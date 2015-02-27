@@ -2023,6 +2023,7 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceMonthlyMaps(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
@@ -2056,14 +2057,44 @@ Public Class cEIIXMLDataSource
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthMap", "")), ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "FlowMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol)
 
         Catch ex As Exception
             bSucces = False
         End Try
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the spatial data associated with an Ecospace scenario.
+    ''' </summary>
+    ''' <param name="iScenarioID">The scenario to load the data for.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadEcospaceMonthlyMaps(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dtMaps As DataTable = Me.ReadTable("EcospaceScenarioMonth")
+        Dim bSucces As Boolean = True
+        Dim iMonth As Integer = 0
+
+        dtMaps.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dtMaps.DefaultView.Sort = "MonthID ASC"
+
+        For Each drow As DataRow In dtMaps.DefaultView.ToTable.Rows
+            iMonth = CInt(Me.ReadSafe(drow, "MonthID", 0))
+            If (1 <= iMonth And iMonth <= cCore.N_MONTHS) Then
+                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "WindXVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Xv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "WindYVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+            End If
+        Next
+
+        dtMaps.Clear()
+
         Return bSucces
 
     End Function

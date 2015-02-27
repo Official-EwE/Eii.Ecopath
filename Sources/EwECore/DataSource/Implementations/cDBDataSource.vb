@@ -368,7 +368,7 @@ Namespace DataSources
                 If iValue > 0 Then
                     sbFilter.Append(" OR ")
                 End If
-                sbFilter.Append(cStringUtils.Localize("({0}='{1}')", strVariable, astrValues(iValue)))
+                sbFilter.Append(String.format("({0}='{1}')", strVariable, astrValues(iValue)))
             Next
             Return sbFilter.ToString()
 
@@ -517,15 +517,15 @@ Namespace DataSources
                     Dim d As Dictionary(Of Integer, Integer) = Me.m_dictMappings(CInt(dt))
 
                     ' Development-time sanity checks.
-                    Debug.Assert(d IsNot Nothing, cStringUtils.Localize("cIDMappings.Add: no dictionary for datatype {0} ({1}), something is very wrong!", dt.ToString, CInt(dt)))
-                    Debug.Assert(Not d.ContainsKey(iIDOrg), cStringUtils.Localize("cIDMappings: DBID {0} is already used to define a mapping", iIDOrg))
-                    Debug.Assert(Not d.ContainsValue(iIDNew), cStringUtils.Localize("cIDMappings: DBID {0} already mapped to", iIDNew))
+                    Debug.Assert(d IsNot Nothing, String.format("cIDMappings.Add: no dictionary for datatype {0} ({1}), something is very wrong!", dt.ToString, CInt(dt)))
+                    Debug.Assert(Not d.ContainsKey(iIDOrg), String.format("cIDMappings: DBID {0} is already used to define a mapping", iIDOrg))
+                    Debug.Assert(Not d.ContainsValue(iIDNew), String.format("cIDMappings: DBID {0} already mapped to", iIDNew))
 
                     d.Add(iIDOrg, iIDNew)
 
                 Catch ex As Exception
                     ' Development-time panic event.
-                    Debug.Assert(False, cStringUtils.Localize("cIDMappings.Add: ID Mapping failed '{0}'", ex.Message))
+                    Debug.Assert(False, String.format("cIDMappings.Add: ID Mapping failed '{0}'", ex.Message))
                 End Try
             End Sub
 
@@ -758,7 +758,7 @@ Namespace DataSources
                 ecopathDS.ModelLastSaved = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathModel", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading EcopathModel", ex.Message))
                 bSucces = False
             End Try
 
@@ -874,7 +874,7 @@ Namespace DataSources
                     iScenario += 1
                 End While
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
+                Me.LogMessage(String.format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -910,7 +910,7 @@ Namespace DataSources
                 For iScenario = 1 To ecopathDS.NumEcosimScenarios
 
                     drow = dt.Rows.Find(ecopathDS.EcosimScenarioDBID(iScenario))
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find existing row for ecosim scenario ID {0}", ecopathDS.EcosimScenarioDBID(iScenario)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find existing row for ecosim scenario ID {0}", ecopathDS.EcosimScenarioDBID(iScenario)))
 
                     drow.BeginEdit()
                     drow("ScenarioName") = ecopathDS.EcosimScenarioName(iScenario)
@@ -965,7 +965,7 @@ Namespace DataSources
                     iScenario += 1
                 End While
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+                Me.LogMessage(String.format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -1000,7 +1000,7 @@ Namespace DataSources
                 For iScenario = 1 To ecopathDS.NumEcospaceScenarios
 
                     drow = dt.Rows.Find(ecopathDS.EcospaceScenarioDBID(iScenario))
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find existing row for ecospace scenario ID {0}", ecopathDS.EcospaceScenarioDBID(iScenario)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find existing row for ecospace scenario ID {0}", ecopathDS.EcospaceScenarioDBID(iScenario)))
 
                     drow.BeginEdit()
                     drow("ScenarioName") = ecopathDS.EcospaceScenarioName(iScenario)
@@ -1055,7 +1055,7 @@ Namespace DataSources
                     iScenario += 1
                 End While
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+                Me.LogMessage(String.format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
                 bSucces = False
             End Try
 
@@ -1090,7 +1090,7 @@ Namespace DataSources
                 For iScenario = 1 To ecopathDS.NumEcotracerScenarios
 
                     drow = dt.Rows.Find(ecopathDS.EcotracerScenarioDBID(iScenario))
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find existing row for ecotracer scenario ID {0}", ecopathDS.EcotracerScenarioDBID(iScenario)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find existing row for ecotracer scenario ID {0}", ecopathDS.EcotracerScenarioDBID(iScenario)))
 
                     drow.BeginEdit()
                     drow("ScenarioName") = ecopathDS.EcotracerScenarioName(iScenario)
@@ -1153,7 +1153,7 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelColor(iLevel) = CInt(Me.m_db.ReadSafe(reader, "LevelColor", 0))
 
                 Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
+                    Me.LogMessage(String.format("Error {0} occurred while reading pedigree level {1}", ex.Message, iLevel))
                     bSucces = False
                 End Try
 
@@ -1200,7 +1200,7 @@ Namespace DataSources
                     End If
 
                 Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading pedigree assignment {1}{2}", ex.Message, iGroup, iVariable))
+                    Me.LogMessage(String.format("Error {0} occurred while reading pedigree assignment {1}{2}", ex.Message, iGroup, iVariable))
                     bSucces = False
                 End Try
 
@@ -1240,7 +1240,7 @@ Namespace DataSources
 
                     ' Find existing row
                     drow = dt.Rows.Find(ecopathDS.PedigreeLevelDBID(iLevel))
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find existing row for pedigree level {0}", ecopathDS.PedigreeLevelDBID(iLevel)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find existing row for pedigree level {0}", ecopathDS.PedigreeLevelDBID(iLevel)))
 
                     drow.BeginEdit()
                     drow("Sequence") = iLevel
@@ -1255,7 +1255,7 @@ Namespace DataSources
                 Next iLevel
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving pedigree level", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving pedigree level", ex.Message))
                 bSucces = False
             End Try
 
@@ -1294,7 +1294,7 @@ Namespace DataSources
                 Next
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving pedigree assignments", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving pedigree assignments", ex.Message))
                 bSucces = False
             End Try
 
@@ -1373,9 +1373,9 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE Pedigree SET Sequence={1} WHERE (LevelID={0})", iPedigreeLevelID, iPosition))
+                Me.m_db.Execute(String.format("UPDATE Pedigree SET Sequence={1} WHERE (LevelID={0})", iPedigreeLevelID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
+                Me.LogMessage(String.format("Error {0} occurred while moving PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
                 bSucces = False
             End Try
             Return bSucces
@@ -1395,11 +1395,11 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Try
                 ' Destroy related pedigree records
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathGroupPedigree WHERE (LevelID={0})", iPedigreeLevelID))
+                Me.m_db.Execute(String.format("DELETE FROM EcopathGroupPedigree WHERE (LevelID={0})", iPedigreeLevelID))
                 ' Destroy zhe master
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM Pedigree WHERE (LevelID={0})", iPedigreeLevelID))
+                Me.m_db.Execute(String.format("DELETE FROM Pedigree WHERE (LevelID={0})", iPedigreeLevelID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
+                Me.LogMessage(String.format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
                 bSucces = False
             End Try
             Return bSucces
@@ -1435,7 +1435,7 @@ Namespace DataSources
                         psdDS.FirstWeightClass = CSng(Me.m_db.ReadSafe(reader, "FirstWeightClass", 0.125))
                         psdDS.ClimateType = CType(CInt(Me.m_db.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
                     Catch ex As Exception
-                        Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        Me.LogMessage(String.format("Error {0} occurred while reading EcopathPSD", ex.Message))
                         bSucces = False
                     End Try
                 End If
@@ -1496,7 +1496,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving PSD", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving PSD", ex.Message))
                 bSucces = False
             End Try
 
@@ -1598,11 +1598,11 @@ Namespace DataSources
                         stanzaDS.BaseStanzaCB(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingCB", stanzaDS.BaseStanza(iStanza)))
 
                     Catch ex As Exception
-                        Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                        Me.LogMessage(String.format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
                         bSucces = False
                     End Try
 
-                    rdLifeStage = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", stanzaDS.StanzaDBID(iStanza)))
+                    rdLifeStage = Me.m_db.GetReader(String.format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", stanzaDS.StanzaDBID(iStanza)))
                     iLifeStage = 0
                     While rdLifeStage.Read()
 
@@ -1622,7 +1622,7 @@ Namespace DataSources
                             stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
 
                         Catch ex As Exception
-                            Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
+                            Me.LogMessage(String.format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
                             bSucces = False
                         End Try
 
@@ -1776,8 +1776,8 @@ Namespace DataSources
             ' Process inputs
             For i As Integer = 0 To aiGroupID.Length - 1
                 ' Test if groups exist
-                If CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcopathGroup WHERE GroupID={0}", aiGroupID(i)), 0)) = 0 Then
-                    Debug.Assert(False, cStringUtils.Localize("Invalid group ID {0} specified", aiGroupID(i)))
+                If CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcopathGroup WHERE GroupID={0}", aiGroupID(i)), 0)) = 0 Then
+                    Debug.Assert(False, String.format("Invalid group ID {0} specified", aiGroupID(i)))
                     Return False
                 End If
                 ' Find max age
@@ -1831,8 +1831,8 @@ Namespace DataSources
         Friend Function RemoveStanza(ByVal iStanzaID As Integer) As Boolean _
                 Implements IEcopathDataSource.RemoveStanza
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathStanzaTaxon WHERE (StanzaID={0})", iStanzaID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM Stanza WHERE (StanzaID={0})", iStanzaID))
+                Me.m_db.Execute(String.format("DELETE FROM EcopathStanzaTaxon WHERE (StanzaID={0})", iStanzaID))
+                Me.m_db.Execute(String.format("DELETE FROM Stanza WHERE (StanzaID={0})", iStanzaID))
                 Return True
             Catch ex As Exception
                 ' Kaboom
@@ -1890,7 +1890,7 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM StanzaLifeStage WHERE (StanzaID={0}) AND (GroupID={1})", iStanzaDBID, iGroupDBID))
+                Me.m_db.Execute(String.format("DELETE FROM StanzaLifeStage WHERE (StanzaID={0}) AND (GroupID={1})", iStanzaDBID, iGroupDBID))
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -1997,7 +1997,7 @@ Namespace DataSources
                     ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(reader("PoolColor")), Globalization.NumberStyles.HexNumber)
 
                 Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
+                    Me.LogMessage(String.format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
                     bSucces = False
                 End Try
 
@@ -2045,7 +2045,7 @@ Namespace DataSources
 
                     ' Find existing row
                     drow = dt.Rows.Find(ecopathDS.GroupDBID(iGroup))
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find existing row for group {0}", ecopathDS.GroupDBID(iGroup)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find existing row for group {0}", ecopathDS.GroupDBID(iGroup)))
 
                     drow.BeginEdit()
                     drow("GroupID") = ecopathDS.GroupDBID(iGroup)
@@ -2077,7 +2077,7 @@ Namespace DataSources
                     drow("Immigration") = ecopathDS.Immig(iGroup)
                     drow("Emigration") = ecopathDS.Emigration(iGroup)
                     drow("EmigRate") = ecopathDS.Emig(iGroup)
-                    drow("PoolColor") = cStringUtils.Localize("{0:x8}", ecopathDS.GroupColor(iGroup))
+                    drow("PoolColor") = String.format("{0:x8}", ecopathDS.GroupColor(iGroup))
 
                     'PSD
                     drow("VBK") = ecopathDS.vbK(iGroup)
@@ -2094,7 +2094,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathGroup", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcopathGroup", ex.Message))
                 bSucces = False
             End Try
 
@@ -2231,7 +2231,7 @@ Namespace DataSources
 
             Try
                 ' Remove all Ecosim groups related to this Ecopath group
-                Dim reader As IDataReader = Me.m_db.GetReader(cStringUtils.Localize("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
+                Dim reader As IDataReader = Me.m_db.GetReader(String.format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
                 If (reader IsNot Nothing) Then
                     While reader.Read()
                         bSucces = bSucces And Me.RemoveEcosimGroup(CInt(reader("GroupID")))
@@ -2241,7 +2241,7 @@ Namespace DataSources
 
                 ' Oh, now wait until we need to do this for Ecospace...
                 ' JS 20Jun11: ...and yep, it happened
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
+                reader = Me.m_db.GetReader(String.format("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iGroupID))
                 If (reader IsNot Nothing) Then
                     While reader.Read()
                         bSucces = bSucces And Me.RemoveEcospaceGroup(CInt(reader("GroupID")))
@@ -2251,11 +2251,11 @@ Namespace DataSources
 
                 ' Now Ecosim and Ecospace are clean, delete the group from Ecopath
                 ' Delete taxa
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathGroup WHERE (GroupID={0})", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iGroupID))
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing group {1}", ex.Message, iGroupID))
+                Me.LogMessage(String.format("Error {0} occurred while removing group {1}", ex.Message, iGroupID))
                 bSucces = False
             End Try
 
@@ -2279,9 +2279,9 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcopathGroup SET Sequence={1} WHERE (GroupID={0})", iGroupID, iPosition))
+                Me.m_db.Execute(String.format("UPDATE EcopathGroup SET Sequence={1} WHERE (GroupID={0})", iGroupID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while moving group {1}", ex.Message, iGroupID))
+                Me.LogMessage(String.format("Error {0} occurred while moving group {1}", ex.Message, iGroupID))
                 bSucces = False
             End Try
             Return bSucces
@@ -2329,7 +2329,7 @@ Namespace DataSources
                     ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
                     If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
                         If (ecopathDS.DCInput(iPred, iPrey) <> 0) Then
-                            cLog.Write(cStringUtils.Localize("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                            cLog.Write(String.format("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
                         End If
                     End If
 
@@ -2341,7 +2341,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
+                Me.LogMessage(String.format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
                 bSucces = False
             End Try
 
@@ -2558,7 +2558,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
+                Me.LogMessage(String.format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
                 bSucces = False
             End Try
 
@@ -2591,14 +2591,14 @@ Namespace DataSources
                         ecopathDS.Market(iFleet, iGroup) = CSng(reader("price"))
                         ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.m_db.ReadSafe(reader, "DiscardMortality", 0.0!))
                     Else
-                        Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
+                        Me.LogMessage(String.format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
                         bSucces = False
                     End If
 
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
+                Me.LogMessage(String.format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
                 bSucces = False
             End Try
 
@@ -2635,7 +2635,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+                Me.LogMessage(String.format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
                 bSucces = False
             End Try
 
@@ -2695,7 +2695,7 @@ Namespace DataSources
                     bAddNewRow = (drow Is Nothing)
 
                     If bAddNewRow Then drow = writer.NewRow()
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("No existing row for fleet {0}", ecopathDS.FleetDBID(iFleet)))
+                    Debug.Assert(drow IsNot Nothing, String.format("No existing row for fleet {0}", ecopathDS.FleetDBID(iFleet)))
 
                     drow("Sequence") = iFleet
                     If bAddNewRow Then drow("FleetID") = ecopathDS.FleetDBID(iFleet)
@@ -2703,7 +2703,7 @@ Namespace DataSources
                     drow("FixedCost") = ecopathDS.CostPct(iFleet, eCostIndex.Fixed)
                     drow("SailingCost") = ecopathDS.CostPct(iFleet, eCostIndex.Sail)
                     drow("variableCost") = ecopathDS.CostPct(iFleet, eCostIndex.CUPE)
-                    drow("PoolColor") = cStringUtils.Localize("{0:x8}", ecopathDS.FleetColor(iFleet))
+                    drow("PoolColor") = String.format("{0:x8}", ecopathDS.FleetColor(iFleet))
 
                     If bAddNewRow Then writer.AddRow(drow)
                 Next iFleet
@@ -2711,7 +2711,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathFleet", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcopathFleet", ex.Message))
                 bSucces = False
             End Try
 
@@ -2759,7 +2759,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving catch", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving catch", ex.Message))
                 bSucces = False
             End Try
 
@@ -2796,7 +2796,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+                Me.LogMessage(String.format("Error {0} occurred while saving DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
                 bSucces = False
             End Try
 
@@ -2840,7 +2840,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
+                Me.LogMessage(String.format("Error {0} occurred while adding fleet {1}", ex.Message, strFleetName))
                 bSucces = False
             End Try
 
@@ -2890,9 +2890,9 @@ Namespace DataSources
             Try
                 bSucces = bSucces And Me.RemoveEcospaceFleet(iFleetID)
                 bSucces = bSucces And Me.RemoveEcosimFleet(iFleetID)
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathFleet WHERE (FleetID={0})", iFleetID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcopathFleet WHERE (FleetID={0})", iFleetID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing fleet {1}", ex.Message, iFleetID))
+                Me.LogMessage(String.format("Error {0} occurred while removing fleet {1}", ex.Message, iFleetID))
                 bSucces = False
             End Try
             Return bSucces
@@ -2912,9 +2912,9 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcopathFleet SET Sequence={1} WHERE (FleetID={0})", iFleetID, iPosition))
+                Me.m_db.Execute(String.format("UPDATE EcopathFleet SET Sequence={1} WHERE (FleetID={0})", iFleetID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while moving fleet {1}", ex.Message, iFleetID))
+                Me.LogMessage(String.format("Error {0} occurred while moving fleet {1}", ex.Message, iFleetID))
                 bSucces = False
             End Try
             Return bSucces
@@ -2965,7 +2965,7 @@ Namespace DataSources
                         tsDS.nDatasetNumPoints(iDataset) = CInt(reader("NumPoints"))
                         tsDS.DataSetIntervals(iDataset) = CType(CInt(Me.m_db.ReadSafe(reader, "DataInterval", eTSDataSetInterval.Annual)), eTSDataSetInterval)
 
-                        tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
+                        tsDS.nDatasetNumTimeSeries(iDataset) = CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(reader("DatasetID")))))
                         iDataset += 1
                     End While
                 Catch ex As Exception
@@ -3006,7 +3006,7 @@ Namespace DataSources
 
             Try
                 ' Delete existing dataset with same name, if any
-                Dim reader As IDataReader = Me.m_db.GetReader(cStringUtils.Localize("SELECT DatasetID FROM EcosimTimeSeriesDataset WHERE DatasetName='{0}'", strDatasetName))
+                Dim reader As IDataReader = Me.m_db.GetReader(String.format("SELECT DatasetID FROM EcosimTimeSeriesDataset WHERE DatasetName='{0}'", strDatasetName))
                 Dim lDatasetID As New List(Of Integer)
                 While reader.Read
                     lDatasetID.Add(CInt(reader("DatasetID")))
@@ -3045,7 +3045,7 @@ Namespace DataSources
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
+                Me.LogMessage(String.format("Error {0} occurred while appending dataset {1}", ex.Message, strDatasetName))
                 bSucces = False
             End Try
 
@@ -3078,8 +3078,8 @@ Namespace DataSources
             Try
                 ' Cascading delete may fail due to 'weak' relations set by updates. Aargh, how I dislike Access!!!
                 ' Solution: manually delete all dataset links
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimTimeSeries WHERE (DatasetID={0})", iDatasetID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimTimeSeriesDataset WHERE (DatasetID={0})", iDatasetID))
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -3146,7 +3146,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading taxon {1}", ex.Message, iTaxon))
+                Me.LogMessage(String.format("Error {0} occurred while reading taxon {1}", ex.Message, iTaxon))
                 bSucces = False
             End Try
 
@@ -3186,7 +3186,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading taxon {1}, group {2}", ex.Message, iTaxon, iGroup))
+                Me.LogMessage(String.format("Error {0} occurred while reading taxon {1}, group {2}", ex.Message, iTaxon, iGroup))
                 bSucces = False
             End Try
 
@@ -3219,7 +3219,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading taxon {1}, stanza {2}", ex.Message, iTaxon, iStanza))
+                Me.LogMessage(String.format("Error {0} occurred while reading taxon {1}, stanza {2}", ex.Message, iTaxon, iStanza))
                 bSucces = False
             End Try
 
@@ -3291,7 +3291,7 @@ Namespace DataSources
                     Next iTaxon
 
                 Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathTaxa", ex.Message))
+                    Me.LogMessage(String.format("Error {0} occurred while saving EcopathTaxa", ex.Message))
                     bSucces = False
                 End Try
             End If
@@ -3331,7 +3331,7 @@ Namespace DataSources
                 Next iTaxon
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcopathGroupTaxon", ex.Message))
                 bSucces = False
             End Try
 
@@ -3366,7 +3366,7 @@ Namespace DataSources
                 Next iTaxon
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathStanzaTaxon", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcopathStanzaTaxon", ex.Message))
                 bSucces = False
             End Try
 
@@ -3439,7 +3439,7 @@ Namespace DataSources
                 bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
             Catch ex As Exception
                 bSucces = False
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while adding taxon", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while adding taxon", ex.Message))
             End Try
 
             Try
@@ -3463,7 +3463,7 @@ Namespace DataSources
                 End If
             Catch ex As Exception
                 bSucces = False
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while adding taxon", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while adding taxon", ex.Message))
             End Try
 
             Return bSucces
@@ -3480,11 +3480,11 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={0})", iTaxonID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathStanzaTaxon WHERE (TaxonID={0})", iTaxonID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcopathTaxon WHERE (TaxonID={0})", iTaxonID))
+                Me.m_db.Execute(String.format("DELETE FROM EcopathGroupTaxon WHERE (TaxonID={0})", iTaxonID))
+                Me.m_db.Execute(String.format("DELETE FROM EcopathStanzaTaxon WHERE (TaxonID={0})", iTaxonID))
+                Me.m_db.Execute(String.format("DELETE FROM EcopathTaxon WHERE (TaxonID={0})", iTaxonID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing taxon {1}", ex.Message, iTaxonID))
+                Me.LogMessage(String.format("Error {0} occurred while removing taxon {1}", ex.Message, iTaxonID))
                 bSucces = False
             End Try
             Return bSucces
@@ -3603,7 +3603,7 @@ Namespace DataSources
             'jb 11-Oct-2012 Add MSY data
             Me.m_core.m_MSYData.RedimVars()
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             Try
                 ' Read the one record
                 reader.Read()
@@ -3635,7 +3635,7 @@ Namespace DataSources
                 ecosimDS.ForagingTimeLowerLimit = CSng(Me.m_db.ReadSafe(reader, "ForagingTimeLowerLimit", 0.01))
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -3669,7 +3669,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             ' Delete existing scenario
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenario WHERE ScenarioName='{0}'", strScenarioName))
+            Me.m_db.Execute(String.format("DELETE FROM EcosimScenario WHERE ScenarioName='{0}'", strScenarioName))
 
             iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario", 0)) + 1
 
@@ -3770,7 +3770,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcoSimModelParameter, iActiveScenarioID)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving Scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while saving Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -3864,7 +3864,7 @@ Namespace DataSources
                 Me.ClearChanged(s_EcosimComponents)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
+                Me.LogMessage(String.format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
                 bSucces = False
             End Try
 
@@ -3887,16 +3887,16 @@ Namespace DataSources
             Try
                 ' Delete 'soft links': database links forged by database updates
                 '    DB update 6.04022
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID))
                 '    DB update 6.07001
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
                 '    DB probably an even older database update, hmm
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete actual scenario
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecosim scenarioID {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while removing Ecosim scenarioID {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -3957,7 +3957,7 @@ Namespace DataSources
             Dim iGroupID As Integer = 1
             Dim iFishMortShapeID As Integer = -1
 
-            readerGroup = Me.m_db.GetReader(cStringUtils.Localize("SELECT GroupID, FishMortShapeID FROM EcosimScenarioGroup WHERE (EcopathGroupID={0}) AND (ScenarioID={1})", iEcopathGroupID, iScenarioID))
+            readerGroup = Me.m_db.GetReader(String.format("SELECT GroupID, FishMortShapeID FROM EcosimScenarioGroup WHERE (EcopathGroupID={0}) AND (ScenarioID={1})", iEcopathGroupID, iScenarioID))
             If (readerGroup IsNot Nothing) Then
 
                 iGroupID = -1
@@ -3992,7 +3992,7 @@ Namespace DataSources
             ' *** Next: Critical bits, create missing entries in DB ***
 
             ' Already exists in EcosimShape?
-            bValueFound = (CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT ShapeID FROM EcosimShape WHERE (ShapeID={0})", iFishMortShapeID))) > 0)
+            bValueFound = (CInt(Me.m_db.GetValue(String.format("SELECT ShapeID FROM EcosimShape WHERE (ShapeID={0})", iFishMortShapeID))) > 0)
             If Not bValueFound Then
                 Try
                     writerShape = Me.m_db.GetWriter("EcosimShape")
@@ -4004,34 +4004,34 @@ Namespace DataSources
                     Me.m_db.ReleaseWriter(writerShape)
 
                     ' Log repair state
-                    Me.LogMessage(cStringUtils.Localize("Added missing shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
+                    Me.LogMessage(String.format("Added missing shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(cStringUtils.Localize("Failed to add shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogMessage(String.format("Failed to add shape definition {0} for Ecosim group {1}", iFishMortShapeID, iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
                 End Try
             End If
 
             ' Already exists in EcosimShapeFishMort?
-            bValueFound = (CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT ShapeID FROM EcosimShapeFishMort WHERE (ShapeID={0})", iFishMortShapeID))) > 0)
+            bValueFound = (CInt(Me.m_db.GetValue(String.format("SELECT ShapeID FROM EcosimShapeFishMort WHERE (ShapeID={0})", iFishMortShapeID))) > 0)
             If Not bValueFound Then
                 Try
                     writerAssgn = Me.m_db.GetWriter("EcosimShapeFishMort")
                     drow = writerAssgn.NewRow()
                     drow("ShapeID") = iFishMortShapeID
-                    drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_FISHMORTSHAPE, iFishMortShapeID)
+                    drow("Title") = String.format(My.Resources.CoreDefaults.CORE_DEFAULT_FISHMORTSHAPE, iFishMortShapeID)
                     drow("Zscale") = "0"
                     writerAssgn.AddRow(drow)
                     Me.m_db.ReleaseWriter(writerAssgn)
 
                     ' Log repair state
-                    Me.LogMessage(cStringUtils.Localize("Added missing fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
+                    Me.LogMessage(String.format("Added missing fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(cStringUtils.Localize("Failed to add fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogMessage(String.format("Failed to add fishing mortality shape {0} for Ecosim group {1}", iFishMortShapeID, iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
                 End Try
             End If
 
@@ -4047,12 +4047,12 @@ Namespace DataSources
                     Me.m_db.ReleaseWriter(writerGroup)
 
                     ' Log repair state
-                    Me.LogMessage(cStringUtils.Localize("Added missing Ecosim group {0}", iGroupID))
+                    Me.LogMessage(String.format("Added missing Ecosim group {0}", iGroupID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(cStringUtils.Localize("Failed to add Ecosim group {0}", iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogMessage(String.format("Failed to add Ecosim group {0}", iGroupID), eMessageType.NotSet, eMessageImportance.Critical)
                 End Try
             End If
 
@@ -4103,7 +4103,7 @@ Namespace DataSources
 
             iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet", 0)) + 1
 
-            readerFleet = Me.m_db.GetReader(cStringUtils.Localize("SELECT EcopathFleetID FROM EcoSimScenarioFleet WHERE (EcopathFleetID={0}) AND (ScenarioID={1})", iEcopathFleetID, iScenarioID))
+            readerFleet = Me.m_db.GetReader(String.format("SELECT EcopathFleetID FROM EcoSimScenarioFleet WHERE (EcopathFleetID={0}) AND (ScenarioID={1})", iEcopathFleetID, iScenarioID))
             If (readerFleet IsNot Nothing) Then
                 bFleetFound = readerFleet.Read()
                 Me.m_db.ReleaseReader(readerFleet)
@@ -4123,12 +4123,12 @@ Namespace DataSources
                     bSucces = bSucces And Me.m_db.ReleaseWriter(writerFleet, True)
 
                     ' Log repair state
-                    Me.LogMessage(cStringUtils.Localize("Added missing Ecosim fleet {0}", iEcopathFleetID))
+                    Me.LogMessage(String.format("Added missing Ecosim fleet {0}", iEcopathFleetID))
 
                 Catch ex As Exception
                     bSucces = False
                     ' Log failure
-                    Me.LogMessage(cStringUtils.Localize("Failed to add Ecosim fleet {0}", iEcopathFleetID), eMessageType.NotSet, eMessageImportance.Critical)
+                    Me.LogMessage(String.format("Failed to add Ecosim fleet {0}", iEcopathFleetID), eMessageType.NotSet, eMessageImportance.Critical)
                 End Try
             End If
 
@@ -4152,7 +4152,7 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function RemoveEcosimFleet(ByVal iEcopathFleetID As Integer) As Boolean
 
-            Dim reader As IDataReader = Me.m_db.GetReader(cStringUtils.Localize("SELECT FleetID FROM EcosimScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
+            Dim reader As IDataReader = Me.m_db.GetReader(String.format("SELECT FleetID FROM EcosimScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
             Dim iFleetID As Integer = 0
             Dim bSucces As Boolean = True
 
@@ -4160,7 +4160,7 @@ Namespace DataSources
             Try
                 While reader.Read
                     iFleetID = CInt(reader("FleetID"))
-                    bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcoSimScenarioFleetYear WHERE FleetID={0}", iFleetID))
+                    bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcoSimScenarioFleetYear WHERE FleetID={0}", iFleetID))
                 End While
             Catch ex As Exception
                 bSucces = False
@@ -4168,8 +4168,8 @@ Namespace DataSources
             Me.m_db.ReleaseReader(reader)
             reader = Nothing
 
-            bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
-            bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
 
             Return bSucces
         End Function
@@ -4193,9 +4193,9 @@ Namespace DataSources
             Try
 
                 ' Big sigh, it's even worse...
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
                 bSucces = False
@@ -4220,7 +4220,7 @@ Namespace DataSources
 
                 ' Me.CreateRepairEcosimGroup(ecopathDS.GroupDBID(j), iScenarioID, True)
 
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcoSimScenarioGroup WHERE (ScenarioID={0}) AND (EcopathGroupID={1})", iScenarioID, ecopathDS.GroupDBID(igroup)))
+                reader = Me.m_db.GetReader(String.format("SELECT * FROM EcoSimScenarioGroup WHERE (ScenarioID={0}) AND (EcopathGroupID={1})", iScenarioID, ecopathDS.GroupDBID(igroup)))
 
                 Try
                     reader.Read()
@@ -4275,7 +4275,7 @@ Namespace DataSources
                     ' Me.LoadFishMortShape(CInt(reader("FishMortShapeID")), iEcopathGroup)
 
                 Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
+                    Me.LogMessage(String.format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iEcopathGroup))
                     bSucces = False
                 End Try
 
@@ -4299,7 +4299,7 @@ Namespace DataSources
             Dim iYear As Integer = -1
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID))
 
             Try
                 While reader.Read()
@@ -4338,7 +4338,7 @@ Namespace DataSources
             Next iPredator
 
             Try
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     ' Find iPredator
@@ -4355,7 +4355,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading ForcingMatrix", ex.Message))
                 bSucces = False
             End Try
 
@@ -4383,7 +4383,7 @@ Namespace DataSources
                 Try
                     ' Read shape for this fleet
                     iFleetID = ecopathDS.FleetDBID(iFleet)
-                    reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID))
+                    reader = Me.m_db.GetReader(String.format("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID))
                     reader.Read()
                     iShapeID = CInt(Me.m_db.ReadSafe(reader, "FishRateShapeID", -1))
                 Catch ex As Exception
@@ -4402,7 +4402,7 @@ Namespace DataSources
                     ' JS 10Aug07: Don't fail in case FishRateShape is missing. Only those present are loaded, only those loaded are saved.
                     '             Since these shapes do not need to be present we can be somewhat forgiving in this particular case.
                     If Not LoadFishingRateShape(iShapeID, iFleet) Then
-                        Me.LogMessage(cStringUtils.Localize("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
+                        Me.LogMessage(String.format("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
                     End If
                 End If
 
@@ -4474,7 +4474,7 @@ Namespace DataSources
             Dim iYear As Integer = -1
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcoSimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcoSimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID))
 
             Try
                 While reader.Read()
@@ -4508,7 +4508,7 @@ Namespace DataSources
             Dim iGroup As Integer = -1
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcoSimScenarioQuota WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcoSimScenarioQuota WHERE (ScenarioID={0})", iScenarioID))
 
             Try
                 While reader.Read()
@@ -4684,7 +4684,7 @@ Namespace DataSources
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
-            strSQL = cStringUtils.Localize("DELETE FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID)
+            strSQL = String.format("DELETE FROM EcosimScenarioGroupYear WHERE (ScenarioID={0})", iScenarioID)
             bSucces = Me.m_db.Execute(strSQL)
 
             Try
@@ -4727,7 +4727,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcoSimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcoSimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
                 writer = Me.m_db.GetWriter("EcoSimScenarioForcingMatrix")
 
                 For iPredator = 1 To ecosimDS.nGroups
@@ -4877,7 +4877,7 @@ Namespace DataSources
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
-            strSQL = cStringUtils.Localize("DELETE FROM EcosimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID)
+            strSQL = String.format("DELETE FROM EcosimScenarioFleetYear WHERE (ScenarioID={0})", iScenarioID)
             bSucces = Me.m_db.Execute(strSQL)
 
             Try
@@ -4924,7 +4924,7 @@ Namespace DataSources
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
-            strSQL = cStringUtils.Localize("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID)
+            strSQL = String.format("DELETE FROM EcosimScenarioQuota WHERE (ScenarioID={0})", iScenarioID)
             bSucces = Me.m_db.Execute(strSQL)
 
             Try
@@ -4982,16 +4982,16 @@ Namespace DataSources
 
             Dim strQuery As String = ""
 
-            strQuery = cStringUtils.Localize("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0} OR ShapeType={1})", CInt(eDataTypes.EggProd), CInt(eDataTypes.Forcing))
+            strQuery = String.format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0} OR ShapeType={1})", CInt(eDataTypes.EggProd), CInt(eDataTypes.Forcing))
             ecosimDS.ForcingShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
-            strQuery = cStringUtils.Localize("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.Mediation))
+            strQuery = String.format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.Mediation))
             PredPreyMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
-            strQuery = cStringUtils.Localize("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.PriceMediation))
+            strQuery = String.format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.PriceMediation))
             LandingsMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
-            strQuery = cStringUtils.Localize("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.CapacityMediation))
+            strQuery = String.format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.CapacityMediation))
             CapEnvResMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
             ecosimDS.DimForcingShapes()
@@ -5041,7 +5041,7 @@ Namespace DataSources
                             'bSucces = bSucces And Me.LoadFishMortShape(iShapeID, iFishingMortShape)
 
                         Case Else
-                            Debug.Assert(False, cStringUtils.Localize("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
+                            Debug.Assert(False, String.format("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
 
                     End Select
 
@@ -5059,7 +5059,7 @@ Namespace DataSources
             Try
                 ' Read and assign scenario forcing shape number(s)
                 ' ToDo: make number of response functions flexible
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT NutForcingShapeID, SalinityForcingShapeID, TemperatureForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.format("SELECT NutForcingShapeID, SalinityForcingShapeID, TemperatureForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
                 reader.Read()
                 iForcingShape = CInt(Me.m_db.ReadSafe(reader, "NutForcingShapeID", 0))
                 ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
@@ -5095,7 +5095,7 @@ Namespace DataSources
 
             Try
 
-                readerShape = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
+                readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
                 shapeParms.YZero = CSng(readerShape("Yzero"))
                 shapeParms.YBase = CSng(readerShape("Ybase"))
@@ -5123,7 +5123,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
+                Me.LogMessage(String.format("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5142,7 +5142,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                readerShape = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimShapeTime WHERE (ShapeID={0})", iShapeID))
+                readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeTime WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
                 ' Read shape parameters
@@ -5174,7 +5174,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
+                Me.LogMessage(String.format("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5194,7 +5194,7 @@ Namespace DataSources
 
             Try
 
-                readerShape = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
+                readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
                 ' Init shapeParms
@@ -5225,7 +5225,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
+                Me.LogMessage(String.format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5248,7 +5248,7 @@ Namespace DataSources
 
             Try
 
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioPredPreyShape WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioPredPreyShape WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     ' Find iPredator
@@ -5288,7 +5288,7 @@ Namespace DataSources
                             End If
                             ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                         Else
-                            Me.LogMessage(cStringUtils.Localize("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                            Me.LogMessage(String.format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                         End If
                     End If
 
@@ -5298,7 +5298,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading PredPreyInteraction", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading PredPreyInteraction", ex.Message))
                 bSucces = False
             End Try
 
@@ -5321,7 +5321,7 @@ Namespace DataSources
 
             Try
 
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     ' Find iFleet
@@ -5338,7 +5338,7 @@ Namespace DataSources
                     If iShape > -1 Then
                         ecosimDS.PriceMedData.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
                     Else
-                        Me.LogMessage(cStringUtils.Localize("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
+                        Me.LogMessage(String.format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
                     End If
 
                 End While
@@ -5347,7 +5347,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Landing interaction", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading Landing interaction", ex.Message))
                 bSucces = False
             End Try
 
@@ -5377,7 +5377,7 @@ Namespace DataSources
             ' === Pred/prey mediations ===
             medData = ecosimDS.BioMedData
             Try
-                readerGroup = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioShapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
+                readerGroup = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioShapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
                 If (readerGroup IsNot Nothing) Then
                     While readerGroup.Read()
                         iShape = Array.IndexOf(medData.MediationDBIDs, readerGroup("ShapeID"))
@@ -5390,12 +5390,12 @@ Namespace DataSources
                     readerGroup = Nothing
                 End If
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group MediationWeights", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading group MediationWeights", ex.Message))
                 bSucces = False
             End Try
 
             Try
-                readerFleet = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
+                readerFleet = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
                 If (readerFleet IsNot Nothing) Then
                     While readerFleet.Read()
                         iShape = Array.IndexOf(medData.MediationDBIDs, readerFleet("ShapeID"))
@@ -5409,14 +5409,14 @@ Namespace DataSources
                     readerFleet = Nothing
                 End If
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading fleet MediationWeights", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading fleet MediationWeights", ex.Message))
                 bSucces = False
             End Try
 
             ' === Landings mediations === 
             medData = ecosimDS.PriceMedData
             Try
-                readerGroup = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimScenarioshapeMedWeightsLandings WHERE (ScenarioID={0})", iScenarioID))
+                readerGroup = Me.m_db.GetReader(String.format("SELECT * FROM EcosimScenarioshapeMedWeightsLandings WHERE (ScenarioID={0})", iScenarioID))
                 If (readerGroup IsNot Nothing) Then
                     While readerGroup.Read()
                         iShape = Array.IndexOf(medData.MediationDBIDs, readerGroup("ShapeID"))
@@ -5431,7 +5431,7 @@ Namespace DataSources
                     readerGroup = Nothing
                 End If
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading group MediationWeights", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading group MediationWeights", ex.Message))
                 bSucces = False
             End Try
 
@@ -5483,7 +5483,7 @@ Namespace DataSources
                 reader = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading stanza shape assignments", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading stanza shape assignments", ex.Message))
                 bSucces = False
             End Try
             Return bSucces
@@ -5501,7 +5501,7 @@ Namespace DataSources
 
             Try
 
-                readerShape = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimShapeFishRate WHERE (ShapeID={0})", iShapeID))
+                readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeFishRate WHERE (ShapeID={0})", iShapeID))
                 If readerShape.Read() Then
                     ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(Me.m_db.ReadSafe(readerShape, "Title", "")).Trim()
                     strMemo = CStr(readerShape("zScale"))
@@ -5516,7 +5516,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
+                Me.LogMessage(String.format("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5536,7 +5536,7 @@ Namespace DataSources
 
             Try
 
-                readerShape = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimShapeFishMort WHERE (ShapeID={0})", iShapeID))
+                readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeFishMort WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
                 ' Store ID
                 ecosimDS.FishRateNoDBID(iForcingShape) = iShapeID
@@ -5557,7 +5557,7 @@ Namespace DataSources
                 readerShape = Nothing
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading fish mortality shape {1}", ex.Message, iShapeID))
+                Me.LogMessage(String.format("Error {0} occurred while reading fish mortality shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -5693,7 +5693,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving forcing shapes", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving forcing shapes", ex.Message))
                 bSucces = False
             End Try
 
@@ -5791,7 +5791,7 @@ Namespace DataSources
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeTime")
                 dt = writer.GetDataTable()
-                adrows = dt.Select(cStringUtils.Localize("ShapeID={0}", iShapeID))
+                adrows = dt.Select(String.format("ShapeID={0}", iShapeID))
                 If adrows.Length = 1 Then
                     drow = adrows(0)
                     drow.BeginEdit()
@@ -5855,7 +5855,7 @@ Namespace DataSources
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeMediation")
                 dt = writer.GetDataTable()
-                adrows = dt.Select(cStringUtils.Localize("ShapeID={0}", iShapeID))
+                adrows = dt.Select(String.format("ShapeID={0}", iShapeID))
                 If adrows.Length = 1 Then
                     drow = adrows(0)
                     drow.BeginEdit()
@@ -5909,7 +5909,7 @@ Namespace DataSources
 
             Try
 
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioPredPreyShape WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ScenarioID={0})", iScenarioID))
                 writer = Me.m_db.GetWriter("EcosimScenarioPredPreyShape")
 
                 For iPredator As Integer = 1 To ecosimDS.nGroups
@@ -5936,7 +5936,7 @@ Namespace DataSources
                                     writer.AddRow(drow)
                                 End If
                             Catch ex As Exception
-                                'Debug.Assert(False, cStringUtils.Localize("Index error on pred {0}, prey {1}, shape {2}", iPredator, iPrey, iShape))
+                                'Debug.Assert(False, String.format("Index error on pred {0}, prey {1}, shape {2}", iPredator, iPrey, iShape))
                             End Try
 
                         Next iShapeNo
@@ -5946,7 +5946,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving PredPreyInteraction", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving PredPreyInteraction", ex.Message))
                 bSucces = False
             End Try
 
@@ -5967,7 +5967,7 @@ Namespace DataSources
 
             Try
 
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioLandingsShape WHERE (ScenarioID={0})", iScenarioID))
                 writer = Me.m_db.GetWriter("EcosimScenarioLandingsShape")
 
                 For iFleet As Integer = 1 To ecosimDS.nGear
@@ -5998,7 +5998,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving landings interaction", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving landings interaction", ex.Message))
                 bSucces = False
             End Try
 
@@ -6020,8 +6020,8 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
             ' === Pred/prey mediations ===
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ScenarioID={0})", iScenarioID))
 
             medData = ecosimDS.BioMedData
             Try
@@ -6062,7 +6062,7 @@ Namespace DataSources
             End Try
 
             ' === Landings mediations === 
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ScenarioID={0})", iScenarioID))
             medData = ecosimDS.PriceMedData
             Try
                 writer = Me.m_db.GetWriter("EcosimScenarioshapeMedWeightsLandings")
@@ -6153,12 +6153,12 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Debug.Assert(iShapeID > 0, cStringUtils.Localize("Invalid ID for FishingRate shape {0}", iShapeID))
+            Debug.Assert(iShapeID > 0, String.format("Invalid ID for FishingRate shape {0}", iShapeID))
 
             Try
                 writer = Me.m_db.GetWriter("EcosimShapeFishRate")
                 dt = writer.GetDataTable()
-                adrows = dt.Select(cStringUtils.Localize("ShapeID={0}", iShapeID))
+                adrows = dt.Select(String.format("ShapeID={0}", iShapeID))
                 If adrows.Length = 1 Then
                     drow = adrows(0)
                     drow.BeginEdit()
@@ -6201,12 +6201,12 @@ Namespace DataSources
         '    Dim drow As DataRow = Nothing
         '    Dim bSucces As Boolean = True
 
-        '    Debug.Assert(iDBID > 0, cStringUtils.Localize("Invalid ID for FishMortShape shape {0}", iDBID))
+        '    Debug.Assert(iDBID > 0, String.format("Invalid ID for FishMortShape shape {0}", iDBID))
 
         '    Try
         '        writer = Me.m_db.GetWriter("EcosimShapeFishMort")
         '        dt = writer.GetDataTable()
-        '        adrows = dt.Select(cStringUtils.Localize("ShapeID={0}", iDBID))
+        '        adrows = dt.Select(String.format("ShapeID={0}", iDBID))
         '        If adrows.Length = 1 Then
         '            drow = adrows(0)
         '            drow.BeginEdit()
@@ -6337,7 +6337,7 @@ Namespace DataSources
                         writerShape = Me.m_db.GetWriter("EcosimShapeFishMort")
 
                     Case eDataTypes.NotSet
-                        Debug.Assert(False, cStringUtils.Localize("Cannot load invalid shapetype for shape ID {0}", iShapeID))
+                        Debug.Assert(False, String.format("Cannot load invalid shapetype for shape ID {0}", iShapeID))
                         Return False
 
                 End Select
@@ -6384,7 +6384,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writerID)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
+                Me.LogMessage(String.format("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
                 bSucces = False
             End Try
 
@@ -6411,29 +6411,29 @@ Namespace DataSources
             Try
 
                 ' Manually set 'soft' shape links to 0
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcoSimStanzaShape Set EggProdShapeID=NULL WHERE (EggProdShapeID={0})", iShapeID))
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcoSimStanzaShape Set HatchCodeShapeID=NULL WHERE (HatchCodeShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("UPDATE EcoSimStanzaShape Set EggProdShapeID=NULL WHERE (EggProdShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("UPDATE EcoSimStanzaShape Set HatchCodeShapeID=NULL WHERE (HatchCodeShapeID={0})", iShapeID))
                 Me.m_db.Execute("DELETE FROM EcoSimStanzaShape WHERE ((HatchCodeShapeID=NULL) AND (EggProdShapeID=NULL))")
 
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcoSimScenario Set SalinityForcingShapeID=NULL WHERE (SalinityForcingShapeID={0})", iShapeID))
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcoSimScenario Set NutForcingShapeID=NULL WHERE (NutForcingShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("UPDATE EcoSimScenario Set SalinityForcingShapeID=NULL WHERE (SalinityForcingShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("UPDATE EcoSimScenario Set NutForcingShapeID=NULL WHERE (NutForcingShapeID={0})", iShapeID))
 
                 ' Delete mediation weights
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ShapeID={0})", iShapeID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ShapeID={0})", iShapeID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ShapeID={0})", iShapeID))
 
                 ' Delete pred/prey interactions
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ShapeID={0})", iShapeID))
 
                 ' Destroy the given shape
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
                 ' Reload shapes data
                 bSucces = Me.LoadShapes()
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while deleting shape {1}", ex.Message, iShapeID))
+                Me.LogMessage(String.format("Error {0} occurred while deleting shape {1}", ex.Message, iShapeID))
                 bSucces = False
             End Try
 
@@ -6758,7 +6758,7 @@ Namespace DataSources
             If (iDataset > 0) Then
 
                 Try
-                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
+                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
                 Catch ex As Exception
                     tsDS.nTimeSeries = 0
                 End Try
@@ -6770,7 +6770,7 @@ Namespace DataSources
 
             If tsDS.nTimeSeries = 0 Then Return bSucces
 
-            strSQL = cStringUtils.Localize("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.iDatasetDBID(iDataset))
+            strSQL = String.format("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.iDatasetDBID(iDataset))
             reader = Me.m_db.GetReader(strSQL)
             Try
                 While reader.Read()
@@ -6784,7 +6784,7 @@ Namespace DataSources
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
                         Case eTimeSeriesCategoryType.Group
-                            readerSub = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
+                            readerSub = Me.m_db.GetReader(String.format("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(readerSub("GroupID")))
@@ -6795,7 +6795,7 @@ Namespace DataSources
                             readerSub = Nothing
 
                         Case eTimeSeriesCategoryType.Fleet
-                            readerSub = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcosimTimeSeriesFleet WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
+                            readerSub = Me.m_db.GetReader(String.format("SELECT * FROM EcosimTimeSeriesFleet WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(readerSub("FleetID")))
@@ -6806,11 +6806,11 @@ Namespace DataSources
                             readerSub = Nothing
 
                         Case eTimeSeriesCategoryType.Forcing
-                            Debug.Assert(False, cStringUtils.Localize("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
+                            Debug.Assert(False, String.format("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
                             bSucces = False
 
                         Case eTimeSeriesCategoryType.NotSet
-                            Debug.Assert(False, cStringUtils.Localize("Time series {0} is of an unknown type", reader("TimeSeriesID")))
+                            Debug.Assert(False, String.format("Time series {0} is of an unknown type", reader("TimeSeriesID")))
                             bSucces = False
 
                     End Select
@@ -6877,7 +6877,7 @@ Namespace DataSources
                 For iTS As Integer = 1 To tsDS.nTimeSeries
 
                     drow = dt.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find time series {0}", tsDS.iTimeSeriesDBID(iTS)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find time series {0}", tsDS.iTimeSeriesDBID(iTS)))
 
                     drow.BeginEdit()
                     drow("DatName") = tsDS.strName(iTS)
@@ -7035,7 +7035,7 @@ Namespace DataSources
                 End Select
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending time series {1}", ex.Message, strName))
+                Me.LogMessage(String.format("Error {0} occurred while appending time series {1}", ex.Message, strName))
                 bSucces = False
             End Try
 
@@ -7055,7 +7055,7 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
+                Me.m_db.Execute(String.format("DELETE FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
             Catch ex As Exception
                 bSucces = False
             End Try
@@ -7075,7 +7075,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
-            Dim reader As IDataReader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
+            Dim reader As IDataReader = Me.m_db.GetReader(String.format("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
             Dim bSucces As Boolean = True
 
             If (reader IsNot Nothing) Then
@@ -7087,7 +7087,7 @@ Namespace DataSources
                         mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
                         mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT))
                     Catch ex As Exception
-                        Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        Me.LogMessage(String.format("Error {0} occurred while reading EcopathPSD", ex.Message))
                         bSucces = False
                     End Try
                 End If
@@ -7117,7 +7117,7 @@ Namespace DataSources
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
-            strSQL = cStringUtils.Localize("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID)
+            strSQL = String.format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID)
             bSucces = Me.m_db.Execute(strSQL)
 
             Try
@@ -7134,7 +7134,7 @@ Namespace DataSources
                 writer.AddRow(drow)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving MSE", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving MSE", ex.Message))
                 bSucces = False
             End Try
 
@@ -7194,8 +7194,8 @@ Namespace DataSources
             ecospaceDS.NGroups = ecopathDS.NumGroups
             ecospaceDS.nFleets = ecopathDS.NumFleet
             ecospaceDS.nLiving = ecopathDS.NumLiving
-            ecospaceDS.nImportanceLayers = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID), 0))
-            ecospaceDS.nEnvironmentalDriverLayers = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
+            ecospaceDS.nImportanceLayers = CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID), 0))
+            ecospaceDS.nEnvironmentalDriverLayers = CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
 
             ' Next is a dangerous solution that may need to be revamped. It is assumed that
             ' SetDefaults properly redimensions the ecospaceDS group variables, which
@@ -7203,7 +7203,7 @@ Namespace DataSources
             ecospaceDS.SetDefaults()
             spatialDS.SetDefaults()
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Try
                 ' Read the one record
                 reader.Read()
@@ -7249,7 +7249,7 @@ Namespace DataSources
                 End Select
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -7271,6 +7271,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceMonthlyMaps(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDataConnections(iScenarioID)
@@ -7294,7 +7295,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             ' Delete existing scenario
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
+            Me.m_db.Execute(String.format("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
             iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario", 0)) + 1
 
             Try
@@ -7446,7 +7447,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving ecospace scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while saving ecospace scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -7458,6 +7459,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceMPAs(idm)
             bSucces = bSucces And Me.SaveEcospaceGroups(idm)
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
+            bSucces = bSucces And Me.SaveEcospaceMonthlyMaps(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
             bSucces = bSucces And Me.SaveEcospaceCapacityMaps(idm)
             bSucces = bSucces And Me.SaveEcospaceDataConnections(idm)
@@ -7556,7 +7558,7 @@ Namespace DataSources
                 Me.ClearChanged(s_EcospaceComponents)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
+                Me.LogMessage(String.format("Error {0} occurred while appending Scenario {1}", ex.Message, strScenarioName))
                 bSucces = False
             End Try
 
@@ -7572,26 +7574,27 @@ Namespace DataSources
             If Me.Version < 6.120001 Then
                 Try
                     ' Delete 'soft links' present from 6.04005 to 6.120001
-                    bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
-                    bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
+                    bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioWeightLayerCell WHERE (ScenarioID={0})", iScenarioID))
+                    bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioFleetMap WHERE (ScenarioID={0})", iScenarioID))
                 Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
+                    Me.LogMessage(String.format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
                     bSucces = False
                 End Try
             End If
 
             Try
-                ' Delete tables not linked by cascading rules
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0})", iScenarioID))
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
+                ' Delete tables not necessarily linked by cascading rules
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMonth WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete scenario
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace scenarioID {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -7665,14 +7668,13 @@ Namespace DataSources
             Dim iID As Integer = 0
 
             Try
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthMap", "")), ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "FlowMap", "")), ecospaceDS.flow, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
@@ -7686,6 +7688,42 @@ Namespace DataSources
                 bSucces = False
             End Try
             Return bSucces
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the spatial data associated with an Ecospace scenario.
+        ''' </summary>
+        ''' <param name="iScenarioID">The scenario to load the data for.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function LoadEcospaceMonthlyMaps(ByVal iScenarioID As Integer) As Boolean
+
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim reader As IDataReader = Nothing
+            Dim bSucces As Boolean = True
+            Dim iMonth As Integer = 0
+
+            Try
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioMonth WHERE (ScenarioID={0}) ORDER BY MonthID ASC", iScenarioID))
+                While reader.Read()
+
+                    iMonth = CInt(Me.m_db.ReadSafe(reader, "MonthID", 0))
+                    If (1 <= iMonth And iMonth <= cCore.N_MONTHS) Then
+                        bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "WindXVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Xv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                        bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "WindYVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    End If
+
+                End While
+
+                Me.m_db.ReleaseReader(reader)
+                reader = Nothing
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Return bSucces
+
         End Function
 
 #End Region ' Load
@@ -7722,8 +7760,7 @@ Namespace DataSources
                 drow("DepthMap") = cStringUtils.ArrayToString(ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
                 drow("RelPPMap") = cStringUtils.ArrayToString(ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("RelCinMap") = cStringUtils.ArrayToString(ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-                drow("XVelMap") = cStringUtils.ArrayToString(ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-                drow("YVelMap") = cStringUtils.ArrayToString(ecospaceDS.Yvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                drow("FlowMap") = cStringUtils.ArrayToString(ecospaceDS.flow, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 drow("ExclusionMap") = cStringUtils.ArrayToString(ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
@@ -7743,7 +7780,71 @@ Namespace DataSources
 
             Catch ex As Exception
                 ' Don't be alarmed..
-                Debug.Assert(False, cStringUtils.Localize("Error saving basemap: '{0}'", ex.Message))
+                Debug.Assert(False, String.Format("Error saving basemap: '{0}'", ex.Message))
+                '..be very, very afraid
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Save the spatial data associated with an Ecospace scenario.
+        ''' </summary>
+        ''' <param name="idm">The scenario to save the data for.</param>
+        ''' <returns>True if succesful.</returns>
+        ''' -----------------------------------------------------------------------
+        Private Function SaveEcospaceMonthlyMaps(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim iActiveScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim iScenarioID As Integer = 0
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim keys() As Object = New Object() {0, 0}
+            Dim bNewRow As Boolean = True
+            Dim bSucces As Boolean = True
+
+            ' Get ID of scenario to save to
+            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iActiveScenarioID)
+
+            Try
+                writer = Me.m_db.GetWriter("EcospaceScenarioMonth")
+                dt = writer.GetDataTable()
+                For iMonth As Integer = 1 To cCore.N_MONTHS
+                    keys(0) = iScenarioID
+                    keys(1) = iMonth
+                    drow = dt.Rows.Find(keys)
+                    bNewRow = (drow Is Nothing)
+
+                    If (bNewRow) Then
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = iScenarioID
+                        drow("MonthID") = iMonth
+                    Else
+                        drow.BeginEdit()
+                    End If
+
+                    drow("WindXVelMap") = cStringUtils.ArrayToString(ecospaceDS.Xv, iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    drow("WindYVelMap") = cStringUtils.ArrayToString(ecospaceDS.Yv, iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+
+                    If (bNewRow) Then
+                        writer.AddRow(drow)
+                    Else
+                        drow.EndEdit()
+                    End If
+                Next
+
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
+                bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerWind, iActiveScenarioID)
+
+            Catch ex As Exception
+                ' Don't be alarmed..
+                Debug.Assert(False, String.Format("Error saving month maps: '{0}'", ex.Message))
                 '..be very, very afraid
                 bSucces = False
             End Try
@@ -7771,11 +7872,11 @@ Namespace DataSources
             ' Start loading
             Try
                 ' Allocate space for habitat data
-                ecospaceDS.NoHabitats = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID), 0))
-                ecospaceDS.NoHabChanges = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID), 0))
+                ecospaceDS.NoHabitats = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID), 0))
+                ecospaceDS.NoHabChanges = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID), 0))
                 ecospaceDS.RedimHabitatVariables(False)
 
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
                 While reader.Read()
                     ecospaceDS.HabitatDBID(i) = CInt(reader("HabitatID"))
                     ecospaceDS.HabitatText(i) = CStr(reader("HabitatName"))
@@ -7789,7 +7890,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
                 bSucces = False
             End Try
 
@@ -7810,7 +7911,7 @@ Namespace DataSources
             Dim iSequence As Integer = 0
 
             Try
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioHabitatChange WHERE (ScenarioID={0}) ORDER BY Time", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioHabitatChange WHERE (ScenarioID={0}) ORDER BY Time", iScenarioID))
                 While reader.Read()
 
                     ' Read fields
@@ -7827,7 +7928,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace habitat for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
                 bSucces = False
             End Try
 
@@ -7913,7 +8014,7 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
 
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID))
 
                 writer = Me.m_db.GetWriter("EcospaceScenarioHabitatChange")
                 For iChange As Integer = 1 To ecospaceDS.NoHabChanges
@@ -8013,11 +8114,11 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) AND (HabitatID={1})", iScenarioID, iHabitatID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) AND (HabitatID={1})", iScenarioID, iHabitatID))
                 '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
                 'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecospace habitatID {1}", ex.Message, iHabitatID))
+                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace habitatID {1}", ex.Message, iHabitatID))
                 bSucces = False
             End Try
             Return bSucces
@@ -8056,7 +8157,7 @@ Namespace DataSources
 
             ' Read the data
             Try
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     ' Resolve group index
@@ -8097,7 +8198,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
                 bSucces = False
             End Try
 
@@ -8119,7 +8220,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     ' Get group index
@@ -8131,8 +8232,8 @@ Namespace DataSources
                     sPreference = CSng(Me.m_db.ReadSafe(reader, "Preference", 1.0))
                     ' Sanity check
                     If (iGroup = -1) Or (iHabitat = -1) Then
-                        If (iGroup = -1) Then Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
-                        If (iHabitat = -1) Then Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
+                        If (iGroup = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                        If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
                     Else
                         ' Flag as preferred
                         ecospaceDS.PrefHab(iGroup, 0) = 0
@@ -8143,7 +8244,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
                 bSucces = False
             End Try
 
@@ -8242,7 +8343,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcospaceGroup", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcospaceGroup", ex.Message))
                 bSucces = False
             End Try
 
@@ -8270,7 +8371,7 @@ Namespace DataSources
 
             Try
                 ' No incremental save for now
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioGroupHabitat WHERE ScenarioID={0}", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioGroupHabitat WHERE ScenarioID={0}", iScenarioID))
 
                 writer = Me.m_db.GetWriter("EcospaceScenarioGroupHabitat")
                 For iGroup = 1 To ecopathDS.NumGroups
@@ -8394,16 +8495,16 @@ Namespace DataSources
                 Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
 
                 ' Delete habitat assignments
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iGroupID))
 
                 ' Do not worry about explicitly deleting layer data connections; there are no
                 ' referential integrity links between maps and their connections. The loading logic
                 ' implemented in this class will deal with missing map links.
 
                 ' Delete capacity drivers
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
                 ' Finally delete group
-                bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
                 bSucces = False
@@ -8427,7 +8528,7 @@ Namespace DataSources
             Dim iFleet As Integer = 0
 
             ecospaceDS.ReDimFleets()
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioFleet WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioFleet WHERE (ScenarioID={0})", iScenarioID))
 
             Try
                 While reader.Read()
@@ -8448,7 +8549,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
+                Me.LogMessage(String.format("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
                 bSucces = False
             End Try
 
@@ -8470,7 +8571,7 @@ Namespace DataSources
             Dim iHabitat As Integer = 0
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioHabitatFishery WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioHabitatFishery WHERE (ScenarioID={0})", iScenarioID))
             Try
                 While reader.Read()
                     iFleet = Array.IndexOf(ecospaceDS.FleetDBID, CInt(reader("FleetID")))
@@ -8483,7 +8584,7 @@ Namespace DataSources
                     End If
                 End While
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
+                Me.LogMessage(String.format("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -8498,7 +8599,7 @@ Namespace DataSources
             Dim iMPA As Integer = 0
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioMPAFishery WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioMPAFishery WHERE (ScenarioID={0})", iScenarioID))
             Try
                 While reader.Read()
                     iFleet = Array.IndexOf(ecospaceDS.FleetDBID, CInt(reader("FleetID")))
@@ -8511,7 +8612,7 @@ Namespace DataSources
                     End If
                 End While
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
+                Me.LogMessage(String.format("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
@@ -8595,7 +8696,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving Ecospace Fleet", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving Ecospace Fleet", ex.Message))
                 bSucces = False
             End Try
 
@@ -8623,7 +8724,7 @@ Namespace DataSources
 
             Try
                 ' Erase
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioHabitatFishery WHERE ScenarioID={0}", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioHabitatFishery WHERE ScenarioID={0}", iScenarioID))
                 writer = Me.m_db.GetWriter("EcospaceScenarioHabitatFishery")
 
                 For iFleet = 1 To ecospaceDS.nFleets
@@ -8644,7 +8745,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcospaceScenarioHabitatFishery", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcospaceScenarioHabitatFishery", ex.Message))
                 bSucces = False
             End Try
 
@@ -8666,7 +8767,7 @@ Namespace DataSources
 
             Try
                 ' Erase
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioMPAFishery WHERE ScenarioID={0}", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioMPAFishery WHERE ScenarioID={0}", iScenarioID))
                 writer = Me.m_db.GetWriter("EcospaceScenarioMPAFishery")
 
                 For iFleet = 1 To ecospaceDS.nFleets
@@ -8687,7 +8788,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcospaceScenarioMPAFishery", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcospaceScenarioMPAFishery", ex.Message))
                 bSucces = False
             End Try
 
@@ -8774,18 +8875,18 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim iFleetID As Integer = 0
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT FleetID FROM EcospaceScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
+            reader = Me.m_db.GetReader(String.format("SELECT FleetID FROM EcospaceScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
             Try
                 While reader.Read()
                     iFleetID = CInt(reader("FleetID"))
-                    bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioHabitatFishery WHERE (FleetID={0})", iFleetID))
-                    bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioMPAFishery WHERE (FleetID={0})", iFleetID))
+                    bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioHabitatFishery WHERE (FleetID={0})", iFleetID))
+                    bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioMPAFishery WHERE (FleetID={0})", iFleetID))
                 End While
             Catch ex As Exception
                 bSucces = False
             End Try
             Me.m_db.ReleaseReader(reader)
-            bSucces = bSucces And Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
 
             Return bSucces
 
@@ -8810,11 +8911,11 @@ Namespace DataSources
             Dim iMPA As Integer = 0
 
             ' Allocate space for MPA data
-            ecospaceDS.MPAno = CInt(Me.m_db.GetValue(cStringUtils.Localize("SELECT COUNT(*) FROM EcospaceScenarioMPA WHERE ScenarioID={0}", iScenarioID)))
+            ecospaceDS.MPAno = CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcospaceScenarioMPA WHERE ScenarioID={0}", iScenarioID)))
             ecospaceDS.RedimMPAVariables()
 
             ' Load the data
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
 
             Try
                 While reader.Read()
@@ -8841,7 +8942,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
+                Me.LogMessage(String.format("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
                 bSucces = False
             End Try
 
@@ -8918,7 +9019,7 @@ Namespace DataSources
                 Next iMPA
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving Ecospace MPA", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving Ecospace MPA", ex.Message))
                 bSucces = False
             Finally
                 Me.m_db.ReleaseWriter(writer)
@@ -9016,11 +9117,11 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) AND (MPAID={1})", iScenarioID, iMPAID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioMPA WHERE (ScenarioID={0}) AND (MPAID={1})", iScenarioID, iMPAID))
                 '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
                 'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecospace MPAID {1}", ex.Message, iMPAID))
+                Me.LogMessage(String.format("Error {0} occurred while removing Ecospace MPAID {1}", ex.Message, iMPAID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9044,7 +9145,7 @@ Namespace DataSources
             Dim iLayer As Integer = 0
 
             Try
-                readerLayer = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
+                readerLayer = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0})", iScenarioID))
                 While readerLayer.Read()
 
                     iLayer += 1
@@ -9227,9 +9328,9 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iLayerID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioWeightLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iLayerID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecospace Importance Layer {1}", ex.Message, iLayerID))
+                Me.LogMessage(String.format("Error {0} occurred while removing Ecospace Importance Layer {1}", ex.Message, iLayerID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9254,7 +9355,7 @@ Namespace DataSources
             Dim iLayer As Integer = 0
 
             Try
-                readerLayer = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
+                readerLayer = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
                 While readerLayer.Read()
 
                     iLayer += 1
@@ -9286,7 +9387,7 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
             Try
 
                 While reader.Read()
@@ -9389,7 +9490,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
             ' Clear
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcospaceScenarioCapacityDrivers")
 
             Try
@@ -9463,12 +9564,12 @@ Namespace DataSources
 
             Try
                 ' Cascading delete any data assignments
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) AND (LayerID={1}) AND (VarName='{2}')", _
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) AND (LayerID={1}) AND (VarName='{2}')", _
                                               iScenarioID, iDBID, cin.GetVarName(eVarNameFlags.LayerDriver)))
                 ' Delete the layer
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iDBID))
+                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0}) AND (LayerID={1})", iScenarioID, iDBID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecospace driver layer ID {1}", ex.Message, iDBID))
+                Me.LogMessage(String.format("Error {0} occurred while removing Ecospace driver layer ID {1}", ex.Message, iDBID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9479,9 +9580,9 @@ Namespace DataSources
             Implements IEcospaceDatasource.MoveEcospaceDriverLayer
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(cStringUtils.Localize("UPDATE EcospaceScenarioDriverLayer SET Sequence={1} WHERE (LayerID={0})", iDBID, iPosition))
+                Me.m_db.Execute(String.format("UPDATE EcospaceScenarioDriverLayer SET Sequence={1} WHERE (LayerID={0})", iDBID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while moving ecospce driver layer {1}", ex.Message, iDBID))
+                Me.LogMessage(String.format("Error {0} occurred while moving ecospce driver layer {1}", ex.Message, iDBID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9498,7 +9599,7 @@ Namespace DataSources
             Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
-            Dim reader As IDataReader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
+            Dim reader As IDataReader = Me.m_db.GetReader(String.format("SELECT * FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim bSucces As Boolean = True
 
@@ -9568,7 +9669,7 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
 
             ' Kaboom
-            Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
+            Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioDataConnection WHERE (ScenarioID={0})", iScenarioID))
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioDataConnection")
@@ -9705,7 +9806,7 @@ Namespace DataSources
             '            This needs to change!
             tracerDS.RedimByNGroups(ecopathDS.NumGroups)
 
-            reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.format("SELECT * FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
             Try
                 ' Read the one record
                 reader.Read()
@@ -9717,7 +9818,7 @@ Namespace DataSources
                 'tracerDS.ConForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iConForceNumber))
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecotracer Scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while reading Ecotracer Scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -9752,7 +9853,7 @@ Namespace DataSources
 
             ' Read the data
             Try
-                reader = Me.m_db.GetReader(cStringUtils.Localize("SELECT * FROM EcotracerScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.format("SELECT * FROM EcotracerScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
                 While reader.Read()
 
                     ' Resolve group index
@@ -9770,7 +9871,7 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecotracer group {1}", ex.Message, iGroup))
+                Me.LogMessage(String.format("Error {0} occurred while reading Ecotracer group {1}", ex.Message, iGroup))
                 bSucces = False
             End Try
             Return bSucces
@@ -9871,7 +9972,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writer)
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving ecotracer scenario {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while saving ecotracer scenario {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -9908,7 +10009,7 @@ Namespace DataSources
 
                     ' Find existing row
                     drow = dt.Rows.Find(objKeys)
-                    Debug.Assert(drow IsNot Nothing, cStringUtils.Localize("Cannot find existing row for group {0}", ecopathDS.GroupDBID(iGroup)))
+                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find existing row for group {0}", ecopathDS.GroupDBID(iGroup)))
 
                     drow("CZero") = tracerDS.Czero(iGroup)
                     drow("Cimmig") = tracerDS.Cimmig(iGroup)
@@ -9919,7 +10020,7 @@ Namespace DataSources
                 Next iGroup
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcotracerGroup", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while saving EcotracerGroup", ex.Message))
                 bSucces = False
             End Try
 
@@ -9997,7 +10098,7 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.m_db.RollbackTransaction()
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while appending Ecotracer scenario {1}", ex.Message, strScenarioName))
+                Me.LogMessage(String.format("Error {0} occurred while appending Ecotracer scenario {1}", ex.Message, strScenarioName))
                 bSucces = False
             End Try
 
@@ -10019,11 +10120,11 @@ Namespace DataSources
             Try
                 ' Delete 'soft links'
                 '    DB update 6.036!
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcotracerScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcotracerScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete scenario
-                Me.m_db.Execute(cStringUtils.Localize("DELETE FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
+                Me.m_db.Execute(String.format("DELETE FROM EcotracerScenario WHERE (ScenarioID={0})", iScenarioID))
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while removing Ecotracer scenarioID {1}", ex.Message, iScenarioID))
+                Me.LogMessage(String.format("Error {0} occurred while removing Ecotracer scenarioID {1}", ex.Message, iScenarioID))
                 bSucces = False
             End Try
 
@@ -10124,7 +10225,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading AuxillaryData", ex.Message))
+                Me.LogMessage(String.format("Error {0} occurred while reading AuxillaryData", ex.Message))
                 bSucces = False
             End Try
 

@@ -3771,8 +3771,6 @@ Namespace Database
                 drow("DepthMap") = cStringUtils.ArrayToString(dataDepth, nRows, nCols)
                 drow("RelPPMap") = cStringUtils.ArrayToString(dataRelPP, nRows, nCols, dataDepth)
                 drow("RelCinMap") = cStringUtils.ArrayToString(dataRelCin, nRows, nCols, dataDepth)
-                drow("XVelMap") = ""
-                drow("YVelMap") = ""
                 drow("DepthAMap") = ""
                 drow("RegionMap") = cStringUtils.ArrayToString(dataRegion, nRows, nCols, dataDepth)
                 drow("NumRegions") = iNumRegions
