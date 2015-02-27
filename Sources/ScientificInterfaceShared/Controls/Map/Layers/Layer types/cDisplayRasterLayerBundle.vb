@@ -162,6 +162,15 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
+        Public Overrides Property Name As String
+            Get
+                Return Me.m_layers(Me.m_iLayer).Name
+            End Get
+            Set(value As String)
+                Me.m_layers(Me.m_iLayer).Name = value
+            End Set
+        End Property
+
     End Class ' Layer
 
 End Namespace
