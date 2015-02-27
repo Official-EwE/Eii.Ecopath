@@ -54,6 +54,8 @@ Namespace Ecospace
             BarrierAvoidance
         End Enum
 
+        Private m_lProps As New List(Of cProperty)
+
 #Region " Construction / destruction "
 
         Public Sub New()
@@ -115,8 +117,23 @@ Namespace Ecospace
                 'Barrier avoidance weight
                 Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
 
+                Me.UpdateRow(source)
+
+                ' ToDo: solve this with core status flags: Set_BadHab_Flags
+                Dim prop As cProperty = Me.PropertyManager.GetProperty(source, eVarNameFlags.EcospaceCapCalType)
+                Me.m_lProps.Add(prop)
+                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+
             Next
 
+        End Sub
+
+        Protected Overrides Sub ClearData()
+            For Each prop As cProperty In Me.m_lProps
+                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+            Next
+            Me.m_lProps.Clear()
+            MyBase.ClearData()
         End Sub
 
         Public Overrides ReadOnly Property CoreComponents() As eCoreComponentType()
@@ -126,6 +143,29 @@ Namespace Ecospace
             End Get
         End Property
 
+        Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
+        End Sub
+
+        Private Sub UpdateRow(grp As cEcospaceGroup)
+
+            Dim iGroup As Integer = grp.Index
+            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+            Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
+
+            Dim cols As eColumnTypes() = New eColumnTypes() {eColumnTypes.RelDisp, eColumnTypes.RelVul, eColumnTypes.RelFeedRate}
+
+            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
+                style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+            End If
+
+            For Each col As eColumnTypes In cols
+                Dim cell As EwECellBase = CType(Me(iGroup, col), EwECellBase)
+                cell.Style = style
+                Me.InvalidateCell(cell)
+            Next
+
+        End Sub
 
     End Class
 
