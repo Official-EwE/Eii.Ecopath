@@ -40,12 +40,6 @@ Namespace Ecospace
     Public Class gridHabitatPreference
         : Inherits EwEGrid
 
-#Region " Private vars "
-
-        Private m_lProps As New List(Of cProperty)
-
-#End Region ' Private vars
-
 #Region " Construction / destruction "
 
         Public Sub New()
@@ -84,10 +78,6 @@ Namespace Ecospace
                 ' # Group name row header cells
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
-
-            'Row header cell - Habitat area
-            Me(Me.Core.nGroups + 1, 0) = New EwERowHeaderCell(CStr(Me.Core.nGroups + 1))
-            Me(Me.Core.nGroups + 1, 1) = New EwERowHeaderCell(My.Resources.ECOSPACE_HEADER_HABITAT_AREA)
 
             'Dynamic column header - Habitat name
             For j As Integer = 0 To Me.Core.nHabitats - 1
@@ -129,23 +119,8 @@ Namespace Ecospace
 
                 Next
 
-                ' ToDo: solve this with core status flags: Set_BadHab_Flags
-                Dim prop As cProperty = Me.PropertyManager.GetProperty(groupEcospace, eVarNameFlags.EcospaceCapCalType)
-                Me.m_lProps.Add(prop)
-                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-
-                Me.UpdateRow(groupEcospace)
-
             Next
 
-        End Sub
-
-        Protected Overrides Sub ClearData()
-            For Each prop As cProperty In Me.m_lProps
-                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-            Next
-            Me.m_lProps.Clear()
-            MyBase.ClearData()
         End Sub
 
         Public Overrides ReadOnly Property CoreComponents() As eCoreComponentType()
@@ -155,32 +130,6 @@ Namespace Ecospace
         End Property
 
 #End Region ' Overrides
-
-#Region " Internals "
-
-        Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
-        End Sub
-
-        Private Sub UpdateRow(grp As cEcospaceGroup)
-
-            Dim iGroup As Integer = grp.Index
-            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-            Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
-
-            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
-                style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
-            End If
-
-            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
-                Dim cell As EwECellBase = CType(Me(iGroup, 2 + iHabitat), EwECellBase)
-                cell.Style = style
-                Me.InvalidateCell(cell)
-            Next
-
-        End Sub
-
-#End Region ' Internals
 
     End Class
 
