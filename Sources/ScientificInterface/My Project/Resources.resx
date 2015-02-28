@@ -5281,9 +5281,6 @@ Description: {1}</value>
         AACAAQAAgAEAAMADAADABwAA8A8AAPw/AAA=
 </value>
   </data>
-  <data name="ECOSPACE_DISPERSAL_EWCONT" xml:space="preserve">
-    <value>Mig. E/W concentration</value>
-  </data>
   <data name="STATUS_MODEL_ACCESS_FAILED" xml:space="preserve">
     <value>An error occurred while attempting to access model '{0}'.</value>
   </data>
@@ -6855,9 +6852,6 @@ Description: {1}</value>
   <data name="PEDIGREE_DEFAULT_SAMPLING_LOW" xml:space="preserve">
     <value>Sampling/locally, low precision</value>
   </data>
-  <data name="ECOSPACE_DISPERSAL_RELFEEDRATE" xml:space="preserve">
-    <value>Rel. feed. rate in bad habitat</value>
-  </data>
   <data name="STATUS_MSY_RUNNING_FULLCOMPENSATION" xml:space="preserve">
     <value>Running MSY full compensation assessment...</value>
   </data>
@@ -7014,9 +7008,6 @@ Description: {1}</value>
     <value>No spatial data could be found for year {0}. Average could not be calculated.</value>
     <comment>{0}=year</comment>
   </data>
-  <data name="ECOSPACE_DISPERSAL_NSCONT" xml:space="preserve">
-    <value>Mig. N/S concentration</value>
-  </data>
   <data name="PROMPT_MPA_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete the selected MPA? This action cannot be undone.</value>
   </data>
@@ -7051,9 +7042,6 @@ Description: {1}</value>
   </data>
   <data name="acknowledgements" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\acknowledgements.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
-  </data>
-  <data name="ECOSPACE_DISPERSAL_BASEDISPRATE" xml:space="preserve">
-    <value>Base dispersal rate (km/year)</value>
   </data>
   <data name="team" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\team.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
@@ -7389,9 +7377,6 @@ Description: {1}</value>
   <data name="ECOSPACE_HEADER_FRACTION_OF_TOTAL" xml:space="preserve">
     <value>Fraction of total</value>
   </data>
-  <data name="ECOSPACE_DISPERSAL_RELDISP" xml:space="preserve">
-    <value>Rel. dispersal in bad habitat</value>
-  </data>
   <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecosim scenario - Ecopath model {0}</value>
     <comment>{0}=scenario name</comment>
@@ -7542,9 +7527,6 @@ Location: {1}</value>
   </data>
   <data name="OPTIONS_FONTDLG_TITLE" xml:space="preserve">
     <value>Title|Font for titles of graphs and figures</value>
-  </data>
-  <data name="ECOSPACE_DISPERSAL_MIGRATING" xml:space="preserve">
-    <value>Migrating</value>
   </data>
   <data name="GENERIC_REPLY_CANCEL" xml:space="preserve">
     <value>You cancelled the operation</value>
@@ -12632,9 +12614,6 @@ Location: {1}</value>
     <value>Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use</value>
     <comment>{0}=model path</comment>
   </data>
-  <data name="ECOSPACE_DISPERSAL_ADVECTED" xml:space="preserve">
-    <value>Advected</value>
-  </data>
   <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
     <value>Do you wish to import '{0}' as monthly forcing data?</value>
     <comment>{0}=name of dataset</comment>
@@ -12651,9 +12630,6 @@ Location: {1}</value>
   </data>
   <data name="PEDIGREE_DEFAULT_GUESSTIMATE" xml:space="preserve">
     <value>Guesstimate</value>
-  </data>
-  <data name="ECOSPACE_DISPERSAL_RELVUL" xml:space="preserve">
-    <value>Rel. vul. to pred. in bad habitat (prop for PP)</value>
   </data>
   <data name="TS_CONSTANTTOTALMORTALITY_NAME" xml:space="preserve">
     <value>Z (Constant total mortality)</value>
@@ -12866,9 +12842,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="STATUS_TIMESERIES_LOADING" xml:space="preserve">
     <value>Loading time series '{0}'...</value>
     <comment>{0}=time series dataset name</comment>
-  </data>
-  <data name="ECOSPACE_DISPERSAL_BARRIERAVOIDANCEWT" xml:space="preserve">
-    <value>Barrier avoidance weight</value>
   </data>
   <data name="ECOPATH_MOVEGROUP_ERROR" xml:space="preserve">
     <value>Failed to move group '{0}'</value>

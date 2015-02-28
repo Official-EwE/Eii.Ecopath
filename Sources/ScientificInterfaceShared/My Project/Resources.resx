@@ -3309,4 +3309,34 @@
   <data name="METADATA_TEXT" xml:space="preserve">
     <value>Max. {0} characters</value>
   </data>
+  <data name="VARIABLE_EATEFFBAD" xml:space="preserve">
+    <value>Rel. feed rate in bad hab.|||Relative feeding rate in bad habitat</value>
+  </data>
+  <data name="VARIABLE_ISADVECTED" xml:space="preserve">
+    <value>Advected||Is advected|Is this group affected by advection?</value>
+  </data>
+  <data name="VARIABLE_ISMIGRATORY" xml:space="preserve">
+    <value>Migratory||Is migratory|Is this a migratory group?</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCCOL" xml:space="preserve">
+    <value>E/W mig. C.|E/W mig. concentration||East/West size of the migration concentration area</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCROW" xml:space="preserve">
+    <value>N/S mig. C.|N/S mig. concentration||North/South size of migration concentration area</value>
+  </data>
+  <data name="VARIABLE_MVEL" xml:space="preserve">
+    <value>Base disp. rate||Base dispersal rate</value>
+  </data>
+  <data name="VARIABLE_RELMOVEBAD" xml:space="preserve">
+    <value>Rel. disp. in bad hab.||Relative dispersal in bad habitat</value>
+  </data>
+  <data name="VARIABLE_RELVULBAD" xml:space="preserve">
+    <value>Rel. vul to pred. in bad hab.|||Relative vulnerability to predation in bad habitat (proportion for primary producers)</value>
+  </data>
+  <data name="VARIABLE_SEMULT" xml:space="preserve">
+    <value>Tot.Eff.Mult.||Total effort multiplier</value>
+  </data>
+  <data name="VARIALBE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
+    <value>Barrier avoidance wt.||Barrier avoidance weight</value>
+  </data>
 </root>
