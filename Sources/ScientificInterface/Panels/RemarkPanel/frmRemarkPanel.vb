@@ -77,6 +77,7 @@ Public Class frmRemarkPanel
         Me.Icon = Icon.FromHandle(SharedResources.CommentHS.GetHicon)
         Me.m_tsbnInfo.Image = SharedResources.Info
 
+        Me.m_tsbnInfo.Checked = My.Settings.ShowExtraVariableInfo
         Me.m_scMain.Panel1Collapsed = Not Me.m_tsbnInfo.Checked
 
         ' Init panel
@@ -201,10 +202,11 @@ Public Class frmRemarkPanel
     End Sub
 
     Private Sub OnToggleShowInfo(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsbnInfo.Click
+        Handles m_tsbnInfo.CheckedChanged
 
         Try
             Me.m_scMain.Panel1Collapsed = Not Me.m_tsbnInfo.Checked
+            My.Settings.ShowExtraVariableInfo = Me.m_tsbnInfo.Checked
         Catch ex As Exception
 
         End Try
@@ -287,9 +289,7 @@ Public Class frmRemarkPanel
             If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = True
         Next
 
-        Me.m_btnApply.Visible = bHasEcopath
         Me.m_btnApply.Enabled = bHasSelection
-        Me.m_tbxRemark.Visible = bHasEcopath
         Me.m_tbxRemark.Enabled = bHasSelection
 
     End Sub
