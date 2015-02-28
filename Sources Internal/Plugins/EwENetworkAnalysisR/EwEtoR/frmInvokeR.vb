@@ -28,7 +28,7 @@ Imports EwEUtils.Interop
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.modExtensions
+Imports ScientificInterfaceShared.Extensions
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
