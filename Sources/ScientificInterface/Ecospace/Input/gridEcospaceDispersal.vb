@@ -70,15 +70,15 @@ Namespace Ecospace
             'Add column headers
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.DispersalRate) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_BASEDISPRATE)
-            Me(0, eColumnTypes.RelDisp) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_RELDISP)
-            Me(0, eColumnTypes.RelVul) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_RELVUL)
-            Me(0, eColumnTypes.RelFeedRate) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_RELFEEDRATE)
-            Me(0, eColumnTypes.Advected) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_ADVECTED)
-            Me(0, eColumnTypes.Migrating) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_MIGRATING)
-            Me(0, eColumnTypes.NSCont) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_NSCONT)
-            Me(0, eColumnTypes.EWCont) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_EWCONT)
-            Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_DISPERSAL_BARRIERAVOIDANCEWT)
+            Me(0, eColumnTypes.DispersalRate) = New EwEColumnHeaderCell(eVarNameFlags.MVel)
+            Me(0, eColumnTypes.RelDisp) = New EwEColumnHeaderCell(eVarNameFlags.RelMoveBad)
+            Me(0, eColumnTypes.RelVul) = New EwEColumnHeaderCell(eVarNameFlags.RelVulBad)
+            Me(0, eColumnTypes.RelFeedRate) = New EwEColumnHeaderCell(eVarNameFlags.EatEffBad)
+            Me(0, eColumnTypes.Advected) = New EwEColumnHeaderCell(eVarNameFlags.IsAdvected)
+            Me(0, eColumnTypes.Migrating) = New EwEColumnHeaderCell(eVarNameFlags.IsMigratory)
+            Me(0, eColumnTypes.NSCont) = New EwEColumnHeaderCell(eVarNameFlags.MigrationConcRow)
+            Me(0, eColumnTypes.EWCont) = New EwEColumnHeaderCell(eVarNameFlags.MigrationConcCol)
+            Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
 
         End Sub
 
