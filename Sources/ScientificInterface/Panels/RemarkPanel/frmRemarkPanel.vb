@@ -348,7 +348,7 @@ Public Class frmRemarkPanel
 
                         strDescription = vnf.GetDescriptor(var, eDescriptorTypes.Description)
                         strDomain = mdf.GetDescriptor(prop.GetVariableMetadata())
-                        strStatus = stf.GetDescriptor(prop.GetStyle())
+                        strStatus = stf.GetDescriptor(prop.GetStyle(), eDescriptorTypes.Description)
                         strRemark = prop.GetRemark()
 
                         bEditable = ((prop.GetStyle() And cStyleGuide.eStyleFlags.NotEditable) = 0)
