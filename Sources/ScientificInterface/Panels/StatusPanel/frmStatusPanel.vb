@@ -25,8 +25,8 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Extensions
 Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.modExtensions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

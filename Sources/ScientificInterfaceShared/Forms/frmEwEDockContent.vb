@@ -19,10 +19,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports WeifenLuo.WinFormsUI.Docking
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Extensions
+Imports ScientificInterfaceShared.Style
+Imports WeifenLuo.WinFormsUI.Docking
 
 #End Region ' Imports
 

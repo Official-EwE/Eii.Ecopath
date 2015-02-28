@@ -21,10 +21,9 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Extensions
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.modExtensions
-Imports System.Text
 
 #End Region ' Imports
 

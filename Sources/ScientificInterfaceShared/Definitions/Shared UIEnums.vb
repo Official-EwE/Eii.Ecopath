@@ -143,14 +143,14 @@ Namespace Definitions
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Supported layer edit operations.
+    ''' Supported layer edit operations (bit flags)
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eLayerEditTypes As Byte
         ''' <summary>Edit layer data.</summary>
-        EditData
+        EditData = &H1
         ''' <summary>Edit layer visual representation.</summary>
-        EditVisuals
+        EditVisuals = &H2
     End Enum
 
     ''' -----------------------------------------------------------------------
