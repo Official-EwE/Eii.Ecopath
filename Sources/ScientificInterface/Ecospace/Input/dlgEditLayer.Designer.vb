@@ -73,6 +73,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tscmbVectorData = New System.Windows.Forms.ToolStripComboBox()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -185,7 +187,7 @@ Namespace Ecospace.Basemap.Layers
             'm_tsGrid
             '
             Me.m_tsGrid.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddImport, Me.m_tsddExport})
+            Me.m_tsGrid.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddImport, Me.m_tsddExport, Me.ToolStripSeparator1, Me.m_tscmbVectorData})
             resources.ApplyResources(Me.m_tsGrid, "m_tsGrid")
             Me.m_tsGrid.Name = "m_tsGrid"
             Me.m_tsGrid.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -309,6 +311,7 @@ Namespace Ecospace.Basemap.Layers
             '
             'm_nudWeight
             '
+            Me.m_nudWeight.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudWeight, "m_nudWeight")
             Me.m_nudWeight.Name = "m_nudWeight"
             '
@@ -319,6 +322,18 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tscmbVectorData
+            '
+            Me.m_tscmbVectorData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbVectorData.Items.AddRange(New Object() {resources.GetString("m_tscmbVectorData.Items"), resources.GetString("m_tscmbVectorData.Items1")})
+            Me.m_tscmbVectorData.Name = "m_tscmbVectorData"
+            resources.ApplyResources(Me.m_tscmbVectorData, "m_tscmbVectorData")
             '
             'dlgEditLayer
             '
@@ -383,6 +398,8 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_tsmiExportCSV As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiExportXYZ As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiExportAsc As System.Windows.Forms.ToolStripMenuItem
+        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tscmbVectorData As System.Windows.Forms.ToolStripComboBox
 
     End Class
 End Namespace

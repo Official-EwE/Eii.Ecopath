@@ -58,6 +58,11 @@ Namespace Ecospace.Basemap.Layers
         Private m_fpWeight As cEwEFormatProvider = Nothing
         Private m_fpDescription As cEwEFormatProvider = Nothing
 
+        ' -- Hackerdihack
+
+        Private m_bIsVectorData As Boolean = False
+        Private m_iVectorData As Integer = 0
+
 #End Region ' Private variables
 
 #Region " Constructors "
@@ -84,6 +89,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_zoommap.UIContext = Me.m_uic
 
             Me.m_layerOriginal = layer
+
             ' Resolve depth layer
             If Not (TypeOf layer.Data Is cEcospaceLayerDepth) Then
                 Dim fact As New cLayerFactoryInternal()
@@ -94,6 +100,10 @@ Namespace Ecospace.Basemap.Layers
             Me.m_layerWork = New cDisplayRasterLayer(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
             Me.m_layerWork.IsSelected = True ' Select layer, otherwise its content may not be rendered
+
+            ' First set default index, then make vector stuff 'live' if need be ;)
+            Me.m_tscmbVectorData.SelectedIndex = 0
+            Me.m_bIsVectorData = (TypeOf Me.m_layerWork.Data Is cEcospaceLayerVector)
 
         End Sub
 
@@ -112,6 +122,7 @@ Namespace Ecospace.Basemap.Layers
 
             ' Show your stuff
             Me.m_zoommap.Map.AddLayer(Me.m_layerWork)
+
             ' Do not add depth layer if already showing depth layer
             If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
                 (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
@@ -119,6 +130,11 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             Me.m_tcLayerView.SelectedIndex = CInt(Me.m_edittype)
+
+            ' Set up format providers
+            Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
+            Me.m_fpWeight = New cEwEFormatProvider(Me.m_uic, Me.m_nudWeight, GetType(Single))
+            Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
 
             Me.LoadLayer()
             Me.UpdateControls()
@@ -215,9 +231,11 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnImportAscii(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiAsc.Click
+
+            ' ToDo: globalize this
+
             Try
                 Dim ofd As New OpenFileDialog()
-                ' ToDo: 
                 ofd.Title = "Pick ASCII file to load"
                 ofd.Filter = "ASCII files|*.asc"
                 If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
@@ -246,6 +264,9 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnExportAsc(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiExportAsc.Click
+
+            ' ToDo: globalize this
+
             Try
                 Dim sfd As New SaveFileDialog()
                 sfd.CheckPathExists = True
@@ -283,6 +304,16 @@ Namespace Ecospace.Basemap.Layers
             End Try
         End Sub
 
+        Private Sub OnSelectData(sender As System.Object, e As System.EventArgs) _
+            Handles m_tscmbVectorData.SelectedIndexChanged
+
+            If (Me.m_bIsVectorData) Then
+                Me.m_grid.VectorFieldIndex = Me.m_tscmbVectorData.SelectedIndex
+                Me.m_grid.RefreshContent()
+            End If
+
+        End Sub
+
 #End Region ' Local events
 
 #Region " Internal implementation "
@@ -310,10 +341,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_nudWeight.Visible = False
             Me.m_lblDescription.Visible = False
             Me.m_tbDescription.Visible = False
-
-            Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
-            Me.m_fpWeight = New cEwEFormatProvider(Me.m_uic, Me.m_nudWeight, GetType(Single))
-            Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
 
             If (Me.HasUniqueSource()) Then
                 Me.m_fpName.Enabled = True
@@ -347,6 +374,9 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             Me.m_grid.Layer = Me.m_layerWork
+            Me.m_grid.VectorFieldIndex = Me.m_iVectorData
+            Me.m_grid.RefreshContent()
+
             Me.m_tlpDetails.PerformLayout()
             Me.m_tlpBits.PerformLayout()
 
@@ -366,6 +396,8 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_tsddImport.Enabled = bEditable
             Me.Text = cStringUtils.Localize(My.Resources.ECOSPACE_CAPTION_EDITLAYER, Me.m_tbNameValue.Text)
+
+            Me.m_tscmbVectorData.Visible = Me.m_bIsVectorData
 
         End Sub
 

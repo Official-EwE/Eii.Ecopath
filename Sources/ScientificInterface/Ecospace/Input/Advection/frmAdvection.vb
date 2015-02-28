@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -235,6 +236,33 @@ Namespace Ecospace.Advection
         Private Sub OnRevertVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnRevert.Click
             Me.Revert()
+        End Sub
+
+        Private Sub OnEditWindLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnEditWind.Click
+
+            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucWind.DataLayer, cDisplayRasterLayer)
+            Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+            cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
+
+        End Sub
+
+        Private Sub OnEditMLDLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnEditMLD.Click
+
+            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucMLD.DataLayer, cDisplayRasterLayer)
+            Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+            cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
+
+        End Sub
+
+        Private Sub OnEditUpwellingLayer(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnEditUpwelling.Click
+
+            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucUpwelling.DataLayer, cDisplayRasterLayer)
+            Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+            cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
+
         End Sub
 
 #End Region ' Control events

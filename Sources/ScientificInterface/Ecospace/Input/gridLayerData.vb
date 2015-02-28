@@ -34,7 +34,9 @@ Public Class gridLayerData
 
     Private m_basemap As cEcospaceBasemap = Nothing
     Private m_layer As cDisplayRasterLayer = Nothing
+    Private m_iVectorField As Integer = 0
     Private m_bReadOnly As Boolean = False
+    Private m_bInvalid As Boolean = False
 
     Public Sub New()
         MyBase.New()
@@ -101,15 +103,23 @@ Public Class gridLayerData
         Dim cell As Cells.ICell = Nothing
         Dim tCell As Type = Nothing
         Dim data As cEcospaceLayer = Nothing
+        Dim dataV As cEcospaceLayerVector = Nothing
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+        Dim value As Object = Nothing
 
         If (Me.m_bReadOnly) Then
             style = cStyleGuide.eStyleFlags.NotEditable
         End If
+        Dim bChanged As Boolean = False
+
 
         ' Grab the data
         data = Me.m_layer.Data
         tCell = data.ValueType
+
+        If (Me.DataMode > 0) Then
+            dataV = DirectCast(data, cEcospaceLayerVector)
+        End If
 
         Me.SuspendLayoutGrid()
 
@@ -125,8 +135,21 @@ Public Class gridLayerData
             ' Add row value cells
             For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Prepare cell
-                cell = New EwECell(data.Cell(iRow, iCol), tCell, style)
+
+                Select Case Me.DataMode
+                    Case 0
+                        value = data.Cell(iRow, iCol)
+                    Case 1
+                        value = dataV.XVelocity(iRow, iCol)
+                    Case 2
+                        value = dataV.YVelocity(iRow, iCol)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+
+                cell = New EwECell(value, tCell, style)
                 If (Not Me.m_bReadOnly) Then cell.Behaviors.Add(Me.EwEEditHandler)
+
                 Me(iRow, iCol) = cell
             Next iCol
         Next iRow
@@ -134,6 +157,8 @@ Public Class gridLayerData
         Me.ResumeLayoutGrid()
 
     End Sub
+
+    Private Property DataMode As Integer = 0
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -154,12 +179,17 @@ Public Class gridLayerData
                 Me.m_layer = value
                 Me.m_bReadOnly = True
 
+                ' Assess layer
+                Me.DataMode = 0
+                If (TypeOf Me.m_layer.Data Is cEcospaceLayerVector) Then
+                    Me.DataMode = 1
+                End If
+
                 If (Me.m_layer IsNot Nothing) Then
                     If (Me.m_layer.Editor IsNot Nothing) Then
                         Me.m_bReadOnly = Not Me.Layer.Editor.IsEditable()
                     End If
                 End If
-                Me.RefreshContent()
             End If
 
             If Me.m_layer IsNot Nothing Then
@@ -169,6 +199,23 @@ Public Class gridLayerData
         End Set
     End Property
 
+    Public Property VectorFieldIndex As Integer
+        Get
+            Return Me.m_iVectorField
+        End Get
+        Set(value As Integer)
+            Me.m_iVectorField = value
+            If (Me.DataMode > 0) Then
+                Me.DataMode = 1 + Me.m_iVectorField
+            End If
+        End Set
+    End Property
+
+    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        Me.InvalidateLayer()
+        Return MyBase.OnCellValueChanged(p, cell)
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Apply the grid data
@@ -177,10 +224,12 @@ Public Class gridLayerData
     ''' <returns>True when the layer data was changed.</returns>
     ''' -----------------------------------------------------------------------
     Public Function Apply(Optional ByVal layTarget As cDisplayRasterLayer = Nothing) As Boolean
+
         Dim p As SourceGrid2.Position = Nothing
         Dim sNew As Single = 0.0!
         Dim sOrg As Single = 0.0!
         Dim data As cEcospaceLayer = Nothing
+        Dim dataV As cEcospaceLayerVector = Nothing
         Dim bChanged As Boolean = False
 
         If Me.m_layer.Editor IsNot Nothing Then
@@ -193,18 +242,41 @@ Public Class gridLayerData
         If (layTarget Is Nothing) Then Return False
 
         data = layTarget.Data
+        If (Me.DataMode > 0) Then
+            dataV = DirectCast(data, cEcospaceLayerVector)
+        End If
 
         For iRow As Integer = 1 To Me.m_basemap.InRow
             For iCol As Integer = 1 To Me.m_basemap.InCol
-                ' Get original value
-                sOrg = CSng(data.Cell(iRow, iCol))
+
+                ' Get original value from layer
+                Select Case Me.DataMode
+                    Case 0
+                        sOrg = CSng(data.Cell(iRow, iCol))
+                    Case 1
+                        sOrg = dataV.XVelocity(iRow, iCol)
+                    Case 2
+                        sOrg = dataV.YVelocity(iRow, iCol)
+                End Select
+
                 ' Get grid value
                 p = New SourceGrid2.Position(iRow, iCol)
                 sNew = CSng(Me(iRow, iCol).GetValue(p))
+
                 ' Has the user modified this value?
                 If (sNew <> sOrg) Then
                     ' #Yes: set it
-                    data.Cell(iRow, iCol) = sNew
+                    Select Case Me.DataMode
+                        Case 0
+                            data.Cell(iRow, iCol) = sNew
+                        Case 1
+                            dataV.XVelocity(iRow, iCol) = sNew
+                        Case 2
+                            dataV.YVelocity(iRow, iCol) = sNew
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
+
                     ' Remember the change
                     bChanged = True
                 End If
@@ -218,6 +290,19 @@ Public Class gridLayerData
     Private Sub OnLayerChanged(l As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
         If ((cf And cDisplayLayer.eChangeFlags.Map) > 0) Then
             Me.RefreshContent()
+        End If
+    End Sub
+
+    Private Sub InvalidateLayer()
+        Me.m_bInvalid = True
+        Me.BeginInvoke(New MethodInvoker(AddressOf Me.ApplyChanges))
+    End Sub
+
+    Private Sub ApplyChanges()
+        If Me.m_bInvalid Then
+            Me.m_bInvalid = False
+            Me.Apply()
+            Me.m_layer.Update(cDisplayLayer.eChangeFlags.Map)
         End If
     End Sub
 

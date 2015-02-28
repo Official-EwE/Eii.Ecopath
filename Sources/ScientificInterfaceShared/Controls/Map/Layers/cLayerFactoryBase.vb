@@ -259,7 +259,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Always
-                    editor = New cLayerEditorVector(GetType(ucLayerEditorVector))
+                    editor = New cLayerEditorVector(Nothing)
                     layer = New cDisplayRasterLayer(uic, bmd.LayerWind, renderer, editor, bmd, eVarNameFlags.LayerWind)
 
                     lLayers.Add(layer)
