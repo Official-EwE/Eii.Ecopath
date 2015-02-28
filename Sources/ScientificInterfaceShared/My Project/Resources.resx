@@ -2729,48 +2729,48 @@
     <value>Save to geo-referenced map(s)</value>
   </data>
   <data name="STYLEFLAGS_CHECKED" xml:space="preserve">
-    <value>Needs attention</value>
+    <value>Alert|||This variable requires your attention</value>
   </data>
   <data name="STYLEFLAGS_COMPUTED" xml:space="preserve">
-    <value>Computed</value>
+    <value>Computed|||The value in this variable was computed by EwE</value>
   </data>
   <data name="STYLEFLAGS_CORESTATUSFLAGSMASK" xml:space="preserve">
     <value />
     <comment>Do not translate</comment>
   </data>
   <data name="STYLEFLAGS_ERRORENCOUNTERED" xml:space="preserve">
-    <value>Unknown error</value>
+    <value>Unknown error|||An unknown error occurred for this variable</value>
   </data>
   <data name="STYLEFLAGS_FAILEDVALIDATION" xml:space="preserve">
-    <value>Invalid input</value>
+    <value>Input error||Invalid input|The model did not accept the value that was entered into this variable</value>
   </data>
   <data name="STYLEFLAGS_HIGHLIGHT" xml:space="preserve">
-    <value>Highlighted</value>
+    <value>Highlight|||This variable is highlighted</value>
   </data>
   <data name="STYLEFLAGS_INVALIDMODELRESULT" xml:space="preserve">
-    <value>Model error</value>
+    <value>Model error||Invalid model results|The model computed an invalid value for this variable</value>
   </data>
   <data name="STYLEFLAGS_NAMES" xml:space="preserve">
-    <value>Name</value>
+    <value>Name|||This variable reflects a name</value>
   </data>
   <data name="STYLEFLAGS_NOTEDITABLE" xml:space="preserve">
-    <value>Read-only</value>
+    <value>Not editable|||This variable cannot be edited</value>
   </data>
   <data name="STYLEFLAGS_NULL" xml:space="preserve">
-    <value>Empty</value>
+    <value>Null||No value|This variable has no value, or its value is not used by EwE</value>
   </data>
   <data name="STYLEFLAGS_OK" xml:space="preserve">
     <value />
     <comment>Do not translate OK</comment>
   </data>
   <data name="STYLEFLAGS_REMARKS" xml:space="preserve">
-    <value>Has attached remarks</value>
+    <value>Remarks|||This variable has attached remarks</value>
   </data>
   <data name="STYLEFLAGS_SUM" xml:space="preserve">
-    <value>Summary</value>
+    <value>Sum|||This variable reflects a sum of a range of values</value>
   </data>
   <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
-    <value>Taxon name</value>
+    <value>Taxon|||This variable reflects a taxonomic name</value>
   </data>
   <data name="COMMAND_DEFINEGROUPS" xml:space="preserve">
     <value>Define functional groups</value>

@@ -7923,7 +7923,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Needs attention.
+        '''  Looks up a localized string similar to Alert|||This variable requires your attention.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_CHECKED() As String
             Get
@@ -7932,7 +7932,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Computed.
+        '''  Looks up a localized string similar to Computed|||The value in this variable was computed by EwE.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_COMPUTED() As String
             Get
@@ -7950,7 +7950,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unknown error.
+        '''  Looks up a localized string similar to Unknown error|||An unknown error occurred for this variable.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_ERRORENCOUNTERED() As String
             Get
@@ -7959,7 +7959,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Invalid input.
+        '''  Looks up a localized string similar to Input error||Invalid input|The model did not accept the value that was entered into this variable.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_FAILEDVALIDATION() As String
             Get
@@ -7968,7 +7968,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Highlighted.
+        '''  Looks up a localized string similar to Highlight|||This variable is highlighted.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_HIGHLIGHT() As String
             Get
@@ -7977,7 +7977,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Model error.
+        '''  Looks up a localized string similar to Model error||Invalid model results|The model computed an invalid value for this variable.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_INVALIDMODELRESULT() As String
             Get
@@ -7986,7 +7986,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Name.
+        '''  Looks up a localized string similar to Name|||This variable reflects a name.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_NAMES() As String
             Get
@@ -7995,7 +7995,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Read-only.
+        '''  Looks up a localized string similar to Not editable|||This variable cannot be edited.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_NOTEDITABLE() As String
             Get
@@ -8004,7 +8004,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Empty.
+        '''  Looks up a localized string similar to Null||No value|This variable has no value, or its value is not used by EwE.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_NULL() As String
             Get
@@ -8022,7 +8022,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Has attached remarks.
+        '''  Looks up a localized string similar to Remarks|||This variable has attached remarks.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_REMARKS() As String
             Get
@@ -8031,7 +8031,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Summary.
+        '''  Looks up a localized string similar to Sum|||This variable reflects a sum of a range of values.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_SUM() As String
             Get
@@ -8040,7 +8040,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Taxon name.
+        '''  Looks up a localized string similar to Taxon|||This variable reflects a taxonomic name.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_TAXONNAME() As String
             Get

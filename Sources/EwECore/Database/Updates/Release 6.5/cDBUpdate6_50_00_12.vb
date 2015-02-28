@@ -64,10 +64,6 @@ Friend Class cDBUpdate6_50_00_12
         ' Add flow field to Ecospace maps
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FlowMap MEMO")
 
-        ' Remove computed advection fields from Ecospace maps
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario DROP COLUMN XVelMap")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario DROP COLUMN YVelMap")
-
         Return bSuccess
 
     End Function
