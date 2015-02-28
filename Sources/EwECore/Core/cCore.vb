@@ -5832,6 +5832,48 @@ Public Class cCore
 
     End Function
 
+    Friend Function Set_BadHab_Flags(ByVal grp As cEcospaceGroup) As Boolean
+
+        Dim b As Boolean = grp.AllowValidation()
+        Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
+        grp.AllowValidation = False
+
+        Select Case grp.CapacityCalculationType
+            Case eEcospaceCapacityCalType.Habitat
+                grp.ClearStatusFlags(eVarNameFlags.RelMoveBad, s)
+                grp.ClearStatusFlags(eVarNameFlags.RelVulBad, s)
+                grp.ClearStatusFlags(eVarNameFlags.EatEffBad, s)
+            Case eEcospaceCapacityCalType.EnvResponses
+                grp.SetStatusFlags(eVarNameFlags.RelMoveBad, s)
+                grp.SetStatusFlags(eVarNameFlags.RelVulBad, s)
+                grp.SetStatusFlags(eVarNameFlags.EatEffBad, s)
+            Case Else
+                Debug.Assert(False)
+        End Select
+        grp.AllowValidation = b
+
+    End Function
+
+    Friend Function Set_HabPref_Flags(ByVal grp As cEcospaceGroup) As Boolean
+
+        Dim b As Boolean = grp.AllowValidation()
+        Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
+        grp.AllowValidation = False
+
+        For iHabitat As Integer = 0 To Me.nHabitats - 1
+            Select Case grp.CapacityCalculationType
+                Case eEcospaceCapacityCalType.Habitat
+                    grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
+                   Case eEcospaceCapacityCalType.EnvResponses
+                    grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
+                Case Else
+                    Debug.Assert(False)
+            End Select
+        Next
+        grp.AllowValidation = b
+
+    End Function
+
     Private Function Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage) As Boolean
 
         Dim objCascade As cCoreInputOutputBase = Nothing
@@ -13272,19 +13314,19 @@ Public Class cCore
 
                 Debug.Assert(TypeOf obj Is cEcoPathGroupInput)
 
-                Dim egi As cEcoPathGroupInput = DirectCast(obj, cEcoPathGroupInput)
+                Dim grp As cEcoPathGroupInput = DirectCast(obj, cEcoPathGroupInput)
 
                 Select Case value.varName
 
                     Case eVarNameFlags.Area, eVarNameFlags.BiomassAreaInput
                         ' Set biomass area status
-                        Me.Set_PB_QB_GE_BA_Flags(egi)
+                        Me.Set_PB_QB_GE_BA_Flags(grp)
 
                     Case eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.GEInput
                         'PB, QB or GE has been changed in the interface
-                        Me.Set_PB_QB_GE_BA_Flags(egi)
+                        Me.Set_PB_QB_GE_BA_Flags(grp)
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
-                        bRecalcStanza = (egi.iStanza > 0)
+                        bRecalcStanza = (grp.iStanza > 0)
 
                         If (value.varName = eVarNameFlags.PBInput) And (Me.m_StateMonitor.HasEcosimLoaded) Then
                             'update bgoal from the new PB
@@ -13300,7 +13342,7 @@ Public Class cCore
 
                     Case eVarNameFlags.GS
                         'GS has been changed in the interface
-                        Me.Set_GS_Flags(egi)
+                        Me.Set_GS_Flags(grp)
 
                     Case eVarNameFlags.DietComp
                         'DietComp has been changed by the user
@@ -13321,25 +13363,25 @@ Public Class cCore
                         'see vaSimGetPBMandFtimeMax() in EwE5 case 10. Solve this here or in PostVariableValidation?
 
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
-                        bRecalcStanza = (egi.iStanza > 0)
+                        bRecalcStanza = (grp.iStanza > 0)
 
                     Case eVarNameFlags.BioAccum, eVarNameFlags.BioAccumRate
-                        Me.Set_PB_QB_GE_BA_Flags(egi)
-                        Me.LoadEcopathInput(egi)
+                        Me.Set_PB_QB_GE_BA_Flags(grp)
+                        Me.LoadEcopathInput(grp)
 
                     Case eVarNameFlags.GS
                         'If GS is a primay producer then it can only be zero
-                        Me.Set_GS_Flags(egi)
+                        Me.Set_GS_Flags(grp)
 
                     Case eVarNameFlags.PP
-                        Me.Set_GS_Flags(egi)
-                        Me.Set_PB_QB_GE_BA_Flags(egi)
-                        Me.Set_EE_OtherMort_Flags(egi)
-                        Me.Set_DetImp_Flags(egi)
+                        Me.Set_GS_Flags(grp)
+                        Me.Set_PB_QB_GE_BA_Flags(grp)
+                        Me.Set_EE_OtherMort_Flags(grp)
+                        Me.Set_DetImp_Flags(grp)
 
                     Case eVarNameFlags.EEInput, eVarNameFlags.OtherMortInput
-                        Me.Set_EE_OtherMort_Flags(egi)
-                        Me.Set_PB_QB_GE_BA_Flags(egi)
+                        Me.Set_EE_OtherMort_Flags(grp)
+                        Me.Set_PB_QB_GE_BA_Flags(grp)
 
                 End Select
 
@@ -13449,9 +13491,19 @@ Public Class cCore
 
             Case eDataTypes.EcospaceGroup
 
+                Dim grp As cEcospaceGroup = DirectCast(obj, cEcospaceGroup)
+
                 Select Case value.varName
-                    Case eVarNameFlags.PreferredHabitat, _
-                         eVarNameFlags.EcospaceCapCalType
+                    Case eVarNameFlags.PreferredHabitat
+                        'Let Ecospace decide what to update in response
+                        If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
+                            'Capacity layer has changed
+                            'send out a message
+                            Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
+                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
+                        End If
+
+                    Case eVarNameFlags.EcospaceCapCalType
 
                         'Let Ecospace decide what to update in response
                         If Me.m_Ecospace.UpdateMaps(obj.DataType) Then
@@ -13460,6 +13512,8 @@ Public Class cCore
                             Me.m_publisher.AddMessage(New cMessage("Ecospace capacity map may have changed.", eMessageType.DataModified, _
                                                                    eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
                         End If
+                        Me.Set_BadHab_Flags(grp)
+                        Me.Set_HabPref_Flags(grp)
 
                 End Select
 

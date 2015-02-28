@@ -125,6 +125,16 @@ Public Class cEcospaceGroup
 
 #End Region
 
+#Region " Overrides "
+
+    Friend Overrides Function ResetStatusFlags(Optional bForceReset As Boolean = False) As Boolean
+        MyBase.ResetStatusFlags(bForceReset)
+        Me.m_core.Set_BadHab_Flags(Me)
+        Me.m_core.Set_HabPref_Flags(Me)
+    End Function
+
+#End Region ' Overrides
+
 #Region "Properties by dot (.) operator "
 
     ''' -----------------------------------------------------------------------
