@@ -57,8 +57,17 @@ Public Class frmMain
             Me.m_clbValues.Items.Add(out)
         Next
 
-        Me.m_tbxSource.Text = My.Settings.PathIn
-        Me.m_tbxDest.Text = My.Settings.PathOut
+        Dim strPathIn As String = My.Settings.PathIn
+        If (String.IsNullOrWhiteSpace(strPathIn)) Then
+            strPathIn = Path.GetDirectoryName(Me.Core.DataSource.Directory)
+        End If
+        Me.m_tbxSource.Text = strPathIn
+
+        Dim strPathOut As String = My.Settings.PathOut
+        If (String.IsNullOrWhiteSpace(strPathOut)) Then
+            strPathOut = Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim, "MultiSim")
+        End If
+        Me.m_tbxDest.Text = strPathOut
         Me.m_cbCreateRunFolder.Checked = My.Settings.CreateUniqueRunFolder
 
         Me.m_cbFF.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Forcing) = cEngine.eFunctionTypes.Forcing
