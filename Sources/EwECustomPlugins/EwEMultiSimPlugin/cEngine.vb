@@ -290,7 +290,7 @@ Friend Class cEngine
         Me.m_types = types
         Me.BuildFFNameCache(True)
 
-        If Not cFileUtils.IsDirectoryAvailable(strOutFolder) Then Return False
+        If Not cFileUtils.IsDirectoryAvailable(strOutFolder, True) Then Return False
 
         Try
             strFileSample = Path.Combine(strOutFolder, "multisim_sample.csv")
