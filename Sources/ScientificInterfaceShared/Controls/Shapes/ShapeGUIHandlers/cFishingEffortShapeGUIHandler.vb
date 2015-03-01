@@ -59,6 +59,7 @@ Namespace Controls
             MyBase.OnShapeFinalized(shape, sketchpad)
             Me.Refresh()
         End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Specifies the shapes manager that delivers the data for this handler.
