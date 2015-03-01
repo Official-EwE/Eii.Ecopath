@@ -1987,6 +1987,10 @@
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
+      <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
+      <Name>EwEEcotroph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
       <Name>EwEFlowDiagramPlugin %28EwE plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
