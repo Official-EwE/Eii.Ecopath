@@ -49,7 +49,9 @@ Public Class cEcospaceLayerBoolean
                    ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
+
         MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Boolean))
+
     End Sub
 
     ''' -----------------------------------------------------------------------

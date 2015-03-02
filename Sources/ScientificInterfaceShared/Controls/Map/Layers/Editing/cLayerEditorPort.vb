@@ -33,6 +33,7 @@ Namespace Controls.Map.Layers
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorPorts
         Inherits cLayerEditorTwoState
+        Implements IFleetFilter
 
 #Region " Construction "
 
@@ -49,24 +50,34 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
+        Public Event OnFilterChanged(sender As IContentFilter) Implements IFleetFilter.FilterChanged
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the index of the Ecopath fleet to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Fleet() As Integer
+        Public Property Fleet() As Integer _
+            Implements IFleetFilter.Fleet
             Get
                 Dim layer As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
                 Return layer.iLayer
             End Get
             Set(ByVal value As Integer)
                 Dim layer As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
+                value = Math.Max(0, Math.Min(Me.UIContext.Core.nFleets, value))
                 ' Will fleet index change?
-                If value <> layer.iLayer Then
+                If (value <> layer.iLayer) Then
                     ' #Yes: update index in the underlying layer collector
                     layer.iLayer = value
                     ' Force map update
-                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map Or cDisplayLayer.eChangeFlags.Selected, False)
+                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+
+                    Try
+                        RaiseEvent OnFilterChanged(Me)
+                    Catch ex As Exception
+                        ' NOP
+                    End Try
                 End If
             End Set
         End Property

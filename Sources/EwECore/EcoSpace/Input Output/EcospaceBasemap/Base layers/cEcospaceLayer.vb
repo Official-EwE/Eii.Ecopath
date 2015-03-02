@@ -90,6 +90,8 @@ Public MustInherit Class cEcospaceLayer
         Me.m_manager = manager
         Me.m_vnData = vnData
         Me.Index = iIndex
+        Me.m_ValidationStatus = New cVariableStatus()
+        Me.m_ValidationStatus.CoreDataObject = Me
 
         If (TypeOf manager Is cCoreInputOutputBase) Then
             Me.m_metadata = CType(Me.m_manager, cCoreInputOutputBase).GetVariableMetadata(Me.m_vnData)

@@ -40,8 +40,6 @@ Namespace Controls.Map.Layers
         Private m_layer As cDisplayRasterLayer = Nothing
         ''' <summary>Flag stating whether the layer is editable.</summary>
         Private m_bEditable As Boolean = True
-        ''' <summary>Flag stating whether the layer is read-only.</summary>
-        Private m_bReadOnly As Boolean = False
         ''' <summary>The current value 'under the cursor'.</summary>
         Private m_sValue As Single = Nothing
         ''' <summary>Max value for cursor.</summary>
@@ -481,13 +479,6 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overridable Property IsReadOnly() As Boolean
-            Get
-                Return m_bReadOnly
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bReadOnly = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>

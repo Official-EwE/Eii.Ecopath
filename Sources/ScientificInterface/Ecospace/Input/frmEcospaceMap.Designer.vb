@@ -84,6 +84,7 @@ Namespace Ecospace.Basemap
             '
             resources.ApplyResources(Me.m_zoomContainer, "m_zoomContainer")
             Me.m_zoomContainer.BackColor = System.Drawing.SystemColors.ButtonShadow
+            Me.m_zoomContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zoomContainer.Name = "m_zoomContainer"
             Me.m_zoomContainer.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomContainer.UIContext = Nothing

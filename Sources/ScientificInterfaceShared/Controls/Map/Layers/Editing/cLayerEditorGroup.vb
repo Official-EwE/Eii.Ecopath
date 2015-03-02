@@ -32,6 +32,7 @@ Namespace Controls.Map.Layers
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorGroup
         Inherits cLayerEditorRange
+        Implements IGroupFilter
 
 #Region " Construction "
 
@@ -48,12 +49,15 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
+        Public Event OnFilterChanged(sender As IContentFilter) Implements IGroupFilter.FilterChanged
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the index of the Ecopath group to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Group() As Integer
+        Public Property Group() As Integer _
+            Implements IGroupFilter.Group
             Get
                 Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
                 Return layerCore.iLayer
@@ -61,11 +65,17 @@ Namespace Controls.Map.Layers
             Set(ByVal value As Integer)
                 Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
                 ' Will Group index change?
-                If value <> layerCore.iLayer Then
+                If (value <> layerCore.iLayer) Then
                     ' #Yes: update Group index in the underlying Ecospace layer
                     layerCore.iLayer = value
                     ' Force map update
-                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map Or cDisplayLayer.eChangeFlags.Selected, False)
+                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+
+                    Try
+                        RaiseEvent OnFilterChanged(Me)
+                    Catch ex As Exception
+                        ' NOP
+                    End Try
                 End If
             End Set
         End Property
