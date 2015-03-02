@@ -41,6 +41,9 @@ Namespace Controls.Map
         Private m_dtGroups As New Dictionary(Of String, ucLayerGroup)
         Private m_dtLayerToGroup As New Dictionary(Of cDisplayLayer, String)
 
+        Private m_lEditorsGroup As New List(Of IGroupFilter)
+        Private m_lEditorsFleet As New List(Of IFleetFilter)
+
         Public Sub New()
             Me.InitializeComponent()
         End Sub
@@ -82,6 +85,26 @@ Namespace Controls.Map
             Me.m_dtLayerToGroup.Add(layer, strGroup)
             AddHandler layer.LayerChanged, AddressOf OnLayerChanged
 
+            ' Link to editors
+            If (TypeOf layer Is cDisplayRasterLayer) Then
+                Dim rl As cDisplayRasterLayer = DirectCast(layer, cDisplayRasterLayer)
+                Dim edt As cLayerEditor = rl.Editor
+                Dim bFilter As Boolean = False
+
+                If (TypeOf edt Is IGroupFilter) Then
+                    Me.m_lEditorsGroup.Add(DirectCast(edt, IGroupFilter))
+                    bFilter = True
+                End If
+                If (TypeOf edt Is IFleetFilter) Then
+                    Me.m_lEditorsFleet.Add(DirectCast(edt, IFleetFilter))
+                    bFilter = True
+                End If
+
+                If bFilter Then
+                    AddHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf OnLayerFilterChanged
+                End If
+            End If
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -96,6 +119,28 @@ Namespace Controls.Map
             Dim ucg As ucLayerGroup = Me.FindGroup(layer)
 
             If Object.ReferenceEquals(ucg, Nothing) Then Return
+
+            ' Remove link to editor, if any
+            If (TypeOf layer Is cDisplayRasterLayer) Then
+
+                Dim rl As cDisplayRasterLayer = DirectCast(layer, cDisplayRasterLayer)
+                Dim edt As cLayerEditor = rl.Editor
+                Dim bFilter As Boolean = False
+
+                If (TypeOf edt Is IGroupFilter) Then
+                    Me.m_lEditorsGroup.Remove(DirectCast(edt, IGroupFilter))
+                    bFilter = True
+                End If
+                If (TypeOf edt Is IFleetFilter) Then
+                    Me.m_lEditorsFleet.Remove(DirectCast(edt, IFleetFilter))
+                    bFilter = True
+                End If
+
+                If bFilter Then
+                    RemoveHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf OnLayerFilterChanged
+                End If
+
+            End If
 
             ' Remove layer
             RemoveHandler layer.LayerChanged, AddressOf OnLayerChanged
@@ -269,6 +314,35 @@ Namespace Controls.Map
                 ' Make sure only one layer is selected at the time
                 Me.UpdateSelectedLayer(l)
             End If
+        End Sub
+
+        Private m_bInEvent As Boolean = False
+
+        Private Sub OnLayerFilterChanged(filter As IContentFilter)
+
+            If (Me.m_bInEvent = True) Then Return
+            Me.m_bInEvent = True
+
+            Try
+                If (TypeOf filter Is IGroupFilter) Then
+                    Dim iGroup As Integer = DirectCast(filter, IGroupFilter).Group
+                    For Each f As IGroupFilter In Me.m_lEditorsGroup
+                        f.Group = iGroup
+                    Next
+                End If
+                If (TypeOf filter Is IFleetFilter) Then
+                    Dim iFleet As Integer = DirectCast(filter, IFleetFilter).Fleet
+                    For Each f As IFleetFilter In Me.m_lEditorsFleet
+                        f.Fleet = iFleet
+                    Next
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+            Me.m_bInEvent = False
+
         End Sub
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
