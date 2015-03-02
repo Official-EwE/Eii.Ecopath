@@ -171,30 +171,32 @@ Public Class gridLayerData
         End Get
         Set(ByVal value As cDisplayRasterLayer)
 
-            If Me.m_layer IsNot Nothing Then
-                RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
-            End If
+            'If Me.m_layer IsNot Nothing Then
+            '    RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+            'End If
 
             If Not Object.ReferenceEquals(Me.m_layer, value) Then
+
                 Me.m_layer = value
                 Me.m_bReadOnly = True
-
-                ' Assess layer
                 Me.DataMode = 0
-                If (TypeOf Me.m_layer.Data Is cEcospaceLayerVector) Then
-                    Me.DataMode = 1
-                End If
 
                 If (Me.m_layer IsNot Nothing) Then
+
+                    ' Assess layer
+                    If (TypeOf Me.m_layer.Data Is cEcospaceLayerVector) Then
+                        Me.DataMode = 1
+                    End If
+
                     If (Me.m_layer.Editor IsNot Nothing) Then
                         Me.m_bReadOnly = Not Me.Layer.Editor.IsEditable()
                     End If
                 End If
             End If
 
-            If Me.m_layer IsNot Nothing Then
-                AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
-            End If
+            'If Me.m_layer IsNot Nothing Then
+            '    AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+            'End If
 
         End Set
     End Property
@@ -287,11 +289,11 @@ Public Class gridLayerData
 
     End Function
 
-    Private Sub OnLayerChanged(l As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
-        If ((cf And cDisplayLayer.eChangeFlags.Map) > 0) Then
-            Me.RefreshContent()
-        End If
-    End Sub
+    'Private Sub OnLayerChanged(l As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
+    '    If ((cf And cDisplayLayer.eChangeFlags.Map) > 0) Then
+    '        Me.RefreshContent()
+    '    End If
+    'End Sub
 
     Private Sub InvalidateLayer()
         Me.m_bInvalid = True
