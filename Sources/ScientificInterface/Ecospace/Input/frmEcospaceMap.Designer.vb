@@ -120,6 +120,7 @@ Namespace Ecospace.Basemap
             'm_plEditor
             '
             Me.m_plEditor.BackColor = System.Drawing.SystemColors.Window
+            Me.m_plEditor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_plEditor, "m_plEditor")
             Me.m_plEditor.Name = "m_plEditor"
             '
