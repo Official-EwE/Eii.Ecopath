@@ -2518,6 +2518,12 @@ Public Class cMSE
 
         sumCatchDiscards(BiomassAtTimestep, iTime)
 
+        'ToDo 3-Mar-2015
+        'Mark to save the total catch, landings, discards and value of catch
+        'we will need to add a method here that saves LandingsDiscards() and value calculated from landings
+        'Then at the end of the run save the data to file
+        'Me.SaveCatchToMemory()
+
         'Average on the last time step
         If iTime = Me.OriginalNTimesteps + (NYearsProject * Me.EcosimData.NumStepsPerYear) Then
             Me.averageCatchDiscards(iTime)
@@ -2535,18 +2541,23 @@ Public Class cMSE
 
             For iflt As Integer = 1 To Me.m_core.nFleets
                 If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
-                    CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
 
                     'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
+                    'Total catch for this timestep based on the regulated effort in FishRateGear(fleet,time) 
+                    'This is all fish that where caught [landings] + [discard mortalities] + [discard survivals]
+                    CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+
+                    'proportion of discards that survived
+                    Dim propDiscardSurvivals As Single = (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
                     Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) += CatchFleetGrp * m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
                     Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
-                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+                    Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * propDiscardSurvivals
 
                     'Sum across fleets into the zero index
                     Me.LandingsDiscards(0, igrp, eCatchTypes.Landings) += CatchFleetGrp * m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
                     Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
-                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+                    Me.LandingsDiscards(0, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * propDiscardSurvivals
 
                     ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
                     ' Debug.Assert(Math.Abs(CatchFleetGrp - tmpCatch) < 0.00001)
@@ -2555,6 +2566,7 @@ Public Class cMSE
             Next iflt
         Next igrp
     End Sub
+
 
     Private Sub averageCatchDiscards(ByVal iTime As Integer)
         Dim nLastTimeStep As Integer = Me.OriginalNTimesteps + (NYearsProject * Me.EcosimData.NumStepsPerYear)
@@ -3001,6 +3013,9 @@ Public Class cMSE
 
             'Calculates what the F's are for each species given the effort
             m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+
+            'ToDo 3-Mar-2015
+            'Save realized fishing mortality  _simdata.FishTime(group)
 
             'Dim percentagechangeeffort As Single
             ''This is a diagnostics test
