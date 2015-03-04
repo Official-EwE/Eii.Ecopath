@@ -68,6 +68,8 @@ Namespace SpatialData
         ''' <summary>States whether the dataset is allowed to deliver data.</summary>
         Private m_bEnabled As Boolean = True
 
+        Private m_bRelative As Boolean = False
+
 #End Region ' Private vars
 
 #Region " Construction / destruction "
@@ -233,11 +235,22 @@ Namespace SpatialData
 
 #Region " Import / export "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether files are found on a path, dictated by source,
         ''' relative to the current configuration file.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Friend Property IsSourceRelative As Boolean
+            Get
+                Return Me.m_bRelative
+            End Get
+            Set(value As Boolean)
+                If (value <> Me.m_bRelative) Then
+                    Me.m_bRelative = value
+                End If
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.ExportTo"/>
