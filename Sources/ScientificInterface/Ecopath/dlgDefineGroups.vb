@@ -122,28 +122,23 @@ Namespace Ecopath
         End Sub
 
         Private Sub OnColourDefaultAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_bntColorDefaultAll.Click
+            Handles m_bntColorDefault.Click
             Me.m_grid.SetDefaultGroupColors()
         End Sub
 
         Private Sub OnColourAlternateAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnColorAlternateAll.Click
+            Handles m_btnColorAlternate.Click
             Me.m_grid.SetAlternatingGroupColors()
         End Sub
 
         Private Sub OnColourRandomAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnRandomAll.Click
+            Handles m_btnRandom.Click
             Me.m_grid.SetRandomGroupColors()
         End Sub
 
-        Private Sub OnColourDefaultCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnColourDefaultCurrent.Click
-            Me.m_grid.SetDefaultGroupColor(Me.m_grid.SelectedRow)
-        End Sub
-
         Private Sub OnColourCustomCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnColourCustomCurrent.Click
-            Me.m_grid.SelectCustomColor()
+            Handles m_btnColourCustom.Click
+            Me.m_grid.SelectCustomColors()
         End Sub
 
 #End Region ' Event handlers 
@@ -151,13 +146,19 @@ Namespace Ecopath
 #Region " Updating "
 
         Private Sub UpdateControls()
+
+            Dim bHasSelection As Boolean = (Me.m_grid.SelectedRows.Length > 0)
+
             Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
             Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
             Me.m_btnInsert.Enabled = Me.m_grid.CanInsertRow()
             Me.m_btnDelete.Enabled = Me.m_grid.IsGroupRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsGroupRow() And Me.m_grid.IsFlaggedForDeletionRow()
-            Me.m_btnColourCustomCurrent.Enabled = Me.m_grid.IsGroupRow()
-            Me.m_btnColourDefaultCurrent.Enabled = Me.m_grid.IsGroupRow()
+
+            Me.m_bntColorDefault.Enabled = bHasSelection
+            Me.m_btnColorAlternate.Enabled = bHasSelection
+            Me.m_btnColourCustom.Enabled = bHasSelection
+
         End Sub
 
 #End Region ' Updating
