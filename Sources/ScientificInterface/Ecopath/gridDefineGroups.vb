@@ -22,9 +22,10 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports EwEUtils.Drawing
-Imports ScientificInterface.Other
+Imports EwEUtils.Utilities
+Imports ScientificInterface
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
@@ -1191,7 +1192,7 @@ Public Class gridDefineGroups
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.GroupColor
-                Me.SelectCustomColor(p.Row)
+                Me.SelectCustomColors()
         End Select
 
     End Sub
@@ -1423,45 +1424,47 @@ Public Class gridDefineGroups
     End Sub
 
     Public Sub SetRandomGroupColors()
+        Dim gi As cGroupInfo = Nothing
         For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
-            Me.SetRandomGroupColor(iRow)
+            If Me.IsGroupRow(iRow) Then
+                gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
+                gi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.NextRandomColor())
+                Me.UpdateRow(iRow)
+            End If
         Next
-    End Sub
-
-    Public Sub SetRandomGroupColor(ByVal iRow As Integer)
-        Me.m_lgiGroups(iRow - iFIRSTGROUPROW).PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.NextRandomColor())
-        Me.UpdateRow(iRow)
     End Sub
 
     Public Sub SetDefaultGroupColors()
-        For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
-            Me.SetDefaultGroupColor(iRow)
+        Dim gi As cGroupInfo = Nothing
+         For iRow As Integer = iFIRSTGROUPROW To Me.RowsCount - 1
+            If Me.IsGroupRow(iRow) Then
+                gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
+                gi.PoolColor = 0
+                Me.UpdateRow(iRow)
+            End If
         Next
     End Sub
 
-    Public Sub SetDefaultGroupColor(ByVal iRow As Integer)
-        Me.m_lgiGroups(iRow - iFIRSTGROUPROW).PoolColor = 0 ' cStyleGuide.ColorToInt(Me.StyleGuide.GroupColorDefault(iRow - iFIRSTGROUPROW + 1, Me.m_lgiGroups.Count))
-        Me.UpdateRow(iRow)
-    End Sub
+    Public Sub SelectCustomColors()
 
-    Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
+        Dim cmdh As EwEUtils.Commands.cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmd As cPickColorCommand = CType(cmdh.GetCommand(cPickColorCommand.COMMAND_NAME), cPickColorCommand)
 
+        cmd.Invoke()
+        If (cmd.Result <> DialogResult.OK) Then Return
+
+        Dim clr As Integer = cColorUtils.ColorToInt(cmd.Color)
         Dim gi As cGroupInfo = Nothing
-        Dim dlgColor As ColorDialog = New cEwEColorDialog()
-        Dim clr As Integer = Nothing
+        Dim iRow As Integer = 0
 
-        If (dlgColor.ShowDialog() = DialogResult.OK) Then
-            clr = cColorUtils.ColorToInt(dlgColor.Color)
-            For i As Integer = 0 To Me.SelectedRows.Length - 1
-                iRow = Me.SelectedRows(i)
-                If Me.IsGroupRow(iRow) Then
-                    gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
-                    dlgColor.Color = cColorUtils.IntToColor(gi.PoolColor)
-                    gi.PoolColor = clr
-                    Me.UpdateRow(iRow)
-                End If
-            Next i
-        End If
+        For i As Integer = 0 To Me.SelectedRows.Length - 1
+            iRow = Me.SelectedRows(i)
+            If Me.IsGroupRow(iRow) Then
+                gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
+                gi.PoolColor = clr
+                Me.UpdateRow(iRow)
+            End If
+        Next i
 
     End Sub
 
