@@ -1447,19 +1447,20 @@ Public Class gridDefineGroups
     Public Sub SelectCustomColor(Optional ByVal iRow As Integer = -1)
 
         Dim gi As cGroupInfo = Nothing
-        Dim dlgColor As ColorDialog = Nothing
+        Dim dlgColor As ColorDialog = New cEwEColorDialog()
+        Dim clr As Integer = Nothing
 
-        If iRow = -1 Then iRow = Me.SelectedRow
-
-        If Not Me.IsGroupRow(iRow) Then Return
-
-        gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
-
-        dlgColor = New cEwEColorDialog()
-        dlgColor.Color = cColorUtils.IntToColor(gi.PoolColor)
-        If dlgColor.ShowDialog() = DialogResult.OK Then
-            gi.PoolColor = cColorUtils.ColorToInt(dlgColor.Color)
-            Me.UpdateRow(iRow)
+        If (dlgColor.ShowDialog() = DialogResult.OK) Then
+            clr = cColorUtils.ColorToInt(dlgColor.Color)
+            For i As Integer = 0 To Me.SelectedRows.Length - 1
+                iRow = Me.SelectedRows(i)
+                If Me.IsGroupRow(iRow) Then
+                    gi = Me.m_lgiGroups(iRow - iFIRSTGROUPROW)
+                    dlgColor.Color = cColorUtils.IntToColor(gi.PoolColor)
+                    gi.PoolColor = clr
+                    Me.UpdateRow(iRow)
+                End If
+            Next i
         End If
 
     End Sub

@@ -1422,6 +1422,44 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns the indexes of all currently selected rows. 
+        ''' </summary>
+        ''' <returns>An array of row indexes.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function SelectedRows() As Integer()
+
+            Dim indexes As New List(Of Integer)
+            Dim selection As SourceGrid2.Selection = Me.Selection
+            If (selection IsNot Nothing) Then
+                For Each ri As RowInfo In selection.SelectedRows
+                    indexes.Add(ri.Index)
+                Next
+            End If
+            Return indexes.ToArray()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the indexes of all currently selected columns.
+        ''' </summary>
+        ''' <returns>An array of column indexes.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function SelectedColumns() As Integer()
+
+            Dim indexes As New List(Of Integer)
+            Dim selection As SourceGrid2.Selection = Me.Selection
+            If (selection IsNot Nothing) Then
+                For Each ci As ColumnInfo In selection.SelectedColumns
+                    indexes.Add(ci.Index)
+                Next
+            End If
+            Return indexes.ToArray()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Set the current selected row to a specific row index.
         ''' </summary>
         ''' <param name="iRow">The index of the row to select.</param>

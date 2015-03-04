@@ -20,17 +20,17 @@
 
 Option Strict On
 
+Imports System.ComponentModel
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Controls.cTreeFlowDiagramRenderer
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -111,6 +111,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.UpdateControls()
 
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
+            AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
             ' Display Groups
             cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -134,6 +135,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
 
+            RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
             Me.SaveSettings()
 
             MyBase.OnFormClosed(e)
@@ -221,11 +223,17 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #End Region ' Mouse Events
 
-#Region " Tree events (wouldn't that be nice?)"
+#Region " Tree events "
 
         Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
+
+            ' These options are not supported in the Ecopath FD
+            Me.m_tree.ShowBiomassLegend = False
+            Me.m_tree.ShowFlowRateLegend = False
+
             Me.m_pbFlowDiagram.Invalidate(True)
             Me.SaveSettings()
+
         End Sub
 
 #End Region ' Tree events
@@ -351,6 +359,26 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
 #End Region ' Commands
+
+#Region " Settings "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler to respond to individual settings changes.
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+            Try
+                Me.LoadSettings()
+                Me.m_pgFlowDiagram.Invalidate()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Settings
 
 #End Region ' Events
 

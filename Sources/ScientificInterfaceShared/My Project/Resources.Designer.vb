@@ -2139,6 +2139,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Show Biomass legend.
+        '''</summary>
+        Public ReadOnly Property GENERIC_SHOW_BIOMASS_LEGEND() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SHOW_BIOMASS_LEGEND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show flow rate legend.
+        '''</summary>
+        Public ReadOnly Property GENERIC_SHOW_FLOW_RATE_LEGEND() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SHOW_FLOW_RATE_LEGEND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Show hidden nodes.
         '''</summary>
         Public ReadOnly Property GENERIC_SHOW_HIDDEN() As String
@@ -6923,11 +6941,56 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Pause.
+        '''</summary>
+        Public ReadOnly Property LABEL_PAUSE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_PAUSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Play.
+        '''</summary>
+        Public ReadOnly Property LABEL_PLAY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_PLAY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Resume.
+        '''</summary>
+        Public ReadOnly Property LABEL_RESUME() As String
+            Get
+                Return ResourceManager.GetString("LABEL_RESUME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Set.
         '''</summary>
         Public ReadOnly Property LABEL_SET() As String
             Get
                 Return ResourceManager.GetString("LABEL_SET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Stop.
+        '''</summary>
+        Public ReadOnly Property LABEL_STOP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_STOP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Title.
+        '''</summary>
+        Public ReadOnly Property LABEL_TITLE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_TITLE", resourceCulture)
             End Get
         End Property
         

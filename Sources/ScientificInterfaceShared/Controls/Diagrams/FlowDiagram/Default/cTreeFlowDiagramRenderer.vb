@@ -218,6 +218,8 @@ Namespace Controls
         Private m_colorusagetype As eFDColorUsageTypes = eFDColorUsageTypes.None
         Private m_tsShowLegend As TriState = TriState.UseDefault
         Private m_nodeshowtype As eFDShowHiddenType = eFDShowHiddenType.GrayedOut
+        Private m_tsShowBiomassLegend As Boolean = False
+        Private m_tsShowFlowRateLegend As Boolean = False
 
         Private Shared g_fmt As New StringFormat()
         ''' <summary>Minimum mouse hit area size</summary>
@@ -226,6 +228,8 @@ Namespace Controls
 #End Region ' Privates
 
         Public Event OnChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Public Event OnBiomassLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
+        Public Event OnFlowRateLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
 #Region " Constructor "
 
@@ -561,6 +565,36 @@ Namespace Controls
         End Property
 
         <Browsable(True), _
+            Category("Appearance"), _
+            cLocalizedDisplayName("GENERIC_SHOW_BIOMASS_LEGEND"), _
+            DefaultValue(False)> _
+        Public Property ShowBiomassLegend As Boolean
+            Get
+                Return Me.m_tsShowBiomassLegend
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_tsShowBiomassLegend = value
+                RaiseEvent OnBiomassLegendChanged(Me)
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
+        <Browsable(True), _
+            Category("Appearance"), _
+            cLocalizedDisplayName("GENERIC_SHOW_FLOW_RATE_LEGEND"), _
+            DefaultValue(TriState.False)> _
+        Public Property ShowFlowRateLegend As Boolean
+            Get
+                Return Me.m_tsShowFlowRateLegend
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_tsShowFlowRateLegend = value
+                RaiseEvent OnFlowRateLegendChanged(Me)
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
+        <Browsable(True), _
              Category("Node"), _
              cLocalizedDisplayName("HEADER_COLOR"), _
              DefaultValue(&HFFD3D3D3)> _
@@ -826,7 +860,7 @@ Namespace Controls
 
         End Function
 
-        Public Function FormatLabelText(iGroup As Integer) As String _
+        Public Function FormatLabelText(ByVal iGroup As Integer) As String _
             Implements IFlowDiagramRenderer.FormatLabelText
 
             Dim sb As New StringBuilder()
