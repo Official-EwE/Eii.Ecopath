@@ -155,9 +155,7 @@ Namespace Ecopath
             Me.m_btnDelete.Enabled = Me.m_grid.IsGroupRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsGroupRow() And Me.m_grid.IsFlaggedForDeletionRow()
 
-            Me.m_bntColorDefault.Enabled = bHasSelection
             Me.m_btnColorAlternate.Enabled = bHasSelection
-            Me.m_btnColourCustom.Enabled = bHasSelection
 
         End Sub
 
