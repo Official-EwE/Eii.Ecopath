@@ -1024,6 +1024,17 @@ Partial Friend NotInheritable Class Settings
             Me("FDAnimateDelay") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property ColorCustom() As Global.System.Collections.ArrayList
+        Get
+            Return CType(Me("ColorCustom"),Global.System.Collections.ArrayList)
+        End Get
+        Set
+            Me("ColorCustom") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

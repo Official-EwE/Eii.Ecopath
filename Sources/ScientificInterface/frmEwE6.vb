@@ -272,6 +272,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdPrint As cCommand = Nothing
     Private WithEvents m_cmdEcosimTrimShapes As cCommand = Nothing
     Private WithEvents m_cmdEcosimChangeShape As cCommand = Nothing
+    Private WithEvents m_cmdPickColor As cPickColorCommand = Nothing
 
     ' --- Ecospace external data ---
 
@@ -662,6 +663,8 @@ Public Class frmEwE6
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
 
         Me.m_cmdHelpFeedback = New cCommand(cmdh, "HelpFeedback")
+
+        Me.m_cmdPickColor = New cPickColorCommand(cmdh)
 
 #If BETA = 1 Then
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
@@ -2671,8 +2674,7 @@ Public Class frmEwE6
     Private Sub OnDirectoryOpen(ByVal cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
 
         ' JS 19Nov13: Restored old path if something went wrong
-
-        Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
+        Dim doc As cDirectoryOpenCommand = Me.m_cmdDirectoryOpen
         Dim strPath As String = doc.Directory
 
         Try
@@ -2681,12 +2683,39 @@ Public Class frmEwE6
             doc.Result = dlgLoad.ShowDialog()
             strPath = dlgLoad.SelectedPath
         Catch ex As Exception
-            cLog.Write(ex, "OnDirectoryOpen old")
+            cLog.Write(ex, "OnDirectoryOpen")
         End Try
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
             doc.Directory = strPath
         End If
+
+    End Sub
+
+    Private Sub OnPickColor(ByVal cmd As cCommand) Handles m_cmdPickColor.OnInvoke
+
+        Try
+            Dim dlg As New ColorDialog()
+            dlg.Color = Me.m_cmdPickColor.Color
+            dlg.AllowFullOpen = True
+            dlg.AnyColor = True
+
+            If (My.Settings.ColorCustom IsNot Nothing) Then
+                dlg.CustomColors = CType(My.Settings.ColorCustom.ToArray(GetType(Integer)), Integer())
+            End If
+
+            Me.m_cmdPickColor.Result = dlg.ShowDialog(Me)
+
+            If (Me.m_cmdPickColor.Result = Windows.Forms.DialogResult.OK) Then
+                Me.m_cmdPickColor.Color = dlg.Color
+                Dim al As New ArrayList()
+                al.AddRange(dlg.CustomColors)
+                My.Settings.ColorCustom = al
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

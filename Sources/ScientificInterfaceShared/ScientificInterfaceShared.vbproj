@@ -125,6 +125,7 @@
     <Compile Include="Commands\cEditDriverLayersCommand.vb" />
     <Compile Include="Commands\cEditRegionsCommand.vb" />
     <Compile Include="Commands\cEditSpatialDatasetCommand.vb" />
+    <Compile Include="Commands\cPickColorCommand.vb" />
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
     <Compile Include="Controls\Config\dlgConfig.Designer.vb">
       <DependentUpon>dlgConfig.vb</DependentUpon>
