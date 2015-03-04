@@ -13043,4 +13043,23 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Allowed values: {0}</value>
     <comment>{0}=values text</comment>
   </data>
+  <data name="ECOSIM_FD_SAVE_FAILURE" xml:space="preserve">
+    <value>Errors occured saving Ecosim flow diagram image(s) to {0}</value>
+    <comment>{0}=path</comment>
+  </data>
+  <data name="ECOSIM_FD_SAVE_FAILURE_DETAIL" xml:space="preserve">
+    <value>Image failed to save for time step {0}. {1}</value>
+    <comment>{0}=time step, {2}=exception message</comment>
+  </data>
+  <data name="ECOSIM_FD_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim flow diagram image(s) saved to {0}</value>
+    <comment>{0}=path</comment>
+  </data>
+  <data name="ECOSIM_FD_SAVE_SUCCESS_DETAIL" xml:space="preserve">
+    <value>Image saved for time step {0}</value>
+    <comment>{0}=time step</comment>
+  </data>
+  <data name="STATUS_ECOSIMFD_SAVING" xml:space="preserve">
+    <value>Saving flow diagram images...</value>
+  </data>
 </root>

@@ -580,6 +580,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Errors occured saving Ecosim flow diagram image(s) to {0}.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_FD_SAVE_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_FD_SAVE_FAILURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Image failed to save for time step {0}. {1}.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_FD_SAVE_FAILURE_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_FD_SAVE_FAILURE_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim flow diagram image(s) saved to {0}.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_FD_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_FD_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Image saved for time step {0}.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_FD_SAVE_SUCCESS_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_FD_SAVE_SUCCESS_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Density-dep. catchability: Qmax/Qo [&gt;=1].
         '''</summary>
         Public ReadOnly Property ECOSIM_GROUPINFO_DENDEPCATCHABILITY() As String
@@ -3525,6 +3561,15 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_ECOSIM_SAVING() As String
             Get
                 Return ResourceManager.GetString("STATUS_ECOSIM_SAVING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Saving flow diagram images....
+        '''</summary>
+        Public ReadOnly Property STATUS_ECOSIMFD_SAVING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ECOSIMFD_SAVING", resourceCulture)
             End Get
         End Property
         

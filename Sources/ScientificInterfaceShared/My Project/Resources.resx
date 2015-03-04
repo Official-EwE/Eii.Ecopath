@@ -2710,6 +2710,12 @@
   <data name="GENERIC_SHOW_LEGEND" xml:space="preserve">
     <value>Show legend</value>
   </data>
+  <data name="GENERIC_SHOW_BIOMASS_LEGEND" xml:space="preserve">
+    <value>Show Biomass legend</value>
+  </data>
+  <data name="GENERIC_SHOW_FLOW_RATE_LEGEND" xml:space="preserve">
+    <value>Show flow rate legend</value>
+  </data>
   <data name="GENERIC_ZOOM_IN" xml:space="preserve">
     <value>Zoom in</value>
   </data>
@@ -2984,6 +2990,9 @@
   </data>
   <data name="HEADER_SHOW_VALUES" xml:space="preserve">
     <value>Show values in labels</value>
+  </data>
+  <data name="LABEL_TITLE" xml:space="preserve">
+    <value>Title</value>
   </data>
   <data name="PROMPT_SHOWTITLE" xml:space="preserve">
     <value>Show title</value>
@@ -3338,5 +3347,17 @@
   </data>
   <data name="VARIALBE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
     <value>Barrier avoidance wt.||Barrier avoidance weight</value>
+  </data>
+  <data name="LABEL_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="LABEL_PLAY" xml:space="preserve">
+    <value>Play</value>
+  </data>
+  <data name="LABEL_RESUME" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>Stop</value>
   </data>
 </root>

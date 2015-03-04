@@ -81,7 +81,7 @@ Namespace Controls
         ''' Get/set the node to highlight.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Property HighlightNode() As Integer
+        Public Property HighlightNode() As Integer
             Get
                 Return Me.m_iHighlight
             End Get

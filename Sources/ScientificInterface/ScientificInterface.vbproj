@@ -127,6 +127,7 @@
     <ManifestCertificateThumbprint>5A8DF073C299AE0828E5FFB5439926BD7D32B957</ManifestCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -138,12 +139,15 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
     <Reference Include="ZedGraph">
       <HintPath>..\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
@@ -163,6 +167,16 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ecosim\Output\frmEcosimOutputPlotsByParm.designer.vb">
+      <DependentUpon>frmEcosimOutputPlotsByParm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmEcosimOutputPlotsByParm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFDGroupData.vb" />
+    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\cConverterPicker.vb" />
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\cDatasetPicker.vb" />
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.Designer.vb">
@@ -880,6 +894,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Ecosim\Output\frmEcosimOutputPlotsByParm.resx">
+      <DependentUpon>frmEcosimOutputPlotsByParm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.resx">
+      <DependentUpon>frmEcosimFD.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.resx">
       <DependentUpon>dlgApplyConnection.vb</DependentUpon>
     </EmbeddedResource>

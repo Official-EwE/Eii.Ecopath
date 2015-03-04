@@ -1012,6 +1012,18 @@ Partial Friend NotInheritable Class Settings
             Me("ShowExtraVariableInfo") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("10")>  _
+    Public Property FDAnimateDelay() As Integer
+        Get
+            Return CType(Me("FDAnimateDelay"),Integer)
+        End Get
+        Set
+            Me("FDAnimateDelay") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

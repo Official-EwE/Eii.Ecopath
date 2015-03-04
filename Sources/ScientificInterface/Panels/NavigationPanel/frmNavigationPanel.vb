@@ -191,10 +191,12 @@ Public Class frmNavigationPanel
             ' Ecosim Output
             .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmRunEcosim), "Run Ecosim.htm")
             .Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimOutputPlots), "Ecosim plot.htm")
+            .Add("ndGrpPlotsByParm", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimOutputPlotsByParm))
             .Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimResults), "Ecosim results.htm")
             .Add("ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmShowAllFits), "Ecosim results.htm")
             .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmStockRecruitmentPlot), "Stock recruitment S R plot.htm")
             .Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
+            .Add("ndFDSliderPlugin", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimFD))
 
             ' Ecosim Tools
             .Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
