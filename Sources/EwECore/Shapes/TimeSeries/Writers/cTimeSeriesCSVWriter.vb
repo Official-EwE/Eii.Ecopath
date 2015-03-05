@@ -77,7 +77,7 @@ Public Class cTimeSeriesCSVWriter
             ' Is dataset available?
             If (ds Is Nothing) Then Return ""
             ' 
-            Return Path.Combine(Me.m_core.OutputPath, cFileUtils.ToValidFileName(ds.Name, True)) & ".csv"
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), cFileUtils.ToValidFileName(ds.Name, True)) & ".csv"
         End Get
     End Property
 
@@ -179,6 +179,7 @@ Public Class cTimeSeriesCSVWriter
                 ' Create success message
                 msg = New cMessage(String.Format(My.Resources.CoreMessages.TIMESERIES_EXPORT_SUCCESS, ds.Name, strFileName), _
                                    eMessageType.DataExport, eCoreComponentType.TimeSeries, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFileName)
 
             End Using
 

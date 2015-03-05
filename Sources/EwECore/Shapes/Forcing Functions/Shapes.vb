@@ -462,7 +462,6 @@ Public MustInherit Class cMediationBaseFunction
 
 #Region " Constructors "
 
-
     Friend Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal Manager As cBaseShapeManager, _
                    ByVal data As cMediationDataStructures, ByVal DBID As Integer, ByVal DataType As eDataTypes)
         'mediation data arrays from EcoSim
@@ -479,7 +478,7 @@ Public MustInherit Class cMediationBaseFunction
             'Me.m_datatype = DataType
             Me.m_coreComponent = eCoreComponentType.EcoSim
             Me.m_medData = data
-            Me.m_timeresolution = eShapeTimeResolutionType.NotApplicable
+            Me.m_timeresolution = eTSDataSetInterval.Monthly
 
             Me.m_bInInit = True
             Me.m_data = EcoSimData
