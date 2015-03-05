@@ -167,12 +167,6 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ecosim\Output\frmEcosimOutputPlotsByParm.designer.vb">
-      <DependentUpon>frmEcosimOutputPlotsByParm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Output\frmEcosimOutputPlotsByParm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFDGroupData.vb" />
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.vb">
       <SubType>Form</SubType>
@@ -894,9 +888,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ecosim\Output\frmEcosimOutputPlotsByParm.resx">
-      <DependentUpon>frmEcosimOutputPlotsByParm.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.resx">
       <DependentUpon>frmEcosimFD.vb</DependentUpon>
     </EmbeddedResource>

@@ -67,6 +67,7 @@ Partial Class frmNavigationPanel
         Me.HideOnClose = True
         Me.Name = "frmNavigationPanel"
         Me.ShowIcon = False
+        Me.TabText = ""
         Me.ResumeLayout(False)
 
     End Sub
