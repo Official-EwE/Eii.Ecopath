@@ -748,7 +748,7 @@ Namespace SpatialData
                         Dim xnData As XmlElement = doc.CreateElement("Configuration")
                         xnData.InnerXml = cfg.DatasetConfig
 
-                        ds.Configuration(doc) = xnData
+                        ds.Configuration(doc, "") = xnData
 
                         ' Try to find Dataset by name 
                         Dim ds2 As ISpatialDataSet = Me.Find(ds.DisplayName)
@@ -802,7 +802,7 @@ Namespace SpatialData
                 cfg.DatasetTypeName = cTypeUtils.TypeToString(ds.GetType)
                 cfg.DatasetGUID = ds.GUID.ToString
 
-                xnData = ds.Configuration(doc)
+                xnData = ds.Configuration(doc, Path.GetDirectoryName(ds.Source))
 
                 If (xnData IsNot Nothing) Then
                     cfg.DatasetConfig = xnData.InnerXml
@@ -911,6 +911,7 @@ Namespace SpatialData
         Public Function Save(strFile As String, bExport As Boolean) As Boolean
 
             Dim doc As New XmlDocument()
+            Dim strPath As String = Path.GetDirectoryName(strFile)
             Dim xnRoot As XmlNode = Nothing
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
@@ -979,7 +980,7 @@ Namespace SpatialData
                     xnDataset.Attributes.Append(xaDataset)
 
                     Try
-                        xnDetails = ds.Configuration(doc)
+                        xnDetails = ds.Configuration(doc, strPath)
                     Catch ex As Exception
                         xnDetails = Nothing
                     End Try

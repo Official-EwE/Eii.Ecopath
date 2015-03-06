@@ -153,6 +153,7 @@ Namespace SpatialData
                              ByVal man As cSpatialDataSetManager) As Boolean
 
             Dim strFile As String = Me.FileName
+            Dim strRoot As String = Path.GetDirectoryName(Me.FileName)
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing
@@ -184,7 +185,7 @@ Namespace SpatialData
 
                                     ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
                                     If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(core)
-                                    ds.Configuration(doc) = xn.ChildNodes(0)
+                                    ds.Configuration(doc, strRoot) = xn.ChildNodes(0)
 
                                     ' Assign GUID
                                     xa = xn.Attributes("GUID")
@@ -253,6 +254,7 @@ Namespace SpatialData
                              ByVal bExporting As Boolean) As Boolean
 
             Dim strFile As String = Me.FileName
+            Dim strPath As String = Path.GetDirectoryName(Me.FileName)
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xaRoot As XmlAttribute = Nothing
@@ -261,7 +263,6 @@ Namespace SpatialData
             Dim xaDataset As XmlAttribute = Nothing
             Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
-            Dim strPath As String = ""
             Dim msg As cMessage = Nothing
             Dim bSuccess As Boolean = True
 
@@ -271,7 +272,6 @@ Namespace SpatialData
             End If
 
             ' Create dir
-            strPath = Path.GetDirectoryName(strFile)
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
                 Return False
             End If
@@ -377,7 +377,7 @@ Namespace SpatialData
                         xnDataset.Attributes.Append(xaDataset)
 
                         Try
-                            xnDetails = ds.Configuration(doc)
+                            xnDetails = ds.Configuration(doc, strPath)
                         Catch ex As Exception
                             xnDetails = Nothing
                         End Try
