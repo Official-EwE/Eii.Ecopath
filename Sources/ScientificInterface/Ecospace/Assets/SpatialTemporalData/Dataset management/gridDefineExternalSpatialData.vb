@@ -74,6 +74,8 @@ Namespace Ecospace.Controls
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
+            Applied
+            Status
             DateFrom
             DateTo
             Description
@@ -138,8 +140,11 @@ Namespace Ecospace.Controls
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
+            ' ToDo_JS: globalize this
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.Applied) = New EwEColumnHeaderCell("Used")
+            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell("Status")
             Me(0, eColumnTypes.DateFrom) = New EwEColumnHeaderCell(SharedResources.HEADER_FROM)
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
@@ -174,8 +179,20 @@ Namespace Ecospace.Controls
             datasets.AddRange(Me.m_manSets)
             datasets.Sort(New cDatasetSorter)
 
-            ' Add dataset rows
+            ' Make snapshot of all used adapters
+            Dim htUsed As New HashSet(Of ISpatialDataSet)
+            For Each adt As cSpatialDataAdapter In Me.m_man.Adapters
+                For Each conn As cSpatialDataConnection In adt.Connections()
+                    ds = conn.Dataset
+                    If (ds IsNot Nothing) Then
+                        If (Not htUsed.Contains(ds)) Then
+                            htUsed.Add(ds)
+                        End If
+                    End If
+                Next
+            Next
 
+            ' Add dataset rows
             For i As Integer = 0 To datasets.Count - 1
                 ds = datasets(i)
 
@@ -202,6 +219,8 @@ Namespace Ecospace.Controls
 
                 End If
 
+                Dim comp As New cDatasetCompatilibity(Me.Core, ds)
+
                 Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
                 Dim strTEnd As String = ""
                 If (ds.TimeStart > Date.MinValue) And (ds.TimeStart < Date.MaxValue) Then strTStart = Me.StyleGuide.FormatDate(ds.TimeStart, False)
@@ -211,6 +230,17 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))
                 Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
+                Me(iRow, eColumnTypes.Applied) = New EwECheckboxCell(htUsed.Contains(ds), cStyleGuide.eStyleFlags.NotEditable)
+                cell = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Select Case comp.Compatibility
+                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors
+                        cell.Image = SharedResources.Critical
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                        cell.Image = SharedResources.Warning
+                    Case Else
+                        cell.Image = SharedResources.OK
+                End Select
+                Me(iRow, eColumnTypes.Status) = cell
                 Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionCell
                 Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
