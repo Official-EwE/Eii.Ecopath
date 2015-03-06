@@ -357,9 +357,6 @@ Namespace SpatialData
                     End Select
                 Next
 
-                ' Correction
-                Me.IsSourceRelative = Me.IsSourceRelative And Not Path.IsPathRooted(Me.Source)
-
                 ' Set initial index status
                 If Not File.Exists(Me.Source) Then
                     Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Failed

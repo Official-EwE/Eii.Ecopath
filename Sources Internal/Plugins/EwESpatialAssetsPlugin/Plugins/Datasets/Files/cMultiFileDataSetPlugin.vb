@@ -539,7 +539,9 @@ Namespace SpatialData
                 Me.m_bCanSort = True
 
                 ' Correction
-                Me.IsSourceRelative = Me.IsSourceRelative And Not Path.IsPathRooted(Me.Source)
+                If Me.IsSourceRelative Then
+                    'Debug.Assert(Not Path.IsPathRooted(Me.Source))
+                End If
 
             Catch ex As Exception
                 Me.Clear()
