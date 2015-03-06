@@ -538,6 +538,7 @@ Namespace SpatialData
                                 Me.m_lFiles.Add(f)
                             Next
                     End Select
+                    If (Me.VarName = Nothing) Then Me.VarName = eVarNameFlags.NotSet
                 Next
                 Me.m_bCanSort = True
 
