@@ -167,13 +167,14 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.Configuration"/>
         ''' -------------------------------------------------------------------
-        Public Property Configuration(ByVal doc As XmlDocument) As XmlNode _
+        Public Property Configuration(ByVal doc As XmlDocument, _
+                                      ByVal strFolderRoot As String) As XmlNode _
             Implements ISpatialDataSet.Configuration
             Get
-                Return Me.ToXML(doc)
+                Return Me.ToXML(doc, strFolderRoot)
             End Get
             Set(ByVal value As XmlNode)
-                Me.FromXML(doc, value)
+                Me.FromXML(doc, value, strFolderRoot)
             End Set
         End Property
 
@@ -217,7 +218,8 @@ Namespace SpatialData
         ''' An XML node that contains the configuration of the dataset.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function ToXML(ByVal doc As XmlDocument) As XmlNode
+        Protected MustOverride Function ToXML(ByVal doc As XmlDocument, _
+                                              ByVal strFolderRoot As String) As XmlNode
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -229,7 +231,9 @@ Namespace SpatialData
         ''' True if successful.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
+        Protected MustOverride Function FromXML(ByVal doc As XmlDocument, _
+                                                ByVal node As XmlNode, _
+                                                ByVal strFolderRoot As String) As Boolean
 
 #End Region ' Configuration
 
@@ -268,13 +272,8 @@ Namespace SpatialData
         ''' EwE ccore.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Friend Function ToAbsolutePath(ByVal strPath As String, _
-                                       Optional ByVal strPathBase As String = "") As String
+        Protected Function ToAbsolutePath(ByVal strPath As String, ByVal strPathBase As String) As String
 
-            If (String.IsNullOrWhiteSpace(strPathBase)) Then
-                Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
-                strPathBase = Path.GetDirectoryName(man.CurrentConfigFile)
-            End If
             Return cFileUtils.NormalizePath(Path.Combine(strPathBase, strPath))
 
         End Function
@@ -289,15 +288,10 @@ Namespace SpatialData
         ''' EwE ccore.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Friend Function ToRelativePath(ByVal strPath As String, _
-                                       Optional ByVal strPathBase As String = "") As String
+        Protected Function ToRelativePath(ByVal strPath As String, ByVal strPathBase As String) As String
 
             If (strPath.StartsWith(".\")) Then
                 strPath = strPath.Substring(2)
-            End If
-            If (String.IsNullOrWhiteSpace(strPathBase)) Then
-                Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
-                strPathBase = Path.GetDirectoryName(man.CurrentConfigFile)
             End If
 
             Return cFileUtils.RelativePath(strPathBase, strPath)

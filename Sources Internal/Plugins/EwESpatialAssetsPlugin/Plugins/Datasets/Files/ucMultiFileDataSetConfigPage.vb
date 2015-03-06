@@ -388,9 +388,9 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Private Function AbsolutePath() As String
             Dim strPath As String = Me.m_strSource
-            If (Me.m_dataset.IsSourceRelative) Then
-                Return Me.m_dataset.ToAbsolutePath(strPath)
-            End If
+            'If (Me.m_dataset.IsSourceRelative) Then
+            '    Return Me.m_dataset.ToAbsolutePath(strPath)
+            'End If
             Return strPath
         End Function
 

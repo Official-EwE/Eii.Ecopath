@@ -202,7 +202,8 @@ Namespace SpatialData
         ''' An XML node that contains the content of the dataset.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function ToXML(ByVal doc As XmlDocument) As XmlNode
+        Protected Overrides Function ToXML(ByVal doc As XmlDocument, _
+                                           ByVal strFolderRoot As String) As XmlNode
 
             Dim xnMaster As XmlNode = Nothing
             Dim xn As XmlNode = Nothing
@@ -226,7 +227,7 @@ Namespace SpatialData
 
             xnFile = doc.CreateElement("File")
             If (Me.IsSourceRelative) Then
-                xnFile.InnerText = Me.ToRelativePath(Me.Source)
+                xnFile.InnerText = Me.ToRelativePath(Me.Source, strFolderRoot)
             Else
                 xnFile.InnerText = Me.Source
             End If
@@ -280,7 +281,9 @@ Namespace SpatialData
         ''' True if successful.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
+        Protected Overrides Function FromXML(ByVal doc As XmlDocument, _
+                                             ByVal node As XmlNode, _
+                                             ByVal strFolderRoot As String) As Boolean
 
             Dim xn As XmlNode = Nothing
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -368,7 +371,7 @@ Namespace SpatialData
 
             ' Resolve relative source path to the current config file location
             If (Me.IsSourceRelative) Then
-                Me.Source = Me.ToAbsolutePath(Me.Source)
+                Me.Source = Me.ToAbsolutePath(Me.Source, strFolderRoot)
             End If
 
             Return True

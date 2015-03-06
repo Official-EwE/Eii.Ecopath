@@ -345,7 +345,8 @@ Namespace SpatialData
         ''' An XML node that contains the content of the dataset.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function ToXML(ByVal doc As XmlDocument) As XmlNode
+        Protected Overrides Function ToXML(ByVal doc As XmlDocument, _
+                                           ByVal strFolderRoot As String) As XmlNode
 
             Dim xnMaster As XmlNode = Nothing
             Dim xn As XmlNode = Nothing
@@ -370,7 +371,7 @@ Namespace SpatialData
             xn = doc.CreateElement("Source")
             xa = doc.CreateAttribute("IsRelative")
             If (Me.IsSourceRelative) Then
-                xn.InnerText = Me.ToRelativePath(Me.Source)
+                xn.InnerText = Me.ToRelativePath(Me.Source, strFolderRoot)
                 xa.Value = Convert.ToString(True)
             Else
                 xn.InnerText = Me.Source
@@ -445,7 +446,9 @@ Namespace SpatialData
         ''' True if successful.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
+        Protected Overrides Function FromXML(ByVal doc As XmlDocument, _
+                                             ByVal node As XmlNode, _
+                                             ByVal strFolderRoot As String) As Boolean
 
             Dim xn As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing
@@ -490,7 +493,7 @@ Namespace SpatialData
                         Case "Files"
 
                             If (Me.IsSourceRelative) Then
-                                Me.Source = Me.ToAbsolutePath(Me.Source)
+                                Me.Source = Me.ToAbsolutePath(Me.Source, strFolderRoot)
                             End If
 
                             For Each xnChild In xn.ChildNodes

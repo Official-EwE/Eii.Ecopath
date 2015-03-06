@@ -127,12 +127,13 @@ Namespace SpatialData
         ''' Get/set the configuration information for the converter.
         ''' </summary>
         ''' <param name="doc"><see cref="XmlDocument"/> for creating and parsing nodes.</param>
+        ''' <param name="strFolderRoot">The root folder where the configuration is read from.</param>
         ''' <remarks>Automatic serialization is not used here because of difficulties 
         ''' that may derive from serializing complex data structures and other 
         ''' headaches. It is deemed more cost-effective to allow full developer 
         ''' control over the persistence logic.</remarks>
         ''' -------------------------------------------------------------------
-        Property Configuration(ByVal doc As XmlDocument) As XmlNode
+        Property Configuration(ByVal doc As XmlDocument, ByVal strFolderRoot As String) As XmlNode
 
 #End Region ' Configuration
 
