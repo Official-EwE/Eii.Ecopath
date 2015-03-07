@@ -121,6 +121,9 @@ Namespace SpatialData
             End If
 
             Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
+            If (Me.m_cmbVarName.SelectedItem Is Nothing) Then
+                Me.m_cmbVarName.SelectedItem = eVarNameFlags.NotSet
+            End If
 
             ' Set dynamic properties
             Me.m_hdrDescription.CollapsedParentHeight = Me.m_tbxDescription.Location.Y + (Me.m_plDescription.Height - Me.m_cmbVarName.Location.Y)

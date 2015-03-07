@@ -64,6 +64,9 @@ Friend Class ucSingleFileDataSetConfigPage
             Me.m_cmbVarName.Items.Add(Me.m_dataset.VarName)
         End If
         Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
+        If (Me.m_cmbVarName.SelectedItem Is Nothing) Then
+            Me.m_cmbVarName.SelectedItem = eVarNameFlags.NotSet
+        End If
 
         Me.UpdateControls()
 
