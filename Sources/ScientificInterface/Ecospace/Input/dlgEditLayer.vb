@@ -20,13 +20,13 @@
 
 Option Explicit On
 Option Strict On
+Imports System.IO
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports System.IO
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -208,6 +208,9 @@ Namespace Ecospace.Basemap.Layers
 #Region " Import "
 
         ' Oooh, this is nasty! Three different import methods, handled by three different classes!
+        ' ToDo: revamp this into a set of base classes that import and export one file format from or to an IRaster
+        '       This code can be used by the spatial assets plug-in to provide access to obscure data formats, wrapped as datasets
+        '       This code can be used by the core, using Joe's xD wrappers to provide access to IRaster data, to export data too
 
         Private Sub OnImportCSV(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiImportCSV.Click
@@ -243,6 +246,7 @@ Namespace Ecospace.Basemap.Layers
                     Me.ReadASCFile(rd)
                     rd.Close()
                     Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
+                    Me.m_grid.RefreshContent()
                 End If
             Catch ex As Exception
 
@@ -494,7 +498,10 @@ Namespace Ecospace.Basemap.Layers
                         Else
                             value = cCore.NULL_VALUE
                         End If
-                        Me.m_layerWork.Value(ir, ic) = value
+
+                        If (value <> cCore.NULL_VALUE) Then
+                            Me.m_layerWork.Value(ir, ic) = value
+                        End If
                     Next
                 Next
             Catch ex As Exception
