@@ -123,12 +123,20 @@ Public Class cMSE
     Private m_StopRun As Boolean
     Private m_runstate As eRunStates = eRunStates.Idle
 
+    Private HCR_F_Table As DataTable
+    Private TargetFs(,) As Double
+    Private ConservationFs(,) As Double
+
+    Private Realised_F_Table As DataTable
+    Private RealisedFs(,) As Double
+
     Const MIN_DIET_PROP As Single = 0.000001
 
     ''' <summary>
     ''' Landings and discards by Fleet, Group and eCatchTypes
     ''' </summary>
     Private LandingsDiscards(,,) As Single
+    Private LandingsDiscardsThroughoutProjection(,,,) As Single
 
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
@@ -1361,6 +1369,15 @@ Public Class cMSE
         Dim swFleet As StreamWriter = Nothing
         Dim swFleetEffort As StreamWriter = Nothing
         Dim swBadDynamics As StreamWriter = Nothing
+        Dim swHCR_F_Targ As New List(Of StreamWriter)
+        Dim swHCR_F_Cons As New List(Of StreamWriter)
+        Dim swRealisedF As New List(Of StreamWriter)
+        Dim swLandingsTraj As New List(Of StreamWriter)
+        Dim swDiscardsTraj As New List(Of StreamWriter)
+        Dim swCatchTraj As New List(Of StreamWriter)
+        Dim swLandingsFleetGroupTraj(m_core.nFleets - 1, m_core.nGroups - 1) As StreamWriter
+        Dim swDiscardsFleetGroupTraj(m_core.nFleets - 1, m_core.nGroups - 1) As StreamWriter
+        Dim swCatchFleetGroupTraj(m_core.nFleets - 1, m_core.nGroups - 1) As StreamWriter
 
         Try
 
@@ -1394,6 +1411,17 @@ Public Class cMSE
             'Prepare the effort trajectory csv with the column headings
             swFleetEffort = Me.initTrajectoryEffortFiles(msgReport)
 
+            'Prepare the HCR F Targ trajectory csv with the column headings
+            Me.initTrajectoryHCRFByGroupFiles(msgReport, swHCR_F_Targ, swHCR_F_Cons)
+
+            'Prepare the Reaised F trajectory csv with the column headings
+            Me.initTrajectoryRealisedFFiles(msgReport, swRealisedF)
+
+            'Prepare the Reaised F trajectory csv with the column headings
+            Me.initTrajectoryCatchTrajectoryFiles(msgReport, swLandingsTraj, swDiscardsTraj, swCatchTraj)
+
+            Me.initTrajectoryFleetGroupCatchTrajectoryFiles(msgReport, swLandingsFleetGroupTraj, swDiscardsFleetGroupTraj, swCatchFleetGroupTraj)
+
             swBadDynamics = Me.initBadDynamicsFile(msgReport)
 
             ReDim TargConsQuota(m_core.nGroups - 1, 1)
@@ -1416,6 +1444,19 @@ Public Class cMSE
             nModels = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
             For iModel = 1 To nModels
                 ModelValid = True
+
+                HCR_F_Table = New DataTable
+                HCR_F_Table.Columns.Add("StrategyName", GetType(String))
+                HCR_F_Table.Columns.Add("Target", GetType(Double(,)))
+                HCR_F_Table.Columns.Add("Conservation", GetType(Double(,)))
+
+                Realised_F_Table = New DataTable
+                Realised_F_Table.Columns.Add("StrategyName", GetType(String))
+                Realised_F_Table.Columns.Add("TotalF", GetType(Double(,)))
+
+                Dim CatchTrajTable = New DataTable
+                CatchTrajTable.Columns.Add("StrategyName", GetType(String))
+                CatchTrajTable.Columns.Add("Value", GetType(Single(,,,)))
 
                 Dim FleetEffortTable As New DataTable
                 FleetEffortTable.Columns.Add("ModelID", GetType(Integer))
@@ -1475,6 +1516,24 @@ Public Class cMSE
                             'Set the CurrentStrategy used by onEcosimTimeStep()
                             m_currentStrategy = curStrategy
 
+                            'Initialise Arrays for recording the F's from Targ and Cons HCR's
+                            ReDim TargetFs(m_core.nGroups - 1, NYearsProject - 1)
+                            ReDim ConservationFs(m_core.nGroups - 1, NYearsProject - 1)
+                            For iGrp = 1 To m_core.nGroups
+                                For iYear = 1 To NYearsProject
+                                    TargetFs(iGrp - 1, iYear - 1) = -9999
+                                    ConservationFs(iGrp - 1, iYear - 1) = -9999
+                                Next
+                            Next
+
+                            'Initialise arrays for recording the realised F's
+                            ReDim RealisedFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
+                            For iGrp = 1 To m_core.nGroups
+                                For iTimeStep = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                                    RealisedFs(iGrp - 1, iTimeStep - 1) = -9999
+                                Next
+                            Next
+
                             ResetEffortToMax(OriginalNTimesteps + 1, m_core.EcoSimModelParameters.NumberYears * m_ecosim.EcosimData.NumStepsPerYear)
 
                             'Get a list of all fleets that fish the groups that have HCRs
@@ -1487,6 +1546,11 @@ Public Class cMSE
                             If Me.RunEcosim() Then
                                 'Save the Ecosim results
                                 GoodDynamics = Me.SaveResults2RAM(iModel, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, FleetEffortTable, TrajectoryTable, BiomassLimits, swBadDynamics)
+                                If GoodDynamics = False Then
+                                    nFailedModels += 1
+                                    Exit For
+                                End If
+
                             Else
                                 GoodDynamics = False
                                 nFailedModels += 1
@@ -1496,13 +1560,24 @@ Public Class cMSE
                             'If one of the groups colapsed during the Ecosim run 
                             'Reject this parameter set
 
+                            'Save the HCR F's to a datatable
+                            HCR_F_Table.Rows.Add(curStrategy.Name, TargetFs, ConservationFs)
+
+                            'Save the realised F's to a datatable
+                            Realised_F_Table.Rows.Add(curStrategy.Name, RealisedFs)
+
+                            'Save the catch trajectory results to RAM
+                            CatchTrajTable.Rows.Add(curStrategy.Name, LandingsDiscardsThroughoutProjection)
+
                         Next curStrategy
                         'End of Strategy loop
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                         If GoodDynamics Or Me.WriteAllResults Then
-                            SaveResults2CSV(FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, _
-                                            swFleetEffort, swFleet, swGroup, TrajectoryCsv, Trajectory2Csv)
+                            SaveResults2CSV(iModel, FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, HCR_F_Table, _
+                                            Realised_F_Table, CatchTrajTable, swFleetEffort, swFleet, swGroup, TrajectoryCsv, swHCR_F_Targ, swHCR_F_Cons, _
+                                            swRealisedF, swLandingsTraj, swDiscardsTraj, swCatchTraj, swLandingsFleetGroupTraj, _
+                                            swDiscardsFleetGroupTraj, swCatchFleetGroupTraj)
                         End If
 
                         cMSEUtils.ReleaseWriter(TrajectoryCsv)
@@ -1542,6 +1617,48 @@ Public Class cMSE
             Trajectory2Csv.Clear()
         End If
 
+        If swHCR_F_Targ IsNot Nothing Then
+            For Each strmWriter As StreamWriter In swHCR_F_Targ
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            swHCR_F_Targ.Clear()
+        End If
+
+        If swHCR_F_Cons IsNot Nothing Then
+            For Each strmWriter As StreamWriter In swHCR_F_Cons
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            swHCR_F_Cons.Clear()
+        End If
+
+        If swRealisedF IsNot Nothing Then
+            For Each strmWriter As StreamWriter In swRealisedF
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            swRealisedF.Clear()
+        End If
+
+        If swCatchTraj IsNot Nothing Then
+            For Each strmWriter As StreamWriter In swCatchTraj
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            swCatchTraj.Clear()
+        End If
+
+        If swDiscardsTraj IsNot Nothing Then
+            For Each strmWriter As StreamWriter In swDiscardsTraj
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            swDiscardsTraj.Clear()
+        End If
+
+        If swLandingsTraj IsNot Nothing Then
+            For Each strmWriter As StreamWriter In swLandingsTraj
+                cMSEUtils.ReleaseWriter(strmWriter)
+            Next
+            swLandingsTraj.Clear()
+        End If
+
         cMSEUtils.ReleaseWriter(swGroup)
         cMSEUtils.ReleaseWriter(swFleet)
         cMSEUtils.ReleaseWriter(swFleetEffort)
@@ -1554,14 +1671,161 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SaveResults2CSV(ByRef FleetEffortTable As DataTable, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable, _
-                         ByRef TrajectoryTable As DataTable, _
-                         ByRef swFleetEffort As StreamWriter, ByRef swFleet As StreamWriter, ByRef swGroup As StreamWriter, _
-                         ByRef swTrajectory As StreamWriter, ByRef swTrajectory2 As List(Of StreamWriter))
+    Private Sub SaveResults2CSV(ByRef iModel As Integer, ByRef FleetEffortTable As DataTable, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable, _
+                         ByRef TrajectoryTable As DataTable, ByRef HCR_F_Tab As DataTable, ByRef Realised_F_Tab As DataTable, _
+                         ByRef CatchTrajTable As DataTable, ByRef swFleetEffort As StreamWriter, ByRef swFleet As StreamWriter, ByRef swGroup As StreamWriter, _
+                         ByRef swTrajectory As StreamWriter, ByRef swHCR_F_Targ As List(Of StreamWriter), ByRef swHCR_F_Cons As List(Of StreamWriter), _
+                         ByRef swRealised_F As List(Of StreamWriter), ByRef swLandingsTraj As List(Of StreamWriter), _
+                         ByRef swDiscardsTraj As List(Of StreamWriter), ByRef swCatchTraj As List(Of StreamWriter), _
+                         ByRef swLandingsFleetGroupTraj(,) As StreamWriter, ByRef swDiscardsFleetGroupTraj(,) As StreamWriter, _
+                         ByRef swCatchFleetGroupTraj(,) As StreamWriter)
+
+        Dim TempRow As DataRow
+        Dim TempArrayResultsTarget(m_core.nGroups - 1, NYearsProject - 1) As Double
+        Dim TempArrayResultsConservation(m_core.nGroups - 1, NYearsProject - 1) As Double
+        Dim nTypes As Integer = [Enum].GetNames(GetType(eCatchTypes)).Length
+        Dim TempArrayCatchesTraj(NYearsProject * EcosimData.NumStepsPerYear, m_core.nFleets, m_core.nGroups, nTypes) As Single
+
+
+        'Save the HCR F trajectories
+        For iGrp = 1 To m_core.nGroups
+            For iRow = 1 To HCR_F_Tab.Rows.Count
+                TempRow = HCR_F_Tab.Rows(iRow - 1)
+
+                'Output the target F's to file
+                swHCR_F_Targ(iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                swHCR_F_Targ(iGrp - 1).Write(iModel & ",")
+                swHCR_F_Targ(iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                swHCR_F_Targ(iGrp - 1).Write("," & "Target")
+                TempArrayResultsTarget = TempRow.Field(Of Double(,))("Target")
+                For iYear = 1 To NYearsProject
+                    swHCR_F_Targ(iGrp - 1).Write("," & TempArrayResultsTarget(iGrp - 1, iYear - 1))
+                Next
+                swHCR_F_Targ(iGrp - 1).WriteLine()
+
+                'Output the conservation F's to file
+                swHCR_F_Cons(iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                swHCR_F_Cons(iGrp - 1).Write(iModel & ",")
+                swHCR_F_Cons(iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                swHCR_F_Cons(iGrp - 1).Write("," & "Conservation")
+                TempArrayResultsTarget = TempRow.Field(Of Double(,))("Conservation")
+                For iYear = 1 To NYearsProject
+                    swHCR_F_Cons(iGrp - 1).Write("," & TempArrayResultsConservation(iGrp - 1, iYear - 1))
+                Next
+                swHCR_F_Cons(iGrp - 1).WriteLine()
+
+            Next
+        Next
+
+        'Save the Realised F trajectories
+        For iGrp = 1 To m_core.nGroups
+            For iRow = 1 To Realised_F_Tab.Rows.Count
+                TempRow = Realised_F_Tab.Rows(iRow - 1)
+
+                'Output the realised F's to file
+                swRealised_F(iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                swRealised_F(iGrp - 1).Write(iModel & ",")
+                swRealised_F(iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                swRealised_F(iGrp - 1).Write("," & "TotalF")
+                TempArrayResultsTarget = TempRow.Field(Of Double(,))("TotalF")
+                For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    swRealised_F(iGrp - 1).Write("," & TempArrayResultsTarget(iGrp - 1, iTime - 1))
+                Next
+                swRealised_F(iGrp - 1).WriteLine()
+
+            Next
+        Next
+
+        'Save the Catch Trajectories
+        For iGrp = 1 To m_core.nGroups
+            For iRow = 1 To CatchTrajTable.Rows.Count
+                TempRow = CatchTrajTable.Rows(iRow - 1)
+                TempArrayCatchesTraj = TempRow.Field(Of Single(,,,))("Value")
+
+                'Output the Landings to file
+                swLandingsTraj(iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                swLandingsTraj(iGrp - 1).Write(iModel & ",")
+                swLandingsTraj(iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                swLandingsTraj(iGrp - 1).Write("," & "Landings")
+                For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    swLandingsTraj(iGrp - 1).Write("," & TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.Landings))
+                Next
+                swLandingsTraj(iGrp - 1).WriteLine()
+
+                'Output the discards
+                swDiscardsTraj(iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                swDiscardsTraj(iGrp - 1).Write(iModel & ",")
+                swDiscardsTraj(iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                swDiscardsTraj(iGrp - 1).Write("," & "Discards")
+                For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    swDiscardsTraj(iGrp - 1).Write("," & TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.DiscardMortalities) + _
+                                                   TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.DiscardSurvivals))
+                Next
+                swDiscardsTraj(iGrp - 1).WriteLine()
+
+                'Output the catches
+                swCatchTraj(iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                swCatchTraj(iGrp - 1).Write(iModel & ",")
+                swCatchTraj(iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                swCatchTraj(iGrp - 1).Write("," & "Catch")
+                For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    swCatchTraj(iGrp - 1).Write("," & TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.DiscardMortalities) + _
+                                                   TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.DiscardSurvivals) + _
+                                                   TempArrayCatchesTraj(iTime, 0, iGrp, eCatchTypes.Landings))
+                Next
+                swCatchTraj(iGrp - 1).WriteLine()
+
+            Next
+        Next
+
+        For iRow = 1 To CatchTrajTable.Rows.Count
+            TempRow = CatchTrajTable.Rows(iRow - 1)
+            TempArrayCatchesTraj = TempRow.Field(Of Single(,,,))("Value")
+            For iGrp = 1 To m_core.nGroups
+                For iFleet = 1 To m_core.nFleets
+
+                    'Output the Landings to file
+                    swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                    swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(m_core.FleetInputs(iFleet).Name & ",")
+                    swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(iModel & ",")
+                    swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                    swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).Write("," & "Landings")
+                    For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                        swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).Write("," & TempArrayCatchesTraj(iTime, iFleet, iGrp, eCatchTypes.Landings))
+                    Next
+                    swLandingsFleetGroupTraj(iFleet - 1, iGrp - 1).WriteLine()
+
+                    'Output the Landings to file
+                    swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                    swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(m_core.FleetInputs(iFleet).Name & ",")
+                    swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(iModel & ",")
+                    swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                    swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).Write("," & "Discards")
+                    For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                        swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).Write("," & TempArrayCatchesTraj(iTime, iFleet, iGrp, eCatchTypes.DiscardSurvivals) _
+                                                                             + TempArrayCatchesTraj(iTime, iFleet, iGrp, eCatchTypes.DiscardMortalities))
+                    Next
+                    swDiscardsFleetGroupTraj(iFleet - 1, iGrp - 1).WriteLine()
+
+                    'Output the Landings to file
+                    swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).Write(m_core.EcoPathGroupInputs(iGrp).Name & ",")
+                    swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).Write(m_core.FleetInputs(iFleet).Name & ",")
+                    swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).Write(iModel & ",")
+                    swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).Write(TempRow.Field(Of String)("StrategyName"))
+                    swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).Write("," & "Catch")
+                    For iTime = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                        swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).Write("," & TempArrayCatchesTraj(iTime, iFleet, iGrp, eCatchTypes.DiscardSurvivals) + _
+                                                                          TempArrayCatchesTraj(iTime, iFleet, iGrp, eCatchTypes.DiscardMortalities) + _
+                                                                          TempArrayCatchesTraj(iTime, iFleet, iGrp, eCatchTypes.Landings))
+                    Next
+                    swCatchFleetGroupTraj(iFleet - 1, iGrp - 1).WriteLine()
+
+                Next
+            Next
+        Next
+
 
         'Save FleetEffortTable to CSV
-        'swFleetEffort.Write("Model,Strategy,FleetNumber,FleetName")
-
         For iRow = 0 To FleetEffortTable.Rows.Count - 1
             swFleetEffort.WriteLine()
             Dim RowData As Data.DataRow
@@ -1662,8 +1926,20 @@ Public Class cMSE
 
     Private Sub initCatchResults()
 
-        Dim nTypes As Integer = [Enum].GetNames(GetType(eCatchTypes)).Length
-        Me.LandingsDiscards = New Single(m_core.nFleets, m_core.nGroups, nTypes) {}
+        Dim nCatchTypes As Integer = [Enum].GetNames(GetType(eCatchTypes)).Length
+        Me.LandingsDiscards = New Single(m_core.nFleets, m_core.nGroups, nCatchTypes) {}
+
+        'Initialise arrays for recording the realised F's
+        Me.LandingsDiscardsThroughoutProjection = New Single(NYearsProject * EcosimData.NumStepsPerYear, m_core.nFleets, m_core.nGroups, nCatchTypes) {}
+        For iGrp = 1 To m_core.nGroups
+            For iTimeStep = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
+                For iFleet = 0 To m_core.nFleets
+                    For iCatchType = 1 To nCatchTypes
+                        LandingsDiscardsThroughoutProjection(iTimeStep, iFleet, iGrp, iCatchType) = -9999
+                    Next
+                Next
+            Next
+        Next
 
     End Sub
 
@@ -1790,8 +2066,8 @@ Public Class cMSE
     End Sub
 
     Private Function SaveResults2RAM(ByVal iModel As Integer, ByRef NumberIterationsAlreadyInResults As Integer, _
-                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByRef ResultsTable As DataTable,
-                                        ByRef FleetCatchTable As DataTable, ByRef FleetEffortTable As DataTable,
+                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByRef ResultsTable As DataTable, _
+                                        ByRef FleetCatchTable As DataTable, ByRef FleetEffortTable As DataTable, _
                                         ByRef TrajectoryTable As DataTable, ByRef BiomassLimits As cBiomassLimits, ByRef swBadDynamics As StreamWriter) As Boolean
 
         Dim GoodDynamics As Boolean = True
@@ -1872,6 +2148,7 @@ Public Class cMSE
         If GoodDynamics = False And Not Me.WriteAllResults Then
             Console.WriteLine("This set of parameters is no good")
         Else
+
 
             'Output the trajectories of the efforts
             For iFleet As Integer = 1 To m_core.nFleets
@@ -2068,6 +2345,187 @@ Public Class cMSE
         Return strm
 
     End Function
+
+
+    Private Sub initTrajectoryHCRFByGroupFiles(ByVal msgReport As cMessage, ByVal HCRF_Targ As List(Of StreamWriter), ByVal HCRF_Cons As List(Of StreamWriter))
+
+        For igrp As Integer = 1 To m_core.nGroups
+
+            Dim strFile As String = cFileUtils.ToValidFileName(m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
+            Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.HCRF_Targ, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+            Debug.Assert(writer IsNot Nothing)
+
+            'Setup the HCR F Targ file for igrp
+            HCRF_Targ.Add(writer)
+            If Me.m_core.SaveWithFileHeader Then HCRF_Targ(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            HCRF_Targ(igrp - 1).Write("GroupName, ModelID, StrategyName, HCRType")
+            For iTime As Integer = 1 To NYearsProject
+                HCRF_Targ(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Next
+            HCRF_Targ(igrp - 1).WriteLine()
+
+            writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.HCRF_Cons, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+            Debug.Assert(writer IsNot Nothing)
+
+            HCRF_Cons.Add(writer)
+            If Me.m_core.SaveWithFileHeader Then HCRF_Cons(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            HCRF_Cons(igrp - 1).Write("GroupName, ModelID, StrategyName, HCRType")
+            For iTime As Integer = 1 To NYearsProject
+                HCRF_Cons(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Next
+            HCRF_Cons(igrp - 1).WriteLine()
+
+        Next
+
+    End Sub
+
+
+    Private Sub initTrajectoryFleetGroupCatchTrajectoryFiles(ByVal msgReport As cMessage, ByVal LandingsFleetGroupTrajectories(,) As StreamWriter, _
+                                               ByVal DiscardsFleetGroupTrajectories(,) As StreamWriter, ByVal CatchFleetGroupTrajectories(,) As StreamWriter)
+
+        For iGrp As Integer = 1 To m_core.nGroups
+            For iFleet As Integer = 1 To m_core.nFleets
+
+                Dim strFile As String = cFileUtils.ToValidFileName(m_core.EcoPathGroupInputs(iGrp).Name & "_GroupNo" & iGrp & "_FleetNo" & iFleet & ".csv", False)
+                Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.LandingsTrajectories, strFile))
+                msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+                Debug.Assert(writer IsNot Nothing)
+
+                LandingsFleetGroupTrajectories(iFleet - 1, iGrp - 1) = writer
+
+                'Setup the HCR F Targ file for igrp
+                If Me.m_core.SaveWithFileHeader Then LandingsFleetGroupTrajectories(iFleet - 1, iGrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                LandingsFleetGroupTrajectories(iFleet - 1, iGrp - 1).Write("GroupName, FleetName, ModelID, StrategyName, CatchType")
+                For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    LandingsFleetGroupTrajectories(iFleet - 1, iGrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+                Next
+                LandingsFleetGroupTrajectories(iFleet - 1, iGrp - 1).WriteLine()
+
+
+                writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DiscardsTrajectories, strFile))
+                msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+                Debug.Assert(writer IsNot Nothing)
+
+                DiscardsFleetGroupTrajectories(iFleet - 1, iGrp - 1) = writer
+
+                'Setup the HCR F Targ file for igrp
+                If Me.m_core.SaveWithFileHeader Then DiscardsFleetGroupTrajectories(iFleet - 1, iGrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                LandingsFleetGroupTrajectories(iFleet - 1, iGrp - 1).Write("GroupName, FleetName, ModelID, StrategyName, CatchType")
+                For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    DiscardsFleetGroupTrajectories(iFleet - 1, iGrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+                Next
+                DiscardsFleetGroupTrajectories(iFleet - 1, iGrp - 1).WriteLine()
+
+
+                writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.CatchTrajectories, strFile))
+                msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+                Debug.Assert(writer IsNot Nothing)
+
+                CatchFleetGroupTrajectories(iFleet - 1, iGrp - 1) = writer
+
+                'Setup the HCR F Targ file for igrp
+                If Me.m_core.SaveWithFileHeader Then CatchFleetGroupTrajectories(iFleet - 1, iGrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                CatchFleetGroupTrajectories(iFleet - 1, iGrp - 1).Write("GroupName, FleetName, ModelID, StrategyName, CatchType")
+                For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                    CatchFleetGroupTrajectories(iFleet - 1, iGrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+                Next
+                CatchFleetGroupTrajectories(iFleet - 1, iGrp - 1).WriteLine()
+
+            Next
+        Next
+
+    End Sub
+
+
+
+
+    Private Sub initTrajectoryCatchTrajectoryFiles(ByVal msgReport As cMessage, ByVal LandingsTrajectories As List(Of StreamWriter), _
+                                                   ByVal DiscardsTrajectories As List(Of StreamWriter), ByVal CatchTrajectories As List(Of StreamWriter))
+
+        For igrp As Integer = 1 To m_core.nGroups
+
+            Dim strFile As String = cFileUtils.ToValidFileName(m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
+
+            'Init Landings CSV file
+            Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.LandingsTrajectories, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+            Debug.Assert(writer IsNot Nothing)
+
+            'Setup the HCR F Targ file for igrp
+            LandingsTrajectories.Add(writer)
+            If Me.m_core.SaveWithFileHeader Then LandingsTrajectories(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            LandingsTrajectories(igrp - 1).Write("GroupName, ModelID, StrategyName, CatchType")
+            For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                LandingsTrajectories(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Next
+            LandingsTrajectories(igrp - 1).WriteLine()
+
+
+            'Init Discard CSV file
+            writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.DiscardsTrajectories, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+            Debug.Assert(writer IsNot Nothing)
+
+            'Setup the HCR F Targ file for igrp
+            DiscardsTrajectories.Add(writer)
+            If Me.m_core.SaveWithFileHeader Then DiscardsTrajectories(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            DiscardsTrajectories(igrp - 1).Write("GroupName, ModelID, StrategyName, CatchType")
+            For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                DiscardsTrajectories(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Next
+            DiscardsTrajectories(igrp - 1).WriteLine()
+
+
+            'Init Catch CSV file
+            writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.CatchTrajectories, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+            Debug.Assert(writer IsNot Nothing)
+
+            'Setup the HCR F Targ file for igrp
+            CatchTrajectories.Add(writer)
+            If Me.m_core.SaveWithFileHeader Then CatchTrajectories(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            CatchTrajectories(igrp - 1).Write("GroupName, ModelID, StrategyName, CatchType")
+            For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                CatchTrajectories(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Next
+            CatchTrajectories(igrp - 1).WriteLine()
+
+        Next
+
+    End Sub
+
+    Private Sub initTrajectoryRealisedFFiles(ByVal msgReport As cMessage, ByVal RealisedF As List(Of StreamWriter))
+
+        For igrp As Integer = 1 To m_core.nGroups
+
+            Dim strFile As String = cFileUtils.ToValidFileName(m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
+            Dim writer As StreamWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.RealisedF, strFile))
+            msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
+
+            Debug.Assert(writer IsNot Nothing)
+
+            'Setup the HCR F Targ file for igrp
+            RealisedF.Add(writer)
+            If Me.m_core.SaveWithFileHeader Then RealisedF(igrp - 1).WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            RealisedF(igrp - 1).Write("GroupName, ModelID, StrategyName, RealisedFType")
+            For iTime As Integer = 1 To NYearsProject * EcosimData.NumStepsPerYear
+                RealisedF(igrp - 1).Write("," & cStringUtils.FormatNumber(iTime))
+            Next
+            RealisedF(igrp - 1).WriteLine()
+
+        Next
+
+    End Sub
 
     Private Sub initTrajectoryByGroupFiles(ByVal msgReport As cMessage, ByVal TrajectoryList As List(Of StreamWriter))
 
@@ -2352,13 +2810,11 @@ Public Class cMSE
 
     End Function
 
-    Private Function DetermineQuotas(BiomassAtTimestep() As Single) As Double(,)
-        '!!! At the moment we are only using the on column of TargConsQuota - the target one
-        '!!! This is to simply the problem - it would have been difficult to include the regulation choices with both targ and cons
-        '!!! at a later date we might want to change this to include conservation fs
+    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iTime As Integer) As Double(,)
 
         Dim TargConsQuota(m_core.nGroups - 1, 1) As Double
         Dim TempTargConsQuota As Double
+        Dim FfromHCR As Double
 
         'Calc the maximum decreases in the biomass
 
@@ -2375,15 +2831,27 @@ Public Class cMSE
                 TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             ElseIf iHCRGroup.TypeOfHCR = HCRType.Conservation Then
                 If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                    TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                    FfromHCR = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF))
+                    TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                 Else
-                    TempTargConsQuota = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                    FfromHCR = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF))
+                    TempTargConsQuota = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                     If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) Then
                         TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = TempTargConsQuota
                     End If
                 End If
             ElseIf TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) <> cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
                 Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
+            End If
+        Next
+
+        'Output as F's to data table
+        For iGrp = 1 To m_core.nGroups
+            If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
+                TargetFs(iGrp - 1, iTime - 1) = TargConsQuota(iGrp - 1, HCRType.Target) / BiomassAtTimestep(iGrp)
+            End If
+            If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
+                ConservationFs(iGrp - 1, iTime - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) / BiomassAtTimestep(iGrp)
             End If
         Next
 
@@ -2806,6 +3274,8 @@ Public Class cMSE
         Dim FleetConsQuota As Double
         Dim FleetTargQuota As Double
         Dim FleetQuota As Double
+        Dim Catch2LandQuota As Single
+        Dim NumberTimeStepsIntoProjection As Integer
 
         If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
             'this is so that its only executed when ecosim is run from mseform
@@ -2821,9 +3291,10 @@ Public Class cMSE
 
                 'OK Hook the stock assessment model up to the Quota setting
                 'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
-                TargConsQuota = DetermineQuotas(bioEst)
+                Dim NumberofYearProjecting As Integer = CInt((iTime + 11 - OriginalNTimesteps) / 12)
+                TargConsQuota = DetermineQuotas(bioEst, NumberofYearProjecting)
 
-                'DON'T use stock assessment model 
+                'DON'T use stock assessment model
                 'Compute the quota on the TRUE(Ecosim) biomass
                 'TargConsQuota = DetermineQuotas(BiomassAtTimestep)
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -2910,7 +3381,7 @@ Public Class cMSE
                                     'get the total catch at this effort
                                     iCatch = CSng(_simdata.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
 
-                                    If TargConsQuota(iGrp - 1, 1) <> cEffortLimits.NoHCR_F Then
+                                    If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
                                         FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
                                         FleetConsQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation)
                                         If FleetTargQuota < FleetConsQuota Then
@@ -2918,7 +3389,7 @@ Public Class cMSE
                                         Else
                                             FleetQuota = FleetConsQuota
                                         End If
-                                    ElseIf TargConsQuota(iGrp - 1, 0) <> cEffortLimits.NoHCR_F Then
+                                    ElseIf TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
                                         FleetQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
                                     End If
 
@@ -2934,7 +3405,8 @@ Public Class cMSE
                                             'QuotaType = Selective 
                                             'excess catch is NOT included in fishing mortality all discards survive
                                             'm_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng(1 - (FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) * iCatch)) * (1 - m_ecopath.EcopathData.PropDiscard(iFleet, iGrp)) - (iCatch - FleetQuota / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / iCatch)
-                                            m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng((1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * (FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) * iCatch)) * (m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)))
+                                            Catch2LandQuota = CSng(FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) + +1.0E-20))
+                                            m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng((1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * (Catch2LandQuota / iCatch) * (m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)))
                                         End If
 
                                     Else
@@ -3027,15 +3499,57 @@ Public Class cMSE
             '    Next
             'End If
 
+            For iGrp = 1 To m_core.nGroups
+                NumberTimeStepsIntoProjection = iTime - OriginalNTimesteps
+                RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = EcosimData.FishTime(iGrp)
+            Next
+
         End If
 
+    End Sub
+
+    Public Sub RecordCatches(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
+        Dim DenDepCatch As Single
+        Dim CatchFleetGrp As Single
+        Dim iTimeIntoProjection As Integer = iTime - OriginalNTimesteps
+
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            'Density dependant catchability
+            DenDepCatch = m_ecosim.EcosimData.QmQo(igrp) / (1 + (m_ecosim.EcosimData.QmQo(igrp) - 1) * BiomassAtTimestep(igrp) / m_ecosim.EcosimData.StartBiomass(igrp))
+
+            For iflt As Integer = 1 To Me.m_core.nFleets
+                If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+                    CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+
+                    'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
+
+                    Me.LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.Landings) = CatchFleetGrp * m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
+                    Me.LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.DiscardMortalities) = CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                    Me.LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iflt, igrp, eCatchTypes.DiscardSurvivals) = CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+
+                    'Sum across fleets into the zero index
+                    Me.LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.Landings) += CatchFleetGrp * m_ecosim.EcosimData.PropLandedTime(iflt, igrp)
+                    Me.LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.DiscardMortalities) += CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+                    Me.LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, igrp, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+
+                    ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
+                    ' Debug.Assert(Math.Abs(CatchFleetGrp - tmpCatch) < 0.00001)
+
+                End If 'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+            Next iflt
+        Next igrp
     End Sub
 
     Public Sub onEcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
         'Number of time step up to the last year
         Dim nTSToLastYear As Integer = Me.OriginalNTimesteps + (Me.NYearsProject - 1) * EcosimData.NumStepsPerYear
+
         If ChangeEffortFlag = True And iTime > nTSToLastYear Then
             Me.CalCatchDiscards(BiomassAtTimestep, iTime)
+        End If
+
+        If ChangeEffortFlag = True And iTime > Me.OriginalNTimesteps Then
+            RecordCatches(BiomassAtTimestep, iTime)
         End If
 
     End Sub

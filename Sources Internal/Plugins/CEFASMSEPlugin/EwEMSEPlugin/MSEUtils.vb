@@ -145,6 +145,18 @@ Public Class cMSEUtils
         ResultsTrajectories
         ''' <summary>The Results\Trajectories2 subfolder under 'Root'.</summary>
         ResultsTraj2
+        ''' <summary>The Results\HCRF_Targ subfolder under 'Root'.</summary>
+        HCRF_Targ
+        ''' <summary>The Results\HCRF_Cons subfolder under 'Root'.</summary>
+        HCRF_Cons
+        ''' <summary>The Results\RealisedF subfolder under 'Root'.</summary>
+        RealisedF
+        ''' <summary>The Results\LandingsTrajectories subfolder under 'Root'.</summary>
+        LandingsTrajectories
+        ''' <summary>The Results\DiscardsTrajectories subfolder under 'Root'.</summary>
+        DiscardsTrajectories
+        ''' <summary>The Results\CatchTrajectories subfolder under 'Root'.</summary>
+        CatchTrajectories
         ''' <summary>The Strategies subfolder under 'Root'.</summary>
         Strategies
         ''' <summary>The regulations subfolder under 'Root'.</summary>
@@ -197,6 +209,12 @@ Public Class cMSEUtils
             Case eMSEPaths.Results : Return "Results"
             Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"
             Case eMSEPaths.ResultsTraj2 : Return "Results\Trajectories2"
+            Case eMSEPaths.HCRF_Targ : Return "Results\HCRF_Targ"
+            Case eMSEPaths.HCRF_Cons : Return "Results\HCRF_Cons"
+            Case eMSEPaths.RealisedF : Return "Results\RealisedF"
+            Case eMSEPaths.LandingsTrajectories : Return "Results\LandingsTrajectories"
+            Case eMSEPaths.DiscardsTrajectories : Return "Results\DiscardsTrajectories"
+            Case eMSEPaths.CatchTrajectories : Return "Results\CatchTrajectories"
             Case eMSEPaths.Strategies : Return "HCRs"
             Case eMSEPaths.Regulations : Return "Regulations"
             Case eMSEPaths.BiomassLimits : Return "BiomassLimits"
