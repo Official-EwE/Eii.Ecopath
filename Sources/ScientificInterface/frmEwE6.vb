@@ -1514,9 +1514,8 @@ Public Class frmEwE6
             Next
 
             ' List available spatial temporal datasets
-            Dim mru As ArrayList = My.Settings.SpatialTempMRU
             Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
-            For i As Integer = 1 To mru.Count - 1
+            For i As Integer = 1 To man.ConfigFiles.Count
 
                 ' Is first dataset?
                 If (i = 1) Then
@@ -1525,12 +1524,13 @@ Public Class frmEwE6
                     tsmi = New ToolStripMenuItem()
                     tsmi.Text = SharedResources.GENERIC_VALUE_DEFAULT
                     tsmi.Tag = ""
+                    tsmi.Checked = (cSpatialDataSetManager.DefaultConfigFile = man.CurrentConfigFile)
 
                     AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
                     Me.m_tsbEcospace.DropDownItems.Add(tsmi)
                 End If
 
-                strItem = CStr(mru(i))
+                strItem = CStr(man.ConfigFiles(i - 1))
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = strItem
                 tsmi.Tag = strItem
@@ -1762,70 +1762,6 @@ Public Class frmEwE6
     End Sub
 
 #End Region ' Models
-
-#Region " Spatial temporal datasets "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Add a EwE DB name to the top of the MRU list.
-    ''' </summary>
-    ''' <param name="strFileName">Name of the file to add.</param>
-    ''' -----------------------------------------------------------------------
-    Private Sub AddSpatialTemporalMRU(ByVal strFileName As String)
-
-        Dim alMDBmru As ArrayList = My.Settings.SpatialTempMRU
-
-        If (alMDBmru Is Nothing) Then Return
-
-        ' Insert at head
-        alMDBmru.Insert(0, strFileName)
-        ' Remove any occurrences further down the list
-        Me.RemoveModelMRU(strFileName, 1)
-
-        ' Update system settings
-        My.Settings.SpatialTempMRU = alMDBmru
-        Me.SaveSettings()
-
-        ' Update UI
-        Me.PopulateModelMRUDropdown()
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Remove a file name from the MRU list, if possible.
-    ''' </summary>
-    ''' <param name="strFileName">Name of the file to remove.</param>
-    ''' <param name="iStartPos">Index in the MRU list to start searching for
-    ''' the item to remove. If not provided, the search will start at the 
-    ''' beginning of the list.</param>
-    ''' -----------------------------------------------------------------------
-    Private Sub RemoveSpatialTemporalMRU(ByVal strFileName As String, _
-                                         Optional ByVal iStartPos As Integer = 0)
-
-        Dim alMDBmru As ArrayList = My.Settings.SpatialTempMRU
-
-        If (alMDBmru Is Nothing) Then Return
-
-        ' Remove all occurrences from the list
-        While iStartPos < alMDBmru.Count - 1
-            If (TypeOf alMDBmru(iStartPos) Is String) Then
-                ' Get entry
-                Dim strEntry As String = CStr(alMDBmru(iStartPos))
-                ' Is same file?
-                If (String.Compare(strEntry, strFileName, True) = 0) Then
-                    ' #Yes: remove 
-                    alMDBmru.RemoveAt(iStartPos)
-                    iStartPos -= 1
-                End If
-            End If
-            iStartPos += 1
-        End While
-        My.Settings.SpatialTempMRU = alMDBmru
-
-    End Sub
-
-#End Region ' Spatial temporal datasets
 
 #End Region ' MRU
 
@@ -4811,7 +4747,8 @@ Public Class frmEwE6
                 If (msg.DataType = eDataTypes.EcoSimScenario) Or _
                    (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
                    (msg.DataType = eDataTypes.EcotracerScenario) Or _
-                   (msg.DataType = eDataTypes.TimeSeriesDataset) Then
+                   (msg.DataType = eDataTypes.TimeSeriesDataset) Or _
+                   (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
                     Me.PopulateScenarioDropdowns()
                 End If
             End If
