@@ -145,6 +145,12 @@ Public Class cMSE
     Private LandingsDiscards(,,) As Single
     Private LandingsDiscardsThroughoutProjection(,,,) As Single
 
+    ''' <summary>
+    ''' Total base catch rates, including discards that survived.
+    ''' </summary>
+    ''' <remarks>This is not just mortality it includes catch that survived. </remarks>
+    Private BaseCatchRate(,) As Single
+
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
 
@@ -1545,6 +1551,9 @@ Public Class cMSE
 
                         Me.m_StockAssessment.TrialNumber = iModel
 
+                        'initialize the base fishing mortality rates to the new ecopath parameters loaded above
+                        Me.initBaseCatchRate()
+
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Loop over all the strategies for this trial
                         For Each curStrategy As Strategy In Strategies
@@ -1637,19 +1646,19 @@ Public Class cMSE
                             CatchTrajTable.Rows.Add(curStrategy.Name, LandingsDiscardsThroughoutProjection)
 
                         Next curStrategy
-                            'End of Strategy loop
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'End of Strategy loop
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                            If GoodDynamics Or Me.WriteAllResults Then
-                                SaveResults2CSV(iModel, FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, HCR_F_Table, _
-                                                HCR_Quota_Table, Realised_F_Table, Realised_Landed_F_Table, Realised_Discard_F_Table, CatchTrajTable, swFleetEffort, swFleet, swGroup, _
-                                                TrajectoryCsv, swHCR_F_Targ, swHCR_F_Cons, swHCR_Quota_TargFleetGroup, swHCR_Quota_ConsFleetGroup, _
-                                                swRealisedF, swRealisedLandedF, swRealisedDiscardF, swLandingsTraj, swDiscardsTraj, _
-                                                swCatchTraj, swLandingsFleetGroupTraj, swDiscardsFleetGroupTraj, swCatchFleetGroupTraj, _
-                                                swValueFleetGroupTraj)
-                            End If
+                        If GoodDynamics Or Me.WriteAllResults Then
+                            SaveResults2CSV(iModel, FleetEffortTable, FleetCatchTable, ResultsTable, TrajectoryTable, HCR_F_Table, _
+                                            HCR_Quota_Table, Realised_F_Table, Realised_Landed_F_Table, Realised_Discard_F_Table, CatchTrajTable, swFleetEffort, swFleet, swGroup, _
+                                            TrajectoryCsv, swHCR_F_Targ, swHCR_F_Cons, swHCR_Quota_TargFleetGroup, swHCR_Quota_ConsFleetGroup, _
+                                            swRealisedF, swRealisedLandedF, swRealisedDiscardF, swLandingsTraj, swDiscardsTraj, _
+                                            swCatchTraj, swLandingsFleetGroupTraj, swDiscardsFleetGroupTraj, swCatchFleetGroupTraj, _
+                                            swValueFleetGroupTraj)
+                        End If
 
-                            cMSEUtils.ReleaseWriter(TrajectoryCsv)
+                        cMSEUtils.ReleaseWriter(TrajectoryCsv)
 
                     Catch ex As Exception
                         Debug.Assert(False, Me.ToString & ".Run() Exception: " & ex.Message)
@@ -2984,6 +2993,38 @@ Public Class cMSE
     End Sub
 
     ''' <summary>
+    ''' Calculate the total catch including discards that survived
+    ''' </summary>
+    Private Function calcTotalCatch(BiomassAtT As Single, FleetIndex As Integer, GroupIndex As Integer, TimeStep As Integer) As Single
+        Return Me.calcCatchRate(BiomassAtT, FleetIndex, GroupIndex, TimeStep) * BiomassAtT
+    End Function
+
+    ''' <summary>
+    ''' Calculate the total catch rate including discards that survived
+    ''' </summary>
+    ''' <remarks>
+    ''' This is not really F because it includes survivals
+    ''' </remarks>
+    Private Function calcCatchRate(BiomassAtT As Single, FleetIndex As Integer, GroupIndex As Integer, TimeStep As Integer) As Single
+        Dim DenDep As Single = m_ecosim.EcosimData.QmQo(GroupIndex) / (1 + (m_ecosim.EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_ecosim.EcosimData.StartBiomass(GroupIndex))
+        Return CSng(_simdata.FishRateGear(FleetIndex, TimeStep) * DenDep * Me.BaseCatchRate(FleetIndex, GroupIndex))
+    End Function
+
+
+    Private Sub initBaseCatchRate()
+        Me.BaseCatchRate = New Single(Me._pathdata.NumFleet, Me._pathdata.NumGroups) {}
+
+        For igrp As Integer = 1 To Me._pathdata.NumGroups
+            For iflt As Integer = 1 To Me._pathdata.NumFleet
+                'Ecopath base catch rate including catch that were discarded and survived
+                '[Total Catch] / [Ecopath Biomass]
+                Me.BaseCatchRate(iflt, igrp) = CSng((Me._pathdata.Landing(iflt, igrp) + Me._pathdata.Discard(iflt, igrp)) / Me._pathdata.B(igrp))
+            Next
+        Next
+
+    End Sub
+
+    ''' <summary>
     ''' Load all the parameters from the [parameter name]_out.csv files
     ''' </summary>
     ''' <remarks></remarks>
@@ -3451,7 +3492,8 @@ Public Class cMSE
 
             For iflt As Integer = 1 To Me.m_core.nFleets
                 If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
-                    CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+
+                    CatchFleetGrp = Me.calcTotalCatch(BiomassAtTimestep(igrp), iflt, igrp, iTime)
 
                     'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
@@ -3820,9 +3862,10 @@ Public Class cMSE
 
                             'Alters the discard parameters 
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
-                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE Then
+
+                                If (m_ecopath.EcopathData.Landing(iFleet, iGrp) > 0) And (TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE) Then
                                     'get the total catch at this effort
-                                    iCatch = CSng(_simdata.FishRateGear(iFleet, iTime) * QMult(iGrp) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+                                    iCatch = Me.calcTotalCatch(BiomassAtTimestep(iGrp), iFleet, iGrp, iTime)
 
                                     If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
                                         FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
@@ -3947,63 +3990,55 @@ Public Class cMSE
                 RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = EcosimData.FishTime(iGrp)
 
                 'Calculate the Realised Landed F
-                RealisedLandedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedLandedFs(iGrp, iTime, TechnologyCreep, QMult)
-                RealisedDiscardFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedDiscardFs(iGrp, iTime, TechnologyCreep, QMult)
+                RealisedLandedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedLandedFs(BiomassAtTimestep(iGrp), iGrp, iTime)
+                RealisedDiscardFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedDiscardFs(BiomassAtTimestep(iGrp), iGrp, iTime)
             Next
 
         End If
 
     End Sub
 
-    Private Function Calc_RealisedLandedFs(ByVal iGrp As Integer, ByVal t As Integer, ByVal QYear() As Single, ByVal QMult() As Double) As Double
-
+    Private Function Calc_RealisedLandedFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Double
         Dim iFleet As Integer, Ft As Single
 
-        'fishing mortality at the current effort
+        For iFleet = 1 To m_ecosim.EcosimData.nGear
+            Ft += Me.calcCatchRate(BiomassAtT, iFleet, iGrp, t) * (Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp))
+        Next
 
-            Ft = 0
-            For iFleet = 1 To m_ecosim.EcosimData.nGear
-                Debug.Assert(Math.Round(Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) + Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp), 3) <= 1.0!, _
-                            Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
-                'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-                Ft = Ft + QYear(iFleet) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * m_ecosim.EcosimData.FishRateGear(iFleet, t) * (Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp))
-            Next
+        Return Ft
 
-            'Save F for this time step 
-            'NOT including Density Dependant Catchability.
-            'This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
-            'Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated In SetFishTime()
+        ''fishing mortality at the current effort
+
+        'Ft = 0
+        'For iFleet = 1 To m_ecosim.EcosimData.nGear
+        '    Debug.Assert(Math.Round(Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) + Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp), 3) <= 1.0!, _
+        '                Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
+        '    'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
+        '    Ft = Ft + QYear(iFleet) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * m_ecosim.EcosimData.FishRateGear(iFleet, t) * (Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp))
+        'Next
+
+        ''Save F for this time step 
+        ''NOT including Density Dependant Catchability.
+        ''This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
+        ''Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated In SetFishTime()
 
 
-            'Include Density Dependant Catchability in the F that is applied to the current timestep
-            Return Ft * QMult(iGrp)
+        ''Include Density Dependant Catchability in the F that is applied to the current timestep
+        'Return Ft * QMult(iGrp)
 
-        Return 0
+        'Return 0
 
     End Function
 
-    Private Function Calc_RealisedDiscardFs(ByVal iGrp As Integer, ByVal t As Integer, ByVal QYear() As Single, ByVal QMult() As Double) As Double
-
+    Private Function Calc_RealisedDiscardFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Double
         Dim iFleet As Integer, Ft As Single
 
-        'fishing mortality at the current effort
-
-        Ft = 0
         For iFleet = 1 To m_ecosim.EcosimData.nGear
-            Debug.Assert(Math.Round(Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) + Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp), 3) <= 1.0!, _
-                        Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
-            'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-            Ft = Ft + QYear(iFleet) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * m_ecosim.EcosimData.FishRateGear(iFleet, t) * (Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp))
+            'Propdiscardtime(iFleet, iGrp) does not include discards that survived
+            Ft += calcCatchRate(BiomassAtT, iFleet, iGrp, t) * (Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp))
         Next
 
-        'Save F for this time step 
-        'NOT including Density Dependant Catchability.
-        'This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
-        'Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated In SetFishTime()
-
-
-        'Include Density Dependant Catchability in the F that is applied to the current timestep
-        Return Ft * QMult(iGrp)
+        Return Ft
 
     End Function
 
@@ -4019,7 +4054,8 @@ Public Class cMSE
 
             For iflt As Integer = 1 To Me.m_core.nFleets
                 'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
-                CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+                'CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+                CatchFleetGrp = Me.calcTotalCatch(BiomassAtTimestep(igrp), iflt, igrp, iTime)
 
                 'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
