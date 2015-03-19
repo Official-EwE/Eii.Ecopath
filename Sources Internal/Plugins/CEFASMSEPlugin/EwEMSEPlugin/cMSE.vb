@@ -3000,7 +3000,7 @@ Public Class cMSE
     End Function
 
     ''' <summary>
-    ''' Calculate the total catch rate including discards that survived
+    ''' Calculate the total catch rate including discards that survived and the density dependant catchability
     ''' </summary>
     ''' <remarks>
     ''' This is not really F because it includes survivals
@@ -3971,8 +3971,9 @@ Public Class cMSE
                 End If
             Next
 
-            'Calculates what the F's are for each species given the effort
-            m_ecosim.SetFtimeFromGear(Nothing, iTime, TechnologyCreep, True)
+            'Sets F's used by Ecosim for this timestep
+            'given the regulated effort and proportions of landing and discards set above
+            Me.SetFtimeFromGear(iTime)
 
             'Dim percentagechangeeffort As Single
             ''This is a diagnostics test
@@ -3987,7 +3988,7 @@ Public Class cMSE
 
             For iGrp = 1 To m_core.nGroups
                 NumberTimeStepsIntoProjection = iTime - OriginalNTimesteps
-                RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = EcosimData.FishTime(iGrp)
+                RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Me._simdata.FishRateNo(iGrp, iTime) * QMult(iGrp)
 
                 'Calculate the Realised Landed F
                 RealisedLandedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedLandedFs(BiomassAtTimestep(iGrp), iGrp, iTime)
@@ -4007,27 +4008,6 @@ Public Class cMSE
 
         Return Ft
 
-        ''fishing mortality at the current effort
-
-        'Ft = 0
-        'For iFleet = 1 To m_ecosim.EcosimData.nGear
-        '    Debug.Assert(Math.Round(Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) + Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp), 3) <= 1.0!, _
-        '                Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
-        '    'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-        '    Ft = Ft + QYear(iFleet) * m_ecosim.EcosimData.FishMGear(iFleet, iGrp) * m_ecosim.EcosimData.FishRateGear(iFleet, t) * (Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp))
-        'Next
-
-        ''Save F for this time step 
-        ''NOT including Density Dependant Catchability.
-        ''This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
-        ''Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated In SetFishTime()
-
-
-        ''Include Density Dependant Catchability in the F that is applied to the current timestep
-        'Return Ft * QMult(iGrp)
-
-        'Return 0
-
     End Function
 
     Private Function Calc_RealisedDiscardFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Double
@@ -4041,6 +4021,38 @@ Public Class cMSE
         Return Ft
 
     End Function
+
+
+    ''' <summary>
+    ''' Populates FishRateNo(group,time) with fishing mortality rates for a timestep from the base catch rates, current Effort and Proportions Landed and Discarded.
+    ''' FishRateNo(group,time) is then used by Ecosim to set FishTime() in SetFishTime()
+    ''' </summary>
+    ''' <param name="t">Timestep.</param>
+    ''' <remarks>
+    ''' Calculates F from the BaseCatchRate(fleet,group) which it the total catch rate including discards that survived.
+    ''' The propotion of discards that survives was removed from  Propdiscardtime(fleet,group) in the regulatory code.
+    ''' </remarks>
+    Public Sub SetFtimeFromGear(ByVal t As Integer)
+        Dim i As Integer, ig As Integer, totF As Single
+
+        'fishing mortality at the current effort
+        For i = 1 To Me._simdata.nGroups
+
+            totF = 0
+            For ig = 1 To Me._simdata.nGear
+                'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
+                totF += Me.BaseCatchRate(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
+            Next
+
+            'Save F for this time step 
+            'NOT including Density Dependant Catchability.
+            'Density Dependant Catchability will be be applied by Ecosim when FishTime() is populated In SetFishTime()
+            Me._simdata.FishRateNo(i, t) = totF
+
+        Next i
+
+    End Sub
+
 
 
     Public Sub RecordCatches(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
