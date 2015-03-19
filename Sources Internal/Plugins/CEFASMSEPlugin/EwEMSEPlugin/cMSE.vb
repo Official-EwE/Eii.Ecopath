@@ -3816,9 +3816,6 @@ Public Class cMSE
                             'If selective
                             'Calculate what selectivity would prevent any other stock going over quota
                             'Set selectivity variables
-                            If m_currentStrategy.Name = "All Mixfish  SelectiveFishing" And iFleet = 1 Then
-                                'Stop
-                            End If
 
                             'If iFleet = 3 Then Stop
 
@@ -3875,12 +3872,12 @@ Public Class cMSE
                                         Else
                                             FleetQuota = FleetConsQuota
                                         End If
-                                    ElseIf TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
+                                    ElseIf TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE Then
                                         FleetQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
                                     End If
 
                                     'if the total catch exceeds the quota figure out what do do with the discards
-                                    If iCatch > FleetQuota / m_ecopath.EcopathData.PropLanded(iFleet, iGrp) Then
+                                    If iCatch * m_ecopath.EcopathData.PropLanded(iFleet, iGrp) > FleetQuota Then
                                         'fishing mortality exceeds quota
                                         m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng(FleetQuota / (iCatch + 1.0E-20))
                                         If m_currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
