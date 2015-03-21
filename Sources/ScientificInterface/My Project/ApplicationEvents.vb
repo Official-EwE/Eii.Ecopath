@@ -32,12 +32,10 @@ Namespace My
 
         Protected Overrides Sub OnCreateSplashScreen()
             ' Only allow in release mode to prevent splash screen when debugging EwE start-up stuff ;)
-#If Not Debug Then
             If My.Settings.ShowSplash Then
                 Me.m_splash = New frmSplash()
                 Me.m_splash.Show()
             End If
-#End If
         End Sub
 
     End Class
