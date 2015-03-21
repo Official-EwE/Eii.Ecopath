@@ -35,6 +35,7 @@ Friend Class frmSplash
 
         Me.CenterToScreen()
         Me.TopMost = True
+        Me.Visible = (Me.m_img IsNot Nothing)
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
