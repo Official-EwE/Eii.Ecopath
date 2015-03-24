@@ -30,7 +30,7 @@ Imports EwEUtils.Core
 Public Class cEwEModel
     Inherits cCoreInputOutputBase
 
-#Region "Constructor"
+#Region " Constructor "
 
     Sub New(ByRef TheCore As cCore)
         MyBase.New(TheCore)
@@ -72,7 +72,7 @@ Public Class cEwEModel
             ' Area
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-             m_values.Add(val.varName, val)
+            m_values.Add(val.varName, val)
 
             ' NumDigits
             meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -81,8 +81,8 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' FirstYear
-            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
-            val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' North
@@ -186,7 +186,7 @@ Public Class cEwEModel
 
     End Sub
 
-#End Region
+#End Region ' Constructor
 
 #Region " Variable via dot(.) operator "
 
