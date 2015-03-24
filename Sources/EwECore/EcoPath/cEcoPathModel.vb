@@ -155,7 +155,7 @@ Namespace Ecopath
         ''' <summary>
         ''' Do not send any messages
         ''' </summary>
-        ''' <value>True no messages will be sent. False messages will be sent this is the default behaviour. </value>
+        ''' <value>True to prevent Ecopath from sending messages, false to allow Ecopath to send messages (which is the default behaviour).</value>
         ''' <returns></returns>
         ''' <remarks>This allows Ecopath to run in a 'Silent' mode</remarks>
         Public Property suppressMessages() As Boolean

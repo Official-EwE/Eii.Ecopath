@@ -85,7 +85,11 @@ Namespace Utilities
 
             Dim bmp As New Bitmap(sz.Width, sz.Height, Imaging.PixelFormat.Format32bppArgb)
             Using g As Graphics = Graphics.FromImage(bmp)
-                g.DrawIcon(icon, 0, 0)
+                Try
+                    g.DrawIcon(icon, 0, 0)
+                Catch ex As Exception
+                    bmp = Nothing
+                End Try
             End Using
             Return bmp
 

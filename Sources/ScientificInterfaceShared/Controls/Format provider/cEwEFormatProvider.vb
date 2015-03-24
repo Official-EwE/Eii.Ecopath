@@ -379,9 +379,9 @@ Namespace Controls
                     ' Did anything change?
                     Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                     Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
-                    Dim bVisible As Boolean = ((style And cStyleGuide.eStyleFlags.Null) = 0)
+                    'Dim bVisible As Boolean = ((style And cStyleGuide.eStyleFlags.Null) = 0)
 
-                    If Me.m_tb.Modified And bVisible And bEditable Then
+                    If Me.m_tb.Modified And bEditable Then
                         ' Update internal value
                         Me.m_provider.Value = Me.m_tb.Text
                     End If

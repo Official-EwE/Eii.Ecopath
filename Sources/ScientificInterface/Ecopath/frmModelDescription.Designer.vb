@@ -85,7 +85,6 @@ Partial Class frmModelDescription
         Me.m_cbGroupDigits = New System.Windows.Forms.CheckBox()
         Me.m_chkPSD = New System.Windows.Forms.CheckBox()
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_lblLocation = New System.Windows.Forms.Label()
         Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -103,13 +102,13 @@ Partial Class frmModelDescription
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
+        Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
         Me.m_gbTimeUnits.SuspendLayout()
         Me.m_gbMonetaryUnits.SuspendLayout()
         Me.m_gbNumFormatting.SuspendLayout()
-        CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -122,6 +121,7 @@ Partial Class frmModelDescription
         '
         'm_udNumDigits
         '
+        Me.m_udNumDigits.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_udNumDigits, "m_udNumDigits")
         Me.m_udNumDigits.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
         Me.m_udNumDigits.Name = "m_udNumDigits"
@@ -394,11 +394,6 @@ Partial Class frmModelDescription
         Me.m_hdrExecution.IsCollapsed = False
         Me.m_hdrExecution.Name = "m_hdrExecution"
         '
-        'm_nudFirstYear
-        '
-        resources.ApplyResources(Me.m_nudFirstYear, "m_nudFirstYear")
-        Me.m_nudFirstYear.Name = "m_nudFirstYear"
-        '
         'm_lblLocation
         '
         resources.ApplyResources(Me.m_lblLocation, "m_lblLocation")
@@ -407,21 +402,25 @@ Partial Class frmModelDescription
         'm_nudNorth
         '
         resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+        Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudNorth.Name = "m_nudNorth"
         '
         'm_nudSouth
         '
         resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+        Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudSouth.Name = "m_nudSouth"
         '
         'm_nudWest
         '
         resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudWest.Name = "m_nudWest"
         '
         'm_nudEast
         '
         resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+        Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudEast.Name = "m_nudEast"
         '
         'm_lblNorth
@@ -464,7 +463,7 @@ Partial Class frmModelDescription
         Me.m_plDescr.Controls.Add(Me.m_tbName)
         Me.m_plDescr.Controls.Add(Me.m_nudNorth)
         Me.m_plDescr.Controls.Add(Me.m_tbAuthor)
-        Me.m_plDescr.Controls.Add(Me.m_nudFirstYear)
+        Me.m_plDescr.Controls.Add(Me.m_tbxFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_tbArea)
         Me.m_plDescr.Controls.Add(Me.m_tbxModelAreaName)
         Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
@@ -517,12 +516,18 @@ Partial Class frmModelDescription
         Me.m_chkIsCoupled.Name = "m_chkIsCoupled"
         Me.m_chkIsCoupled.UseVisualStyleBackColor = True
         '
+        'm_tbxFirstYear
+        '
+        resources.ApplyResources(Me.m_tbxFirstYear, "m_tbxFirstYear")
+        Me.m_tbxFirstYear.Name = "m_tbxFirstYear"
+        '
         'frmModelDescription
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlpContent)
         Me.Name = "frmModelDescription"
+        Me.TabText = ""
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpUnits.ResumeLayout(False)
         Me.m_gbCurrencyUnit.ResumeLayout(False)
@@ -533,7 +538,6 @@ Partial Class frmModelDescription
         Me.m_gbMonetaryUnits.PerformLayout()
         Me.m_gbNumFormatting.ResumeLayout(False)
         Me.m_gbNumFormatting.PerformLayout()
-        CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
@@ -600,12 +604,12 @@ Partial Class frmModelDescription
     Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_chkIsCoupled As System.Windows.Forms.CheckBox
     Private WithEvents m_udNumDigits As ScientificInterfaceShared.Controls.cEwENumericUpDown
-    Private WithEvents m_nudFirstYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudNorth As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudSouth As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudWest As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudEast As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_tbContact As System.Windows.Forms.TextBox
     Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxFirstYear As System.Windows.Forms.TextBox
 
 End Class
