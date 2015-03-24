@@ -72,7 +72,7 @@ Public Class frmModelDescription
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, Me.m_tbArea, eweModel, eVarNameFlags.Area)
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
-        Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
+        Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
         Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxModelAreaName, eweModel, eVarNameFlags.AreaName)
         Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
         Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
