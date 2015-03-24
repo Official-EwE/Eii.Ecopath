@@ -2680,9 +2680,12 @@ Public Class cCore
     ''' </summary>
     ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save type</see>
     ''' to obtain the generic file header for.</param>
+    ''' <param name="iStartYear">Optional start year to include in the header. If 
+    ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A text block safe for integration in CSV files.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function DefaultFileHeader(ByVal savetype As eAutosaveTypes) As String
+    Public Function DefaultFileHeader(ByVal savetype As eAutosaveTypes, _
+                                      Optional iStartYear As Integer = cCore.NULL_VALUE) As String
 
         Dim sb As New StringBuilder()
 
@@ -2705,7 +2708,8 @@ Public Class cCore
                 Else
                     sb.AppendLine("(none)")
                 End If
-                sb.AppendLine("StartYear," & cStringUtils.ToCSVField(Me.EcosimFirstYear))
+                If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
+                sb.AppendLine("StartYear," & cStringUtils.ToCSVField(iStartYear))
             End If
 
             ' Has Ecospace?
