@@ -481,6 +481,9 @@ Public Class cF2TSManager
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the number of blocks to search for.
+    ''' </summary>
     Public Property nBlockCodes() As Integer
         Get
             Return m_model.nBlockCodes
@@ -489,8 +492,6 @@ Public Class cF2TSManager
             m_model.nBlockCodes = value
         End Set
     End Property
-
-
 
 #End Region ' Generic variable access
 
