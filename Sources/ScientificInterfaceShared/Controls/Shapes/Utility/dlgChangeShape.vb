@@ -133,8 +133,8 @@ Namespace Controls
             Dim fs As IShapeFunction = Me.SelectedShapeFunction()
             If (fs Is Nothing) Then Return
 
-            fs.Apply(Me.m_shape)
             Me.m_shape.Name = Me.m_tbxName.Text
+            fs.Apply(Me.m_shape)
 
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()

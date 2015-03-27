@@ -859,7 +859,7 @@
     <value>m_hdrShape</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11625.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12055.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Parent" xml:space="preserve">
     <value>m_tlpInput</value>
@@ -892,7 +892,7 @@
     <value>m_hdrParams</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11625.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12055.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Parent" xml:space="preserve">
     <value>m_tlpInput</value>
