@@ -1506,14 +1506,11 @@ Namespace Ecospace
             Dim fmt As New cRunEcospacePlotTypeFormatter()
             Dim msg As cMessage = Nothing
 
-            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
-
             Try
-
+                bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
                 g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
                 Me.PlotMap(g)
                 bmp.Save(strFileName, imgFormat)
-                bmp.Dispose()
 
                 Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), SharedResources.SCALE_LOG)
 
@@ -1525,8 +1522,9 @@ Namespace Ecospace
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 
-            g.Dispose() : g = Nothing
             br.Dispose() : br = Nothing
+            bmp.Dispose() : bmp = Nothing
+            g.Dispose() : g = Nothing
 
             If (msg IsNot Nothing) Then
                 Me.Core.Messages.SendMessage(msg)
