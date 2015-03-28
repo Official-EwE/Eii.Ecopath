@@ -1502,13 +1502,14 @@ Namespace Ecospace
 
             Dim bmp As New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim g As Graphics = Graphics.FromImage(bmp)
-            Dim br As New SolidBrush(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
-            Dim fmt As New cRunEcospacePlotTypeFormatter()
+             Dim fmt As New cRunEcospacePlotTypeFormatter()
             Dim msg As cMessage = Nothing
 
             Try
                 bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
-                g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
+                Using br As New SolidBrush(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
+                    g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
+                End Using
                 Me.PlotMap(g)
                 bmp.Save(strFileName, imgFormat)
 
@@ -1522,7 +1523,6 @@ Namespace Ecospace
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 
-            br.Dispose() : br = Nothing
             bmp.Dispose() : bmp = Nothing
             g.Dispose() : g = Nothing
 
