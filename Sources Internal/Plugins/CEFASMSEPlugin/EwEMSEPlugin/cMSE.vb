@@ -1551,6 +1551,9 @@ Public Class cMSE
 
                         Me.m_StockAssessment.TrialNumber = iModel
 
+                        'Re-load any Ecosim forcing data for the hind cast period
+                        Me.setFishForcedToBase()
+
                         'initialize the base fishing mortality rates to the new ecopath parameters loaded above
                         Me.initBaseCatchRate()
 
@@ -4047,6 +4050,24 @@ Public Class cMSE
             Me._simdata.FishRateNo(i, t) = totF
 
         Next i
+
+    End Sub
+
+
+    Private Sub setFishForcedToBase()
+
+        Try
+
+            'reloads time series forcing data into core arrays and resets FisForced(groups)
+            'F into FishRateNo()
+            Me.m_ecosim.TimeSeriesData.DoDatValCalculations(Me.EcosimData)
+
+            'resets F in FishRateNo() based on forced Catches or Effort 
+            Me.m_ecosim.SetBaseFFromGear()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".setFishForcedToBase() Exception: " + ex.Message)
+        End Try
 
     End Sub
 
