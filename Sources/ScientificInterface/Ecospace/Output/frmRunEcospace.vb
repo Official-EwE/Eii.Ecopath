@@ -827,20 +827,9 @@ Namespace Ecospace
             ' Save map image
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
             If (parms.SavePNG) Then
-
-                ' Big hack: checking for which time steps to save data
-                Dim strTS As String = Me.m_tbxAutosaveTimeSteps.Text
-                Dim iTS As Integer = 0
-                Dim liTS As New List(Of Integer)
-
-                If Not String.IsNullOrWhiteSpace(strTS) Then
-                    For Each strBit As String In strTS.Split(","c)
-                        If (Integer.TryParse(strBit, iTS) = True) And (iTS > 0) Then
-                            liTS.Add(iTS)
-                        End If
-                    Next
-                End If
-                Me.m_iAutosaveTS = liTS.ToArray
+                Me.m_iAutosaveTS = cStringUtils.Range(Me.m_tbxAutosaveTimeSteps.Text)
+            Else
+                Me.m_iAutosaveTS = Nothing
             End If
 
         End Sub
@@ -1194,11 +1183,9 @@ Namespace Ecospace
             ' Save map image
             If (parms.SavePNG) Then
 
-                Dim bSave As Boolean = True
+                Dim bSave As Boolean = False
                 If (Me.m_iAutosaveTS IsNot Nothing) Then
-                    If (Me.m_iAutosaveTS.Count > 0) Then
-                        bSave = Me.m_iAutosaveTS.Contains(TimeStepData.iTimeStep)
-                    End If
+                    bSave = Me.m_iAutosaveTS.Contains(TimeStepData.iTimeStep)
                 End If
 
                 If (bSave) Then

@@ -2033,6 +2033,37 @@ Namespace Utilities
             Return strMask
         End Function
 
+        Public Shared Function Range(ByVal strValue As String) As Integer()
+
+            Dim lValues As New List(Of Integer)
+            Dim temp As String() = strValue.Split("-"c)
+            Dim iFrom As Integer = -9999
+            Dim iTo As Integer = -9999
+            Dim bSuccess As Boolean = True
+
+            For i As Integer = 0 To temp.Length - 1
+                Dim nums As String() = temp(i).Split(","c)
+                If (iFrom <> -9999) Then
+                    bSuccess = bSuccess And Integer.TryParse(nums(0), iTo)
+                    For j As Integer = iFrom To iTo - 1
+                        lValues.Add(j)
+                    Next
+                End If
+
+                For j As Integer = 0 To nums.Length - 1
+                    bSuccess = bSuccess And Integer.TryParse(nums(j), iFrom)
+                    lValues.Add(iFrom)
+                Next
+                iFrom += 1
+            Next
+
+            If Not bSuccess Then lValues.Clear()
+
+            lValues.Sort()
+            Return lValues.ToArray()
+
+        End Function
+
 #End Region ' Localization
 
     End Class
