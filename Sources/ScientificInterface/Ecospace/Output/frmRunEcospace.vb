@@ -900,6 +900,7 @@ Namespace Ecospace
             Handles m_cbAutoSavePNG.CheckedChanged
             Try
                 Me.Core.EcospaceModelParameters.SavePNG = Me.m_cbAutoSavePNG.Checked
+                Me.UpdateControls()
             Catch ex As Exception
 
             End Try
@@ -1387,7 +1388,6 @@ Namespace Ecospace
             Me.m_cbShowIBMPackets.Enabled = bUseIBM
 
             Dim iIndex As Integer = 2
-
             If bUseIBM Then iIndex = 1
             If bUseNewStanza Then iIndex = 0
 
@@ -1400,6 +1400,7 @@ Namespace Ecospace
 
             Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
 
+            Me.m_tbxAutosaveTimeSteps.Enabled = (Me.m_cbAutoSavePNG.Checked = True)
             Me.m_bInUpdate = False
 
         End Sub
