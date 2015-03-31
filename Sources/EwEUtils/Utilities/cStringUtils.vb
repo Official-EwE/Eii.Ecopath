@@ -2033,28 +2033,46 @@ Namespace Utilities
             Return strMask
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strValue"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function Range(ByVal strValue As String) As Integer()
 
             Dim lValues As New List(Of Integer)
             Dim temp As String() = strValue.Split("-"c)
             Dim iFrom As Integer = -9999
             Dim iTo As Integer = -9999
+            Dim iIncr As Integer = 1
             Dim bSuccess As Boolean = True
 
             For i As Integer = 0 To temp.Length - 1
                 Dim nums As String() = temp(i).Split(","c)
                 If (iFrom <> -9999) Then
-                    bSuccess = bSuccess And Integer.TryParse(nums(0), iTo)
-                    For j As Integer = iFrom To iTo - 1
-                        lValues.Add(j)
+                    If (nums(0).Contains("@")) Then
+                        Dim its As String() = nums(0).Split("@"c)
+                        bSuccess = bSuccess And Integer.TryParse(its(0), iTo)
+                        bSuccess = bSuccess And Integer.TryParse(its(1), iIncr)
+                    Else
+                        bSuccess = bSuccess And Integer.TryParse(nums(0), iTo)
+                        iIncr = 1
+                    End If
+                    For j As Integer = iFrom To iTo - 1 Step iIncr
+                        If (Not lValues.Contains(j)) Then
+                            lValues.Add(j)
+                        End If
                     Next
                 End If
 
-                For j As Integer = 0 To nums.Length - 1
+                For j As Integer = cSystemUtils.IIF(iFrom <> -9999, 1, 0) To nums.Length - 1
                     bSuccess = bSuccess And Integer.TryParse(nums(j), iFrom)
-                    lValues.Add(iFrom)
+                    If (Not lValues.Contains(iFrom)) Then
+                        lValues.Add(iFrom)
+                    End If
                 Next
-                iFrom += 1
             Next
 
             If Not bSuccess Then lValues.Clear()
