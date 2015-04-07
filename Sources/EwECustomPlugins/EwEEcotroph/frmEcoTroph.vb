@@ -244,9 +244,11 @@ Public Class frmEcotroph
         If Not (IsNothing(ETinputdata.Modeldescription)) Then modeldescription.Text = ETinputdata.Modeldescription Else modeldescription.Text = ""
         Button2.Enabled = True
         Button3.Enabled = True
-        Button4.Enabled = True
+            Button4.Enabled = True
+            list_group_diag.Items.Clear()
+            List_fleet1.Items.Clear()
         Else
-        MsgBox(My.Resources.NO_MODEL_DATA)
+            MsgBox(My.Resources.NO_MODEL_DATA)
         End If
 
         ' frmET.ETgridinput.DataSource = ETinput
@@ -344,6 +346,9 @@ Public Class frmEcotroph
             Next
             DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
         End If
+        list_group_diag.Items.Clear()
+        List_fleet1.Items.Clear()
+
         Button2.Enabled = True
         Button3.Enabled = True
         Button4.Enabled = True
@@ -424,7 +429,7 @@ Public Class frmEcotroph
                 Next
                 myStreamWriter.Close()
 
-                Dim depasse As Boolean = myProcess.WaitForExit(100000)
+                Dim depasse As Boolean = myProcess.WaitForExit(600000)
                 If depasse Then
                     output2(1) = myProcess.StandardOutput.ReadToEnd()
                     output2(0) = myProcess.StandardError.ReadToEnd()
@@ -1316,6 +1321,8 @@ Public Class frmEcotroph
             Button2.Enabled = True
             Button3.Enabled = True
             Button4.Enabled = True
+            list_group_diag.Items.Clear()
+            List_fleet1.Items.Clear()
 
         Catch Ex As Exception
             cLog.Write(Ex, "Ecotroph::models_list")
