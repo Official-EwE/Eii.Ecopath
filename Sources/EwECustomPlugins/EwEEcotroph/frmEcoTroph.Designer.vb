@@ -145,17 +145,17 @@ Partial Class frmEcotroph
         Me.Load_from_ecopath = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ETgridinput = New System.Windows.Forms.DataGridView()
-        Me.panel_webservi = New System.Windows.Forms.Panel()
-        Me.site_eco = New System.Windows.Forms.WebBrowser()
-        Me.Button8 = New System.Windows.Forms.Button()
-        Me.models_list = New System.Windows.Forms.ListBox()
-        Me.inputdata = New System.Windows.Forms.TabControl()
         Me.Group_name = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TTL = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Biomass = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Production = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.accessibilty = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.OI = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.panel_webservi = New System.Windows.Forms.Panel()
+        Me.site_eco = New System.Windows.Forms.WebBrowser()
+        Me.Button8 = New System.Windows.Forms.Button()
+        Me.models_list = New System.Windows.Forms.ListBox()
+        Me.inputdata = New System.Windows.Forms.TabControl()
         Me.diagnosis_page.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -228,7 +228,7 @@ Partial Class frmEcotroph
         'GroupBox3
         '
         Me.GroupBox3.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox3.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox3.Controls.Add(Me.Label9)
         Me.GroupBox3.Controls.Add(Me.Label20)
@@ -248,7 +248,6 @@ Partial Class frmEcotroph
         Me.GroupBox3.Controls.Add(Me.beta)
         Me.GroupBox3.Controls.Add(Me.Label5)
         Me.GroupBox3.Controls.Add(Me.TopD)
-
         Me.GroupBox3.Location = New System.Drawing.Point(4, 45)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(884, 155)
@@ -443,12 +442,10 @@ Partial Class frmEcotroph
         Me.TopD.Text = "04"
         Me.TopD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
-
-        '
         'GroupBox5
         '
         Me.GroupBox5.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox5.Controls.Add(Me.log_scale_diagnose)
         Me.GroupBox5.Controls.Add(Me.PictureBox5)
         Me.GroupBox5.Controls.Add(Me.getgraph_diag)
@@ -514,8 +511,8 @@ Partial Class frmEcotroph
         'panel_result_diag
         '
         Me.panel_result_diag.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.panel_result_diag.Controls.Add(Me.ET_Main_diagnose)
         Me.panel_result_diag.Controls.Add(Me.ET_Main_diagnose_B)
         Me.panel_result_diag.Controls.Add(Me.ET_Main_diagnose_B_acc)
@@ -747,8 +744,8 @@ Partial Class frmEcotroph
         'result_pdf_et_diag
         '
         Me.result_pdf_et_diag.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.result_pdf_et_diag.Location = New System.Drawing.Point(3, 206)
         Me.result_pdf_et_diag.MinimumSize = New System.Drawing.Size(20, 20)
         Me.result_pdf_et_diag.Name = "result_pdf_et_diag"
@@ -759,6 +756,7 @@ Partial Class frmEcotroph
         '
         'TabPage3
         '
+        Me.TabPage3.AutoScroll = True
         Me.TabPage3.Controls.Add(Me.PictureBox4)
         Me.TabPage3.Controls.Add(Me.Log_scale)
         Me.TabPage3.Controls.Add(Me.getgraphs)
@@ -814,8 +812,8 @@ Partial Class frmEcotroph
         'result_pdf
         '
         Me.result_pdf.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.result_pdf.Location = New System.Drawing.Point(3, 32)
         Me.result_pdf.MinimumSize = New System.Drawing.Size(20, 20)
         Me.result_pdf.Name = "result_pdf"
@@ -827,8 +825,8 @@ Partial Class frmEcotroph
         'panel_result
         '
         Me.panel_result.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.panel_result.Controls.Add(Me.TabPage4)
         Me.panel_result.Controls.Add(Me.TabPage5)
         Me.panel_result.Controls.Add(Me.TabPage6)
@@ -963,6 +961,7 @@ Partial Class frmEcotroph
         '
         'TabPage2
         '
+        Me.TabPage2.AutoScroll = True
         Me.TabPage2.Controls.Add(Me.Label12)
         Me.TabPage2.Controls.Add(Me.ecotroph_version)
         Me.TabPage2.Controls.Add(Me.smooth_pdf)
@@ -998,12 +997,12 @@ Partial Class frmEcotroph
         'smooth_pdf
         '
         Me.smooth_pdf.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.smooth_pdf.Location = New System.Drawing.Point(6, 181)
         Me.smooth_pdf.MinimumSize = New System.Drawing.Size(20, 20)
         Me.smooth_pdf.Name = "smooth_pdf"
-        Me.smooth_pdf.Size = New System.Drawing.Size(885, 552)
+        Me.smooth_pdf.Size = New System.Drawing.Size(892, 535)
         Me.smooth_pdf.TabIndex = 8
         Me.smooth_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         Me.smooth_pdf.Visible = False
@@ -1182,16 +1181,17 @@ Partial Class frmEcotroph
         'datasmooth
         '
         Me.datasmooth.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.datasmooth.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.datasmooth.Location = New System.Drawing.Point(8, 185)
         Me.datasmooth.Name = "datasmooth"
-        Me.datasmooth.Size = New System.Drawing.Size(880, 548)
+        Me.datasmooth.Size = New System.Drawing.Size(887, 531)
         Me.datasmooth.TabIndex = 1
         '
         'TabPage1
         '
+        Me.TabPage1.AutoScroll = True
         Me.TabPage1.Controls.Add(Me.Button7)
         Me.TabPage1.Controls.Add(Me.Label13)
         Me.TabPage1.Controls.Add(Me.Label3)
@@ -1242,7 +1242,7 @@ Partial Class frmEcotroph
         'modeldescription
         '
         Me.modeldescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.modeldescription.Location = New System.Drawing.Point(273, 36)
         Me.modeldescription.Multiline = True
         Me.modeldescription.Name = "modeldescription"
@@ -1252,7 +1252,7 @@ Partial Class frmEcotroph
         'Modelname
         '
         Me.Modelname.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Modelname.Location = New System.Drawing.Point(273, 10)
         Me.Modelname.Name = "Modelname"
         Me.Modelname.Size = New System.Drawing.Size(612, 20)
@@ -1262,7 +1262,7 @@ Partial Class frmEcotroph
         '
         Me.commentaires.AcceptsReturn = True
         Me.commentaires.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.commentaires.Location = New System.Drawing.Point(273, 78)
         Me.commentaires.Multiline = True
         Me.commentaires.Name = "commentaires"
@@ -1308,8 +1308,8 @@ Partial Class frmEcotroph
         'ETgridinput
         '
         Me.ETgridinput.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ETgridinput.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.ETgridinput.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.ETgridinput.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Group_name, Me.TTL, Me.Biomass, Me.Production, Me.accessibilty, Me.OI})
@@ -1317,71 +1317,6 @@ Partial Class frmEcotroph
         Me.ETgridinput.Name = "ETgridinput"
         Me.ETgridinput.Size = New System.Drawing.Size(878, 571)
         Me.ETgridinput.TabIndex = 10
-        '
-        'panel_webservi
-        '
-        Me.panel_webservi.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.panel_webservi.BackColor = System.Drawing.Color.DimGray
-        Me.panel_webservi.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.panel_webservi.Controls.Add(Me.site_eco)
-        Me.panel_webservi.Controls.Add(Me.Button8)
-        Me.panel_webservi.Controls.Add(Me.models_list)
-        Me.panel_webservi.Location = New System.Drawing.Point(7, 162)
-        Me.panel_webservi.Name = "panel_webservi"
-        Me.panel_webservi.Size = New System.Drawing.Size(878, 571)
-        Me.panel_webservi.TabIndex = 13
-        Me.panel_webservi.Visible = False
-        '
-        'site_eco
-        '
-        Me.site_eco.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.site_eco.Location = New System.Drawing.Point(194, 12)
-        Me.site_eco.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.site_eco.Name = "site_eco"
-        Me.site_eco.Size = New System.Drawing.Size(670, 540)
-        Me.site_eco.TabIndex = 1
-        '
-        'Button8
-        '
-        Me.Button8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button8.Location = New System.Drawing.Point(13, 529)
-        Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(168, 23)
-        Me.Button8.TabIndex = 2
-        Me.Button8.Text = "Close Models List Selection"
-        Me.Button8.UseVisualStyleBackColor = True
-        '
-        'models_list
-        '
-        Me.models_list.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.models_list.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.models_list.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.models_list.ForeColor = System.Drawing.Color.Black
-        Me.models_list.FormattingEnabled = True
-        Me.models_list.IntegralHeight = False
-        Me.models_list.Location = New System.Drawing.Point(13, 11)
-        Me.models_list.Name = "models_list"
-        Me.models_list.Size = New System.Drawing.Size(168, 512)
-        Me.models_list.TabIndex = 0
-        '
-        'inputdata
-        '
-        Me.inputdata.Controls.Add(Me.TabPage1)
-        Me.inputdata.Controls.Add(Me.TabPage2)
-        Me.inputdata.Controls.Add(Me.TabPage3)
-        Me.inputdata.Controls.Add(Me.diagnosis_page)
-        Me.inputdata.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.inputdata.Location = New System.Drawing.Point(0, 0)
-        Me.inputdata.Name = "inputdata"
-        Me.inputdata.SelectedIndex = 0
-        Me.inputdata.Size = New System.Drawing.Size(902, 767)
-        Me.inputdata.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
-        Me.inputdata.TabIndex = 0
         '
         'Group_name
         '
@@ -1412,6 +1347,71 @@ Partial Class frmEcotroph
         '
         Me.OI.HeaderText = "Omnivory index"
         Me.OI.Name = "OI"
+        '
+        'panel_webservi
+        '
+        Me.panel_webservi.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.panel_webservi.BackColor = System.Drawing.Color.DimGray
+        Me.panel_webservi.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.panel_webservi.Controls.Add(Me.site_eco)
+        Me.panel_webservi.Controls.Add(Me.Button8)
+        Me.panel_webservi.Controls.Add(Me.models_list)
+        Me.panel_webservi.Location = New System.Drawing.Point(7, 162)
+        Me.panel_webservi.Name = "panel_webservi"
+        Me.panel_webservi.Size = New System.Drawing.Size(878, 571)
+        Me.panel_webservi.TabIndex = 13
+        Me.panel_webservi.Visible = False
+        '
+        'site_eco
+        '
+        Me.site_eco.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.site_eco.Location = New System.Drawing.Point(194, 12)
+        Me.site_eco.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.site_eco.Name = "site_eco"
+        Me.site_eco.Size = New System.Drawing.Size(670, 540)
+        Me.site_eco.TabIndex = 1
+        '
+        'Button8
+        '
+        Me.Button8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Button8.Location = New System.Drawing.Point(13, 529)
+        Me.Button8.Name = "Button8"
+        Me.Button8.Size = New System.Drawing.Size(168, 23)
+        Me.Button8.TabIndex = 2
+        Me.Button8.Text = "Close Models List Selection"
+        Me.Button8.UseVisualStyleBackColor = True
+        '
+        'models_list
+        '
+        Me.models_list.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.models_list.BackColor = System.Drawing.SystemColors.ControlLightLight
+        Me.models_list.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.models_list.ForeColor = System.Drawing.Color.Black
+        Me.models_list.FormattingEnabled = True
+        Me.models_list.IntegralHeight = False
+        Me.models_list.Location = New System.Drawing.Point(13, 11)
+        Me.models_list.Name = "models_list"
+        Me.models_list.Size = New System.Drawing.Size(168, 512)
+        Me.models_list.TabIndex = 0
+        '
+        'inputdata
+        '
+        Me.inputdata.Controls.Add(Me.TabPage1)
+        Me.inputdata.Controls.Add(Me.TabPage2)
+        Me.inputdata.Controls.Add(Me.TabPage3)
+        Me.inputdata.Controls.Add(Me.diagnosis_page)
+        Me.inputdata.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.inputdata.Location = New System.Drawing.Point(0, 0)
+        Me.inputdata.Name = "inputdata"
+        Me.inputdata.SelectedIndex = 0
+        Me.inputdata.Size = New System.Drawing.Size(902, 767)
+        Me.inputdata.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
+        Me.inputdata.TabIndex = 0
         '
         'frmEcotroph
         '
