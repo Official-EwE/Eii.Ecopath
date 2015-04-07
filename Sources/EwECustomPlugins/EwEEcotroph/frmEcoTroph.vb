@@ -51,7 +51,7 @@ Imports System.Text
 Public Class frmEcotroph
 
     Private num_model() As Integer
-    Private aide As String = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?action=examples&lang=uk"
+    Private aide As String = "http://sirs.agrocampus-ouest.fr/EcoBase/index.php?action=examples&lang=uk"
     Private m_strRPath As String = ""
     Private m_strRRoot As String = ""
 
@@ -1229,7 +1229,7 @@ Public Class frmEcotroph
 
         Dim url_eco As String
 
-        url_eco = "http://sirs.agrocampus-ouest.fr/EcoTroph/php/extract_model.php?model=" & num_model(models_list.SelectedIndex)
+        url_eco = "http://sirs.agrocampus-ouest.fr/EcoBase/php/extract_model.php?model=" & num_model(models_list.SelectedIndex)
 
 
         Try
@@ -1341,7 +1341,7 @@ Public Class frmEcotroph
     Private Sub models_list_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles models_list.SelectedIndexChanged
 
         Dim url_eco As String
-        url_eco = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & num_model(models_list.SelectedIndex)
+        url_eco = "http://sirs.agrocampus-ouest.fr/EcoBase/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & num_model(models_list.SelectedIndex)
         site_eco.Navigate(New Uri(url_eco))
 
     End Sub

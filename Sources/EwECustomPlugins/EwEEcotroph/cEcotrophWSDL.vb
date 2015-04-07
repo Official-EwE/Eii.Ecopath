@@ -36,7 +36,7 @@ Imports System.Xml.Serialization
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1")> _
 <System.Diagnostics.DebuggerStepThroughAttribute()> _
 <System.ComponentModel.DesignerCategoryAttribute("code")> _
-<System.Web.Services.WebServiceBindingAttribute(Name:="getResultBinding", [Namespace]:="http://sirs.agrocampus-ouest.fr/EcoTroph/php/webser/operation_1.wsdl")> _
+<System.Web.Services.WebServiceBindingAttribute(Name:="getResultBinding", [Namespace]:="http://sirs.agrocampus-ouest.fr/EcoBase/php/webser/operation_1.wsdl")> _
 Partial Public Class getResult
     Inherits System.Web.Services.Protocols.SoapHttpClientProtocol
 
@@ -45,7 +45,7 @@ Partial Public Class getResult
     Private getModelOperationCompleted As System.Threading.SendOrPostCallback
 
     Public Sub New()
-        Me.Url = "http://sirs.agrocampus-ouest.fr/EcoTroph/php/webser/soap-server.php"
+        Me.Url = "http://sirs.agrocampus-ouest.fr/EcoBase/php/webser/soap-server.php"
     End Sub
 
     Public Event list_modelsCompleted As list_modelsCompletedEventHandler
