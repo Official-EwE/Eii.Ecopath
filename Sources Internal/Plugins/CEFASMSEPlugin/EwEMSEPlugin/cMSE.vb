@@ -131,11 +131,11 @@ Public Class cMSE
     Private ConservationQuotas(,,) As Double
 
     Private Realised_F_Table As DataTable
-    Private RealisedFs(,) As Double
+    Private m_RealisedFs(,) As Double
     Private Realised_Landed_F_Table As DataTable
-    Private RealisedLandedFs(,) As Double
+    Private m_RealisedLandedFs(,) As Double
     Private Realised_Discard_F_Table As DataTable
-    Private RealisedDiscardFs(,) As Double
+    Private m_RealisedDiscardFs(,) As Double
 
     Private HighestValueSpeciesTable As DataTable
     Private HighestValueSpecies(,) As String
@@ -144,6 +144,8 @@ Public Class cMSE
     Private ChokeGroupArray(,) As String
 
     Private CatchTrajTable As DataTable
+
+    Private RealisedFCollector As cRealisedFs
 
     Const MIN_DIET_PROP As Single = 0.000001
 
@@ -202,6 +204,32 @@ Public Class cMSE
         RunningModels
         RunningMSE
     End Enum
+
+    Public ReadOnly Property RealisedFs(iGroup As Integer, iTime As Integer) As Double
+        Get
+            Return m_RealisedFs(iGroup - 1, iTime - 1)
+        End Get
+    End Property
+
+    Public ReadOnly Property RealisedLandedFs(iGroup As Integer, iTime As Integer) As Double
+        Get
+            Return m_RealisedLandedFs(iGroup - 1, iTime - 1)
+        End Get
+    End Property
+
+    Public ReadOnly Property RealisedDiscardFs(iGroup As Integer, iTime As Integer) As Double
+        Get
+            Return m_RealisedDiscardFs(iGroup - 1, iTime - 1)
+        End Get
+    End Property
+
+    Friend ReadOnly Property currentStrategy As Strategy
+        Get
+            Return m_currentStrategy
+        End Get
+    End Property
+
+
 
     Public Property RunState As eRunStates
         Get
@@ -1417,6 +1445,7 @@ Public Class cMSE
         Dim swValueFleetGroupTraj(m_core.nFleets - 1, m_core.nGroups) As StreamWriter
         Dim swHighestValueGroup As StreamWriter = Nothing
         Dim swChokeGroup As StreamWriter = Nothing
+        Dim ListofResultCollectors As New List(Of cBaseResultsArray)
 
         Try
 
@@ -1470,6 +1499,9 @@ Public Class cMSE
             ReDim TargConsQuota(m_core.nGroups - 1, 1)
             ReDim MinEffortThisYear(m_core.nFleets - 1)
             ReDim MaxEffortThisYear(m_core.nFleets - 1)
+
+            ListofResultCollectors.Add(New cRealisedFs)
+            ListofResultCollectors.Add(New cRealisedLandedFs)
 
             'increase the number of years for the projection
             m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear + NYearsProject)
@@ -1586,6 +1618,10 @@ Public Class cMSE
                             'Set the CurrentStrategy used by onEcosimTimeStep()
                             m_currentStrategy = curStrategy
 
+                            For Each iResultCollector In ListofResultCollectors
+                                iResultCollector.Initialise(Me)
+                            Next
+
                             'Initialise Arrays for recording the F's from Targ and Cons HCR's
                             ReDim TargetFs(m_core.nGroups - 1, NYearsProject - 1)
                             ReDim ConservationFs(m_core.nGroups - 1, NYearsProject - 1)
@@ -1618,26 +1654,26 @@ Public Class cMSE
 
 
                             'Initialise arrays for recording the realised F's
-                            ReDim RealisedFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
+                            ReDim m_RealisedFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
                             For iGrp = 1 To m_core.nGroups
                                 For iTimeStep = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                                    RealisedFs(iGrp - 1, iTimeStep - 1) = -9999
+                                    m_RealisedFs(iGrp - 1, iTimeStep - 1) = -9999
                                 Next
                             Next
 
                             'Initialise arrays for recording the realised landed F's
-                            ReDim RealisedLandedFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
+                            ReDim m_RealisedLandedFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
                             For iGrp = 1 To m_core.nGroups
                                 For iTimeStep = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                                    RealisedLandedFs(iGrp - 1, iTimeStep - 1) = -9999
+                                    m_RealisedLandedFs(iGrp - 1, iTimeStep - 1) = -9999
                                 Next
                             Next
 
                             'Initialise arrays for recording the realised landed F's
-                            ReDim RealisedDiscardFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
+                            ReDim m_RealisedDiscardFs(m_core.nGroups - 1, NYearsProject * m_ecosim.EcosimData.NumStepsPerYear - 1)
                             For iGrp = 1 To m_core.nGroups
                                 For iTimeStep = 1 To NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
-                                    RealisedDiscardFs(iGrp - 1, iTimeStep - 1) = -9999
+                                    m_RealisedDiscardFs(iGrp - 1, iTimeStep - 1) = -9999
                                 Next
                             Next
 
@@ -1652,6 +1688,11 @@ Public Class cMSE
 
                             If Me.RunEcosim() Then
                                 'Save the Ecosim results
+
+                                For Each iResultCollector In ListofResultCollectors
+                                    iResultCollector.Populate()
+                                Next
+
                                 GoodDynamics = Me.SaveResults2RAM(iModel, m_currentStrategy, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, FleetEffortTable, TrajectoryTable, BiomassLimits, swBadDynamics)
                                 If GoodDynamics = False And Not Me.WriteAllResults Then
                                     nFailedModels += 1
@@ -2633,13 +2674,13 @@ Public Class cMSE
             HCR_Quota_Table.Rows.Add(m_currentStrategy.Name, TargetQuotas, ConservationQuotas)
 
             'Save the realised F's to a datatable
-            Realised_F_Table.Rows.Add(m_currentStrategy.Name, RealisedFs)
+            Realised_F_Table.Rows.Add(m_currentStrategy.Name, m_RealisedFs)
 
             'Save the realised Landed F's to a datatable
-            Realised_Landed_F_Table.Rows.Add(m_currentStrategy.Name, RealisedLandedFs)
+            Realised_Landed_F_Table.Rows.Add(m_currentStrategy.Name, m_RealisedLandedFs)
 
             'Save the realised Discard F's to a datatable
-            Realised_Discard_F_Table.Rows.Add(m_currentStrategy.Name, RealisedDiscardFs)
+            Realised_Discard_F_Table.Rows.Add(m_currentStrategy.Name, m_RealisedDiscardFs)
 
             'Save the catch trajectory results to RAM
             CatchTrajTable.Rows.Add(m_currentStrategy.Name, LandingsDiscardsThroughoutProjection)
@@ -4132,11 +4173,11 @@ Public Class cMSE
             'End If
 
             For iGrp = 1 To m_core.nGroups
-                RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Me._simdata.FishRateNo(iGrp, iTime) * QMult(iGrp)
+                m_RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Me._simdata.FishRateNo(iGrp, iTime) * QMult(iGrp)
 
                 'Calculate the Realised Landed F
-                RealisedLandedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedLandedFs(BiomassAtTimestep(iGrp), iGrp, iTime)
-                RealisedDiscardFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedDiscardFs(BiomassAtTimestep(iGrp), iGrp, iTime)
+                m_RealisedLandedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedLandedFs(BiomassAtTimestep(iGrp), iGrp, iTime)
+                m_RealisedDiscardFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedDiscardFs(BiomassAtTimestep(iGrp), iGrp, iTime)
             Next
 
         End If

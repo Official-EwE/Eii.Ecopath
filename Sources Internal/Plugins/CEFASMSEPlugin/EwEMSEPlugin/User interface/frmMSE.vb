@@ -677,4 +677,24 @@ Public Class frmMSE
 
 #End Region ' Path / model validation
  
+    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+        Dim LandingsList As New List(Of Array)
+        Dim Landings(20, 10, 100, 1000) As Double
+        For iLandingsArrays = 1 To 10
+            For iStrategy = 1 To 20
+                For iFleet = 1 To 10
+                    For iGroup = 1 To 100
+                        For iTimestep = 1 To 1000
+                            InsertValueIntoArray(Landings, iStrategy, iFleet, iGroup, iTimestep, THEVALUE:=123456789)
+                        Next
+                    Next
+                Next
+            Next
+            LandingsList.Add(Landings)
+        Next
+    End Sub
+
+    Private Sub InsertValueIntoArray(ByRef LandingsArray As Double(,,,), ByRef iStrategy As Integer, ByRef iFleet As Integer, ByRef iGroup As Integer, ByRef iTimeStep As Integer, ByRef THEVALUE As Double)
+        LandingsArray(iStrategy, iFleet, iGroup, iTimeStep) = 123456789
+    End Sub
 End Class

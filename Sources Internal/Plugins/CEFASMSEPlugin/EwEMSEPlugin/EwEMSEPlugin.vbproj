@@ -140,6 +140,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cBaseResultsArray.vb" />
     <Compile Include="cBiomassLimits.vb" />
     <Compile Include="cDistributionParameters.vb" />
     <Compile Include="cEffortLimits.vb" />
@@ -147,7 +148,13 @@
     <Compile Include="cMSEPluginPoint.vb" />
     <Compile Include="cDiets.vb" />
     <Compile Include="cQuotaShares.vb" />
+    <Compile Include="cRealisedFs.vb" />
+    <Compile Include="cRealisedLandedFs.vb" />
     <Compile Include="cRegulation.vb" />
+    <Compile Include="cResultsArrayFleets.vb" />
+    <Compile Include="cResultsArrayFleetsGroups.vb" />
+    <Compile Include="cResultsArrayGroups.vb" />
+    <Compile Include="cResultsCSVWriter.vb" />
     <Compile Include="cStockAssessmentFleetParameters.vb" />
     <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="cStockAssessmentParameters.vb" />
