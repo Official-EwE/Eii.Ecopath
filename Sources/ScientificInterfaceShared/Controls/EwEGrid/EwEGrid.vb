@@ -1581,24 +1581,30 @@ Namespace Controls.EwEGrid
 
             Try
                 For iRow As Integer = 0 To Me.RowsCount - 1
-                    For iCol As Integer = 0 To Me.ColumnsCount - 1
-                        If Me.Columns(iCol).Visible Then
-                            cell = Me(iRow, iCol)
-                            If (cell IsNot Nothing) Then
-                                cellValue = cell.Value
-                                If (cellValue IsNot Nothing) Then
-                                    If TypeOf (cellValue) Is String Then
-                                        sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
-                                    Else
-                                        strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
-                                        sw.Write(strValue)
+                    If Me.Rows(iRow).Visible Then
+                        For iCol As Integer = 0 To Me.ColumnsCount - 1
+                            If Me.Columns(iCol).Visible Then
+                                cell = Me(iRow, iCol)
+                                If (cell IsNot Nothing) Then
+                                    cellValue = cell.Value
+                                    If (cellValue IsNot Nothing) Then
+                                        Try
+                                            If TypeOf (cellValue) Is String Then
+                                                sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
+                                            Else
+                                                strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
+                                                sw.Write(strValue)
+                                            End If
+                                        Catch ex As Exception
+                                            ' Ignore value graciously
+                                        End Try
                                     End If
                                 End If
+                                sw.Write(",")
                             End If
-                            sw.Write(",")
-                        End If
-                    Next
-                    sw.WriteLine()
+                        Next
+                        sw.WriteLine()
+                    End If
                 Next
 
             Catch ex As Exception
