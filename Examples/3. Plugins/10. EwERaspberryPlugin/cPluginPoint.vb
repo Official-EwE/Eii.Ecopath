@@ -223,7 +223,7 @@ Public Class cPluginPoint
             Dim strMessge As String = String.Format(My.Resources.PROMPT_CRASH, _
                                                     fmt.GetDescriptor(Me.m_core.EcoPathGroupInputs(iGroup)), _
                                                     Me.m_uic.StyleGuide.FormatNumber(sPerc))
-            Dim msg As New cMessage(strMessge, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+            Dim msg As New cMessage(strMessge, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
 
         End If
