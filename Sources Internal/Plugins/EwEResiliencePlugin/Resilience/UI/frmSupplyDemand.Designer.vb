@@ -126,6 +126,7 @@ Partial Class frmSupplyDemand
         Me.Controls.Add(Me.m_slider)
         Me.Controls.Add(Me.m_zgc)
         Me.Name = "frmSupplyDemand"
+        Me.TabText = ""
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)

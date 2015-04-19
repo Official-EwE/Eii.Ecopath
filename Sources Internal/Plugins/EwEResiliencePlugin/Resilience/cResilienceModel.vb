@@ -60,14 +60,14 @@ Public Class cResilienceModel
             EatenByYear(i) += simds.Eatenby(i)
             EatenOfYear(i) += simds.Eatenof(i)
 
-            Me.m_data.GroupSupplyAtT(i, iTime - 1) = -cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
+            Me.m_data.GroupSupplyAtT(i, iTime - 1) = cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
             Me.m_data.GroupDemandAtT(i, iTime - 1) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
 
             Me.CalculateResilience(Me.m_data.GroupSupplyAtT, Me.m_data.GroupDemandAtT, iTime - 1, Me.m_data.ResilienceAtT)
 
             Try
                 If ((iTime Mod cCore.N_MONTHS) = 0) Then
-                    Me.m_data.GroupSupplyAtY(i, iYear - 1) = -cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupSupplyAtY(i, iYear - 1) = cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
                     Me.m_data.GroupDemandAtY(i, iYear - 1) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
                     Me.CalculateResilience(Me.m_data.GroupSupplyAtY, Me.m_data.GroupDemandAtY, iYear - 1, Me.m_data.ResilienceAtY)
                     EatenOfYear(i) = 0

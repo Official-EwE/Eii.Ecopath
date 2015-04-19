@@ -116,7 +116,7 @@ Public Class cResilienceGraph
 
         ppl = New PointPairList()
         For i As Integer = 1 To Me.m_data.NumYears
-            ppl.Add(i, Me.m_data.ResilienceAtY(i))
+            ppl.Add(i - 0.5, Me.m_data.ResilienceAtY(i))
         Next
         li = New ZedGraph.LineItem(My.Resources.GRAPH_RES_LINE_ANNUAL, ppl, Color.Blue, SymbolType.Circle)
         li.Line.IsVisible = False

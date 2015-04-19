@@ -51,11 +51,11 @@ Public Class frmResilience
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
-        AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
-
         Me.m_graph = New cResilienceGraph()
         Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
+
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
+        AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
 
         Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
         Me.m_tsbnSaveNow.Image = SharedResources.saveHS
