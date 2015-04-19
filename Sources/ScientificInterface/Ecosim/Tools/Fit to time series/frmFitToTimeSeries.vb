@@ -115,6 +115,7 @@ Namespace Ecosim
                 Me.IsRunning = Me.m_F2TSManager.IsRunning()
 
                 Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
+                Me.UpdateMaxSplinePoints()
                 Me.UpdateControls()
 
             Catch ex As Exception
@@ -234,7 +235,7 @@ Namespace Ecosim
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSearch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnSearch.Click
 
             Dim shapeSelected As cShapeData = Nothing
@@ -278,7 +279,7 @@ Namespace Ecosim
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
+        Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
             'this will stop any running model Search or Sensitivity
             Me.m_F2TSManager.StopRun(0)
         End Sub
@@ -330,11 +331,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnResetVsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cbResetVs.CheckedChanged
-
-        End Sub
-
         Private Sub OnBlockSelected(ByVal sender As IBlockSelector) _
             Handles m_vulnerabilityBlockCodeSelector.OnBlockSelected
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = sender.SelectedBlock
@@ -356,7 +352,11 @@ Namespace Ecosim
         Private Sub OnLastYearChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudLastYear.ValueChanged
 
-            If (Not Me.m_bInUpdate) Then Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
+            If (Not Me.m_bInUpdate) Then
+                Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
+                Me.UpdateMaxSplinePoints()
+            End If
+
             Me.UpdateControls()
 
         End Sub
@@ -668,6 +668,17 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub LogProgress(ByVal strEntry As String)
             Me.m_lbResults.Items.Insert(0, strEntry)
+        End Sub
+
+        Private Sub UpdateMaxSplinePoints()
+
+            Dim nMax As Integer = CInt(Math.Min(Me.m_nudSplinePts.Value, Me.m_nudLastYear.Value))
+            If (nMax < Me.m_nudSplinePts.Value) Then
+                Me.m_nudSplinePts.Value = nMax
+                Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
+            End If
+            Me.m_nudSplinePts.Maximum = Me.m_nudLastYear.Value
+
         End Sub
 
 #End Region ' Internal implementation
