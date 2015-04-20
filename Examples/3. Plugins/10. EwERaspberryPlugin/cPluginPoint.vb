@@ -31,18 +31,25 @@ Public Class cPluginPoint
     Implements EwEPlugin.IEcopathRunCompletedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
+    Implements EwEPlugin.IDisposedPlugin
 
 #Region " Private vars "
 
     ''' <summary>The core to use.</summary>
     Private m_core As cCore = Nothing
+
     ''' <summary>The UI context to use.</summary>
-    ''' 
     Private m_uic As cUIContext = Nothing
+
     ''' <summary>Ecopath data for detecting crashes.</summary>
     Private m_epdata As cEcopathDataStructures = Nothing
+
     ''' <summary>Stocks chrash at 1% of the original biomass.</summary>
     Private m_threshold As Single = 0.01
+
+    ''' <summary>Pfrt</summary>
+    Private m_berry As Media.SoundPlayer = Nothing
+
     ''' <summary>Thar she blows!</summary>
     Private m_bBlown As Boolean = False
 
@@ -53,13 +60,15 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
     ''' <remarks>
-    ''' Overridden to grab a reference to the EwE <see cref="cCore">core</see>.
+    ''' Implemented to grab a reference to the EwE <see cref="cCore">core</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Sub Initialize(core As Object) _
-         Implements EwEPlugin.IPlugin.Initialize
+        Implements EwEPlugin.IPlugin.Initialize
         Try
             Me.m_core = DirectCast(core, cCore)
+            Me.m_berry = New Media.SoundPlayer(My.Resources.berry)
+            Me.m_berry.Load()
         Catch ex As Exception
             ' Umph
         End Try
@@ -68,11 +77,11 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
     ''' <remarks>
-    ''' Overridden to grab a reference to the EwE <see cref="cCore">core</see>.
+    ''' Implemented to provide an author name.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Author As String _
-          Implements EwEPlugin.IPlugin.Author
+        Implements EwEPlugin.IPlugin.Author
         Get
             Return "Anonymous"
         End Get
@@ -81,7 +90,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Contact"/>
     ''' <remarks>
-    ''' Overridden to report contact information for this plug-in.
+    ''' Implemented to report contact information for this plug-in.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Contact As String _
@@ -94,7 +103,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
     ''' <remarks>
-    ''' Overridden to report description information for this plug-in.
+    ''' Implemented to report description information for this plug-in.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Description As String _
@@ -107,11 +116,11 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
     ''' <remarks>
-    ''' Overridden to grab a reference to the EwE <see cref="cCore">core</see>.
+    ''' Implemented to grab a reference to the EwE <see cref="cCore">core</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name As String _
-         Implements EwEPlugin.IPlugin.Name
+        Implements EwEPlugin.IPlugin.Name
         Get
             Return "EwERaspberryPlugin"
         End Get
@@ -124,7 +133,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IUIContextPlugin.UIContext"/>
     ''' <remarks>
-    ''' Overridden to grab a reference to the EwE <see cref="cUIContext">UI context</see>.
+    ''' Implemented to grab a reference to the EwE <see cref="cUIContext">UI context</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Sub UIContext(uic As Object) Implements _
@@ -143,7 +152,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted"/>
     ''' <remarks>
-    ''' Overridden to grab a reference to the Ecopath data structures. We need
+    ''' Implemented to grab a reference to the Ecopath data structures. We need
     ''' this to detect Ecosim biomass crashes relative to the original Ecopath biomass.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
@@ -159,7 +168,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized"/>
     ''' <remarks>
-    ''' Overridden to reset the raspberry flag to pfrt new crashes. Yippee.
+    ''' Implemented to reset the raspberry flag to pfrt new crashes. Yippee.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
@@ -174,7 +183,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep"/>
     ''' <remarks>
-    ''' Overridden to check if a biomass has crashed below threshold level.
+    ''' Implemented to check if a biomass has crashed below threshold level.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Sub EcosimEndTimeStep(ByRef Bt() As Single, simdata As Object, t As Integer, simresults As Object) _
@@ -192,6 +201,22 @@ Public Class cPluginPoint
     End Sub
 
 #End Region ' EwE core integration
+
+#Region " Disposal "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Implemented to clean up bits that were allocated.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Dispose() _
+        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Me.m_berry.Stop()
+        Me.m_berry.Dispose()
+        Me.m_berry = Nothing
+    End Sub
+
+#End Region ' Disposal
 
 #Region " Internals "
 
@@ -212,11 +237,10 @@ Public Class cPluginPoint
     ''' <param name="sPerc">Percentage of biomass remaining.</param>
     ''' -----------------------------------------------------------------------
     Private Sub Blow(iGroup As Integer, sPerc As Single)
-        If (Not Me.m_bBlown) Then
 
-            Dim p As New Media.SoundPlayer(My.Resources.berry)
-            p.PlaySync()
-            p.Dispose()
+        If (Not Me.m_bBlown) And (Me.m_berry IsNot Nothing) Then
+
+            Me.m_berry.Play()
             Me.m_bBlown = True
 
             Dim fmt As New cCoreInterfaceFormatter()
