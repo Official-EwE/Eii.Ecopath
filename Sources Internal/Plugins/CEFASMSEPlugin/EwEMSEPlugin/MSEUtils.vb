@@ -141,10 +141,6 @@ Public Class cMSEUtils
         ParamsOut
         ''' <summary>The Results subfolder under 'Root'.</summary>
         Results
-        ''' <summary>The Results\Trajectories1 subfolder under 'Root'.</summary>
-        ResultsTrajectories
-        ''' <summary>The Results\Trajectories2 subfolder under 'Root'.</summary>
-        ResultsTraj2
         ''' <summary>The Results\HCRF_Targ subfolder under 'Root'.</summary>
         HCRF_Targ
         ''' <summary>The Results\HCRF_Cons subfolder under 'Root'.</summary>
@@ -153,6 +149,14 @@ Public Class cMSEUtils
         HCRQuota_Targ
         ''' <summary>The Results\HCRQuota_Cons subfolder under 'Root'.</summary>
         HCRQuota_Cons
+        ''' <summary>The Results\Biomass subfolder under 'Root'.</summary>
+        Biomass
+        ''' <summary>The Results\Effort subfolder under 'Root'.</summary>
+        Effort
+        ''' <summary>The Results\HighestValueGroup subfolder under 'Root'.</summary>
+        HighestValueGroup
+        ''' <summary>The Results\ChokeGroup subfolder under 'Root'.</summary>
+        ChokeGroup
         ''' <summary>The Results\RealisedF subfolder under 'Root'.</summary>
         RealisedF
         ''' <summary>The Results\RealisedF subfolder under 'Root'.</summary>
@@ -217,12 +221,14 @@ Public Class cMSEUtils
                 'Case eMSEPaths.NaturalMort : Return "NaturalMortalities"
             Case eMSEPaths.ParamsOut : Return "ParametersOut"
             Case eMSEPaths.Results : Return "Results"
-            Case eMSEPaths.ResultsTrajectories : Return "Results\Trajectories"
-            Case eMSEPaths.ResultsTraj2 : Return "Results\Trajectories2"
             Case eMSEPaths.HCRF_Targ : Return "Results\HCRF_Targ"
             Case eMSEPaths.HCRF_Cons : Return "Results\HCRF_Cons"
             Case eMSEPaths.HCRQuota_Targ : Return "Results\HCRQuota_Targ"
             Case eMSEPaths.HCRQuota_Cons : Return "Results\HCRQuota_Cons"
+            Case eMSEPaths.Biomass : Return "Results\Biomass"
+            Case eMSEPaths.Effort : Return "Results\Effort"
+            Case eMSEPaths.HighestValueGroup : Return "Results\HighestValueGroup"
+            Case eMSEPaths.ChokeGroup : Return "Results\ChokeGroup"
             Case eMSEPaths.RealisedF : Return "Results\RealisedF"
             Case eMSEPaths.RealisedLandedF : Return "Results\RealisedLandedF"
             Case eMSEPaths.RealisedDiscardF : Return "Results\RealisedDiscardedF"
