@@ -3,12 +3,12 @@
 
     Public Overrides ReadOnly Property ResultsThroughProjection(iGrp As Integer, iFleet As Integer, iTime As Integer) As Double
         Get
-            Dim TempTotalGroupFleetDiscardRate As Double = 0
+            Dim TempTotalGroupFleetLandingsRate As Double = 0
             For iMonth = 1 To 12
-                TempTotalGroupFleetDiscardRate += m_MSE.DiscardsThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
+                TempTotalGroupFleetLandingsRate += m_MSE.LandingsThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
             Next
-            TempTotalGroupFleetDiscardRate /= 12
-            Return TempTotalGroupFleetDiscardRate
+            TempTotalGroupFleetLandingsRate /= 12
+            Return TempTotalGroupFleetLandingsRate
         End Get
     End Property
 

@@ -182,14 +182,9 @@
     <Compile Include="cRegulation.vb" />
     <Compile Include="cResultsCollector_2DArray.vb" />
     <Compile Include="cResultsCollector_1DArray.vb" />
-    <Compile Include="cResultsWriter_HCR_Fs.vb" />
-    <Compile Include="cResultsWriter_HCR_Quota.vb" />
-    <Compile Include="cResultsWriter_List.vb" />
     <Compile Include="cStockAssessmentFleetParameters.vb" />
     <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="cStockAssessmentParameters.vb" />
-    <Compile Include="cResultsWriter_Catches.vb" />
-    <Compile Include="cResultsWriter_RealisedFs.vb" />
     <Compile Include="IMSEData.vb" />
     <Compile Include="User interface\gridQuotaShares.vb">
       <SubType>Component</SubType>

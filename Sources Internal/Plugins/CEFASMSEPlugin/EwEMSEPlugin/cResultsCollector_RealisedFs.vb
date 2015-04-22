@@ -16,12 +16,6 @@ Public MustInherit Class cResultsCollector_RealisedFs
         End Get
     End Property
 
-    Public Overrides Sub Initialise(MSE As cMSE)
-
-        m_MSE = MSE
-        SetSize(MSE.Strategies.Count, MSE.Core.nGroups, NumberOfTimeRecords)
-
-    End Sub
 
     Public Overrides ReadOnly Property Dim_Name As String
         Get

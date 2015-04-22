@@ -5,7 +5,7 @@
         Get
             Dim TempTotalGroupFleetLandingRate As Double = 0
             For iMonth = 1 To 12
-                TempTotalGroupFleetLandingRate += m_MSE.LandingsThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
+                TempTotalGroupFleetLandingRate += m_MSE.DiscardsThroughoutProjection(iGrp, iFleet, (iTime - 1) * 12 + iMonth)
             Next
             TempTotalGroupFleetLandingRate /= 12
             Return TempTotalGroupFleetLandingRate
@@ -31,17 +31,17 @@
         End Get
     End Property
 
-    Public Overrides Sub Populate()
+    'Public Overrides Sub Populate()
 
-        Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
-        For igrp = 1 To m_MSE.Core.nGroups
-            For iFleet = 1 To m_MSE.Core.nFleets
-                For iTime = 1 To NumberOfTimeRecords
-                    Me.SetValue(StrategyIndex, igrp, iFleet, iTime) = m_MSE.DiscardsThroughoutProjection(igrp, iFleet, iTime)
-                Next
-            Next
-        Next
-    End Sub
+    'Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
+    'For igrp = 1 To m_MSE.Core.nGroups
+    '    For iFleet = 1 To m_MSE.Core.nFleets
+    '        For iTime = 1 To NumberOfTimeRecords
+    '            Me.SetValue(StrategyIndex, igrp, iFleet, iTime) = m_MSE.DiscardsThroughoutProjection(igrp, iFleet, iTime)
+    '        Next
+    '    Next
+    'Next
+    'End Sub
 
 
 End Class

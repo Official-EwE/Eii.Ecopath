@@ -13,13 +13,6 @@
         End Get
     End Property
 
-    Public Overrides Sub Initialise(MSE As cMSE)
-
-        m_MSE = MSE
-        SetSize(MSE.Strategies.Count, MSE.Core.nGroups, MSE.Core.nFleets, NumberOfTimeRecords)
-
-    End Sub
-
     Public Overrides Sub Populate()
 
         Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index

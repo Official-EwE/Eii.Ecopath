@@ -7,11 +7,6 @@
         End Get
     End Property
 
-    Public Overrides Sub Initialise(MSE As cMSE)
-        m_MSE = MSE
-        SetSize(MSE.Strategies.Count, MSE.Core.nGroups, MSE.Core.nFleets, NumberOfTimeRecords)
-    End Sub
-
     Public Overrides ReadOnly Property TotalAcrossFleets As Boolean
         Get
             Return True

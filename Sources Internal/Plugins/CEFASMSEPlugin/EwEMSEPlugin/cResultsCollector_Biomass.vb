@@ -28,11 +28,6 @@ Public Class cResultsCollector_Biomass
         End Get
     End Property
 
-    Public Overrides Sub Initialise(MSE As cMSE)
-        m_MSE = MSE
-        SetSize(MSE.Strategies.Count, MSE.Core.nGroups, NumberOfTimeRecords)
-    End Sub
-
     Public Overrides ReadOnly Property nElements As Integer
         Get
             Return m_MSE.Core.nGroups

@@ -102,7 +102,6 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
-        Me.Button2 = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -408,7 +407,6 @@ Partial Class frmMSE
         '
         'm_plStep1
         '
-        Me.m_plStep1.Controls.Add(Me.Button2)
         Me.m_plStep1.Controls.Add(Me.TableLayoutPanel1)
         Me.m_plStep1.Controls.Add(Me.m_lblPathValue)
         Me.m_plStep1.Controls.Add(Me.m_lblDataPath)
@@ -498,12 +496,6 @@ Partial Class frmMSE
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
         '
-        'Button2
-        '
-        resources.ApplyResources(Me.Button2, "Button2")
-        Me.Button2.Name = "Button2"
-        Me.Button2.UseVisualStyleBackColor = True
-        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -588,5 +580,4 @@ Partial Class frmMSE
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
     Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
-    Friend WithEvents Button2 As System.Windows.Forms.Button
 End Class
