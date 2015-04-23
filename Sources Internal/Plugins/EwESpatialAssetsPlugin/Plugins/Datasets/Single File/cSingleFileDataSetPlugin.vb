@@ -350,10 +350,10 @@ Namespace SpatialData
                                 ' JS 06Nov13: added file exist check when loading dataset metadata
                                 If Boolean.Parse(xn.Attributes("Indexed").InnerText) And IO.File.Exists(Me.SourceFileName) Then
                                     Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed
-                                    Me.m_ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("lonmin").InnerText, GetType(Single))), _
-                                                           CSng(cStringUtils.ConvertToNumber(xn.Attributes("latmax").InnerText, GetType(Single))))
-                                    Me.m_ptBR = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("lonmax").InnerText, GetType(Single))), _
-                                                           CSng(cStringUtils.ConvertToNumber(xn.Attributes("latmin").InnerText, GetType(Single))))
+                                    Me.m_ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMin").InnerText, GetType(Single))), _
+                                                           CSng(cStringUtils.ConvertToNumber(xn.Attributes("LatMax").InnerText, GetType(Single))))
+                                    Me.m_ptBR = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMax").InnerText, GetType(Single))), _
+                                                           CSng(cStringUtils.ConvertToNumber(xn.Attributes("LatMin").InnerText, GetType(Single))))
                                 End If
                             End If
 

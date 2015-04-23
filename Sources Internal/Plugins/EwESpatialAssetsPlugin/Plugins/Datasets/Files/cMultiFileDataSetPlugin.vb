@@ -528,10 +528,10 @@ Namespace SpatialData
                                 ElseIf (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                     If (Boolean.Parse(xnChild.Attributes("Indexed").InnerText)) Then
                                         f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
-                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("lonmin").InnerText, GetType(Single))), _
-                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("latmax").InnerText, GetType(Single))))
-                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("lonmax").InnerText, GetType(Single))), _
-                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("latmin").InnerText, GetType(Single))))
+                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMin").InnerText, GetType(Single))), _
+                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LatMax").InnerText, GetType(Single))))
+                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMax").InnerText, GetType(Single))), _
+                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LatMin").InnerText, GetType(Single))))
                                     End If
                                 End If
 
