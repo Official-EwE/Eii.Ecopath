@@ -941,10 +941,10 @@ Public Class cEcoSpace
                 Me.BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
 
                 If Me.m_Data.isCapacityChanged Then
-                    Dim hcSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
+                    'Dim hcSt As Double = stpwchTotRunTime.Elapsed.TotalSeconds
                     'set the Capacity maps if any of the inputs have changed
                     Me.SetHabCap()
-                    System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
+                    'System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
                 End If
 
                 'Tell Ecoseed that we are at the start of a timestep
