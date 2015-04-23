@@ -95,22 +95,26 @@ Public Class cEcospaceASCMapResultsWriter
                 Next
             Next
 
-            ' Sum space effort
-            strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
-            Try
-                strm = New StreamWriter(strFile, False)
-                If (strm IsNot Nothing) Then
-                    Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
-                    strm.Flush()
-                    strm.Close()
-                    strm = Nothing
-                End If
-            Catch ex As IOException
-                cLog.Write(ex)
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
-                                         eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
-                Me.m_core.Messages.SendMessage(msg)
-            End Try
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb 17-Apr-2015 Removed sum of effort output 
+            'This was added for a specific purpose and is not a generic output
+            '' Sum space effort
+            'strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
+            'Try
+            '    strm = New StreamWriter(strFile, False)
+            '    If (strm IsNot Nothing) Then
+            '        Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
+            '        strm.Flush()
+            '        strm.Close()
+            '        strm = Nothing
+            '    End If
+            'Catch ex As IOException
+            '    cLog.Write(ex)
+            '    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+            '                             eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+            '    Me.m_core.Messages.SendMessage(msg)
+            'End Try
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             ' Space effort
             For iFlt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
