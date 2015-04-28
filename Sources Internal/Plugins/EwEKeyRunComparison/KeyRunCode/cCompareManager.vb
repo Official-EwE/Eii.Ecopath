@@ -32,6 +32,46 @@ Imports System.Text
 
 Public Class cCompareManager
 
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'ToDo 28-Apr-2015 Add the ability to compare partial configurations, just Ecopath, Ecopath and Sim, Path Sim and Space
+    '   This will require a change to the UI so it can be run from a partial model load, just Ecopath.
+    '   Setup the UI results grid so that it can group results by model type/component Ecopath...
+    '   This could either be in a single hierarchical grid, separate grid for each type all in one spliter panel or tabs for each grid.
+    '   The UI could be setup as nodes in the navigation tree with a master node to load, create and compare files. 
+    '       This might be awkward to see an overview of the comparison as the results would be spread across multiple forms.
+    '       So there would need to be an overview of the match on the main form... this might get all muddled up and become hard to us.   
+
+    '   Add a ModelType/Component tag to the hash record.
+    '       I think it will be better to use a new ModelType/CoreComponent enum rather than the ICoreInterface.CoreComponent property.
+    '       The ICoreInterface.CoreComponent property can have enums other than one of the 3 core model Ecopath, Ecosim or Ecospace.
+    '       This would make it hard to organize the UI around the core models based on the ModelType ennum.
+    '
+    '       The ModelType/CoreComponent enum can be hardwired into the cHashValue when the object is created.
+    '
+    '   Comparing a KeyRun file to the current model
+    '       Once there is a ModelType/CoreComponent enum as part of the cHashValue objects.
+    '       There could be a different cHashResults object for each ModelType/CoreComponent. 
+    '               They could be stored in a dictionary of cHashResults by ModelType/CoreComponent then fished out by type
+    '       When the compare function creates a new cHashResultPair object, the match result, it could store it in the correct cHashResults by the ModelType/CoreComponent
+    '       The UI could use a different property for each cHashResults or use the enum to get the correct result object.
+    '
+    '   KeyRunVerion is already stored in the file. It may be a good idea to tag it in file for easier retrieval. 
+    '       This would allow for easier modification of the file format at a later date.
+
+    '   Added a dedicated field for which ModelType/CoreComponents are store in the file and currently loaded in the SI-UI
+    '       This is not totaly necessary as it can be calculated on the fly when the comparison is made and is not really relavant until that time.
+    '       Unless you need a live update of the current model to the currently loaded KeyRun file... which seems like nothing more then a cluster fuck 
+
+
+    'ToDo 28-Apr-2015 Make it so the KeyRun configuration can be stored in a field in the database??? We need to sort out how this would be used.
+    '       Change the format of the .ewekeyrun file to .xml, or add that as a format.
+    '       Change the popultation of the keyrun hash values dictionary to use a .xml string in memory instead of reading the values from file.
+    '       That should more or less do it. Once the data is in memory it should all work the same.
+    '       We really need to sort out how this would work in the UI because you still need to ability to load, create and save files.
+    '       So two user can make sure a new configuration is the same across models.
+    '       So it would have to be clear where the data is being saved. To the database or to file
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 #Region " Private variables "
 
     Private m_core As EwECore.cCore
