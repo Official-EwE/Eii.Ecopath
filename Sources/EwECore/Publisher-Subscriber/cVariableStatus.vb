@@ -196,7 +196,7 @@ Public Class cVariableStatus
         Get
             If ((Me.Status And eStatusFlags.ErrorEncountered) > 0) Then Return eMessageImportance.Critical
             If ((Me.Status And (eStatusFlags.FailedValidation Or eStatusFlags.MissingParameter Or eStatusFlags.MissingParameter)) > 0) Then Return eMessageImportance.Warning
-            Return eMessageImportance.Information
+            Return eMessageImportance.Maintenance
         End Get
     End Property
 
