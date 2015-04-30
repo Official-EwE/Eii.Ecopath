@@ -334,8 +334,6 @@ Public Class cIBMSolver
         Dim Egg As Single
         Dim Te(,) As Single, Xe As Single, XeT As Single
 
-        m_Stanza.EggAtSpawn(isp) = True
-
         'update numbers and body weights
         ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp))
         If m_Ecosim.ResetPred(ieco) = False Then
@@ -391,7 +389,6 @@ Public Class cIBMSolver
                 m_Stanza.Wpacket(isp, ia1, ip) = 0.0000000001
             Next
 
-            m_Stanza.EggAtSpawn(isp) = False
             If m_Stanza.EggAtSpawn(isp) Then
                 'distribute juvenile packets in proportion to eggcell distribution
                 ReDim Te(m_Data.InRow, m_Data.InCol)
