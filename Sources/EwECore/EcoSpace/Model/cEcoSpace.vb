@@ -6409,7 +6409,7 @@ exitline:
                         m_Data.PredCell(i, j, ieco) = 0
                         'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
                         'this could be proportional
-                        If m_Data.HabCap(j)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
+                        If m_Data.HabCap(ieco)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
                             Nused = Nused + 1
                             iList(Nused) = i : Jlist(Nused) = j
                             If ist = 1 Then m_Stanza.iNursery(isp, Nused) = i : m_Stanza.jNursery(isp, Nused) = j
