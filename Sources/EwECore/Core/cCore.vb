@@ -11306,6 +11306,8 @@ Public Class cCore
             'In EwE5 this only happens in InitStanza here we need the value from Age2() for the interface EwE5 uses SecondAge()
             m_Stanza.Age2(iStanza, nLifeStages) = SecondAge(nLifeStages)
 
+            'Keep the EggAtSpawn flag any edits by the user will be lost by LoadStanza()
+            Dim EggAtSpawn As Boolean = stanza.EggAtSpawn
 
             'LoadStanza() will update WeightAtAge (SplitWage), NumberAtAge (SplitNo), BiomassAtAge (SplitWage*SplitNo)
             'with the new values computed by CalculateStanzaParameters() above
@@ -11314,13 +11316,8 @@ Public Class cCore
 
             're-populate the variables that the user entered as arguments to CalculateStanzaParameters() 
             'that were over written by loadStanza()
-
-            ' JS 25feb09: vbk stored in groups, unaffected by stanza calculations
-            'StanzaGrp.VBGF = orgVBK
-
-            ' Restore group
+            'Restore group
             stanza.AllowValidation = False
-
             For i = 1 To nLifeStages
                 stanza.Biomass(i) = Bio(i)
                 stanza.Mortality(i) = Z(i)
@@ -11335,6 +11332,7 @@ Public Class cCore
             stanza.FixedFecundity = bFixedFecundity
             stanza.LeadingB = leadingB
             stanza.LeadingCB = leadingCB
+            stanza.EggAtSpawn = EggAtSpawn
 
             'stanza.AllowValidation = True
 
