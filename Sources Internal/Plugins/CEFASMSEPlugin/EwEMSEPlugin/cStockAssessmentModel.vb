@@ -51,7 +51,7 @@ Public Class cStockAssessmentModel
 
 #Region "Private data"
 
-    Private Const MODEL_HEADER As String = "ModelParametersName,Value"
+    Private Const MODEL_HEADER As String = "'ModelParametersName','Value'"
 
     Private m_MSE As cMSE
     Private m_core As cCore
@@ -718,7 +718,7 @@ Public Class cStockAssessmentModel
         Try
             'Header data
             buff = strm.ReadLine()
-            Debug.Assert(buff.Contains(MODEL_HEADER), "Opps could be a problem reading Model data from StockAssessment file.")
+            'Debug.Assert(buff.Contains(MODEL_HEADER), "Opps could be a problem reading Model data from StockAssessment file.")
             'Data
             buff = strm.ReadLine()
             recs = cStringUtils.SplitQualified(buff, ",")

@@ -173,7 +173,7 @@ Public Class cStockAssessmentParameters
     End Function
 
     Public Shared Function toCSVHeader() As String
-        Return "GroupName,GroupIndex,ForcastGain,RHalfBioAtB0,CVKalman,CVObservationError,CVRecruitment"
+        Return "'GroupName','GroupIndex','Recruitment/total_pop','Bt/Ecopath_B_50%','Recruitment_CV','Biomass_Observation_Error','Kalman_Error'"
     End Function
 
 End Class

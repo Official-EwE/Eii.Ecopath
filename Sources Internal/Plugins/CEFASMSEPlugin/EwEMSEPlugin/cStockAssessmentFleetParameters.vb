@@ -90,7 +90,7 @@ Public Class cStockAssessmentFleetParameters
 
 
     Public Shared Function toCSVHeader() As String
-        Return "FleetName,FleetIndex,FleetImplementationError"
+        Return "'FleetName','FleetIndex','FleetImplementationError'"
     End Function
 End Class
 
