@@ -725,7 +725,7 @@ Public Class frmEcotroph
             Dim totales As String = Join(recup, vbNewLine)
             Dim matrices() As String = Split(totales, "-----")
 
-
+            'A matrice created by commande(12) is not loaded (created but not loaded). i do'nt remember what is the use of this matrice (and the name) JG 07/05/2015
 
             Dim Ctr() As Control = Me.Controls.Find("Catch." & (ETinputdata.fleetname(0)), True)
             Try
@@ -755,9 +755,9 @@ Public Class frmEcotroph
                         dtg.Left = 3
                         dtg.Dock = DockStyle.Fill
                         panel_result.TabPages(compteur_fleet + 6).Controls.Add(dtg)
-                        charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
+                        charge_grid(matrices(compteur_fleet + 7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
                     Else
-                        charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
+                        charge_grid(matrices(compteur_fleet + 7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
                     End If
 
 
