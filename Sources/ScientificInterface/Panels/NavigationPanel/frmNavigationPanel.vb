@@ -208,6 +208,7 @@ Public Class frmNavigationPanel
             .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceParameters), "Ecospace parameters.htm")
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.frmEcospaceMap), "Basemap.htm") ' ToDo: connect to help
             .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceFishery), "Ecospace Fishery.htm")
+            .Add("ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAs))
             .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.dlgEcospaceScenario)) ' ToDo: connect to help
             .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmRunEcospace), "Run Ecospace.htm")
             .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Advection.frmAdvection), "")
