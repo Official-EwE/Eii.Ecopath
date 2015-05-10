@@ -111,6 +111,7 @@ Public Class frmSupplyDemand
         Me.m_tsbnAutosave.Checked = My.Settings.ResilAutosave
 
         MyBase.UpdateControls()
+
     End Sub
 
     Private Sub UpdateGraph()
@@ -139,6 +140,7 @@ Public Class frmSupplyDemand
             Me.UpdateControls()
         Catch ex As Exception
             Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmSupplyDemand.OnCalculationsUpdated")
         End Try
     End Sub
 
@@ -150,6 +152,7 @@ Public Class frmSupplyDemand
             Me.UpdateGraph()
         Catch ex As Exception
             Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmSupplyDemand.OnToggleAnnual")
         End Try
     End Sub
 
@@ -160,6 +163,7 @@ Public Class frmSupplyDemand
             Me.Core.OnSettingsChanged()
         Catch ex As Exception
             Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmSupplyDemand.OnToggleAutosave")
         End Try
     End Sub
 
@@ -169,17 +173,27 @@ Public Class frmSupplyDemand
             Me.m_graph.FixedScale = (Me.m_tsbnDynamicScales.Checked = False)
             Me.UpdateGraph()
         Catch ex As Exception
-
+            Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmSupplyDemand.OnToggleDynamicAxis")
         End Try
     End Sub
 
     Private Sub OnSaveNow(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnSaveNow.Click
         Try
-            Dim writer As New cResilienceWriter(Me.UIContext.Core, Me.m_model.Data)
+            Dim core As cCore = Me.UIContext.Core
+
+            If (Not core.StateManager.LoadState(eCoreExecutionState.EcosimCompleted)) Then
+                Dim msg As New cMessage(My.Resources.RESIL_STATUS_RUNSIM, eMessageType.StateNotMet, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                core.Messages.SendMessage(msg)
+                Return
+            End If
+
+            Dim writer As New cResilienceWriter(core, Me.m_model.Data)
             writer.Write()
         Catch ex As Exception
-
+            Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmSupplyDemand.OnSaveNow")
         End Try
     End Sub
 
@@ -189,6 +203,7 @@ Public Class frmSupplyDemand
             Me.UpdateGraph()
         Catch ex As Exception
             Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmSupplyDemand.OnTimeSliderChanged")
         End Try
     End Sub
 

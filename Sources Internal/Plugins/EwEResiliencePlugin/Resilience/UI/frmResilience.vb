@@ -118,6 +118,7 @@ Public Class frmResilience
             Me.UpdateControls()
         Catch ex As Exception
             Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmResilience.OnCalculationsUpdated")
         End Try
     End Sub
 
@@ -129,16 +130,25 @@ Public Class frmResilience
             Me.Core.OnSettingsChanged()
         Catch ex As Exception
             Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmResilience.OnToggleAutosave")
         End Try
     End Sub
 
     Private Sub OnSaveNow(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnSaveNow.Click
         Try
-            Dim writer As New cResilienceWriter(Me.UIContext.Core, Me.m_model.Data)
+            Dim core As cCore = Me.UIContext.Core
+
+            If (Not core.StateManager.LoadState(eCoreExecutionState.EcosimCompleted)) Then
+                ' Message of some sort
+                Return
+            End If
+
+            Dim writer As New cResilienceWriter(core, Me.m_model.Data)
             writer.Write()
         Catch ex As Exception
-
+            Debug.Assert(False)
+            cLog.Write(ex, "Reselience:frmResilience.OnSaveNow")
         End Try
     End Sub
 

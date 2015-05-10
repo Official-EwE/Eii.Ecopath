@@ -194,4 +194,7 @@
   <data name="NAVTREE_SUPPLY_DEMAND" xml:space="preserve">
     <value>Supply / demand plot</value>
   </data>
+  <data name="RESIL_STATUS_RUNSIM" xml:space="preserve">
+    <value>Ecosim failed to run, cannot compute resilience</value>
+  </data>
 </root>
