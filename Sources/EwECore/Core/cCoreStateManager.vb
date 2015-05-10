@@ -63,34 +63,41 @@ Public Class cCoreStateManager
     ''' <param name="ExecutionState">State to bring the core up to</param>
     ''' <returns>True if successful. False otherwise.</returns>
     ''' <remarks></remarks>
-    Public Function LoadState(ByVal ExecutionState As EwEUtils.Core.eCoreExecutionState) As Boolean
+    Public Function LoadState(ByVal ExecutionState As eCoreExecutionState) As Boolean
         Try
+            Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
 
             'Try to bring to core up to the requested execution state
             Select Case ExecutionState
 
-                Case EwEUtils.Core.eCoreExecutionState.EcopathCompleted
-                    If Not Me.m_core.StateMonitor.HasEcopathLoaded Then Return False
+                Case eCoreExecutionState.EcopathCompleted
+                    If Not sm.HasEcopathLoaded Then Return False
+                    If sm.HasEcopathRan Then Return True
                     Return m_core.RunEcoPath()
 
-                Case EwEUtils.Core.eCoreExecutionState.EcosimInitialized
-                    If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return False
+                Case eCoreExecutionState.EcosimInitialized
+                    If Not sm.HasEcosimLoaded Then Return False
+                    If sm.HasEcosimInitialized Then Return True
                     If m_core.m_EcoSim.Init(False) Then
-                        m_core.StateMonitor.SetEcoSimInitialized()
+                        sm.SetEcoSimInitialized()
                         Return True
                     End If
                     Return False
 
-                Case EwEUtils.Core.eCoreExecutionState.EcosimCompleted
-                    If Not Me.m_core.StateMonitor.HasEcosimLoaded Then Return False
+                Case eCoreExecutionState.EcosimCompleted
+                    If Not sm.HasEcosimLoaded Then Return False
+                    If sm.HasEcosimRan Then Return True
                     Return m_core.RunEcoSim()
 
+                Case Else
+                    ' Not implemented (yet)
             End Select
 
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".LoadState(" & ExecutionState.ToString & ") Error: " & ex.Message)
         End Try
+
         Return False
 
     End Function
