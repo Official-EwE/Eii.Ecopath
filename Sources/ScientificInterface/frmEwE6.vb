@@ -1835,6 +1835,8 @@ Public Class frmEwE6
 
             ' Set form icon based on core state
             Select Case state
+                Case eCoreExecutionState.Idle
+                    frmNew.Icon = My.Resources.Ecopath0
                 Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
                     frmNew.Icon = My.Resources.Ecopath0
                 Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
