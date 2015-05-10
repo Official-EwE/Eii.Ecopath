@@ -921,21 +921,20 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-        ' Add the dock panel 
         Me.SuspendLayout()
-        Me.m_DockPanel = New DockPanel()
-        With Me.m_DockPanel
-            .Parent = Me
-            .Dock = DockStyle.Fill
-            .ShowDocumentIcon = False
-            .BringToFront()
-        End With
 
-        Me.ResumeLayout()
+        ' Add the dock panel 
+        Me.m_DockPanel = New DockPanel()
+        Me.m_DockPanel.Parent = Me
+        Me.m_DockPanel.Dock = DockStyle.Fill
+        Me.m_DockPanel.ShowDocumentIcon = True
+        Me.m_DockPanel.BringToFront()
+
         My.Settings.Reload()
 
-        Dim al As ArrayList = My.Settings.MdbRecentlyUsedList
-        My.Settings.MdbRecentlyUsedList = al
+        '' What was the intended magic here?
+        'Dim al As ArrayList = My.Settings.MdbRecentlyUsedList
+        'My.Settings.MdbRecentlyUsedList = al
 
         ' Peeks at key but does not consume it
         Me.KeyPreview = True
@@ -986,6 +985,8 @@ Public Class frmEwE6
         Me.UpdateModelControls()
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+        Me.ResumeLayout()
 
     End Sub
 
@@ -2671,8 +2672,7 @@ Public Class frmEwE6
 
         nc = DirectCast(cmd, cNavigationCommand)
 
-        ' Preserve properties from Nav command, because the content of the nav 
-        '    command may change in response to actions in this method
+        ' Preserve properties from Nav command, because the content of the nav command may change in response to actions in this method
         strNavPageID = nc.PageID
         strNavPageName = nc.PageName
         strNavHelpURL = nc.HelpURL
@@ -2699,7 +2699,7 @@ Public Class frmEwE6
             ' Is form already loaded?
             If Not ActivateForm(strNavPageName) Then
 
-                cApplicationStatusNotifier.StartProgress(Me.Core)
+                'cApplicationStatusNotifier.StartProgress(Me.Core)
 
                 Try
                     ' Load instance of form for selected node
@@ -2724,7 +2724,7 @@ Public Class frmEwE6
                     ' Whoah!
                 End Try
 
-                cApplicationStatusNotifier.EndProgress(Me.Core)
+                'cApplicationStatusNotifier.EndProgress(Me.Core)
 
             End If
         End If
@@ -4421,6 +4421,20 @@ Public Class frmEwE6
             ' if possible.
             If (pgcmd.Form IsNot Nothing) Then
                 ' #Yes: form detected
+
+                ' Set form icon based on core state
+                Select Case pgcmd.CoreExecutionState
+                    Case eCoreExecutionState.Idle
+                        pgcmd.Form.Icon = My.Resources.Ecopath0
+                    Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
+                        pgcmd.Form.Icon = My.Resources.Ecopath0
+                    Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
+                        pgcmd.Form.Icon = My.Resources.Ecosim
+                    Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
+                        pgcmd.Form.Icon = My.Resources.Ecospace
+                    Case eCoreExecutionState.EcotracerLoaded
+                        pgcmd.Form.Icon = My.Resources.Ecotracer
+                End Select
 
                 ' Able to activate this form from the open tabs?
                 If Not ActivateForm(pgcmd.Form.Text) Then
