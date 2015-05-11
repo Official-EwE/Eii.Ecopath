@@ -2484,7 +2484,7 @@
     <value>Ecopath estimates</value>
   </data>
   <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
-    <value>Ecosim run results</value>
+    <value>Ecosim</value>
   </data>
   <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
     <value>Ecospace results by region</value>
@@ -3359,5 +3359,8 @@
   </data>
   <data name="LABEL_STOP" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIMRUNRESULTS" xml:space="preserve">
+    <value>Ecosim run results</value>
   </data>
 </root>

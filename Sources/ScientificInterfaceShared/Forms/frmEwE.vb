@@ -271,7 +271,7 @@ Namespace Forms
 
                 AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-                If (Me.DesignMode = False) Then
+                If (Me.DesignMode = False) And (Me.UIContext.FormSettings IsNot Nothing) Then
                     Me.UIContext.FormSettings.Apply(Me)
                 End If
             End If
@@ -287,9 +287,11 @@ Namespace Forms
 
             If (Me.UIContext IsNot Nothing) Then
 
-                ' JS28Feb14: this is one of the memleak culprits that is keeping forms alive
-                ' Explicitly detach from help
-                Me.UIContext.Help.HelpTopic(Me) = ""
+                If (Me.UIContext.Help IsNot Nothing) Then
+                    ' JS28Feb14: this is one of the memleak culprits that is keeping forms alive
+                    ' Explicitly detach from help
+                    Me.UIContext.Help.HelpTopic(Me) = ""
+                End If
 
                 RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 Me.UIContext = Nothing
@@ -405,7 +407,7 @@ Namespace Forms
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
-            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
+            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) And (Me.UIContext.FormSettings IsNot Nothing) Then
                 ' Store form position BEFORE form is closed
                 Me.UIContext.FormSettings.Store(Me)
             End If

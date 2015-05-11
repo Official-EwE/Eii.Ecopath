@@ -180,6 +180,8 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\EcospaceResultsWriterDataSources.vb" />
+    <Compile Include="FitToTimeSeries\Input Output\cF2TSManager.vb" />
+    <Compile Include="FitToTimeSeries\Input Output\cF2TSResults.vb" />
     <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
@@ -210,8 +212,6 @@
     <Compile Include="Fishing Policy\cFishingPolicyManager.vb" />
     <Compile Include="Fishing Policy\cFishingPolicySearch.vb" />
     <Compile Include="Fishing Policy\cFishingPolicyParameters.vb" />
-    <Compile Include="FitToTimeSeries\Input Output\cF2TSManager.vb" />
-    <Compile Include="FitToTimeSeries\Input Output\cF2TSResults.vb" />
     <Compile Include="FitToTimeSeries\Model\cF2TSDataStructures.vb" />
     <Compile Include="FitToTimeSeries\Model\cF2TSModel.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayer.vb" />

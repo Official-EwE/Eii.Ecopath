@@ -1298,6 +1298,36 @@ Public Class cPluginManager
 
 #End Region ' Ecosim
 
+#Region " Ecosim time series "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcosimTimeSeriesPlugin.TimeSeriesLoaded"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcosimTimeSeriesPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcosimLoadedTimeSeries() As Boolean
+
+        ' Invoke IEcosimTimeSeriesPlugin.TimeSeriesLoaded()
+        Return Me.TryInvokeMethod(GetType(IEcosimTimeSeriesPlugin), "TimeSeriesLoaded")
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcosimTimeSeriesPlugin.TimeSeriesClosed"/> 
+    ''' plug-in point on any available and responsive <see cref="IEcosimTimeSeriesPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcosimClosedTimeSeries() As Boolean
+
+        ' Invoke IEcosimTimeSeriesPlugin.TimeSeriesClosed()
+        Return Me.TryInvokeMethod(GetType(IEcosimTimeSeriesPlugin), "TimeSeriesClosed")
+
+    End Function
+
+#End Region ' Ecosim time series
+
 #Region " Ecospace "
 
     ''' ---------------------------------------------------------------------------

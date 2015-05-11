@@ -2237,7 +2237,7 @@ Namespace Ecosim
                             'squared sum of log prediction error by datatype
                             DatSumZ2(iDType) = DatSumZ2(iDType) + Zstat * Zstat
 
-                            System.Console.WriteLine(iDType.ToString + "," + iDYear.ToString + "," + Zstat.ToString + "," + BB(m_RefData.DatPool(iDType)).ToString)
+                            'System.Console.WriteLine(iDType.ToString + "," + iDYear.ToString + "," + Zstat.ToString + "," + BB(m_RefData.DatPool(iDType)).ToString)
 
                         ElseIf (m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDYear, iDType) > 0) And _
                                             (m_RefData.DatType(iDType) = eTimeSeriesType.EcotracerConcRel Or m_RefData.DatType(iDType) = eTimeSeriesType.EcotracerConcAbs) Then

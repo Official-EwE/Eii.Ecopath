@@ -47,7 +47,6 @@ Public Class cF2TSManager
     Private m_runModelHandler As RunModelDelegate = Nothing
 
 
-    Private m_runSilent As Boolean
 
     'Messaging 
     'list of messages sent from the model
@@ -518,7 +517,7 @@ Public Class cF2TSManager
             If (Me.AnomalySearch) Then bCanRun = bCanRun And (Me.AnomalySearchShapeNumber > 0)
             'isRefDataLoaded() will send a message if there is not data loaded
             bCanRun = bCanRun And isRefDataLoaded()
-            bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
+            ' bCanRun = bCanRun And Me.m_SyncObject IsNot Nothing
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & " Error not properly initialized.")
@@ -526,6 +525,7 @@ Public Class cF2TSManager
         End Try
 
         If Not bCanRun Then
+            ' ToDo: globalize this
             m_core.Messages.SendMessage(New cMessage("Fit to Time Series not all the parameters have been set correctly.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End If
 
@@ -653,6 +653,7 @@ Public Class cF2TSManager
         Catch ex As Exception
             Me.ReleaseWait()
             cLog.Write(ex)
+            ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
 
@@ -700,6 +701,7 @@ Public Class cF2TSManager
 
             Me.ReleaseWait()
             cLog.Write(ex)
+            ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
         End Try
@@ -713,19 +715,19 @@ Public Class cF2TSManager
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="RunSilent">Optional parameter to run without sending any messages or requesting any feedback</param>
+    ''' <param name="bRunSilent">Optional parameter to run without sending any messages or requesting any feedback</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function RunSearch(Optional ByVal RunSilent As Boolean = False) As Boolean
+    Public Function RunSearch(Optional ByVal bRunSilent As Boolean = False) As Boolean
 
         Dim iPPYear1 As Integer = 0
         Dim iPPYear2 As Integer = 0
-        Dim bret As Boolean
+        Dim bSucces As Boolean = True
 
         ' Safety check
         If Not CanRun() Then Return False
 
-        Me.m_runSilent = RunSilent
+        Me.m_core.m_FitToTimeSeriesData.bRunSilent = bRunSilent
 
         Try
 
@@ -736,29 +738,27 @@ Public Class cF2TSManager
 
             ' Launch requested analysis model 
             If Me.m_SyncObject IsNot Nothing Then
-                m_thrdRun = New Thread(AddressOf Me.m_model.RunSearch)
-                m_thrdRun.Start()
-                bret = True
+                Me.m_thrdRun = New Thread(AddressOf Me.m_model.RunSearch)
+                Me.m_thrdRun.Start()
             Else
-                bret = False
+                Me.m_model.RunSearch()
             End If
-
-            Return bret
 
         Catch ex As Exception
             Me.ReleaseWait()
-            Me.m_runSilent = False
-            cLog.Write(ex)
+            bSucces = False
+            Me.m_core.m_FitToTimeSeriesData.bRunSilent = False
+
+            ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: " & ex.Message, eMessageType.ErrorEncountered, _
                          eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
-
-            Return False
-
+            cLog.Write(ex)
         End Try
 
 
-    End Function
+        Return bSucces
 
+    End Function
 
     Public Function getAIC(ByVal nPars As Integer, ByVal nData As Integer, ByVal ss As Single) As Single
         Try
@@ -815,6 +815,7 @@ Public Class cF2TSManager
         Try
             sw = New StreamWriter(strFilename, False)
         Catch ex As Exception
+            ' ToDo: globalize this
             msg = New cMessage(cStringUtils.Localize("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             Me.m_core.Messages.SendMessage(msg)
@@ -842,6 +843,7 @@ Public Class cF2TSManager
         sw.Flush()
         sw.Close()
 
+        ' ToDo: globalize this
         msg = New cMessage(cStringUtils.Localize("Saved sensitivity CSV file {0}.", strFilename), _
                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Path.GetDirectoryName(strFilename)
@@ -866,16 +868,19 @@ Public Class cF2TSManager
     ''' <remarks>This handler is passed to the model during the contruction of the manager via cF2TSModel.Init()</remarks>
     Private Sub RunStartedCallback(ByVal runType As eRunType, ByVal nSteps As Integer)
 
-        Dim parms(1) As Object
-        parms(0) = runType
-        parms(1) = nSteps
-
         ' Clear previous results
         Me.m_results = Nothing
 
         Try
             ' Call delegate
-            m_SyncObject.BeginInvoke(Me.m_runstartedHandler, parms)
+            If (Me.m_SyncObject IsNot Nothing) Then
+                Dim parms(1) As Object
+                parms(0) = runType
+                parms(1) = nSteps
+                m_SyncObject.BeginInvoke(Me.m_runstartedHandler, parms)
+            Else
+                Me.m_runstartedHandler.Invoke(runType, nSteps)
+            End If
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.StackTrace)
@@ -896,7 +901,7 @@ Public Class cF2TSManager
 
             If m_model.RunState = eRunType.Search Then
                 Try 'incase m_results is not a cSearchResults object
-                    System.Console.WriteLine("F2TS: Run Step. SS = " & DirectCast(m_results, cSearchResults).IterSS)
+                    'System.Console.WriteLine("F2TS: Run Step. SS = " & DirectCast(m_results, cSearchResults).IterSS)
                 Catch ex As Exception
                     'dont need to do anything this is just for debugging
                 End Try
@@ -904,7 +909,11 @@ Public Class cF2TSManager
 
 
             ' Call delegate
-            m_SyncObject.BeginInvoke(Me.m_runstepHandler, Nothing)
+            If (Me.m_SyncObject IsNot Nothing) Then
+                m_SyncObject.BeginInvoke(Me.m_runstepHandler, Nothing)
+            Else
+                Me.m_runstepHandler.Invoke()
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -924,19 +933,23 @@ Public Class cF2TSManager
         Try
             'keep a reference
             m_results = m_model.Results
-            Dim objs(0) As Object
-            objs(0) = runType
 
-            System.Console.WriteLine("F2TS: Run Stopped.")
+            'System.Console.WriteLine("F2TS: Run Stopped.")
 
             'call anything that needs to be called at the end of a model run via the m_SyncObject 
             'so that it will be marshalled to the interfaces thread
             Dim dlgRunStopped As RunStoppedDelegate = AddressOf Me.ThreadSafeRunStopped
-            m_SyncObject.BeginInvoke(dlgRunStopped, objs)
+            If (Me.m_SyncObject IsNot Nothing) Then
+                Dim parms(0) As Object
+                parms(0) = runType
+                m_SyncObject.BeginInvoke(dlgRunStopped, parms)
+            Else
+                dlgRunStopped.Invoke(runType)
+            End If
 
             Me.ReleaseWait()
 
-            Me.m_runSilent = False
+            Me.m_core.m_FitToTimeSeriesData.bRunSilent = False
             Me.m_thrdRun = Nothing
 
         Catch ex As Exception
@@ -954,15 +967,12 @@ Public Class cF2TSManager
         'THIS MUST BE CALLED ON THE INTERFACES THREAD VIA m_SyncObject
         'do anything at the end of a model run that may interact with the interface thread here
         Try
-            Dim objs(0) As Object
-            objs(0) = runType
-
             'the core may send messages that are handled by the interface
 
             m_core.VulnerabilitiesChanged()
             m_core.LoadEcosimStats()
 
-            If Not Me.m_runSilent Then
+            If Not Me.m_core.m_FitToTimeSeriesData.bRunSilent Then
 
                 'send any messages created by the fit to time series
                 For Each msg As cMessage In m_lstMessages
@@ -973,27 +983,37 @@ Public Class cF2TSManager
             End If
 
             ' Call delegate on the interfaces thread
-            m_SyncObject.BeginInvoke(Me.m_runstoppedHandler, objs)
+            If (Me.m_SyncObject IsNot Nothing) Then
+                Dim objs(0) As Object
+                objs(0) = runType
+                m_SyncObject.BeginInvoke(Me.m_runstoppedHandler, objs)
+            Else
+                Me.m_runstoppedHandler.Invoke(runType)
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
-            'this should work because this routine MUST be on the interface thread!!!!
+            ' ToDo: globalize this
             m_core.Messages.SendMessage(New cMessage("Fit to Time Series error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End Try
 
     End Sub
 
     Private Sub RunModelCallBack(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalInterationSteps As Integer)
-        Dim parms(2) As Object
 
         Try
-            System.Console.WriteLine("F2TS: Ecosim called.")
-            parms(0) = runType
-            parms(1) = iCurrentIterationStep
-            parms(2) = nTotalInterationSteps
+            'System.Console.WriteLine("F2TS: Ecosim called.")
 
             ' Call delegate
-            m_SyncObject.BeginInvoke(Me.m_runModelHandler, parms)
+            If (Me.m_SyncObject IsNot Nothing) Then
+                Dim parms(2) As Object
+                parms(0) = runType
+                parms(1) = iCurrentIterationStep
+                parms(2) = nTotalInterationSteps
+                m_SyncObject.BeginInvoke(Me.m_runModelHandler, parms)
+            Else
+                Me.m_runModelHandler.Invoke(runType, iCurrentIterationStep, nTotalInterationSteps)
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1008,12 +1028,12 @@ Public Class cF2TSManager
     ''' <param name="msg"></param>
     Private Sub AddMessageCallback(ByVal msg As cMessage)
         Try
-            If Me.m_runSilent Then
-                System.Console.WriteLine(Me.ToString & " Tried to send message while running in Silent Mode.")
-                Exit Sub
-            End If
-            'add the message to the list of messages
-            m_lstMessages.Add(msg)
+            If Me.m_core.m_FitToTimeSeriesData.bRunSilent  Then
+                    System.Console.WriteLine(Me.ToString & " Tried to send message while running in Silent Mode.")
+                    Return
+                End If
+                'add the message to the list of messages
+                m_lstMessages.Add(msg)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -1024,12 +1044,11 @@ Public Class cF2TSManager
     ''' Delegate handler for Model to add a message to the managers list of messages
     ''' </summary>
     ''' <param name="msg"></param>
-    ''' <remarks> </remarks>
     Private Sub SendMessageCallback(ByVal msg As cMessage)
         Try
             Dim objs(0) As Object
 
-            If Me.m_runSilent Then
+            If Me.m_core.m_FitToTimeSeriesData.bRunSilent Then
                 System.Console.WriteLine(Me.ToString & " Tried to send message while running in Silent Mode.")
                 Exit Sub
             End If
@@ -1038,8 +1057,12 @@ Public Class cF2TSManager
 
             'call ThreadSafeSendMessage() via the m_SyncObject 
             'this will put ThreadSafeSendMessage() on the interface thread
-            Dim dlgSenMessage As RunMessageDelegate = AddressOf Me.ThreadSafeSendMessage
-            m_SyncObject.BeginInvoke(dlgSenMessage, objs)
+            If (m_SyncObject IsNot Nothing) Then
+                Dim dlgSenMessage As RunMessageDelegate = AddressOf Me.SendMessage
+                m_SyncObject.BeginInvoke(dlgSenMessage, objs)
+            Else
+                Me.SendMessage(msg)
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1047,7 +1070,7 @@ Public Class cF2TSManager
 
     End Sub
 
-    Private Sub ThreadSafeSendMessage(ByVal msg As cMessage)
+    Private Sub SendMessage(ByVal msg As cMessage)
         Try
             m_core.Messages.SendMessage(msg)
         Catch ex As Exception
@@ -1085,7 +1108,6 @@ Public Class cF2TSManager
     End Property
 
 #End Region
-
 
     Public WriteOnly Property MessagePump As cCore.MessagePumpDelegate Implements IThreadedProcess.MessagePump
         Set(value As cCore.MessagePumpDelegate)

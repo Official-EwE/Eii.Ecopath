@@ -75,7 +75,7 @@ Public Class cMessageHandler
 
         Debug.Assert(DelegateToCall IsNot Nothing, "Must specify a valid delegate")
         Debug.Assert(SourceToHandle <> eCoreComponentType.NotSet, "Must specify a valid source")
-        Debug.Assert(syncobj IsNot Nothing, Me.ToString & ".New() SynchronizationContext must not be Nothing!")
+        ' Debug.Assert(syncobj IsNot Nothing, Me.ToString & ".New() SynchronizationContext must not be Nothing!")
 
         Me.m_DelegateNotifier = DelegateToCall
         Me.m_corecomponent = SourceToHandle
