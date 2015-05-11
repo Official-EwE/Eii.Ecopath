@@ -381,6 +381,9 @@ Namespace Controls
             ExportToCSV
         End Enum
 
+        ''' <summary>Hover menu state flag.</summary>
+        Private m_bShowHoverMenu As Boolean = True
+
         ''' <summary>The hover menu to display on top of graph areas.</summary>
         Private m_hovermenu As ucHoverMenu = Nothing
 
@@ -424,11 +427,6 @@ Namespace Controls
             Return Me.m_zgc IsNot Nothing
         End Function
 
-        ''' <summary>
-        ''' Get/set whether a floating hover menu should be displayed on the graph.
-        ''' </summary>
-        Public Property ShowHoverMenu As Boolean = True
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Attach a zedgraph helper to a zedgraph control.
@@ -454,21 +452,6 @@ Namespace Controls
             Me.m_zgc = zgc
             Me.m_nPanels = iNumPanels
 
-            If (Me.ShowHoverMenu) Then
-                Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
-                ' This can screw up zedgraphs in plug-ins
-                Me.m_hovermenu.Attach(Me.m_zgc)
-                Me.m_hovermenu.AddItem(My.Resources.ZoomInHS, My.Resources.GENERIC_ZOOM_IN, eHoverCommands.Zoomin)
-                Me.m_hovermenu.AddItem(My.Resources.ZoomOutHS, My.Resources.GENERIC_ZOOM_OUT, eHoverCommands.Zoomout)
-                Me.m_hovermenu.AddItem(My.Resources.ZoomHS, My.Resources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
-                Me.m_hovermenu.AddSeparator()
-                Me.m_hovermenu.AddItem(My.Resources.LegendHS, My.Resources.GENERIC_SHOW_LEGEND, eHoverCommands.ShowLegend)
-                Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
-                Me.m_hovermenu.AddSeparator()
-                Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
-                AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
-            End If
-
             Me.ChangeNumPanels()
 
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
@@ -486,9 +469,11 @@ Namespace Controls
             ' Configure graph control
             Me.UpdateStyle()
             Me.UpdateColours()
-            Me.UpdateHoverMenuItems()
 
-        End Sub
+            ' Kick the hover menu. Kick.
+            Me.ShowHoverMenu = Me.ShowHoverMenu
+
+         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -511,12 +496,7 @@ Namespace Controls
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
-            If (Me.m_hovermenu IsNot Nothing) Then
-                RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
-                Me.m_hovermenu.Detach()
-                Me.m_hovermenu.Dispose()
-                Me.m_hovermenu = Nothing
-            End If
+            Me.ShowHoverMenu = False
 
             Me.m_dtAxisLabels.Clear()
 
@@ -2820,6 +2800,28 @@ Namespace Controls
 
 #Region " Hover menu handling "
 
+        ''' <summary>
+        ''' Get/set whether a floating hover menu should be displayed on the graph.
+        ''' </summary>
+        Public Property ShowHoverMenu As Boolean
+            Get
+                Return Me.m_bShowHoverMenu
+            End Get
+            Set(value As Boolean)
+
+                If (Me.m_hovermenu IsNot Nothing) Then
+                    Me.DestroyHoverMenu()
+                End If
+
+                Me.m_bShowHoverMenu = value
+
+                If (Me.m_bShowHoverMenu And Me.IsAttached()) Then
+                    Me.m_zgc.BeginInvoke(New MethodInvoker(AddressOf CreateHoverMenu))
+                End If
+
+            End Set
+        End Property
+
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
         Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As Object)
@@ -2897,21 +2899,48 @@ Namespace Controls
 
         Protected Overridable Sub UpdateHoverMenuItems()
 
-            If (Me.m_hovermenu IsNot Nothing) Then
+            If (Me.m_hovermenu Is Nothing) Then Return
 
-                Dim bCanZoomOut As Boolean = False
-                For iPane As Integer = 1 To Me.NumPanes
-                    Dim gp As GraphPane = Me.GetPane(iPane)
-                    bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
-                Next
+            Dim bCanZoomOut As Boolean = False
+            For iPane As Integer = 1 To Me.NumPanes
+                Dim gp As GraphPane = Me.GetPane(iPane)
+                bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
+            Next
 
-                Me.m_hovermenu.IsEnabled(eHoverCommands.Zoomin) = True
-                Me.m_hovermenu.IsEnabled(eHoverCommands.Zoomout) = bCanZoomOut
-                Me.m_hovermenu.IsChecked(eHoverCommands.ShowLegend) = Me.IsLegendVisible
-                Me.m_hovermenu.IsChecked(eHoverCommands.ShowLabels) = Me.IsAxisLabelsVisible
+            Me.m_hovermenu.IsEnabled(eHoverCommands.Zoomin) = True
+            Me.m_hovermenu.IsEnabled(eHoverCommands.Zoomout) = bCanZoomOut
+            Me.m_hovermenu.IsChecked(eHoverCommands.ShowLegend) = Me.IsLegendVisible
+            Me.m_hovermenu.IsChecked(eHoverCommands.ShowLabels) = Me.IsAxisLabelsVisible
 
-            End If
+        End Sub
 
+        Private Sub CreateHoverMenu()
+
+            If (Me.m_hovermenu IsNot Nothing) Then Return
+
+            Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
+            Me.m_hovermenu.AddItem(My.Resources.ZoomInHS, My.Resources.GENERIC_ZOOM_IN, eHoverCommands.Zoomin)
+            Me.m_hovermenu.AddItem(My.Resources.ZoomOutHS, My.Resources.GENERIC_ZOOM_OUT, eHoverCommands.Zoomout)
+            Me.m_hovermenu.AddItem(My.Resources.ZoomHS, My.Resources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
+            Me.m_hovermenu.AddSeparator()
+            Me.m_hovermenu.AddItem(My.Resources.LegendHS, My.Resources.GENERIC_SHOW_LEGEND, eHoverCommands.ShowLegend)
+            Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
+            Me.m_hovermenu.AddSeparator()
+            Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
+            AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
+
+            Me.UpdateHoverMenuItems()
+            Me.m_hovermenu.Attach(Me.m_zgc)
+
+        End Sub
+
+        Private Sub DestroyHoverMenu()
+
+            If (Me.m_hovermenu Is Nothing) Then Return
+            RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
+            Me.m_hovermenu.Detach()
+            Me.m_hovermenu.Dispose()
+            Me.m_hovermenu = Nothing
         End Sub
 
 #End Region ' Hover menu handling
