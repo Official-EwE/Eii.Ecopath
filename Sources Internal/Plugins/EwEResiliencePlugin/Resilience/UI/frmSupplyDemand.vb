@@ -18,6 +18,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
@@ -35,10 +36,12 @@ Public Class frmSupplyDemand
 #End Region ' Internal vars
 
     Public Sub New(uic As cUIContext, model As cResilienceModel)
+
         MyBase.New()
+        Me.InitializeComponent()
+
         Me.UIContext = uic
         Me.m_model = model
-        Me.InitializeComponent()
 
     End Sub
 
@@ -55,14 +58,17 @@ Public Class frmSupplyDemand
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
         AddHandler Me.m_model.OnUpdated, AddressOf OnCalculationsUpdated
 
-        Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
-        Me.m_tsbnSaveNow.Image = SharedResources.saveHS
-        Me.m_tsbnDynamicScales.Image = My.Resources.FixedAxesHS
-
         Me.m_cbAnnual.Checked = My.Settings.ResilShowAnnual
 
+        Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
+        Me.m_tsbnAutosave.Checked = My.Settings.ResilAutosave
+
+        Me.m_tsbnSaveNow.Image = SharedResources.saveHS
+
+        Me.m_tsbnDynamicScales.Image = My.Resources.FixedAxesHS
+        Me.m_tsbnDynamicScales.Checked = Not Me.m_graph.FixedScale
+
         Me.UpdateControls()
-        Me.UpdateGraph()
 
     End Sub
 
@@ -115,6 +121,9 @@ Public Class frmSupplyDemand
     End Sub
 
     Private Sub UpdateGraph()
+
+        ' Wait!
+        If (Not Me.m_graph.IsAttached) Then Return
 
         Me.m_graph.Time = Me.m_slider.Value
         Me.m_graph.Annual = Me.m_cbAnnual.Checked

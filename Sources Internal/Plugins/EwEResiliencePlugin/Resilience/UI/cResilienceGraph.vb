@@ -28,6 +28,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -76,6 +77,7 @@ Public Class cResilienceGraph
         Me.ConfigurePane(My.Resources.GRAPH_RES_CAPTION, My.Resources.GRAPH_RES_XAXIS_LABEL, My.Resources.GRAPH_RES_YAXIS_LABEL, False)
         Me.AutoscalePane() = True
         Me.ShowPointValue = True
+        Me.IsLegendVisible = True
 
     End Sub
 
@@ -108,18 +110,18 @@ Public Class cResilienceGraph
         If (Not Me.m_data.Calculated) Then Return
 
         ppl = New PointPairList()
-        For i As Integer = 1 To Me.m_data.NumTimeSteps
-            ppl.Add(i / 12, Me.m_data.ResilienceAtT(i))
+        For iTimeStep As Integer = 1 To Me.m_data.NumTimeSteps
+            ppl.Add(iTimeStep / 12, Me.m_data.ResilienceAtT(iTimeStep))
         Next
         li = New ZedGraph.LineItem(My.Resources.GRAPH_RES_LINE_MONTHLY, ppl, Color.Black, SymbolType.None)
         pane.CurveList.Add(li)
 
         ppl = New PointPairList()
-        For i As Integer = 1 To Me.m_data.NumYears
-            ppl.Add(i - 0.5, Me.m_data.ResilienceAtY(i))
+        For iYear As Integer = 1 To Me.m_data.NumYears
+            ppl.Add(cSystemUtils.IIF(iYear = 1, 1 / cCore.N_MONTHS, iYear - 1), Me.m_data.ResilienceAtY(iYear))
+            ppl.Add(iYear, Me.m_data.ResilienceAtY(iYear))
         Next
-        li = New ZedGraph.LineItem(My.Resources.GRAPH_RES_LINE_ANNUAL, ppl, Color.Blue, SymbolType.Circle)
-        li.Line.IsVisible = False
+        li = New ZedGraph.LineItem(My.Resources.GRAPH_RES_LINE_ANNUAL, ppl, Color.Blue, SymbolType.None)
         pane.CurveList.Add(li)
 
         pane.Title.Text = My.Resources.GRAPH_RES_CAPTION

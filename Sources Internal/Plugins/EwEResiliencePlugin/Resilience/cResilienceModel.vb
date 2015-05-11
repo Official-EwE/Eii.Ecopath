@@ -49,27 +49,27 @@ Public Class cResilienceModel
     Public Sub Compute(iTime As Integer, simds As cEcosimDatastructures)
 
         If (iTime = 1) Then
-            Me.m_data.Resize(simds.nGroups, simds.NTimes - 1, simds.NumYears - 1)
+            Me.m_data.Resize(simds.nGroups, simds.NTimes, simds.NumYears)
             ReDim EatenByYear(simds.nGroups)
             ReDim EatenOfYear(simds.nGroups)
         End If
 
-        Dim iYear As Integer = 1 + CInt((iTime - 1) / cCore.N_MONTHS)
+        Dim iYear As Integer = 1 + CInt(Math.Floor((iTime - 1) / cCore.N_MONTHS))
 
         For i As Integer = 1 To Me.m_core.nGroups
             EatenByYear(i) += simds.Eatenby(i)
             EatenOfYear(i) += simds.Eatenof(i)
 
-            Me.m_data.GroupSupplyAtT(i, iTime - 1) = cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
-            Me.m_data.GroupDemandAtT(i, iTime - 1) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
+            Me.m_data.GroupSupplyAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, -CSng(Math.Log10(simds.Eatenby(i))))
+            Me.m_data.GroupDemandAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
 
-            Me.CalculateResilience(Me.m_data.GroupSupplyAtT, Me.m_data.GroupDemandAtT, iTime - 1, Me.m_data.ResilienceAtT)
+            Me.CalculateRegression(Me.m_data.GroupSupplyAtT, Me.m_data.GroupDemandAtT, iTime, Me.m_data.SlopeAtT, Me.m_data.InterceptAtT)
 
             Try
                 If ((iTime Mod cCore.N_MONTHS) = 0) Then
-                    Me.m_data.GroupSupplyAtY(i, iYear - 1) = cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
-                    Me.m_data.GroupDemandAtY(i, iYear - 1) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
-                    Me.CalculateResilience(Me.m_data.GroupSupplyAtY, Me.m_data.GroupDemandAtY, iYear - 1, Me.m_data.ResilienceAtY)
+                    Me.m_data.GroupSupplyAtY(i, iYear) = cSystemUtils.IIF(EatenByYear(i) = 0, 0, -CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupDemandAtY(i, iYear) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
+                    Me.CalculateRegression(Me.m_data.GroupSupplyAtY, Me.m_data.GroupDemandAtY, iYear, Me.m_data.SlopeAtY, Me.m_data.InterceptAtY)
                     EatenOfYear(i) = 0
                     EatenByYear(i) = 0
                 End If
@@ -102,10 +102,7 @@ Public Class cResilienceModel
         End Try
     End Sub
 
-    Private Sub CalculateResilience(ByVal Supply As Single(,), ByVal Demand As Single(,), ByVal Time As Integer, ByVal Resilience As Single())
-
-        'Dim sSlope As Single
-        'Dim sIntercept As Single
+    Private Sub CalculateRegression(ByVal Supply As Single(,), ByVal Demand As Single(,), ByVal Time As Integer, ByVal Slope As Single(), ByVal Intercept As Single())
 
         Dim s0 As Integer = 0
         Dim s1, s2, t0, t1 As Double
@@ -118,8 +115,8 @@ Public Class cResilienceModel
             t1 = t1 + Demand(i, Time) * Supply(i, Time)
         Next
 
-        'sSlope = CSng((s0 * t1 - s1 * t0) / (s0 * s2 - s1 * s1))
-        Resilience(Time) = CSng((s2 * t0 - s1 * t1) / (s0 * s2 - s1 * s1))
+        Slope(Time) = CSng((s0 * t1 - s1 * t0) / (s0 * s2 - s1 * s1))
+        Intercept(Time) = CSng((s2 * t0 - s1 * t1) / (s0 * s2 - s1 * s1))
 
     End Sub
 

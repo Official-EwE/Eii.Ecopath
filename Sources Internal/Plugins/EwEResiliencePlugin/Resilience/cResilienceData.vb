@@ -57,12 +57,14 @@ Public Class cResilienceData
         Me.m_nTimes = nTimes
         Me.m_nYears = nYears
 
-        ReDim GroupSupplyAtT(nGroups, nTimes + 1)
-        ReDim GroupSupplyAtY(nGroups, nYears + 1)
-        ReDim GroupDemandAtT(nGroups, nTimes + 1)
-        ReDim GroupDemandAtY(nGroups, nYears + 1)
-        ReDim ResilienceAtT(nTimes + 1)
-        ReDim ResilienceAtY(nYears + 1)
+        ReDim GroupSupplyAtT(nGroups, nTimes)
+        ReDim GroupSupplyAtY(nGroups, nYears)
+        ReDim GroupDemandAtT(nGroups, nTimes)
+        ReDim GroupDemandAtY(nGroups, nYears)
+        ReDim SlopeAtT(nTimes)
+        ReDim SlopeAtY(nYears)
+        ReDim InterceptAtT(nTimes)
+        ReDim InterceptAtY(nYears)
 
         Me.m_bCalculated = False
 
@@ -84,8 +86,22 @@ Public Class cResilienceData
     Public Property GroupSupplyAtY As Single(,)
     Public Property GroupDemandAtT As Single(,)
     Public Property GroupDemandAtY As Single(,)
-    Public Property ResilienceAtT As Single()
-    Public Property ResilienceAtY As Single()
+    Public Property SlopeAtT As Single()
+    Public Property SlopeAtY As Single()
+    Public Property InterceptAtT As Single()
+    Public Property InterceptAtY As Single()
+
+    Public ReadOnly Property ResilienceAtT(iTime As Integer) As Single
+        Get
+            Return Me.SlopeAtT(iTime)
+        End Get
+    End Property
+
+    Public ReadOnly Property ResilienceAtY(iYear As Integer) As Single
+        Get
+            Return Me.SlopeAtY(iYear)
+        End Get
+    End Property
 
     Public Function DataboundsT() As sBounds
         Return Me.m_boundsT
