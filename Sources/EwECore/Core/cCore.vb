@@ -1639,6 +1639,10 @@ Public Class cCore
             bSucces = False
         End Try
 
+        If (Me.PluginManager IsNot Nothing) Then
+            Me.PluginManager.EcosimLoadedTimeSeries()
+        End If
+
         Return bSucces
 
     End Function
@@ -1781,7 +1785,8 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Gets the index of the active <see cref="cTimeSeriesDataset">TimeSeries Dataset</see>.
+    ''' Gets the one-based index of the active <see cref="cTimeSeriesDataset">TimeSeries Dataset</see>.
+    ''' If no time series are loaded, a value &lt; 1 is returned.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ActiveTimeSeriesDatasetIndex() As Integer
@@ -1810,6 +1815,7 @@ Public Class cCore
     ''' <param name="strError"></param>
     ''' <remarks></remarks>
     Private Sub SendTimeSeriesLoadMessage(ByVal strDataset As String, Optional ByVal strError As String = "")
+
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
@@ -1830,7 +1836,7 @@ Public Class cCore
         End If
 
         Me.m_publisher.AddMessage(msg)
-        m_publisher.sendAllMessages()
+        Me.m_publisher.sendAllMessages()
 
     End Sub
 
@@ -1853,7 +1859,7 @@ Public Class cCore
     ''' <summary>
     ''' Load (and optionally apply) a single time series dataset
     ''' </summary>
-    ''' <param name="iDataset">Index of the dataset to load. Provide 0 to unload any dataset.</param>
+    ''' <param name="iDataset">One-based index of the dataset to load. Provide 0 to unload any dataset.</param>
     ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
@@ -2497,6 +2503,14 @@ Public Class cCore
 
                 Case eAutosaveTypes.Ecosim
                     strScenario = "Ecosim_"
+                    If (Me.ActiveEcosimScenarioIndex > 0) Then
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
+                    End If
+
+                Case eAutosaveTypes.EcosimRunResults
+                    strScenario = "Ecosim_results_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -3368,7 +3382,7 @@ Public Class cCore
         Me.m_StateMonitor.SetEcopathLoaded(True)
 
         'Core initialized plugin point
-        If (Me.PluginManager IsNot Nothing) Then Me.m_pluginManager.CoreInitialized(m_EcoPath, m_EcoSim, m_Ecospace)
+        If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CoreInitialized(m_EcoPath, m_EcoSim, m_Ecospace)
 
         m_publisher.sendAllMessages()
 
@@ -3509,7 +3523,7 @@ Public Class cCore
                     ' '#Yes: close plug-in data sources, close plug-in 
                     If (Me.PluginManager IsNot Nothing) Then
                         Me.PluginManager.CloseDatabase()
-                        Me.m_pluginManager.CloseModel()
+                        Me.PluginManager.CloseModel()
                     End If
                     If bTotalCleanup Then DataSource.Close()
                 End If
@@ -5868,7 +5882,7 @@ Public Class cCore
             Select Case grp.CapacityCalculationType
                 Case eEcospaceCapacityCalType.Habitat
                     grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
-                   Case eEcospaceCapacityCalType.EnvResponses
+                Case eEcospaceCapacityCalType.EnvResponses
                     grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
                 Case Else
                     Debug.Assert(False)
@@ -6290,10 +6304,12 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Gets the index of the active <see cref="cEcosimScenario">Ecosim scenario</see>.
+    ''' If no scenario is loaded, a value &lt; 1 will be returned.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ActiveEcosimScenarioIndex() As Integer
         Get
+            If Not Me.StateMonitor.HasEcosimLoaded Then Return -1
             Return Me.m_EcoPathData.ActiveEcosimScenario
         End Get
     End Property
@@ -6765,7 +6781,6 @@ Public Class cCore
         'Me.m_EcoPathData.NumEcosimScenarios = 0
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
         Me.m_TSData.ClearTimeSeries()
 
         ' JS 01Dec10: This method should be bullet-proof. Search data is for instance not 
@@ -6818,6 +6833,7 @@ Public Class cCore
         ' Invoke plugin point to allow plug-ins to clean up now Ecosim has gone
         If (Me.PluginManager IsNot Nothing) Then
             Me.PluginManager.EcosimRunInvalidated()
+            Me.PluginManager.EcosimClosedTimeSeries()
             Me.PluginManager.EcosimCloseScenario()
         End If
 
@@ -7971,7 +7987,7 @@ Public Class cCore
 
             ' -------
             ' Write results if needed
-            If Me.Autosave(eAutosaveTypes.Ecosim) Then
+            If Me.Autosave(eAutosaveTypes.EcosimRunResults) Then
                 Dim writer As New cEcosimResultWriter(Me)
                 writer.WriteResults()
             End If
@@ -8804,7 +8820,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcospaceCompleted()
             Me.m_publisher.sendAllMessages()
 
-            If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
 
             Me.m_EcospaceResultsWriters.Clear()
 
@@ -13979,9 +13995,9 @@ Public Class cCore
     Private Sub m_StateMonitor_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
         Handles m_StateMonitor.CoreExecutionStateEvent
 
-        If Me.m_pluginManager IsNot Nothing Then
+        If (Me.PluginManager IsNot Nothing) Then
             ' Inform the plugin manager of the new core state.
-            Me.m_pluginManager.UpdatePluginEnabledStates()
+            Me.PluginManager.UpdatePluginEnabledStates()
         End If
 
         If (Not Me.m_StateMonitor.IsSearching And Not Me.m_StateMonitor.IsBusy) Then

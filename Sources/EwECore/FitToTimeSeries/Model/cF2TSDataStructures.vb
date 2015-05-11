@@ -29,23 +29,21 @@ Public Class cF2TSDataStructures
     Public PPVariance As Single = 0.1!
     Public iCatchAnomalySearchShapeNumber As Integer = 0
     Public nNumSplinePoints As Integer = 0
+    Public bRunSilent As Boolean = False
 
     ''' <summary>
     ''' Number of AIC parameters
     ''' </summary>
-    ''' <remarks></remarks>
     Public nAICPars As Integer
 
     ''' <summary>
     ''' Number of AIC data points
     ''' </summary>
-    ''' <remarks></remarks>
     Public nAICData As Integer
 
     ''' <summary>
     ''' Akaike Information Criteria for the last run
     ''' </summary>
-    ''' <remarks></remarks>
     Public AIC As Single
 
     Public UseDefaultV As Boolean = True

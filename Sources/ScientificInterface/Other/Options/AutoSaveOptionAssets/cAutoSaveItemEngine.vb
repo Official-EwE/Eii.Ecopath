@@ -189,16 +189,15 @@ Namespace Other
         ''' Recursive core to build the hierarchy control structure.
         ''' </summary>
         ''' <param name="t"><see cref="eAutosaveTypes"/> to build a node for.</param>
-        ''' <param name="parent">Parent checkbox, if any.</param>
+        ''' <param name="cbParent">Parent checkbox, if any.</param>
         ''' <param name="iIndent">Control indentation.</param>
         ''' <param name="lPlugins">2-dimensional list of autosaving plug-ins.</param>
         ''' -------------------------------------------------------------------
         Private Sub BuildControlTree(ByVal t As eAutosaveTypes, _
-                                     ByVal parent As CheckBox, _
+                                     ByVal cbParent As CheckBox, _
                                      ByVal iIndent As Integer, _
                                      ByVal lPlugins() As List(Of IAutoSavePlugin))
 
-            Dim cbParent As CheckBox = Nothing
             Dim ctrl As ucAutosaveOption = Nothing
 
             Select Case t
@@ -230,41 +229,40 @@ Namespace Other
                     'Me.Add(ctrl, parent)
 
                     ' Add Ecopath plug-ins
-                    Me.Add(lPlugins(t), parent, iIndent)
+                    Me.Add(lPlugins(t), cbParent, iIndent)
 
                 Case eAutosaveTypes.Ecosim
-                    ' Add Ecosim results node
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    Me.Add(ctrl, parent)
-                    ' Add Ecosim plug-in nodes
-                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
-                    ' Add other Ecosim nodes
-                    Me.BuildControlTree(eAutosaveTypes.MonteCarlo, parent, iIndent, lPlugins)
-                    Me.BuildControlTree(eAutosaveTypes.MSE, parent, iIndent, lPlugins)
-                    Me.BuildControlTree(eAutosaveTypes.MSY, parent, iIndent, lPlugins)
- 
+
+                    ' Add Ecosim nodes
+                    Me.BuildControlTree(eAutosaveTypes.EcosimRunResults, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.MonteCarlo, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.MSE, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.MSY, cbParent, iIndent, lPlugins)
+                    ' Add plug-in nodes
+                    Me.Add(lPlugins(t), cbParent, iIndent)
+
                 Case eAutosaveTypes.Ecospace
                     ' Add Ecospace results node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    Me.Add(ctrl, parent)
+                    Me.Add(ctrl, cbParent)
+                    ' Add Ecospace map node
+                    Me.BuildControlTree(eAutosaveTypes.EcospaceMaps, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.MPAOpt, cbParent, iIndent, lPlugins)
                     ' Add Ecospace plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
-                    ' Add Ecospace map node
-                    Me.BuildControlTree(eAutosaveTypes.EcospaceMaps, parent, iIndent, lPlugins)
-                    Me.BuildControlTree(eAutosaveTypes.MPAOpt, parent, iIndent, lPlugins)
 
                 Case eAutosaveTypes.Ecotracer
                     ' Add tracer node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    Me.Add(ctrl, parent)
+                    Me.Add(ctrl, cbParent)
                     ' Add tracer plug-in nodes
-                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
+                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
 
                 Case Else
 
                     ' Add master node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    Me.Add(ctrl, parent)
+                    Me.Add(ctrl, cbParent)
                     ' Add child plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
 

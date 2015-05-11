@@ -854,7 +854,7 @@ Namespace DataSources
         Private Function LoadEcosimScenarioDefinitions() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimScenario")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimScenario ORDER BY ScenarioID ASC")
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
 
@@ -2952,7 +2952,7 @@ Namespace DataSources
 
             tsDS.RedimTimeSeriesDatasets()
 
-            reader = Me.m_db.GetReader("SELECT * FROM EcosimTimeSeriesDataset")
+            reader = Me.m_db.GetReader("SELECT * FROM EcosimTimeSeriesDataset ORDER BY DatasetID ASC")
             If reader IsNot Nothing Then
                 Try
                     While reader.Read()

@@ -3327,8 +3327,10 @@ Namespace Core
         NotSet = 0
         ''' <summary>Ecopath run results</summary>
         Ecopath
-        ''' <summary>Ecosim run results</summary>
+        ''' <summary>Ecosim group</summary>
         Ecosim
+        ''' <summary>Ecosim run results</summary>
+        EcosimRunResults
         ''' <summary>Monte Carlo results</summary>
         MonteCarlo
         ''' <summary>MSE results</summary>

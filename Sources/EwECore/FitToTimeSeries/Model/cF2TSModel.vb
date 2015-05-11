@@ -606,7 +606,7 @@ Namespace FitToTimeSeries
 
         End Sub
 
-        Private Sub sendMessage(ByVal msg As cMessage)
+        Private Sub SendMessage(ByVal msg As cMessage)
             Try
                 m_SendMessageHandler(msg)
             Catch ex As Exception
@@ -914,7 +914,11 @@ Namespace FitToTimeSeries
                                                  eMessageType.Any, _
                                                  eMessageImportance.Information, _
                                                  eMessageReplyStyle.YES_NO)
-                    sendMessage(fbmsg)
+                    fbmsg.Reply = eMessageReply.NO
+
+                    If (Not Me.m_data.bRunSilent) Then
+                        SendMessage(fbmsg)
+                    End If
                     If fbmsg.Reply = eMessageReply.NO Then GoTo 250
                     '  If MsgBox("MORE ITERATIONS (y/n)?", MsgBoxStyle.YesNo) = vbNo Then GoTo 250
                 End If
@@ -949,11 +953,16 @@ Namespace FitToTimeSeries
                 MatInv(n, amat, det)
 
                 fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED, _
-                                             eCoreComponentType.EcoSimFitToTimeSeries, _
-                                             eMessageType.Any, _
-                                             eMessageImportance.Information, _
-                                             eMessageReplyStyle.YES_NO)
-                sendMessage(fbmsg)
+                                                 eCoreComponentType.EcoSimFitToTimeSeries, _
+                                                 eMessageType.Any, _
+                                                 eMessageImportance.Information, _
+                                                 eMessageReplyStyle.YES_NO)
+                fbmsg.Reply = eMessageReply.NO
+
+                If (Not Me.m_data.bRunSilent) Then
+                    SendMessage(fbmsg)
+                End If
+
                 If fbmsg.Reply = eMessageReply.YES Then GoTo 220
 
                 '   If MsgBox("ESTIMATES CONVERGED; MORE ITERATIONS?", MsgBoxStyle.YesNo) = vbYes Then GoTo 220
