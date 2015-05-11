@@ -57,6 +57,8 @@ Public Class cResilienceData
         Me.m_nTimes = nTimes
         Me.m_nYears = nYears
 
+        ReDim IsConsumer(nGroups)
+
         ReDim GroupSupplyAtT(nGroups, nTimes)
         ReDim GroupSupplyAtY(nGroups, nYears)
         ReDim GroupDemandAtT(nGroups, nTimes)
@@ -90,16 +92,17 @@ Public Class cResilienceData
     Public Property SlopeAtY As Single()
     Public Property InterceptAtT As Single()
     Public Property InterceptAtY As Single()
+    Public Property IsConsumer As Boolean()
 
     Public ReadOnly Property ResilienceAtT(iTime As Integer) As Single
         Get
-            Return Me.SlopeAtT(iTime)
+            Return -Me.SlopeAtT(iTime)
         End Get
     End Property
 
     Public ReadOnly Property ResilienceAtY(iYear As Integer) As Single
         Get
-            Return Me.SlopeAtY(iYear)
+            Return -Me.SlopeAtY(iYear)
         End Get
     End Property
 

@@ -142,7 +142,6 @@ Public Class cSupplyDemandGraph
         Dim sg As cStyleGuide = Me.UIContext.StyleGuide
         Dim fmt As New cCoreInterfaceFormatter()
         Dim strScale As String = ""
-        Dim grp As cEcoPathGroupInput = Nothing
 
         ' Regression bit
         Dim x, y As Double
@@ -178,9 +177,9 @@ Public Class cSupplyDemandGraph
         ' Add a line for each group. Each line contains one circle
         For iGroup As Integer = 1 To Me.Core.nGroups
             ppl = New ZedGraph.PointPairList()
-            grp = Core.EcoPathGroupInputs(iGroup)
 
-            If grp.IsConsumer Then
+            If Me.m_data.IsConsumer(iGroup) Then
+
                 If (Me.Annual) Then
                     x = data.GroupDemandAtY(iGroup, t)
                     y = data.GroupSupplyAtY(iGroup, t)
@@ -190,7 +189,7 @@ Public Class cSupplyDemandGraph
                 End If
                 ppl.Add(x, y)
 
-                li = Me.CreateLineItem(grp, ppl)
+                li = Me.CreateLineItem(Core.EcoPathGroupInputs(iGroup), ppl)
                 li.Symbol.Type = SymbolType.Circle
                 li.Line.IsVisible = False
                 pane.CurveList.Add(li)
