@@ -2101,7 +2101,7 @@
     <value>Sigmoid</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
-    <value>Foraging response {0}</value>
+    <value>Environmental response {0}</value>
     <comment>The default name for a new Ecosim capacity shape. {0}: autonumber</comment>
   </data>
   <data name="CAPACITY_PROMPT" xml:space="preserve">
