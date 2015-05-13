@@ -4986,7 +4986,7 @@ Namespace DataSources
 
             Try
 
-                reader = Me.m_db.GetReader("SELECT * FROM EcosimShape")
+                reader = Me.m_db.GetReader("SELECT * FROM EcosimShape ORDER BY ShapeID ASC")
                 While reader.Read()
 
                     iShapeID = CInt(reader("ShapeID"))
