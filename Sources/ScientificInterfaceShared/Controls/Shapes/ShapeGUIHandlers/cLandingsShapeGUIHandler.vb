@@ -39,8 +39,12 @@ Namespace Controls
     Public Class cLandingsShapeGUIHandler
         : Inherits cMediationShapeGUIHandler
 
-        Public Overrides Sub Attach(ByVal uic As cUIContext, ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar, ByVal bp As ucMediationAssignments, ByVal bpt As ucMediationAssignmentsToolbar)
-            MyBase.Attach(uic, stb, stbtb, sp, sptb, bp, bpt)
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
+        Public Overrides Sub Attach(ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar, ByVal bp As ucMediationAssignments, ByVal bpt As ucMediationAssignmentsToolbar)
+            MyBase.Attach(stb, stbtb, sp, sptb, bp, bpt)
 
             If (Me.MediationAssignments IsNot Nothing) Then
                 Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_LANDINGS
@@ -69,7 +73,8 @@ Namespace Controls
         ''' <returns>The color for rendering price elasticity shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Color.FromArgb(255, 41, 233, 41)
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.PriceMediation)
         End Function
 
         ''' -------------------------------------------------------------------

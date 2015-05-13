@@ -21,18 +21,20 @@ Imports EwECore
 Public Class cAnomalySearchShapeGUIHandler
     Inherits cForcingShapeGUIHandler
 
+    Public Sub New(uic As cUIContext)
+        MyBase.New(uic)
+    End Sub
+
     ''' ---------------------------------------------------------------
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="uic"></param>
     ''' <param name="stb"></param>
     ''' <param name="sp"></param>
     ''' ---------------------------------------------------------------
-    Public Shadows Sub Attach(ByVal uic As cUIContext, _
-                              ByVal stb As ucShapeToolbox, _
+    Public Shadows Sub Attach(ByVal stb As ucShapeToolbox, _
                               ByVal sp As ucSketchPad)
-        MyBase.Attach(uic, stb, Nothing, sp, Nothing)
+        MyBase.Attach(stb, Nothing, sp, Nothing)
     End Sub
 
     ''' ---------------------------------------------------------------

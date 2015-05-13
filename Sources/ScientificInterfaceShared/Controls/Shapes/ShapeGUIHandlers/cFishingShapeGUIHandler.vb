@@ -38,6 +38,10 @@ Namespace Controls
     Public MustInherit Class cFishingBaseShapeGUIHandler
         : Inherits cForcingShapeGUIHandler
 
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Overridden to allow use of specific <see cref="eShapeCommandTypes">commands</see>.

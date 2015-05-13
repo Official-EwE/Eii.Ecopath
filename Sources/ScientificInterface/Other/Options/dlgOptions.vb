@@ -274,7 +274,7 @@ Namespace Other
                 Case "", "ndGeneral" : t = GetType(ucOptionsGeneral)
                 Case "ndAutosave" : t = GetType(ucOptionsFileManagement)
                 Case "ndPresentation" : t = GetType(ucOptionsPresentation)
-                Case "ndDisplay", "ndColors" : t = GetType(ucOptionsColors)
+                Case "ndDisplay", "ndStatusColors" : t = GetType(ucOptionsStatusColors)
                 Case "ndGraphCharts" : t = GetType(ucOptionsGraphs)
                 Case "ndPlugins" : t = GetType(ucOptionsPlugins)
                 Case "ndMap" : t = GetType(ucOptionsMap)
@@ -301,8 +301,8 @@ Namespace Other
                     strNode = "ndPresentation"
 
                 Case eApplicationOptionTypes.Colours
-                    t = GetType(ucOptionsColors)
-                    strNode = "ndColors"
+                    t = GetType(ucOptionsStatusColors)
+                    strNode = "ndStatusColors"
 
                 Case eApplicationOptionTypes.Graphs, _
                      eApplicationOptionTypes.Fonts

@@ -20,7 +20,7 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Other
 
-    Partial Class ucOptionsColors
+    Partial Class ucOptionsStatusColors
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -40,7 +40,7 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsColors))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsStatusColors))
             Me.m_lblItemForeColor = New System.Windows.Forms.Label()
             Me.m_cmbItemForeground = New System.Windows.Forms.ComboBox()
             Me.m_lblItemBackColor = New System.Windows.Forms.Label()
@@ -140,7 +140,7 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_colDesc, "m_colDesc")
             '
-            'ucOptionsColors
+            'ucOptionsStatusColors
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -155,7 +155,7 @@ Namespace Other
             Me.Controls.Add(Me.m_cmbItemForeground)
             Me.Controls.Add(Me.m_lblColorItem)
             Me.Controls.Add(Me.m_lblItemForeColor)
-            Me.Name = "ucOptionsColors"
+            Me.Name = "ucOptionsStatusColors"
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

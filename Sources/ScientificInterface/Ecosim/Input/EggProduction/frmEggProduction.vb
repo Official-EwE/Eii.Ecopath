@@ -68,8 +68,8 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            Me.m_shapeguihandler = New cEggProductionShapeGUIHandler()
-            Me.m_shapeguihandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
+            Me.m_shapeguihandler = New cEggProductionShapeGUIHandler(Me.UIContext)
+            Me.m_shapeguihandler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                                         Me.m_sketchPad, Me.m_sketchPadToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub

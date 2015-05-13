@@ -38,6 +38,10 @@ Namespace Controls
     Public Class cFishingEffortShapeGUIHandler
         : Inherits cFishingBaseShapeGUIHandler
 
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns the colour for rendering fishing effort shapes.
@@ -45,7 +49,8 @@ Namespace Controls
         ''' <returns>The color for rendering fishing effort shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Drawing.Color.Coral
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.FishingEffort)
         End Function
 
         ''' -----------------------------------------------------------------------

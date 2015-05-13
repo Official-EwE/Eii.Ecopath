@@ -130,13 +130,13 @@
     <value>237, 25</value>
   </data>
   <data name="m_lblItemForeColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 13</value>
+    <value>90, 13</value>
   </data>
   <data name="m_lblItemForeColor.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_lblItemForeColor.Text" xml:space="preserve">
-    <value>Item &amp;foreground:</value>
+    <value>&amp;Foreground color:</value>
   </data>
   <data name="&gt;&gt;m_lblItemForeColor.Name" xml:space="preserve">
     <value>m_lblItemForeColor</value>
@@ -187,13 +187,13 @@
     <value>237, 71</value>
   </data>
   <data name="m_lblItemBackColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 13</value>
+    <value>94, 13</value>
   </data>
   <data name="m_lblItemBackColor.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="m_lblItemBackColor.Text" xml:space="preserve">
-    <value>Item &amp;background:</value>
+    <value>&amp;Background color:</value>
   </data>
   <data name="&gt;&gt;m_lblItemBackColor.Name" xml:space="preserve">
     <value>m_lblItemBackColor</value>
@@ -301,7 +301,7 @@
     <value>0</value>
   </data>
   <data name="m_hdrCaption.Text" xml:space="preserve">
-    <value>Color options</value>
+    <value>Status colors</value>
   </data>
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -310,7 +310,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12334.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -328,13 +328,13 @@
     <value>0, 25</value>
   </data>
   <data name="m_lblColorItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
+    <value>67, 13</value>
   </data>
   <data name="m_lblColorItem.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_lblColorItem.Text" xml:space="preserve">
-    <value>Color &amp;item:</value>
+    <value>Status items:</value>
   </data>
   <data name="&gt;&gt;m_lblColorItem.Name" xml:space="preserve">
     <value>m_lblColorItem</value>
@@ -408,15 +408,6 @@
   <data name="m_lvItems.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_colItem.Text" xml:space="preserve">
-    <value>Item</value>
-  </data>
-  <data name="m_colDesc.Text" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="m_colDesc.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
   <data name="m_lvItems.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -441,6 +432,15 @@
   <data name="&gt;&gt;m_lvItems.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_colItem.Text" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="m_colDesc.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="m_colDesc.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -463,7 +463,7 @@
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucOptionsColors</value>
+    <value>ucOptionsStatusColors</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -98,8 +98,6 @@ Namespace Controls
 
 #Region " Private variables "
 
-        Private m_uic As cUIContext = Nothing
-
         ''' <summary><see cref="ucShapeToolbox">Shape toolbox control </see> to handle.</summary>
         Private m_shapeToolBox As ucShapeToolbox = Nothing
         ''' <summary><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle.</summary>
@@ -108,8 +106,6 @@ Namespace Controls
         Private m_sketchPad As ucSketchPad = Nothing
         ''' <summary><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle.</summary>
         Private m_sketchPadToolbar As ucSketchPadToolbar = Nothing
-        ''' <summary>The color to use for rendering <see cref="cShapeData">shapes</see>.</summary>
-        Private m_color As Color = Nothing
         ''' <summary>Selected <see cref="cShapeData">shapes</see>.</summary>
         Private m_ashapeSelected() As cShapeData = Nothing
 
@@ -120,33 +116,31 @@ Namespace Controls
 
 #Region " Constructor and destructor "
 
+        Public Sub New(uic As cUIContext)
+            Me.UIContext = uic
+        End Sub
+
+#End Region ' Constructor and destructor
+
+#Region " Attach / detach "
+
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Private Set(value As cUIContext)
-                ' Must be set via Attach()
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Attach(ByVal uic As cUIContext, _
-                                      ByVal stb As ucShapeToolbox, _
+        Public Overridable Sub Attach(ByVal stb As ucShapeToolbox, _
                                       ByVal stbtb As ucShapeToolboxToolbar, _
                                       ByVal sp As ucSketchPad, _
                                       ByVal sptb As ucSketchPadToolbar)
 
-            Me.m_uic = uic
             Me.ShapeToolBox = stb
             Me.ShapeToolBoxToolbar = stbtb
             Me.SketchPad = sp
@@ -174,7 +168,7 @@ Namespace Controls
             MyBase.Finalize()
         End Sub
 
-#End Region ' Constructor and destructor
+#End Region ' Attach / detach
 
 #Region " Obligatory overrides "
 
@@ -521,7 +515,8 @@ Namespace Controls
 
         Public ReadOnly Property Core() As cCore
             Get
-                Return Me.m_uic.Core
+                Debug.Assert(Me.UIContext IsNot Nothing)
+                Return Me.UIContext.Core
             End Get
         End Property
 
@@ -657,16 +652,16 @@ Namespace Controls
         ''' <returns>A shape gui handler, or nothing if the data type did not 
         ''' denote a shape type.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetShapeUIHandler(ByVal dt As eDataTypes) As cShapeGUIHandler
+        Public Shared Function GetShapeUIHandler(ByVal dt As eDataTypes, uic As cUIContext) As cShapeGUIHandler
             Select Case dt
-                Case eDataTypes.Forcing : Return New cForcingShapeGUIHandler()
-                Case eDataTypes.FishingEffort : Return New cFishingEffortShapeGUIHandler()
-                Case eDataTypes.FishMort : Return New cFishingMortalityShapeGUIHandler()
-                Case eDataTypes.Mediation : Return New cMediationShapeGUIHandler()
-                Case eDataTypes.PriceMediation : Return New cLandingsShapeGUIHandler()
-                Case eDataTypes.GroupTimeSeries : Return New cTimeSeriesShapeGUIHandler()
-                Case eDataTypes.FleetTimeSeries : Return New cTimeSeriesShapeGUIHandler()
-                Case eDataTypes.CapacityMediation : Return New cCapacityShapeGUIHandler()
+                Case eDataTypes.Forcing : Return New cForcingShapeGUIHandler(uic)
+                Case eDataTypes.FishingEffort : Return New cFishingEffortShapeGUIHandler(uic)
+                Case eDataTypes.FishMort : Return New cFishingMortalityShapeGUIHandler(uic)
+                Case eDataTypes.Mediation : Return New cMediationShapeGUIHandler(uic)
+                Case eDataTypes.PriceMediation : Return New cLandingsShapeGUIHandler(uic)
+                Case eDataTypes.GroupTimeSeries : Return New cTimeSeriesShapeGUIHandler(uic)
+                Case eDataTypes.FleetTimeSeries : Return New cTimeSeriesShapeGUIHandler(uic)
+                Case eDataTypes.CapacityMediation : Return New cCapacityShapeGUIHandler(uic)
             End Select
             Return Nothing
         End Function
@@ -679,9 +674,9 @@ Namespace Controls
         ''' <returns>A shape gui handler, or nothing if the shape is of a new type
         ''' that is not yet supported.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetShapeUIHandler(ByVal shape As cShapeData) As cShapeGUIHandler
+        Public Shared Function GetShapeUIHandler(ByVal shape As cShapeData, uic As cUIContext) As cShapeGUIHandler
             If (shape Is Nothing) Then Return Nothing
-            Dim handler As cShapeGUIHandler = cShapeGUIHandler.GetShapeUIHandler(shape.DataType)
+            Dim handler As cShapeGUIHandler = cShapeGUIHandler.GetShapeUIHandler(shape.DataType, uic)
             Debug.Assert(handler IsNot Nothing, "Unknown shape type")
             Return handler
         End Function

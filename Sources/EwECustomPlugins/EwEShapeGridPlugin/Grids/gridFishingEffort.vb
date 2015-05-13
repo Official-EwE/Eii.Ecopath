@@ -32,14 +32,17 @@ Imports ScientificInterfaceShared.Controls
 Public Class gridFishingEffort
     Inherits gridForcingBase
 
+    Private m_handler As cFishingEffortShapeGUIHandler = Nothing
+
     Public Sub New()
         MyBase.New()
     End Sub
 
-    Private m_handler As New cFishingEffortShapeGUIHandler()
-
     Public Overrides ReadOnly Property Handler() As ScientificInterfaceShared.Controls.cShapeGUIHandler
         Get
+            If (Me.m_handler Is Nothing) Then
+                Me.m_handler = New cFishingEffortShapeGUIHandler(Me.UIContext)
+            End If
             Return Me.m_handler
         End Get
     End Property

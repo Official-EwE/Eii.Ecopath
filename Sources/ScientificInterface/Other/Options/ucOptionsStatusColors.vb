@@ -30,10 +30,10 @@ Namespace Other
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' User control; implements the Options > Color settings interface.
+    ''' User control; implements the interface to change value status feedback colors.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucOptionsColors
+    Public Class ucOptionsStatusColors
         Implements IOptionsPage
         Implements IUIElement
 

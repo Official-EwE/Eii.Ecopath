@@ -38,6 +38,10 @@ Namespace Controls
     Public Class cFishingMortalityShapeGUIHandler
         : Inherits cFishingBaseShapeGUIHandler
 
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
         Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
 
             Select Case cmd
@@ -66,7 +70,8 @@ Namespace Controls
         ''' <returns>The color for rendering fishing mortality shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Drawing.Color.DarkGray
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.FishMort)
         End Function
 
         ''' -------------------------------------------------------------------

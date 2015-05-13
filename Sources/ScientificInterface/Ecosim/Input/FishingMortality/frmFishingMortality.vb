@@ -85,9 +85,8 @@ Namespace Ecosim
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_handler = New cFishingMortalityShapeGUIHandler()
-            Me.m_handler.Attach(Me.UIContext, _
-                                Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
+            Me.m_handler = New cFishingMortalityShapeGUIHandler(Me.UIContext)
+            Me.m_handler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, _
                                 Me.m_sketchPad, Me.m_sketchPadToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
         End Sub

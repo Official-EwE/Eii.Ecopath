@@ -1036,8 +1036,8 @@ Namespace Ecosim
                     Me.m_shapeGUIHandler.Detach()
                     Me.m_shapeGUIHandler = Nothing
                 End If
-                Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler()
-                Me.m_shapeGUIHandler.Attach(Me.UIContext, Nothing, Nothing, Me.m_sketchPad, Nothing)
+                Me.m_shapeGUIHandler = New cFishingEffortShapeGUIHandler(Me.UIContext)
+                Me.m_shapeGUIHandler.Attach(Nothing, Nothing, Me.m_sketchPad, Nothing)
             End If
 
             Me.m_shapeGUIHandler.SelectedShape = shape
@@ -1061,8 +1061,8 @@ Namespace Ecosim
                     Me.m_shapeGUIHandler.Detach()
                     Me.m_shapeGUIHandler = Nothing
                 End If
-                Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler()
-                Me.m_shapeGUIHandler.Attach(Me.UIContext, Nothing, Nothing, Me.m_sketchPad, Nothing)
+                Me.m_shapeGUIHandler = New cFishingMortalityShapeGUIHandler(Me.UIContext)
+                Me.m_shapeGUIHandler.Attach(Nothing, Nothing, Me.m_sketchPad, Nothing)
             End If
 
             Me.m_shapeGUIHandler.SelectedShape = shape

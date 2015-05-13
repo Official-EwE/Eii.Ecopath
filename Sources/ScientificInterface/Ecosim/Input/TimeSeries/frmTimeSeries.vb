@@ -71,8 +71,8 @@ Namespace Ecosim
             ' Hook up message sources
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
 
-            Me.m_handler = New cTimeSeriesShapeGUIHandler()
-            Me.m_handler.Attach(Me.UIContext, Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, Me.m_sketchPad, Me.m_sketchPadToolbar)
+            Me.m_handler = New cTimeSeriesShapeGUIHandler(Me.UIContext)
+            Me.m_handler.Attach(Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, Me.m_sketchPad, Me.m_sketchPadToolbar)
 
             ' Once hooked up, try to get TS if not here yet
             If Not Me.UIContext.Core.HasTimeSeries Then
