@@ -29,22 +29,28 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eShapeFunctionType"/>.
+    ''' Class for providing a textual description of <see cref="IShapeFunction"/>.
     ''' </summary>
     ''' <remarks>
-    ''' <para>This class tries to obtain a string from the ScientificShared resources.
-    ''' The resource string is expected to be named and formatted as follows:</para>
-    ''' <para>SHAPEFUNCTION_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
+    ''' <para>This class provides a localized representation of a <see cref="IShapeFunction">shape function</see>.</para>
+    ''' <para>If the function is defined as a predefined <see cref="eShapeFunctionType">primitive</see>, 
+    ''' the <see cref="cShapeFunctionTypeFormatter">localized version of that primitive</see>
+    ''' is returned.</para>
+    ''' <para>If the shape function is derived from a <see cref="EwEPlugin.IEcosimShapeFunctionPlugin">plug-in</see>,
+    ''' the <see cref="EwEPlugin.IEcosimShapeFunctionPlugin.DisplayName">display name</para> 
+    ''' of that plug-in is returned instead.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cShapeFunctionFormatter
         Implements ITypeFormatter
 
+        ''' <inheritdocs cref="ITypeFormatter.GetDescribedType"/>
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
             Return GetType(IShapeFunction)
         End Function
 
+        ''' <inheritdocs cref="ITypeFormatter.GetDescriptor"/>
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
