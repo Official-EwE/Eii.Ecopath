@@ -358,22 +358,6 @@ Namespace DataSources
             Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
         End Function
 
-        Private Function BuildWhereClause(ByVal strVariable As String, ByVal astrValues() As String) As String
-
-            Debug.Assert(Not astrValues Is Nothing)
-            Debug.Assert(Not astrValues.Length = 0)
-
-            Dim sbFilter As New StringBuilder
-            For iValue As Integer = 0 To astrValues.Length - 1
-                If iValue > 0 Then
-                    sbFilter.Append(" OR ")
-                End If
-                sbFilter.Append(String.format("({0}='{1}')", strVariable, astrValues(iValue)))
-            Next
-            Return sbFilter.ToString()
-
-        End Function
-
 #End Region ' Helper methods
 
 #End Region ' Generic
