@@ -50,7 +50,7 @@ Public Class gridTimeSeries
     End Enum
 
     ''' <summary>Time series UI display handler thingy</summary>
-    Private m_handler As New cTimeSeriesShapeGUIHandler()
+    Private m_handler As cTimeSeriesShapeGUIHandler = Nothing
 
     Public Sub New()
         MyBase.New()
@@ -176,6 +176,9 @@ Public Class gridTimeSeries
 
     Public Overrides ReadOnly Property Handler() As ScientificInterfaceShared.Controls.cShapeGUIHandler
         Get
+            If (Me.m_handler Is Nothing) Then
+                Me.m_handler = New cTimeSeriesShapeGUIHandler(Me.UIContext)
+            End If
             Return Me.m_handler
         End Get
     End Property

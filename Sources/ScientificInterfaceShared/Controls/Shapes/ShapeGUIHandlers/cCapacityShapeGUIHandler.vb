@@ -38,6 +38,10 @@ Namespace Controls
     Public Class cCapacityShapeGUIHandler
         Inherits cMediationShapeGUIHandler
 
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Specifies the shapes manager that delivers the data for this handler.
@@ -55,7 +59,8 @@ Namespace Controls
         ''' <returns>The color for rendering capacity shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Drawing.Color.SandyBrown
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.CapacityMediation)
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -102,7 +107,6 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="uic"><see cref="cUIContext">UI context</see> to connect to.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
@@ -110,15 +114,14 @@ Namespace Controls
         ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
         ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Shadows Sub Attach(ByVal uic As cUIContext, _
-                                  ByVal stb As ucShapeToolbox, _
+        Public Overridable Shadows Sub Attach(ByVal stb As ucShapeToolbox, _
                                   ByVal stbtb As ucShapeToolboxToolbar, _
                                   ByVal sp As ucSketchPad, _
                                   ByVal sptb As ucSketchPadToolbar, _
                                   ByVal ma As ucMediationAssignments, _
                                   ByVal mat As ucMediationAssignmentsToolbar)
 
-            MyBase.Attach(uic, stb, stbtb, sp, sptb, ma, mat)
+            MyBase.Attach(stb, stbtb, sp, sptb, ma, mat)
 
             Me.MediationAssignments = ma
             If (Me.MediationAssignments IsNot Nothing) Then

@@ -82,8 +82,8 @@ Namespace Ecosim
                 Me.m_grid.UIContext = Me.UIContext
                 Me.m_gridOutput.UIContext = Me.UIContext
 
-                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler()
-                Me.m_shapeHandler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_sketchPad)
+                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler(Me.UIContext)
+                Me.m_shapeHandler.Attach(Me.m_shapeToolBox, Me.m_sketchPad)
 
                 Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
                 If (Me.m_cmdTSWeights IsNot Nothing) Then

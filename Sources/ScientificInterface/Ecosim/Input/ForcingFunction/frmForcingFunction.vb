@@ -66,9 +66,8 @@ Namespace Ecosim
             ' Design time fix
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_shapeguihandler = New cForcingShapeGUIHandler()
-            Me.m_shapeguihandler.Attach(Me.UIContext, _
-                                        Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
+            Me.m_shapeguihandler = New cForcingShapeGUIHandler(Me.UIContext)
+            Me.m_shapeguihandler.Attach(Me.m_shapeToolbox, Me.m_shapeToolboxToolbar, _
                                         Me.m_sketchPad, Me.m_sketchPadToolbar)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}

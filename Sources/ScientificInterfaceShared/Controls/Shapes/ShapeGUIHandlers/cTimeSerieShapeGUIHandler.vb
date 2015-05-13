@@ -57,7 +57,6 @@ Namespace Controls
 
             Private m_strName As String
             Private m_type As eTimeSeriesType
-            Private m_iNumShapes As Integer
 
             Public Sub New(ByVal t As eTimeSeriesType)
                 Me.m_type = t
@@ -66,13 +65,6 @@ Namespace Controls
             End Sub
 
             Public Property NumShapes() As Integer
-                Get
-                    Return Me.m_iNumShapes
-                End Get
-                Set(ByVal value As Integer)
-                    Me.m_iNumShapes = value
-                End Set
-            End Property
 
             Public ReadOnly Property TimeSeriesType() As eTimeSeriesType
                 Get
@@ -97,7 +89,12 @@ Namespace Controls
             End Function
 
         End Class
+
 #End Region ' Filter
+
+        Public Sub New(uic As cUIContext)
+            MyBase.new(uic)
+        End Sub
 
 #Region " Baseclass overrides "
 
@@ -105,19 +102,17 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="uic"><see cref="cUIContext">UI contextual</see> information.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overloads Sub Attach(ByVal uic As cUIContext, _
-                                    ByVal stb As ucShapeToolbox, _
+        Public Overloads Sub Attach(ByVal stb As ucShapeToolbox, _
                                     ByVal stbtb As ucShapeToolboxToolbar, _
                                     ByVal sp As ucSketchPad, _
                                     ByVal sptb As ucSketchPadToolbar)
 
-            MyBase.Attach(uic, stb, stbtb, sp, sptb)
+            MyBase.Attach(stb, stbtb, sp, sptb)
 
             If Me.SketchPad IsNot Nothing Then
                 ' Cannot draw onto time series shapes
@@ -346,7 +341,8 @@ Namespace Controls
         ''' <returns>The color for Time Series shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Color.DarkGreen
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.GroupTimeSeries)
         End Function
 
         ''' -----------------------------------------------------------------------

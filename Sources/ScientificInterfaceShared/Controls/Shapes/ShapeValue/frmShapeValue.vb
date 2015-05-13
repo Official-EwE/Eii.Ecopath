@@ -128,7 +128,7 @@ Public Class frmShapeValue
 
         ' Store shape
         Me.m_shape = shape
-        Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape)
+        Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, uic)
 
         ' Determine interface mode
         If (shape Is Nothing) Then

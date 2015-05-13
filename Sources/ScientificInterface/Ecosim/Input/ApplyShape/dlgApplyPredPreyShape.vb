@@ -546,7 +546,7 @@ Namespace Ecosim
             For Each shape As cForcingFunction In Me.m_lFFs
                 ' Get handler
                 If Not dtHandlers.ContainsKey(shape.DataType) Then
-                    dtHandlers(shape.DataType) = cShapeGUIHandler.GetShapeUIHandler(shape)
+                    dtHandlers(shape.DataType) = cShapeGUIHandler.GetShapeUIHandler(shape, Me.m_uic)
                 End If
                 ' Create bmp
                 bmp = New Bitmap(rc.Width, rc.Height)

@@ -38,6 +38,10 @@ Namespace Controls
     Public Class cEggProductionShapeGUIHandler
         Inherits cForcingShapeGUIHandler
 
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Specifies the shapes manager that delivers the data for this handler.
@@ -55,7 +59,8 @@ Namespace Controls
         ''' <returns>The color for rendering egg production shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Color.Orange
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.EggProd)
         End Function
 
         ''' -------------------------------------------------------------------

@@ -87,7 +87,7 @@ Namespace Ecospace
             Me.m_seltype = selection
             Me.m_shapeManager = Manager
             Me.m_mapmanager = MapIntManager
-            Me.m_shapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_shapeManager.DataType)
+            Me.m_shapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_shapeManager.DataType, uic)
 
             Me.m_iSelMap = iMap
             Me.m_iSelGrp = iSelGroup

@@ -36,7 +36,7 @@ Imports ScientificInterfaceShared.Style
 Public Class gridHabitatCapacity
     Inherits gridMediation
 
-    Private m_handler As New cCapacityShapeGUIHandler()
+    Private m_handler As cCapacityShapeGUIHandler = Nothing
 
     ''' <summary>Rows in the grid</summary>
     Protected Shadows Enum eRowType As Integer
@@ -55,6 +55,9 @@ Public Class gridHabitatCapacity
 
     Public Overrides ReadOnly Property Handler() As ScientificInterfaceShared.Controls.cShapeGUIHandler
         Get
+            If (Me.m_handler Is Nothing) Then
+                Me.m_handler = New cCapacityShapeGUIHandler(Me.UIContext)
+            End If
             Return Me.m_handler
         End Get
     End Property

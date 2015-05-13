@@ -35,7 +35,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class gridPredPreyMediation
     Inherits gridMediation
 
-    Private m_handler As New cMediationShapeGUIHandler()
+    Private m_handler As cMediationShapeGUIHandler = Nothing
 
     Public Sub New()
         MyBase.New()
@@ -43,6 +43,9 @@ Public Class gridPredPreyMediation
 
     Public Overrides ReadOnly Property Handler() As ScientificInterfaceShared.Controls.cShapeGUIHandler
         Get
+            If (Me.m_handler Is Nothing) Then
+                Me.m_handler = New cMediationShapeGUIHandler(Me.UIContext)
+            End If
             Return Me.m_handler
         End Get
     End Property

@@ -70,7 +70,7 @@ Namespace Controls
             ' Init
             Me.m_uic = uic
             Me.m_shape = shape
-            Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape)
+            Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, uic)
 
         End Sub
 

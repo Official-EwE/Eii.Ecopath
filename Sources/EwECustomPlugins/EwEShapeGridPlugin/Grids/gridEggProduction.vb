@@ -35,15 +35,18 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class gridEggProduction
     Inherits gridForcingBase
 
+    Private m_handler As cEggProductionShapeGUIHandler = Nothing
+
     Public Sub New()
         MyBase.New()
         Me.IsSeasonal = True
     End Sub
 
-    Private m_handler As New cEggProductionShapeGUIHandler()
-
     Public Overrides ReadOnly Property Handler() As ScientificInterfaceShared.Controls.cShapeGUIHandler
         Get
+            If (Me.m_handler Is Nothing) Then
+                Me.m_handler = New cEggProductionShapeGUIHandler(Me.UIContext)
+            End If
             Return Me.m_handler
         End Get
     End Property

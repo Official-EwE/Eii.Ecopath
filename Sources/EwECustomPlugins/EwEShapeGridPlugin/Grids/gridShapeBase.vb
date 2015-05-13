@@ -53,7 +53,7 @@ Public MustInherit Class gridShapeBase
             End If
             MyBase.UIContext = value
             If (MyBase.UIContext IsNot Nothing) Then
-                Me.Handler.Attach(Me.UIContext, Nothing, Nothing, Nothing, Nothing)
+                Me.Handler.Attach(Nothing, Nothing, Nothing, Nothing)
                 AddHandler Me.Handler.OnRefreshed, AddressOf OnRefreshed
                 Me.RefreshContent()
             End If

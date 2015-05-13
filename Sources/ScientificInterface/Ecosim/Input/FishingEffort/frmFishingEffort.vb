@@ -60,8 +60,8 @@ Namespace Ecosim
 
             If Me.UIContext Is Nothing Then Return
 
-            Me.m_handler = New cFishingEffortShapeGUIHandler()
-            Me.m_handler.Attach(Me.UIContext, Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, Me.m_sketchPad, Me.m_sketchPadToolbar)
+            Me.m_handler = New cFishingEffortShapeGUIHandler(Me.UIContext)
+            Me.m_handler.Attach(Me.m_shapeToolBox, Me.m_shapeToolboxToolbar, Me.m_sketchPad, Me.m_sketchPadToolbar)
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
 
         End Sub

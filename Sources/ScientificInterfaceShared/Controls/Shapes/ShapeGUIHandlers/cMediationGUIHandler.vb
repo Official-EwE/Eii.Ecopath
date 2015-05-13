@@ -46,11 +46,14 @@ Namespace Controls
         ''' <summary>Mediation assignment toolbar to handle.</summary>
         Private m_medasstoolbar As ucMediationAssignmentsToolbar = Nothing
 
+        Public Sub New(uic As cUIContext)
+            MyBase.New(uic)
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor, initializes a new instance of this handler.
         ''' </summary>
-        ''' <param name="uic"><see cref="cUIContext">UI context</see> to connect to.</param>
         ''' <param name="stb"><see cref="ucShapeToolbox">Shape toolbox control </see> to handle, if any.</param>
         ''' <param name="stbtb"><see cref="ucShapeToolboxToolbar">Shape toolbox toolbar control </see> to handle, if any.</param>
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
@@ -58,15 +61,14 @@ Namespace Controls
         ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
         ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Shadows Sub Attach(ByVal uic As cUIContext, _
-                                  ByVal stb As ucShapeToolbox, _
+        Public Overridable Shadows Sub Attach(ByVal stb As ucShapeToolbox, _
                                   ByVal stbtb As ucShapeToolboxToolbar, _
                                   ByVal sp As ucSketchPad, _
                                   ByVal sptb As ucSketchPadToolbar, _
                                   ByVal ma As ucMediationAssignments, _
                                   ByVal mat As ucMediationAssignmentsToolbar)
 
-            MyBase.Attach(uic, stb, stbtb, sp, sptb)
+            MyBase.Attach(stb, stbtb, sp, sptb)
 
             Me.MediationAssignments = ma
             If (Me.MediationAssignments IsNot Nothing) Then
@@ -182,7 +184,8 @@ Namespace Controls
         ''' <returns>The color for rendering mediation shapes.</returns>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Color() As System.Drawing.Color
-            Return Color.FromArgb(255, 81, 133, 255)
+            Debug.Assert(Me.UIContext IsNot Nothing)
+            Return Me.UIContext.StyleGuide.ShapeColor(eDataTypes.Mediation)
         End Function
 
         ''' -----------------------------------------------------------------------

@@ -75,6 +75,8 @@ Namespace Style
         Private m_bChanged As Boolean = False
         ''' <summary>Application colour scheme.</summary>
         Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
+        ''' <summary>Shape colour scheme.</summary>
+        Private m_dtShapeColors As New Dictionary(Of eDataTypes, Color)
         ''' <summary>Color ramp for obtaining EwE5 group colors</summary>
         Private m_colorrampGroups As New cEwEColorRamp()
         ''' <summary>Color ramp for obtaining fleet colors</summary>
@@ -192,6 +194,15 @@ Namespace Style
             Me.m_dtFontFamilyName.Clear()
             Me.m_dtFontSize.Clear()
             Me.m_dtFontStye.Clear()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Resets shape colors to default values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub ResetShapeColors()
+            Me.m_dtShapeColors.Clear()
         End Sub
 
 #End Region ' Public interfaces
@@ -1487,11 +1498,11 @@ Namespace Style
                 Return Me.DefaultColor(colorType)
             End Get
             Set(ByVal value As Color)
+                ' Optimization
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
-                    ' Optimization
                     If Me.m_dtApplicationColors(colorType) = value Then Return
-                    Me.m_dtApplicationColors.Remove(colorType)
                 End If
+
                 ' Apply
                 Me.m_dtApplicationColors(colorType) = value
                 ' Notify the world
@@ -1500,6 +1511,31 @@ Namespace Style
         End Property
 
 #End Region ' Application
+
+#Region " Shape "
+
+        Public Property ShapeColor(ByVal shapetype As eDataTypes) As Color
+            Get
+                If (Me.m_dtShapeColors.ContainsKey(shapetype)) Then
+                    Return Me.m_dtShapeColors(shapetype)
+                End If
+                Return DefaultShapeColor(shapetype)
+            End Get
+            Set(value As Color)
+
+                ' Optimization
+                If (Me.m_dtShapeColors.ContainsKey(shapetype)) Then
+                    If Me.m_dtShapeColors(shapetype) = value Then Return
+                End If
+
+                ' Apply
+                Me.m_dtShapeColors(shapetype) = value
+                ' Notify the world
+                Me.ColorsChanged()
+            End Set
+        End Property
+
+#End Region ' Shape
 
 #Region " Generics "
 
@@ -2283,6 +2319,23 @@ Namespace Style
                     Debug.Assert(False)
             End Select
             Return -1
+        End Function
+
+        Private Function DefaultShapeColor(ByVal shapetype As eDataTypes) As Color
+            Select Case shapetype
+                Case eDataTypes.Forcing : Return Color.FromArgb(255, 236, 55, 12)
+                Case eDataTypes.EggProd : Return Color.Orange
+                Case eDataTypes.CapacityMediation : Return Drawing.Color.SandyBrown
+                Case eDataTypes.FishingEffort : Return Drawing.Color.Coral
+                Case eDataTypes.FishMort : Return Color.DarkGray
+                Case eDataTypes.PriceMediation : Return Color.FromArgb(255, 41, 233, 41)
+                Case eDataTypes.Mediation : Return Color.FromArgb(255, 81, 133, 255)
+                Case eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries : Return Color.DarkGreen
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            ' Unknown!
+            Return Color.Magenta
         End Function
 
 #End Region ' Internal implementation
