@@ -1164,7 +1164,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Foraging response {0}.
+        '''  Looks up a localized string similar to Environmental response {0}.
         '''</summary>
         Public ReadOnly Property ECOSIM_DEFAULT_NEWCAPACITYSHAPE() As String
             Get
