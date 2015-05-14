@@ -929,7 +929,7 @@ Namespace DataSources
         Private Function LoadEcospaceScenarioDefinitions() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcospaceScenario")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcospaceScenario ORDER BY ScenarioID ASC")
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
 
@@ -1019,7 +1019,7 @@ Namespace DataSources
         Private Function LoadEcotracerScenarioDefinitions() As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcotracerScenario")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcotracerScenario ORDER BY ScenarioID ASC")
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
 
@@ -3092,7 +3092,7 @@ Namespace DataSources
             taxonDS.NumTaxon = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathTaxon"))
             taxonDS.RedimTaxon()
 
-            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathTaxon")
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathTaxon ORDER BY TaxonID ASC")
             Dim iTaxon As Integer = 1
             Dim bSucces As Boolean = True
 
@@ -7861,7 +7861,6 @@ Namespace DataSources
             Try
                 ' Allocate space for habitat data
                 ecospaceDS.NoHabitats = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID), 0))
-                ecospaceDS.NoHabChanges = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID), 0))
                 ecospaceDS.RedimHabitatVariables(False)
 
                 reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
@@ -7879,44 +7878,6 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
-                bSucces = False
-            End Try
-
-
-            ' Load related data
-            bSucces = bSucces And Me.LoadEcospaceHabitatChanges(iScenarioID)
-
-            Return bSucces
-
-        End Function
-
-        Private Function LoadEcospaceHabitatChanges(ByVal iScenarioID As Integer) As Boolean
-
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim reader As IDataReader = Nothing
-            Dim bSucces As Boolean = True
-            Dim iTime As Integer = 0
-            Dim iSequence As Integer = 0
-
-            Try
-                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioHabitatChange WHERE (ScenarioID={0}) ORDER BY Time", iScenarioID))
-                While reader.Read()
-
-                    ' Read fields
-                    iTime = CInt(reader("Time"))
-                    iSequence = CInt(reader("Sequence"))
-
-                    ecospaceDS.HabTime(iSequence) = iTime
-                    ecospaceDS.HabChange(0, iSequence) = CInt(reader("InCol"))
-                    ecospaceDS.HabChange(1, iSequence) = CInt(reader("InRow"))
-                    ecospaceDS.HabChange(2, iSequence) = CInt(reader("DrawMod"))
-                    ecospaceDS.HabChange(3, iSequence) = CInt(reader("Change"))
-
-                End While
-                Me.m_db.ReleaseReader(reader)
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
                 bSucces = False
             End Try
 
@@ -7987,45 +7948,8 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            Return bSucces And SaveEcospaceHabitatChanges(idm)
-
-        End Function
-
-        Private Function SaveEcospaceHabitatChanges(ByVal idm As cIDMappings) As Boolean
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim drow As DataRow = Nothing
-            Dim bSucces As Boolean = True
-
-            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
-
-            Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID))
-
-                writer = Me.m_db.GetWriter("EcospaceScenarioHabitatChange")
-                For iChange As Integer = 1 To ecospaceDS.NoHabChanges
-
-                    drow = writer.NewRow()
-                    drow("ScenarioID") = iScenarioID
-                    drow("Time") = ecospaceDS.HabTime(iChange)
-                    drow("Sequence") = iChange
-                    drow("InRow") = ecospaceDS.HabChange(0, iChange)
-                    drow("InCol") = ecospaceDS.HabChange(1, iChange)
-                    drow("DrawMod") = ecospaceDS.HabChange(2, iChange)
-                    drow("Change") = ecospaceDS.HabChange(3, iChange)
-                    writer.AddRow(drow)
-
-                Next iChange
-
-                bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
-
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
             Return bSucces
+
         End Function
 
 #End Region ' Save

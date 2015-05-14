@@ -3115,14 +3115,24 @@ Public Class frmEwE6
 
         ' Is a hyperlink?
         If cStringUtils.BeginsWith(strURL, "http:", True) Then
-            ' #Yes: extract hyperlink bit, and pass it to the navigation panel
+            ' #Yes: extract hyperlink bit, and pass it to the desired browser
             If Not cmd.Checked Or Not String.IsNullOrEmpty(strURL) Then
-                If panel.IsDisposed() Then
-                    panel = New frmStartPanel(Me.UIContext)
-                    Me.m_dtPanels(cPANEL_START) = panel
+                If (My.Settings.UseExternalBrowser) Then
+                    Try
+                        System.Diagnostics.Process.Start(strURL)
+                    Catch ex As Exception
+                        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SHELL_FAILURE, ex.Message), _
+                                                 eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+                        Me.Core.Messages.SendMessage(msg)
+                    End Try
+                Else
+                    If panel.IsDisposed() Then
+                        panel = New frmStartPanel(Me.UIContext)
+                        Me.m_dtPanels(cPANEL_START) = panel
+                    End If
+                    panel.URL = strURL
+                    panel.Show(Me.m_DockPanel, DockState.Document)
                 End If
-                panel.URL = strURL
-                panel.Show(Me.m_DockPanel, DockState.Document)
             Else
                 If Not panel.IsDisposed Then
                     panel.Close()
@@ -3158,6 +3168,7 @@ Public Class frmEwE6
     Private Sub OnUpdateBrowseURI(ByVal cmd As cCommand) Handles m_cmdBrowseURI.OnUpdate
         Dim p As frmEwEDockContent = Me.Panel(cPANEL_START)
         cmd.Checked = p.Visible
+        cmd.IsAvailable = (My.Settings.UseExternalBrowser = False)
     End Sub
 
     ''' <summary>

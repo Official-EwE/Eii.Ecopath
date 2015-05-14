@@ -2105,7 +2105,6 @@ Public Class cEIIXMLDataSource
 
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dtHab As DataTable = Me.ReadTable("EcospaceScenarioHabitat")
-        Dim dtHabChange As DataTable = Me.ReadTable("EcospaceScenarioHabitatChange")
         Dim strMap As String = ""
         Dim i As Integer = 0
         Dim iTime As Integer = 0
@@ -2116,11 +2115,7 @@ Public Class cEIIXMLDataSource
         dtHab.DefaultView.Sort = "Sequence ASC"
         ecospaceDS.NoHabitats = dtHab.DefaultView.ToTable.Rows.Count()
 
-        dtHabChange.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
-        dtHabChange.DefaultView.Sort = "Time ASC"
-        ecospaceDS.NoHabChanges = dtHabChange.DefaultView.ToTable.Rows.Count()
-
-        ecospaceDS.RedimHabitatVariables(False)
+          ecospaceDS.RedimHabitatVariables(False)
 
         For Each drow As DataRow In dtHab.DefaultView.ToTable.Rows
             Try
@@ -2137,25 +2132,7 @@ Public Class cEIIXMLDataSource
             End Try
         Next
 
-        For Each drow As DataRow In dtHabChange.DefaultView.ToTable.Rows
-            Try
-                iTime = CInt(drow("Time"))
-                iSequence = CInt(drow("Sequence"))
-
-                ecospaceDS.HabTime(iSequence) = iTime
-                ecospaceDS.HabChange(0, iSequence) = CInt(drow("InCol"))
-                ecospaceDS.HabChange(1, iSequence) = CInt(drow("InRow"))
-                ecospaceDS.HabChange(2, iSequence) = CInt(drow("DrawMod"))
-                ecospaceDS.HabChange(3, iSequence) = CInt(drow("Change"))
-
-            Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace habitat changes for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
-                bSucces = False
-            End Try
-        Next
-
         dtHab.Clear()
-        dtHabChange.Clear()
 
         Return bSucces
 
