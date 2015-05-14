@@ -407,9 +407,11 @@ Namespace Forms
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
 
-            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) And (Me.UIContext.FormSettings IsNot Nothing) Then
-                ' Store form position BEFORE form is closed
-                Me.UIContext.FormSettings.Store(Me)
+            If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
+                If (Me.UIContext.FormSettings IsNot Nothing) Then
+                    ' Store form position BEFORE form is closed
+                    Me.UIContext.FormSettings.Store(Me)
+                End If
             End If
 
             ' Just in case

@@ -165,12 +165,12 @@ Public Class cEcospaceDataStructures
     ''' <remarks>In EwE5 there is no variable for this it is read from the interface when it is needed</remarks>
     Public FitnessResp As Single
 
-    ''' <summary>Number of habitat time changes</summary>
-    Public NoHabChanges As Integer
-    ''' <summary>Habitat time for NoHabChange #</summary>
-    Public HabTime() As Single
-    ''' <summary>Habitat changes for NoHabChange #</summary>
-    Public HabChange(,) As Integer
+    ' ''' <summary>Number of habitat time changes</summary>
+    'Public NoHabChanges As Integer
+    ' ''' <summary>Habitat time for NoHabChange #</summary>
+    'Public HabTime() As Single
+    ' ''' <summary>Habitat changes for NoHabChange #</summary>
+    'Public HabChange(,) As Integer
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Map Variables
@@ -919,7 +919,6 @@ Public Class cEcospaceDataStructures
             Ftot = Nothing
             EffPower = Nothing
             SEmult = Nothing
-            HabTime = Nothing
             HabAreaProportion = Nothing
             HabArea = Nothing
             PHabType = Nothing
@@ -1156,9 +1155,6 @@ Public Class cEcospaceDataStructures
                 ReDim Preserve HabitatDBID(NoHabitats)
 
             End If
-
-            ReDim HabTime(NoHabChanges)
-            ReDim HabChange(3, NoHabChanges)
 
             Me.allocate(PHabType, NoHabitats, InRow, InCol)
 

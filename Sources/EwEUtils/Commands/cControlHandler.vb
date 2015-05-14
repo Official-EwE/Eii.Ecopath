@@ -358,7 +358,9 @@ Namespace Commands
 
         Private Sub OnClick(sender As Object, e As System.EventArgs) Handles m_ctrl.Click
             Try
-                Me.Invoke()
+                If (Me.Params IsNot Nothing) Then
+                    Me.Invoke()
+                End If
             Catch ex As Exception
                 ' Kaboom
             End Try
