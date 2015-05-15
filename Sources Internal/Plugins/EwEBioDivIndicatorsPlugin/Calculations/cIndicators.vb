@@ -582,7 +582,8 @@ Public MustInherit Class cIndicators
 
 #Region " Outputs "
 
-    ' Funtions that expose the private variables
+    ' Functions that expose the private variables. Do NOT rename these functions;
+    ' they are invoked via Reflection.
 
 #Region " Trophic indicators "
 
