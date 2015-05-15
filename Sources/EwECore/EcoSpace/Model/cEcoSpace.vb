@@ -7355,12 +7355,6 @@ exitline:
         'Dim orgCap As Single
         If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
-        ''If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
-        'If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
-        '    'Enviromental response maps not used
-        '    Return False
-        'End If
-
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
 
             'Is this layer active
