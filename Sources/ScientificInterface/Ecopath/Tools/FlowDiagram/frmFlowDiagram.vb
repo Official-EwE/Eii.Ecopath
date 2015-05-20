@@ -227,6 +227,10 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
+            'During initialization don't responsed to changes in the Flow Diagram
+            'This prevents a recursive loop during initialization
+            If Me.m_bInUpdate Then Return
+
             ' These options are not supported in the Ecopath FD
             Me.m_tree.ShowBiomassLegend = False
             Me.m_tree.ShowFlowRateLegend = False
