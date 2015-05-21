@@ -499,8 +499,10 @@ Namespace Controls
                 Return Me.m_data.Title
             End Get
             Set(ByVal value As String)
-                Me.m_data.Title = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_data.Title) Then
+                    Me.m_data.Title = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -514,8 +516,10 @@ Namespace Controls
                 Return Me.m_bShowTitle
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bShowTitle = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_bShowTitle) Then
+                    Me.m_bShowTitle = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -545,8 +549,10 @@ Namespace Controls
                 Return Me.m_colorusagetype
             End Get
             Set(ByVal value As eFDColorUsageTypes)
-                Me.m_colorusagetype = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_colorusagetype) Then
+                    Me.m_colorusagetype = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -559,8 +565,10 @@ Namespace Controls
                 Return Me.m_tsShowLegend
             End Get
             Set(ByVal value As TriState)
-                Me.m_tsShowLegend = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_tsShowLegend) Then
+                    Me.m_tsShowLegend = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -573,9 +581,11 @@ Namespace Controls
                 Return Me.m_tsShowBiomassLegend
             End Get
             Set(ByVal value As Boolean)
-                Me.m_tsShowBiomassLegend = value
-                RaiseEvent OnBiomassLegendChanged(Me)
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_tsShowBiomassLegend) Then
+                    Me.m_tsShowBiomassLegend = value
+                    RaiseEvent OnBiomassLegendChanged(Me)
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -588,9 +598,11 @@ Namespace Controls
                 Return Me.m_tsShowFlowRateLegend
             End Get
             Set(ByVal value As Boolean)
-                Me.m_tsShowFlowRateLegend = value
-                RaiseEvent OnFlowRateLegendChanged(Me)
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_tsShowFlowRateLegend) Then
+                    Me.m_tsShowFlowRateLegend = value
+                    RaiseEvent OnFlowRateLegendChanged(Me)
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -603,8 +615,10 @@ Namespace Controls
                 Return Me.m_clrNode
             End Get
             Set(ByVal value As Color)
-                Me.m_clrNode = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_clrNode) Then
+                    Me.m_clrNode = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -617,8 +631,10 @@ Namespace Controls
                 Return Me.m_bAutoNodeSize
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bAutoNodeSize = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_bAutoNodeSize) Then
+                    Me.m_bAutoNodeSize = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -631,8 +647,10 @@ Namespace Controls
                 Return Me.m_iNodeSize
             End Get
             Set(ByVal value As Integer)
-                Me.m_iNodeSize = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_iNodeSize) Then
+                    Me.m_iNodeSize = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -645,8 +663,10 @@ Namespace Controls
                 Return Me.m_nodetype
             End Get
             Set(ByVal value As eFDNodeTypes)
-                Me.m_nodetype = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_nodetype) Then
+                    Me.m_nodetype = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -659,8 +679,10 @@ Namespace Controls
                 Return Me.m_bAutoLineWidth
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bAutoLineWidth = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_bAutoLineWidth) Then
+                    Me.m_bAutoLineWidth = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -673,8 +695,10 @@ Namespace Controls
                 Return Me.m_sLineWidth
             End Get
             Set(ByVal value As Single)
-                Me.m_sLineWidth = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_sLineWidth) Then
+                    Me.m_sLineWidth = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -686,8 +710,10 @@ Namespace Controls
                 Return Me.m_clrLine
             End Get
             Set(ByVal value As Color)
-                Me.m_clrLine = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_clrLine) Then
+                    Me.m_clrLine = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -716,8 +742,10 @@ Namespace Controls
                 Return Me.m_bIsNodeDrawValue
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bIsNodeDrawValue = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_bIsNodeDrawValue) Then
+                    Me.m_bIsNodeDrawValue = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -730,8 +758,10 @@ Namespace Controls
                 Return Me.m_bIsDrawLabel
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bIsDrawLabel = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_bIsDrawLabel) Then
+                    Me.m_bIsDrawLabel = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
@@ -745,8 +775,10 @@ Namespace Controls
                 Return Me.m_nodeshowtype
             End Get
             Set(ByVal value As eFDShowHiddenType)
-                Me.m_nodeshowtype = value
-                RaiseEvent OnChanged(Me)
+                If (value <> Me.m_nodeshowtype) Then
+                    Me.m_nodeshowtype = value
+                    RaiseEvent OnChanged(Me)
+                End If
             End Set
         End Property
 
