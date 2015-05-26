@@ -123,7 +123,7 @@ Public Class cMediatedInteractionManager
                 End If
 
                 'Detritus Groups
-                If (PredIndex >= m_EPData.NumLiving) Then
+                If (PredIndex > m_EPData.NumLiving) Then
                     If PredIndex = PreyIndex Then
                         'this is the detritus diagonal that appears in the grids
                         Return True
