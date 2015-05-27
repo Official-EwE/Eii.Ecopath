@@ -205,7 +205,7 @@ Public Class frmNavigationPanel
 
             ' Ecospace
             .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceDispersal), "Dispersal.htm")
-            .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceParameters), "Ecospace parameters.htm")
+            .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmEcospaceParameters), "Ecospace parameters.htm")
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.frmEcospaceMap), "Basemap.htm") ' ToDo: connect to help
             .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAs))

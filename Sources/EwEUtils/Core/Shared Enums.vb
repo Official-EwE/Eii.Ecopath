@@ -3330,7 +3330,7 @@ Namespace Core
         ''' <summary>Ecosim group</summary>
         Ecosim
         ''' <summary>Ecosim run results</summary>
-        EcosimRunResults
+        EcosimResults
         ''' <summary>Monte Carlo results</summary>
         MonteCarlo
         ''' <summary>MSE results</summary>
@@ -3340,7 +3340,9 @@ Namespace Core
         ''' <summary>Ecospace run result summary</summary>
         Ecospace
         ''' <summary>Ecospace run result maps</summary>
-        EcospaceMaps
+        EcospaceResults
+        ''' <summary>Ecospace run results extracted by region</summary>
+        EcospaceResultsRegion
         ''' <summary>MPA optimizations</summary>
         MPAOpt
         ''' <summary>Ecotracer run results</summary>

@@ -37,16 +37,17 @@ Public Class cEcospaceResultWriterFactory
     ''' <summary>
     ''' Factory method.
     ''' </summary>
-    ''' <param name="strExt">The file extension to find a writer for.</param>
+    ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.DataName">data name</see> to find a writer for.</param>
     ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
     ''' no writer could be found for the provided extension.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetWriter(ByVal strExt As String, _
+    Public Shared Function GetWriter(ByVal strDataName As String, _
                                      ByVal pm As cPluginManager) As IEcospaceResultsWriter
 
-        Select Case strExt.ToLower
-            Case ".csv" : Return New cEcospaceCSVMapResultsWriter()
-            Case ".asc" : Return New cEcospaceASCMapResultsWriter()
+        Select Case strDataName.ToLower()
+            Case "csvmap" : Return New cEcospaceCSVMapResultsWriter()
+            Case "ascmap" : Return New cEcospaceASCMapResultsWriter()
+            Case "regavg" : Return New cEcospaceAvgModelAreaResultsWriter()
         End Select
 
         ' Plug-in manager provided?
@@ -54,7 +55,7 @@ Public Class cEcospaceResultWriterFactory
             ' #Yes: see if a plug-in based writer supports the requested format
             For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
                 ' Does plug-in support this format?
-                If (String.Compare(strExt, ip.FileExtension, True) = 0) Then
+                If (String.Compare(strDataName, ip.DataName, True) = 0) Then
                     ' #Yes: use it
                     Return ip
                 End If
@@ -122,10 +123,18 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IEcospaceResultsWriter.FileExtension"/>
+    ''' <inheritdocs cref="IEcospaceResultsWriter.DataName"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function FileExtension() As String _
-        Implements IEcospaceResultsWriter.FileExtension
+    Public MustOverride ReadOnly Property DataName() As String _
+        Implements IEcospaceResultsWriter.DataName
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.Name"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride ReadOnly Property Name() As String _
+        Implements IEcospaceResultsWriter.Name
+
+    Public MustOverride Function FileExtension() As String
 
 #End Region ' IEcospaceResultsWriter implementation
 
@@ -192,8 +201,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags, _
                                                     ByVal iGrp As Integer, _
                                                     ByVal strExt As String, _
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String _
-                                                    Implements EwEUtils.Core.IEcospaceResultsWriter.GetGroupFileName
+                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
@@ -227,8 +235,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags, _
                                                     ByVal iFlt As Integer, _
                                                     ByVal strExt As String, _
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String _
-                                                    Implements EwEUtils.Core.IEcospaceResultsWriter.GetFleetFileName
+                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
@@ -289,8 +296,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Return value
     End Function
 
-
-    Public ReadOnly Property OutputPath As String Implements EwEUtils.Core.IEcospaceResultsWriter.OutputPath
+    Public ReadOnly Property OutputPath As String
         Get
             Return Me.m_OutputPath
         End Get

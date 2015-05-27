@@ -54,42 +54,14 @@ Namespace Core
         Sub EndWrite()
 
         ''' <summary>
-        ''' Return the file extension that this writer supports.
+        ''' Return a human-legible name of the data that this writer produces.
         ''' </summary>
-        Function FileExtension() As String
+        ReadOnly Property DataName() As String
 
         ''' <summary>
-        ''' Return the output path that this writter is going to use.
+        ''' Return the internal name of this writer.
         ''' </summary>
-        ReadOnly Property OutputPath As String
-
-        ''' <summary>
-        ''' Return the full path this writer will use for this Varname, Group, File extention and timestep.
-        ''' </summary>
-        ''' <param name="varname">eVarNameFlags of the variable.</param>
-        ''' <param name="iGrp">Group index.</param>
-        ''' <param name="strExt">File extention.</param>
-        ''' <param name="iModelTimeStep">Model timestep</param>
-        ''' <returns>Full path of the file</returns>
-        ''' <remarks></remarks>
-        Function GetGroupFileName(ByVal varname As eVarNameFlags, _
-                                  ByVal iGrp As Integer, _
-                                  ByVal strExt As String, _
-                                  Optional ByVal iModelTimeStep As Integer = -9999) As String
-
-        ''' <summary>
-        ''' Return the full path this writer will use for this Varname, Group, File extention and timestep.
-        ''' </summary>
-        ''' <param name="varname">eVarNameFlags of the variable.</param>
-        ''' <param name="iFlt">Fleet index.</param>
-        ''' <param name="strExt">File extention.</param>
-        ''' <param name="iModelTimeStep">Model timestep</param>
-        ''' <returns>Full path of the file</returns>
-        ''' <remarks></remarks>
-        Function GetFleetFileName(ByVal varname As eVarNameFlags, _
-                                  ByVal iFlt As Integer, _
-                                  ByVal strExt As String, _
-                                  Optional ByVal iModelTimeStep As Integer = -9999) As String
+        ReadOnly Property Name() As String
 
     End Interface
 

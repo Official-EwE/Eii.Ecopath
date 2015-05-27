@@ -1190,7 +1190,7 @@ Namespace Ecospace
                 End If
 
                 If (bSave) Then
-                    Dim strFile As String = Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), _
+                    Dim strFile As String = Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), _
                                                          Me.m_plottype.ToString & String.Format("-{0:00000}", TimeStepData.iTimeStep))
                     Me.SaveMapGeoRefImages(strFile, ImageFormat.Png)
                 End If

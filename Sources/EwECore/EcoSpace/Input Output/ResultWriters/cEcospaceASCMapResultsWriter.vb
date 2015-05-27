@@ -275,4 +275,17 @@ Public Class cEcospaceASCMapResultsWriter
 
 #End Region ' Internals
 
+    Public Overrides ReadOnly Property DataName As String
+        Get
+            ' ToDo: globalize this
+            Return "ASCII map"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property Name As String
+        Get
+            Return "ascmap"
+        End Get
+    End Property
+
 End Class

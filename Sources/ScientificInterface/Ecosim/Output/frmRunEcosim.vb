@@ -623,7 +623,7 @@ Namespace Ecosim
         Private Sub OnSaveOutput(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnSaveOutput.Click
             Try
-                Me.Core.Autosave(eAutosaveTypes.EcosimRunResults) = Me.m_tsbnSaveOutput.Checked
+                Me.Core.Autosave(eAutosaveTypes.EcosimResults) = Me.m_tsbnSaveOutput.Checked
             Catch ex As Exception
                 ' Plop
             End Try
@@ -1140,7 +1140,7 @@ Namespace Ecosim
             Me.m_tsbnSetTo0.Enabled = Me.m_bIsEffortSelected
 
             Me.m_tsbnExplore.Enabled = (Me.Core.StateMonitor.HasEcosimRan)
-            Me.m_tsbnSaveOutput.Checked = Me.Core.Autosave(eAutosaveTypes.EcosimRunResults)
+            Me.m_tsbnSaveOutput.Checked = Me.Core.Autosave(eAutosaveTypes.EcosimResults)
 
             Me.m_bInUpdate = False
 

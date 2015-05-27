@@ -234,7 +234,7 @@ Namespace Other
                 Case eAutosaveTypes.Ecosim
 
                     ' Add Ecosim nodes
-                    Me.BuildControlTree(eAutosaveTypes.EcosimRunResults, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.EcosimResults, cbParent, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MonteCarlo, cbParent, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MSE, cbParent, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MSY, cbParent, iIndent, lPlugins)
@@ -242,14 +242,13 @@ Namespace Other
                     Me.Add(lPlugins(t), cbParent, iIndent)
 
                 Case eAutosaveTypes.Ecospace
-                    ' Add Ecospace results node
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    Me.Add(ctrl, cbParent)
+
                     ' Add Ecospace map node
-                    Me.BuildControlTree(eAutosaveTypes.EcospaceMaps, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.EcospaceResults, cbParent, iIndent, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.EcospaceResultsRegion, cbParent, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MPAOpt, cbParent, iIndent, lPlugins)
                     ' Add Ecospace plug-in nodes
-                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
+                    Me.Add(lPlugins(t), cbParent, iIndent)
 
                 Case eAutosaveTypes.Ecotracer
                     ' Add tracer node

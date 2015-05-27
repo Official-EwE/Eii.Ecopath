@@ -164,16 +164,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecosim run results.
+        '''  Looks up a localized string similar to Run results.
         '''</summary>
-        Public ReadOnly Property AUTOSAVE_ECOSIMRUNRESULTS() As String
+        Public ReadOnly Property AUTOSAVE_ECOSIMRESULTS() As String
             Get
-                Return ResourceManager.GetString("AUTOSAVE_ECOSIMRUNRESULTS", resourceCulture)
+                Return ResourceManager.GetString("AUTOSAVE_ECOSIMRESULTS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace results by region.
+        '''  Looks up a localized string similar to Ecospace.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOSPACE() As String
             Get
@@ -182,20 +182,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace result maps.
+        '''  Looks up a localized string similar to Run results.
         '''</summary>
-        Public ReadOnly Property AUTOSAVE_ECOSPACEMAPS() As String
+        Public ReadOnly Property AUTOSAVE_ECOSPACERESULTS() As String
             Get
-                Return ResourceManager.GetString("AUTOSAVE_ECOSPACEMAPS", resourceCulture)
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACERESULTS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace summary per region.
+        '''  Looks up a localized string similar to Result summary per region.
         '''</summary>
-        Public ReadOnly Property AUTOSAVE_ECOSPACEREGIONSUMMARY() As String
+        Public ReadOnly Property AUTOSAVE_ECOSPACERESULTSREGION() As String
             Get
-                Return ResourceManager.GetString("AUTOSAVE_ECOSPACEREGIONSUMMARY", resourceCulture)
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACERESULTSREGION", resourceCulture)
             End Get
         End Property
         

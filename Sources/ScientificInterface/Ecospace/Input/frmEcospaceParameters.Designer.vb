@@ -20,7 +20,7 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecospace
 
-    Partial Class EcospaceParameters
+    Partial Class frmEcospaceParameters
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -44,7 +44,7 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim m_gbModel As System.Windows.Forms.GroupBox
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcospaceParameters))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceParameters))
             Me.m_rbNewStanzaModel = New System.Windows.Forms.RadioButton()
             Me.m_rbIBM = New System.Windows.Forms.RadioButton()
             Me.m_rbOldSchool = New System.Windows.Forms.RadioButton()
@@ -73,7 +73,7 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
-            Me.m_cmbAutosaveMapFormat = New System.Windows.Forms.ComboBox()
+            Me.m_cmbAutosaveFormat = New System.Windows.Forms.ComboBox()
             Me.m_lblAutosaveResultMaps = New System.Windows.Forms.Label()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbAutosaveResultRegions = New System.Windows.Forms.CheckBox()
@@ -320,7 +320,7 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
-            Me.m_gbRunTime.Controls.Add(Me.m_cmbAutosaveMapFormat)
+            Me.m_gbRunTime.Controls.Add(Me.m_cmbAutosaveFormat)
             Me.m_gbRunTime.Controls.Add(Me.m_lblAutosaveResultMaps)
             Me.m_gbRunTime.Controls.Add(Me.m_lbNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_nudNumThreads)
@@ -340,13 +340,13 @@ Namespace Ecospace
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
-            'm_cmbAutosaveMapFormat
+            'm_cmbAutosaveFormat
             '
-            Me.m_cmbAutosaveMapFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbAutosaveMapFormat.FormattingEnabled = True
-            Me.m_cmbAutosaveMapFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveMapFormat.Items"), resources.GetString("m_cmbAutosaveMapFormat.Items1"), resources.GetString("m_cmbAutosaveMapFormat.Items2"), resources.GetString("m_cmbAutosaveMapFormat.Items3")})
-            resources.ApplyResources(Me.m_cmbAutosaveMapFormat, "m_cmbAutosaveMapFormat")
-            Me.m_cmbAutosaveMapFormat.Name = "m_cmbAutosaveMapFormat"
+            Me.m_cmbAutosaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbAutosaveFormat.FormattingEnabled = True
+            Me.m_cmbAutosaveFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveFormat.Items"), resources.GetString("m_cmbAutosaveFormat.Items1"), resources.GetString("m_cmbAutosaveFormat.Items2"), resources.GetString("m_cmbAutosaveFormat.Items3")})
+            resources.ApplyResources(Me.m_cmbAutosaveFormat, "m_cmbAutosaveFormat")
+            Me.m_cmbAutosaveFormat.Name = "m_cmbAutosaveFormat"
             '
             'm_lblAutosaveResultMaps
             '
@@ -606,12 +606,13 @@ Namespace Ecospace
             Me.m_hdrSpatial.IsCollapsed = False
             Me.m_hdrSpatial.Name = "m_hdrSpatial"
             '
-            'EcospaceParameters
+            'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_tlpStuff)
-            Me.Name = "EcospaceParameters"
+            Me.Name = "frmEcospaceParameters"
+            Me.TabText = ""
             m_gbModel.ResumeLayout(False)
             m_gbModel.PerformLayout()
             Me.m_tlpModelTop.ResumeLayout(False)
@@ -683,7 +684,7 @@ Namespace Ecospace
         Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_rbEcopathEffort As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPredictEffort As System.Windows.Forms.RadioButton
-        Private WithEvents m_cmbAutosaveMapFormat As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbAutosaveFormat As System.Windows.Forms.ComboBox
         Private WithEvents m_cbAutosaveResultRegions As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveResultMaps As System.Windows.Forms.Label
         Private WithEvents m_plScenario As System.Windows.Forms.Panel

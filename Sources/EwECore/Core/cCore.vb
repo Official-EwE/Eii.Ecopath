@@ -2501,16 +2501,8 @@ Public Class cCore
                 Case eAutosaveTypes.Ecopath
                     ' NOP
 
-                Case eAutosaveTypes.Ecosim
+                Case eAutosaveTypes.Ecosim, eAutosaveTypes.EcosimResults
                     strScenario = "Ecosim_"
-                    If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
-
-                Case eAutosaveTypes.EcosimRunResults
-                    strScenario = "Ecosim_results_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -2541,8 +2533,16 @@ Public Class cCore
                         strScenario = strScenario & "{scenario}"
                     End If
 
-                Case eAutosaveTypes.Ecospace, eAutosaveTypes.EcospaceMaps
+                Case eAutosaveTypes.Ecospace, eAutosaveTypes.EcospaceResults
                     strScenario = "Ecospace_"
+                    If (Me.ActiveEcospaceScenarioIndex > 0) Then
+                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
+                    End If
+
+                Case eAutosaveTypes.EcospaceResultsRegion
+                    strScenario = "Ecospace_summary_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -7987,7 +7987,7 @@ Public Class cCore
 
             ' -------
             ' Write results if needed
-            If Me.Autosave(eAutosaveTypes.EcosimRunResults) Then
+            If Me.Autosave(eAutosaveTypes.EcosimResults) Then
                 Dim writer As New cEcosimResultWriter(Me)
                 writer.WriteResults()
             End If
@@ -8725,11 +8725,11 @@ Public Class cCore
                         ' ---
                         ' Create ecospace result writers, if desired
                         Me.m_EcospaceResultsWriters.Clear()
-                        If Me.Autosave(eAutosaveTypes.Ecospace) Then
+                        If Me.Autosave(eAutosaveTypes.EcospaceResultsRegion) Then
                             Me.m_EcospaceResultsWriters.Add(New cEcospaceAvgModelAreaResultsWriter())
                         End If
-                        If Me.Autosave(eAutosaveTypes.EcospaceMaps) Then
-                            For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceMaps).Split(";"c)
+                        If Me.Autosave(eAutosaveTypes.EcospaceResults) Then
+                            For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceResults).Split(";"c)
                                 Dim writer As IEcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager)
                                 If (writer IsNot Nothing) Then Me.m_EcospaceResultsWriters.Add(writer)
                             Next

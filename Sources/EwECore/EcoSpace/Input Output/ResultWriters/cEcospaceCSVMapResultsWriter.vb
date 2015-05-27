@@ -280,4 +280,16 @@ Public Class cEcospaceCSVMapResultsWriter
 
 #End Region ' Internals
 
+    Public Overrides ReadOnly Property DataName As String
+        Get
+            Return "CSV map"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property Name As String
+        Get
+            Return "csvmap"
+        End Get
+    End Property
+
 End Class
