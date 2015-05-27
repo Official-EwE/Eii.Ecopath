@@ -25,6 +25,8 @@ Imports System.Drawing.Drawing2D
 Imports System.IO
 Imports System.Runtime.Serialization.Formatters
 Imports System.Runtime.Serialization.Formatters.Binary
+Imports System.Runtime.Serialization
+Imports System.Reflection
 
 #End Region ' Imports 
 
@@ -341,6 +343,30 @@ Namespace Auxiliary
 
         End Function
 
+        Private Class cVisualStyleNamespaceMapper
+            Inherits SerializationBinder
+
+            Public Overrides Function BindToType(assemblyName As String, strType As String) As System.Type
+
+                If (strType.Contains("EwECore")) Then
+                    Select Case strType
+                        Case "EwECore.cVisualStyle"
+                            strType = GetType(cVisualStyle).ToString
+                    End Select
+                End If
+
+                For Each ass As Assembly In AppDomain.CurrentDomain.GetAssemblies()
+                    Dim t As Type = ass.GetType(strType, False, True)
+                    If (t IsNot Nothing) Then
+                        Return t
+                    End If
+                Next
+                Return Nothing
+
+            End Function
+
+        End Class
+
         Public Shared Function StringToStyle(ByVal str As String) As cVisualStyle
 
             Dim vsResult As cVisualStyle = Nothing
@@ -353,6 +379,8 @@ Namespace Auxiliary
 
             ' Ignore assembly version differences
             bf.AssemblyFormat = FormatterAssemblyStyle.Simple
+            ' Perform type mapping
+            bf.Binder = New cVisualStyleNamespaceMapper()
 
             Try
                 ab = System.Convert.FromBase64String(str)
