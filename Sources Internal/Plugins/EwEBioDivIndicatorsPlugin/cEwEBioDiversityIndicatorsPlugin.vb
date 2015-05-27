@@ -661,7 +661,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             Select Case component
                 Case eComponentType.Ecopath : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecopath)
                 Case eComponentType.Ecosim : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
-                Case eComponentType.Ecospace : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps)
+                Case eComponentType.Ecospace : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceResults)
                 Case eComponentType.MonteCarlo : Return Me.m_core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
             End Select
             Debug.Assert(False)
