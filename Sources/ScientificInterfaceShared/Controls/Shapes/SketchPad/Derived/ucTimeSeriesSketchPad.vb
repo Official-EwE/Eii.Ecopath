@@ -29,6 +29,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports System.Text
 
 #End Region
 
@@ -96,6 +97,16 @@ Namespace Controls
             astrLabels = lstrAxis.ToArray
 
         End Sub
+
+        Protected Overrides Function GetShapeTitle() As String
+            Dim sb As New StringBuilder()
+            Dim fmt As New cTimeSeriesTypeFormatter()
+
+            sb.AppendLine(MyBase.GetShapeTitle())
+            sb.Append(fmt.GetDescriptor(DirectCast(Me.Shape, cTimeSeries).TimeSeriesType))
+
+            Return sb.ToString()
+        End Function
 
     End Class
 
