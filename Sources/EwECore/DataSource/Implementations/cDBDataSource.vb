@@ -9068,7 +9068,7 @@ Namespace DataSources
                     ecospaceDS.ImportanceLayerWeight(iLayer) = CSng(readerLayer("Weight"))
 
                     Dim strMap As String = CStr(Me.m_db.ReadSafe(readerLayer, "LayerMap", ""))
-                    bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.ImportanceLayerMap, _
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.ImportanceLayerMap(iLayer), _
                                                                      ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                 End While
 
