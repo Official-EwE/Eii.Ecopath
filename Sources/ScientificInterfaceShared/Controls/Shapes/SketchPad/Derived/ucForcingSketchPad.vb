@@ -186,8 +186,7 @@ Namespace Controls
                 End If
 
                 ' Display shape ID (=index in manager list) + 1
-                strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name)
-                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
+                g.DrawString(Me.GetShapeTitle(), tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.
                 brTmp.Dispose()
@@ -197,6 +196,10 @@ Namespace Controls
             End If
 
         End Sub
+
+        Protected Overridable Function GetShapeTitle() As String
+            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name)
+        End Function
 
     End Class
 
