@@ -47,7 +47,6 @@ Public Class frmConfig
         Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
         cmd.AddControl(Me.m_pbIPN, "http://www.ipn.mx")
         cmd.AddControl(Me.m_pbCicimar, "http://www.cicimar.ipn.mx")
-        cmd.AddControl(Me.m_pbAuci, "http://www.auci.gub.uy")
         cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
 
         Me.UpdateControls()
@@ -57,7 +56,6 @@ Public Class frmConfig
         Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
         cmd.RemoveControl(Me.m_pbIPN)
         cmd.RemoveControl(Me.m_pbCicimar)
-        cmd.RemoveControl(Me.m_pbAuci)
         cmd.RemoveControl(Me.m_pbConacyt)
         MyBase.OnFormClosed(e)
     End Sub

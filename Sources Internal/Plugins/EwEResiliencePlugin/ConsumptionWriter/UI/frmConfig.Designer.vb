@@ -48,13 +48,11 @@ Partial Class frmConfig
         Me.m_pbIPN = New System.Windows.Forms.PictureBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbCicimar = New System.Windows.Forms.PictureBox()
-        Me.m_pbAuci = New System.Windows.Forms.PictureBox()
         Me.m_pbConacyt = New System.Windows.Forms.PictureBox()
         Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbAuci, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -90,7 +88,7 @@ Partial Class frmConfig
         '
         'm_pbIPN
         '
-        Me.m_pbIPN.BackgroundImage = My.Resources.IPN_color
+        Me.m_pbIPN.BackgroundImage = Global.EwEResiliencePlugin.My.Resources.Resources.IPN_color
         resources.ApplyResources(Me.m_pbIPN, "m_pbIPN")
         Me.m_pbIPN.Name = "m_pbIPN"
         Me.m_pbIPN.TabStop = False
@@ -101,27 +99,19 @@ Partial Class frmConfig
         Me.TableLayoutPanel1.BackColor = System.Drawing.Color.White
         Me.TableLayoutPanel1.Controls.Add(Me.m_pbIPN, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.m_pbCicimar, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_pbAuci, 2, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_pbConacyt, 3, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_pbConacyt, 2, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         '
         'm_pbCicimar
         '
-        Me.m_pbCicimar.BackgroundImage = My.Resources.cicimar_color
+        Me.m_pbCicimar.BackgroundImage = Global.EwEResiliencePlugin.My.Resources.Resources.cicimar_color
         resources.ApplyResources(Me.m_pbCicimar, "m_pbCicimar")
         Me.m_pbCicimar.Name = "m_pbCicimar"
         Me.m_pbCicimar.TabStop = False
         '
-        'm_pbAuci
-        '
-        Me.m_pbAuci.BackgroundImage = Nothing
-        resources.ApplyResources(Me.m_pbAuci, "m_pbAuci")
-        Me.m_pbAuci.Name = "m_pbAuci"
-        Me.m_pbAuci.TabStop = False
-        '
         'm_pbConacyt
         '
-        Me.m_pbConacyt.BackgroundImage = My.Resources.CONACYT
+        Me.m_pbConacyt.BackgroundImage = Global.EwEResiliencePlugin.My.Resources.Resources.CONACYT
         resources.ApplyResources(Me.m_pbConacyt, "m_pbConacyt")
         Me.m_pbConacyt.Name = "m_pbConacyt"
         Me.m_pbConacyt.TabStop = False
@@ -153,7 +143,6 @@ Partial Class frmConfig
         CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbAuci, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -167,7 +156,6 @@ Partial Class frmConfig
     Private WithEvents m_pbIPN As System.Windows.Forms.PictureBox
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbCicimar As System.Windows.Forms.PictureBox
-    Private WithEvents m_pbAuci As System.Windows.Forms.PictureBox
     Private WithEvents m_pbConacyt As System.Windows.Forms.PictureBox
     Private WithEvents m_hdrSponsors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class

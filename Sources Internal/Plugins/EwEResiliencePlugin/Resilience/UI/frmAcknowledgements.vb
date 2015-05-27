@@ -18,6 +18,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Windows.Forms
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
@@ -60,12 +61,19 @@ Public Class frmAcknowledgements
 
     End Sub
 
-    Private Sub OnContact(sender As Object, e As System.EventArgs) _
-        Handles m_lblAcknowledgements.Click
+    Private Sub OnContact(sender As Object, e As System.EventArgs) Handles m_llContact.LinkClicked
 
         Try
             Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             cmd.Invoke("mailto:mzetina@ipn.mx?subject=Question%20about%20Resilience%20plug-in")
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnReference(sender As Object, e As System.EventArgs) Handles m_lblRef.Click
+        Try
+            Clipboard.SetText(Me.m_lblRef.Text, Windows.Forms.TextDataFormat.Text)
         Catch ex As Exception
 
         End Try

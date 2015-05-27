@@ -280,7 +280,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbIPN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 85</value>
+    <value>138, 85</value>
   </data>
   <data name="m_pbIPN.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -301,7 +301,7 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_pbCicimar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
@@ -310,7 +310,7 @@
     <value>Fill</value>
   </data>
   <data name="m_pbCicimar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>116, 5</value>
+    <value>153, 5</value>
   </data>
   <data name="m_pbCicimar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
@@ -319,7 +319,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbCicimar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 85</value>
+    <value>138, 85</value>
   </data>
   <data name="m_pbCicimar.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -336,39 +336,6 @@
   <data name="&gt;&gt;m_pbCicimar.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_pbAuci.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="m_pbAuci.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_pbAuci.Location" type="System.Drawing.Point, System.Drawing">
-    <value>227, 5</value>
-  </data>
-  <data name="m_pbAuci.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbAuci.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbAuci.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 85</value>
-  </data>
-  <data name="m_pbAuci.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_pbAuci.Name" xml:space="preserve">
-    <value>m_pbAuci</value>
-  </data>
-  <data name="&gt;&gt;m_pbAuci.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbAuci.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbAuci.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_pbConacyt.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
@@ -376,7 +343,7 @@
     <value>Fill</value>
   </data>
   <data name="m_pbConacyt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>338, 5</value>
+    <value>301, 5</value>
   </data>
   <data name="m_pbConacyt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
@@ -385,7 +352,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbConacyt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 85</value>
+    <value>141, 85</value>
   </data>
   <data name="m_pbConacyt.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -400,7 +367,7 @@
     <value>TableLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;m_pbConacyt.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 121</value>
@@ -430,7 +397,7 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIPN" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCicimar" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbAuci" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_pbConacyt" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIPN" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCicimar" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbConacyt" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrSponsors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -457,7 +424,7 @@
     <value>m_hdrSponsors</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12418.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Parent" xml:space="preserve">
     <value>$this</value>
