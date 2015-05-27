@@ -33,7 +33,7 @@ Imports System.Reflection
 Namespace Auxiliary
 
     <Serializable()> _
-    Public Class cVisualStyle
+    Public NotInheritable Class cVisualStyle
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
