@@ -1269,6 +1269,10 @@ Namespace MSE
                 'Ok to use timeseries data
 
                 For igrp = 1 To Me.m_data.NGroups
+
+                    'get the correct forcing time step index for this model time step
+                    Dim iForced As Integer = Me.m_refData.toForcingTimeStep(iTime, iyear)
+
                     'Forced F
                     If Me.m_esData.FisForced(igrp) Then
                         'F forcing data was loaded into FishRateNo(group,time) by DoDatValCalculations()
@@ -1276,15 +1280,15 @@ Namespace MSE
                     End If
 
                     'forced Catches
-                    If iyear <= Me.m_refData.nYears And Me.m_refData.PoolForceCatch(igrp, iyear) > 0 Then
-                        FishYear(igrp) = Me.m_refData.PoolForceCatch(igrp, iyear) / Biomass(igrp)
+                    If iyear <= Me.m_refData.nYears And Me.m_refData.PoolForceCatch(igrp, iForced) > 0 Then
+                        FishYear(igrp) = Me.m_refData.PoolForceCatch(igrp, iForced) / Biomass(igrp)
                         If FishYear(igrp) > 3 Then FishYear(igrp) = 3
                     End If
 
                     'Forced Mortality (Z)
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality PoolForceZ(group, 0) = 0 is No forcng
                     If iyear <= Me.m_refData.nDatPoints Then
-                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(IIF(Me.m_refData.PoolForceZ(igrp, iyear) > 0, Me.m_refData.PoolForceZ(igrp, iyear), 0))
+                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(IIF(Me.m_refData.PoolForceZ(igrp, iForced) > 0, Me.m_refData.PoolForceZ(igrp, iForced), 0))
                     End If
 
                 Next igrp

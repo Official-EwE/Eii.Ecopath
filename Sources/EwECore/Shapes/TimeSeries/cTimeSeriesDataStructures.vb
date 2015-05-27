@@ -180,6 +180,24 @@ Public Class cTimeSeriesDataStructures
 
     End Property
 
+    Public Function toForcingTimeStep(iModelTimeStep As Integer, iModelYear As Integer) As Integer
+        Dim its As Integer
+        If Me.DataSetInterval = eTSDataSetInterval.Annual Then
+            its = iModelYear
+        ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+            its = iModelTimeStep
+        End If
+
+        'Constrain the time step index 
+        'to the last reference data time step
+        If its > Me.nDatPoints Then
+            its = nDatPoints
+        End If
+
+        Return its
+
+    End Function
+
     Private Sub ClearForcing()
 
         Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
@@ -612,49 +630,66 @@ Public Class cTimeSeriesDataStructures
                         Case eTimeSeriesType.FishingEffort 'effort data by gear type
 
                             If DatPool(iDType) > 0 And DatPool(iDType) <= EcosimData.nGear Then
-                                For K = 1 To 12
-                                    Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K    ': If Tim > 1200 Then Tim = 1200
-                                    ig = DatPool(iDType)
-                                    EcosimData.FishRateGear(ig, Tim) = DatVal(iDatPt, iDType)
-                                Next
+                                If Me.DataSetInterval = eTSDataSetInterval.Annual Then
+                                    For K = 1 To 12
+                                        Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K    ': If Tim > 1200 Then Tim = 1200
+                                        ig = DatPool(iDType)
+                                        EcosimData.FishRateGear(ig, Tim) = DatVal(iDatPt, iDType)
+                                    Next
+                                ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+
+                                    EcosimData.FishRateGear(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+
+                                End If
                             End If
 
                         Case eTimeSeriesType.FishingMortality 'F by pool
 
                             If DatPool(iDType) > 0 And DatPool(iDType) <= nGroups Then
                                 EcosimData.FisForced(DatPool(iDType)) = True
-                                For K = 1 To 12
-                                    Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K
-                                    EcosimData.FishRateNo(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
-                                    If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), Tim) Then
-                                        EcosimData.FishRateMax(DatPool(iDType)) = CSng(EcosimData.FishRateNo(DatPool(iDType), Tim) * 1.01)
+
+                                If Me.DataSetInterval = eTSDataSetInterval.Annual Then
+                                    For K = 1 To 12
+                                        Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K
+                                        EcosimData.FishRateNo(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
+                                        If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), Tim) Then
+                                            EcosimData.FishRateMax(DatPool(iDType)) = CSng(EcosimData.FishRateNo(DatPool(iDType), Tim) * 1.01)
+                                        End If
+                                    Next
+
+                                ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+
+                                    EcosimData.FishRateNo(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                                    If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), iDatPt) Then
+                                        EcosimData.FishRateMax(DatPool(iDType)) = CSng(EcosimData.FishRateNo(DatPool(iDType), iDatPt) * 1.01)
                                     End If
-                                Next
-                                'Also check the fishratemax(pool):
+
+                                End If
+
                             End If
 
                         Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by pool
 
-                            If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
-                            If DatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
-                                PoolForceZ(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                                If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
+                                If DatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
+                                    PoolForceZ(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
 
-                            Else
-                                PoolForceZ(DatPool(iDType), iDatPt) = 0
-                            End If
+                                Else
+                                    PoolForceZ(DatPool(iDType), iDatPt) = 0
+                                End If
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'Catches, -6 is forced
-                            If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
-                            If DatType(iDType) = eTimeSeriesType.CatchesForcing Then
-                                PoolForceCatch(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
-                            Else
-                                PoolForceCatch(DatPool(iDType), iDatPt) = 0
-                            End If
+                                If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
+                                If DatType(iDType) = eTimeSeriesType.CatchesForcing Then
+                                    PoolForceCatch(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                                Else
+                                    PoolForceCatch(DatPool(iDType), iDatPt) = 0
+                                End If
 
-                            'Martell playing here!
+                                'Martell playing here!
                         Case eTimeSeriesType.AverageWeight 'Mean Body Weight data for split pool groups
-                            'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
-                            If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
+                                'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
+                                If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
 
                         Case Else
                     End Select

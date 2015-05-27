@@ -878,9 +878,9 @@ Namespace Ecosim
                     Me.m_MSE.VaryForcing(m_Data.tval)
 
                     'CJW email 04May00: in runmodel, m_refData.PoolForceBB loop has to be put in twice, 
-                    'both before and after call to rk4 (otherwise Z calculation as loss/bb 
+                    'both before and after call to rk4 (otherwise Z calculation as loss/bb) 
                     'is wrong later in time step
-                    Me.setBiomassForcing(itt)
+                    Me.setBiomassForcing(itt, iyr)
 
                     Me.clearMonthlyStanzaVars()
                     For irk4 As Integer = 1 To Me.m_Data.StepsPerMonth
@@ -891,7 +891,7 @@ Namespace Ecosim
                         Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
                         rk4(BB, nvar, t, DeltaT, UpdateStanza)
                         t += DeltaT
-                        Me.setBiomassForcing(itt)
+                        Me.setBiomassForcing(itt, iyr)
 
                         If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimSubTimestepEnd(BB, t, DeltaT, irk4, m_Data)
 
@@ -1139,30 +1139,23 @@ Namespace Ecosim
 
 
 
-        Private Sub setBiomassForcing(ByVal iYear As Integer)
+        Private Sub setBiomassForcing(ByVal iModelTimeStep As Integer, iYear As Integer)
             Dim iGrp As Integer
+            'Get the correct forcing data timestep for this model time step
+            Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iModelTimeStep, iYear)
 
             For iGrp = 1 To m_EPData.NumGroups
                 ResetPred(iGrp) = False
             Next
 
-            If iYear <= m_RefData.nDatPoints Then  'Force the biomass if such a dataseries exists
+            If iForcing <= m_RefData.nDatPoints Then  'Force the biomass if such a dataseries exists
                 For iGrp = 1 To m_EPData.NumGroups
-                    If m_RefData.PoolForceBB(iGrp, iYear) > 0 Then
+                    If m_RefData.PoolForceBB(iGrp, iForcing) > 0 Then
                         ResetPred(iGrp) = True
-                        BB(iGrp) = m_RefData.PoolForceBB(iGrp, iYear)
+                        BB(iGrp) = m_RefData.PoolForceBB(iGrp, iForcing)
                     End If
                 Next
             End If 'If iyr <= m_refData.NdatYear Then
-
-            'If iYear <= m_RefData.nYears Then  'Force the biomass if such a dataseries exists
-            '    For iGrp = 1 To m_EPData.NumGroups
-            '        If m_RefData.PoolForceBB(iGrp, iYear) > 0 Then
-            '            ResetPred(iGrp) = True
-            '            BB(iGrp) = m_RefData.PoolForceBB(iGrp, iYear)
-            '        End If
-            '    Next
-            'End If 'If iyr <= m_refData.NdatYear Then
 
         End Sub
 
@@ -1192,6 +1185,9 @@ Namespace Ecosim
 
             Else
 
+                'Get the correct forcing data timestep for this model time step
+                Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
+
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Normal run
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1200,10 +1196,10 @@ Namespace Ecosim
                 For iGrp As Integer = 1 To nvar
 
                     'Catches forced or computed
-                    If iYear <= Me.m_RefData.nYears And Me.m_RefData.PoolForceCatch(iGrp, iYear) > 0 Then
+                    If iForcing <= Me.m_RefData.nYears And Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0 Then
                         'Forced catch rates
                         'Was up to Sep 2008:
-                        m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iYear) / BB(iGrp)
+                        m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iForcing) / BB(iGrp)
                         'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
                         'Carl suggests the following:
                         'predict F from
@@ -1224,8 +1220,8 @@ Namespace Ecosim
                     End If
 
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality
-                    If iYear <= Me.m_RefData.nYears Then
-                        Me.m_RefData.PoolForceZ(iGrp, 0) = IIF(Me.m_RefData.PoolForceZ(iGrp, iYear) > 0, Me.m_RefData.PoolForceZ(iGrp, iYear), 0)
+                    If iForcing <= Me.m_RefData.nYears And Me.m_RefData.PoolForceZ(iGrp, iForcing) > 0 Then
+                        Me.m_RefData.PoolForceZ(iGrp, 0) = Me.m_RefData.PoolForceZ(iGrp, iForcing)
                     End If
 
                 Next iGrp
