@@ -1021,18 +1021,6 @@ Partial Friend NotInheritable Class Settings
             Me("ColorCustom") = value
         End Set
     End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-    Public Property UseExternalBrowser() As Boolean
-        Get
-            Return CType(Me("UseExternalBrowser"),Boolean)
-        End Get
-        Set
-            Me("UseExternalBrowser") = value
-        End Set
-    End Property
 End Class
 
 Namespace My

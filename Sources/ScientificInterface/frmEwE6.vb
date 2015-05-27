@@ -3170,7 +3170,7 @@ Public Class frmEwE6
     Private Sub OnUpdateBrowseURI(ByVal cmd As cCommand) Handles m_cmdBrowseURI.OnUpdate
         Dim p As frmEwEDockContent = Me.Panel(cPANEL_START)
         cmd.Checked = p.Visible
-        cmd.IsAvailable = (My.Settings.UseExternalBrowser = False)
+        'cmd.IsAvailable = (My.Settings.UseExternalBrowser = False)
     End Sub
 
     ''' <summary>
