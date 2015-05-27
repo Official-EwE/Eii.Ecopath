@@ -1621,6 +1621,7 @@ Public Class cCore
                 ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
                 ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
                 ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
+                ts.Interval = Me.m_TSData.DataSetInterval
 
                 ts.ResizeData(iNumYears)
                 For iYear As Integer = 1 To iNumYears
