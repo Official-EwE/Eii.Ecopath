@@ -7395,13 +7395,15 @@ exitline:
 
     Private Sub dumpCapacity(map As IEnviroInputMap, igrp As Integer, row As Integer, col As Integer)
         If map.Layer.DataType = eDataTypes.EcospaceLayerDriver Then
-            If row = 134 And col = 126 Then
-                Dim cellValue As Single = map.Layer.Cell(row, col)
-                Dim response As Single = map.ResponseFunction(igrp, row, col)
-                Dim cap As Single = Me.m_Data.HabCap(igrp)(row, col)
+            If igrp = 27 Then
+                If row = 34 And col = 174 Then
+                    Dim cellValue As Single = map.Layer.Cell(row, col)
+                    Dim response As Single = map.ResponseFunction(igrp, row, col)
+                    Dim cap As Single = Me.m_Data.HabCap(igrp)(row, col)
 
-                System.Console.WriteLine("SST," + cellValue.ToString + ",Response," + response.ToString + ",Cap," + cap.ToString + ",NewCap," + (cap * response).ToString)
+                    'System.Console.WriteLine("SST," + cellValue.ToString + ",Response," + response.ToString + ",Cap," + cap.ToString + ",NewCap," + (cap * response).ToString)
 
+                End If
             End If
         End If
     End Sub
