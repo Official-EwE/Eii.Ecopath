@@ -414,8 +414,14 @@ Friend Class cDBUpdate6_02_00_01
         writer = db.GetWriter("EcospaceScenarioWeightLayer")
         dt = writer.GetDataTable()
         For i = 0 To lImportanceLayerID.Count - 1
-            ' This table is not indexed by scenario, only by layer ID. Should be ok, but it is an oversight
-            drow = dt.Rows.Find(lImportanceLayerID(i))
+            Try
+                ' This table is not indexed by scenario, only by layer ID. It occurred in some old models
+                drow = dt.Rows.Find(lImportanceLayerID(i))
+            Catch ex As ArgumentException
+                ' This table is not indexed by scenario, only by layer ID. Should be ok, but it is an oversight
+                key(1) = lImportanceLayerID(i)
+                drow = dt.Rows.Find(key)
+            End Try
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
                 drow("LayerMap") = cStringUtils.ArrayToString(dataImportance(i), InRow, InCol, dataDepth)
