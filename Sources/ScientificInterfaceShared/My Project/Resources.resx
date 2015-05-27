@@ -2487,7 +2487,7 @@
     <value>Ecosim</value>
   </data>
   <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
-    <value>Ecospace results by region</value>
+    <value>Ecospace</value>
   </data>
   <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
     <value>Ecotracer run results</value>
@@ -2692,8 +2692,8 @@
   <data name="HEADER_OBJECTIVE" xml:space="preserve">
     <value>Search objective</value>
   </data>
-  <data name="AUTOSAVE_ECOSPACEMAPS" xml:space="preserve">
-    <value>Ecospace result maps</value>
+  <data name="AUTOSAVE_ECOSPACERESULTS" xml:space="preserve">
+    <value>Run results</value>
   </data>
   <data name="TOOLTIP_VIEWFOLDER" xml:space="preserve">
     <value>View folder</value>
@@ -3171,8 +3171,8 @@
   <data name="HEADER_EXPLOITATION_STATUS" xml:space="preserve">
     <value>Exploitation status</value>
   </data>
-  <data name="AUTOSAVE_ECOSPACEREGIONSUMMARY" xml:space="preserve">
-    <value>Ecospace summary per region</value>
+  <data name="AUTOSAVE_ECOSPACERESULTSREGION" xml:space="preserve">
+    <value>Result summary per region</value>
   </data>
   <data name="GENERAL_LABEL_ANNUAL" xml:space="preserve">
     <value>Annual</value>
@@ -3360,7 +3360,7 @@
   <data name="LABEL_STOP" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="AUTOSAVE_ECOSIMRUNRESULTS" xml:space="preserve">
-    <value>Ecosim run results</value>
+  <data name="AUTOSAVE_ECOSIMRESULTS" xml:space="preserve">
+    <value>Run results</value>
   </data>
 </root>

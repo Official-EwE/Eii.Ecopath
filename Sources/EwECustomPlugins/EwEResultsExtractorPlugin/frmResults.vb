@@ -593,7 +593,7 @@ Public Class frmResults
         If (Not TypeOf cmd Is cDirectoryOpenCommand) Then Return
         cmdDir = DirectCast(cmd, cDirectoryOpenCommand)
 
-        Dim strPath As String = Me.Core.DefaultOutputPath(eAutosaveTypes.EcosimRunResults)
+        Dim strPath As String = Me.Core.DefaultOutputPath(eAutosaveTypes.EcosimResults)
         If Not Directory.Exists(strPath) Then
             strPath = Me.Core.OutputPath
         End If

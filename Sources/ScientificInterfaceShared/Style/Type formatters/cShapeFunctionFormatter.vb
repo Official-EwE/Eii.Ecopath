@@ -37,7 +37,7 @@ Namespace Style
     ''' the <see cref="cShapeFunctionTypeFormatter">localized version of that primitive</see>
     ''' is returned.</para>
     ''' <para>If the shape function is derived from a <see cref="EwEPlugin.IEcosimShapeFunctionPlugin">plug-in</see>,
-    ''' the <see cref="EwEPlugin.IEcosimShapeFunctionPlugin.DisplayName">display name</para> 
+    ''' the <see cref="EwEPlugin.IEcosimShapeFunctionPlugin.DisplayName">display name</see></para> 
     ''' of that plug-in is returned instead.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------

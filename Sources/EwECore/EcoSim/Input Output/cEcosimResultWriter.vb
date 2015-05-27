@@ -93,7 +93,7 @@ Namespace Ecosim
             If Not Me.m_core.StateMonitor.HasEcosimRan Then Return False
 
             If String.IsNullOrEmpty(strPath) Then
-                strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimRunResults)
+                strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults)
             End If
 
             ' Try to make sure that the output path is there
@@ -487,7 +487,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Function GetModelDetails() As String
-            Return Me.m_core.DefaultFileHeader(eAutosaveTypes.EcosimRunResults)
+            Return Me.m_core.DefaultFileHeader(eAutosaveTypes.EcosimResults)
         End Function
 
         Private Function GetAllGroupNames() As String

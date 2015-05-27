@@ -294,12 +294,12 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = True) And _
-                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".asc", True) = 0)
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
+                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), ".asc", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".asc"
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ".asc"
         End Set
     End Property
 
@@ -311,12 +311,12 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property SaveCSV As Boolean
         Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = True) And _
-                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".csv", True) = 0)
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
+                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), ".csv", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".csv"
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ".csv"
         End Set
     End Property
 
@@ -328,12 +328,12 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property SavePNG As Boolean
         Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = True) And _
-                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".png", True) = 0)
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
+                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), ".png", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".png"
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ".png"
         End Set
     End Property
 

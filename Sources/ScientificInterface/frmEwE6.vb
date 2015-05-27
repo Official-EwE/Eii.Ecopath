@@ -3090,8 +3090,10 @@ Public Class frmEwE6
     Private Sub OnUpdateAutosaveResults(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdAutosaveResults.OnUpdate
         ' Check if any autosave option set
         Dim nAutoSaving As Integer = 0
+        Dim nodes As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
-            If Me.Core.Autosave(setting) Then
+            ' Exclude nodes
+            If Me.Core.Autosave(setting) And Array.IndexOf(nodes, setting) = -1 Then
                 nAutoSaving += 1
             End If
         Next

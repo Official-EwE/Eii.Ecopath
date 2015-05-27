@@ -279,7 +279,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_F(iGroup) = value
             Catch ex As Exception
@@ -300,7 +300,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_pred(iGroup) = value
             Catch ex As Exception
@@ -322,7 +322,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_catch(iGroup) = value
             Catch ex As Exception
@@ -344,7 +344,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_consum(iGroup) = value
             Catch ex As Exception
@@ -372,7 +372,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_biomass(iGroup) = value
             Catch ex As Exception
@@ -396,7 +396,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 Me.m_ConMax(iGroup) = value
             Catch ex As Exception
@@ -422,7 +422,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_relativebiomass(iGroup) = value
             Catch ex As Exception
@@ -467,7 +467,7 @@ Public Class cEcospaceTimestep
 
         End Get
 
-        Set(ByVal value As Single)
+        Friend Set(ByVal value As Single)
             Try
                 m_biomassByRegion(iGroup, iRegion) = value
             Catch ex As Exception

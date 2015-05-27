@@ -622,9 +622,9 @@ Namespace SpatialData
 
         Protected Function getIntermediateOutputDir() As String
             If Not String.IsNullOrWhiteSpace(Me.IntermediateSubDirectory) Then
-                Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), Me.IntermediateSubDirectory)
+                Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), Me.IntermediateSubDirectory)
             End If
-            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), "_debug_")
         End Function
 
         Protected Function getIntermediateFile(ByVal thePath As String, iTime As Integer) As String

@@ -77,7 +77,7 @@ Public Class cTimeSeriesCSVWriter
             ' Is dataset available?
             If (ds Is Nothing) Then Return ""
             ' 
-            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimRunResults), cFileUtils.ToValidFileName(ds.Name, True)) & ".csv"
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults), cFileUtils.ToValidFileName(ds.Name, True)) & ".csv"
         End Get
     End Property
 

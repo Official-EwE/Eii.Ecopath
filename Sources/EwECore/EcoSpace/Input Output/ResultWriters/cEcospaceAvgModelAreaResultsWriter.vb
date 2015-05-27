@@ -325,4 +325,17 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
 #End Region
 
+    Public Overrides ReadOnly Property DataName As String
+        Get
+            ' ToDo: globalize this
+            Return "Region averages"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property Name As String
+        Get
+            Return "regavg"
+        End Get
+    End Property
+
 End Class

@@ -65,7 +65,7 @@ Public Class frmMain
 
         Dim strPathOut As String = My.Settings.PathOut
         If (String.IsNullOrWhiteSpace(strPathOut)) Then
-            strPathOut = Me.Core.DefaultOutputPath(eAutosaveTypes.EcosimRunResults, "MultiSim")
+            strPathOut = Me.Core.DefaultOutputPath(eAutosaveTypes.EcosimResults, "MultiSim")
         End If
         Me.m_tbxDest.Text = strPathOut
         Me.m_cbCreateRunFolder.Checked = My.Settings.CreateUniqueRunFolder

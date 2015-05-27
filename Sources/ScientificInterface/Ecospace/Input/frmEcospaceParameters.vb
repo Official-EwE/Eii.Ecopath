@@ -34,7 +34,7 @@ Namespace Ecospace
     ''' Form from which to configure generic Ecospace parameters.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class EcospaceParameters
+    Public Class frmEcospaceParameters
 
         Public Const NOTSAVEDEXT As String = "-notsaved-"
 
@@ -98,30 +98,29 @@ Namespace Ecospace
             Public Sub New(item As IEcospaceResultsWriter)
                 Me.m_items = New IEcospaceResultsWriter() {item}
                 ' ToDo: globalize this
-                Me.m_strLabel = cStringUtils.Localize("Save as {0} maps", Me.Extensions)
+                Me.m_strLabel = Me.DataNames
             End Sub
 
             Public Sub New(items As IEcospaceResultsWriter())
                 Me.m_items = items
                 ' ToDo: globalize this
-                Me.m_strLabel = cStringUtils.Localize("Save maps in multiple formats ({0})", Me.Extensions)
+                Me.m_strLabel = Me.DataNames
             End Sub
 
             Public Overrides Function ToString() As String
                 Return Me.m_strLabel
             End Function
 
-            Public ReadOnly Property Extensions As String
+            Public ReadOnly Property DataNames As String
                 Get
-                    Dim strExts As String = ""
-                    If Me.m_items.Count = 0 Then Return EcospaceParameters.NOTSAVEDEXT
+                    Dim strNames As String = ""
+                    If Me.m_items.Count = 0 Then Return frmEcospaceParameters.NOTSAVEDEXT
                     For i As Integer = 0 To Me.m_items.Count - 1
-                        If (i > 0) Then strExts = strExts & ";"
-                        strExts = strExts & Me.m_items(i).FileExtension
+                        If (i > 0) Then strNames = strNames & ";"
+                        strNames = strNames & Me.m_items(i).DataName
                     Next
-                    Return strExts
+                    Return strNames
                 End Get
-
             End Property
 
         End Class
@@ -158,20 +157,23 @@ Namespace Ecospace
             ' Configure writers
             Dim wrAsc As New cEcospaceASCMapResultsWriter()
             Dim wrCSV As New cEcospaceCSVMapResultsWriter()
+            Dim wrReg As New cEcospaceAvgModelAreaResultsWriter()
 
-            Me.m_cmbAutosaveMapFormat.Items.Clear()
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem("Do not auto-save results"))
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrAsc))
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrCSV))
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(New IEcospaceResultsWriter() {wrAsc, wrCSV}))
+            Me.m_cmbAutosaveFormat.Items.Clear()
+
+            ' ToDo: globalize this
+            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem("Do not auto-save results"))
+
+            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(wrAsc))
+            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(wrCSV))
+            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(New IEcospaceResultsWriter() {wrAsc, wrCSV}))
             If (Me.Core.PluginManager IsNot Nothing) Then
                 For Each ip As EwEPlugin.IEcospaceResultWriterPlugin In Me.Core.PluginManager.GetPlugins(GetType(EwEPlugin.IEcospaceResultWriterPlugin))
-                    Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(ip))
+                    Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(ip))
                 Next ip
             End If
 
             Me.UpdateControls()
-
 
             Me.m_fpInCol = New cEwEFormatProvider(Me.UIContext, Me.m_nudColCount, GetType(Integer), bm.GetVariableMetadata(eVarNameFlags.InCol))
             Me.m_fpInCol.Value = bm.InCol
@@ -301,13 +303,15 @@ Namespace Ecospace
 
             Me.m_cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
 
-            Me.m_cbAutosaveResultRegions.Checked = Me.Core.Autosave(eAutosaveTypes.Ecospace)
+            Me.m_cbAutosaveResultRegions.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceResultsRegion)
 
             ' Compare by extension
-            For Each item As cEcospaceResultWriterItem In Me.m_cmbAutosaveMapFormat.Items
+            Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
+            For Each item As cEcospaceResultWriterItem In Me.m_cmbAutosaveFormat.Items
                 If (item IsNot Nothing) Then
-                    If String.Compare(item.Extensions, Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), True) = 0 Then
-                        Me.m_cmbAutosaveMapFormat.SelectedItem = item
+                    If String.Compare(item.DataNames, strFmt, True) = 0 Then
+                        Me.m_cmbAutosaveFormat.SelectedItem = item
+                        Exit For
                     End If
                 End If
             Next
@@ -412,25 +416,25 @@ Namespace Ecospace
 
         Private Sub OnAutsosaveRegionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbAutosaveResultRegions.CheckedChanged
-            Me.Core.Autosave(eAutosaveTypes.Ecospace) = Me.m_cbAutosaveResultRegions.Checked
+            Me.Core.Autosave(eAutosaveTypes.EcospaceResultsRegion) = Me.m_cbAutosaveResultRegions.Checked
         End Sub
 
         Private Sub OnSpaceSaveFormatChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_cmbAutosaveMapFormat.SelectedIndexChanged
+            Handles m_cmbAutosaveFormat.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
 
             Dim strExt As String = ""
-            If Me.m_cmbAutosaveMapFormat.SelectedIndex <> -1 Then
-                strExt = DirectCast(Me.m_cmbAutosaveMapFormat.SelectedItem, cEcospaceResultWriterItem).Extensions
+            If Me.m_cmbAutosaveFormat.SelectedIndex <> -1 Then
+                strExt = DirectCast(Me.m_cmbAutosaveFormat.SelectedItem, cEcospaceResultWriterItem).DataNames
             End If
 
             If String.IsNullOrWhiteSpace(strExt) Or String.Compare(strExt, NOTSAVEDEXT) = 0 Then
-                Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False
-                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = EcospaceParameters.NOTSAVEDEXT
+                Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = False
+                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = frmEcospaceParameters.NOTSAVEDEXT
             Else
-                Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
-                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = strExt
+                Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = True
+                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strExt
             End If
         End Sub
 
