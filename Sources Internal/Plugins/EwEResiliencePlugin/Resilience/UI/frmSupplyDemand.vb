@@ -32,6 +32,8 @@ Public Class frmSupplyDemand
 
     Private m_model As cResilienceModel = Nothing
     Private m_graph As cSupplyDemandGraph = Nothing
+    Private m_bInUpdate As Boolean = False
+    Private m_iTime As Integer = 0
 
 #End Region ' Internal vars
 
@@ -100,18 +102,13 @@ Public Class frmSupplyDemand
     Protected Overrides Sub UpdateControls()
 
         If Me.m_model.Data.Calculated Then
-            Me.m_slider.Enabled = True
             Me.m_cbAnnual.Enabled = True
-            Me.m_slider.Minimum = 1
-
-            If Me.m_cbAnnual.Checked Then
-                Me.m_slider.Maximum = Me.m_model.Data.NumYears
-            Else
-                Me.m_slider.Maximum = Me.m_model.Data.NumTimeSteps
-            End If
+            Me.m_slider.Enabled = True
+            Me.m_nudTime.Enabled = True
         Else
-            Me.m_slider.Enabled = False
             Me.m_cbAnnual.Enabled = False
+            Me.m_slider.Enabled = False
+            Me.m_nudTime.Enabled = False
         End If
 
         Me.m_tsbnAutosave.Checked = My.Settings.ResilAutosave
@@ -125,9 +122,8 @@ Public Class frmSupplyDemand
         ' Wait!
         If (Not Me.m_graph.IsAttached) Then Return
 
-        Me.m_graph.Time = Me.m_slider.Value
+        Me.m_graph.Time = Me.m_iTime
         Me.m_graph.Annual = Me.m_cbAnnual.Checked
-        Me.m_lblTime.Text = CStr(Me.m_slider.Value)
 
         Me.m_graph.Refresh()
 
@@ -145,7 +141,29 @@ Public Class frmSupplyDemand
 
     Private Sub OnCalculationsUpdated(sender As cResilienceData, iTime As Integer, bDone As Boolean)
         Try
-            If bDone Then Me.UpdateGraph()
+            If bDone Then
+
+                Me.m_bInUpdate = True
+
+                Me.m_iTime = 1
+                Me.m_slider.Value = iTime
+                Me.m_nudTime.Value = iTime
+
+                Me.m_slider.Minimum = 1
+                Me.m_nudTime.Minimum = 1
+
+                If Me.m_cbAnnual.Checked Then
+                    Me.m_slider.Maximum = Me.m_model.Data.NumYears
+                    Me.m_nudTime.Maximum = Me.m_model.Data.NumYears
+                Else
+                    Me.m_slider.Maximum = Me.m_model.Data.NumTimeSteps
+                    Me.m_nudTime.Maximum = Me.m_model.Data.NumTimeSteps
+                End If
+
+                Me.m_bInUpdate = False
+                Me.UpdateGraph()
+
+            End If
             Me.UpdateControls()
         Catch ex As Exception
             Debug.Assert(False)
@@ -208,12 +226,31 @@ Public Class frmSupplyDemand
 
     Private Sub OnTimeSliderChanged(sender As Object, e As System.EventArgs) _
         Handles m_slider.ValueChanged
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
         Try
+            Me.m_iTime = Me.m_slider.Value
+            Me.m_nudTime.Value = Me.m_iTime
             Me.UpdateGraph()
         Catch ex As Exception
-            Debug.Assert(False)
-            cLog.Write(ex, "Reselience:frmSupplyDemand.OnTimeSliderChanged")
+
         End Try
+        Me.m_bInUpdate = False
+    End Sub
+
+    Private Sub OnTimeNUDChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_nudTime.ValueChanged
+
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
+        Try
+            Me.m_iTime = CInt(Me.m_nudTime.Value)
+            Me.m_slider.Value = Me.m_iTime
+            Me.UpdateGraph()
+        Catch ex As Exception
+
+        End Try
+        Me.m_bInUpdate = False
     End Sub
 
 #End Region ' Events 

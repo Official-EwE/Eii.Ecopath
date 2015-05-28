@@ -50,10 +50,20 @@ Partial Class frmConfig
         Me.m_pbCicimar = New System.Windows.Forms.PictureBox()
         Me.m_pbConacyt = New System.Windows.Forms.PictureBox()
         Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_lblAckVal = New System.Windows.Forms.Label()
+        Me.m_lblRefVal = New System.Windows.Forms.Label()
+        Me.m_llContactVal = New System.Windows.Forms.LinkLabel()
+        Me.m_lblAck = New System.Windows.Forms.Label()
+        Me.m_lblRef = New System.Windows.Forms.Label()
+        Me.m_lblContact = New System.Windows.Forms.Label()
+        Me.m_lblGrant = New System.Windows.Forms.Label()
+        Me.m_lblGrantVal = New System.Windows.Forms.Label()
         CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_cbIncludeDetritus
@@ -124,11 +134,67 @@ Partial Class frmConfig
         Me.m_hdrSponsors.IsCollapsed = False
         Me.m_hdrSponsors.Name = "m_hdrSponsors"
         '
+        'TableLayoutPanel2
+        '
+        resources.ApplyResources(Me.TableLayoutPanel2, "TableLayoutPanel2")
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblAckVal, 1, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblRefVal, 1, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_llContactVal, 1, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblAck, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblRef, 0, 1)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblContact, 0, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblGrant, 0, 3)
+        Me.TableLayoutPanel2.Controls.Add(Me.m_lblGrantVal, 1, 3)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        '
+        'm_lblAckVal
+        '
+        resources.ApplyResources(Me.m_lblAckVal, "m_lblAckVal")
+        Me.m_lblAckVal.Name = "m_lblAckVal"
+        '
+        'm_lblRefVal
+        '
+        resources.ApplyResources(Me.m_lblRefVal, "m_lblRefVal")
+        Me.m_lblRefVal.Name = "m_lblRefVal"
+        '
+        'm_llContactVal
+        '
+        resources.ApplyResources(Me.m_llContactVal, "m_llContactVal")
+        Me.m_llContactVal.Name = "m_llContactVal"
+        Me.m_llContactVal.TabStop = True
+        Me.m_llContactVal.UseCompatibleTextRendering = True
+        '
+        'm_lblAck
+        '
+        resources.ApplyResources(Me.m_lblAck, "m_lblAck")
+        Me.m_lblAck.Name = "m_lblAck"
+        '
+        'm_lblRef
+        '
+        resources.ApplyResources(Me.m_lblRef, "m_lblRef")
+        Me.m_lblRef.Name = "m_lblRef"
+        '
+        'm_lblContact
+        '
+        resources.ApplyResources(Me.m_lblContact, "m_lblContact")
+        Me.m_lblContact.Name = "m_lblContact"
+        '
+        'm_lblGrant
+        '
+        resources.ApplyResources(Me.m_lblGrant, "m_lblGrant")
+        Me.m_lblGrant.Name = "m_lblGrant"
+        '
+        'm_lblGrantVal
+        '
+        resources.ApplyResources(Me.m_lblGrantVal, "m_lblGrantVal")
+        Me.m_lblGrantVal.Name = "m_lblGrantVal"
+        '
         'frmConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
+        Me.Controls.Add(Me.TableLayoutPanel2)
         Me.Controls.Add(Me.m_hdrSponsors)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.m_btnCancel)
@@ -144,6 +210,8 @@ Partial Class frmConfig
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TableLayoutPanel2.ResumeLayout(False)
+        Me.TableLayoutPanel2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -158,4 +226,13 @@ Partial Class frmConfig
     Private WithEvents m_pbCicimar As System.Windows.Forms.PictureBox
     Private WithEvents m_pbConacyt As System.Windows.Forms.PictureBox
     Private WithEvents m_hdrSponsors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_lblAckVal As System.Windows.Forms.Label
+    Private WithEvents m_lblRefVal As System.Windows.Forms.Label
+    Private WithEvents m_llContactVal As System.Windows.Forms.LinkLabel
+    Private WithEvents m_lblAck As System.Windows.Forms.Label
+    Private WithEvents m_lblRef As System.Windows.Forms.Label
+    Private WithEvents m_lblContact As System.Windows.Forms.Label
+    Private WithEvents m_lblGrant As System.Windows.Forms.Label
+    Private WithEvents m_lblGrantVal As System.Windows.Forms.Label
 End Class

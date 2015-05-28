@@ -145,7 +145,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbIPN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 100</value>
+    <value>323, 100</value>
   </data>
   <data name="m_pbIPN.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -172,7 +172,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbCicimar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>318, 5</value>
+    <value>338, 5</value>
   </data>
   <data name="m_pbCicimar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
@@ -181,7 +181,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbCicimar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 100</value>
+    <value>323, 100</value>
   </data>
   <data name="m_pbCicimar.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -208,7 +208,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbConacyt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>631, 5</value>
+    <value>671, 5</value>
   </data>
   <data name="m_pbConacyt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 5, 5, 5</value>
@@ -217,7 +217,7 @@
     <value>5, 5, 5, 5</value>
   </data>
   <data name="m_pbConacyt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 100</value>
+    <value>323, 100</value>
   </data>
   <data name="m_pbConacyt.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -235,7 +235,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpSonsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 470</value>
+    <value>9, 255</value>
   </data>
   <data name="m_tlpSonsors.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -244,7 +244,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpSonsors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>939, 110</value>
+    <value>999, 110</value>
   </data>
   <data name="m_tlpSonsors.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -268,10 +268,10 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_hdrSponsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 450</value>
+    <value>9, 235</value>
   </data>
   <data name="m_hdrSponsors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>939, 18</value>
+    <value>999, 18</value>
   </data>
   <data name="m_hdrSponsors.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -286,7 +286,7 @@
     <value>m_hdrSponsors</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12418.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12448.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Parent" xml:space="preserve">
     <value>$this</value>
@@ -294,7 +294,10 @@
   <data name="&gt;&gt;m_hdrSponsors.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+  <data name="m_tlpAck.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_tlpAck.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_lblAckVal.AutoSize" type="System.Boolean, mscorlib">
@@ -304,13 +307,13 @@
     <value>Fill</value>
   </data>
   <data name="m_lblAckVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 4</value>
+    <value>112, 6</value>
   </data>
   <data name="m_lblAckVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 4, 3, 12</value>
+    <value>3, 6, 3, 12</value>
   </data>
   <data name="m_lblAckVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>816, 26</value>
+    <value>881, 26</value>
   </data>
   <data name="m_lblAckVal.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -326,88 +329,85 @@ Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblAckVal.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+    <value>m_tlpAck</value>
   </data>
   <data name="&gt;&gt;m_lblAckVal.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblRef.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_lblRefVal.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblRefVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lblRef.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 48</value>
+  <data name="m_lblRefVal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 50</value>
   </data>
-  <data name="m_lblRef.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lblRefVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 12</value>
   </data>
-  <data name="m_lblRef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>816, 23</value>
+  <data name="m_lblRefVal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>881, 26</value>
   </data>
-  <data name="m_lblRef.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblRefVal.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="m_lblRef.Text" xml:space="preserve">
+  <data name="m_lblRefVal.Text" xml:space="preserve">
     <value>Arreguı́n-Sánchez, F., 2014. Measuring resilience in aquatic trophic networks from supply-demand of energy relationships. Ecological Modelling 272, 271-276.
 
 </value>
   </data>
-  <data name="&gt;&gt;m_lblRef.Name" xml:space="preserve">
-    <value>m_lblRef</value>
+  <data name="&gt;&gt;m_lblRefVal.Name" xml:space="preserve">
+    <value>m_lblRefVal</value>
   </data>
-  <data name="&gt;&gt;m_lblRef.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRefVal.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblRef.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_lblRefVal.Parent" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;m_lblRef.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRefVal.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_llContact.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_llContact.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_llContactVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_llContact.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+  <data name="m_llContactVal.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
     <value>28, 44</value>
   </data>
-  <data name="m_llContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 89</value>
+  <data name="m_llContactVal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 94</value>
   </data>
-  <data name="m_llContact.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_llContactVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 12</value>
   </data>
-  <data name="m_llContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>816, 17</value>
+  <data name="m_llContactVal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>881, 17</value>
   </data>
-  <data name="m_llContact.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_llContactVal.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="m_llContact.Text" xml:space="preserve">
+  <data name="m_llContactVal.Text" xml:space="preserve">
     <value>Dr. Manuel J. Zetina-Rejon, mzetina@ipn.mx
 </value>
   </data>
-  <data name="&gt;&gt;m_llContact.Name" xml:space="preserve">
-    <value>m_llContact</value>
+  <data name="&gt;&gt;m_llContactVal.Name" xml:space="preserve">
+    <value>m_llContactVal</value>
   </data>
-  <data name="&gt;&gt;m_llContact.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_llContactVal.Type" xml:space="preserve">
     <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_llContact.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_llContactVal.Parent" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;m_llContact.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_llContactVal.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_lblAck.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="m_lblAck.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lblAck.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
+  <data name="m_lblAck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblAck.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 6</value>
@@ -416,7 +416,7 @@ Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
     <value>3, 6, 3, 12</value>
   </data>
   <data name="m_lblAck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 24</value>
+    <value>103, 26</value>
   </data>
   <data name="m_lblAck.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -431,184 +431,166 @@ Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblAck.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+    <value>m_tlpAck</value>
   </data>
   <data name="&gt;&gt;m_lblAck.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_lblRef.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="Label1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblRef.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 48</value>
+  <data name="m_lblRef.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 50</value>
   </data>
-  <data name="Label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lblRef.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 12</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 23</value>
+  <data name="m_lblRef.Size" type="System.Drawing.Size, System.Drawing">
+    <value>103, 26</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblRef.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_lblRef.Text" xml:space="preserve">
     <value>Reference:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblRef.Name" xml:space="preserve">
+    <value>m_lblRef</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRef.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_lblRef.Parent" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRef.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_lblContact.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="Label2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="Label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblContact.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 89</value>
+  <data name="m_lblContact.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 94</value>
   </data>
-  <data name="Label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lblContact.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 12</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblContact.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 17</value>
   </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblContact.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
+  <data name="m_lblContact.Text" xml:space="preserve">
     <value>Contact:</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
+  <data name="&gt;&gt;m_lblContact.Name" xml:space="preserve">
+    <value>m_lblContact</value>
   </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblContact.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_lblContact.Parent" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblContact.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="Label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_lblGrant.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="Label3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="Label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblGrant.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 124</value>
+  <data name="m_lblGrant.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 129</value>
   </data>
-  <data name="Label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lblGrant.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 12</value>
   </data>
-  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblGrant.Size" type="System.Drawing.Size, System.Drawing">
     <value>103, 13</value>
   </data>
-  <data name="Label3.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblGrant.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="Label3.Text" xml:space="preserve">
+  <data name="m_lblGrant.Text" xml:space="preserve">
     <value>Project grant:</value>
   </data>
-  <data name="&gt;&gt;Label3.Name" xml:space="preserve">
-    <value>Label3</value>
+  <data name="&gt;&gt;m_lblGrant.Name" xml:space="preserve">
+    <value>m_lblGrant</value>
   </data>
-  <data name="&gt;&gt;Label3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblGrant.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label3.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_lblGrant.Parent" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;Label3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblGrant.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="Label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_lblGrantVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 124</value>
+  <data name="m_lblGrantVal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>112, 129</value>
   </data>
-  <data name="Label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lblGrantVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 12</value>
   </data>
-  <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 13</value>
+  <data name="m_lblGrantVal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>881, 13</value>
   </data>
-  <data name="Label4.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblGrantVal.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="Label4.Text" xml:space="preserve">
+  <data name="m_lblGrantVal.Text" xml:space="preserve">
     <value>CONACyT project 155900 &amp; grant 206762</value>
   </data>
-  <data name="&gt;&gt;Label4.Name" xml:space="preserve">
-    <value>Label4</value>
+  <data name="&gt;&gt;m_lblGrantVal.Name" xml:space="preserve">
+    <value>m_lblGrantVal</value>
   </data>
-  <data name="&gt;&gt;Label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblGrantVal.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label4.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_lblGrantVal.Parent" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;Label4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblGrantVal.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tlpAck.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+  <data name="m_tlpAck.RowCount" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>931, 435</value>
+  <data name="m_tlpAck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>996, 220</value>
   </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tlpAck.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
+  <data name="&gt;&gt;m_tlpAck.Name" xml:space="preserve">
+    <value>m_tlpAck</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpAck.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpAck.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpAck.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblAckVal" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRef" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_llContact" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAck" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Label2" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Label3" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Label4" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="m_tlpAck.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblAckVal" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRefVal" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_llContactVal" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAck" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRef" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblContact" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGrant" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGrantVal" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -620,7 +602,7 @@ Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>957, 589</value>
+    <value>1017, 374</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -632,6 +614,6 @@ Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
     <value>frmAcknowledgements</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12418.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12448.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

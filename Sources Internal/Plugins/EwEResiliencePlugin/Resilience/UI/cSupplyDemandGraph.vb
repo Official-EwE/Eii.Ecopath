@@ -187,17 +187,21 @@ Public Class cSupplyDemandGraph
                     x = data.GroupDemandAtT(iGroup, t)
                     y = data.GroupSupplyAtT(iGroup, t)
                 End If
-                ppl.Add(x, y)
 
-                li = Me.CreateLineItem(Core.EcoPathGroupInputs(iGroup), ppl)
-                li.Symbol.Type = SymbolType.Circle
-                li.Line.IsVisible = False
-                pane.CurveList.Add(li)
+                If (x <> 0 And y <> 0) Then
+                    ppl.Add(x, y)
 
-                ' Regression tracking
-                pplReg.Add(x, y)
-                xmin = Math.Min(xmin, x)
-                xmax = Math.Max(xmax, x)
+                    li = Me.CreateLineItem(Core.EcoPathGroupInputs(iGroup), ppl)
+                    li.Symbol.Type = SymbolType.Circle
+                    li.Line.IsVisible = False
+                    pane.CurveList.Add(li)
+
+                    ' Regression tracking
+                    pplReg.Add(x, y)
+                    xmin = Math.Min(xmin, x)
+                    xmax = Math.Max(xmax, x)
+                End If
+
             End If
         Next
 

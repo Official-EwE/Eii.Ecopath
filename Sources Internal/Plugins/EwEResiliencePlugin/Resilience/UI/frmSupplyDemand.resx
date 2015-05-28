@@ -148,16 +148,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_zgc.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_slider.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_slider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 343</value>
+    <value>140, 345</value>
   </data>
   <data name="m_slider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>377, 20</value>
+    <value>293, 20</value>
   </data>
   <data name="m_slider.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -166,13 +166,13 @@
     <value>m_slider</value>
   </data>
   <data name="&gt;&gt;m_slider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.12058.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.12448.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_slider.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_slider.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -268,52 +268,22 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12058.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12448.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_lblTime.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_lblTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>460, 343</value>
-  </data>
-  <data name="m_lblTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 16</value>
-  </data>
-  <data name="m_lblTime.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_lblTime.Text" xml:space="preserve">
-    <value>&lt;time&gt;</value>
-  </data>
-  <data name="m_lblTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="&gt;&gt;m_lblTime.Name" xml:space="preserve">
-    <value>m_lblTime</value>
-  </data>
-  <data name="&gt;&gt;m_lblTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblTime.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_cbAnnual.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="m_cbAnnual.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbAnnual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 345</value>
+    <value>439, 346</value>
   </data>
   <data name="m_cbAnnual.Size" type="System.Drawing.Size, System.Drawing">
     <value>59, 17</value>
@@ -334,6 +304,60 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAnnual.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_nudTime.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_nudTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>51, 345</value>
+  </data>
+  <data name="m_nudTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 20</value>
+  </data>
+  <data name="m_nudTime.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Name" xml:space="preserve">
+    <value>m_nudTime</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_nudTime.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblTime.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_lblTime.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 347</value>
+  </data>
+  <data name="m_lblTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 13</value>
+  </data>
+  <data name="m_lblTime.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_lblTime.Text" xml:space="preserve">
+    <value>&amp;Time:</value>
+  </data>
+  <data name="&gt;&gt;m_lblTime.Name" xml:space="preserve">
+    <value>m_lblTime</value>
+  </data>
+  <data name="&gt;&gt;m_lblTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblTime.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblTime.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -385,6 +409,6 @@
     <value>frmSupplyDemand</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12058.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12448.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

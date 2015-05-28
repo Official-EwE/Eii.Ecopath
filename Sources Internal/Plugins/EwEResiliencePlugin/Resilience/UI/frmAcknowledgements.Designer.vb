@@ -47,20 +47,20 @@ Partial Class frmAcknowledgements
         Me.m_pbCicimar = New System.Windows.Forms.PictureBox()
         Me.m_pbConacyt = New System.Windows.Forms.PictureBox()
         Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tlpAck = New System.Windows.Forms.TableLayoutPanel()
         Me.m_lblAckVal = New System.Windows.Forms.Label()
-        Me.m_lblRef = New System.Windows.Forms.Label()
-        Me.m_llContact = New System.Windows.Forms.LinkLabel()
+        Me.m_lblRefVal = New System.Windows.Forms.Label()
+        Me.m_llContactVal = New System.Windows.Forms.LinkLabel()
         Me.m_lblAck = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.m_lblRef = New System.Windows.Forms.Label()
+        Me.m_lblContact = New System.Windows.Forms.Label()
+        Me.m_lblGrant = New System.Windows.Forms.Label()
+        Me.m_lblGrantVal = New System.Windows.Forms.Label()
         Me.m_tlpSonsors.SuspendLayout()
         CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel1.SuspendLayout()
+        Me.m_tlpAck.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_tlpSonsors
@@ -101,68 +101,67 @@ Partial Class frmAcknowledgements
         Me.m_hdrSponsors.IsCollapsed = False
         Me.m_hdrSponsors.Name = "m_hdrSponsors"
         '
-        'TableLayoutPanel1
+        'm_tlpAck
         '
-        resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lblAckVal, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lblRef, 1, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_llContact, 1, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lblAck, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Label1, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.Label2, 0, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.Label3, 0, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.Label4, 1, 3)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        resources.ApplyResources(Me.m_tlpAck, "m_tlpAck")
+        Me.m_tlpAck.Controls.Add(Me.m_lblAckVal, 1, 0)
+        Me.m_tlpAck.Controls.Add(Me.m_lblRefVal, 1, 1)
+        Me.m_tlpAck.Controls.Add(Me.m_llContactVal, 1, 2)
+        Me.m_tlpAck.Controls.Add(Me.m_lblAck, 0, 0)
+        Me.m_tlpAck.Controls.Add(Me.m_lblRef, 0, 1)
+        Me.m_tlpAck.Controls.Add(Me.m_lblContact, 0, 2)
+        Me.m_tlpAck.Controls.Add(Me.m_lblGrant, 0, 3)
+        Me.m_tlpAck.Controls.Add(Me.m_lblGrantVal, 1, 3)
+        Me.m_tlpAck.Name = "m_tlpAck"
         '
         'm_lblAckVal
         '
         resources.ApplyResources(Me.m_lblAckVal, "m_lblAckVal")
         Me.m_lblAckVal.Name = "m_lblAckVal"
         '
-        'm_lblRef
+        'm_lblRefVal
         '
-        resources.ApplyResources(Me.m_lblRef, "m_lblRef")
-        Me.m_lblRef.Name = "m_lblRef"
+        resources.ApplyResources(Me.m_lblRefVal, "m_lblRefVal")
+        Me.m_lblRefVal.Name = "m_lblRefVal"
         '
-        'm_llContact
+        'm_llContactVal
         '
-        resources.ApplyResources(Me.m_llContact, "m_llContact")
-        Me.m_llContact.Name = "m_llContact"
-        Me.m_llContact.TabStop = True
-        Me.m_llContact.UseCompatibleTextRendering = True
+        resources.ApplyResources(Me.m_llContactVal, "m_llContactVal")
+        Me.m_llContactVal.Name = "m_llContactVal"
+        Me.m_llContactVal.TabStop = True
+        Me.m_llContactVal.UseCompatibleTextRendering = True
         '
         'm_lblAck
         '
         resources.ApplyResources(Me.m_lblAck, "m_lblAck")
         Me.m_lblAck.Name = "m_lblAck"
         '
-        'Label1
+        'm_lblRef
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblRef, "m_lblRef")
+        Me.m_lblRef.Name = "m_lblRef"
         '
-        'Label2
+        'm_lblContact
         '
-        resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.Name = "Label2"
+        resources.ApplyResources(Me.m_lblContact, "m_lblContact")
+        Me.m_lblContact.Name = "m_lblContact"
         '
-        'Label3
+        'm_lblGrant
         '
-        resources.ApplyResources(Me.Label3, "Label3")
-        Me.Label3.Name = "Label3"
+        resources.ApplyResources(Me.m_lblGrant, "m_lblGrant")
+        Me.m_lblGrant.Name = "m_lblGrant"
         '
-        'Label4
+        'm_lblGrantVal
         '
-        resources.ApplyResources(Me.Label4, "Label4")
-        Me.Label4.Name = "Label4"
+        resources.ApplyResources(Me.m_lblGrantVal, "m_lblGrantVal")
+        Me.m_lblGrantVal.Name = "m_lblGrantVal"
         '
         'frmAcknowledgements
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.White
         Me.ControlBox = False
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Controls.Add(Me.m_tlpAck)
         Me.Controls.Add(Me.m_hdrSponsors)
         Me.Controls.Add(Me.m_tlpSonsors)
         Me.Name = "frmAcknowledgements"
@@ -172,8 +171,8 @@ Partial Class frmAcknowledgements
         CType(Me.m_pbIPN, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbCicimar, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbConacyt, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel1.PerformLayout()
+        Me.m_tlpAck.ResumeLayout(False)
+        Me.m_tlpAck.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -182,13 +181,13 @@ Partial Class frmAcknowledgements
     Private WithEvents m_pbCicimar As System.Windows.Forms.PictureBox
     Private WithEvents m_pbConacyt As System.Windows.Forms.PictureBox
     Private WithEvents m_hdrSponsors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpAck As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_lblAckVal As System.Windows.Forms.Label
-    Private WithEvents m_lblRef As System.Windows.Forms.Label
-    Private WithEvents m_llContact As System.Windows.Forms.LinkLabel
+    Private WithEvents m_lblRefVal As System.Windows.Forms.Label
+    Private WithEvents m_llContactVal As System.Windows.Forms.LinkLabel
     Private WithEvents m_lblAck As System.Windows.Forms.Label
-    Private WithEvents Label1 As System.Windows.Forms.Label
-    Private WithEvents Label2 As System.Windows.Forms.Label
-    Private WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Private WithEvents m_lblRef As System.Windows.Forms.Label
+    Private WithEvents m_lblContact As System.Windows.Forms.Label
+    Private WithEvents m_lblGrant As System.Windows.Forms.Label
+    Private WithEvents m_lblGrantVal As System.Windows.Forms.Label
 End Class

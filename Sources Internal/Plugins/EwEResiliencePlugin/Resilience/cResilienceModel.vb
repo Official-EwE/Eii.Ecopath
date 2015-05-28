@@ -113,11 +113,13 @@ Public Class cResilienceModel
 
         For i As Integer = 1 To Me.m_core.nGroups
             If Me.m_data.IsConsumer(i) Then
-                s0 += 1
-                s1 = s1 + Demand(i, Time)
-                s2 = s2 + Demand(i, Time) * Demand(i, Time)
-                t0 = t0 + Supply(i, Time)
-                t1 = t1 + Demand(i, Time) * Supply(i, Time)
+                If (Demand(i, Time) <> 0) And (Supply(i, Time) <> 0) Then
+                    s0 += 1
+                    s1 = s1 + Demand(i, Time)
+                    s2 = s2 + Demand(i, Time) * Demand(i, Time)
+                    t0 = t0 + Supply(i, Time)
+                    t1 = t1 + Demand(i, Time) * Supply(i, Time)
+                End If
             End If
         Next
 

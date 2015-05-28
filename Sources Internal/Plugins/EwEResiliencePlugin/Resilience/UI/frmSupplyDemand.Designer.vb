@@ -48,9 +48,11 @@ Partial Class frmSupplyDemand
         Me.m_tsbnSaveNow = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnDynamicScales = New System.Windows.Forms.ToolStripButton()
-        Me.m_lblTime = New System.Windows.Forms.Label()
         Me.m_cbAnnual = New System.Windows.Forms.CheckBox()
+        Me.m_nudTime = New System.Windows.Forms.NumericUpDown()
+        Me.m_lblTime = New System.Windows.Forms.Label()
         Me.m_tsMain.SuspendLayout()
+        CType(Me.m_nudTime, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_zgc
@@ -104,24 +106,30 @@ Partial Class frmSupplyDemand
         resources.ApplyResources(Me.m_tsbnDynamicScales, "m_tsbnDynamicScales")
         Me.m_tsbnDynamicScales.Name = "m_tsbnDynamicScales"
         '
-        'm_lblTime
-        '
-        resources.ApplyResources(Me.m_lblTime, "m_lblTime")
-        Me.m_lblTime.Name = "m_lblTime"
-        '
         'm_cbAnnual
         '
         resources.ApplyResources(Me.m_cbAnnual, "m_cbAnnual")
         Me.m_cbAnnual.Name = "m_cbAnnual"
         Me.m_cbAnnual.UseVisualStyleBackColor = True
         '
+        'm_nudTime
+        '
+        resources.ApplyResources(Me.m_nudTime, "m_nudTime")
+        Me.m_nudTime.Name = "m_nudTime"
+        '
+        'm_lblTime
+        '
+        resources.ApplyResources(Me.m_lblTime, "m_lblTime")
+        Me.m_lblTime.Name = "m_lblTime"
+        '
         'frmSupplyDemand
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_cbAnnual)
         Me.Controls.Add(Me.m_lblTime)
+        Me.Controls.Add(Me.m_nudTime)
+        Me.Controls.Add(Me.m_cbAnnual)
         Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_slider)
         Me.Controls.Add(Me.m_zgc)
@@ -129,6 +137,7 @@ Partial Class frmSupplyDemand
         Me.TabText = ""
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
+        CType(Me.m_nudTime, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -140,6 +149,7 @@ Partial Class frmSupplyDemand
     Private WithEvents m_tsbnSaveNow As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnDynamicScales As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_nudTime As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblTime As System.Windows.Forms.Label
-    Friend WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
 End Class

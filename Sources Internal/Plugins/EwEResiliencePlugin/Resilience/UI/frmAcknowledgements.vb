@@ -61,7 +61,7 @@ Public Class frmAcknowledgements
 
     End Sub
 
-    Private Sub OnContact(sender As Object, e As System.EventArgs) Handles m_llContact.LinkClicked
+    Private Sub OnContact(sender As Object, e As System.EventArgs) Handles m_llContactVal.LinkClicked
 
         Try
             Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
@@ -71,9 +71,9 @@ Public Class frmAcknowledgements
         End Try
     End Sub
 
-    Private Sub OnReference(sender As Object, e As System.EventArgs) Handles m_lblRef.Click
+    Private Sub OnReference(sender As Object, e As System.EventArgs) Handles m_lblRefVal.Click
         Try
-            Clipboard.SetText(Me.m_lblRef.Text, Windows.Forms.TextDataFormat.Text)
+            Clipboard.SetText(Me.m_lblRefVal.Text, Windows.Forms.TextDataFormat.Text)
         Catch ex As Exception
 
         End Try
