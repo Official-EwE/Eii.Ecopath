@@ -323,8 +323,10 @@ Namespace Commands
                 Return Me.m_bAvailable
             End Get
             Set(ByVal bAvailable As Boolean)
-                Me.m_bAvailable = bAvailable
-                Me.Update()
+                If (Me.m_bAvailable <> bAvailable) Then
+                    Me.m_bAvailable = bAvailable
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -335,11 +337,13 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Property Enabled() As Boolean
             Get
-                Return Me.m_bEnabled And Me.m_bAvailable
+                Return Me.m_bEnabled
             End Get
             Set(ByVal bEnable As Boolean)
-                Me.m_bEnabled = bEnable
-                Me.Update()
+                If (Me.m_bEnabled <> bEnable) Then
+                    Me.m_bEnabled = bEnable
+                    Me.Update()
+                End If
             End Set
         End Property
 
@@ -353,8 +357,10 @@ Namespace Commands
                 Return Me.m_bChecked
             End Get
             Set(ByVal bCheck As Boolean)
-                Me.m_bChecked = bCheck
-                Me.Update()
+                If (Me.m_bChecked <> bCheck) Then
+                    Me.m_bChecked = bCheck
+                    Me.Update()
+                End If
             End Set
         End Property
 

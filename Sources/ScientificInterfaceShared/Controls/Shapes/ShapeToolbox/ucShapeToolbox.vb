@@ -197,14 +197,7 @@ Namespace Controls
         Public Sub UpdateThumbnail(ByVal shape As cShapeData)
 
             If Me.m_bInUpdate Then Return
-            If m_lvShapes.LargeImageList Is Nothing Then Return
-
-            Dim iThumbnailIndex As Integer = Me.m_lShapes.IndexOf(shape)
-            If iThumbnailIndex = -1 Then Return
-
-            Me.m_lvShapes.LargeImageList.Images(iThumbnailIndex) = GetThumbnail(shape)
-            Me.m_lvShapes.Refresh()
-
+            Me.UpdateThumbnails(New cShapeData() {shape})
         End Sub
 
         ''' ------------------------------------------------------------------
