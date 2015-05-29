@@ -1538,18 +1538,18 @@ Namespace Ecospace
 
             'Big hack: scale images between 
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-            Dim dx As Integer = bm.InCol
-            Dim dy As Integer = bm.InRow
-            Dim sdummy(dx, dy) As Single
+            Dim nCols As Integer = bm.InCol
+            Dim nRows As Integer = bm.InRow
+            Dim sdummy(nRows, nCols) As Single
             Dim i As Integer = 0
-            For x As Integer = 1 To dx
-                For y As Integer = 1 To dy
-                    If bm.IsModelledCell(x, y) Then
-                        sdummy(x, y) = cSystemUtils.IIF(i = 0, 10, -10)
+            For iRow As Integer = 1 To nRows
+                For iCol As Integer = 1 To nCols
+                    If bm.IsModelledCell(iRow, iCol) Then
+                        sdummy(iRow, iCol) = cSystemUtils.IIF(i = 0, 10, -10)
                         i = (i + 1) Mod 2 'FlipFlop
                     End If
-                Next y
-            Next x
+                Next iCol
+            Next iRow
 
             Dim lgd As New cLegend(Me.UIContext, strValueName)
             Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
