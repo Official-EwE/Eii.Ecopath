@@ -45,8 +45,9 @@ Public Class cEcospaceResultWriterFactory
                                      ByVal pm As cPluginManager) As IEcospaceResultsWriter
 
         Select Case strDataName.ToLower()
-            Case "csvmap" : Return New cEcospaceCSVMapResultsWriter()
-            Case "ascmap" : Return New cEcospaceASCMapResultsWriter()
+            Case "csv map" : Return New cEcospaceCSVMapResultsWriter()
+            Case "ascii map" : Return New cEcospaceASCMapResultsWriter()
+                'regavg Really... this can't be right
             Case "regavg" : Return New cEcospaceAvgModelAreaResultsWriter()
         End Select
 
