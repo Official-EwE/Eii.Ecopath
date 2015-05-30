@@ -44,11 +44,26 @@ Public Class cEcospaceResultWriterFactory
     Public Shared Function GetWriter(ByVal strDataName As String, _
                                      ByVal pm As cPluginManager) As IEcospaceResultsWriter
 
+        ' JS 28May15: Small change here: writers are now identified by their internal name, not by their localized name
         Select Case strDataName.ToLower()
-            Case "csv map" : Return New cEcospaceCSVMapResultsWriter()
-            Case "ascii map" : Return New cEcospaceASCMapResultsWriter()
-                'regavg Really... this can't be right
-            Case "regavg" : Return New cEcospaceAvgModelAreaResultsWriter()
+
+            Case "csvmap"
+                ' Backwards compatibility- localized names should not be used anymore
+                Return New cEcospaceCSVMapResultsWriter()
+            Case "ascmap"
+                ' Backwards compatibility - localized names should not be used anymore
+                Return New cEcospaceASCMapResultsWriter()
+            Case "regavg"
+                ' Sorry Joe, it's right
+                Return New cEcospaceAvgModelAreaResultsWriter()
+
+            Case "csv map"
+                ' Backwards compatibility- localized names should not be used anymore
+                Return New cEcospaceCSVMapResultsWriter()
+            Case "ascii map"
+                ' Backwards compatibility - localized names should not be used anymore
+                Return New cEcospaceASCMapResultsWriter()
+
         End Select
 
         ' Plug-in manager provided?

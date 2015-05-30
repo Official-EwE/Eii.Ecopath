@@ -278,7 +278,7 @@ Public Class cEcospaceASCMapResultsWriter
     Public Overrides ReadOnly Property DataName As String
         Get
             ' ToDo: globalize this
-            Return "ASCII map"
+            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_ASCMAP
         End Get
     End Property
 
