@@ -68,6 +68,7 @@ Public Class cEcospaceMapsWrapper
         Me.m_lVars.Add(eVarNameFlags.LayerSail)
         Me.m_lVars.Add(eVarNameFlags.LayerUpwelling)
         Me.m_lVars.Add(eVarNameFlags.LayerWind)
+        Me.m_lVars.Add(eVarNameFlags.LayerMPA)
 
         ' Used driver layers are hashed in cEcospaceCapacityWrapper
         'Me.m_lVars.Add(eVarNameFlags.LayerDriver)
