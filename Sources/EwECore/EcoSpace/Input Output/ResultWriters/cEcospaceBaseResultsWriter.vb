@@ -48,13 +48,10 @@ Public Class cEcospaceResultWriterFactory
         Select Case strDataName.ToLower()
 
             Case "csvmap"
-                ' Backwards compatibility- localized names should not be used anymore
                 Return New cEcospaceCSVMapResultsWriter()
             Case "ascmap"
-                ' Backwards compatibility - localized names should not be used anymore
                 Return New cEcospaceASCMapResultsWriter()
             Case "regavg"
-                ' Sorry Joe, it's right
                 Return New cEcospaceAvgModelAreaResultsWriter()
 
             Case "csv map"
