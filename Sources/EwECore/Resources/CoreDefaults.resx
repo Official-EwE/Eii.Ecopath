@@ -242,6 +242,15 @@
     <value>Created {0}</value>
     <comment>{0} date and time, converted to string in current Locale</comment>
   </data>
+  <data name="ECOSPACE_WRITER_ASCMAP" xml:space="preserve">
+    <value>ASCII map</value>
+  </data>
+  <data name="ECOSPACE_WRITER_CSVMAP" xml:space="preserve">
+    <value>CSV map</value>
+  </data>
+  <data name="ECOSPACE_WRITER_REGAVG" xml:space="preserve">
+    <value>Region averages</value>
+  </data>
   <data name="PARAM_LEFTPOINT" xml:space="preserve">
     <value>Left point</value>
   </data>

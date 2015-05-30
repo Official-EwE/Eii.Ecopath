@@ -327,11 +327,13 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            ' ToDo: globalize this
-            Return "Region averages"
+            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_REGAVG
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.Name"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property Name As String
         Get
             Return "regavg"

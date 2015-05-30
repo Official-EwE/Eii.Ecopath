@@ -282,7 +282,7 @@ Public Class cEcospaceCSVMapResultsWriter
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "CSV map"
+            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_CSVMAP
         End Get
     End Property
 
