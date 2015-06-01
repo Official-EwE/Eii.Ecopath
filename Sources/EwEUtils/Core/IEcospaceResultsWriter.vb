@@ -56,7 +56,7 @@ Namespace Core
         ''' <summary>
         ''' Return a human-legible name of the data that this writer produces.
         ''' </summary>
-        ReadOnly Property DataName() As String
+        ReadOnly Property DisplayName() As String
 
         ''' <summary>
         ''' Return the internal name of this writer.

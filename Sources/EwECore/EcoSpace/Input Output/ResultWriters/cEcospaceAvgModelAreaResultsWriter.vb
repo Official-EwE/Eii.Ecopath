@@ -325,7 +325,7 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
 #End Region
 
-    Public Overrides ReadOnly Property DataName As String
+    Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_REGAVG
         End Get
