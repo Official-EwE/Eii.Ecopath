@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -98,26 +99,30 @@ Namespace Ecospace
             Public Sub New(item As IEcospaceResultsWriter)
                 Me.m_items = New IEcospaceResultsWriter() {item}
                 ' ToDo: globalize this
-                Me.m_strLabel = Me.DataNames
+                Me.m_strLabel = item.DisplayName
             End Sub
 
             Public Sub New(items As IEcospaceResultsWriter())
                 Me.m_items = items
-                ' ToDo: globalize this
-                Me.m_strLabel = Me.DataNames
+                Dim strDisplayName As String = ""
+                For i As Integer = 0 To items.Count - 1
+                    If (i > 0) Then strDisplayName = strDisplayName & ", "
+                    strDisplayName = strDisplayName & items(i).DisplayName
+                Next
+                Me.m_strLabel = strDisplayName
             End Sub
 
             Public Overrides Function ToString() As String
                 Return Me.m_strLabel
             End Function
 
-            Public ReadOnly Property DataNames As String
+            Public ReadOnly Property WriterNames As String
                 Get
                     Dim strNames As String = ""
                     If Me.m_items.Count = 0 Then Return frmEcospaceParameters.NOTSAVEDEXT
                     For i As Integer = 0 To Me.m_items.Count - 1
                         If (i > 0) Then strNames = strNames & ";"
-                        strNames = strNames & Me.m_items(i).DataName
+                        strNames = strNames & Me.m_items(i).Name
                     Next
                     Return strNames
                 End Get
@@ -305,11 +310,11 @@ Namespace Ecospace
 
             Me.m_cbAutosaveResultRegions.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceResultsRegion)
 
-            ' Compare by extension
+            ' Compare by format
             Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
             For Each item As cEcospaceResultWriterItem In Me.m_cmbAutosaveFormat.Items
                 If (item IsNot Nothing) Then
-                    If String.Compare(item.DataNames, strFmt, True) = 0 Then
+                    If String.Compare(item.WriterNames, strFmt, True) = 0 Then
                         Me.m_cmbAutosaveFormat.SelectedItem = item
                         Exit For
                     End If
@@ -424,18 +429,23 @@ Namespace Ecospace
 
             If Me.m_bInUpdate Then Return
 
-            Dim strExt As String = ""
+            Me.m_bInUpdate = True
+
+            Dim strFormat As String = ""
             If Me.m_cmbAutosaveFormat.SelectedIndex <> -1 Then
-                strExt = DirectCast(Me.m_cmbAutosaveFormat.SelectedItem, cEcospaceResultWriterItem).DataNames
+                strFormat = DirectCast(Me.m_cmbAutosaveFormat.SelectedItem, cEcospaceResultWriterItem).WriterNames
             End If
 
-            If String.IsNullOrWhiteSpace(strExt) Or String.Compare(strExt, NOTSAVEDEXT) = 0 Then
+            If String.IsNullOrWhiteSpace(strFormat) Or String.Compare(strFormat, NOTSAVEDEXT) = 0 Then
                 Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = False
                 Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = frmEcospaceParameters.NOTSAVEDEXT
             Else
                 Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = True
-                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strExt
+                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strFormat
             End If
+
+            Me.m_bInUpdate = False
+
         End Sub
 
 #End Region ' Control events

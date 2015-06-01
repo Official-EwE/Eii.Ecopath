@@ -68,7 +68,7 @@ Public Class cEcospaceResultWriterFactory
             ' #Yes: see if a plug-in based writer supports the requested format
             For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
                 ' Does plug-in support this format?
-                If (String.Compare(strDataName, ip.DataName, True) = 0) Then
+                If (String.Compare(strDataName, ip.DisplayName, True) = 0) Then
                     ' #Yes: use it
                     Return ip
                 End If
@@ -136,10 +136,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IEcospaceResultsWriter.DataName"/>
+    ''' <inheritdocs cref="IEcospaceResultsWriter.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property DataName() As String _
-        Implements IEcospaceResultsWriter.DataName
+    Public MustOverride ReadOnly Property DisplayName() As String _
+        Implements IEcospaceResultsWriter.DisplayName
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.Name"/>
