@@ -50,7 +50,7 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("6.5.12482.0")> 
-<Assembly: AssemblyFileVersion("6.5.12482.0")> 
+<Assembly: AssemblyVersion("6.5.12492.0")> 
+<Assembly: AssemblyFileVersion("6.5.12492.0")> 
 
 <Assembly: NeutralResourcesLanguageAttribute("en-CA")> 
