@@ -39,6 +39,8 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceAvgModelAreaResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
+    Public Const cDATA_NAME As String = "regavg"
+
 #Region " Private classes "
 
     ''' <summary>

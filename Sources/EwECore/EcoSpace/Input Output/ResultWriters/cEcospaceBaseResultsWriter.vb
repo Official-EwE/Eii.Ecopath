@@ -48,18 +48,18 @@ Public Class cEcospaceResultWriterFactory
         ' JS 28May15: Small change here: writers are now identified by their internal name, not by their localized name
         Select Case strDataName.ToLower()
 
-            Case "csvmap"
+            Case cEcospaceCSVMapResultsWriter.cDATA_NAME
                 Return New cEcospaceCSVMapResultsWriter()
-            Case "ascmap"
+            Case cEcospaceASCMapResultsWriter.cDATA_NAME
                 Return New cEcospaceASCMapResultsWriter()
-            Case "regavg"
+            Case cEcospaceAvgModelAreaResultsWriter.cDATA_NAME
                 Return New cEcospaceAvgModelAreaResultsWriter()
 
-            Case "csv map"
-                ' Backwards compatibility- localized names should not be used anymore
+            Case "csv map", ".csv"
+                ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
                 Return New cEcospaceCSVMapResultsWriter()
-            Case "ascii map"
-                ' Backwards compatibility - localized names should not be used anymore
+            Case "ascii map", ".asc"
+                ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
                 Return New cEcospaceASCMapResultsWriter()
 
         End Select
