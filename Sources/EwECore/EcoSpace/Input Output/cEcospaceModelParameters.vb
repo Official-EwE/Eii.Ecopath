@@ -288,35 +288,33 @@ Public Class cEcospaceModelParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether Ecospace should automatically save ASC files for every
-    ''' time step.
+    ''' Get/set whether Ecospace should automatically save ASC files.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
             Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
-                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), ".asc", True) = 0)
+                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), cEcospaceASCMapResultsWriter.cDATA_NAME, True) = 0)
         End Get
         Set(value As Boolean)
             Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ".asc"
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = cEcospaceASCMapResultsWriter.cDATA_NAME
         End Set
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether Ecospace should automatically save CSV files for every
-    ''' time step.
+    ''' Get/set whether Ecospace should automatically save CSV files.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property SaveCSV As Boolean
         Get
             Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
-                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), ".csv", True) = 0)
+                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), cEcospaceCSVMapResultsWriter.cDATA_NAME, True) = 0)
         End Get
         Set(value As Boolean)
             Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ".csv"
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = cEcospaceCSVMapResultsWriter.cDATA_NAME
         End Set
     End Property
 

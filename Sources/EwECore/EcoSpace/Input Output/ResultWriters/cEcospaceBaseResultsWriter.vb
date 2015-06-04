@@ -37,7 +37,8 @@ Public Class cEcospaceResultWriterFactory
     ''' <summary>
     ''' Factory method.
     ''' </summary>
-    ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.DataName">data name</see> to find a writer for.</param>
+    ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.Name">internal name</see> 
+    ''' to find a writer for.</param>
     ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
     ''' no writer could be found for the provided extension.</returns>
     ''' -----------------------------------------------------------------------
