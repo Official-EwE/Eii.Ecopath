@@ -41,6 +41,7 @@ Namespace Ecospace
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
             Dim cmd As cCommand = Nothing
             MyBase.OnLoad(e)
 
@@ -51,9 +52,10 @@ Namespace Ecospace
 
             Me.m_tsbnDefineMPAs.Image = SharedResources.MPA
 
-         End Sub
+        End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
             Dim cmd As cCommand = Nothing
 
             MyBase.OnFormClosed(e)

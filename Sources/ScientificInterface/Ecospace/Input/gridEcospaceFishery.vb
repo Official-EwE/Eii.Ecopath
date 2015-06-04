@@ -25,6 +25,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region
 
@@ -42,6 +43,7 @@ Namespace Ecospace
         Private m_iStartHabCol As Integer = -1
         Private m_iStartMPACol As Integer = -1
         Private m_bInUpdate As Boolean = False
+        Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
         Public Sub New()
 
@@ -51,6 +53,26 @@ Namespace Ecospace
         End Sub
 
 #Region " Overrides "
+
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_bpEffort = Nothing
+                End If
+
+                If (value IsNot Nothing) Then
+                    Dim ecospaceModelParams As cEcospaceModelParameters = value.Core.EcospaceModelParameters()
+                    Dim propMan As cPropertyManager = value.PropertyManager
+                    Me.m_bpEffort = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+                End If
+
+                MyBase.UIContext = value
+
+            End Set
+        End Property
 
         Protected Overrides Sub InitStyle()
 
@@ -102,27 +124,51 @@ Namespace Ecospace
 
         Protected Overrides Sub FillData()
 
+            Dim bEnable As Boolean = (CBool(Me.m_bpEffort.GetValue()) = True)
+            Dim cell As EwECellBase = Nothing
+
             For i As Integer = 1 To Me.Core.nFleets
 
                 Dim source As cEcospaceFleet = Me.Core.EcospaceFleets(i)
 
-                Me(i, 2) = New Cells.Real.CheckBox(False)
-                Me(i, 2).Behaviors.Add(Me.EwEEditHandler)
+                If (bEnable) Then
+                    Me(i, 2) = New Cells.Real.CheckBox(False)
+                    Me(i, 2).Behaviors.Add(Me.EwEEditHandler)
 
-                For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
-                    Me(i, Me.m_iStartHabCol + iHabitat) = New Cells.Real.CheckBox(source.HabitatFishery(iHabitat))
-                    Me(i, Me.m_iStartHabCol + iHabitat).Behaviors.Add(Me.EwEEditHandler)
-                Next
+                    For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
+                        Me(i, Me.m_iStartHabCol + iHabitat) = New Cells.Real.CheckBox(source.HabitatFishery(iHabitat))
+                        Me(i, Me.m_iStartHabCol + iHabitat).Behaviors.Add(Me.EwEEditHandler)
+                    Next
 
-                For iMPA As Integer = 1 To Me.Core.nMPAs
-                    Me(i, Me.m_iStartMPACol + iMPA - 1) = New Cells.Real.CheckBox(CBool(source.MPAFishery(iMPA)))
-                    Me(i, Me.m_iStartMPACol + iMPA - 1).Behaviors.Add(Me.EwEEditHandler)
-                Next
+                    For iMPA As Integer = 1 To Me.Core.nMPAs
+                        Me(i, Me.m_iStartMPACol + iMPA - 1) = New Cells.Real.CheckBox(CBool(source.MPAFishery(iMPA)))
+                        Me(i, Me.m_iStartMPACol + iMPA - 1).Behaviors.Add(Me.EwEEditHandler)
+                    Next
 
-                Me(i, Me.ColumnsCount - 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
-                Me(i, Me.ColumnsCount - 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SEmult)
+                    Me(i, Me.ColumnsCount - 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
+                    Me(i, Me.ColumnsCount - 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SEmult)
 
-                Me.UpdateRow(i)
+                    Me.UpdateRow(i)
+                Else
+                    Me(i, 2) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+
+                    For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
+                        Me(i, Me.m_iStartHabCol + iHabitat) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                    Next
+
+                    For iMPA As Integer = 1 To Me.Core.nMPAs
+                        Me(i, Me.m_iStartMPACol + iMPA - 1) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                    Next
+
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
+                    cell.Style = cell.Style Or eStyleFlags.NotEditable
+                    Me(i, Me.ColumnsCount - 2) = cell
+
+                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SEmult)
+                    cell.Style = cell.Style Or eStyleFlags.NotEditable
+                    Me(i, Me.ColumnsCount - 1) = cell
+
+                End If
 
             Next
 
@@ -218,6 +264,20 @@ Namespace Ecospace
 
 #End Region ' Internals
 
+#Region " Event handlers "
+
+        Private Sub m_bpEffort_PropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags) _
+            Handles m_bpEffort.PropertyChanged
+
+            Try
+                BeginInvoke(New MethodInvoker(AddressOf RefreshContent))
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+#End Region ' Event handlers
     End Class
 
 End Namespace

@@ -62,6 +62,7 @@ Namespace Ecospace
         End Enum
 
         Private m_bInUpdate As Boolean = False
+        Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -76,6 +77,26 @@ Namespace Ecospace
         End Sub
 
 #Region " Grid interaction "
+
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_bpEffort = Nothing
+                End If
+
+                If (value IsNot Nothing) Then
+                    Dim ecospaceModelParams As cEcospaceModelParameters = value.Core.EcospaceModelParameters()
+                    Dim propMan As cPropertyManager = value.PropertyManager
+                    Me.m_bpEffort = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+                End If
+
+                MyBase.UIContext = value
+
+             End Set
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -118,8 +139,11 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim mpa As cEcospaceMPA = Nothing
             Dim ewec As EwECellBase = Nothing
+            Dim bEnable As Boolean = (CBool(Me.m_bpEffort.GetValue()) = True)
 
             ' Create missing rows
             For iMPA As Integer = 1 To Me.Core.nMPAs
@@ -130,20 +154,30 @@ Namespace Ecospace
                 Me(iMPA, eColumnTypes.MPAIndex) = New PropertyRowHeaderCell(Me.PropertyManager, mpa, eVarNameFlags.Index)
                 Me(iMPA, eColumnTypes.MPAName) = New PropertyRowHeaderCell(Me.PropertyManager, mpa, eVarNameFlags.Name)
 
-                Me(iMPA, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
-                Me(iMPA, eColumnTypes.MPAAll).Behaviors.Add(Me.EwEEditHandler)
+                If (bEnable) Then
+                    Me(iMPA, eColumnTypes.MPAAll) = New Cells.Real.CheckBox(False)
+                    Me(iMPA, eColumnTypes.MPAAll).Behaviors.Add(Me.EwEEditHandler)
 
-                For iMonth As Integer = 1 To cCore.N_MONTHS
-                    Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth) = New Cells.Real.CheckBox(False)
-                    Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
-                Next iMonth
+                    For iMonth As Integer = 1 To cCore.N_MONTHS
+                        Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth) = New Cells.Real.CheckBox(False)
+                        Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth).Behaviors.Add(Me.EwEEditHandler)
+                    Next iMonth
+                Else
+                    Me(iMPA, eColumnTypes.MPAAll) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+
+                    For iMonth As Integer = 1 To cCore.N_MONTHS
+                        Me(iMPA, eColumnTypes.MPAJan - 1 + iMonth) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+                    Next iMonth
+                End If
 
             Next
 
             ' Populate rows
-            For iRow As Integer = 1 To Me.RowsCount - 1
-                UpdateRow(iRow)
-            Next iRow
+            If (bEnable) Then
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    UpdateRow(iRow)
+                Next iRow
+            End If
 
         End Sub
 
@@ -228,6 +262,21 @@ Namespace Ecospace
         End Function
 
 #End Region ' Grid interaction
+
+#Region " Event handlers "
+
+        Private Sub m_bpEffort_PropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags) _
+            Handles m_bpEffort.PropertyChanged
+
+            Try
+                BeginInvoke(New MethodInvoker(AddressOf RefreshContent))
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+#End Region ' Event handlers
 
     End Class
 
