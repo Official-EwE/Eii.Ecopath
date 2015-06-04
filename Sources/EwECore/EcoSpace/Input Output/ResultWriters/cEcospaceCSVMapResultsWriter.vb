@@ -37,6 +37,8 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceCSVMapResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
+    Public Const cDATA_NAME As String = "csvmap"
+
 #Region " Overrides "
 
     ''' -----------------------------------------------------------------------
@@ -288,7 +290,7 @@ Public Class cEcospaceCSVMapResultsWriter
 
     Public Overrides ReadOnly Property Name As String
         Get
-            Return "csvmap"
+            Return cEcospaceCSVMapResultsWriter.cDATA_NAME
         End Get
     End Property
 
