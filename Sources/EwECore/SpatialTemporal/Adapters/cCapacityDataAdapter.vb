@@ -83,12 +83,10 @@ Namespace SpatialData
             Me.m_spaceData.isCapacityChanged = True
             breturnVal = MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
-            For iGroup As Integer = 1 To Me.m_spaceData.NGroups
-                'Ok Turn on the groups that were changed
-                If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
-                    Me.m_spaceData.isGroupHabCapChanged(iGroup) = True
-                End If
-            Next
+            'isGroupHabCapChanged(group) tells the habitat capacity model 
+            'that the capacity inputs have change for a group.
+            'This is an optimization so only the groups that have changed will be recomputed
+            Me.m_spaceData.isGroupHabCapChanged(layer.Index) = True
 
             Return breturnVal
 
