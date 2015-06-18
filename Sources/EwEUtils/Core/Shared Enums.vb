@@ -3208,6 +3208,18 @@ Namespace Core
         Habitat = 1
     End Enum
 
+
+
+    ''' <summary>
+    ''' Averaging/summary time periods for the Ecospace regions results files
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum eEcospaceResultsAverageType
+        TimeStep
+        Annual
+    End Enum
+
+
 #End Region ' Ecospace Capacity and Habitat
 
 #Region " MSE Batch "

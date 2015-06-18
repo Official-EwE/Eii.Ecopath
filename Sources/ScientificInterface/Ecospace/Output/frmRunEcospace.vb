@@ -259,6 +259,7 @@ Namespace Ecospace
                 drawer.ShowExcluded = My.Settings.MapShowExcludedCells
                 Me.m_drawers.Add(drawer)
             Next
+
         End Sub
 
         Private Sub InitOutputBitmaps()

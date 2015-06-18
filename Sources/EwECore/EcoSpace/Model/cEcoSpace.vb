@@ -7125,6 +7125,7 @@ exitline:
             'Have the Habitat Capacity input maps changed
             If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
                 'Yes the map has changed
+                'Debug.Assert(igrp <> 45)
                 For irow = 1 To Me.m_Data.InRow
                     For icol = 1 To Me.m_Data.InCol
 
@@ -7362,6 +7363,8 @@ exitline:
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
+
+                    ' Debug.Assert(igrp <> 47)
                     If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
@@ -7374,6 +7377,7 @@ exitline:
                                     If Me.m_Data.Depth(irow, icol) > 0 Then
                                         'For debugging
                                         'dumpCapacity(map, igrp, irow, icol)
+                                        'Debug.Assert(igrp = 47)
 
                                         Me.m_Data.HabCap(igrp)(irow, icol) *= map.ResponseFunction(igrp, irow, icol)
 

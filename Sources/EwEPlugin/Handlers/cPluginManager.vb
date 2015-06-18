@@ -1498,6 +1498,52 @@ Public Class cPluginManager
         Return Me.TryInvokeMethod(GetType(IEcospaceLayerChangePlugin), "EcospaceEndLayerChange", New Object() {iTime, dt, layer})
     End Function
 
+
+    Public Function EcospaceResultsModelAreaFileName(ByRef FileName As String, ByVal DataSourceAsObject As Object, ByVal AvgType As eEcospaceResultsAverageType) As Boolean
+
+        Dim args() As Object = New Object() {FileName, DataSourceAsObject, AvgType}
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceResultWriterUtils), _
+                                                    "ModelAreaFileName", _
+                                                    args, _
+                                                    eInvocationType.Any)
+        FileName = CStr(args(0))
+
+        Return bSucces
+
+
+    End Function
+
+
+    Public Function EcospaceResultsMapGroupFileName(ByRef FileName As String, ByVal varname As EwEUtils.Core.eVarNameFlags, _
+                                                    ByVal iGrp As Integer, ByVal strExt As String, ByVal iModelTimeStep As Integer) As Boolean
+
+        Dim args() As Object = New Object() {FileName, varname, iGrp, strExt, iModelTimeStep}
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceResultWriterUtils), _
+                                                    "MapGroupFileName", _
+                                                    args, _
+                                                    eInvocationType.Any)
+        FileName = CStr(args(0))
+
+        Return bSucces
+
+
+    End Function
+
+    Public Function EcospaceResultsMapFleetFileName(ByRef FileName As String, ByVal varname As EwEUtils.Core.eVarNameFlags, _
+                                                    ByVal iFlt As Integer, ByVal strExt As String, ByVal iModelTimeStep As Integer) As Boolean
+
+        Dim args() As Object = New Object() {FileName, varname, iFlt, strExt, iModelTimeStep}
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcospaceResultWriterUtils), _
+                                                    "MapFleetFileName", _
+                                                    args, _
+                                                    eInvocationType.Any)
+        FileName = CStr(args(0))
+
+        Return bSucces
+
+
+    End Function
+
 #End Region ' Ecospace
 
 #Region " Ecotracer "

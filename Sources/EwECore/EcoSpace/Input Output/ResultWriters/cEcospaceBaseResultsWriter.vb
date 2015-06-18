@@ -217,20 +217,26 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                                                     ByVal strExt As String, _
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
-        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
-        Dim strTimestep As String = ""
+        Dim Filename As String
+        If Me.m_core.PluginManager.EcospaceResultsMapGroupFileName(Filename, varname, iGrp, strExt, iModelTimeStep) Then
+            'File was set by the plugin
+        Else
+            'Ok Use the default filename
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
+            Dim strTimestep As String = ""
 
-        ' Is there a time step in the file name?
-        If (iModelTimeStep > 0) Then
-            ' #Yes: include it in the file name
-            strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+            ' Is there a time step in the file name?
+            If (iModelTimeStep > 0) Then
+                ' #Yes: include it in the file name
+                strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+            End If
+
+            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
+                                                               cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
-                                                                                       cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), _
-                                                                         False)
-        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
+        Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
 
     End Function
 
@@ -251,20 +257,27 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                                                     ByVal strExt As String, _
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
-        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-        Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
-        Dim strTimestep As String = ""
 
-        ' Is there a time step in the file name?
-        If (iModelTimeStep > 0) Then
-            ' #Yes: include it in the file name
-            strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+        Dim Filename As String
+        If Me.m_core.PluginManager.EcospaceResultsMapFleetFileName(Filename, varname, iFlt, strExt, iModelTimeStep) Then
+            'File was set by the plugin
+        Else
+
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
+            Dim strTimestep As String = ""
+
+            ' Is there a time step in the file name?
+            If (iModelTimeStep > 0) Then
+                ' #Yes: include it in the file name
+                strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
+            End If
+
+            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
+                                                                     cin.GetVarName(varname), fltName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
-                                                                                       cin.GetVarName(varname), fltName, strTimestep, strExt.Replace(".", "")), _
-                                                                         False)
-        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
+        Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
 
     End Function
 
