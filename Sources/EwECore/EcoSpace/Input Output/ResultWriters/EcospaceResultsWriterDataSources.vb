@@ -34,7 +34,7 @@ Imports EwEUtils.Utilities
 ''' to write averaged Ecospace results to a csv file. 
 ''' </summary>
 ''' <remarks></remarks>
-Public MustInherit Class cResultsDataSourceBase
+Public MustInherit Class cEcospaceResultsWriterDataSourceBase
     Protected m_core As cCore
     Protected m_spaceData As cEcospaceDataStructures
 
@@ -89,6 +89,14 @@ Public MustInherit Class cResultsDataSourceBase
     ''' </summary>
     MustOverride Function FieldName(OneBasedIndex As Integer) As String
 
+
+    ''' <summary>
+    ''' Four character abbreviation of Variable and Area
+    ''' </summary>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    MustOverride Function FileNameAbbreviation() As String
+
 End Class
 
 #End Region
@@ -98,10 +106,11 @@ End Class
 #Region "Biomass over model area"
 
 ''' <summary>
-''' Implementation of <see cref="cResultsDataSourceBase">cResultsDataSourceBase</see> for biomass averaged over the total modeled area.
+''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for biomass averaged over the total modeled area.
 ''' </summary>
 Public Class cBiomassResultsDataSource
-    Inherits cResultsDataSourceBase
+    Inherits cEcospaceResultsWriterDataSourceBase
+
 
     Sub New(Core As cCore, EcospaceData As cEcospaceDataStructures)
         MyBase.New(Core, EcospaceData)
@@ -148,6 +157,11 @@ Public Class cBiomassResultsDataSource
             Return Me.m_spaceData.nWaterCells
         End Get
     End Property
+
+    Public Overrides Function FileNameAbbreviation() As String
+        'Biomass total model area
+        Return "BMFL"
+    End Function
 End Class
 
 #End Region
@@ -155,11 +169,11 @@ End Class
 #Region "Catch over modeled area"
 
 ''' <summary>
-''' Implementation of <see cref="cResultsDataSourceBase">cResultsDataSourceBase</see> for catch averaged over the total modeled area.
+''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for catch averaged over the total modeled area.
 ''' </summary>
 ''' <remarks></remarks>
 Public Class cCatchResultsDataSource
-    Inherits cResultsDataSourceBase
+    Inherits cEcospaceResultsWriterDataSourceBase
 
     ''' <summary>
     ''' Local helper class for remembering bits of a landing record.
@@ -260,6 +274,11 @@ Public Class cCatchResultsDataSource
             Return "Modeled area km2"
         End Get
     End Property
+
+    Public Overrides Function FileNameAbbreviation() As String
+        'Catch total model area
+        Return "CTFL"
+    End Function
 End Class
 
 #End Region
@@ -271,11 +290,11 @@ End Class
 #Region "Biomass by region"
 
 ''' <summary>
-''' Implementation of <see cref="cResultsDataSourceBase">cResultsDataSourceBase</see> for averaged biomass by region.
+''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged biomass by region.
 ''' </summary>
 ''' <remarks></remarks>
 Public Class cRegionBiomassResultsDataSource
-    Inherits cResultsDataSourceBase
+    Inherits cEcospaceResultsWriterDataSourceBase
 
     ''' <summary>
     ''' Local helper class for remembering bits of a landing record.
@@ -364,6 +383,19 @@ Public Class cRegionBiomassResultsDataSource
             Return Me.m_core.m_EcoSpaceData.nCellsInRegion(Me.m_iRegionIndex)
         End Get
     End Property
+
+    Public Overrides Function FileNameAbbreviation() As String
+        'Biomass for region
+        Dim ReturnStr As String
+        Dim RegStr As String = Me.m_iRegionIndex.ToString
+        If RegStr.Length = 1 Then
+            RegStr = "0" + RegStr
+        End If
+        ReturnStr = "BR" + RegStr
+        Debug.Assert(ReturnStr.Length = 4, "WOW " + Me.ToString + ".FileNameAbbreviation() not the correct length for ICM abbreviation.")
+        Return ReturnStr
+    End Function
+
 End Class
 
 #End Region
@@ -372,11 +404,11 @@ End Class
 
 
 ''' <summary>
-''' Implementation of <see cref="cResultsDataSourceBase">cResultsDataSourceBase</see> for averaged catch by region.
+''' Implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cResultsDataSourceBase</see> for averaged catch by region.
 ''' </summary>
 ''' <remarks></remarks>
 Public Class cRegionCatchResultsDataSource
-    Inherits cResultsDataSourceBase
+    Inherits cEcospaceResultsWriterDataSourceBase
 
     ''' <summary>
     ''' Local helper class for remembering bits of a landing record.
@@ -481,6 +513,19 @@ Public Class cRegionCatchResultsDataSource
             Return Me.m_core.m_EcoSpaceData.nCellsInRegion(Me.m_iRegionIndex)
         End Get
     End Property
+
+    Public Overrides Function FileNameAbbreviation() As String
+        'Biomass for region
+        Dim ReturnStr As String
+        Dim RegStr As String = Me.m_iRegionIndex.ToString
+        If RegStr.Length = 1 Then
+            RegStr = "0" + RegStr
+        End If
+        ReturnStr = "CR" + RegStr
+        Debug.Assert(ReturnStr.Length = 4, "WOW " + Me.ToString + ".FileNameAbbreviation() not the correct length for ICM abbreviation.")
+        Return ReturnStr
+    End Function
+
 End Class
 
 #End Region

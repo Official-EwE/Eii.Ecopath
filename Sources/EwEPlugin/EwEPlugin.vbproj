@@ -131,6 +131,7 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimShapeFunctionPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLayerChangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterUtils.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IAutoSavePlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\cSearchRunType.vb" />

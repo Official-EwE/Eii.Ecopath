@@ -32,7 +32,7 @@ Imports EwEUtils.Utilities
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
 ''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
 ''' to write Ecospace area averaged results to csv files. This class provides 
-''' the framework for writting the file. The actual data is supplied by an implementation of <see cref="cResultsDataSourceBase">cResultsDataSourceBase</see> 
+''' the framework for writting the file. The actual data is supplied by an implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cEcospaceResultsWriterDataSourceBase</see> 
 ''' that supplies the data in a generic format.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
@@ -52,15 +52,6 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         [Catch]
         RegionBiomass
         RegionCatch
-    End Enum
-
-    ''' <summary>
-    ''' Averaging/summary time peroids
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Enum eAverageType
-        TimeStep
-        Annual
     End Enum
 
 #End Region ' Private classes
@@ -158,8 +149,8 @@ Public Class cEcospaceAvgModelAreaResultsWriter
     ''' <param name="RegionIndex"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function DataSourceFactory(ResultType As eDataSourceTypes, Optional ByVal RegionIndex As Integer = 0) As cResultsDataSourceBase
-        Dim dataSource As cResultsDataSourceBase
+    Private Function DataSourceFactory(ResultType As eDataSourceTypes, Optional ByVal RegionIndex As Integer = 0) As cEcospaceResultsWriterDataSourceBase
+        Dim dataSource As cEcospaceResultsWriterDataSourceBase
         Select Case ResultType
             Case eDataSourceTypes.Biomass
                 dataSource = New cBiomassResultsDataSource(Me.m_core, Me.m_core.m_EcoSpaceData)
@@ -177,8 +168,8 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 #Region " Write Results  "
 
 
-    Private Function getDataSources() As List(Of cResultsDataSourceBase)
-        Dim lstDataSources As New List(Of cResultsDataSourceBase)
+    Private Function initDataSources() As List(Of cEcospaceResultsWriterDataSourceBase)
+        Dim lstDataSources As New List(Of cEcospaceResultsWriterDataSourceBase)
 
         lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Biomass))
         lstDataSources.Add(Me.DataSourceFactory(eDataSourceTypes.Catch))
@@ -200,23 +191,16 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         Dim strDescriptor As String = ""
         Dim sValue As Single = 0
 
-        Dim lstDataSources As List(Of cResultsDataSourceBase) = Me.getDataSources()
+        Dim lstDataSources As List(Of cEcospaceResultsWriterDataSourceBase) = Me.initDataSources()
 
-        For Each ds As cResultsDataSourceBase In lstDataSources
+        For Each ds As cEcospaceResultsWriterDataSourceBase In lstDataSources
 
             Dim eAvgs As Array
-            eAvgs = System.Enum.GetValues(GetType(eAverageType))
+            eAvgs = System.Enum.GetValues(GetType(eEcospaceResultsAverageType))
 
-            For Each AvgType As eAverageType In eAvgs
-                Dim fn As String
-                Select Case AvgType
-                    Case eAverageType.TimeStep
-                        fn = "Ecospace_Average_"
-                    Case eAverageType.Annual
-                        fn = "Ecospace_Annual_Average_"
-                End Select
+            For Each AvgType As eEcospaceResultsAverageType In eAvgs
 
-                strFile = cFileUtils.ToValidFileName(fn + ds.FilenameIdentifier + ".csv", False)
+                strFile = Me.getFileName(AvgType, ds)
 
                 Try
 
@@ -248,20 +232,38 @@ Public Class cEcospaceAvgModelAreaResultsWriter
     End Sub
 
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write data in the datasource to the stream
-    ''' </summary>
-    ''' <param name="sw">The streamwriter to write to.</param>
-    ''' -----------------------------------------------------------------------
-    Private Sub WriteData(sw As StreamWriter, dataSource As cResultsDataSourceBase, AvgType As eAverageType)
+    Private Function getFileName(AverageType As eEcospaceResultsAverageType, ds As cEcospaceResultsWriterDataSourceBase) As String
+        Dim fn As String
+
+        'get the file name from a plugin
+        If Me.m_core.PluginManager.EcospaceResultsModelAreaFileName(fn, ds, AverageType) Then
+            Return fn
+        Else
+            'No plugin with the filename
+            'So use the default
+            Select Case AverageType
+                Case eEcospaceResultsAverageType.TimeStep
+                    fn = "Ecospace_Average_"
+                Case eEcospaceResultsAverageType.Annual
+                    fn = "Ecospace_Annual_Average_"
+            End Select
+
+            System.Console.WriteLine(ds.FileNameAbbreviation)
+
+            Return cFileUtils.ToValidFileName(fn + ds.FilenameIdentifier + ".csv", False)
+        End If
+
+    End Function
+
+
+    Private Sub WriteData(sw As StreamWriter, dataSource As cEcospaceResultsWriterDataSourceBase, AvgType As eEcospaceResultsAverageType)
         Dim nYrs As Integer = 0
         Dim spaceData As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
 
         nYrs = Me.m_core.nEcospaceTimeSteps
 
         ' Write data header
-        If AvgType = eAverageType.Annual Then
+        If AvgType = eEcospaceResultsAverageType.Annual Then
             sw.Write("Year")
         Else
             sw.Write("TimeStep")
@@ -282,7 +284,7 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
             For igrp As Integer = 1 To dataSource.nResults
 
-                If AvgType = eAverageType.Annual Then
+                If AvgType = eEcospaceResultsAverageType.Annual Then
                     value(igrp) += dataSource.getResult(igrp, iTime)
                     If ((iTime Mod Me.m_core.m_EcoSpaceData.nTimeStepsPerYear) = 0) Then
                         'End of the year
@@ -301,7 +303,7 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
             If bSave Then
                 'Grab the label based on the Average Type
-                If AvgType = eAverageType.Annual Then
+                If AvgType = eEcospaceResultsAverageType.Annual Then
                     Year += 1
                     TSLabel = CStr(Year)
                 Else
