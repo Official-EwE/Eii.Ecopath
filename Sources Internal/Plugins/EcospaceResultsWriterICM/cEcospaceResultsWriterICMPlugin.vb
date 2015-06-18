@@ -224,9 +224,7 @@ Public Class cEcospaceResultsWriterICMPlugin
 
             Dim strFNAbbrev As String = ds.FileNameAbbreviation + strPeriod
 
-            FileName = Me.MasterPlanYear + delim + Me.Scenario + delim + Me.GroupID + delim + Me.CLARA + delim + _
-                        Me.Uncertainty + delim + Me.Variance + delim + Me.Region + delim + Me.FileType + delim + _
-                        TimeSteps + delim + "E" + delim + strFNAbbrev + ".csv"
+            FileName = Me.getFixedFileName() + strFNAbbrev + ".csv"
 
         Catch ex As Exception
             Return False
@@ -237,16 +235,23 @@ Public Class cEcospaceResultsWriterICMPlugin
 
     Public Function MapFleetFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
                                      iFlt As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapFleetFileName
-        'FileName = "Fleet_" + iFlt.ToString + "_" + iModelTimeStep.ToString + strExt
-        Return False
+        FileName = Me.getFixedFileName() + "F" + iFlt.ToString + "_" + iModelTimeStep.ToString + strExt
+        Return True
     End Function
 
     Public Function MapGroupFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
                                      iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapGroupFileName
 
-        'FileName = "Group_" + iGrp.ToString + "_" + iModelTimeStep.ToString + strExt
-        Return False
+        FileName = Me.getFixedFileName() + "G" + iGrp.ToString + "_" + iModelTimeStep.ToString + strExt
+        Return True
 
+    End Function
+
+    Private Function getFixedFileName() As String
+        Dim delim As String = "_"
+        Return Me.MasterPlanYear + delim + Me.Scenario + delim + Me.GroupID + delim + Me.CLARA + delim + _
+                        Me.Uncertainty + delim + Me.Variance + delim + Me.Region + delim + Me.FileType + delim + _
+                        TimeSteps + delim + "E" + delim
     End Function
 End Class
 
