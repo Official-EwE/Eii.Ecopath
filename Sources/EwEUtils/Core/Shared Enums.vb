@@ -3339,7 +3339,7 @@ Namespace Core
         NotSet = 0
         ''' <summary>Ecopath run results</summary>
         Ecopath
-        ''' <summary>Ecosim group</summary>
+        ''' <summary>Ecosim category</summary>
         Ecosim
         ''' <summary>Ecosim run results</summary>
         EcosimResults
@@ -3349,11 +3349,12 @@ Namespace Core
         MSE
         ''' <summary>MSY results</summary>
         MSY
-        ''' <summary>Ecospace run result summary</summary>
+        ''' <summary>Ecospace category</summary>
         Ecospace
-        ''' <summary>Ecospace run result maps</summary>
+        ''' <summary>Ecospace run results</summary>
         EcospaceResults
         ''' <summary>Ecospace run results extracted by region</summary>
+        ''' <remarks>This optiopn is too granular and should go. Region output is provided by just another result writer.</remarks>
         EcospaceResultsRegion
         ''' <summary>MPA optimizations</summary>
         MPAOpt
