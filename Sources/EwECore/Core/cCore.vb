@@ -2535,7 +2535,6 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.Ecospace, eAutosaveTypes.EcospaceResults
-                    strScenario = "Ecospace_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -2544,6 +2543,8 @@ Public Class cCore
 
                 Case eAutosaveTypes.EcospaceResultsRegion
                     strScenario = "Ecospace_summary_"
+
+                    strScenario = "Ecospace_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -8453,7 +8454,10 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
+    ''' <summary>Manually added result writers.<seealso cref="m_EcospaceAutosaveResultsWriters"></seealso></summary>
     Friend m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
+    ''' <summary>Result writers managed by the autosave process.<seealso cref="m_EcospaceResultsWriters"></seealso></summary>
+    Private m_EcospaceAutosaveResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
 
     Friend m_mapInteractionManager As cMapResponseInteractionManager
 
@@ -8594,6 +8598,18 @@ Public Class cCore
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clear excluded cells.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub InvertExcludedCells()
+
+        Me.m_Ecospace.InvertExcludedCells()
+        Me.onChanged(Me.EcospaceBasemap.LayerExclusion())
+
+    End Sub
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Convert an Ecospace time step to absolute time.
@@ -8723,19 +8739,22 @@ Public Class cCore
                         Me.m_StateMonitor.SetEcospaceRun()
                         Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
-                        ' ---
-                        ' Create ecospace result writers, if desired
-                        Me.m_EcospaceResultsWriters.Clear()
-                        If Me.Autosave(eAutosaveTypes.EcospaceResultsRegion) Then
-                            Me.m_EcospaceResultsWriters.Add(New cEcospaceAvgModelAreaResultsWriter())
-                        End If
+                        'Output writing
+                        For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+                            writer.Init(Me)
+                            writer.StartWrite()
+                        Next
+
+                        ' Ecospace auto-save
+                        Me.m_EcospaceAutosaveResultsWriters.Clear()
                         If Me.Autosave(eAutosaveTypes.EcospaceResults) Then
                             For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceResults).Split(";"c)
                                 Dim writer As IEcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager)
-                                If (writer IsNot Nothing) Then Me.m_EcospaceResultsWriters.Add(writer)
+                                If (writer IsNot Nothing) Then Me.m_EcospaceAutosaveResultsWriters.Add(writer)
                             Next
                         End If
-                        For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+
+                         For Each writer As IEcospaceResultsWriter In Me.m_EcospaceAutosaveResultsWriters
                             writer.Init(Me)
                             writer.StartWrite()
                         Next
@@ -8803,6 +8822,9 @@ Public Class cCore
                 For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
                     writer.EndWrite()
                 Next
+                For Each writer As IEcospaceResultsWriter In Me.m_EcospaceAutosaveResultsWriters
+                    writer.EndWrite()
+                Next
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
                 cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
@@ -8823,7 +8845,7 @@ Public Class cCore
 
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
 
-            Me.m_EcospaceResultsWriters.Clear()
+            Me.m_EcospaceAutosaveResultsWriters.Clear()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
@@ -9034,6 +9056,14 @@ Public Class cCore
                     writer.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceResultsWriter Exception: " & ex.Message)
+                    cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
+                End Try
+            Next
+            For Each writer As IEcospaceResultsWriter In Me.m_EcospaceAutosaveResultsWriters
+                Try
+                    writer.WriteResults(Me.m_spaceresults)
+                Catch ex As Exception
+                    System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceAutosaveResultsWriters Exception: " & ex.Message)
                     cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
                 End Try
             Next
