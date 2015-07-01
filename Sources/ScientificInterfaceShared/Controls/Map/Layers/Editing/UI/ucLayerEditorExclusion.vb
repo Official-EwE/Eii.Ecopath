@@ -77,7 +77,16 @@ Namespace Controls.Map.Layers
             Try
                 Me.UIContext.Core.ClearExcludedCells()
             Catch ex As Exception
-                cLog.Write(ex, "ucLayerEditorExclusion:OnExcludeDepths(" & Me.m_nudDepth.Value & ")")
+                cLog.Write(ex, "ucLayerEditorExclusion:OnClear()")
+            End Try
+        End Sub
+
+        Private Sub OnInvert(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnInvert.Click
+            Try
+                Me.UIContext.Core.InvertExcludedCells()
+            Catch ex As Exception
+                cLog.Write(ex, "ucLayerEditorExclusion:OnInvert()")
             End Try
         End Sub
 

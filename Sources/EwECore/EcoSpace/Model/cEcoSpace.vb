@@ -1506,6 +1506,18 @@ Public Class cEcoSpace
         Me.UpdateDepthMap()
     End Sub
 
+    ''' <summary>
+    ''' Inverts the map of excluded cells.
+    ''' </summary>
+    Friend Sub InvertExcludedCells()
+        For i As Integer = 1 To m_Data.InRow
+            For j As Integer = 1 To m_Data.InCol
+                Me.m_Data.Excluded(i, j) = Not Me.m_Data.Excluded(i, j)
+            Next
+        Next
+        Me.UpdateDepthMap()
+    End Sub
+
     Private Sub EcoseedBeginTimeStep(ByVal imonth As Integer, ByRef iYear As Integer, ByRef BiomassCellAvg() As Single)
 
         If m_OptMPA IsNot Nothing Then
