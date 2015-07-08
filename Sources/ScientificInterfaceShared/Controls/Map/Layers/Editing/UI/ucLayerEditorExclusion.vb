@@ -120,10 +120,17 @@ Namespace Controls.Map.Layers
 
             Me.m_btnClear.Enabled = (Me.IsAttached)
             Me.m_btnSet.Enabled = (Me.IsAttached)
+            Me.m_rbExclude.Checked = (CBool(Me.Editor.CellValue) = True)
+            Me.m_rbInclude.Checked = (CBool(Me.Editor.CellValue) = False)
 
         End Sub
 
 #End Region ' Internals
+
+        Private Sub OnValueChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbInclude.CheckedChanged, m_rbExclude.CheckedChanged
+            Me.Editor.CellValue = (Me.m_rbExclude.Checked)
+        End Sub
 
     End Class
 

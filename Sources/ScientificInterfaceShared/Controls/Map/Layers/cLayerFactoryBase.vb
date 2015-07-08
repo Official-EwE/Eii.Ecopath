@@ -381,7 +381,7 @@ Namespace Controls.Map
                     End If
                     renderer = New cLayerRendererExclusion(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                    editor = New cLayerEditorTwoState(GetType(ucLayerEditorExclusion))
+                    editor = New cLayerEditorTwoState(GetType(ucLayerEditorExclusion), False)
                     layer = New cDisplayRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name, CSng(True), CSng(False))
 
                     lLayers.Add(layer)

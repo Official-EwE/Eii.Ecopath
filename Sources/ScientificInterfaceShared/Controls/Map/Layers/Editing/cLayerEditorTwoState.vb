@@ -34,12 +34,15 @@ Namespace Controls.Map.Layers
         Inherits cLayerEditor
 
         Public Sub New()
-            Me.New(Nothing)
+            Me.New(Nothing, True)
         End Sub
 
-        Public Sub New(ByVal typeGUI As Type)
+        Public Sub New(ByVal typeGUI As Type, bAutoToggleCellValue As Boolean)
             MyBase.New(typeGUI)
+            Me.AutoToggleCellValue = bAutoToggleCellValue
         End Sub
+
+        Protected Property AutoToggleCellValue As Boolean = True
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
@@ -58,20 +61,23 @@ Namespace Controls.Map.Layers
 
             If (Not Me.IsEditable) Then Return
 
-            ' Clicked on data cell?
-            If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueSet)) Then
-                ' #Yes: start clearing values
-                Me.CellValue = CSng(Layer.ValueClear)
-            Else
-                ' #No: start setting values
-                Me.CellValue = CSng(Layer.ValueSet)
-            End If
+            If (Me.AutoToggleCellValue) Then
 
-            If Me.GUI IsNot Nothing Then
-                ' Trigger GUI to update to the changes
-                Me.GUI.UpdateContent(Me)
-            End If
+                ' Clicked on data cell?
+                If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueSet)) Then
+                    ' #Yes: start clearing values
+                    Me.CellValue = CSng(Layer.ValueClear)
+                Else
+                    ' #No: start setting values
+                    Me.CellValue = CSng(Layer.ValueSet)
+                End If
 
+                If Me.GUI IsNot Nothing Then
+                    ' Trigger GUI to update to the changes
+                    Me.GUI.UpdateContent(Me)
+                End If
+
+            End If
         End Sub
 
     End Class

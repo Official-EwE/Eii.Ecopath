@@ -42,7 +42,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Sub New(ByVal t As Type)
-            MyBase.New(t)
+            MyBase.New(t, True)
             Me.CellValue = 1
         End Sub
 
