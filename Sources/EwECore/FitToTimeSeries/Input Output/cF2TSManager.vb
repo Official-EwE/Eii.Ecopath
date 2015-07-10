@@ -877,7 +877,7 @@ Public Class cF2TSManager
                 Dim parms(1) As Object
                 parms(0) = runType
                 parms(1) = nSteps
-                m_SyncObject.BeginInvoke(Me.m_runstartedHandler, parms)
+                m_SyncObject.Invoke(Me.m_runstartedHandler, parms)
             Else
                 Me.m_runstartedHandler.Invoke(runType, nSteps)
             End If
@@ -899,18 +899,18 @@ Public Class cF2TSManager
             'keep a reference
             m_results = m_model.Results
 
-            If m_model.RunState = eRunType.Search Then
-                Try 'incase m_results is not a cSearchResults object
-                    'System.Console.WriteLine("F2TS: Run Step. SS = " & DirectCast(m_results, cSearchResults).IterSS)
-                Catch ex As Exception
-                    'dont need to do anything this is just for debugging
-                End Try
-            End If
-
+            'jb For debugging
+            'If m_model.RunState = eRunType.Search Then
+            '    Try 'incase m_results is not a cSearchResults object
+            '        'System.Console.WriteLine("F2TS: Run Step. SS = " & DirectCast(m_results, cSearchResults).IterSS)
+            '    Catch ex As Exception
+            '        'dont need to do anything this is just for debugging
+            '    End Try
+            'End If
 
             ' Call delegate
             If (Me.m_SyncObject IsNot Nothing) Then
-                m_SyncObject.BeginInvoke(Me.m_runstepHandler, Nothing)
+                m_SyncObject.Invoke(Me.m_runstepHandler, Nothing)
             Else
                 Me.m_runstepHandler.Invoke()
             End If
@@ -942,7 +942,7 @@ Public Class cF2TSManager
             If (Me.m_SyncObject IsNot Nothing) Then
                 Dim parms(0) As Object
                 parms(0) = runType
-                m_SyncObject.BeginInvoke(dlgRunStopped, parms)
+                m_SyncObject.Invoke(dlgRunStopped, parms)
             Else
                 dlgRunStopped.Invoke(runType)
             End If
@@ -986,7 +986,7 @@ Public Class cF2TSManager
             If (Me.m_SyncObject IsNot Nothing) Then
                 Dim objs(0) As Object
                 objs(0) = runType
-                m_SyncObject.BeginInvoke(Me.m_runstoppedHandler, objs)
+                m_SyncObject.Invoke(Me.m_runstoppedHandler, objs)
             Else
                 Me.m_runstoppedHandler.Invoke(runType)
             End If
@@ -1010,7 +1010,7 @@ Public Class cF2TSManager
                 parms(0) = runType
                 parms(1) = iCurrentIterationStep
                 parms(2) = nTotalInterationSteps
-                m_SyncObject.BeginInvoke(Me.m_runModelHandler, parms)
+                m_SyncObject.Invoke(Me.m_runModelHandler, parms)
             Else
                 Me.m_runModelHandler.Invoke(runType, iCurrentIterationStep, nTotalInterationSteps)
             End If
@@ -1059,7 +1059,7 @@ Public Class cF2TSManager
             'this will put ThreadSafeSendMessage() on the interface thread
             If (m_SyncObject IsNot Nothing) Then
                 Dim dlgSenMessage As RunMessageDelegate = AddressOf Me.SendMessage
-                m_SyncObject.BeginInvoke(dlgSenMessage, objs)
+                m_SyncObject.Invoke(dlgSenMessage, objs)
             Else
                 Me.SendMessage(msg)
             End If
