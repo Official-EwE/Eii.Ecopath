@@ -116,17 +116,10 @@ Namespace FitToTimeSeries
         Dim Ss2 As Single, Den As Single, MaxObs As Integer
         Dim Penter() As Single, Po() As Single, pv() As Single, P() As Single, paramname() As String, StopIndex As Integer, MaxPars As Integer
 
-        '  Public Iobs As Long, Erpred() As Single
         Public StopRun As Boolean
-        '  Public TraceObs As Long
-        '  Public ErTrace() As Single
-        'Public YTraceHat() As Single
-        Public PPyear1 As Integer, PPyear2 As Integer ', PPVar As Single
-        ' Public VulVar As Single, PPVar As Single
-        'Yhat() As Single,
+        Public PPyear1 As Integer, PPyear2 As Integer
         Public IsBlockEstimated() As Boolean
         Public VBlock() As Single, VblockCode() As Integer, CodeIsSet As Boolean
-        ' Public WtType() As Single, Wt() As Single
         Dim Xspline() As Single
         Public Numspline As Integer
         Public AnomalySearch As Boolean
@@ -952,6 +945,8 @@ Namespace FitToTimeSeries
                 sub900()
                 MatInv(n, amat, det)
 
+                searchIterationStep()
+
                 fbmsg = New cFeedbackMessage(My.Resources.CoreMessages.F2TS_PROMPT_CONVERGED, _
                                                  eCoreComponentType.EcoSimFitToTimeSeries, _
                                                  eMessageType.Any, _
@@ -964,6 +959,8 @@ Namespace FitToTimeSeries
                 End If
 
                 If fbmsg.Reply = eMessageReply.YES Then GoTo 220
+
+                '  searchIterationStep()
 
                 '   If MsgBox("ESTIMATES CONVERGED; MORE ITERATIONS?", MsgBoxStyle.YesNo) = vbYes Then GoTo 220
 
@@ -1275,6 +1272,7 @@ Namespace FitToTimeSeries
             m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
             Ss = m_esdata.SS
+            System.Console.WriteLine("SS = " + Ss.ToString)
 
             'For Iobs = 1 To Nobs
             '    Ss = Ss + Erpred(Iobs) * Erpred(Iobs) * Wt(Iobs)
