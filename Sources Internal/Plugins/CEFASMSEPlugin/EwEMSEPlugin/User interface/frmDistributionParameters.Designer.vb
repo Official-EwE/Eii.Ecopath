@@ -154,6 +154,7 @@ Partial Class frmDistributionParameters
         Me.Name = "frmDistributionParameters"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)

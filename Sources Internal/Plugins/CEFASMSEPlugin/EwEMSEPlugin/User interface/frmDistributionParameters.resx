@@ -220,10 +220,10 @@
     <value>121, 25</value>
   </data>
   <data name="m_tslVariable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 22</value>
+    <value>64, 22</value>
   </data>
   <data name="m_tslVariable.Text" xml:space="preserve">
-    <value>Variable:</value>
+    <value>Parameter:</value>
   </data>
   <data name="m_tscmParamName.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 25</value>
@@ -241,7 +241,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11612.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12040.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -298,6 +298,6 @@
     <value>frmDistributionParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11612.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12040.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
