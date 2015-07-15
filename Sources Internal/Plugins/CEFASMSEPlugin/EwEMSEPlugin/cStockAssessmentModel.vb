@@ -487,7 +487,8 @@ Public Class cStockAssessmentModel
 
         RstockPred = CSng(Rmax(iGroup) * Me.BestimateLast(iGroup) / (BhalfT(iGroup) + Me.BestimateLast(iGroup)))
         vPred = CSng((RstockRatio(iGroup) * cvRec(iGroup)) ^ 2 / (1 - GstockPred(iGroup) ^ 2))
-        KalmanGain(iGroup) = CSng(vPred / (vPred + CVRecruitError(iGroup) ^ 2))
+        KalmanGain(iGroup) = CSng(vPred / (vPred + CVbiomEst(iGroup) ^ 2))
+
 
         Best = KalmanGain(iGroup) * BioEst + (1 - KalmanGain(iGroup)) * (GstockPred(iGroup) * Me.BestimateLast(iGroup) + RstockPred)
 
