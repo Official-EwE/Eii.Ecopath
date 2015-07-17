@@ -230,7 +230,7 @@ Namespace SpatialData
                                         (cFileUtils.Equals(strFile, Me.CurrentConfigFile()) = False)
 
             If bExporting Then
-                Console.WriteLine("@@ Exporting from " & Me.CurrentConfigFile & " to " & strFile)
+                Console.WriteLine("Exporting to " & strFile)
                 'Stop
             End If
 
