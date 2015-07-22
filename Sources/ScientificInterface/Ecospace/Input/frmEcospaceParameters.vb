@@ -80,6 +80,8 @@ Namespace Ecospace
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
+        Private m_fpFirstOutputTimestep As cEwEFormatProvider
+
 
 
 #End Region ' Private vars
@@ -207,6 +209,9 @@ Namespace Ecospace
 
             Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
 
+            Me.m_fpFirstOutputTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstTimeStep, ecospaceModelParams, eVarNameFlags.EcospaceFirstOutputTimeStep)
+
+
             ' Model
             Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
             Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
@@ -248,6 +253,8 @@ Namespace Ecospace
                 Me.m_fpMaxIterations.Release()
                 Me.m_fpUseExact.Release()
                 Me.m_fpMovePackets.Release()
+
+                Me.m_fpFirstOutputTimestep.Release()
 
             Catch ex As Exception
 

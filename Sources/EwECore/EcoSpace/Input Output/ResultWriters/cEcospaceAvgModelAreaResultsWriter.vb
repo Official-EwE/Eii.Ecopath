@@ -281,7 +281,7 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
         'Loop over all the time steps
         'If in Annual mode then sum and average the at the end of the year
-        For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
+        For iTime As Integer = Me.FirstOutputTimeStep To Me.m_core.nEcospaceTimeSteps
             For igrp As Integer = 1 To dataSource.nResults
 
                 If AvgType = eEcospaceResultsAverageType.Annual Then

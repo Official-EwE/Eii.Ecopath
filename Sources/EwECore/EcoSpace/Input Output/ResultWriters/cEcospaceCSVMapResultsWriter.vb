@@ -77,6 +77,10 @@ Public Class cEcospaceCSVMapResultsWriter
 
         Try
 
+            If tsData.iTimeStep <= Me.FirstOutputTimeStep Then
+                Return
+            End If
+
             For Each varname As eVarNameFlags In vars
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension())

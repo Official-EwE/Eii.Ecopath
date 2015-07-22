@@ -736,6 +736,13 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public EcospaceAreaOutputDir As String
 
+
+    ''' <summary>
+    ''' First model time step to being writing Ecospace output files
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public FirstOutputTimeStep As Integer = 1
+
 #End Region
 
 #Region "Private Data"

@@ -239,6 +239,14 @@ Public Class cEcospaceModelParameters
             val.Stored = False
             m_values.Add(val.varName, val)
 
+
+            meta = Nothing
+            val = New cValue(1, eVarNameFlags.EcospaceFirstOutputTimeStep, eStatusFlags.Null, eValueTypes.Int, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.EcospaceFirstOutputTimeStep))
+            val.Stored = False
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             'set status flags to default values
             ResetStatusFlags()
 
@@ -794,6 +802,20 @@ Public Class cEcospaceModelParameters
         End Set
 
     End Property
+
+
+    Public Property FirstOutputTimeStep() As Integer
+
+        Get
+            Return CInt(GetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep, value)
+        End Set
+
+    End Property
+
 
 #End Region ' Variables by dot (.) operator
 

@@ -112,6 +112,8 @@ Namespace Ecospace
             Me.m_lblEast = New System.Windows.Forms.Label()
             Me.m_lblSouth = New System.Windows.Forms.Label()
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -134,6 +136,7 @@ Namespace Ecospace
             CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -320,6 +323,8 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
+            Me.m_gbRunTime.Controls.Add(Me.Label2)
+            Me.m_gbRunTime.Controls.Add(Me.m_nudFirstTimeStep)
             Me.m_gbRunTime.Controls.Add(Me.m_cmbAutosaveFormat)
             Me.m_gbRunTime.Controls.Add(Me.m_lblAutosaveResultMaps)
             Me.m_gbRunTime.Controls.Add(Me.m_lbNumThreads)
@@ -606,6 +611,19 @@ Namespace Ecospace
             Me.m_hdrSpatial.IsCollapsed = False
             Me.m_hdrSpatial.Name = "m_hdrSpatial"
             '
+            'Label2
+            '
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
+            '
+            'm_nudFirstTimeStep
+            '
+            Me.m_nudFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            resources.ApplyResources(Me.m_nudFirstTimeStep, "m_nudFirstTimeStep")
+            Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
+            Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
             'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -641,6 +659,7 @@ Namespace Ecospace
             CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -711,6 +730,8 @@ Namespace Ecospace
         Private WithEvents m_lblCellSize As System.Windows.Forms.Label
         Private WithEvents m_lblCellWidth As System.Windows.Forms.Label
         Private WithEvents m_tlpStuff As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents Label2 As System.Windows.Forms.Label
+        Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace
