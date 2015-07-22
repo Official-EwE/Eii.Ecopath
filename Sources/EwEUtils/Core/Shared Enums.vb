@@ -673,6 +673,8 @@ Namespace Core
         ''' <summary>User-defined output directory for Ecospace Area Averaged outputs</summary>
         EcospaceAreaOutputDir
 
+        EcospaceFirstOutputTimeStep
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''

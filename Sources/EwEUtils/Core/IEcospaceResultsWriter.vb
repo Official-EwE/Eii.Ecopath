@@ -63,6 +63,15 @@ Namespace Core
         ''' </summary>
         ReadOnly Property Name() As String
 
+
+        ''' <summary>
+        ''' Model time step the writer will begin outputting data on
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Property FirstOutputTimeStep As Integer
+
     End Interface
 
 End Namespace

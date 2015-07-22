@@ -71,6 +71,10 @@ Public Class cEcospaceASCMapResultsWriter
             Dim strm As StreamWriter = Nothing
             Dim strFile As String = ""
 
+            If tsData.iTimeStep <= Me.FirstOutputTimeStep Then
+                Return
+            End If
+
             For Each varname As eVarNameFlags In vars
                 For iGrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
                     strFile = Me.GetGroupFileName(varname, iGrp, Me.FileExtension(), tsData.iTimeStep)

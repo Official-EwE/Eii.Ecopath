@@ -91,12 +91,19 @@ End Class
 Public MustInherit Class cEcospaceBaseResultsWriter
     Implements EwEUtils.Core.IEcospaceResultsWriter
 
+
 #Region " Protected data "
 
     ''' <summary>Zhe core.</summary>
     Protected m_core As cCore = Nothing
     ''' <summary>The complete path to the directory containing result files.</summary>
     Protected m_OutputPath As String
+
+    ''' <summary>
+    ''' Default first time step to write data
+    ''' </summary>
+    ''' <remarks></remarks>
+    Protected m_FirstStep As Integer = 1
 
 #End Region ' Protected data
 
@@ -116,6 +123,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Public Overridable Sub Init(ByVal theCore As Object) _
         Implements EwEUtils.Core.IEcospaceResultsWriter.Init
         Me.m_core = DirectCast(theCore, cCore)
+
+        Me.FirstOutputTimeStep = Me.m_core.m_EcoSpaceData.FirstOutputTimeStep
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -329,6 +339,17 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Get
     End Property
 
+
+    Public Overridable Property FirstOutputTimeStep As Integer Implements EwEUtils.Core.IEcospaceResultsWriter.FirstOutputTimeStep
+        Get
+            Return Me.m_FirstStep
+        End Get
+        Set(value As Integer)
+            Me.m_FirstStep = value
+        End Set
+    End Property
+
 #End Region ' Internals
+
 
 End Class

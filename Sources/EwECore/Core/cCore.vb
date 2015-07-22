@@ -9124,6 +9124,14 @@ Public Class cCore
         End Get
     End Property
 
+    Private Sub updateEcospaceResultsWriters()
+        'Output writing
+        For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+            writer.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
+        Next
+
+    End Sub
+
 
 #Region " Ecospace interface objects "
 
@@ -9973,6 +9981,8 @@ Public Class cCore
             m_EcospaceModelParams.EcospaceAreaOutputDir = Me.m_EcoSpaceData.EcospaceAreaOutputDir
             m_EcospaceModelParams.EcospaceMapOutputDir = Me.m_EcoSpaceData.EcospaceMapOutputDir
 
+            m_EcospaceModelParams.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
+
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
 
@@ -10030,6 +10040,9 @@ Public Class cCore
 
         Me.m_EcoSpaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
         Me.m_EcoSpaceData.EcospaceMapOutputDir = m_EcospaceModelParams.EcospaceMapOutputDir
+
+        Me.m_EcoSpaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
+
 
         Return True
 
@@ -13534,6 +13547,10 @@ Public Class cCore
 
                     Case eVarNameFlags.EcospaceRegionNumber
                         Me.EcospaceBasemap.LayerRegion.Invalidate()
+
+                    Case eVarNameFlags.EcospaceFirstOutputTimeStep
+                        Me.updateEcospaceResultsWriters()
+
 
                 End Select 'Select Case value.varName
 
