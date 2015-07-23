@@ -55,6 +55,7 @@ Public Class cMSE
     Private m_effortlimits As cEffortLimits = Nothing
     Private m_diets As cDiets = Nothing
     Private m_implementation_error As Single
+    Private m_currentModelID As Integer
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'For the Stock Assessment Model
@@ -206,6 +207,12 @@ Public Class cMSE
         RunningModels
         RunningMSE
     End Enum
+
+    Public ReadOnly Property CurrentModelID As Integer
+        Get
+            Return m_currentModelID
+        End Get
+    End Property
 
     Public ReadOnly Property RealisedFs(iGroup As Integer, iTime As Integer) As Double
         Get
@@ -1701,6 +1708,7 @@ Public Class cMSE
             'load parameter values into ecopath and ecosim to be used
             nModels = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
             For iModel = 1 To nModels
+                m_currentModelID = iModel
                 ModelValid = True
 
                 Me.initQModifier()
@@ -4205,12 +4213,18 @@ Public Class cMSE
             'given the regulated effort and proportions of landing and discards set above
             Me.SetFtimeFromGear(iTime)
 
-            'If iTime = OriginalNTimesteps + 1 Then
-            '    For iGrp = 1 To m_core.nGroups
-            '        If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(i, t) * QMult(iGrp)) Then
-
-            '        End If
-            'End If
+            If iTime = OriginalNTimesteps + 1 Then
+                Dim strmWriter As StreamWriter
+                Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_TestingFishRateNoJumpBegProj.csv", False)
+                strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
+                For iGrp = 1 To m_core.nGroups
+                    If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1) > 0.05 Then
+                        strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & m_currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
+                    End If
+                Next
+                strmWriter.Close()
+                strmWriter.Dispose()
+            End If
 
             'Dim percentagechangeeffort As Single
             ''This is a diagnostics test
