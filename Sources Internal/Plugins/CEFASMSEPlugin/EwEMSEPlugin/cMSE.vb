@@ -1711,7 +1711,6 @@ Public Class cMSE
                 m_currentModelID = iModel
                 ModelValid = True
 
-                Me.initQModifier()
 
                 Me.initResultsTables(FleetCatchTable, ResultsTable)
 
@@ -1728,8 +1727,7 @@ Public Class cMSE
                         'this should not happen 
                         Debug.Assert(bEcopathRan, Me.ToString + ".Run() Ecopath failed to run from balanced parameter set.")
 
-                        'This creates the files we will write the biomass trajectories to
-                        'TrajectoryCsv = Me.initTrialTrajectoryFile(msgReport, iModel)
+                        Me.initQModifier()
 
                         Me.m_StockAssessment.TrialNumber = iModel
 
@@ -4605,7 +4603,6 @@ Public Class cMSE
 #End Region ' Configurable settings
 
 #Region "Q Modifiers set and clear Ecopath base F's"
-
     ''' <summary>
     ''' Start of run initializer for Q modifiers (Ecopath base fishing mortality)
     ''' </summary>
@@ -4621,6 +4618,12 @@ Public Class cMSE
 
     Private Sub setQModifiers(iTime As Integer)
 
+        'ToDo Deal with zeros in input data
+        '   This includes zeros for F(t) where there is a baseline catch
+        'ToDo PropTotCatchFleet() Make sure including effort in proportion of total catch is correct
+        'ToDo Make sure we don't need to set BaseCatchRate() back to its original value at the end of the run
+        '   Right now I think it gets re-set in the run loop
+
         'Only set the Q Modifiers once
         'At the start of the first time step of the forecast
         If Me.m_bQSet Then
@@ -4630,15 +4633,86 @@ Public Class cMSE
 
         Debug.Assert(iTime = OriginalNTimesteps + 1, "Oppss setQModifiers(t) called at the wrong time step.")
 
-        
+        'Effort at time
+        Dim Et As Double
+        'base q (catchability)
+        Dim Q0 As Double
+
+        Dim mseQ0 As Double
+        'fishing mortality at time  
+        'F(t) = q0 * e(t) or Forced F at t
+        Dim Ft As Double
+
+        'Proportion of the total catch that dies
+        Dim PropMort As Double
+
+        Dim PropCatchFleet As Double
+
+        'iTime is the first timestep of the forecast
+        'We want to use the data from the last timestep of the hindcast
+        'so iTime - 1
+        Dim it As Integer = iTime - 1
+
+        For iflt As Integer = 1 To Me.m_core.nFleets
+            For igrp As Integer = 1 To Me.m_core.nGroups
+                If Me._simdata.FishMGear(iflt, igrp) > 0 Then
+
+
+                    'ToDo: Does Propdiscardtime() include discards that survived at this point in the code execution????
+                    PropMort = Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp) ' * Me._pathdata.PropDiscardMort(iflt, igrp)
+                    'Proportion of the total catch on this group by this fleet
+                    PropCatchFleet = Me.PropTotCatchFleet(it, iflt, igrp)
+                    Debug.Assert(PropCatchFleet = 1, "Propotion of total catch = " + PropCatchFleet.ToString)
+
+                    'Forcing F does not include discards that survived. I think...
+                    Ft = Me._simdata.FishRateNo(igrp, it) * PropCatchFleet
+                    Et = Me._simdata.FishRateGear(iflt, it) + 1.0E-20
+
+                    'Me.BaseCatchRate(iflt, igrp) is the base catch rate. It includes discards that survived
+                    mseQ0 = Me.BaseCatchRate(iflt, igrp) + 1.0E-20
+
+                    'Me._simdata.FishMGear(iflt,igrp) does not include discards that survived
+                    Q0 = Me._simdata.FishMGear(iflt, igrp) + 1.0E-20
+
+                    'Discards that survived (1-Me._pathdata.PropDiscardMort(iflt, igrp)) are not included in FishRateNo() or FishMGear()
+                    Me.m_QModifier(iflt, igrp) = CSng(Ft / (Q0 * Et))
+
+                    Me._simdata.FishMGear(iflt, igrp) *= Me.m_QModifier(iflt, igrp)
+
+                    'Don't need to keep the mse base catch rate modifier. BaseCatchRate() will be re-initialized for each run.
+                    '
+                    Me.BaseCatchRate(iflt, igrp) *= CSng(Ft / (mseQ0 * PropMort * Et))
+                End If
+            Next
+        Next
+
         Me.m_bQSet = True
 
     End Sub
+
+    Private Function PropTotCatchFleet(iTime As Integer, iFleet As Integer, iGroup As Integer) As Single
+        Dim sumCatch As Single
+
+        Debug.Assert(iTime = OriginalNTimesteps, "Oppss PropTotCatchFleet(t) called at the wrong time step.")
+
+        For iflt As Integer = 1 To Me.m_core.nFleets
+            sumCatch += (Me._pathdata.Landing(iflt, iGroup) + Me._pathdata.Discard(iflt, iGroup) * Me._pathdata.PropDiscardMort(iflt, iGroup)) * Me._simdata.FishRateGear(iflt, iTime)
+        Next
+        Dim catchByFleet As Single = (Me._pathdata.Landing(iFleet, iGroup) + Me._pathdata.Discard(iFleet, iGroup) * Me._pathdata.PropDiscardMort(iFleet, iGroup)) * Me._simdata.FishRateGear(iFleet, iTime)
+
+        sumCatch += CSng(1.0E-20)
+
+        'Proportion of total catch caught by this fleet
+        Return catchByFleet / sumCatch
+
+    End Function
 
     Private Sub clearQModifiers()
         For iflt As Integer = 1 To Me.m_core.nFleets
             For igrp As Integer = 1 To Me.m_core.nGroups
                 If Me.m_QModifier(iflt, igrp) > 0 Then
+                    'Don't need to restore the mse's internal BaseCatchRate()
+                    'Because it will be initialized in Run() for each new model run
                     Me._simdata.FishMGear(iflt, igrp) /= Me.m_QModifier(iflt, igrp)
                 End If
             Next
