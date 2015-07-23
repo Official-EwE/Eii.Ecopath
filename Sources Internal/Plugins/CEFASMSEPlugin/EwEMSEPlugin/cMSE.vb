@@ -4135,6 +4135,7 @@ Public Class cMSE
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 Then
                                     If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
+                                        'If iGrp = 14 Then Stop
                                         Elim_Target = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
                                         Elim = Elim_Target 'sets this because if both cons and targ don't exist then this is what it will be
                                     End If
@@ -4204,6 +4205,12 @@ Public Class cMSE
             'given the regulated effort and proportions of landing and discards set above
             Me.SetFtimeFromGear(iTime)
 
+            'If iTime = OriginalNTimesteps + 1 Then
+            '    For iGrp = 1 To m_core.nGroups
+            '        If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(i, t) * QMult(iGrp)) Then
+
+            '        End If
+            'End If
 
             'Dim percentagechangeeffort As Single
             ''This is a diagnostics test
