@@ -161,6 +161,7 @@
     <Compile Include="frmSelectPreyPredator.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="IDataCollector.vb" />
     <Compile Include="lstCreateMember.Designer.vb">
       <DependentUpon>lstCreateMember.vb</DependentUpon>
     </Compile>
