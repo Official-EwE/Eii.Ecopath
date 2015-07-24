@@ -1510,37 +1510,37 @@ Public Class frmEwE6
                 tsmi.Text = Me.Core.EcospaceScenarios(i).Name
                 tsmi.Tag = Me.Core.EcospaceScenarios(i)
                 tsmi.Checked = (Me.Core.ActiveEcospaceScenarioIndex = i)
-                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
+                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
                 Me.m_tsbEcospace.DropDownItems.Add(tsmi)
             Next
 
-            ' List available spatial temporal datasets
-            Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
-            For i As Integer = 1 To man.ConfigFiles.Count
+            '' List available spatial temporal datasets
+            'Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
+            'For i As Integer = 1 To man.ConfigFiles.Count
 
-                ' Is first dataset?
-                If (i = 1) Then
-                    ' #Yes: add a separator
-                    Me.m_tsbEcospace.DropDownItems.Add(New ToolStripSeparator())
-                    tsmi = New ToolStripMenuItem()
-                    tsmi.Text = SharedResources.GENERIC_VALUE_DEFAULT
-                    tsmi.Tag = ""
-                    tsmi.Checked = (cSpatialDataSetManager.DefaultConfigFile = man.CurrentConfigFile)
+            '    ' Is first dataset?
+            '    If (i = 1) Then
+            '        ' #Yes: add a separator
+            '        Me.m_tsbEcospace.DropDownItems.Add(New ToolStripSeparator())
+            '        tsmi = New ToolStripMenuItem()
+            '        tsmi.Text = SharedResources.GENERIC_VALUE_DEFAULT
+            '        tsmi.Tag = ""
+            '        tsmi.Checked = (cSpatialDataSetManager.DefaultConfigFile = man.CurrentConfigFile)
 
-                    AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
-                    Me.m_tsbEcospace.DropDownItems.Add(tsmi)
-                End If
+            '        AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
+            '        Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+            '    End If
 
-                strItem = CStr(man.ConfigFiles(i - 1))
-                tsmi = New ToolStripMenuItem()
-                tsmi.Text = strItem
-                tsmi.Tag = strItem
-                tsmi.Checked = (strItem = man.CurrentConfigFile)
+            '    strItem = CStr(man.ConfigFiles(i - 1))
+            '    tsmi = New ToolStripMenuItem()
+            '    tsmi.Text = strItem
+            '    tsmi.Tag = strItem
+            '    tsmi.Checked = (strItem = man.CurrentConfigFile)
 
-                AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
-                Me.m_tsbEcospace.DropDownItems.Add(tsmi)
+            '    AddHandler tsmi.Click, AddressOf OnLoadEcospaceScenario
+            '    Me.m_tsbEcospace.DropDownItems.Add(tsmi)
 
-            Next i
+            'Next i
 
             ' List available Ecotracer scenarios
             For i As Integer = 1 To Me.Core.nEcotracerScenarios
@@ -1576,7 +1576,7 @@ Public Class frmEwE6
         ' Properly release space menu items
         For Each tsi In Me.m_tsbEcospace.DropDownItems
             If Not (TypeOf tsi Is ToolStripSeparator) Then
-                RemoveHandler tsi.Click, AddressOf OnLoadEcospaceScenarioOrDataset
+                RemoveHandler tsi.Click, AddressOf OnLoadEcospaceScenario
             End If
         Next
         Me.m_tsbEcospace.DropDownItems.Clear()
@@ -4524,21 +4524,15 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnLoadEcospaceScenarioOrDataset(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub OnLoadEcospaceScenario(ByVal sender As Object, ByVal e As System.EventArgs)
 
         Dim mnuItem As ToolStripMenuItem = CType(sender, ToolStripMenuItem)
 
         If (mnuItem.Tag Is Nothing) Then Return
 
-        If (TypeOf mnuItem.Tag Is cEcospaceScenario) Then
-            Me.m_cmdLoadEcospaceScenario.Tag = mnuItem.Tag
-            Me.m_cmdLoadEcospaceScenario.Invoke()
-            Me.m_cmdLoadEcospaceScenario.Tag = Nothing
-        ElseIf (TypeOf mnuItem.Tag Is String) Then
-            Me.m_cmdEcospaceLoadTimeSeries.Tag = CStr(mnuItem.Tag)
-            Me.m_cmdEcospaceLoadTimeSeries.Invoke()
-            Me.m_cmdEcospaceLoadTimeSeries.Tag = Nothing
-        End If
+        Me.m_cmdLoadEcospaceScenario.Tag = mnuItem.Tag
+        Me.m_cmdLoadEcospaceScenario.Invoke()
+        Me.m_cmdLoadEcospaceScenario.Tag = Nothing
 
     End Sub
 
