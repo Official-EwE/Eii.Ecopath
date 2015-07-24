@@ -31,6 +31,7 @@ Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -301,7 +302,7 @@ Namespace Ecosim
                                         asSimData(iTime) = grpOutput.TotalMort(iTime)
 
                                     Case eTimeSeriesType.AverageWeight
-                                        If grpOutput.IsMultiStanza Then
+                                        If grpOutput.isMultiStanza Then
                                             asSimData(iTime) = grpOutput.AvgWeight(iTime)
                                         End If
 
@@ -498,6 +499,7 @@ Namespace Ecosim
 
             Dim tsd As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
             Dim bAnnual As Boolean = (tsd.TimeSeriesInterval = eTSDataSetInterval.Annual)
+            Dim nSteps As Integer = CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
 
             msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strPath), _
                                eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Information)
@@ -533,12 +535,7 @@ Namespace Ecosim
                             sw.Write(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                             sw.WriteLine()
                         End If
-
-                        If (bAnnual) Then
-                            sw.Write("Year")
-                        Else
-                            sw.Write("Timestep")
-                        End If
+                        sw.Write("Timestep")
                         sw.Write(",")
                         For j As Integer = 1 To Me.Core.nTimeSeries
 
@@ -571,105 +568,56 @@ Namespace Ecosim
                         Next
                         sw.WriteLine()
 
-                        If (bAnnual) Then
-                            Dim iPt As Integer = 6
-                            For k As Integer = 1 To Me.Core.nEcosimTimeSteps \ 12
-                                sw.Write(cStringUtils.FormatInteger(Me.Core.EcosimFirstYear + k - 1))
-                                sw.Write(",")
-                                For j As Integer = 1 To Me.m_lPlots.Count
+                        For k As Integer = 1 To Me.Core.nEcosimTimeSteps
+                            sw.Write(cStringUtils.FormatInteger(k))
+                            sw.Write(",")
+                            For j As Integer = 1 To Me.m_lPlots.Count
 
-                                    plot = Me.m_lPlots(j - 1)
-                                    ts = plot.TimeSeries
+                                plot = Me.m_lPlots(j - 1)
+                                ts = plot.TimeSeries
 
-                                    Select Case i
-                                        Case 1
-                                            If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                                sw.Write(plot.SimData(iPt))
-                                                sw.Write(",")
-                                                If ts.ShapeData(k) > 0 Then
-                                                    sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
-                                                Else
-                                                    sw.Write("")
-                                                End If
-                                                sw.Write(",")
-                                            End If
-                                        Case 2
-                                            If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                                sw.Write(plot.SimData(iPt))
-                                                sw.Write(",")
-                                                If ts.ShapeData(k) > 0 Then
-                                                    sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
-                                                Else
-                                                    sw.Write("")
-                                                End If
-                                                sw.Write(",")
-                                            End If
-                                        Case 3
-                                            If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
-                                                sw.Write(plot.SimData(iPt))
-                                                sw.Write(",")
-                                                If ts.ShapeData(k) > 0 Then
-                                                    sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
-                                                Else
-                                                    sw.Write("")
-                                                End If
-                                                sw.Write(",")
-                                            End If
-                                    End Select
+                                Dim bWriteTS As Boolean = (bAnnual = False) Or (1 + ((k - 1) Mod nSteps) = Math.Floor(nSteps / 2))
+                                Dim t As Integer = cSystemUtils.IIF(bAnnual, ((k - 1) \ nSteps) + 1, k)
 
-                                Next
-                                iPt += cCore.N_MONTHS
-                                sw.WriteLine()
+                                Select Case i
+                                    Case 1
+                                        If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
+                                            sw.Write(plot.SimData(k))
+                                            sw.Write(",")
+                                            If ts.ShapeData(t) > 0 And bWriteTS Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
+                                            Else
+                                                sw.Write("")
+                                            End If
+                                            sw.Write(",")
+                                        End If
+                                    Case 2
+                                        If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
+                                            sw.Write(plot.SimData(k))
+                                            sw.Write(",")
+                                            If ts.ShapeData(t) > 0 And bWriteTS Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
+                                            Else
+                                                sw.Write("")
+                                            End If
+                                            sw.Write(",")
+                                        End If
+                                    Case 3
+                                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
+                                            sw.Write(plot.SimData(k))
+                                            sw.Write(",")
+                                            If ts.ShapeData(t) > 0 And bWriteTS Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
+                                            Else
+                                                sw.Write("")
+                                            End If
+                                            sw.Write(",")
+                                        End If
+                                End Select
+
                             Next
-                        Else
-                            For k As Integer = 1 To Me.Core.nEcosimTimeSteps
-                                sw.Write(cStringUtils.FormatInteger(k))
-                                sw.Write(",")
-                                For j As Integer = 1 To Me.m_lPlots.Count
-
-                                    plot = Me.m_lPlots(j - 1)
-                                    ts = plot.TimeSeries
-
-                                    Select Case i
-                                        Case 1
-                                            If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                                sw.Write(plot.SimData(k))
-                                                sw.Write(",")
-                                                If ts.ShapeData(k) > 0 Then
-                                                    sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
-                                                Else
-                                                    sw.Write("")
-                                                End If
-                                                sw.Write(",")
-                                            End If
-                                        Case 2
-                                            If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                                sw.Write(plot.SimData(k))
-                                                sw.Write(",")
-                                                If ts.ShapeData(k) > 0 Then
-                                                    sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
-                                                Else
-                                                    sw.Write("")
-                                                End If
-                                                sw.Write(",")
-                                            End If
-                                        Case 3
-                                            If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
-                                                sw.Write(plot.SimData(k))
-                                                sw.Write(",")
-                                                If ts.ShapeData(k) > 0 Then
-                                                    sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
-                                                Else
-                                                    sw.Write("")
-                                                End If
-                                                sw.Write(",")
-                                            End If
-                                    End Select
-
-                                Next
-                                sw.WriteLine()
-                            Next
-                        End If
+                            sw.WriteLine()
+                        Next
 
                     Catch ex As Exception
                         msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
