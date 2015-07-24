@@ -245,7 +245,6 @@ Namespace Other
 
                     ' Add Ecospace map node
                     Me.BuildControlTree(eAutosaveTypes.EcospaceResults, cbParent, iIndent, lPlugins)
-                    Me.BuildControlTree(eAutosaveTypes.EcospaceResultsRegion, cbParent, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MPAOpt, cbParent, iIndent, lPlugins)
                     ' Add Ecospace plug-in nodes
                     Me.Add(lPlugins(t), cbParent, iIndent)

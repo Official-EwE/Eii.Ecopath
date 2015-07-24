@@ -124,7 +124,7 @@ Namespace Ecospace
                     If Me.m_items.Count = 0 Then Return frmEcospaceParameters.NOTSAVEDEXT
                     For i As Integer = 0 To Me.m_items.Count - 1
                         If (i > 0) Then strNames = strNames & ";"
-                        strNames = strNames & Me.m_items(i).Name
+                        strNames = strNames & Me.m_items(i).DataName
                     Next
                     Return strNames
                 End Get

@@ -73,6 +73,8 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_cmbAutosaveFormat = New System.Windows.Forms.ComboBox()
             Me.m_lblAutosaveResultMaps = New System.Windows.Forms.Label()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
@@ -112,8 +114,6 @@ Namespace Ecospace
             Me.m_lblEast = New System.Windows.Forms.Label()
             Me.m_lblSouth = New System.Windows.Forms.Label()
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.Label2 = New System.Windows.Forms.Label()
-            Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -122,6 +122,7 @@ Namespace Ecospace
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
+            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plBiomass.SuspendLayout()
             Me.m_tlpStuff.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
@@ -136,7 +137,6 @@ Namespace Ecospace
             CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -344,6 +344,19 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
+            '
+            'Label2
+            '
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
+            '
+            'm_nudFirstTimeStep
+            '
+            Me.m_nudFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+            resources.ApplyResources(Me.m_nudFirstTimeStep, "m_nudFirstTimeStep")
+            Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
+            Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
+            Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
             'm_cmbAutosaveFormat
             '
@@ -611,19 +624,6 @@ Namespace Ecospace
             Me.m_hdrSpatial.IsCollapsed = False
             Me.m_hdrSpatial.Name = "m_hdrSpatial"
             '
-            'Label2
-            '
-            resources.ApplyResources(Me.Label2, "Label2")
-            Me.Label2.Name = "Label2"
-            '
-            'm_nudFirstTimeStep
-            '
-            Me.m_nudFirstTimeStep.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            resources.ApplyResources(Me.m_nudFirstTimeStep, "m_nudFirstTimeStep")
-            Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
-            Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
-            Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
             'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -642,6 +642,7 @@ Namespace Ecospace
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbRunTime.ResumeLayout(False)
             Me.m_gbRunTime.PerformLayout()
+            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
             Me.m_tlpStuff.ResumeLayout(False)
@@ -659,7 +660,6 @@ Namespace Ecospace
             CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudFirstTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
