@@ -1708,8 +1708,8 @@ Public Class cMSE
                 m_currentModelID = iModel
                 ModelValid = True
 
-
                 Me.initResultsTables(FleetCatchTable, ResultsTable)
+                Debug.Assert(FleetCatchTable IsNot Nothing And ResultsTable IsNot Nothing, Me.ToString + ".Run() initResultsTables() Failed to create output tables.")
 
                 cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_RUN_PROGRESS, My.Resources.CAPTION, iModel), CSng(iModel / nModels))
 
