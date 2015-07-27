@@ -104,6 +104,9 @@ Public Class cValidatorManager
         validator = New cValidatorCore(theCore)
         m_validators.Add(eVarNameFlags.Pedigree, validator)
 
+        validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcospaceTimeSteps)
+        m_validators.Add(eVarNameFlags.EcospaceFirstOutputTimeStep, validator)
+
         Me.m_validators.Add(eVarNameFlags.EcologyType, New cValidatorEnum(GetType(eEcologyTypes)))
         Me.m_validators.Add(eVarNameFlags.IUCNConservationStatus, New cValidatorEnum(GetType(eIUCNConservationStatusTypes)))
         Me.m_validators.Add(eVarNameFlags.OrganismType, New cValidatorEnum(GetType(eOrganismTypes)))
