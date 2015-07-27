@@ -97,6 +97,14 @@ Public MustInherit Class cEcospaceResultsWriterDataSourceBase
     ''' <remarks></remarks>
     MustOverride Function FileNameAbbreviation() As String
 
+    ''' <summary>
+    ''' Index of the Region for this datasource
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    MustOverride ReadOnly Property AreaIndex As Integer
+
 End Class
 
 #End Region
@@ -110,7 +118,6 @@ End Class
 ''' </summary>
 Public Class cBiomassResultsDataSource
     Inherits cEcospaceResultsWriterDataSourceBase
-
 
     Sub New(Core As cCore, EcospaceData As cEcospaceDataStructures)
         MyBase.New(Core, EcospaceData)
@@ -162,6 +169,12 @@ Public Class cBiomassResultsDataSource
         'Biomass total model area
         Return "BMFL"
     End Function
+
+    Public Overrides ReadOnly Property AreaIndex As Integer
+        Get
+            Return 0
+        End Get
+    End Property
 End Class
 
 #End Region
@@ -279,6 +292,12 @@ Public Class cCatchResultsDataSource
         'Catch total model area
         Return "CTFL"
     End Function
+
+    Public Overrides ReadOnly Property AreaIndex As Integer
+        Get
+            Return 0
+        End Get
+    End Property
 End Class
 
 #End Region
@@ -396,6 +415,11 @@ Public Class cRegionBiomassResultsDataSource
         Return ReturnStr
     End Function
 
+    Public Overrides ReadOnly Property AreaIndex As Integer
+        Get
+            Return Me.m_iRegionIndex
+        End Get
+    End Property
 End Class
 
 #End Region
@@ -411,7 +435,7 @@ Public Class cRegionCatchResultsDataSource
     Inherits cEcospaceResultsWriterDataSourceBase
 
     ''' <summary>
-    ''' Local helper class for remembering bits of a landing record.
+    ''' Local helper class for remembering region and group/fleet info
     ''' </summary>
     Private Class cRegion
 
@@ -525,6 +549,13 @@ Public Class cRegionCatchResultsDataSource
         Debug.Assert(ReturnStr.Length = 4, "WOW " + Me.ToString + ".FileNameAbbreviation() not the correct length for ICM abbreviation.")
         Return ReturnStr
     End Function
+
+
+    Public Overrides ReadOnly Property AreaIndex As Integer
+        Get
+            Return Me.m_iRegionIndex
+        End Get
+    End Property
 
 End Class
 
