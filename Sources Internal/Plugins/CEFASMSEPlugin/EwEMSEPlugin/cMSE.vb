@@ -50,12 +50,16 @@ Public Class cMSE
     Private m_strategies As Strategies = Nothing
     Private m_survivability As cSurvivability = Nothing
     Private m_regulations As cRegulations = Nothing
-    Private m_currentStrategy As Strategy = Nothing
     Private m_monitor As cMSEStateMonitor = Nothing
     Private m_effortlimits As cEffortLimits = Nothing
     Private m_diets As cDiets = Nothing
     Private m_implementation_error As Single
     Private m_currentModelID As Integer
+
+    'Private m_currentStrategy As Strategy = Nothing
+
+    'Zero based index of the current strategy
+    Private m_iCurStategy As Integer = cCore.NULL_VALUE
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'For the Stock Assessment Model
@@ -292,7 +296,9 @@ Public Class cMSE
 
     Friend ReadOnly Property currentStrategy As Strategy
         Get
-            Return m_currentStrategy
+            'use the current strategy index to get the current 
+            Return Me.Strategies.Item(Me.m_iCurStategy)
+            'Return m_currentStrategy
         End Get
     End Property
 
@@ -1738,12 +1744,14 @@ Public Class cMSE
                             iResultCollector.Init_for_iModel(iModel)
                         Next
 
+
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Loop over all the strategies for this trial
+                        Me.m_iCurStategy = 0
                         For Each curStrategy As Strategy In Strategies
 
-                            'Set the CurrentStrategy used by onEcosimTimeStep()
-                            m_currentStrategy = curStrategy
+                            ''Set the CurrentStrategy used by onEcosimTimeStep()
+                            'm_currentStrategy = curStrategy
 
                             'Initialise Arrays for recording the F's from Targ and Cons HCR's
                             InitArraysForStrategy()
@@ -1764,8 +1772,7 @@ Public Class cMSE
                                     iResultCollector.Populate()
                                 Next
 
-                                'GoodDynamics = Me.SaveResults2RAM(iModel, m_currentStrategy, nResultIters, nFleetIters, ResultsTable, FleetCatchTable, BiomassLimits, swBadDynamics)
-                                GoodDynamics = Me.SaveResults2RAM(iModel, m_currentStrategy, nResultIters, nFleetIters, BiomassLimits, swBadDynamics, ResultsTable, FleetCatchTable)
+                                GoodDynamics = Me.SaveResults2RAM(iModel, Me.currentStrategy, nResultIters, nFleetIters, BiomassLimits, swBadDynamics, ResultsTable, FleetCatchTable)
                                 If GoodDynamics = False And Not Me.WriteAllResults Then
                                     nFailedModels += 1
                                     Exit For
@@ -1776,6 +1783,11 @@ Public Class cMSE
                                 nFailedModels += 1
                                 Exit For
                             End If
+
+                            'Set the index to the CurrentStrategy used by me.currentStrategy to retrieve the correct strategy
+                            'We can't use a reference to the current strategy because the Strategies can reload at any time 
+                            'Causing the reference to no longer be valid
+                            m_iCurStategy += 1
 
                         Next curStrategy
                         'End of Strategy loop
@@ -2163,7 +2175,7 @@ Public Class cMSE
             swBadDynamics.WriteLine()
             swBadDynamics.Write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
                         cStringUtils.FormatNumber(iModel), _
-                        cStringUtils.ToCSVField(m_currentStrategy.Name), _
+                        cStringUtils.ToCSVField(Me.currentStrategy.Name), _
                         cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
                         cStringUtils.FormatNumber(MaxBiomass), _
                         cStringUtils.FormatNumber(iGrp.mUpperLimit), _
@@ -2228,7 +2240,7 @@ Public Class cMSE
             For iFleet As Integer = 1 To m_core.nFleets
                 For iGrp As Integer = 1 To m_core.nLivingGroups
                     Dim landings As Single = Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings)
-                    FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, m_currentStrategy.Name, _
+                    FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, Me.currentStrategy.Name, _
                     iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, _
                     Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings), _
                     Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardSurvivals), _
@@ -2252,21 +2264,21 @@ Public Class cMSE
                 Next
                 'TrajectoryTable.Rows.Add(iModel, m_currentStrategy.Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, BiomassVals)
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassMin", BiomassProjected.Min)
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassEnd", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes)) 'confirmed that _simdata.NTimes is the last timestep
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, Me._simdata.NTimes)) 'confirmed that _simdata.NTimes is the last timestep
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "Landings", Me.LandingsDiscards(0, iGrp, eCatchTypes.Landings))
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardMortalities", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardMortalities))
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardSurvivals", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardSurvivals))
             Next
 
@@ -2276,7 +2288,7 @@ Public Class cMSE
                 For iGrp As Integer = 1 To m_core.nGroups
                     TempCalcedFleetEndValue += Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings) * EcopathData.Market(iFleet, iGrp)
                 Next
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, m_currentStrategy.Name, iFleet, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iFleet, _
                                       m_core.FleetInputs(iFleet).Name, "TotalEndValue", TempCalcedFleetEndValue)
             Next
 
@@ -3084,7 +3096,7 @@ Public Class cMSE
             TargConsQuota(i - 1, 1) = cEffortLimits.NoHCR_F
         Next
 
-        For Each iHCRGroup In m_currentStrategy
+        For Each iHCRGroup In Me.currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
                 TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
@@ -3552,7 +3564,7 @@ Public Class cMSE
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Stock Assessment
                 'Get Biomass estimated by the stock assessment model
-                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(Me.m_currentStrategy, iTime, BiomassAtTimestep)
+                Dim bioEst() As Single = Me.StockAssessment.DoAnnualStockAssessment(Me.currentStrategy, iTime, BiomassAtTimestep)
 
                 'OK Hook the stock assessment model up to the Quota setting
                 'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
@@ -3588,7 +3600,7 @@ Public Class cMSE
             If FleetsThatFishHCRGrp.Count > 0 Then
 
                 For Each iFleet In FleetsThatFishHCRGrp
-                    Select Case m_currentStrategy.Regulations.Method(iFleet)
+                    Select Case Me.currentStrategy.Regulations.Method(iFleet)
                         Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
                             'Find out the highest value species
                             'Calculate the effort that would catch all quota of highest value species
@@ -3670,7 +3682,7 @@ Public Class cMSE
                                     If iCatch * m_ecopath.EcopathData.PropLanded(iFleet, iGrp) > FleetQuota Then
                                         'fishing mortality exceeds quota
                                         m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng(FleetQuota / (iCatch + 1.0E-20))
-                                        If m_currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
+                                        If Me.currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
                                             'QuotaType = Strongest
                                             'excess catch discarded and included in the fishing mortality()
                                             m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
@@ -3748,7 +3760,7 @@ Public Class cMSE
                     Next
                 Else
                     'Make sure the fleet is regulated if we are going add error to Effort Implementation
-                    If Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None Then
+                    If Me.currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None Then
                         'Add uncertainty to the regulated Effort 
                         'This is implementation error. The Effort actually achieved by the Fleet.
                         'The implementation error is not really the business of the stock assessment model
@@ -3779,7 +3791,7 @@ Public Class cMSE
                 End If
                 For iGrp = 1 To m_core.nGroups
                     If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1) > 0.05 Then
-                        strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & m_currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
+                        strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
                     End If
                 Next
                 strmWriter.Close()
@@ -4209,6 +4221,12 @@ Public Class cMSE
             For igrp As Integer = 1 To Me.m_core.nGroups
                 If Me._simdata.FishMGear(iflt, igrp) > 0 Then
 
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Not accounting for changes in discard mortality rates when a new MSE model is loaded 
+                    'FishMGear() contains the mortality rates from the baseline ecopath model 
+                    'not from the tweaked MSE loaded model.... I think
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                     'Proportion of the fishing mortality caused by this fleet
                     'This is not the baseline proportion but the F at this effort timestep.
                     'This accounts for changes in the effort timeseries
@@ -4224,6 +4242,8 @@ Public Class cMSE
                     'Ratio of F from time series to F computed
                     'If there is no timeseries or the F and Effort timeseries are synchronised this will 1
                     Me.m_QModifier(iflt, igrp) = CSng(Ft / (Q0 * Et))
+
+                    Debug.Assert(Me.m_QModifier(iflt, igrp) = 1 Or Me.m_QModifier(iflt, igrp) = 0)
 
                     'Modify both the Ecosim F base fishing mortality rate, this is mortality only it does not include discards that survived,
                     'and the MSE's base catch rate, this includes discards that survived.
