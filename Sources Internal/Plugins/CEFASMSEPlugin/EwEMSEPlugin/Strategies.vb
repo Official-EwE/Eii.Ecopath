@@ -110,12 +110,9 @@ Public Class Strategies
 
     Public Shadows Function Contains(Item As Strategy) As Boolean
 
-        For Each Strategy As Strategy In Me
-            ' JS 30Sep13: made comparison case-insensitive
-            If (String.Compare(Item.Name, Strategy.Name, True) = 0) And (String.Compare(Item.FileName, Strategy.FileName, True) = 0) Then
-                Return True
-            End If
-        Next
+        If Me.IndexOf(Item) > 0 Then
+            Return True
+        End If
         Return False
 
     End Function
@@ -211,5 +208,22 @@ Public Class Strategies
         Implements IMSEData.FileExists
         Return File.Exists(strFilename)
     End Function
+
+    Public Shadows Function IndexOf(Item As Strategy) As Integer
+        Dim iPos As Integer = 0
+        For Each Strategy As Strategy In Me
+            'case-insensitive
+            If (String.Compare(Item.Name, Strategy.Name, True) = 0) And (String.Compare(Item.FileName, Strategy.FileName, True) = 0) Then
+                Return iPos
+            End If
+            iPos += 1
+        Next
+        Return -1
+
+    End Function
+
+    Public Shadows Sub Sort()
+        Debug.Assert(False, Me.ToString + ".Sort() Sorry at this time you can't sort the list of Strategies because cMSE.Run() assumes they are in the same order as they were loaded.")
+    End Sub
 
 End Class
