@@ -52,17 +52,16 @@ Public Class cEcospaceResultsWriterICMPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcospaceResultWriterUtils
 
+    'ToDo sort out the region naming. Have the CHR regions been combinded in the Ecospace regions map?
+    'ToDo some basic bounds checking for ngroups and nregions.
+    '   Maybe during the Init() then set a flag and bark if it fails????
 
+#Region "Public Variables"
+
+    Public FileNamePreFix As String
     Public MasterPlanYear As String = "MP2017"
-    Public Scenario As String = "S01"
-    Public GroupID As String = "G001"
-    Public CLARA As String = "C000"
-    Public Uncertainty As String = "U00"
-    Public Variance As String = "V00"
-    Public Region As String = "SLA"
-    Public FileType As String = "O"
-    Public TimeSteps As String = "01-50"
 
+#End Region
 
 #Region " Local variables"
 
@@ -74,15 +73,138 @@ Public Class cEcospaceResultsWriterICMPlugin
     Private m_EcoSimData As cEcosimDatastructures
     Private m_EcoSpaceData As cEcospaceDataStructures
 
+    Private SpCodes() As String
+    Private RegionCodes() As String
+    Private dctTypeCodes As Dictionary(Of eVarNameFlags, String)
+    Private delim As String
+
 #End Region
 
-#Region "Public Methods and properties"
+#Region "File Naming "
+
+#Region "Implementation of Plugin Points"
 
 
+    Public Function ModelAreaFileName(ByRef FileName As String, DataSourceAsObject As Object, _
+                                      AvgType As EwEUtils.Core.eEcospaceResultsAverageType) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.ModelAreaFileName
+        Try
+
+            Dim ds As cEcospaceResultsWriterDataSourceBase = DirectCast(DataSourceAsObject, cEcospaceResultsWriterDataSourceBase)
+            Dim nYears As Integer = Me.EcoSpaceData.nTimeSteps \ Me.EcoSpaceData.nTimeStepsPerYear
+            FileName = Me.ToPrefix() + delim + ToRegionFileName(ds, AvgType) + delim + ToFormattedNumber(1) + "-" + ToFormattedNumber(nYears) + ".csv"
+
+        Catch ex As Exception
+            Return False
+        End Try
+
+        Return True
+    End Function
+
+    Public Function MapFleetFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
+                                     iFlt As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapFleetFileName
+        FileName = Me.ToPrefix() + delim + ToDataTypeCode(varname) + ToFormattedNumber(iFlt) + ToModelMonth(iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
+        Return True
+    End Function
+
+    Public Function MapGroupFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
+                                     iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapGroupFileName
+
+        FileName = Me.ToPrefix() + delim + ToVarCode(varname, iGrp, iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
+        Return True
+
+    End Function
 
 #End Region
 
 #Region "Private methods"
+
+
+    Private Function ToPrefix() As String
+        Return Me.MasterPlanYear + delim + FileNamePreFix
+    End Function
+
+    Private Function ToVarCode(varname As eVarNameFlags, iGrp As Integer, iModelTimestep As Integer) As String
+        Return ToDataTypeCode(varname) + ToSpCode(iGrp) + ToModelMonth(iModelTimestep)
+    End Function
+
+    Private Function ToModelMonth(iModelTimeStep As Integer) As String
+        Return ToFormattedNumber(Me.EcoSpaceData.MonthNow)
+    End Function
+
+    Private Function ToDataTypeCode(varname As eVarNameFlags) As String
+        Return Me.dctTypeCodes.Item(varname)
+    End Function
+
+    Private Function ToSpCode(iGrp As Integer) As String
+        Return SpCodes(iGrp)
+    End Function
+
+    Private Function ToModelYear(iModelTimestep As Integer) As String
+        Return ToFormattedNumber(Me.EcoSpaceData.YearNow) + "-" + ToFormattedNumber(Me.EcoSpaceData.YearNow)
+    End Function
+
+    Private Function ToFormattedNumber(iTime As Integer) As String
+        Dim tmpStr As String = iTime.ToString
+        If tmpStr.Length < 2 Then
+            tmpStr = "0" + tmpStr
+        End If
+        Return tmpStr
+    End Function
+
+    Private Function ToRegionFileName(ds As cEcospaceResultsWriterDataSourceBase, AvgType As EwEUtils.Core.eEcospaceResultsAverageType) As String
+        Return ToDataTypeCode(ds) + toAvgTypeCode(AvgType) + toRegionCode(ds)
+    End Function
+
+    Private Function toAvgTypeCode(avgType As eEcospaceResultsAverageType) As String
+        Select Case avgType
+            Case eEcospaceResultsAverageType.Annual
+                Return "A"
+            Case eEcospaceResultsAverageType.TimeStep
+                Return "M"
+        End Select
+        Return "X"
+    End Function
+
+    Private Function ToDataTypeCode(ds As cEcospaceResultsWriterDataSourceBase) As String
+
+        If TypeOf ds Is cBiomassResultsDataSource Then
+            Return "B"
+        ElseIf TypeOf ds Is cCatchResultsDataSource Then
+            Return "C"
+        ElseIf TypeOf ds Is cRegionBiomassResultsDataSource Then
+            Return "B"
+        ElseIf TypeOf ds Is cRegionCatchResultsDataSource Then
+            Return "C"
+        End If
+        Debug.Assert(False, Me.ToString + ".ToDataTypeCode() Unsupported cEcospaceResultsWriterDataSourceBase.")
+        Return "X"
+
+    End Function
+
+
+    Private Function toRegionCode(ds As cEcospaceResultsWriterDataSourceBase) As String
+        Return RegionCodes(ds.AreaIndex)
+    End Function
+
+
+    Public Sub Init()
+        SpCodes = New String() {"N/A", "JC", "AC", "JA", "AA", "BA", "BC", "JB", "AB", "JT", "AT", "JL", "AL", "JN", "AN", "DE", "DO", "GS", "JM", "AM", "JG", "AG", "KI", "JS", "AS", "MO", "OD", "SP", "SE", "SA", "PH", "JR", "AR", "SV", "BI", "JX", "AX", "JH", "AH", "JE", "AE", "SI", "JF", "AF", "JO", "AO", "JU", "AU", "JP", "AP", "JI", "AI", "JW", "AW", "ZB", "ZP"}
+        RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "UTA", "MEL", "LBA", "BRE", "CAS", "CHR"}
+
+        dctTypeCodes = New Dictionary(Of eVarNameFlags, String)
+        dctTypeCodes.Add(eVarNameFlags.EcospaceMapBiomass, "B")
+        dctTypeCodes.Add(eVarNameFlags.EcospaceMapCatch, "C")
+        dctTypeCodes.Add(eVarNameFlags.EcospaceMapEffort, "E")
+
+        delim = "_"
+
+    End Sub
+
+#End Region
+
+#End Region
+
+#Region "Message Logging"
 
     Public Sub LogMessage(ex As Exception, Optional msg As String = "")
         Try
@@ -104,8 +226,6 @@ Public Class cEcospaceResultsWriterICMPlugin
 #End Region
 
 #Region "Ecopath, Ecosim and Ecospace events"
-
-
 
     ''' <summary>
     ''' Every plug-in is told to initialize to the EwE core as soon as it is loaded. 
@@ -134,12 +254,13 @@ Public Class cEcospaceResultsWriterICMPlugin
 
             m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
+            Me.Init()
+
         Catch ex As Exception
             Me.LogMessage(ex)
         End Try
 
     End Sub
-
 
 #End Region
 
@@ -152,24 +273,24 @@ Public Class cEcospaceResultsWriterICMPlugin
         End Get
     End Property
 
-    Public ReadOnly Property EcoPathData As cEcopathDataStructures
-        Get
-            Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathData() Ecopath has not been initialized correctly.")
-            Return Me.m_EcoPathData
-        End Get
-    End Property
+    'Public ReadOnly Property EcoPathData As cEcopathDataStructures
+    '    Get
+    '        Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathData() Ecopath has not been initialized correctly.")
+    '        Return Me.m_EcoPathData
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property EcoSimData As cEcosimDatastructures
-        Get
-            Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcoSimData() EcoSim has not been initialized correctly.")
-            Return Me.m_EcoSimData
-        End Get
-    End Property
+    'Public ReadOnly Property EcoSimData As cEcosimDatastructures
+    '    Get
+    '        'Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcoSimData() EcoSim has not been initialized correctly.")
+    '        Return Me.m_core.m
+    '    End Get
+    'End Property
 
     Public ReadOnly Property EcoSpaceData As cEcospaceDataStructures
         Get
-            Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcoSpaceData() EcoSpace has not been initialized correctly.")
-            Return Me.m_EcoSpaceData
+            'Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcoSpaceData() EcoSpace has not been initialized correctly.")
+            Return Me.m_core.m_EcoSpaceData
         End Get
     End Property
 
@@ -208,50 +329,5 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 #End Region
 
-
-    Public Function ModelAreaFileName(ByRef FileName As String, DataSourceAsObject As Object, AvgType As EwEUtils.Core.eEcospaceResultsAverageType) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.ModelAreaFileName
-        Try
-            Dim delim As String = "_"
-            Dim ds As cEcospaceResultsWriterDataSourceBase = DirectCast(DataSourceAsObject, cEcospaceResultsWriterDataSourceBase)
-
-            Dim strPeriod As String
-            Select Case AvgType
-                Case eEcospaceResultsAverageType.Annual
-                    strPeriod = "A"
-                Case eEcospaceResultsAverageType.TimeStep
-                    strPeriod = "M"
-            End Select
-
-            Dim strFNAbbrev As String = ds.FileNameAbbreviation + strPeriod
-
-            FileName = Me.getFixedFileName() + strFNAbbrev + ".csv"
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
-    End Function
-
-    Public Function MapFleetFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
-                                     iFlt As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapFleetFileName
-        FileName = Me.getFixedFileName() + "F" + iFlt.ToString + "_" + iModelTimeStep.ToString + strExt
-        Return True
-    End Function
-
-    Public Function MapGroupFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
-                                     iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapGroupFileName
-
-        FileName = Me.getFixedFileName() + "G" + iGrp.ToString + "_" + iModelTimeStep.ToString + strExt
-        Return True
-
-    End Function
-
-    Private Function getFixedFileName() As String
-        Dim delim As String = "_"
-        Return Me.MasterPlanYear + delim + Me.Scenario + delim + Me.GroupID + delim + Me.CLARA + delim + _
-                        Me.Uncertainty + delim + Me.Variance + delim + Me.Region + delim + Me.FileType + delim + _
-                        TimeSteps + delim + "E" + delim
-    End Function
 End Class
 
