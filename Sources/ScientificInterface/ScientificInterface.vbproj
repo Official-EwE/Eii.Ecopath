@@ -2019,6 +2019,10 @@
       <Project>{804DA432-10C6-418C-B323-99C4FDB5CB67}</Project>
       <Name>EwERemarksPlugin %28EwE plugins\EwERemarksPlugin\EwERemarksPlugin%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
+      <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
+      <Name>EwEResultsExtractorPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
       <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
       <Name>EwEShapeGridPlugin %28EwE plugins\EwEShapeGridPlugin\EwEShapeGridPlugin%29</Name>

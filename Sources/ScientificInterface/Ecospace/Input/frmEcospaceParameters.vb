@@ -25,6 +25,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Text
 
 #End Region ' Imports
 
@@ -86,52 +87,6 @@ Namespace Ecospace
 
 #End Region ' Private vars
 
-        Private Class cEcospaceResultWriterItem
-
-            ' ToDo: globalize this class 
-
-            Private m_items As IEcospaceResultsWriter()
-            Private m_strLabel As String = ""
-
-            Public Sub New(strLabel As String)
-                Me.m_items = New IEcospaceResultsWriter() {}
-                Me.m_strLabel = strLabel
-            End Sub
-
-            Public Sub New(item As IEcospaceResultsWriter)
-                Me.m_items = New IEcospaceResultsWriter() {item}
-                ' ToDo: globalize this
-                Me.m_strLabel = item.DisplayName
-            End Sub
-
-            Public Sub New(items As IEcospaceResultsWriter())
-                Me.m_items = items
-                Dim strDisplayName As String = ""
-                For i As Integer = 0 To items.Count - 1
-                    If (i > 0) Then strDisplayName = strDisplayName & ", "
-                    strDisplayName = strDisplayName & items(i).DisplayName
-                Next
-                Me.m_strLabel = strDisplayName
-            End Sub
-
-            Public Overrides Function ToString() As String
-                Return Me.m_strLabel
-            End Function
-
-            Public ReadOnly Property WriterNames As String
-                Get
-                    Dim strNames As String = ""
-                    If Me.m_items.Count = 0 Then Return frmEcospaceParameters.NOTSAVEDEXT
-                    For i As Integer = 0 To Me.m_items.Count - 1
-                        If (i > 0) Then strNames = strNames & ";"
-                        strNames = strNames & Me.m_items(i).Name
-                    Next
-                    Return strNames
-                End Get
-            End Property
-
-        End Class
-
 #Region " Form events "
 
         Public Sub New()
@@ -161,24 +116,10 @@ Namespace Ecospace
 
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
-            ' Configure writers
-            Dim wrAsc As New cEcospaceASCMapResultsWriter()
-            Dim wrCSV As New cEcospaceCSVMapResultsWriter()
-            Dim wrReg As New cEcospaceAvgModelAreaResultsWriter()
-
-            Me.m_cmbAutosaveFormat.Items.Clear()
-
-            ' ToDo: globalize this
-            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem("Do not auto-save results"))
-
-            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(wrAsc))
-            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(wrCSV))
-            Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(New IEcospaceResultsWriter() {wrAsc, wrCSV}))
-            If (Me.Core.PluginManager IsNot Nothing) Then
-                For Each ip As EwEPlugin.IEcospaceResultWriterPlugin In Me.Core.PluginManager.GetPlugins(GetType(EwEPlugin.IEcospaceResultWriterPlugin))
-                    Me.m_cmbAutosaveFormat.Items.Add(New cEcospaceResultWriterItem(ip))
-                Next ip
-            End If
+            Me.m_clbAutosave.Items.Clear()
+            For Each wr As IEcospaceResultsWriter In cEcospaceResultWriterFactory.GetWriters(Me.Core.PluginManager)
+                Me.m_clbAutosave.Items.Add(wr, Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults).Contains(wr.DataName))
+            Next
 
             Me.UpdateControls()
 
@@ -200,17 +141,12 @@ Namespace Ecospace
             Me.m_fpCellSize = New cEwEFormatProvider(Me.UIContext, Me.m_nudCellSize, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.CellSize))
             Me.m_fpCellSize.Value = bm.CellSize
 
-
-
             ' Hmm, connecting one control to three live properties - this could be dangerous
             Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
             Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
             Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nEffortDistThreads)
-
             Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
-
             Me.m_fpFirstOutputTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstTimeStep, ecospaceModelParams, eVarNameFlags.EcospaceFirstOutputTimeStep)
-
 
             ' Model
             Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
@@ -315,17 +251,12 @@ Namespace Ecospace
 
             Me.m_cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
 
-            Me.m_cbAutosaveResultRegions.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceResultsRegion)
-
             ' Compare by format
             Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
-            For Each item As cEcospaceResultWriterItem In Me.m_cmbAutosaveFormat.Items
-                If (item IsNot Nothing) Then
-                    If String.Compare(item.WriterNames, strFmt, True) = 0 Then
-                        Me.m_cmbAutosaveFormat.SelectedItem = item
-                        Exit For
-                    End If
-                End If
+
+            For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
+                Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
+                Me.m_clbAutosave.SetItemChecked(i, strFmt.Contains(wr.DataName))
             Next
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
@@ -426,30 +357,37 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnAutsosaveRegionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cbAutosaveResultRegions.CheckedChanged
-            Me.Core.Autosave(eAutosaveTypes.EcospaceResultsRegion) = Me.m_cbAutosaveResultRegions.Checked
+        Private Sub m_clbAutosave_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_clbAutosave.Format
+            Try
+                e.Value = DirectCast(e.ListItem, IEcospaceResultsWriter).DisplayName
+            Catch ex As Exception
+
+            End Try
         End Sub
 
-        Private Sub OnSpaceSaveFormatChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_cmbAutosaveFormat.SelectedIndexChanged
+        Private Sub m_clbAutosave_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbAutosave.ItemCheck
 
             If Me.m_bInUpdate Then Return
 
-            Me.m_bInUpdate = True
+            ' Delay the update, because the item state has not changed yet
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateAutosaveFormat))
 
-            Dim strFormat As String = ""
-            If Me.m_cmbAutosaveFormat.SelectedIndex <> -1 Then
-                strFormat = DirectCast(Me.m_cmbAutosaveFormat.SelectedItem, cEcospaceResultWriterItem).WriterNames
-            End If
+        End Sub
 
-            If String.IsNullOrWhiteSpace(strFormat) Or String.Compare(strFormat, NOTSAVEDEXT) = 0 Then
-                Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = False
-                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = frmEcospaceParameters.NOTSAVEDEXT
-            Else
-                Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = True
-                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strFormat
-            End If
+        Private Sub UpdateAutosaveFormat()
+
+            Dim fmt As New StringBuilder()
+
+            For Each item As Object In Me.m_clbAutosave.CheckedItems
+                Dim wr As IEcospaceResultsWriter = DirectCast(item, IEcospaceResultsWriter)
+                If (fmt.Length > 0) Then fmt.Append(";")
+                fmt.Append(wr.DataName)
+            Next
+
+            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = (fmt.Length > 0)
+            Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = fmt.ToString()
 
             Me.m_bInUpdate = False
 

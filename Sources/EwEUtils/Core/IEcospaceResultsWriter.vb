@@ -61,15 +61,11 @@ Namespace Core
         ''' <summary>
         ''' Return the internal name of this writer.
         ''' </summary>
-        ReadOnly Property Name() As String
-
+        ReadOnly Property DataName() As String
 
         ''' <summary>
         ''' Model time step the writer will begin outputting data on
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Property FirstOutputTimeStep As Integer
 
     End Interface
