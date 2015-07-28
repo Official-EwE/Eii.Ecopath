@@ -4237,7 +4237,8 @@ Public Class cMSE
                     Et = Me._simdata.FishRateGear(iflt, it) + 1.0E-20
 
                     'Me._simdata.FishMGear(iflt,igrp) does not include discards that survived
-                    Q0 = Me._simdata.FishMGear(iflt, igrp) + 1.0E-20
+                    'ToDo sort out the prop land and discards 
+                    Q0 = (Me._simdata.FishMGear(iflt, igrp) + 1.0E-20) ' * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
 
                     'Ratio of F from time series to F computed
                     'If there is no timeseries or the F and Effort timeseries are synchronised this will 1
