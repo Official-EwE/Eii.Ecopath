@@ -8457,7 +8457,8 @@ Public Class cCore
     ''' <summary>Manually added result writers.<seealso cref="m_EcospaceAutosaveResultsWriters"></seealso></summary>
     Friend m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
     ''' <summary>Result writers managed by the autosave process.<seealso cref="m_EcospaceResultsWriters"></seealso></summary>
-    Private m_EcospaceAutosaveResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
+    ''' <remarks>This list only exists during qan Ecospace run.</remarks>
+    Private m_EcospaceAutosaveResultsWriters As List(Of EwEUtils.Core.IEcospaceResultsWriter)
 
     Friend m_mapInteractionManager As cMapResponseInteractionManager
 
@@ -8746,7 +8747,7 @@ Public Class cCore
                         Next
 
                         ' Ecospace auto-save
-                        Me.m_EcospaceAutosaveResultsWriters.Clear()
+                        Me.m_EcospaceAutosaveResultsWriters = New List(Of IEcospaceResultsWriter)
                         If Me.Autosave(eAutosaveTypes.EcospaceResults) Then
                             For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceResults).Split(";"c)
                                 Dim writer As IEcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager)
@@ -8844,8 +8845,7 @@ Public Class cCore
             Me.m_publisher.sendAllMessages()
 
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
-
-            Me.m_EcospaceAutosaveResultsWriters.Clear()
+            Me.m_EcospaceAutosaveResultsWriters = Nothing
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
