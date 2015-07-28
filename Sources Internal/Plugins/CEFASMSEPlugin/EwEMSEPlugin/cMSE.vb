@@ -1750,6 +1750,14 @@ Public Class cMSE
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Loop over all the strategies for this trial
                         Me.m_iCurStategy = 0
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'ToDo change this to iterate over a copy of the strategies instead of the list
+                        'incase the strategies reloads the list 
+                        'Dim StratArray() As Strategy = Strategies.ToArray()
+                        'For istrat As Integer = 0 To StratArray.Count - 1
+                        '    curStrategy = StratArray(istrat)
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                         For Each curStrategy As Strategy In Strategies
 
                             ''Set the CurrentStrategy used by onEcosimTimeStep()
