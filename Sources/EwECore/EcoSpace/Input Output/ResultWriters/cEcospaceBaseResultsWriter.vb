@@ -23,6 +23,7 @@ Imports System.IO
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports System.Reflection
 
 #End Region ' Imports
 
@@ -35,9 +36,37 @@ Public Class cEcospaceResultWriterFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get all the Ecospace result writers provided by the EwE core and plug-ins
+    ''' </summary>
+    ''' <param name="pm">The plug-in manager instance to consult, if any.</param>
+    ''' <returns>An array of all avaliable result writers.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetWriters(ByVal pm As cPluginManager) As IEcospaceResultsWriter()
+
+        Dim writers As New List(Of IEcospaceResultsWriter)
+        For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
+            If (GetType(IEcospaceResultsWriter).IsAssignableFrom(t) And Not t.IsAbstract()) Then
+                writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
+            End If
+        Next
+
+        ' Plug-in manager provided?
+        If (pm IsNot Nothing) Then
+            ' #Yes: see if a plug-in based writer supports the requested format
+            For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
+                writers.Add(ip)
+            Next
+        End If
+
+        Return writers.ToArray()
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Factory method.
     ''' </summary>
-    ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.Name">internal name</see> 
+    ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.DataName">internal name</see> 
     ''' to find a writer for.</param>
     ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
     ''' no writer could be found for the provided extension.</returns>
@@ -68,8 +97,8 @@ Public Class cEcospaceResultWriterFactory
         If (pm IsNot Nothing) Then
             ' #Yes: see if a plug-in based writer supports the requested format
             For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
-                ' Does plug-in support this format?
-                If (String.Compare(strDataName, ip.DisplayName, True) = 0) Then
+                ' JS: Use writer display name here
+                If (String.Compare(strDataName, ip.DataName, True) = 0) Then
                     ' #Yes: use it
                     Return ip
                 End If
@@ -90,7 +119,6 @@ End Class
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class cEcospaceBaseResultsWriter
     Implements EwEUtils.Core.IEcospaceResultsWriter
-
 
 #Region " Protected data "
 
@@ -156,7 +184,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <inheritdocs cref="IEcospaceResultsWriter.Name"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property Name() As String _
-        Implements IEcospaceResultsWriter.Name
+        Implements IEcospaceResultsWriter.DataName
 
     Public MustOverride Function FileExtension() As String
 
@@ -350,6 +378,5 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     End Property
 
 #End Region ' Internals
-
 
 End Class
