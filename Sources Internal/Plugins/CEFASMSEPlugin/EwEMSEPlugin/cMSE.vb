@@ -167,6 +167,7 @@ Public Class cMSE
     Private m_QModifier(,) As Single
     Private m_bQSet As Boolean
 
+    Private m_PassedChangeInFAtBeginProjTest As Boolean
 
 #Region "Threading variables"
     'Private m_WaitObject As System.Threading.ManualResetEvent
@@ -3832,7 +3833,7 @@ Public Class cMSE
             End If
             For iGrp = 1 To m_core.nGroups
                 If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1) > 0.05 Then
-                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & m_currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
+                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
                     m_PassedChangeInFAtBeginProjTest = False
                 End If
             Next
@@ -4248,13 +4249,13 @@ Public Class cMSE
 
                     'Me._simdata.FishMGear(iflt,igrp) does not include discards that survived
                     'ToDo sort out the prop land and discards 
-                    Q0 = (Me._simdata.FishMGear(iflt, igrp) + 1.0E-20) ' * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
+                    Q0 = (Me._simdata.FishMGear(iflt, igrp) + 1.0E-20) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
 
                     'Ratio of F from time series to F computed
                     'If there is no timeseries or the F and Effort timeseries are synchronised this will 1
                     Me.m_QModifier(iflt, igrp) = CSng(Ft / (Q0 * Et))
 
-                    Debug.Assert(Me.m_QModifier(iflt, igrp) = 1 Or Me.m_QModifier(iflt, igrp) = 0)
+                    'Debug.Assert(Me.m_QModifier(iflt, igrp) = 1 Or Me.m_QModifier(iflt, igrp) = 0)
 
                     'Modify both the Ecosim F base fishing mortality rate, this is mortality only it does not include discards that survived,
                     'and the MSE's base catch rate, this includes discards that survived.
