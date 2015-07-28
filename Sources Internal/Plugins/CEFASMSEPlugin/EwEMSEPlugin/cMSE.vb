@@ -1710,6 +1710,7 @@ Public Class cMSE
             'Run The Trials 
             'load parameter values into ecopath and ecosim to be used
             nModels = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
+            m_PassedChangeInFAtBeginProjTest = True
             For iModel = 1 To nModels
                 m_currentModelID = iModel
                 ModelValid = True
@@ -1816,6 +1817,9 @@ Public Class cMSE
             Next iModel
             'End of trials loop
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            Debug.Assert(m_PassedChangeInFAtBeginProjTest, "Somewhere the jump in F from end of hindcast to beginning of forecast is too big. See ")
+
 
             'ecosimData.NTimes is the number of months so 17 years = 204 timesteps
             m_core.EcoSimModelParameters.NumberYears = CInt(OriginalNTimesteps / m_ecosim.EcosimData.NumStepsPerYear)
@@ -3780,23 +3784,7 @@ Public Class cMSE
             Me.SetFtimeFromGear(iTime)
 
 #If DEBUG Then
-
-            If iTime = OriginalNTimesteps + 1 Then
-                Dim strmWriter As StreamWriter
-                Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_TestingFishRateNoJumpBegProj.csv", False)
-                Dim fileexists As Boolean = File.Exists(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile))
-                strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
-                If fileexists = False Then
-                    strmWriter.WriteLine("Date & Time, ModelID, StrategyName, GroupName, FishRateNo@iTime-1, FishRateNo@iTime, %ChangeInFishRateNo")
-                End If
-                For iGrp = 1 To m_core.nGroups
-                    If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1) > 0.05 Then
-                        strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
-                    End If
-                Next
-                strmWriter.Close()
-                strmWriter.Dispose()
-            End If
+            TestingJumpInFAtBeginProjection(iTime)
 #End If
 
             'Dim percentagechangeeffort As Single
@@ -3829,6 +3817,28 @@ Public Class cMSE
         '    'QMult(iGrp) = 1
         '    Console.WriteLine("The f for " & m_core.EcoPathGroupOutputs(iGrp).Name & " at timestep " & iTime.ToString & " is " & Me._simdata.FishRateNo(iGrp, iTime))
         'End If
+
+    End Sub
+
+    Private Sub TestingJumpInFAtBeginProjection(iTime As Integer)
+
+        If iTime = OriginalNTimesteps + 1 Then
+            Dim strmWriter As StreamWriter
+            Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_TestingFishRateNoJumpBegProj.csv", False)
+            Dim fileexists As Boolean = File.Exists(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile))
+            strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
+            If fileexists = False Then
+                strmWriter.WriteLine("Date & Time, ModelID, StrategyName, GroupName, FishRateNo@iTime-1, FishRateNo@iTime, %ChangeInFishRateNo")
+            End If
+            For iGrp = 1 To m_core.nGroups
+                If Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1) > 0.05 Then
+                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & m_currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & (EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) * 100 / EcosimData.FishRateNo(iGrp, iTime - 1) & "%")
+                    m_PassedChangeInFAtBeginProjTest = False
+                End If
+            Next
+            strmWriter.Close()
+            strmWriter.Dispose()
+        End If
 
     End Sub
 
