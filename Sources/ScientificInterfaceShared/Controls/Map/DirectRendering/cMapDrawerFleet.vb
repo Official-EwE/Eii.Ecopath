@@ -23,10 +23,11 @@ Option Explicit On
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-Namespace Ecospace
+Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

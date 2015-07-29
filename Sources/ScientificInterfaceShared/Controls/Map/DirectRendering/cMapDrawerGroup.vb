@@ -23,10 +23,11 @@ Option Explicit On
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-Namespace Ecospace
+Namespace Controls.Map
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -122,7 +123,7 @@ Namespace Ecospace
 
             brExcluded.Dispose()
             brExcluded = Nothing
-  
+
             If (Me.StanzaDS IsNot Nothing) Then
 
                 Dim isp As Integer = -1
