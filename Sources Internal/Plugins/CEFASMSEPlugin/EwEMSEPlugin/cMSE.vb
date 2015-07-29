@@ -1751,17 +1751,13 @@ Public Class cMSE
                         'Loop over all the strategies for this trial
                         Me.m_iCurStategy = 0
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        'ToDo change this to iterate over a copy of the strategies instead of the list
-                        'incase the strategies reloads the list 
-                        'Dim StratArray() As Strategy = Strategies.ToArray()
-                        'For istrat As Integer = 0 To StratArray.Count - 1
-                        '    curStrategy = StratArray(istrat)
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'Iterate over a static array of strategies instead of the list
+                        'because the Strategies can reload at any time
+                        Dim StratArray() As Strategy = Strategies.ToArray()
+                        For istrat As Integer = 0 To StratArray.Count - 1
 
-                        For Each curStrategy As Strategy In Strategies
-
-                            ''Set the CurrentStrategy used by onEcosimTimeStep()
-                            'm_currentStrategy = curStrategy
+                            'Set the index to the CurrentStrategy used by me.currentStrategy to retrieve the correct strategy
+                            m_iCurStategy = istrat
 
                             'Initialise Arrays for recording the F's from Targ and Cons HCR's
                             InitArraysForStrategy()
@@ -1770,7 +1766,7 @@ Public Class cMSE
 
                             'Get a list of all fleets that fish the groups that have HCRs
                             'Populates FleetsTheFishHCRGroup() which is used by onEcosimTimeStep() to optimize the fleets it loops over
-                            Me.initFishedByHCR(curStrategy)
+                            Me.initFishedByHCR(Me.currentStrategy)
 
                             'Clear out the catch results from the last HCR
                             Me.initCatchResults()
@@ -1797,9 +1793,10 @@ Public Class cMSE
                             'Set the index to the CurrentStrategy used by me.currentStrategy to retrieve the correct strategy
                             'We can't use a reference to the current strategy because the Strategies can reload at any time 
                             'Causing the reference to no longer be valid
-                            m_iCurStategy += 1
+                            m_iCurStategy = istrat
 
-                        Next curStrategy
+                            'Next curStrategy
+                        Next istrat
                         'End of Strategy loop
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -4220,12 +4217,6 @@ Public Class cMSE
             For igrp As Integer = 1 To Me.m_core.nGroups
                 If Me._simdata.FishMGear(iflt, igrp) > 0 Then
 
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'Not accounting for changes in discard mortality rates when a new MSE model is loaded 
-                    'FishMGear() contains the mortality rates from the baseline ecopath model 
-                    'not from the tweaked MSE loaded model.... I think
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
                     'Proportion of the fishing mortality caused by this fleet
                     'This is not the baseline proportion but the F at this effort timestep.
                     'This accounts for changes in the effort timeseries
@@ -4235,19 +4226,19 @@ Public Class cMSE
                     Ft = Me._simdata.FishRateNo(igrp, it) * PropCatchFleet
                     Et = Me._simdata.FishRateGear(iflt, it) + 1.0E-20
 
-                    'Me._simdata.FishMGear(iflt,igrp) does not include discards that survived
-                    'ToDo sort out the prop land and discards 
                     Q0 = (Me._simdata.FishMGear(iflt, igrp) + 1.0E-20) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
 
-                    'Ratio of F from time series to F computed
+                    'Ratio of F from time series to F computed from Effort
                     'If there is no timeseries or the F and Effort timeseries are synchronised this will 1
                     Me.m_QModifier(iflt, igrp) = CSng(Ft / (Q0 * Et))
+                    If Me.m_QModifier(iflt, igrp) = 0 Then Me.m_QModifier(iflt, igrp) = 1.0
 
-                    'Debug.Assert(Me.m_QModifier(iflt, igrp) = 1 Or Me.m_QModifier(iflt, igrp) = 0)
+                    Debug.Assert(Math.Round(Me.m_QModifier(iflt, igrp), 2) = 1, "setQModifiers() has changed baseline Q's.")
 
-                    'Modify both the Ecosim F base fishing mortality rate, this is mortality only it does not include discards that survived,
-                    'and the MSE's base catch rate, this includes discards that survived.
+                    'Modify both the Ecosim baseline F and MSE baseline F / Catch rate.
+                    'Ecosim F base fishing mortality rate, this is mortality only it does not include discards that survived.
                     Me._simdata.FishMGear(iflt, igrp) *= Me.m_QModifier(iflt, igrp)
+                    'MSE's base catch rate, this includes discards that survived, so it's not just fishing mortality
                     Me.BaseCatchRate(iflt, igrp) *= Me.m_QModifier(iflt, igrp)
                 End If
             Next
