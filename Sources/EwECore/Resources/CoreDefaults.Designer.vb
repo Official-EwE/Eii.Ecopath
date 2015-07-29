@@ -398,7 +398,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ASCII map.
+        '''  Looks up a localized string similar to Georeferenced ASCII maps.
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_WRITER_ASCMAP() As String
             Get
@@ -407,7 +407,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CSV map.
+        '''  Looks up a localized string similar to CSV maps.
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_WRITER_CSVMAP() As String
             Get
