@@ -3829,30 +3829,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub TestingJumpInFAtBeginProjection(iTime As Integer)
 
-        If iTime = OriginalNTimesteps + 1 Then
-            Dim FChange As Double
-            Dim strmWriter As StreamWriter
-            Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_TestingFishRateNoJumpBegProj.csv", False)
-            Dim fileexists As Boolean = File.Exists(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile))
-            strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
-            If fileexists = False Then
-                strmWriter.WriteLine("Date & Time, ModelID, StrategyName, GroupName, FishRateNo@iTime-1, FishRateNo@iTime, %ChangeInFishRateNo")
-            End If
-            For iGrp = 1 To m_core.nGroups
-                'jb round the percent change so it doesn't trip because of rounding error when the value is right on the limit
-                FChange = Math.Round(Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1), 4)
-                If FChange > 0.05 Then
-                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & FChange & "%")
-                    m_PassedChangeInFAtBeginProjTest = False
-                End If
-            Next
-            strmWriter.Close()
-            strmWriter.Dispose()
-        End If
-
-    End Sub
 
     Private Function Calc_RealisedLandedFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Double
         Dim iFleet As Integer, Ft As Single
@@ -4944,5 +4921,42 @@ Public Class cMSE
 #End If
 
 #End Region ' Dead Code
+
+#Region "Error checking"
+    Private Sub TestingJumpInFAtBeginProjection(iTime As Integer)
+
+        'The reason we have hardwired the max_percent_change_F is because the precise value is difficult to calculate. If we were to use
+        'the max change in fleet effort it would be misleading, because the max change in F is dependent on more than one fleet and 
+        'each fleet catches more than one group. And so this value is a guide only and we are using it to flag results which are clearly
+        'wrong. This means that this test is not 100% airtight and will be guarenteed to flag all errors, but we believe it is
+        'adequate for our needs.
+        'However, should the max change in efforts be specified much different to 5% and this test is still to be applied then it
+        'changing this value is advisable.
+        Const max_percent_change_F = 0.05
+
+
+        If iTime = OriginalNTimesteps + 1 Then
+            Dim FChange As Double
+            Dim strmWriter As StreamWriter
+            Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_TestingFishRateNoJumpBegProj.csv", False)
+            Dim fileexists As Boolean = File.Exists(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile))
+            strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
+            If fileexists = False Then
+                strmWriter.WriteLine("Date & Time, ModelID, StrategyName, GroupName, FishRateNo@iTime-1, FishRateNo@iTime, %ChangeInFishRateNo")
+            End If
+            For iGrp = 1 To m_core.nGroups
+                'jb round the percent change so it doesn't trip because of rounding error when the value is right on the limit
+                FChange = Math.Round(Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1), 4)
+                If FChange > max_percent_change_F Then
+                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & FChange & "%")
+                    m_PassedChangeInFAtBeginProjTest = False
+                End If
+            Next
+            strmWriter.Close()
+            strmWriter.Dispose()
+        End If
+
+    End Sub
+#End Region
 
 End Class
