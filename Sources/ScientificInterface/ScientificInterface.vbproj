@@ -245,9 +245,7 @@
     <Compile Include="Ecospace\Input\dlgDefineRegions.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Output\Map rendering\cMapDrawerFleet.vb" />
-    <Compile Include="Ecospace\Output\Map rendering\cMapDrawerGroup.vb" />
-    <Compile Include="Ecospace\Output\Map rendering\cRunEcospacePlotTypeFormatter.vb" />
+    <Compile Include="Ecospace\Output\cRunEcospacePlotTypeFormatter.vb" />
     <Compile Include="Other\cEwEIcon.vb" />
     <Compile Include="Other\cStyleGuideUpdater.vb" />
     <Compile Include="Controls\cEwEStatusBar.designer.vb">
