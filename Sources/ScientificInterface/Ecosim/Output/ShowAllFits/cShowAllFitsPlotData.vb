@@ -58,12 +58,12 @@ Namespace Ecosim
 
         Public Property TSDataScale() As Single = 1.0
 
-        Public Property Visible() As Boolean
+        Public Property Visible() As Boolean = True
 
         ''' <summary>
         ''' States whether the user has selected this plot or viewing
         ''' </summary>
-        Public Property Selected() As Boolean
+        Public Property Selected() As Boolean = True
 
         Private Sub CalculateScale()
 
