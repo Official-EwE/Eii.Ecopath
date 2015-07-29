@@ -78,8 +78,9 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Me.m_NTimes = Me.Core.nEcosimTimeSteps
-            Me.SetDefaultParams()
+
             Me.GatherPlotData()
+            Me.SetDefaultParams()
             Me.CalcPlotParams()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
@@ -355,6 +356,8 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub SetPlotTypes()
+
+            If (Me.UIContext Is Nothing) Then Return
 
             Me.m_lShownPlotsType.Clear()
 
@@ -729,7 +732,10 @@ Namespace Ecosim
             Handles m_chkShowB.CheckedChanged, _
                     m_chkShowZ.CheckedChanged, _
                     m_chkShowCatch.CheckedChanged
+
+            If (Me.UIContext Is Nothing) Then Return
             Me.SetPlotTypes()
+
         End Sub
 
         Private Sub OnShowDetailsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -737,27 +743,42 @@ Namespace Ecosim
                     m_chkShowYear.CheckedChanged, _
                     m_chkScaleForPrinter.CheckedChanged, _
                     m_chkShowSS.CheckedChanged
+
+            If (Me.UIContext Is Nothing) Then Return
             Me.UpdatePlots()
+
         End Sub
 
         Private Sub OnDotSizeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudDotSize.ValueChanged
+
+            If (Me.UIContext Is Nothing) Then Return
             Me.UpdatePlots()
+
         End Sub
 
         Private Sub OnLineWidthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudLineWidth.ValueChanged
+
+            If (Me.UIContext Is Nothing) Then Return
             Me.UpdatePlots()
+
         End Sub
 
         Private Sub OnRowNumChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudRowNum.ValueChanged
+
+            If (Me.UIContext Is Nothing) Then Return
             Me.UpdatePlots()
+
         End Sub
 
         Private Sub OnMarginLRChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_nudMarginLR.ValueChanged
+
+            If (Me.UIContext Is Nothing) Then Return
             Me.UpdatePlots()
+
         End Sub
 
         Private Sub OnMarginTBChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
