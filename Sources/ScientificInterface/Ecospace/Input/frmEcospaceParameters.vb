@@ -104,21 +104,21 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim propMan As cPropertyManager = Me.PropertyManager
 
             ' Start listening to props
-            Me.m_bpUseIBM = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
-            Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
-            Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
-            Me.m_bpEffort = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+            Me.m_bpUseIBM = DirectCast(propMan.GetProperty(parms, eVarNameFlags.UseIBM), cBooleanProperty)
+            Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(parms, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
+            Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(parms, eVarNameFlags.AdjustSpace), cBooleanProperty)
+            Me.m_bpEffort = DirectCast(propMan.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
 
-            Me.m_bpConTracing = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+            Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
             Me.m_clbAutosave.Items.Clear()
             For Each wr As IEcospaceResultsWriter In cEcospaceResultWriterFactory.GetWriters(Me.Core.PluginManager)
-                Me.m_clbAutosave.Items.Add(wr, Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults).Contains(wr.DataName))
+                Me.m_clbAutosave.Items.Add(wr, parms.Autosave(wr.DataName))
             Next
 
             Me.UpdateControls()
@@ -142,21 +142,21 @@ Namespace Ecospace
             Me.m_fpCellSize.Value = bm.CellSize
 
             ' Hmm, connecting one control to three live properties - this could be dangerous
-            Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
-            Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
-            Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nEffortDistThreads)
-            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
-            Me.m_fpFirstOutputTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstTimeStep, ecospaceModelParams, eVarNameFlags.EcospaceFirstOutputTimeStep)
+            Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nGridSolverThreads)
+            Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nSpaceThreads)
+            Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nEffortDistThreads)
+            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, parms, eVarNameFlags.PacketsMultiplier)
+            Me.m_fpFirstOutputTimestep = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstTimeStep, parms, eVarNameFlags.EcospaceFirstOutputTimeStep)
 
             ' Model
-            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
-            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
-            Me.m_fpTolerance = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
-            Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
-            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
-            Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
+            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, parms, eVarNameFlags.TotalTime)
+            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumTimeStepsPerYear, parms, eVarNameFlags.NumTimeStepsPerYear)
+            Me.m_fpTolerance = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTolerance, parms, eVarNameFlags.Tolerance)
+            Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, parms, eVarNameFlags.SOR)
+            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, parms, eVarNameFlags.MaxIterations)
+            Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
 
-            Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
+            Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
             Me.UpdateScenarioFormatProviders()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
@@ -251,12 +251,9 @@ Namespace Ecospace
 
             Me.m_cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
 
-            ' Compare by format
-            Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
-
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
-                Me.m_clbAutosave.SetItemChecked(i, strFmt.Contains(wr.DataName))
+                Me.m_clbAutosave.SetItemChecked(i, parms.Autosave(wr.DataName))
             Next
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
@@ -378,16 +375,15 @@ Namespace Ecospace
 
         Private Sub UpdateAutosaveFormat()
 
-            Dim fmt As New StringBuilder()
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
-            For Each item As Object In Me.m_clbAutosave.CheckedItems
-                Dim wr As IEcospaceResultsWriter = DirectCast(item, IEcospaceResultsWriter)
-                If (fmt.Length > 0) Then fmt.Append(";")
-                fmt.Append(wr.DataName)
+            If Me.m_bInUpdate Then Return
+            Me.m_bInUpdate = True
+
+            For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
+                Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
+                parms.Autosave(wr.DataName) = Me.m_clbAutosave.GetItemChecked(i)
             Next
-
-            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = (fmt.Length > 0)
-            Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = fmt.ToString()
 
             Me.m_bInUpdate = False
 

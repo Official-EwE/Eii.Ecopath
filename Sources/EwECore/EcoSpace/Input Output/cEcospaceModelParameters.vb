@@ -280,71 +280,6 @@ Public Class cEcospaceModelParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether Ecospace should automatically save region summary output 
-    ''' for every time step.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property SaveRegions As Boolean
-        Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.Ecospace) = True)
-        End Get
-        Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.Ecospace) = value
-        End Set
-    End Property
-
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set whether Ecospace should automatically save ASC files.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property SaveASC As Boolean
-        Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
-                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), cEcospaceASCMapResultsWriter.cDATA_NAME, True) = 0)
-        End Get
-        Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = cEcospaceASCMapResultsWriter.cDATA_NAME
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set whether Ecospace should automatically save CSV files.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property SaveCSV As Boolean
-        Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
-                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), cEcospaceCSVMapResultsWriter.cDATA_NAME, True) = 0)
-        End Get
-        Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = cEcospaceCSVMapResultsWriter.cDATA_NAME
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set whether Ecospace should automatically save PNG files for every
-    ''' time step.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property SavePNG As Boolean
-        Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
-                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), ".png", True) = 0)
-        End Get
-        Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ".png"
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get/set the number of time steps per year for this model. Internally,
     ''' this value will be recalculated to the ratio of the time step size (years).
     ''' </summary>
@@ -816,7 +751,102 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-
 #End Region ' Variables by dot (.) operator
+
+#Region " Utility methods "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should automatically save region summary output 
+    ''' for every time step.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SaveRegions As Boolean
+        Get
+            Return Me.Autosave(cEcospaceAvgModelAreaResultsWriter.cDATA_NAME)
+        End Get
+        Set(value As Boolean)
+            Me.Autosave(cEcospaceAvgModelAreaResultsWriter.cDATA_NAME) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should automatically save ASC files.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SaveASC As Boolean
+        Get
+            Return Me.Autosave(cEcospaceASCMapResultsWriter.cDATA_NAME)
+        End Get
+        Set(value As Boolean)
+            Me.Autosave(cEcospaceASCMapResultsWriter.cDATA_NAME) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should automatically save CSV files.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SaveCSV As Boolean
+        Get
+            Return Me.Autosave(cEcospaceCSVMapResultsWriter.cDATA_NAME)
+        End Get
+        Set(value As Boolean)
+            Me.Autosave(cEcospaceCSVMapResultsWriter.cDATA_NAME) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should automatically save PNG files for every
+    ''' time step.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SavePNG As Boolean
+        Get
+            Return Me.Autosave("png_image")
+        End Get
+        Set(value As Boolean)
+            Me.Autosave("png_image") = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Getset whether a given file format is allowed to autosave
+    ''' </summary>
+    ''' <param name="strFmt"></param>
+    ''' -----------------------------------------------------------------------
+    Public Property Autosave(ByVal strFmt As String) As Boolean
+        Get
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
+                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), strFmt, True) = 0)
+        End Get
+        Set(value As Boolean)
+
+            Dim settings As String = Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
+            If (value) Then
+                If Not settings.Contains(strFmt) Then
+                    If Not String.IsNullOrWhiteSpace(settings) Then settings = settings & ";"
+                End If
+                settings = settings & strFmt
+            Else
+                settings = settings.Replace(strFmt, "")
+            End If
+
+            While settings.Contains(";;")
+                settings = settings.Replace(";;", ";")
+            End While
+            If (settings = ";") Then settings = ""
+
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = Not String.IsNullOrWhiteSpace(settings)
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = settings
+
+        End Set
+    End Property
+
+#End Region ' Utility methods
 
 End Class
