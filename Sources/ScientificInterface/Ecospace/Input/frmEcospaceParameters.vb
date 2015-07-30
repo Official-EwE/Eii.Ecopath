@@ -380,6 +380,7 @@ Namespace Ecospace
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
 
+            Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ""
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
                 parms.Autosave(wr.DataName) = Me.m_clbAutosave.GetItemChecked(i)
