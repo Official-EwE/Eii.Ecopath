@@ -1746,13 +1746,11 @@ Public Class cMSE
                             iResultCollector.Init_for_iModel(iModel)
                         Next
 
-
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Loop over all the strategies for this trial
-                        Me.m_iCurStategy = 0
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'Iterate over a static array of strategies instead of the list
                         'because the Strategies can reload at any time
+                        Me.m_iCurStategy = 0
                         Dim StratArray() As Strategy = Strategies.ToArray()
                         For istrat As Integer = 0 To StratArray.Count - 1
 
