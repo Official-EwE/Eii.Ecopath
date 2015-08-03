@@ -144,7 +144,7 @@ Public Class frmShapeValue
             Select Case (DirectCast(shape, cTimeSeries)).Interval
                 Case eTSDataSetInterval.Annual
                     Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
-                Case eTSDataSetInterval.Monthly
+                Case eTSDataSetInterval.TimeStep
                     Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
                 Case Else
                     Debug.Assert(False)

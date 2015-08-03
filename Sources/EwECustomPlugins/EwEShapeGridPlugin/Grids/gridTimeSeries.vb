@@ -329,7 +329,7 @@ Public Class gridTimeSeries
         Select Case ds.TimeSeriesInterval
             Case eTSDataSetInterval.Annual
                 Return CStr(iPoint + Me.Core.EcosimFirstYear)
-            Case eTSDataSetInterval.Monthly
+            Case eTSDataSetInterval.TimeStep
                 Dim iMonth As Integer = (iPoint Mod 12) + 1
                 If Not Me.IsSeasonal And (iMonth = 1) Then
                     Return CStr(Math.Floor(iPoint / cCore.N_MONTHS) + Me.Core.EcosimFirstYear)

@@ -892,7 +892,7 @@ Namespace Ecosim
                             ndatapoints = Core.EcoSimModelParameters.NumberYears
                             Dt = 1
                             halfDt = 0.5
-                        Case eTSDataSetInterval.Monthly
+                        Case eTSDataSetInterval.TimeStep
                             ndatapoints = Core.nEcosimTimeSteps
                             Dt = 1 / cCore.N_MONTHS
                             halfDt = Dt * 0.5

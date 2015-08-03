@@ -101,7 +101,7 @@ Public Class dlgManageTimeSeries
         Me.m_tbImportContact.Text = Me.m_uic.Core.EwEModel.Contact
 
         Me.m_cmbImportInterval.Items.Add(eTSDataSetInterval.Annual)
-        Me.m_cmbImportInterval.Items.Add(eTSDataSetInterval.Monthly)
+        Me.m_cmbImportInterval.Items.Add(eTSDataSetInterval.TimeStep)
         Me.m_cmbImportInterval.SelectedItem = eTSDataSetInterval.Annual
 
         Me.FillImportDatasetCombo()
@@ -663,7 +663,7 @@ Public Class dlgManageTimeSeries
         Select Case interval
             Case eTSDataSetInterval.Annual
                 iNumPoints = Math.Max(Me.m_tr.NumPoints, 1)
-            Case eTSDataSetInterval.Monthly
+            Case eTSDataSetInterval.TimeStep
                 iNumPoints = CInt(cCore.N_MONTHS * Math.Ceiling(Math.Max(Me.m_tr.NumPoints, 1) / cCore.N_MONTHS))
             Case Else
                 Debug.Assert(False)
@@ -685,6 +685,8 @@ Public Class dlgManageTimeSeries
                                                                 Me.m_tr.FirstYear, iNumPoints, _
                                                                 interval, _
                                                                 iDataset)
+
+                ' ToDo: send notification message that a new dataset has been created
             Else
                 ' #No: append to current
                 iDataset = Me.m_uic.Core.ActiveTimeSeriesDatasetIndex
@@ -700,6 +702,9 @@ Public Class dlgManageTimeSeries
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, cStringUtils.Localize(My.Resources.STATUS_IMPORTING_DATASET, Me.DatasetName))
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
+
+                    ts.Interval = interval
+
                     If Me.m_uic.Core.ImportEcosimTimeSeries(ts, iDataset) Then
                         Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
 
@@ -720,6 +725,8 @@ Public Class dlgManageTimeSeries
             End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
+
+        ' ToDo: send notification message reporting success (or failure)
 
         ' Release appropriate level (this will reload the time series definitions)
         Me.m_uic.Core.ReleaseBatchLock(clf, bSucces)

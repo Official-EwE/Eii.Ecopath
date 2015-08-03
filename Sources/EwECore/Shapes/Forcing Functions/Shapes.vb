@@ -478,7 +478,7 @@ Public MustInherit Class cMediationBaseFunction
             'Me.m_datatype = DataType
             Me.m_coreComponent = eCoreComponentType.EcoSim
             Me.m_medData = data
-            Me.m_timeresolution = eTSDataSetInterval.Monthly
+            Me.m_timeresolution = eTSDataSetInterval.TimeStep
 
             Me.m_bInInit = True
             Me.m_data = EcoSimData

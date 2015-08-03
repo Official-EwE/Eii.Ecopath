@@ -6538,8 +6538,8 @@ Namespace DataSources
                 ' JS 04april09: Time Series are most likely ANNUAL, FFs are MONTHLY
                 Select Case ts.Interval
                     Case eTSDataSetInterval.Annual
-                        iRepetitions = cCore.N_MONTHS
-                    Case eTSDataSetInterval.Monthly
+                        iRepetitions = CInt(Me.m_core.nEcosimTimeSteps / Me.m_core.nEcosimYears)
+                    Case eTSDataSetInterval.TimeStep
                         iRepetitions = 1
                     Case Else
                         Debug.Assert(False)

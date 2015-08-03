@@ -82,7 +82,7 @@ Namespace Controls
                     Case eTSDataSetInterval.Annual
                         iTSFinalYear = iTSFirstYear + Me.XAxisMaxValue
                         iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / 10))
-                    Case eTSDataSetInterval.Monthly
+                    Case eTSDataSetInterval.TimeStep
                         iTSFinalYear = iTSFirstYear + (Me.XAxisMaxValue \ cCore.N_MONTHS)
                         iStepSize = Math.Max(1, CInt((iTSFinalYear - iTSFirstYear) / cCore.N_MONTHS))
                     Case Else

@@ -168,7 +168,7 @@ Public Class cTimeSeriesDataStructures
             Select Case Me.DataSetInterval
                 Case eTSDataSetInterval.Annual
                     n = Me.nDatPoints
-                Case eTSDataSetInterval.Monthly
+                Case eTSDataSetInterval.TimeStep
                     n = Me.nDatPoints \ cCore.N_MONTHS
                 Case Else
                     Debug.Assert(False, Me.ToString + " Undefined DataSetInterval type.")
@@ -184,7 +184,7 @@ Public Class cTimeSeriesDataStructures
         Dim its As Integer
         If Me.DataSetInterval = eTSDataSetInterval.Annual Then
             its = iModelYear
-        ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+        ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
             its = iModelTimeStep
         End If
 
@@ -314,7 +314,7 @@ Public Class cTimeSeriesDataStructures
                 breturn = True
             End If
 
-        ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+        ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
 
             If iCumTimeStep <= Me.nDatPoints Then
                 breturn = True
@@ -345,7 +345,7 @@ Public Class cTimeSeriesDataStructures
                 iIndexToSet = iYear
                 breturn = True
 
-            ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+            ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
 
                 iIndexToSet = iCumTimeStep
                 breturn = True
@@ -461,7 +461,7 @@ Public Class cTimeSeriesDataStructures
         If nTimeSeries > 0 Then
 
             Dim dt As Double = 1
-            If Me.DataSetInterval = eTSDataSetInterval.Monthly Then dt = 1 / cCore.N_MONTHS
+            If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then dt = 1 / cCore.N_MONTHS
             DatYear(1) = Me.nDatasetFirstYear(Me.ActiveDatasetIndex)
             For iYear = 2 To nDatPoints
                 'DatYear(iYear) = DatYear(iYear - 1) + 1
@@ -545,7 +545,7 @@ Public Class cTimeSeriesDataStructures
             ' Me.loadEnabled()
 
             Dim npoints As Integer = Me.nYears
-            If Me.DataSetInterval = eTSDataSetInterval.Monthly Then npoints = Me.nDatPoints
+            If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then npoints = Me.nDatPoints
 
             npoints = Math.Max(npoints, EcosimData.NumYears)
 
@@ -636,7 +636,7 @@ Public Class cTimeSeriesDataStructures
                                         ig = DatPool(iDType)
                                         EcosimData.FishRateGear(ig, Tim) = DatVal(iDatPt, iDType)
                                     Next
-                                ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+                                ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
 
                                     EcosimData.FishRateGear(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
 
@@ -657,7 +657,7 @@ Public Class cTimeSeriesDataStructures
                                         End If
                                     Next
 
-                                ElseIf Me.DataSetInterval = eTSDataSetInterval.Monthly Then
+                                ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
 
                                     EcosimData.FishRateNo(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
                                     If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), iDatPt) Then
