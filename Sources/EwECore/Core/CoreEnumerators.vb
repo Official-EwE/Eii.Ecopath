@@ -473,7 +473,7 @@ End Enum
 ''' -----------------------------------------------------------------------
 Public Enum eTSDataSetInterval
     Annual = 0
-    Monthly = 1
+    TimeStep = 1
 End Enum
 
 #End Region ' Time series types

@@ -44,7 +44,7 @@ Public MustInherit Class cShapeData
     Private m_xdata() As Single
     Private m_nPoints As Integer
     Private m_bSeasonal As Boolean = False
-    Protected m_timeresolution As eTSDataSetInterval = eTSDataSetInterval.Monthly
+    Protected m_timeresolution As eTSDataSetInterval = eTSDataSetInterval.TimeStep
 
     Public Event OnChanged(ByVal sd As cShapeData)
 

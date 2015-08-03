@@ -151,7 +151,7 @@ Namespace Ecosim
                         ' Draw time series
                         ' ===============
                         Dim dx As Double = cCore.N_MONTHS / m_NTimes
-                        If plot.TimeSeries.Interval = eTSDataSetInterval.Monthly Then dx = 1 / m_NTimes
+                        If plot.TimeSeries.Interval = eTSDataSetInterval.TimeStep Then dx = 1 / m_NTimes
                         data = plot.TimeSeries.ShapeData
                         For k As Integer = 1 To data.Length - 1
                             If Math.Abs(data(k)) > 0 Then

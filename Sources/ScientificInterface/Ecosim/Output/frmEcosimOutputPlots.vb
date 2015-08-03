@@ -638,12 +638,12 @@ Namespace Ecosim
             End If
 
             'Just in case...
-            Debug.Assert(Me.m_TSInterval = eTSDataSetInterval.Annual Or Me.m_TSInterval = eTSDataSetInterval.Monthly, "Plotting Ecosim Output unknown timeseries interval.")
+            Debug.Assert(Me.m_TSInterval = eTSDataSetInterval.Annual Or Me.m_TSInterval = eTSDataSetInterval.TimeStep, "Plotting Ecosim Output unknown timeseries interval.")
 
             For j As Integer = 1 To da.Length - 1
                 If (da(j) > 0) Then
                     Select Case Me.m_TSInterval
-                        Case eTSDataSetInterval.Monthly
+                        Case eTSDataSetInterval.TimeStep
                             xpos = iYear + j * deltaT - deltaT * 0.5
                         Case eTSDataSetInterval.Annual
                             xpos = iYear + j - 0.5
