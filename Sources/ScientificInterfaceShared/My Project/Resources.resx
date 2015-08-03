@@ -3044,8 +3044,8 @@
   <data name="TSDATASETINTERVAL_ANNUAL" xml:space="preserve">
     <value>Annual</value>
   </data>
-  <data name="TSDATASETINTERVAL_MONTHLY" xml:space="preserve">
-    <value>Monthly</value>
+  <data name="TSDATASETINTERVAL_TIMESTEP" xml:space="preserve">
+    <value>Time step</value>
   </data>
   <data name="GENERIC_VALUE_NO" xml:space="preserve">
     <value>No</value>
