@@ -117,9 +117,20 @@ Namespace Ecospace
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
             Me.m_clbAutosave.Items.Clear()
-            For Each wr As IEcospaceResultsWriter In cEcospaceResultWriterFactory.GetWriters(Me.Core.PluginManager)
-                Me.m_clbAutosave.Items.Add(wr, parms.Autosave(wr.DataName))
+
+            ' -- Autosave. This is potentially confusing --
+
+            Dim bWriting As Boolean = False
+            Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
+
+            For n As Integer = 1 To parms.nResultWriters
+                Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
+                writer.Enabled = (strFmt.IndexOf(writer.DataName) > 0)
+                Me.m_clbAutosave.Items.Add(writer, writer.Enabled)
+                bWriting = bWriting Or writer.Enabled
             Next
+            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = bWriting
+            ' ------------------------------------------
 
             Me.UpdateControls()
 
@@ -253,7 +264,7 @@ Namespace Ecospace
 
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
-                Me.m_clbAutosave.SetItemChecked(i, parms.Autosave(wr.DataName))
+                Me.m_clbAutosave.SetItemChecked(i, wr.Enabled And Me.Core.Autosave(eAutosaveTypes.EcospaceResults))
             Next
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
@@ -369,22 +380,29 @@ Namespace Ecospace
             If Me.m_bInUpdate Then Return
 
             ' Delay the update, because the item state has not changed yet
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateAutosaveFormat))
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateAutosaveSettings))
 
         End Sub
 
-        Private Sub UpdateAutosaveFormat()
+        Private Sub UpdateAutosaveSettings()
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            Dim strFmt As String = ""
+            Dim bSaving As Boolean = False
 
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
 
-            Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = ""
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
-                parms.Autosave(wr.DataName) = Me.m_clbAutosave.GetItemChecked(i)
+                wr.Enabled = Me.m_clbAutosave.GetItemChecked(i)
+                If (wr.Enabled) Then
+                    strFmt = strFmt & ";" & wr.DataName
+                    bSaving = True
+                End If
             Next
+            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = bSaving
+            Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strFmt
 
             Me.m_bInUpdate = False
 
@@ -395,10 +413,6 @@ Namespace Ecospace
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
-                ' Reload
-                'Me.InitContent()
-            End If
             If ((msg.Source = eCoreComponentType.Core) And (msg.Type = eMessageType.GlobalSettingsChanged)) Then
                 Me.UpdateControls()
             End If

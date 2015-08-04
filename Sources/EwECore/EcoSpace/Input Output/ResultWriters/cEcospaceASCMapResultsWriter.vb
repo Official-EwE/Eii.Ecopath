@@ -288,7 +288,7 @@ Public Class cEcospaceASCMapResultsWriter
         End Get
     End Property
 
-    Public Overrides ReadOnly Property Name As String
+    Public Overrides ReadOnly Property DataName As String
         Get
             Return cEcospaceASCMapResultsWriter.cDATA_NAME
         End Get

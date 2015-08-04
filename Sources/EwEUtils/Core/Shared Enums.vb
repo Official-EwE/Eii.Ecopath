@@ -2584,6 +2584,9 @@ Namespace Core
         ''' <summary>Number of TAC iterations</summary>
         nMSEBATCHTAC
 
+        ''' <summary>Number of available Ecospace result writers <seealso cref="IEcospaceResultsWriter"></seealso></summary>
+        nEcospaceResultWriters
+
     End Enum
 
 #End Region ' Core counters
