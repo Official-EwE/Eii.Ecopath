@@ -338,7 +338,7 @@ Public Class cEcospaceAvgModelAreaResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.Name"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides ReadOnly Property Name As String
+    Public Overrides ReadOnly Property DataName As String
         Get
             Return "regavg"
         End Get

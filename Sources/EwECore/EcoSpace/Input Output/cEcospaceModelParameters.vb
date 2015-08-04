@@ -25,6 +25,9 @@ Public Class cEcospaceModelParameters
 
     Private N_CORES_HUNGABEE As Integer = 2048
 
+    ''' <summary>Available Ecospace result writers.</summary>
+    Private m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
+
 #Region " Constructor "
 
     Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
@@ -249,6 +252,8 @@ Public Class cEcospaceModelParameters
 
             'set status flags to default values
             ResetStatusFlags()
+
+            m_EcospaceResultsWriters.AddRange(cEcospaceResultWriterFactory.GetWriters(Me.m_core.PluginManager))
 
             Me.AllowValidation = True
 
@@ -757,9 +762,43 @@ Public Class cEcospaceModelParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get the number of available <see cref="IEcospaceResultsWriter">Ecospace result writers</see>.
+    ''' <seealso cref="ResultWriter"/>
+    ''' <seealso cref="IEcospaceResultsWriter"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property nResultWriters As Integer
+        Get
+            Return Me.m_EcospaceResultsWriters.Count
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a <see cref="IEcospaceResultsWriter"/>.
+    ''' <seealso cref="nResultWriters"/>
+    ''' <seealso cref="IEcospaceResultsWriter"/>
+    ''' </summary>
+    ''' <param name="iIndex">One-based index of the result writer to obtain.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ResultWriter(iIndex As Integer) As IEcospaceResultsWriter
+        Try
+            Return Me.m_EcospaceResultsWriters(iIndex - 1)
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/set whether Ecospace should automatically save region summary output 
     ''' for every time step.
     ''' </summary>
+    ''' <remarks>
+    ''' This shortcut method enables or disables the <see cref="cEcospaceAvgModelAreaResultsWriter"/>.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property SaveRegions As Boolean
         Get
@@ -774,6 +813,9 @@ Public Class cEcospaceModelParameters
     ''' <summary>
     ''' Get/set whether Ecospace should automatically save ASC files.
     ''' </summary>
+    ''' <remarks>
+    ''' This shortcut method enables or disables the <see cref="cEcospaceASCMapResultsWriter"/>.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
@@ -788,6 +830,9 @@ Public Class cEcospaceModelParameters
     ''' <summary>
     ''' Get/set whether Ecospace should automatically save CSV files.
     ''' </summary>
+    ''' <remarks>
+    ''' This shortcut method enables or disables the <see cref="cEcospaceCSVMapResultsWriter"/>.
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property SaveCSV As Boolean
         Get
@@ -804,6 +849,7 @@ Public Class cEcospaceModelParameters
     ''' time step.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <Obsolete("PNG saving must be handled by a dedicated result writer")> _
     Public Property SavePNG As Boolean
         Get
             Return Me.Autosave("png_image")
@@ -821,29 +867,18 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property Autosave(ByVal strFmt As String) As Boolean
         Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = True) And _
-                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults), strFmt, True) = 0)
+            For Each wr As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+                If (String.Compare(wr.DataName, strFmt, True) = 0) Then
+                    Return wr.Enabled
+                End If
+            Next
         End Get
         Set(value As Boolean)
-
-            Dim settings As String = Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
-            If (value) Then
-                If Not settings.Contains(strFmt) Then
-                    If Not String.IsNullOrWhiteSpace(settings) Then settings = settings & ";"
+            For Each wr As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+                If (String.Compare(wr.DataName, strFmt, True) = 0) Then
+                    wr.Enabled = value
                 End If
-                settings = settings & strFmt
-            Else
-                settings = settings.Replace(strFmt, "")
-            End If
-
-            While settings.Contains(";;")
-                settings = settings.Replace(";;", ";")
-            End While
-            If (settings = ";") Then settings = ""
-
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceResults) = Not String.IsNullOrWhiteSpace(settings)
-            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = settings
-
+            Next
         End Set
     End Property
 

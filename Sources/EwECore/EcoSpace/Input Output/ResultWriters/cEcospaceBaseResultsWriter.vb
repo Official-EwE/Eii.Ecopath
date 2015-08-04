@@ -41,7 +41,7 @@ Public Class cEcospaceResultWriterFactory
     ''' <param name="pm">The plug-in manager instance to consult, if any.</param>
     ''' <returns>An array of all avaliable result writers.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetWriters(ByVal pm As cPluginManager) As IEcospaceResultsWriter()
+    Friend Shared Function GetWriters(ByVal pm As cPluginManager) As IEcospaceResultsWriter()
 
         Dim writers As New List(Of IEcospaceResultsWriter)
         For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
@@ -62,52 +62,52 @@ Public Class cEcospaceResultWriterFactory
 
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Factory method.
-    ''' </summary>
-    ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.DataName">internal name</see> 
-    ''' to find a writer for.</param>
-    ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
-    ''' no writer could be found for the provided extension.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function GetWriter(ByVal strDataName As String, _
-                                     ByVal pm As cPluginManager) As IEcospaceResultsWriter
+    ' ''' -----------------------------------------------------------------------
+    ' ''' <summary>
+    ' ''' Factory method.
+    ' ''' </summary>
+    ' ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.DataName">internal name</see> 
+    ' ''' to find a writer for.</param>
+    ' ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
+    ' ''' no writer could be found for the provided extension.</returns>
+    ' ''' -----------------------------------------------------------------------
+    'Public Shared Function GetWriter(ByVal strDataName As String, _
+    '                                 ByVal pm As cPluginManager) As IEcospaceResultsWriter
 
-        ' JS 28May15: Small change here: writers are now identified by their internal name, not by their localized name
-        Select Case strDataName.ToLower()
+    '    ' JS 28May15: Small change here: writers are now identified by their internal name, not by their localized name
+    '    Select Case strDataName.ToLower()
 
-            Case cEcospaceCSVMapResultsWriter.cDATA_NAME
-                Return New cEcospaceCSVMapResultsWriter()
-            Case cEcospaceASCMapResultsWriter.cDATA_NAME
-                Return New cEcospaceASCMapResultsWriter()
-            Case cEcospaceAvgModelAreaResultsWriter.cDATA_NAME
-                Return New cEcospaceAvgModelAreaResultsWriter()
+    '        Case cEcospaceCSVMapResultsWriter.cDATA_NAME
+    '            Return New cEcospaceCSVMapResultsWriter()
+    '        Case cEcospaceASCMapResultsWriter.cDATA_NAME
+    '            Return New cEcospaceASCMapResultsWriter()
+    '        Case cEcospaceAvgModelAreaResultsWriter.cDATA_NAME
+    '            Return New cEcospaceAvgModelAreaResultsWriter()
 
-            Case "csv map", ".csv"
-                ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
-                Return New cEcospaceCSVMapResultsWriter()
-            Case "ascii map", ".asc"
-                ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
-                Return New cEcospaceASCMapResultsWriter()
+    '        Case "csv map", ".csv"
+    '            ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
+    '            Return New cEcospaceCSVMapResultsWriter()
+    '        Case "ascii map", ".asc"
+    '            ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
+    '            Return New cEcospaceASCMapResultsWriter()
 
-        End Select
+    '    End Select
 
-        ' Plug-in manager provided?
-        If (pm IsNot Nothing) Then
-            ' #Yes: see if a plug-in based writer supports the requested format
-            For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
-                ' JS: Use writer display name here
-                If (String.Compare(strDataName, ip.DataName, True) = 0) Then
-                    ' #Yes: use it
-                    Return ip
-                End If
-            Next
-        End If
+    '    ' Plug-in manager provided?
+    '    If (pm IsNot Nothing) Then
+    '        ' #Yes: see if a plug-in based writer supports the requested format
+    '        For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
+    '            ' JS: Use writer display name here
+    '            If (String.Compare(strDataName, ip.DataName, True) = 0) Then
+    '                ' #Yes: use it
+    '                Return ip
+    '            End If
+    '        Next
+    '    End If
 
-        Return Nothing
+    '    Return Nothing
 
-    End Function
+    'End Function
 
 End Class
 
@@ -181,12 +181,18 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Implements IEcospaceResultsWriter.DisplayName
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IEcospaceResultsWriter.Name"/>
+    ''' <inheritdocs cref="IEcospaceResultsWriter.DataName"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property Name() As String _
+    Public MustOverride ReadOnly Property DataName() As String _
         Implements IEcospaceResultsWriter.DataName
 
+    <Obsolete("Since the file extension is no longer crucial for identifying writers, this method should go")> _
     Public MustOverride Function FileExtension() As String
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.Enabled"/>
+    ''' -----------------------------------------------------------------------  
+    Public Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
 
 #End Region ' IEcospaceResultsWriter implementation
 

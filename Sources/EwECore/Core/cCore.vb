@@ -275,13 +275,19 @@ Public Class cCore
                     Return Me.nPedigreeVariables
                 Case eCoreCounterTypes.nCapacityMaps
                     Return Me.CapacityMapInteractionManager.nMaps
-
+                Case eCoreCounterTypes.nEcospaceResultWriters
+                    If (Me.m_EcospaceModelParams IsNot Nothing) Then
+                        Return Me.m_EcospaceModelParams.nResultWriters
+                    Else
+                        Return 0
+                    End If
                 Case eCoreCounterTypes.nMSEBATCHFixedF
                     Return Me.MSEBatchManager.BatchData.nFixedF
                 Case eCoreCounterTypes.nMSEBATCHTAC
                     Return Me.MSEBatchManager.BatchData.nTAC
                 Case eCoreCounterTypes.nMSEBatchTFM
                     Return Me.MSEBatchManager.BatchData.nTFM
+
                 Case Else
                     'Debug.Assert(False, cStringUtils.Localize("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
@@ -580,10 +586,8 @@ Public Class cCore
 
     ''' <summary>
     ''' Get the number of taxonomy groups.
+    ''' <seealso cref="eCoreCounterTypes.nTaxon"/>
     ''' </summary>
-    ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nTaxon"/>.
-    ''' </remarks>
     Public ReadOnly Property nTaxon() As Integer
         Get
             Return Me.m_TaxonData.NumTaxon
@@ -592,10 +596,8 @@ Public Class cCore
 
     ''' <summary>
     ''' Get the number of pedigree variables.
+    ''' <seealso cref="eCoreCounterTypes.nPedigreeVariables"/>
     ''' </summary>
-    ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nPedigreeVariables"/>.
-    ''' </remarks>
     Public ReadOnly Property nPedigreeVariables() As Integer
         Get
             Return Me.m_EcoPathData.NumPedigreeVariables
@@ -603,14 +605,18 @@ Public Class cCore
     End Property
 
     ''' <summary>
-    ''' Get the number of capacity maps.
+    ''' Get the number of capacity maps
+    ''' <seealso cref="eCoreCounterTypes.nCapacityMaps"/>.
     ''' </summary>
-    ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nCapacityMaps"/>.
-    ''' </remarks>
     Public ReadOnly Property nCapacityMaps() As Integer
         Get
             Return Me.CapacityMapInteractionManager.nMaps
+        End Get
+    End Property
+
+    Public ReadOnly Property nEcospaceResultWriters As Integer
+        Get
+            Return Me.m_EcospaceModelParams.nResultWriters
         End Get
     End Property
 
@@ -8454,12 +8460,6 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
-    ''' <summary>Manually added result writers.<seealso cref="m_EcospaceAutosaveResultsWriters"></seealso></summary>
-    Friend m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
-    ''' <summary>Result writers managed by the autosave process.<seealso cref="m_EcospaceResultsWriters"></seealso></summary>
-    ''' <remarks>This list only exists during qan Ecospace run.</remarks>
-    Private m_EcospaceAutosaveResultsWriters As List(Of EwEUtils.Core.IEcospaceResultsWriter)
-
     Friend m_mapInteractionManager As cMapResponseInteractionManager
 
     Private m_stpwSpaceTimer As Stopwatch
@@ -8741,25 +8741,13 @@ Public Class cCore
                         Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
                         'Output writing
-                        For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
-                            writer.Init(Me)
-                            writer.StartWrite()
+                        For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
+                            Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
+                            If (writer.Enabled) Then
+                                writer.Init(Me)
+                                writer.StartWrite()
+                            End If
                         Next
-
-                        ' Ecospace auto-save
-                        Me.m_EcospaceAutosaveResultsWriters = New List(Of IEcospaceResultsWriter)
-                        If Me.Autosave(eAutosaveTypes.EcospaceResults) Then
-                            For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceResults).Split(";"c)
-                                Dim writer As IEcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager)
-                                If (writer IsNot Nothing) Then Me.m_EcospaceAutosaveResultsWriters.Add(writer)
-                            Next
-                        End If
-
-                         For Each writer As IEcospaceResultsWriter In Me.m_EcospaceAutosaveResultsWriters
-                            writer.Init(Me)
-                            writer.StartWrite()
-                        Next
-                        ' ---
 
                         'make sure Ecospace is not paused
                         Me.m_Ecospace.isPaused = False
@@ -8820,11 +8808,11 @@ Public Class cCore
             End If
 
             Try
-                For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
-                    writer.EndWrite()
-                Next
-                For Each writer As IEcospaceResultsWriter In Me.m_EcospaceAutosaveResultsWriters
-                    writer.EndWrite()
+                For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
+                    Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
+                    If (writer.Enabled) Then
+                        writer.EndWrite()
+                    End If
                 Next
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
@@ -8845,7 +8833,6 @@ Public Class cCore
             Me.m_publisher.sendAllMessages()
 
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
-            Me.m_EcospaceAutosaveResultsWriters = Nothing
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
@@ -9046,24 +9033,16 @@ Public Class cCore
         End Try
     End Sub
 
-
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
 
         Dim st As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
         Try
-            For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+            For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
+                Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
                 Try
-                    writer.WriteResults(Me.m_spaceresults)
+                    If (writer.Enabled) Then writer.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceResultsWriter Exception: " & ex.Message)
-                    cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
-                End Try
-            Next
-            For Each writer As IEcospaceResultsWriter In Me.m_EcospaceAutosaveResultsWriters
-                Try
-                    writer.WriteResults(Me.m_spaceresults)
-                Catch ex As Exception
-                    System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceAutosaveResultsWriters Exception: " & ex.Message)
                     cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
                 End Try
             Next
@@ -9117,16 +9096,11 @@ Public Class cCore
 
     End Sub
 
-
-    Public ReadOnly Property EcospaceResultWriters As List(Of IEcospaceResultsWriter)
-        Get
-            Return Me.m_EcospaceResultsWriters
-        End Get
-    End Property
-
     Private Sub updateEcospaceResultsWriters()
+
         'Output writing
-        For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+        For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
+            Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
             writer.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
         Next
 

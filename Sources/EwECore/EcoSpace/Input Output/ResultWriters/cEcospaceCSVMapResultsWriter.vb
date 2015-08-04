@@ -292,7 +292,7 @@ Public Class cEcospaceCSVMapResultsWriter
         End Get
     End Property
 
-    Public Overrides ReadOnly Property Name As String
+    Public Overrides ReadOnly Property DataName As String
         Get
             Return cEcospaceCSVMapResultsWriter.cDATA_NAME
         End Get

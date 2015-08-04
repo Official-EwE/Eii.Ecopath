@@ -64,6 +64,11 @@ Namespace Core
         ReadOnly Property DataName() As String
 
         ''' <summary>
+        ''' Get/set whether this writer is allowed to write outputs.
+        ''' </summary>
+        Property Enabled As Boolean
+
+        ''' <summary>
         ''' Model time step the writer will begin outputting data on
         ''' </summary>
         Property FirstOutputTimeStep As Integer
