@@ -77,7 +77,7 @@ Public Class cEcospaceCSVMapResultsWriter
 
         Try
 
-            If tsData.iTimeStep <= Me.FirstOutputTimeStep Then
+            If tsData.iTimeStep < Me.FirstOutputTimeStep Then
                 Return
             End If
 
