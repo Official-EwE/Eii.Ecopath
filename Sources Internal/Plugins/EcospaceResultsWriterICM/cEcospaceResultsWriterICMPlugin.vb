@@ -31,20 +31,6 @@ Imports EwEUtils.Utilities
 ''' Base code that can be used as a template to create a new plug-in.
 ''' </summary>
 ''' <remarks>
-''' <para>This plugin responds to:</para>
-''' <list type="bullet">
-''' <item><description>loading a model,</description>></item>
-''' <item><description>saving a model,</description>></item>
-''' <item><description>closing a model,</description>></item>
-''' <item><description>initialization of the Core,</description>></item>
-''' <item><description>initialization of Ecopath,</description>></item>
-''' <item><description>initialization of Ecosim,</description>></item>
-''' <item><description>initialization of Ecospace.</description>></item>
-''' </list>
-''' <para>In order to run and test this plugin it must be integrated within the EwE6 scientific interface. 
-''' To achieve this, add this project to the EwE6 solution, and reference this project from within the 
-''' ScientificInterface. This ensures that your plug-in will be built with EwE6, and will be loaded by the 
-''' EwE6 plug-in manager when you run EwE6.</para>
 ''' </remarks>
 ''' 
 Public Class cEcospaceResultsWriterICMPlugin
@@ -75,6 +61,7 @@ Public Class cEcospaceResultsWriterICMPlugin
 
     Private SpCodes() As String
     Private RegionCodes() As String
+    Private FleetCodes() As String
     Private dctTypeCodes As Dictionary(Of eVarNameFlags, String)
     Private delim As String
 
@@ -82,7 +69,7 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 #Region "File Naming "
 
-#Region "Implementation of Plugin Points"
+#Region "Implementation of File Naming"
 
 
     Public Function ModelAreaFileName(ByRef FileName As String, DataSourceAsObject As Object, _
@@ -94,6 +81,7 @@ Public Class cEcospaceResultsWriterICMPlugin
             FileName = Me.ToPrefix() + delim + ToRegionFileName(ds, AvgType) + delim + ToFormattedNumber(1) + "-" + ToFormattedNumber(nYears) + ".csv"
 
         Catch ex As Exception
+            Me.LogMessage(ex)
             Return False
         End Try
 
@@ -102,16 +90,29 @@ Public Class cEcospaceResultsWriterICMPlugin
 
     Public Function MapFleetFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
                                      iFlt As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapFleetFileName
-        FileName = Me.ToPrefix() + delim + ToDataTypeCode(varname) + ToFormattedNumber(iFlt) + ToModelMonth(iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
-        Return True
+        Try
+            FileName = Me.ToPrefix() + delim + ToDataTypeCode(varname) + toFleetCode(iFlt) + ToModelMonth(iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
+            Return True
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            Me.LogMessage(ex)
+        End Try
+
+        Return False
     End Function
 
     Public Function MapGroupFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
                                      iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapGroupFileName
+        Try
 
-        FileName = Me.ToPrefix() + delim + ToVarCode(varname, iGrp, iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
-        Return True
+            FileName = Me.ToPrefix() + delim + ToVarCode(varname, iGrp, iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
+            Return True
 
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            Me.LogMessage(ex)
+        End Try
+        Return False
     End Function
 
 #End Region
@@ -187,9 +188,15 @@ Public Class cEcospaceResultsWriterICMPlugin
     End Function
 
 
+    Private Function toFleetCode(iFlt As Integer) As String
+        Return Me.FleetCodes(iFlt)
+    End Function
+
+
     Public Sub Init()
         SpCodes = New String() {"N/A", "JC", "AC", "JA", "AA", "BA", "BC", "JB", "AB", "JT", "AT", "JL", "AL", "JN", "AN", "DE", "DO", "GS", "JM", "AM", "JG", "AG", "KI", "JS", "AS", "MO", "OD", "SP", "SE", "SA", "PH", "JR", "AR", "SV", "BI", "JX", "AX", "JH", "AH", "JE", "AE", "SI", "JF", "AF", "JO", "AO", "JU", "AU", "JP", "AP", "JI", "AI", "JW", "AW", "ZB", "ZP"}
         RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "UTA", "MEL", "LBA", "BRE", "CAS", "CHR"}
+        FleetCodes = New String() {"N/A", "BS", "WS", "BC", "BD", "OY", "RC", "ME"}
 
         dctTypeCodes = New Dictionary(Of eVarNameFlags, String)
         dctTypeCodes.Add(eVarNameFlags.EcospaceMapBiomass, "B")
@@ -295,10 +302,6 @@ Public Class cEcospaceResultsWriterICMPlugin
     End Property
 
 #End Region
-
-#Region " User Interface plug-in implementation "
-
-#End Region ' User Interface plug-in implementation
 
 #Region "IPlugin implementation"
 
