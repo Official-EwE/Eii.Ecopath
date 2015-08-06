@@ -71,7 +71,7 @@ Public Class cEcospaceASCMapResultsWriter
             Dim strm As StreamWriter = Nothing
             Dim strFile As String = ""
 
-            If tsData.iTimeStep <= Me.FirstOutputTimeStep Then
+            If tsData.iTimeStep < Me.FirstOutputTimeStep Then
                 Return
             End If
 
