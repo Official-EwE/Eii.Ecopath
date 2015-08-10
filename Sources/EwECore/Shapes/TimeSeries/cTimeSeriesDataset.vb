@@ -30,11 +30,7 @@ Public Class cTimeSeriesDataset
 
     Private m_lTimeSeries As New List(Of cTimeSeries)
     Private m_nTimeSeries As Integer = 0
-    Private m_iFirstYear As Integer = 0
-    Private m_iNumYears As Integer = 0
     Private m_iNumTimeSeries As Integer = 0
-
-    Private m_TimeseriesInterval As eTSDataSetInterval
 
 #Region " Constructor "
 
@@ -162,31 +158,19 @@ Public Class cTimeSeriesDataset
     ''' Returns the first year in the time series dataset.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property FirstYear() As Integer
-        Get
-            Return m_iFirstYear
-        End Get
-        Friend Set(ByVal value As Integer)
-            Me.m_iFirstYear = value
-        End Set
-    End Property
+    Public Property FirstYear() As Integer = 0
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the number of points in the time series dataset. Data points may
-    ''' be spaced <see cref="eTSDataSetInterval.Annual">annually</see> or 
-    ''' <see cref="eTSDataSetInterval.Monthly">monthly</see>. The size of the 
+    ''' be spaced <see cref="eTSDataSetInterval.Annual">annually</see> or is given for each
+    ''' <see cref="eTSDataSetInterval.TimeStep">time step</see>. The size of the 
     ''' interval can be checked via <see cref="TimeSeriesInterval"/>.
+    ''' <seealso cref="TimeSeriesInterval"/>
+    ''' <seealso cref="eTSDataSetInterval"/>
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property NumPoints() As Integer
-        Get
-            Return Me.m_iNumYears
-        End Get
-        Friend Set(ByVal value As Integer)
-            Me.m_iNumYears = value
-        End Set
-    End Property
+    Public Property NumPoints() As Integer = 0
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -200,14 +184,7 @@ Public Class cTimeSeriesDataset
         End Get
     End Property
 
-    Public Property TimeSeriesInterval As eTSDataSetInterval
-        Get
-            Return Me.m_TimeseriesInterval
-        End Get
-        Set(value As eTSDataSetInterval)
-            Me.m_TimeseriesInterval = value
-        End Set
-    End Property
+    Public Property TimeSeriesInterval As eTSDataSetInterval = eTSDataSetInterval.Annual
 
 #End Region ' Variable via dot(.) operator
 
