@@ -1462,7 +1462,6 @@ Public Class frmEwE6
 
         Dim tsmi As ToolStripMenuItem = Nothing
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
-        Dim strItem As String
 
         Me.ClearScenarioDropdowns()
 
