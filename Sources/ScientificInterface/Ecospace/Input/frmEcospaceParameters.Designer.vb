@@ -73,6 +73,7 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
+            Me.m_cbAnnualOutput = New System.Windows.Forms.CheckBox()
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -322,6 +323,7 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
+            Me.m_gbRunTime.Controls.Add(Me.m_cbAnnualOutput)
             Me.m_gbRunTime.Controls.Add(Me.m_clbAutosave)
             Me.m_gbRunTime.Controls.Add(Me.Label2)
             Me.m_gbRunTime.Controls.Add(Me.m_nudFirstTimeStep)
@@ -342,6 +344,14 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
+            '
+            'm_cbAnnualOutput
+            '
+            resources.ApplyResources(Me.m_cbAnnualOutput, "m_cbAnnualOutput")
+            Me.m_cbAnnualOutput.Checked = True
+            Me.m_cbAnnualOutput.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbAnnualOutput.Name = "m_cbAnnualOutput"
+            Me.m_cbAnnualOutput.UseVisualStyleBackColor = True
             '
             'm_clbAutosave
             '
@@ -723,6 +733,7 @@ Namespace Ecospace
         Private WithEvents Label2 As System.Windows.Forms.Label
         Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Friend WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
+        Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace
