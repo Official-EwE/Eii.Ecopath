@@ -71,15 +71,18 @@ Namespace Ecospace
         Private m_fpSOR As cEwEFormatProvider = Nothing
         Private m_fpMaxIterations As cEwEFormatProvider = Nothing
         Private m_fpUseExact As cEwEFormatProvider = Nothing
+        Private m_fpAnnualOutput As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
+
 
         ' Properties to monitor for setting radio button check states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
+
 
         Private m_fpFirstOutputTimestep As cEwEFormatProvider
 
@@ -115,7 +118,6 @@ Namespace Ecospace
             Me.m_bpEffort = DirectCast(propMan.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
 
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
-
             Me.m_clbAutosave.Items.Clear()
 
             ' -- Autosave. This is potentially confusing --
@@ -166,6 +168,7 @@ Namespace Ecospace
             Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, parms, eVarNameFlags.SOR)
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, parms, eVarNameFlags.MaxIterations)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
+            Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceUseAnnualOutput)
 
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
             Me.UpdateScenarioFormatProviders()
@@ -200,6 +203,7 @@ Namespace Ecospace
                 Me.m_fpMaxIterations.Release()
                 Me.m_fpUseExact.Release()
                 Me.m_fpMovePackets.Release()
+                Me.m_fpAnnualOutput.Release()
 
                 Me.m_fpFirstOutputTimestep.Release()
 
