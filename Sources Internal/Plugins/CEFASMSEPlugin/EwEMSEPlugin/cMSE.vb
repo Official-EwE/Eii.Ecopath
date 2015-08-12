@@ -3580,8 +3580,8 @@ Public Class cMSE
                 TargConsQuota = DetermineQuotas(bioEst, NumberofYearProjecting)
 
                 'DON'T use stock assessment model
-                'Compute the quota on the TRUE(Ecosim) biomass
-                'TargConsQuota = DetermineQuotas(BiomassAtTimestep)
+                'Compute the quota on the Ecosim biomass
+                'TargConsQuota = DetermineQuotas(BiomassAtTimestep, NumberofYearProjecting))
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 For iFleet = 1 To m_core.nFleets
@@ -3775,7 +3775,12 @@ Public Class cMSE
                         'It is part of the stock assessment for practical reasons 
                         '   CV can be included in the interface
                         '   Random number generator needs to be seeded at the same time as the stock assessment model
+                        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                        'WARNING commmented out the implementation error for debugging
+                        'MAKE SURE THIS IS NOT CHECK IN COMMENTED OUT
                         _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                        'REALLY
+                        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                     Else
                         _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                     End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
@@ -3830,7 +3835,7 @@ Public Class cMSE
         Dim iFleet As Integer, Ft As Single
 
         For iFleet = 1 To m_ecosim.EcosimData.nGear
-            Ft += Me.calcCatchRate(BiomassAtT, iFleet, iGrp, t) * (Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp))
+            Ft += Me.calcCatchRate(BiomassAtT, iFleet, iGrp, t) * Me.m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)
         Next
 
         Return Ft
@@ -3842,7 +3847,7 @@ Public Class cMSE
 
         For iFleet = 1 To m_ecosim.EcosimData.nGear
             'Propdiscardtime(iFleet, iGrp) does not include discards that survived
-            Ft += calcCatchRate(BiomassAtT, iFleet, iGrp, t) * (Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp))
+            Ft += calcCatchRate(BiomassAtT, iFleet, iGrp, t) * Me.m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp)
         Next
 
         Return Ft
@@ -4179,12 +4184,9 @@ Public Class cMSE
     End Sub
 
     Private Sub setQModifiers(iTime As Integer)
-
         'ToDo Deal with zeros in input data
         '   This includes zeros for F(t) where there is a baseline catch
         'ToDo PropTotCatchFleet() Make sure including effort in proportion of total catch is correct
-        'ToDo Make sure we don't need to set BaseCatchRate() back to its original value at the end of the run
-        '   Right now I think it gets re-set in the run loop
 
         'Only set the Q Modifiers once
         'At the start of the first time step of the forecast
@@ -4197,8 +4199,8 @@ Public Class cMSE
 
         'Effort at time
         Dim Et As Double
-        'base q (catchability)
-        Dim Q0 As Double
+        'F Calcualted from baseline values at t
+        Dim FtCalc As Double
 
         'fishing mortality at time  
         'F(t) = q0 * e(t) or Forced F at t
@@ -4221,19 +4223,27 @@ Public Class cMSE
                     PropCatchFleet = Me.PropTotCatchFleet(it, iflt, igrp)
                     'Debug.Assert(PropCatchFleet = 1, "Propotion of total catch = " + PropCatchFleet.ToString)
 
+                    'Fishing mortality at this time step from the time series or calculated from effort. We don't know which
                     Ft = Me._simdata.FishRateNo(igrp, it) * PropCatchFleet
+
                     Et = Me._simdata.FishRateGear(iflt, it) + 1.0E-20
 
-                    Q0 = (Me._simdata.FishMGear(iflt, igrp) + 1.0E-20) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
+                    'F at the current timestep calculated from baseline values
+                    FtCalc = Me._simdata.FishMGear(iflt, igrp) * Me._simdata.FishRateGear(iflt, it) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
 
                     'Ratio of F from time series to F computed from Effort
-                    'If there is no timeseries or the F and Effort timeseries are synchronised this will 1
-                    Me.m_QModifier(iflt, igrp) = CSng(Ft / (Q0 * Et))
+                    'If there is no timeseries or the F and Effort timeseries are synchronised then m_QModifier will be one
+                    Me.m_QModifier(iflt, igrp) = CSng(Ft / FtCalc)
                     If Me.m_QModifier(iflt, igrp) = 0 Then Me.m_QModifier(iflt, igrp) = 1.0
 
-                    Debug.Assert(Math.Round(Me.m_QModifier(iflt, igrp), 2) = 1, "setQModifiers() has changed baseline Q's.")
+                    Debug.Assert(Me.BaseCatchRate(iflt, igrp) <> 0.666)
 
-                    'Modify both the Ecosim baseline F and MSE baseline F / Catch rate.
+                    ' Debug.Assert((Math.Round(Me.m_QModifier(iflt, igrp), 2) = 1), "setQModifiers() has changed baseline Q's.")
+                    If (Math.Round(Me.m_QModifier(iflt, igrp), 2) <> 1) Then
+                        System.Console.WriteLine("Flt=" + iflt.ToString + "," + "Grp=" + igrp.ToString + "," + Me.m_QModifier(iflt, igrp).ToString + ",")
+                    End If
+
+                    'Modify both the Ecosim baseline F and MSE baseline F(Catch rate includes discards).
                     'Ecosim F base fishing mortality rate, this is mortality only it does not include discards that survived.
                     Me._simdata.FishMGear(iflt, igrp) *= Me.m_QModifier(iflt, igrp)
                     'MSE's base catch rate, this includes discards that survived, so it's not just fishing mortality
@@ -4260,13 +4270,13 @@ Public Class cMSE
         Debug.Assert(iTime = OriginalNTimesteps, "Oppss PropTotCatchFleet(t) called at the wrong time step.")
 
         For iflt As Integer = 1 To Me.m_core.nFleets
-            sumCatch += (Me._pathdata.Landing(iflt, iGroup) + Me._pathdata.Discard(iflt, iGroup) * Me._pathdata.PropDiscardMort(iflt, iGroup)) * Me._simdata.FishRateGear(iflt, iTime)
+            sumCatch += Me._simdata.FishMGear(iflt, iGroup) * Me._simdata.FishRateGear(iflt, iTime) * (Me._simdata.PropLandedTime(iflt, iGroup) + Me._simdata.Propdiscardtime(iflt, iGroup))
         Next
-        Dim catchByFleet As Single = (Me._pathdata.Landing(iFleet, iGroup) + Me._pathdata.Discard(iFleet, iGroup) * Me._pathdata.PropDiscardMort(iFleet, iGroup)) * Me._simdata.FishRateGear(iFleet, iTime)
+        Dim catchByFleet As Single = Me._simdata.FishMGear(iFleet, iGroup) * Me._simdata.FishRateGear(iFleet, iTime) * (Me._simdata.PropLandedTime(iFleet, iGroup) + Me._simdata.Propdiscardtime(iFleet, iGroup))
 
         sumCatch += CSng(1.0E-20)
 
-        'Proportion of total catch caught by this fleet
+        'Proportion of total catch caught by this fleet at this timestep
         Return catchByFleet / sumCatch
 
     End Function
