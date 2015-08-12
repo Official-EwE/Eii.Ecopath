@@ -3428,7 +3428,9 @@ Namespace Ecosim
                 For j = 1 To m_EPData.NumGroups
                     m_Data.FishMGear(i, j) = 0
                     If m_EPData.fCatch(j) > 0 Then
-                        m_Data.FishMGear(i, j) = m_Data.Fish1(j) * (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_EPData.fCatch(j)
+                        'JB 12-Aug-2015 don't include the discards that survived in FishMGear() 
+                        'm_Data.FishMGear(i, j) = m_Data.Fish1(j) * (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_EPData.fCatch(j)
+                        m_Data.FishMGear(i, j) = m_Data.Fish1(j) * (m_EPData.Landing(i, j) + (m_EPData.Discard(i, j) * m_EPData.PropDiscardMort(i, j))) / m_EPData.fCatch(j)
                     End If
                 Next
             Next
