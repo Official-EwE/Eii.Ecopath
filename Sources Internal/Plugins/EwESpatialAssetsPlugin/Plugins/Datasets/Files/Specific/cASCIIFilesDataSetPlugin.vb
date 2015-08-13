@@ -206,7 +206,7 @@ Namespace SpatialData
             While (Not reader.EndOfStream) And (Not bIsComplete) And (Not bIsError)
 
                 ' Read a line
-                strLine = reader.ReadLine()
+                strLine = reader.ReadLine().Trim
 
                 ' Be nice
                 If Not String.IsNullOrWhiteSpace(strLine) Then
