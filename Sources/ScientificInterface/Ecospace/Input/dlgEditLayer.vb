@@ -467,7 +467,7 @@ Namespace Ecospace.Basemap.Layers
 
             While (String.IsNullOrWhiteSpace(strLine) Or (Not cStringUtils.BeginsWith(strLine, "NODATA_value", True))) And _
                   (Not reader.EndOfStream)
-                strLine = reader.ReadLine
+                strLine = reader.ReadLine.Trim
             End While
 
         End Sub
