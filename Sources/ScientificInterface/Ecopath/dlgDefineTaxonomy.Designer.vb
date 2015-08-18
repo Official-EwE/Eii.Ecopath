@@ -164,10 +164,12 @@ Partial Class dlgDefineTaxa
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridGroups.CustomSort = False
+        Me.m_gridGroups.DataName = "grid content"
         resources.ApplyResources(Me.m_gridGroups, "m_gridGroups")
         Me.m_gridGroups.FixedColumnWidths = False
         Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridGroups.GridToolTipActive = True
+        Me.m_gridGroups.IsLayoutSuspended = False
         Me.m_gridGroups.Name = "m_gridGroups"
         Me.m_gridGroups.SelectedTaxon = Nothing
         Me.m_gridGroups.ShowCodes = False
@@ -202,7 +204,7 @@ Partial Class dlgDefineTaxa
         '
         'm_gridResults
         '
-        Me.m_gridResults.AllowBlockSelect = True
+        Me.m_gridResults.AllowBlockSelect = False
         resources.ApplyResources(Me.m_gridResults, "m_gridResults")
         Me.m_gridResults.AutoSizeMinHeight = 10
         Me.m_gridResults.AutoSizeMinWidth = 10
@@ -214,10 +216,13 @@ Partial Class dlgDefineTaxa
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridResults.CustomSort = False
+        Me.m_gridResults.DataName = "grid content"
         Me.m_gridResults.FixedColumnWidths = False
         Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridResults.GridToolTipActive = True
+        Me.m_gridResults.IsLayoutSuspended = False
         Me.m_gridResults.Name = "m_gridResults"
+        Me.m_gridResults.ShowCodes = False
         Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
