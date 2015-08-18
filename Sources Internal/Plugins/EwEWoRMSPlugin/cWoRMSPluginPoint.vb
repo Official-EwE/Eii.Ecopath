@@ -95,8 +95,9 @@ Public Class cWoRMSPluginPoint
         binding.AllowCookies = False
         binding.BypassProxyOnLocal = False
         binding.HostNameComparisonMode = ServiceModel.HostNameComparisonMode.StrongWildcard
-        binding.MaxBufferSize = 65536
+        binding.MaxBufferSize = 524288
         binding.MaxBufferPoolSize = 524288
+        binding.MaxReceivedMessageSize = 524288
         binding.MessageEncoding = ServiceModel.WSMessageEncoding.Text
         binding.TextEncoding = System.Text.Encoding.UTF8
         binding.TransferMode = ServiceModel.TransferMode.Buffered
@@ -370,13 +371,15 @@ Public Class cWoRMSPluginPoint
             ' Me.m_bSearching = False
         Catch exCfg As Configuration.ConfigurationException
             ' NOP
-        Catch ex As SoapException
+        Catch exSoap As SoapException
             ' Send message cross-threaded
-            Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", ex.Message), _
+            Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", exSoap.Message), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+        Catch exComm As ServiceModel.CommunicationException
+            ' Too many results! Not sure how to handle this
+        Catch exGeneral As Exception
+            Debug.Assert(False, exGeneral.Message)
         End Try
 
         If (lRecords IsNot Nothing) Then
