@@ -21,13 +21,11 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-
-Public Class cEcospaceFisheryHabitatsWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cCapacityCalTypeSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -37,24 +35,23 @@ Public Class cEcospaceFisheryHabitatsWrapper
 
         MyBase.Init()
 
-        For iFlt As Integer = 1 To Me.m_core.nFleets
-            Me.m_objects.Add(Me.Core.EcospaceFleets(iFlt))
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_objects.Add(Me.Core.EcospaceGroups(igrp))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.HabitatFishery)
-
+        Me.m_variables.Add(eVarNameFlags.EcospaceCapCalType)
 
     End Sub
 
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults(Me.Core.nHabitats - 1)
+        Return MyBase.getVarResults()
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcospaceFisheryHabitat"
+            Return "EcospaceGroupCapacityModel"
         End Get
     End Property
 

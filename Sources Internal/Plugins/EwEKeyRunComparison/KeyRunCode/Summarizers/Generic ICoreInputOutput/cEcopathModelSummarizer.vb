@@ -24,11 +24,22 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcosimInputWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcopathModelSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
+    End Sub
+
+    Public Overrides Sub Init()
+
+        MyBase.Init()
+
+        Me.m_objects.Add(Me.Core.EwEModel)
+
+        Me.m_variables.Add(eVarNameFlags.Area)
+        Me.m_variables.Add(eVarNameFlags.EcopathFirstYear)
+        Me.m_variables.Add(eVarNameFlags.UnitCurrency)
 
     End Sub
 
@@ -36,38 +47,11 @@ Public Class cEcosimInputWrapper
         Return MyBase.getVarResults()
     End Function
 
-    Public Overrides Sub Init()
-
-        MyBase.Init()
-
-        For igrp As Integer = 1 To Me.m_core.nGroups
-            Me.m_objects.Add(Me.Core.EcoSimGroupInputs(igrp))
-        Next
-
-        Me.m_variables.Add(eVarNameFlags.MaxRelFeedingTime)
-        Me.m_variables.Add(eVarNameFlags.FeedingTimeAdjRate)
-        Me.m_variables.Add(eVarNameFlags.OtherMortFeedingTime)
-        Me.m_variables.Add(eVarNameFlags.PredEffectFeedingTime)
-        Me.m_variables.Add(eVarNameFlags.DenDepCatchability)
-        Me.m_variables.Add(eVarNameFlags.QBMaxQBio)
-        Me.m_variables.Add(eVarNameFlags.SwitchingPower)
-
-        Me.m_variables.Add(eVarNameFlags.SalinityOpt)
-        Me.m_variables.Add(eVarNameFlags.SalinitySpreadLeft)
-
-        Me.m_variables.Add(eVarNameFlags.SalinitySpreadRight)
-
-        Me.m_variables.Add(eVarNameFlags.TemperatureOpt)
-        Me.m_variables.Add(eVarNameFlags.TemperatureSpreadLeft)
-        Me.m_variables.Add(eVarNameFlags.TemperatureSpreadRight)
-
-    End Sub
-
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcosimGroupInfo"
+            Return "EcopathModelParameters"
         End Get
     End Property
 

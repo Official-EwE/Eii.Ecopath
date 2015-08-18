@@ -25,43 +25,34 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cEcosimFleetSizeDynamicsWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcospaceHabitatSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
     End Sub
 
     Public Overrides Sub Init()
+
         MyBase.Init()
 
-        For iFlt As Integer = 1 To Me.m_core.nFleets
-            Me.m_objects.Add(Me.Core.EcosimFleetInputs(iFlt))
+        For iGrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_objects.Add(Me.Core.EcospaceGroups(iGrp))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.EPower)
-        Me.m_variables.Add(eVarNameFlags.PcapBase)
-        Me.m_variables.Add(eVarNameFlags.CapDepreciate)
-        Me.m_variables.Add(eVarNameFlags.CapBaseGrowth)
+        Me.m_variables.Add(eVarNameFlags.PreferredHabitat)
 
     End Sub
 
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        If Me.Core.EcoSimModelParameters.PredictEffort Then
-            Return MyBase.getVarResults()
-        Else
-            'PredictEffort Turned off
-            Dim results As New List(Of cHashValues)
-            results.Add(New cHashValues(Me.Name, eVarNameFlags.PredictEffort, "False"))
-            Return results
-        End If
+        Return MyBase.getVarResults(Me.m_core.nHabitats - 1)
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcosimFleetSizeDynamics"
+            Return "EcospaceHabitatForaging"
         End Get
     End Property
 

@@ -21,11 +21,13 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cEcopathFleetDefinitionWrapper
-    Inherits cCoreIOWrapperBase
+
+Public Class cEcospaceFisheryHabitatSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -36,25 +38,22 @@ Public Class cEcopathFleetDefinitionWrapper
         MyBase.Init()
 
         For iFlt As Integer = 1 To Me.m_core.nFleets
-            Me.m_objects.Add(Me.Core.FleetInputs(iFlt))
+            Me.m_objects.Add(Me.Core.EcospaceFleets(iFlt))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.FixedCost)
-        Me.m_variables.Add(eVarNameFlags.CPUECost)
-        Me.m_variables.Add(eVarNameFlags.SailCost)
+        Me.m_variables.Add(eVarNameFlags.HabitatFishery)
 
     End Sub
 
-
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults()
+        Return MyBase.GetVarResults(Me.Core.nHabitats - 1)
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcopathFleetDefinition"
+            Return "EcospaceFisheryHabitat"
         End Get
     End Property
 

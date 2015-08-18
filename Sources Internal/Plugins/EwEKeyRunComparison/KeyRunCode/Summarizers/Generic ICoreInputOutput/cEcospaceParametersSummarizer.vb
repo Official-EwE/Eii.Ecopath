@@ -21,12 +21,11 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cEcospaceDispersalWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcospaceParametersSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -36,31 +35,33 @@ Public Class cEcospaceDispersalWrapper
 
         MyBase.Init()
 
-        For iGrp As Integer = 1 To Me.m_core.nGroups
-            Me.m_objects.Add(Me.Core.EcospaceGroups(iGrp))
-        Next
+        Me.m_objects.Add(Me.Core.EcospaceModelParameters)
 
-        Me.m_variables.Add(eVarNameFlags.MVel)
-        Me.m_variables.Add(eVarNameFlags.RelMoveBad)
-        Me.m_variables.Add(eVarNameFlags.RelVulBad)
-        Me.m_variables.Add(eVarNameFlags.EatEffBad)
-        Me.m_variables.Add(eVarNameFlags.IsAdvected)
-        Me.m_variables.Add(eVarNameFlags.IsMigratory)
-        Me.m_variables.Add(eVarNameFlags.MigrationConcRow)
-        Me.m_variables.Add(eVarNameFlags.MigrationConcCol)
-        Me.m_variables.Add(eVarNameFlags.BarrierAvoidanceWeight)
+        Me.m_variables.Add(eVarNameFlags.UseIBM)
+        Me.m_variables.Add(eVarNameFlags.UseNewMultiStanza)
+        Me.m_variables.Add(eVarNameFlags.AdjustSpace)
+        Me.m_variables.Add(eVarNameFlags.PredictEffort)
+        Me.m_variables.Add(eVarNameFlags.ConSimOnEcoSpace)
+        Me.m_variables.Add(eVarNameFlags.PacketsMultiplier)
+        Me.m_variables.Add(eVarNameFlags.TotalTime)
+        Me.m_variables.Add(eVarNameFlags.NumTimeStepsPerYear)
+        Me.m_variables.Add(eVarNameFlags.Tolerance)
+        Me.m_variables.Add(eVarNameFlags.SOR)
+        Me.m_variables.Add(eVarNameFlags.MaxIterations)
+        Me.m_variables.Add(eVarNameFlags.UseExact)
+        Me.m_variables.Add(eVarNameFlags.EcospaceIBMMovePacketOnStanza)
 
     End Sub
 
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults(Me.m_core.nGroups)
+        Return MyBase.getVarResults()
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcospaceDispersal"
+            Return "EcospaceParameters"
         End Get
     End Property
 

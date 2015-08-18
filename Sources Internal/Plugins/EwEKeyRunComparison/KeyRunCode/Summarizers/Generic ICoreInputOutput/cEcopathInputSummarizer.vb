@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcospaceParamatersWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcopathInputSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -35,21 +35,27 @@ Public Class cEcospaceParamatersWrapper
 
         MyBase.Init()
 
-        Me.m_objects.Add(Me.Core.EcospaceModelParameters)
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_objects.Add(Me.Core.EcoPathGroupInputs(igrp))
+        Next
 
-        Me.m_variables.Add(eVarNameFlags.UseIBM)
-        Me.m_variables.Add(eVarNameFlags.UseNewMultiStanza)
-        Me.m_variables.Add(eVarNameFlags.AdjustSpace)
-        Me.m_variables.Add(eVarNameFlags.PredictEffort)
-        Me.m_variables.Add(eVarNameFlags.ConSimOnEcoSpace)
-        Me.m_variables.Add(eVarNameFlags.PacketsMultiplier)
-        Me.m_variables.Add(eVarNameFlags.TotalTime)
-        Me.m_variables.Add(eVarNameFlags.NumTimeStepsPerYear)
-        Me.m_variables.Add(eVarNameFlags.Tolerance)
-        Me.m_variables.Add(eVarNameFlags.SOR)
-        Me.m_variables.Add(eVarNameFlags.MaxIterations)
-        Me.m_variables.Add(eVarNameFlags.UseExact)
-        Me.m_variables.Add(eVarNameFlags.EcospaceIBMMovePacketOnStanza)
+        Me.m_variables.Add(eVarNameFlags.Area)
+        Me.m_variables.Add(eVarNameFlags.BiomassAreaInput)
+        Me.m_variables.Add(eVarNameFlags.PBInput)
+        Me.m_variables.Add(eVarNameFlags.QBInput)
+        Me.m_variables.Add(eVarNameFlags.EEInput)
+        Me.m_variables.Add(eVarNameFlags.GEInput)
+        Me.m_variables.Add(eVarNameFlags.GS)
+
+        Me.m_variables.Add(eVarNameFlags.BioAccum)
+        Me.m_variables.Add(eVarNameFlags.Immig)
+        Me.m_variables.Add(eVarNameFlags.Emig)
+        Me.m_variables.Add(eVarNameFlags.BioAccumRate)
+        Me.m_variables.Add(eVarNameFlags.EmigRate)
+        Me.m_variables.Add(eVarNameFlags.OtherMortInput)
+        Me.m_variables.Add(eVarNameFlags.DetImp)
+
+        Me.m_variables.Add(eVarNameFlags.NonMarketValue)
 
     End Sub
 
@@ -61,7 +67,7 @@ Public Class cEcospaceParamatersWrapper
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcospaceParameters"
+            Return "EcopathBasicInputs"
         End Get
     End Property
 

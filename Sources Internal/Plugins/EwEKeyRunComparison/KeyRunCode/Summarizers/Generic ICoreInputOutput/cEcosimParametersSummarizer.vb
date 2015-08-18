@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcopathDiscardFateWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcosimParametersSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -35,25 +35,31 @@ Public Class cEcopathDiscardFateWrapper
 
         MyBase.Init()
 
-        For iFlt As Integer = 1 To Me.m_core.nFleets
-            Me.m_objects.Add(Me.Core.FleetInputs(iFlt))
-        Next
+        Me.m_objects.Add(Me.Core.EcoSimModelParameters)
 
-        Me.m_variables.Add(eVarNameFlags.DiscardFate)
+        Me.m_variables.Add(eVarNameFlags.EcoSimNYears)
+        Me.m_variables.Add(eVarNameFlags.NutBaseFreeProp)
+
+        ' The forcing numbers are already checked in cEcosimEnvForcingSummarizer, including the shape of the attached functions
+        'Me.m_variables.Add(eVarNameFlags.NutForceFunctionNumber)
+        'Me.m_variables.Add(eVarNameFlags.SalinityForceFunctionNumber)
+        'Me.m_variables.Add(eVarNameFlags.TemperatureForceFunctionNumber)
+
+        Me.m_variables.Add(eVarNameFlags.PredictEffort)
+        Me.m_variables.Add(eVarNameFlags.UseVarPQ)
+        Me.m_variables.Add(eVarNameFlags.ForagingTimeLowerLimit)
 
     End Sub
 
-
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Dim nDetritus As Integer = Me.Core.nGroups - Me.Core.nLivingGroups
-        Return MyBase.getVarResults(nDetritus)
+        Return MyBase.getVarResults()
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcopathDiscardFate"
+            Return "EcosimParameters"
         End Get
     End Property
 

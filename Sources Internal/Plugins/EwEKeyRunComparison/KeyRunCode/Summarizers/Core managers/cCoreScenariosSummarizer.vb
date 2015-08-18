@@ -21,46 +21,37 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cEcopathFleetWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cCoreScenariosSummarizer
+    Implements IHashSummarizer
 
-    Public Sub New(core As cCore)
-        MyBase.New(core)
+    Private m_core As cCore
+
+    Public Sub New(Core As cCore)
+        Me.m_core = Core
     End Sub
 
-    Public Overrides Sub Init()
-
-        MyBase.Init()
-
-        For iFlt As Integer = 1 To Me.m_core.nFleets
-            Me.m_objects.Add(Me.Core.FleetInputs(iFlt))
-        Next
-
-        Me.m_variables.Add(eVarNameFlags.Landings)
-        Me.m_variables.Add(eVarNameFlags.Discards)
-
-        Me.m_variables.Add(eVarNameFlags.DiscardMortality)
-        Me.m_variables.Add(eVarNameFlags.OffVesselPrice)
-
-
-    End Sub
-
-
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults(Me.Core.nGroups)
+    Public Function Name() As String Implements IHashSummarizer.Name
+        Return "EcopathActiveScenarios"
     End Function
 
-#Region " Internals "
+    Public Sub Init() Implements IHashSummarizer.Init
 
-    Protected Overrides ReadOnly Property ObjectDescriptor As String
-        Get
-            Return "EcopathLandingsDiscards"
-        End Get
-    End Property
+    End Sub
 
-#End Region ' Internals
+    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+        Dim sbSummary As New Text.StringBuilder()
+        Dim lstHashValues As New List(Of cHashValues)
+
+        sbSummary.Append("EcosimScenario," & cStringUtils.ToCSVField(Me.m_core.ActiveEcosimScenarioIndex))
+        sbSummary.Append("EcospaceScenario," & cStringUtils.ToCSVField(Me.m_core.ActiveEcospaceScenarioIndex))
+
+        lstHashValues.Add(New cHashValues(Me.Name, "Scenarios", sbSummary.ToString))
+        Return lstHashValues
+
+    End Function
 
 End Class

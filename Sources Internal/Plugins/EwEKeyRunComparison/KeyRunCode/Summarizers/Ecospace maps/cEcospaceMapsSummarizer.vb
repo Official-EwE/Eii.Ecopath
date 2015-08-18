@@ -29,7 +29,7 @@ Imports EwEUtils.Utilities
 ''' <summary>
 ''' Base class for generating hash codes for Ecospace maps.
 ''' </summary>
-Public Class cEcospaceMapsWrapper
+Public Class cEcospaceMapsSummarizer
     Implements IHashSummarizer
 
 #Region " Protected vars "
@@ -70,7 +70,7 @@ Public Class cEcospaceMapsWrapper
         Me.m_lVars.Add(eVarNameFlags.LayerWind)
         Me.m_lVars.Add(eVarNameFlags.LayerMPA)
 
-        ' Used driver layers are hashed in cEcospaceCapacityWrapper
+        ' Used driver layers are hashed in cEcospaceCapacitySummarizer
         'Me.m_lVars.Add(eVarNameFlags.LayerDriver)
 
         ' Capacity output maps are not hashed right now. That could be wrong?

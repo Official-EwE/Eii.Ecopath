@@ -25,8 +25,8 @@ Imports System.Text
 
 #End Region ' Imports
 
-Public Class cStanzaWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cStanzaSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)

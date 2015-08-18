@@ -82,7 +82,7 @@ Public Class cCompareManager
     Private m_dctKeyRunValues As Dictionary(Of String, cHashValues)
     Private m_dctCurValues As Dictionary(Of String, cHashValues)
 
-    Private m_lHashObjects As List(Of IHashSummarizer)
+    Private m_lSummarizers As List(Of IHashSummarizer)
     Private m_strKeyRunFile As String = ""
 
     Private m_Results As cHashResults
@@ -106,7 +106,7 @@ Public Class cCompareManager
 
         Me.m_dctCurValues = New Dictionary(Of String, cHashValues)
         Me.m_dctKeyRunValues = New Dictionary(Of String, cHashValues)
-        Me.m_lHashObjects = New List(Of IHashSummarizer)
+        Me.m_lSummarizers = New List(Of IHashSummarizer)
         Me.m_lErrors = New List(Of String)
 
     End Sub
@@ -414,17 +414,17 @@ Public Class cCompareManager
 
         cApplicationStatusNotifier.StartProgress(Me.m_core)
 
-        Dim n As Integer = Me.m_lHashObjects.Count
+        Dim n As Integer = Me.m_lSummarizers.Count
         For i As Integer = 0 To n - 1
 
-            Dim wrapper As IHashSummarizer = Me.m_lHashObjects(i)
+            Dim summarizer As IHashSummarizer = Me.m_lSummarizers(i)
 
             cApplicationStatusNotifier.UpdateProgress(Me.m_core, _
-                                                      cStringUtils.Localize(My.Resources.PROGRESS_HASHING, wrapper.Name), _
+                                                      cStringUtils.Localize(My.Resources.PROGRESS_HASHING, summarizer.Name), _
                                                       CSng((i + 1) / n))
 
             Try
-                For Each hash As cHashValues In wrapper.HashValues()
+                For Each hash As cHashValues In summarizer.HashValues()
                     'this is a coding issue you have dulicated one of the hash IDs
                     Debug.Assert(Not Me.m_dctCurValues.ContainsKey(hash.Key), "Oh my! You're trying to add a duplicate key to the current model dictionary.")
                     Me.m_dctCurValues.Add(hash.Key, hash)
@@ -448,54 +448,52 @@ Public Class cCompareManager
         'Clear out any old results
         Me.m_dctCurValues.Clear()
         ' Clear out hash objects 
-        Me.m_lHashObjects.Clear()
+        Me.m_lSummarizers.Clear()
 
         '-- Core Scenarios --
-        m_lHashObjects.Add(New cCoreScenariosWrapper(Me.Core))
+        m_lSummarizers.Add(New cCoreScenariosSummarizer(Me.Core))
 
         ' -- Ecopath --
-        m_lHashObjects.Add(New cEcopathModelWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcopathInputWrapper(Me.Core))
-        'Moved all Ecopath variables to inputs cEcopathInputWrapper 
-        'm_lHashObjects.Add(New cEcopathOutputWrapper(Me.Core))
-        m_lHashObjects.Add(New cDietCompWrapper(Me.Core))
-        m_lHashObjects.Add(New cDetritusFateWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcopathFleetDefinitionWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcopathFleetWrapper(Me.Core))
+        m_lSummarizers.Add(New cEcopathModelSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcopathInputSummarizer(Me.Core))
+        m_lSummarizers.Add(New cDietCompSummarizer(Me.Core))
+        m_lSummarizers.Add(New cDetritusFateSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcopathFleetDefinitionSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcopathFleetSummarizer(Me.Core))
 
-        m_lHashObjects.Add(New cEcopathDiscardFateWrapper(Me.Core))
+        m_lSummarizers.Add(New cEcopathDiscardFateSummarizer(Me.Core))
 
         ' -- Stanza --
-        m_lHashObjects.Add(New cStanzaWrapper(Me.Core))
-        m_lHashObjects.Add(New cStanzaLifestageWrapper(Me.Core))
+        m_lSummarizers.Add(New cStanzaSummarizer(Me.Core))
+        m_lSummarizers.Add(New cStanzaLifestageSummarizer(Me.Core))
 
         ' -- Ecosim --
-        m_lHashObjects.Add(New cEcosimParamatersWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimEnvForcingWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimForcingFunctionWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimInputWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimEffortWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimMortalityWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimVulnerabilitiesWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimMediationWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimPriceElasticityWrapper(Me.Core))
-        m_lHashObjects.Add(New cTimeSeriesWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcosimFleetSizeDynamicsWrapper(Me.Core))
+        m_lSummarizers.Add(New cEcosimParametersSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimEnvForcingSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimForcingFunctionSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimInputSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimEffortSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimMortalitySummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimVulnerabilitiesSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimMediationSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimPriceElasticitySummarizer(Me.Core))
+        m_lSummarizers.Add(New cTimeSeriesSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcosimFleetSizeDynamicsSummarizer(Me.Core))
 
         ' -- Ecospace --
-        m_lHashObjects.Add(New cEcospaceParamatersWrapper(Me.Core))
-        m_lHashObjects.Add(New cCapacityCalTypeWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcopaceCapacityWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcospaceHabitatWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcospaceDispersalWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcospaceFisheryWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcospaceFisheryHabitatsWrapper(Me.Core))
-        m_lHashObjects.Add(New cEcospaceMapsWrapper(Me.Core))
-        m_lHashObjects.Add(New cSpatialTemporalConfigurationWrapper(Me.Core))
+        m_lSummarizers.Add(New cEcospaceParametersSummarizer(Me.Core))
+        m_lSummarizers.Add(New cCapacityCalTypeSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcospaceCapacitySummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcospaceHabitatSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcospaceDispersalSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcospaceFisherySummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcospaceFisheryHabitatSummarizer(Me.Core))
+        m_lSummarizers.Add(New cEcospaceMapsSummarizer(Me.Core))
+        m_lSummarizers.Add(New cSpatialTemporalConfigurationSummarizer(Me.Core))
 
         ' -- Give'r --
-        For Each wrapper As IHashSummarizer In m_lHashObjects
-            wrapper.Init()
+        For Each summarizer As IHashSummarizer In m_lSummarizers
+            summarizer.Init()
         Next
 
     End Sub

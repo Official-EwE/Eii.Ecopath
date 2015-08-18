@@ -26,7 +26,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public MustInherit Class cCoreIOWrapperBase
+Public MustInherit Class cCoreIOSummarizerBase
     Implements IHashSummarizer
 
 #Region " Protected variables "
@@ -112,7 +112,7 @@ Public MustInherit Class cCoreIOWrapperBase
     ''' Get variable values for a variable with one dimension.
     ''' </summary>
     ''' <param name="n">'Core counter'</param>
-    Protected Function getVarResults(ByVal n As Integer) As List(Of cHashValues)
+    Protected Function GetVarResults(ByVal n As Integer) As List(Of cHashValues)
 
         Dim sb As New StringBuilder()
         Dim lstResults As New List(Of cHashValues)

@@ -24,12 +24,17 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcosimVulnerabilitiesWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcosimInputSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
+
     End Sub
+
+    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
+        Return MyBase.getVarResults()
+    End Function
 
     Public Overrides Sub Init()
 
@@ -39,19 +44,30 @@ Public Class cEcosimVulnerabilitiesWrapper
             Me.m_objects.Add(Me.Core.EcoSimGroupInputs(igrp))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.VulMult)
+        Me.m_variables.Add(eVarNameFlags.MaxRelFeedingTime)
+        Me.m_variables.Add(eVarNameFlags.FeedingTimeAdjRate)
+        Me.m_variables.Add(eVarNameFlags.OtherMortFeedingTime)
+        Me.m_variables.Add(eVarNameFlags.PredEffectFeedingTime)
+        Me.m_variables.Add(eVarNameFlags.DenDepCatchability)
+        Me.m_variables.Add(eVarNameFlags.QBMaxQBio)
+        Me.m_variables.Add(eVarNameFlags.SwitchingPower)
+
+        Me.m_variables.Add(eVarNameFlags.SalinityOpt)
+        Me.m_variables.Add(eVarNameFlags.SalinitySpreadLeft)
+
+        Me.m_variables.Add(eVarNameFlags.SalinitySpreadRight)
+
+        Me.m_variables.Add(eVarNameFlags.TemperatureOpt)
+        Me.m_variables.Add(eVarNameFlags.TemperatureSpreadLeft)
+        Me.m_variables.Add(eVarNameFlags.TemperatureSpreadRight)
 
     End Sub
-
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults(Me.m_core.nGroups)
-    End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcosimVulnerabilities"
+            Return "EcosimGroupInfo"
         End Get
     End Property
 

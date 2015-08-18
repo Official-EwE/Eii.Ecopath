@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cDetritusFateWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cDietCompSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -35,24 +35,23 @@ Public Class cDetritusFateWrapper
 
         MyBase.Init()
 
-        For igrp As Integer = 1 To Me.m_core.nGroups
-            Me.m_objects.Add(Me.Core.EcoPathGroupInputs(igrp))
+        For iGrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_objects.Add(Me.Core.EcoPathGroupInputs(iGrp))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.DetritusFate)
+        Me.m_variables.Add(eVarNameFlags.DietComp)
 
     End Sub
 
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Dim nDetritus As Integer = Me.Core.nGroups - Me.Core.nLivingGroups
-        Return MyBase.getVarResults(nDetritus)
+        Return MyBase.GetVarResults(Me.Core.nGroups)
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcopathDetritusFate"
+            Return "EcopathDietComposition"
         End Get
     End Property
 

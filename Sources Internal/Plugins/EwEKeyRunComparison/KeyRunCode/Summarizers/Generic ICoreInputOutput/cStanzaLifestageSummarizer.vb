@@ -26,7 +26,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cStanzaLifestageWrapper
+Public Class cStanzaLifestageSummarizer
     Implements IHashSummarizer
 
     Private m_core As cCore

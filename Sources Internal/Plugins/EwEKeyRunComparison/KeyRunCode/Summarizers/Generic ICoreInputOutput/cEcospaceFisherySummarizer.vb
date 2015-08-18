@@ -21,11 +21,12 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cEcosimParamatersWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcospaceFisherySummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -35,19 +36,12 @@ Public Class cEcosimParamatersWrapper
 
         MyBase.Init()
 
-        Me.m_objects.Add(Me.Core.EcoSimModelParameters)
+        For iFlt As Integer = 1 To Me.m_core.nFleets
+            Me.m_objects.Add(Me.Core.EcospaceFleets(iFlt))
+        Next
 
-        Me.m_variables.Add(eVarNameFlags.EcoSimNYears)
-        Me.m_variables.Add(eVarNameFlags.NutBaseFreeProp)
-
-        ' The forcing numbers are already checked in cEcosimEnvForcingWrapper, including the shape of the attached functions
-        'Me.m_variables.Add(eVarNameFlags.NutForceFunctionNumber)
-        'Me.m_variables.Add(eVarNameFlags.SalinityForceFunctionNumber)
-        'Me.m_variables.Add(eVarNameFlags.TemperatureForceFunctionNumber)
-
-        Me.m_variables.Add(eVarNameFlags.PredictEffort)
-        Me.m_variables.Add(eVarNameFlags.UseVarPQ)
-        Me.m_variables.Add(eVarNameFlags.ForagingTimeLowerLimit)
+        Me.m_variables.Add(eVarNameFlags.EffectivePower)
+        Me.m_variables.Add(eVarNameFlags.SEmult)
 
     End Sub
 
@@ -59,7 +53,7 @@ Public Class cEcosimParamatersWrapper
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcosimParameters"
+            Return "EcospaceFishery"
         End Get
     End Property
 

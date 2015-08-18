@@ -21,11 +21,12 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class cEcopathModelWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcospaceDispersalSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -35,23 +36,31 @@ Public Class cEcopathModelWrapper
 
         MyBase.Init()
 
-        Me.m_objects.Add(Me.Core.EwEModel)
+        For iGrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_objects.Add(Me.Core.EcospaceGroups(iGrp))
+        Next
 
-        Me.m_variables.Add(eVarNameFlags.Area)
-        Me.m_variables.Add(eVarNameFlags.EcopathFirstYear)
-        Me.m_variables.Add(eVarNameFlags.UnitCurrency)
+        Me.m_variables.Add(eVarNameFlags.MVel)
+        Me.m_variables.Add(eVarNameFlags.RelMoveBad)
+        Me.m_variables.Add(eVarNameFlags.RelVulBad)
+        Me.m_variables.Add(eVarNameFlags.EatEffBad)
+        Me.m_variables.Add(eVarNameFlags.IsAdvected)
+        Me.m_variables.Add(eVarNameFlags.IsMigratory)
+        Me.m_variables.Add(eVarNameFlags.MigrationConcRow)
+        Me.m_variables.Add(eVarNameFlags.MigrationConcCol)
+        Me.m_variables.Add(eVarNameFlags.BarrierAvoidanceWeight)
 
     End Sub
 
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults()
+        Return MyBase.GetVarResults(Me.m_core.nGroups)
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcopathModelParameters"
+            Return "EcospaceDispersal"
         End Get
     End Property
 

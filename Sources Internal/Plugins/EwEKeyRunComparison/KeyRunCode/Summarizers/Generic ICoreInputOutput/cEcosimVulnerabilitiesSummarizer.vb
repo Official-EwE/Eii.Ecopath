@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cDietCompWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcosimVulnerabilitiesSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -35,23 +35,23 @@ Public Class cDietCompWrapper
 
         MyBase.Init()
 
-        For iGrp As Integer = 1 To Me.m_core.nGroups
-            Me.m_objects.Add(Me.Core.EcoPathGroupInputs(iGrp))
+        For igrp As Integer = 1 To Me.m_core.nGroups
+            Me.m_objects.Add(Me.Core.EcoSimGroupInputs(igrp))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.DietComp)
+        Me.m_variables.Add(eVarNameFlags.VulMult)
 
     End Sub
 
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults(Me.Core.nGroups)
+        Return MyBase.GetVarResults(Me.m_core.nGroups)
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcopathDietComposition"
+            Return "EcosimVulnerabilities"
         End Get
     End Property
 

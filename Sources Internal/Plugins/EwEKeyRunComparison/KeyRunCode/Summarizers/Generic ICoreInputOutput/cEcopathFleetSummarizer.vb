@@ -24,8 +24,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cEcopathInputWrapper
-    Inherits cCoreIOWrapperBase
+Public Class cEcopathFleetSummarizer
+    Inherits cCoreIOSummarizerBase
 
     Public Sub New(core As cCore)
         MyBase.New(core)
@@ -33,41 +33,31 @@ Public Class cEcopathInputWrapper
 
     Public Overrides Sub Init()
 
-         MyBase.Init()
+        MyBase.Init()
 
-        For igrp As Integer = 1 To Me.m_core.nGroups
-            Me.m_objects.Add(Me.Core.EcoPathGroupInputs(igrp))
+        For iFlt As Integer = 1 To Me.m_core.nFleets
+            Me.m_objects.Add(Me.Core.FleetInputs(iFlt))
         Next
 
-        Me.m_variables.Add(eVarNameFlags.Area)
-        Me.m_variables.Add(eVarNameFlags.BiomassAreaInput)
-        Me.m_variables.Add(eVarNameFlags.PBInput)
-        Me.m_variables.Add(eVarNameFlags.QBInput)
-        Me.m_variables.Add(eVarNameFlags.EEInput)
-        Me.m_variables.Add(eVarNameFlags.GEInput)
-        Me.m_variables.Add(eVarNameFlags.GS)
+        Me.m_variables.Add(eVarNameFlags.Landings)
+        Me.m_variables.Add(eVarNameFlags.Discards)
 
-        Me.m_variables.Add(eVarNameFlags.BioAccum)
-        Me.m_variables.Add(eVarNameFlags.Immig)
-        Me.m_variables.Add(eVarNameFlags.Emig)
-        Me.m_variables.Add(eVarNameFlags.BioAccumRate)
-        Me.m_variables.Add(eVarNameFlags.EmigRate)
-        Me.m_variables.Add(eVarNameFlags.OtherMortInput)
-        Me.m_variables.Add(eVarNameFlags.DetImp)
+        Me.m_variables.Add(eVarNameFlags.DiscardMortality)
+        Me.m_variables.Add(eVarNameFlags.OffVesselPrice)
 
-        Me.m_variables.Add(eVarNameFlags.NonMarketValue)
 
     End Sub
 
+
     Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults()
+        Return MyBase.GetVarResults(Me.Core.nGroups)
     End Function
 
 #Region " Internals "
 
     Protected Overrides ReadOnly Property ObjectDescriptor As String
         Get
-            Return "EcopathBasicInputs"
+            Return "EcopathLandingsDiscards"
         End Get
     End Property
 
