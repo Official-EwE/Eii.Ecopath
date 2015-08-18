@@ -3560,6 +3560,11 @@ Public Class cMSE
         Dim Catch2LandQuota As Single
         Dim NumberTimeStepsIntoProjection As Integer
 
+        Dim tmpPropDiscardTime(m_ecosim.EcosimData.nGear, m_ecosim.EcosimData.nGroups) As Single
+        Dim tmpPropLandedTime(m_ecosim.EcosimData.nGear, m_ecosim.EcosimData.nGroups) As Single
+        Dim tmpDiscardMort(m_ecosim.EcosimData.nGear, m_ecosim.EcosimData.nGroups) As Single
+      
+
         NumberTimeStepsIntoProjection = iTime - OriginalNTimesteps
 
         If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
@@ -3785,8 +3790,8 @@ Public Class cMSE
                         _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                     End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
 
-                End If
-            Next
+                End If 'If FleetsThatFishHCRGrp.IndexOf(iFleet) = -1 Then
+            Next ' For iFleet = 1 To m_core.nFleets
 
             'Sets F's used by Ecosim for this timestep
             'given the regulated effort and proportions of landing and discards set above
@@ -3873,13 +3878,19 @@ Public Class cMSE
             totF = 0
             For ig = 1 To Me._simdata.nGear
                 'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-                totF += Me.BaseCatchRate(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
+                totF += Me._simdata.FishMGear(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
             Next
 
             'Save F for this time step 
             'NOT including Density Dependant Catchability.
             'Density Dependant Catchability will be be applied by Ecosim when FishTime() In SetFishTime()
             Me._simdata.FishRateNo(i, t) = totF
+
+            'If Me._simdata.FishRateNo(i, t) > 0 Then
+            '    Dim fchange As Double = Math.Abs((Me._simdata.FishRateNo(i, t - 1) - Me._simdata.FishRateNo(i, t)) / Me._simdata.FishRateNo(i, t))
+            '    Debug.Assert(fchange < 0.051)
+            'End If
+
 
         Next i
 
@@ -4236,11 +4247,9 @@ Public Class cMSE
                     Me.m_QModifier(iflt, igrp) = CSng(Ft / FtCalc)
                     If Me.m_QModifier(iflt, igrp) = 0 Then Me.m_QModifier(iflt, igrp) = 1.0
 
-                    Debug.Assert(Me.BaseCatchRate(iflt, igrp) <> 0.666)
-
-                    ' Debug.Assert((Math.Round(Me.m_QModifier(iflt, igrp), 2) = 1), "setQModifiers() has changed baseline Q's.")
                     If (Math.Round(Me.m_QModifier(iflt, igrp), 2) <> 1) Then
                         System.Console.WriteLine("Flt=" + iflt.ToString + "," + "Grp=" + igrp.ToString + "," + Me.m_QModifier(iflt, igrp).ToString + ",")
+                        Debug.Assert(Me._simdata.FisForced(igrp), "Oppss group not forced.")
                     End If
 
                     'Modify both the Ecosim baseline F and MSE baseline F(Catch rate includes discards).
