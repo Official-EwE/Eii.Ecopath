@@ -541,7 +541,7 @@ Public Class dlgDefineTaxa
         ' No term? Abort
         If String.IsNullOrEmpty(strTerm) Then Return
         ' Term less than 3 chars? Abort
-        If (strTerm.Length < 3) Then Return
+        If (strTerm.Length < 4) Then Return
 
         ' Make search term
         Dim objTerm As Object = Me.SelectedDataProducer.CreateSearchTerm()
