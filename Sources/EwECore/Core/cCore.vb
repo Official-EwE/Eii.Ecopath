@@ -2710,50 +2710,49 @@ Public Class cCore
                                       Optional iStartYear As Integer = cCore.NULL_VALUE) As String
 
         Dim sb As New StringBuilder()
+        Dim sm As cCoreStateMonitor = Me.StateMonitor
 
         sb.AppendLine("EwE version," & cStringUtils.ToCSVField(cCore.Version))
         sb.AppendLine("Date," & cStringUtils.ToCSVField(Date.Now.ToString()))
 
-        If (Me.StateMonitor.HasEcopathLoaded) Then
-
-            'Add the model name
+        If (sm.HasEcopathLoaded) Then
+            ' #Yes: add the model name
             sb.AppendLine("ModelName," & cStringUtils.ToCSVField(Me.EwEModel.Name))
+        End If
 
-            ' Has Ecosim?
-            If (savetype >= eAutosaveTypes.Ecosim) Then
-                ' #Yes: add ecosim scenario details
-                sb.AppendLine("EcosimScenario," & cStringUtils.ToCSVField(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name))
-                ' Append time series name to scenario, if any
-                sb.Append("TimeSeries,")
-                If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
-                    sb.AppendLine(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
-                Else
-                    sb.AppendLine("(none)")
-                End If
-                If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
-                sb.AppendLine("StartYear," & cStringUtils.ToCSVField(iStartYear))
+        ' Has Ecosim?
+        If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
+            ' #Yes: add ecosim scenario details
+            sb.AppendLine("EcosimScenario," & cStringUtils.ToCSVField(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name))
+            ' Append time series name to scenario, if any
+            sb.Append("TimeSeries,")
+            If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
+                sb.AppendLine(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
+            Else
+                sb.AppendLine("(none)")
             End If
+            If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
+            sb.AppendLine("StartYear," & cStringUtils.ToCSVField(iStartYear))
+        End If
 
-            ' Has Ecospace?
-            If (savetype >= eAutosaveTypes.Ecospace) Then
-                ' #Yes: add ecospace scenario details
-                sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
-                sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
-                sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
-                sb.AppendLine("MapCellLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
-                sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize()))
-                sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
-                sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
-                sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
-                sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")))
-            End If
+        ' Has Ecospace?
+        If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
+            ' #Yes: add ecospace scenario details
+            sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
+            sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
+            sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
+            sb.AppendLine("MapCellLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
+            sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize()))
+            sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
+            sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
+            sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
+            sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")))
+        End If
 
-            ' Has Ecotracer?
-            If (savetype >= eAutosaveTypes.Ecotracer) Then
-                ' #Yes: add ecotracer scenario details
-                sb.AppendLine("EcotracerScenario," & cStringUtils.ToCSVField(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name))
-            End If
-
+        ' Has Ecotracer?
+        If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
+            ' #Yes: add ecotracer scenario details
+            sb.AppendLine("EcotracerScenario," & cStringUtils.ToCSVField(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name))
         End If
 
         Return sb.ToString
