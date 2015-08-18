@@ -44,8 +44,12 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 #Region "Public Variables"
 
+
+    'MPM2017_S000_C000_G000_U00_V00_SLA_I_2000-2000_E_sal01
+    Public MasterPlanYear As String = "MPM2017"
     Public FileNamePreFix As String
-    Public MasterPlanYear As String = "MP2017"
+       
+
 
 #End Region
 
@@ -59,11 +63,15 @@ Public Class cEcospaceResultsWriterICMPlugin
     Private m_EcoSimData As cEcosimDatastructures
     Private m_EcoSpaceData As cEcospaceDataStructures
 
-    Private SpCodes() As String
-    Private RegionCodes() As String
-    Private FleetCodes() As String
-    Private dctTypeCodes As Dictionary(Of eVarNameFlags, String)
-    Private delim As String
+    Private m_SpCodes() As String
+    Private m_RegionCodes() As String
+    Private m_FleetCodes() As String
+    Private m_dctTypeCodes As Dictionary(Of eVarNameFlags, String)
+    Private m_delim As String
+
+    Private m_FileNamePreFix As String
+
+    Private Const MODELTYPE As String = "_E_"
 
 #End Region
 
@@ -78,7 +86,7 @@ Public Class cEcospaceResultsWriterICMPlugin
 
             Dim ds As cEcospaceResultsWriterDataSourceBase = DirectCast(DataSourceAsObject, cEcospaceResultsWriterDataSourceBase)
             Dim nYears As Integer = Me.EcoSpaceData.nTimeSteps \ Me.EcoSpaceData.nTimeStepsPerYear
-            FileName = Me.ToPrefix() + delim + ToRegionFileName(ds, AvgType) + delim + ToFormattedNumber(1) + "-" + ToFormattedNumber(nYears) + ".csv"
+            FileName = Me.ToPrefix() + m_delim + toYear(1, nYears) + MODELTYPE + ToRegionFileName(ds, AvgType) + ".csv"
 
         Catch ex As Exception
             Me.LogMessage(ex)
@@ -91,7 +99,7 @@ Public Class cEcospaceResultsWriterICMPlugin
     Public Function MapFleetFileName(ByRef FileName As String, varname As EwEUtils.Core.eVarNameFlags,
                                      iFlt As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapFleetFileName
         Try
-            FileName = Me.ToPrefix() + delim + ToDataTypeCode(varname) + toFleetCode(iFlt) + ToModelMonth(iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
+            FileName = Me.ToPrefix() + m_delim + ToModelYear(iModelTimeStep) + MODELTYPE + toFleetCode(iFlt) + ToModelMonth(iModelTimeStep) + ".asc"
             Return True
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -105,7 +113,7 @@ Public Class cEcospaceResultsWriterICMPlugin
                                      iGrp As Integer, strExt As String, iModelTimeStep As Integer) As Boolean Implements EwEPlugin.IEcospaceResultWriterUtils.MapGroupFileName
         Try
 
-            FileName = Me.ToPrefix() + delim + ToVarCode(varname, iGrp, iModelTimeStep) + delim + ToModelYear(iModelTimeStep) + ".asc"
+            FileName = Me.ToPrefix() + m_delim + ToModelYear(iModelTimeStep) + MODELTYPE + ToVarCode(varname, iGrp, iModelTimeStep) + ".asc"
             Return True
 
         Catch ex As Exception
@@ -119,9 +127,21 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 #Region "Private methods"
 
+    Private Function toYear(FirstYear As Integer, LastYear As Integer) As String
+        Return ToFormattedNumber(FirstYear) + "-" + ToFormattedNumber(LastYear)
+    End Function
+
 
     Private Function ToPrefix() As String
-        Return Me.MasterPlanYear + delim + FileNamePreFix
+        Dim tmpPrefix As String
+        'MPM2017_S000_C000_G000_U00_V00_SLA_O
+        If Not FileNamePreFix.Contains(MasterPlanYear) Then
+            tmpPrefix = Me.MasterPlanYear + m_delim + FileNamePreFix
+        Else
+            tmpPrefix = FileNamePreFix
+        End If
+        Return tmpPrefix + "_O"
+
     End Function
 
     Private Function ToVarCode(varname As eVarNameFlags, iGrp As Integer, iModelTimestep As Integer) As String
@@ -133,11 +153,11 @@ Public Class cEcospaceResultsWriterICMPlugin
     End Function
 
     Private Function ToDataTypeCode(varname As eVarNameFlags) As String
-        Return Me.dctTypeCodes.Item(varname)
+        Return Me.m_dctTypeCodes.Item(varname)
     End Function
 
     Private Function ToSpCode(iGrp As Integer) As String
-        Return SpCodes(iGrp)
+        Return m_SpCodes(iGrp)
     End Function
 
     Private Function ToModelYear(iModelTimestep As Integer) As String
@@ -184,26 +204,26 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 
     Private Function toRegionCode(ds As cEcospaceResultsWriterDataSourceBase) As String
-        Return RegionCodes(ds.AreaIndex)
+        Return m_RegionCodes(ds.AreaIndex)
     End Function
 
 
     Private Function toFleetCode(iFlt As Integer) As String
-        Return Me.FleetCodes(iFlt)
+        Return Me.m_FleetCodes(iFlt)
     End Function
 
 
     Public Sub Init()
-        SpCodes = New String() {"N/A", "JC", "AC", "JA", "AA", "BA", "BC", "JB", "AB", "JT", "AT", "JL", "AL", "JN", "AN", "DE", "DO", "GS", "JM", "AM", "JG", "AG", "KI", "JS", "AS", "MO", "OD", "SP", "SE", "SA", "PH", "JR", "AR", "SV", "BI", "JX", "AX", "JH", "AH", "JE", "AE", "SI", "JF", "AF", "JO", "AO", "JU", "AU", "JP", "AP", "JI", "AI", "JW", "AW", "ZB", "ZP"}
-        RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "UTA", "MEL", "LBA", "BRE", "CAS", "CHR"}
-        FleetCodes = New String() {"N/A", "BS", "WS", "BC", "BD", "OY", "RC", "ME"}
+        m_SpCodes = New String() {"N/A", "JC", "AC", "JA", "AA", "BA", "BC", "JB", "AB", "JT", "AT", "JL", "AL", "JN", "AN", "DE", "DO", "GS", "JM", "AM", "JG", "AG", "KI", "JS", "AS", "MO", "OD", "SP", "SE", "SA", "PH", "JR", "AR", "SV", "BI", "JX", "AX", "JH", "AH", "JE", "AE", "SI", "JF", "AF", "JO", "AO", "JU", "AU", "JP", "AP", "JI", "AI", "JW", "AW", "ZB", "ZP"}
+        m_RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "UTA", "MEL", "LBA", "BRE", "CAS", "CHR"}
+        m_FleetCodes = New String() {"N/A", "BS", "WS", "BC", "BD", "OY", "RC", "ME"}
 
-        dctTypeCodes = New Dictionary(Of eVarNameFlags, String)
-        dctTypeCodes.Add(eVarNameFlags.EcospaceMapBiomass, "B")
-        dctTypeCodes.Add(eVarNameFlags.EcospaceMapCatch, "C")
-        dctTypeCodes.Add(eVarNameFlags.EcospaceMapEffort, "E")
+        m_dctTypeCodes = New Dictionary(Of eVarNameFlags, String)
+        m_dctTypeCodes.Add(eVarNameFlags.EcospaceMapBiomass, "B")
+        m_dctTypeCodes.Add(eVarNameFlags.EcospaceMapCatch, "C")
+        m_dctTypeCodes.Add(eVarNameFlags.EcospaceMapEffort, "E")
 
-        delim = "_"
+        m_delim = "_"
 
     End Sub
 
