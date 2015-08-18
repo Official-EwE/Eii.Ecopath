@@ -44,12 +44,9 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 #Region "Public Variables"
 
-
     'MPM2017_S000_C000_G000_U00_V00_SLA_I_2000-2000_E_sal01
     Public MasterPlanYear As String = "MPM2017"
     Public FileNamePreFix As String
-       
-
 
 #End Region
 
@@ -300,23 +297,8 @@ Public Class cEcospaceResultsWriterICMPlugin
         End Get
     End Property
 
-    'Public ReadOnly Property EcoPathData As cEcopathDataStructures
-    '    Get
-    '        Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathData() Ecopath has not been initialized correctly.")
-    '        Return Me.m_EcoPathData
-    '    End Get
-    'End Property
-
-    'Public ReadOnly Property EcoSimData As cEcosimDatastructures
-    '    Get
-    '        'Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcoSimData() EcoSim has not been initialized correctly.")
-    '        Return Me.m_core.m
-    '    End Get
-    'End Property
-
     Public ReadOnly Property EcoSpaceData As cEcospaceDataStructures
         Get
-            'Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcoSpaceData() EcoSpace has not been initialized correctly.")
             Return Me.m_core.m_EcoSpaceData
         End Get
     End Property
