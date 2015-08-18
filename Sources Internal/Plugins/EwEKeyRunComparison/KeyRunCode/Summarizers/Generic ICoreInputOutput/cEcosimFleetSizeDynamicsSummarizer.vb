@@ -46,14 +46,14 @@ Public Class cEcosimFleetSizeDynamicsSummarizer
 
     End Sub
 
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
+    Public Overrides Function HashValues() As cHashValues()
         If Me.Core.EcoSimModelParameters.PredictEffort Then
-            Return MyBase.getVarResults()
+            Return MyBase.GetVarResults()
         Else
             'PredictEffort Turned off
             Dim results As New List(Of cHashValues)
             results.Add(New cHashValues(Me.Name, eVarNameFlags.PredictEffort, "False"))
-            Return results
+            Return results.ToArray()
         End If
     End Function
 

@@ -39,7 +39,7 @@ Public Class cKeyRunComparisonPluginPoint
     Implements EwEPlugin.INavigationTreeItemPlugin
     Implements EwEPlugin.IDataValidatedPlugin
 
-#Region " Local variables"
+#Region " Local variables "
 
     ''' <summary>The core that this plug-in can use</summary>
     Private m_core As cCore
@@ -56,13 +56,9 @@ Public Class cKeyRunComparisonPluginPoint
 
     Private m_CompareManager As cCompareManager
 
-#End Region
+#End Region ' Local variables
 
-#Region "Public Methods"
-
-#End Region
-
-#Region "Ecopath, Ecosim and Ecospace events"
+#Region " Ecopath, Ecosim and Ecospace events "
 
     ''' <summary>
     ''' Every plug-in is told to initialize to the EwE core as soon as it is loaded. 
@@ -124,7 +120,6 @@ Public Class cKeyRunComparisonPluginPoint
 
     End Sub
 
-
     Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
 
@@ -140,9 +135,9 @@ Public Class cKeyRunComparisonPluginPoint
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
 
-#End Region
+#End Region ' Ecopath, Ecosim and Ecospace events
 
-#Region "Core, Ecopath, Ecosim and Ecospace Datastructures"
+#Region " Core, Ecopath, Ecosim and Ecospace Datastructures "
 
     Public ReadOnly Property Core As cCore
         Get
@@ -172,7 +167,7 @@ Public Class cKeyRunComparisonPluginPoint
         End Get
     End Property
 
-#End Region
+#End Region ' Core, Ecopath, Ecosim and Ecospace Datastructures
 
 #Region " User Interface plug-in implementation "
 
@@ -202,7 +197,7 @@ Public Class cKeyRunComparisonPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Ecospace key run"
+            Return My.Resources.PLUGIN_DISPLAYNAME
         End Get
     End Property
 
@@ -225,7 +220,6 @@ Public Class cKeyRunComparisonPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            ' Show the description as a tooltip text
             Return Me.Description
         End Get
     End Property
@@ -277,7 +271,6 @@ Public Class cKeyRunComparisonPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
-            ' For example, a plug-in menu item should be placed in the main the 'Tools' menu. 
             Return "MenuTools"
         End Get
     End Property
@@ -290,8 +283,7 @@ Public Class cKeyRunComparisonPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            'For now we are checking a full Ecospace run
-            Return EwEUtils.Core.eCoreExecutionState.EcospaceInitialized
+            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
@@ -302,7 +294,6 @@ Public Class cKeyRunComparisonPluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
-            ' As an example, place a navigation tree item under the main 'tools' node.
             Return "ndTools"
         End Get
     End Property
@@ -325,14 +316,13 @@ Public Class cKeyRunComparisonPluginPoint
 
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Compare an Ecospace Key Run file to the current Ecospace configuration."
+            Return My.Resources.PLUGIN_DESCRIPTION
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Ecospace Key Run Comparison"
+            Return "ndKeyRunComparison"
         End Get
     End Property
 

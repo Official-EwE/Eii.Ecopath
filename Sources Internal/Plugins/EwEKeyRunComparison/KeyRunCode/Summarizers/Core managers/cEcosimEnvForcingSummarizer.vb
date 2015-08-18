@@ -48,7 +48,7 @@ Public Class cEcosimEnvForcingSummarizer
 
     End Sub
 
-    Public Function HashValues() As List(Of cHashValues) _
+    Public Function HashValues() As cHashValues() _
         Implements IHashSummarizer.HashValues
 
         Dim man As cForcingFunctionManager = Me.m_core.ForcingShapeManager
@@ -69,7 +69,7 @@ Public Class cEcosimEnvForcingSummarizer
             End If
         Next
         lHashValues.Add(New cHashValues(Me.Name, "EnvForcing", sbSummary.ToString))
-        Return lHashValues
+        Return lHashValues.ToArray()
 
     End Function
 

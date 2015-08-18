@@ -42,11 +42,11 @@ Public Class cTimeSeriesSummarizer
 
     End Sub
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim lHashValues As New List(Of cHashValues)
 
-        If (Me.m_core.ActiveTimeSeriesDatasetIndex <= 0) Then Return lHashValues
+        If (Me.m_core.ActiveTimeSeriesDatasetIndex <= 0) Then Return lHashValues.ToArray()
 
         Dim ds As cTimeSeriesDataset = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
         Dim ts As cTimeSeries = Nothing
@@ -68,7 +68,7 @@ Public Class cTimeSeriesSummarizer
 
         lHashValues.Add(New cHashValues(Me.Name, "TimeSeries", sbSummary.ToString))
 
-        Return lHashValues
+        Return lHashValues.ToArray()
 
     End Function
 

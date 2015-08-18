@@ -47,7 +47,7 @@ Public Class cSpatialTemporalConfigurationSummarizer
 
     End Sub
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim sbSummary As New StringBuilder()
         Dim lstHashValues As New List(Of cHashValues)
@@ -77,7 +77,7 @@ Public Class cSpatialTemporalConfigurationSummarizer
             End If
         Next i
 
-        Return lstHashValues
+        Return lstHashValues.ToArray()
 
     End Function
 

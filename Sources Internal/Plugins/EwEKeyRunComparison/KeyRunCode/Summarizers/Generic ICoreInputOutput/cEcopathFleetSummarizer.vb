@@ -49,7 +49,7 @@ Public Class cEcopathFleetSummarizer
     End Sub
 
 
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
+    Public Overrides Function HashValues() As cHashValues()
         Return MyBase.GetVarResults(Me.Core.nGroups)
     End Function
 

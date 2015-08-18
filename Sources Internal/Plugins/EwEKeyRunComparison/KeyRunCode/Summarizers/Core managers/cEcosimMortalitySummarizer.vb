@@ -42,7 +42,7 @@ Public Class cEcosimMortalitySummarizer
 
     End Sub
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim MortShps As cFishingMortalityManger = Me.m_core.FishMortShapeManager
         Dim shape As cForcingFunction = Nothing
@@ -60,7 +60,7 @@ Public Class cEcosimMortalitySummarizer
         Next
 
         lstHashValues.Add(New cHashValues(Me.Name, "FishingMortality", sbSummary.ToString))
-        Return lstHashValues
+        Return lstHashValues.ToArray()
 
     End Function
 

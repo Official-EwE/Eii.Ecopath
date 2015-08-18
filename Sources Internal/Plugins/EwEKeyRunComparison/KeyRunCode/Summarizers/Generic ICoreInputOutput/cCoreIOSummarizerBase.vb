@@ -50,7 +50,7 @@ Public MustInherit Class cCoreIOSummarizerBase
 
     End Sub
 
-    Public MustOverride Function HashValues() As List(Of cHashValues) _
+    Public MustOverride Function HashValues() As cHashValues() _
         Implements IHashSummarizer.HashValues
 
     Protected MustOverride ReadOnly Property ObjectDescriptor As String
@@ -81,7 +81,7 @@ Public MustInherit Class cCoreIOSummarizerBase
     ''' <summary>
     ''' Get variable values for a non-indexed variable.
     ''' </summary>
-    Protected Function getVarResults() As List(Of cHashValues)
+    Protected Function GetVarResults() As cHashValues()
 
         Dim sb As New StringBuilder()
         Dim lstResults As New List(Of cHashValues)
@@ -104,7 +104,7 @@ Public MustInherit Class cCoreIOSummarizerBase
             sb.Clear()
         Next
 
-        Return lstResults
+        Return lstResults.ToArray()
 
     End Function
 
@@ -112,7 +112,7 @@ Public MustInherit Class cCoreIOSummarizerBase
     ''' Get variable values for a variable with one dimension.
     ''' </summary>
     ''' <param name="n">'Core counter'</param>
-    Protected Function GetVarResults(ByVal n As Integer) As List(Of cHashValues)
+    Protected Function GetVarResults(ByVal n As Integer) As cHashValues()
 
         Dim sb As New StringBuilder()
         Dim lstResults As New List(Of cHashValues)
@@ -138,7 +138,7 @@ Public MustInherit Class cCoreIOSummarizerBase
             sb.Clear()
         Next
 
-        Return lstResults
+        Return lstResults.ToArray()
 
     End Function
 

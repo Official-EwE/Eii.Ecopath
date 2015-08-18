@@ -38,7 +38,7 @@ Public Class cEcospaceCapacitySummarizer
         Return "EcospaceAppliedEnvironmentalResponse"
     End Function
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim capacity As cMapResponseInteractionManager = m_core.CapacityMapInteractionManager
@@ -71,7 +71,7 @@ Public Class cEcospaceCapacitySummarizer
 
         End Try
 
-        Return lstHashValues
+        Return lstHashValues.ToArray()
 
     End Function
 

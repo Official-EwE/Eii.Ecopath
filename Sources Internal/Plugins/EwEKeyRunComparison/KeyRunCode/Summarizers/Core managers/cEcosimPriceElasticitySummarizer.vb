@@ -42,7 +42,7 @@ Public Class cEcosimPriceElasticitySummarizer
         Return "EcosimPriceFunctions"
     End Function
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim interactions As cMediatedInteractionManager = Me.m_core.MediatedInteractionManager
         Dim shapes As cLandingsMediationManager = Me.m_core.LandingsShapeManager
@@ -77,7 +77,7 @@ Public Class cEcosimPriceElasticitySummarizer
         Next i
 
         lstHashValues.Add(New cHashValues(Me.Name, "PriceElasticity", sbSummary.ToString))
-        Return lstHashValues
+        Return lstHashValues.ToArray()
 
     End Function
 

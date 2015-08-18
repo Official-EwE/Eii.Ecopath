@@ -37,9 +37,6 @@ Public Interface IHashSummarizer
     ''' <summary>
     ''' Compute and return the hash values for a set of summarized EwE values.
     ''' </summary>
-    ''' <hmm>
-    ''' This should really return an array, not an actual list. A list suggests that results are open for further manipulation...
-    ''' </hmm>
-    Function HashValues() As List(Of cHashValues)
+    Function HashValues() As cHashValues()
 
 End Interface

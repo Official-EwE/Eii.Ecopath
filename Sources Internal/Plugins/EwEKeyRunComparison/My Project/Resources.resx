@@ -322,4 +322,16 @@
   <data name="COMPONENT_ECOSPACEEXTERNALDATA" xml:space="preserve">
     <value>Ecospace external data</value>
   </data>
+  <data name="COMPONENT_ECOSIMTIMESERIES" xml:space="preserve">
+    <value>Ecosim time series</value>
+  </data>
+  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
+    <value>Compare an Ecopath, Ecosim and Ecospace configuration to an existing Key Run file.</value>
+  </data>
+  <data name="PLUGIN_DISPLAYNAME" xml:space="preserve">
+    <value>Key run comparison</value>
+  </data>
+  <data name="VARIABLE_TIMESERIES" xml:space="preserve">
+    <value>Applied time series</value>
+  </data>
 </root>

@@ -53,8 +53,8 @@ Public Class cEcospaceParametersSummarizer
 
     End Sub
 
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
-        Return MyBase.getVarResults()
+    Public Overrides Function HashValues() As cHashValues()
+        Return MyBase.GetVarResults()
     End Function
 
 #Region " Internals "

@@ -44,7 +44,7 @@ Public Class cEcopathDiscardFateSummarizer
     End Sub
 
 
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
+    Public Overrides Function HashValues() As cHashValues()
         Dim nDetritus As Integer = Me.Core.nGroups - Me.Core.nLivingGroups
         Return MyBase.GetVarResults(nDetritus)
     End Function

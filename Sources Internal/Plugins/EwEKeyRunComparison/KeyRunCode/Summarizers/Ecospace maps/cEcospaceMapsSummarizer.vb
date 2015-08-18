@@ -78,7 +78,7 @@ Public Class cEcospaceMapsSummarizer
 
     End Sub
 
-    Public Overridable Function HashValues() As List(Of cHashValues) _
+    Public Overridable Function HashValues() As cHashValues() _
         Implements IHashSummarizer.HashValues
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
@@ -141,7 +141,7 @@ Public Class cEcospaceMapsSummarizer
         Next i
 #End If
 
-        Return lResults
+        Return lResults.ToArray()
 
     End Function
 

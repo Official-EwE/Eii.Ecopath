@@ -42,7 +42,7 @@ Public Class cEcosimForcingFunctionSummarizer
 
     End Sub
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim interactions As cMediatedInteractionManager = Me.m_core.MediatedInteractionManager
         Dim shapes As cForcingFunctionManager = Me.m_core.ForcingShapeManager
@@ -79,7 +79,7 @@ Public Class cEcosimForcingFunctionSummarizer
         Next i
 
         lstHashValues.Add(New cHashValues(Me.Name, "Forcing", sbSummary.ToString))
-        Return lstHashValues
+        Return lstHashValues.ToArray()
 
     End Function
 

@@ -45,7 +45,7 @@ Public Class cStanzaLifestageSummarizer
         Me.m_variables = New List(Of eVarNameFlags)
     End Sub
 
-    Public Function HashValues() As List(Of cHashValues) _
+    Public Function HashValues() As cHashValues() _
         Implements IHashSummarizer.HashValues
 
         Dim sb As New StringBuilder()
@@ -78,7 +78,7 @@ Public Class cStanzaLifestageSummarizer
             sb.Clear()
         Next ' Variable
 
-        Return lResults
+        Return lResults.ToArray()
 
     End Function
 

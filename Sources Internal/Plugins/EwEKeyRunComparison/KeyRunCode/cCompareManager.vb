@@ -195,21 +195,19 @@ Public Class cCompareManager
 
         Me.ResetErrors()
 
-        If Me.RunStateOk Then
-            If ReadKeyRunFile(strFileName) Then
-                If PopulateCurrentModel() Then
-                    If Me.CompareRuns() Then
-                        bSuccess = True
-                    End If
+        If ReadKeyRunFile(strFileName) Then
+            If PopulateCurrentModel() Then
+                If Me.CompareRuns() Then
+                    bSuccess = True
                 End If
             End If
+        End If
 
-            If (bSuccess) Then
-                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_SUCCESS, strFileName))
-            Else
-                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_FAILED, strFileName))
-            End If
-        End If 'Me.RunStateOk
+        If (bSuccess) Then
+            Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_SUCCESS, strFileName))
+        Else
+            Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_FAILED, strFileName))
+        End If
 
         Me.NotifyUI()
 
@@ -222,28 +220,25 @@ Public Class cCompareManager
 
         Me.ResetErrors()
 
-        If Me.RunStateOk Then
-            If File.Exists(Me.m_strKeyRunFile) Then
-                If PopulateCurrentModel() Then
-                    If Me.CompareRuns() Then
-                        bSuccess = True
-                    End If
+        If File.Exists(Me.m_strKeyRunFile) Then
+            If PopulateCurrentModel() Then
+                If Me.CompareRuns() Then
+                    bSuccess = True
                 End If
+            End If
 
-                If (bSuccess) Then
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_SUCCESS, Me.m_strKeyRunFile))
-                Else
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_FAILED, Me.m_strKeyRunFile))
-                End If
-
+            If (bSuccess) Then
+                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_SUCCESS, Me.m_strKeyRunFile))
             Else
+                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_LOAD_FAILED, Me.m_strKeyRunFile))
+            End If
 
-                Me.AddError("Invalid key run file. You must have a valid key run file loaded first.")
-                Me.SendMessage("Sorry unable to run current key run file.")
+        Else
 
-            End If 'File.Exists(Me.m_strKeyRunFile)
+            Me.AddError("Invalid key run file. You must have a valid key run file loaded first.")
+            Me.SendMessage("Sorry unable to run current key run file.")
 
-        End If 'Me.RunStateOk 
+        End If 'File.Exists(Me.m_strKeyRunFile)
 
         Me.NotifyUI()
 
@@ -257,18 +252,16 @@ Public Class cCompareManager
 
         Me.ResetErrors()
 
-        If Me.RunStateOk Then
-            If Me.PopulateCurrentModel() Then
-                bSuccess = Me.SaveCurModelToFile(strFileName)
-            End If
+        If Me.PopulateCurrentModel() Then
+            bSuccess = Me.SaveCurModelToFile(strFileName)
+        End If
 
-            If (bSuccess) Then
-                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_SUCCESS, strFileName), _
-                               Path.GetDirectoryName(strFileName))
-            Else
-                Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_FAILED, strFileName))
-            End If
-        End If 'Me.RunStateOk
+        If (bSuccess) Then
+            Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_SUCCESS, strFileName), _
+                           Path.GetDirectoryName(strFileName))
+        Else
+            Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_FAILED, strFileName))
+        End If
 
         Me.NotifyUI()
 
@@ -310,14 +303,14 @@ Public Class cCompareManager
 
     End Function
 
-    Private Function RunStateOk() As Boolean
-        Dim bStateOk As Boolean = Me.Core.StateMonitor.HasEcospaceLoaded
-        If Not bStateOk Then
-            Me.AddError("")
-            Me.SendMessage("Sorry unable to run. You must reload an Ecospace scenario.")
-        End If
-        Return bStateOk
-    End Function
+    'Private Function RunStateOk() As Boolean
+    '    Dim bStateOk As Boolean = Me.Core.StateMonitor.HasEcospaceLoaded
+    '    If Not bStateOk Then
+    '        Me.AddError("")
+    '        Me.SendMessage("Sorry unable to run. You must reload an Ecospace scenario.")
+    '    End If
+    '    Return bStateOk
+    'End Function
 
     Private Function ReadKeyRunFile(FileName As String) As Boolean
 
@@ -425,14 +418,14 @@ Public Class cCompareManager
 
             Try
                 For Each hash As cHashValues In summarizer.HashValues()
-                    'this is a coding issue you have dulicated one of the hash IDs
+                    ' Catch possible coding issue of duplicate hash IDs
                     Debug.Assert(Not Me.m_dctCurValues.ContainsKey(hash.Key), "Oh my! You're trying to add a duplicate key to the current model dictionary.")
                     Me.m_dctCurValues.Add(hash.Key, hash)
                     ' System.Console.WriteLine(hash.SortOrder.ToString + ", " + hash.Component + ", " + hash.VariableID + ", " + hash.Hash + ", " + hash.Value)
                 Next
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
-                'right now there is no way for IHashSummarizer to tell use what/who it is
+                'right now there is no way for IHashSummarizer to tell use what/who failed
                 Me.AddError(cStringUtils.Localize(My.Resources.DETAIL_COMPUTE_HASH_FAILED, ex.Message))
             End Try
         Next
@@ -442,6 +435,8 @@ Public Class cCompareManager
     End Sub
 
     Private Sub InitCurrentModel()
+
+        Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
 
         'reset sort order to zero
         cHashValues.ClearSort()
@@ -468,28 +463,36 @@ Public Class cCompareManager
         m_lSummarizers.Add(New cStanzaLifestageSummarizer(Me.Core))
 
         ' -- Ecosim --
-        m_lSummarizers.Add(New cEcosimParametersSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimEnvForcingSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimForcingFunctionSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimInputSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimEffortSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimMortalitySummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimVulnerabilitiesSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimMediationSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimPriceElasticitySummarizer(Me.Core))
-        m_lSummarizers.Add(New cTimeSeriesSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcosimFleetSizeDynamicsSummarizer(Me.Core))
+        If (sm.HasEcosimLoaded) Then
+
+            m_lSummarizers.Add(New cEcosimParametersSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimEnvForcingSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimForcingFunctionSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimInputSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimEffortSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimMortalitySummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimVulnerabilitiesSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimMediationSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimPriceElasticitySummarizer(Me.Core))
+            m_lSummarizers.Add(New cTimeSeriesSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcosimFleetSizeDynamicsSummarizer(Me.Core))
+
+        End If
 
         ' -- Ecospace --
-        m_lSummarizers.Add(New cEcospaceParametersSummarizer(Me.Core))
-        m_lSummarizers.Add(New cCapacityCalTypeSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcospaceCapacitySummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcospaceHabitatSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcospaceDispersalSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcospaceFisherySummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcospaceFisheryHabitatSummarizer(Me.Core))
-        m_lSummarizers.Add(New cEcospaceMapsSummarizer(Me.Core))
-        m_lSummarizers.Add(New cSpatialTemporalConfigurationSummarizer(Me.Core))
+        If (sm.HasEcospaceLoaded) Then
+
+            m_lSummarizers.Add(New cEcospaceParametersSummarizer(Me.Core))
+            m_lSummarizers.Add(New cCapacityCalTypeSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcospaceCapacitySummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcospaceHabitatSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcospaceDispersalSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcospaceFisherySummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcospaceFisheryHabitatSummarizer(Me.Core))
+            m_lSummarizers.Add(New cEcospaceMapsSummarizer(Me.Core))
+            m_lSummarizers.Add(New cSpatialTemporalConfigurationSummarizer(Me.Core))
+
+        End If
 
         ' -- Give'r --
         For Each summarizer As IHashSummarizer In m_lSummarizers

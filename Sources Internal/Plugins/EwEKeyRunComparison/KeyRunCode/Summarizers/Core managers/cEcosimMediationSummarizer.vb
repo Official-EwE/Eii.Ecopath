@@ -42,7 +42,7 @@ Public Class cEcosimMediationSummarizer
 
     End Sub
 
-    Public Function HashValues() As System.Collections.Generic.List(Of cHashValues) Implements IHashSummarizer.HashValues
+    Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim interactions As cMediatedInteractionManager = Me.m_core.MediatedInteractionManager
         Dim shapes As cMediationManager = Me.m_core.MediationShapeManager
@@ -81,7 +81,7 @@ Public Class cEcosimMediationSummarizer
         Next i
 
         lstHashValues.Add(New cHashValues(Me.Name, "Mediation", sbSummary.ToString))
-        Return lstHashValues
+        Return lstHashValues.ToArray()
 
     End Function
 

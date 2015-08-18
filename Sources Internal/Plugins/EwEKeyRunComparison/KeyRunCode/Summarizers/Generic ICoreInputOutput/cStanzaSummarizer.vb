@@ -52,7 +52,7 @@ Public Class cStanzaSummarizer
         Me.m_variables.Add(eVarNameFlags.FixedFecundity)
         Me.m_variables.Add(eVarNameFlags.EggAtSpawn)
 
-        ' Indexed vars new different treatment
+        ' Indexed vars need different treatment
         'Me.m_variables.Add(eVarNameFlags.Bat)
         'Me.m_variables.Add(eVarNameFlags.StartAge)
         'Me.m_variables.Add(eVarNameFlags.StanzaNumberAtAge)
@@ -64,10 +64,10 @@ Public Class cStanzaSummarizer
 
     End Sub
 
-    Public Overrides Function HashValues() As System.Collections.Generic.List(Of cHashValues)
+    Public Overrides Function HashValues() As cHashValues()
 
         Dim lResults As New List(Of cHashValues)
-        lResults.AddRange(MyBase.getVarResults())
+        lResults.AddRange(MyBase.GetVarResults())
 
         Dim sb As New StringBuilder()
         Dim shp As cShapeData = Nothing
@@ -86,7 +86,7 @@ Public Class cStanzaSummarizer
         Next
         lResults.Add(New cHashValues(Me.ObjectDescriptor, eVarNameFlags.HatchCode, sb.ToString()))
 
-        Return lResults
+        Return lResults.ToArray()
     End Function
 
 #Region " Internals "
