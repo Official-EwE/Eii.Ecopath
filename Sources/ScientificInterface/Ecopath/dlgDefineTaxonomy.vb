@@ -232,8 +232,8 @@ Public Class dlgDefineTaxa
         Me.Close()
     End Sub
 
-    Private Sub m_btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnAdd.Click
+    Private Sub OnDefineNew(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnDefine.Click
         Try
             Me.m_gridGroups.AddTaxon()
             Me.m_gridResults.OnUsedTaxaChanged()
@@ -243,7 +243,7 @@ Public Class dlgDefineTaxa
         Me.UpdateControls()
     End Sub
 
-    Private Sub m_btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemoveSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnRemove.Click
         Try
             Me.m_gridGroups.DeleteRows(True)
@@ -254,7 +254,7 @@ Public Class dlgDefineTaxa
         Me.UpdateControls()
     End Sub
 
-    Private Sub m_btnKeep_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnKeepSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnKeep.Click
         Try
             Me.m_gridGroups.DeleteRows(False)
@@ -264,7 +264,7 @@ Public Class dlgDefineTaxa
         Me.UpdateControls()
     End Sub
 
-    Private Sub m_btnProps_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnNormalizeProportions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnProps.Click
         Try
             Me.m_gridGroups.NormalizeProportions()
@@ -292,12 +292,21 @@ Public Class dlgDefineTaxa
         End Try
     End Sub
 
-    Private Sub m_cbIncludeExtent_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnIncludeExtentChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_cbIncludeExtent.CheckedChanged
         Try
             Me.RefreshSearch()
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::m_cbIncludeExtent_CheckedChanged")
+        End Try
+    End Sub
+
+    Private Sub OnResultSelected(selection As SourceGrid2.CellVirtualCollection) _
+        Handles m_gridResults.OnSelectionChanged
+        Try
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+        Catch ex As Exception
+
         End Try
     End Sub
 
@@ -376,6 +385,22 @@ Public Class dlgDefineTaxa
         End Try
     End Sub
 
+    Private Sub m_btnAdd_Click(sender As Object, e As System.EventArgs) _
+        Handles m_btnAdd.Click
+
+        Try
+            For Each i As Integer In Me.m_gridResults.SelectedRows
+                Dim t As ITaxonSearchData = Me.m_gridResults.TaxonAtRow(i)
+                If (t IsNot Nothing) Then
+                    Me.m_gridGroups.AddTaxon(t)
+                End If
+            Next
+        Catch ex As Exception
+            cLog.Write(ex, "dlgDefineTaxa::m_btnAdd_Click")
+        End Try
+
+    End Sub
+
 #End Region ' Events
 
 #Region " Internals "
@@ -385,14 +410,16 @@ Public Class dlgDefineTaxa
         Dim bCanSearch As Boolean = False
         Dim bCanConfig As Boolean = False
         Dim bIsSearching As Boolean = False
+        Dim bHasResult As Boolean = (Me.m_gridResults.TaxonAtRow(-1) IsNot Nothing)
 
         Me.m_bInUpdate = True
 
         ' == Manipulation controls ==
         Try
-            Me.m_btnAdd.Enabled = Me.m_gridGroups.CanAddTaxon(DirectCast(Me.m_gridResults.TaxonAtRow, ITaxonSearchData))
+            Me.m_btnDefine.Enabled = Me.m_gridGroups.CanAddTaxon(Nothing)
             Me.m_btnRemove.Enabled = Me.m_gridGroups.CanDeleteTaxon() And Not Me.m_gridGroups.IsFlaggedForDeletionRow()
             Me.m_btnKeep.Enabled = Me.m_gridGroups.IsFlaggedForDeletionRow()
+            Me.m_btnAdd.Enabled = Me.m_gridGroups.CanAddTaxon(DirectCast(Me.m_gridResults.TaxonAtRow, ITaxonSearchData)) And bHasResult
         Catch ex As Exception
 
         End Try
@@ -409,6 +436,7 @@ Public Class dlgDefineTaxa
                     Try
                         bCanSearch = bCanSearch And DirectCast(prod, IConfigurablePlugin).IsConfigured
                     Catch ex As Exception
+                        Debug.Assert(False, ex.Message)
                     End Try
                 End If
                 bIsSearching = bIsSearching Or (DirectCast(prod, IDataSearchProducerPlugin).IsSeaching)

@@ -42,7 +42,7 @@ Partial Class dlgDefineTaxa
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineTaxa))
-        Me.m_btnAdd = New System.Windows.Forms.Button()
+        Me.m_btnDefine = New System.Windows.Forms.Button()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_btnKeep = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
@@ -63,6 +63,8 @@ Partial Class dlgDefineTaxa
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnProps = New System.Windows.Forms.Button()
         Me.m_cbShowCodes = New System.Windows.Forms.CheckBox()
+        Me.m_btnAdd = New System.Windows.Forms.Button()
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -70,11 +72,11 @@ Partial Class dlgDefineTaxa
         CType(Me.m_pbSearching, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'm_btnAdd
+        'm_btnDefine
         '
-        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-        Me.m_btnAdd.Name = "m_btnAdd"
-        Me.m_btnAdd.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnDefine, "m_btnDefine")
+        Me.m_btnDefine.Name = "m_btnDefine"
+        Me.m_btnDefine.UseVisualStyleBackColor = True
         '
         'm_btnRemove
         '
@@ -137,11 +139,19 @@ Partial Class dlgDefineTaxa
         'm_scMain.Panel1
         '
         Me.m_scMain.Panel1.Controls.Add(Me.m_gridGroups)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrEdit)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnDefine)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnRemove)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnProps)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrProps)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnKeep)
         '
         'm_scMain.Panel2
         '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_hdrSearch)
         Me.m_scMain.Panel2.Controls.Add(Me.m_pbSearching)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cmbFilter)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnAdd)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lblIn)
         Me.m_scMain.Panel2.Controls.Add(Me.m_btnConfigure)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cbIncludeExtent)
@@ -154,6 +164,7 @@ Partial Class dlgDefineTaxa
         'm_gridGroups
         '
         Me.m_gridGroups.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_gridGroups, "m_gridGroups")
         Me.m_gridGroups.AutoSizeMinHeight = 10
         Me.m_gridGroups.AutoSizeMinWidth = 10
         Me.m_gridGroups.AutoStretchColumnsToFitWidth = False
@@ -165,7 +176,6 @@ Partial Class dlgDefineTaxa
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridGroups.CustomSort = False
         Me.m_gridGroups.DataName = "grid content"
-        resources.ApplyResources(Me.m_gridGroups, "m_gridGroups")
         Me.m_gridGroups.FixedColumnWidths = False
         Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridGroups.GridToolTipActive = True
@@ -267,6 +277,20 @@ Partial Class dlgDefineTaxa
         Me.m_cbShowCodes.Name = "m_cbShowCodes"
         Me.m_cbShowCodes.UseVisualStyleBackColor = True
         '
+        'm_btnAdd
+        '
+        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+        Me.m_btnAdd.Name = "m_btnAdd"
+        Me.m_btnAdd.UseVisualStyleBackColor = True
+        '
+        'm_hdrSearch
+        '
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.CanCollapseParent = False
+        Me.m_hdrSearch.CollapsedParentHeight = 0
+        Me.m_hdrSearch.IsCollapsed = False
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
         'dlgDefineTaxa
         '
         resources.ApplyResources(Me, "$this")
@@ -277,12 +301,6 @@ Partial Class dlgDefineTaxa
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
-        Me.Controls.Add(Me.m_hdrEdit)
-        Me.Controls.Add(Me.m_hdrProps)
-        Me.Controls.Add(Me.m_btnKeep)
-        Me.Controls.Add(Me.m_btnProps)
-        Me.Controls.Add(Me.m_btnRemove)
-        Me.Controls.Add(Me.m_btnAdd)
         Me.Name = "dlgDefineTaxa"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
@@ -307,7 +325,7 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_tbxSearchTerm As System.Windows.Forms.TextBox
     Private WithEvents m_cmbEngine As System.Windows.Forms.ComboBox
     Private WithEvents m_btnConfigure As System.Windows.Forms.Button
-    Private WithEvents m_btnAdd As System.Windows.Forms.Button
+    Private WithEvents m_btnDefine As System.Windows.Forms.Button
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
     Private WithEvents m_lblEngine As System.Windows.Forms.Label
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
@@ -318,5 +336,7 @@ Partial Class dlgDefineTaxa
     Private WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults
     Private WithEvents m_pbSearching As System.Windows.Forms.PictureBox
     Private WithEvents m_cbShowCodes As System.Windows.Forms.CheckBox
+    Private WithEvents m_btnAdd As System.Windows.Forms.Button
+    Private WithEvents m_hdrSearch As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
 End Class
