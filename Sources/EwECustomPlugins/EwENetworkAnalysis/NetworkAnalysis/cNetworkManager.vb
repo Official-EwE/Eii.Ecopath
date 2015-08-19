@@ -1590,19 +1590,56 @@ Public Class cNetworkManager
 
     Public ReadOnly Property Psust(iGroup As Integer) As Single
         Get
-            Return CSng(Math.Max(0, Math.Min(1, 1 - Lindex(iGroup) / 0.18)))
+            Return CalcPsust(Lindex(iGroup))
         End Get
     End Property
 
     Public ReadOnly Property PsustTot() As Single
         Get
-            Dim l As Single = 0
+            Dim LIndexTot As Single = 0
             For i As Integer = 1 To nGroups
-                l += Lindex(i)
+                LIndexTot += Lindex(i)
             Next
-            Return CSng(Math.Max(0, Math.Min(1, 1 - l / 0.18)))
+            Return CalcPsust(LIndexTot)
         End Get
     End Property
+
+    ''' <summary>
+    ''' Calculate P-sust (probability percentage of sustainable fishing) from an L-Index value
+    ''' </summary>
+    ''' <param name="LIndex">The L-Index value to calculate P-sust from.</param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' From Marta Coll / Simone Libralato
+    ''' </remarks>
+    Private Function CalcPsust(LIndex As Single) As Single
+        'Return CSng(Math.Max(0, Math.Min(1, 1 - lIndex / 0.18)))
+        Return CSng(-238674 * LIndex ^ 6 + 190305 * LIndex ^ 5 - 57326 * LIndex ^ 4 + 7916.6 * LIndex ^ 3 - 447.24 * LIndex ^ 2 - 1.5725 * LIndex + 0.9686)
+    End Function
+
+    ''' <summary>
+    ''' Calculate P-sust upper SD from an L-Index value
+    ''' </summary>
+    ''' <param name="LIndex">The L-Index value to calculate P-sust SD upper from.</param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' From Marta Coll / Simone Libralato
+    ''' </remarks>
+    Private Function CalcPsustSDupper(LIndex As Single) As Single
+        Return CSng(1000000.0 * LIndex ^ 6 - 574602 * LIndex ^ 5 + 92861 * LIndex ^ 4 - 4778.1 * LIndex ^ 3 - 60.762 * LIndex ^ 2 - 1.31 * LIndex + 1.0066)
+    End Function
+
+    ''' <summary>
+    ''' Calculate P-sust lower SD from an L-Index value
+    ''' </summary>
+    ''' <param name="LIndex">The L-Index value to calculate P-sust SD lower from.</param>
+    ''' <returns></returns>
+    ''' <remarks>
+    ''' From Marta Coll / Simone Libralato
+    ''' </remarks>
+    Private Function CalcPsustSDlower(LIndex As Single) As Single
+        Return CSng(690857 * LIndex ^ 6 - 324339 * LIndex ^ 5 + 52144 * LIndex ^ 4 - 3409.8 * LIndex ^ 3 + 160.53 * LIndex ^ 2 - 18.241 * LIndex + 1.0109)
+    End Function
 
     ''' <summary>
     ''' Absolute L-index over time (Ecosim)
