@@ -9545,9 +9545,6 @@ Namespace DataSources
                             item.ConverterConfig = CStr(Me.m_db.ReadSafe(reader, "ConverterCfg", ""))
                             item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
                             item.ScaleType = CType(Me.m_db.ReadSafe(reader, "ScaleType", cSpatialScalarDataAdapterBase.eScaleType.Relative), cSpatialScalarDataAdapterBase.eScaleType)
-
-                            ' These datasets are 'virtual', obtained from a foreign model but not properly defined
-
                         End If
                     End If
 
