@@ -1594,6 +1594,18 @@ Public Class cNetworkManager
         End Get
     End Property
 
+    Public ReadOnly Property PsustSDupper(iGroup As Integer) As Single
+        Get
+            Return CalcPsustSDupper(Lindex(iGroup))
+        End Get
+    End Property
+
+    Public ReadOnly Property PsustSDlower(iGroup As Integer) As Single
+        Get
+            Return CalcPsustSDlower(Lindex(iGroup))
+        End Get
+    End Property
+
     Public ReadOnly Property PsustTot() As Single
         Get
             Dim LIndexTot As Single = 0
