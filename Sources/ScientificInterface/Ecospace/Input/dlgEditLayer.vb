@@ -242,11 +242,10 @@ Namespace Ecospace.Basemap.Layers
                 ofd.Title = "Pick ASCII file to load"
                 ofd.Filter = "ASCII files|*.asc"
                 If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                    Dim rd As New StreamReader(ofd.FileName)
-                    Me.ReadASCFile(rd)
-                    rd.Close()
-                    Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
-                    Me.m_grid.RefreshContent()
+                    If Me.ReadASCFile(ofd.FileName) Then
+                        Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
+                        Me.m_grid.RefreshContent()
+                    End If
                 End If
             Catch ex As Exception
 
@@ -446,44 +445,91 @@ Namespace Ecospace.Basemap.Layers
 #Region " This should really live somewhere else... "
 
         ' ToDo_JS: merge with core ASCII map logic, and build provisions to use spatial temporal framework
-
-        Protected Sub ReadASCFile(ByVal strm As StreamReader)
+        Protected Function ReadASCFile(ByVal filename As String) As Boolean
+            Dim bloaded As Boolean
+            Dim strm As New StreamReader(filename)
+            Dim nNullCells As Integer
+            'jb 19-Aug-2015 changed to be more robust
+            'Send a message if the file fails to read
+            'Send a message if there are null values in water cells
             Try
-                Me.ReadASCIIHeader(strm)
-                Me.ReadASCIIBody(strm)
+                bloaded = Me.ReadASCIIHeader(strm)
+                bloaded = bloaded And Me.ReadASCIIBody(strm, nNullCells)
             Catch ex As Exception
-
+                'shouldn't happen... 
+                'the methods above handle there own exceptions
+                bloaded = False
             End Try
-        End Sub
+
+            strm.Close()
+
+            If Not bloaded Then
+                Me.m_uic.Core.Messages.SendMessage(New cMessage("Failed to load ASCII map file. " + filename, _
+                                                               eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            End If
+
+            If bloaded And nNullCells > 0 Then
+                'The current .asc file contains null values in water cells
+                'Warn the user this may be a problem for the model
+                Me.m_uic.Core.Messages.SendMessage(New cMessage("Waring: The ASCII file contains " + nNullCells.ToString + " null values (-9999) in water cells. This could cause problems for Ecospace.", _
+                                                              eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+
+            End If
+
+            Return bloaded
+
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Too hack to be true
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Sub ReadASCIIHeader(ByVal reader As StreamReader)
-
+        Protected Function ReadASCIIHeader(ByVal reader As StreamReader) As Boolean
+            Dim bsuccess As Boolean = True
             Dim strLine As String = ""
+            Dim bFoundData As Boolean = False
+            Try
 
-            While (String.IsNullOrWhiteSpace(strLine) Or (Not cStringUtils.BeginsWith(strLine, "NODATA_value", True))) And _
-                  (Not reader.EndOfStream)
-                strLine = reader.ReadLine.Trim
-            End While
+                'jb 19-Aug-2015 changed to be more robust
+                'at least it reports if the file fails to read
+                While Not reader.EndOfStream
+                    'jb Trim the line just in case. We have had files that contain a leading space in the headers. Really...
+                    strLine = reader.ReadLine.Trim
+                    If Not String.IsNullOrWhiteSpace(strLine) Then
+                        If cStringUtils.BeginsWith(strLine, "NODATA_value", True) Then
+                            bFoundData = True
+                            Exit While
+                        End If
+                    End If
+                End While
 
-        End Sub
+                'While (String.IsNullOrWhiteSpace(strLine) Or (Not cStringUtils.BeginsWith(strLine, "NODATA_value", True))) And _
+                '(Not reader.EndOfStream)
+                '    strLine = reader.ReadLine
+                'End While
+
+            Catch ex As Exception
+                bsuccess = False
+            End Try
+
+            Return bsuccess And bFoundData
+
+        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Too hack to be true
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Function ReadASCIIBody(ByVal reader As StreamReader) As Boolean
+        Protected Function ReadASCIIBody(ByVal reader As StreamReader, ByRef nNullCells As Integer) As Boolean
 
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
             Dim value As Single = 0
             Dim strValue As String = ""
             Dim bSuccess As Boolean = True
+            Dim isDepthLayer As Boolean = (Me.m_layerWork.VarName = eVarNameFlags.LayerDepth)
 
             Try
 
@@ -493,15 +539,26 @@ Namespace Ecospace.Basemap.Layers
                     Dim strLine As String = reader.ReadLine.Trim
                     Dim astrBits() As String = strLine.Split(" "c)
                     For ic As Integer = 1 To Math.Min(bm.InCol, astrBits.Length)
-                        If depth.IsWaterCell(ir, ic) Or Me.m_layerWork.VarName = eVarNameFlags.LayerDepth Then
+                        If depth.IsWaterCell(ir, ic) Or isDepthLayer Then
                             bSuccess = bSuccess And Single.TryParse(astrBits(ic - 1), value)
                         Else
                             value = cCore.NULL_VALUE
                         End If
 
-                        If (value <> cCore.NULL_VALUE) Then
-                            Me.m_layerWork.Value(ir, ic) = value
+                        'jb 19-Aug-2015 when loading a new basemap 
+                        'I think it's better to load all the data 'as is'
+                        'this way you don't get fragments from any previously loaded data
+                        Me.m_layerWork.Value(ir, ic) = value
+
+                        'Count the number of null values in water cells
+                        If depth.IsWaterCell(ir, ic) And value = CSng(cCore.NULL_VALUE) And Not isDepthLayer Then
+                            nNullCells += 1
                         End If
+
+                        'Could also test to see if it actually set the value in the map
+                        'Passed all the validation rules
+                        'if  (Me.m_layerWork.Value(ir, ic) = value).....
+
                     Next
                 Next
             Catch ex As Exception
