@@ -95,8 +95,8 @@ Public Class cWoRMSPluginPoint
         binding.AllowCookies = False
         binding.BypassProxyOnLocal = False
         binding.HostNameComparisonMode = ServiceModel.HostNameComparisonMode.StrongWildcard
-        binding.MaxBufferSize = 524288
         binding.MaxBufferPoolSize = 524288
+        binding.MaxBufferSize = 524288
         binding.MaxReceivedMessageSize = 524288
         binding.MessageEncoding = ServiceModel.WSMessageEncoding.Text
         binding.TextEncoding = System.Text.Encoding.UTF8
@@ -331,7 +331,9 @@ Public Class cWoRMSPluginPoint
     Private Function Search(ByVal taxon As ITaxonSearchData) As Boolean
 
         If (Me.m_thread IsNot Nothing) Then
-            Me.m_thread.Abort()
+            If (Me.m_client IsNot Nothing) Then
+                Me.m_client.Abort()
+            End If
             Me.m_thread = Nothing
             Me.m_bSearching = False
         End If
@@ -351,10 +353,13 @@ Public Class cWoRMSPluginPoint
     Private Sub SearchThreaded()
 
         ' ToDo: globalize this method
+        Dim c As AphiaNameServicePortTypeClient = Me.m_client
 
         Try
-            If (Me.m_client Is Nothing) Then Me.InitClient()
+            Me.InitClient()
         Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            cLog.Write(ex, "cWoRMSPluginPoint.SearchThreaded")
         End Try
 
         Dim lRecords As AphiaRecord() = Nothing
@@ -362,24 +367,39 @@ Public Class cWoRMSPluginPoint
 
         Try
             ' Central web service call
-            If (Me.m_client IsNot Nothing) Then
+            If (c IsNot Nothing) Then
                 lRecords = Me.m_client.getAphiaRecords(Me.m_term.Common, True, True, True, 1)
+                c.Close()
             End If
         Catch exThread As Threading.ThreadAbortException
             ' Search aborted, is ok. 
             ' Do not tinker with searching flag because it may already have been set in the calling thread
             ' Me.m_bSearching = False
+            c.Abort()
+        Catch exComm As ServiceModel.CommunicationObjectAbortedException
+            ' Search was deliberately aborted: ignore this exception
         Catch exCfg As Configuration.ConfigurationException
             ' NOP
+            c.Abort()
         Catch exSoap As SoapException
+            cLog.Write(exSoap, "cWoRMSPluginPoint.SearchThreaded")
             ' Send message cross-threaded
             Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", exSoap.Message), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
+            c.Abort()
         Catch exComm As ServiceModel.CommunicationException
             ' Too many results! Not sure how to handle this
+            c.Abort()
+            cLog.Write(exComm, "cWoRMSPluginPoint.SearchThreaded")
+        Catch exTime As TimeoutException
+            ' Timeout
+            c.Abort()
+            cLog.Write(exTime, "cWoRMSPluginPoint.SearchThreaded")
         Catch exGeneral As Exception
             Debug.Assert(False, exGeneral.Message)
+            cLog.Write(exGeneral, "cWoRMSPluginPoint.SearchThreaded")
+            c.Abort()
         End Try
 
         If (lRecords IsNot Nothing) Then
