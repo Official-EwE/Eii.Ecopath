@@ -3377,4 +3377,10 @@ AIABAACAAQAAAAEAAAAAAAAAAAAAAAEAAIABAACAAQAAwAMAAMAHAADwDwAA/D8AAAs=</value>
   <data name="COL_HDR_PSUST" xml:space="preserve">
     <value>Psust</value>
   </data>
+  <data name="COL_HDR_PSUST_SDLOWER" xml:space="preserve">
+    <value>Psust SD (lower)</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDUPPER" xml:space="preserve">
+    <value>Psust SD (upper)</value>
+  </data>
 </root>
