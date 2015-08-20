@@ -1,4 +1,28 @@
-﻿Imports System
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+'
+' Stepwise Fitting Procedure by Sheila Heymans, Erin Scott, Jeroen Steenbeek
+' Copyright 2015- Scottish Association for Marine Science, Oban, Scotland
+'
+' Erin Scott was funded by the Scottish Informatics and Computer Science
+' Alliance (SICSA) Postgraduate Industry Internship Programme.
+' ===============================================================================
+'
+
+Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,17 +32,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwEStepwiseFittingPlugin")> 
-<Assembly: AssemblyDescription("Plug-in for the EwE6 desktop to automate the process of stepwise fitting.")> 
-<Assembly: AssemblyCompany("Scottsh Association of Marine Science")> 
-<Assembly: AssemblyProduct("EwEStepwiseFittingPlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2015")> 
+<Assembly: AssemblyTitle("EwESFP")> 
+<Assembly: AssemblyDescription("Stepwise fitting procedure for the Ecopath with Ecosim food-web modeling approach")> 
+<Assembly: AssemblyCompany("Scottish Association of Marine Science")> 
+<Assembly: AssemblyProduct("EwESFP")> 
+<Assembly: AssemblyCopyright("Copyright © 2015 Scottish Association of Marine Science")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("609d8897-555c-41a5-b687-25324007e701")> 
+<Assembly: Guid("6fbdd00f-0a48-4601-b883-8f21c52c101f")> 
 
 ' Version information for an assembly consists of the following four values:
 '
