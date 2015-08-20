@@ -526,6 +526,7 @@ Namespace Ecospace.Basemap.Layers
 
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim exclusion As cEcospaceLayerExclusion = bm.LayerExclusion
             Dim value As Single = 0
             Dim strValue As String = ""
             Dim bSuccess As Boolean = True
@@ -551,7 +552,7 @@ Namespace Ecospace.Basemap.Layers
                         Me.m_layerWork.Value(ir, ic) = value
 
                         'Count the number of null values in water cells
-                        If depth.IsWaterCell(ir, ic) And value = CSng(cCore.NULL_VALUE) And Not isDepthLayer Then
+                        If depth.IsWaterCell(ir, ic) And (Not exclusion.IsExcludedCell(ir, ic)) And (value = CSng(cCore.NULL_VALUE)) And Not isDepthLayer Then
                             nNullCells += 1
                         End If
 
