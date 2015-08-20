@@ -1989,10 +1989,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESFPPlugin\EwESFP\EwEStepwiseFittingPlugin.vbproj">
-      <Project>{DFBA19D6-8E39-48F9-A503-CBC2519130B5}</Project>
-      <Name>EwEStepwiseFittingPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
