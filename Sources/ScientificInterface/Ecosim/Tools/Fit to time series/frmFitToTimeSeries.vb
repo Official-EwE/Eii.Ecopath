@@ -49,6 +49,7 @@ Namespace Ecosim
 
         Private m_fpNoAICPts As cEwEFormatProvider = Nothing
         Private m_fpUseDefaultVs As cEwEFormatProvider = Nothing
+        Private m_bIsRunOwner As Boolean = False
 
 #End Region 'Private variables
 
@@ -72,7 +73,7 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
             Try
 
@@ -111,8 +112,7 @@ Namespace Ecosim
                 Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
                 Me.m_sketchPad.NumDataPoints = Me.Core.nTimeSeriesYears
 
-                Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
-                Me.IsRunning = Me.m_F2TSManager.IsRunning()
+                AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
 
                 Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
                 Me.UpdateMaxSplinePoints()
@@ -126,7 +126,15 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
+
+            RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+
+            If (Me.m_bIsRunOwner) Then
+                Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
+                                            AddressOf OnRunStopped, AddressOf Me.OnModelRun)
+                Me.m_bIsRunOwner = False
+            End If
 
             Try
 
@@ -135,9 +143,6 @@ Namespace Ecosim
 
                 Me.m_fpUseDefaultVs.Release()
                 Me.m_fpUseDefaultVs = Nothing
-
-                Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
-                                            AddressOf OnRunStopped, AddressOf Me.OnModelRun)
 
                 ' Detach from event handlers
                 Me.m_vulnerabilityBlockCodeSelector = Nothing
@@ -212,6 +217,14 @@ Namespace Ecosim
             End Select
         End Sub
 
+        Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
+            Try
+                Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
         Public Overrides Property UIContext() As cUIContext
             Get
                 Return MyBase.UIContext
@@ -268,6 +281,8 @@ Namespace Ecosim
             Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
             'Me.m_F2TSManager.NAICDataPoints = CInt(Me.m_nudAICDataPts.Value)
 
+            Me.m_bIsRunOwner = True
+            Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
             Me.m_F2TSManager.RunSearch()
 
         End Sub
@@ -528,7 +543,8 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnRunStep()
 
-            'get the results of this iteration from the manager
+            If (Not Me.m_bIsRunOwner) Then Return
+
             Dim data As cF2TSResults = Me.m_F2TSManager.Results
             Dim runtype As eRunType = data.RunType
 
@@ -567,6 +583,11 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnRunStopped(ByVal runType As eRunType)
 
+            If (Not Me.m_bIsRunOwner) Then Return
+
+            Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
+                                            AddressOf OnRunStopped, AddressOf Me.OnModelRun)
+
             Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
 
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
@@ -579,6 +600,7 @@ Namespace Ecosim
             End If
 
             Me.IsRunning = False
+            Me.m_bIsRunOwner = False
             Me.UpdateControls()
         End Sub
 
@@ -626,6 +648,7 @@ Namespace Ecosim
             Me.m_bInUpdate = True
 
             Dim bInputsValid As Boolean = Me.Core.HasAppliedTimeSeries()
+            Dim bIsRunning As Boolean = Me.IsRunning Or Me.Core.StateMonitor.IsSearching()
 
             If Me.m_cbAnomalySearch.Checked Then
                 bInputsValid = bInputsValid And _
@@ -635,18 +658,24 @@ Namespace Ecosim
                 'bInputsValid = True
             End If
 
+            If (bIsRunning) Then
+                Me.m_split1.Enabled = Me.m_bIsRunOwner
+            Else
+                Me.m_split1.Enabled = True
+            End If
+
             Me.m_btnStop.Enabled = Me.IsRunning
-            Me.m_btnSearch.Enabled = (Not Me.IsRunning) And bInputsValid
-            Me.m_sketchPad.Enabled = (Not Me.IsRunning)
-            Me.m_shapeToolBox.Enabled = (Not Me.IsRunning)
-            Me.m_nudFirstYear.Enabled = (Not Me.IsRunning)
-            Me.m_nudLastYear.Enabled = (Not Me.IsRunning)
-            Me.m_nudSplinePts.Enabled = (Not Me.IsRunning)
-            Me.m_nudVariance.Enabled = (Not Me.IsRunning)
-            Me.m_nudVariancePrimaryProd.Enabled = (Not Me.IsRunning)
-            Me.m_cbVulnerabilitySearch.Enabled = (Not Me.IsRunning)
-            Me.m_cbAnomalySearch.Enabled = (Not Me.IsRunning)
-            Me.m_cbResetVs.Enabled = (Not Me.IsRunning)
+            Me.m_btnSearch.Enabled = (Not bIsRunning) And bInputsValid
+            Me.m_sketchPad.Enabled = (Not bIsRunning)
+            Me.m_shapeToolBox.Enabled = (Not bIsRunning)
+            Me.m_nudFirstYear.Enabled = (Not bIsRunning)
+            Me.m_nudLastYear.Enabled = (Not bIsRunning)
+            Me.m_nudSplinePts.Enabled = (Not bIsRunning)
+            Me.m_nudVariance.Enabled = (Not bIsRunning)
+            Me.m_nudVariancePrimaryProd.Enabled = (Not bIsRunning)
+            Me.m_cbVulnerabilitySearch.Enabled = (Not bIsRunning)
+            Me.m_cbAnomalySearch.Enabled = (Not bIsRunning)
+            Me.m_cbResetVs.Enabled = (Not bIsRunning)
 
             'constrain the number of years to the number of years in the time series data
             If Me.m_nudLastYear.Value > Me.m_F2TSManager.nTimeSeriesYears Then

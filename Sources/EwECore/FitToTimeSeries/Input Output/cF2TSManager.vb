@@ -220,7 +220,7 @@ Public Class cF2TSManager
     Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, _
             ByVal runStartedCallback As RunStartedDelegate, ByVal runStepCallback As RunStepDelegate, ByVal runStoppedCallback As RunStoppedDelegate, ByVal RunModelCallBack As RunModelDelegate)
 
-        Debug.Assert(m_runstartedHandler = Nothing)
+        Debug.Assert(m_runstartedHandler = Nothing, "Manager already connected?")
 
         Try
             Me.m_SyncObject = syncObject
@@ -625,9 +625,13 @@ Public Class cF2TSManager
     ''' <summary>
     ''' 
     ''' </summary>
+    ''' <param name="RunThreaded">Optional flag to state if the search runs multi-threaded. If <see cref="TriState.[False]"/>,
+    ''' the search never runs theaded. If <see cref="TriState.[True]"/>the search always runs threaded. If <see cref="TriState.UseDefault"/>,
+    ''' the search only runs threaded if a <see cref="System.ComponentModel.ISynchronizeInvoke">sync object</see> has been
+    ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunSensitivitySS2VByPredPrey() As Boolean
+    Public Function RunSensitivitySS2VByPredPrey(Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
         If Not CanRun() Then Return False
@@ -641,7 +645,7 @@ Public Class cF2TSManager
             Me.Update(Me.m_dataType)
 
             ' Launch requested analysis model 
-            If Me.m_SyncObject IsNot Nothing Then
+            If (Me.m_SyncObject IsNot Nothing) And (RunThreaded <> TriState.False) Then
                 m_thrdRun = New Thread(AddressOf Me.m_model.RunSensitivitySS2VByPredPrey)
                 m_thrdRun.Start()
             Else
@@ -651,12 +655,13 @@ Public Class cF2TSManager
             Return True
 
         Catch ex As Exception
-            Me.ReleaseWait()
+
             cLog.Write(ex)
             ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
-
+        Finally
+            Me.ReleaseWait()
         End Try
 
     End Function
@@ -669,9 +674,13 @@ Public Class cF2TSManager
     ''' <summary>
     ''' 
     ''' </summary>
+    ''' <param name="RunThreaded">Optional flag to state if the search runs multi-threaded. If <see cref="TriState.[False]"/>,
+    ''' the search never runs theaded. If <see cref="TriState.[True]"/>the search always runs threaded. If <see cref="TriState.UseDefault"/>,
+    ''' the search only runs threaded if a <see cref="System.ComponentModel.ISynchronizeInvoke">sync object</see> has been
+    ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunSensitivitySS2VByPredator() As Boolean
+    Public Function RunSensitivitySS2VByPredator(Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
         If Not CanRun() Then Return False
@@ -688,7 +697,7 @@ Public Class cF2TSManager
             Me.Update(Me.m_dataType)
 
             ' Launch requested analysis model 
-            If Me.m_SyncObject IsNot Nothing Then
+            If (Me.m_SyncObject IsNot Nothing) And (RunThreaded <> TriState.False) Then
                 m_thrdRun = New Thread(AddressOf Me.m_model.RunSensitivitySS2VByPredator)
                 m_thrdRun.Start()
             Else
@@ -699,11 +708,12 @@ Public Class cF2TSManager
 
         Catch ex As Exception
 
-            Me.ReleaseWait()
             cLog.Write(ex)
             ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+        Finally
+            Me.ReleaseWait()
         End Try
 
     End Function
@@ -716,9 +726,13 @@ Public Class cF2TSManager
     ''' 
     ''' </summary>
     ''' <param name="bRunSilent">Optional parameter to run without sending any messages or requesting any feedback</param>
+    ''' <param name="RunThreaded">Optional flag to state if the search runs multi-threaded. If <see cref="TriState.[False]"/>,
+    ''' the search never runs theaded. If <see cref="TriState.[True]"/>the search always runs threaded. If <see cref="TriState.UseDefault"/>,
+    ''' the search only runs threaded if a <see cref="System.ComponentModel.ISynchronizeInvoke">sync object</see> has been
+    ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function RunSearch(Optional ByVal bRunSilent As Boolean = False) As Boolean
+    Public Function RunSearch(Optional ByVal bRunSilent As Boolean = False, _
+                              Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         Dim iPPYear1 As Integer = 0
         Dim iPPYear2 As Integer = 0
@@ -737,7 +751,7 @@ Public Class cF2TSManager
             Me.Update(Me.m_dataType)
 
             ' Launch requested analysis model 
-            If Me.m_SyncObject IsNot Nothing Then
+            If (Me.m_SyncObject IsNot Nothing) And (RunThreaded <> TriState.False) Then
                 Me.m_thrdRun = New Thread(AddressOf Me.m_model.RunSearch)
                 Me.m_thrdRun.Start()
             Else
@@ -745,7 +759,6 @@ Public Class cF2TSManager
             End If
 
         Catch ex As Exception
-            Me.ReleaseWait()
             bSucces = False
             Me.m_core.m_FitToTimeSeriesData.bRunSilent = False
 
@@ -753,8 +766,9 @@ Public Class cF2TSManager
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: " & ex.Message, eMessageType.ErrorEncountered, _
                          eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             cLog.Write(ex)
+        Finally
+            Me.ReleaseWait()
         End Try
-
 
         Return bSucces
 

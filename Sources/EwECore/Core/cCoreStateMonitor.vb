@@ -726,7 +726,10 @@ Public Class cCoreStateMonitor
     ''' <remarks>Use this with care!!</remarks>
     ''' -----------------------------------------------------------------------
     Public Sub SetIsSearching(ByVal searchmode As eSearchModes)
-        Me.m_searchmode = searchmode
+        If (Me.m_searchmode <> searchmode) Then
+            Me.m_searchmode = searchmode
+            RaiseEvent CoreExecutionStateEvent(Me)
+        End If
     End Sub
 
     ''' -----------------------------------------------------------------------

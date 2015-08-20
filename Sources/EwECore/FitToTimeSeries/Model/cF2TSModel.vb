@@ -1272,7 +1272,7 @@ Namespace FitToTimeSeries
             m_ecosim.RunModelValue(TotalTime, Nothing, 0)
 
             Ss = m_esdata.SS
-            System.Console.WriteLine("SS = " + Ss.ToString)
+            'System.Console.WriteLine("SS = " + Ss.ToString)
 
             'For Iobs = 1 To Nobs
             '    Ss = Ss + Erpred(Iobs) * Erpred(Iobs) * Wt(Iobs)
