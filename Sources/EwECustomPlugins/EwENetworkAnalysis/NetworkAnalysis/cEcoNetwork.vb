@@ -3430,7 +3430,6 @@ NextPivot:
             Else
                 relCatch = esData.CatchSim(iTime) / esData.CatchSim(1)
             End If
-            'Kemptons(iTime) = FunctionKemptonsQ(BB, 0.25)
 
             PrepareUlanowForCallFromEcosim(iTime)
 
@@ -3438,9 +3437,6 @@ NextPivot:
             'see EwE5 RunModel() "If IndicesOn Then"
             RelativeSumOfCatchPlot(iTime) = relCatch
             RelativeKemptonsPlot(iTime) = esData.Kemptons(iTime) / OrigKempton
-            'EwE5 code for plotting trophic level of catch it Indicies plot
-            'If Solving = False Then
-            '    frmSim1.PlotTime.Line (told, OldTL)-(t, TLcatch - IIf(frmSim1.optTL, 0, 2)), QBColor(0)
 
             ' JS 21Mar2010: fixed issue 698
             ' TLCatchPlot(iTime) = esData.TLC(iTime) - 2 'subtract two from TLCatch for plotting I have no idea why
@@ -3454,22 +3450,15 @@ NextPivot:
                 RelativeCatchPPR(iTime) = RaiseToPP(0) / OrigPPR(0)
                 RelativeCatchDetReq(iTime) = RaiseToDet(0) / OrigPPR(1)
 
-                ' -PPRi*TE^(TLi-1) / ln(TE)
-                Dim PPR As Single = 0
-                Dim sToTL As Single = 0
+                Dim LIndexTot As Single = 0
                 For i As Integer = 1 To Me.m_core.nLivingGroups
-                    sToTL += Me.m_manager.Lindex(i)
-                    PPR += Me.m_manager.PPRTotPPHarvest(i)
+                    LIndexTot += Me.m_manager.LindexSim(i)
                 Next
 
-                Dim TE As Single = TotTransferEfficiencyWeighted(iTime)
-                Dim TLC As Single = Me.m_esdata.TLC(iTime) - 1
-                Dim l As Single = -CSng(PPR * TE ^ TLC / Math.Log(TE))
-
-                AbsoluteLIndex(iTime) = sToTL
+                AbsoluteLIndex(iTime) = LIndexTot
                 RelativeLIndex(iTime) = AbsoluteLIndex(iTime) / AbsoluteLIndex(1)
 
-                AbsolutePsust(iTime) = Me.m_manager.PsustTot()
+                AbsolutePsust(iTime) = Me.m_manager.CalcPsust(LIndexTot)
                 RelativePsust(iTime) = AbsolutePsust(iTime) / AbsolutePsust(1)
             End If
 

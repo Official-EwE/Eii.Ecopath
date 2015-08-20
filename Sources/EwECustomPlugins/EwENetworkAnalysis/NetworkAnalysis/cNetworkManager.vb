@@ -1574,7 +1574,6 @@ Public Class cNetworkManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Lindex(iGroup As Integer) As Single
         Get
-
             If Me.PPRCatchHarvest(iGroup) <= 0.0 Or Me.PPRCatchHarvest(iGroup) <= 0.0 Then Return 0
 
             Dim TE2 As Single = Me.TotTransferEfficiency(2)
@@ -1585,6 +1584,22 @@ Public Class cNetworkManager
 
             ' Loss of Prod for fn group: -PPRi%*TE^(TLi-1) / ln(TE)
             Return CSng(-PPRi * TE ^ (Me.m_epdata.TTLX(iGroup) - 1) / Math.Log(TE))
+        End Get
+    End Property
+
+    Public ReadOnly Property LindexSim(iGroup As Integer) As Single
+        Get
+            If Me.PPRCatchHarvest(iGroup) <= 0.0 Or Me.PPRCatchHarvest(iGroup) <= 0.0 Then Return 0
+
+            ' TotTransferEfficiency is computed for Ecosim, *phew*
+            Dim TE2 As Single = Me.TotTransferEfficiency(2)
+            Dim TE3 As Single = Me.TotTransferEfficiency(3)
+            Dim TE4 As Single = Me.TotTransferEfficiency(4)
+            Dim TE As Single = CSng((TE2 * TE3 * TE4) ^ (1 / 3)) ' OK, NOT expressed in percent
+            Dim PPRi As Single = Me.PPRTotPPHarvest(iGroup)  ' OK, expressed in percent
+
+            ' Loss of Prod for fn group: -PPRi%*TE^(TLi-1) / ln(TE)
+            Return CSng(-PPRi * TE ^ (Me.m_esdata.TLSim(iGroup) - 1) / Math.Log(TE))
         End Get
     End Property
 
@@ -1606,16 +1621,6 @@ Public Class cNetworkManager
         End Get
     End Property
 
-    Public ReadOnly Property PsustTot() As Single
-        Get
-            Dim LIndexTot As Single = 0
-            For i As Integer = 1 To nGroups
-                LIndexTot += Lindex(i)
-            Next
-            Return CalcPsust(LIndexTot)
-        End Get
-    End Property
-
     ''' <summary>
     ''' Calculate P-sust (probability percentage of sustainable fishing) from an L-Index value
     ''' </summary>
@@ -1624,7 +1629,7 @@ Public Class cNetworkManager
     ''' <remarks>
     ''' From Marta Coll / Simone Libralato
     ''' </remarks>
-    Private Function CalcPsust(LIndex As Single) As Single
+    Public Function CalcPsust(LIndex As Single) As Single
         'Return CSng(Math.Max(0, Math.Min(1, 1 - lIndex / 0.18)))
         Return CSng(-238674 * LIndex ^ 6 + 190305 * LIndex ^ 5 - 57326 * LIndex ^ 4 + 7916.6 * LIndex ^ 3 - 447.24 * LIndex ^ 2 - 1.5725 * LIndex + 0.9686)
     End Function
@@ -1845,7 +1850,8 @@ Public Class cNetworkManager
 
 #End Region
 
-#Region "For harvest of all groups"
+#Region " For harvest of all groups "
+
     ''' <summary>
     ''' EwE5 PPR(PP)
     ''' </summary>

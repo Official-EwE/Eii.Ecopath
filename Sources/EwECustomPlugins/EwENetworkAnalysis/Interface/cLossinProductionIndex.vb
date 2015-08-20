@@ -94,7 +94,7 @@ Public Class cLossinProductionIndex
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.ROW_HDR_TOTAL
         astrRowContent(2) = Me.StyleGuide.FormatNumber(LindexTot)
-        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.PsustTot())
+        astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.CalcPsust(LindexTot))
         Grid.Rows(NetworkManager.nLivingGroups + 1).SetValues(astrRowContent)
 
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
