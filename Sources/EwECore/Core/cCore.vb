@@ -38,6 +38,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.SpatialData
+Imports System.Xml
 
 #End Region ' Imports
 
@@ -80,7 +81,7 @@ Public Class cCore
     Public Const N_MONTHS As Integer = 12
     ''' <summary>Max number of years ecosim or ecospace can run for</summary>
     Public Const MAX_RUN_LENGTH As Integer = 500
-  
+
 #End Region ' Shared consts
 
 #Region " Public delegates "
@@ -2712,19 +2713,15 @@ Public Class cCore
         Dim sb As New StringBuilder()
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
-        sb.AppendLine("EwE version," & cStringUtils.ToCSVField(cCore.Version))
+        sb.AppendLine("EwEVersion," & cStringUtils.ToCSVField(cCore.Version))
         sb.AppendLine("Date," & cStringUtils.ToCSVField(Date.Now.ToString()))
 
-        If (sm.HasEcopathLoaded) Then
-            ' #Yes: add the model name
+        If (savetype > eAutosaveTypes.NotSet) And (sm.HasEcopathLoaded) Then
             sb.AppendLine("ModelName," & cStringUtils.ToCSVField(Me.EwEModel.Name))
         End If
 
-        ' Has Ecosim?
         If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
-            ' #Yes: add ecosim scenario details
             sb.AppendLine("EcosimScenario," & cStringUtils.ToCSVField(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name))
-            ' Append time series name to scenario, if any
             sb.Append("TimeSeries,")
             If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
                 sb.AppendLine(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
@@ -2735,9 +2732,7 @@ Public Class cCore
             sb.AppendLine("StartYear," & cStringUtils.ToCSVField(iStartYear))
         End If
 
-        ' Has Ecospace?
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
-            ' #Yes: add ecospace scenario details
             sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
             sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
             sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
@@ -2749,13 +2744,132 @@ Public Class cCore
             sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")))
         End If
 
-        ' Has Ecotracer?
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
-            ' #Yes: add ecotracer scenario details
             sb.AppendLine("EcotracerScenario," & cStringUtils.ToCSVField(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name))
         End If
 
         Return sb.ToString
+
+    End Function
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a default file header for XML files for a given 
+    ''' <see cref="eAutosaveTypes">auto-save type</see>, representing loaded
+    ''' aspects of ecopath, ecosim, ecospace and ecotracer, where applicable.
+    ''' This header block can be integrated in XML files.
+    ''' </summary>
+    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save type</see>
+    ''' to obtain the generic file header for.</param>
+    ''' <param name="iStartYear">Optional start year to include in the header. If 
+    ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
+    ''' <returns>A XML node structure describing the EwE run, safe for integration in XML files.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function DefaultFileHeader(ByVal doc As XmlDocument, _
+                                      ByVal savetype As eAutosaveTypes, _
+                                      Optional iStartYear As Integer = cCore.NULL_VALUE) As XmlNode
+
+        Dim xnEwE As XmlNode = doc.CreateElement("EwE")
+        Dim xn As XmlNode = Nothing
+        Dim xa As XmlAttribute = Nothing
+        Dim sm As cCoreStateMonitor = Me.StateMonitor
+
+        xn = doc.CreateElement("Software")
+        xnEwE.AppendChild(xn)
+
+        xa = doc.CreateAttribute("version")
+        xa.Value = cCore.Version
+        xn.Attributes.Append(xa)
+
+        xa = doc.CreateAttribute("Date")
+        xa.Value = cStringUtils.FormatDate(Date.Now)
+        xn.Attributes.Append(xa)
+
+        If (sm.HasEcopathLoaded() And savetype > eAutosaveTypes.NotSet) Then
+            ' #Yes: add the model name
+            xn = doc.CreateElement("Model")
+            xnEwE.AppendChild(xn)
+
+            xa = doc.CreateAttribute("Name")
+            xa.Value = Me.EwEModel.Name
+            xn.Attributes.Append(xa)
+        End If
+
+        If (savetype >= eAutosaveTypes.Ecosim) And (sm.HasEcosimLoaded) Then
+            xn = doc.CreateElement("Ecosim")
+            xnEwE.AppendChild(xn)
+
+            xa = doc.CreateAttribute("Name")
+            xn.Attributes.Append(xa)
+            xa.Value = Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+
+            xa = doc.CreateAttribute("StartYear")
+            xn.Attributes.Append(xa)
+            If (iStartYear = cCore.NULL_VALUE) Then iStartYear = Me.EcosimFirstYear
+            xa.Value = cStringUtils.FormatNumber(iStartYear)
+
+            ' Append time series name to scenario, if any
+            xa = doc.CreateAttribute("TimeSeries")
+            xn.Attributes.Append(xa)
+            If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
+                xa.Value = Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name
+            Else
+                xa.Value = ""
+            End If
+        End If
+
+        If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
+            xn = doc.CreateElement("Ecospace")
+            xnEwE.AppendChild(xn)
+
+            xa = doc.CreateAttribute("Name")
+            xn.Attributes.Append(xa)
+            xa.Value = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+
+            xa = doc.CreateAttribute("MapRows")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow)
+
+            xa = doc.CreateAttribute("MapCols")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol)
+
+            xa = doc.CreateAttribute("MapCellLength")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength)
+
+            xa = doc.CreateAttribute("MapCellSize")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize())
+
+            xa = doc.CreateAttribute("MapLatitude")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1)
+
+            xa = doc.CreateAttribute("MapLongitude")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1)
+
+            xa = doc.CreateAttribute("EcoSpaceTimeStepLength")
+            xn.Attributes.Append(xa)
+            xa.Value = cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep)
+
+            xa = doc.CreateAttribute("CoordinateSystemWKT")
+            xn.Attributes.Append(xa)
+            xa.Value = Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")
+        End If
+
+        If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
+            xn = doc.CreateElement("Ecotracer")
+            xnEwE.AppendChild(xn)
+
+            xa = doc.CreateAttribute("Name")
+            xn.Attributes.Append(xa)
+            xa.Value = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+        End If
+
+        Return xn
 
     End Function
 
