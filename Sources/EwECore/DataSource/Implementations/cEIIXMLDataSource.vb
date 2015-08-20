@@ -544,26 +544,28 @@ Public Class cEIIXMLDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
-        Dim rdStanza As DataTable = Nothing
-        Dim rdLifeStage As DataTable = Nothing
+        Dim dtStanza As DataTable = Nothing
+        Dim dtLifeStage As DataTable = Nothing
         Dim iStanza As Integer = 0
         Dim iLifeStage As Integer = 0
         Dim iGroup As Integer = 0
         Dim sTemp As Single = 0.0
         Dim bSucces As Boolean = True
 
-        rdStanza = Me.ReadTable("Stanza")
-        rdLifeStage = Me.ReadTable("StanzaLifeStage")
+        dtStanza = Me.ReadTable("Stanza")
+        dtStanza.DefaultView.Sort = "StanzaID ASC"
+
+        dtLifeStage = Me.ReadTable("StanzaLifeStage")
 
         ' Count the number of rows in StanzaInfo; this is the number of split groups that we're going to work with
-        stanzaDS.Nsplit = rdStanza.Rows.Count
+        stanzaDS.Nsplit = dtStanza.Rows.Count
         ' Get max no of stanza
         stanzaDS.MaxStanza = 0
 
         If (stanzaDS.Nsplit > 0) Then
             'stanzaDS.MaxStanza = CInt(Me..GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
             Dim dic As New Dictionary(Of Integer, Integer)
-            For Each row As DataRow In rdLifeStage.Rows
+            For Each row As DataRow In dtLifeStage.Rows
                 iStanza = CInt(row("StanzaID"))
                 If dic.ContainsKey(iStanza) Then iLifeStage = dic(iStanza) Else iLifeStage = 0
                 iLifeStage += 1
@@ -584,7 +586,7 @@ Public Class cEIIXMLDataSource
 
         ' First read Stanza
         iStanza = 0
-        For Each row As DataRow In rdStanza.Rows
+        For Each row As DataRow In dtStanza.Rows
 
             ' JS 11May2010: Stanza configs without stanza groups are now loaded.
             '               This *could* screw up the core calculations, but in a way
@@ -626,11 +628,11 @@ Public Class cEIIXMLDataSource
             End Try
 
             'rdLifeStage = Me..Getdrow(cStringUtils.Localize("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
-            rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
-            rdLifeStage.DefaultView.Sort = "AgeStart ASC"
+            dtLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
+            dtLifeStage.DefaultView.Sort = "AgeStart ASC"
             iLifeStage = 0
 
-            For Each rowStage As DataRow In rdLifeStage.DefaultView.ToTable.Rows
+            For Each rowStage As DataRow In dtLifeStage.DefaultView.ToTable.Rows
                 ' Next life stage in this stanza
                 iLifeStage += 1
 
@@ -658,8 +660,8 @@ Public Class cEIIXMLDataSource
             stanzaDS.Nstanza(iStanza) = iLifeStage
         Next
 
-        rdStanza.Clear()
-        rdLifeStage.Clear()
+        dtStanza.Clear()
+        dtLifeStage.Clear()
 
         Return bSucces
     End Function
@@ -800,6 +802,7 @@ Public Class cEIIXMLDataSource
     ''' Load the pedigree level definitions.
     ''' </summary>
     ''' <returns>True if successful.</returns>
+    ''' <remarks>Not supported yet</remarks>
     ''' -----------------------------------------------------------------------
     Private Function LoadPedigreeLevels() As Boolean
 
@@ -808,6 +811,9 @@ Public Class cEIIXMLDataSource
         ' Init data structure
         ecopathDS.NumPedigreeLevels = 0
         ecopathDS.RedimPedigree()
+
+        ' dt.DefaultView.Sort = "ScenarioID ASC"
+
         Return True
 
     End Function
@@ -858,6 +864,8 @@ Public Class cEIIXMLDataSource
         ecopathDS.RedimEcosimScenarios()
         If (ecopathDS.NumEcosimScenarios = 0) Then Return bSucces
 
+        dt.DefaultView.Sort = "ScenarioID ASC"
+
         Try
             For Each drow As DataRow In dt.Rows
                 ecopathDS.EcosimScenarioDBID(iScenario) = CInt(drow("ScenarioID"))
@@ -899,6 +907,8 @@ Public Class cEIIXMLDataSource
         ecopathDS.RedimEcospaceScenarios()
         If (ecopathDS.NumEcospaceScenarios = 0) Then Return bSucces
 
+        dt.DefaultView.Sort = "ScenarioID ASC"
+
         Try
             For Each drow As DataRow In dt.Rows
                 ecopathDS.EcospaceScenarioDBID(iScenario) = CInt(drow("ScenarioID"))
@@ -924,10 +934,7 @@ Public Class cEIIXMLDataSource
     ''' Load the list of available Ecotracer scenarios.
     ''' </summary>
     ''' <returns>True if succesful.</returns>
-    ''' <remarks>
-    ''' Note that this will NOT load any actual Ecotracer scenario. Scenario definitions 
-    ''' merely provide a preview of available Ecotracer scenarios in the database.
-    ''' </remarks>
+    ''' <remarks>Not supported yet</remarks>
     ''' -----------------------------------------------------------------------
     Private Function LoadEcotracerScenarioDefinitions() As Boolean
 
@@ -935,6 +942,8 @@ Public Class cEIIXMLDataSource
 
         ecopathDS.NumEcotracerScenarios = 0
         ecopathDS.RedimEcotracerScenarios()
+
+        ' dt.DefaultView.Sort = "ScenarioID ASC"
 
         Return True
     End Function
@@ -2062,6 +2071,7 @@ Public Class cEIIXMLDataSource
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "FlowMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "ExclusionMap", "")), ecospaceDS.Excluded, ecospaceDS.InRow, ecospaceDS.InCol)
 
         Catch ex As Exception
             bSucces = False
@@ -2432,6 +2442,7 @@ Public Class cEIIXMLDataSource
         Dim iLayer As Integer = 0
 
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dt.DefaultView.Sort = "Sequence ASC"
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
             Try
                 iLayer += 1
