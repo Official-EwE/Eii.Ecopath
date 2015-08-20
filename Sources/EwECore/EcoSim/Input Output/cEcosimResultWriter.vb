@@ -81,11 +81,13 @@ Namespace Ecosim
         ''' <item><term><see cref="TriState.UseDefault"/></term><description>Values are written as both annual and monthly values.</description></item>
         ''' </list>
         ''' </param>
+        ''' <param name="bQuiet">Flag stating if messages must be suppressed.</param>
         ''' <returns>True if saved successfully.</returns>
         ''' -----------------------------------------------------------------------
         Public Function WriteResults(Optional ByVal strPath As String = "", _
                                      Optional ByVal results As eResultTypes() = Nothing, _
-                                     Optional ByVal tsMonthly As TriState = TriState.UseDefault) As Boolean
+                                     Optional ByVal tsMonthly As TriState = TriState.UseDefault, _
+                                     Optional ByVal bQuiet As Boolean = False) As Boolean
 
             Dim msg As cMessage = Nothing
             Dim bSucces As Boolean = True
@@ -100,7 +102,11 @@ Namespace Ecosim
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
                 msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING), _
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
-                Me.m_core.Messages.SendMessage(msg)
+                If (Not bQuiet) Then
+                    Me.m_core.Messages.SendMessage(msg)
+                Else
+                    cLog.Write(msg)
+                End If
                 Return False
             End If
 
@@ -113,7 +119,11 @@ Namespace Ecosim
                         If Not bSucces Then
                             msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
-                            Me.m_core.Messages.SendMessage(msg)
+                            If (Not bQuiet) Then
+                                Me.m_core.Messages.SendMessage(msg)
+                            Else
+                                cLog.Write(msg)
+                            End If
                         End If
 
                     Catch ex As Exception
@@ -128,7 +138,11 @@ Namespace Ecosim
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 ' Provide hyperlink to the directory with the files
                 msg.Hyperlink = strPath
-                Me.m_core.Messages.SendMessage(msg)
+                If (Not bQuiet) Then
+                    Me.m_core.Messages.SendMessage(msg)
+                Else
+                    cLog.Write(msg)
+                End If
             End If
             Return bSucces
 
