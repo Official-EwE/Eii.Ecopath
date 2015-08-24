@@ -7368,15 +7368,16 @@ exitline:
         'Dim orgCap As Single
         If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
+        'System.Console.WriteLine("Sethabcap")
         For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+
+            'System.Console.WriteLine(map.Layer.Name + ", " + map.isLayerActive.ToString)
 
             'Is this layer active
             If map.isLayerActive Then
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-
-                    ' Debug.Assert(igrp <> 47)
                     If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
@@ -7389,8 +7390,6 @@ exitline:
                                     If Me.m_Data.Depth(irow, icol) > 0 Then
                                         'For debugging
                                         'dumpCapacity(map, igrp, irow, icol)
-                                        'Debug.Assert(igrp = 47)
-
                                         Me.m_Data.HabCap(igrp)(irow, icol) *= map.ResponseFunction(igrp, irow, icol)
 
                                     End If
@@ -7401,6 +7400,7 @@ exitline:
                 Next igrp
                 'System.Console.WriteLine()
             End If ' map.isLayerActive
+
         Next map
 
         bReturn = True
