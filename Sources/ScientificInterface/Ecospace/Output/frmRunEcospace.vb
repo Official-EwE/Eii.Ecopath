@@ -1183,7 +1183,7 @@ Namespace Ecospace
             Me.UpdateControls()
 
             ' Save map image
-            If (parms.SavePNG) Then
+            If (Me.m_cbAutoSavePNG.Checked) Then
 
                 Dim bSave As Boolean = False
                 If (Me.m_iAutosaveTS IsNot Nothing) Then
