@@ -40,15 +40,16 @@
             Me.m_btnChoose = New System.Windows.Forms.Button()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDestination = New System.Windows.Forms.Panel()
+            Me.m_hdrDestination = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plMetadata = New System.Windows.Forms.Panel()
+            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_lblAuthor = New System.Windows.Forms.Label()
             Me.m_tbxContact = New System.Windows.Forms.TextBox()
             Me.m_tbxAuthor = New System.Windows.Forms.TextBox()
             Me.m_plData = New System.Windows.Forms.Panel()
-            Me.m_hdrDestination = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrLabel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbIncludeData = New System.Windows.Forms.CheckBox()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plDestination.SuspendLayout()
             Me.m_plMetadata.SuspendLayout()
@@ -149,6 +150,14 @@
             resources.ApplyResources(Me.m_plDestination, "m_plDestination")
             Me.m_plDestination.Name = "m_plDestination"
             '
+            'm_hdrDestination
+            '
+            resources.ApplyResources(Me.m_hdrDestination, "m_hdrDestination")
+            Me.m_hdrDestination.CanCollapseParent = False
+            Me.m_hdrDestination.CollapsedParentHeight = 0
+            Me.m_hdrDestination.IsCollapsed = False
+            Me.m_hdrDestination.Name = "m_hdrDestination"
+            '
             'm_plMetadata
             '
             Me.m_plMetadata.Controls.Add(Me.CEwEHeaderLabel1)
@@ -160,6 +169,14 @@
             Me.m_plMetadata.Controls.Add(Me.m_tbxAuthor)
             resources.ApplyResources(Me.m_plMetadata, "m_plMetadata")
             Me.m_plMetadata.Name = "m_plMetadata"
+            '
+            'CEwEHeaderLabel1
+            '
+            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+            Me.CEwEHeaderLabel1.CanCollapseParent = True
+            Me.CEwEHeaderLabel1.CollapsedParentHeight = 114
+            Me.CEwEHeaderLabel1.IsCollapsed = False
+            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
             '
             'Label1
             '
@@ -191,22 +208,6 @@
             resources.ApplyResources(Me.m_plData, "m_plData")
             Me.m_plData.Name = "m_plData"
             '
-            'm_hdrDestination
-            '
-            resources.ApplyResources(Me.m_hdrDestination, "m_hdrDestination")
-            Me.m_hdrDestination.CanCollapseParent = False
-            Me.m_hdrDestination.CollapsedParentHeight = 0
-            Me.m_hdrDestination.IsCollapsed = False
-            Me.m_hdrDestination.Name = "m_hdrDestination"
-            '
-            'CEwEHeaderLabel1
-            '
-            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-            Me.CEwEHeaderLabel1.CanCollapseParent = True
-            Me.CEwEHeaderLabel1.CollapsedParentHeight = 114
-            Me.CEwEHeaderLabel1.IsCollapsed = False
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-            '
             'm_hdrLabel
             '
             resources.ApplyResources(Me.m_hdrLabel, "m_hdrLabel")
@@ -215,6 +216,14 @@
             Me.m_hdrLabel.IsCollapsed = False
             Me.m_hdrLabel.Name = "m_hdrLabel"
             '
+            'm_cbIncludeData
+            '
+            resources.ApplyResources(Me.m_cbIncludeData, "m_cbIncludeData")
+            Me.m_cbIncludeData.Checked = True
+            Me.m_cbIncludeData.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbIncludeData.Name = "m_cbIncludeData"
+            Me.m_cbIncludeData.UseVisualStyleBackColor = True
+            '
             'dlgExportSpatialData
             '
             Me.AcceptButton = Me.m_btnExport
@@ -222,6 +231,7 @@
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_cbIncludeData)
             Me.Controls.Add(Me.m_tlpContent)
             Me.Controls.Add(Me.m_btnExport)
             Me.Controls.Add(Me.m_btnCancel)
@@ -234,6 +244,7 @@
             Me.m_plMetadata.PerformLayout()
             Me.m_plData.ResumeLayout(False)
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_btnExport As System.Windows.Forms.Button
@@ -260,6 +271,7 @@
         Private WithEvents m_plMetadata As System.Windows.Forms.Panel
         Private WithEvents m_plData As System.Windows.Forms.Panel
         Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_cbIncludeData As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

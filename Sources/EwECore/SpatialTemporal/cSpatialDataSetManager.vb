@@ -205,7 +205,8 @@ Namespace SpatialData
                              Optional datasets As ISpatialDataSet() = Nothing, _
                              Optional strDescription As String = "", _
                              Optional strAuthor As String = "", _
-                             Optional strContact As String = "") As Boolean
+                             Optional strContact As String = "", _
+                             Optional bExportData As Boolean = True) As Boolean
 
             Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
@@ -227,12 +228,7 @@ Namespace SpatialData
 
             ' Any switch of destination other than to the default location is considered as an export
             Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And _
-                                        (cFileUtils.Equals(strFile, Me.CurrentConfigFile()) = False)
-
-            If bExporting Then
-                Console.WriteLine("Exporting to " & strFile)
-                'Stop
-            End If
+                                        (cFileUtils.Equals(strFile, Me.CurrentConfigFile()) = False) And bExportData
 
             ' Create dir
             strPath = Path.GetDirectoryName(strFile)
