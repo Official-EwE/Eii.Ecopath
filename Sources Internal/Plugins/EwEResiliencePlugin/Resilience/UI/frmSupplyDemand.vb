@@ -111,6 +111,20 @@ Public Class frmSupplyDemand
             Me.m_nudTime.Enabled = False
         End If
 
+        Me.m_slider.Minimum = 1
+        Me.m_nudTime.Minimum = 1
+
+        If Me.m_cbAnnual.Checked Then
+            Me.m_iTime = Math.Max(1, Math.Min(Me.m_iTime, Me.m_model.Data.NumYears))
+            Me.m_slider.Maximum = Me.m_model.Data.NumYears
+            Me.m_nudTime.Maximum = Me.m_model.Data.NumYears
+        Else
+            Me.m_slider.Maximum = Me.m_model.Data.NumTimeSteps
+            Me.m_nudTime.Maximum = Me.m_model.Data.NumTimeSteps
+        End If
+        Me.m_slider.Value = Me.m_iTime
+        Me.m_nudTime.Value = Me.m_iTime
+
         Me.m_tsbnAutosave.Checked = My.Settings.ResilAutosave
 
         MyBase.UpdateControls()
@@ -149,17 +163,6 @@ Public Class frmSupplyDemand
                 Me.m_slider.Value = iTime
                 Me.m_nudTime.Value = iTime
 
-                Me.m_slider.Minimum = 1
-                Me.m_nudTime.Minimum = 1
-
-                If Me.m_cbAnnual.Checked Then
-                    Me.m_slider.Maximum = Me.m_model.Data.NumYears
-                    Me.m_nudTime.Maximum = Me.m_model.Data.NumYears
-                Else
-                    Me.m_slider.Maximum = Me.m_model.Data.NumTimeSteps
-                    Me.m_nudTime.Maximum = Me.m_model.Data.NumTimeSteps
-                End If
-
                 Me.m_bInUpdate = False
                 Me.UpdateGraph()
 
@@ -174,7 +177,15 @@ Public Class frmSupplyDemand
     Private Sub OnToggleAnnual(sender As System.Object, e As System.EventArgs) _
         Handles m_cbAnnual.CheckedChanged
         Try
+            Dim nStepsPerYear As Integer = CInt(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
+
             Me.m_graph.Annual = Me.m_cbAnnual.Checked
+
+            If Me.m_graph.Annual Then
+                Me.m_iTime = CInt((Me.m_iTime - 1) / nStepsPerYear) + 1
+            Else
+                Me.m_iTime = CInt((Me.m_iTime - 1) * nStepsPerYear) + 1
+            End If
             Me.UpdateControls()
             Me.UpdateGraph()
         Catch ex As Exception
