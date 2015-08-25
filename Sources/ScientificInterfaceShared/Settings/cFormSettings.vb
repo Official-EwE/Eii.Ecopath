@@ -383,14 +383,8 @@ Public Class cFormSettings
     ''' -----------------------------------------------------------------------
     Private Overloads Function Content() As XmlDocument
 
-        Dim doc As New XmlDocument()
         Dim node As XmlNode = Nothing
-
-        node = doc.CreateXmlDeclaration("1.0", "utf-16", Nothing)
-        doc.AppendChild(node)
-
-        node = doc.CreateElement("formsettings")
-        doc.AppendChild(node)
+        Dim doc As XmlDocument = cXMLUtils.NewDoc("formsettings", node, "utf-16")
 
         For Each strFormName As String In Me.m_dictFormSettings.Keys
             Try

@@ -932,11 +932,7 @@ Public Class frmEwE6
 
         My.Settings.Reload()
 
-        '' What was the intended magic here?
-        'Dim al As ArrayList = My.Settings.MdbRecentlyUsedList
-        'My.Settings.MdbRecentlyUsedList = al
-
-        ' Peeks at key but does not consume it
+        ' Peek at key presses but does not consume them
         Me.KeyPreview = True
 
         Me.InitCoreParams()
@@ -998,15 +994,20 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnFormClosing(ByVal e As FormClosingEventArgs)
 
-        ' Cancel application shut down if the core does not terminate succesfully.
-        e.Cancel = Not Me.CloseEcopathModel()
-        ' Abort if Ecopath model did not close sucessfully
-        If e.Cancel Then Return
+        Try
+            ' Cancel application shut down if the core does not terminate succesfully.
+            e.Cancel = Not Me.CloseEcopathModel()
+            ' Abort if Ecopath model did not close sucessfully
+            If e.Cancel Then Return
 
-        ' Last-ditch cleanup
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_CLEANUP_TEMPFILES)
-        cFileUtils.PurgeTempFiles()
-        cApplicationStatusNotifier.EndProgress(Me.Core)
+            ' Last-ditch cleanup
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_CLEANUP_TEMPFILES)
+            cFileUtils.PurgeTempFiles()
+            cApplicationStatusNotifier.EndProgress(Me.Core)
+
+        Catch ex As Exception
+            cLog.Write(ex, "frmEwE6.OnFormClosing")
+        End Try
 
         ' Resume shutdown
         MyBase.OnFormClosing(e)
@@ -1015,60 +1016,76 @@ Public Class frmEwE6
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-        RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
-        RemoveHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle
+        If (Me.UIContext IsNot Nothing) Then
 
-        RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-        RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
-        RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
-        RemoveHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
-        RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+            Try
 
-        Me.m_FormStateHelper.Dispose()
-        Me.m_FormStateHelper = Nothing
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                RemoveHandler Application.Idle, AddressOf cmdh.OnIdle
+                RemoveHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle
 
-        Me.Core.Messages.RemoveMessageHandler(Me.m_mhProgress)
-        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
-        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-        Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
-        Me.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
-        Me.m_mhProgress = Nothing
-        Me.m_mhEcosim = Nothing
-        Me.m_mhEcospace = Nothing
-        Me.m_mhEcotracer = Nothing
-        Me.m_mhTimeseries = Nothing
+                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+                RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
+                RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
+                RemoveHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
+                RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
-        ' Terminate all model-independent UI components
-        Me.CloseAllDocuments()
-        Me.ClearScenarioDropdowns()
-        Me.ClearModelMRUDropdowns()
+                Me.m_FormStateHelper.Dispose()
+                Me.m_FormStateHelper = Nothing
 
-        ' JS 13Dec10: Another attempt to free tooltip memory 
-        Dim ts As cToolTipShared = cToolTipShared.GetInstance()
-        ts.RemoveAll()
-        ts.Dispose()
+                Me.Core.Messages.RemoveMessageHandler(Me.m_mhProgress)
+                Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
+                Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+                Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcotracer)
+                Me.Core.Messages.RemoveMessageHandler(Me.m_mhTimeseries)
+                Me.m_mhProgress = Nothing
+                Me.m_mhEcosim = Nothing
+                Me.m_mhEcospace = Nothing
+                Me.m_mhEcotracer = Nothing
+                Me.m_mhTimeseries = Nothing
 
-        For Each p As frmEwEDockContent In Me.m_dtPanels.Values
-            p.Close()
-            p.Dispose()
-        Next
-        Me.m_dtPanels.Clear()
+                ' Terminate all model-independent UI components
+                Me.CloseAllDocuments()
+                Me.ClearScenarioDropdowns()
+                Me.ClearModelMRUDropdowns()
 
-        Me.m_MessageHistory.Dispose()
-        Me.m_MessageHistory = Nothing
+                ' JS 13Dec10: Another attempt to free tooltip memory 
+                Dim ts As cToolTipShared = cToolTipShared.GetInstance()
+                ts.RemoveAll()
+                ts.Dispose()
 
-        Me.UIContext.PropertyManager.Dispose()
-        Me.UIContext.StyleGuide.Dispose()
+                ' JS 26Aug15: the start panel throws a null ref exception in release mode during explicit cleanup.
+                ' This cannot be reproduced in debug mode> I suspect that the issue is caused by the nexted version of IE
+                ' Bypassing explicit destruction also makes the issue go away. Whoah.
+                'For Each p As frmEwEDockContent In Me.m_dtPanels.Values
+                '    Try
+                '        p.Close()
+                '        p.Dispose()
+                '    Catch ex As Exception
+                '        cLog.Write(ex, "frmEwE6.OnFormClosed(" & p.Name & ")")
+                '    End Try
+                'Next
+                Me.m_dtPanels.Clear()
 
-        Me.m_pluginManager.UIContext = Nothing
-        Me.UIContext = Nothing
+                Me.m_MessageHistory.Dispose()
+                Me.m_MessageHistory = Nothing
 
-        ' Clear commands after all UI elements have lost their UI context, which 
-        ' should have triggered proper cleanups
-        cmdh.Clear()
+                Me.UIContext.PropertyManager.Dispose()
+                Me.UIContext.StyleGuide.Dispose()
 
-        Me.m_DockPanel.Dispose()
+                Me.m_pluginManager.UIContext = Nothing
+                Me.UIContext = Nothing
+
+                ' Clear commands after all UI elements have lost their UI context, which 
+                ' should have triggered proper cleanups
+                cmdh.Clear()
+
+                Me.m_DockPanel.Dispose()
+
+            Catch ex As Exception
+                cLog.Write(ex, "frmEwE6.OnFormClosed")
+            End Try
+        End If
 
         MyBase.OnFormClosed(e)
 
@@ -1594,9 +1611,11 @@ Public Class frmEwE6
 
     Private Sub SaveMainFormSettings()
 
-        Me.UIContext.FormSettings.Store(Me, False)
-        Me.m_styleguideupdater.Save()
-        My.Settings.FormSettings = Me.UIContext.FormSettings.Setting
+        If (Me.UIContext IsNot Nothing) Then
+            Me.UIContext.FormSettings.Store(Me, False)
+            Me.m_styleguideupdater.Save()
+            My.Settings.FormSettings = Me.UIContext.FormSettings.Setting
+        End If
         Me.SaveSettings()
 
     End Sub
@@ -1605,8 +1624,10 @@ Public Class frmEwE6
 
         Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
 
-        My.Settings.SpatialTempConfigurations = man.ConfigFiles
-        My.Settings.SpatialTemporalConfigFile = man.CurrentConfigFile
+        If (man IsNot Nothing) Then
+            My.Settings.SpatialTempConfigurations = man.ConfigFiles
+            My.Settings.SpatialTemporalConfigFile = man.CurrentConfigFile
+        End If
         My.Settings.Save()
 
     End Sub
@@ -2211,6 +2232,9 @@ Public Class frmEwE6
     ''' ---------------------------------------------------------------------------
     Private Function CloseEcopathModel() As Boolean
 
+        ' Save form settings
+        Me.SaveMainFormSettings()
+
         If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
 
             Me.m_cmdPropertySelection.Invoke()
@@ -2221,8 +2245,6 @@ Public Class frmEwE6
                 Return False
             End If
 
-            ' Save form settings
-            Me.SaveMainFormSettings()
             ' Close all open documents
             Me.CloseAllDocuments()
             Me.ClearScenarioDropdowns()

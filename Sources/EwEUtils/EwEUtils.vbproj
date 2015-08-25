@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="Utilities\cStringUtils.vb" />
     <Compile Include="Utilities\cUriBuilder.vb" />
+    <Compile Include="Utilities\cXMLUtils.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
