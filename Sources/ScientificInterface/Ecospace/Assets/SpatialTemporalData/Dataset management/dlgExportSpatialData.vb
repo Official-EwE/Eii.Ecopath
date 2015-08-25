@@ -165,7 +165,8 @@ Namespace Ecospace.Controls
             Try
                 bSuccess = Me.m_manSets.Save(Me.OutputLocation(), _
                                              Me.SelectedDatasets(), Me.m_tbxDescription.Text, _
-                                             Me.m_tbxAuthor.Text, Me.m_tbxContact.Text)
+                                             Me.m_tbxAuthor.Text, Me.m_tbxContact.Text, _
+                                             Me.m_cbIncludeData.Checked)
             Catch ex As Exception
 
             End Try
@@ -174,6 +175,11 @@ Namespace Ecospace.Controls
             If (bSuccess) Then
                 Me.DialogResult = Windows.Forms.DialogResult.OK
                 Me.Close()
+
+                ' ToDo: globalize this
+                Dim msg As New cMessage("Spatial data configuration has been exported to " & Me.OutputLocation, _
+                                        eMessageType.DataExport, eCoreComponentType.DataSource, eMessageImportance.Information)
+                Me.m_uic.Core.Messages.SendMessage(msg)
             End If
 
         End Sub
