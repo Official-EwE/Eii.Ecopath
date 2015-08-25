@@ -312,9 +312,7 @@ Namespace Ecospace
             ' Initially collapse some headers
             Me.m_hdrLabelOptions.IsCollapsed = True
             Me.m_hdrGraphTypes.IsCollapsed = True
-            Me.m_hdrAutosave.IsCollapsed = Not parms.SavePNG
-
-            Me.m_cbAutoSavePNG.Checked = parms.SavePNG()
+            Me.m_hdrAutosave.IsCollapsed = Not Me.m_cbAutoSavePNG.Checked
 
             Me.InitCoreParams()
             Me.InitUIParams()
@@ -827,7 +825,7 @@ Namespace Ecospace
 
             ' Save map image
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
-            If (parms.SavePNG) Then
+            If (Me.m_cbAutoSavePNG.Checked) Then
                 Me.m_iAutosaveTS = cStringUtils.Range(Me.m_tbxAutosaveTimeSteps.Text)
             Else
                 Me.m_iAutosaveTS = Nothing
