@@ -702,13 +702,7 @@ Namespace SpatialData
 #Region " Internals "
 
         Friend Shared Function NewDoc(ByRef xnRoot As XmlNode) As XmlDocument
-            Dim doc As New XmlDocument()
-            Dim xnData As XmlElement = Nothing
-            Dim xaData As XmlAttribute = Nothing
-            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
-            xnRoot = doc.CreateElement("Datasets")
-            doc.AppendChild(xnRoot)
-            Return doc
+            Return cXMLUtils.NewDoc("Datasets", xnRoot)
         End Function
 
         ''' -------------------------------------------------------------------
