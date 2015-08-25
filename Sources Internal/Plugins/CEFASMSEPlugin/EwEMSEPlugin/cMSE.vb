@@ -3574,6 +3574,15 @@ Public Class cMSE
 
                 Me.setQModifiers(iTime)
 
+                'diagnostics code
+                '#If DEBUG Then
+                '                Dim totalFCod As Single = 0
+                '                For ifleet = 1 To m_core.nFleets
+                '                    totalFCod += Me._simdata.FishMGear(ifleet, 14)
+                '                Next
+                '                Stop
+                '#End If
+
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Stock Assessment
                 'Get Biomass estimated by the stock assessment model
@@ -3718,7 +3727,6 @@ Public Class cMSE
                             'Find the weakest stock
                             'Calculate effort that would catch all weakest stock quota
                             'Set it for this fleet
-                            'If m_currentStrategy.Name = "high_weak_cod" Then Stop
                             For iGrp = 1 To m_ecopath.EcopathData.NumGroups
                                 If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp)) > 0 Then
                                     If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
@@ -4950,13 +4958,13 @@ Public Class cMSE
             Dim fileexists As Boolean = File.Exists(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile))
             strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
             If fileexists = False Then
-                strmWriter.WriteLine("Date & Time, ModelID, StrategyName, GroupName, FishRateNo@iTime-1, FishRateNo@iTime, %ChangeInFishRateNo")
+                strmWriter.WriteLine("Date & Time, ModelID, StrategyName, GroupName, FishRateNo@iTime-1, FishRateNo@iTime, %ChangeInFishRateNo(Decimal)")
             End If
             For iGrp = 1 To m_core.nGroups
                 'jb round the percent change so it doesn't trip because of rounding error when the value is right on the limit
-                FChange = Math.Round(Math.Abs(EcosimData.FishRateNo(iGrp, iTime - 1) - Me._simdata.FishRateNo(iGrp, iTime)) / EcosimData.FishRateNo(iGrp, iTime - 1), 4)
-                If FChange > max_percent_change_F Then
-                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & FChange & "%")
+                FChange = Math.Round((Me._simdata.FishRateNo(iGrp, iTime) - EcosimData.FishRateNo(iGrp, iTime - 1)) / EcosimData.FishRateNo(iGrp, iTime - 1), 4)
+                If Math.Abs(FChange) > max_percent_change_F Then
+                    strmWriter.WriteLine(DateTime.Now & "," & m_currentModelID & "," & Me.currentStrategy.Name & "," & cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp).Name) & "," & EcosimData.FishRateNo(iGrp, iTime - 1) & "," & Me._simdata.FishRateNo(iGrp, iTime) & "," & FChange)
                     m_PassedChangeInFAtBeginProjTest = False
                 End If
             Next
