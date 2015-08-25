@@ -898,7 +898,6 @@ Namespace Ecospace
         Private Sub OnAutosaveTimeStepsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbAutoSavePNG.CheckedChanged
             Try
-                Me.Core.EcospaceModelParameters.SavePNG = Me.m_cbAutoSavePNG.Checked
                 Me.UpdateControls()
             Catch ex As Exception
 
