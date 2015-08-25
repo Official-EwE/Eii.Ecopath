@@ -845,22 +845,6 @@ Public Class cEcospaceModelParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether Ecospace should automatically save PNG files for every
-    ''' time step.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("PNG saving must be handled by a dedicated result writer")> _
-    Public Property SavePNG As Boolean
-        Get
-            Return Me.Autosave("png_image")
-        End Get
-        Set(value As Boolean)
-            Me.Autosave("png_image") = value
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Getset whether a given file format is allowed to autosave
     ''' </summary>
     ''' <param name="strFmt"></param>
