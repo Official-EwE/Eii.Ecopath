@@ -880,11 +880,6 @@ Namespace Ecospace
             Me.m_bOverlay = m_cbOverlay.Checked
         End Sub
 
-        'Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
-        '    Handles m_cmbDisplayItem.GotFocus
-        '    Me.ShowItemMode = eShowItemType.ShowSingle
-        'End Sub
-
         Private Sub OnSelectGroupToShow(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_cmbDisplayItem.SelectedIndexChanged
             Try
@@ -1561,11 +1556,6 @@ Namespace Ecospace
 
         Private Sub SaveMapGeoRefImages(strFileName As String, imgFormat As ImageFormat)
 
-            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-            Dim rc As New Rectangle(0, 0, bm.InCol * 10, bm.InRow * 10)
-            Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
-            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
-
             Dim maptype As cMapDrawerBase.eMapType
             Dim scaler As Single() = Nothing
             Dim drawer As New cMapDrawerGroup(Me.Core, Me.StyleGuide)
@@ -1629,6 +1619,11 @@ Namespace Ecospace
                 Return
             End If
 
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim rc As New Rectangle(0, 0, bm.InCol * 10, bm.InRow * 10)
+            Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
+
             Try
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
@@ -1688,6 +1683,7 @@ Namespace Ecospace
             End Try
 
             g.Dispose() : g = Nothing
+            bmp.Dispose()
 
             If (msg IsNot Nothing) Then
                 Me.Core.Messages.SendMessage(msg)
