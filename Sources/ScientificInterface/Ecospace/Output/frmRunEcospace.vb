@@ -1483,7 +1483,7 @@ Namespace Ecospace
 
             Dim bmp As New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim g As Graphics = Graphics.FromImage(bmp)
-             Dim fmt As New cRunEcospacePlotTypeFormatter()
+            Dim fmt As New cRunEcospacePlotTypeFormatter()
             Dim msg As cMessage = Nothing
 
             Try
@@ -1504,8 +1504,8 @@ Namespace Ecospace
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 
-            bmp.Dispose() : bmp = Nothing
             g.Dispose() : g = Nothing
+            bmp.Dispose() : bmp = Nothing
 
             If (msg IsNot Nothing) Then
                 Me.Core.Messages.SendMessage(msg)
@@ -1555,6 +1555,11 @@ Namespace Ecospace
         End Sub
 
         Private Sub SaveMapGeoRefImages(strFileName As String, imgFormat As ImageFormat)
+
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim rc As New Rectangle(0, 0, bm.InCol * 10, bm.InRow * 10)
+            Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
 
             Dim maptype As cMapDrawerBase.eMapType
             Dim scaler As Single() = Nothing
@@ -1616,15 +1621,11 @@ Namespace Ecospace
 
             If Not cFileUtils.IsDirectoryAvailable(strDir, True) Then
                 Debug.Assert(False)
+                bmp.Dispose()
                 Return
             End If
 
-            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-            Dim rc As New Rectangle(0, 0, bm.InCol * 10, bm.InRow * 10)
-            Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
-            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
-
-            Try
+             Try
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
 
@@ -1683,7 +1684,7 @@ Namespace Ecospace
             End Try
 
             g.Dispose() : g = Nothing
-            bmp.Dispose()
+            bmp.Dispose() : bmp = Nothing
 
             If (msg IsNot Nothing) Then
                 Me.Core.Messages.SendMessage(msg)
