@@ -1114,6 +1114,9 @@ Namespace Ecospace
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
+            'Init memory for C/B, F/B
+            Me.initLocalMemory(TimeStepData)
+
             ' Biomass plotting
             ' For each time step, we get the Biomass from the core and store it into our array
             ' The following algorithm was extracted from EwE5. Biomass Log plotting, the value between 0.1 to 10. 
@@ -1139,10 +1142,6 @@ Namespace Ecospace
             'Update the running simulation years progress label.
             cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
             Me.m_dataTimeStep = TimeStepData
-
-            ' Calc C/B, F/B
-            ReDim Me.m_ConcOverB(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups)
-            ReDim Me.m_FoverB(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups)
 
             For iRow As Integer = 1 To TimeStepData.inRows
                 For iCol As Integer = 1 To TimeStepData.inCols
@@ -1441,6 +1440,41 @@ Namespace Ecospace
 
         End Sub
 
+
+        Private Sub initLocalMemory(TimeStepData As cEcospaceTimestep)
+            Dim size As Integer = (TimeStepData.inCols + 1) * (TimeStepData.inRows + 1) * (Me.Core.nGroups + 1)
+            Dim bAllocNew As Boolean = False
+
+            'Has the memory already been allocated
+            If (m_ConcOverB Is Nothing) Or (Me.m_FoverB Is Nothing) Then
+                'nope we need to allocate new memory
+                bAllocNew = True
+            End If
+
+            'Memory has already been allocated 
+            'make sure it's the correct size
+            If Not bAllocNew Then
+                If (m_ConcOverB.Length <> size) Or (m_FoverB.Length <> size) Then
+                    'Nope allocate new memory
+                    bAllocNew = True
+                End If
+            End If
+
+            'Allocate new memory
+            'Or Clear the existing
+            If bAllocNew Then
+                'Allocate new memory
+                Me.m_ConcOverB = New Single(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups) {}
+                Me.m_FoverB = New Single(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups) {}
+            Else
+                'if we didn't allocate new memory 
+                'then clear the existing data
+                Array.Clear(Me.m_ConcOverB, 0, size)
+                Array.Clear(Me.m_FoverB, 0, size)
+            End If
+
+        End Sub
+
 #End Region ' Internal implementation
 
 #Region " Image saving "
@@ -1625,7 +1659,7 @@ Namespace Ecospace
                 Return
             End If
 
-             Try
+            Try
 
                 For iGroup As Integer = 1 To Me.Core.nGroups
 
@@ -1688,6 +1722,7 @@ Namespace Ecospace
 
             If (msg IsNot Nothing) Then
                 Me.Core.Messages.SendMessage(msg)
+                cLog.Write(msg)
             End If
 
         End Sub
