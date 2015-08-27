@@ -1586,6 +1586,9 @@ Namespace Ecospace
             lgd.AddLayer(l)
             lgd.Save(strFilenameLegend, imgFormat)
 
+            ' Clean up!!
+            l.Dispose()
+
         End Sub
 
         Private Sub SaveMapGeoRefImages(strFileName As String, imgFormat As ImageFormat)
