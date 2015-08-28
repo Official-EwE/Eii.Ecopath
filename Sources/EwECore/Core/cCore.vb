@@ -5305,7 +5305,7 @@ Public Class cCore
         ' Sanity check
         Debug.Assert(Me.StateMonitor.HasEcopathLoaded())
         ' Normalize ecopath DCInput
-        Me.m_EcoPathData.SumDCToOne(True)
+        Me.m_EcoPathData.SumDCToOne()
         ' Refresh ecopath groups
         Me.LoadEcopathInputs()
         Me.m_StateMonitor.SetEcopathLoaded(True)

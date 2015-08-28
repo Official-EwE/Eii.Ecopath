@@ -2244,16 +2244,16 @@ nextJ:
             sTolerance = 0.001
 
             ' Check all diets
-            For iPred = 1 To m_Data.NumLiving Step 1
+            For iPred = 1 To m_Data.NumLiving
                 ' Is consumer?
                 If m_Data.PP(iPred) < 1 Then
                     ' #Yes: determine diet sum
                     sSum = 0
-                    For iPrey = 0 To m_Data.NumGroups Step 1
+                    For iPrey = 0 To m_Data.NumGroups
                         sSum += m_Data.DC(iPred, iPrey)
                     Next
 
-                    ' JS 4Nov14 - EwE course feedback: should warn when a predator has no diet!
+                    ' JS 4Nov14 - EwE30 course feedback: should warn when a predator has no diet!
                     If (sSum <= 0) Then
 
                         bMissing = True
