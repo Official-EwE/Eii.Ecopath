@@ -274,32 +274,37 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         Next iGroup
         sw.WriteLine()
 
-        Dim nTsYr As Integer = CInt(1.0 / spaceData.TimeStep)
+        'Dim nTsYr As Integer = CInt(1.0 / spaceData.TimeStep)
         Dim value() As Single = New Single(dataSource.nResults) {}
         Dim bSave As Boolean
         Dim TSLabel As String, Year As Integer
+        Dim nAvg(dataSource.nResults) As Integer
+
+        Year = CInt(Math.Truncate((Me.FirstOutputTimeStep - 1) / Me.m_core.m_EcoSpaceData.nTimeStepsPerYear))
 
         'Loop over all the time steps
         'If in Annual mode then sum and average the at the end of the year
         For iTime As Integer = Me.FirstOutputTimeStep To Me.m_core.nEcospaceTimeSteps
-            For igrp As Integer = 1 To dataSource.nResults
+            For iRslt As Integer = 1 To dataSource.nResults
 
                 If AvgType = eEcospaceResultsAverageType.Annual Then
-                    value(igrp) += dataSource.getResult(igrp, iTime)
+                    value(iRslt) += dataSource.getResult(iRslt, iTime)
+                    nAvg(iRslt) += 1
                     If ((iTime Mod Me.m_core.m_EcoSpaceData.nTimeStepsPerYear) = 0) Then
                         'End of the year
                         'Average the results and
                         'Save to file
-                        value(igrp) /= Me.m_core.m_EcoSpaceData.nTimeStepsPerYear
+                        value(iRslt) /= nAvg(iRslt) 'average over the number of data points/timesteps
                         bSave = True
+                        nAvg(iRslt) = 0
                     End If
                 Else
                     'Save every time step
-                    value(igrp) = dataSource.getResult(igrp, iTime)
+                    value(iRslt) = dataSource.getResult(iRslt, iTime)
                     bSave = True
                 End If
 
-            Next igrp
+            Next iRslt
 
             If bSave Then
                 'Grab the label based on the Average Type
