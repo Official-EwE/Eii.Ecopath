@@ -402,7 +402,7 @@ Public Class cEcopathModelFromEcosim
 
             Next
         Next
-        pathDest.SumDCToOne(True)
+        pathDest.SumDCToOne()
 
         'immigration is constant rate and is not changed by ecosim so no need to change
         For i As Integer = 1 To Me.m_core.nGroups

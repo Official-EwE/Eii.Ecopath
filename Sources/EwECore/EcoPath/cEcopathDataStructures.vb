@@ -1036,14 +1036,7 @@ Public Class cEcopathDataStructures
     ''' <summary>
     ''' Sums a <see cref="DC">Diet Composition</see> matrix to one. 
     ''' </summary>
-    ''' <param name="bSumDCInput">Flag, states which DC matrix should be corrected. If 
-    ''' True, the user input matrix <see cref="DCInput">DCInput</see> will be altered. 
-    ''' If False, the model matrix <see cref="DC">DC</see> will be altered.</param>
-    Public Sub SumDCToOne(Optional ByVal bSumDCInput As Boolean = False)
-
-        ' Pick matrix to alter
-        Dim asDCref(,) As Single ' = CType(IIF(bSumDCInput, Me.DCInput, Me.DC), Single(,))
-        If bSumDCInput Then asDCref = Me.DCInput Else Me.DCInput = Me.DC
+    Public Sub SumDCToOne()
 
         ' For each potential predator
         For iPred As Integer = 1 To NumLiving
@@ -1056,19 +1049,21 @@ Public Class cEcopathDataStructures
                 ' ** DC Impoprt in the calculations - which is stored at index 0.
                 For iPrey As Integer = 0 To Me.NumGroups
                     ' Add consumption to sum
-                    sDCSum += asDCref(iPred, iPrey)
+                    sDCSum += Me.DCInput(iPred, iPrey)
                 Next iPrey
 
                 ' Is there predation with a need to recalc?
                 If (sDCSum > 0) And (sDCSum <> 1.0) Then
                     ' For each prey
-                    For iPrey As Integer = 1 To Me.NumGroups
+                    ' JS 28Aug15: Rescale imports too!!!
+                    For iPrey As Integer = 0 To Me.NumGroups
                         ' Rescale consumption
-                        asDCref(iPred, iPrey) = asDCref(iPred, iPrey) / sDCSum
+                        Me.DCInput(iPred, iPrey) = Me.DCInput(iPred, iPrey) / sDCSum
                     Next iPrey
                 End If
             End If ' PP < 1
         Next iPred
+
     End Sub
 
     ''' -----------------------------------------------------------------------
