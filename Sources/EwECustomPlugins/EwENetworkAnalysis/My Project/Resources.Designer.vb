@@ -259,6 +259,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Det. TE (weighted).
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_DET_TE_W() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_DET_TE_W", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Detritus (t/km²).
         '''</summary>
         Friend ReadOnly Property COL_HDR_DETRITUS_TKM2() As String
@@ -556,6 +565,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to PP TE (weighted).
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_PP_TE_W() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_PP_TE_W", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to PPR.
         '''</summary>
         Friend ReadOnly Property COL_HDR_PPR() As String
@@ -768,6 +786,15 @@ Namespace My.Resources
         Friend ReadOnly Property COL_HDR_TOT_TE() As String
             Get
                 Return ResourceManager.GetString("COL_HDR_TOT_TE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Total TE (weigthed).
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_TOT_TE_W() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_TOT_TE_W", resourceCulture)
             End Get
         End Property
         

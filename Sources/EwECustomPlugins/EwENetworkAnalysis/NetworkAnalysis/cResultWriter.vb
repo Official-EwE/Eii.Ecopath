@@ -65,11 +65,10 @@ Public Class cResultWriter
         TLc
         KEMPTONS
         FIB
-        DET_TE
-        PP_TE
-        TOT_TE
-        CATCH_PPR
-        CATCH_DET_REQ
+        DET_TE_W
+        PP_TE_W
+        TOT_TE_W
+        PPR
         LINDEX
         PSUST
     End Enum
@@ -216,7 +215,7 @@ Public Class cResultWriter
     Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
 
         Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
-        Dim iNumCols As Integer = cols.Length - 2 ' Exclude PPR columns
+        Dim iNumCols As Integer = cols.Length - 3 ' Exclude PPR columns
         Dim asValues(iNumCols) As Single
         Dim iMonth As Integer = 0
         Dim iYear As Integer = 0
@@ -276,9 +275,9 @@ Public Class cResultWriter
                     Case eColTypes.TLc : asValues(j) += Me.m_manager.TLCatchPlot(i)
                     Case eColTypes.KEMPTONS : asValues(j) += Me.m_manager.RelativeKemptonsPlot(i)
                     Case eColTypes.FIB : asValues(j) += Me.m_manager.FIB(i)
-                    Case eColTypes.DET_TE : asValues(j) += Me.m_manager.DetTransferEfficiencyEcosim(i)
-                    Case eColTypes.PP_TE : asValues(j) += Me.m_manager.PPTransferEfficiencyEcosim(i)
-                    Case eColTypes.TOT_TE : asValues(j) += Me.m_manager.TotTransferEfficiencyEcosim(i)
+                    Case eColTypes.DET_TE_W : asValues(j) += Me.m_manager.DetTransferEfficiencyWeighted(i)
+                    Case eColTypes.PP_TE_W : asValues(j) += Me.m_manager.PPTransferEfficiencyWeighted(i)
+                    Case eColTypes.TOT_TE_W : asValues(j) += Me.m_manager.TotTransferEfficiencyWeighted(i)
 
                 End Select
 
@@ -383,11 +382,10 @@ Public Class cResultWriter
                     Case eColTypes.TLc : asValues(j) += Me.m_manager.TLCatchPlot(i)
                     Case eColTypes.KEMPTONS : asValues(j) += Me.m_manager.RelativeKemptonsPlot(i)
                     Case eColTypes.FIB : asValues(j) += Me.m_manager.FIB(i)
-                    Case eColTypes.DET_TE : asValues(j) += Me.m_manager.DetTransferEfficiencyEcosim(i)
-                    Case eColTypes.PP_TE : asValues(j) += Me.m_manager.PPTransferEfficiencyEcosim(i)
-                    Case eColTypes.TOT_TE : asValues(j) += Me.m_manager.TotTransferEfficiencyEcosim(i)
-                    Case eColTypes.CATCH_PPR : asValues(j) += Me.m_manager.RaiseToPPEcosim(i)
-                    Case eColTypes.CATCH_DET_REQ : asValues(j) += Me.m_manager.RaiseToDetEcosim(i)
+                    Case eColTypes.DET_TE_W : asValues(j) += Me.m_manager.DetTransferEfficiencyWeighted(i)
+                    Case eColTypes.PP_TE_W : asValues(j) += Me.m_manager.PPTransferEfficiencyWeighted(i)
+                    Case eColTypes.TOT_TE_W : asValues(j) += Me.m_manager.TotTransferEfficiencyWeighted(i)
+                    Case eColTypes.PPR
                     Case eColTypes.LINDEX : asValues(j) += Me.m_manager.LIndexEcosim(i)
                     Case eColTypes.PSUST : asValues(j) += Me.m_manager.PsustEcosim(i)
                 End Select
