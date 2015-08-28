@@ -349,6 +349,9 @@ Public Class cEcoNetwork
     Public TotTransferEfficiency() As Single
     Public DetTransferEfficiency() As Single
     Public PPTransferEfficiency() As Single
+
+    Public PPTransferEfficiencyWeighted() As Single
+    Public DetTransferEfficiencyWeighted() As Single
     Public TotTransferEfficiencyWeighted() As Single
 
 #End Region ' Ecosim
@@ -3621,6 +3624,8 @@ NextPivot:
             ReDim Preserve DetTransferEfficiency(Round)
             ReDim Preserve PPTransferEfficiency(Round)
             ReDim Preserve TotTransferEfficiencyWeighted(Round)
+            ReDim Preserve DetTransferEfficiencyWeighted(Round)
+            ReDim Preserve PPTransferEfficiencyWeighted(Round)
             Throughput(Round) = TruPut
             CapacityEcosim(Round) = Capacity
             AscendImport(Round) = Aop
@@ -3644,13 +3649,18 @@ NextPivot:
             Ascendency(Round) = (AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
             AMI(Round) = Ascendency(Round) / Throughput(Round)
             Entropy(Round) = CapacityEcosim(Round) / Throughput(Round)
+
+            TotTransferEfficiency(Round) = 0
+            DetTransferEfficiency(Round) = 0
+            PPTransferEfficiency(Round) = 0
             For i = 1 To Me.m_manager.nTrophicLevels
-                If (i = 1) Then TotTransferEfficiency(Round) = 0 : DetTransferEfficiency(Round) = 0 : PPTransferEfficiency(Round) = 0
                 DetTransferEfficiency(Round) += m_manager.DetTransferEfficiency(i)
                 PPTransferEfficiency(Round) += m_manager.PPTransferEfficiency(i)
                 TotTransferEfficiency(Round) += m_manager.TotTransferEfficiency(i)
             Next
 
+            PPTransferEfficiencyWeighted(Round) = CSng((m_manager.PPTransferEfficiency(2) * m_manager.PPTransferEfficiency(3) * m_manager.PPTransferEfficiency(4)) ^ (1 / 3))
+            DetTransferEfficiencyWeighted(Round) = CSng((m_manager.DetTransferEfficiency(2) * m_manager.DetTransferEfficiency(3) * m_manager.DetTransferEfficiency(4)) ^ (1 / 3))
             TotTransferEfficiencyWeighted(Round) = CSng((m_manager.TotTransferEfficiency(2) * m_manager.TotTransferEfficiency(3) * m_manager.TotTransferEfficiency(4)) ^ (1 / 3))
 
             'If PPRon Then Write #FF, RaiseToPP(0), RaiseToDet(0) Else Write #FF,

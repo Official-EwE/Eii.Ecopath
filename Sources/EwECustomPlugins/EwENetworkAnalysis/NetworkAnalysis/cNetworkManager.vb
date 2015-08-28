@@ -51,7 +51,7 @@ Public Class cNetworkManager
     End Enum
 
     ''' <summary>
-    ''' State infomation for the core set in CoreStateMonitor_CoreExecutionStateEvent(...)
+    ''' State information for the core set in CoreStateMonitor_CoreExecutionStateEvent(...)
     ''' </summary>
     ''' <remarks>
     ''' This is the state of the core as it relates to the Network Analysis. 
@@ -97,11 +97,12 @@ Public Class cNetworkManager
 
 #Region " Construction and initialization "
 
-    Public Sub New()
+    Public Sub New(core As cCore)
         m_runstate = eRunState.CoreNotReady
+        Me.Init(core)
     End Sub
 
-    Friend Function Init(ByRef theCore As cCore) As Boolean
+    Private Function Init(ByRef theCore As cCore) As Boolean
 
         Me.m_core = theCore
         Me.m_corestatemonitor = theCore.StateMonitor
@@ -652,7 +653,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Ecopath data to run the analysis on
     ''' </summary>
-    ''' <remarks>This is set by plugin (cEwENetworkAnalysisPlugin) each time the core fire the EcopathRunCompleted() Plugin point.</remarks>
+    ''' <remarks>This is set by plugin (cEwENetworkAnalysisPlugin) each time the core fires the EcopathRunCompleted() Plugin point.</remarks>
     Public Property EcopathData() As cEcopathDataStructures
         Get
             Return m_epdata
@@ -665,7 +666,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Ecopath data to run the analysis on
     ''' </summary>
-
     Public Property EcosimData() As cEcosimDatastructures
         Get
             Return m_esdata
@@ -2179,21 +2179,21 @@ Public Class cNetworkManager
         End Get
     End Property
 
-    Public ReadOnly Property DetTransferEfficiencyEcosim() As Single()
+    Public ReadOnly Property DetTransferEfficiencyWeighted() As Single()
         Get
-            Return Me.m_econetwork.DetTransferEfficiency
+            Return Me.m_econetwork.DetTransferEfficiencyWeighted
         End Get
     End Property
 
-    Public ReadOnly Property PPTransferEfficiencyEcosim() As Single()
+    Public ReadOnly Property PPTransferEfficiencyWeighted() As Single()
         Get
-            Return Me.m_econetwork.PPTransferEfficiency
+            Return Me.m_econetwork.PPTransferEfficiencyWeighted
         End Get
     End Property
 
-    Public ReadOnly Property TotTransferEfficiencyEcosim() As Single()
+    Public ReadOnly Property TotTransferEfficiencyWeighted() As Single()
         Get
-            Return Me.m_econetwork.TotTransferEfficiency
+            Return Me.m_econetwork.TotTransferEfficiencyWeighted
         End Get
     End Property
 

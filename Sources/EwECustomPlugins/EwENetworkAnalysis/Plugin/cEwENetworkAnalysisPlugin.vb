@@ -66,11 +66,11 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " Singleton "
 
-    Private Shared _inst_ As cEwENetworkAnalysisPlugin = Nothing
+    Public Shared thePlugin As cEwENetworkAnalysisPlugin = Nothing
 
     Public Sub New()
-        If _inst_ Is Nothing Then
-            _inst_ = Me
+        If thePlugin Is Nothing Then
+            thePlugin = Me
         End If
     End Sub
 
@@ -82,15 +82,15 @@ Public Class cEwENetworkAnalysisPlugin
 
         'Interface item has been clicked
         'Show the Ecotroph interface
-        If cEwENetworkAnalysisPlugin._inst_.m_bInitOK Then
+        If cEwENetworkAnalysisPlugin.thePlugin.m_bInitOK Then
 
             ' Does form still exist?
-            If Not cEwENetworkAnalysisPlugin._inst_.HasUI() Then
+            If Not cEwENetworkAnalysisPlugin.thePlugin.HasUI() Then
                 ' #No: create it
-                frm = New frmNetworkAnalysis(cEwENetworkAnalysisPlugin._inst_.m_manager, cEwENetworkAnalysisPlugin._inst_.m_uic)
-                cEwENetworkAnalysisPlugin._inst_.m_frmNA = frm
+                frm = New frmNetworkAnalysis(cEwENetworkAnalysisPlugin.thePlugin.m_manager, cEwENetworkAnalysisPlugin.thePlugin.m_uic)
+                cEwENetworkAnalysisPlugin.thePlugin.m_frmNA = frm
             Else
-                frm = cEwENetworkAnalysisPlugin._inst_.m_frmNA
+                frm = cEwENetworkAnalysisPlugin.thePlugin.m_frmNA
             End If
             frm.ShowPage(page)
         Else
@@ -99,12 +99,6 @@ Public Class cEwENetworkAnalysisPlugin
         Return frm
 
     End Function
-
-    Public ReadOnly Property Manager As cNetworkManager
-        Get
-            Return cEwENetworkAnalysisPlugin._inst_.m_manager
-        End Get
-    End Property
 
 #End Region ' Singleton
 
@@ -154,8 +148,7 @@ Public Class cEwENetworkAnalysisPlugin
             If TypeOf core Is EwECore.cCore Then
                 Me.m_core = DirectCast(core, EwECore.cCore)
 
-                Me.m_manager = New cNetworkManager
-                Me.m_manager.Init(m_core)
+                Me.m_manager = New cNetworkManager(Me.m_core)
 
                 Me.m_bInitOK = True
                 Me.m_ddx = New cEwENetworkAnalysisData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name, Me.m_manager)
@@ -191,6 +184,12 @@ Public Class cEwENetworkAnalysisPlugin
         Me.m_bInitOK = False
 
     End Sub
+
+    Public ReadOnly Property Manager As cNetworkManager
+        Get
+            Return Me.m_manager
+        End Get
+    End Property
 
 #End Region ' Core
 
