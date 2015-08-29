@@ -413,31 +413,40 @@ Public MustInherit Class cTimeSeriesTextReader
 
                 astrCols = Me.SplitLine(strLine)
 
-                Me.m_tsPreview.AddRow(strLine, astrCols)
+                ' JS 2908125: Addressed issue #1391 (skip empty value lines)
+                Dim bIsLineEmpty As Boolean = True
+                For Each col As String In astrCols
+                    bIsLineEmpty = bIsLineEmpty And String.IsNullOrWhiteSpace(col)
+                Next
 
-                Try
-                    iYear = cStringUtils.ConvertToInteger(astrCols(0))
-                Catch ex As Exception
-                    iYear = -9999
-                End Try
+                If (Not bIsLineEmpty) Then
 
-                If (iYear = -9999) Then
-                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
-                    bSucces = False
-                Else
+                    Me.m_tsPreview.AddRow(strLine, astrCols)
 
-                    ' Fix Start year if not set
-                    If (Me.m_iFirstYear = 0) Then
-                        Me.m_iNumPoints = 0
-                        Me.m_iFirstYear = iYear
-                    End If
-                    Me.m_iNumPoints += 1
+                    Try
+                        iYear = cStringUtils.ConvertToInteger(astrCols(0))
+                    Catch ex As Exception
+                        iYear = -9999
+                    End Try
 
-                    If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
-                        Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
+                    If (iYear = -9999) Then
+                        Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
                         bSucces = False
-                    End If
+                    Else
 
+                        ' Fix Start year if not set
+                        If (Me.m_iFirstYear = 0) Then
+                            Me.m_iNumPoints = 0
+                            Me.m_iFirstYear = iYear
+                        End If
+                        Me.m_iNumPoints += 1
+
+                        If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
+                            bSucces = False
+                        End If
+
+                    End If
                 End If
 
                 ' Next
