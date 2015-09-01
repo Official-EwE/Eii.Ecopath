@@ -23,7 +23,6 @@ Option Strict On
 
 Imports System.ComponentModel
 Imports System.IO
-Imports System.Reflection
 Imports System.Threading
 Imports EwECore
 Imports EwECore.Database
@@ -1454,18 +1453,23 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
 
-        Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
-        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
+        Dim strCaption As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version.ToString())
         Dim model As cEwEModel = Me.Core.EwEModel
+        Dim bIsReadOnly As Boolean = False
 
         Me.m_tsModel.Path = Me.SelectedFileName
-        If Not Me.Core.StateMonitor.HasEcopathLoaded Then
-            Me.Text = strCaption
-            Me.m_tslbReadOnly.Visible = False
-        Else
-            Me.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
-            Me.m_tslbReadOnly.Visible = Me.Core.DataSource.IsReadOnly
+        If Me.Core.StateMonitor.HasEcopathLoaded Then
+            bIsReadOnly = Me.Core.DataSource.IsReadOnly
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_CAPTION, strCaption, model.Name)
+            If (bIsReadOnly) Then
+                ' Explicitly show read-only status in the caption text
+                ' ToDo: Globalize this
+                strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, "read only")
+            End If
         End If
+
+        Me.Text = strCaption
+        Me.m_tslbReadOnly.Visible = bIsReadOnly
 
     End Sub
 
