@@ -229,8 +229,9 @@ Namespace Database
             If Not File.Exists(strDatabase) Then Return eDatasourceAccessType.Failed_FileNotFound
 
             ' Test read-only file attributes
-            If (Not bReadOnly) And (File.GetAttributes(strDatabase) And FileAttributes.ReadOnly) = FileAttributes.ReadOnly Then
-                Return eDatasourceAccessType.Failed_ReadOnly
+            If (File.GetAttributes(strDatabase) And FileAttributes.ReadOnly) = FileAttributes.ReadOnly Then
+                bReadOnly = True
+                ' Return eDatasourceAccessType.Failed_ReadOnly
             End If
 
             ' Need to auto-detect database type?
@@ -458,6 +459,9 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Function Compact(ByVal strFileFrom As String, _
                                           ByVal strFileTo As String) As eDatasourceAccessType
+
+            '  If read-only: report only status and abort
+            If (Me.IsReadOnly) Then Return eDatasourceAccessType.Failed_ReadOnly
 
             ' Fix params
             If String.IsNullOrEmpty(strFileTo) Then strFileTo = strFileFrom
