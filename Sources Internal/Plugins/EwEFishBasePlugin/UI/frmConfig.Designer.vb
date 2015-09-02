@@ -50,8 +50,6 @@ Partial Class frmConfig
         Me.m_plBits = New System.Windows.Forms.Panel()
         Me.m_cmbMaxResults = New System.Windows.Forms.ComboBox()
         Me.m_lblNumResults = New System.Windows.Forms.Label()
-        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrConnection = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tbxODBCpwd = New System.Windows.Forms.TextBox()
         Me.m_tbxWebPort = New System.Windows.Forms.TextBox()
         Me.m_tbxWebServer = New System.Windows.Forms.TextBox()
@@ -60,7 +58,6 @@ Partial Class frmConfig
         Me.m_tbxODBCconn = New System.Windows.Forms.TextBox()
         Me.m_lblWebServer = New System.Windows.Forms.Label()
         Me.m_tbxODBCuser = New System.Windows.Forms.TextBox()
-        Me.m_lblAccess = New System.Windows.Forms.Label()
         Me.m_lblODBCconn = New System.Windows.Forms.Label()
         Me.m_lblODBCpwd = New System.Windows.Forms.Label()
         Me.m_lblODBCuser = New System.Windows.Forms.Label()
@@ -69,6 +66,8 @@ Partial Class frmConfig
         Me.m_rbODBC = New System.Windows.Forms.RadioButton()
         Me.m_btnPickAccess = New System.Windows.Forms.Button()
         Me.m_bpLogo = New System.Windows.Forms.PictureBox()
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrConnection = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpLogo.SuspendLayout()
         Me.m_plBits.SuspendLayout()
         CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -127,7 +126,6 @@ Partial Class frmConfig
         Me.m_plBits.Controls.Add(Me.m_tbxODBCconn)
         Me.m_plBits.Controls.Add(Me.m_lblWebServer)
         Me.m_plBits.Controls.Add(Me.m_tbxODBCuser)
-        Me.m_plBits.Controls.Add(Me.m_lblAccess)
         Me.m_plBits.Controls.Add(Me.m_lblODBCconn)
         Me.m_plBits.Controls.Add(Me.m_lblODBCpwd)
         Me.m_plBits.Controls.Add(Me.m_lblODBCuser)
@@ -155,22 +153,6 @@ Partial Class frmConfig
         '
         resources.ApplyResources(Me.m_lblNumResults, "m_lblNumResults")
         Me.m_lblNumResults.Name = "m_lblNumResults"
-        '
-        'm_hdrSearch
-        '
-        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
-        Me.m_hdrSearch.CanCollapseParent = False
-        Me.m_hdrSearch.CollapsedParentHeight = 0
-        Me.m_hdrSearch.IsCollapsed = False
-        Me.m_hdrSearch.Name = "m_hdrSearch"
-        '
-        'm_hdrConnection
-        '
-        resources.ApplyResources(Me.m_hdrConnection, "m_hdrConnection")
-        Me.m_hdrConnection.CanCollapseParent = False
-        Me.m_hdrConnection.CollapsedParentHeight = 0
-        Me.m_hdrConnection.IsCollapsed = False
-        Me.m_hdrConnection.Name = "m_hdrConnection"
         '
         'm_tbxODBCpwd
         '
@@ -211,11 +193,6 @@ Partial Class frmConfig
         '
         resources.ApplyResources(Me.m_tbxODBCuser, "m_tbxODBCuser")
         Me.m_tbxODBCuser.Name = "m_tbxODBCuser"
-        '
-        'm_lblAccess
-        '
-        resources.ApplyResources(Me.m_lblAccess, "m_lblAccess")
-        Me.m_lblAccess.Name = "m_lblAccess"
         '
         'm_lblODBCconn
         '
@@ -266,6 +243,22 @@ Partial Class frmConfig
         Me.m_bpLogo.Name = "m_bpLogo"
         Me.m_bpLogo.TabStop = False
         '
+        'm_hdrSearch
+        '
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.CanCollapseParent = False
+        Me.m_hdrSearch.CollapsedParentHeight = 0
+        Me.m_hdrSearch.IsCollapsed = False
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
+        'm_hdrConnection
+        '
+        resources.ApplyResources(Me.m_hdrConnection, "m_hdrConnection")
+        Me.m_hdrConnection.CanCollapseParent = False
+        Me.m_hdrConnection.CollapsedParentHeight = 0
+        Me.m_hdrConnection.IsCollapsed = False
+        Me.m_hdrConnection.Name = "m_hdrConnection"
+        '
         'frmConfig
         '
         resources.ApplyResources(Me, "$this")
@@ -310,7 +303,6 @@ Partial Class frmConfig
     Private WithEvents m_hdrConnection As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_plBits As System.Windows.Forms.Panel
     Private WithEvents m_tbxAccess As System.Windows.Forms.TextBox
-    Private WithEvents m_lblAccess As System.Windows.Forms.Label
     Private WithEvents m_rbAccess As System.Windows.Forms.RadioButton
     Private WithEvents m_btnPickAccess As System.Windows.Forms.Button
 End Class

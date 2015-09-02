@@ -126,6 +126,7 @@
     <Compile Include="Data\cFishBaseConnection.vb" />
     <Compile Include="Data\Database\cFishBaseAccessConnection.vb" />
     <Compile Include="Data\Database\cFishBaseDatabaseConnection.vb" />
+    <Compile Include="My Project\Settings.vb" />
     <Compile Include="UI\frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </Compile>
@@ -172,6 +173,7 @@
     <None Include="..\..\Deployment\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
+    <None Include="app.config" />
     <None Include="EwEFishBasePlugin.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

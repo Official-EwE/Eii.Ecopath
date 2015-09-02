@@ -50,6 +50,19 @@ Public Class frmConfig
 
         Me.UpdateControls()
 
+        Me.m_tbxAccess.Text = My.Settings.MDBpath
+        Me.m_tbxODBCconn.Text = My.Settings.ODBCconn
+        Me.m_tbxODBCuser.Text = My.Settings.ODBCuser
+        Me.m_tbxWebServer.Text = My.Settings.WSDLserver
+        Me.m_tbxWebPort.Text = My.Settings.WSDLport
+        Me.m_tbxWebAccount.Text = My.Settings.WSDLuser
+
+        Select Case My.Settings.ConnectionType
+            Case 0 : Me.m_rbAccess.Checked = True
+            Case 1 : Me.m_rbODBC.Checked = True
+            Case 2 : Me.m_rbWebService.Checked = True
+        End Select
+
         Me.Connection = Me.m_ppt.Connection
         Me.m_cmbMaxResults.Text = Me.m_ppt.MaxResults.ToString
 
@@ -58,6 +71,21 @@ Public Class frmConfig
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        ' Store settings
+        If Me.m_rbAccess.Checked Then My.Settings.ConnectionType = 0
+        If Me.m_rbODBC.Checked Then My.Settings.ConnectionType = 1
+        If Me.m_rbWebService.Checked Then My.Settings.ConnectionType = 2
+
+        My.Settings.MDBpath = Me.m_tbxAccess.Text
+        My.Settings.ODBCconn = Me.m_tbxODBCconn.Text
+        My.Settings.ODBCuser = Me.m_tbxODBCuser.Text
+        My.Settings.WSDLserver = Me.m_tbxWebServer.Text
+        My.Settings.WSDLport = Me.m_tbxWebPort.Text
+        My.Settings.WSDLuser = Me.m_tbxWebAccount.Text
+
+        My.Settings.Save()
+
         ' Configure ppt
         Me.m_ppt.Connection = Me.Connection
         Me.m_ppt = Nothing
@@ -211,7 +239,7 @@ Public Class frmConfig
     Private Sub OnPickAccess(sender As System.Object, e As System.EventArgs) _
         Handles m_btnPickAccess.Click
 
-        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Pick fbapp Access database", Me.m_tbxAccess.Text, "Fishbase database|Fbapp*.mdb")
+        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Choose Fishbase Access database", Me.m_tbxAccess.Text, "Fishbase database|FBapp_*.mdb")
         If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxAccess.Text = ofd.FileName
         End If
