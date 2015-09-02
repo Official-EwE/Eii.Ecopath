@@ -46,11 +46,8 @@ Namespace Style
             Dim val As eTaxonLevelType = DirectCast(value, eTaxonLevelType)
 
             Select Case val
-                Case eTaxonLevelType.Any
-                    Return My.Resources.GENERIC_VALUE_ALL
                 Case eTaxonLevelType.Common
                     Return My.Resources.HEADER_COMMON_NAME
-                    'Case eTaxonLevelType.Kingdom
                 Case eTaxonLevelType.Phylum
                     Return My.Resources.HEADER_PHYLUM
                 Case eTaxonLevelType.Order
@@ -63,9 +60,12 @@ Namespace Style
                     Return My.Resources.HEADER_GENUS
                 Case eTaxonLevelType.Species
                     Return My.Resources.HEADER_SPECIES
+                    'Case eTaxonLevelType.Kingdom
+                Case Else
+                    Debug.Assert(False)
             End Select
 
-            Return "?"
+            Return ""
         End Function
 
     End Class
