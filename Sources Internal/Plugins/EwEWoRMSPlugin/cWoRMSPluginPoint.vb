@@ -33,6 +33,7 @@ Public Class cWoRMSPluginPoint
     Implements IDataSearchProducerPlugin
     Implements IDisposedPlugin
     Implements IConfigurablePlugin
+    Implements ITaxonDataSearchCapabilitiesPlugin
 
 #Region " Private vars "
 
@@ -83,9 +84,8 @@ Public Class cWoRMSPluginPoint
 
     End Sub
 
-    Friend Sub InitClient()
+    Friend Function InitClient() As AphiaNameServicePortTypeClient
 
-        Me.m_client = Nothing
         Dim binding = New ServiceModel.BasicHttpBinding()
         binding.Name = "AphiaNameServiceBinding"
         binding.CloseTimeout = TimeSpan.FromSeconds(Me.ConnectionTimeOut)
@@ -117,9 +117,10 @@ Public Class cWoRMSPluginPoint
         binding.Security.Message.AlgorithmSuite = ServiceModel.Security.SecurityAlgorithmSuite.Default
         Dim endpointStr = "http://www.marinespecies.org/aphia.php?p=soap"
         Dim endpoint = New ServiceModel.EndpointAddress(endpointStr)
-        Me.m_client = New AphiaNameServicePortTypeClient(binding, endpoint)
 
-    End Sub
+        Return New AphiaNameServicePortTypeClient(binding, endpoint)
+
+    End Function
 
 #End Region ' Init
 
@@ -333,6 +334,7 @@ Public Class cWoRMSPluginPoint
         If (Me.m_thread IsNot Nothing) Then
             If (Me.m_client IsNot Nothing) Then
                 Me.m_client.Abort()
+                Me.m_client = Nothing
             End If
             Me.m_thread = Nothing
             Me.m_bSearching = False
@@ -352,25 +354,21 @@ Public Class cWoRMSPluginPoint
 
     Private Sub SearchThreaded()
 
-        ' ToDo: globalize this method
-        Dim c As AphiaNameServicePortTypeClient = Me.m_client
-
-        Try
-            Me.InitClient()
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-            cLog.Write(ex, "cWoRMSPluginPoint.SearchThreaded")
-        End Try
-
+        Dim c As AphiaNameServicePortTypeClient = Nothing
         Dim lRecords As AphiaRecord() = Nothing
         Dim lResults As New List(Of ITaxonSearchData)
 
         Try
-            ' Central web service call
-            If (c IsNot Nothing) Then
-                lRecords = Me.m_client.getAphiaRecords(Me.m_term.Common, True, True, True, 1)
-                c.Close()
-            End If
+            c = Me.InitClient()
+        Catch ex As Exception
+            cLog.Write(ex, "cWoRMSPluginPoint.SearchThreaded(InitClient)")
+            Return
+        End Try
+
+        Try
+            Me.m_client = c
+            lRecords = Me.m_client.getAphiaRecords(Me.m_term.Common, True, True, True, 1)
+            c.Close()
         Catch exThread As Threading.ThreadAbortException
             ' Search aborted, is ok. 
             ' Do not tinker with searching flag because it may already have been set in the calling thread
@@ -400,6 +398,8 @@ Public Class cWoRMSPluginPoint
             Debug.Assert(False, exGeneral.Message)
             cLog.Write(exGeneral, "cWoRMSPluginPoint.SearchThreaded")
             c.Abort()
+        Finally
+            Me.m_client = Nothing
         End Try
 
         If (lRecords IsNot Nothing) Then
@@ -414,6 +414,7 @@ Public Class cWoRMSPluginPoint
                 End Try
             Next
         End If
+
 
         ' Create new results
         Me.m_results = New cWoRMSTaxonSearchResults(Me.m_term, lResults.ToArray(), Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
@@ -464,5 +465,15 @@ Public Class cWoRMSPluginPoint
     End Function
 
 #End Region ' Internals
+
+    Public Function CanSearchBySpatialBounds() As Boolean _
+        Implements ITaxonDataSearchCapabilitiesPlugin.SpatialSearchCapabilities
+        Return False
+    End Function
+
+    Public Function CanSearchByTaxonomicLevel() As eTaxonLevelType _
+        Implements ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
+        Return eTaxonLevelType.Common
+    End Function
 
 End Class
