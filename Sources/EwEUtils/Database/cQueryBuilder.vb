@@ -146,7 +146,8 @@ Namespace Database
         ''' <param name="strSegment">The segment to add.</param>
         ''' -------------------------------------------------------
         Public Sub AddClause(ByVal strSegment As String)
-            m_lstrClauses.Add(strSegment)
+            If (String.IsNullOrWhiteSpace(strSegment)) Then Return
+            Me.m_lstrClauses.Add(strSegment)
         End Sub
 
         ''' -------------------------------------------------------
@@ -193,7 +194,11 @@ Namespace Database
                 sbValues.Append(astrValues(i))
                 If (i > 0) Then sbValues.Append(",")
             Next
-            Me.m_lstrClauses.Add(Me.ToClauseString(strSegment, strField, sbValues.ToString()))
+
+            Dim strFormatted As String = Me.ToClauseString(strSegment, strField, sbValues.ToString())
+            If (String.IsNullOrWhiteSpace(strFormatted)) Then Return 0
+
+            Me.m_lstrClauses.Add(strFormatted)
             Return nValueCount
 
         End Function
@@ -207,7 +212,9 @@ Namespace Database
         Public Sub AddOrder(ByVal strOrder As String, _
                             Optional ByVal fields As KeyValuePair(Of String, String)() = Nothing)
 
-            m_lstrOrderBy.Add(strOrder)
+            If (String.IsNullOrWhiteSpace(strOrder)) Then Return
+
+            Me.m_lstrOrderBy.Add(strOrder)
             Me.CopyFields(fields)
 
         End Sub
@@ -221,7 +228,9 @@ Namespace Database
         Public Sub AddGroup(ByVal strGroup As String, _
                             Optional ByVal fields As KeyValuePair(Of String, String)() = Nothing)
 
-            m_lstrGroupBy.Add(strGroup)
+            If (String.IsNullOrWhiteSpace(strGroup)) Then Return
+
+            Me.m_lstrGroupBy.Add(strGroup)
             Me.CopyFields(fields)
 
         End Sub
@@ -233,6 +242,8 @@ Namespace Database
         ''' <param name="strReplace">The field value to replace this placeholder with.</param>
         ''' -------------------------------------------------------
         Public Sub AddField(ByVal strField As String, ByVal strReplace As String)
+
+            If (String.IsNullOrWhiteSpace(strField)) Then Return
 
             If (Not Me.m_dtFields.ContainsKey(strField)) Then
                 Me.m_dtFields.Add(strField, strReplace)
