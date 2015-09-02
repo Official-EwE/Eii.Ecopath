@@ -30,6 +30,7 @@ Public Class cFishBasePlugin
     Implements IDataSearchProducerPlugin
     Implements IDisposedPlugin
     Implements IConfigurablePlugin
+    Implements ITaxonDataSearchCapabilitiesPlugin
 
 #Region " Private vars "
 
@@ -308,5 +309,13 @@ Public Class cFishBasePlugin
     End Sub
 
 #End Region ' Event handling
+
+    Public Function SpatialSearchCapabilities() As Boolean Implements EwEPlugin.Data.ITaxonDataSearchCapabilitiesPlugin.SpatialSearchCapabilities
+        Return True
+    End Function
+
+    Public Function TaxonSearchCapabilities() As EwEUtils.Core.eTaxonLevelType Implements EwEPlugin.Data.ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
+        Return eTaxonLevelType.Common Or eTaxonLevelType.Class Or eTaxonLevelType.Family Or eTaxonLevelType.Genus Or eTaxonLevelType.Local Or eTaxonLevelType.Species
+    End Function
 
 End Class

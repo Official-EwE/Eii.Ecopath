@@ -120,11 +120,11 @@ Public Class gridTaxonSearchResults
             If iRow < 1 Then
                 Return Nothing
             End If
-            Return DirectCast(Me(iRow, eColumnTypes.Index).Tag, ITaxonSearchData)
+            Return DirectCast(Me.Rows(iRow).Tag, ITaxonSearchData)
         End Get
         Set(value As ITaxonSearchData)
             If (iRow < 1) Then Return
-            Me(iRow, eColumnTypes.Index).Tag = value
+            Me.Rows(iRow).Tag = value
         End Set
     End Property
 
@@ -172,8 +172,12 @@ Public Class gridTaxonSearchResults
         If Me.UIContext Is Nothing Then Return
         If Me.m_results Is Nothing Then Return
 
-        For iRow As Integer = 0 To Me.m_results.SearchResults.Count - 1
-            Me.AddResult(DirectCast(Me.m_results.SearchResults(iRow), ITaxonSearchData))
+        Dim results As Object() = Me.m_results.SearchResults
+        For i As Integer = 0 To results.Count - 1
+            Dim res As Object = results(i)
+            If (TypeOf res Is ITaxonSearchData) And (res IsNot Nothing) Then
+                Me.AddResult(DirectCast(res, ITaxonSearchData))
+            End If
         Next
 
     End Sub
@@ -217,12 +221,18 @@ Public Class gridTaxonSearchResults
     ''' -----------------------------------------------------------------------
     Private Sub AddResult(ByVal result As ITaxonSearchData)
 
-        Dim iRow As Integer = Me.AddRow()
-        For iCol As Integer = 0 To Me.ColumnsCount - 1
-            Me.AddCell(result, iRow, DirectCast(iCol, eColumnTypes))
-        Next
-        Me.TaxonAtRow(iRow) = result
-        Me.UpdateTaxaUsedStatus(iRow)
+        Try
+
+            Dim iRow As Integer = Me.AddRow()
+            Me.TaxonAtRow(iRow) = result
+            For iCol As Integer = 0 To Me.ColumnsCount - 1
+                Me.AddCell(result, iRow, DirectCast(iCol, eColumnTypes))
+            Next
+            Me.UpdateTaxaUsedStatus(iRow)
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
 
     End Sub
 
@@ -249,6 +259,8 @@ Public Class gridTaxonSearchResults
             Case eColumnTypes.CodeLSID : value = result.CodeLSID
 
         End Select
+
+        If (value Is Nothing) Then value = ""
 
         cell = New EwECell(value, value.GetType(), style)
         cell.Behaviors.Add(EwEEditHandler)

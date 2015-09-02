@@ -28,29 +28,18 @@ Namespace Core
 
     ''' <summary>Enumerated type, identifying taxonomy searchable fields.</summary>
     Public Enum eTaxonLevelType As Long
-        Any = Common Or Species Or Genus Or Family Or Order Or [Class] Or Phylum
         Common = &H1
-        Species = &H10
-        Genus = &H100
-        Family = &H1000
-        Order = &H10000
-        [Class] = &H100000
-        Phylum = &H1000000
+        Local = &H2
+        Species = &H4
+        Genus = &H8
+        Family = &H10
+        Order = &H20
+        [Class] = &H40
+        Phylum = &H80
         <Obsolete("Kingdom not supported yet but added for future use")> _
-        Kingdom = &H10000000
+        Kingdom = &H100
     End Enum
 
-    ''' <summary>Type 
-    ''' 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum eTaxonCodeType As Integer
-        FAOTaxon
-        FishBase
-        SeaLifeBase
-        SeaAroundUs
-        TDWG_LCID
-    End Enum
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Template for searching Taxonomy data from external data sources.
