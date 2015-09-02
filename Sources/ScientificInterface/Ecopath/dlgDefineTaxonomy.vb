@@ -161,20 +161,11 @@ Public Class dlgDefineTaxa
 
         If (Me.m_groupStartup Is Nothing) Then Me.m_groupStartup = Me.m_uic.Core.EcoPathGroupInputs(1)
 
-        ' Do not change the order here please
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Any)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Common)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Species)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Genus)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Family)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Order)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Class)
-        Me.m_cmbFilter.Items.Add(eTaxonLevelType.Phylum)
-        Me.m_cmbFilter.SelectedIndex = 0
-
         Me.m_pbSearching.Image = SharedResources.ani_loader
 
+        Me.UpdateEngineCapabilities()
         Me.UpdateControls()
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -323,6 +314,7 @@ Public Class dlgDefineTaxa
         Handles m_cmbEngine.SelectedIndexChanged
 
         If (Me.m_bInUpdate) Then Return
+        Me.UpdateEngineCapabilities()
         Me.UpdateControls()
 
     End Sub
@@ -430,7 +422,7 @@ Public Class dlgDefineTaxa
 
         If (Me.m_bHasSearchEngines) Then
             Dim prod As IDataProducerPlugin = Me.SelectedDataProducer
-            If prod IsNot Nothing Then
+            If (prod IsNot Nothing) Then
                 bCanSearch = (TypeOf prod Is IDataSearchProducerPlugin) And (prod.IsDataAvailable(GetType(ITaxonSearchData)))
                 If (TypeOf prod Is IConfigurablePlugin) Then
                     Try
@@ -450,12 +442,36 @@ Public Class dlgDefineTaxa
         Me.m_lblSearchTerm.Enabled = bCanSearch
         Me.m_tbxSearchTerm.Enabled = bCanSearch
         Me.m_lblIn.Enabled = bCanSearch
-        Me.m_cmbFilter.Enabled = bCanSearch
-        Me.m_cbIncludeExtent.Enabled = bCanSearch
         Me.m_gridResults.Enabled = bCanSearch
 
         Me.m_pbSearching.Visible = bIsSearching
         Me.m_bInUpdate = False
+
+    End Sub
+
+    Private Sub UpdateEngineCapabilities()
+
+        Dim engine As IDataSearchProducerPlugin = Me.SelectedDataProducer
+        Dim taxacaps As eTaxonLevelType = eTaxonLevelType.Common
+        Dim bSpatialCaps As Boolean = False
+
+        If (engine IsNot Nothing) Then
+            If (TypeOf engine Is ITaxonDataSearchCapabilitiesPlugin) Then
+                Dim caps As ITaxonDataSearchCapabilitiesPlugin = CType(engine, ITaxonDataSearchCapabilitiesPlugin)
+                taxacaps = caps.TaxonSearchCapabilities
+                bSpatialCaps = caps.SpatialSearchCapabilities
+            End If
+
+            Me.m_cmbFilter.Items.Clear()
+            For Each test As eTaxonLevelType In [Enum].GetValues(GetType(eTaxonLevelType))
+                If (taxacaps And test) = test Then
+                    Me.m_cmbFilter.Items.Add(test)
+                End If
+            Next
+            Me.m_cmbFilter.SelectedIndex = 0
+        End If
+
+        Me.m_cbIncludeExtent.Enabled = bSpatialCaps
 
     End Sub
 
@@ -563,12 +579,13 @@ Public Class dlgDefineTaxa
     ''' -----------------------------------------------------------------------
     Private Sub Search(ByVal strTerm As String)
 
-        ' Clear grid
-        Me.OnProcessSearchResults(Nothing)
-
         ' No term? Abort
-        If String.IsNullOrEmpty(strTerm) Then Return
-        ' Term less than 3 chars? Abort
+        If (String.IsNullOrWhiteSpace(strTerm)) Then Return
+
+        ' Prune term
+        strTerm = strTerm.Trim()
+
+        ' Term less than 4 chars? Abort
         If (strTerm.Length < 4) Then Return
 
         ' Make search term
@@ -583,8 +600,6 @@ Public Class dlgDefineTaxa
             '#Yes: populate term
             searchterm.SearchFields = DirectCast(Me.m_cmbFilter.SelectedItem, eTaxonLevelType)
             searchterm.Common = strTerm
-            ' Update UI
-            Me.m_tbxSearchTerm.Text = strTerm
             ' Go Jimmy
             Me.Search(searchterm)
         End If
