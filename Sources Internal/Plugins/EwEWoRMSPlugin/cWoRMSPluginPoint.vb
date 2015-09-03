@@ -33,7 +33,7 @@ Public Class cWoRMSPluginPoint
     Implements IDataSearchProducerPlugin
     Implements IDisposedPlugin
     Implements IConfigurablePlugin
-    Implements ITaxonDataSearchCapabilitiesPlugin
+    Implements ITaxonSearchCapabilitiesPlugin
 
 #Region " Private vars "
 
@@ -466,14 +466,23 @@ Public Class cWoRMSPluginPoint
 
 #End Region ' Internals
 
-    Public Function CanSearchBySpatialBounds() As Boolean _
-        Implements ITaxonDataSearchCapabilitiesPlugin.SpatialSearchCapabilities
+#Region " Search capabilities "
+
+    Public Function HasSpatialSearchCapabilities() As Boolean _
+        Implements ITaxonSearchCapabilitiesPlugin.HasSpatialSearchCapabilities
         Return False
     End Function
 
     Public Function CanSearchByTaxonomicLevel() As eTaxonClassificationType _
-        Implements ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
+        Implements ITaxonSearchCapabilitiesPlugin.TaxonSearchCapabilities
         Return eTaxonClassificationType.Common
     End Function
+
+    Public Function HasDepthRangeSearchCapabilities() As Boolean _
+        Implements EwEPlugin.Data.ITaxonSearchCapabilitiesPlugin.HasDepthRangeSearchCapabilities
+        Return False
+    End Function
+
+#End Region ' Search capabilities
 
 End Class

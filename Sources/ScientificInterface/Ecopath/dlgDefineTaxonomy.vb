@@ -456,10 +456,12 @@ Public Class dlgDefineTaxa
         Dim bSpatialCaps As Boolean = False
 
         If (engine IsNot Nothing) Then
-            If (TypeOf engine Is ITaxonDataSearchCapabilitiesPlugin) Then
-                Dim caps As ITaxonDataSearchCapabilitiesPlugin = CType(engine, ITaxonDataSearchCapabilitiesPlugin)
+            ' Does the engine report specific search capabilities?
+            If (TypeOf engine Is ITaxonSearchCapabilities) Then
+                ' #Yes: Report capabilities
+                Dim caps As ITaxonSearchCapabilities = CType(engine, ITaxonSearchCapabilities)
                 taxacaps = caps.TaxonSearchCapabilities
-                bSpatialCaps = caps.SpatialSearchCapabilities
+                bSpatialCaps = caps.HasSpatialSearchCapabilities
             End If
 
             Me.m_cmbFilter.Items.Clear()

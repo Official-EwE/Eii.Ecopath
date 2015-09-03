@@ -124,7 +124,7 @@
     <Compile Include="Plugin templates\Data exchange\cEcosimRunType.vb" />
     <Compile Include="Plugin templates\Data exchange\cEcospaceRunType.vb" />
     <Compile Include="Plugin templates\Data exchange\cFishingPolicySearchRunType.vb" />
-    <Compile Include="Plugin templates\Data exchange\ITaxonDataSearchCapabilitiesPlugin.vb" />
+    <Compile Include="Plugin templates\Data exchange\ITaxonSearchCapabilitiesPlugin.vb" />
     <Compile Include="Plugin templates\Database\IModelImportPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathRunInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimTimeSeriesPlugin.vb" />

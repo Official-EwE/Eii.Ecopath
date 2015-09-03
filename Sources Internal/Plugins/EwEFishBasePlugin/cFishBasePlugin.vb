@@ -30,7 +30,7 @@ Public Class cFishBasePlugin
     Implements IDataSearchProducerPlugin
     Implements IDisposedPlugin
     Implements IConfigurablePlugin
-    Implements ITaxonDataSearchCapabilitiesPlugin
+    Implements ITaxonSearchCapabilitiesPlugin
 
 #Region " Private vars "
 
@@ -148,7 +148,7 @@ Public Class cFishBasePlugin
     End Function
 
     Public Function IsDataAvailable(ByVal typeData As System.Type, _
-                                    Optional ByVal runType As EwEUtils.Core.IRunType = Nothing) As Boolean _
+                                    Optional ByVal runType As IRunType = Nothing) As Boolean _
         Implements IDataProducerPlugin.IsDataAvailable
         Return (GetType(ITaxonSearchData).IsAssignableFrom(typeData))
     End Function
@@ -159,7 +159,7 @@ Public Class cFishBasePlugin
     End Function
 
     Public Function IsEnabled(ByVal typeData As System.Type, _
-                              ByVal runType As EwEUtils.Core.IRunType) As Boolean _
+                              ByVal runType As IRunType) As Boolean _
         Implements IDataProducerPlugin.IsEnabled
         Return Me.m_bEnabled
     End Function
@@ -170,7 +170,7 @@ Public Class cFishBasePlugin
     End Function
 
     Public Sub SetEnabled(ByVal typeData As System.Type, _
-                          ByVal runType As EwEUtils.Core.IRunType, _
+                          ByVal runType As IRunType, _
                           ByVal bEnable As Boolean) _
         Implements IDataProducerPlugin.SetEnabled
         ' NOP
@@ -236,6 +236,29 @@ Public Class cFishBasePlugin
     End Function
 
 #End Region ' Search
+
+#Region " Search capabiities "
+
+    Public Function TaxonSearchCapabilities() As eTaxonClassificationType _
+        Implements ITaxonSearchCapabilitiesPlugin.TaxonSearchCapabilities
+        Return eTaxonClassificationType.Common Or _
+               eTaxonClassificationType.Class Or _
+               eTaxonClassificationType.Family Or _
+               eTaxonClassificationType.Genus Or _
+               eTaxonClassificationType.Local Or _
+               eTaxonClassificationType.Species
+    End Function
+
+    Public Function HasDepthRangeSearchCapabilities() As Boolean _
+        Implements ITaxonSearchCapabilities.HasDepthRangeSearchCapabilities
+        Return False
+    End Function
+
+    Public Function HasSpatialSearchCapabilities() As Boolean Implements ITaxonSearchCapabilities.HasSpatialSearchCapabilities
+        Return True
+    End Function
+
+#End Region ' Search capabiities
 
 #End Region ' Plugin points implementation
 
@@ -309,13 +332,5 @@ Public Class cFishBasePlugin
     End Sub
 
 #End Region ' Event handling
-
-    Public Function SpatialSearchCapabilities() As Boolean Implements EwEPlugin.Data.ITaxonDataSearchCapabilitiesPlugin.SpatialSearchCapabilities
-        Return True
-    End Function
-
-    Public Function TaxonSearchCapabilities() As EwEUtils.Core.eTaxonClassificationType Implements EwEPlugin.Data.ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
-        Return eTaxonClassificationType.Common Or eTaxonClassificationType.Class Or eTaxonClassificationType.Family Or eTaxonClassificationType.Genus Or eTaxonClassificationType.Local Or eTaxonClassificationType.Species
-    End Function
 
 End Class

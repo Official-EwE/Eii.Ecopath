@@ -3425,4 +3425,21 @@ Namespace Core
 
 #End Region ' LP Solver
 
+#Region " Taxonomy "
+
+    ''' <summary>Enumerated type, identifying taxonomic classifications fields.</summary>
+    Public Enum eTaxonClassificationType As Long
+        Common = &H0
+        Local = &H0
+        Species = &H1
+        Genus = &H2
+        Family = &H4
+        Order = &H8
+        [Class] = &H10
+        Phylum = &H20
+        <Obsolete("Kingdom not supported yet but added for future use")> _
+        Kingdom = &H40
+    End Enum
+
+#End Region ' Taxonomy
 End Namespace ' Core

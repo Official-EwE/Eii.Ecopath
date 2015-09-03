@@ -128,6 +128,7 @@
     <Compile Include="Commands\cCommand.vb" />
     <Compile Include="Commands\cCommandHandler.vb" />
     <Compile Include="Commands\cControlHandler.vb" />
+    <Compile Include="Core\ITaxonSearchCapabilities.vb" />
     <Compile Include="Core\IConfigurable.vb" />
     <Compile Include="Core\IConfigurationSummary.vb" />
     <Compile Include="Core\IEcospaceImportExport.vb" />
