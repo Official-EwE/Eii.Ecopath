@@ -15,7 +15,6 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
@@ -26,79 +25,32 @@ Imports System
 
 Namespace Core
 
-    ''' <summary>Enumerated type, identifying taxonomy searchable fields.</summary>
-    Public Enum eTaxonClassificationType As Long
-        Common = &H1
-        Local = &H2
-        Species = &H4
-        Genus = &H8
-        Family = &H10
-        Order = &H20
-        [Class] = &H40
-        Phylum = &H80
-        <Obsolete("Kingdom not supported yet but added for future use")> _
-        Kingdom = &H100
-    End Enum
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Template for searching Taxonomy data from external data sources.
+    ''' Template for reporting taxonomic search capabilities
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Interface ITaxonSearchData
+    Public Interface ITaxonSearchCapabilities
 
-        ' -- Reference --
-
-        ''' <summary>Data source that a taxon was obtained for.</summary>
-        Property Source() As String
-        ''' <summary>Key to update this taxonomy from the source.</summary>
-        Property SourceKey() As String
-
-        ''' <summary>Bitwise flag pattern indicating which fields to search, and
-        ''' which fields have been searched.
+        ''' <summary>
+        ''' Returns a bitwise pattern of <see cref="eTaxonClassificationType"/> enumerated
+        ''' values stating which taxonomic classification fields can be searched.
         ''' </summary>
-        Property SearchFields As eTaxonClassificationType
+        ''' <returns>A bitwise pattern of <see cref="eTaxonClassificationType"/> enumerated
+        ''' values stating which taxonomic classification fields can be searched.</returns>
+        Function TaxonSearchCapabilities() As eTaxonClassificationType
 
-        ' -- Data fields --
+        ''' <summary>
+        ''' Returns whether the taxonomic search engine can search by spatial bounding box.
+        ''' </summary>
+        ''' <returns>True if the taxonomic search engine can search by spatial bounding box</returns>
+        Function HasSpatialSearchCapabilities() As Boolean
 
-        ''' <summary>Class name of a taxon.</summary>
-        Property [Class]() As String
-        ''' <summary>Order name of a taxon.</summary>
-        Property Order() As String
-        ''' <summary>Family name of a taxon.</summary>
-        Property Family() As String
-        ''' <summary>Genus name of a taxon.</summary>
-        Property Genus() As String
-        ''' <summary>Species name of a taxon.</summary>
-        Property Species() As String
-        ''' <summary>Common name of a taxon.</summary>
-        Property Common() As String
-        ''' <summary>Phylum of a taxon.</summary>
-        Property Phylum() As String
-
-        ' -- Identification --
-
-        ''' <summary>FAO taxon code (http://www.fao.org/fishery/collection/asfis/en).</summary>
-        Property CodeFAO() As String
-        ''' <summary>FishBase SpecCode.</summary>
-        Property CodeFB() As Long
-        ''' <summary>Sea Life Base SpecCode.</summary>
-        Property CodeSLB As Long
-        ''' <summary>Sea Around Us project Taxon ID</summary>
-        Property CodeSAUP As Long
-        ''' <summary>Taxonomy Databases Working Group Life Catalogue ID (http://lsid.tdwg.org/)</summary>
-        Property CodeLSID As String
-
-        ' -- Spatial extent --
-
-        ''' <summary>Northern limit of the bounding box where this taxon occurs.</summary>
-        Property North() As Single
-        ''' <summary>Southern limit of the bounding box where this taxon occurs.</summary>
-        Property South() As Single
-        ''' <summary>Eastern limit of the bounding box where this taxon occurs.</summary>
-        Property East() As Single
-        ''' <summary>Western limit of the bounding box where this taxon occurs.</summary>
-        Property West() As Single
+        ''' <summary>
+        ''' Returns whether the taxonomic search engine can search by depth range.
+        ''' </summary>
+        ''' <returns>True if the taxonomic search engine can search by depth range.</returns>
+        Function HasDepthRangeSearchCapabilities() As Boolean
 
     End Interface
 
