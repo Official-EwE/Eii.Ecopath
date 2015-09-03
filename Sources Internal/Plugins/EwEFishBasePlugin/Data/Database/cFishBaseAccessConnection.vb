@@ -107,7 +107,7 @@ Public Class cFishBaseAccessConnnection
         End If
 
         Dim qb As New cQueryBuilder("SELECT species.DateModified As DateModified, species.SpecCode AS Code, classes.Class AS Cls, orders.Order AS Ord, families.Family AS Fam, genera.GenName AS Gen, species.Species AS Spec, comnames.ComName AS Comm, species.Vulnerability AS Vul, stocks.IUCN_Code AS IUCN, stocks.Occurrence AS Occ, stocks.Ecology AS Eco, stocks.SAUP_ID AS CodeSaup FROM comnames INNER JOIN (((((stocks INNER JOIN species ON stocks.SpecCode = species.SpecCode) INNER JOIN families ON species.FamCode = families.FamCode) INNER JOIN classes ON families.Class = classes.Class) INNER JOIN genera ON species.Genus = genera.GenName) INNER JOIN orders ON families.Ordnum = orders.Ordnum) ON comnames.SpecCode = stocks.SpecCode [WHERE] ORDER BY species.SpecCode")
-        Dim bSearchComm As Boolean = ((taxon.SearchFields And eTaxonLevelType.Common) > 0)
+        Dim bSearchComm As Boolean = ((taxon.SearchFields And eTaxonClassificationType.Common) > 0)
 
         ' Started searching
         Me.IsSearching = True
@@ -129,7 +129,7 @@ Public Class cFishBaseAccessConnnection
                     sbClause.Append(String.Format("comnames.ComName LIKE '%{0}%'", taxon.Common))
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Phylum) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Phylum) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
                         sbClause.Append(String.Format("(classes.Class LIKE ""%{0}%"") OR (classes.CommonName LIKE ""%{0}%"")", taxon.Common))
@@ -138,7 +138,7 @@ Public Class cFishBaseAccessConnnection
                     End If
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Class) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Class) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
                         sbClause.Append(String.Format("(classes.Class LIKE ""%{0}%"") OR (classes.CommonName LIKE ""%{0}%"")", taxon.Common))
@@ -147,7 +147,7 @@ Public Class cFishBaseAccessConnnection
                     End If
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Order) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Order) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
                         sbClause.Append(String.Format("(orders.Order LIKE ""%{0}%"") OR (orders.CommonName LIKE ""%{0}%"")", taxon.Common))
@@ -156,7 +156,7 @@ Public Class cFishBaseAccessConnnection
                     End If
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Family) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Family) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
                         sbClause.Append(String.Format("(families.Family LIKE ""%{0}%"") OR (families.CommonName LIKE ""%{0}%"")", taxon.Common))
@@ -165,7 +165,7 @@ Public Class cFishBaseAccessConnnection
                     End If
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Genus) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Genus) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
                         sbClause.Append(String.Format("(genera.GenName LIKE ""%{0}%"") OR (genera.GenComName LIKE ""%{0}%"")", taxon.Common))
@@ -174,7 +174,7 @@ Public Class cFishBaseAccessConnnection
                     End If
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Species) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Species) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
                         sbClause.Append(String.Format("(species.Species LIKE ""%{0}%"") OR (comnames.ComName LIKE ""%{0}%"")", taxon.Common))

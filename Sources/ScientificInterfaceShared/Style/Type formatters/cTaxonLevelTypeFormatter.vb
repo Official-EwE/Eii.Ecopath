@@ -29,38 +29,38 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eTaxonLevelType"/>s.
+    ''' Class for providing a textual description of <see cref="eTaxonClassificationType"/>s.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cTaxonLevelTypeFormatter
+    Public Class cTaxonClassificationTypeFormatter
         Implements ITypeFormatter
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(eTaxonLevelType)
+            Return GetType(eTaxonClassificationType)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
 
-            Dim val As eTaxonLevelType = DirectCast(value, eTaxonLevelType)
+            Dim val As eTaxonClassificationType = DirectCast(value, eTaxonClassificationType)
 
             Select Case val
-                Case eTaxonLevelType.Common
+                Case eTaxonClassificationType.Common
                     Return My.Resources.HEADER_COMMON_NAME
-                Case eTaxonLevelType.Phylum
+                Case eTaxonClassificationType.Phylum
                     Return My.Resources.HEADER_PHYLUM
-                Case eTaxonLevelType.Order
+                Case eTaxonClassificationType.Order
                     Return My.Resources.HEADER_ORDER
-                Case eTaxonLevelType.Class
+                Case eTaxonClassificationType.Class
                     Return My.Resources.HEADER_CLASS
-                Case eTaxonLevelType.Family
+                Case eTaxonClassificationType.Family
                     Return My.Resources.HEADER_FAMILY
-                Case eTaxonLevelType.Genus
+                Case eTaxonClassificationType.Genus
                     Return My.Resources.HEADER_GENUS
-                Case eTaxonLevelType.Species
+                Case eTaxonClassificationType.Species
                     Return My.Resources.HEADER_SPECIES
-                    'Case eTaxonLevelType.Kingdom
+                    'Case eTaxonClassificationType.Kingdom
                 Case Else
                     Debug.Assert(False)
             End Select

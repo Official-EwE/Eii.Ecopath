@@ -364,7 +364,7 @@ Public Class dlgDefineTaxa
 
     Private Sub OnTaxonLevelFormat(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_cmbFilter.Format
-        Dim fmt As New cTaxonLevelTypeFormatter()
+        Dim fmt As New cTaxonClassificationTypeFormatter()
         e.Value = fmt.GetDescriptor(e.ListItem)
     End Sub
 
@@ -452,7 +452,7 @@ Public Class dlgDefineTaxa
     Private Sub UpdateEngineCapabilities()
 
         Dim engine As IDataSearchProducerPlugin = Me.SelectedDataProducer
-        Dim taxacaps As eTaxonLevelType = eTaxonLevelType.Common
+        Dim taxacaps As eTaxonClassificationType = eTaxonClassificationType.Common
         Dim bSpatialCaps As Boolean = False
 
         If (engine IsNot Nothing) Then
@@ -463,7 +463,7 @@ Public Class dlgDefineTaxa
             End If
 
             Me.m_cmbFilter.Items.Clear()
-            For Each test As eTaxonLevelType In [Enum].GetValues(GetType(eTaxonLevelType))
+            For Each test As eTaxonClassificationType In [Enum].GetValues(GetType(eTaxonClassificationType))
                 If (taxacaps And test) = test Then
                     Me.m_cmbFilter.Items.Add(test)
                 End If
@@ -598,7 +598,7 @@ Public Class dlgDefineTaxa
         ' Successful?
         If searchterm IsNot Nothing Then
             '#Yes: populate term
-            searchterm.SearchFields = DirectCast(Me.m_cmbFilter.SelectedItem, eTaxonLevelType)
+            searchterm.SearchFields = DirectCast(Me.m_cmbFilter.SelectedItem, eTaxonClassificationType)
             searchterm.Common = strTerm
             ' Go Jimmy
             Me.Search(searchterm)

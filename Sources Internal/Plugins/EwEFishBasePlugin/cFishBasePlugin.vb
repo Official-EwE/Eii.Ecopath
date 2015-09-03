@@ -314,8 +314,8 @@ Public Class cFishBasePlugin
         Return True
     End Function
 
-    Public Function TaxonSearchCapabilities() As EwEUtils.Core.eTaxonLevelType Implements EwEPlugin.Data.ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
-        Return eTaxonLevelType.Common Or eTaxonLevelType.Class Or eTaxonLevelType.Family Or eTaxonLevelType.Genus Or eTaxonLevelType.Local Or eTaxonLevelType.Species
+    Public Function TaxonSearchCapabilities() As EwEUtils.Core.eTaxonClassificationType Implements EwEPlugin.Data.ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
+        Return eTaxonClassificationType.Common Or eTaxonClassificationType.Class Or eTaxonClassificationType.Family Or eTaxonClassificationType.Genus Or eTaxonClassificationType.Local Or eTaxonClassificationType.Species
     End Function
 
 End Class

@@ -471,9 +471,9 @@ Public Class cWoRMSPluginPoint
         Return False
     End Function
 
-    Public Function CanSearchByTaxonomicLevel() As eTaxonLevelType _
+    Public Function CanSearchByTaxonomicLevel() As eTaxonClassificationType _
         Implements ITaxonDataSearchCapabilitiesPlugin.TaxonSearchCapabilities
-        Return eTaxonLevelType.Common
+        Return eTaxonClassificationType.Common
     End Function
 
 End Class

@@ -46,7 +46,7 @@ Public Class cFishBaseTaxonData
     ' -- Plugin connection --
     Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""
-    Private m_searchfields As eTaxonLevelType
+    Private m_searchfields As eTaxonClassificationType
 
     ' -- Data --
     Private m_strCommon As String = ""

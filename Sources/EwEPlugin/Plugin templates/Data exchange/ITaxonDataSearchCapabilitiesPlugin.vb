@@ -27,12 +27,25 @@ Imports EwEUtils.Core
 Namespace Data
 
     ''' <summary>
-    ''' List search capabilities for taxonomy data search providers
+    ''' Plug-in point allowing taxonomy <see cref="IDataSearchProducerPlugin">search
+    ''' plug-ins</see> to report their search capabilities.
     ''' </summary>
     Public Interface ITaxonDataSearchCapabilitiesPlugin
         Inherits IDataSearchProducerPlugin
 
-        Function TaxonSearchCapabilities() As eTaxonLevelType
+        ''' <summary>
+        ''' Returns a bitwise pattern of <see cref="eTaxonClassificationType"/> enumerated
+        ''' values stating which taxonomic classification fields can be searched.
+        ''' </summary>
+        ''' <returns>A bitwise pattern of <see cref="eTaxonClassificationType"/> enumerated
+        ''' values stating which taxonomic classification fields can be searched.</returns>
+        Function TaxonSearchCapabilities() As eTaxonClassificationType
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Function SpatialSearchCapabilities() As Boolean
 
     End Interface

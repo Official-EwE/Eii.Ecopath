@@ -27,7 +27,7 @@ Imports System
 Namespace Core
 
     ''' <summary>Enumerated type, identifying taxonomy searchable fields.</summary>
-    Public Enum eTaxonLevelType As Long
+    Public Enum eTaxonClassificationType As Long
         Common = &H1
         Local = &H2
         Species = &H4
@@ -57,7 +57,7 @@ Namespace Core
         ''' <summary>Bitwise flag pattern indicating which fields to search, and
         ''' which fields have been searched.
         ''' </summary>
-        Property SearchFields As eTaxonLevelType
+        Property SearchFields As eTaxonClassificationType
 
         ' -- Data fields --
 
