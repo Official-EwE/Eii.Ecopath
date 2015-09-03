@@ -355,12 +355,12 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set flags last used to search the taxon.
     ''' </summary>
-    Public Property SearchFields() As eTaxonLevelType _
+    Public Property SearchFields() As eTaxonClassificationType _
         Implements ITaxonDetailsData.SearchFields
         Get
-            Return DirectCast(Me.GetVariable(eVarNameFlags.TaxonSearchFields), eTaxonLevelType)
+            Return DirectCast(Me.GetVariable(eVarNameFlags.TaxonSearchFields), eTaxonClassificationType)
         End Get
-        Set(ByVal value As eTaxonLevelType)
+        Set(ByVal value As eTaxonClassificationType)
             Me.SetVariable(eVarNameFlags.TaxonSearchFields, value)
         End Set
     End Property

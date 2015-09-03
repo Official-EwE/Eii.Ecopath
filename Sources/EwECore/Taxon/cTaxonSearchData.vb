@@ -85,7 +85,7 @@ Public Class cTaxonSearchData
     ''' <inheritdocs cref="ITaxonSearchData.SourceKey"/>
     Public Property SourceKey() As String Implements ITaxonSearchData.SourceKey
 
-    Public Property SearchFields As eTaxonLevelType Implements ITaxonSearchData.SearchFields
+    Public Property SearchFields As eTaxonClassificationType Implements ITaxonSearchData.SearchFields
 
     ''' <inheritdocs cref="ITaxonSearchData.North"/>
     Public Property North() As Single = cCore.NULL_VALUE Implements ITaxonSearchData.North
