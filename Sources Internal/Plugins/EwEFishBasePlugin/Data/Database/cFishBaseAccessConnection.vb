@@ -126,60 +126,60 @@ Public Class cFishBaseAccessConnnection
 
                 ' Search
                 If bSearchComm Then
-                    sbClause.Append(String.Format("comnames.ComName LIKE '%{0}%'", taxon.Common))
+                    sbClause.Append(String.Format("comnames.ComName LIKE '{0}%'", taxon.Common))
                 End If
 
                 If ((taxon.SearchFields And eTaxonClassificationType.Phylum) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
-                        sbClause.Append(String.Format("(classes.Class LIKE ""%{0}%"") OR (classes.CommonName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(classes.Class LIKE ""{0}%"") OR (classes.CommonName LIKE ""{0}%"")", taxon.Common))
                     Else
-                        sbClause.Append(String.Format("(classes.Class LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(classes.Class LIKE ""{0}%"")", taxon.Common))
                     End If
                 End If
 
                 If ((taxon.SearchFields And eTaxonClassificationType.Class) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
-                        sbClause.Append(String.Format("(classes.Class LIKE ""%{0}%"") OR (classes.CommonName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(classes.Class LIKE ""{0}%"") OR (classes.CommonName LIKE ""{0}%"")", taxon.Common))
                     Else
-                        sbClause.Append(String.Format("(classes.Class LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(classes.Class LIKE ""{0}%"")", taxon.Common))
                     End If
                 End If
 
                 If ((taxon.SearchFields And eTaxonClassificationType.Order) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
-                        sbClause.Append(String.Format("(orders.Order LIKE ""%{0}%"") OR (orders.CommonName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(orders.Order LIKE ""{0}%"") OR (orders.CommonName LIKE ""{0}%"")", taxon.Common))
                     Else
-                        sbClause.Append(String.Format("(orders.Order LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(orders.Order LIKE ""{0}%"")", taxon.Common))
                     End If
                 End If
 
                 If ((taxon.SearchFields And eTaxonClassificationType.Family) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
-                        sbClause.Append(String.Format("(families.Family LIKE ""%{0}%"") OR (families.CommonName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(families.Family LIKE ""{0}%"") OR (families.CommonName LIKE ""{0}%"")", taxon.Common))
                     Else
-                        sbClause.Append(String.Format("(families.Family LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(families.Family LIKE ""{0}%"")", taxon.Common))
                     End If
                 End If
 
                 If ((taxon.SearchFields And eTaxonClassificationType.Genus) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
-                        sbClause.Append(String.Format("(genera.GenName LIKE ""%{0}%"") OR (genera.GenComName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(genera.GenName LIKE ""{0}%"") OR (genera.GenComName LIKE ""{0}%"")", taxon.Common))
                     Else
-                        sbClause.Append(String.Format("(genera.GenName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(genera.GenName LIKE ""{0}%"")", taxon.Common))
                     End If
                 End If
 
                 If ((taxon.SearchFields And eTaxonClassificationType.Species) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then
-                        sbClause.Append(String.Format("(species.Species LIKE ""%{0}%"") OR (comnames.ComName LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(species.Species LIKE ""{0}%"") OR (comnames.ComName LIKE ""{0}%"")", taxon.Common))
                     Else
-                        sbClause.Append(String.Format("(species.Species LIKE ""%{0}%"")", taxon.Common))
+                        sbClause.Append(String.Format("(species.Species LIKE ""{0}%"")", taxon.Common))
                     End If
                 End If
                 qb.AddClause(sbClause.ToString)
