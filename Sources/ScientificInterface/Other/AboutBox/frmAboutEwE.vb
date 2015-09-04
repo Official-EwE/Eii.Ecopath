@@ -68,7 +68,7 @@ Namespace Other
             ' Format generic page
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp)
+            Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp)
             Me.m_lbCopyright.Text = cStringUtils.Localize(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format RTF content pages
