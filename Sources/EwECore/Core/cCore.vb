@@ -700,12 +700,17 @@ Public Class cCore
     ''' Get the Core assembly version.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Shared ReadOnly Property Version As String
+    Public Shared ReadOnly Property Version(Optional ByVal bIncludeCompilationDate As Boolean = False) As String
         Get
             Try
-                ' ToDo_JS: globalize this
                 Dim an As Reflection.AssemblyName = cAssemblyUtils.GetAssemblyName(GetType(cCore))
-                Return cStringUtils.Localize("{0} (compiled {1})", cAssemblyUtils.GetVersion(an), cAssemblyUtils.GetCompileDate(an).ToShortDateString)
+                If bIncludeCompilationDate Then
+                    Return cStringUtils.Localize(My.Resources.CoreDefaults.VERSION_EXT_COMPILED, _
+                                                 cAssemblyUtils.GetVersion(an), _
+                                                 cAssemblyUtils.GetCompileDate(an).ToShortDateString)
+                Else
+                    Return cAssemblyUtils.GetVersion(an).ToString
+                End If
             Catch ex As Exception
                 Return ""
             End Try
@@ -2713,7 +2718,7 @@ Public Class cCore
         Dim sb As New StringBuilder()
         Dim sm As cCoreStateMonitor = Me.StateMonitor
 
-        sb.AppendLine("EwEVersion," & cStringUtils.ToCSVField(cCore.Version))
+        sb.AppendLine("EwEVersion," & cStringUtils.ToCSVField(cCore.Version(True)))
         sb.AppendLine("Date," & cStringUtils.ToCSVField(Date.Now.ToString()))
 
         If (savetype > eAutosaveTypes.NotSet) And (sm.HasEcopathLoaded) Then
@@ -2779,7 +2784,7 @@ Public Class cCore
         xnEwE.AppendChild(xn)
 
         xa = doc.CreateAttribute("version")
-        xa.Value = cCore.Version
+        xa.Value = cCore.Version(True)
         xn.Attributes.Append(xa)
 
         xa = doc.CreateAttribute("Date")

@@ -306,4 +306,7 @@
   <data name="SOURCE_CLIPBOARD" xml:space="preserve">
     <value>From clipboard</value>
   </data>
+  <data name="VERSION_EXT_COMPILED" xml:space="preserve">
+    <value>{0} (compiled {1})</value>
+  </data>
 </root>
