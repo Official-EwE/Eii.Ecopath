@@ -239,7 +239,7 @@ Public Class frmConfig
     Private Sub OnPickAccess(sender As System.Object, e As System.EventArgs) _
         Handles m_btnPickAccess.Click
 
-        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Choose Fishbase Access database", Me.m_tbxAccess.Text, "Fishbase database|FBapp_*.mdb")
+        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Choose Fishbase Access database", Me.m_tbxAccess.Text, "Access database|*.accdb;*.mdb")
         If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxAccess.Text = ofd.FileName
         End If

@@ -129,15 +129,6 @@ Public Class cFishBaseAccessConnnection
                     sbClause.Append(String.Format("comnames.ComName LIKE '{0}%'", taxon.Common))
                 End If
 
-                If ((taxon.SearchFields And eTaxonClassificationType.Phylum) > 0) Then
-                    If sbClause.Length > 0 Then sbClause.Append(" OR")
-                    If bSearchComm Then
-                        sbClause.Append(String.Format("(classes.Class LIKE ""{0}%"") OR (classes.CommonName LIKE ""{0}%"")", taxon.Common))
-                    Else
-                        sbClause.Append(String.Format("(classes.Class LIKE ""{0}%"")", taxon.Common))
-                    End If
-                End If
-
                 If ((taxon.SearchFields And eTaxonClassificationType.Class) > 0) Then
                     If sbClause.Length > 0 Then sbClause.Append(" OR")
                     If bSearchComm Then

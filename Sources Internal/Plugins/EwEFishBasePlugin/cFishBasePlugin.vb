@@ -244,8 +244,8 @@ Public Class cFishBasePlugin
         Return eTaxonClassificationType.Common Or _
                eTaxonClassificationType.Class Or _
                eTaxonClassificationType.Family Or _
+               eTaxonClassificationType.Order Or _
                eTaxonClassificationType.Genus Or _
-               eTaxonClassificationType.Local Or _
                eTaxonClassificationType.Species
     End Function
 
