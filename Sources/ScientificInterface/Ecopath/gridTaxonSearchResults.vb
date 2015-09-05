@@ -44,12 +44,11 @@ Public Class gridTaxonSearchResults
     Private Enum eColumnTypes As Integer
         Index = 0
         Common
-        Species
         Genus
+        Species
         Family
         Order
         [Class]
-        Phylum
         'Code
         CodeSAUP
         CodeFB
@@ -140,7 +139,7 @@ Public Class gridTaxonSearchResults
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
 
-        Dim iNumCols As Integer = CInt(IIf(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Phylum + 1))
+        Dim iNumCols As Integer = CInt(IIF(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Class + 1))
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
@@ -150,7 +149,7 @@ Public Class gridTaxonSearchResults
         Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(SharedResources.HEADER_ORDER)
         Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
-        Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
+        'Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
         If (Me.m_bShowCodes) Then
             'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
             Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
@@ -250,7 +249,7 @@ Public Class gridTaxonSearchResults
             Case eColumnTypes.Family : value = result.Family
             Case eColumnTypes.Order : value = result.Order
             Case eColumnTypes.Class : value = result.Class
-            Case eColumnTypes.Phylum : value = result.Phylum
+                'Case eColumnTypes.Phylum : value = result.Phylum
                 'Case eColumnTypes.Code: value = result.SourceKey
             Case eColumnTypes.CodeFB : value = result.CodeFB
             Case eColumnTypes.CodeSLB : value = result.CodeSLB

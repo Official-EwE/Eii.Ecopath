@@ -120,7 +120,7 @@ Public Class frmNavigationPanel
         With Me.m_nodeController
 
             'Basic Parameters
-            .Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelDescription), "Model description.htm")
+            .Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelParameters), "Model description.htm")
             .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), "Basic input.htm", True)
             .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(frmDietComp), "Diet composition.htm")
             .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(gridDetritusFate), "Detritus fate.htm")

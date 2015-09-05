@@ -3430,7 +3430,6 @@ Namespace Core
     ''' <summary>Enumerated type, identifying taxonomic classifications fields.</summary>
     Public Enum eTaxonClassificationType As Long
         Common = &H0
-        Local = &H0
         Species = &H1
         Genus = &H2
         Family = &H4

@@ -2318,8 +2318,12 @@ Public Class cPluginManager
             If (Me.m_sync IsNot Nothing) Then
                 ' #Yes: build info to cross over
                 Dim inf As New cInvokeMethodInfo(typePlugin, strMethod, aArgs, invocation, coll)
-                ' Yo Maurice
-                Me.m_sync.Send(New SendOrPostCallback(AddressOf Me.MarshallInvokeMethod), inf)
+                Try
+                    ' Yo Maurice
+                    Me.m_sync.Send(New SendOrPostCallback(AddressOf Me.MarshallInvokeMethod), inf)
+                Catch ex As Exception
+                    ' Target may no longer exist
+                End Try
                 ' Return result
                 Return inf.Result
             End If
