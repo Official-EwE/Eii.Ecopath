@@ -19,7 +19,7 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-Partial Class frmModelDescription
+Partial Class frmModelParameters
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -42,7 +42,7 @@ Partial Class frmModelDescription
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelDescription))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelParameters))
         Me.m_udNumDigits = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.lbNumDigits = New System.Windows.Forms.Label()
         Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()

@@ -25,7 +25,7 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Public Class frmModelDescription
+Public Class frmModelParameters
 
     Private m_fpName As cEwEFormatProvider = Nothing
     Private m_fpDescription As cEwEFormatProvider = Nothing
