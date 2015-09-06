@@ -18,13 +18,16 @@
 
 Option Strict On
 Imports System.Windows.Forms
+Imports ScientificInterfaceShared.Controls
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Interface for configuring a WoRMS web service connection.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class frmConfig
+Public Class ucConfig
+    Implements IOptionsPage
+    Implements IUIElement
 
     ''' <summary>Plug-in to configure.</summary>
     Private m_plugin As cWoRMSPluginPoint = Nothing
@@ -41,17 +44,38 @@ Public Class frmConfig
         Me.m_nudReplyTO.Value = Me.m_plugin.ResponseTimeOut
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
     End Sub
 
-    Private Sub m_btnOK_Click(sender As System.Object, e As System.EventArgs) Handles m_btnOK.Click
-
+    Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
         Me.m_plugin.ConnectionTimeOut = CInt(Me.m_nudConnTO.Value)
         Me.m_plugin.ResponseTimeOut = CInt(Me.m_nudReplyTO.Value)
+        Return IOptionsPage.eApplyResultType.Success
+    End Function
 
-        Me.DialogResult = Windows.Forms.DialogResult.OK
-        Me.Close()
+    Public Function CanApply() As Boolean Implements IOptionsPage.CanApply
+        Return True
+    End Function
+
+    Public Function CanSetDefaults() As Boolean Implements IOptionsPage.CanSetDefaults
+        Return False
+    End Function
+
+    Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) _
+        Implements IOptionsPage.OnChanged
+
+    Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
+        ' NOP
     End Sub
 
+    Public Property UIContext As cUIContext _
+        Implements IUIElement.UIContext
+     
 End Class

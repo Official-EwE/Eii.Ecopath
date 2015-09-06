@@ -18,11 +18,11 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Reflection
+Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwECore
-Imports System.Reflection
 
 #End Region
 
@@ -246,7 +246,8 @@ Public Class cFishBasePlugin
                eTaxonClassificationType.Family Or _
                eTaxonClassificationType.Order Or _
                eTaxonClassificationType.Genus Or _
-               eTaxonClassificationType.Species
+               eTaxonClassificationType.Species Or _
+               eTaxonClassificationType.Latin
     End Function
 
     Public Function HasDepthRangeSearchCapabilities() As Boolean _
@@ -266,7 +267,12 @@ Public Class cFishBasePlugin
 
     Friend Function GetConfigUI() As System.Windows.Forms.Control _
         Implements EwEPlugin.IConfigurablePlugin.GetConfigUI
-        Return New frmConfig(Me)
+        Try
+            Return New ucConfig(Me)
+        Catch ex As Exception
+            cLog.Write(ex, "cFishBasePlugin.GetConfigUI()")
+        End Try
+        Return Nothing
     End Function
 
     Friend Function IsConfigured() As Boolean _

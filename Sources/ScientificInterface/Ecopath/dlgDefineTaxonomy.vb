@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -304,7 +305,7 @@ Public Class dlgDefineTaxa
     Private Sub OnConnect(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnConfigure.Click
         Try
-            Me.ConnectSelectedDataProducer()
+            Me.ConfigureSelectedDataProducer()
         Catch ex As Exception
             cLog.Write(ex, "dlgDefineTaxa::OnConnect")
         End Try
@@ -452,7 +453,7 @@ Public Class dlgDefineTaxa
     Private Sub UpdateEngineCapabilities()
 
         Dim engine As IDataSearchProducerPlugin = Me.SelectedDataProducer
-        Dim taxacaps As eTaxonClassificationType = eTaxonClassificationType.Common
+        Dim taxacaps As eTaxonClassificationType = eTaxonClassificationType.Latin
         Dim bSpatialCaps As Boolean = False
 
         If (engine IsNot Nothing) Then
@@ -520,7 +521,7 @@ Public Class dlgDefineTaxa
         End Get
     End Property
 
-    Private Sub ConnectSelectedDataProducer()
+    Private Sub ConfigureSelectedDataProducer()
 
         Dim prod As IDataSearchProducerPlugin = Me.SelectedDataProducer
         Dim ui As Control = Nothing
@@ -535,29 +536,8 @@ Public Class dlgDefineTaxa
 
         If (ui Is Nothing) Then Return
 
-        Try
-            Dim frm As Form = Nothing
-
-            If TypeOf (ui) Is Form Then
-                frm = DirectCast(ui, Form)
-            Else
-                frm = New Form()
-                frm.AutoSize = True
-                frm.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
-                ui.Dock = DockStyle.Fill
-                frm.Controls.Add(ui)
-            End If
-
-            frm.ShowInTaskbar = False
-            frm.ShowIcon = False
-            frm.ShowDialog(Me)
-
-        Catch ex As Exception
-            ' Send an error
-            Dim msg As New cMessage(String.Format(My.Resources.PROMPT_ERROR_CONNECTION, prod.Name, ex.Message), _
-                                    eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-            Me.m_uic.Core.Messages.SendMessage(msg)
-        End Try
+        Dim dlg As New dlgConfig(Me.m_uic)
+        dlg.ShowDialog(cStringUtils.Localize("Configuring {0}", ui.Text), ui)
 
         Me.UpdateControls()
 

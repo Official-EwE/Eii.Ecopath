@@ -154,7 +154,7 @@ Public Class cWoRMSPluginPoint
     Friend ReadOnly Property Name() As String _
         Implements IPlugin.Name
         Get
-            Return "WoRMS (world register of marine life) taxon search"
+            Return My.Resources.ENGINE_NAME
         End Get
     End Property
 
@@ -278,7 +278,7 @@ Public Class cWoRMSPluginPoint
     ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
     Public Function GetConfigUI() As System.Windows.Forms.Control _
         Implements EwEPlugin.IConfigurablePlugin.GetConfigUI
-        Return New frmConfig(Me)
+        Return New ucConfig(Me)
     End Function
 
     ''' <inheritdocs cref="IConfigurablePlugin.IsConfigured"/>

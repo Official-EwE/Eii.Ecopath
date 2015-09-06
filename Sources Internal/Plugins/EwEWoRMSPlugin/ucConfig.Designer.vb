@@ -17,20 +17,8 @@
 '
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmConfig
-    Inherits System.Windows.Forms.Form
-
-    'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-    End Sub
+Partial Class ucConfig
+    Inherits System.Windows.Forms.UserControl
 
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
@@ -40,13 +28,11 @@ Partial Class frmConfig
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmConfig))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucConfig))
         Me.m_plLogo = New System.Windows.Forms.Panel()
         Me.m_lblConnTO = New System.Windows.Forms.Label()
         Me.m_nudConnTO = New System.Windows.Forms.NumericUpDown()
         Me.m_lblSecs1 = New System.Windows.Forms.Label()
-        Me.m_btnOK = New System.Windows.Forms.Button()
-        Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_lblReplyTO = New System.Windows.Forms.Label()
         Me.m_lblSecs2 = New System.Windows.Forms.Label()
         Me.m_nudReplyTO = New System.Windows.Forms.NumericUpDown()
@@ -78,19 +64,6 @@ Partial Class frmConfig
         resources.ApplyResources(Me.m_lblSecs1, "m_lblSecs1")
         Me.m_lblSecs1.Name = "m_lblSecs1"
         '
-        'm_btnOK
-        '
-        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-        Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.UseVisualStyleBackColor = True
-        '
-        'm_btnCancel
-        '
-        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-        Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Name = "m_btnCancel"
-        Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
         'm_lblReplyTO
         '
         resources.ApplyResources(Me.m_lblReplyTO, "m_lblReplyTO")
@@ -109,14 +82,10 @@ Partial Class frmConfig
         Me.m_nudReplyTO.Name = "m_nudReplyTO"
         Me.m_nudReplyTO.Value = New Decimal(New Integer() {300, 0, 0, 0})
         '
-        'frmConfig
+        'ucConfig
         '
-        Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_nudReplyTO)
         Me.Controls.Add(Me.m_lblSecs2)
         Me.Controls.Add(Me.m_nudConnTO)
@@ -124,11 +93,7 @@ Partial Class frmConfig
         Me.Controls.Add(Me.m_lblSecs1)
         Me.Controls.Add(Me.m_lblConnTO)
         Me.Controls.Add(Me.m_plLogo)
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
-        Me.Name = "frmConfig"
-        Me.ShowIcon = False
-        Me.ShowInTaskbar = False
+        Me.Name = "ucConfig"
         CType(Me.m_nudConnTO, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudReplyTO, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -139,8 +104,6 @@ Partial Class frmConfig
     Private WithEvents m_lblConnTO As System.Windows.Forms.Label
     Private WithEvents m_nudConnTO As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblSecs1 As System.Windows.Forms.Label
-    Private WithEvents m_btnOK As System.Windows.Forms.Button
-    Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_lblReplyTO As System.Windows.Forms.Label
     Private WithEvents m_lblSecs2 As System.Windows.Forms.Label
     Private WithEvents m_nudReplyTO As System.Windows.Forms.NumericUpDown

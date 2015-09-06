@@ -1,4 +1,4 @@
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -1069,6 +1069,20 @@ Namespace Style
 
 
 #End Region ' Maps and charts
+
+#Region " Generic "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the character to display for password input.
+        ''' </summary>
+        ''' <returns>The character to display for password input.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function PasswordChar() As Char
+            Return "●"c
+        End Function
+
+#End Region ' Generic
 
 #Region " Color access "
 

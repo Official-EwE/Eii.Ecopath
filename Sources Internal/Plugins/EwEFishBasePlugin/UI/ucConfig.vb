@@ -20,6 +20,9 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -28,14 +31,14 @@ Imports ScientificInterfaceShared.Controls
 ''' Interface for configuring the SAUP taxon table connection.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class frmConfig
+Public Class ucConfig
+    Implements IUIElement
 
     Private m_ppt As cFishBasePlugin = Nothing
-
-    ''' <summary>Fishbase connection to manage.</summary>
     Private m_ddx As cFishBaseConnection = Nothing
     Private m_bLogOnRequested As Boolean
-    Private m_bWaiting As Boolean
+    Private m_bWaiting As Boolean = False
+    Private m_bViewPwdChars As Boolean = False
 
     Public Sub New(pluginpoint As cFishBasePlugin)
         MyBase.New()
@@ -50,17 +53,15 @@ Public Class frmConfig
 
         Me.UpdateControls()
 
-        Me.m_tbxAccess.Text = My.Settings.MDBpath
-        Me.m_tbxODBCconn.Text = My.Settings.ODBCconn
-        Me.m_tbxODBCuser.Text = My.Settings.ODBCuser
+        Me.m_tbxAccess.Text = My.Settings.AccessPath
         Me.m_tbxWebServer.Text = My.Settings.WSDLserver
         Me.m_tbxWebPort.Text = My.Settings.WSDLport
         Me.m_tbxWebAccount.Text = My.Settings.WSDLuser
+        Me.m_tbxWebPwd.Text = cStringUtils.ToInsecureString(cStringUtils.DecryptString(My.Settings.WSDLpassword))
 
         Select Case My.Settings.ConnectionType
             Case 0 : Me.m_rbAccess.Checked = True
-            Case 1 : Me.m_rbODBC.Checked = True
-            Case 2 : Me.m_rbWebService.Checked = True
+            Case 1 : Me.m_rbWebService.Checked = True
         End Select
 
         Me.Connection = Me.m_ppt.Connection
@@ -70,20 +71,17 @@ Public Class frmConfig
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 
         ' Store settings
         If Me.m_rbAccess.Checked Then My.Settings.ConnectionType = 0
-        If Me.m_rbODBC.Checked Then My.Settings.ConnectionType = 1
         If Me.m_rbWebService.Checked Then My.Settings.ConnectionType = 2
 
-        My.Settings.MDBpath = Me.m_tbxAccess.Text
-        My.Settings.ODBCconn = Me.m_tbxODBCconn.Text
-        My.Settings.ODBCuser = Me.m_tbxODBCuser.Text
+        My.Settings.AccessPath = Me.m_tbxAccess.Text
         My.Settings.WSDLserver = Me.m_tbxWebServer.Text
         My.Settings.WSDLport = Me.m_tbxWebPort.Text
         My.Settings.WSDLuser = Me.m_tbxWebAccount.Text
-
+        My.Settings.WSDLpassword = cStringUtils.EncryptString(cStringUtils.ToSecureString(Me.m_tbxWebPwd.Text))
         My.Settings.Save()
 
         ' Configure ppt
@@ -91,8 +89,14 @@ Public Class frmConfig
         Me.m_ppt = Nothing
         ' Clean up
         Me.Connection = Nothing
-        ' Bye
-        MyBase.OnFormClosed(e)
+
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
     End Sub
 
     Private Property Connection As cFishBaseConnection
@@ -122,9 +126,12 @@ Public Class frmConfig
 
     Private Sub UpdateControls()
 
+        Dim bWebServicesAvailable As Boolean = False
+#If DEBUG Then
+        bWebServicesAvailable = True
+#End If
         Dim bConnected As Boolean = False
         Dim bUseAccess As Boolean = Me.m_rbAccess.Checked
-        Dim bUseODBC As Boolean = Me.m_rbODBC.Checked
         Dim bUseWebServices As Boolean = Me.m_rbWebService.Checked
         Dim bInputsComplete As Boolean = False
 
@@ -136,13 +143,7 @@ Public Class frmConfig
             bInputsComplete = Not String.IsNullOrWhiteSpace(Me.m_tbxAccess.Text)
         End If
 
-        If bUseODBC Then
-            bInputsComplete = (Not String.IsNullOrWhiteSpace(Me.m_tbxODBCconn.Text)) And _
-                              (Not String.IsNullOrWhiteSpace(Me.m_tbxODBCuser.Text)) And _
-                              (Not String.IsNullOrWhiteSpace(Me.m_tbxODBCpwd.Text))
-        End If
-
-        If bUseODBC Then
+        If bUseWebServices Then
             bInputsComplete = (Not String.IsNullOrWhiteSpace(Me.m_tbxWebServer.Text)) And _
                   (Not String.IsNullOrWhiteSpace(Me.m_tbxWebPort.Text)) And _
                   (Not String.IsNullOrWhiteSpace(Me.m_tbxWebAccount.Text)) And _
@@ -151,15 +152,10 @@ Public Class frmConfig
         End If
 
         Me.m_rbAccess.Enabled = Not bConnected
-        Me.m_rbODBC.Enabled = Not bConnected
-        Me.m_rbWebService.Enabled = False And Not bConnected
+        Me.m_rbWebService.Enabled = bWebServicesAvailable And Not bConnected
 
         Me.m_tbxAccess.Enabled = bUseAccess And Not bConnected
         Me.m_btnPickAccess.Enabled = bUseAccess And Not bConnected
-
-        Me.m_tbxODBCconn.Enabled = bUseODBC And Not bConnected
-        Me.m_tbxODBCuser.Enabled = bUseODBC And Not bConnected
-        Me.m_tbxODBCpwd.Enabled = bUseODBC And Not bConnected
 
         Me.m_tbxWebServer.Enabled = bUseWebServices And Not bConnected
         Me.m_tbxWebPort.Enabled = bUseWebServices And Not bConnected
@@ -169,12 +165,21 @@ Public Class frmConfig
         Me.m_btnConnect.Enabled = (Not bConnected) And bInputsComplete
         Me.m_btnDisconnect.Enabled = bConnected
 
+        If (Me.m_bViewPwdChars) Then
+            Me.m_tbxWebPwd.PasswordChar = cStringUtils.vbCharNull
+            Me.m_btnToggleViewChars.Image = SharedResources.Eye_open
+        Else
+            Me.m_tbxWebPwd.PasswordChar = Me.UIContext.StyleGuide.PasswordChar()
+            Me.m_btnToggleViewChars.Image = SharedResources.Eye_closed
+
+        End If
+
     End Sub
 
 #Region " Generic controls "
 
     Private Sub OnSourceSelectionChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_rbODBC.CheckedChanged, m_rbWebService.CheckedChanged, m_rbAccess.CheckedChanged
+        Handles m_rbWebService.CheckedChanged, m_rbAccess.CheckedChanged
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -184,16 +189,12 @@ Public Class frmConfig
 
     Private Sub OnConnect(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_btnConnect.Click
+
         If (Me.Connection Is Nothing) Then
             ' Connecting
             If (Me.m_rbAccess.Checked) Then
                 Dim fbc As New cFishBaseAccessConnnection(Me.m_ppt)
                 If (fbc.Connect(Me.m_tbxAccess.Text)) Then
-                    Me.Connection = fbc
-                End If
-            ElseIf (Me.m_rbODBC.Checked) Then
-                Dim fbc As New cFishBaseOdbcConnection(Me.m_ppt)
-                If (fbc.Connect(Me.m_tbxODBCconn.Text, Me.m_tbxODBCuser.Text, Me.m_tbxODBCpwd.Text)) Then
                     Me.Connection = fbc
                 End If
             ElseIf (Me.m_rbWebService.Checked) Then
@@ -203,7 +204,7 @@ Public Class frmConfig
                 End If
             End If
         End If
-            Me.UpdateControls()
+        Me.UpdateControls()
     End Sub
 
     Private Sub OnDisconnect(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -246,6 +247,12 @@ Public Class frmConfig
 
     End Sub
 
+    Private Sub OnToggleViewChars(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnToggleViewChars.Click
+        Me.m_bViewPwdChars = Not Me.m_bViewPwdChars
+        Me.UpdateControls()
+    End Sub
+
     Private Sub OnMaxResultsChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cmbMaxResults.SelectedIndexChanged, m_cmbMaxResults.TextChanged
 
@@ -255,8 +262,7 @@ Public Class frmConfig
     End Sub
 
     Private Sub OnAnyTextFieldChanged(sender As Object, e As System.EventArgs) _
-        Handles m_tbxODBCconn.TextChanged, m_tbxODBCpwd.TextChanged, m_tbxODBCuser.TextChanged, _
-                m_tbxWebServer.TextChanged, m_tbxWebPort.TextChanged, m_tbxWebAccount.TextChanged, m_tbxWebPwd.TextChanged, m_tbxAccess.TextChanged
+        Handles m_tbxWebServer.TextChanged, m_tbxWebPort.TextChanged, m_tbxWebAccount.TextChanged, m_tbxWebPwd.TextChanged, m_tbxAccess.TextChanged
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -265,5 +271,8 @@ Public Class frmConfig
     End Sub
 
 #End Region ' Generic controls
+
+    Public Property UIContext As cUIContext _
+        Implements IUIElement.UIContext
 
 End Class

@@ -24,6 +24,7 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwECore
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -122,10 +123,11 @@ Namespace Ecopath.Input
 
             Dim ui As Control = Nothing
             If (prod Is Nothing) Then Return False
-            If Not (TypeOf prod Is IConfigurablePlugin) Then Return True
-            Dim cfg As IConfigurablePlugin = DirectCast(prod, IConfigurablePlugin)
+            If Not (TypeOf prod Is IConfigurable) Then Return True
+            Dim cfg As IConfigurable = DirectCast(prod, IConfigurable)
 
-            If cfg.IsConfigured Then Return True
+            ' Must be able to configure again!
+            'If cfg.IsConfigured Then Return True 
 
             Try
                 ui = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
@@ -135,30 +137,8 @@ Namespace Ecopath.Input
 
             If (ui Is Nothing) Then Return True
 
-            Try
-                Dim frm As Form = Nothing
-
-                If TypeOf (ui) Is Form Then
-                    frm = DirectCast(ui, Form)
-                Else
-                    frm = New Form()
-                    frm.AutoSize = True
-                    frm.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
-                    ui.Dock = DockStyle.Fill
-                    frm.Controls.Add(ui)
-                End If
-
-                frm.ShowInTaskbar = False
-                frm.ShowIcon = False
-                frm.ShowDialog(Me)
-
-            Catch ex As Exception
-                ' Send an error
-                Dim msg As New cMessage(String.Format(My.Resources.PROMPT_ERROR_CONNECTION, prod.Name, ex.Message), _
-                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
-                Me.Core.Messages.SendMessage(msg)
-            End Try
-            Return True
+            Dim dlg As New dlgConfig(Me.UIContext)
+            dlg.ShowDialog(cStringUtils.Localize("Configuring {0}", ui.Text), ui)
 
         End Function
 

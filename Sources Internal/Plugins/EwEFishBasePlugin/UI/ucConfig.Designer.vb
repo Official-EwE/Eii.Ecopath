@@ -16,20 +16,8 @@
 ' ===============================================================================
 '
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmConfig
-    Inherits System.Windows.Forms.Form
-
-    'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-    End Sub
+Partial Class ucConfig
+    Inherits System.Windows.Forms.UserControl
 
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
@@ -39,37 +27,33 @@ Partial Class frmConfig
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmConfig))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucConfig))
         Me.m_lblWebUser = New System.Windows.Forms.Label()
         Me.m_lblWebPwd = New System.Windows.Forms.Label()
         Me.m_tbxWebAccount = New System.Windows.Forms.TextBox()
-        Me.m_btnConnect = New System.Windows.Forms.Button()
-        Me.m_btnDisconnect = New System.Windows.Forms.Button()
         Me.m_tbxWebPwd = New System.Windows.Forms.TextBox()
         Me.m_tlpLogo = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plBits = New System.Windows.Forms.Panel()
         Me.m_cmbMaxResults = New System.Windows.Forms.ComboBox()
         Me.m_lblNumResults = New System.Windows.Forms.Label()
-        Me.m_tbxODBCpwd = New System.Windows.Forms.TextBox()
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrConnection = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tbxWebPort = New System.Windows.Forms.TextBox()
         Me.m_tbxWebServer = New System.Windows.Forms.TextBox()
         Me.m_lblWebPort = New System.Windows.Forms.Label()
         Me.m_tbxAccess = New System.Windows.Forms.TextBox()
-        Me.m_tbxODBCconn = New System.Windows.Forms.TextBox()
         Me.m_lblWebServer = New System.Windows.Forms.Label()
-        Me.m_tbxODBCuser = New System.Windows.Forms.TextBox()
-        Me.m_lblODBCconn = New System.Windows.Forms.Label()
-        Me.m_lblODBCpwd = New System.Windows.Forms.Label()
-        Me.m_lblODBCuser = New System.Windows.Forms.Label()
         Me.m_rbWebService = New System.Windows.Forms.RadioButton()
         Me.m_rbAccess = New System.Windows.Forms.RadioButton()
-        Me.m_rbODBC = New System.Windows.Forms.RadioButton()
+        Me.m_btnToggleViewChars = New System.Windows.Forms.Button()
         Me.m_btnPickAccess = New System.Windows.Forms.Button()
+        Me.m_tlpConnection = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_btnConnect = New System.Windows.Forms.Button()
+        Me.m_btnDisconnect = New System.Windows.Forms.Button()
         Me.m_bpLogo = New System.Windows.Forms.PictureBox()
-        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrConnection = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpLogo.SuspendLayout()
         Me.m_plBits.SuspendLayout()
+        Me.m_tlpConnection.SuspendLayout()
         CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -88,16 +72,6 @@ Partial Class frmConfig
         resources.ApplyResources(Me.m_tbxWebAccount, "m_tbxWebAccount")
         Me.m_tbxWebAccount.Name = "m_tbxWebAccount"
         '
-        'm_btnConnect
-        '
-        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
-        Me.m_btnConnect.Name = "m_btnConnect"
-        '
-        'm_btnDisconnect
-        '
-        resources.ApplyResources(Me.m_btnDisconnect, "m_btnDisconnect")
-        Me.m_btnDisconnect.Name = "m_btnDisconnect"
-        '
         'm_tbxWebPwd
         '
         resources.ApplyResources(Me.m_tbxWebPwd, "m_tbxWebPwd")
@@ -107,34 +81,27 @@ Partial Class frmConfig
         '
         Me.m_tlpLogo.BackColor = System.Drawing.Color.White
         resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
-        Me.m_tlpLogo.Controls.Add(Me.m_plBits, 0, 0)
-        Me.m_tlpLogo.Controls.Add(Me.m_bpLogo, 0, 1)
+        Me.m_tlpLogo.Controls.Add(Me.m_plBits, 0, 1)
+        Me.m_tlpLogo.Controls.Add(Me.m_bpLogo, 0, 0)
         Me.m_tlpLogo.Name = "m_tlpLogo"
         '
         'm_plBits
         '
         Me.m_plBits.BackColor = System.Drawing.SystemColors.Control
+        Me.m_plBits.Controls.Add(Me.m_tlpConnection)
         Me.m_plBits.Controls.Add(Me.m_cmbMaxResults)
         Me.m_plBits.Controls.Add(Me.m_lblNumResults)
         Me.m_plBits.Controls.Add(Me.m_hdrSearch)
         Me.m_plBits.Controls.Add(Me.m_hdrConnection)
-        Me.m_plBits.Controls.Add(Me.m_tbxODBCpwd)
         Me.m_plBits.Controls.Add(Me.m_tbxWebPort)
         Me.m_plBits.Controls.Add(Me.m_tbxWebServer)
         Me.m_plBits.Controls.Add(Me.m_lblWebPort)
         Me.m_plBits.Controls.Add(Me.m_tbxAccess)
-        Me.m_plBits.Controls.Add(Me.m_tbxODBCconn)
         Me.m_plBits.Controls.Add(Me.m_lblWebServer)
-        Me.m_plBits.Controls.Add(Me.m_tbxODBCuser)
-        Me.m_plBits.Controls.Add(Me.m_lblODBCconn)
-        Me.m_plBits.Controls.Add(Me.m_lblODBCpwd)
-        Me.m_plBits.Controls.Add(Me.m_lblODBCuser)
         Me.m_plBits.Controls.Add(Me.m_rbWebService)
         Me.m_plBits.Controls.Add(Me.m_rbAccess)
-        Me.m_plBits.Controls.Add(Me.m_rbODBC)
+        Me.m_plBits.Controls.Add(Me.m_btnToggleViewChars)
         Me.m_plBits.Controls.Add(Me.m_btnPickAccess)
-        Me.m_plBits.Controls.Add(Me.m_btnDisconnect)
-        Me.m_plBits.Controls.Add(Me.m_btnConnect)
         Me.m_plBits.Controls.Add(Me.m_lblWebUser)
         Me.m_plBits.Controls.Add(Me.m_tbxWebAccount)
         Me.m_plBits.Controls.Add(Me.m_tbxWebPwd)
@@ -144,9 +111,9 @@ Partial Class frmConfig
         '
         'm_cmbMaxResults
         '
+        resources.ApplyResources(Me.m_cmbMaxResults, "m_cmbMaxResults")
         Me.m_cmbMaxResults.FormattingEnabled = True
         Me.m_cmbMaxResults.Items.AddRange(New Object() {resources.GetString("m_cmbMaxResults.Items"), resources.GetString("m_cmbMaxResults.Items1"), resources.GetString("m_cmbMaxResults.Items2"), resources.GetString("m_cmbMaxResults.Items3"), resources.GetString("m_cmbMaxResults.Items4"), resources.GetString("m_cmbMaxResults.Items5")})
-        resources.ApplyResources(Me.m_cmbMaxResults, "m_cmbMaxResults")
         Me.m_cmbMaxResults.Name = "m_cmbMaxResults"
         '
         'm_lblNumResults
@@ -154,10 +121,21 @@ Partial Class frmConfig
         resources.ApplyResources(Me.m_lblNumResults, "m_lblNumResults")
         Me.m_lblNumResults.Name = "m_lblNumResults"
         '
-        'm_tbxODBCpwd
+        'm_hdrSearch
         '
-        resources.ApplyResources(Me.m_tbxODBCpwd, "m_tbxODBCpwd")
-        Me.m_tbxODBCpwd.Name = "m_tbxODBCpwd"
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.CanCollapseParent = False
+        Me.m_hdrSearch.CollapsedParentHeight = 0
+        Me.m_hdrSearch.IsCollapsed = False
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
+        'm_hdrConnection
+        '
+        resources.ApplyResources(Me.m_hdrConnection, "m_hdrConnection")
+        Me.m_hdrConnection.CanCollapseParent = False
+        Me.m_hdrConnection.CollapsedParentHeight = 0
+        Me.m_hdrConnection.IsCollapsed = False
+        Me.m_hdrConnection.Name = "m_hdrConnection"
         '
         'm_tbxWebPort
         '
@@ -179,35 +157,10 @@ Partial Class frmConfig
         resources.ApplyResources(Me.m_tbxAccess, "m_tbxAccess")
         Me.m_tbxAccess.Name = "m_tbxAccess"
         '
-        'm_tbxODBCconn
-        '
-        resources.ApplyResources(Me.m_tbxODBCconn, "m_tbxODBCconn")
-        Me.m_tbxODBCconn.Name = "m_tbxODBCconn"
-        '
         'm_lblWebServer
         '
         resources.ApplyResources(Me.m_lblWebServer, "m_lblWebServer")
         Me.m_lblWebServer.Name = "m_lblWebServer"
-        '
-        'm_tbxODBCuser
-        '
-        resources.ApplyResources(Me.m_tbxODBCuser, "m_tbxODBCuser")
-        Me.m_tbxODBCuser.Name = "m_tbxODBCuser"
-        '
-        'm_lblODBCconn
-        '
-        resources.ApplyResources(Me.m_lblODBCconn, "m_lblODBCconn")
-        Me.m_lblODBCconn.Name = "m_lblODBCconn"
-        '
-        'm_lblODBCpwd
-        '
-        resources.ApplyResources(Me.m_lblODBCpwd, "m_lblODBCpwd")
-        Me.m_lblODBCpwd.Name = "m_lblODBCpwd"
-        '
-        'm_lblODBCuser
-        '
-        resources.ApplyResources(Me.m_lblODBCuser, "m_lblODBCuser")
-        Me.m_lblODBCuser.Name = "m_lblODBCuser"
         '
         'm_rbWebService
         '
@@ -223,56 +176,50 @@ Partial Class frmConfig
         Me.m_rbAccess.TabStop = True
         Me.m_rbAccess.UseVisualStyleBackColor = True
         '
-        'm_rbODBC
+        'm_btnToggleViewChars
         '
-        resources.ApplyResources(Me.m_rbODBC, "m_rbODBC")
-        Me.m_rbODBC.Name = "m_rbODBC"
-        Me.m_rbODBC.TabStop = True
-        Me.m_rbODBC.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnToggleViewChars, "m_btnToggleViewChars")
+        Me.m_btnToggleViewChars.Name = "m_btnToggleViewChars"
         '
         'm_btnPickAccess
         '
         resources.ApplyResources(Me.m_btnPickAccess, "m_btnPickAccess")
         Me.m_btnPickAccess.Name = "m_btnPickAccess"
         '
+        'm_tlpConnection
+        '
+        resources.ApplyResources(Me.m_tlpConnection, "m_tlpConnection")
+        Me.m_tlpConnection.Controls.Add(Me.m_btnConnect, 0, 0)
+        Me.m_tlpConnection.Controls.Add(Me.m_btnDisconnect, 1, 0)
+        Me.m_tlpConnection.Name = "m_tlpConnection"
+        '
+        'm_btnConnect
+        '
+        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
+        Me.m_btnConnect.Name = "m_btnConnect"
+        '
+        'm_btnDisconnect
+        '
+        resources.ApplyResources(Me.m_btnDisconnect, "m_btnDisconnect")
+        Me.m_btnDisconnect.Name = "m_btnDisconnect"
+        '
         'm_bpLogo
         '
-        resources.ApplyResources(Me.m_bpLogo, "m_bpLogo")
         Me.m_bpLogo.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_bpLogo, "m_bpLogo")
         Me.m_bpLogo.Image = Global.EwEFishBasePlugin.My.Resources.Resources.fblogo_new
         Me.m_bpLogo.Name = "m_bpLogo"
         Me.m_bpLogo.TabStop = False
         '
-        'm_hdrSearch
+        'ucConfig
         '
-        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
-        Me.m_hdrSearch.CanCollapseParent = False
-        Me.m_hdrSearch.CollapsedParentHeight = 0
-        Me.m_hdrSearch.IsCollapsed = False
-        Me.m_hdrSearch.Name = "m_hdrSearch"
-        '
-        'm_hdrConnection
-        '
-        resources.ApplyResources(Me.m_hdrConnection, "m_hdrConnection")
-        Me.m_hdrConnection.CanCollapseParent = False
-        Me.m_hdrConnection.CollapsedParentHeight = 0
-        Me.m_hdrConnection.IsCollapsed = False
-        Me.m_hdrConnection.Name = "m_hdrConnection"
-        '
-        'frmConfig
-        '
-        resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlpLogo)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
-        Me.MaximizeBox = False
-        Me.MinimizeBox = False
-        Me.Name = "frmConfig"
-        Me.ShowIcon = False
-        Me.ShowInTaskbar = False
+        Me.Name = "ucConfig"
+        resources.ApplyResources(Me, "$this")
         Me.m_tlpLogo.ResumeLayout(False)
         Me.m_plBits.ResumeLayout(False)
         Me.m_plBits.PerformLayout()
+        Me.m_tlpConnection.ResumeLayout(False)
         CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -280,23 +227,13 @@ Partial Class frmConfig
     Private WithEvents m_lblWebUser As System.Windows.Forms.Label
     Private WithEvents m_tbxWebAccount As System.Windows.Forms.TextBox
     Private WithEvents m_lblWebPwd As System.Windows.Forms.Label
-    Private WithEvents m_btnConnect As System.Windows.Forms.Button
-    Private WithEvents m_btnDisconnect As System.Windows.Forms.Button
     Private WithEvents m_tbxWebPwd As System.Windows.Forms.TextBox
     Private WithEvents m_tlpLogo As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_bpLogo As System.Windows.Forms.PictureBox
-    Private WithEvents m_tbxODBCpwd As System.Windows.Forms.TextBox
-    Friend WithEvents m_tbxODBCuser As System.Windows.Forms.TextBox
-    Private WithEvents m_lblODBCpwd As System.Windows.Forms.Label
-    Private WithEvents m_lblODBCuser As System.Windows.Forms.Label
     Private WithEvents m_rbWebService As System.Windows.Forms.RadioButton
-    Private WithEvents m_rbODBC As System.Windows.Forms.RadioButton
     Private WithEvents m_tbxWebPort As System.Windows.Forms.TextBox
     Private WithEvents m_tbxWebServer As System.Windows.Forms.TextBox
     Private WithEvents m_lblWebPort As System.Windows.Forms.Label
-    Private WithEvents m_tbxODBCconn As System.Windows.Forms.TextBox
     Private WithEvents m_lblWebServer As System.Windows.Forms.Label
-    Private WithEvents m_lblODBCconn As System.Windows.Forms.Label
     Private WithEvents m_cmbMaxResults As System.Windows.Forms.ComboBox
     Private WithEvents m_lblNumResults As System.Windows.Forms.Label
     Private WithEvents m_hdrSearch As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -305,4 +242,9 @@ Partial Class frmConfig
     Private WithEvents m_tbxAccess As System.Windows.Forms.TextBox
     Private WithEvents m_rbAccess As System.Windows.Forms.RadioButton
     Private WithEvents m_btnPickAccess As System.Windows.Forms.Button
+    Private WithEvents m_btnToggleViewChars As System.Windows.Forms.Button
+    Private WithEvents m_tlpConnection As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_btnConnect As System.Windows.Forms.Button
+    Private WithEvents m_btnDisconnect As System.Windows.Forms.Button
+    Private WithEvents m_bpLogo As System.Windows.Forms.PictureBox
 End Class

@@ -3427,9 +3427,9 @@ Namespace Core
 
 #Region " Taxonomy "
 
-    ''' <summary>Enumerated type, identifying taxonomic classifications fields.</summary>
+    ''' <summary>Enumerated type, identifying taxonomic classification searchable fields.</summary>
     Public Enum eTaxonClassificationType As Long
-        Common = &H0
+        Latin = Genus Or Species
         Species = &H1
         Genus = &H2
         Family = &H4
@@ -3438,6 +3438,7 @@ Namespace Core
         Phylum = &H20
         <Obsolete("Kingdom not supported yet but added for future use")> _
         Kingdom = &H40
+        Common = &H80
     End Enum
 
 #End Region ' Taxonomy

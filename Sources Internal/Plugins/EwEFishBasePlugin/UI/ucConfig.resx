@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lblWebUser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 268</value>
+    <value>25, 163</value>
   </data>
   <data name="m_lblWebUser.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 13</value>
@@ -148,7 +148,7 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_lblWebUser.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>14</value>
   </data>
   <data name="m_lblWebPwd.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -157,7 +157,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWebPwd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 294</value>
+    <value>25, 189</value>
   </data>
   <data name="m_lblWebPwd.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>
@@ -178,13 +178,16 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_lblWebPwd.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>17</value>
+  </data>
+  <data name="m_tbxWebAccount.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxWebAccount.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 265</value>
+    <value>139, 160</value>
   </data>
   <data name="m_tbxWebAccount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
+    <value>90, 20</value>
   </data>
   <data name="m_tbxWebAccount.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -199,70 +202,19 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_tbxWebAccount.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>15</value>
   </data>
-  <data name="m_btnConnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnConnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 322</value>
-  </data>
-  <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 23</value>
-  </data>
-  <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="m_btnConnect.Text" xml:space="preserve">
-    <value>&amp;Connect</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.Name" xml:space="preserve">
-    <value>m_btnConnect</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="m_btnDisconnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnDisconnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 322</value>
-  </data>
-  <data name="m_btnDisconnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 23</value>
-  </data>
-  <data name="m_btnDisconnect.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="m_btnDisconnect.Text" xml:space="preserve">
-    <value>&amp;Disconnect</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.Name" xml:space="preserve">
-    <value>m_btnDisconnect</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_btnDisconnect.ZOrder" xml:space="preserve">
-    <value>19</value>
+  <data name="m_tbxWebPwd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxWebPwd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 291</value>
+    <value>139, 186</value>
   </data>
   <data name="m_tbxWebPwd.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
     <value>*</value>
   </data>
   <data name="m_tbxWebPwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
+    <value>90, 20</value>
   </data>
   <data name="m_tbxWebPwd.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -277,13 +229,115 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_tbxWebPwd.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>16</value>
   </data>
   <data name="m_tlpLogo.CellBorderStyle" type="System.Windows.Forms.TableLayoutPanelCellBorderStyle, System.Windows.Forms">
     <value>Inset</value>
   </data>
   <data name="m_tlpLogo.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="m_tlpConnection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tlpConnection.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnConnect.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnConnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnConnect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_btnConnect.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 23</value>
+  </data>
+  <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="m_btnConnect.Text" xml:space="preserve">
+    <value>&amp;Connect</value>
+  </data>
+  <data name="&gt;&gt;m_btnConnect.Name" xml:space="preserve">
+    <value>m_btnConnect</value>
+  </data>
+  <data name="&gt;&gt;m_btnConnect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnConnect.Parent" xml:space="preserve">
+    <value>m_tlpConnection</value>
+  </data>
+  <data name="&gt;&gt;m_btnConnect.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btnDisconnect.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnDisconnect.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnDisconnect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>103, 0</value>
+  </data>
+  <data name="m_btnDisconnect.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 0, 0</value>
+  </data>
+  <data name="m_btnDisconnect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 23</value>
+  </data>
+  <data name="m_btnDisconnect.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_btnDisconnect.Text" xml:space="preserve">
+    <value>&amp;Disconnect</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisconnect.Name" xml:space="preserve">
+    <value>m_btnDisconnect</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisconnect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisconnect.Parent" xml:space="preserve">
+    <value>m_tlpConnection</value>
+  </data>
+  <data name="&gt;&gt;m_btnDisconnect.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpConnection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>28, 278</value>
+  </data>
+  <data name="m_tlpConnection.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpConnection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>201, 23</value>
+  </data>
+  <data name="m_tlpConnection.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;m_tlpConnection.Name" xml:space="preserve">
+    <value>m_tlpConnection</value>
+  </data>
+  <data name="&gt;&gt;m_tlpConnection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpConnection.Parent" xml:space="preserve">
+    <value>m_plBits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpConnection.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpConnection.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnConnect" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnDisconnect" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_cmbMaxResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
   <data name="m_cmbMaxResults.Items" xml:space="preserve">
     <value>10</value>
@@ -304,10 +358,10 @@
     <value>1000</value>
   </data>
   <data name="m_cmbMaxResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 380</value>
+    <value>139, 245</value>
   </data>
   <data name="m_cmbMaxResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 21</value>
+    <value>90, 21</value>
   </data>
   <data name="m_cmbMaxResults.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -322,7 +376,10 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_cmbMaxResults.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="m_lblNumResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_lblNumResults.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -331,7 +388,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNumResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 383</value>
+    <value>7, 248</value>
   </data>
   <data name="m_lblNumResults.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 13</value>
@@ -352,16 +409,16 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_lblNumResults.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_hdrSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Bottom, Left, Right</value>
   </data>
   <data name="m_hdrSearch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_hdrSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 357</value>
+    <value>3, 224</value>
   </data>
   <data name="m_hdrSearch.Size" type="System.Drawing.Size, System.Drawing">
     <value>257, 18</value>
@@ -385,7 +442,7 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrConnection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -418,37 +475,16 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_hdrConnection.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_tbxODBCpwd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 155</value>
-  </data>
-  <data name="m_tbxODBCpwd.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
-    <value>*</value>
-  </data>
-  <data name="m_tbxODBCpwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
-  </data>
-  <data name="m_tbxODBCpwd.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCpwd.Name" xml:space="preserve">
-    <value>m_tbxODBCpwd</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCpwd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCpwd.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCpwd.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="m_tbxWebPort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_tbxWebPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 239</value>
+    <value>139, 134</value>
   </data>
   <data name="m_tbxWebPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
+    <value>90, 20</value>
   </data>
   <data name="m_tbxWebPort.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -465,11 +501,14 @@
   <data name="&gt;&gt;m_tbxWebPort.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="m_tbxWebServer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_tbxWebServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 213</value>
+    <value>139, 108</value>
   </data>
   <data name="m_tbxWebServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
+    <value>90, 20</value>
   </data>
   <data name="m_tbxWebServer.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -493,7 +532,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWebPort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 242</value>
+    <value>25, 137</value>
   </data>
   <data name="m_lblWebPort.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 13</value>
@@ -516,6 +555,9 @@
   <data name="&gt;&gt;m_lblWebPort.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="m_tbxAccess.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_tbxAccess.Location" type="System.Drawing.Point, System.Drawing">
     <value>28, 48</value>
   </data>
@@ -537,30 +579,6 @@
   <data name="&gt;&gt;m_tbxAccess.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="m_tbxODBCconn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 103</value>
-  </data>
-  <data name="m_tbxODBCconn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
-  </data>
-  <data name="m_tbxODBCconn.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_tbxODBCconn.Text" xml:space="preserve">
-    <value>fbapp</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCconn.Name" xml:space="preserve">
-    <value>m_tbxODBCconn</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCconn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCconn.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCconn.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <data name="m_lblWebServer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -568,7 +586,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWebServer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 216</value>
+    <value>25, 111</value>
   </data>
   <data name="m_lblWebServer.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 13</value>
@@ -589,118 +607,7 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_lblWebServer.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="m_tbxODBCuser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 129</value>
-  </data>
-  <data name="m_tbxODBCuser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 20</value>
-  </data>
-  <data name="m_tbxODBCuser.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCuser.Name" xml:space="preserve">
-    <value>m_tbxODBCuser</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCuser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCuser.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_tbxODBCuser.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="m_lblODBCconn.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblODBCconn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblODBCconn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 106</value>
-  </data>
-  <data name="m_lblODBCconn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 13</value>
-  </data>
-  <data name="m_lblODBCconn.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_lblODBCconn.Text" xml:space="preserve">
-    <value>&amp;Connection name:</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCconn.Name" xml:space="preserve">
-    <value>m_lblODBCconn</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCconn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCconn.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCconn.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="m_lblODBCpwd.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblODBCpwd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblODBCpwd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 158</value>
-  </data>
-  <data name="m_lblODBCpwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 13</value>
-  </data>
-  <data name="m_lblODBCpwd.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
-  </data>
-  <data name="m_lblODBCpwd.Text" xml:space="preserve">
-    <value>&amp;Password:</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCpwd.Name" xml:space="preserve">
-    <value>m_lblODBCpwd</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCpwd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCpwd.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCpwd.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="m_lblODBCuser.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblODBCuser.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblODBCuser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 132</value>
-  </data>
-  <data name="m_lblODBCuser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 13</value>
-  </data>
-  <data name="m_lblODBCuser.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_lblODBCuser.Text" xml:space="preserve">
-    <value>&amp;User name:</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCuser.Name" xml:space="preserve">
-    <value>m_lblODBCuser</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCuser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCuser.Parent" xml:space="preserve">
-    <value>m_plBits</value>
-  </data>
-  <data name="&gt;&gt;m_lblODBCuser.ZOrder" xml:space="preserve">
-    <value>14</value>
   </data>
   <data name="m_rbWebService.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -709,7 +616,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbWebService.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 190</value>
+    <value>10, 85</value>
   </data>
   <data name="m_rbWebService.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 17</value>
@@ -730,7 +637,7 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_rbWebService.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>10</value>
   </data>
   <data name="m_rbAccess.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -760,37 +667,37 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_rbAccess.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>11</value>
   </data>
-  <data name="m_rbODBC.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_btnToggleViewChars.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="m_rbODBC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnToggleViewChars.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_rbODBC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 80</value>
+  <data name="m_btnToggleViewChars.Location" type="System.Drawing.Point, System.Drawing">
+    <value>235, 184</value>
   </data>
-  <data name="m_rbODBC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 17</value>
+  <data name="m_btnToggleViewChars.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 23</value>
   </data>
-  <data name="m_rbODBC.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_btnToggleViewChars.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="m_rbODBC.Text" xml:space="preserve">
-    <value>Connect through &amp;ODBC</value>
+  <data name="&gt;&gt;m_btnToggleViewChars.Name" xml:space="preserve">
+    <value>m_btnToggleViewChars</value>
   </data>
-  <data name="&gt;&gt;m_rbODBC.Name" xml:space="preserve">
-    <value>m_rbODBC</value>
+  <data name="&gt;&gt;m_btnToggleViewChars.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbODBC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_rbODBC.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnToggleViewChars.Parent" xml:space="preserve">
     <value>m_plBits</value>
   </data>
-  <data name="&gt;&gt;m_rbODBC.ZOrder" xml:space="preserve">
-    <value>17</value>
+  <data name="&gt;&gt;m_btnToggleViewChars.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_btnPickAccess.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="m_btnPickAccess.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -817,19 +724,19 @@
     <value>m_plBits</value>
   </data>
   <data name="&gt;&gt;m_btnPickAccess.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>13</value>
   </data>
   <data name="m_plBits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_plBits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 2</value>
+    <value>2, 92</value>
   </data>
   <data name="m_plBits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plBits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 415</value>
+    <value>263, 313</value>
   </data>
   <data name="m_plBits.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -846,14 +753,14 @@
   <data name="&gt;&gt;m_plBits.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_bpLogo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>None</value>
+  <data name="m_bpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="m_bpLogo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_bpLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 419</value>
+    <value>12, 2</value>
   </data>
   <data name="m_bpLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 0, 10, 0</value>
@@ -862,7 +769,7 @@
     <value>243, 88</value>
   </data>
   <data name="m_bpLogo.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_bpLogo.Name" xml:space="preserve">
     <value>m_bpLogo</value>
@@ -886,7 +793,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 509</value>
+    <value>267, 407</value>
   </data>
   <data name="m_tlpLogo.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -904,30 +811,18 @@
     <value>0</value>
   </data>
   <data name="m_tlpLogo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plBits" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_bpLogo" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,88" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plBits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_bpLogo" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,88,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>267, 509</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Configure FishBase connection</value>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 407</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmConfig</value>
+    <value>ucConfig</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

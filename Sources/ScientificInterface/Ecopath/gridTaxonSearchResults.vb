@@ -145,10 +145,10 @@ Public Class gridTaxonSearchResults
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
+        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
         Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(SharedResources.HEADER_ORDER)
         Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
-        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         'Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
         If (Me.m_bShowCodes) Then
             'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)

@@ -122,16 +122,15 @@
     <Compile Include="Data\cFishBaseSearchResults.vb" />
     <Compile Include="Data\cFishBaseTaxonData.vb" />
     <Compile Include="Data\Web service\cFishBaseWebserviceConn.vb" />
-    <Compile Include="Data\Database\cFishBaseOdbcConnection.vb" />
     <Compile Include="Data\cFishBaseConnection.vb" />
     <Compile Include="Data\Database\cFishBaseAccessConnection.vb" />
     <Compile Include="Data\Database\cFishBaseDatabaseConnection.vb" />
     <Compile Include="My Project\Settings.vb" />
-    <Compile Include="UI\frmConfig.Designer.vb">
-      <DependentUpon>frmConfig.vb</DependentUpon>
+    <Compile Include="UI\ucConfig.Designer.vb">
+      <DependentUpon>ucConfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmConfig.vb">
-      <SubType>Form</SubType>
+    <Compile Include="UI\ucConfig.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -159,8 +158,8 @@
     <Compile Include="Socket\cMessageReceivedEventArgs.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\frmConfig.resx">
-      <DependentUpon>frmConfig.vb</DependentUpon>
+    <EmbeddedResource Include="UI\ucConfig.resx">
+      <DependentUpon>ucConfig.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

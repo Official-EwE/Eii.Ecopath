@@ -69,36 +69,12 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property MDBpath() As String
+        Public Property AccessPath() As String
             Get
-                Return CType(Me("MDBpath"),String)
+                Return CType(Me("AccessPath"),String)
             End Get
             Set
-                Me("MDBpath") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property ODBCconn() As String
-            Get
-                Return CType(Me("ODBCconn"),String)
-            End Get
-            Set
-                Me("ODBCconn") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-        Public Property ODBCuser() As String
-            Get
-                Return CType(Me("ODBCuser"),String)
-            End Get
-            Set
-                Me("ODBCuser") = value
+                Me("AccessPath") = value
             End Set
         End Property
         
@@ -135,6 +111,30 @@ Namespace My
             End Get
             Set
                 Me("WSDLuser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property WSDLpassword() As String
+            Get
+                Return CType(Me("WSDLpassword"),String)
+            End Get
+            Set
+                Me("WSDLpassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property NumResultsSelection() As Integer
+            Get
+                Return CType(Me("NumResultsSelection"),Integer)
+            End Get
+            Set
+                Me("NumResultsSelection") = value
             End Set
         End Property
     End Class

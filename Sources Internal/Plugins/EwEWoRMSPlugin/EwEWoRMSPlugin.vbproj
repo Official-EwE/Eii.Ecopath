@@ -112,11 +112,11 @@
     <Compile Include="cWoRMSPluginPoint.vb" />
     <Compile Include="cWoRMSTaxonSearchResults.vb" />
     <Compile Include="cWoRMSTaxonData.vb" />
-    <Compile Include="frmConfig.Designer.vb">
-      <DependentUpon>frmConfig.vb</DependentUpon>
+    <Compile Include="ucConfig.Designer.vb">
+      <DependentUpon>ucConfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmConfig.vb">
-      <SubType>Form</SubType>
+    <Compile Include="ucConfig.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -141,8 +141,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmConfig.resx">
-      <DependentUpon>frmConfig.vb</DependentUpon>
+    <EmbeddedResource Include="ucConfig.resx">
+      <DependentUpon>ucConfig.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -195,6 +195,10 @@
     <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
+      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

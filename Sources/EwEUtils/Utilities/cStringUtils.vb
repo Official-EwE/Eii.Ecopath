@@ -20,16 +20,17 @@
 
 Option Strict On
 Imports System
+Imports System.Collections.Generic
 Imports System.Diagnostics
+Imports System.Drawing
+Imports System.Globalization
+Imports System.Security
+Imports System.Security.Cryptography
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Drawing
 Imports System.Windows.Forms
-Imports System.Globalization
-Imports System.Security.Cryptography
-Imports System.Collections.Generic
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -760,7 +761,7 @@ Namespace Utilities
             ' Retrieve a byte array based on the source text
             Dim abData() As Byte = enc.GetBytes(strSrc)
             ' Instantiate an MD5 Provider object
-            Dim Md5 As New MD5CryptoServiceProvider
+            Dim Md5 As New MD5CryptoServiceProvider()
             ' Compute the hash value from the source
             Dim abHash() As Byte = Md5.ComputeHash(abData)
             ' Return string representation
@@ -1685,6 +1686,21 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Return a former vbCharNull.
+        ''' </summary>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+        ''' For Mono compliance this definition should be used instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared ReadOnly Property vbCharNull As Char
+            Get
+                Return Convert.ToChar(0)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Return a Tab character.
         ''' </summary>
         ''' <remarks>
@@ -2083,6 +2099,79 @@ Namespace Utilities
         End Function
 
 #End Region ' Localization
+
+#Region " Encryption "
+
+        ' From http://weblogs.asp.net/jongalloway/encrypting-passwords-in-a-net-app-config-file
+
+        ''' <summary>Let's generate some controlled noise.</summary>
+        Private Shared entropy As Byte() = System.Text.Encoding.Unicode.GetBytes("Secret Is Not A Password")
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Encrypt a <see cref="SecureString">secure string</see> for persistent storage.
+        ''' </summary>
+        ''' <param name="strsIn">The <see cref="SecureString">secure string</see> to encrypt.</param>
+        ''' <returns>A <see cref="String">regular string</see>.</returns>
+        ''' <remarks><example>AppSettings.Password = EncryptString(ToSecureString(PasswordTextBox.Password));</example></remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function EncryptString(strsIn As SecureString) As String
+            Dim data As Byte() = ProtectedData.Protect(Encoding.Unicode.GetBytes(ToInsecureString(strsIn)), entropy, DataProtectionScope.CurrentUser)
+            Return Convert.ToBase64String(data)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Decrypt a <see cref="SecureString">secure string</see> from persistent storage.
+        ''' </summary>
+        ''' <param name="strsIn">The <see cref="SecureString">secure string</see> to decrypt.</param>
+        ''' <returns>A <see cref="SecureString">secure string</see>.</returns>
+        ''' <remarks><example>SecureString password = DecryptString(AppSettings.Password);</example></remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function DecryptString(strsIn As String) As SecureString
+            Try
+                Dim data As Byte() = ProtectedData.Unprotect(Convert.FromBase64String(strsIn), entropy, DataProtectionScope.CurrentUser)
+                Return ToSecureString(System.Text.Encoding.Unicode.GetString(data))
+            Catch
+                Return New SecureString()
+            End Try
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a <see cref="String">regular string</see> to a <see cref="SecureString">secure string</see>.
+        ''' </summary>
+        ''' <param name="strIn">The string to convert.</param>
+        ''' <returns>A <see cref="SecureString">secure string</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToSecureString(strIn As String) As SecureString
+            Dim strsOut As New SecureString()
+            For Each c As Char In strIn
+                strsOut.AppendChar(c)
+            Next
+            strsOut.MakeReadOnly()
+            Return strsOut
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a <see cref="SecureString">secure string</see> to a <see cref="String">regular string</see>.
+        ''' </summary>
+        ''' <param name="strsIn">The <see cref="SecureString">secure string</see> to convert.</param>
+        ''' <returns>A <see cref="String">regular string</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToInsecureString(strsIn As SecureString) As String
+            Dim strResult As String = String.Empty
+            Dim ptr As IntPtr = System.Runtime.InteropServices.Marshal.SecureStringToBSTR(strsIn)
+            Try
+                strResult = System.Runtime.InteropServices.Marshal.PtrToStringBSTR(ptr)
+            Finally
+                System.Runtime.InteropServices.Marshal.ZeroFreeBSTR(ptr)
+            End Try
+            Return strResult
+        End Function
+
+#End Region ' Encryption
 
     End Class
 
