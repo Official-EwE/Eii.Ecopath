@@ -77,6 +77,8 @@ Namespace Controls
                 Dim opts As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
                 AddHandler opts.OnChanged, AddressOf OnOptionsPageChanged
                 Me.OnOptionsPageChanged(opts, New EventArgs)
+            Else
+                Me.m_btnDefaults.Visible = False
             End If
 
             Me.CenterToParent()

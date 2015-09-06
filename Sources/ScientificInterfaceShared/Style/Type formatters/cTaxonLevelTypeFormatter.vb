@@ -43,6 +43,7 @@ Namespace Style
         Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
 
+            ' ToDo: globalize this
             Dim val As eTaxonClassificationType = DirectCast(value, eTaxonClassificationType)
 
             Select Case val
@@ -60,6 +61,8 @@ Namespace Style
                     Return My.Resources.HEADER_GENUS
                 Case eTaxonClassificationType.Species
                     Return My.Resources.HEADER_SPECIES
+                Case eTaxonClassificationType.Latin
+                    Return "Latin name"
                     'Case eTaxonClassificationType.Kingdom
                 Case Else
                     Debug.Assert(False)

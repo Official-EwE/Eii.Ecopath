@@ -456,20 +456,20 @@ Namespace SystemUtilities
         ''' Returns one of two Single values, depending on the evaluation of an expression. 
         ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
         ''' </summary>
-        ''' <param name="BoolValue">The value to test.</param>
-        ''' <param name="TrueReturnSingle">Single value to return if <paramref name="BoolValue"/> resolved to True.</param>
-        ''' <param name="FalseReturnSingle">Single value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <param name="bValue">The value to test.</param>
+        ''' <param name="sTrue">Single value to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="sFalse">Single value to return if <paramref name="bValue"/> resolved to False.</param>
         ''' <returns>A Single value.</returns>
         ''' <remarks>
         ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnSingle As Single, ByVal FalseReturnSingle As Single) As Single
-            If BoolValue Then
-                Return TrueReturnSingle
+        Public Shared Function IIF(ByVal bValue As Boolean, ByVal sTrue As Single, ByVal sFalse As Single) As Single
+            If bValue Then
+                Return sTrue
             Else
-                Return FalseReturnSingle
+                Return sFalse
             End If
         End Function
 
@@ -478,20 +478,20 @@ Namespace SystemUtilities
         ''' Returns one of two Double values, depending on the evaluation of an expression. 
         ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
         ''' </summary>
-        ''' <param name="BoolValue">The value to test.</param>
-        ''' <param name="TrueReturnDouble">Double value to return if <paramref name="BoolValue"/> resolved to True.</param>
-        ''' <param name="FalseReturnDouble">Double value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <param name="bValue">The value to test.</param>
+        ''' <param name="dTrue">Double value to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="dFalse">Double value to return if <paramref name="bValue"/> resolved to False.</param>
         ''' <returns>A Double value.</returns>
         ''' <remarks>
         ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnDouble As Double, ByVal FalseReturnDouble As Double) As Double
-            If BoolValue Then
-                Return TrueReturnDouble
+        Public Shared Function IIF(ByVal bValue As Boolean, ByVal dTrue As Double, ByVal dFalse As Double) As Double
+            If bValue Then
+                Return dTrue
             Else
-                Return FalseReturnDouble
+                Return dFalse
             End If
         End Function
 
@@ -500,20 +500,20 @@ Namespace SystemUtilities
         ''' Returns one of two Boolean values, depending on the evaluation of an expression. 
         ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
         ''' </summary>
-        ''' <param name="BoolValue">The value to test.</param>
-        ''' <param name="TrueReturnBool">Booolean value to return if <paramref name="BoolValue"/> resolved to True.</param>
-        ''' <param name="FalseReturnBool">Booolean value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <param name="bValue">The value to test.</param>
+        ''' <param name="bTrue">Booolean value to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="bFalse">Booolean value to return if <paramref name="bValue"/> resolved to False.</param>
         ''' <returns>A boolean value.</returns>
         ''' <remarks>
         ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnBool As Boolean, ByVal FalseReturnBool As Boolean) As Boolean
-            If BoolValue Then
-                Return TrueReturnBool
+        Public Shared Function IIF(ByVal bValue As Boolean, ByVal bTrue As Boolean, ByVal bFalse As Boolean) As Boolean
+            If bValue Then
+                Return bTrue
             Else
-                Return FalseReturnBool
+                Return bFalse
             End If
         End Function
 
@@ -522,20 +522,20 @@ Namespace SystemUtilities
         ''' Returns one of two String values, depending on the evaluation of an expression. 
         ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
         ''' </summary>
-        ''' <param name="BoolValue">The value to test.</param>
-        ''' <param name="TrueReturnString">String value to return if <paramref name="BoolValue"/> resolved to True.</param>
-        ''' <param name="FalseReturnString">String value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <param name="bValue">The value to test.</param>
+        ''' <param name="strTrue">String value to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="strFalse">String value to return if <paramref name="bValue"/> resolved to False.</param>
         ''' <returns>A String value.</returns>
         ''' <remarks>
         ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnString As String, ByVal FalseReturnString As String) As String
-            If BoolValue Then
-                Return TrueReturnString
+        Public Shared Function IIF(ByVal bValue As Boolean, ByVal strTrue As String, ByVal strFalse As String) As String
+            If bValue Then
+                Return strTrue
             Else
-                Return FalseReturnString
+                Return strFalse
             End If
         End Function
 
@@ -545,8 +545,8 @@ Namespace SystemUtilities
         ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
         ''' </summary>
         ''' <param name="bTest">The value to test.</param>
-        ''' <param name="iTrue">Integer value to return if <paramref name="BoolValue"/> resolved to True.</param>
-        ''' <param name="iFalse">Integer value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <param name="iTrue">Integer value to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="iFalse">Integer value to return if <paramref name="bValue"/> resolved to False.</param>
         ''' <returns>An Integer value.</returns>
         ''' <remarks>
         ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
@@ -567,8 +567,8 @@ Namespace SystemUtilities
         ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
         ''' </summary>
         ''' <param name="bTest">The value to test.</param>
-        ''' <param name="objTrue">Object to return if <paramref name="BoolValue"/> resolved to True.</param>
-        ''' <param name="objFalse">Object to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <param name="objTrue">Object to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="objFalse">Object to return if <paramref name="bValue"/> resolved to False.</param>
         ''' <returns>An object.</returns>
         ''' <remarks>
         ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
@@ -580,6 +580,28 @@ Namespace SystemUtilities
                 Return objTrue
             Else
                 Return objFalse
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two Char values, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="bValue">The value to test.</param>
+        ''' <param name="cTrue">Char value to return if <paramref name="bValue"/> resolved to True.</param>
+        ''' <param name="cFalse">Char value to return if <paramref name="bValue"/> resolved to False.</param>
+        ''' <returns>A Single value.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal bValue As Boolean, ByVal cTrue As Char, ByVal cFalse As Char) As Char
+            If bValue Then
+                Return cTrue
+            Else
+                Return cFalse
             End If
         End Function
 
