@@ -22,6 +22,7 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
+Imports System.Text
 
 #End Region ' Imports
 
@@ -45,7 +46,7 @@ Public Class cFileReader
         Dim bSuccess As Boolean = True
 
         Try
-            reader = New StreamReader(strFile)
+            reader = New StreamReader(strFile, Encoding.GetEncoding("iso-8859-1"))
         Catch ex As Exception
             Me.SendMessage(String.Format(My.Resources.PROMPT_FILE_NOT_FOUND, strFile), eMessageImportance.Warning)
             Return False
