@@ -61,7 +61,17 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to WoRMS (World Register of Marine Species).
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property BlueBridge_xparent() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BlueBridge_xparent", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to WoRMS (World Register of Marine Species) data connection.
         '''</summary>
         Friend ReadOnly Property ENGINE_NAME() As String
             Get

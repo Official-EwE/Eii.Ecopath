@@ -16,9 +16,14 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Strict On
-Imports System.Windows.Forms
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -35,6 +40,7 @@ Public Class ucConfig
     Public Sub New(ByVal plugin As cWoRMSPluginPoint)
         MyBase.New()
         Me.m_plugin = plugin
+        Me.Text = My.Resources.ENGINE_NAME
         Me.InitializeComponent()
     End Sub
 
@@ -77,5 +83,24 @@ Public Class ucConfig
 
     Public Property UIContext As cUIContext _
         Implements IUIElement.UIContext
-     
+
+    Private Sub OnVisitWoRMS(sender As Object, e As System.EventArgs) _
+        Handles m_plLogo.Click
+        Me.VisitSponsor("http://www.marinespecies.org")
+    End Sub
+
+    Private Sub OnVisitBlueBridge(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbBlueBridge.Click
+        Me.VisitSponsor("http://www.i-marine.eu/Content/eLibrary.aspx?id=786ae7dd-f868-4c19-b611-3500b6697bee&li=0")
+    End Sub
+
+    Private Sub VisitSponsor(strURL As String)
+        Try
+            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(strURL)
+        Catch ex As Exception
+            cLog.Write(ex, "EwEWormsPlugIn.ViewSponsor(" & strURL & ")")
+        End Try
+    End Sub
+
 End Class

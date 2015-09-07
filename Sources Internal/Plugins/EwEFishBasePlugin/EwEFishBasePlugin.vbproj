@@ -203,6 +203,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\BlueBridge xparent.png" />
     <Content Include="Resources\fblogo_new.gif" />
     <Content Include="Resources\sealifelogo.gif" />
   </ItemGroup>

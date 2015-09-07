@@ -92,7 +92,7 @@ Public Class cFishBasePlugin
     Public ReadOnly Property Author() As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "UBC Fisheries Centre"
+            Return "Ecopath International Initiative"
         End Get
     End Property
 
@@ -113,7 +113,7 @@ Public Class cFishBasePlugin
     Public ReadOnly Property Name() As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "FishBase taxon search"
+            Return My.Resources.ENGINE_NAME
         End Get
     End Property
 
@@ -194,6 +194,10 @@ Public Class cFishBasePlugin
         ' Get ready
         Me.m_dataTerm = DirectCast(data, ITaxonSearchData)
         Me.m_results = Nothing
+
+        If ((Me.m_dataTerm.SearchFields And eTaxonClassificationType.Latin) > 0) Then
+            Me.m_dataTerm.SearchFields = Me.m_dataTerm.SearchFields Or eTaxonClassificationType.Class Or eTaxonClassificationType.Genus
+        End If
 
         If (iMaxResults > 0) Then
             Me.m_iMaxResults = iMaxResults

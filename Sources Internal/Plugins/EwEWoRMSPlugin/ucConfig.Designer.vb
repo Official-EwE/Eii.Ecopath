@@ -36,8 +36,10 @@ Partial Class ucConfig
         Me.m_lblReplyTO = New System.Windows.Forms.Label()
         Me.m_lblSecs2 = New System.Windows.Forms.Label()
         Me.m_nudReplyTO = New System.Windows.Forms.NumericUpDown()
+        Me.m_pbBlueBridge = New System.Windows.Forms.PictureBox()
         CType(Me.m_nudConnTO, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudReplyTO, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_plLogo
@@ -82,10 +84,18 @@ Partial Class ucConfig
         Me.m_nudReplyTO.Name = "m_nudReplyTO"
         Me.m_nudReplyTO.Value = New Decimal(New Integer() {300, 0, 0, 0})
         '
+        'm_pbBlueBridge
+        '
+        resources.ApplyResources(Me.m_pbBlueBridge, "m_pbBlueBridge")
+        Me.m_pbBlueBridge.BackgroundImage = Global.EwEWoRMSPlugin.My.Resources.Resources.BlueBridge_xparent
+        Me.m_pbBlueBridge.Name = "m_pbBlueBridge"
+        Me.m_pbBlueBridge.TabStop = False
+        '
         'ucConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_pbBlueBridge)
         Me.Controls.Add(Me.m_nudReplyTO)
         Me.Controls.Add(Me.m_lblSecs2)
         Me.Controls.Add(Me.m_nudConnTO)
@@ -96,6 +106,7 @@ Partial Class ucConfig
         Me.Name = "ucConfig"
         CType(Me.m_nudConnTO, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudReplyTO, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -107,4 +118,5 @@ Partial Class ucConfig
     Private WithEvents m_lblReplyTO As System.Windows.Forms.Label
     Private WithEvents m_lblSecs2 As System.Windows.Forms.Label
     Private WithEvents m_nudReplyTO As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_pbBlueBridge As System.Windows.Forms.PictureBox
 End Class

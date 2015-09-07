@@ -130,7 +130,7 @@ Public Class cWoRMSPluginPoint
     Friend ReadOnly Property Author() As String _
         Implements IPlugin.Author
         Get
-            Return "UBC Fisheries Centre"
+            Return "Ecopath International Initiative"
         End Get
     End Property
 
@@ -475,7 +475,7 @@ Public Class cWoRMSPluginPoint
 
     Public Function CanSearchByTaxonomicLevel() As eTaxonClassificationType _
         Implements ITaxonSearchCapabilitiesPlugin.TaxonSearchCapabilities
-        Return eTaxonClassificationType.Common
+        Return eTaxonClassificationType.Latin
     End Function
 
     Public Function HasDepthRangeSearchCapabilities() As Boolean _

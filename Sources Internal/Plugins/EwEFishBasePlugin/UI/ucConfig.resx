@@ -187,7 +187,7 @@
     <value>139, 160</value>
   </data>
   <data name="m_tbxWebAccount.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
+    <value>102, 20</value>
   </data>
   <data name="m_tbxWebAccount.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -214,7 +214,7 @@
     <value>*</value>
   </data>
   <data name="m_tbxWebPwd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
+    <value>102, 20</value>
   </data>
   <data name="m_tbxWebPwd.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -231,14 +231,44 @@
   <data name="&gt;&gt;m_tbxWebPwd.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="m_tlpLogo.CellBorderStyle" type="System.Windows.Forms.TableLayoutPanelCellBorderStyle, System.Windows.Forms">
-    <value>Inset</value>
-  </data>
-  <data name="m_tlpLogo.ColumnCount" type="System.Int32, mscorlib">
+  <data name="m_tlpAll.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_pbBlueBridge.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbBlueBridge.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbBlueBridge.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbBlueBridge.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 400</value>
+  </data>
+  <data name="m_pbBlueBridge.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_pbBlueBridge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 45</value>
+  </data>
+  <data name="m_pbBlueBridge.TabIndex" type="System.Int32, mscorlib">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.Name" xml:space="preserve">
+    <value>m_pbBlueBridge</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.Parent" xml:space="preserve">
+    <value>m_tlpAll</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_tlpConnection.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Bottom, Left, Right</value>
   </data>
   <data name="m_tlpConnection.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
@@ -256,7 +286,7 @@
     <value>0, 0, 3, 0</value>
   </data>
   <data name="m_btnConnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 23</value>
+    <value>103, 23</value>
   </data>
   <data name="m_btnConnect.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -283,13 +313,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnDisconnect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 0</value>
+    <value>109, 0</value>
   </data>
   <data name="m_btnDisconnect.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
   </data>
   <data name="m_btnDisconnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 23</value>
+    <value>104, 23</value>
   </data>
   <data name="m_btnDisconnect.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -310,13 +340,13 @@
     <value>1</value>
   </data>
   <data name="m_tlpConnection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 278</value>
+    <value>28, 220</value>
   </data>
   <data name="m_tlpConnection.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_tlpConnection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 23</value>
+    <value>213, 23</value>
   </data>
   <data name="m_tlpConnection.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -358,10 +388,10 @@
     <value>1000</value>
   </data>
   <data name="m_cmbMaxResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>139, 245</value>
+    <value>139, 267</value>
   </data>
   <data name="m_cmbMaxResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 21</value>
+    <value>102, 21</value>
   </data>
   <data name="m_cmbMaxResults.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -388,7 +418,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNumResults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 248</value>
+    <value>7, 270</value>
   </data>
   <data name="m_lblNumResults.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 13</value>
@@ -418,10 +448,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 224</value>
+    <value>3, 246</value>
   </data>
   <data name="m_hdrSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 18</value>
+    <value>269, 18</value>
   </data>
   <data name="m_hdrSearch.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -454,7 +484,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_hdrConnection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 18</value>
+    <value>269, 18</value>
   </data>
   <data name="m_hdrConnection.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -484,7 +514,7 @@
     <value>139, 134</value>
   </data>
   <data name="m_tbxWebPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
+    <value>102, 20</value>
   </data>
   <data name="m_tbxWebPort.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -508,7 +538,7 @@
     <value>139, 108</value>
   </data>
   <data name="m_tbxWebServer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
+    <value>102, 20</value>
   </data>
   <data name="m_tbxWebServer.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -562,7 +592,7 @@
     <value>28, 48</value>
   </data>
   <data name="m_tbxAccess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>201, 20</value>
+    <value>213, 20</value>
   </data>
   <data name="m_tbxAccess.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -676,7 +706,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnToggleViewChars.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 184</value>
+    <value>247, 184</value>
   </data>
   <data name="m_btnToggleViewChars.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -703,7 +733,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnPickAccess.Location" type="System.Drawing.Point, System.Drawing">
-    <value>235, 46</value>
+    <value>247, 46</value>
   </data>
   <data name="m_btnPickAccess.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -730,13 +760,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plBits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 92</value>
+    <value>0, 100</value>
   </data>
   <data name="m_plBits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plBits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 313</value>
+    <value>275, 295</value>
   </data>
   <data name="m_plBits.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -748,10 +778,13 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_plBits.Parent" xml:space="preserve">
-    <value>m_tlpLogo</value>
+    <value>m_tlpAll</value>
   </data>
   <data name="&gt;&gt;m_plBits.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <data name="m_bpLogo.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
   </data>
   <data name="m_bpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -760,13 +793,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_bpLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 2</value>
+    <value>0, 0</value>
   </data>
   <data name="m_bpLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>10, 0, 10, 0</value>
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_bpLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 88</value>
+    <value>275, 100</value>
   </data>
   <data name="m_bpLogo.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -778,46 +811,46 @@
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_bpLogo.Parent" xml:space="preserve">
-    <value>m_tlpLogo</value>
+    <value>m_tlpAll</value>
   </data>
   <data name="&gt;&gt;m_bpLogo.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tlpLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tlpLogo.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_tlpLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 407</value>
+  <data name="m_tlpAll.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="m_tlpLogo.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tlpAll.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpAll.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tlpAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>275, 450</value>
+  </data>
+  <data name="m_tlpAll.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_tlpLogo.Name" xml:space="preserve">
-    <value>m_tlpLogo</value>
+  <data name="&gt;&gt;m_tlpAll.Name" xml:space="preserve">
+    <value>m_tlpAll</value>
   </data>
-  <data name="&gt;&gt;m_tlpLogo.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpAll.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tlpLogo.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpAll.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_tlpLogo.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpAll.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_tlpLogo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plBits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_bpLogo" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,88,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="m_tlpAll.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbBlueBridge" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plBits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_bpLogo" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,100,Percent,100,Absolute,55" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 407</value>
+    <value>275, 450</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucConfig</value>

@@ -32,8 +32,11 @@ Partial Class ucConfig
         Me.m_lblWebPwd = New System.Windows.Forms.Label()
         Me.m_tbxWebAccount = New System.Windows.Forms.TextBox()
         Me.m_tbxWebPwd = New System.Windows.Forms.TextBox()
-        Me.m_tlpLogo = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plBits = New System.Windows.Forms.Panel()
+        Me.m_tlpConnection = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_btnConnect = New System.Windows.Forms.Button()
+        Me.m_btnDisconnect = New System.Windows.Forms.Button()
         Me.m_cmbMaxResults = New System.Windows.Forms.ComboBox()
         Me.m_lblNumResults = New System.Windows.Forms.Label()
         Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -47,14 +50,13 @@ Partial Class ucConfig
         Me.m_rbAccess = New System.Windows.Forms.RadioButton()
         Me.m_btnToggleViewChars = New System.Windows.Forms.Button()
         Me.m_btnPickAccess = New System.Windows.Forms.Button()
-        Me.m_tlpConnection = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_btnConnect = New System.Windows.Forms.Button()
-        Me.m_btnDisconnect = New System.Windows.Forms.Button()
         Me.m_bpLogo = New System.Windows.Forms.PictureBox()
-        Me.m_tlpLogo.SuspendLayout()
+        Me.m_pbBlueBridge = New System.Windows.Forms.PictureBox()
+        Me.m_tlpAll.SuspendLayout()
         Me.m_plBits.SuspendLayout()
         Me.m_tlpConnection.SuspendLayout()
         CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblWebUser
@@ -77,13 +79,14 @@ Partial Class ucConfig
         resources.ApplyResources(Me.m_tbxWebPwd, "m_tbxWebPwd")
         Me.m_tbxWebPwd.Name = "m_tbxWebPwd"
         '
-        'm_tlpLogo
+        'm_tlpAll
         '
-        Me.m_tlpLogo.BackColor = System.Drawing.Color.White
-        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
-        Me.m_tlpLogo.Controls.Add(Me.m_plBits, 0, 1)
-        Me.m_tlpLogo.Controls.Add(Me.m_bpLogo, 0, 0)
-        Me.m_tlpLogo.Name = "m_tlpLogo"
+        Me.m_tlpAll.BackColor = System.Drawing.Color.Transparent
+        resources.ApplyResources(Me.m_tlpAll, "m_tlpAll")
+        Me.m_tlpAll.Controls.Add(Me.m_pbBlueBridge, 0, 2)
+        Me.m_tlpAll.Controls.Add(Me.m_plBits, 0, 1)
+        Me.m_tlpAll.Controls.Add(Me.m_bpLogo, 0, 0)
+        Me.m_tlpAll.Name = "m_tlpAll"
         '
         'm_plBits
         '
@@ -108,6 +111,23 @@ Partial Class ucConfig
         Me.m_plBits.Controls.Add(Me.m_lblWebPwd)
         resources.ApplyResources(Me.m_plBits, "m_plBits")
         Me.m_plBits.Name = "m_plBits"
+        '
+        'm_tlpConnection
+        '
+        resources.ApplyResources(Me.m_tlpConnection, "m_tlpConnection")
+        Me.m_tlpConnection.Controls.Add(Me.m_btnConnect, 0, 0)
+        Me.m_tlpConnection.Controls.Add(Me.m_btnDisconnect, 1, 0)
+        Me.m_tlpConnection.Name = "m_tlpConnection"
+        '
+        'm_btnConnect
+        '
+        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
+        Me.m_btnConnect.Name = "m_btnConnect"
+        '
+        'm_btnDisconnect
+        '
+        resources.ApplyResources(Me.m_btnDisconnect, "m_btnDisconnect")
+        Me.m_btnDisconnect.Name = "m_btnDisconnect"
         '
         'm_cmbMaxResults
         '
@@ -186,41 +206,32 @@ Partial Class ucConfig
         resources.ApplyResources(Me.m_btnPickAccess, "m_btnPickAccess")
         Me.m_btnPickAccess.Name = "m_btnPickAccess"
         '
-        'm_tlpConnection
-        '
-        resources.ApplyResources(Me.m_tlpConnection, "m_tlpConnection")
-        Me.m_tlpConnection.Controls.Add(Me.m_btnConnect, 0, 0)
-        Me.m_tlpConnection.Controls.Add(Me.m_btnDisconnect, 1, 0)
-        Me.m_tlpConnection.Name = "m_tlpConnection"
-        '
-        'm_btnConnect
-        '
-        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
-        Me.m_btnConnect.Name = "m_btnConnect"
-        '
-        'm_btnDisconnect
-        '
-        resources.ApplyResources(Me.m_btnDisconnect, "m_btnDisconnect")
-        Me.m_btnDisconnect.Name = "m_btnDisconnect"
-        '
         'm_bpLogo
         '
         Me.m_bpLogo.BackColor = System.Drawing.Color.White
+        Me.m_bpLogo.BackgroundImage = Global.EwEFishBasePlugin.My.Resources.Resources.fblogo_new
         resources.ApplyResources(Me.m_bpLogo, "m_bpLogo")
-        Me.m_bpLogo.Image = Global.EwEFishBasePlugin.My.Resources.Resources.fblogo_new
         Me.m_bpLogo.Name = "m_bpLogo"
         Me.m_bpLogo.TabStop = False
         '
+        'm_pbBlueBridge
+        '
+        Me.m_pbBlueBridge.BackgroundImage = Global.EwEFishBasePlugin.My.Resources.Resources.BlueBridge_xparent
+        resources.ApplyResources(Me.m_pbBlueBridge, "m_pbBlueBridge")
+        Me.m_pbBlueBridge.Name = "m_pbBlueBridge"
+        Me.m_pbBlueBridge.TabStop = False
+        '
         'ucConfig
         '
-        Me.Controls.Add(Me.m_tlpLogo)
+        Me.Controls.Add(Me.m_tlpAll)
         Me.Name = "ucConfig"
         resources.ApplyResources(Me, "$this")
-        Me.m_tlpLogo.ResumeLayout(False)
+        Me.m_tlpAll.ResumeLayout(False)
         Me.m_plBits.ResumeLayout(False)
         Me.m_plBits.PerformLayout()
         Me.m_tlpConnection.ResumeLayout(False)
         CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -228,7 +239,7 @@ Partial Class ucConfig
     Private WithEvents m_tbxWebAccount As System.Windows.Forms.TextBox
     Private WithEvents m_lblWebPwd As System.Windows.Forms.Label
     Private WithEvents m_tbxWebPwd As System.Windows.Forms.TextBox
-    Private WithEvents m_tlpLogo As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_tlpAll As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_rbWebService As System.Windows.Forms.RadioButton
     Private WithEvents m_tbxWebPort As System.Windows.Forms.TextBox
     Private WithEvents m_tbxWebServer As System.Windows.Forms.TextBox
@@ -247,4 +258,5 @@ Partial Class ucConfig
     Private WithEvents m_btnConnect As System.Windows.Forms.Button
     Private WithEvents m_btnDisconnect As System.Windows.Forms.Button
     Private WithEvents m_bpLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbBlueBridge As System.Windows.Forms.PictureBox
 End Class

@@ -428,7 +428,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_plLogo.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_lblConnTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -458,7 +458,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblConnTO.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_nudConnTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -482,7 +482,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudConnTO.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblSecs1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -515,7 +515,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblSecs1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblReplyTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -548,7 +548,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblReplyTO.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_lblSecs2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -581,7 +581,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblSecs2.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_nudReplyTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -605,6 +605,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudReplyTO.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_pbBlueBridge.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_pbBlueBridge.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbBlueBridge.Location" type="System.Drawing.Point, System.Drawing">
+    <value>297, 206</value>
+  </data>
+  <data name="m_pbBlueBridge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 50</value>
+  </data>
+  <data name="m_pbBlueBridge.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.Name" xml:space="preserve">
+    <value>m_pbBlueBridge</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbBlueBridge.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -617,7 +644,7 @@
     <value>Stretch</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>400, 208</value>
+    <value>400, 259</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucConfig</value>

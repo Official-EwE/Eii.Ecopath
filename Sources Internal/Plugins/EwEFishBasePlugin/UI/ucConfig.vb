@@ -23,6 +23,8 @@ Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -42,9 +44,8 @@ Public Class ucConfig
 
     Public Sub New(pluginpoint As cFishBasePlugin)
         MyBase.New()
-        ' Store refs
         Me.m_ppt = pluginpoint
-        ' Init controls
+        Me.Text = My.Resources.ENGINE_NAME
         Me.InitializeComponent()
     End Sub
 
@@ -99,6 +100,9 @@ Public Class ucConfig
         End Try
     End Sub
 
+    Public Property UIContext As cUIContext _
+        Implements IUIElement.UIContext
+
     Private Property Connection As cFishBaseConnection
         Get
             Return Me.m_ddx
@@ -132,7 +136,7 @@ Public Class ucConfig
 #End If
         Dim bConnected As Boolean = False
         Dim bUseAccess As Boolean = Me.m_rbAccess.Checked
-        Dim bUseWebServices As Boolean = Me.m_rbWebService.Checked
+        Dim bUseWebServices As Boolean = Me.m_rbWebService.Checked And bWebServicesAvailable
         Dim bInputsComplete As Boolean = False
 
         If (Me.Connection IsNot Nothing) Then
@@ -161,17 +165,17 @@ Public Class ucConfig
         Me.m_tbxWebPort.Enabled = bUseWebServices And Not bConnected
         Me.m_tbxWebAccount.Enabled = bUseWebServices And Not bConnected
         Me.m_tbxWebPwd.Enabled = bUseWebServices And Not bConnected
+        Me.m_btnToggleViewChars.Enabled = bUseWebServices
 
         Me.m_btnConnect.Enabled = (Not bConnected) And bInputsComplete
         Me.m_btnDisconnect.Enabled = bConnected
 
-        If (Me.m_bViewPwdChars) Then
+        If (Me.m_bViewPwdChars And bWebServicesAvailable) Then
             Me.m_tbxWebPwd.PasswordChar = cStringUtils.vbCharNull
             Me.m_btnToggleViewChars.Image = SharedResources.Eye_open
         Else
             Me.m_tbxWebPwd.PasswordChar = Me.UIContext.StyleGuide.PasswordChar()
             Me.m_btnToggleViewChars.Image = SharedResources.Eye_closed
-
         End If
 
     End Sub
@@ -270,9 +274,25 @@ Public Class ucConfig
         End Try
     End Sub
 
+    Private Sub OnVisitFishBase(sender As Object, e As System.EventArgs) _
+        Handles m_bpLogo.Click
+        Me.VisitSponsor("http://www.fishbase.org")
+    End Sub
+
+    Private Sub VisitBlueBridge(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbBlueBridge.Click
+        Me.VisitSponsor("http://www.i-marine.eu/Content/eLibrary.aspx?id=786ae7dd-f868-4c19-b611-3500b6697bee&li=0")
+    End Sub
+
 #End Region ' Generic controls
 
-    Public Property UIContext As cUIContext _
-        Implements IUIElement.UIContext
+    Private Sub VisitSponsor(strURL As String)
+        Try
+            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(strURL)
+        Catch ex As Exception
+            cLog.Write(ex, "EwEWormsPlugIn.ViewSponsor(" & strURL & ")")
+        End Try
+    End Sub
 
 End Class
