@@ -174,12 +174,22 @@ Public Class gridTaxonSearchResults
         Dim results As Object() = Me.m_results.SearchResults
         For i As Integer = 0 To results.Count - 1
             Dim res As Object = results(i)
-            If (TypeOf res Is ITaxonSearchData) And (res IsNot Nothing) Then
+            If (TypeOf res Is ITaxonSearchData) Then
                 Me.AddResult(DirectCast(res, ITaxonSearchData))
             End If
         Next
 
     End Sub
+
+    Private Function IsNullOrEmpty(res As ITaxonSearchData) As Boolean
+        If (res Is Nothing) Then Return True
+        Return String.IsNullOrWhiteSpace(res.Common) And _
+               String.IsNullOrWhiteSpace(res.Species) And _
+               String.IsNullOrWhiteSpace(res.Genus) And _
+               String.IsNullOrWhiteSpace(res.Family) And _
+               String.IsNullOrWhiteSpace(res.Order) And _
+               String.IsNullOrWhiteSpace(res.Class)
+    End Function
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
@@ -219,6 +229,9 @@ Public Class gridTaxonSearchResults
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
     Private Sub AddResult(ByVal result As ITaxonSearchData)
+
+        ' Last line of defense
+        If Me.IsNullOrEmpty(result) Then Return
 
         Try
 

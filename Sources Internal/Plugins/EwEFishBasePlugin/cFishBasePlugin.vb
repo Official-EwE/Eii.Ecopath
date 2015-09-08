@@ -37,7 +37,6 @@ Public Class cFishBasePlugin
     Private m_bInitOk As Boolean = False
     Private m_core As cCore = Nothing
     Private m_fbddx As cFishBaseConnection = Nothing
-    Private m_iMaxResults As Integer = 100
 
     ''' <summary>Data search term.</summary>
     Friend m_dataTerm As ITaxonSearchData = Nothing
@@ -200,11 +199,11 @@ Public Class cFishBasePlugin
         End If
 
         If (iMaxResults > 0) Then
-            Me.m_iMaxResults = iMaxResults
+            Me.MaxResults = iMaxResults
         End If
 
         ' Go search
-        Return Me.m_fbddx.Search(Me.m_dataTerm, Me.m_iMaxResults)
+        Return Me.m_fbddx.Search(Me.m_dataTerm, Me.MaxResults)
 
     End Function
 
@@ -291,23 +290,16 @@ Public Class cFishBasePlugin
         End Get
         Set(value As cFishBaseConnection)
             If (Me.m_fbddx IsNot Nothing) Then
-
+                ' ToDo: Cleanup
             End If
             Me.m_fbddx = value
             If (Me.m_fbddx IsNot Nothing) Then
-
+                ' ToDo: Initialize
             End If
         End Set
     End Property
 
-    Friend Property MaxResults As Integer
-        Get
-            Return Me.m_iMaxResults
-        End Get
-        Set(value As Integer)
-            Me.m_iMaxResults = value
-        End Set
-    End Property
+    Friend Property MaxResults As Integer = 100
 
 #End Region ' Friendly bits
 
