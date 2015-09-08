@@ -196,7 +196,7 @@ Namespace Ecosim
                     Dim iSwitch As Integer = Me.m_iYearFirstDragPos
                     Me.m_iYearFirstDragPos = Me.m_iYearLastDragPos
                     Me.m_iYearLastDragPos = iSwitch
-                    Me.m_dragMode = DirectCast(IIf(Me.m_dragMode = eDragModeTypes.FirstYear, eDragModeTypes.EndYear, eDragModeTypes.FirstYear), eDragModeTypes)
+                    Me.m_dragMode = IIF(Me.m_dragMode = eDragModeTypes.FirstYear, eDragModeTypes.EndYear, eDragModeTypes.FirstYear)
                 End If
                 Me.Invalidate()
 

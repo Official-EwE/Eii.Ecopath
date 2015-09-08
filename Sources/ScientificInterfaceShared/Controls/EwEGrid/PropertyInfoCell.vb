@@ -61,7 +61,7 @@ Namespace Controls.EwEGrid
             ' Set the cell value to the intial property value and type
             MyBase.New(pi.GetValue(obj, Nothing), _
                        pi.PropertyType, _
-                       DirectCast(IIf(pi.CanWrite, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable), cStyleGuide.eStyleFlags))
+                       IIF(pi.CanWrite, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable))
 
             ' Sanity checks
             Debug.Assert(obj IsNot Nothing)

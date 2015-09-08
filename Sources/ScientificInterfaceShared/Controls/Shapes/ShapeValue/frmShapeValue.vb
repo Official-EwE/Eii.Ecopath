@@ -134,7 +134,7 @@ Public Class frmShapeValue
         If (shape Is Nothing) Then
             Me.m_editMode = eDialogEditModeType.AddTimeSeries
         Else
-            Me.m_editMode = DirectCast(IIF(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing), eDialogEditModeType)
+            Me.m_editMode = IIF(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing)
         End If
 
         ' Determine display mode
