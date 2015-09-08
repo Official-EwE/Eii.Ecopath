@@ -22,6 +22,7 @@ Option Strict On
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -46,8 +47,17 @@ Public Class ucConfig
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        If (Me.UIContext Is Nothing) Then Return
+
         Me.m_nudConnTO.Value = Me.m_plugin.ConnectionTimeOut
         Me.m_nudReplyTO.Value = Me.m_plugin.ResponseTimeOut
+
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.AddControl(Me.m_pbBlueBridge, "http://www.i-marine.eu/Content/eLibrary.aspx?id=786ae7dd-f868-4c19-b611-3500b6697bee&li=0")
+        cmd.AddControl(Me.m_pbWoRMS, "http://www.marinespecies.org")
+
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -55,10 +65,17 @@ Public Class ucConfig
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
             End If
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.RemoveControl(Me.m_pbBlueBridge)
+            cmd.RemoveControl(Me.m_pbWoRMS)
         Finally
             MyBase.Dispose(disposing)
         End Try
     End Sub
+
+    Public Property UIContext As cUIContext _
+        Implements IUIElement.UIContext
 
     Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
         Me.m_plugin.ConnectionTimeOut = CInt(Me.m_nudConnTO.Value)
@@ -79,28 +96,6 @@ Public Class ucConfig
 
     Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
         ' NOP
-    End Sub
-
-    Public Property UIContext As cUIContext _
-        Implements IUIElement.UIContext
-
-    Private Sub OnVisitWoRMS(sender As Object, e As System.EventArgs) _
-        Handles m_plLogo.Click
-        Me.VisitSponsor("http://www.marinespecies.org")
-    End Sub
-
-    Private Sub OnVisitBlueBridge(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbBlueBridge.Click
-        Me.VisitSponsor("http://www.i-marine.eu/Content/eLibrary.aspx?id=786ae7dd-f868-4c19-b611-3500b6697bee&li=0")
-    End Sub
-
-    Private Sub VisitSponsor(strURL As String)
-        Try
-            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.Invoke(strURL)
-        Catch ex As Exception
-            cLog.Write(ex, "EwEWormsPlugIn.ViewSponsor(" & strURL & ")")
-        End Try
     End Sub
 
 End Class

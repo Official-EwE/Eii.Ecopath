@@ -276,13 +276,13 @@ Namespace Controls
 
             ' Brush picker
             Me.pbBrush.Enabled = ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Hatch) > 0)
-            Me.pbBrush.BorderStyle = DirectCast(IIf(Me.pbBrush.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle), BorderStyle)
+            Me.pbBrush.BorderStyle = IIF(Me.pbBrush.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
 
             Me.plBackColor.Enabled = ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.BackColor) > 0)
-            Me.plBackColor.BorderStyle = DirectCast(IIf(Me.plBackColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle), BorderStyle)
+            Me.plBackColor.BorderStyle = IIF(Me.plBackColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
 
             Me.plForeColor.Enabled = ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.ForeColor) > 0)
-            Me.plForeColor.BorderStyle = DirectCast(IIf(Me.plForeColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle), BorderStyle)
+            Me.plForeColor.BorderStyle = IIF(Me.plForeColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
 
             Me.UpdateColors()
         End Sub

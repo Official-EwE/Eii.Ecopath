@@ -30,6 +30,7 @@ Imports EwEUtils.Utilities
 Imports EwECore
 Imports System.Reflection
 Imports System.IO
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -61,11 +62,23 @@ Public Class frmImport
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.AddControl(Me.m_pbAquamaps, "http://aquamaps.org")
+        cmd.AddControl(Me.m_pbJRC, "https://ec.europa.eu/jrc/")
+
         Me.UpdateControls()
         Me.CenterToParent()
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmd As cCommand = cmdh.GetCommand(cBrowserCommand.COMMAND_NAME)
+        cmd.RemoveControl(Me.m_pbAquamaps)
+        cmd.RemoveControl(Me.m_pbJRC)
+
         MyBase.OnFormClosed(e)
     End Sub
 
@@ -122,21 +135,6 @@ Public Class frmImport
         Catch ex As Exception
             ' Whoah!
         End Try
-
-    End Sub
-
-
-    Private Sub OnVisitAquamaps(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbAquamaps.Click
-
-        Me.VisitURL("http://aquamaps.org")
-
-    End Sub
-
-    Private Sub OnVistJRC(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbJRC.Click
-
-        Me.VisitURL("https://ec.europa.eu/jrc/")
 
     End Sub
 

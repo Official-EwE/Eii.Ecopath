@@ -33,6 +33,7 @@ Partial Class ucConfig
         Me.m_tbxWebAccount = New System.Windows.Forms.TextBox()
         Me.m_tbxWebPwd = New System.Windows.Forms.TextBox()
         Me.m_tlpAll = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbBlueBridge = New System.Windows.Forms.PictureBox()
         Me.m_plBits = New System.Windows.Forms.Panel()
         Me.m_tlpConnection = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnConnect = New System.Windows.Forms.Button()
@@ -50,13 +51,12 @@ Partial Class ucConfig
         Me.m_rbAccess = New System.Windows.Forms.RadioButton()
         Me.m_btnToggleViewChars = New System.Windows.Forms.Button()
         Me.m_btnPickAccess = New System.Windows.Forms.Button()
-        Me.m_bpLogo = New System.Windows.Forms.PictureBox()
-        Me.m_pbBlueBridge = New System.Windows.Forms.PictureBox()
+        Me.m_pbFishBase = New System.Windows.Forms.PictureBox()
         Me.m_tlpAll.SuspendLayout()
+        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plBits.SuspendLayout()
         Me.m_tlpConnection.SuspendLayout()
-        CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbFishBase, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblWebUser
@@ -85,8 +85,15 @@ Partial Class ucConfig
         resources.ApplyResources(Me.m_tlpAll, "m_tlpAll")
         Me.m_tlpAll.Controls.Add(Me.m_pbBlueBridge, 0, 2)
         Me.m_tlpAll.Controls.Add(Me.m_plBits, 0, 1)
-        Me.m_tlpAll.Controls.Add(Me.m_bpLogo, 0, 0)
+        Me.m_tlpAll.Controls.Add(Me.m_pbFishBase, 0, 0)
         Me.m_tlpAll.Name = "m_tlpAll"
+        '
+        'm_pbBlueBridge
+        '
+        Me.m_pbBlueBridge.BackgroundImage = Global.EwEFishBasePlugin.My.Resources.Resources.BlueBridge_xparent
+        resources.ApplyResources(Me.m_pbBlueBridge, "m_pbBlueBridge")
+        Me.m_pbBlueBridge.Name = "m_pbBlueBridge"
+        Me.m_pbBlueBridge.TabStop = False
         '
         'm_plBits
         '
@@ -206,20 +213,13 @@ Partial Class ucConfig
         resources.ApplyResources(Me.m_btnPickAccess, "m_btnPickAccess")
         Me.m_btnPickAccess.Name = "m_btnPickAccess"
         '
-        'm_bpLogo
+        'm_pbFishBase
         '
-        Me.m_bpLogo.BackColor = System.Drawing.Color.White
-        Me.m_bpLogo.BackgroundImage = Global.EwEFishBasePlugin.My.Resources.Resources.fblogo_new
-        resources.ApplyResources(Me.m_bpLogo, "m_bpLogo")
-        Me.m_bpLogo.Name = "m_bpLogo"
-        Me.m_bpLogo.TabStop = False
-        '
-        'm_pbBlueBridge
-        '
-        Me.m_pbBlueBridge.BackgroundImage = Global.EwEFishBasePlugin.My.Resources.Resources.BlueBridge_xparent
-        resources.ApplyResources(Me.m_pbBlueBridge, "m_pbBlueBridge")
-        Me.m_pbBlueBridge.Name = "m_pbBlueBridge"
-        Me.m_pbBlueBridge.TabStop = False
+        Me.m_pbFishBase.BackColor = System.Drawing.Color.White
+        Me.m_pbFishBase.BackgroundImage = Global.EwEFishBasePlugin.My.Resources.Resources.fblogo_new
+        resources.ApplyResources(Me.m_pbFishBase, "m_pbFishBase")
+        Me.m_pbFishBase.Name = "m_pbFishBase"
+        Me.m_pbFishBase.TabStop = False
         '
         'ucConfig
         '
@@ -227,11 +227,11 @@ Partial Class ucConfig
         Me.Name = "ucConfig"
         resources.ApplyResources(Me, "$this")
         Me.m_tlpAll.ResumeLayout(False)
+        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_plBits.ResumeLayout(False)
         Me.m_plBits.PerformLayout()
         Me.m_tlpConnection.ResumeLayout(False)
-        CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbFishBase, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -257,6 +257,6 @@ Partial Class ucConfig
     Private WithEvents m_tlpConnection As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnConnect As System.Windows.Forms.Button
     Private WithEvents m_btnDisconnect As System.Windows.Forms.Button
-    Private WithEvents m_bpLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbFishBase As System.Windows.Forms.PictureBox
     Private WithEvents m_pbBlueBridge As System.Windows.Forms.PictureBox
 End Class

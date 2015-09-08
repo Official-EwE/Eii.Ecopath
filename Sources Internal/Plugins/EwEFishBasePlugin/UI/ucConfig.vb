@@ -25,6 +25,7 @@ Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -52,6 +53,8 @@ Public Class ucConfig
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        If (Me.UIContext Is Nothing) Then Return
+
         Me.UpdateControls()
 
         Me.m_tbxAccess.Text = My.Settings.AccessPath
@@ -68,6 +71,11 @@ Public Class ucConfig
         Me.Connection = Me.m_ppt.Connection
         Me.m_cmbMaxResults.Text = Me.m_ppt.MaxResults.ToString
 
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.AddControl(Me.m_pbBlueBridge, "http://www.i-marine.eu/Content/eLibrary.aspx?id=786ae7dd-f868-4c19-b611-3500b6697bee&li=0")
+        cmd.AddControl(Me.m_pbFishBase, "http://www.fishbase.org")
+
         Me.UpdateControls()
 
     End Sub
@@ -76,7 +84,12 @@ Public Class ucConfig
 
         ' Store settings
         If Me.m_rbAccess.Checked Then My.Settings.ConnectionType = 0
-        If Me.m_rbWebService.Checked Then My.Settings.ConnectionType = 2
+        If Me.m_rbWebService.Checked Then My.Settings.ConnectionType = 1
+
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.RemoveControl(Me.m_pbBlueBridge)
+        cmd.RemoveControl(Me.m_pbFishBase)
 
         My.Settings.AccessPath = Me.m_tbxAccess.Text
         My.Settings.WSDLserver = Me.m_tbxWebServer.Text
@@ -274,25 +287,7 @@ Public Class ucConfig
         End Try
     End Sub
 
-    Private Sub OnVisitFishBase(sender As Object, e As System.EventArgs) _
-        Handles m_bpLogo.Click
-        Me.VisitSponsor("http://www.fishbase.org")
-    End Sub
-
-    Private Sub VisitBlueBridge(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbBlueBridge.Click
-        Me.VisitSponsor("http://www.i-marine.eu/Content/eLibrary.aspx?id=786ae7dd-f868-4c19-b611-3500b6697bee&li=0")
-    End Sub
-
 #End Region ' Generic controls
 
-    Private Sub VisitSponsor(strURL As String)
-        Try
-            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.Invoke(strURL)
-        Catch ex As Exception
-            cLog.Write(ex, "EwEWormsPlugIn.ViewSponsor(" & strURL & ")")
-        End Try
-    End Sub
 
 End Class

@@ -29,7 +29,7 @@ Partial Class ucConfig
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucConfig))
-        Me.m_plLogo = New System.Windows.Forms.Panel()
+        Me.m_pbWoRMS = New System.Windows.Forms.PictureBox()
         Me.m_lblConnTO = New System.Windows.Forms.Label()
         Me.m_nudConnTO = New System.Windows.Forms.NumericUpDown()
         Me.m_lblSecs1 = New System.Windows.Forms.Label()
@@ -37,16 +37,18 @@ Partial Class ucConfig
         Me.m_lblSecs2 = New System.Windows.Forms.Label()
         Me.m_nudReplyTO = New System.Windows.Forms.NumericUpDown()
         Me.m_pbBlueBridge = New System.Windows.Forms.PictureBox()
+        CType(Me.m_pbWoRMS, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudConnTO, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudReplyTO, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'm_plLogo
+        'm_pbWoRMS
         '
-        resources.ApplyResources(Me.m_plLogo, "m_plLogo")
-        Me.m_plLogo.BackColor = System.Drawing.Color.White
-        Me.m_plLogo.Name = "m_plLogo"
+        resources.ApplyResources(Me.m_pbWoRMS, "m_pbWoRMS")
+        Me.m_pbWoRMS.BackColor = System.Drawing.Color.White
+        Me.m_pbWoRMS.Name = "m_pbWoRMS"
+        Me.m_pbWoRMS.TabStop = False
         '
         'm_lblConnTO
         '
@@ -102,8 +104,9 @@ Partial Class ucConfig
         Me.Controls.Add(Me.m_lblReplyTO)
         Me.Controls.Add(Me.m_lblSecs1)
         Me.Controls.Add(Me.m_lblConnTO)
-        Me.Controls.Add(Me.m_plLogo)
+        Me.Controls.Add(Me.m_pbWoRMS)
         Me.Name = "ucConfig"
+        CType(Me.m_pbWoRMS, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudConnTO, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudReplyTO, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbBlueBridge, System.ComponentModel.ISupportInitialize).EndInit()
@@ -111,7 +114,7 @@ Partial Class ucConfig
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_plLogo As System.Windows.Forms.Panel
+    Private WithEvents m_pbWoRMS As System.Windows.Forms.PictureBox
     Private WithEvents m_lblConnTO As System.Windows.Forms.Label
     Private WithEvents m_nudConnTO As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblSecs1 As System.Windows.Forms.Label

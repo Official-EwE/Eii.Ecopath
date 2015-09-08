@@ -783,37 +783,37 @@
   <data name="&gt;&gt;m_plBits.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_bpLogo.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="m_pbFishBase.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
   </data>
-  <data name="m_bpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbFishBase.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_bpLogo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_pbFishBase.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_bpLogo.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbFishBase.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_bpLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_pbFishBase.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_bpLogo.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbFishBase.Size" type="System.Drawing.Size, System.Drawing">
     <value>275, 100</value>
   </data>
-  <data name="m_bpLogo.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbFishBase.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_bpLogo.Name" xml:space="preserve">
-    <value>m_bpLogo</value>
+  <data name="&gt;&gt;m_pbFishBase.Name" xml:space="preserve">
+    <value>m_pbFishBase</value>
   </data>
-  <data name="&gt;&gt;m_bpLogo.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbFishBase.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_bpLogo.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbFishBase.Parent" xml:space="preserve">
     <value>m_tlpAll</value>
   </data>
-  <data name="&gt;&gt;m_bpLogo.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbFishBase.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_tlpAll.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -844,7 +844,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpAll.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbBlueBridge" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plBits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_bpLogo" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,100,Percent,100,Absolute,55" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbBlueBridge" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plBits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbFishBase" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,100,Percent,100,Absolute,55" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

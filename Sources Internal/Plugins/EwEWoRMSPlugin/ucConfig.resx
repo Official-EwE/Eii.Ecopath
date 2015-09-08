@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_plLogo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_pbWoRMS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_plLogo.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_pbWoRMS.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAfoAAACVCAIAAAA/oq8lAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
         MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxIAAAsSAdLdfvwAAEAcSURBVHhe7Z1/jJXXeefxema2
@@ -402,32 +402,32 @@
         KUGU+0gkEpkCXL78/wFOmejlkkndvQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="m_plLogo.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="m_pbWoRMS.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_plLogo.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbWoRMS.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_plLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_pbWoRMS.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_plLogo.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbWoRMS.Size" type="System.Drawing.Size, System.Drawing">
     <value>400, 112</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_plLogo.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbWoRMS.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_plLogo.Name" xml:space="preserve">
-    <value>m_plLogo</value>
+  <data name="&gt;&gt;m_pbWoRMS.Name" xml:space="preserve">
+    <value>m_pbWoRMS</value>
   </data>
-  <data name="&gt;&gt;m_plLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_pbWoRMS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_plLogo.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbWoRMS.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_plLogo.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbWoRMS.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="m_lblConnTO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
