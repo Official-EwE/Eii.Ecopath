@@ -54,17 +54,17 @@ Partial Class dlgDefineTaxa
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy()
+        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btnProps = New System.Windows.Forms.Button()
+        Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_pbSearching = New System.Windows.Forms.PictureBox()
         Me.m_cmbFilter = New System.Windows.Forms.ComboBox()
+        Me.m_btnAdd = New System.Windows.Forms.Button()
         Me.m_lblIn = New System.Windows.Forms.Label()
         Me.m_gridResults = New ScientificInterface.gridTaxonSearchResults()
         Me.m_lblEngine = New System.Windows.Forms.Label()
-        Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_btnProps = New System.Windows.Forms.Button()
         Me.m_cbShowCodes = New System.Windows.Forms.CheckBox()
-        Me.m_btnAdd = New System.Windows.Forms.Button()
-        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -194,6 +194,36 @@ Partial Class dlgDefineTaxa
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridGroups.UIContext = Nothing
         '
+        'm_hdrEdit
+        '
+        resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+        Me.m_hdrEdit.CanCollapseParent = False
+        Me.m_hdrEdit.CollapsedParentHeight = 0
+        Me.m_hdrEdit.IsCollapsed = False
+        Me.m_hdrEdit.Name = "m_hdrEdit"
+        '
+        'm_btnProps
+        '
+        resources.ApplyResources(Me.m_btnProps, "m_btnProps")
+        Me.m_btnProps.Name = "m_btnProps"
+        Me.m_btnProps.UseVisualStyleBackColor = True
+        '
+        'm_hdrProps
+        '
+        resources.ApplyResources(Me.m_hdrProps, "m_hdrProps")
+        Me.m_hdrProps.CanCollapseParent = False
+        Me.m_hdrProps.CollapsedParentHeight = 0
+        Me.m_hdrProps.IsCollapsed = False
+        Me.m_hdrProps.Name = "m_hdrProps"
+        '
+        'm_hdrSearch
+        '
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.CanCollapseParent = False
+        Me.m_hdrSearch.CollapsedParentHeight = 0
+        Me.m_hdrSearch.IsCollapsed = False
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
         'm_pbSearching
         '
         resources.ApplyResources(Me.m_pbSearching, "m_pbSearching")
@@ -206,6 +236,12 @@ Partial Class dlgDefineTaxa
         Me.m_cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbFilter.FormattingEnabled = True
         Me.m_cmbFilter.Name = "m_cmbFilter"
+        '
+        'm_btnAdd
+        '
+        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+        Me.m_btnAdd.Name = "m_btnAdd"
+        Me.m_btnAdd.UseVisualStyleBackColor = True
         '
         'm_lblIn
         '
@@ -249,47 +285,11 @@ Partial Class dlgDefineTaxa
         resources.ApplyResources(Me.m_lblEngine, "m_lblEngine")
         Me.m_lblEngine.Name = "m_lblEngine"
         '
-        'm_hdrEdit
-        '
-        resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
-        Me.m_hdrEdit.CanCollapseParent = False
-        Me.m_hdrEdit.CollapsedParentHeight = 0
-        Me.m_hdrEdit.IsCollapsed = False
-        Me.m_hdrEdit.Name = "m_hdrEdit"
-        '
-        'm_hdrProps
-        '
-        resources.ApplyResources(Me.m_hdrProps, "m_hdrProps")
-        Me.m_hdrProps.CanCollapseParent = False
-        Me.m_hdrProps.CollapsedParentHeight = 0
-        Me.m_hdrProps.IsCollapsed = False
-        Me.m_hdrProps.Name = "m_hdrProps"
-        '
-        'm_btnProps
-        '
-        resources.ApplyResources(Me.m_btnProps, "m_btnProps")
-        Me.m_btnProps.Name = "m_btnProps"
-        Me.m_btnProps.UseVisualStyleBackColor = True
-        '
         'm_cbShowCodes
         '
         resources.ApplyResources(Me.m_cbShowCodes, "m_cbShowCodes")
         Me.m_cbShowCodes.Name = "m_cbShowCodes"
         Me.m_cbShowCodes.UseVisualStyleBackColor = True
-        '
-        'm_btnAdd
-        '
-        resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
-        Me.m_btnAdd.Name = "m_btnAdd"
-        Me.m_btnAdd.UseVisualStyleBackColor = True
-        '
-        'm_hdrSearch
-        '
-        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
-        Me.m_hdrSearch.CanCollapseParent = False
-        Me.m_hdrSearch.CollapsedParentHeight = 0
-        Me.m_hdrSearch.IsCollapsed = False
-        Me.m_hdrSearch.Name = "m_hdrSearch"
         '
         'dlgDefineTaxa
         '

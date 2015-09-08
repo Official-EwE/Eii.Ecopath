@@ -90,15 +90,6 @@ Public Class gridDefineTaxonomy
         Private m_iDBIDTaxon As Integer = cCore.NULL_VALUE
         Private m_iTaxon As Integer = -1
 
-        ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
-        Private m_iGroup As Integer = 0
-        ''' <summary>Index of the stanza configuration that this taxon contributes to.</summary>
-        Private m_iStanza As Integer = 0
-        ''' <summary>Proportion this taxon contributes to group/stanza biomass.</summary>
-        Private m_sProportion As Single = 1.0!
-        ''' <summary>Proportion this taxon contributes to group/stanza catch.</summary>
-        Private m_sPropCatch As Single = 1.0!
-
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
@@ -111,9 +102,7 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
             MyBase.New("")
-            Me.m_iGroup = group.Index
-            Me.m_iStanza = 0
-            Me.m_sProportion = 1.0!
+            Me.Group = group.Index
             Me.Common = group.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
@@ -125,9 +114,8 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal stanza As cStanzaGroup)
             MyBase.New("")
-            Me.m_iGroup = 0
-            Me.m_iStanza = stanza.Index
-            Me.m_sProportion = 1.0!
+            Me.Group = 0
+            Me.Stanza = stanza.Index
             Me.Common = stanza.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
@@ -141,9 +129,9 @@ Public Class gridDefineTaxonomy
             MyBase.New(taxon.Source)
             Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
             Me.m_iTaxon = taxon.Index
-            Me.m_iGroup = taxon.iGroup
-            Me.m_iStanza = taxon.iStanza
-            Me.m_sProportion = taxon.Proportion
+            Me.Group = taxon.iGroup
+            Me.Stanza = taxon.iStanza
+            Me.Proportion = taxon.Proportion
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFB = taxon.CodeFishBase
             Me.CodeSLB = taxon.CodeSeaLifeBase
@@ -261,9 +249,9 @@ Public Class gridDefineTaxonomy
 
                 Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.m_iDBIDTaxon)
 
-                If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.m_sProportion, 5)) Then Return True
-                If (taxon.iGroup <> Me.m_iGroup) Then Return True
-                If (taxon.iStanza <> Me.m_iStanza) Then Return True
+                If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.Proportion, 5)) Then Return True
+                If (taxon.iGroup <> Me.Group) Then Return True
+                If (taxon.iStanza <> Me.Stanza) Then Return True
                 If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
                 If (taxon.CodeFishBase <> Me.CodeFB) Then Return True
                 If (taxon.CodeSeaLifeBase <> Me.CodeSLB) Then Return True
@@ -340,64 +328,37 @@ Public Class gridDefineTaxonomy
         ''' Get/set the group index of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Group() As Integer
-            Get
-                Return Me.m_iGroup
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iGroup = value
-            End Set
-        End Property
+        Public Property Group() As Integer = -1
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the stanza index of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Stanza() As Integer
-            Get
-                Return Me.m_iStanza
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iStanza = value
-            End Set
-        End Property
+        Public Property Stanza() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the group/stanza biomass proportion for this taxon.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Proportion() As Single
-            Get
-                Return Me.m_sProportion
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sProportion = value
-            End Set
-        End Property
+        Public Property Proportion() As Single = 1.0!
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the group/stanza catch proportion for this taxon.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PropCatch() As Single
-            Get
-                Return Me.m_sPropCatch
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sPropCatch = value
-            End Set
-        End Property
+        Public Property PropCatch() As Single = 1.0
+
 
         Public Sub ApplyChanges(ByVal taxon As cTaxon)
             If Me.IsChanged(taxon) Then
                 With taxon
                     .Name = Me.Common
-                    .iGroup = Me.m_iGroup
-                    .iStanza = Me.m_iStanza
-                    .Proportion = Me.m_sProportion
+                    .iGroup = Me.Group
+                    .iStanza = Me.Stanza
+                    .Proportion = Me.Proportion
                     .CodeSAUP = Me.CodeSAUP
                     .CodeFishBase = Me.CodeFB
                     .CodeSeaLifeBase = Me.CodeSLB
