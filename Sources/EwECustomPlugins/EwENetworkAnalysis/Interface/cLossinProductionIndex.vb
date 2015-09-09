@@ -37,6 +37,7 @@ Public Class cLossinProductionIndex
     End Sub
 
     Public Overrides Function PageTitle() As String
+        ' ToDo: globalize this
         Return "Loss of Production index"
     End Function
 
@@ -73,8 +74,8 @@ Public Class cLossinProductionIndex
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
         astrRowContent(2) = My.Resources.COL_HDR_LINDEX
         astrRowContent(3) = My.Resources.COL_HDR_PSUST
-        astrRowContent(4) = My.Resources.COL_HDR_PSUST_SDLOWER
-        astrRowContent(5) = My.Resources.COL_HDR_PSUST_SDUPPER
+        'astrRowContent(4) = My.Resources.COL_HDR_PSUST_SDLOWER
+        'astrRowContent(5) = My.Resources.COL_HDR_PSUST_SDUPPER
 
         Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True
@@ -84,8 +85,8 @@ Public Class cLossinProductionIndex
             astrRowContent(1) = NetworkManager.GroupName(i)
             astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.Lindex(i))
             astrRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.Psust(i))
-            astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PsustSDlower(i))
-            astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PsustSDupper(i))
+            'astrRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PsustSDlower(i))
+            'astrRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PsustSDupper(i))
             LindexTot += NetworkManager.Lindex(i)
             Grid.Rows(i).SetValues(astrRowContent)
             Grid.Rows(i).Visible = True
@@ -112,7 +113,7 @@ Public Class cLossinProductionIndex
     Private Sub SetUpGridColumn()
 
         'DataGrid.RowCount = 1
-        Grid.ColumnCount = 6
+        Grid.ColumnCount = 4
 
         SetGridColumnPropertyDefault(Grid)
 
