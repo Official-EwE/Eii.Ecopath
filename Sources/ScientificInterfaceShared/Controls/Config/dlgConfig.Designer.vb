@@ -74,7 +74,6 @@ Namespace Controls
             '
             'dlgConfig
             '
-            Me.AcceptButton = Me.m_btnOK
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.m_btnCancel

@@ -155,8 +155,11 @@ Namespace Controls
         End Sub
 
         Protected Overridable Sub UpdateControls()
-            Me.m_btnOK.Enabled = DirectCast(Me.m_ctrl, IOptionsPage).CanApply
-            Me.m_btnDefaults.Enabled = DirectCast(Me.m_ctrl, IOptionsPage).CanSetDefaults
+
+            Dim page As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
+            Me.m_btnOK.Enabled = page.CanApply
+            Me.m_btnDefaults.Enabled = page.CanSetDefaults
+
         End Sub
 
     End Class
