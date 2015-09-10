@@ -259,6 +259,17 @@ Public Class cPlotOfMixedTrophicImpact
         End Set
     End Property
 
+    Public Property DrawColors() As Boolean
+        Get
+            Return Me.m_style = cArrayGraphRenderer.eRenderStyle.Colours
+        End Get
+        Set(ByVal value As Boolean)
+            Me.m_style = cArrayGraphRenderer.eRenderStyle.Colours
+            Me.Plot.Invalidate(True)
+        End Set
+    End Property
+
+
     Public Property DrawGrid() As Boolean
         Get
             Return Me.m_bDrawGrid

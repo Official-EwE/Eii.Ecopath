@@ -687,7 +687,7 @@
     <Compile Include="Settings\IXMLDocSettings.vb" />
     <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cColorRamp.vb" />
-    <Compile Include="Style\ColorRamps\cSAUPColorRamp.vb" />
+    <Compile Include="Style\ColorRamps\cEwEColorRamp.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
     <Compile Include="Style\Localization\cLocalizedDisplayNameAttribute.vb" />

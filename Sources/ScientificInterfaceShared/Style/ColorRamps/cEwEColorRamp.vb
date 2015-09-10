@@ -162,6 +162,6 @@ Namespace Style
 
 #End If
 
-    End Class ' cSAUPColorRamp
+    End Class
 
 End Namespace

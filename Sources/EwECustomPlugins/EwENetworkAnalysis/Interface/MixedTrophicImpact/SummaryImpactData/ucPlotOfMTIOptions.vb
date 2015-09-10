@@ -38,6 +38,7 @@ Public Class ucPlotOfMTIOptions
     Private WithEvents m_plGraph As System.Windows.Forms.Panel
     Private WithEvents m_hdrPlot As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_cbShowLegend As System.Windows.Forms.CheckBox
+    Private WithEvents m_rbColors As System.Windows.Forms.RadioButton
     Private m_content As cPlotOfMixedTrophicImpact = Nothing
 
     Public Sub New(ByVal content As cPlotOfMixedTrophicImpact)
@@ -62,6 +63,7 @@ Public Class ucPlotOfMTIOptions
         Me.m_plGraph = New System.Windows.Forms.Panel()
         Me.m_hdrPlot = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_cbShowLegend = New System.Windows.Forms.CheckBox()
+        Me.m_rbColors = New System.Windows.Forms.RadioButton()
         Me.m_tlpOptions.SuspendLayout()
         Me.m_plLabels.SuspendLayout()
         Me.m_plData.SuspendLayout()
@@ -205,13 +207,14 @@ Public Class ucPlotOfMTIOptions
         'm_plData
         '
         Me.m_plData.Controls.Add(Me.m_hdrData)
+        Me.m_plData.Controls.Add(Me.m_rbColors)
         Me.m_plData.Controls.Add(Me.m_rbRectangles)
         Me.m_plData.Controls.Add(Me.m_rbCircles)
         Me.m_plData.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plData.Location = New System.Drawing.Point(0, 112)
         Me.m_plData.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plData.Name = "m_plData"
-        Me.m_plData.Size = New System.Drawing.Size(134, 66)
+        Me.m_plData.Size = New System.Drawing.Size(134, 97)
         Me.m_plData.TabIndex = 1
         '
         'm_hdrData
@@ -234,7 +237,7 @@ Public Class ucPlotOfMTIOptions
         Me.m_plGraph.Controls.Add(Me.m_cbFitToScreen)
         Me.m_plGraph.Controls.Add(Me.m_cbShowGrid)
         Me.m_plGraph.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plGraph.Location = New System.Drawing.Point(0, 178)
+        Me.m_plGraph.Location = New System.Drawing.Point(0, 209)
         Me.m_plGraph.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plGraph.Name = "m_plGraph"
         Me.m_plGraph.Size = New System.Drawing.Size(134, 88)
@@ -262,6 +265,17 @@ Public Class ucPlotOfMTIOptions
         Me.m_cbShowLegend.TabIndex = 2
         Me.m_cbShowLegend.Text = "Draw &legend"
         Me.m_cbShowLegend.UseVisualStyleBackColor = True
+        '
+        'm_rbColors
+        '
+        Me.m_rbColors.AutoSize = True
+        Me.m_rbColors.Location = New System.Drawing.Point(3, 67)
+        Me.m_rbColors.Name = "m_rbColors"
+        Me.m_rbColors.Size = New System.Drawing.Size(54, 17)
+        Me.m_rbColors.TabIndex = 3
+        Me.m_rbColors.TabStop = True
+        Me.m_rbColors.Text = "Co&lors"
+        Me.m_rbColors.UseVisualStyleBackColor = True
         '
         'ucPlotOfMTIOptions
         '
@@ -311,15 +325,17 @@ Public Class ucPlotOfMTIOptions
     End Sub
 
     Private Sub OnDrawModeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_rbCircles.CheckedChanged, m_rbRectangles.CheckedChanged
+        Handles m_rbCircles.CheckedChanged, m_rbRectangles.CheckedChanged, m_rbColors.CheckedChanged
 
         If (Me.m_content Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
 
         If Me.m_rbCircles.Checked Then
             Me.m_content.DrawCircles = True
-        Else
+        ElseIf Me.m_rbRectangles.Checked Then
             Me.m_content.DrawRectangles = True
+        Else
+            Me.m_content.DrawColors = True
         End If
 
     End Sub
