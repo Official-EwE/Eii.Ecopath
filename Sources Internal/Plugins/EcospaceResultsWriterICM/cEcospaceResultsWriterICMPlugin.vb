@@ -112,6 +112,7 @@ Public Class cEcospaceResultsWriterICMPlugin
 
             FileName = Me.ToPrefix() + m_delim + ToModelYear(iModelTimeStep) + MODELTYPE + ToVarCode(varname, iGrp, iModelTimeStep) + ".asc"
             Return True
+            'Return False
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -211,8 +212,11 @@ Public Class cEcospaceResultsWriterICMPlugin
 
 
     Public Sub Init()
-        m_SpCodes = New String() {"N/A", "JC", "AC", "JA", "AA", "BA", "BC", "JB", "AB", "JT", "AT", "JL", "AL", "JN", "AN", "DE", "DO", "GS", "JM", "AM", "JG", "AG", "KI", "JS", "AS", "MO", "OD", "SP", "SE", "SA", "PH", "JR", "AR", "SV", "BI", "JX", "AX", "JH", "AH", "JE", "AE", "SI", "JF", "AF", "JO", "AO", "JU", "AU", "JP", "AP", "JI", "AI", "JW", "AW", "ZB", "ZP"}
-        m_RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "UTA", "MEL", "LBA", "BRE", "CAS", "CHR"}
+
+        m_SpCodes = New String() {"N/A", "JH", "AH", "DO", "BI", "JU", "AU", "JR", "AR", "JB", "AB", "JS", "AS", "JG", "AG", "JT", "AT", "JX", "AX", "JF", "AF", "JC", "AC", "JE", "AE", "JP", "AP", "JO", "AO", "JI", "AI", "JA", "AA", "JM", "AM", "KI", "SI", "JL", "AL", "JN", "AN", "JW", "AW", "GS", "SP", "SE", "SA", "OD", "BC", "MO", "ZB", "ZP", "PH", "BA", "SV", "DE"}
+
+        'm_RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "UTA", "MEL", "LBA", "BRE", "CAS", "CHR"}
+        m_RegionCodes = New String() {"TOT", "LAV", "LTB", "UBA", "BFD", "UPO", "LPO", "MEL", "LBA", "BRE", "CAS", "CHR"}
         m_FleetCodes = New String() {"N/A", "BS", "WS", "BC", "BD", "OY", "RC", "ME"}
 
         m_dctTypeCodes = New Dictionary(Of eVarNameFlags, String)
