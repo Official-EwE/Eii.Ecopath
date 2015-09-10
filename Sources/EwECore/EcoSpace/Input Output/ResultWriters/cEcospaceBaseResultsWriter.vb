@@ -264,6 +264,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Dim Filename As String
         If Me.m_core.PluginManager.EcospaceResultsMapGroupFileName(Filename, varname, iGrp, strExt, iModelTimeStep) Then
             'File was set by the plugin
+            'System.Console.WriteLine("Plugin Filename = " + Filename)
+
         Else
             'Ok Use the default filename
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -277,7 +279,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             End If
 
             Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
-                                                               cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
+                                                                        cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
         Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
