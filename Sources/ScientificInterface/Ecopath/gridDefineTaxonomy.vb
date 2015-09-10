@@ -102,7 +102,8 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
             MyBase.New("")
-            Me.Group = group.Index
+            Me.iGroup = group.Index
+            Me.iStanza = 0
             Me.Common = group.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
@@ -114,8 +115,8 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal stanza As cStanzaGroup)
             MyBase.New("")
-            Me.Group = 0
-            Me.Stanza = stanza.Index
+            Me.iGroup = 0
+            Me.iStanza = stanza.Index
             Me.Common = stanza.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
@@ -129,8 +130,8 @@ Public Class gridDefineTaxonomy
             MyBase.New(taxon.Source)
             Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
             Me.m_iTaxon = taxon.Index
-            Me.Group = taxon.iGroup
-            Me.Stanza = taxon.iStanza
+            Me.iGroup = taxon.iGroup
+            Me.iStanza = taxon.iStanza
             Me.Proportion = taxon.Proportion
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFB = taxon.CodeFishBase
@@ -250,8 +251,8 @@ Public Class gridDefineTaxonomy
                 Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.m_iDBIDTaxon)
 
                 If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.Proportion, 5)) Then Return True
-                If (taxon.iGroup <> Me.Group) Then Return True
-                If (taxon.iStanza <> Me.Stanza) Then Return True
+                If (taxon.iGroup <> Me.iGroup) Then Return True
+                If (taxon.iStanza <> Me.iStanza) Then Return True
                 If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
                 If (taxon.CodeFishBase <> Me.CodeFB) Then Return True
                 If (taxon.CodeSeaLifeBase <> Me.CodeSLB) Then Return True
@@ -328,14 +329,14 @@ Public Class gridDefineTaxonomy
         ''' Get/set the group index of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Group() As Integer = -1
+        Public Property iGroup() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the stanza index of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Stanza() As Integer = 0
+        Public Property iStanza() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -356,8 +357,8 @@ Public Class gridDefineTaxonomy
             If Me.IsChanged(taxon) Then
                 With taxon
                     .Name = Me.Common
-                    .iGroup = Me.Group
-                    .iStanza = Me.Stanza
+                    .iGroup = Me.iGroup
+                    .iStanza = Me.iStanza
                     .Proportion = Me.Proportion
                     .CodeSAUP = Me.CodeSAUP
                     .CodeFishBase = Me.CodeFB
@@ -514,7 +515,7 @@ Public Class gridDefineTaxonomy
 
                     For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
                         ti = Me.m_lTaxonInfo(iTaxon)
-                        If ti.Stanza = stz.Index Then
+                        If ti.iStanza = stz.Index Then
                             Me.AddTaxonRow(ti, iRow)
                         End If
                     Next
@@ -536,7 +537,7 @@ Public Class gridDefineTaxonomy
 
                 For iTaxon As Integer = 0 To Me.m_lTaxonInfo.Count - 1
                     ti = Me.m_lTaxonInfo(iTaxon)
-                    If ti.Group = grp.Index Then
+                    If ti.iGroup = grp.Index Then
                         Me.AddTaxonRow(ti, iRow)
                     End If
                 Next
@@ -872,9 +873,9 @@ Public Class gridDefineTaxonomy
         Else
             ti = New cTaxonInfo(taxon)
             If (grp Is Nothing) Then
-                ti.Stanza = stz.Index
+                ti.iStanza = stz.Index
             Else
-                ti.Group = grp.Index
+                ti.iGroup = grp.Index
             End If
         End If
 
@@ -912,7 +913,7 @@ Public Class gridDefineTaxonomy
         For Each ti As cTaxonInfo In Me.m_lTaxonInfo
             'bIsTaxonUsed = bIsTaxonUsed Or (ti.Equals(taxon))
             If (stz IsNot Nothing) Then
-                bStanzaHasTaxon = bStanzaHasTaxon Or (stz.Index = ti.Stanza)
+                bStanzaHasTaxon = bStanzaHasTaxon Or (stz.Index = ti.iStanza)
             End If
         Next
 
@@ -1077,12 +1078,12 @@ Public Class gridDefineTaxonomy
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
-                If ti.Stanza > 0 Then
-                    asTotalTaxon(ti.Stanza) += ti.Proportion
-                    aiTotalTaxon(ti.Stanza) += 1
+                If ti.iStanza > 0 Then
+                    asTotalTaxon(ti.iStanza) += ti.Proportion
+                    aiTotalTaxon(ti.iStanza) += 1
                 Else
-                    asTotalGroup(ti.Group) += ti.Proportion
-                    aiTotalGroup(ti.Group) += 1
+                    asTotalGroup(ti.iGroup) += ti.Proportion
+                    aiTotalGroup(ti.iGroup) += 1
                 End If
             End If
         Next
@@ -1090,21 +1091,21 @@ Public Class gridDefineTaxonomy
         For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
-                If ti.Stanza > 0 Then
+                If ti.iStanza > 0 Then
                     ' Has a total of 0?
-                    If (asTotalTaxon(ti.Stanza) = 0.0!) Then
+                    If (asTotalTaxon(ti.iStanza) = 0.0!) Then
                         ' #Yes: redistribute values
-                        ti.Proportion = 1.0! / aiTotalTaxon(ti.Stanza)
+                        ti.Proportion = 1.0! / aiTotalTaxon(ti.iStanza)
                     Else
-                        ti.Proportion = ti.Proportion / asTotalTaxon(ti.Stanza)
+                        ti.Proportion = ti.Proportion / asTotalTaxon(ti.iStanza)
                     End If
                 Else
                     ' Has a total of 0?
-                    If (asTotalGroup(ti.Group) = 0.0!) Then
+                    If (asTotalGroup(ti.iGroup) = 0.0!) Then
                         ' #Yes: redistribute values
-                        ti.Proportion = 1.0! / aiTotalGroup(ti.Group)
+                        ti.Proportion = 1.0! / aiTotalGroup(ti.iGroup)
                     Else
-                        ti.Proportion = ti.Proportion / asTotalGroup(ti.Group)
+                        ti.Proportion = ti.Proportion / asTotalGroup(ti.iGroup)
                     End If
                 End If
             End If
@@ -1172,7 +1173,7 @@ Public Class gridDefineTaxonomy
                 For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
                     ti = Me.m_lTaxonInfo(iTaxon)
                     If (ti.IsNew) Then
-                        bSuccess = bSuccess And Me.Core.AddTaxon(Math.Max(ti.Group, ti.Stanza), (ti.Stanza > 0), ti, ti.Proportion, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddTaxon(Math.Max(ti.iGroup, ti.iStanza), (ti.iStanza > 0), ti, ti.Proportion, iDBID)
                         ' Map this new ID during update
                         htTaxonID.Add(ti, iDBID)
                     End If
