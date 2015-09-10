@@ -88,14 +88,15 @@ Public Class ucConfig
     End Function
 
     Public Function CanSetDefaults() As Boolean Implements IOptionsPage.CanSetDefaults
-        Return False
+        Return True
     End Function
 
     Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) _
         Implements IOptionsPage.OnChanged
 
     Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
-        ' NOP
+        Me.m_nudConnTO.Value = 60
+        Me.m_nudReplyTO.Value = 300
     End Sub
 
 End Class
