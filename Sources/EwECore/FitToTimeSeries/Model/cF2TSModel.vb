@@ -308,9 +308,10 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.m_runstoppedHandler(Me.RunState)
+            ' Done searching
             Me.RunState = eRunType.Idle
-
+            Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            Me.m_runstoppedHandler(eRunType.SensitivitySS2VByPredPrey)
 
         End Sub
 
@@ -420,8 +421,10 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.m_runstoppedHandler(Me.RunState)
+            ' Done searching
             Me.RunState = eRunType.Idle
+            Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            Me.m_runstoppedHandler(eRunType.SensitivitySS2VByPredator)
 
         End Sub
 
@@ -549,16 +552,12 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.m_runstoppedHandler(Me.RunState)
-
             ' Done searching
             Me.RunState = eRunType.Idle
-            m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            Me.m_runstoppedHandler(eRunType.Search)
 
         End Sub
-
-
-
 
 #End Region ' Search
 
