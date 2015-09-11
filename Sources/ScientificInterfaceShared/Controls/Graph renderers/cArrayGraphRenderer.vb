@@ -28,6 +28,8 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+' ToDo: FIX scaling; the legend renders on top of graph when groups are rendered as indexes only
+
 Namespace Controls
 
     ''' <summary>
@@ -50,7 +52,7 @@ Namespace Controls
         Private m_colorramp As cColorRamp = Nothing
 
         Public Sub New()
-            Me.m_colorramp = New cARGBColorRamp(New Color() {Color.DarkBlue, Color.Blue, Color.White, Color.Green, Color.DarkGreen}, New Double() {0, 0.25, 0.25, 0.25, 0.25})
+            Me.m_colorramp = New cARGBColorRamp(New Color() {Color.DarkRed, Color.Red, Color.White, Color.Blue, Color.DarkBlue}, New Double() {0, 0.25, 0.25, 0.25, 0.25})
         End Sub
 
         ''' -----------------------------------------------------------------------
