@@ -41,7 +41,6 @@ Namespace Ecosim
 
         Private m_F2TSManager As cF2TSManager = Nothing
         Private m_shapeHandler As cAnomalySearchShapeGUIHandler = Nothing
-        Private m_dlgSensOfSS As dlgSensitivityOfSStoV = Nothing
         Private m_SensitivityByPredatorResults As cSensitivityToVulResults = Nothing
         Private m_cmdTSWeights As cCommand = Nothing
         Private m_shapeSelected As cShapeData = Nothing
@@ -131,8 +130,7 @@ Namespace Ecosim
             RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
 
             If (Me.m_bIsRunOwner) Then
-                Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
-                                            AddressOf OnRunStopped, AddressOf Me.OnModelRun)
+                Me.m_F2TSManager.Disconnect()
                 Me.m_bIsRunOwner = False
             End If
 
@@ -219,7 +217,10 @@ Namespace Ecosim
 
         Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
             Try
-                Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+                ' Form may be closing because the core is shutting down. Nasty
+                If Not Me.IsDisposed Then
+                    Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+                End If
             Catch ex As Exception
 
             End Try
@@ -308,41 +309,37 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub m_tsbSensOfSS2V_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsbSensOfSS2V.Click
 
-            If (m_dlgSensOfSS IsNot Nothing) Then Return
-
-            Me.m_dlgSensOfSS = New dlgSensitivityOfSStoV(Me.UIContext, Me.m_F2TSManager)
-            Me.m_dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
+            Dim dlgSensOfSS As New dlgSensitivityOfSStoV(Me.UIContext, Me.m_F2TSManager)
+            dlgSensOfSS.NumBlocks = Me.m_vulnerabilityBlockCodeSelector.NumBlocks
 
             ' Init vulnerabiltiy blocks
             For iPred As Integer = 1 To Me.Core.nGroups
                 For iPrey As Integer = 1 To Me.Core.nGroups
-                    Me.m_dlgSensOfSS.VulnerabilityBlocks(iPred, iPrey) = Me.m_vulnerabilityBlockMatrix.Vulblocks(iPred, iPrey)
+                    dlgSensOfSS.VulnerabilityBlocks(iPred, iPrey) = Me.m_vulnerabilityBlockMatrix.Vulblocks(iPred, iPrey)
                 Next iPrey
             Next iPred
 
             m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             m_F2TSManager.nBlockCodes = m_vulnerabilityBlockCodeSelector.NumBlocks
 
-            If Me.m_dlgSensOfSS.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If dlgSensOfSS.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
 
                 ' Transfer values from the Sensitivity form to this form
                 ' Number of blocks, colors on the main form should match those set by the user on the Sensitivity form
-                Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Me.m_dlgSensOfSS.NumBlocks
+                Me.m_vulnerabilityBlockCodeSelector.NumBlocks = dlgSensOfSS.NumBlocks
                 ' Init block colors via selector
                 Me.m_vulnerabilityBlockMatrix.BlockColors = Me.m_vulnerabilityBlockCodeSelector.BlockColors
 
                 ' Transfer vulnerabiltiy blocks
                 For iPred As Integer = 1 To Me.Core.nGroups
                     For iPrey As Integer = 1 To Me.Core.nGroups
-                        Me.m_vulnerabilityBlockMatrix.Vulblocks(iPred, iPrey) = Me.m_dlgSensOfSS.VulnerabilityBlocks(iPred, iPrey)
+                        Me.m_vulnerabilityBlockMatrix.Vulblocks(iPred, iPrey) = dlgSensOfSS.VulnerabilityBlocks(iPred, iPrey)
                     Next iPrey
                 Next iPred
 
                 ' Adjust numblocks
                 Me.m_vulnerabilityBlockMatrix.Invalidate()
             End If
-
-            Me.m_dlgSensOfSS = Nothing
 
         End Sub
 
@@ -527,10 +524,6 @@ Namespace Ecosim
             Dim data As cF2TSResults = Me.m_F2TSManager.Results
             Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNSTARTED, data.BaseSS))
 
-            If (Me.m_dlgSensOfSS IsNot Nothing) Then
-                Me.m_dlgSensOfSS.OnRunStarted(runType, nSteps)
-            End If
-
             Me.IsRunning = True
             Me.UpdateControls()
 
@@ -564,12 +557,6 @@ Namespace Ecosim
                         Next
                     End If
 
-                Case eRunType.SensitivitySS2VByPredPrey, eRunType.SensitivitySS2VByPredator
-                    If (Me.m_dlgSensOfSS IsNot Nothing) Then
-                        Dim results As cSensitivityToVulResults = DirectCast(Me.m_F2TSManager.Results, cSensitivityToVulResults)
-                        Me.m_dlgSensOfSS.OnRunStep(runtype, results.iPred, results.iPrey, results.SSen)
-                    End If
-
             End Select
             Me.UpdateControls()
 
@@ -583,25 +570,23 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnRunStopped(ByVal runType As eRunType)
 
-            If (Not Me.m_bIsRunOwner) Then Return
+            If (Me.m_bIsRunOwner) Then
+                Me.m_F2TSManager.Disconnect()
 
-            Me.m_F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, _
-                                            AddressOf OnRunStopped, AddressOf Me.OnModelRun)
+                Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
 
-            Me.LogProgress(cStringUtils.Localize(My.Resources.FIT2TS_PROGRESS_RUNCOMPLETED, Date.Now().ToShortTimeString))
+                If (TypeOf Me.m_F2TSManager.Results Is cSearchResults) Then
+                    Dim res As cSearchResults = DirectCast(Me.m_F2TSManager.Results, cSearchResults)
+                    Me.m_gridOutput.AddFitToTimeSeriesOutput(res.nAICPars, res.IterSS)
+                End If
 
-            If (Me.m_dlgSensOfSS IsNot Nothing) Then
-                Me.m_dlgSensOfSS.OnRunStopped(runType)
+                Me.IsRunning = False
+                Me.m_bIsRunOwner = False
             End If
 
-            If (TypeOf Me.m_F2TSManager.Results Is cSearchResults) Then
-                Dim res As cSearchResults = DirectCast(Me.m_F2TSManager.Results, cSearchResults)
-                Me.m_gridOutput.AddFitToTimeSeriesOutput(res.nAICPars, res.IterSS)
-            End If
-
-            Me.IsRunning = False
-            Me.m_bIsRunOwner = False
+            ' Always do this though
             Me.UpdateControls()
+
         End Sub
 
         ''' -------------------------------------------------------------------

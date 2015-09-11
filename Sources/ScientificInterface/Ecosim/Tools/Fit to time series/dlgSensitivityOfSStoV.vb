@@ -22,6 +22,7 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwECore.FitToTimeSeries
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -223,7 +224,7 @@ Public Class dlgSensitivityOfSStoV
 
 #Region " F2TS manager interface "
 
-    Public Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
+    Private Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
         ' Sanity check
         Debug.Assert(runType = Me.m_runType)
 
@@ -241,10 +242,17 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnRunStep(ByVal runType As eRunType, ByVal iPred As Integer, ByVal iPrey As Integer, ByVal sSen As Single)
+    Private Sub OnRunStep()
+
+        Dim results As cSensitivityToVulResults = DirectCast(Me.m_F2TSManager.Results, cSensitivityToVulResults)
+        Dim runType As eRunType = results.RunType
 
         ' Sanity check
         Debug.Assert(runType = Me.m_runType)
+
+        Dim iPred As Integer = results.iPred
+        Dim iPrey As Integer = results.iPrey
+        Dim sSen As Single = results.SSen
 
         Select Case runType
 
@@ -271,16 +279,25 @@ Public Class dlgSensitivityOfSStoV
     ''' </summary>
     ''' <param name="runType"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub OnRunStopped(ByVal runType As eRunType)
+    Private Sub OnRunStopped(ByVal runType As eRunType)
 
         ' Sanity check
         Debug.Assert(runType = Me.m_runType)
 
         Me.m_bRunning = False
 
-        Me.UpdateControls()
-        Me.UpdateDisplay()
+    End Sub
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="runType"></param>
+    ''' <param name="iCurrentIterationStep"></param>
+    ''' <param name="nTotalIterationSteps"></param>
+    ''' -------------------------------------------------------------------
+    Protected Sub OnModelRun(ByVal runType As eRunType, ByVal iCurrentIterationStep As Integer, ByVal nTotalIterationSteps As Integer)
+        ' NOP
     End Sub
 
 #End Region ' F2TS manager
@@ -348,19 +365,22 @@ Public Class dlgSensitivityOfSStoV
         ' Reset controls
         Me.m_progress.Value = 0
 
+        Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, Nothing)
         If (Me.m_rbSearchPredPrey.Checked) Then
-            If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey() = False) Then
+            If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(TriState.False) = False) Then
                 Return False
             End If
             Me.m_runType = eRunType.SensitivitySS2VByPredPrey
         Else
-            If (Me.m_F2TSManager.RunSensitivitySS2VByPredator() = False) Then
+            If (Me.m_F2TSManager.RunSensitivitySS2VByPredator(TriState.False) = False) Then
                 Return False
             End If
             Me.m_runType = eRunType.SensitivitySS2VByPredator
         End If
+        Me.m_F2TSManager.Disconnect()
 
         Me.UpdateControls()
+        Me.UpdateDisplay()
 
         Return True
     End Function
