@@ -218,7 +218,10 @@ Public Class cF2TSManager
     End Sub
 
     Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, _
-            ByVal runStartedCallback As RunStartedDelegate, ByVal runStepCallback As RunStepDelegate, ByVal runStoppedCallback As RunStoppedDelegate, ByVal RunModelCallBack As RunModelDelegate)
+                       ByVal runStartedCallback As RunStartedDelegate, _
+                       ByVal runStepCallback As RunStepDelegate, _
+                       ByVal runStoppedCallback As RunStoppedDelegate, _
+                       ByVal RunModelCallBack As RunModelDelegate)
 
         Debug.Assert(m_runstartedHandler = Nothing, "Manager already connected?")
 
@@ -235,27 +238,16 @@ Public Class cF2TSManager
 
     End Sub
 
-    Public Sub Disconnect(ByVal runStartedCallback As RunStartedDelegate, ByVal runStepCallback As RunStepDelegate, ByVal runStoppedCallback As RunStoppedDelegate, ByVal RunModelCallBack As RunModelDelegate)
+    <Obsolete("Use parameterless Disconnect() instead")> _
+    Public Sub Disconnect(ByVal runStartedCallback As RunStartedDelegate, _
+                          ByVal runStepCallback As RunStepDelegate, _
+                          ByVal runStoppedCallback As RunStoppedDelegate, _
+                          ByVal RunModelCallBack As RunModelDelegate)
+        Me.Disconnect()
+    End Sub
 
-        Try
-            Me.m_SyncObject = Nothing
-            Me.m_runstartedHandler = Nothing
-            Me.m_runstepHandler = Nothing
-            Me.m_runstoppedHandler = Nothing
-            Me.m_runModelHandler = Nothing
-
-            'kill the thread if it is still alive
-            If Me.m_thrdRun IsNot Nothing Then
-                Me.m_thrdRun.Abort()
-                Me.m_thrdRun = Nothing
-            End If
-
-        Catch ex As Exception
-            cLog.Write(ex)
-            Throw New ApplicationException(Me.ToString & ".Disconnect() Error.", ex)
-        End Try
-
-
+    Public Sub Disconnect()
+        Me.Clear()
     End Sub
 
 
@@ -302,15 +294,11 @@ Public Class cF2TSManager
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
 
-        If Me.m_thrdRun IsNot Nothing Then
-            'I dont think this can happen
-            'the thread is kill when the form is unloaded but just in case
-            Me.m_thrdRun.Abort()
-            Me.m_thrdRun = Nothing
-        End If
+        'I dont think this can happen
+        'the thread is killed when the form is unloaded but just in case
+        Me.Clear()
 
     End Sub
-
 
 #End Region
 
@@ -598,13 +586,6 @@ Public Class cF2TSManager
 
         Return result
 
-        'Try
-        '    Me.m_thrdRun.Abort()
-        'Catch e As Threading.ThreadAbortException
-        '    Return True
-        'Catch e As Exception
-        '    Return False
-        'End Try
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -886,14 +867,16 @@ Public Class cF2TSManager
         Me.m_results = Nothing
 
         Try
-            ' Call delegate
-            If (Me.m_SyncObject IsNot Nothing) Then
-                Dim parms(1) As Object
-                parms(0) = runType
-                parms(1) = nSteps
-                m_SyncObject.Invoke(Me.m_runstartedHandler, parms)
-            Else
-                Me.m_runstartedHandler.Invoke(runType, nSteps)
+            ' Notify the world
+            If (Me.m_runstartedHandler IsNot Nothing) Then
+                If (Me.m_SyncObject IsNot Nothing) Then
+                    Dim parms(1) As Object
+                    parms(0) = runType
+                    parms(1) = nSteps
+                    m_SyncObject.Invoke(Me.m_runstartedHandler, parms)
+                Else
+                    Me.m_runstartedHandler.Invoke(runType, nSteps)
+                End If
             End If
         Catch ex As Exception
             cLog.Write(ex)
@@ -922,11 +905,13 @@ Public Class cF2TSManager
             '    End Try
             'End If
 
-            ' Call delegate
-            If (Me.m_SyncObject IsNot Nothing) Then
-                m_SyncObject.Invoke(Me.m_runstepHandler, Nothing)
-            Else
-                Me.m_runstepHandler.Invoke()
+            ' Notify the world
+            If (Me.m_runstartedHandler IsNot Nothing) Then
+                If (Me.m_SyncObject IsNot Nothing) Then
+                    m_SyncObject.Invoke(Me.m_runstepHandler, Nothing)
+                Else
+                    Me.m_runstepHandler.Invoke()
+                End If
             End If
 
         Catch ex As Exception
@@ -978,13 +963,10 @@ Public Class cF2TSManager
 
     Private Sub ThreadSafeRunStopped(ByVal runType As eRunType)
 
-        'THIS MUST BE CALLED ON THE INTERFACES THREAD VIA m_SyncObject
-        'do anything at the end of a model run that may interact with the interface thread here
         Try
-            'the core may send messages that are handled by the interface
-
             m_core.VulnerabilitiesChanged()
             m_core.LoadEcosimStats()
+            Me.m_thrdRun = Nothing
 
             If Not Me.m_core.m_FitToTimeSeriesData.bRunSilent Then
 
@@ -996,13 +978,15 @@ Public Class cF2TSManager
                 m_lstMessages.Clear()
             End If
 
-            ' Call delegate on the interfaces thread
-            If (Me.m_SyncObject IsNot Nothing) Then
-                Dim objs(0) As Object
-                objs(0) = runType
-                m_SyncObject.Invoke(Me.m_runstoppedHandler, objs)
-            Else
-                Me.m_runstoppedHandler.Invoke(runType)
+            ' Notify world
+            If (Me.m_runstoppedHandler IsNot Nothing) Then
+                If (Me.m_SyncObject IsNot Nothing) Then
+                    Dim objs(0) As Object
+                    objs(0) = runType
+                    m_SyncObject.Invoke(Me.m_runstoppedHandler, objs)
+                Else
+                    Me.m_runstoppedHandler.Invoke(runType)
+                End If
             End If
 
         Catch ex As Exception
