@@ -21,8 +21,7 @@
     <SccProvider>
     </SccProvider>
     <OptionStrict>On</OptionStrict>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Resources\Ecopath0.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
