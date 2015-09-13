@@ -1993,17 +1993,9 @@
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
-      <Project>{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}</Project>
-      <Name>EwEAquamapsEnvDataImporterPlugin %28EwE plugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
       <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
       <Name>EwEEcotroph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEFishBasePlugin\EwEFishBasePlugin.vbproj">
-      <Project>{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}</Project>
-      <Name>EwEFishBasePlugin %28EwE plugins\Taxonomic searches\EwEFishBasePlugin\EwEFishBasePlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
@@ -2036,10 +2028,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
       <Name>EwEValueChain %28EwE plugins\EwEValueChain\EwEValueChain%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj">
-      <Project>{4B88BF52-04A7-476B-B2F5-153758A62935}</Project>
-      <Name>EwEWoRMSPlugin %28EwE plugins\Taxonomic searches\EwEWoRMSPlugin\EwEWoRMSPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
