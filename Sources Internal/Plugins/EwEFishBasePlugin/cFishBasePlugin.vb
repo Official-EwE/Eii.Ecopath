@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -47,8 +48,6 @@ Public Class cFishBasePlugin
 
     ''' <summary>Data provider enabled state.</summary>
     Private m_bEnabled As Boolean = False
-
-    Private m_strAssemName As String = Assembly.GetExecutingAssembly().GetName().Name
 
 #End Region ' Private vars
 
@@ -132,7 +131,7 @@ Public Class cFishBasePlugin
     ''' <returns></returns>
     Friend Function BroadcastResults(aResults() As ITaxonSearchData) As Boolean
         ' Create new results
-        Me.m_results = New cFishBaseSearchResults(Me.m_dataTerm, aResults, Me.m_strAssemName, Me.Name)
+        Me.m_results = New cFishBaseSearchResults(Me.m_dataTerm, aResults, EwEUtils.Utilities.cTypeUtils.TypeToString(Me.GetType))
         ' Broadcast results
         If (Me.m_broadcaster IsNot Nothing) Then
             Me.m_broadcaster.BroadcastData(Me.Name, Me.m_results)
@@ -235,7 +234,7 @@ Public Class cFishBasePlugin
     ''' <inheritdocs cref="IDataSearchProducerPlugin.CreateSearchTerm"/>
     Public Function CreateSearchTerm() As Object _
         Implements EwEPlugin.Data.IDataSearchProducerPlugin.CreateSearchTerm
-        Return New cFishBaseTaxonData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Return New cFishBaseTaxonData(cTypeUtils.TypeToString(Me.GetType()))
     End Function
 
 #End Region ' Search

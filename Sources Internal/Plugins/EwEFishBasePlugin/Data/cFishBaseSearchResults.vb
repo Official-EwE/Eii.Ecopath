@@ -37,8 +37,6 @@ Public Class cFishBaseSearchResults
     Private m_term As ITaxonSearchData = Nothing
     ''' <summary>Terms returned in response to the search.</summary>
     Private m_results As ITaxonSearchData() = Nothing
-    ''' <summary>Mandatory bit: assembly name that returned the search results.</summary>
-    Private m_strAssemblyName As String = ""
     ''' <summary>Mandatory bit: plug-in name that returned the search results.</summary>
     Private m_strPluginName As String = ""
 
@@ -46,11 +44,9 @@ Public Class cFishBaseSearchResults
 
     Public Sub New(ByVal term As ITaxonSearchData, _
                    ByVal results As ITaxonSearchData(), _
-                   ByVal strAssemblyName As String, _
                    ByVal strPluginName As String)
         Me.m_term = term
         Me.m_results = results
-        Me.m_strAssemblyName = strAssemblyName
         Me.m_strPluginName = strPluginName
     End Sub
 
@@ -76,14 +72,6 @@ Public Class cFishBaseSearchResults
         Implements EwEPlugin.Data.IDataSearchResults.SearchTerm
         Get
             Return Me.m_term
-        End Get
-    End Property
-
-    ''' <inheritdoc cref="IDataSearchResults.AssemblyName"/>
-    Public ReadOnly Property AssemblyName() As String _
-        Implements EwEPlugin.Data.IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
         End Get
     End Property
 

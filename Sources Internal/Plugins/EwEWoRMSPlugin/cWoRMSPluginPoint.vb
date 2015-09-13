@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEWoRMSPlugin.WoRMSWebService
 Imports System.Web.Services.Protocols
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -256,8 +257,8 @@ Public Class cWoRMSPluginPoint
 
     ''' <inheritdocs cref="IDataSearchProducerPlugin.CreateSearchTerm"/>
     Public Function CreateSearchTerm() As Object _
-        Implements EwEPlugin.Data.IDataSearchProducerPlugin.CreateSearchTerm
-        Return New cWoRMSTaxonData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Implements IDataSearchProducerPlugin.CreateSearchTerm
+        Return New cWoRMSTaxonData(cTypeUtils.TypeToString(Me.GetType()))
     End Function
 
 #End Region ' Search
@@ -417,7 +418,7 @@ Public Class cWoRMSPluginPoint
 
 
         ' Create new results
-        Me.m_results = New cWoRMSTaxonSearchResults(Me.m_term, lResults.ToArray(), Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Me.m_results = New cWoRMSTaxonSearchResults(Me.m_term, lResults.ToArray(), cTypeUtils.TypeToString(Me.GetType))
         ' Broadcast results
         Me.m_broadcaster.BroadcastData(Me.Name, Me.m_results)
 
@@ -437,7 +438,7 @@ Public Class cWoRMSPluginPoint
 
         If (record Is Nothing) Then Return Nothing
 
-        Dim taxon As New cWoRMSTaxonData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Dim taxon As New cWoRMSTaxonData(cTypeUtils.TypeToString(Me.GetType()))
 
         Try
 
@@ -452,7 +453,7 @@ Public Class cWoRMSPluginPoint
             taxon.CodeLSID = Me.Validate(record.lsid)
 
         Catch ex As Exception
-
+            cLog.Write(ex, "cWoRMSPluginPoint.ReadTaxon")
         End Try
 
         Return taxon
@@ -479,7 +480,7 @@ Public Class cWoRMSPluginPoint
     End Function
 
     Public Function HasDepthRangeSearchCapabilities() As Boolean _
-        Implements EwEPlugin.Data.ITaxonSearchCapabilitiesPlugin.HasDepthRangeSearchCapabilities
+        Implements ITaxonSearchCapabilitiesPlugin.HasDepthRangeSearchCapabilities
         Return False
     End Function
 

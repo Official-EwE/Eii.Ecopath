@@ -447,7 +447,7 @@ Public MustInherit Class cSFPGenericIterations
     ''' -----------------------------------------------------------------------
     Public Sub Clear() _
        Implements ISFPIterations.Clear
-        F2TSManager.Disconnect(AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf Me.OnModelRun)
+        F2TSManager.Disconnect()
     End Sub
 
     ''' -----------------------------------------------------------------------

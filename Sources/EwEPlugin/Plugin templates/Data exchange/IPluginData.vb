@@ -34,15 +34,8 @@ Namespace Data
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Name of the <see cref="cPluginAssembly">plugin assembly</see> that 
+        ''' Name of the <see cref="IPlugin">type name</see> of the plug-in that 
         ''' exposed this data.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        ReadOnly Property AssemblyName() As String
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Name of the <see cref="IPlugin">plugin</see> that exposed this data.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         ReadOnly Property PluginName() As String
