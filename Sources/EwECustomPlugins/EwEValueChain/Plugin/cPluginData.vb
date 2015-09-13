@@ -209,7 +209,6 @@ Public Class cPluginData
 
 #Region " Privates "
 
-    Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""
     Private m_totals As New cVCEconomicData()
 
@@ -221,8 +220,7 @@ Public Class cPluginData
 
 #Region " Constructor "
 
-    Public Sub New(ByVal strAssemblyName As String, ByVal strPluginName As String)
-        Me.m_strAssemblyName = strAssemblyName
+    Public Sub New(ByVal strPluginName As String)
         Me.m_strPluginName = strPluginName
     End Sub
 
@@ -240,13 +238,6 @@ Public Class cPluginData
 #End Region ' Helper methods
 
 #Region " IPluginData implementation "
-
-    Public ReadOnly Property AssemblyName() As String _
-        Implements IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
-        End Get
-    End Property
 
     Public ReadOnly Property PluginName() As String _
         Implements IPluginData.PluginName

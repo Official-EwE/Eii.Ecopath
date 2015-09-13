@@ -30,24 +30,15 @@ Friend Class cEwENetworkAnalysisData
     Implements INetworkAnalysisData
 
     Private m_man As cNetworkManager = Nothing
-    Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""
     Private m_Ascendancy(6, 5) As Single
 
     Public Sub New(ByVal strAssemblyName As String, _
                    ByVal strPluginName As String, _
                    ByVal man As cNetworkManager)
-        Me.m_strAssemblyName = strAssemblyName
         Me.m_strPluginName = strPluginName
         Me.m_man = man
     End Sub
-
-    Public ReadOnly Property AssemblyName() As String _
-        Implements IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
-        End Get
-    End Property
 
     Public ReadOnly Property PluginName() As String _
         Implements IPluginData.PluginName

@@ -28,6 +28,7 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -163,7 +164,7 @@ Public Class cValueChainPlugin
             If (TypeOf core Is EwECore.cCore) Then
 
                 Me.m_core = DirectCast(core, EwECore.cCore)
-                Me.m_ddx = New cPluginData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+                Me.m_ddx = New cPluginData(cTypeUtils.TypeToString(Me.GetType()))
                 Me.m_data = New cData(Me.m_core)
                 Me.m_model = New cModel()
                 Me.m_result = New cResults(Me.m_data)
