@@ -79,9 +79,9 @@ Namespace Ecosim
 
             Me.m_NTimes = Me.Core.nEcosimTimeSteps
 
-            Me.GatherPlotData()
             Me.SetDefaultParams()
             Me.CalcPlotParams()
+            Me.SetPlotTypes()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
 
@@ -469,6 +469,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdatePlots()
+            Me.GatherPlotData()
             Me.CalcPlotParams()
             Me.m_pbPlots.Invalidate()
         End Sub
