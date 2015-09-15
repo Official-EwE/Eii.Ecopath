@@ -604,20 +604,34 @@ Namespace Ecosim
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
             Dim iNumLine As Integer = 0
+            Dim iMaxLines As Integer = 1
 
+            ' First count #TS (for colouring)
             For i As Integer = 1 To Me.UIContext.Core.nTimeSeries
                 ts = Me.UIContext.Core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = TSType Then
                     If TypeOf ts Is cGroupTimeSeries Then
                         gts = DirectCast(ts, cGroupTimeSeries)
                         If (gts.GroupIndex = iGroup) And gts.Enabled() Then
-                            lli.Add(Me.ToTimeSeriesLineItem(gts, cColorUtils.GetVariant(clr, iNumLine)))
-                            iNumLine += 1
+                            iMaxLines += 1
                         End If
                     End If
                 End If
             Next
 
+            ' Build lines
+            For i As Integer = 1 To Me.UIContext.Core.nTimeSeries
+                ts = Me.UIContext.Core.EcosimTimeSeries(i)
+                If ts.TimeSeriesType = TSType Then
+                    If TypeOf ts Is cGroupTimeSeries Then
+                        gts = DirectCast(ts, cGroupTimeSeries)
+                        If (gts.GroupIndex = iGroup) And gts.Enabled() Then
+                            lli.Add(Me.ToTimeSeriesLineItem(gts, cColorUtils.GetVariant(clr, CSng(iNumLine / iMaxLines))))
+                            iNumLine += 1
+                        End If
+                    End If
+                End If
+            Next
             Return lli
 
         End Function
