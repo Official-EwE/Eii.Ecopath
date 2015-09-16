@@ -140,6 +140,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cTimeFrameRules.vb" />
     <Compile Include="Results\cResultsCollector_Base.vb" />
     <Compile Include="Results\cResultsCollector_Biomass.vb" />
     <Compile Include="Results\cResultsCollector_Biomass_Yearly.vb" />

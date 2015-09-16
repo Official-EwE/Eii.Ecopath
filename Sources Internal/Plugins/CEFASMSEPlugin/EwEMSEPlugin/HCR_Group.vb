@@ -145,13 +145,14 @@ Public Class HCR_Group
 
     Public Function CalcFfromHCR(ByRef Biomass As Single()) As Double
 
-        If Biomass(Me.GroupB.Index) > UpperLimit Then
-            Return Convert.ToDouble(MaxF)
-        ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
-            Return 0
-        Else
-            Return Convert.ToDouble(((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF)
-        End If
+
+            If Biomass(Me.GroupB.Index) > UpperLimit Then
+                Return Convert.ToDouble(MaxF)
+            ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
+                Return 0
+            Else
+                Return Convert.ToDouble(((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF)
+            End If
 
     End Function
 
