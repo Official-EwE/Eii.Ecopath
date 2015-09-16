@@ -178,7 +178,7 @@ Public Class frmDistributionParameters
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.BA, SharedResources.HEADER_BIOMACCUM_ABBR, Me.m_ecopathdist.BA))
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.QB, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, Me.m_ecopathdist.QB))
             Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.PB, SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, Me.m_ecopathdist.PB))
-            Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.EE, SharedResources.HEADER_EE, Me.m_ecopathdist.EE))
+            Me.m_tscmParamName.Items.Add(New ParamComboItem(cDistributionParams.eDistrParamName.EE, "EE", Me.m_ecopathdist.EE))
             Me.m_tscmParamName.SelectedIndex = 0
         ElseIf m_tscmPathOrSim.SelectedIndex = eParameterSet.Ecosim Then
             Me.m_grid.Mode = eParameterSet.Ecosim

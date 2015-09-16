@@ -74,10 +74,10 @@ Public Class cPrebalZedGraphHelper
 
         ' Set the panels
         Me.Configure(strTitle)
-        Me.ConfigurePane(SharedResources.HEADER_BIOMASS, SharedResources.HEADER_TROPHICLEVEL, SharedResources.HEADER_BIOMASS, False, iPane:=1)
-        Me.ConfigurePane(SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, SharedResources.HEADER_TROPHICLEVEL, SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, False, iPane:=2)
-        Me.ConfigurePane(SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, SharedResources.HEADER_TROPHICLEVEL, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, False, iPane:=3)
-        Me.ConfigurePane(SharedResources.HEADER_PRODCONS, SharedResources.HEADER_TROPHICLEVEL, SharedResources.HEADER_PRODCONS, False, iPane:=4)
+        Me.ConfigurePane(SharedResources.HEADER_BIOMASS, "Trophic level", SharedResources.HEADER_BIOMASS, False, iPane:=1)
+        Me.ConfigurePane(SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, "Trophic level", SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, False, iPane:=2)
+        Me.ConfigurePane(SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, "Trophic level", SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, False, iPane:=3)
+        Me.ConfigurePane(SharedResources.HEADER_PRODCONS, "Trophic level", SharedResources.HEADER_PRODCONS, False, iPane:=4)
 
         ' Data change callback
         AddHandler Me.m_model.OnUpdated, AddressOf OnUpdated

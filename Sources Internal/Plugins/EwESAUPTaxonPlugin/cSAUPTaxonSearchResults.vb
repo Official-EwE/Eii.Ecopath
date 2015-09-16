@@ -39,8 +39,6 @@ Public Class cSAUPTaxonSearchResults
     ''' Taxa returned in response to the search.
     ''' </summary>
     Private m_taxa As ITaxonSearchData() = Nothing
-    ''' <summary>Mandatory bit: assembly name that returned the search results.</summary>
-    Private m_strAssemblyName As String = ""
     ''' <summary>Mandatory bit: plug-in name that returned the search results.</summary>
     Private m_strPluginName As String = ""
 
@@ -48,11 +46,9 @@ Public Class cSAUPTaxonSearchResults
 
     Public Sub New(ByVal term As ITaxonSearchData, _
                    ByVal results As ITaxonSearchData(), _
-                   ByVal strAssemblyName As String, _
                    ByVal strPluginName As String)
         Me.m_term = term
         Me.m_taxa = results
-        Me.m_strAssemblyName = strAssemblyName
         Me.m_strPluginName = strPluginName
     End Sub
 
@@ -78,14 +74,6 @@ Public Class cSAUPTaxonSearchResults
         Implements EwEPlugin.Data.IDataSearchResults.SearchTerm
         Get
             Return Me.m_term
-        End Get
-    End Property
-
-    ''' <inheritdoc cref="IDataSearchResults.AssemblyName"/>
-    Public ReadOnly Property AssemblyName() As String _
-        Implements EwEPlugin.Data.IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
         End Get
     End Property
 

@@ -249,7 +249,7 @@ Public Class cSAUPTaxonDataPlugin
     ''' <inheritdocs cref="IDataSearchProducerPlugin.CreateSearchTerm"/>
     Public Function CreateSearchTerm() As Object _
         Implements EwEPlugin.Data.IDataSearchProducerPlugin.CreateSearchTerm
-        Return New cSAUPTaxonData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Return New cSAUPTaxonData(EwEUtils.Utilities.cTypeUtils.TypeToString(Me.GetType()))
     End Function
 
 #End Region ' Search
@@ -321,33 +321,33 @@ Public Class cSAUPTaxonDataPlugin
                 If String.IsNullOrWhiteSpace(taxon.Common) Then Return False
 
                 ' Search
-                If Not String.IsNullOrWhiteSpace(taxon.Common) And ((taxon.SearchFields And eTaxonLevelType.Common) > 0) Then
+                If Not String.IsNullOrWhiteSpace(taxon.Common) And ((taxon.SearchFields And eTaxonClassificationType.Common) > 0) Then
                     qb.AddClause(String.Format("CommonName LIKE '%{0}%' OR TaxonName LIKE '%{0}%'", taxon.Common))
                 Else
                     qb.AddClause(String.Format("TaxonName LIKE '%{0}%'", taxon.Common))
                 End If
 
-                If ((taxon.SearchFields And eTaxonLevelType.Phylum) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Phylum) > 0) Then
                     If sbFilter.Length > 0 Then sbFilter.Append(",")
                     sbFilter.Append(SAUPTaxLevel.Phylum)
                 End If
-                If ((taxon.SearchFields And eTaxonLevelType.Class) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Class) > 0) Then
                     If sbFilter.Length > 0 Then sbFilter.Append(",")
                     sbFilter.Append(SAUPTaxLevel.Class)
                 End If
-                If ((taxon.SearchFields And eTaxonLevelType.Order) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Order) > 0) Then
                     If sbFilter.Length > 0 Then sbFilter.Append(",")
                     sbFilter.Append(SAUPTaxLevel.Order)
                 End If
-                If ((taxon.SearchFields And eTaxonLevelType.Family) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Family) > 0) Then
                     If sbFilter.Length > 0 Then sbFilter.Append(",")
                     sbFilter.Append(SAUPTaxLevel.Family)
                 End If
-                If ((taxon.SearchFields And eTaxonLevelType.Genus) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Genus) > 0) Then
                     If sbFilter.Length > 0 Then sbFilter.Append(",")
                     sbFilter.Append(SAUPTaxLevel.Genus)
                 End If
-                If ((taxon.SearchFields And eTaxonLevelType.Species) > 0) Then
+                If ((taxon.SearchFields And eTaxonClassificationType.Species) > 0) Then
                     If sbFilter.Length > 0 Then sbFilter.Append(",")
                     sbFilter.Append(SAUPTaxLevel.Species)
                 End If
@@ -409,7 +409,7 @@ Public Class cSAUPTaxonDataPlugin
         reader = Nothing
 
         ' Create new results
-        Me.m_results = New cSAUPTaxonSearchResults(Me.m_term, lResults.ToArray(), Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Me.m_results = New cSAUPTaxonSearchResults(Me.m_term, lResults.ToArray(), EwEUtils.Utilities.cTypeUtils.TypeToString(Me.GetType()))
         ' Broadcast results
         Me.m_broadcaster.BroadcastData(Me.Name, Me.m_results)
 
@@ -442,28 +442,28 @@ Public Class cSAUPTaxonDataPlugin
     ''' -----------------------------------------------------------------------
     Private Function ReadTaxon(ByVal reader As IDataReader) As ITaxonSearchData
 
-        Dim taxon As New cSAUPTaxonData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Dim taxon As New cSAUPTaxonData(EwEUtils.Utilities.cTypeUtils.TypeToString(Me.GetType()))
 
         taxon.Common = Me.ReadSave(reader, "CommonName")
         Select Case DirectCast(CInt(Me.ReadSave(reader, "TaxLevel")), SAUPTaxLevel)
             Case SAUPTaxLevel.Phylum
                 taxon.Phylum = Me.ReadSave(reader, "TaxonName")
-                taxon.SearchFields = eTaxonLevelType.Phylum
+                taxon.SearchFields = eTaxonClassificationType.Phylum
             Case SAUPTaxLevel.Class
                 taxon.Class = Me.ReadSave(reader, "TaxonName")
-                taxon.SearchFields = eTaxonLevelType.Class
+                taxon.SearchFields = eTaxonClassificationType.Class
             Case SAUPTaxLevel.Order
                 taxon.Order = Me.ReadSave(reader, "TaxonName")
-                taxon.SearchFields = eTaxonLevelType.Order
+                taxon.SearchFields = eTaxonClassificationType.Order
             Case SAUPTaxLevel.Family
                 taxon.Family = Me.ReadSave(reader, "TaxonName")
-                taxon.SearchFields = eTaxonLevelType.Family
+                taxon.SearchFields = eTaxonClassificationType.Family
             Case SAUPTaxLevel.Genus
                 taxon.Genus = Me.ReadSave(reader, "TaxonName")
-                taxon.SearchFields = eTaxonLevelType.Genus
+                taxon.SearchFields = eTaxonClassificationType.Genus
             Case SAUPTaxLevel.Species
                 taxon.Species = Me.ReadSave(reader, "TaxonName")
-                taxon.SearchFields = eTaxonLevelType.Species
+                taxon.SearchFields = eTaxonClassificationType.Species
         End Select
         taxon.SourceKey = Me.ReadSave(reader, "TaxonKey")
         taxon.CodeSAUP = Long.Parse(taxon.SourceKey)
