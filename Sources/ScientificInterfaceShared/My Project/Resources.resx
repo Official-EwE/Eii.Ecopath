@@ -346,10 +346,10 @@
     <value>DC|Diet||Diet composition</value>
   </data>
   <data name="VARIABLE_PBINPUT" xml:space="preserve">
-    <value>PB|P/B|Production/biomass</value>
+    <value>PB|P/B|Production / biomass</value>
   </data>
   <data name="VARIABLE_QBINPUT" xml:space="preserve">
-    <value>QB|Q/B|Consumption/biomass</value>
+    <value>QB|Q/B|Consumption / biomass</value>
   </data>
   <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
     <value>Catch</value>
@@ -618,9 +618,6 @@
     <value>Age ({0})</value>
     <comment>{0}: time unit</comment>
   </data>
-  <data name="HEADER_AREA" xml:space="preserve">
-    <value>Habitat area (fraction)</value>
-  </data>
   <data name="HEADER_AREA_CLOSED" xml:space="preserve">
     <value>Area closed (%)</value>
   </data>
@@ -724,9 +721,6 @@
   <data name="HEADER_CATCH_UPPER" xml:space="preserve">
     <value>Catch upper</value>
   </data>
-  <data name="HEADER_CB" xml:space="preserve">
-    <value>Cons/biom</value>
-  </data>
   <data name="HEADER_COLOR" xml:space="preserve">
     <value>Colour</value>
   </data>
@@ -766,10 +760,6 @@
   <data name="HEADER_DESCRIPTION" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="HEADER_DETIMP_UNIT" xml:space="preserve">
-    <value>Detritus import ({0}/{1})</value>
-    <comment>{0}: ??? unit, {1}: ??? unit</comment>
-  </data>
   <data name="HEADER_DETRITUS" xml:space="preserve">
     <value>Detritus</value>
   </data>
@@ -796,12 +786,6 @@
   </data>
   <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
     <value>Ecosys.</value>
-  </data>
-  <data name="HEADER_EE" xml:space="preserve">
-    <value>Ecotrophic efficiency</value>
-  </data>
-  <data name="HEADER_EE_ABBR" xml:space="preserve">
-    <value>EE</value>
   </data>
   <data name="HEADER_EFFORTES" xml:space="preserve">
     <value>Effort (E/S)</value>
@@ -895,9 +879,6 @@
   </data>
   <data name="HEADER_G" xml:space="preserve">
     <value>g</value>
-  </data>
-  <data name="HEADER_GE" xml:space="preserve">
-    <value>Production / consumption</value>
   </data>
   <data name="HEADER_GROSS_EFFICIENCY" xml:space="preserve">
     <value>Gross efficiency (catch/net p.p.)</value>
@@ -1097,13 +1078,6 @@
   <data name="HEADER_PBZ" xml:space="preserve">
     <value>Prod/biom or Z</value>
   </data>
-  <data name="HEADER_PB_ABBR" xml:space="preserve">
-    <value>Prod/biom</value>
-  </data>
-  <data name="HEADER_PB_UNIT" xml:space="preserve">
-    <value>Production / biomass (/{0})</value>
-    <comment>{0}: ??? unit</comment>
-  </data>
   <data name="HEADER_PER_UNIT" xml:space="preserve">
     <value>/{0}</value>
     <comment>{0}: unit</comment>
@@ -1158,10 +1132,6 @@
   </data>
   <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
     <value>Proportion natural mort.</value>
-  </data>
-  <data name="HEADER_QB_UNIT" xml:space="preserve">
-    <value>Consumption / biomass (/{0})</value>
-    <comment>{0}: ??? unit</comment>
   </data>
   <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
     <value>Effort</value>
@@ -1361,13 +1331,6 @@
   <data name="HEADER_TOTALLENGTH" xml:space="preserve">
     <value>Total length</value>
   </data>
-  <data name="HEADER_TOTALMORTALITY" xml:space="preserve">
-    <value>Z (Total mortality)</value>
-  </data>
-  <data name="HEADER_TOTALMORTALITY_UNIT" xml:space="preserve">
-    <value>Z (/{0})</value>
-    <comment>{0}: ? unit</comment>
-  </data>
   <data name="HEADER_TOTALPROFIT_UNIT" xml:space="preserve">
     <value>Total profit ({0})</value>
     <comment>{0}: Monetary unit</comment>
@@ -1382,15 +1345,9 @@
   <data name="HEADER_TOTEFFMULTI" xml:space="preserve">
     <value>Tot. eff. multip.</value>
   </data>
-  <data name="HEADER_TROPHICLEVEL" xml:space="preserve">
-    <value>Trophic level</value>
-  </data>
   <data name="HEADER_TZERO_VBGF_UNIT" xml:space="preserve">
     <value>to in VBGF (year)</value>
     <comment>{0}: ??? unit</comment>
-  </data>
-  <data name="HEADER_UNASSIMILCONSUMPTION" xml:space="preserve">
-    <value>Unassimil. / consumption</value>
   </data>
   <data name="HEADER_UNITS" xml:space="preserve">
     <value>Units</value>
@@ -2556,25 +2513,22 @@
     <value>Detritus import</value>
   </data>
   <data name="VARIABLE_GS" xml:space="preserve">
-    <value>GS|Unassim. cons.|Unassimilated consumption</value>
+    <value>GS||Unassim. consumption|Unassimilated consumption</value>
   </data>
   <data name="VARIABLE_PREDMORT" xml:space="preserve">
     <value>M2||Pred. mort.|Predation mortality</value>
-  </data>
-  <data name="HEADER_OTHERMORT" xml:space="preserve">
-    <value>Other mortality</value>
   </data>
   <data name="VARIABLE_EEOUTPUT" xml:space="preserve">
     <value>EE||Ecotrophic Efficiency</value>
   </data>
   <data name="VARIABLE_GEINPUT" xml:space="preserve">
-    <value>GE|G/E|Production over consumption</value>
+    <value>GE|G/E|Production / consumption</value>
   </data>
   <data name="VARIABLE_GEOUTPUT" xml:space="preserve">
-    <value>GE|G/E|Production over consumption</value>
+    <value>GE|G/E|Production / consumption</value>
   </data>
   <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
-    <value>QB|Q/B|Consumption/biomass</value>
+    <value>QB|Q/B|Consumption / biomass</value>
   </data>
   <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
     <value>Detritus fate</value>
@@ -2620,10 +2574,10 @@
     <value>Fishing effort modifier</value>
   </data>
   <data name="VARIABLE_AREA" xml:space="preserve">
-    <value>Area</value>
+    <value>Area||Habitat area (fraction)</value>
   </data>
   <data name="VARIABLE_CB" xml:space="preserve">
-    <value>CB||Consumption over Biomass</value>
+    <value>CB||Consumption / Biomass</value>
   </data>
   <data name="VARIABLE_DISCARDFATE" xml:space="preserve">
     <value>Discard fate</value>
@@ -3277,7 +3231,7 @@
     <value>Price||Off-vessel price</value>
   </data>
   <data name="VARIABLE_PBOUTPUT" xml:space="preserve">
-    <value>PB|P/B|Production/biomass (computed)</value>
+    <value>PB|P/B|Production / biomass (computed)</value>
   </data>
   <data name="VARIABLE_RECPOWERSPLIT" xml:space="preserve">
     <value>Rec. rate||Relative recruitment rate</value>
@@ -3362,5 +3316,11 @@
   </data>
   <data name="AUTOSAVE_ECOSIMRESULTS" xml:space="preserve">
     <value>Run results</value>
+  </data>
+  <data name="HEADER_CB" xml:space="preserve">
+    <value>Cons/biom</value>
+  </data>
+  <data name="VARIABLE_Z" xml:space="preserve">
+    <value>Z|Tot. mort.|Total mortality</value>
   </data>
 </root>

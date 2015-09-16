@@ -63,9 +63,9 @@ Namespace Ecosim
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_ABBR)
+            Me(0, 3) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, eDescriptorTypes.Abbreviation)
             Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CB)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
+            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.EEInput, eDescriptorTypes.Abbreviation)
             Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_ABBR)
 
             Me.FixedColumnWidths = False

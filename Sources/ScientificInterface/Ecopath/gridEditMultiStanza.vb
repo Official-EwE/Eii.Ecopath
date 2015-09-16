@@ -87,9 +87,9 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
         Me(0, eColumnTypes.LeadingB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-        Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
         Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
-        Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False

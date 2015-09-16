@@ -439,7 +439,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub AddTimeSeries()
-            Dim frm As frmShapeValue = New frmShapeValue(Me.UIContext)
+            Dim frm As frmShapeValue = New frmShapeValue(Me.UIContext, Me)
             If (frm.ShowDialog() = DialogResult.OK) Then
                 ' Ecosim will reload, which means a reload of datasets and time series
                 ' As a result, this control will be told to update

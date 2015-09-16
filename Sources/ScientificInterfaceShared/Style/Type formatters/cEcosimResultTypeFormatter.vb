@@ -40,6 +40,8 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
+            Dim fmt As New cVarnameTypeFormatter()
+
             Select Case DirectCast(value, cEcosimResultWriter.eResultTypes)
                 Case cEcosimResultWriter.eResultTypes.AvgWeightOrProdCons : Return My.Resources.HEADER_PRODCONS
                 Case cEcosimResultWriter.eResultTypes.Biomass : Return My.Resources.HEADER_BIOMASS
@@ -50,7 +52,7 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.Prey : Return My.Resources.HEADER_PREY_PERCENTAGE
                 Case cEcosimResultWriter.eResultTypes.Value : Return My.Resources.HEADER_VALUE
                 Case cEcosimResultWriter.eResultTypes.Yield : Return My.Resources.HEADER_CATCH
-                Case cEcosimResultWriter.eResultTypes.TL : Return My.Resources.HEADER_TROPHICLEVEL
+                Case cEcosimResultWriter.eResultTypes.TL : Return fmt.GetDescriptor(eVarNameFlags.TTLX, eDescriptorTypes.Name)
                 Case cEcosimResultWriter.eResultTypes.FIB : Return My.Resources.HEADER_FIB
                 Case cEcosimResultWriter.eResultTypes.KemptonsQ : Return My.Resources.HEADER_KEMPTONSQ
                 Case cEcosimResultWriter.eResultTypes.TLC : Return My.Resources.HEADER_TLC

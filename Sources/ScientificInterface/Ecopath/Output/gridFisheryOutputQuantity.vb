@@ -247,7 +247,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TROPHICLEVEL)
+            Me(iRow, 1) = New EwERowHeaderCell(eVarNameFlags.TTLX)
 
             alSumQuantityAll.Clear()
             alSumQuantityTTLXAll.Clear()

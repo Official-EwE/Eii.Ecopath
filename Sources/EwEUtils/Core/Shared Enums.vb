@@ -1909,8 +1909,10 @@ Namespace Core
 
         ''' <summary>To document</summary>
         AssumeSquareCells
-        ''' <summary>To document</summary>
+        ''' <summary>Proj4 string of the Ecospace projection</summary>
         CoordinateSystem
+
+        Z
 
     End Enum
 

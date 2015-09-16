@@ -109,6 +109,41 @@ Public Class frmShapeValue
 
 #Region " Construction "
 
+    Public Sub New(ByVal uic As cUIContext, handler As cShapeGUIHandler)
+
+        Me.InitializeComponent()
+
+        ' Config
+        Me.UIContext = uic
+        Me.m_grid.UIContext = uic
+
+        ' Store shape
+        Me.m_shape = Nothing
+        Me.m_handler = handler
+
+        ' Determine interface and display modes
+        Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
+
+        If (TypeOf (Me.m_handler) Is cTimeSeriesShapeGUIHandler) Then
+            Me.m_editMode = eDialogEditModeType.AddTimeSeries
+            Dim ds As cTimeSeriesDataset = uic.Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex)
+            Select Case ds.TimeSeriesInterval
+                Case eTSDataSetInterval.Annual
+                    Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
+                Case eTSDataSetInterval.TimeStep
+                    Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
+                Case Else
+                    Debug.Assert(False)
+            End Select
+        Else
+            Me.m_editMode = eDialogEditModeType.AddForcing
+            If (TypeOf (Me.m_handler) Is cMediationShapeGUIHandler) Then
+                Me.m_displayMode = frmShapeValue.eDisplayMode.Index
+            End If
+        End If
+
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Constructor, initializes a new instance of this class.
@@ -117,8 +152,7 @@ Public Class frmShapeValue
     ''' <param name="shape">The shape to edit, if any. If left to Nothing, this
     ''' interface assumes that a new time series is being added.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
-                   Optional ByVal shape As cShapeData = Nothing)
+    Public Sub New(ByVal uic As cUIContext, ByVal shape As cShapeData)
 
         Me.InitializeComponent()
 
@@ -185,15 +219,23 @@ Public Class frmShapeValue
         MyBase.OnLoad(e)
 
         ' Kick off
-        If Me.m_shape Is Nothing Then
-            Me.NumPoints = cNUMROWS_EMTPY
-        Else
-            If Me.m_shape.IsSeasonal Then
-                Me.NumPoints = cCore.N_MONTHS
-            Else
-                Me.NumPoints = Me.m_shape.nPoints
-            End If
-        End If
+        Select Case Me.m_editMode
+            Case eDialogEditModeType.AddTimeSeries, eDialogEditModeType.EditTimeSeries
+                Dim ds As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
+                Me.NumPoints = ds.NumPoints
+            Case eDialogEditModeType.AddForcing, eDialogEditModeType.EditForcing
+                If (Me.m_shape Is Nothing) Then
+                    Me.NumPoints = cNUMROWS_EMTPY
+                Else
+                    If Me.m_shape.IsSeasonal Then
+                        Me.NumPoints = cCore.N_MONTHS
+                    Else
+                        Me.NumPoints = Me.m_shape.nPoints
+                    End If
+                End If
+            Case Else
+                Debug.Assert(False)
+        End Select
 
         Me.m_fpWeight = New cEwEFormatProvider(Me.UIContext, Me.m_txtWeight, GetType(Single))
         Me.m_fpXBase = New cEwEFormatProvider(Me.UIContext, Me.m_txtXBase, GetType(Single))
@@ -536,7 +578,7 @@ Public Class frmShapeValue
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub UpdateControls()
 
-        Dim bIsMediation As Boolean = (Me.m_shape.DataType = EwEUtils.Core.eDataTypes.Mediation)
+        Dim bIsMediation As Boolean = (TypeOf (Me.m_handler) Is cMediationShapeGUIHandler)
         Dim bEnableOk As Boolean = True
         Try
             ' Need a name to 'OK'
