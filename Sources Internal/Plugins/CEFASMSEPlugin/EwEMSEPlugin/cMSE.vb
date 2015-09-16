@@ -3051,17 +3051,7 @@ Public Class cMSE
 
     End Function
 
-    Private Function CalcFfromHCR(ByRef Biomass As Single, ByRef MinBiomass As Single, ByRef MaxBiomass As Single, ByRef FMax As Single) As Double
 
-        If Biomass > MaxBiomass Then
-            Return Convert.ToDouble(FMax)
-        ElseIf Biomass < MinBiomass Then
-            Return 0
-        Else
-            Return Convert.ToDouble(((Biomass - MinBiomass) / (MaxBiomass - MinBiomass)) * FMax)
-        End If
-
-    End Function
 
     Private Function DetermineZeroEffortFleets(ByRef FTargCons(,) As Double) As Integer()
         Dim ZeroEffortFleets As New List(Of Integer)
@@ -3098,13 +3088,13 @@ Public Class cMSE
         For Each iHCRGroup In Me.currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF)) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcFfromHCR(BiomassAtTimestep) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             ElseIf iHCRGroup.TypeOfHCR = HCRType.Conservation Then
                 If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                    FfromHCR = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF))
+                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep)
                     TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                 Else
-                    FfromHCR = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupB.Index), CSng(iHCRGroup.LowerLimit), CSng(iHCRGroup.UpperLimit), CSng(iHCRGroup.MaxF))
+                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep)
                     TempTargConsQuota = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                     If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) Then
                         TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = TempTargConsQuota
