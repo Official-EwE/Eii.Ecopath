@@ -56,17 +56,17 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(SharedResources.HEADER_TROPHICLEVEL)
-            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(SharedResources.HEADER_AREA)
+            Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(eVarNameFlags.TTLX)
+            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.Area)
             Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
             Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
-            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(SharedResources.HEADER_GE)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBOutput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(eVarNameFlags.EEOutput)
+            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(eVarNameFlags.GEOutput)
 
             Me.FixedColumns = 2
 

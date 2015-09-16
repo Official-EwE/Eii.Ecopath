@@ -147,7 +147,7 @@ Public Class gridShapeValue
         Get
             Try
                 ' Parse value using UI number settings
-                Return Integer.Parse(CStr(Me(0, 1).Value))
+                Return Integer.Parse(CStr(Me(1, 0).Value))
             Catch ex As Exception
 
             End Try

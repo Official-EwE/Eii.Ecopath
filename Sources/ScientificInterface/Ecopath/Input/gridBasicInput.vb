@@ -64,18 +64,18 @@ Namespace Ecopath.Input
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(SharedResources.HEADER_AREA)
+            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.Area)
             Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
-            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(SharedResources.HEADER_OTHERMORT)
-            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(SharedResources.HEADER_GE)
-            Me(0, eColumnTypes.GS) = New EwEColumnHeaderCell(SharedResources.HEADER_UNASSIMILCONSUMPTION)
-            Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(SharedResources.HEADER_DETIMP_UNIT, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time})
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBInput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBInput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(eVarNameFlags.EEInput)
+            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(eVarNameFlags.OtherMortInput)
+            Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(eVarNameFlags.GEInput)
+            Me(0, eColumnTypes.GS) = New EwEColumnHeaderCell(eVarNameFlags.GS)
+            Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(eVarNameFlags.DetImp, SharedResources.GENERIC_LABEL_UNITPERUNIT, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time})
 
             Me.FixedColumns = 2
 

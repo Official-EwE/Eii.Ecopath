@@ -65,9 +65,17 @@ Namespace Controls.EwEGrid
             Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name))
         End Sub
 
+        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes)
+            Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, detail))
+        End Sub
+
         Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+            Me.New(varname, eDescriptorTypes.Name, strUnitMask, unitType)
+        End Sub
+
+        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
             Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                 New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
+                                 New cVarnameTypeFormatter().GetDescriptor(varname, detail), _
                                  strUnitMask), _
                    New cStyleGuide.eUnitType() {unitType})
         End Sub
