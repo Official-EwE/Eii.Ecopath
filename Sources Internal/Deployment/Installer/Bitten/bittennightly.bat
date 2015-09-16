@@ -1,0 +1,1 @@
+"C:\Python25\Scripts\bitten-slave.exe" --form-auth http://sources.ecopath.org/trac/Ecopath/builds --config=config.ini --single --name=nightly

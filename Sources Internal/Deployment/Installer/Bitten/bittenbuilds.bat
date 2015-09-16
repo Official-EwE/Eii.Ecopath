@@ -1,0 +1,1 @@
+"C:\Python25\Scripts\bitten-slave.exe" --form-auth http://sources.ecopath.org/trac/Ecopath_Internal/builds --config=config.ini --name=builds --no-loop
