@@ -1,42 +1,47 @@
 ﻿Imports EwECore
 
 Public Class cTimeFrameRule
+    'This object handles the application of a time frame rule.
+    'A time frame rule is a rule that overrides the HCR and steps the F used to calc the quota down uniformly from the F during the last year of hindcast
+    'to the maximum F (Fmsy) of the harvest control rule over a user specified number of years
+    'This object is created for each HCR but only does anything if the number of years it is specified for is > 0
 
     Private m_F() As Double
     Private m_nTimeStepsInHindcast As Integer
     Private m_EcosimData As cEcosimDatastructures
     Private m_HCR As HCR_Group
+    Private FGreaterThanFmsy As Boolean
 
     Public Property NYears As Integer
 
     Public ReadOnly Property F(ByVal iYear As Integer)
         Get
+            'Holds the value of the Fs to be applied each year
             Return m_F(iYear - 1)
         End Get
     End Property
 
-    Public Sub New(ByRef EcosimDatastructures As cEcosimDatastructures, ByRef HCR As HCR_Group, ByVal nTimeStepsInHindcast As Integer)
+    Public Sub New(ByRef EcosimDatastructures As cEcosimDatastructures, ByRef HCR As HCR_Group)
         m_EcosimData = EcosimDatastructures
         m_HCR = HCR
-        m_nTimeStepsInHindcast = nTimeStepsInHindcast
+        m_nTimeStepsInHindcast = EcosimDatastructures.NTimes
     End Sub
 
 
-    Public Property ExtractF(iTime) As Double
+    Public Property ExtractF(iYearProjecting) As Double
         Get
-            Return m_F((iTime - 1 - m_nTimeStepsInHindcast) \ 12)
+            Return m_F(iYearProjecting - 1)
         End Get
         Set(value As Double)
-            m_F((iTime - 1 - m_nTimeStepsInHindcast) \ 12) = value
+            m_F(iYearProjecting - 1) = value
         End Set
     End Property
 
-    Public Function CheckValidRule(iTimeStep As Integer) As Boolean
+    Public Function CheckValidRule(iYearProjecting As Integer) As Boolean
+        'A time frame rule is valid only if the number of years field for it is >0 and the year into projection is 1 upto that number
+        'and also the F during the last year of the hindcast is greater than the Fmsy
 
-        Dim TimeFrameRuleTimeStepBegin As Integer = m_nTimeStepsInHindcast + 1
-        Dim TimeFrameRuleTimeStepEnd As Integer = m_nTimeStepsInHindcast + 12 * NYears
-
-        If NYears > 0 And iTimeStep >= TimeFrameRuleTimeStepBegin And iTimeStep <= TimeFrameRuleTimeStepEnd Then
+        If NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= NYears And FGreaterThanFmsy Then
             Return True
         Else
             Return False
@@ -47,9 +52,14 @@ Public Class cTimeFrameRule
     Private Function calcAverageFLastYearHindCast()
 
         Dim MeanF As Double
+        Dim BiomassAtT As Double
+        Dim Q As Double
+        Dim GroupIndex As Integer = m_HCR.GroupF.Index
 
-        For iTimeStep = 1 To 12
-            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, m_nTimeStepsInHindcast - iTimeStep + 1) / 12
+        For iTimeStep = 0 To 11
+            BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
+            Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
+            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, m_nTimeStepsInHindcast - iTimeStep) * Q / 12
         Next
 
         Return MeanF
@@ -57,6 +67,8 @@ Public Class cTimeFrameRule
     End Function
 
     Public Sub calcFsfromTimeFrameRules()
+        'It performs this during the very first timestep of the projection and saves the results to an array for 
+        ' extraction at the beginning of each year
 
         Dim MeanHindcastF As Double
         Dim Fmsy As Double = m_HCR.MaxF
@@ -64,15 +76,17 @@ Public Class cTimeFrameRule
 
         MeanHindcastF = calcAverageFLastYearHindCast()
 
-        If MeanHindcastF > Fmsy And NYears > 0 Then
-            Interval = (MeanHindcastF - Fmsy) / NYears
-            ReDim m_F(NYears - 1)
-            For iYear = 1 To NYears
-                m_F(iYear - 1) = MeanHindcastF - iYear * Interval
-            Next iYear
+        If MeanHindcastF > Fmsy Then
+            FGreaterThanFmsy = True
+            If NYears > 0 Then
+                Interval = (MeanHindcastF - Fmsy) / NYears
+                ReDim m_F(NYears - 1)
+                For iYear = 1 To NYears
+                    m_F(iYear - 1) = MeanHindcastF - iYear * Interval
+                Next iYear
 
+            End If
         End If
-
     End Sub
 
 

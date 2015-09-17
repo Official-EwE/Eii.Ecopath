@@ -3070,7 +3070,7 @@ Public Class cMSE
 
     End Function
 
-    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iTime As Integer) As Double(,)
+    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iYearProjecting As Integer) As Double(,)
 
         Dim TargConsQuota(m_core.nGroups - 1, 1) As Double
         Dim TempTargConsQuota As Double
@@ -3088,13 +3088,13 @@ Public Class cMSE
         For Each iHCRGroup In Me.currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iTime) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iYearProjecting) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             ElseIf iHCRGroup.TypeOfHCR = HCRType.Conservation Then
                 If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iTime)
+                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iYearProjecting)
                     TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                 Else
-                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iTime)
+                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iYearProjecting)
                     TempTargConsQuota = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                     If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) Then
                         TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = TempTargConsQuota
@@ -3108,18 +3108,18 @@ Public Class cMSE
         'Output as F's to data table
         For iGrp = 1 To m_core.nGroups
             If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
-                TargetFs(iGrp - 1, iTime - 1) = TargConsQuota(iGrp - 1, HCRType.Target) / BiomassAtTimestep(iGrp)
+                TargetFs(iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Target) / BiomassAtTimestep(iGrp)
                 For iFleet = 1 To m_core.nFleets
                     If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
-                        TargetQuotas(iFleet - 1, iGrp - 1, iTime - 1) = TargConsQuota(iGrp - 1, HCRType.Target) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare
+                        TargetQuotas(iFleet - 1, iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Target) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare
                     End If
                 Next
             End If
             If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
-                ConservationFs(iGrp - 1, iTime - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) / BiomassAtTimestep(iGrp)
+                ConservationFs(iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) / BiomassAtTimestep(iGrp)
                 For iFleet = 1 To m_core.nFleets
                     If m_ecopath.EcopathData.Landing(iFleet, iGrp) > 0 Then
-                        ConservationQuotas(iFleet - 1, iGrp - 1, iTime - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare
+                        ConservationQuotas(iFleet - 1, iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare
                     End If
                 Next
             End If
@@ -3542,6 +3542,13 @@ Public Class cMSE
 
             If (iTime - 1) Mod 12 = 0 Then 'if it is the first timestep of the year
 
+                'if it is the first timestep of the firstyear of the projection then calculate where necessary the fimeframerule f's for the next TimeFrameRule.NYears
+                If iTime = OriginalNTimesteps + 1 Then
+                    For Each iHCR In currentStrategy
+                        iHCR.TimeFrameRule.calcFsfromTimeFrameRules()
+                    Next
+                End If
+
                 Me.setQModifiers(iTime)
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -3554,10 +3561,6 @@ Public Class cMSE
                 TargConsQuota = DetermineQuotas(bioEst, NumberofYearProjecting)
 
                 SetMinMaxEfforts(iTime)
-
-                For Each iHCR In currentStrategy
-                    iHCR.TimeFrameRule.calcFsfromTimeFrameRules()
-                Next
 
             End If
 
