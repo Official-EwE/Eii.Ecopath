@@ -40,11 +40,15 @@ Public Class Strategy
 
     Private m_HCRsList As New List(Of HCR_Group)
     Private m_core As cCore = Nothing
+    Private m_MSE As cMSE = Nothing
+    Private m_EcosimData As cEcosimDatastructures = Nothing
     Public Property Name As String = ""
     Public Property FileName As String = ""
 
     Public Sub New(ByVal StrategyName As String, StrategyNumber As Integer, ByVal theFilename As String, Core As cCore, MSE As cMSE)
         Me.m_core = Core
+        Me.m_MSE = MSE
+        Me.m_EcosimData = MSE.EcosimData
         Me.Name = StrategyName
         Me.FileName = theFilename
         Me.Regulations = New cRegulations(MSE, Core)
@@ -192,7 +196,7 @@ Public Class Strategy
 
                 Dim tempHCRGroup As HCR_Group
                 'Each HCR Group needs to be a new object
-                tempHCRGroup = New HCR_Group(m_core)
+                tempHCRGroup = New HCR_Group(m_core, m_MSE)
 
                 Try
                     ' Resolve group
@@ -204,6 +208,7 @@ Public Class Strategy
                     If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
                         tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
                     End If
+                    tempHCRGroup.TimeFrameRule.NYears = cStringUtils.ConvertToInteger(recs(8))
                 Catch ex As Exception
                     ' Whoah!
                     cMSEUtils.LogError(msg, "Strategy could not load from " & strFilename & ". " & ex.Message)
@@ -242,7 +247,7 @@ Public Class Strategy
             'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
             '                                    String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
             '                                    eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
-            strm.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
+            strm.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType, NYears(Time Frame Rule)")
             For Each iHCR In Me
                 strm.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
                                           cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
@@ -251,7 +256,8 @@ Public Class Strategy
                                           cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
                                           cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
                                           cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.TypeOfHCR))
+                                          cStringUtils.ToCSVField(iHCR.TypeOfHCR) & "," & _
+                                          cStringUtils.ToCSVField(iHCR.TimeFrameRule.NYears))
             Next
             cMSEUtils.ReleaseWriter(strm)
         End If

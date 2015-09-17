@@ -1,6 +1,6 @@
 ﻿Imports EwECore
 
-Public Class cTimeFrameRules
+Public Class cTimeFrameRule
 
     Private m_F() As Double
     Private m_nTimeStepsInHindcast As Integer
@@ -22,12 +22,12 @@ Public Class cTimeFrameRules
     End Sub
 
 
-    Public Property ExtractF(iYear) As Double
+    Public Property ExtractF(iTime) As Double
         Get
-            Return m_F(iYear)
+            Return m_F((iTime - 1 - m_nTimeStepsInHindcast) \ 12)
         End Get
         Set(value As Double)
-            m_F(iYear) = value
+            m_F((iTime - 1 - m_nTimeStepsInHindcast) \ 12) = value
         End Set
     End Property
 
@@ -56,7 +56,7 @@ Public Class cTimeFrameRules
 
     End Function
 
-    Public Sub calcFsfromTimeFrameRules(FsFromPreviousYear As Double)
+    Public Sub calcFsfromTimeFrameRules()
 
         Dim MeanHindcastF As Double
         Dim Fmsy As Double = m_HCR.MaxF
@@ -64,7 +64,7 @@ Public Class cTimeFrameRules
 
         MeanHindcastF = calcAverageFLastYearHindCast()
 
-        If MeanHindcastF > Fmsy Then
+        If MeanHindcastF > Fmsy And NYears > 0 Then
             Interval = (MeanHindcastF - Fmsy) / NYears
             ReDim m_F(NYears - 1)
             For iYear = 1 To NYears

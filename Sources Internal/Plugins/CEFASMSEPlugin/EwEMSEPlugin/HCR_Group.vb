@@ -62,6 +62,7 @@ Public Class HCR_Group
 
 #Region "Private variables"
     Private m_core As cCore
+    Private m_MSE As cMSE
 #End Region
 
 #Region "Public variables and Properties"
@@ -82,6 +83,8 @@ Public Class HCR_Group
 
     Public Property TypeOfHCR As HCRType = HCRType.Target
 
+    Public Property TimeFrameRule As cTimeFrameRule
+
     Public Overrides Function ToString() As String
 
         ' JS 01Oct13: StringBuilder is better at handling newlines on different OS-es
@@ -101,8 +104,10 @@ Public Class HCR_Group
 
 #Region "Construction"
 
-    Public Sub New(theCore As cCore)
+    Public Sub New(theCore As cCore, MSE As cMSE)
         Me.m_core = theCore
+        Me.m_MSE = MSE
+        TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me, MSE.OriginalNTimesteps)
     End Sub
 
 #End Region
@@ -143,16 +148,19 @@ Public Class HCR_Group
 
     End Function
 
-    Public Function CalcFfromHCR(ByRef Biomass As Single()) As Double
+    Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iTime As Integer) As Double
 
-
-            If Biomass(Me.GroupB.Index) > UpperLimit Then
+        If TimeFrameRule.CheckValidRule(iTime) Then 'Use a time frame rule
+            Return TimeFrameRule.ExtractF(iTime)
+        Else
+            If Biomass(Me.GroupB.Index) > UpperLimit Then 'otherwise use the standard HCR
                 Return Convert.ToDouble(MaxF)
             ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
                 Return 0
             Else
                 Return Convert.ToDouble(((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF)
             End If
+        End If
 
     End Function
 

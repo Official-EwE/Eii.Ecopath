@@ -53,6 +53,7 @@ Public Class gridTargetFishingMortalityPolicy
         FGroupName
         MaxF
         CostFunction
+        TimeFrameRuleYears
     End Enum
 
 #End Region ' Internal defs
@@ -109,6 +110,7 @@ Public Class gridTargetFishingMortalityPolicy
         Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
         Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHINGMORTALITY)
         Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell(My.Resources.HEADER_COST_FUNCTION_TYPE)
+        Me(0, eColumnTypes.TimeFrameRuleYears) = New EwEColumnHeaderCell(My.Resources.HEADER_TIMEFRAMERULES)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = True
@@ -152,6 +154,10 @@ Public Class gridTargetFishingMortalityPolicy
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.CostFunction) = Cell
 
+            Cell = New EwECell(Rule.TimeFrameRule.NYears, GetType(Double))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.TimeFrameRuleYears) = Cell
+
             Me.Rows(iHCR).Tag = Rule
         Next
 
@@ -173,6 +179,8 @@ Public Class gridTargetFishingMortalityPolicy
                     DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
 
                     DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = hcr.TypeOfHCR
+
+                    DirectCast(row.GetCells(eColumnTypes.TimeFrameRuleYears), ICell).Value = hcr.TimeFrameRule.NYears
 
                 End If
 
@@ -250,6 +258,9 @@ Public Class gridTargetFishingMortalityPolicy
 
                 Case eColumnTypes.CostFunction
                     Me.HarvestControlRule.TypeOfHCR = DirectCast(cell.GetValue(p), HCRType)
+
+                Case eColumnTypes.TimeFrameRuleYears
+                    Me.HarvestControlRule.TimeFrameRule.NYears = CInt(cell.GetValue(p))
 
             End Select
 

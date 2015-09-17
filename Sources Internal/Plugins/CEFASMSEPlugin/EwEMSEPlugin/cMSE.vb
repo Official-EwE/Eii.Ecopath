@@ -3088,13 +3088,13 @@ Public Class cMSE
         For Each iHCRGroup In Me.currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcFfromHCR(BiomassAtTimestep) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iTime) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             ElseIf iHCRGroup.TypeOfHCR = HCRType.Conservation Then
                 If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep)
+                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iTime)
                     TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                 Else
-                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep)
+                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iTime)
                     TempTargConsQuota = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                     If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) Then
                         TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = TempTargConsQuota
@@ -3555,6 +3555,10 @@ Public Class cMSE
 
                 SetMinMaxEfforts(iTime)
 
+                For Each iHCR In currentStrategy
+                    iHCR.TimeFrameRule.calcFsfromTimeFrameRules()
+                Next
+
             End If
 
             CalcEffortAndDiscards(BiomassAtTimestep, iTime, NumberTimeStepsIntoProjection, QMult)
@@ -3631,9 +3635,11 @@ Public Class cMSE
 
     Private Function SetEmaxWithinUserSpecifiedRangeOfEfforts(ByVal Effort As Single, ByVal iFleet As Integer) As Single
 
-        If Effort < MinEffortThisYear(iFleet - 1) Then
-            Effort = MinEffortThisYear(iFleet - 1)
-        End If
+        'Code redundant because we use time frame rules now to limit the amount effort can drop by
+        'If Effort < MinEffortThisYear(iFleet - 1) Then
+        '    Effort = MinEffortThisYear(iFleet - 1)
+        'End If
+
         If Effort > MaxEffortThisYear(iFleet - 1) Then
             Effort = MaxEffortThisYear(iFleet - 1)
         End If

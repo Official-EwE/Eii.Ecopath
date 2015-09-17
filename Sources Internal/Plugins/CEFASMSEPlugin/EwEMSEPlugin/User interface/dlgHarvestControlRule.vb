@@ -47,7 +47,7 @@ Public Class dlgHarvestControlRule
 
     Private m_Plugin As cMSE = Nothing
     Private m_strategy As Strategy = Nothing
-    Private m_HRC As HCR_Group = Nothing
+    Private m_HCR As HCR_Group = Nothing
     Private m_bIsValid As Boolean = True
     Private m_bInitialized As Boolean = False
 
@@ -63,7 +63,7 @@ Public Class dlgHarvestControlRule
 
     Public ReadOnly Property HarvestControlRule As HCR_Group
         Get
-            Return Me.m_HRC
+            Return Me.m_HCR
         End Get
     End Property
 
@@ -74,22 +74,22 @@ Public Class dlgHarvestControlRule
     Public Sub Init(MSEPlugin As cMSE, curStrategy As Strategy, Optional curHCR As HCR_Group = Nothing)
         Me.m_Plugin = MSEPlugin
         Me.m_strategy = curStrategy
-        Me.m_HRC = curHCR
+        Me.m_HCR = curHCR
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
 
-        If (Me.m_HRC Is Nothing) Then
-            Me.m_HRC = New HCR_Group(m_Plugin.Core)
+        If (Me.m_HCR Is Nothing) Then
+            Me.m_HCR = New HCR_Group(m_Plugin.Core, m_Plugin)
         End If
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
                 Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbBiomassGroups.Items.Add(grp)
-                If (Object.ReferenceEquals(grp, Me.m_HRC.GroupB)) Then
+                If (Object.ReferenceEquals(grp, Me.m_HCR.GroupB)) Then
                     Me.m_cmbBiomassGroups.SelectedIndex = i
                 End If
             End If
@@ -99,7 +99,7 @@ Public Class dlgHarvestControlRule
             If Core.EcoPathGroupInputs(igrp).IsFished Then
                 Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbFMortGroups.Items.Add(grp)
-                If (Object.ReferenceEquals(grp, Me.m_HRC.GroupF)) Then
+                If (Object.ReferenceEquals(grp, Me.m_HCR.GroupF)) Then
                     Me.m_cmbFMortGroups.SelectedIndex = i
                 End If
             End If
@@ -107,11 +107,11 @@ Public Class dlgHarvestControlRule
 
         Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Target))
         Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Conservation))
-        Me.m_cmbCostFunctions.SelectedIndex = cSystemUtils.IIF(Me.m_HRC.TypeOfHCR = HCRType.Target, 0, 1)
+        Me.m_cmbCostFunctions.SelectedIndex = cSystemUtils.IIF(Me.m_HCR.TypeOfHCR = HCRType.Target, 0, 1)
 
         Me.m_bInitialized = True
 
-        Me.UpdateHRC()
+        Me.UpdateHCR()
 
     End Sub
 
@@ -174,7 +174,7 @@ Public Class dlgHarvestControlRule
         If Not Me.m_bInitialized Then Return
 
         Try
-            UpdateHRC()
+            UpdateHCR()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -186,7 +186,7 @@ Public Class dlgHarvestControlRule
         If Not Me.m_bInitialized Then Return
 
         Try
-            Me.UpdateHRC()
+            Me.UpdateHCR()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -196,36 +196,38 @@ Public Class dlgHarvestControlRule
 
 #Region " Internals "
 
-    Private Sub UpdateHRC()
+    Private Sub UpdateHCR()
 
         Dim grpOut As cEcoPathGroupOutput = Nothing
         Dim sVal As Single = 0
 
         ' Group Biomass
-        Me.m_HRC.GroupB = DirectCast(m_cmbBiomassGroups.SelectedItem, cEcoPathGroupInput)
+        Me.m_HCR.GroupB = DirectCast(m_cmbBiomassGroups.SelectedItem, cEcoPathGroupInput)
 
-        If (Me.m_HRC.GroupB IsNot Nothing) Then
-            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupB.Index)
+        If (Me.m_HCR.GroupB IsNot Nothing) Then
+            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HCR.GroupB.Index)
             sVal = grpOut.Biomass
         Else
             sVal = 0
         End If
-        Me.m_HRC.LowerLimit = sVal * 0.1
-        Me.m_HRC.UpperLimit = sVal * 0.4
+        Me.m_HCR.LowerLimit = sVal * 0.1
+        Me.m_HCR.UpperLimit = sVal * 0.4
 
         ' Fishing Mort
-        Me.m_HRC.GroupF = DirectCast(m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)
-        If (Me.m_HRC.GroupF IsNot Nothing) Then
-            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupF.Index)
-            Me.m_HRC.MaxF = grpOut.MortCoFishRate
+        Me.m_HCR.GroupF = DirectCast(m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)
+        If (Me.m_HCR.GroupF IsNot Nothing) Then
+            grpOut = Me.Core.EcoPathGroupOutputs(Me.m_HCR.GroupF.Index)
+            Me.m_HCR.MaxF = grpOut.MortCoFishRate
         Else
-            Me.m_HRC.MaxF = 0
+            Me.m_HCR.MaxF = 0
         End If
 
-        Me.m_HRC.TypeOfHCR = CType(m_cmbCostFunctions.SelectedItem, cHCRTypeItem).Function
+        Me.m_HCR.TypeOfHCR = CType(m_cmbCostFunctions.SelectedItem, cHCRTypeItem).Function
+
+        Me.m_HCR.TimeFrameRule.NYears = 0
 
         ' Oooh
-        Me.m_tbxRule.Text = Me.m_HRC.ToString()
+        Me.m_tbxRule.Text = Me.m_HCR.ToString()
 
     End Sub
 
