@@ -35,14 +35,8 @@ Friend Class cCoreSettings
 
     ''' <summary>Autosave flags</summary>
     Private m_bAutosave() As Boolean
-    ''' <summary>Flag, stating if autosave info should carry standard EwE header information</summary>
-    Private m_bAutosaveHeaders As Boolean
     ''' <summary>Autosave formats</summary>
     Private m_strAutosaveFormat() As String
-    ''' <summary>Path for EwE core processes to write output information to.</summary>
-    Private m_strOutputPath As String = ""
-    ''' <summary>Path for the core to write backup files to.</summary>
-    Private m_strBackupFileMask As String = ""
 
     ''' <summary>Default author name.</summary>
     Private m_strAuthor As String = ""
@@ -83,14 +77,7 @@ Friend Class cCoreSettings
     ''' Get/set whether a component is allowed to auto-save.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property AutosaveHeaders() As Boolean
-        Get
-            Return Me.m_bAutosaveHeaders
-        End Get
-        Set(value As Boolean)
-            Me.m_bAutosaveHeaders = value
-        End Set
-    End Property
+    Public Property AutosaveHeaders() As Boolean = True
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -116,30 +103,13 @@ Friend Class cCoreSettings
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property OutputPath As String
-        Get
-            Return Me.m_strOutputPath
-        End Get
-        Set(value As String)
-            Me.m_strOutputPath = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the model backup path mask.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property BackupFileMask As String
-        Get
-            If (String.IsNullOrWhiteSpace(Me.m_strBackupFileMask)) Then
-                Return "{ModelFile}_{Date}-{Time}.{ModelExt}"
-            End If
-            Return Me.m_strBackupFileMask
-        End Get
-        Set(value As String)
-            Me.m_strBackupFileMask = value
-        End Set
-    End Property
+    Public Property BackupFileMask As String = ""
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -163,6 +133,7 @@ Friend Class cCoreSettings
     ''' -----------------------------------------------------------------------
     Public Property Contact As String
         Get
+            If (String.IsNullOrWhiteSpace(Me.m_strContact)) Then Return cSystemUtils.GetUserEmail()
             Return Me.m_strContact
         End Get
         Set(value As String)
