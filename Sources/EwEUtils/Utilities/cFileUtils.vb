@@ -261,8 +261,11 @@ Namespace Utilities
                 strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
             End If
 
-            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest)) Then
-                Return False
+            Dim strPath As String = (Path.GetDirectoryName(strDest))
+            If (Not String.IsNullOrWhiteSpace(strPath)) Then
+                If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest)) Then
+                    Return False
+                End If
             End If
 
             Try
