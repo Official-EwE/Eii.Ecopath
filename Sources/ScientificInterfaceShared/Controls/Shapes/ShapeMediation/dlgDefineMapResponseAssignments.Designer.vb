@@ -130,7 +130,7 @@ Partial Class dlgDefineMapResponseAssignments
         'm_btnRemove
         '
         resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
-        Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.Back
+        Me.m_btnRemove.Image = Global.ScientificInterfaceShared.My.Resources.Resources.DeleteHS
         Me.m_btnRemove.Name = "m_btnRemove"
         Me.m_btnRemove.UseVisualStyleBackColor = True
         '
