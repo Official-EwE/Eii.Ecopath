@@ -131,6 +131,9 @@ Friend Class cCoreSettings
     ''' -----------------------------------------------------------------------
     Public Property BackupFileMask As String
         Get
+            If (String.IsNullOrWhiteSpace(Me.m_strBackupFileMask)) Then
+                Return "{ModelFile}_{Date}-{Time}.{ModelExt}"
+            End If
             Return Me.m_strBackupFileMask
         End Get
         Set(value As String)
