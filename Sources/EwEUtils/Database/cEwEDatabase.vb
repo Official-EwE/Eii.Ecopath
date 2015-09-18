@@ -828,6 +828,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("** DB error '{0}' on query '{1}'", ex.Message, strSQL)
 #End If
+                cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.GetValue(" & strSQL & ")")
             End Try
             Return value
         End Function
@@ -892,6 +893,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("* DB exception '{0}' on '{1}'", ex.Message, strSQL)
 #End If
+                cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.Execute(" & strSQL & ")")
                 bSucces = False
             End Try
             Return bSucces
@@ -930,7 +932,7 @@ Namespace Database
 
             If (TypeOf conn Is SqlConnection) Then
                 ' Not implemented yet
-
+                Throw New NotImplementedException("GetPKName not implemented for SQL databases")
             End If
 
             Return strPKKey
@@ -1677,7 +1679,7 @@ Namespace Database
                     Me.ReleaseReader(reader)
 
                 Catch ex As Exception
-                    ' Aargh, cLog is not available here!!
+                    cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.ReadObjectKeys(" & strSQL & ")")
                 End Try
             End If
 
