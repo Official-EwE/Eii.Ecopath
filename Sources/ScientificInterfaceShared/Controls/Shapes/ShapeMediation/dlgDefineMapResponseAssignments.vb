@@ -599,13 +599,16 @@ Public Class dlgDefineMapResponseAssignments
                     If Me.m_shape.Index = map.ResponseIndexForGroup(igrp) Then
                         'Yes this shape is set for this group
                         'add a group node
-                        Dim grp As cCoreGroupBase = Me.m_uic.Core.EcoPathGroupInputs(igrp)
-                        Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
-                        ndgrp.Tag = grp
+                        Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(igrp)
+                        If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
 
-                        If Not ndApply.IsExpanded Then
-                            'if there are groups assigned to this Map/Node then expand it the tree to this point
-                            ndApply.ExpandAll()
+                            Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
+                            ndgrp.Tag = grp
+
+                            If Not ndApply.IsExpanded Then
+                                'if there are groups assigned to this Map/Node then expand it the tree to this point
+                                ndApply.ExpandAll()
+                            End If
                         End If
                     End If
                 Next
