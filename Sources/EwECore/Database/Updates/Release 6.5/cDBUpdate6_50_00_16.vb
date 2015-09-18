@@ -55,15 +55,33 @@ Friend Class cDBUpdate6_50_00_16
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Dim astrColumns As String() = New String() {"CodeISCAAP", "CodeTaxon", "Code3A", "ClassName", "OrderName", "FamilyName", "GenusName", "SpeciesName", "CommonName", "SourceName", "SourceKey", "LastUpdated", "EcologyType", "OrganismType", "Exploited", "ConservationStatus", "OccurrenceStatus", "OccurenceStatus", "MeanWeight", "MeanLength", "MaxLength", "MeanLifeSpan", "VulnerabiltyIndex"}
+        ' Required columns, the rest must go
+        Dim requiredCols As String() = New String() {"taxonid", "ecopathgroupid", "proportion", "propcatch"}
+        Dim bHasPropCatch As Boolean = False
         Dim bSucces As Boolean = True
 
+        Dim writer As New cEwEDatabase.cEwEDbWriter(db, "EcopathGroupTaxon")
+        Dim deadCols As New List(Of String)
+
+        Dim dt As DataTable = writer.GetDataTable()
+        For Each col As DataColumn In dt.Columns
+            Dim name As String = col.ColumnName
+            Dim i As Integer = Array.IndexOf(requiredCols, name.ToLower())
+            If (i = -1) Then
+                deadCols.Add(name)
+            Else
+                bHasPropCatch = bHasPropCatch Or (i = 3)
+            End If
+        Next
+        writer.Disconnect()
+
         ' Remove obsolete fields from EcopathGroupTaxon
-        For Each strColumn As String In astrColumns
+        For Each strColumn As String In deadCols
             db.Execute("ALTER TABLE EcopathGroupTaxon DROP COLUMN " & strColumn)
         Next
-        ' Make sure proportion of catch field is available in EcopathGroupTaxon
-        db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
+        If Not bHasPropCatch Then
+            db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
+        End If
 
         ' Remove obsolete fields from EcopathStanzaTaxon
         db.Execute("ALTER TABLE EcopathStanzaTaxon DROP COLUMN Proportion")
