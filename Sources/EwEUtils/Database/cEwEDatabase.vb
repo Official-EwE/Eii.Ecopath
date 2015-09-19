@@ -756,6 +756,7 @@ Namespace Database
 #If VERBOSE_LEVEL >= 1 Then
                 Console.WriteLine("GetReader error: {0}", ex.Message)
 #End If
+                cLog.Write(ex, eVerboseLevel.Detailed, "cEwEDatabase.GetReader(" & strSQL & ")")
                 reader = Nothing
             End Try
             Return reader
