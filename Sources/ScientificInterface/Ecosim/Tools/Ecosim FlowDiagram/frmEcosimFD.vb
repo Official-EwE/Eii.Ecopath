@@ -206,6 +206,15 @@ Namespace Ecosim
 
         End Sub
 
+        Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
+
+            If (Me.m_animationstate = eAnimationState.Playing) Then
+                Me.m_animationstate = eAnimationState.Stopping
+            End If
+            MyBase.OnFormClosing(e)
+
+        End Sub
+
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -398,9 +407,11 @@ Namespace Ecosim
             If Me.m_tree.ShowFlowRateLegend = False Then
                 Try
                     previousHighlightNod = 0 'we can again select the same node
-                    Me.m_mdataGridView.Dispose()  'Dellocating all the resources to DataGridView
-                    Me.m_mdataGridView.ClearSelection()
-                    Me.m_pbFlowDiagram.Controls.Remove(m_mdataGridView)
+                    If (Me.m_mdataGridView IsNot Nothing) Then
+                        Me.m_mdataGridView.Dispose()  'Dellocating all the resources to DataGridView
+                        Me.m_mdataGridView.ClearSelection()
+                        Me.m_pbFlowDiagram.Controls.Remove(m_mdataGridView)
+                    End If
                 Catch
                     'nothing
                 End Try
@@ -825,6 +836,8 @@ Namespace Ecosim
         Private Sub OnSliderValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_slider.ValueChanged
 
+            If (Me.m_noofTimeSlicesPerYear = 0) Then Return
+
             m_tbxTimeStep.Text = m_slider.Value.ToString
             CurrentTimestep = m_slider.Value
             Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
@@ -931,7 +944,10 @@ Namespace Ecosim
             End While
 
             Me.m_animationstate = eAnimationState.Idle
-            Me.Invoke(New RunCompletedDelegate(AddressOf UpdateControls))
+
+            If (Not Me.IsDisposed()) Then
+                Me.BeginInvoke(New RunCompletedDelegate(AddressOf UpdateControls))
+            End If
 
         End Sub
 
@@ -966,7 +982,6 @@ Namespace Ecosim
                 sl.Value = val
             End If
         End Sub
-
 
 #End Region
 
@@ -1009,7 +1024,7 @@ Namespace Ecosim
                 Return Me.m_slider.Value
             End Get
             Set(value As Integer)
-                Me.m_slider.Value = value
+                Me.AppendSlider(Me.m_slider, value)
                 If (Me.m_data IsNot Nothing) Then
                     Me.m_data.TimeStep = value
                 End If
