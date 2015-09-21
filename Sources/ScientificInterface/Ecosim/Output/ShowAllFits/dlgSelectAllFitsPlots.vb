@@ -36,16 +36,17 @@ Namespace Ecosim
     ''' =======================================================================
     Public Class dlgSelectAllFitsPlots
 
-        Private m_lplots As List(Of cShowAllFitsPlotData)
+        Private m_lplots As cShowAllFitsPlotData()
 
-        Public Sub New(ByVal lplots As List(Of cShowAllFitsPlotData))
+        Public Sub New(ByVal lplots() As cShowAllFitsPlotData)
 
-            InitializeComponent()
+            Me.InitializeComponent()
             Me.m_lplots = lplots
 
         End Sub
 
-        Private Sub SelectTSPlots_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
 
             Dim plot As cShowAllFitsPlotData = Nothing
             Dim ts As cTimeSeries = Nothing
@@ -54,9 +55,7 @@ Namespace Ecosim
 
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
-                ts = plot.TimeSeries
-                clbAllPlots.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ts.Index, ts.Name), _
-                    plot.Selected)
+                clbAllPlots.Items.Add(plot, plot.Selected)
             Next
 
         End Sub
@@ -98,6 +97,16 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub clbAllPlots_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles clbAllPlots.Format
+
+            If (e.ListItem IsNot Nothing) Then
+                Dim plot As cShowAllFitsPlotData = DirectCast(e.ListItem, cShowAllFitsPlotData)
+                Dim ts As cTimeSeries = plot.TimeSeries
+                Debug.Assert(ts IsNot Nothing)
+                e.Value = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ts.Index, ts.Name)
+            End If
+        End Sub
     End Class
 
 End Namespace
