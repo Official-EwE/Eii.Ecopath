@@ -14,13 +14,6 @@ Public Class cTimeFrameRule
 
     Public Property NYears As Integer
 
-    Public ReadOnly Property F(ByVal iYear As Integer)
-        Get
-            'Holds the value of the Fs to be applied each year
-            Return m_F(iYear - 1)
-        End Get
-    End Property
-
     Public Sub New(ByRef EcosimDatastructures As cEcosimDatastructures, ByRef HCR As HCR_Group)
         m_EcosimData = EcosimDatastructures
         m_HCR = HCR
