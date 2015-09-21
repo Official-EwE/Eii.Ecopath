@@ -77,7 +77,7 @@ Public Class cMSE
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
     Private StrategyIndex As Integer
     Public OriginalNTimesteps As Integer
-    Private MinEffortThisYear() As Single
+    'Private MinEffortThisYear() As Single
     Private MaxEffortThisYear() As Single
 
     Private TargConsQuota(,) As Double 'Stores the target and conservation quota's for each species
@@ -2022,7 +2022,7 @@ Public Class cMSE
     Private Sub initQuotaEffortArrays()
 
         ReDim TargConsQuota(m_core.nGroups - 1, 1)
-        ReDim MinEffortThisYear(m_core.nFleets - 1)
+        'ReDim MinEffortThisYear(m_core.nFleets - 1)
         ReDim MaxEffortThisYear(m_core.nFleets - 1)
 
     End Sub
@@ -3873,8 +3873,8 @@ Public Class cMSE
                                          + Me.EcopathData.FleetName(iFleet) + " = zero.")
             End If
 
-            MinEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
-            If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
+            'MinEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
+            'If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
             MaxEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
             If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MaxEffortThisYear(iFleet - 1) = 200
         Next
