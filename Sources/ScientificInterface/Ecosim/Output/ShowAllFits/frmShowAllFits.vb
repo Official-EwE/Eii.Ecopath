@@ -77,6 +77,7 @@ Namespace Ecosim
             Me.m_NTimes = Me.Core.nEcosimTimeSteps
 
             Me.SetDefaultParams()
+            Me.GatherPlotData()
             Me.CalcPlotParams()
             Me.SetPlotTypes()
 
@@ -466,7 +467,6 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdatePlots()
-            Me.GatherPlotData()
             Me.CalcPlotParams()
             Me.m_pbPlots.Invalidate()
         End Sub
@@ -792,9 +792,10 @@ Namespace Ecosim
         Private Sub tsBtnHSPlots_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiChoosePlots.Click
 
-            Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots)
+            Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots.ToArray())
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                Me.UpdatePlots()
+                Me.CalcPlotParams()
+                Me.m_pbPlots.Invalidate()
             End If
 
         End Sub
