@@ -1,4 +1,7 @@
-﻿Imports EwECore
+﻿Option Explicit On
+
+
+Imports EwECore
 
 Public Class cTimeFrameRule
     'This object handles the application of a time frame rule.
@@ -42,24 +45,28 @@ Public Class cTimeFrameRule
 
     End Function
 
-    Private Function calcAverageFLastYearHindCast()
+    Private Function calcAverageFLastYearHindCast(iCurrentTimestep As Integer)
 
         Dim MeanF As Double
         Dim BiomassAtT As Double
         Dim Q As Double
         Dim GroupIndex As Integer = m_HCR.GroupF.Index
 
-        For iTimeStep = 0 To 11
+        Debug.Assert(iCurrentTimestep > 12, "TimeFrameRules must have a hind cast period > 12 months. See cTimeFrameRule.calcAverageFLastYearHindCast()")
+
+        'Get the average from the last year of the hindcast
+        'iCurrentTimestep is the first time step of the forecast
+        For iTimeStep = (iCurrentTimestep - 13) To (iCurrentTimestep - 1)
             BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
             Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
-            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, m_nTimeStepsInHindcast - iTimeStep) * Q / 12
+            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) * Q / 12
         Next
 
         Return MeanF
 
     End Function
 
-    Public Sub calcFsfromTimeFrameRules()
+    Public Sub calcFsfromTimeFrameRules(iCurrentTimestep As Integer)
         'It performs this during the very first timestep of the projection and saves the results to an array for 
         ' extraction at the beginning of each year
 
@@ -67,7 +74,7 @@ Public Class cTimeFrameRule
         Dim Fmsy As Double = m_HCR.MaxF
         Dim Interval As Double
 
-        MeanHindcastF = calcAverageFLastYearHindCast()
+        MeanHindcastF = calcAverageFLastYearHindCast(iCurrentTimestep)
 
         If MeanHindcastF > Fmsy Then
             FGreaterThanFmsy = True

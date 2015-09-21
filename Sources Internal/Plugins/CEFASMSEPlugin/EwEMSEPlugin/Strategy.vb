@@ -208,7 +208,12 @@ Public Class Strategy
                     If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
                         tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
                     End If
-                    tempHCRGroup.TimeFrameRule.NYears = cStringUtils.ConvertToInteger(recs(8))
+                    'backwards compatability with older file that don't contain Time Frame Rules
+                    If recs.Length > 8 Then
+                        tempHCRGroup.TimeFrameRule.NYears = cStringUtils.ConvertToInteger(recs(8))
+                    Else
+                        tempHCRGroup.TimeFrameRule.NYears = 0
+                    End If
                 Catch ex As Exception
                     ' Whoah!
                     cMSEUtils.LogError(msg, "Strategy could not load from " & strFilename & ". " & ex.Message)

@@ -3544,8 +3544,8 @@ Public Class cMSE
 
                 'if it is the first timestep of the firstyear of the projection then calculate where necessary the fimeframerule f's for the next TimeFrameRule.NYears
                 If iTime = OriginalNTimesteps + 1 Then
-                    For Each iHCR In currentStrategy
-                        iHCR.TimeFrameRule.calcFsfromTimeFrameRules()
+                    For Each HCR As HCR_Group In currentStrategy
+                        HCR.TimeFrameRule.calcFsfromTimeFrameRules(iTime)
                     Next
                 End If
 
