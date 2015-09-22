@@ -916,7 +916,7 @@ Namespace Ecosim
             Dim currTimeStep As Integer = 1
 
             ' JS 03Mar15: Break on a stop flag rather than shooting the thread
-            While (Me.m_animationstate <> eAnimationState.Stopping)
+            While (Me.m_animationstate = eAnimationState.Playing)
 
                 AppendTextBox(m_tbxTimeStep, currTimeStep.ToString)  'Cross Threads operating on Textbox
                 CurrentTimestep = currTimeStep
@@ -960,27 +960,54 @@ Namespace Ecosim
 
 
         Private Sub AppendTextBox(ByVal TB As TextBox, ByVal txt As String)
-            If TB.InvokeRequired Then
-                TB.Invoke(New AppendTextBoxDelegate(AddressOf AppendTextBox), New Object() {TB, txt})
-            Else
-                TB.Text = txt
-            End If
+
+            If Me.IsDisposed Then Return
+            Try
+                If TB.InvokeRequired Then
+                    TB.Invoke(New AppendTextBoxDelegate(AddressOf AppendTextBox), New Object() {TB, txt})
+                Else
+                    TB.Text = txt
+                End If
+            Catch exDisp As ObjectDisposedException
+                ' Swallow this, just bad luck
+            Catch ex As Exception
+                cLog.Write(ex, "frmEcosimFD.AppendTextBox")
+            End Try
+
         End Sub
 
         Private Sub AppendButton(ByVal Btn As Button, ByVal txt As String)
-            If Btn.InvokeRequired Then
-                Btn.Invoke(New AppendButtonDelegate(AddressOf AppendButton), New Object() {Btn, txt})
-            Else
-                Btn.Text = txt
-            End If
+
+            If Me.IsDisposed Then Return
+            Try
+                If Btn.InvokeRequired Then
+                    Btn.Invoke(New AppendButtonDelegate(AddressOf AppendButton), New Object() {Btn, txt})
+                Else
+                    Btn.Text = txt
+                End If
+            Catch exDisp As ObjectDisposedException
+                ' Swallow this, just bad luck
+            Catch ex As Exception
+                cLog.Write(ex, "frmEcosimFD.AppendButton")
+            End Try
         End Sub
 
         Private Sub AppendSlider(ByVal sl As ucSlider, ByVal val As Integer)
-            If sl.InvokeRequired Then
-                sl.Invoke(New AppendSliderDelegate(AddressOf AppendSlider), New Object() {sl, val})
-            Else
-                sl.Value = val
-            End If
+
+            If Me.IsDisposed Then Return
+
+            Try
+                If sl.InvokeRequired Then
+                    sl.Invoke(New AppendSliderDelegate(AddressOf AppendSlider), New Object() {sl, val})
+                Else
+                    sl.Value = val
+                End If
+            Catch exDisp As ObjectDisposedException
+                ' Swallow this, just bad luck
+            Catch ex As Exception
+                cLog.Write(ex, "frmEcosimFD.AppendSlider")
+            End Try
+
         End Sub
 
 #End Region
