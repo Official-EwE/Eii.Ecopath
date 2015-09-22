@@ -97,7 +97,7 @@ Public Class cResilienceWriter
         End If
 
         ' Header
-        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "Time"))
+        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "TimeStep"))
         For i As Integer = 1 To Me.m_core.nGroups
             grp = Me.m_core.EcoPathGroupInputs(i)
             If grp.IsConsumer Then
@@ -164,7 +164,7 @@ Public Class cResilienceWriter
         If (Me.m_core.SaveWithFileHeader) Then sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
 
         ' Header
-        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "Time"))
+        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "TimeStep"))
         sw.WriteLine(",Resilience")
 
         ' Body
