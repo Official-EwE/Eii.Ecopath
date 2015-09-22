@@ -184,7 +184,7 @@
     <value>Bottom, Left</value>
   </data>
   <data name="m_tbxDelay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 450</value>
+    <value>155, 465</value>
   </data>
   <data name="m_tbxDelay.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 20</value>
@@ -214,16 +214,16 @@
     <value>True</value>
   </data>
   <data name="m_lblDelay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>152, 473</value>
+    <value>152, 488</value>
   </data>
   <data name="m_lblDelay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
+    <value>56, 13</value>
   </data>
   <data name="m_lblDelay.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_lblDelay.Text" xml:space="preserve">
-    <value>Delay(ms)</value>
+    <value>Delay (ms)</value>
   </data>
   <data name="&gt;&gt;m_lblDelay.Name" xml:space="preserve">
     <value>m_lblDelay</value>
@@ -271,7 +271,7 @@
     <value>True</value>
   </data>
   <data name="m_lblTimeStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>745, 473</value>
+    <value>773, 488</value>
   </data>
   <data name="m_lblTimeStep.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 13</value>
@@ -297,20 +297,20 @@
   <data name="m_lblMonth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="m_lblMonth.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>697, 473</value>
+    <value>725, 488</value>
   </data>
   <data name="m_lblMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 13</value>
+    <value>45, 16</value>
   </data>
   <data name="m_lblMonth.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_lblMonth.Text" xml:space="preserve">
     <value>Month</value>
+  </data>
+  <data name="m_lblMonth.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
   </data>
   <data name="&gt;&gt;m_lblMonth.Name" xml:space="preserve">
     <value>m_lblMonth</value>
@@ -327,23 +327,23 @@
   <data name="m_lblYear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="m_lblYear.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>649, 473</value>
+    <value>677, 488</value>
   </data>
   <data name="m_lblYear.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
   <data name="m_lblYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
+    <value>45, 13</value>
   </data>
   <data name="m_lblYear.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="m_lblYear.Text" xml:space="preserve">
     <value>Year</value>
+  </data>
+  <data name="m_lblYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
   </data>
   <data name="&gt;&gt;m_lblYear.Name" xml:space="preserve">
     <value>m_lblYear</value>
@@ -361,7 +361,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_tbxMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>700, 450</value>
+    <value>728, 465</value>
   </data>
   <data name="m_tbxMonth.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 20</value>
@@ -385,7 +385,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_tbxYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>652, 450</value>
+    <value>680, 465</value>
   </data>
   <data name="m_tbxYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 20</value>
@@ -409,7 +409,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_tbxTimeStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>748, 450</value>
+    <value>776, 465</value>
   </data>
   <data name="m_tbxTimeStep.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 20</value>
@@ -436,7 +436,7 @@
     <value>211, 466</value>
   </data>
   <data name="m_slider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 20</value>
+    <value>463, 20</value>
   </data>
   <data name="m_slider.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -445,7 +445,7 @@
     <value>m_slider</value>
   </data>
   <data name="&gt;&gt;m_slider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.11969.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.12766.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_slider.Parent" xml:space="preserve">
     <value>m_scContent.Panel1</value>
@@ -677,7 +677,7 @@
     <value>m_tsFlowDiagram</value>
   </data>
   <data name="&gt;&gt;m_tsFlowDiagram.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11969.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12766.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsFlowDiagram.Parent" xml:space="preserve">
     <value>$this</value>
@@ -764,6 +764,6 @@
     <value>frmEcosimFD</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11969.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12766.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

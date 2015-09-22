@@ -1241,6 +1241,7 @@ Namespace Ecosim
             '
             'm_pgFlowDiagram
             '
+            Me.m_pgFlowDiagram.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText
             resources.ApplyResources(Me.m_pgFlowDiagram, "m_pgFlowDiagram")
             Me.m_pgFlowDiagram.Name = "m_pgFlowDiagram"
             '
