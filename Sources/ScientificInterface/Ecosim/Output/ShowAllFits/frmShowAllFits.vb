@@ -76,8 +76,8 @@ Namespace Ecosim
 
             Me.m_NTimes = Me.Core.nEcosimTimeSteps
 
-            Me.SetDefaultParams()
-            Me.GatherPlotData()
+            Me.InitializeDefaultParams()
+            Me.InitializePlotData()
             Me.CalcPlotParams()
             Me.SetPlotTypes()
 
@@ -241,9 +241,9 @@ Namespace Ecosim
 #Region " Internal mucky bits "
 
         ''' <summary>
-        ''' Init the form with default values
+        ''' Init the form with default values. Call this only once.
         ''' </summary>
-        Private Sub SetDefaultParams()
+        Private Sub InitializeDefaultParams()
 
             ' Defaults
             m_sDotSize = 3
@@ -263,7 +263,10 @@ Namespace Ecosim
             SetPlotTypes()
         End Sub
 
-        Private Sub GatherPlotData()
+        ''' <summary>
+        ''' Init plot data administration structure. Call this only once.
+        ''' </summary>
+        Private Sub InitializePlotData()
 
             Dim ts As cTimeSeries = Nothing
             Dim asSimData(Me.Core.nEcosimTimeSteps) As Single
