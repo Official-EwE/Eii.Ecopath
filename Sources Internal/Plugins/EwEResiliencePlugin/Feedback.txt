@@ -1,0 +1,64 @@
+﻿1.  In some cases the csv files are not saved. We don't find any particular 
+    situation but thats for real. In different pc's with different models.
+
+JS: Found and fixed an error. The autosave flag was checked only when Ecosim 
+    loaded, but it should have been done when an Ecosim run was started.
+
+2. The values between plots are not equal. If you check for the Resilience 
+   at the scatterplot for every year, it's not the same when you look at the 
+   temporal plot of resilience
+
+JS: Both plots draw from the same computed data
+MZ: I’VE ATTACHE FEW SHOTS, AS YOU CAN SEE IN TR (TEMPORAL RESILIENCE) VALUES ARE IN THE RANGE OF ~ -0.6 TO -0.5. BUT IN SP (SCATTERPLOTS) ARE AROUND -0.77
+JS: Ok, fixed
+
+3.  Please delete the smooth line in the temporal plot of resilience, we found 
+    that a straight line connecting the dots would be a better representation
+
+JS: The dots are annual resilience values, the smooth line is generated from 
+    resilience values for each monthly time step. Do you want me to remove monthly 
+	resilience values from the graph then?
+MJ: OK, NOW I UNDERSTAND. PLEASE KEEP IT, CAND YOU ADD A LEGENDS TO INDICATE THIS.
+JS: I've made the anunal line more explicit, and made the difference explicitly clear 
+    in the legend
+
+4.  We also think now that Resilience index would be better understood if we put 
+    in absolute values, that is positive. Particularly in the temporal plot. However, 
+    the negative relation among demand and supply must be remain, that is we expect 
+    that the scatterplot still remain with the negative correlation
+JS: Perfect, I'll change that.
+JS: Is this better?
+
+5.  If we make the calculations using the matrix consumptions the plugin save, 
+    we don't get the same results as in the plugin. Why? I'm sending a R script 
+    in order you can check where is the miss calculation and also I've check by 
+    hand in excel and there is no correspondence with the plugin estimations. 
+    Also I attach an excel file where I did the estimations and the model I use 
+    last time
+
+JS: Will check, this is probably where the confusion starts. The plots draw from 
+    the same data, and the consoumption data that is written out to CSV file is 
+	the same data used for the plotting. It is all connected, but somehow I must 
+	have mixed things up in the final calculations. 
+MJ: GOOD, LET ME KNOW. PLEASE CHECK MY “NOT ELEGANT” R SCRIPT, IS MY BEST TRY, 
+    BUT I CONFIRMED IT WITH EXCEL, :D
+JS: A possible difference: the Consumption writer includs diet Imports, while the
+    resilience do not include imports when calculating supply and demand. Can you
+	advise what to do here? Will this matter?
+    
+6. Also we don't understand how the annual value of resilience is estimated. I've 
+   checked and is not the average, star nor ending value? How do you estimate 
+   the annual? Is a moving average?
+
+JS: Annual reslience is computed from the average Supply and average Demand for one 
+    year. I do not average the resilience; I average demand and supply, and use that 
+	to calculate the resilience over one year. Perhaps that is not what you want?
+MJ: OH, I DON’T EVEN THINK THAT APPROACH, IT’S INTERESTING. YOU MAKE ME THINK!!!! 
+    HONESTLY, I’M NOT SURE WHAT IS BEST? BUT I BELIVE AVERAGE RESILIENCE COULD BE 
+	MORE INTUITIVELY DUE THAT IN TIME SERIES WE FOCUS ON THE INDICATOR. BUT I CAN 
+	BE OPEN TO YOUR IDEAS!! ACTUALLY, THIS IS EXPLAIN DIFFERENCES RELATED WITH 
+	POINT #2. AN PEOPLE AT THE WORKSHOP WERE EXPECTED TO SEE EQUAL VALUES OF 
+	RESILIENCE AMONG TR PLOT AND SP PLOTS
+JS: For outputting annual supply and demand to CSV I need to compute these values.
+    It makes sense to compute resilience over these averaged values, no?
+	What do you advise?

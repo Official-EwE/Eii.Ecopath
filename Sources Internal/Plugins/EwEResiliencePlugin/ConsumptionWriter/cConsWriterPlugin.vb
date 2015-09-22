@@ -31,6 +31,7 @@ Public Class cConsWriterPlugin
     Implements EwEPlugin.IAutoSavePlugin
     Implements EwEPlugin.IEcopathRunInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
+    Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IMenuItemPlugin
@@ -144,6 +145,13 @@ Public Class cConsWriterPlugin
         Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Try
             Me.m_simds = CType(EcosimDatastructures, cEcosimDatastructures)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
+        Try
             If My.Settings.ConsAutosave Then
                 Me.m_writer = New cConsumptionWriter(Me.m_core, m_pathds, m_simds)
             End If
@@ -232,4 +240,4 @@ Public Class cConsWriterPlugin
 
 #End Region ' UI integration
 
-End Class
+ End Class

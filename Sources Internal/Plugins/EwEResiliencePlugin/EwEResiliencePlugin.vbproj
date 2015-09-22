@@ -227,6 +227,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Feedback.txt" />
     <Content Include="Resources\cicimar-color.png" />
     <Content Include="Resources\CONACYT.png" />
     <Content Include="Resources\FixedAxesHS.png" />

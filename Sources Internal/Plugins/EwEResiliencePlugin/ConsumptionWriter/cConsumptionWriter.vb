@@ -98,9 +98,9 @@ Public Class cConsumptionWriter
                     sw.WriteLine()
                 End If
 
-                For i As Integer = 1 To nMax
-                    If i > 1 Then sw.Write(",")
-                    sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
+                For iPrey As Integer = 1 To nMax
+                    If iPrey > 1 Then sw.Write(",")
+                    sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPrey).Name))
                 Next
 
                 If My.Settings.ConsIncludeImportAndSum Then
@@ -108,16 +108,16 @@ Public Class cConsumptionWriter
                 End If
                 sw.WriteLine()
 
-                For j As Integer = 1 To nMax
+                For iPrey As Integer = 1 To nMax
                     Dim sSum As Single = 0
-                    For i As Integer = 1 To nMax
-                        If i > 1 Then sw.Write(",")
-                        sw.Write(cStringUtils.FormatSingle(data(j, i)))
-                        sSum += data(j, i)
+                    For iPred As Integer = 1 To nMax
+                        If iPred > 1 Then sw.Write(",")
+                        sw.Write(cStringUtils.FormatSingle(data(iPrey, iPred)))
+                        sSum += data(iPrey, iPred)
                     Next
                     If My.Settings.ConsIncludeImportAndSum Then
                         sw.Write(",")
-                        sw.Write(cStringUtils.FormatSingle(data(j, nGroups + 1)))
+                        sw.Write(cStringUtils.FormatSingle(data(iPrey, nGroups + 1)))
                         sw.Write(",")
                         sw.Write(cStringUtils.FormatSingle(sSum))
                     End If
@@ -182,13 +182,20 @@ Public Class cConsumptionWriter
         Dim data(n, n + 1) As Single
 
         ' Grab consumption
-        For i As Integer = 1 To n
-            For j As Integer = 1 To n
-                data(i, j) = Me.m_simds.Consumpt(i, j)
+        For iPrey As Integer = 1 To n
+
+            Dim sEatenOf As Single = 0
+            Dim sEatebBy As Single = 0
+
+            For iPred As Integer = 1 To n
+                data(iPrey, iPred) = Me.m_simds.Consumpt(iPrey, iPred)
+                sEatenOf += data(iPrey, iPred)
             Next
 
             ' Calc imports
-            data(i, n + 1) = Me.m_pathds.DtImp(i) * m_simds.Eatenby(i)
+            data(iPrey, n + 1) = Me.m_pathds.DtImp(iPrey) * m_simds.Eatenby(iPrey)
+
+            Debug.Assert(sEatenOf = Me.m_simds.Eatenof(iPrey))
         Next
 
         Return data
