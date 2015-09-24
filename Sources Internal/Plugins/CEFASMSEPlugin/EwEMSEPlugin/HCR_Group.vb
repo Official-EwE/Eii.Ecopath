@@ -107,7 +107,7 @@ Public Class HCR_Group
     Public Sub New(theCore As cCore, MSE As cMSE)
         Me.m_core = theCore
         Me.m_MSE = MSE
-        TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me)
+        TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me, MSE)
     End Sub
 
 #End Region
@@ -151,6 +151,11 @@ Public Class HCR_Group
     Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iYearProjecting As Integer) As Double
 
         If TimeFrameRule.CheckValidRule(iYearProjecting) And Me.TypeOfHCR = HCRType.Target Then 'Use a time frame rule
+
+#If DEBUG Then
+            Console.WriteLine("Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
+#End If
+
             Return TimeFrameRule.ExtractF(iYearProjecting)
         Else
             If Biomass(Me.GroupB.Index) > UpperLimit Then 'otherwise use the standard HCR

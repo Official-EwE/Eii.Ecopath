@@ -135,6 +135,16 @@ Public Class Strategy
         Me.m_HCRsList.Insert(index, item)
     End Sub
 
+    Public Function StrategyContainsHCRforiGrp(ByVal iGrp As Integer) As Boolean
+        'Checks to see whether this strategy has an HCR for the indexed group
+        For Each iHCR In m_HCRsList
+            If iHCR.GroupF.Index = iGrp Then
+                Return True
+            End If
+        Next
+        Return False
+    End Function
+
     Default Public Property Item(index As Integer) As HCR_Group Implements IList(Of HCR_Group).Item
         Get
             Return Me.m_HCRsList.Item(index)

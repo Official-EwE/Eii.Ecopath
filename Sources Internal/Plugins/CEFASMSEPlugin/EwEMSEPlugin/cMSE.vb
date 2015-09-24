@@ -914,7 +914,7 @@ Public Class cMSE
 
         ' JS 09Oct13: Used standard readers/writers, and made robust
 
-        Dim nIterations As Integer = Me.NModels2Run
+        Dim nIterations As Integer = Me.NModels
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, m_ecopath.EcopathData.NumGroups - 1, m_ecopath.EcopathData.NumGroups - 1) As Double
 
@@ -1706,6 +1706,11 @@ Public Class cMSE
             'Initialise and load from CSV the biomass limits
             BiomassLimits = New cBiomassLimits(m_plugin)
             BiomassLimits.LoadLimitsFromCSV()
+
+#If DEBUG Then
+            'output the headings of the csv for the F results to test whether F steps correctly
+            OutputFHeadings()
+#End If
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Run The Trials 
@@ -3580,6 +3585,59 @@ Public Class cMSE
 
     End Sub
 
+    Private Sub OutputFHeadings()
+        'Dim FChange As Double
+        Dim strmWriter As StreamWriter
+        Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_F_Steps.csv", False)
+        Dim fileexists As Boolean = File.Exists(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile))
+        strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.Results, strFile), False)
+
+        strmWriter.WriteLine("ModelNumber,Strategy,GroupName,F")
+
+
+        ''output model number
+        'strmWriter.Write("Model Number")
+        'For iModel = 1 To NModels2Run
+        '    For Each iStrategy In Strategies
+        '        For iGroup = 1 To m_core.nGroups
+        '            If iStrategy.StrategyContainsHCRforiGrp(iGroup) Then
+        '                strmWriter.Write(", " & iModel)
+        '            End If
+        '        Next
+        '    Next
+        'Next
+        'strmWriter.WriteLine()
+
+        ''output strategy
+        'strmWriter.Write("Strategy")
+        'For iModel = 1 To NModels2Run
+        '    For Each iStrategy In Strategies
+        '        For iGroup = 1 To m_core.nGroups
+        '            If iStrategy.StrategyContainsHCRforiGrp(iGroup) Then
+        '                strmWriter.Write(", " & iStrategy.Name)
+        '            End If
+        '        Next
+        '    Next
+        'Next
+        'strmWriter.WriteLine()
+
+        ''output group numbers
+        'strmWriter.Write("Group Number")
+        'For iModel = 1 To NModels2Run
+        '    For Each iStrategy In Strategies
+        '        For iGroup = 1 To m_core.nGroups
+        '            If iStrategy.StrategyContainsHCRforiGrp(iGroup) Then
+        '                strmWriter.Write(", " & iGroup)
+        '            End If
+        '        Next
+        '    Next
+        'Next
+        'strmWriter.WriteLine()
+
+        strmWriter.Close()
+        strmWriter.Dispose()
+    End Sub
+
     Private Sub RecordRealisedFResults(ByVal iTime As Integer, ByVal BiomassAtTimeStep() As Single, ByVal NumberTimeStepsIntoProjection As Integer, ByRef QMult() As Double)
 
         For iGrp = 1 To m_core.nGroups
@@ -3855,7 +3913,7 @@ Public Class cMSE
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
                 Else
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None

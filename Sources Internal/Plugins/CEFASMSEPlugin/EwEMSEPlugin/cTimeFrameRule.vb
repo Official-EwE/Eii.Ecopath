@@ -2,6 +2,8 @@
 
 
 Imports EwECore
+Imports System.IO
+Imports EwEUtils.Utilities
 
 Public Class cTimeFrameRule
     'This object handles the application of a time frame rule.
@@ -14,13 +16,15 @@ Public Class cTimeFrameRule
     Private m_EcosimData As cEcosimDatastructures
     Private m_HCR As HCR_Group
     Private FGreaterThanFmsy As Boolean
+    Private m_MSE As cMSE
 
     Public Property NYears As Integer
 
-    Public Sub New(ByRef EcosimDatastructures As cEcosimDatastructures, ByRef HCR As HCR_Group)
+    Public Sub New(ByRef EcosimDatastructures As cEcosimDatastructures, ByRef HCR As HCR_Group, ByRef MSE As cMSE)
         m_EcosimData = EcosimDatastructures
         m_HCR = HCR
         m_nTimeStepsInHindcast = EcosimDatastructures.NTimes
+        m_MSE = MSE
     End Sub
 
 
@@ -75,6 +79,15 @@ Public Class cTimeFrameRule
         Dim Interval As Double
 
         MeanHindcastF = calcAverageFLastYearHindCast(iCurrentTimestep)
+
+#If DEBUG Then
+        Dim strmWriter As StreamWriter
+        Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_F_Steps.csv", False)
+        strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
+        strmWriter.WriteLine(m_MSE.CurrentModelID & "," & m_MSE.currentStrategy.Name & "," & Me.m_HCR.GroupF.Name & "," & MeanHindcastF)
+        strmWriter.Close()
+        strmWriter.Dispose()
+#End If
 
         If MeanHindcastF > Fmsy Then
             FGreaterThanFmsy = True
