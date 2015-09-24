@@ -1351,9 +1351,10 @@ Public Class cMSE
             Me.Core.DiscardChanges()
 
             ' Just reload Ecosim
-            Core.CloseEcosimScenario()
-
-            Me.Core.LoadEcosimScenario(iscenario)
+            'Closing and reloading the Ecosim Scenario causes all time series to be unloaded
+            'If this happens and the user runs the MSE again it will on longer be in the same state as the previous run
+            'Core.CloseEcosimScenario()
+            'Me.Core.LoadEcosimScenario(iscenario)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -3978,15 +3979,17 @@ Public Class cMSE
         For i = 1 To Me._simdata.nGroups
 
             totF = 0
-            For ig = 1 To Me._simdata.nGear
-                'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-                totF += Me._simdata.FishMGear(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
-            Next
+            If Not Me._simdata.FisForced(i) Then
+                For ig = 1 To Me._simdata.nGear
+                    'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
+                    totF += Me._simdata.FishMGear(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
+                Next
 
-            'Save F for this time step 
-            'NOT including Density Dependant Catchability.
-            'Density Dependant Catchability will be be applied by Ecosim when FishTime() In SetFishTime()
-            Me._simdata.FishRateNo(i, t) = totF
+                'Save F for this time step 
+                'NOT including Density Dependant Catchability.
+                'Density Dependant Catchability will be be applied by Ecosim when FishTime() In SetFishTime()
+                Me._simdata.FishRateNo(i, t) = totF
+            End If
 
             'If Me._simdata.FishRateNo(i, t) > 0 Then
             '    Dim fchange As Double = Math.Abs((Me._simdata.FishRateNo(i, t - 1) - Me._simdata.FishRateNo(i, t)) / Me._simdata.FishRateNo(i, t))

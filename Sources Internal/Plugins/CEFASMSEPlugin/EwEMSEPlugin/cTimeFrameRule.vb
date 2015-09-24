@@ -62,8 +62,11 @@ Public Class cTimeFrameRule
         'iCurrentTimestep is the first time step of the forecast
         For iTimeStep = (iCurrentTimestep - 13) To (iCurrentTimestep - 1)
             BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
-            Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
-            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) * Q / 12
+            'ToDo 24-Sept-2015 We need to sort out if Density Dependant Catchability should be included in F
+            'When it is F is different between models because Biomass will vary between models
+            'Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
+            'MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) * Q / 12
+            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) / 12
         Next
 
         Return MeanF
