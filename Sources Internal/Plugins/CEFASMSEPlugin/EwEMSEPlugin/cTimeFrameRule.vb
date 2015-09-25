@@ -60,7 +60,7 @@ Public Class cTimeFrameRule
 
         'Get the average from the last year of the hindcast
         'iCurrentTimestep is the first time step of the forecast
-        For iTimeStep = (iCurrentTimestep - 13) To (iCurrentTimestep - 1)
+        For iTimeStep = (iCurrentTimestep - 12) To (iCurrentTimestep - 1)
             BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
             'ToDo 24-Sept-2015 We need to sort out if Density Dependant Catchability should be included in F
             'When it is F is different between models because Biomass will vary between models
