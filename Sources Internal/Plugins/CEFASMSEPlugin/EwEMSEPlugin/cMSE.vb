@@ -3695,7 +3695,7 @@ Public Class cMSE
         Return Emax
     End Function
 
-    Private Function SetEmaxWithinUserSpecifiedRangeOfEfforts(ByVal Effort As Single, ByVal iFleet As Integer) As Single
+    Private Function SetEmaxBelowUserSpecifiedMaxEffort(ByVal Effort As Single, ByVal iFleet As Integer) As Single
 
         'Code redundant because we use time frame rules now to limit the amount effort can drop by
         'If Effort < MinEffortThisYear(iFleet - 1) Then
@@ -3788,7 +3788,7 @@ Public Class cMSE
         Effort = ChangeMaxEffortIfConsRequires(iMax, iFleet, Effort, QMult, BiomassAtTimestep)
 
         'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
-        Effort = SetEmaxWithinUserSpecifiedRangeOfEfforts(Effort, iFleet)
+        Effort = SetEmaxBelowUserSpecifiedMaxEffort(Effort, iFleet)
 
         'Limit the effort if it is greater than the max allowable
         SetEffortBelowHighestPermittedEffort(Effort, iFleet, iTime)
@@ -3801,7 +3801,6 @@ Public Class cMSE
         Dim Elim_Conservation As Single
 
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
-            'If iGrp = 14 Then Stop
             Elim_Target = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
             Elim = Elim_Target 'sets this because if both cons and targ don't exist then this is what it will be
         End If
@@ -3827,7 +3826,7 @@ Public Class cMSE
 
         'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE Or TargConsQuota(iGrp - 1, HCRType.Conservation) <> cCore.NULL_VALUE Then
-            Elim = SetEmaxWithinUserSpecifiedRangeOfEfforts(Elim, iFleet)
+            Elim = SetEmaxBelowUserSpecifiedMaxEffort(Elim, iFleet)
 
             If SetEffortBelowHighestPermittedEffort(Elim, iFleet, iTime) = True Then
                 m_ChokeGroup(iFleet - 1, NumberTimeStepsIntoProjection - 1) = m_core.EcoPathGroupOutputs(iGrp).Name
@@ -3914,7 +3913,7 @@ Public Class cMSE
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
                 Else
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
