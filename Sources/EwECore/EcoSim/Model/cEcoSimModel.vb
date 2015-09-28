@@ -340,6 +340,9 @@ Namespace Ecosim
 
                 SetRelativeCatchabilities()
 
+                'Make sure FishMGear and relQ are set correctly 
+                Me.debugTestRelQFishMGear()
+
                 If bFullInitialization Then
 
                     SetBaseFFromGear()
@@ -999,7 +1002,7 @@ Namespace Ecosim
         ''' <param name="biomass">Biomass of current time step</param>
         ''' <param name="Fgear">Effort set by searches</param>
         ''' <param name="QYear">Catchability increase for year</param>
-        ''' <remarks>Uses <see cref="cEcoSimModel.CalcCatch"> CalcCatch to compute catch.</see></remarks>
+        ''' <remarks>Uses <see cref="cEcoSimModel.CalcLandings"> CalcCatch to compute catch.</see></remarks>
         Private Sub CalcCatchForSearch(ByVal iTime As Integer, ByVal iYear As Integer, ByVal iMonth As Integer, ByVal biomass() As Single, ByVal Fgear() As Single, ByVal QYear() As Single)
             Dim iflt As Integer
             Dim LandingsForValue(,) As Single
@@ -1033,7 +1036,7 @@ Namespace Ecosim
                 For iflt = 1 To Me.m_Data.nGear
                     'landings calculated by ecosim
                     'discards are not included
-                    landings = Me.CalcCatch(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / 12.0F
+                    landings = Me.CalcLandings(igrp, iflt, biomass(igrp), Fgear(iflt), Me.m_Data.relQ(iflt, igrp), QYear(iflt)) / 12.0F
                     'sum into yearly value for searches
                     Me.m_search.CatchYear(iflt, igrp) += landings
                     Me.m_search.CatchYearGroup(igrp) += landings
@@ -1066,21 +1069,21 @@ Namespace Ecosim
         End Sub
 
         ''' <summary>
-        ''' Return Catch for the Group, Fleet, Biomass, Effort, F, QYear and Density dependant catchability
+        ''' Return Landings for the Group, Fleet, Biomass, Effort, Q, QYear and Density dependant catchability
         ''' </summary>
         ''' <param name="iGrp">Group index</param>
         ''' <param name="iFlt">Fleet index</param>
         ''' <param name="B">Biomass of the group</param>
         ''' <param name="Effort">Effort</param>
-        ''' <param name="Fmort">Fishing Mort</param>
+        ''' <param name="Qrate">Catchability rate</param>
         ''' <param name="QYear">Catchability multiplier used for increase in catchability over time (QYear())</param>
-        ''' <returns>Catch</returns>
+        ''' <returns>Landings</returns>
         ''' <remarks>Qmult() must be set via <see cref="cEcoSimModel.setDenDepCatchMult">setDenDepCatchMult</see> before calling CalcCatch(). </remarks>
-        Public Function CalcCatch(ByVal iGrp As Integer, ByVal iFlt As Integer, _
-                                    ByVal B As Single, ByVal Effort As Single, ByVal Fmort As Single, _
+        Public Function CalcLandings(ByVal iGrp As Integer, ByVal iFlt As Integer, _
+                                    ByVal B As Single, ByVal Effort As Single, ByVal Qrate As Single, _
                                      ByVal QYear As Single) As Single
 
-            Return B * Fmort * Effort * Me.Qmult(iGrp) * Me.m_Data.PropLandedTime(iFlt, iGrp) * QYear
+            Return B * Qrate * Effort * Me.Qmult(iGrp) * Me.m_Data.PropLandedTime(iFlt, iGrp) * QYear
 
         End Function
 
@@ -1587,6 +1590,36 @@ Namespace Ecosim
         End Sub
 
 
+        ''' <summary>
+        ''' For Debugging. Test that relQ() and FishMGear have been set correctly. 
+        ''' </summary>
+        ''' <remarks>Only called during initialization of Ecosim. At other times during the run relQ() and FishMGear() may not be equal.</remarks>
+        Private Sub debugTestRelQFishMGear()
+
+            'fishing mortality at the current effort
+            For iGrp As Integer = 1 To m_Data.nGroups
+                If (Not m_Data.FisForced(iGrp)) Then
+
+                    For iFlt As Integer = 1 To m_Data.nGear
+                        If Me.m_Data.relQ(iFlt, iGrp) > 0 Then
+                            'Make sure PropLandedTime() and Propdiscardtime() don't add up to greater than zero
+                            Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp), 3) <= 1.0!, _
+                                        Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
+                            'Fishing Mortality "F" computed from base catch rate "q"
+                            Dim FfromQ0 As Single = Me.m_Data.relQ(iFlt, iGrp) * (Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp))
+                            Dim dif As Double = Math.Round(FfromQ0 - Me.m_Data.FishMGear(iFlt, iGrp), 3)
+                            Debug.Assert(dif = 0.0, "relQ and FishMGear are not equal. Something is wrong!")
+                        End If
+                    Next iFlt
+
+                End If
+
+            Next iGrp
+
+
+        End Sub
+
+
         'Private Sub Cupdate(ByVal Biom() As Single)
         '    Dim i As Integer, Ceq As Single, istep, Tst As Single, InputMult As Single
         '    Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, ConCtot As Single
@@ -1934,7 +1967,8 @@ Namespace Ecosim
 
                     If m_Data.FishTime(igrp) > 0 Then
                         Dim bioCatch As Single
-                        Dim FleetProp As Single
+                        Dim PropFleet As Single 'proportion of total F(fishing mortality) on group by a fleet
+                        Dim PropLanded As Single 'proportion of F by a fleet that was landed
 
                         'If F time series is loaded then the fleet proportions are not known
                         'In that case the correct Catch is in the zero fleet index
@@ -1942,12 +1976,16 @@ Namespace Ecosim
                         For iflt = 1 To m_Data.nGear
                             If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
 
-                                FleetProp = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
+                                PropFleet = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
 
-                                bioCatch = BB(igrp) * m_Data.FishTime(igrp) * FleetProp
+                                bioCatch = BB(igrp) * m_Data.FishTime(igrp) * PropFleet
 
-                                'Remove the discards for ResultsLandings(group,fleet) contains only landings
-                                Me.m_Data.ResultsLandings(igrp, iflt) += bioCatch * Me.m_EPData.PropLanded(iflt, igrp)
+                                'FishTime() and FishMGear() only contain mortality. Discards that survived are not included.
+                                'PropLandedTime() is the proportion of total catch that is landed. The total catch include all discards.
+                                'Propdiscardtime() does not include discards that survived.
+                                'We only want the proportion of the catch mortality that was landed.
+                                PropLanded = Me.m_Data.PropLandedTime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp))
+                                Me.m_Data.ResultsLandings(igrp, iflt) += bioCatch * PropLanded
 
                                 'sum catch across all the groups into this fleet
                                 m_Data.ResultsSumCatchByGear(iflt, iTime) += bioCatch
@@ -2584,13 +2622,16 @@ Namespace Ecosim
 
                     If m_EPData.NumFleet > 0 Then     'Only if there is fishery
                         For K = 1 To m_EPData.NumFleet
+                            Dim PropDiscMort As Single = (Me.m_Data.Propdiscardtime(K, i) / (Me.m_Data.PropLandedTime(K, i) + Me.m_Data.Propdiscardtime(K, i) + 1.0E-20F))
+                            'Debug.Assert(PropDiscMort = 0.0)
                             If m_Data.FirstTime = True Then
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishMGear(K, i)
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * m_Data.FishMGear(K, i) * PropDiscMort
+                                'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishMGear(K, i)
                             Else
                                 'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
-                                'discard mort is included in Propdiscardtime() by initialization and MSE 
-                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Data.Propdiscardtime(K, i)
-                                'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * m_EPData.PropDiscard(K, i) * Biomass(i) * m_Data.FishRateGear(K, 0) * m_Data.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
+                                DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * PropDiscMort
+                                'DetFlowN = m_EPData.DiscardFate(K, j - m_EPData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_Data.FishMGear(K, i) * Me.m_Data.Propdiscardtime(K, i)
+
                             End If
                             ToDet = ToDet + DetFlowN
 
@@ -4275,6 +4316,22 @@ Namespace Ecosim
         Public Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
+            'ToDo FishMGear() Aug 2015 Bug Fix
+            'FishMGear contains only Fishing Mortality. Discards that survived are not included.
+            'xxxxxxxxxxxxxxxxxxxxx
+            'DONE
+            'Make sure Me.m_Data.Propdiscardtime has been adjusted for discards that survive
+            '   This happens in InitPropLanded() 
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            'Change SetFtimeFromGear()(this routine) to use the base relQ instead of FishMGear()
+
+            'Check all routines that use FishMGear to make sure they use FishMGear correctly.
+            '   Once I change setFFromGear to use relQ then the UI looks correct
+
+            'Check SimDetritus to make sure it uses discards correctly
+
+
             'fishing mortality at the current effort
             For i = 1 To m_Data.nGroups
                 If (m_Data.FisForced(i) = False Or PredEffort) Then
@@ -4284,7 +4341,10 @@ Namespace Ecosim
                         Debug.Assert(Math.Round(Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i), 3) <= 1.0!, _
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-                        Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
+
+                        'Debug.Assert(m_Data.relQ(ig, i) = m_Data.FishMGear(ig, i), "relQ() and FishMGear() don't match!")
+                        Ft = Ft + QYear(ig) * m_Data.relQ(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
+                        'Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
 
                     'Save F for this time step 
