@@ -2205,18 +2205,21 @@ Public Class cNetworkManager
 
     Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
         Get
+            If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
             Return Me.m_econetwork.KeystoneIndex1(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property TotalImpactOverBiomass(ByVal iGroup As Integer) As Double
         Get
+            If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
             Return Me.m_econetwork.KeystoneIndex2(iGroup)
         End Get
     End Property
 
     Public ReadOnly Property RelativeTotalImpact(ByVal iGroup As Integer) As Double
         Get
+            If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
             Return Me.m_econetwork.RelTotalImpact(iGroup)
         End Get
     End Property
