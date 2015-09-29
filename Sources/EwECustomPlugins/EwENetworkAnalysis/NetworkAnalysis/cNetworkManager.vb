@@ -1742,7 +1742,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 No.of paths
     ''' </summary>
-    Public ReadOnly Property NumerPaths(ByVal iGroup As Integer) As Integer
+    Public ReadOnly Property NumOfPaths(ByVal iGroup As Integer) As Integer
         Get
             Return m_econetwork.NumPath(iGroup)
         End Get

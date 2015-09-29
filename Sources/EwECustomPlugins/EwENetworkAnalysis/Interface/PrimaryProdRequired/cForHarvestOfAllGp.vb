@@ -87,8 +87,8 @@ Public Class cForHarvestOfAllGp
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             strRowContent(0) = CStr(i)
             strRowContent(1) = NetworkManager.GroupName(i)
-            strRowContent(2) = CStr(NetworkManager.NumerPaths(i))
-            If NetworkManager.PPRCatchHarvest(i) > 0.0 Then lngSumPath = lngSumPath + NetworkManager.NumerPaths(i)
+            strRowContent(2) = CStr(NetworkManager.NumOfPaths(i))
+            If NetworkManager.PPRCatchHarvest(i) > 0.0 Then lngSumPath = lngSumPath + NetworkManager.NumOfPaths(i)
             strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.TrophicLevel(i))
             strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredHarvest(i))
             strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredDetHarvest(i))
