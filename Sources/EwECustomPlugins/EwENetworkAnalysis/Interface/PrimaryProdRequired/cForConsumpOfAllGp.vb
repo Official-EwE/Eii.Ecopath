@@ -84,7 +84,7 @@ Public Class cForConsumpOfAllGp
         For i As Integer = 1 To Me.NetworkManager.Core.nLivingGroups
             strRowContent(0) = CStr(i)
             strRowContent(1) = NetworkManager.GroupName(i)
-            strRowContent(2) = CStr(NetworkManager.NumerPaths(i))
+            strRowContent(2) = CStr(NetworkManager.NumOfPaths(i))
             strRowContent(3) = Me.StyleGuide.FormatNumber(NetworkManager.TrophicLevel(i))
             strRowContent(4) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequired(i))
             strRowContent(5) = Me.StyleGuide.FormatNumber(NetworkManager.PPRRequiredDet(i))
