@@ -3978,17 +3978,15 @@ Public Class cMSE
         For i = 1 To Me._simdata.nGroups
 
             totF = 0
-            If Not Me._simdata.FisForced(i) Then
-                For ig = 1 To Me._simdata.nGear
-                    'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
-                    totF += Me._simdata.relQ(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
-                Next
+            For ig = 1 To Me._simdata.nGear
+                'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
+                totF += Me._simdata.relQ(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
+            Next
 
-                'Save F for this time step 
-                'NOT including Density Dependant Catchability.
-                'Density Dependant Catchability will be be applied by Ecosim when FishTime() In SetFishTime()
-                Me._simdata.FishRateNo(i, t) = totF
-            End If
+            'Save F for this time step 
+            'NOT including Density Dependant Catchability.
+            'Density Dependant Catchability will be be applied by Ecosim when FishTime() In SetFishTime()
+            Me._simdata.FishRateNo(i, t) = totF
 
         Next i
 
