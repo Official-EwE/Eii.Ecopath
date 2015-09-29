@@ -4866,6 +4866,7 @@ Public Class cCore
 
             Dim sTroughput As Single = Me.m_EcoPathData.Consum + Me.m_EcoPathData.SumEx + Me.m_EcoPathData.Dt + Me.m_EcoPathData.RTZ
 
+            Me.m_EcopathStats.Name = Me.m_EcoPathData.ModelName
             Me.m_EcopathStats.TotalConsumption = Me.m_EcoPathData.Consum
             Me.m_EcopathStats.TotalExports = Me.m_EcoPathData.SumEx
             Me.m_EcopathStats.TotalRespFlow = Me.m_EcoPathData.RTZ
