@@ -631,6 +631,7 @@ Public Class cF2TSManager
                 m_thrdRun.Start()
             Else
                 Me.m_model.RunSensitivitySS2VByPredPrey()
+                Me.ReleaseWait()
             End If
 
             Return True
@@ -641,8 +642,8 @@ Public Class cF2TSManager
             ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
-        Finally
-            Me.ReleaseWait()
+            'Finally
+            '    Me.ReleaseWait()
         End Try
 
     End Function
@@ -683,6 +684,7 @@ Public Class cF2TSManager
                 m_thrdRun.Start()
             Else
                 Me.m_model.RunSensitivitySS2VByPredator()
+                Me.ReleaseWait()
             End If
 
             Return True
@@ -693,8 +695,8 @@ Public Class cF2TSManager
             ' ToDo: globalize this
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
-        Finally
-            Me.ReleaseWait()
+            'Finally
+            '    Me.ReleaseWait()
         End Try
 
     End Function
@@ -737,6 +739,7 @@ Public Class cF2TSManager
                 Me.m_thrdRun.Start()
             Else
                 Me.m_model.RunSearch()
+                Me.ReleaseWait()
             End If
 
         Catch ex As Exception
@@ -747,7 +750,7 @@ Public Class cF2TSManager
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: " & ex.Message, eMessageType.ErrorEncountered, _
                          eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             cLog.Write(ex)
-        Finally
+
             Me.ReleaseWait()
         End Try
 
