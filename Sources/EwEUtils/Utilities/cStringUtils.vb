@@ -549,6 +549,8 @@ Namespace Utilities
                                             Optional ByVal strDecimalSeparator As String = ".", _
                                             Optional ByVal strThousandsSeparator As String = "") As String
 
+            If (Convert.IsDBNull(value)) Then Return ""
+
             If TypeOf value Is Single Then
                 Return FormatSingle(CSng(value), strDecimalSeparator, strThousandsSeparator)
             ElseIf TypeOf value Is Double Then
@@ -2173,6 +2175,96 @@ Namespace Utilities
 
 #End Region ' Encryption
 
+#Region " Private classes "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' String comparer to perform natural sorting of strings.
+        ''' </summary>
+        ''' <remarks>
+        ''' Converted from http://www.dotnetperls.com/alphanumeric-sorting-vbnet
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Class cAlphanumComparer
+            Implements IComparer(Of String)
+
+            Public Function Compare(ByVal s1 As String, ByVal s2 As String) As Integer _
+                Implements System.Collections.Generic.IComparer(Of String).Compare
+
+                ' [1] Validate the arguments
+                If (String.IsNullOrWhiteSpace(s1)) Then Return 0
+                If (String.IsNullOrWhiteSpace(s2)) Then Return 0
+
+                Dim len1 As Integer = s1.Length
+                Dim len2 As Integer = s2.Length
+                Dim marker1 As Integer = 0
+                Dim marker2 As Integer = 0
+
+                ' [2] Loop over both Strings.
+                While marker1 < len1 And marker2 < len2
+
+                    ' [3] Get Chars.
+                    Dim ch1 As Char = s1(marker1)
+                    Dim ch2 As Char = s2(marker2)
+
+                    Dim space1(len1) As Char
+                    Dim loc1 As Integer = 0
+                    Dim space2(len2) As Char
+                    Dim loc2 As Integer = 0
+
+                    ' [4] Collect digits for String one.
+                    Do
+                        space1(loc1) = ch1
+                        loc1 += 1
+                        marker1 += 1
+
+                        If marker1 < len1 Then
+                            ch1 = s1(marker1)
+                        Else
+                            Exit Do
+                        End If
+                    Loop While Char.IsDigit(ch1) = Char.IsDigit(space1(0))
+
+                    ' [5] Collect digits for String two.
+                    Do
+                        space2(loc2) = ch2
+                        loc2 += 1
+                        marker2 += 1
+
+                        If marker2 < len2 Then
+                            ch2 = s2(marker2)
+                        Else
+                            Exit Do
+                        End If
+                    Loop While Char.IsDigit(ch2) = Char.IsDigit(space2(0))
+
+                    ' [6] Convert to Strings.
+                    Dim str1 As New String(space1)
+                    Dim str2 As New String(space2)
+
+                    ' [7] Parse Strings into Integers.
+                    Dim result As Integer
+                    If Char.IsDigit(space1(0)) And Char.IsDigit(space2(0)) Then
+                        Dim thisNumericChunk As Integer = Integer.Parse(str1)
+                        Dim thatNumericChunk As Integer = Integer.Parse(str2)
+                        result = thisNumericChunk.CompareTo(thatNumericChunk)
+                    Else
+                        result = str1.CompareTo(str2)
+                    End If
+
+                    ' [8] Return result if not equal.
+                    If Not result = 0 Then
+                        Return result
+                    End If
+                End While
+
+                ' [9] Compare lengths.
+                Return len1 - len2
+            End Function
+
+        End Class
+
+#End Region
     End Class
 
 End Namespace ' Utilities
