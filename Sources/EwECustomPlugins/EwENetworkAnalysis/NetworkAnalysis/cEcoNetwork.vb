@@ -464,6 +464,9 @@ Public Class cEcoNetwork
         Console.WriteLine("The abortTimer.Elapsed event was raised at {0}", e.SignalTime)
     End Sub
 
+    Public Function IsTimedOut() As Boolean
+        Return Me.m_timedOut
+    End Function
 
     ''' <summary>
     ''' Run the Main Network Analysis routine

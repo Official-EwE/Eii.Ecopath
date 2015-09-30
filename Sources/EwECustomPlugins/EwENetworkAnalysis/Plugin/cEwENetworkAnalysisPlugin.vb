@@ -181,7 +181,10 @@ Public Class cEwENetworkAnalysisPlugin
         End If
 
         Me.m_manager = Nothing
+        Me.m_core = Nothing
         Me.m_bInitOK = False
+
+        thePlugin = Nothing
 
     End Sub
 
