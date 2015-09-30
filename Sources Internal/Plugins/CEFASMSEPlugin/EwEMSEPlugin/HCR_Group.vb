@@ -152,9 +152,7 @@ Public Class HCR_Group
 
         If TimeFrameRule.CheckValidRule(iYearProjecting) And Me.TypeOfHCR = HCRType.Target Then 'Use a time frame rule
 
-#If DEBUG Then
-            Console.WriteLine("Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
-#End If
+            Debug.WriteLine("Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
 
             Return TimeFrameRule.ExtractF(iYearProjecting)
         Else
