@@ -606,6 +606,7 @@ Public Class cNetworkManager
 #Region " Public Properties "
 
 #Region " Settings "
+
     ''' <summary>
     ''' Boolean flag to run Network Analysis automatically when an Ecopath run has completed.
     ''' </summary>
@@ -628,7 +629,7 @@ Public Class cNetworkManager
         Get
             Return Me.m_econetwork.bUseAbortTimer
         End Get
-        Set(value As Boolean)
+        Set(ByVal value As Boolean)
             Me.m_econetwork.bUseAbortTimer = value
         End Set
     End Property
@@ -641,9 +642,15 @@ Public Class cNetworkManager
         Get
             Return Me.m_econetwork.TimeOutMilSecs
         End Get
-        Set(value As Long)
+        Set(ByVal value As Long)
             Me.m_econetwork.TimeOutMilSecs = value
         End Set
+    End Property
+
+    Public ReadOnly Property IsTimedOut As Boolean
+        Get
+            Return Me.m_econetwork.IsTimedOut
+        End Get
     End Property
 
 #End Region ' Settings
@@ -1572,7 +1579,7 @@ Public Class cNetworkManager
     ''' <remarks>If <paramref name="iGroup"/> does not refer to a fished group
     ''' 0 will be returned.</remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Lindex(iGroup As Integer) As Single
+    Public ReadOnly Property Lindex(ByVal iGroup As Integer) As Single
         Get
             If Me.PPRCatchHarvest(iGroup) <= 0.0 Or Me.PPRCatchHarvest(iGroup) <= 0.0 Then Return 0
 
@@ -1587,7 +1594,7 @@ Public Class cNetworkManager
         End Get
     End Property
 
-    Public ReadOnly Property LindexSim(iGroup As Integer) As Single
+    Public ReadOnly Property LindexSim(ByVal iGroup As Integer) As Single
         Get
             If Me.PPRCatchHarvest(iGroup) <= 0.0 Or Me.PPRCatchHarvest(iGroup) <= 0.0 Then Return 0
 
@@ -1603,7 +1610,7 @@ Public Class cNetworkManager
         End Get
     End Property
 
-    Public ReadOnly Property Psust(iGroup As Integer) As Single
+    Public ReadOnly Property Psust(ByVal iGroup As Integer) As Single
         Get
             Return CalcPsust(Lindex(iGroup))
         End Get
@@ -1629,7 +1636,7 @@ Public Class cNetworkManager
     ''' <remarks>
     ''' From Marta Coll / Simone Libralato
     ''' </remarks>
-    Public Function CalcPsust(LIndex As Single) As Single
+    Public Function CalcPsust(ByVal LIndex As Single) As Single
         'Return CSng(Math.Max(0, Math.Min(1, 1 - lIndex / 0.18)))
         Return CSng(-238674 * LIndex ^ 6 + 190305 * LIndex ^ 5 - 57326 * LIndex ^ 4 + 7916.6 * LIndex ^ 3 - 447.24 * LIndex ^ 2 - 1.5725 * LIndex + 0.9686)
     End Function
@@ -1744,6 +1751,7 @@ Public Class cNetworkManager
     ''' </summary>
     Public ReadOnly Property NumOfPaths(ByVal iGroup As Integer) As Integer
         Get
+            If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
             Return m_econetwork.NumPath(iGroup)
         End Get
     End Property
