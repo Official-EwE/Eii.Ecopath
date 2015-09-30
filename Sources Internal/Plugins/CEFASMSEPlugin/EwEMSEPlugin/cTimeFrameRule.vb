@@ -60,7 +60,7 @@ Public Class cTimeFrameRule
 
         'Get the average from the last year of the hindcast
         'iCurrentTimestep is the first time step of the forecast
-        For iTimeStep = (iCurrentTimestep - 13) To (iCurrentTimestep - 1)
+        For iTimeStep = (iCurrentTimestep - 12) To (iCurrentTimestep - 1)
             BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
             Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
             MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) ' * Q
