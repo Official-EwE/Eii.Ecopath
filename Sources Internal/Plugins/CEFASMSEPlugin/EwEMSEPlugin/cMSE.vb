@@ -2795,7 +2795,7 @@ Public Class cMSE
     ''' <summary>
     ''' Calculate the total catch including discards that survived
     ''' </summary>
-    Private Function calcTotalCatch(BiomassAtT As Single, FleetIndex As Integer, GroupIndex As Integer, TimeStep As Integer) As Single
+    Private Function Calc_Total_Catch_If_Quota_Didnt_Affect_It(BiomassAtT As Single, FleetIndex As Integer, GroupIndex As Integer, TimeStep As Integer) As Single
         Return Me.calcCatchRate(BiomassAtT, FleetIndex, GroupIndex, TimeStep) * BiomassAtT
     End Function
 
@@ -3284,7 +3284,7 @@ Public Class cMSE
             For iflt As Integer = 1 To Me.m_core.nFleets
                 If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
 
-                    CatchFleetGrp = Me.calcTotalCatch(BiomassAtTimestep(igrp), iflt, igrp, iTime)
+                    CatchFleetGrp = Me.Calc_Total_Catch_If_Quota_Didnt_Affect_It(BiomassAtTimestep(igrp), iflt, igrp, iTime)
 
                     'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
@@ -3725,55 +3725,115 @@ Public Class cMSE
 
     End Function
 
-    Private Sub SetDiscardParameters(ByVal iFleet As Integer, ByVal iTime As Integer, ByVal BiomassAtTimestep() As Single)
-        Dim iCatch As Single
+    Private Function Fleet_Catches_Group_With_Quota(ByVal iFleet As Integer, ByVal iGrp As Integer) As Boolean
+
+        If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp) > 0) And (TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE) Then
+            Return True
+        Else
+            Return False
+        End If
+
+    End Function
+
+    Private Function There_Is_A_Conservation_HCR_For(ByVal iGrp As Integer) As Boolean
+        If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Private Function There_Is_A_Target_HCR_For(ByVal iGrp As Integer) As Boolean
+        If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Private Function Calc_Fleet_Quota_Given_Conservation_HCR_Exists(ByVal iGrp As Integer, ByVal iFleet As Integer) As Double
+
         Dim FleetConsQuota As Double
         Dim FleetTargQuota As Double
         Dim FleetQuota As Double
+
+        FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
+        FleetConsQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation)
+        If FleetTargQuota < FleetConsQuota Then
+            FleetQuota = FleetTargQuota
+        Else
+            FleetQuota = FleetConsQuota
+        End If
+
+        Return FleetQuota
+
+    End Function
+
+    Private Function Calc_Fleet_Quota_Given_Only_Target_HCR_Exists(ByVal iGrp As Integer, ByVal iFleet As Integer) As Double
+
+        Return m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
+
+    End Function
+
+    Private Function Theoretical_Landings_Is_Greater_Than_Quota(ByVal iGrp As Integer, ByVal iFleet As Integer, ByVal iCatch As Single, ByVal FleetQuota As Double) As Boolean
+        Return iCatch * m_ecopath.EcopathData.PropLanded(iFleet, iGrp) > FleetQuota
+    End Function
+
+    Private Sub Set_Prop_Landed_Prop_plus_Discarded_and_Die_Given_Greater(ByVal iGrp As Integer, ByVal iFleet As Integer, ByVal iCatch As Single, ByVal FleetQuota As Double)
         Dim Catch2LandQuota As Single
+
+        'fishing mortality exceeds quota
+        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng(FleetQuota / (iCatch + 1.0E-20))
+        If Me.currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
+            'QuotaType = Strongest
+            'excess catch discarded and included in the fishing mortality()
+            m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+        Else
+            'QuotaType = Selective 
+            'excess catch is NOT included in fishing mortality all discards survive
+            'm_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng(1 - (FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) * iCatch)) * (1 - m_ecopath.EcopathData.PropDiscard(iFleet, iGrp)) - (iCatch - FleetQuota / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / iCatch)
+            Catch2LandQuota = CSng(FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) + +1.0E-20))
+            m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng((1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * (Catch2LandQuota / iCatch) * (m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)))
+        End If
+
+    End Sub
+
+    Private Sub SetDiscardParameters(ByVal iFleet As Integer, ByVal iTime As Integer, ByVal BiomassAtTimestep() As Single)
+        Dim iCatch As Single
+
+        Dim FleetQuota As Double
 
         For iGrp = 1 To m_ecopath.EcopathData.NumGroups
 
+            If Fleet_Catches_Group_With_Quota(iFleet, iGrp) Then
 
-            If (m_ecopath.EcopathData.Landing(iFleet, iGrp) + m_ecopath.EcopathData.Discard(iFleet, iGrp) > 0) And (TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE) Then
-                'Note that it is only when there are landings that a quota will make sense
-                'get the total catch at this effort
-                iCatch = Me.calcTotalCatch(BiomassAtTimestep(iGrp), iFleet, iGrp, iTime)
+                'iCatch is theoretical and whether it is caught or not depends on whether it is greater than
+                'the quota and the regulation Is selective
 
-                If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
-                    FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
-                    FleetConsQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation)
-                    If FleetTargQuota < FleetConsQuota Then
-                        FleetQuota = FleetTargQuota
-                    Else
-                        FleetQuota = FleetConsQuota
-                    End If
-                ElseIf TargConsQuota(iGrp - 1, HCRType.Target) <> cCore.NULL_VALUE Then
-                    FleetQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
+                iCatch = Calc_Total_Catch_If_Quota_Didnt_Affect_It(BiomassAtTimestep(iGrp), iFleet, iGrp, iTime)
+
+                If There_Is_A_Conservation_HCR_For(iGrp) Then
+
+                    FleetQuota = Calc_Fleet_Quota_Given_Conservation_HCR_Exists(iGrp, iFleet)
+
+                ElseIf There_Is_A_Target_HCR_For(iGrp) Then
+
+                    FleetQuota = Calc_Fleet_Quota_Given_Only_Target_HCR_Exists(iGrp, iFleet)
+
                 End If
 
-                'if the total catch exceeds the quota figure out what do do with the discards
-                If iCatch * m_ecopath.EcopathData.PropLanded(iFleet, iGrp) > FleetQuota Then
-                    'fishing mortality exceeds quota
-                    m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = CSng(FleetQuota / (iCatch + 1.0E-20))
-                    If Me.currentStrategy.Regulations.Method(iFleet) = cRegulations.eRegMethod.HighestValue Then
-                        'QuotaType = Strongest
-                        'excess catch discarded and included in the fishing mortality()
-                        m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = (1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
-                    Else
-                        'QuotaType = Selective 
-                        'excess catch is NOT included in fishing mortality all discards survive
-                        'm_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng(1 - (FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) * iCatch)) * (1 - m_ecopath.EcopathData.PropDiscard(iFleet, iGrp)) - (iCatch - FleetQuota / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / iCatch)
-                        Catch2LandQuota = CSng(FleetQuota / (m_ecopath.EcopathData.PropLanded(iFleet, iGrp) + +1.0E-20))
-                        m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = CSng((1 - m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp)) * (Catch2LandQuota / iCatch) * (m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)))
-                    End If
+                If Theoretical_Landings_Is_Greater_Than_Quota(iGrp, iFleet, iCatch, FleetQuota) Then
 
-                Else
-                    'iCatch < Quota
-                    SetDiscardParameters_Default(iFleet, iGrp)
+                    Set_Prop_Landed_Prop_plus_Discarded_and_Die_Given_Greater(iGrp, iFleet, iCatch, FleetQuota)
+
+                Else ' Theoretical Landings are less than the Quota
+
+                    Set_Prop_Landed_Prop_Discarded_Die_To_Default(iFleet, iGrp)
+
                 End If
             End If
         Next iGrp
+
     End Sub
 
     Private Sub SetEffortWithinPermissableRange_HighestValue(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Double, _
@@ -3787,7 +3847,7 @@ Public Class cMSE
         'Calculate the maximum effort given the conservations
         Effort = ChangeMaxEffortIfConsRequires(iMax, iFleet, Effort, QMult, BiomassAtTimestep)
 
-        'Check whether the calculated effort is less than the max decrease and if it is set it to the max decrease
+        'Check whether the calculated effort is greater than the max increase and if it is set it to the max increase
         Effort = SetEmaxBelowUserSpecifiedMaxEffort(Effort, iFleet)
 
         'Limit the effort if it is greater than the max allowable
@@ -3836,12 +3896,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SetDiscardParameters_Default(ByVal iFleet As Integer, ByVal iGrp As Integer)
 
-        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = m_ecopath.EcopathData.PropLanded(iFleet, iGrp)
-        m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = m_ecopath.EcopathData.PropDiscard(iFleet, iGrp) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
-
-    End Sub
 
     Private Sub CalcEffortAndDiscards(ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer, ByVal NumberTimeStepsIntoProjection As Integer, ByVal QMult() As Double)
 
@@ -3877,7 +3932,7 @@ Public Class cMSE
 
                                 SetEffortWithinPermissableRange_WeakestStock(iFleet, iGrp, QMult, BiomassAtTimestep, iTime, NumberTimeStepsIntoProjection)
 
-                                SetDiscardParameters_Default(iFleet, iGrp)
+                                Set_Prop_Landed_Prop_Discarded_Die_To_Default(iFleet, iGrp)
 
                             End If
                         Next iGrp
@@ -3888,7 +3943,7 @@ Public Class cMSE
 
                         For iGrp = 1 To m_ecopath.EcopathData.NumGroups
 
-                            SetDiscardParameters_Default(iFleet, iGrp)
+                            Set_Prop_Landed_Prop_Discarded_Die_To_Default(iFleet, iGrp)
 
                         Next
 
@@ -3902,7 +3957,7 @@ Public Class cMSE
                 'This sets the effort for any fleet that does not have a HCR which affects it to the effort as it was in the previous timestep
                 _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 For iGrp = 1 To m_ecopath.EcopathData.NumGroups
-                    SetDiscardParameters_Default(iFleet, iGrp)
+                    Set_Prop_Landed_Prop_Discarded_Die_To_Default(iFleet, iGrp)
                 Next
             Else
                 'Make sure the fleet is regulated if we are going add error to Effort Implementation
@@ -3913,13 +3968,20 @@ Public Class cMSE
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
                 Else
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
 
             End If
         Next
+    End Sub
+
+    Private Sub Set_Prop_Landed_Prop_Discarded_Die_To_Default(ByVal iFleet As Integer, ByVal iGrp As Integer)
+
+        m_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) = m_ecopath.EcopathData.PropLanded(iFleet, iGrp)
+        m_ecosim.EcosimData.Propdiscardtime(iFleet, iGrp) = m_ecopath.EcopathData.PropDiscard(iFleet, iGrp) * m_ecopath.EcopathData.PropDiscardMort(iFleet, iGrp)
+
     End Sub
 
 
@@ -3978,6 +4040,7 @@ Public Class cMSE
         For i = 1 To Me._simdata.nGroups
 
             totF = 0
+            'If Not Me._simdata.FisForced(i) Then
             For ig = 1 To Me._simdata.nGear
                 'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                 totF += Me._simdata.relQ(ig, i) * Me._simdata.FishRateGear(ig, t) * (Me._simdata.PropLandedTime(ig, i) + Me._simdata.Propdiscardtime(ig, i))
@@ -3987,6 +4050,7 @@ Public Class cMSE
             'NOT including Density Dependant Catchability.
             'Density Dependant Catchability will be be applied by Ecosim when FishTime() In SetFishTime()
             Me._simdata.FishRateNo(i, t) = totF
+            'End If
 
         Next i
 
@@ -4021,7 +4085,7 @@ Public Class cMSE
             For iflt As Integer = 1 To Me.m_core.nFleets
                 'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
                 'CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
-                CatchFleetGrp = Me.calcTotalCatch(BiomassAtTimestep(igrp), iflt, igrp, iTime)
+                CatchFleetGrp = Me.Calc_Total_Catch_If_Quota_Didnt_Affect_It(BiomassAtTimestep(igrp), iflt, igrp, iTime)
 
                 'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
 
@@ -5058,7 +5122,5 @@ Public Class cMSE
 #End If
 
 #End Region ' Dead Code
-
-
 
 End Class
