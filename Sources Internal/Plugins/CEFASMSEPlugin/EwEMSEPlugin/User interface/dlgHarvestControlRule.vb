@@ -210,8 +210,8 @@ Public Class dlgHarvestControlRule
         Else
             sVal = 0
         End If
-        Me.m_HCR.LowerLimit = sVal * 0.1
-        Me.m_HCR.UpperLimit = sVal * 0.4
+        Me.m_HCR.LowerLimit = CSng(sVal * 0.1)
+        Me.m_HCR.UpperLimit = CSng(sVal * 0.4)
 
         ' Fishing Mort
         Me.m_HCR.GroupF = DirectCast(m_cmbFMortGroups.SelectedItem, cEcoPathGroupInput)

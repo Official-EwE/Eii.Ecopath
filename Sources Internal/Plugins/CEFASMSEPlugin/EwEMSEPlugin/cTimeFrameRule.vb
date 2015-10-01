@@ -11,7 +11,7 @@ Public Class cTimeFrameRule
     'to the maximum F (Fmsy) of the harvest control rule over a user specified number of years
     'This object is created for each HCR but only does anything if the number of years it is specified for is > 0
 
-    Private m_F() As Double
+    Private m_F() As Single
     Private m_nTimeStepsInHindcast As Integer
     Private m_EcosimData As cEcosimDatastructures
     Private m_HCR As HCR_Group
@@ -28,11 +28,11 @@ Public Class cTimeFrameRule
     End Sub
 
 
-    Public Property ExtractF(iYearProjecting) As Double
+    Public Property ExtractF(iYearProjecting) As Single
         Get
             Return m_F(iYearProjecting - 1)
         End Get
-        Set(value As Double)
+        Set(value As Single)
             m_F(iYearProjecting - 1) = value
         End Set
     End Property

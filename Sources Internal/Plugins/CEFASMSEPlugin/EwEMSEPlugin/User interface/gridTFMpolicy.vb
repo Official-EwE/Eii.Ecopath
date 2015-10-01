@@ -241,7 +241,7 @@ Public Class gridTargetFishingMortalityPolicy
                         cell.SetValue(p, Units.Convert(eConvertTypes.ToDisplayBio, LowerLim))
                     End If
 
-                    Me.HarvestControlRule.LowerLimit = LowerLim
+                    Me.HarvestControlRule.LowerLimit = CSng(LowerLim)
 
                 Case eColumnTypes.BUpperLim
                     'bounds checking upper limit can not be < lower limit
@@ -251,10 +251,10 @@ Public Class gridTargetFishingMortalityPolicy
                         cell.SetValue(p, Units.Convert(eConvertTypes.ToDisplayBio, upperLim))
                     End If
 
-                    Me.HarvestControlRule.UpperLimit = upperLim
+                    Me.HarvestControlRule.UpperLimit = CSng(upperLim)
 
                 Case eColumnTypes.MaxF
-                    Me.HarvestControlRule.MaxF = CDbl(cell.GetValue(p))
+                    Me.HarvestControlRule.MaxF = CSng(cell.GetValue(p))
 
                 Case eColumnTypes.CostFunction
                     Me.HarvestControlRule.TypeOfHCR = DirectCast(cell.GetValue(p), HCRType)

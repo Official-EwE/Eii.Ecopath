@@ -192,7 +192,7 @@ Public Class gridQuotaShares
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.QuotaShare
-                data.mShare = CDbl(cell.GetValue(p))
+                data.mShare = CSng(cell.GetValue(p))
         End Select
 
         ' To Mark: First complete the edit, then notify the world. It was the other way around

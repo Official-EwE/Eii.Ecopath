@@ -41,9 +41,9 @@ Public Class cQuotaShares
 
         Public mGroupNo As Integer
         Public mFleetNo As Integer
-        Public mShare As Double
+        Public mShare As Single
 
-        Public Sub New(GroupNo As Integer, FleetNo As Integer, Share As Double)
+        Public Sub New(GroupNo As Integer, FleetNo As Integer, Share As Single)
             mGroupNo = GroupNo
             mFleetNo = FleetNo
             mShare = Share
@@ -192,7 +192,7 @@ Public Class cQuotaShares
     ''' Adds a quota share value to the list of quota shares
     ''' and if it can't returns FALSE
     ''' </summary>
-    Public Function AddQuotaShare(GroupNo As Integer, FleetNo As Integer, Share As Double) As Boolean
+    Public Function AddQuotaShare(GroupNo As Integer, FleetNo As Integer, Share As Single) As Boolean
 
         'Check Fleet Number
         If FleetNo < 0 Or FleetNo > m_core.nFleets Then Return False
@@ -342,12 +342,12 @@ Public Class cQuotaShares
 
         Dim TGroupNumber As Integer
         Dim TFleetNumber As Integer
-        Dim TShare As Double
+        Dim TShare As Single
 
         Try
             TGroupNumber = cStringUtils.ConvertToInteger(csv(0))
             TFleetNumber = cStringUtils.ConvertToInteger(csv(2))
-            TShare = cStringUtils.ConvertToDouble(csv(4))
+            TShare = cStringUtils.ConvertToSingle(csv(4))
 
         Catch ex As Exception
             ' ToDo_JS: respond to error

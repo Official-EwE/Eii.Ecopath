@@ -82,7 +82,7 @@ Public Class cMSE
     'Private MinEffortThisYear() As Single
     Private MaxEffortThisYear() As Single
 
-    Private TargConsQuota(,) As Double 'Stores the target and conservation quota's for each species
+    Private TargConsQuota(,) As Single 'Stores the target and conservation quota's for each species
     Private nSuccessfullyProjectedModels As Integer
 
     Private TechnologyCreep() As Single 'an array where each element represents the percentage with which each fleet increases its catching efficiency each year
@@ -132,17 +132,17 @@ Public Class cMSE
 
     Private HCR_F_Table As DataTable
     Private HCR_Quota_Table As DataTable
-    Private TargetFs(,) As Double
-    Private ConservationFs(,) As Double
-    Private TargetQuotas(,,) As Double
-    Private ConservationQuotas(,,) As Double
+    Private TargetFs(,) As Single
+    Private ConservationFs(,) As Single
+    Private TargetQuotas(,,) As Single
+    Private ConservationQuotas(,,) As Single
 
     Private Realised_F_Table As DataTable
-    Private m_RealisedFs(,) As Double
+    Private m_RealisedFs(,) As Single
     Private Realised_Landed_F_Table As DataTable
-    Private m_RealisedLandedFs(,) As Double
+    Private m_RealisedLandedFs(,) As Single
     Private Realised_Discard_F_Table As DataTable
-    Private m_RealisedDiscardFs(,) As Double
+    Private m_RealisedDiscardFs(,) As Single
 
     Private HighestValueSpeciesTable As DataTable
     Private m_HighestValueSpecies(,) As String
@@ -221,31 +221,31 @@ Public Class cMSE
         End Get
     End Property
 
-    Public ReadOnly Property RealisedFs(iGroup As Integer, iTime As Integer) As Double
+    Public ReadOnly Property RealisedFs(iGroup As Integer, iTime As Integer) As Single
         Get
             Return m_RealisedFs(iGroup - 1, iTime - 1)
         End Get
     End Property
 
-    Public ReadOnly Property RealisedLandedFs(iGroup As Integer, iTime As Integer) As Double
+    Public ReadOnly Property RealisedLandedFs(iGroup As Integer, iTime As Integer) As Single
         Get
             Return m_RealisedLandedFs(iGroup - 1, iTime - 1)
         End Get
     End Property
 
-    Public ReadOnly Property RealisedDiscardFs(iGroup As Integer, iTime As Integer) As Double
+    Public ReadOnly Property RealisedDiscardFs(iGroup As Integer, iTime As Integer) As Single
         Get
             Return m_RealisedDiscardFs(iGroup - 1, iTime - 1)
         End Get
     End Property
 
-    Public ReadOnly Property LandingsThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Double
+    Public ReadOnly Property LandingsThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
             Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.Landings)
         End Get
     End Property
 
-    Public ReadOnly Property CatchesThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Double
+    Public ReadOnly Property CatchesThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
             Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.Landings) + _
                 Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardMortalities) + _
@@ -265,32 +265,32 @@ Public Class cMSE
         End Get
     End Property
 
-    Public ReadOnly Property DiscardsThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Double
+    Public ReadOnly Property DiscardsThroughoutProjection(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
             Return Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardMortalities) + _
                 Me.m_LandingsDiscardsThroughoutProjection(iTime, iFleet, iGroup, eCatchTypes.DiscardSurvivals)
         End Get
     End Property
 
-    Public ReadOnly Property HCR_F_Conservation(iGroup As Integer, iTime As Integer) As Double
+    Public ReadOnly Property HCR_F_Conservation(iGroup As Integer, iTime As Integer) As Single
         Get
             Return ConservationFs(iGroup - 1, iTime - 1)
         End Get
     End Property
 
-    Public ReadOnly Property HCR_F_Target(iGroup As Integer, iTime As Integer) As Double
+    Public ReadOnly Property HCR_F_Target(iGroup As Integer, iTime As Integer) As Single
         Get
             Return TargetFs(iGroup - 1, iTime - 1)
         End Get
     End Property
 
-    Public ReadOnly Property HCR_Quota_Conservation(iGroup As Integer, iFleet As Integer, iTime As Integer) As Double
+    Public ReadOnly Property HCR_Quota_Conservation(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
             Return ConservationQuotas(iFleet - 1, iGroup - 1, iTime - 1)
         End Get
     End Property
 
-    Public ReadOnly Property HCR_Quota_Target(iGroup As Integer, iFleet As Integer, iTime As Integer) As Double
+    Public ReadOnly Property HCR_Quota_Target(iGroup As Integer, iFleet As Integer, iTime As Integer) As Single
         Get
             Return TargetQuotas(iFleet - 1, iGroup - 1, iTime - 1)
         End Get
@@ -3080,11 +3080,11 @@ Public Class cMSE
 
     End Function
 
-    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iYearProjecting As Integer) As Double(,)
+    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iYearProjecting As Integer) As Single(,)
 
-        Dim TargConsQuota(m_core.nGroups - 1, 1) As Double
-        Dim TempTargConsQuota As Double
-        Dim FfromHCR As Double
+        Dim TargConsQuota(m_core.nGroups - 1, 1) As Single
+        Dim TempTargConsQuota As Single
+        Dim FfromHCR As Single
 
         'Calc the maximum decreases in the biomass
 
@@ -3537,7 +3537,7 @@ Public Class cMSE
         'Must have nfleets+1 elements so for 10 fleets needs elements 0-10
         'This is because of the way code works in EwE
         Dim TargetF(m_core.nGroups) As Double
-        Dim QMult(m_ecosim.EcosimData.nGroups) As Double
+        Dim QMult(m_ecosim.EcosimData.nGroups) As Single
         Dim NumberTimeStepsIntoProjection As Integer
 
         NumberTimeStepsIntoProjection = iTime - OriginalNTimesteps
@@ -3643,7 +3643,7 @@ Public Class cMSE
         strmWriter.Dispose()
     End Sub
 
-    Private Sub RecordRealisedFResults(ByVal iTime As Integer, ByVal BiomassAtTimeStep() As Single, ByVal NumberTimeStepsIntoProjection As Integer, ByRef QMult() As Double)
+    Private Sub RecordRealisedFResults(ByVal iTime As Integer, ByVal BiomassAtTimeStep() As Single, ByVal NumberTimeStepsIntoProjection As Integer, ByRef QMult() As Single)
 
         For iGrp = 1 To m_core.nGroups
             m_RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Me._simdata.FishRateNo(iGrp, iTime) * QMult(iGrp)
@@ -3684,20 +3684,20 @@ Public Class cMSE
 
     End Sub
 
-    Private Function CalcEffort2CatchHighestValue(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Double, ByVal BiomassAtTimestep() As Single, ByRef Emax As Single) As Single
+    Private Function CalcEffort2CatchHighestValue(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Single, ByVal BiomassAtTimestep() As Single, ByRef Emax As Single) As Single
         'ToDo jb Check that this is using FishMGear() correctly
         Emax = 0
         'Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
-        Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax)))
+        Emax = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
         Return Emax
     End Function
 
-    Private Function ChangeMaxEffortIfConsRequires(ByVal iMax As Integer, ByVal iFleet As Integer, Emax As Single, ByVal QMult() As Double, ByVal BiomassAtTimestep() As Single) As Single
+    Private Function ChangeMaxEffortIfConsRequires(ByVal iMax As Integer, ByVal iFleet As Integer, Emax As Single, ByVal QMult() As Single, ByVal BiomassAtTimestep() As Single) As Single
         'ToDo jb Check that this is using FishMGear() correctly
         Dim Elim_Conservation As Single = 200
         If TargConsQuota(iMax - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F And TargConsQuota(iMax - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
             'Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
-            Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax)))
+            Elim_Conservation = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
             If Elim_Conservation < Emax Then Emax = Elim_Conservation
         End If
         Return Emax
@@ -3842,7 +3842,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SetEffortWithinPermissableRange_HighestValue_Selective(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Double, _
+    Private Sub SetEffortWithinPermissableRange_HighestValue_Selective(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Single, _
                                                       ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer)
 
         Dim Effort As Single 'the calculated effort that is within the permissable range
@@ -3861,17 +3861,17 @@ Public Class cMSE
 
     End Sub
 
-    Private Function CalcEffortFromTargAndConsQuotas_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal Elim As Single, QMult() As Double, BiomassAtTimestep() As Single) As Single
+    Private Function CalcEffortFromTargAndConsQuotas_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal Elim As Single, QMult() As Single, BiomassAtTimestep() As Single) As Single
         'ToDo jb Check that this is using FishMGear() correctly
         Dim Elim_Target As Single
         Dim Elim_Conservation As Single
 
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
-            Elim_Target = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (1.0E-20 + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+            Elim_Target = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (CSng(1.0E-20) + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp))
             Elim = Elim_Target 'sets this because if both cons and targ don't exist then this is what it will be
         End If
         If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
-            Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (1.0E-20 + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+            Elim_Conservation = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (CSng(1.0E-20) + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp))
             Elim = Elim_Conservation 'sets this because if both cons and targ don't exist then this is what it will be
         End If
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F And TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
@@ -3883,7 +3883,7 @@ Public Class cMSE
 
     End Function
 
-    Private Sub SetEffortWithinPermissableRange_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal QMult() As Double, _
+    Private Sub SetEffortWithinPermissableRange_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal QMult() As Single, _
                                                       ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer, ByVal NumberTimeStepsIntoProjection As Integer)
 
         Dim Elim As Single 'the maximum effort that can be exerted without causing discards
@@ -3904,7 +3904,7 @@ Public Class cMSE
 
 
 
-    Private Sub CalcEffortAndDiscards(ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer, ByVal NumberTimeStepsIntoProjection As Integer, ByVal QMult() As Double)
+    Private Sub CalcEffortAndDiscards(ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer, ByVal NumberTimeStepsIntoProjection As Integer, ByVal QMult() As Single)
 
         Dim iMax As Integer
 
@@ -4007,7 +4007,7 @@ Public Class cMSE
     End Sub
 
 
-    Private Function Calc_RealisedLandedFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Double
+    Private Function Calc_RealisedLandedFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Single
         Dim iFleet As Integer, Ft As Single
 
         For iFleet = 1 To m_ecosim.EcosimData.nGear
@@ -4018,7 +4018,7 @@ Public Class cMSE
 
     End Function
 
-    Private Function Calc_RealisedDiscardFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Double
+    Private Function Calc_RealisedDiscardFs(BiomassAtT As Single, ByVal iGrp As Integer, ByVal t As Integer) As Single
         Dim iFleet As Integer, Ft As Single
 
         For iFleet = 1 To m_ecosim.EcosimData.nGear

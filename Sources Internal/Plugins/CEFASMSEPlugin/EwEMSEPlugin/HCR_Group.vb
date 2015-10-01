@@ -77,9 +77,9 @@ Public Class HCR_Group
     ''' </summary>
     Public Property GroupF As cEcoPathGroupInput = Nothing
 
-    Public Property LowerLimit As Double = cCore.NULL_VALUE
-    Public Property UpperLimit As Double = cCore.NULL_VALUE
-    Public Property MaxF As Double = cCore.NULL_VALUE
+    Public Property LowerLimit As Single = cCore.NULL_VALUE
+    Public Property UpperLimit As Single = cCore.NULL_VALUE
+    Public Property MaxF As Single = cCore.NULL_VALUE
 
     Public Property TypeOfHCR As HCRType = HCRType.Target
 
@@ -148,7 +148,7 @@ Public Class HCR_Group
 
     End Function
 
-    Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iYearProjecting As Integer) As Double
+    Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iYearProjecting As Integer) As Single
 
         If TimeFrameRule.CheckValidRule(iYearProjecting) And Me.TypeOfHCR = HCRType.Target Then 'Use a time frame rule
 
@@ -159,11 +159,11 @@ Public Class HCR_Group
             Return TimeFrameRule.ExtractF(iYearProjecting)
         Else
             If Biomass(Me.GroupB.Index) > UpperLimit Then 'otherwise use the standard HCR
-                Return Convert.ToDouble(MaxF)
+                Return MaxF
             ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
                 Return 0
             Else
-                Return Convert.ToDouble(((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF)
+                Return ((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF
             End If
         End If
 

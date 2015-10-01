@@ -554,9 +554,9 @@ Public Class frmTFMpolicy
 
             Select Case Me.m_dragtype
                 Case eDragType.BLower
-                    Me.m_HCR.LowerLimit = Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit))
+                    Me.m_HCR.LowerLimit = CSng(Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit)))
                 Case eDragType.BUpperFMax
-                    Me.m_HCR.UpperLimit = Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX))
+                    Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX)))
                     Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
                 Case eDragType.FMax
                     Me.m_HCR.MaxF = Math.Max(0, CSng(dy))

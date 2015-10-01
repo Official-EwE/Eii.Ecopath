@@ -211,10 +211,10 @@ Public Class Strategy
                 Try
                     ' Resolve group
                     tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
-                    tempHCRGroup.LowerLimit = cStringUtils.ConvertToDouble(recs(2))
-                    tempHCRGroup.UpperLimit = cStringUtils.ConvertToDouble(recs(3))
+                    tempHCRGroup.LowerLimit = cStringUtils.ConvertToSingle(recs(2))
+                    tempHCRGroup.UpperLimit = cStringUtils.ConvertToSingle(recs(3))
                     tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
-                    tempHCRGroup.MaxF = cStringUtils.ConvertToDouble(recs(6))
+                    tempHCRGroup.MaxF = cStringUtils.ConvertToSingle(recs(6))
                     If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
                         tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
                     End If
