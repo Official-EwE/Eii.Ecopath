@@ -1,4 +1,6 @@
-﻿' ===============================================================================
+﻿Option Explicit On
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -3685,7 +3687,8 @@ Public Class cMSE
     Private Function CalcEffort2CatchHighestValue(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Double, ByVal BiomassAtTimestep() As Single, ByRef Emax As Single) As Single
         'ToDo jb Check that this is using FishMGear() correctly
         Emax = 0
-        Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
+        'Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
+        Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax)))
         Return Emax
     End Function
 
@@ -3693,7 +3696,8 @@ Public Class cMSE
         'ToDo jb Check that this is using FishMGear() correctly
         Dim Elim_Conservation As Single = 200
         If TargConsQuota(iMax - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F And TargConsQuota(iMax - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
-            Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
+            'Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
+            Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax)))
             If Elim_Conservation < Emax Then Emax = Elim_Conservation
         End If
         Return Emax
@@ -3800,7 +3804,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SetDiscardParameters(ByVal iFleet As Integer, ByVal iTime As Integer, ByVal BiomassAtTimestep() As Single)
+    Private Sub SetDiscardParameters_HighestValue_Selective(ByVal iFleet As Integer, ByVal iTime As Integer, ByVal BiomassAtTimestep() As Single)
         Dim iCatch As Single
 
         Dim FleetQuota As Double
@@ -3838,7 +3842,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SetEffortWithinPermissableRange_HighestValue(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Double, _
+    Private Sub SetEffortWithinPermissableRange_HighestValue_Selective(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Double, _
                                                       ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer)
 
         Dim Effort As Single 'the calculated effort that is within the permissable range
@@ -3863,11 +3867,11 @@ Public Class cMSE
         Dim Elim_Conservation As Single
 
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
-            Elim_Target = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+            Elim_Target = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (1.0E-20 + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
             Elim = Elim_Target 'sets this because if both cons and targ don't exist then this is what it will be
         End If
         If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
-            Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation)) / (1.0E-20 + QMult(iGrp) * _simdata.FishMGear(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
+            Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (1.0E-20 + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp)))
             Elim = Elim_Conservation 'sets this because if both cons and targ don't exist then this is what it will be
         End If
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F And TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
@@ -3920,10 +3924,10 @@ Public Class cMSE
                             RecordHighestValueStock(iTime, iFleet, iMax)
                         End If
 
-                        SetEffortWithinPermissableRange_HighestValue(iFleet, iMax, QMult, BiomassAtTimestep, iTime)
+                        SetEffortWithinPermissableRange_HighestValue_Selective(iFleet, iMax, QMult, BiomassAtTimestep, iTime)
 
                         'Alters the discard parameters
-                        SetDiscardParameters(iFleet, iTime, BiomassAtTimestep)
+                        SetDiscardParameters_HighestValue_Selective(iFleet, iTime, BiomassAtTimestep)
 
 
                     Case cRegulations.eRegMethod.WeakestStock
