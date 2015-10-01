@@ -1,5 +1,5 @@
 ﻿Public Class cResultsCollector_RealisedLandedFs_Yearly
-    Inherits cResultsCollector_RealisedDiscardedFs
+    Inherits cResultsCollector_RealisedLandedFs
 
     Public Overrides ReadOnly Property Yearly As Boolean
         Get

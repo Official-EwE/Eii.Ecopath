@@ -11,16 +11,16 @@
         End Get
     End Property
 
-    Public Overrides Sub Populate()
+    'Public Overrides Sub Populate()
 
-        Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
-        For igrp = 1 To m_MSE.Core.nGroups
-            For iTime = 1 To NumberOfTimeRecords
-                Me.SetValue(StrategyIndex, igrp, iTime) = m_MSE.RealisedLandedFs(igrp, iTime)
-            Next
-        Next
+    '    Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
+    '    For igrp = 1 To m_MSE.Core.nGroups
+    '        For iTime = 1 To NumberOfTimeRecords
+    '            Me.SetValue(StrategyIndex, igrp, iTime) = Me.RealisedF(igrp, iTime)
+    '        Next
+    '    Next
 
-    End Sub
+    'End Sub
 
 
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
