@@ -166,14 +166,14 @@
     <value>A series of spatial files over time</value>
   </data>
   <data name="DATASET_SINGLE_DESCR" xml:space="preserve">
-    <value>A single time-tagged spatial file</value>
+    <value>A time-tagged spatial file</value>
   </data>
   <data name="DATASET_SINGLE_DISPLAYNAME" xml:space="preserve">
     <value>File '{0}'</value>
     <comment>{0}: file name</comment>
   </data>
   <data name="DATASET_SINGLE_NAME" xml:space="preserve">
-    <value>A single spatial file</value>
+    <value>A spatial file</value>
   </data>
   <data name="DIALOGFILTER_ASCII" xml:space="preserve">
     <value>Ecospace ASCII files</value>
