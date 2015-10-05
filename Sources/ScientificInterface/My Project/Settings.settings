@@ -17,8 +17,8 @@
     <Setting Name="ColorComputedValuesText" Roaming="true" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">0, 0, 244</Value>
     </Setting>
-    <Setting Name="ColorErrorText" Roaming="true" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Firebrick</Value>
+    <Setting Name="ColorErrorBackground" Roaming="true" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">OrangeRed</Value>
     </Setting>
     <Setting Name="ColorFailedValidationText" Roaming="true" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">DarkGoldenrod</Value>

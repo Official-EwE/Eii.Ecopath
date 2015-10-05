@@ -228,7 +228,7 @@ Namespace Other
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_NAMES, cStyleGuide.eApplicationColorType.NAMES_TEXT, cStyleGuide.eApplicationColorType.NAMES_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT, cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION, cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ERROR, cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ERROR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.GENERICERROR_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_COMPUTED, cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_REMARKS, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_PEDIGREE, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PEDIGREE)

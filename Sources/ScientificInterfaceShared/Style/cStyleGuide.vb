@@ -1354,7 +1354,7 @@ Namespace Style
             MISSINGPARAMETER_BACKGROUND
             COMPUTED_TEXT
             INVALIDMODELRESULT_TEXT
-            GENERICERROR_TEXT
+            GENERICERROR_BACKGROUND
             HIGHLIGHT
             IMAGE_BACKGROUND
             PLOT_BACKGROUND
@@ -1450,7 +1450,7 @@ Namespace Style
                         eColorText = eApplicationColorType.FAILEDVALIDATION_TEXT
 
                     Case cStyleGuide.eStyleFlags.ErrorEncountered
-                        eColorText = eApplicationColorType.GENERICERROR_TEXT
+                        eColorBack = eApplicationColorType.GENERICERROR_BACKGROUND
 
                     Case cStyleGuide.eStyleFlags.ValueComputed
                         eColorText = eApplicationColorType.COMPUTED_TEXT
@@ -2288,7 +2288,7 @@ Namespace Style
                 Case eApplicationColorType.HIGHLIGHT : Return Color.Orange
                 Case eApplicationColorType.INVALIDMODELRESULT_TEXT : Return Color.DarkViolet
                 Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return Color.DarkGoldenrod
-                Case eApplicationColorType.GENERICERROR_TEXT : Return Color.Firebrick
+                Case eApplicationColorType.GENERICERROR_BACKGROUND : Return Color.OrangeRed
                 Case eApplicationColorType.COMPUTED_TEXT : Return Color.FromArgb(255, 0, 0, 244)
                     'Case eApplicationColorType.FISHINGPRESSURE_TEXT : Return Color.Red
                     'Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
