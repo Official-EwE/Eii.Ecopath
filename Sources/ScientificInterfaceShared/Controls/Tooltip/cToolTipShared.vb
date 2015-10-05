@@ -65,6 +65,31 @@ Namespace Controls
             Return cToolTipShared.__inst__
         End Function
 
+        Public Overloads Sub SetToolTip(ctrl As Control, strTip As String)
+
+            Dim split As String() = strTip.Split(" "c)
+            Dim sbLine As New System.Text.StringBuilder()
+            Dim sbTip As New System.Text.StringBuilder()
+
+            For i As Integer = 0 To split.Length - 1
+                Dim strTerm As String = split(i)
+                If sbLine.Length > 80 Then
+                    If (sbTip.Length > 0) Then sbTip.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
+                    sbTip.Append(sbLine.ToString())
+                    sbLine.Clear()
+                Else
+                    sbLine.Append(" ")
+                End If
+                sbLine.Append(strTerm)
+            Next
+
+            If (sbTip.Length > 0) Then sbTip.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
+            sbTip.Append(sbLine.ToString())
+            sbLine.Clear()
+
+            MyBase.SetToolTip(ctrl, sbTip.ToString)
+        End Sub
+
 #End Region ' Public interfaces
 
 #Region " Doomed interfaces "

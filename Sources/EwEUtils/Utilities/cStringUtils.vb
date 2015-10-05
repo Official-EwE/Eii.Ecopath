@@ -1209,6 +1209,49 @@ Namespace Utilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert text into a paragraph that wraps at <paramref name="iNumChars"/>.
+        ''' </summary>
+        ''' <param name="str">The string to split.</param>
+        ''' <param name="iNumChars">The max number of characters on each text line.</param>
+        ''' <returns>This is rather blunt logic but hey... Ideally, this should be 
+        ''' outsourced to more dedicated logic that performs Locale aware hyphenation
+        ''' etc. Perhaps NHunSpell? Ugh, that is for later.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ToParagraph(ByVal str As String, Optional iNumChars As Integer = 100) As String
+
+            ' Clean up
+            str = str.Replace(vbCrLf, " "c)
+            str = str.Replace(vbCr, " "c)
+            str = str.Replace(vbLf, " "c)
+            While str.Contains("  ")
+                str = str.Replace("  ", " ")
+            End While
+
+            Dim split As String() = str.Split(" "c)
+            Dim sbLine As New System.Text.StringBuilder()
+            Dim sbBlock As New System.Text.StringBuilder()
+
+            For i As Integer = 0 To split.Length - 1
+                Dim strTerm As String = split(i)
+                If sbLine.Length >= iNumChars Then
+                    If (sbBlock.Length > 0) Then sbBlock.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
+                    sbBlock.Append(sbLine.ToString())
+                    sbLine.Clear()
+                ElseIf (sbBlock.Length > 0) Then
+                    sbLine.Append(" ")
+                End If
+                sbLine.Append(strTerm)
+            Next
+
+            If (sbBlock.Length > 0) Then sbBlock.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
+            sbBlock.Append(sbLine.ToString())
+
+            Return sbBlock.ToString()
+
+        End Function
+
 #Region " Replace "
 
         ''' -----------------------------------------------------------------------
