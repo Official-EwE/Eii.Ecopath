@@ -1239,7 +1239,7 @@ Namespace Utilities
                     If (sbBlock.Length > 0) Then sbBlock.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
                     sbBlock.Append(sbLine.ToString())
                     sbLine.Clear()
-                ElseIf (sbBlock.Length > 0) Then
+                ElseIf (sbLine.Length > 0) Then
                     sbLine.Append(" ")
                 End If
                 sbLine.Append(strTerm)
