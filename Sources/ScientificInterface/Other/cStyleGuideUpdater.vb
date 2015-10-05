@@ -184,7 +184,7 @@ Friend Class cStyleGuideUpdater
             .ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND) = My.Settings.ColorNameBackground
             .ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT) = My.Settings.ColorFailedResultText
             .ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT) = My.Settings.ColorFailedValidationText
-            .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT) = My.Settings.ColorErrorText
+            .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_BACKGROUND) = My.Settings.ColorErrorBackground
             .ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT) = My.Settings.ColorComputedValuesText
             .ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND) = My.Settings.ColorRemarksBackground
             .ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND) = My.Settings.ColorSumBackground
@@ -234,7 +234,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.ColorNameBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.NAMES_BACKGROUND)
             My.Settings.ColorFailedResultText = .ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
             My.Settings.ColorFailedValidationText = .ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
-            My.Settings.ColorErrorText = .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
+            My.Settings.ColorErrorBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_BACKGROUND)
             My.Settings.ColorComputedValuesText = .ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
             My.Settings.ColorRemarksBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
             My.Settings.ColorSumBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND)

@@ -314,8 +314,8 @@ Namespace Controls
             Dim strLabel As String = Me.FormatLabelText(iGroup)
             Dim sValue As Single = Me.m_data.Value(iGroup)
             Dim sValueMax As Single = Me.m_data.ValueMax
-            Dim clrPen As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
-            Dim clrLabel As Color = Me.TextColor()
+            Dim clrPen As Color = Me.TextColor()
+            Dim clrLabel As Color = clrPen
 
             Dim clrFill As Color = Color.LightGray
             Dim iSize As Integer = Me.CalcNodeSize(sValue, sValueMax)
@@ -352,8 +352,7 @@ Namespace Controls
             End Select
 
             If (sValue = 0) Then
-                clrPen = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
-                clrFill = Color.White
+                clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_BACKGROUND)
                 clrLabel = clrPen
             End If
 
