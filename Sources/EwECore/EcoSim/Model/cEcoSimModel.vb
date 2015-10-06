@@ -1168,9 +1168,11 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="iTime">Index of the current time step.</param>
         '''  <param name="iYear">Index of the current year.</param>
-        ''' <remarks>If runnning in a regular mode (no search) then use FishRateNo(ngroups,ntime) fishing mortality rates set by the user or loaded timeseries PoolForceCatch() to compute F. 
+        ''' <remarks>
+        '''  If runnning in a regular mode (no search) then use FishRateNo(ngroups,ntime) * density dependant catchability, if forced catch or F (fishing mortality rates) then don't use density dependance.
         '''  If in a FP search use FishYear() to set FishRateNo(ngroups,ntime)  and FishTime(ngroups). 
-        '''  MSE sets FishTime(ngroups) and FishRateNo(ngroups,ntime) in <see cref="cMSE.DoRegulations">DoRegulations()</see></remarks>
+        '''  MSE sets FishRateNo(ngroups,ntime) in <see cref="cMSE.DoRegulations">DoRegulations()</see>
+        ''' </remarks>
         Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer)
 
             If m_search.SearchMode = eSearchModes.FishingPolicy Then
@@ -1190,7 +1192,8 @@ Namespace Ecosim
 
                 'Get the correct forcing data timestep for this model time step
                 Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
-
+                'is this group timestep forced
+                Dim isForced As Boolean = False
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Normal run
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1198,26 +1201,35 @@ Namespace Ecosim
                 'Qmult(group) density dependent catchability at the current biomass set in setDenDepCatchMult()
                 For iGrp As Integer = 1 To nvar
 
-                    'Catches forced or computed
-                    If iForcing <= Me.m_RefData.nYears And Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0 Then
-                        'Forced catch rates
-                        'Was up to Sep 2008:
-                        m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iForcing) / BB(iGrp)
-                        'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
-                        'Carl suggests the following:
-                        'predict F from
-                        'F=w*Fmax+(1-w)C/B
-                        'Where the “weight” w is given by the logistic function, and K = 5
-                        'w = 1 / (1 + exp(-K * (C / B - Fmax)))
-                        'Fmax is the Flimit from the search
-                        'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - FLimit(iGrp))))
-                        'FishTime(iGrp) = w * FLimit(iGrp) + (1 - w) * CBratio
+                    'Is this group forced in some way
+                    isForced = (iForcing <= Me.m_RefData.nYears) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
 
-                        'The next is easier, and gives almost the same answer:
-                        If m_Data.FishTime(iGrp) > 3 Then m_Data.FishTime(iGrp) = 3
+                    If isForced Then
+                        'YES Forced don't included Density Dependant Catchability on any type of forced F
+                        If Me.m_Data.FisForced(iGrp) Then
+                            'Forced F
+                            m_Data.FishTime(iGrp) = m_Data.FishRateNo(iGrp, iTime)
+                        Else
+                            'Forced Catches
+                            m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iForcing) / BB(iGrp)
+                            'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
+                            'Carl suggests the following:
+                            'predict F from
+                            'F=w*Fmax+(1-w)C/B
+                            'Where the “weight” w is given by the logistic function, and K = 5
+                            'w = 1 / (1 + exp(-K * (C / B - Fmax)))
+                            'Fmax is the Flimit from the search
+                            'Dim w As Double = 1 / (1 + Math.Exp(-5 * (CBratio - FLimit(iGrp))))
+                            'FishTime(iGrp) = w * FLimit(iGrp) + (1 - w) * CBratio
+
+                            'The next is easier, and gives almost the same answer:
+                            If m_Data.FishTime(iGrp) > 3 Then m_Data.FishTime(iGrp) = 3
+
+                        End If
+
                     Else
-                        'Computed fishing mortality
-
+                        'NOT Forced
+                        'Include density dependant catchability
                         'FishRateNo() is fishing mortality at the current effort by group,time
                         m_Data.FishTime(iGrp) = m_Data.FishRateNo(iGrp, iTime) * Qmult(iGrp)
                     End If
@@ -1232,6 +1244,7 @@ Namespace Ecosim
             End If
 
         End Sub
+
 
         Private Sub setEffortFromPlugin(ByVal QYear() As Single, ByVal iTime As Integer, ByVal iYear As Integer)
             Dim bModified As Boolean
