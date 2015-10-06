@@ -449,7 +449,8 @@ Namespace SpatialData
                         fs = DirectCast(Me.m_dsSourceData, IFeatureSet)
                         dt = fs.DataTable
                         For iCol As Integer = 0 To dt.Columns.Count - 1
-                            lstrAttributes.Add(dt.Columns(iCol).ColumnName)
+                            Dim col As DataColumn = dt.Columns(iCol)
+                            lstrAttributes.Add(col.ColumnName)
                         Next
                     End If
                 End If
