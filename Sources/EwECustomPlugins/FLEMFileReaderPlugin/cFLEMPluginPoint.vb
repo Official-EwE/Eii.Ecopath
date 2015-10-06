@@ -135,8 +135,8 @@ Public Class cFLEMPluginPoint
         'Make a copy of the original HapCap and RelPP array so we can restore then after a run
         ReDim orgHabCap(SpaceData.InRow + 1, SpaceData.InCol + 1, SpaceData.NGroups)
         ReDim orgRelPP(SpaceData.InRow + 1, SpaceData.InCol + 1)
-        Array.Copy(SpaceData.HabCap, Me.orgHabCap, Me.orgHabCap.Length)
-        Array.Copy(SpaceData.RelPP, Me.orgRelPP, Me.orgRelPP.Length)
+        'Array.Copy(SpaceData.HabCap, Me.orgHabCap, Me.orgHabCap.Length)
+        'Array.Copy(SpaceData.RelPP, Me.orgRelPP, Me.orgRelPP.Length)
 
         FileNumber = FreeFile()
 
@@ -295,8 +295,8 @@ Public Class cFLEMPluginPoint
             FileClose(FileNumber)
 
             'Restore the arrays we modified so Ecospace and initialize properly
-            Array.Copy(Me.orgHabCap, SpaceData.HabCap, Me.orgHabCap.Length)
-            Array.Copy(Me.orgRelPP, SpaceData.RelPP, Me.orgRelPP.Length)
+            'Array.Copy(Me.orgHabCap, SpaceData.HabCap, Me.orgHabCap.Length)
+            'Array.Copy(Me.orgRelPP, SpaceData.RelPP, Me.orgRelPP.Length)
 
         Catch ex As Exception
 
