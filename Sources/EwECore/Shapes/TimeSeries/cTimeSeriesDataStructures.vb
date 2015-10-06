@@ -198,6 +198,19 @@ Public Class cTimeSeriesDataStructures
 
     End Function
 
+
+    Public Function isTimeStepValid(iModelTimeStep As Integer) As Boolean
+
+        If Me.DataSetInterval = eTSDataSetInterval.Annual Then
+            If (iModelTimeStep / cCore.N_MONTHS) <= Me.nYears Then Return True
+        ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
+            If iModelTimeStep <= Me.nDatPoints Then Return True
+        End If
+
+        Return False
+
+    End Function
+
     Private Sub ClearForcing()
 
         Array.Clear(Me.PoolForceBB, 0, Me.PoolForceBB.Length)
