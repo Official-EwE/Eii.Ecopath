@@ -1202,7 +1202,7 @@ Namespace Ecosim
                 For iGrp As Integer = 1 To nvar
 
                     'Is this group forced in some way
-                    isForced = (iForcing <= Me.m_RefData.nYears) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
+                    isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
 
                     If isForced Then
                         'YES Forced don't included Density Dependant Catchability on any type of forced F
