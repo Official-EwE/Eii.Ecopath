@@ -3559,7 +3559,7 @@ Public Class cMSE
                     Next
                 End If
 
-                Me.setQModifiers(iTime)
+                Me.setQModifiers(iTime, QMult)
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Get Biomass estimated by the stock assessment model
@@ -4355,7 +4355,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub setQModifiers(iTime As Integer)
+    Private Sub setQModifiers(iTime As Integer, ByVal QMult() As Single)
         'ToDo Deal with zeros in input data
         '   This includes zeros for F(t) where there is a baseline catch
         'ToDo PropTotCatchFleet() Make sure including effort in proportion of total catch is correct
@@ -4380,27 +4380,44 @@ Public Class cMSE
         'F(t) = q0 * e(t) or Forced F at t
         Dim Ft As Double
 
-        Dim PropCatchFleet As Double
+        Dim PropCatchFleet(m_core.nFleets, m_core.nGroups) As Double
+
+        Dim TotPropCatchFleet As Double = 0
+        Dim TotFt As Double = 0
 
         'iTime is the first timestep of the forecast
         'We want to use the data from the last timestep of the hindcast
         'so iTime - 1
         Dim it As Integer = iTime - 1
 
+        For iFleet = 1 To m_core.nFleets
+            For iGrp = 1 To m_core.nGroups
+                PropCatchFleet(iFleet, iGrp) = Me.PropTotCatchFleet(it, iFleet, iGrp)
+            Next
+        Next
+
         For iflt As Integer = 1 To Me.m_core.nFleets
             For igrp As Integer = 1 To Me.m_core.nGroups
-                If Me._simdata.FishMGear(iflt, igrp) > 0 Then
+                If Me._simdata.FishMGear(iflt, igrp) > 0 And Me._simdata.FisForced(igrp) Then
 
                     'Proportion of the fishing mortality caused by this fleet
                     'This is not the baseline proportion but the F at this effort timestep.
                     'This accounts for changes in the effort timeseries
-                    PropCatchFleet = Me.PropTotCatchFleet(it, iflt, igrp)
 
                     'Fishing mortality at this time step from the time series or calculated from effort. We don't know which
-                    Ft = Me._simdata.FishRateNo(igrp, it) * PropCatchFleet
+                    Ft = Me._simdata.FishRateNo(igrp, it) * PropCatchFleet(iflt, igrp)
+
+                    'If igrp = 16 Then
+                    '    TotPropCatchFleet += PropCatchFleet(iflt, igrp)
+                    '    TotFt += Ft
+                    '    Console.WriteLine("Whiting Fleet(" & iflt & ")" & " PropCatchFleet = " & PropCatchFleet(iflt, igrp))
+                    '    Console.WriteLine("Whiting Fleet(" & iflt & ")" & " Total PropCatchFleet = " & TotPropCatchFleet)
+                    '    Console.WriteLine("Whiting Fleet(" & iflt & ")" & " Ft = " & Ft)
+                    '    Console.WriteLine("Whiting Fleet(" & iflt & ")" & " Total Ft = " & TotFt)
+                    'End If
 
                     'F at the current timestep calculated from baseline values
-                    FtCalc = Me._simdata.relQ(iflt, igrp) * Me._simdata.FishRateGear(iflt, it) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
+                    FtCalc = Me._simdata.relQ(iflt, igrp) * CalcQMultLastTimeStepHindcast(igrp) * Me._simdata.FishRateGear(iflt, it) * (Me._simdata.PropLandedTime(iflt, igrp) + Me._simdata.Propdiscardtime(iflt, igrp))
 
                     'Ratio of F from time series to F computed from Effort
                     'If there is no timeseries or the F and Effort timeseries are synchronised then m_QModifier will be one
@@ -4421,8 +4438,26 @@ Public Class cMSE
             Next
         Next
 
+#If DEBUG Then
+        Dim TestTotalFWhitingLastYearHindcast As Double = 0
+        Dim WhitingIndex As Integer = 16
+        Dim QWhiting As Single = CalcQMultLastTimeStepHindcast(WhitingIndex)
+        For iFleet = 1 To m_core.nFleets
+            TestTotalFWhitingLastYearHindcast += Me._simdata.relQ(iFleet, WhitingIndex) * QWhiting * Me._simdata.FishRateGear(iFleet, it) * (Me._simdata.PropLandedTime(iFleet, WhitingIndex) + Me._simdata.Propdiscardtime(iFleet, WhitingIndex))
+        Next
+#End If
+
         Me.m_bQSet = True
     End Sub
+
+    Private Function CalcQMultLastTimeStepHindcast(iGrp As Integer) As Single
+
+        Dim BiomassAtT As Single = _simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, OriginalNTimesteps)
+        Dim Q As Single = _simdata.QmQo(iGrp) / (1 + (_simdata.QmQo(iGrp) - 1) * BiomassAtT / _simdata.StartBiomass(iGrp))
+
+        Return Q
+
+    End Function
 
     ''' <summary>
     ''' Get the proportion of the fishing mortality caused by a fleet on a group at a time step.
@@ -4433,19 +4468,20 @@ Public Class cMSE
     ''' <returns>Proportion of fishing mortality cause by a fleet</returns>
     ''' <remarks></remarks>
     Private Function PropTotCatchFleet(iTime As Integer, iFleet As Integer, iGroup As Integer) As Single
-        Dim sumCatch As Single
+        Dim sumCatchMortality As Single
 
         Debug.Assert(iTime = OriginalNTimesteps, "Oppss PropTotCatchFleet(t) called at the wrong time step.")
 
         For iflt As Integer = 1 To Me.m_core.nFleets
-            sumCatch += Me._simdata.relQ(iflt, iGroup) * Me._simdata.FishRateGear(iflt, iTime) * (Me._simdata.PropLandedTime(iflt, iGroup) + Me._simdata.Propdiscardtime(iflt, iGroup))
+            sumCatchMortality += Me._simdata.relQ(iflt, iGroup) * Me._simdata.FishRateGear(iflt, iTime) * (Me._simdata.PropLandedTime(iflt, iGroup) + Me._simdata.Propdiscardtime(iflt, iGroup))
         Next
-        Dim catchByFleet As Single = Me._simdata.relQ(iFleet, iGroup) * Me._simdata.FishRateGear(iFleet, iTime) * (Me._simdata.PropLandedTime(iFleet, iGroup) + Me._simdata.Propdiscardtime(iFleet, iGroup))
 
-        sumCatch += CSng(1.0E-20)
+        Dim catchMortalityByFleet As Single = Me._simdata.relQ(iFleet, iGroup) * Me._simdata.FishRateGear(iFleet, iTime) * (Me._simdata.PropLandedTime(iFleet, iGroup) + Me._simdata.Propdiscardtime(iFleet, iGroup))
+
+        sumCatchMortality += CSng(1.0E-20)
 
         'Proportion of total catch caught by this fleet at this timestep
-        Return catchByFleet / sumCatch
+        Return catchMortalityByFleet / sumCatchMortality
 
     End Function
 
