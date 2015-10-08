@@ -28,13 +28,13 @@ Public Class cTimeFrameRule
     End Sub
 
 
-    Public Property ExtractF(iYearProjecting) As Single
+    Public ReadOnly Property ExtractF(iYearProjecting) As Single
         Get
             Return m_F(iYearProjecting - 1)
         End Get
-        Set(value As Single)
-            m_F(iYearProjecting - 1) = value
-        End Set
+        'Set(value As Single)
+        '    m_F(iYearProjecting - 1) = value
+        'End Set
     End Property
 
     Public Function CheckValidRule(iYearProjecting As Integer) As Boolean
