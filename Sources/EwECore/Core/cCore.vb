@@ -2351,99 +2351,88 @@ Public Class cCore
                 Case eMessageReply.YES
                     Me.DiscardChanges()
                     Return True
-            End Select
-            Return False
-
-        Else
-            ' Prepare feedback message
-            strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
-            fm = New cFeedbackMessage(strPrompt, _
-                                      eCoreComponentType.Core, eMessageType.Any, _
-                                      eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO_CANCEL)
-
-            ' Auto-affirm
-            fm.Reply = eMessageReply.YES
-
-            If (Not bQuiet) Then
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
-
-            ' Send progress message
-            msg = New cProgressMessage(eProgressState.Start, 0, 0, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
-            Me.Messages.SendMessage(msg, True)
-
-            ' Hmm...
-            Select Case fm.Reply
-
-                Case eMessageReply.CANCEL
-                    ' Do not save
+                Case Else
                     Return False
-
-                Case eMessageReply.YES
-
-                    ' Plug-ins
-                    If bSuccess And Me.m_StateMonitor.IsPluginModified Then
-                        If Not Me.PluginManager.SaveModel(Me.DataSource) Then
-                            bSuccess = False
-                        Else
-                            Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
-                        End If
-                    End If
-
-                    ' Ecotracer
-                    If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecotracer) Then
-                        If Me.m_StateMonitor.IsEcotracerModified Then
-                            If Not Me.SaveEcotracerScenario() Then
-                                bSuccess = False
-                            Else
-                                Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
-                            End If
-                        End If
-                    End If
-
-                    ' Ecospace
-                    If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecospace) Then
-                        If Me.m_StateMonitor.IsEcospaceModified Then
-                            If Not Me.SaveEcospaceScenario() Then
-                                bSuccess = False
-                            Else
-                                Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
-                            End If
-                        End If
-                    End If
-
-                    ' Ecosim
-                    If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecosim) Then
-                        If Me.m_StateMonitor.IsEcosimModified Then
-                            If Not Me.SaveEcosimScenario() Then
-                                bSuccess = False
-                            Else
-                                Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
-                            End If
-                        End If
-                    End If
-
-                    ' The bottom of it all
-                    If bSuccess = (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
-                        If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
-                            If Not Me.SaveModel() Then
-                                bSuccess = False
-                            Else
-                                Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
-                            End If
-                        End If
-                    End If
-
-                Case eMessageReply.NO
-                    ' Forget changes
-                    Me.DiscardChanges()
-
             End Select
-
-            msg = New cProgressMessage(eProgressState.Finished, 0, 0, "", eMessageType.DataExport)
-            Me.Messages.SendMessage(msg, True)
         End If
+
+        ' Prepare feedback message
+        strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
+        fm = New cFeedbackMessage(strPrompt, _
+                                  eCoreComponentType.Core, eMessageType.Any, _
+                                  eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO_CANCEL)
+
+        ' Auto-affirm
+        fm.Reply = eMessageReply.YES
+
+        If (Not bQuiet) Then
+            ' Send and see what happens
+            Me.m_publisher.SendMessage(fm)
+        End If
+
+        ' Do not save
+        If (fm.Reply = eMessageReply.CANCEL) Then Return False
+        If (fm.Reply = eMessageReply.NO) Then Me.DiscardChanges() : Return True
+
+        ' Send progress message
+        msg = New cProgressMessage(eProgressState.Start, 0, 0, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
+        Me.Messages.SendMessage(msg, True)
+
+        ' Plug-ins
+        If bSuccess And Me.m_StateMonitor.IsPluginModified Then
+            If Not Me.PluginManager.SaveModel(Me.DataSource) Then
+                bSuccess = False
+            Else
+                Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+            End If
+        End If
+
+        ' Ecotracer
+        If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecotracer) Then
+            If Me.m_StateMonitor.IsEcotracerModified Then
+                If Not Me.SaveEcotracerScenario() Then
+                    bSuccess = False
+                Else
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
+            End If
+        End If
+
+        ' Ecospace
+        If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecospace) Then
+            If Me.m_StateMonitor.IsEcospaceModified Then
+                If Not Me.SaveEcospaceScenario() Then
+                    bSuccess = False
+                Else
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
+            End If
+        End If
+
+        ' Ecosim
+        If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecosim) Then
+            If Me.m_StateMonitor.IsEcosimModified Then
+                If Not Me.SaveEcosimScenario() Then
+                    bSuccess = False
+                Else
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
+            End If
+        End If
+
+        ' The bottom of it all
+        If bSuccess = (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
+            If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
+                If Not Me.SaveModel() Then
+                    bSuccess = False
+                Else
+                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
+                End If
+            End If
+        End If
+
+        msg = New cProgressMessage(eProgressState.Finished, 0, 0, "", eMessageType.DataExport)
+        Me.Messages.SendMessage(msg, True)
 
         ' Report success
         Return bSuccess
@@ -2746,7 +2735,7 @@ Public Class cCore
             sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
             sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
             sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
-            sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")))
+            sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")))
         End If
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
@@ -2862,7 +2851,7 @@ Public Class cCore
 
             xa = doc.CreateAttribute("CoordinateSystemWKT")
             xn.Attributes.Append(xa)
-            xa.Value = Me.m_EcoSpaceData.CoordinateSystemWKT.Replace("""", "'")
+            xa.Value = Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")
         End If
 
         If (savetype >= eAutosaveTypes.Ecotracer) And (sm.HasEcotracerLoaded) Then
@@ -6755,7 +6744,7 @@ Public Class cCore
     ''' <summary>
     ''' Load an <see cref="cEcoSimScenario">Ecosim scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
-    ''' <param name="iScenario">Index of the <see cref="cEcoSimScenario">Scenario</see> in the <see cref="m_EcoSimScenarios">Scenario list</see>.</param>
+    ''' <param name="iScenario">One-based index of the <see cref="cEcoSimScenario">Scenario</see> in the <see cref="m_EcoSimScenarios">Scenario list</see>.</param>
     ''' <returns>True if succesful.</returns>
     Public Function LoadEcosimScenario(ByVal iScenario As Integer) As Boolean
 
@@ -9258,7 +9247,7 @@ Public Class cCore
         End Get
     End Property
 
-     ''' -----------------------------------------------------------------------
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get an <see cref="cEcoSpacescenario">Ecospace scenario</see> from the available scenarios.
     ''' </summary>
@@ -10219,6 +10208,7 @@ Public Class cCore
                 .Latitude = m_EcoSpaceData.Lat1 'UDH_UL
                 .Longitude = m_EcoSpaceData.Lon1
                 .AssumeSquareCells = m_EcoSpaceData.AssumeSquareCells
+                .ProjectionString = m_EcoSpaceData.ProjectionString
                 .ResetStatusFlags()
                 .AllowValidation = True
             End With
@@ -10287,6 +10277,7 @@ Public Class cCore
 
             Me.m_EcoSpaceData.CellLength = m_EcospaceBasemap.CellLength
             Me.m_EcoSpaceData.AssumeSquareCells = Me.m_EcospaceBasemap.AssumeSquareCells
+            Me.m_EcoSpaceData.ProjectionString = Me.m_EcospaceBasemap.ProjectionString
             Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
             Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude
 

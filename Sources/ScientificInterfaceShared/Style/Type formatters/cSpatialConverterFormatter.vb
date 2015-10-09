@@ -53,12 +53,10 @@ Namespace Style
                     Dim strName As String = obj.DisplayName
                     Dim strDetails As String = ""
 
-                    If (Not String.IsNullOrWhiteSpace(obj.AttributeName)) Then
-                        strName = String.Format("{0} by field {1}", strName, obj.AttributeName)
-                    End If
-
                     If (Not String.IsNullOrWhiteSpace(obj.AttributeFilter)) Then
-                        strName = String.Format("{0} filtering {1}", strName, obj.AttributeFilter)
+                        strName = String.Format("{0} where {1}", strName, obj.AttributeFilter)
+                    ElseIf (Not String.IsNullOrWhiteSpace(obj.AttributeName)) Then
+                        strName = String.Format("{0} by {1}", strName, obj.AttributeName)
                     End If
 
                     Return strName

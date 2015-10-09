@@ -7201,7 +7201,7 @@ Namespace DataSources
                 ecospaceDS.TimeStep = CSng(Me.m_db.ReadSafe(reader, "TimeStep", 0))
                 ecospaceDS.PredictEffort = (CInt(Me.m_db.ReadSafe(reader, "PredictEffort", True)) <> 0)
                 ecospaceDS.AssumeSquareCells = (CInt(Me.m_db.ReadSafe(reader, "AssumeSquareCells", True)) <> 0)
-                ecospaceDS.CoordinateSystemWKT = CStr(Me.m_db.ReadSafe(reader, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
+                ecospaceDS.ProjectionString = CStr(Me.m_db.ReadSafe(reader, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
 
                 ' JS 05apr08: pragmatic fix to prevent mayhem
                 If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
@@ -7400,7 +7400,7 @@ Namespace DataSources
                 drow("TimeStep") = ecospaceDS.TimeStep
                 drow("PredictEffort") = ecospaceDS.PredictEffort
                 drow("AssumeSquareCells") = ecospaceDS.AssumeSquareCells
-                drow("CoordinateSystemWKT") = ecospaceDS.CoordinateSystemWKT
+                drow("CoordinateSystemWKT") = ecospaceDS.ProjectionString
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower

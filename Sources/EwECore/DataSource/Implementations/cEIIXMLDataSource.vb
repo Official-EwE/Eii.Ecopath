@@ -1980,7 +1980,7 @@ Public Class cEIIXMLDataSource
             ecospaceDS.TimeStep = CSng(Me.ReadSafe(drow, "TimeStep", 0))
             ecospaceDS.PredictEffort = (CInt(Me.ReadSafe(drow, "PredictEffort", True)) <> 0)
             ecospaceDS.AssumeSquareCells = (CInt(Me.ReadSafe(drow, "AssumeSquareCells", True)) <> 0)
-            ecospaceDS.CoordinateSystemWKT = CStr(Me.ReadSafe(drow, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
+            ecospaceDS.ProjectionString = CStr(Me.ReadSafe(drow, "CoordinateSystemWKT", cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM))
 
             ' JS 05apr08: pragmatic fix to prevent mayhem
             If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS

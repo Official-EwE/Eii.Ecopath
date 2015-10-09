@@ -106,7 +106,6 @@ Public Class cTimeSeriesDataStructures
 
     Public nAICTimeSeries As Integer
 
-    'ToDo_jb change DatType to eTimeSeriesType
     ''' <summary><see cref="eTimeSeriesType">Type</see> of each applied time series.</summary>
     Public DatType() As eTimeSeriesType
     ''' <summary>Index of the core object that each applied time series links to. The type

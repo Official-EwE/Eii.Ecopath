@@ -98,6 +98,13 @@ Public Class cEcospaceBasemap
             val = New cValue(New Boolean, eVarNameFlags.AssumeSquareCells, eStatusFlags.Null, eValueTypes.Bool, meta)
             m_values.Add(val.varName, val)
 
+            ' CoordinateSystem
+            meta = New cVariableMetaData(1024)
+            Dim coord() As Char
+            val = New cValue(New String(coord), eVarNameFlags.ProjectionString, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta)
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             ' *************************************************************************************** '
             ' Variables for layers, providing metadata and an anchor point for remarks, visual styles '
             ' *************************************************************************************** '
@@ -517,6 +524,20 @@ Public Class cEcospaceBasemap
         End Get
         Set(value As Boolean)
             Me.SetVariable(eVarNameFlags.AssumeSquareCells, value)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <para>Get/set the Proj4 string for the Ecospace map.</para>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ProjectionString As String
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.ProjectionString))
+        End Get
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.ProjectionString, value)
         End Set
     End Property
 

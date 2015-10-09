@@ -92,6 +92,7 @@ Namespace SpatialData
         ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
         ''' <see cref="Point.Y"/> as latiude.</param>
         ''' <param name="dCellSize">Cell size (in decimal degrees) to convert data to.</param>
+        ''' <param name="strProjectionString">The target projection string.</param>
         ''' <param name="strFile">Name of the file to store the converted raster.</param>
         ''' <returns>A <see cref="ISpatialRaster">raster</see> with data, trimmed to the Ecospace 
         ''' bounding box indicated by <paramref name="ptfNE"/>, <paramref name="ptfSW"/> and 
@@ -101,6 +102,7 @@ Namespace SpatialData
                          ByVal ptfNE As PointF, _
                          ByVal ptfSW As PointF, _
                          ByVal dCellSize As Double, _
+                         ByVal strProjectionString As String, _
                          ByVal strFile As String) As ISpatialRaster
 
         ''' -------------------------------------------------------------------

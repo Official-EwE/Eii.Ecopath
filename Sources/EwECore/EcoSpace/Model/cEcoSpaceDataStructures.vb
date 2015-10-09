@@ -41,11 +41,13 @@ Public Class cEcospaceDataStructures
 
 #Region "Public Fields"
 
+    ''' <summary>ESRI projection string of the default WGS_84 projection of Ecospace.</summary>
     Public Const DEFAULT_COORDINATESYSTEM As String = "GEOGCS[""WGS 84"", DATUM[""WGS_1984"", SPHEROID[""WGS 84"",6378137,298.257223563, AUTHORITY[""EPSG"",""7030""]], AUTHORITY[""EPSG"",""6326""]], PRIMEM[""Greenwich"",0, AUTHORITY[""EPSG"",""8901""]], UNIT[""degree"",0.01745329251994328, AUTHORITY[""EPSG"",""9122""]], AUTHORITY[""EPSG"",""4326""]]"
 
     Public EcosimScenarioDBID As Integer
     ''' <summary>Array of ecospace group database IDs.</summary>
     Public GroupDBID() As Integer
+    ''' <summary>Array of mappings to ecopath group database IDs.</summary>
     Public EcopathGroupDBID() As Integer
     ''' <summary>Array of ecospace region database IDs.</summary>
     Public RegionDBID() As Integer
@@ -55,6 +57,7 @@ Public Class cEcospaceDataStructures
     Public MPADBID() As Integer
     ''' <summary>Array of ecospace Fleet database IDs.</summary>
     Public FleetDBID() As Integer
+    ''' <summary>Array of mappings to ecopath fleet database IDs.</summary>
     Public EcopathFleetDBID() As Integer
 
     'number of years to run the simulation for
@@ -78,9 +81,9 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public LinkCellWidthAndSize As Boolean = True
     ''' <summary>
-    ''' WKT string for the Ecospace coordinate system
+    ''' WKT projection string for the Ecospace coordinate system
     ''' </summary>
-    Friend CoordinateSystemWKT As String = DEFAULT_COORDINATESYSTEM
+    Friend ProjectionString As String = DEFAULT_COORDINATESYSTEM
 
     Public CurrentForce As Boolean
     'jb Ecoseed may get move to an object
