@@ -1910,7 +1910,7 @@ Namespace Core
         ''' <summary>To document</summary>
         AssumeSquareCells
         ''' <summary>Proj4 string of the Ecospace projection</summary>
-        CoordinateSystem
+        ProjectionString
 
         Z
 

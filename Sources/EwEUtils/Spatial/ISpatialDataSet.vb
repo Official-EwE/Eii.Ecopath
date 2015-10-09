@@ -162,12 +162,14 @@ Namespace SpatialData
         ''' <param name="ptfSW">South-west corner of the area to load data for. 
         ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
         ''' <see cref="Point.Y"/> as latiude.</param>
+        ''' <param name="strProjectionString">WKT projection string for the target raster.</param>
         ''' <returns>True if data was successfully locked.</returns>
         ''' -------------------------------------------------------------------
         Function LockDataAtT(ByVal datetime As DateTime, _
                              ByVal dCellSize As Double, _
                              ByVal ptfNE As PointF, _
-                             ByVal ptfSW As PointF) As Boolean
+                             ByVal ptfSW As PointF, _
+                             ByVal strProjectionString As String) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -175,7 +175,7 @@ Namespace SpatialData
                     Me.m_core.Messages.SendMessage(msg)
 
                     ' Do the spatial magics
-                    If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                    If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
                         rs = ds.GetRaster(cv, strLayerName)
                         If rs IsNot Nothing Then
                             For iRow As Integer = 1 To iInRow

@@ -238,7 +238,7 @@ Namespace SpatialData
                                 cLog.Write(cStringUtils.Localize(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
 
                                 ' #Yes: Can lock that data?
-                                If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                                If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
                                     ' #Yes: start process of extracting external data
 
                                     ' Start logging the operations on successfully locked data
