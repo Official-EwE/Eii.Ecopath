@@ -27,6 +27,7 @@ Imports EwECore
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports DotSpatial.Projections
 
 #End Region ' Imports
 
@@ -45,10 +46,6 @@ Namespace SpatialData
 
         ''' <summary>The raster to wrap.</summary>
         Private m_rs As IRaster = Nothing
-        'Private m_ptfTL As PointF
-        'Private m_ptfBR As PointF
-        ' ''' <summary>Ecospace cell size.</summary>
-        'Private m_sCellSize As Double = 0
 
         Private m_bStatsCalculated As Boolean = False
         Private m_lNumValueCells As Long = 0
@@ -70,10 +67,7 @@ Namespace SpatialData
         Public Sub New(ByVal raster As IRaster)
 
             Me.m_rs = raster
-            'Me.m_ptfTL = ptfTL
-            'Me.m_ptfBR = ptfBR
-            'Me.m_sCellSize = Math.Abs(CSng(dCellSize))
-
+ 
         End Sub
 
         Public Sub New(ByVal strFile As String)
@@ -265,6 +259,18 @@ Namespace SpatialData
             If (Me.m_rs Is Nothing) Then Return False
             If (Not cNumberUtils.Approximates(Me.m_rs.CellHeight, Me.m_rs.CellWidth, Me.m_rs.CellHeight / 100)) Then Return False
             Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a string representing the projection of this raster.
+        ''' </summary>
+        ''' <returns>The ESRI projection string that represents the projection of this raster.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function ProjectionString() As String
+            Dim pi As ProjectionInfo = Nothing
+            If (Me.m_rs IsNot Nothing) Then pi = Me.m_rs.Projection
+            Return cDotSpatialUtils.ToProjectionString(pi)
         End Function
 
 #End Region ' Public access

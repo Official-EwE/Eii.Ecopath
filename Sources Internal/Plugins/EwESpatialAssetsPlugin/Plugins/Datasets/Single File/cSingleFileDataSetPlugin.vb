@@ -423,7 +423,7 @@ Namespace SpatialData
             If (Me.m_indexstatus <> ISpatialDataSet.eIndexStatus.Indexed) And (Me.IsConfigured) Then
                 Try
                     Me.Cache = Nothing
-                    If Me.LockDataAtT(Nothing, 1.0!, ptfTL, ptfBR) Then
+                    If Me.LockDataAtT(Nothing, 1.0!, ptfTL, ptfBR, "") Then
                         Me.LoadSource()
                         Me.UnlockData()
                     End If

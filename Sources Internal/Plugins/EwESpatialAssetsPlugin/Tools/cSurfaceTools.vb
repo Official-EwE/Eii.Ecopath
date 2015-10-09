@@ -62,6 +62,7 @@ Public Class cSurfaceTools
                                          ByVal ptfTL As PointF, _
                                          ByVal ptfBR As PointF, _
                                          ByVal dCellSize As Double, _
+                                         ByVal strProjectionString As String, _
                                          ByVal strFilter As String, _
                                          ByVal strFileName As String,
                                          ByVal log As cSpatialOperationLog) As IRaster
@@ -71,11 +72,12 @@ Public Class cSurfaceTools
         Dim featToConvert As IFeatureSet = Nothing
         Dim polyToConvert As IGeometry = Nothing
         Dim iNumRejected As Integer = 0
+        Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
 
-        If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
-            fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), _
-                                                         eStatusFlags.ValueComputed)
+        If (Not fs.Projection.Equals(proj)) Then
+            fs.Reproject(proj)
+            'fs.SaveAs("H:\test.asc", True)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
         End If
 
         ' -----
@@ -108,7 +110,7 @@ Public Class cSurfaceTools
         ' -----
         Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = cDotSpatialUtils.EcospaceProjection
+        rs.Projection = proj
         rs.Bounds = bnds
         rs.NoDataValue = 0
         'rs.Reproject(fs.Projection)
@@ -206,6 +208,7 @@ Public Class cSurfaceTools
                                            ByVal ptfTL As PointF, _
                                            ByVal ptfBR As PointF, _
                                            ByVal dCellWidth As Double, _
+                                           ByVal strProjectionString As String, _
                                            ByVal strField As String, _
                                            ByVal strFileName As String,
                                            ByVal log As cSpatialOperationLog) As IRaster
@@ -213,10 +216,11 @@ Public Class cSurfaceTools
         'Dim projWork As ProjectionInfo = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaworld
         Dim featToConvert As IFeatureSet = Nothing
         Dim iNumRejected As Integer = 0
+        Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
 
-        If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
-            fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+        If (Not fs.Projection.Equals(proj)) Then
+            fs.Reproject(proj)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, strProjectionString), eStatusFlags.ValueComputed)
         End If
 
         featToConvert = fs
@@ -232,7 +236,7 @@ Public Class cSurfaceTools
         ' -----
         Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellWidth)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = cDotSpatialUtils.EcospaceProjection
+        rs.Projection = proj
         rs.Bounds = bnds
         rs.NoDataValue = 0
 

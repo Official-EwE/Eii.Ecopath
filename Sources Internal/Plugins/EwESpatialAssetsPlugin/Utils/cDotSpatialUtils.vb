@@ -33,6 +33,7 @@ Imports System.Drawing
 Imports EwEUtils.SpatialData
 Imports EwESpatialAssetsPlugin.SpatialData
 Imports EwEUtils.Core
+Imports EwECore
 
 #End Region ' Imports
 
@@ -94,12 +95,28 @@ Public Class cDotSpatialUtils
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the standard Ecospace projection.
+    ''' Returns a projection from a projection string. If the provided projection
+    ''' string is empty, the <seealso cref="cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM">default Ecospace projection</seealso>
+    ''' is assumed.
     ''' </summary>
-    ''' <returns>The standard Ecospace projection.</returns>
+    ''' <returns>A projection for the EwE model.</returns>
     ''' -------------------------------------------------------------------
-    Public Shared Function EcospaceProjection() As ProjectionInfo
-        Return KnownCoordinateSystems.Geographic.World.WGS1984
+    Public Shared Function ToProjection(strProjectionString As String) As ProjectionInfo
+        If (String.IsNullOrWhiteSpace(strProjectionString)) Then strProjectionString = cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM
+        Return ProjectionInfo.FromEsriString(strProjectionString)
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a projection string for a given projection. If the provided projection
+    ''' is missing, the <seealso cref="cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM">default Ecospace projection</seealso>
+    ''' is returned.
+    ''' </summary>
+    ''' <returns>A projection string for a projection.</returns>
+    ''' -------------------------------------------------------------------
+    Public Shared Function ToProjectionString(info As ProjectionInfo) As String
+        If (info Is Nothing) Then Return cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM
+        Return info.ToEsriString()
     End Function
 
     ''' -------------------------------------------------------------------
@@ -355,11 +372,7 @@ Public Class cDotSpatialUtils
     ''' <returns>A formatted string.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function FormatExtent(ext As IExtent) As String
-        Return String.Format(My.Resources.FORMAT_BOUNDS, _
-                             cStringUtils.FormatDegrees(ext.MinX), _
-                             cStringUtils.FormatDegrees(ext.MaxY), _
-                             cStringUtils.FormatDegrees(ext.MaxX), _
-                             cStringUtils.FormatDegrees(ext.MinY))
+        Return String.Format(My.Resources.FORMAT_BOUNDS, ext.MinX, ext.MaxY, ext.MaxX, ext.MinY)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -420,6 +433,7 @@ Public Class cDotSpatialUtils
         Return String.Format(My.Resources.FORMAT_RASTER, _
                              cDotSpatialUtils.FormatExtent(rs.Ext), _
                              cDotSpatialUtils.FormatRasterGrid(rs.Raster), _
+                             rs.ProjectionString, _
                              cDotSpatialUtils.FormatRasterStats(rs))
     End Function
 

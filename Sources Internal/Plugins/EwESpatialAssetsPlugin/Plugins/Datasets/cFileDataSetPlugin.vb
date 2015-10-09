@@ -24,6 +24,7 @@ Imports System.Drawing
 Imports System.IO
 Imports System.Xml
 Imports DotSpatial.Data
+Imports DotSpatial.Projections
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -64,6 +65,8 @@ Namespace SpatialData
         Protected m_extModelArea As Extent = Nothing
         ''' <summary>Ecospace cell size.</summary>
         Protected m_dModelCellSize As Double = 0
+        ''' <summary>Ecospace target projection.</summary>
+        Protected m_strProjectionString As String = ""
 
         ''' <summary>States whether the dataset is allowed to deliver data.</summary>
         Private m_bEnabled As Boolean = True
@@ -348,6 +351,7 @@ Namespace SpatialData
                                      cDotSpatialUtils.TopLeft(Me.m_extModelArea), _
                                      cDotSpatialUtils.BottomRight(Me.m_extModelArea), _
                                      Me.m_dModelCellSize, _
+                                     Me.m_strProjectionString, _
                                      strFileName)
 
         End Function
@@ -392,7 +396,8 @@ Namespace SpatialData
         Public Overridable Function LockDataAtT(ByVal datetime As Date, _
                                                 ByVal dCellSize As Double, _
                                                 ByVal ptfTL As System.Drawing.PointF, _
-                                                ByVal ptfBR As System.Drawing.PointF) As Boolean _
+                                                ByVal ptfBR As System.Drawing.PointF, _
+                                                ByVal strProjectionString As String) As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataSet.LockDataAtT
 
             ' Sanity checks
@@ -402,7 +407,7 @@ Namespace SpatialData
 
             Me.m_extModelArea = New Extent(ptfTL.X, ptfBR.Y, ptfBR.X, ptfTL.Y)
             Me.m_dModelCellSize = dCellSize
-
+            Me.m_strProjectionString = strProjectionString
             Me.m_dtTime = datetime
 
             Return True

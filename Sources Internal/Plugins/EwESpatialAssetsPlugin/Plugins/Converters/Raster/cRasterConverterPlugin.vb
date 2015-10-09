@@ -22,6 +22,7 @@ Option Strict On
 Imports System.Drawing
 Imports System.Xml
 Imports DotSpatial.Data
+Imports DotSpatial.Projections
 Imports DotSpatial.Topology
 Imports EwECore
 Imports EwEUtils.Core
@@ -69,10 +70,12 @@ Namespace SpatialData
                                           ByVal ptfTL As PointF, _
                                           ByVal ptfBR As PointF, _
                                           ByVal dCellSize As Double, _
+                                          ByVal strProjectionString As String, _
                                           ByVal strFile As String) As ISpatialRaster
 
             Dim rstResult As IRaster = Nothing
             Dim ext As Extent = cDotSpatialUtils.Extent(ptfTL, ptfBR)
+            Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
 
             ' Sanity checks
             Debug.Assert((data IsNot Nothing) And (Not String.IsNullOrWhiteSpace(strFile)) And (dCellSize > 0))
@@ -91,6 +94,12 @@ Namespace SpatialData
                 Try
                     Dim rs As IRaster = CType(data, IRaster)
                     Dim bMustCache As Boolean = False
+
+                    ' Same projection?
+                    If (Not rs.Projection.Equals(proj)) Then
+                        rs.Reproject(proj)
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, strProjectionString), eStatusFlags.ValueComputed)
+                    End If
 
                     ' Does overlap?
                     If (rs.Bounds.Extent.Intersects(ext)) Then

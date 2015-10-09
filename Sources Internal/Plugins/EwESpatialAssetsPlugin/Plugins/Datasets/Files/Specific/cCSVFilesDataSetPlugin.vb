@@ -57,10 +57,13 @@ Namespace SpatialData
             End Get
         End Property
 
-        Public Overrides Function LockDataAtT(datetime As Date, dCellSize As Double, ptfTL As System.Drawing.PointF, ptfBR As System.Drawing.PointF) As Boolean
+        Public Overrides Function LockDataAtT(datetime As Date, _
+                                              dCellSize As Double, _
+                                              ptfTL As System.Drawing.PointF, ptfBR As System.Drawing.PointF, _
+                                              strProjectionString As String) As Boolean
 
             ' First set file time etc to find correct file index
-            If Not MyBase.LockDataAtT(datetime, dCellSize, ptfTL, ptfBR) then Return false
+            If Not MyBase.LockDataAtT(datetime, dCellSize, ptfTL, ptfBR, strProjectionString) Then Return False
 
             If (Not Me.IsLocked) Then
                 Dim reader As New cEcospaceImportExportXYData(Me.m_core.EcospaceBasemap)

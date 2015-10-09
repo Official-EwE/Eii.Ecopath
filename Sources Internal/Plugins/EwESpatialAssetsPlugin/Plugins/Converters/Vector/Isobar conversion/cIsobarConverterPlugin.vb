@@ -78,6 +78,7 @@ Namespace SpatialData
                                           ByVal ptfTL As PointF, _
                                           ByVal ptfBR As PointF, _
                                           ByVal dCellSize As Double, _
+                                          ByVal strProjectionString As String, _
                                           ByVal strFile As String) As ISpatialRaster
 
             Dim log As cSpatialOperationLog = Nothing
@@ -104,7 +105,7 @@ Namespace SpatialData
                 Try
                     ' Rasterize the features
                     Dim fs As IFeatureSet = CType(data, IFeatureSet)
-                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, Me.AttributeName, strFile, log)
+                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, strProjectionString, Me.AttributeName, strFile, log)
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 

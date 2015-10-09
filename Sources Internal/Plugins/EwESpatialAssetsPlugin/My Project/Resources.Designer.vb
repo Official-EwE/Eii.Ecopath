@@ -295,7 +295,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to raster ({0}, {1}, {2}).
+        '''  Looks up a localized string similar to raster ({0}, {1}, {2}, {3}).
         '''</summary>
         Friend ReadOnly Property FORMAT_RASTER() As String
             Get

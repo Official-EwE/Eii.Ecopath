@@ -253,7 +253,7 @@ Namespace SpatialData
 
         Public MustOverride Function Convert(data As Object, _
                                              ptfNE As System.Drawing.PointF, ptfSW As System.Drawing.PointF, _
-                                             dCellSize As Double, strFile As String) As ISpatialRaster _
+                                             dCellSize As Double, strProjectionString As String, strFile As String) As ISpatialRaster _
             Implements ISpatialDataConverter.Convert
 
 #End Region ' Conversion

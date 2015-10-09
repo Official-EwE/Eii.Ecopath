@@ -74,6 +74,7 @@ Public Class cVectorTools
                                      ByVal ptfBR As PointF, _
                                      ByVal dCellSize As Double, _
                                      ByVal dValueNull As Double, _
+                                     ByVal strProjectionString As String, _
                                      ByVal strFileName As String,
                                      ByVal log As cSpatialOperationLog, _
                                      ByVal dgt As TranslateValueDelegate) As IRaster
@@ -85,13 +86,14 @@ Public Class cVectorTools
         Dim polyToConvert As IGeometry = Nothing
         Dim dValClear As Double
         Dim dValSet As Double
+        Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
 
         ' -----
         ' Create and position raster 
         ' -----
         Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = cDotSpatialUtils.EcospaceProjection
+        rs.Projection = proj
         rs.Bounds = bnds
         rs.NoDataValue = dValueNull
 
@@ -103,8 +105,8 @@ Public Class cVectorTools
             Next
         Next
 
-        If (Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection)) Then
-            fs.Reproject(cDotSpatialUtils.EcospaceProjection)
+        If (Not fs.Projection.Equals(proj)) Then
+            fs.Reproject(proj)
             If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
         End If
 

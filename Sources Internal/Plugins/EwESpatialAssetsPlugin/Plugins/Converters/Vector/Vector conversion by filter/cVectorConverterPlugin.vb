@@ -27,6 +27,7 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports DotSpatial.Projections
 
 #End Region ' Imports
 
@@ -78,6 +79,7 @@ Namespace SpatialData
                                           ByVal ptfTL As PointF,
                                           ByVal ptfBR As PointF,
                                           ByVal dCellSize As Double,
+                                          ByVal strProjectionString As String, _
                                           ByVal strFile As String) As ISpatialRaster
 
             Dim log As cSpatialOperationLog = Nothing
@@ -112,13 +114,8 @@ Namespace SpatialData
                         Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, Me.AttributeFilter), eStatusFlags.ValueComputed)
                     End If
 
-                    If Not fs.Projection.Equals(cDotSpatialUtils.EcospaceProjection) Then
-                        fs.Reproject(cDotSpatialUtils.EcospaceProjection)
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
-                    End If
-
                     ' Rasterize the features
-                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strFile, log, _
+                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strProjectionString, strFile, log, _
                                                        New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)

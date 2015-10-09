@@ -29,6 +29,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports DotSpatial.Projections
 
 #End Region ' Imports
 
@@ -285,7 +286,8 @@ Namespace SpatialData
         Public Overrides Function LockDataAtT(ByVal datetime As Date, _
                                               ByVal dCellSize As Double, _
                                               ByVal ptfTL As PointF, _
-                                              ByVal ptfBR As PointF) As Boolean
+                                              ByVal ptfBR As PointF, _
+                                              ByVal strProjectionString As String) As Boolean
 
             Me.m_iFileIndex = Me.FileIndex(datetime)
             If (Me.m_iFileIndex < 0) Then
@@ -293,7 +295,7 @@ Namespace SpatialData
                 Return False
             End If
 
-            Return MyBase.LockDataAtT(datetime, dCellSize, ptfTL, ptfBR)
+            Return MyBase.LockDataAtT(datetime, dCellSize, ptfTL, ptfBR, strProjectionString)
 
         End Function
 
@@ -683,7 +685,7 @@ Namespace SpatialData
 
             If (Me.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) And (Me.IsConfigured) Then
                 Try
-                    If Me.LockDataAtT(dt, 1.0!, ptfTL, ptfBR) Then
+                    If Me.LockDataAtT(dt, 1.0!, ptfTL, ptfBR, "") Then
                         If Not Me.LoadSource() Then
                             ' Log indexing failure
                             Dim iFile As Integer = Me.FileIndex(dt)
