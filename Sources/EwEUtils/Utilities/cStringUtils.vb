@@ -1221,6 +1221,8 @@ Namespace Utilities
         ''' -----------------------------------------------------------------------
         Public Shared Function ToParagraph(ByVal str As String, Optional iNumChars As Integer = 100) As String
 
+            If (String.IsNullOrWhiteSpace(str)) Then Return ""
+
             ' Clean up
             str = str.Replace(vbCrLf, " "c)
             str = str.Replace(vbCr, " "c)
