@@ -95,32 +95,6 @@ Public Class cDotSpatialUtils
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Returns a projection from a projection string. If the provided projection
-    ''' string is empty, the <seealso cref="cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM">default Ecospace projection</seealso>
-    ''' is assumed.
-    ''' </summary>
-    ''' <returns>A projection for the EwE model.</returns>
-    ''' -------------------------------------------------------------------
-    Public Shared Function ToProjection(strProjectionString As String) As ProjectionInfo
-        If (String.IsNullOrWhiteSpace(strProjectionString)) Then strProjectionString = cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM
-        Return ProjectionInfo.FromEsriString(strProjectionString)
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns a projection string for a given projection. If the provided projection
-    ''' is missing, the <seealso cref="cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM">default Ecospace projection</seealso>
-    ''' is returned.
-    ''' </summary>
-    ''' <returns>A projection string for a projection.</returns>
-    ''' -------------------------------------------------------------------
-    Public Shared Function ToProjectionString(info As ProjectionInfo) As String
-        If (info Is Nothing) Then Return cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM
-        Return info.ToEsriString()
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
     ''' Returns the default extension for cached files. This extension must
     ''' be natively supported by DotSpatial.
     ''' </summary>
@@ -490,5 +464,46 @@ Public Class cDotSpatialUtils
     End Function
 
 #End Region ' Resample
+
+#Region " Projections "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a projection from a projection string. If the provided projection
+    ''' string is empty, the <seealso cref="cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM">default Ecospace projection</seealso>
+    ''' is assumed.
+    ''' </summary>
+    ''' <returns>A projection for the EwE model.</returns>
+    ''' -------------------------------------------------------------------
+    Friend Shared Function ToProjection(strProjectionString As String) As ProjectionInfo
+        If (String.IsNullOrWhiteSpace(strProjectionString)) Then strProjectionString = cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM
+        Return ProjectionInfo.FromEsriString(strProjectionString)
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a projection string for a given projection. If the provided projection
+    ''' is missing, the <seealso cref="cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM">default Ecospace projection</seealso>
+    ''' is returned.
+    ''' </summary>
+    ''' <returns>A projection string for a projection.</returns>
+    ''' -------------------------------------------------------------------
+    Friend Shared Function ToProjectionString(info As ProjectionInfo) As String
+        If (info Is Nothing) Then Return cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM
+        Return info.ToEsriString()
+    End Function
+
+    Public Shared Sub GetProjectionInfo(ByVal strProj As String, ByRef strName As String, ByRef bIsLatLon As Boolean, ByRef strUnit As String)
+        Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProj)
+        strName = proj.Name
+        bIsLatLon = proj.IsLatLon() Or proj.IsGeocentric()
+        If (bIsLatLon) Then
+            strUnit = "dd"
+        Else
+            strUnit = proj.Unit.Name
+        End If
+    End Sub
+
+#End Region ' Projections
 
 End Class
