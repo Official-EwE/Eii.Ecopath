@@ -451,9 +451,12 @@ Public Class cQuotaShares
         'This routine adds default values to quotashares object and csv because values are now necessary since hcrs have been created for new groups
         Dim Share As Single
         Dim TotalLandings As Single
-        Dim nTimeSteps As Integer = m_MSE.EcosimData.NumStepsPerYear * m_MSE.EcosimData.NumYears
+        Dim TimeStep As Integer = m_MSE.EcosimData.NumStepsPerYear * m_MSE.EcosimData.NumYears
 
         If m_MSE.RunEcosim() Then
+
+            Dim RelQModifier(,) As Single = Me.m_MSE.calcQModifiers(TimeStep)
+
             'Loop though each group
             For iGrp = 1 To m_core.nGroups
                 'Check whether the group has an hcr for it and check whether there are quotashares set up for it
@@ -461,14 +464,12 @@ Public Class cQuotaShares
                     'if a strategy exists for the group but there aren't any quotashares create default quotashares in memory
                     TotalLandings = 0
                     For iFleet = 1 To m_core.nFleets
-                        'TotalLandings += m_core.EcoSimGroupOutputs(iGrp).CatchEnd(iFleet) * m_MSE.EcopathData.PropLanded(iFleet, iGrp)
-                        TotalLandings += m_MSE.EcosimData.ResultsSumCatchByGroupGear(iGrp, iFleet, nTimeSteps) * m_MSE.EcopathData.PropLanded(iFleet, iGrp)
-                        'TotalLandings += m_core.FleetInputs(iFleet).Landings(iGrp)
+                        TotalLandings += m_MSE.EcosimData.ResultsSumCatchByGroupGear(iGrp, iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp)
                     Next
 
                     For iFleet As Integer = 1 To m_core.nFleets
                         If m_core.FleetInputs(iFleet).Landings(iGrp) > 0 Then
-                            Share = m_MSE.EcosimData.ResultsSumCatchByGroupGear(iGrp, iFleet, nTimeSteps) * m_MSE.EcopathData.PropLanded(iFleet, iGrp) / TotalLandings
+                            Share = m_MSE.EcosimData.ResultsSumCatchByGroupGear(iGrp, iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp) / TotalLandings
                             Me.AddQuotaShare(iGrp, iFleet, Share)
                         End If
                     Next
