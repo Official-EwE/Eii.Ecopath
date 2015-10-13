@@ -62,10 +62,6 @@ Namespace DataSources
                     Else
                         Return eDataSourceTypes.Access2003
                     End If
-#If DEBUG Then
-                Case ".mdf"
-                    Return eDataSourceTypes.SQLServer
-#End If
                 Case ".eiixml"
                     Return eDataSourceTypes.EIIXML
 
@@ -87,9 +83,6 @@ Namespace DataSources
                 Case eDataSourceTypes.Access2003 : Return ".ewemdb"
                 Case eDataSourceTypes.EII : Return ".eii"
                 Case eDataSourceTypes.Access2007 : Return ".eweaccdb"
-#If DEBUG Then
-                Case eDataSourceTypes.SQLServer : Return ".mdf"
-#End If
                 Case eDataSourceTypes.EIIXML : Return ".eiixml"
             End Select
             Return ""
@@ -121,17 +114,6 @@ Namespace DataSources
                         comp = db.Compatibility
                         db.Close()
                     End If
-
-#If DEBUG Then
-                Case eDataSourceTypes.SQLServer
-                    ' Is database, whoohoo
-                    Dim db As New cEwESQLServerDatabase()
-                    access = db.Open(strDatabase)
-                    If (access = eDatasourceAccessType.Opened) Then
-                        comp = db.Compatibility
-                        db.Close()
-                    End If
-#End If
 
                 Case eDataSourceTypes.EII, eDataSourceTypes.EIIXML
                     ' Is EII
@@ -192,11 +174,7 @@ Namespace DataSources
                      eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
                     Return New cDBDataSource(New cEwEAccessDatabase())
-#If DEBUG Then
-                Case eDataSourceTypes.SQLServer
-                    ' Create a DB datasource on a MS Access database
-                    Return New cDBDataSource(New cEwESQLServerDatabase())
-#End If
+
                 Case Else
                     '
             End Select
