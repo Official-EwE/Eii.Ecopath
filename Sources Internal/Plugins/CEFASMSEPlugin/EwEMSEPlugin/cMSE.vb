@@ -4387,7 +4387,7 @@ Public Class cMSE
 
     End Sub
 
-    Public Function calcQModifiers(iTime As Integer) As Single(,)
+    Public Function calcQModifiers(it As Integer) As Single(,)
         'F Calcualted from baseline values at t
         Dim FtCalc As Double
 
@@ -4404,7 +4404,6 @@ Public Class cMSE
         'iTime is the first timestep of the forecast
         'We want to use the data from the last timestep of the hindcast
         'so iTime - 1
-        Dim it As Integer = iTime - 1
 
         'Get the density dependant catchability at last time step of the hindcast
         Dim QMultAtT() As Single = Me.CalcDensityDependencyAtT(it)
