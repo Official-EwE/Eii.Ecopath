@@ -2690,10 +2690,6 @@ Namespace Core
         Access2003 = 2
         ''' <summary>Datasource capable of handling ACCDB and MDB formatted data</summary>
         Access2007 = 3
-#If DEBUG Then
-        ''' <summary>Datasource capable of connection to SQL Server-like databases</summary>
-        SQLServer = 4
-#End If
         ''' <summary>Datasource capable of handling EIIXML formatted data</summary>
         EIIXML = 5
     End Enum

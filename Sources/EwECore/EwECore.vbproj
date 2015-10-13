@@ -136,7 +136,6 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerResultWriter.vb" />
     <Compile Include="Contaminant Tracer\Model\cContaminanTracerDataStructures.vb" />
     <Compile Include="Core\cCoreSettings.vb" />
-    <Compile Include="Database\cEwESQLServerDatabase.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_04.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_05.vb" />
@@ -169,6 +168,7 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_15.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_16.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_17.vb" />
+    <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_18.vb" />
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />
