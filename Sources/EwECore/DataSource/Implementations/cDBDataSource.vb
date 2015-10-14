@@ -3343,8 +3343,6 @@ Namespace DataSources
                         drow = writer.NewRow()
                         drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
                         drow("StanzaID") = stanzaDS.StanzaDBID(taxonDS.TaxonTarget(iTaxon))
-                        drow("Proportion") = taxonDS.TaxonProp(iTaxon)
-                        drow("PropCatch") = taxonDS.TaxonPropCatch(iTaxon)
                         writer.AddRow(drow)
                     End If
                 Next iTaxon
