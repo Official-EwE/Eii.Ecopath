@@ -750,7 +750,7 @@ Public Class cSFPManager
             Select Case outputtype
                 Case eResultTypes.Biomass, _
                      eResultTypes.Mortality, _
-                     eResultTypes.Yield
+                     eResultTypes.Catch
                     SaveAggregatedTypeResult(outputtype, iteration, tsMonthly, msg)
             End Select
         Next
@@ -830,7 +830,7 @@ Public Class cSFPManager
                                         data(i, j) = grpOutput.Biomass(j)
                                     Case eResultTypes.Mortality
                                         data(i, j) = grpOutput.TotalMort(j)
-                                    Case eResultTypes.Yield
+                                    Case eResultTypes.Catch
                                         data(i, j) = grpOutput.Yield(j)
                                 End Select
                             Next
