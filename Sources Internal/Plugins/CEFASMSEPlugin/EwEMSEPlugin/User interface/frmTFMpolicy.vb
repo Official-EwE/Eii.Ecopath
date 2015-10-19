@@ -249,7 +249,7 @@ Public Class frmTFMpolicy
     ' Controls
     ' -----------------------------
 
-    Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSave.Click
+    Private Sub OnSave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOK.Click
 
         Try
             Me.m_bStrategiesSaved = Me.m_strategies.Save()
@@ -457,7 +457,7 @@ Public Class frmTFMpolicy
         Me.m_tsbnEditHCR.Enabled = bHasHCR
         Me.m_tsbnDeleteHCR.Enabled = bHasHCR
 
-        Me.m_btnSave.Enabled = Not Me.m_bStrategiesSaved
+        Me.m_btnOK.Enabled = Not Me.m_bStrategiesSaved
 
     End Sub
 
