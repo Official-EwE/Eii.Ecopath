@@ -126,37 +126,37 @@ Public Class gridTargetFishingMortalityPolicy
         If (Me.m_strategy Is Nothing) Then Return
 
         Dim iHCR As Integer
-        Dim Cell As ICell
+        Dim cell As ICell
 
         For Each Rule As HCR_Group In Me.m_strategy
             iHCR = Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
 
-            Cell = New EwECell(Rule.GroupB.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
-            Me(iHCR, eColumnTypes.BioGroupName) = Cell
+            cell = New EwECell(Rule.GroupB.Name, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            Me(iHCR, eColumnTypes.BioGroupName) = cell
 
-            Cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.LowerLimit), GetType(Double))
-            Cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.BLowerLim) = Cell
+            cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.LowerLimit))
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.BLowerLim) = cell
 
-            Cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.UpperLimit), GetType(Double))
-            Cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.BUpperLim) = Cell
+            cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.UpperLimit))
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.BUpperLim) = cell
 
-            Cell = New EwECell(Rule.GroupF.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
-            Me(iHCR, eColumnTypes.FGroupName) = Cell
+            cell = New EwECell(Rule.GroupF.Name, GetType(String), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names)
+            Me(iHCR, eColumnTypes.FGroupName) = cell
 
-            Cell = New EwECell(Rule.MaxF, GetType(Double))
-            Cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.MaxF) = Cell
+            cell = New EwECell(Rule.MaxF)
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.MaxF) = cell
 
-            Cell = New SourceGrid2.Cells.Real.Cell(Rule.TypeOfHCR, Me.m_editorHCR)
-            Cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.CostFunction) = Cell
+            cell = New SourceGrid2.Cells.Real.Cell(Rule.TypeOfHCR, Me.m_editorHCR)
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.CostFunction) = cell
 
-            Cell = New EwECell(Rule.TimeFrameRule.NYears, GetType(Double))
-            Cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.TimeFrameRuleYears) = Cell
+            cell = New EwECell(Rule.TimeFrameRule.NYears)
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.TimeFrameRuleYears) = cell
 
             Me.Rows(iHCR).Tag = Rule
         Next
