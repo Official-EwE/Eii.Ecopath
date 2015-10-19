@@ -131,6 +131,9 @@ Namespace Ecosim
                     ' Draw title
                     ' ===============
                     strTitle = plot.TimeSeries.Name
+                    If (Me.m_cbShowGroupNo.Checked) Then
+                        strTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, plot.TimeSeries.DatPool, strTitle)
+                    End If
                     If Me.m_chkShowWeight.Checked Then
                         strTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
                     End If
@@ -488,7 +491,7 @@ Namespace Ecosim
 
         Private Sub SaveToCSV(ByVal strPath As String)
 
-            Dim strFileName As String = Me.Core.EwEModel.Name
+            Dim strFileName As String = ""
             Dim strTargetPath As String = ""
             Dim ts As cTimeSeries = Nothing
             Dim plot As cShowAllFitsPlotData = Nothing
@@ -509,6 +512,7 @@ Namespace Ecosim
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
 
             For i As Integer = 1 To 3
+                strFileName = Me.Core.EwEModel.Name
                 Select Case i
                     Case 1
                         strFileName &= "_allfit_biomass.csv"
@@ -561,9 +565,9 @@ Namespace Ecosim
                                     End If
                                 Case 3
                                     If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
-                                        sw.Write(cStringUtils.ToCSVField("Predicted Yield " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("Predicted Catch " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("Observed Yield " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("Observed Catch " & ts.Name))
                                         sw.Write(",")
                                     End If
                             End Select
@@ -624,6 +628,7 @@ Namespace Ecosim
                                 sw.WriteLine()
                             End If
                         Next
+                        msg.Hyperlink = strPath
 
                     Catch ex As Exception
                         msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
@@ -745,7 +750,8 @@ Namespace Ecosim
             Handles m_chkShowWeight.CheckedChanged, _
                     m_chkShowYear.CheckedChanged, _
                     m_chkScaleForPrinter.CheckedChanged, _
-                    m_chkShowSS.CheckedChanged
+                    m_chkShowSS.CheckedChanged, _
+                    m_cbShowGroupNo.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
             Me.UpdatePlots()
