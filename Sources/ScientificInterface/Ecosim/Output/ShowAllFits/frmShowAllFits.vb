@@ -298,7 +298,7 @@ Namespace Ecosim
 
                                     Case eTimeSeriesType.Catches, _
                                          eTimeSeriesType.CatchesForcing
-                                        asSimData(iTime) = grpOutput.Yield(iTime)
+                                        asSimData(iTime) = grpOutput.Catch(iTime)
 
                                     Case eTimeSeriesType.TotalMortality
                                         asSimData(iTime) = grpOutput.TotalMort(iTime)

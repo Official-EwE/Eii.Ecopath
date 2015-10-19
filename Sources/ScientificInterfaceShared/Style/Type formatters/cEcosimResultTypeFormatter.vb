@@ -51,7 +51,7 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.PredationMortality : Return My.Resources.HEADER_PREDMORT
                 Case cEcosimResultWriter.eResultTypes.Prey : Return My.Resources.HEADER_PREY_PERCENTAGE
                 Case cEcosimResultWriter.eResultTypes.Value : Return My.Resources.HEADER_VALUE
-                Case cEcosimResultWriter.eResultTypes.Yield : Return My.Resources.HEADER_CATCH
+                Case cEcosimResultWriter.eResultTypes.Catch : Return My.Resources.HEADER_CATCH
                 Case cEcosimResultWriter.eResultTypes.TL : Return fmt.GetDescriptor(eVarNameFlags.TTLX, eDescriptorTypes.Name)
                 Case cEcosimResultWriter.eResultTypes.FIB : Return My.Resources.HEADER_FIB
                 Case cEcosimResultWriter.eResultTypes.KemptonsQ : Return My.Resources.HEADER_KEMPTONSQ
