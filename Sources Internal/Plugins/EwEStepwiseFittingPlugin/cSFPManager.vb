@@ -831,7 +831,7 @@ Public Class cSFPManager
                                     Case eResultTypes.Mortality
                                         data(i, j) = grpOutput.TotalMort(j)
                                     Case eResultTypes.Catch
-                                        data(i, j) = grpOutput.Yield(j)
+                                        data(i, j) = grpOutput.Catch(j)
                                 End Select
                             Next
                         Next
@@ -1112,7 +1112,7 @@ Public Class cSFPManager
             End Try
         End If
 
-        iteration.RunState = DirectCast(cSystemUtils.IIF(bSuccess, ISFPIterations.eRunState.Completed, ISFPIterations.eRunState.Error), ISFPIterations.eRunState)
+        iteration.RunState = cSystemUtils.IIF(bSuccess, ISFPIterations.eRunState.Completed, ISFPIterations.eRunState.Error)
         Return bSuccess
 
     End Function
