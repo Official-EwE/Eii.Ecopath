@@ -43,6 +43,7 @@ Namespace Ecosim
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShowAllFits))
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_chkShowSS = New System.Windows.Forms.CheckBox()
             Me.m_chkShowYear = New System.Windows.Forms.CheckBox()
             Me.m_chkShowWeight = New System.Windows.Forms.CheckBox()
             Me.m_chkShowCatch = New System.Windows.Forms.CheckBox()
@@ -75,7 +76,7 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument()
-            Me.m_chkShowSS = New System.Windows.Forms.CheckBox()
+            Me.m_cbShowGroupNo = New System.Windows.Forms.CheckBox()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -100,6 +101,7 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_scMain.Panel1, "m_scMain.Panel1")
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowSS)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowYear)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_cbShowGroupNo)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowWeight)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowCatch)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowZ)
@@ -123,6 +125,14 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_scMain.Panel2, "m_scMain.Panel2")
             Me.m_scMain.Panel2.Controls.Add(Me.m_pbPlots)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsMain)
+            '
+            'm_chkShowSS
+            '
+            resources.ApplyResources(Me.m_chkShowSS, "m_chkShowSS")
+            Me.m_chkShowSS.Checked = True
+            Me.m_chkShowSS.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowSS.Name = "m_chkShowSS"
+            Me.m_chkShowSS.UseVisualStyleBackColor = True
             '
             'm_chkShowYear
             '
@@ -167,12 +177,14 @@ Namespace Ecosim
             'm_nudMarginTB
             '
             resources.ApplyResources(Me.m_nudMarginTB, "m_nudMarginTB")
+            Me.m_nudMarginTB.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMarginTB.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
             Me.m_nudMarginTB.Name = "m_nudMarginTB"
             '
             'm_nudMarginLR
             '
             resources.ApplyResources(Me.m_nudMarginLR, "m_nudMarginLR")
+            Me.m_nudMarginLR.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMarginLR.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
             Me.m_nudMarginLR.Name = "m_nudMarginLR"
             '
@@ -180,6 +192,7 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_nudDotSize, "m_nudDotSize")
             Me.m_nudDotSize.DecimalPlaces = 2
+            Me.m_nudDotSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudDotSize.Name = "m_nudDotSize"
             Me.m_nudDotSize.Value = New Decimal(New Integer() {3, 0, 0, 0})
             '
@@ -188,6 +201,7 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_nudLineWidth, "m_nudLineWidth")
             Me.m_nudLineWidth.DecimalPlaces = 1
             Me.m_nudLineWidth.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+            Me.m_nudLineWidth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudLineWidth.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
             Me.m_nudLineWidth.Minimum = New Decimal(New Integer() {1, 0, 0, 131072})
             Me.m_nudLineWidth.Name = "m_nudLineWidth"
@@ -196,6 +210,7 @@ Namespace Ecosim
             'm_nudRowNum
             '
             resources.ApplyResources(Me.m_nudRowNum, "m_nudRowNum")
+            Me.m_nudRowNum.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudRowNum.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
             Me.m_nudRowNum.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudRowNum.Name = "m_nudRowNum"
@@ -327,13 +342,11 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
-            'm_chkShowSS
+            'm_cbShowGroupNo
             '
-            resources.ApplyResources(Me.m_chkShowSS, "m_chkShowSS")
-            Me.m_chkShowSS.Checked = True
-            Me.m_chkShowSS.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_chkShowSS.Name = "m_chkShowSS"
-            Me.m_chkShowSS.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbShowGroupNo, "m_cbShowGroupNo")
+            Me.m_cbShowGroupNo.Name = "m_cbShowGroupNo"
+            Me.m_cbShowGroupNo.UseVisualStyleBackColor = True
             '
             'frmShowAllFits
             '
@@ -343,6 +356,7 @@ Namespace Ecosim
             Me.Name = "frmShowAllFits"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
@@ -394,6 +408,7 @@ Namespace Ecosim
         Private WithEvents m_nudDotSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMarginLR As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMarginTB As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_cbShowGroupNo As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

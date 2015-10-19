@@ -122,13 +122,18 @@ Public Class gridTimeSeries
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Name, i + 1) = cell
 
+            selDatType = Nothing
             If TypeOf ts Is cGroupTimeSeries Then
                 collDatTypes = lGroups
-                selDatType = Me.Core.EcoPathGroupInputs(ts.DatPool)
+                If (ts.DatPool >= 1) Then
+                    selDatType = Me.Core.EcoPathGroupInputs(ts.DatPool)
+                End If
                 aTypes = Me.GroupTSTypes
             Else
                 collDatTypes = lFleets
-                selDatType = Me.Core.FleetInputs(ts.DatPool)
+                If (ts.DatPool >= 1) Then
+                    selDatType = Me.Core.FleetInputs(ts.DatPool)
+                End If
                 aTypes = Me.FleetTSTypes
             End If
 
