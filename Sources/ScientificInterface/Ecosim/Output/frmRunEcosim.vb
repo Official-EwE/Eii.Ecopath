@@ -967,7 +967,7 @@ Namespace Ecosim
                 Case eMSEPlotData.Biomass
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
                 Case eMSEPlotData.GroupCatch
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Catch(iTimeStep), src.CatchRel(iTimeStep)))
                 Case eMSEPlotData.Value
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
             End Select

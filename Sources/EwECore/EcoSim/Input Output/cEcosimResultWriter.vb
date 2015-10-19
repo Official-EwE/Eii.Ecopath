@@ -48,7 +48,7 @@ Namespace Ecosim
             Mortality
             FeedingTime
             Prey
-            Yield
+            [Catch]
             Value
             AvgWeightOrProdCons
             TL
@@ -174,7 +174,7 @@ Namespace Ecosim
 
                 Case eResultTypes.Biomass, _
                      eResultTypes.Mortality, _
-                     eResultTypes.Yield, _
+                     eResultTypes.Catch, _
                      eResultTypes.ConsumptionBiomass, _
                      eResultTypes.FeedingTime, _
                      eResultTypes.AvgWeightOrProdCons, _
@@ -190,8 +190,8 @@ Namespace Ecosim
                                     data(i, j) = grpOutput.Biomass(j)
                                 Case eResultTypes.Mortality
                                     data(i, j) = grpOutput.TotalMort(j)
-                                Case eResultTypes.Yield
-                                    data(i, j) = grpOutput.Yield(j)
+                                Case eResultTypes.Catch
+                                    data(i, j) = grpOutput.Catch(j)
                                 Case eResultTypes.ConsumptionBiomass
                                     data(i, j) = grpOutput.ConsumpBiomass(j)
                                 Case eResultTypes.FeedingTime
@@ -336,8 +336,8 @@ Namespace Ecosim
                         strFileName = "Biomass_annual"
                     Case eResultTypes.Mortality
                         strFileName = "Mortality_annual"
-                    Case eResultTypes.Yield
-                        strFileName = "Yield_annual"
+                    Case eResultTypes.Catch
+                        strFileName = "Catch_annual"
                     Case eResultTypes.ConsumptionBiomass
                         strFileName = "Cons_biom_annual"
                     Case eResultTypes.FeedingTime
@@ -367,8 +367,8 @@ Namespace Ecosim
                         strFileName = "Biomass"
                     Case eResultTypes.Mortality
                         strFileName = "Mortality"
-                    Case eResultTypes.Yield
-                        strFileName = "Yield"
+                    Case eResultTypes.Catch
+                        strFileName = "Catch"
                     Case eResultTypes.ConsumptionBiomass
                         strFileName = "Cons_biom"
                     Case eResultTypes.FeedingTime
@@ -418,28 +418,31 @@ Namespace Ecosim
                         sw.WriteLine()
                     End If
 
-                    sw.WriteLine(strGroupNames)
                     If bSaveYearly Then
                         Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
                         Dim nGroups As Integer = data.GetLength(0) - 1
                         Dim sum(nGroups) As Single
+                        sw.WriteLine("Year," & strGroupNames)
                         For j As Integer = 1 To simYears
+                            sw.Write(Me.m_core.EcosimFirstYear - 1 + j)
                             For i As Integer = 1 To nGroups
                                 For k As Integer = 1 To cCore.N_MONTHS
                                     If (k = 1) Then sum(i) = 0
                                     sum(i) += data(i, (j - 1) * cCore.N_MONTHS + k)
                                 Next
-                                If i > 1 Then sw.Write(", ")
+                                sw.Write(", ")
                                 sw.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
                             Next
                             sw.WriteLine()
                         Next
                     Else
+                        sw.WriteLine("TimeStep," & strGroupNames)
                         'Each time steps
                         For j As Integer = 1 To data.GetLength(1) - 1
+                            sw.Write(j)
                             'For every group
                             For i As Integer = 1 To data.GetLength(0) - 1
-                                If i > 1 Then sw.Write(", ")
+                                sw.Write(", ")
                                 sw.Write(cStringUtils.FormatSingle(data(i, j)))
                             Next
                             sw.WriteLine()

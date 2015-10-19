@@ -151,7 +151,6 @@ Namespace Ecosim
 
             Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
-            Me.ConfigureShowHidePlots()
 
             Me.m_zgh = New cZedGraphHelper()
             Me.ConfigurePlots(True)
@@ -220,7 +219,7 @@ Namespace Ecosim
                             Case ePlot.Biomass
                                 aResults.Add(cEcosimResultWriter.eResultTypes.Biomass)
                             Case ePlot.Catch
-                                aResults.Add(cEcosimResultWriter.eResultTypes.Yield)
+                                aResults.Add(cEcosimResultWriter.eResultTypes.Catch)
                             Case ePlot.ConsumptionBiomass
                                 aResults.Add(cEcosimResultWriter.eResultTypes.ConsumptionBiomass)
                             Case ePlot.FeedingTime
@@ -245,7 +244,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnShowHidePlots(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsDDShowHidePlots.ButtonClick
+            Handles m_btnChoosePlots.Click
 
             Dim dlg As New dlgSelectItems(GetType(ePlot), New cSimPlotFormatter())
 
@@ -267,35 +266,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnShowHidePlot(ByVal sender As Object, ByVal args As EventArgs)
-
-            If Not TypeOf sender Is ToolStripMenuItem Then Return
-
-            Dim item As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
-            Dim plot As ePlot = CType(item.Tag, ePlot)
-
-            Me.m_abPlotVisible(plot) = Not Me.m_abPlotVisible(plot)
-
-            Me.ShowHidePlots()
-
-        End Sub
-
-        Private Sub OnShowAll(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsmiAll.Click
-            For i As Integer = 0 To Me.m_abPlotVisible.Count - 1
-                Me.m_abPlotVisible(i) = True
-            Next
-            Me.ShowHidePlots()
-        End Sub
-
-        Private Sub ShowHidePlots()
-
-            Me.m_graph.Visible = False
-            Me.ConfigurePlots(True)
-            Me.AddCurves()
-            Me.m_graph.Visible = True
-
-        End Sub
 #End Region ' Event handlers
 
 #Region " Helper methods "
@@ -319,16 +289,6 @@ Namespace Ecosim
             End Set
         End Property
 
-        Private Sub ConfigureShowHidePlots()
-            For Each plot As ePlot In [Enum].GetValues(GetType(ePlot))
-                Dim item As New ToolStripMenuItem(Me.GetPlotTitle(plot), Nothing, AddressOf OnShowHidePlot)
-                Me.m_tsDDShowHidePlots.DropDownItems.Add(item)
-                item.Tag = plot
-                item.Checked = Me.m_abPlotVisible(plot)
-                Me.m_tsDDShowHidePlots.DropDownItems.Add(item)
-            Next
-        End Sub
-
         Protected Sub ConfigurePlots(Optional ByVal bFormOpen As Boolean = True)
 
             Dim iPane As Integer = 1
@@ -343,19 +303,6 @@ Namespace Ecosim
                     Me.m_aiPlotPane(plot) = cCore.NULL_VALUE
                 End If
             Next plot
-
-            Try
-                For Each item As ToolStripItem In Me.m_tsDDShowHidePlots.DropDownItems
-                    If (item.Tag IsNot Nothing) And (TypeOf item Is ToolStripMenuItem) Then
-                        Dim plot As ePlot = DirectCast(item.Tag, ePlot)
-                        DirectCast(item, ToolStripMenuItem).Checked = Me.m_abPlotVisible(plot)
-                    End If
-                Next
-            Catch ex As Exception
-
-            End Try
-
-            Me.m_tsmiAll.Checked = (iPane = Me.m_abPlotVisible.Count)
 
             If Me.m_zgh.IsAttached Then
                 Me.m_zgh.Detach()
@@ -463,7 +410,7 @@ Namespace Ecosim
                 pplB.Add(dXValue, groupSimOut.Biomass(i))
                 pplConsB.Add(dXValue, groupSimOut.ConsumpBiomass(i))
                 pplFeedTime.Add(dXValue, groupSimOut.FeedingTime(i))
-                pplYield.Add(dXValue, groupSimOut.Yield(i))
+                pplYield.Add(dXValue, groupSimOut.Catch(i))
                 pplMortTotal.Add(dXValue, groupSimOut.TotalMort(i))
                 pplMortPredation.Add(dXValue, groupSimOut.PredMort(i))
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))

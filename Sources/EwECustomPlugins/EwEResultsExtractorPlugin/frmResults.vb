@@ -1354,13 +1354,13 @@ Public Class frmResults
                 For nYear As Integer = 1 To Core.nEcosimYears
                     CumulCatch = 0
                     For nMonth = 1 To cCore.N_MONTHS
-                        CumulCatch += Core.EcoSimGroupOutputs(EwEIndex).Yield((nYear - 1) * cCore.N_MONTHS + nMonth)
+                        CumulCatch += Core.EcoSimGroupOutputs(EwEIndex).Catch((nYear - 1) * cCore.N_MONTHS + nMonth)
                     Next
                     ACatch(ParentIndex, nYear) = CumulCatch / cCore.N_MONTHS
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
-                    ACatch(ParentIndex, TimeStep) = Core.EcoSimGroupOutputs(EwEIndex).Yield(TimeStep)
+                    ACatch(ParentIndex, TimeStep) = Core.EcoSimGroupOutputs(EwEIndex).Catch(TimeStep)
                 Next
             End If
 

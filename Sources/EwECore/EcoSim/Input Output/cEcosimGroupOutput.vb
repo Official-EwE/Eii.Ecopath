@@ -302,29 +302,39 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    <Obsolete("Use Catch(i) instead")> _
+    Public ReadOnly Property Yield(ByVal iTime As Integer) As Single
+        Get
+            Return Me.Catch(iTime)
+        End Get
+    End Property
+
+    <Obsolete("Use CatchRel(i) instead")> _
+    Public ReadOnly Property YieldRel(ByVal iTime As Integer) As Single
+        Get
+            Return Me.CatchRel(iTime)
+        End Get
+    End Property
+
     ''' <summary>
     ''' Get the total catch on this group at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     ''' <remarks>Sum of catch across all fleets for this group</remarks>
-    Public ReadOnly Property Yield(ByVal iTime As Integer) As Single
-
+    Public ReadOnly Property [Catch](ByVal iTime As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimYield, iTime))
         End Get
-
     End Property
 
     ''' <summary>
     ''' Get the total catch relative to the Ecopath inputs catch on this group at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
-    Public ReadOnly Property YieldRel(ByVal iTime As Integer) As Single
-
+    Public ReadOnly Property CatchRel(ByVal iTime As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimYieldRel, iTime))
         End Get
-
     End Property
 
     ''' <summary>
@@ -333,11 +343,9 @@ Public Class cEcosimGroupOutput
     ''' <param name="iFleetIndex">Fleet index</param>
     ''' <param name="iTime">Time index</param>
     Public ReadOnly Property CatchByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimCatchGroupGear, iFleetIndex, iTime))
         End Get
-
     End Property
 
     ''' <summary>
@@ -358,11 +366,9 @@ Public Class cEcosimGroupOutput
     ''' </summary>
     ''' <param name="iTime"></param>
     Public ReadOnly Property ConsumpBiomass(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimConsumpBiomass, iTime))
         End Get
-
     End Property
 
     ''' <summary>
@@ -370,11 +376,9 @@ Public Class cEcosimGroupOutput
     ''' </summary>
     ''' <param name="iTime"></param>
     Public ReadOnly Property FeedingTime(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimFeedingTime, iTime))
         End Get
-
     End Property
 
     ''' <summary>
@@ -382,22 +386,18 @@ Public Class cEcosimGroupOutput
     ''' </summary>
     ''' <param name="iTime"></param>
     Public ReadOnly Property PredMort(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimPredMort, iTime))
         End Get
-
     End Property
 
     ''' <summary>
     ''' Get the Predation mortality + fishing mortality at a given time step.
     ''' </summary>
     Public ReadOnly Property FishMort(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimFishMort, iTime))
         End Get
-
     End Property
 
     ''' <summary>
@@ -406,102 +406,78 @@ Public Class cEcosimGroupOutput
     ''' <param name="iTime">Time index</param>
     ''' <remarks>Fishing mort + Predation mort + Natural mort</remarks>
     Public ReadOnly Property TotalMort(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimTotalMort, iTime))
         End Get
-
     End Property
 
     ''' <summary>
     ''' Production / Consumption (Ecopath GE) at a given time step.
     ''' </summary>
     Public ReadOnly Property ProdConsump(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimProdConsump, iTime))
         End Get
-
     End Property
 
     Public ReadOnly Property AvgWeight(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgWeight, iTime))
         End Get
-
     End Property
-
 
     ''' <summary>
     '''  Predation / total loss rate  [Eatenof(i) / (loss(i) / B(i))]
     ''' </summary>
     Public ReadOnly Property MortVPred(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimMortVPred, iTime))
         End Get
-
     End Property
 
     ''' <summary>
     ''' Catch / total loss rate [B(i) * F(i) / (loss(i) / b(i))
     ''' </summary>
     Public ReadOnly Property MortVFishing(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimMortVFishing, iTime))
         End Get
-
     End Property
 
     Public ReadOnly Property EcoSystemStruct(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimEcoSystemStruct, iTime))
         End Get
-
     End Property
 
     Public ReadOnly Property AvgPredConsumption(ByVal iGroup As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgPred, iGroup))
         End Get
-
     End Property
 
     Public ReadOnly Property AvgPreyConsumption(ByVal igroup As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimAvgPrey, igroup))
         End Get
-
     End Property
 
     Public ReadOnly Property Value(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimValueGroup, iTime))
         End Get
-
     End Property
 
-
     Public ReadOnly Property ValueRel(ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimValueGroupRel, iTime))
         End Get
-
     End Property
 
     Public ReadOnly Property ValueByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EcosimValueGroupFleet, iFleetIndex, iTime))
         End Get
-
     End Property
 
 #End Region

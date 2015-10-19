@@ -41,6 +41,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimOutputPlots))
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
@@ -50,9 +51,6 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripSplitButton()
-            Me.m_tsmiAll = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_plGroups = New System.Windows.Forms.Panel()
             Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plFleets = New System.Windows.Forms.Panel()
@@ -63,6 +61,7 @@ Namespace Ecosim
             Me.m_plPrey = New System.Windows.Forms.Panel()
             Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbSaveVisibleOnly = New System.Windows.Forms.CheckBox()
+            Me.m_btnChoosePlots = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -95,7 +94,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
-            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
             Me.m_lbGroups.IsAllGroupsItemSelected = False
             Me.m_lbGroups.Name = "m_lbGroups"
@@ -103,7 +101,6 @@ Namespace Ecosim
             Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.ShowAllGroupsItem = False
             Me.m_lbGroups.SortThreshold = -9999.0!
-            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
             '
             'm_btnSaveData
             '
@@ -119,8 +116,6 @@ Namespace Ecosim
             Me.m_lbPredators.BackColor = System.Drawing.SystemColors.Window
             Me.m_lbPredators.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbPredators.FormattingEnabled = True
-            Me.m_lbPredators.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
-            Me.m_lbPredators.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
             Me.m_lbPredators.IsAllGroupsItemSelected = False
             Me.m_lbPredators.Name = "m_lbPredators"
             Me.m_lbPredators.SelectedGroup = Nothing
@@ -137,8 +132,6 @@ Namespace Ecosim
             Me.m_lbPrey.BackColor = System.Drawing.SystemColors.Window
             Me.m_lbPrey.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbPrey.FormattingEnabled = True
-            Me.m_lbPrey.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
-            Me.m_lbPrey.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
             Me.m_lbPrey.IsAllGroupsItemSelected = False
             Me.m_lbPrey.Name = "m_lbPrey"
             Me.m_lbPrey.SelectedGroup = Nothing
@@ -150,7 +143,6 @@ Namespace Ecosim
             'm_scMain
             '
             resources.ApplyResources(Me.m_scMain, "m_scMain")
-            Me.m_scMain.MinimumSize = New System.Drawing.Size(400, 400)
             Me.m_scMain.Name = "m_scMain"
             '
             'm_scMain.Panel1
@@ -177,27 +169,9 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsDDShowHidePlots})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnChoosePlots})
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsDDShowHidePlots
-            '
-            Me.m_tsDDShowHidePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsDDShowHidePlots.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAll, Me.m_sep1})
-            resources.ApplyResources(Me.m_tsDDShowHidePlots, "m_tsDDShowHidePlots")
-            Me.m_tsDDShowHidePlots.Name = "m_tsDDShowHidePlots"
-            Me.m_tsDDShowHidePlots.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-            '
-            'm_tsmiAll
-            '
-            Me.m_tsmiAll.Name = "m_tsmiAll"
-            resources.ApplyResources(Me.m_tsmiAll, "m_tsmiAll")
-            '
-            'm_sep1
-            '
-            Me.m_sep1.Name = "m_sep1"
-            resources.ApplyResources(Me.m_sep1, "m_sep1")
             '
             'm_plGroups
             '
@@ -277,13 +251,21 @@ Namespace Ecosim
             Me.m_cbSaveVisibleOnly.Name = "m_cbSaveVisibleOnly"
             Me.m_cbSaveVisibleOnly.UseVisualStyleBackColor = True
             '
-            'EcosimOutputPlots
+            'm_btnChoosePlots
+            '
+            Me.m_btnChoosePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_btnChoosePlots, "m_btnChoosePlots")
+            Me.m_btnChoosePlots.Name = "m_btnChoosePlots"
+            Me.m_btnChoosePlots.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            '
+            'frmEcosimOutputPlots
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
-            Me.Name = "EcosimOutputPlots"
+            Me.Name = "frmEcosimOutputPlots"
             Me.ShowIcon = False
+            Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
@@ -316,10 +298,8 @@ Namespace Ecosim
         Private WithEvents m_lbFleets As cFleetListBox
         Private WithEvents m_hdrFleets As cEwEHeaderLabel
         Private WithEvents m_tsMain As cEwEToolstrip
-        Private WithEvents m_tsDDShowHidePlots As System.Windows.Forms.ToolStripSplitButton
         Private WithEvents m_cbSaveVisibleOnly As System.Windows.Forms.CheckBox
-        Private WithEvents m_tsmiAll As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_btnChoosePlots As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace
