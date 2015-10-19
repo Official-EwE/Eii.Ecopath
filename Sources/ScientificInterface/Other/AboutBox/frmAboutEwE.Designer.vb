@@ -44,12 +44,8 @@ Namespace Other
             Me.m_tlpGeneral = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbFish0 = New System.Windows.Forms.PictureBox()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_lbTitle = New System.Windows.Forms.Label()
             Me.m_rtbDisclaimer = New System.Windows.Forms.RichTextBox()
-            Me.m_lbVersion = New System.Windows.Forms.Label()
-            Me.m_lbCopyright = New System.Windows.Forms.Label()
             Me.m_rtbDistribution = New System.Windows.Forms.RichTextBox()
-            Me.m_lbLicense = New System.Windows.Forms.Label()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpGeneral = New System.Windows.Forms.TabPage()
             Me.m_tpLicense = New System.Windows.Forms.TabPage()
@@ -62,13 +58,17 @@ Namespace Other
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblOSVersion = New System.Windows.Forms.Label()
             Me.m_lblNetVersion = New System.Windows.Forms.Label()
-            Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_tsTechnical = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnShowEwEAssembliesOnly = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
             Me.m_tpDatabase = New System.Windows.Forms.TabPage()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
+            Me.m_lbVersion = New System.Windows.Forms.TextBox()
+            Me.m_lbLicense = New System.Windows.Forms.TextBox()
+            Me.m_lbTitle = New System.Windows.Forms.TextBox()
+            Me.m_lbCopyright = New System.Windows.Forms.TextBox()
+            Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -109,18 +109,13 @@ Namespace Other
             'm_tlpDetails
             '
             resources.ApplyResources(Me.m_tlpDetails, "m_tlpDetails")
-            Me.m_tlpDetails.Controls.Add(Me.m_lbTitle, 0, 0)
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 5)
-            Me.m_tlpDetails.Controls.Add(Me.m_lbVersion, 0, 1)
             Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 3)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 5)
             Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 7)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbVersion, 0, 1)
             Me.m_tlpDetails.Controls.Add(Me.m_lbLicense, 0, 2)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbTitle, 0, 0)
             Me.m_tlpDetails.Name = "m_tlpDetails"
-            '
-            'm_lbTitle
-            '
-            resources.ApplyResources(Me.m_lbTitle, "m_lbTitle")
-            Me.m_lbTitle.Name = "m_lbTitle"
             '
             'm_rtbDisclaimer
             '
@@ -129,27 +124,12 @@ Namespace Other
             resources.ApplyResources(Me.m_rtbDisclaimer, "m_rtbDisclaimer")
             Me.m_rtbDisclaimer.Name = "m_rtbDisclaimer"
             '
-            'm_lbVersion
-            '
-            resources.ApplyResources(Me.m_lbVersion, "m_lbVersion")
-            Me.m_lbVersion.Name = "m_lbVersion"
-            '
-            'm_lbCopyright
-            '
-            resources.ApplyResources(Me.m_lbCopyright, "m_lbCopyright")
-            Me.m_lbCopyright.Name = "m_lbCopyright"
-            '
             'm_rtbDistribution
             '
             Me.m_rtbDistribution.BackColor = System.Drawing.SystemColors.Control
             Me.m_rtbDistribution.BorderStyle = System.Windows.Forms.BorderStyle.None
             resources.ApplyResources(Me.m_rtbDistribution, "m_rtbDistribution")
             Me.m_rtbDistribution.Name = "m_rtbDistribution"
-            '
-            'm_lbLicense
-            '
-            resources.ApplyResources(Me.m_lbLicense, "m_lbLicense")
-            Me.m_lbLicense.Name = "m_lbLicense"
             '
             'm_tcMain
             '
@@ -242,38 +222,6 @@ Namespace Other
             resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
             Me.m_lblNetVersion.Name = "m_lblNetVersion"
             '
-            'm_gridTechnical
-            '
-            Me.m_gridTechnical.AllowBlockSelect = False
-            resources.ApplyResources(Me.m_gridTechnical, "m_gridTechnical")
-            Me.m_gridTechnical.AutoSizeMinHeight = 10
-            Me.m_gridTechnical.AutoSizeMinWidth = 10
-            Me.m_gridTechnical.AutoStretchColumnsToFitWidth = False
-            Me.m_gridTechnical.AutoStretchRowsToFitHeight = False
-            Me.m_gridTechnical.BackColor = System.Drawing.Color.White
-            Me.m_gridTechnical.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridTechnical.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridTechnical.CustomSort = False
-            Me.m_gridTechnical.DataName = "EwE components"
-            Me.m_gridTechnical.FixedColumnWidths = False
-            Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridTechnical.GridToolTipActive = True
-            Me.m_gridTechnical.IsLayoutSuspended = False
-            Me.m_gridTechnical.Name = "m_gridTechnical"
-            Me.m_gridTechnical.ShowEwEComponentsOnly = True
-            Me.m_gridTechnical.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridTechnical.UIContext = Nothing
-            '
             'm_tsTechnical
             '
             Me.m_tsTechnical.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -312,6 +260,66 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_lblDatabase, "m_lblDatabase")
             Me.m_lblDatabase.Name = "m_lblDatabase"
+            '
+            'm_lbVersion
+            '
+            Me.m_lbVersion.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbVersion, "m_lbVersion")
+            Me.m_lbVersion.Name = "m_lbVersion"
+            Me.m_lbVersion.ReadOnly = True
+            '
+            'm_lbLicense
+            '
+            Me.m_lbLicense.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbLicense, "m_lbLicense")
+            Me.m_lbLicense.Name = "m_lbLicense"
+            Me.m_lbLicense.ReadOnly = True
+            '
+            'm_lbTitle
+            '
+            Me.m_lbTitle.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbTitle, "m_lbTitle")
+            Me.m_lbTitle.Name = "m_lbTitle"
+            Me.m_lbTitle.ReadOnly = True
+            '
+            'm_lbCopyright
+            '
+            Me.m_lbCopyright.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbCopyright, "m_lbCopyright")
+            Me.m_lbCopyright.Name = "m_lbCopyright"
+            Me.m_lbCopyright.ReadOnly = True
+            '
+            'm_gridTechnical
+            '
+            Me.m_gridTechnical.AllowBlockSelect = False
+            resources.ApplyResources(Me.m_gridTechnical, "m_gridTechnical")
+            Me.m_gridTechnical.AutoSizeMinHeight = 10
+            Me.m_gridTechnical.AutoSizeMinWidth = 10
+            Me.m_gridTechnical.AutoStretchColumnsToFitWidth = False
+            Me.m_gridTechnical.AutoStretchRowsToFitHeight = False
+            Me.m_gridTechnical.BackColor = System.Drawing.Color.White
+            Me.m_gridTechnical.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridTechnical.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridTechnical.CustomSort = False
+            Me.m_gridTechnical.DataName = "EwE components"
+            Me.m_gridTechnical.FixedColumnWidths = False
+            Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridTechnical.GridToolTipActive = True
+            Me.m_gridTechnical.IsLayoutSuspended = False
+            Me.m_gridTechnical.Name = "m_gridTechnical"
+            Me.m_gridTechnical.ShowEwEComponentsOnly = True
+            Me.m_gridTechnical.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridTechnical.UIContext = Nothing
             '
             'm_gridDatabase
             '
@@ -383,9 +391,6 @@ Namespace Other
         Private WithEvents m_rtbAcknowledgements As System.Windows.Forms.RichTextBox
         Private WithEvents m_pbFish0 As System.Windows.Forms.PictureBox
         Private WithEvents m_rtbDistribution As System.Windows.Forms.RichTextBox
-        Private WithEvents m_lbTitle As System.Windows.Forms.Label
-        Private WithEvents m_lbVersion As System.Windows.Forms.Label
-        Private WithEvents m_lbCopyright As System.Windows.Forms.Label
         Private WithEvents m_tcMain As System.Windows.Forms.TabControl
         Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tlpTechnicalDetails As System.Windows.Forms.TableLayoutPanel
@@ -403,12 +408,15 @@ Namespace Other
         Private WithEvents m_tpLicense As System.Windows.Forms.TabPage
         Private WithEvents m_rtbLicense As System.Windows.Forms.RichTextBox
         Private WithEvents m_rtbDisclaimer As System.Windows.Forms.RichTextBox
-        Private WithEvents m_lbLicense As System.Windows.Forms.Label
         Private WithEvents m_lblOSVersion As System.Windows.Forms.Label
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_tsTechnical As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tsbnShowEwEAssembliesOnly As System.Windows.Forms.ToolStripButton
         Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+        Private WithEvents m_lbCopyright As System.Windows.Forms.TextBox
+        Private WithEvents m_lbVersion As System.Windows.Forms.TextBox
+        Private WithEvents m_lbLicense As System.Windows.Forms.TextBox
+        Private WithEvents m_lbTitle As System.Windows.Forms.TextBox
 
     End Class
 End Namespace
