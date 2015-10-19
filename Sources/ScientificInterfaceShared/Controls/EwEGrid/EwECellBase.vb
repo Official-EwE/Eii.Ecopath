@@ -71,11 +71,11 @@ Namespace Controls.EwEGrid
                     ' Allowed to advance?
                     If bAdvance Then
                         ' #Yes: advance to next editable row
-                        Dim bFound As Boolean = False
+                        Dim grid As GridVirtual = e.Grid
                         Dim iRow As Integer = e.Position.Row
                         Dim p As Position = Nothing
-                        Dim grid As GridVirtual = e.Grid
                         Dim cell As ICellVirtual = Nothing
+                        Dim bFound As Boolean = (grid.RowsCount <= grid.FixedRows)
 
                         While Not bFound
                             ' Next
