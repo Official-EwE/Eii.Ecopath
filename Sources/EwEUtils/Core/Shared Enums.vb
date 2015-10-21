@@ -1909,7 +1909,7 @@ Namespace Core
 
         ''' <summary>To document</summary>
         AssumeSquareCells
-        ''' <summary>Proj4 string of the Ecospace projection</summary>
+        ''' <summary>WKT (ESRI) string describing the Ecospace projection</summary>
         ProjectionString
 
         Z
