@@ -97,16 +97,7 @@ Public Class cIndicatorSettings
 
         Dim aunitCatch() As cStyleGuide.eUnitType = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
 
-        ' 6 trophic-based indicators
-        grp = Me.AddGroup(My.Resources.GROUP_TROPHIC, My.Resources.GROUP_TROPHIC_DESC)
-        grp.Add("TLC", My.Resources.IND_TLC, My.Resources.IND_TLC_DESC, My.Resources.IND_VALUE_TL)
-        grp.Add("MTI", My.Resources.IND_MTI, String.Format(My.Resources.IND_MTIX_DESC, 3.25), My.Resources.IND_VALUE_TL)
-        grp.Add("TLco", My.Resources.IND_TLCo, My.Resources.IND_TLCo_DESC, My.Resources.IND_VALUE_TL)
-        grp.Add("TLco2", String.Format(My.Resources.IND_TLCoX, 2), String.Format(My.Resources.IND_TLCoX_DESC, 2), My.Resources.IND_VALUE_TL)
-        grp.Add("TLco325", String.Format(My.Resources.IND_TLCoX, 3.25), String.Format(My.Resources.IND_TLCoX_DESC, 3.25), My.Resources.IND_VALUE_TL)
-        grp.Add("TLco4", String.Format(My.Resources.IND_TLCoX, 4), String.Format(My.Resources.IND_TLCoX_DESC, 4), My.Resources.IND_VALUE_TL)
-
-        '10 biomass-based indicators
+        ' 1 biomass-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_BIOMASS, My.Resources.GROUP_BIOMASS_DESC)
         grp.Add("TotalB", My.Resources.IND_TOTALB, My.Resources.IND_TOTALB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("CommercialB", My.Resources.IND_COMMB, My.Resources.IND_COMMB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
@@ -119,7 +110,7 @@ Public Class cIndicatorSettings
         grp.Add("PredB", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC, My.Resources.IND_VALUE)
 
-        '9 catch-based indicators
+        ' 2 catch-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_CATCH, My.Resources.GROUP_CATCH_DESC)
         grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
         grp.Add("FishC", My.Resources.IND_FISHC, My.Resources.IND_FISHC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
@@ -131,7 +122,16 @@ Public Class cIndicatorSettings
         grp.Add("sC4", My.Resources.IND_PREDC, My.Resources.IND_PREDC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
         grp.Add("DT", My.Resources.IND_DIS, My.Resources.IND_DIS_DESC, My.Resources.IND_VALUE_DISCARDS, aunitCatch)
 
-        '7 species-based indicators
+        ' 3 trophic-based indicators
+        grp = Me.AddGroup(My.Resources.GROUP_TROPHIC, My.Resources.GROUP_TROPHIC_DESC)
+        grp.Add("TLC", My.Resources.IND_TLC, My.Resources.IND_TLC_DESC, My.Resources.IND_VALUE_TL)
+        grp.Add("MTI", My.Resources.IND_MTI, String.Format(My.Resources.IND_MTIX_DESC, 3.25), My.Resources.IND_VALUE_TL)
+        grp.Add("TLco", My.Resources.IND_TLCo, My.Resources.IND_TLCo_DESC, My.Resources.IND_VALUE_TL)
+        grp.Add("TLco2", String.Format(My.Resources.IND_TLCoX, 2), String.Format(My.Resources.IND_TLCoX_DESC, 2), My.Resources.IND_VALUE_TL)
+        grp.Add("TLco325", String.Format(My.Resources.IND_TLCoX, 3.25), String.Format(My.Resources.IND_TLCoX_DESC, 3.25), My.Resources.IND_VALUE_TL)
+        grp.Add("TLco4", String.Format(My.Resources.IND_TLCoX, 4), String.Format(My.Resources.IND_TLCoX_DESC, 4), My.Resources.IND_VALUE_TL)
+
+        ' 4 species-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_SPECIES, My.Resources.GROUP_SPECIES_DESC)
         grp.Add("IVIC", My.Resources.IND_IVIC, My.Resources.IND_IVIC_DESC, My.Resources.IND_VALUE_INTR_VUL_INDEX)
         grp.Add("EndemicB", My.Resources.IND_ENDB, My.Resources.IND_ENDB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
@@ -141,7 +141,7 @@ Public Class cIndicatorSettings
         grp.Add("MSRB", My.Resources.IND_MSRB, My.Resources.IND_MSRB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("MSRC", My.Resources.IND_MSRC, My.Resources.IND_MSRC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
 
-        ' 6 size-based indicators
+        ' 5 size-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_SIZE, My.Resources.GROUP_SIZE_DESC)
         grp.Add("MLengthB", My.Resources.IND_MLB, My.Resources.IND_MLB_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
         grp.Add("MLengthC", My.Resources.IND_MLC, My.Resources.IND_MLC_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
@@ -150,7 +150,7 @@ Public Class cIndicatorSettings
         grp.Add("MLifeSpanB", My.Resources.IND_MLSC, My.Resources.IND_MLSC_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
         grp.Add("MLifeSpanC", My.Resources.IND_MLSB, My.Resources.IND_MLSB_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
 
-        ' 7 MSFD
+        ' 6 MSFD
         grp = Me.AddGroup(My.Resources.GROUP_MSDF, My.Resources.GROUP_MSDF_DESC)
         grp.Add("TotalB", My.Resources.IND_TOTALB, My.Resources.IND_TOTALB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
