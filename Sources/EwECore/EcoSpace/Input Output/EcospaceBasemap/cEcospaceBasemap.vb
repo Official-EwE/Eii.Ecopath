@@ -406,7 +406,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="cEcospaceDataStructures.CellLength">CellLength</see>
-    ''' value for this scenario in km
+    ''' value for this scenario in kilometers.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property CellLength() As Single
@@ -424,8 +424,14 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="cEcospaceDataStructures.CellLength">CellLength</see>
-    ''' value for this scenario in decimal degrees
+    ''' value for this scenario in map units. The value returned here depends 
+    ''' on the setting of the <see cref="AssumeSquareCells"/> flag. If set to false,
+    ''' Ecospace returns the cell size in decimal degrees. If set to true, Ecospace 
+    ''' returns the cell size in meters.
     ''' </summary>
+    ''' <remarks>
+    ''' This conversion should be explicitly driven by map projections, of course...
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property CellSize() As Single
 
@@ -921,11 +927,11 @@ Public Class cEcospaceBasemap
 #Region " Cell position calculations "
 
     Public Function ToCellSize(ByVal sCellLength As Single, ByVal bAssumeSquareCells As Boolean) As Single
-        Return Me.m_core.m_EcoSpaceData.ToCellSize(sCellLength, bAssumeSquareCells)
+        Return cEcospaceDataStructures.ToCellSize(sCellLength, bAssumeSquareCells)
     End Function
 
     Public Function ToCellLength(ByVal sCellSize As Single, ByVal bAssumeSquareCells As Boolean) As Single
-        Return Me.m_core.m_EcoSpaceData.ToCellLength(sCellSize, bAssumeSquareCells)
+        Return cEcospaceDataStructures.ToCellLength(sCellSize, bAssumeSquareCells)
     End Function
 
     ''' -----------------------------------------------------------------------

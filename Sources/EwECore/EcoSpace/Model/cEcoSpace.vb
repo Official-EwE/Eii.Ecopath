@@ -6698,7 +6698,7 @@ exitline:
         Next iFleet
 
         'Cell size in degress at the equator
-        Dim CellSize As Single = m_Data.ToCellSize(Me.m_Data.CellLength, Me.m_Data.AssumeSquareCells)
+        Dim CellSize As Single = cEcospaceDataStructures.ToCellSize(Me.m_Data.CellLength, Me.m_Data.AssumeSquareCells)
 
         For iPort = 1 To Ports      'go port by port
             iColPortX = PortX(iPort)
