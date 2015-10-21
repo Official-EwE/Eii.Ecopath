@@ -310,10 +310,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxSearchTerm.Location" type="System.Drawing.Point, System.Drawing">
-    <value>119, 51</value>
+    <value>98, 51</value>
   </data>
   <data name="m_tbxSearchTerm.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 20</value>
+    <value>276, 20</value>
   </data>
   <data name="m_tbxSearchTerm.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -343,10 +343,10 @@
     <value>Sea Life Base</value>
   </data>
   <data name="m_cmbEngine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>119, 24</value>
+    <value>98, 24</value>
   </data>
   <data name="m_cmbEngine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>536, 21</value>
+    <value>557, 21</value>
   </data>
   <data name="m_cmbEngine.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -454,7 +454,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTraits, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -487,7 +487,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -556,7 +556,7 @@
     <value>m_hdrProps</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -598,7 +598,7 @@
     <value>m_hdrSearch</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -607,7 +607,7 @@
     <value>0</value>
   </data>
   <data name="m_pbSearching.Location" type="System.Drawing.Point, System.Drawing">
-    <value>97, 53</value>
+    <value>76, 52</value>
   </data>
   <data name="m_pbSearching.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -727,7 +727,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -745,13 +745,13 @@
     <value>3, 27</value>
   </data>
   <data name="m_lblEngine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 13</value>
+    <value>79, 13</value>
   </data>
   <data name="m_lblEngine.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="m_lblEngine.Text" xml:space="preserve">
-    <value>&amp;Taxon search engine:</value>
+    <value>&amp;Search engine:</value>
   </data>
   <data name="&gt;&gt;m_lblEngine.Name" xml:space="preserve">
     <value>m_lblEngine</value>
@@ -847,10 +847,10 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Define group taxonomy</value>
+    <value>Define group traits</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgDefineTaxa</value>
+    <value>dlgDefineTraits</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

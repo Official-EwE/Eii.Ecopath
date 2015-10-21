@@ -122,7 +122,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcopathDefineMultiStanza = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcopathDefineFleets = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcopathDefinePedigree = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcopathDefineTaxa = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcopathDefineTraits = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuEcosim = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcosimLoad = New System.Windows.Forms.ToolStripMenuItem()
@@ -574,7 +574,7 @@ Partial Public Class frmEwE6
         '
         'MenuEcopath
         '
-        Me.MenuEcopath.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcopathDefineGroups, Me.m_tsmiEcopathDefineMultiStanza, Me.m_tsmiEcopathDefineFleets, Me.m_tsmiEcopathDefinePedigree, Me.m_tsmiEcopathDefineTaxa})
+        Me.MenuEcopath.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcopathDefineGroups, Me.m_tsmiEcopathDefineMultiStanza, Me.m_tsmiEcopathDefineFleets, Me.m_tsmiEcopathDefinePedigree, Me.m_tsmiEcopathDefineTraits})
         Me.MenuEcopath.Name = "MenuEcopath"
         resources.ApplyResources(Me.MenuEcopath, "MenuEcopath")
         '
@@ -598,10 +598,10 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcopathDefinePedigree.Name = "m_tsmiEcopathDefinePedigree"
         resources.ApplyResources(Me.m_tsmiEcopathDefinePedigree, "m_tsmiEcopathDefinePedigree")
         '
-        'm_tsmiEcopathDefineTaxa
+        'm_tsmiEcopathDefineTraits
         '
-        resources.ApplyResources(Me.m_tsmiEcopathDefineTaxa, "m_tsmiEcopathDefineTaxa")
-        Me.m_tsmiEcopathDefineTaxa.Name = "m_tsmiEcopathDefineTaxa"
+        resources.ApplyResources(Me.m_tsmiEcopathDefineTraits, "m_tsmiEcopathDefineTraits")
+        Me.m_tsmiEcopathDefineTraits.Name = "m_tsmiEcopathDefineTraits"
         '
         'MenuEcosim
         '
@@ -764,9 +764,8 @@ Partial Public Class frmEwE6
         '
         Me.m_tslbReadOnly.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tslbReadOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tslbReadOnly.Image = ScientificInterfaceShared.My.Resources.Warning
-        Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
+        Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
         'm_ssMain
         '
@@ -860,7 +859,7 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcopathDefineTaxa As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcopathDefineTraits As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcopathDefinePedigree As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiPresentation As System.Windows.Forms.ToolStripMenuItem

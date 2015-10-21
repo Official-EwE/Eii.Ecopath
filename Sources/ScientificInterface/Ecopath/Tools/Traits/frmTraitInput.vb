@@ -48,8 +48,8 @@ Namespace Ecopath.Input
 
             If Me.UIContext Is Nothing Then Return
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxa")
-            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditTaxa)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTraits")
+            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditTraits)
 
             Dim pm As cPluginManager = Me.Core.PluginManager
             Dim pi As IPlugin = Nothing
@@ -87,7 +87,7 @@ Namespace Ecopath.Input
             If Me.UIContext Is Nothing Then Return
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxa")
-            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditTaxa)
+            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditTraits)
 
             Me.StopRefreshTaxa()
 
@@ -168,6 +168,7 @@ Namespace Ecopath.Input
 
             Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopRefreshTaxa))
             Try
+                ' ToDo: globalize this
                 cApplicationStatusNotifier.StartProgress(Me.Core, "Refreshing taxa...")
                 For Each taxon As cTaxon In Me.m_taxaRefresh
                     cApplicationStatusNotifier.UpdateProgress(Me.Core, "Refreshing taxon " & i, CSng(1 / Me.m_taxaRefresh.Count))

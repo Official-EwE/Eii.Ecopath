@@ -52,29 +52,38 @@ Namespace Ecopath.Input
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTaxonInput))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnEditTaxa = New System.Windows.Forms.ToolStripButton()
-            Me.m_grid = New ScientificInterface.Ecopath.Input.gridTaxonInput()
+            Me.m_tsbnEditTraits = New System.Windows.Forms.ToolStripButton()
             Me.m_tscmbUpdate = New System.Windows.Forms.ToolStripSplitButton()
+            Me.m_grid = New ScientificInterface.Ecopath.Input.gridTaxonInput()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditTaxa, Me.m_tscmbUpdate})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditTraits, Me.m_tscmbUpdate})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_ts.Size = New System.Drawing.Size(655, 25)
             Me.m_ts.TabIndex = 0
             '
-            'm_tsbnEditTaxa
+            'm_tsbnEditTraits
             '
-            Me.m_tsbnEditTaxa.Image = SharedResources.taxon
-            Me.m_tsbnEditTaxa.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbnEditTaxa.Name = "m_tsbnEditTaxa"
-            Me.m_tsbnEditTaxa.Size = New System.Drawing.Size(94, 22)
-            Me.m_tsbnEditTaxa.Text = "Define taxa..."
+            Me.m_tsbnEditTraits.Image = CType(resources.GetObject("m_tsbnEditTraits.Image"), System.Drawing.Image)
+            Me.m_tsbnEditTraits.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnEditTraits.Name = "m_tsbnEditTraits"
+            Me.m_tsbnEditTraits.Size = New System.Drawing.Size(99, 22)
+            Me.m_tsbnEditTraits.Text = "Define traits..."
+            '
+            'm_tscmbUpdate
+            '
+            Me.m_tscmbUpdate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tscmbUpdate.Image = CType(resources.GetObject("m_tscmbUpdate.Image"), System.Drawing.Image)
+            Me.m_tscmbUpdate.Name = "m_tscmbUpdate"
+            Me.m_tscmbUpdate.Size = New System.Drawing.Size(32, 22)
+            Me.m_tscmbUpdate.Text = "Update"
+            Me.m_tscmbUpdate.Visible = False
             '
             'm_grid
             '
@@ -89,10 +98,12 @@ Namespace Ecopath.Input
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
             Me.m_grid.Location = New System.Drawing.Point(0, 25)
             Me.m_grid.Name = "m_grid"
             Me.m_grid.Size = New System.Drawing.Size(655, 237)
@@ -108,15 +119,6 @@ Namespace Ecopath.Input
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
             '
-            'm_tscmbUpdate
-            '
-            Me.m_tscmbUpdate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tscmbUpdate.Image = SharedResources.Refresh
-            Me.m_tscmbUpdate.Name = "m_tscmbUpdate"
-            Me.m_tscmbUpdate.Size = New System.Drawing.Size(32, 22)
-            Me.m_tscmbUpdate.Text = "Update"
-            Me.m_tscmbUpdate.Visible = False
-            '
             'frmTaxonInput
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -127,7 +129,8 @@ Namespace Ecopath.Input
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmTaxonInput"
             Me.ShowInTaskbar = False
-            Me.Text = "Taxonomy"
+            Me.TabText = ""
+            Me.Text = "Traits"
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
@@ -136,7 +139,7 @@ Namespace Ecopath.Input
         End Sub
         Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_grid As ScientificInterface.Ecopath.Input.gridTaxonInput
-        Private WithEvents m_tsbnEditTaxa As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnEditTraits As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tscmbUpdate As System.Windows.Forms.ToolStripSplitButton
     End Class
 

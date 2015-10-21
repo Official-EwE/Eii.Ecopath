@@ -133,7 +133,7 @@ Public Class frmNavigationPanel
             .Add("ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryOffVesselValue), "Market price.htm")
             .Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputNonMarketPrice), "Non market price.htm")
             .Add("ndPedigree", eCoreExecutionState.EcopathLoaded, GetType(frmPedigree), "pedigree.htm")
-            .Add("ndEcopathInputTaxon", eCoreExecutionState.EcopathLoaded, GetType(frmTaxonInput), "") ' ToDo: connect to help
+            .Add("ndEcopathInputTraits", eCoreExecutionState.EcopathLoaded, GetType(frmTaxonInput), "") ' ToDo: connect to help
 
             ' Ecopath Output
             .Add("ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(gridBasicEstimates), "Basic estimates.htm")
