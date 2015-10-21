@@ -34,6 +34,7 @@ Imports EwEUtils.SpatialData
 Imports EwESpatialAssetsPlugin.SpatialData
 Imports EwEUtils.Core
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -494,13 +495,18 @@ Public Class cDotSpatialUtils
     End Function
 
     Public Shared Sub GetProjectionInfo(ByVal strProj As String, ByRef strName As String, ByRef bIsLatLon As Boolean, ByRef strUnit As String)
+
         Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProj)
         strName = proj.Name
         bIsLatLon = proj.IsLatLon() Or proj.IsGeocentric()
         If (bIsLatLon) Then
-            strUnit = "dd"
+            strUnit = SharedResources.UNIT_DECIMALDEGREE
         Else
-            strUnit = proj.Unit.Name
+            Select Case proj.Unit.Name.ToLower()
+                Case "meter", "meters" : strUnit = SharedResources.UNIT_METER
+                Case "kilometer", "kilometers" : strUnit = SharedResources.UNIT_KILOMETER
+                Case Else : strUnit = "?"
+            End Select
         End If
     End Sub
 

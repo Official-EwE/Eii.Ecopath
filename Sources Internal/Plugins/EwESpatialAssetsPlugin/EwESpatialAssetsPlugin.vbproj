@@ -214,6 +214,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Rasters\cSpatialRaster.vb" />
+    <Compile Include="Tools\cProjectTools.vb" />
     <Compile Include="Tools\cSurfaceTools.vb" />
     <Compile Include="Tools\cVectorTools.vb" />
     <Compile Include="Utils\cDotSpatialUtils.vb" />
