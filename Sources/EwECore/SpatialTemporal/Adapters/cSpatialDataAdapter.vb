@@ -249,7 +249,7 @@ Namespace SpatialData
 
                                     Try
                                         ' The raster returned here MUST have the extent and projection compatible with Ecospace
-                                        dataExternal = ds.GetRaster(cv, cValueID.getDataTypeID(layer.DataType, layer.DBID))
+                                        dataExternal = ds.GetRaster(cv, layer.Name)
                                     Catch ex As Exception
                                         Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), _
                                                                                    eStatusFlags.MissingParameter)
