@@ -1689,17 +1689,17 @@ Namespace Ecospace
 
                         ' Add world file
                         Using sw As New StreamWriter(cFileUtils.ToWorldFileName(strFileSub))
-                            ' Horz. pixel size, in decimal degrees
-                            sw.WriteLine(cStringUtils.FormatNumber(bm.CellSize / 100))
+                            ' Horz. pixel size, in map units
+                            sw.WriteLine(cStringUtils.FormatNumber(bm.CellSize))
                             ' Rotation around x axis
                             sw.WriteLine(0)
                             ' Rotation around y axis
                             sw.WriteLine(0)
-                            ' Vert. pixel size, in decimal degrees
-                            sw.WriteLine(cStringUtils.FormatNumber(-bm.CellSize / 100))
-                            ' Longitude centroid of TL pixel, in dec degrees
+                            ' Vert. pixel size, in map units
+                            sw.WriteLine(cStringUtils.FormatNumber(-bm.CellSize))
+                            ' Longitude centroid of TL pixel, in map units
                             sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.X + bm.CellSize / 2))
-                            ' Lattitude centroid of TL pixel, in dec degrees
+                            ' Lattitude centroid of TL pixel, in map units
                             sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.Y - bm.CellSize / 2))
                             sw.Flush()
                             sw.Close()

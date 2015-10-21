@@ -34,7 +34,7 @@ Imports SourceGrid2
 ''' </summary>
 ''' -----------------------------------------------------------------------
 <CLSCompliant(False)> _
-Public Class gridDefineTaxonomy
+Public Class gridDefineTraits
     Inherits EwEGrid
 
 #Region " Privates "
