@@ -19,15 +19,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
-Imports DotSpatial.Data
 Imports DotSpatial.Projections
-Imports DotSpatial.Topology
-Imports EwECore
-Imports EwECore.SpatialData
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 
