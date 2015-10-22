@@ -10855,17 +10855,16 @@ Public Class cCore
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
     ''' <param name="strMPAName">Name of MPA to add.</param>
-    ''' <param name="iMPA">Index of the new MPA.</param>
+    ''' <param name="iDBID"><see cref="cCoreInputOutputBase.DBID"/> of the new MPA.</param>
     ''' <param name="MPAMonths">One-based series of flags that indicate when the 
     ''' MPA is OPEN for fishing.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddEcospaceMPA(ByVal strMPAName As String, _
                                    ByVal MPAMonths() As Boolean, _
-                                   ByRef iMPA As Integer) As Boolean
+                                   ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
-        Dim iDBID As Integer = 0
         Dim bSucces As Boolean = True
 
         ' Sanity checks
