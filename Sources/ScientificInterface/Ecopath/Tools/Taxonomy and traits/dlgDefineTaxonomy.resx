@@ -454,7 +454,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTraits, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -828,12 +828,12 @@
   <data name="&gt;&gt;m_cbShowCodes.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.Localizable" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
     <value>54</value>
-  </metadata>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -847,10 +847,10 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Define group traits</value>
+    <value>Define group taxonomy</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgDefineTraits</value>
+    <value>dlgDefineTaxonomy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

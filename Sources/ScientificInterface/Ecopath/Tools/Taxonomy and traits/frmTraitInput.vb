@@ -48,8 +48,8 @@ Namespace Ecopath.Input
 
             If Me.UIContext Is Nothing Then Return
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTraits")
-            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditTraits)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxonomy")
+            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditTaxonomy)
 
             Dim pm As cPluginManager = Me.Core.PluginManager
             Dim pi As IPlugin = Nothing
@@ -87,7 +87,7 @@ Namespace Ecopath.Input
             If Me.UIContext Is Nothing Then Return
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxa")
-            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditTraits)
+            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditTaxonomy)
 
             Me.StopRefreshTaxa()
 

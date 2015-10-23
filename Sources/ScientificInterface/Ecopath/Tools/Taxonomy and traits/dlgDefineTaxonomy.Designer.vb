@@ -18,7 +18,7 @@
 
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-Partial Class dlgDefineTraits
+Partial Class dlgDefineTaxonomy
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -41,7 +41,7 @@ Partial Class dlgDefineTraits
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineTraits))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineTaxonomy))
         Me.m_btnDefine = New System.Windows.Forms.Button()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_btnKeep = New System.Windows.Forms.Button()
@@ -53,7 +53,7 @@ Partial Class dlgDefineTraits
         Me.m_btnConfigure = New System.Windows.Forms.Button()
         Me.m_cbIncludeExtent = New System.Windows.Forms.CheckBox()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
-        Me.m_gridGroups = New ScientificInterface.gridDefineTraits()
+        Me.m_gridGroups = New ScientificInterface.gridDefineTaxonomy()
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnProps = New System.Windows.Forms.Button()
         Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -316,7 +316,7 @@ Partial Class dlgDefineTraits
 
     End Sub
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
-    Private WithEvents m_gridGroups As ScientificInterface.gridDefineTraits
+    Private WithEvents m_gridGroups As ScientificInterface.gridDefineTaxonomy
     Private WithEvents m_btnKeep As System.Windows.Forms.Button
     Private WithEvents m_hdrEdit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents Cancel_Button As System.Windows.Forms.Button

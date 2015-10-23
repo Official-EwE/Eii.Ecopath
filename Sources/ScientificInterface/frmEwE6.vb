@@ -241,7 +241,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdEditGroups As cCommand = Nothing
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
-    Private WithEvents m_cmdEditTraits As cCommand = Nothing
+    Private WithEvents m_cmdEditTaxonomy As cCommand = Nothing
     Private WithEvents m_cmdEditPedigree As cEditPedigreeCommand = Nothing
     Private WithEvents m_cmdImportTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdEcosimLoadTimeSeries As cCommand = Nothing
@@ -597,8 +597,8 @@ Public Class frmEwE6
         Me.m_cmdEditPedigree = New cEditPedigreeCommand(cmdh)
         Me.m_cmdEditPedigree.AddControl(Me.m_tsmiEcopathDefinePedigree)
 
-        Me.m_cmdEditTraits = New cCommand(cmdh, "EditTraits")
-        Me.m_cmdEditTraits.AddControl(Me.m_tsmiEcopathDefineTraits)
+        Me.m_cmdEditTaxonomy = New cCommand(cmdh, "EditTaxonomy")
+        Me.m_cmdEditTaxonomy.AddControl(Me.m_tsmiEcopathDefineTraits)
 
         Me.m_cmdEditBasemap = New cCommand(cmdh, "EditBasemap")
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
@@ -3423,14 +3423,14 @@ Public Class frmEwE6
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
-    Private Sub OnEditTraits(ByVal cmd As cCommand) _
-        Handles m_cmdEditTraits.OnInvoke
-        Dim dlg As New dlgDefineTraits(Me.UIContext)
+    Private Sub OnEditTaxonomy(ByVal cmd As cCommand) _
+        Handles m_cmdEditTaxonomy.OnInvoke
+        Dim dlg As New dlgDefineTaxonomy(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
-    Private Sub OnUpdateEditTraits(ByVal cmd As cCommand) _
-        Handles m_cmdEditTraits.OnUpdate
+    Private Sub OnUpdateEditTaxonomy(ByVal cmd As cCommand) _
+        Handles m_cmdEditTaxonomy.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub

@@ -52,7 +52,7 @@ Namespace Ecopath.Input
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTaxonInput))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnEditTraits = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnEditTaxonomy = New System.Windows.Forms.ToolStripButton()
             Me.m_tscmbUpdate = New System.Windows.Forms.ToolStripSplitButton()
             Me.m_grid = New ScientificInterface.Ecopath.Input.gridTaxonInput()
             Me.m_ts.SuspendLayout()
@@ -61,20 +61,20 @@ Namespace Ecopath.Input
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditTraits, Me.m_tscmbUpdate})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditTaxonomy, Me.m_tscmbUpdate})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_ts.Size = New System.Drawing.Size(655, 25)
             Me.m_ts.TabIndex = 0
             '
-            'm_tsbnEditTraits
+            'm_tsbnEditTaxonomy
             '
-            Me.m_tsbnEditTraits.Image = CType(resources.GetObject("m_tsbnEditTraits.Image"), System.Drawing.Image)
-            Me.m_tsbnEditTraits.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbnEditTraits.Name = "m_tsbnEditTraits"
-            Me.m_tsbnEditTraits.Size = New System.Drawing.Size(99, 22)
-            Me.m_tsbnEditTraits.Text = "Define traits..."
+            Me.m_tsbnEditTaxonomy.Image = CType(resources.GetObject("m_tsbnEditTaxonomy.Image"), System.Drawing.Image)
+            Me.m_tsbnEditTaxonomy.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnEditTaxonomy.Name = "m_tsbnEditTaxonomy"
+            Me.m_tsbnEditTaxonomy.Size = New System.Drawing.Size(126, 22)
+            Me.m_tsbnEditTaxonomy.Text = "Define taxonomy..."
             '
             'm_tscmbUpdate
             '
@@ -139,7 +139,7 @@ Namespace Ecopath.Input
         End Sub
         Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_grid As ScientificInterface.Ecopath.Input.gridTaxonInput
-        Private WithEvents m_tsbnEditTraits As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnEditTaxonomy As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tscmbUpdate As System.Windows.Forms.ToolStripSplitButton
     End Class
 

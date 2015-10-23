@@ -163,13 +163,13 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ecopath\Tools\Traits\dlgDefineTraits.Designer.vb">
-      <DependentUpon>dlgDefineTraits.vb</DependentUpon>
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.Designer.vb">
+      <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Tools\Traits\dlgDefineTraits.vb">
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\Traits\gridDefineTraits.vb">
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\gridDefineTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFDGroupData.vb" />
@@ -891,8 +891,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ecopath\Tools\Traits\dlgDefineTraits.resx">
-      <DependentUpon>dlgDefineTraits.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.resx">
+      <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.resx">
       <DependentUpon>frmEcosimFD.vb</DependentUpon>
@@ -1187,7 +1187,7 @@
       <DependentUpon>frmSizeWeight.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecopath\Tools\Traits\frmTraitInput.resx">
+    <EmbeddedResource Include="Ecopath\Tools\Taxonomy and traits\frmTraitInput.resx">
       <DependentUpon>frmTraitInput.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1352,7 +1352,7 @@
     <Compile Include="Ecopath\Tools\Pedigree\dlgDefinePedigree.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\Traits\gridTaxonSearchResults.vb">
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\gridTaxonSearchResults.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\frmNichePredPreyPlot.Designer.vb">
@@ -1367,13 +1367,13 @@
     <Compile Include="Ecopath\Output\frmSizeShiftedConnectancePlot.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\Traits\frmTraitInput.Designer.vb">
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\frmTraitInput.Designer.vb">
       <DependentUpon>frmTraitInput.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecopath\Tools\Traits\frmTraitInput.vb">
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\frmTraitInput.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\Traits\gridTraitInput.vb">
+    <Compile Include="Ecopath\Tools\Taxonomy and traits\gridTraitInput.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Input\frmFisheryBasicInput.Designer.vb">

@@ -46,7 +46,7 @@ Imports EwEUtils.Utilities
 ''' be used for other purposes at core level.</para>
 ''' </remarks>
 ''' ===========================================================================
-Public Class dlgDefineTraits
+Public Class dlgDefineTaxonomy
 
 #Region " Private vars "
 
@@ -99,13 +99,13 @@ Public Class dlgDefineTraits
     Private Class cWaitForSearch
 
         ''' <summary>UI to notify when search complete.</summary>
-        Private m_ui As dlgDefineTraits = Nothing
+        Private m_ui As dlgDefineTaxonomy = Nothing
         ''' <summary>Data producer that is searching.</summary>
         Private m_producer As IDataSearchProducerPlugin = Nothing
         ''' <summary>Search results.</summary>
         Private m_results As IDataSearchResults = Nothing
 
-        Public Sub New(ByVal form As dlgDefineTraits, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
+        Public Sub New(ByVal form As dlgDefineTaxonomy, ByVal prod As IDataSearchProducerPlugin, ByVal res As IDataSearchResults)
             Me.m_ui = form
             Me.m_producer = prod
             Me.m_results = res
