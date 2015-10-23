@@ -90,7 +90,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Consumption writer options....
+        '''  Looks up a localized string similar to Consumption writer....
         '''</summary>
         Friend ReadOnly Property CONSWR_MENU_ITEM() As String
             Get
@@ -227,7 +227,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Resilience acknowledgements.
+        '''  Looks up a localized string similar to Acknowledgements.
         '''</summary>
         Friend ReadOnly Property NAVTREE_ACKNOWLEDGEMENTS() As String
             Get

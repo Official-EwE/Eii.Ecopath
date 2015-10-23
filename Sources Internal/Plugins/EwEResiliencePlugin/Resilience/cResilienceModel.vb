@@ -65,21 +65,21 @@ Public Class cResilienceModel
                 EatenByYear(i) += simds.Eatenby(i)
                 EatenOfYear(i) += simds.Eatenof(i)
 
-                Me.m_data.GroupSupplyAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, -CSng(Math.Log10(simds.Eatenby(i))))
-                Me.m_data.GroupDemandAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
+                Me.m_data.GroupDemandAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
+                Me.m_data.GroupSupplyAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
 
                 If ((iTime Mod cCore.N_MONTHS) = 0) Then
-                    Me.m_data.GroupSupplyAtY(i, iYear) = cSystemUtils.IIF(EatenByYear(i) = 0, 0, -CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
-                    Me.m_data.GroupDemandAtY(i, iYear) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupDemandAtY(i, iYear) = cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupSupplyAtY(i, iYear) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
                     EatenOfYear(i) = 0
                     EatenByYear(i) = 0
                 End If
             End If
         Next
 
-        Me.CalculateRegression(Me.m_data.GroupSupplyAtT, Me.m_data.GroupDemandAtT, iTime, Me.m_data.SlopeAtT, Me.m_data.InterceptAtT)
+        Me.CalculateRegression(Me.m_data.GroupDemandAtT, Me.m_data.GroupSupplyAtT, iTime, Me.m_data.SlopeAtT, Me.m_data.InterceptAtT)
         If ((iTime Mod cCore.N_MONTHS) = 0) Then
-            Me.CalculateRegression(Me.m_data.GroupSupplyAtY, Me.m_data.GroupDemandAtY, iYear, Me.m_data.SlopeAtY, Me.m_data.InterceptAtY)
+            Me.CalculateRegression(Me.m_data.GroupDemandAtY, Me.m_data.GroupSupplyAtY, iYear, Me.m_data.SlopeAtY, Me.m_data.InterceptAtY)
         End If
 
         If (iTime = simds.NTimes) Then

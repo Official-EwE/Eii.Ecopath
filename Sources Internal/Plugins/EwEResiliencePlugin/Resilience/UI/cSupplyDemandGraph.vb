@@ -36,7 +36,7 @@ Imports ZedGraph
 ''' Controller for the resilience supply/demand graph.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cSupplyDemandGraph
+Public Class cDemandSupplyGraph
     Inherits cZedGraphHelper
 
 #Region " Private vars "
@@ -181,11 +181,11 @@ Public Class cSupplyDemandGraph
             If Me.m_data.IsConsumer(iGroup) Then
 
                 If (Me.Annual) Then
-                    x = data.GroupDemandAtY(iGroup, t)
-                    y = data.GroupSupplyAtY(iGroup, t)
+                    x = data.GroupSupplyAtY(iGroup, t)
+                    y = data.GroupDemandAtY(iGroup, t)
                 Else
-                    x = data.GroupDemandAtT(iGroup, t)
-                    y = data.GroupSupplyAtT(iGroup, t)
+                    x = data.GroupSupplyAtT(iGroup, t)
+                    y = data.GroupDemandAtT(iGroup, t)
                 End If
 
                 If (x <> 0 And y <> 0) Then

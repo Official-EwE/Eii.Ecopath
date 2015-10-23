@@ -28,11 +28,9 @@ Imports EwEUtils.Commands
 
 Public Class frmConfig
 
-    Private m_uic As cUIContext = Nothing
-
     Public Sub New(uic As cUIContext)
-        Me.m_uic = uic
         Me.InitializeComponent()
+        Me.m_ack.UIContext = uic
     End Sub
 
 #Region " Overrides "
@@ -44,20 +42,6 @@ Public Class frmConfig
         Me.m_cbIncludeDetritus.Checked = My.Settings.ConsIncludeDetritus
         Me.m_cbIncludeImportAndSum.Checked = My.Settings.ConsIncludeImportAndSum
 
-        Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
-        cmd.AddControl(Me.m_pbIPN, "http://www.ipn.mx")
-        cmd.AddControl(Me.m_pbCicimar, "http://www.cicimar.ipn.mx")
-        cmd.AddControl(Me.m_pbConacyt, "http://www.conacyt.mx")
-
-        Me.UpdateControls()
-    End Sub
-
-    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-        Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
-        cmd.RemoveControl(Me.m_pbIPN)
-        cmd.RemoveControl(Me.m_pbCicimar)
-        cmd.RemoveControl(Me.m_pbConacyt)
-        MyBase.OnFormClosed(e)
     End Sub
 
 #End Region ' Overrides
@@ -97,19 +81,6 @@ Public Class frmConfig
 #End Region ' Event handlers
 
 #Region " Internals "
-
-    Private Sub ShowSponsor(strURL As String)
-
-        If (Me.m_uic Is Nothing) Then Return
-
-        Try
-            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.Invoke(strURL)
-        Catch ex As Exception
-            cLog.Write(ex, "ConsumptionWriterPlugin::frmConfig.ShowSponsor(" & strURL & ")")
-        End Try
-
-    End Sub
 
     Private Sub UpdateControls()
         Me.m_cbIncludeDetritus.Enabled = Me.m_cbAutosave.Checked

@@ -91,6 +91,7 @@
     <AssemblyOriginatorKeyFile>EwEResiliencePlugin.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwEResiliencePlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d3a2cb3f44446acb, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -154,17 +155,17 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Resilience\UI\cSupplyDemandGraph.vb" />
-    <Compile Include="Resilience\UI\frmAcknowledgements.Designer.vb">
-      <DependentUpon>frmAcknowledgements.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Resilience\UI\frmAcknowledgements.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Resilience\UI\frmSupplyDemand.Designer.vb">
       <DependentUpon>frmSupplyDemand.vb</DependentUpon>
     </Compile>
     <Compile Include="Resilience\UI\frmSupplyDemand.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shared\ucAcknowledgements.Designer.vb">
+      <DependentUpon>ucAcknowledgements.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Shared\ucAcknowledgements.vb">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -177,14 +178,14 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resilience\UI\frmAcknowledgements.resx">
-      <DependentUpon>frmAcknowledgements.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resilience\UI\frmResilience.resx">
       <DependentUpon>frmResilience.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resilience\UI\frmSupplyDemand.resx">
       <DependentUpon>frmSupplyDemand.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Shared\ucAcknowledgements.resx">
+      <DependentUpon>ucAcknowledgements.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -207,7 +208,9 @@
     <None Include="Resilience\Documentation\EwEResilience.docx" />
     <None Include="Resilience\Documentation\EwEResilience.pdf" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>

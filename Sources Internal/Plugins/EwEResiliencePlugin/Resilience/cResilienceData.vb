@@ -59,10 +59,10 @@ Public Class cResilienceData
 
         ReDim IsConsumer(nGroups)
 
-        ReDim GroupSupplyAtT(nGroups, nTimes)
-        ReDim GroupSupplyAtY(nGroups, nYears)
         ReDim GroupDemandAtT(nGroups, nTimes)
         ReDim GroupDemandAtY(nGroups, nYears)
+        ReDim GroupSupplyAtT(nGroups, nTimes)
+        ReDim GroupSupplyAtY(nGroups, nYears)
         ReDim SlopeAtT(nTimes)
         ReDim SlopeAtY(nYears)
         ReDim InterceptAtT(nTimes)
@@ -84,10 +84,10 @@ Public Class cResilienceData
         End Get
     End Property
 
-    Public Property GroupSupplyAtT As Single(,)
-    Public Property GroupSupplyAtY As Single(,)
     Public Property GroupDemandAtT As Single(,)
     Public Property GroupDemandAtY As Single(,)
+    Public Property GroupSupplyAtT As Single(,)
+    Public Property GroupSupplyAtY As Single(,)
     Public Property SlopeAtT As Single()
     Public Property SlopeAtY As Single()
     Public Property InterceptAtT As Single()
@@ -126,16 +126,16 @@ Public Class cResilienceData
         Me.m_boundsY.Init()
         For i As Integer = 1 To Me.m_nGroups
             For t As Integer = 0 To Me.m_nTimes - 1
-                Me.m_boundsT.dmin = Math.Min(Me.m_boundsT.dmin, Me.GroupDemandAtT(i, t))
-                Me.m_boundsT.dmax = Math.Max(Me.m_boundsT.dmax, Me.GroupDemandAtT(i, t))
-                Me.m_boundsT.smin = Math.Min(Me.m_boundsT.smin, Me.GroupSupplyAtT(i, t))
-                Me.m_boundsT.smax = Math.Max(Me.m_boundsT.smax, Me.GroupSupplyAtT(i, t))
+                Me.m_boundsT.dmin = Math.Min(Me.m_boundsT.dmin, Me.GroupSupplyAtT(i, t))
+                Me.m_boundsT.dmax = Math.Max(Me.m_boundsT.dmax, Me.GroupSupplyAtT(i, t))
+                Me.m_boundsT.smin = Math.Min(Me.m_boundsT.smin, Me.GroupDemandAtT(i, t))
+                Me.m_boundsT.smax = Math.Max(Me.m_boundsT.smax, Me.GroupDemandAtT(i, t))
             Next
             For t As Integer = 0 To Me.m_nYears - 1
-                Me.m_boundsY.dmin = Math.Min(Me.m_boundsY.dmin, Me.GroupDemandAtY(i, t))
-                Me.m_boundsY.dmax = Math.Max(Me.m_boundsY.dmax, Me.GroupDemandAtY(i, t))
-                Me.m_boundsY.smin = Math.Min(Me.m_boundsY.smin, Me.GroupSupplyAtY(i, t))
-                Me.m_boundsY.smax = Math.Max(Me.m_boundsY.smax, Me.GroupSupplyAtY(i, t))
+                Me.m_boundsY.dmin = Math.Min(Me.m_boundsY.dmin, Me.GroupSupplyAtY(i, t))
+                Me.m_boundsY.dmax = Math.Max(Me.m_boundsY.dmax, Me.GroupSupplyAtY(i, t))
+                Me.m_boundsY.smin = Math.Min(Me.m_boundsY.smin, Me.GroupDemandAtY(i, t))
+                Me.m_boundsY.smax = Math.Max(Me.m_boundsY.smax, Me.GroupDemandAtY(i, t))
             Next t
         Next i
 

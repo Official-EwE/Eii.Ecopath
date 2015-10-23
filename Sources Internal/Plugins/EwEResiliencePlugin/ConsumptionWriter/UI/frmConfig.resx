@@ -117,19 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbIncludeDetritus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_cbIncludeDetritus.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_cbIncludeDetritus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 35</value>
+    <value>32, 315</value>
   </data>
   <data name="m_cbIncludeDetritus.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 17</value>
   </data>
   <data name="m_cbIncludeDetritus.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_cbIncludeDetritus.Text" xml:space="preserve">
     <value>Include &amp;detritus groups</value>
@@ -144,19 +148,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbIncludeDetritus.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
+  </data>
+  <data name="m_cbIncludeImportAndSum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_cbIncludeImportAndSum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbIncludeImportAndSum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 58</value>
+    <value>32, 338</value>
   </data>
   <data name="m_cbIncludeImportAndSum.Size" type="System.Drawing.Size, System.Drawing">
     <value>135, 17</value>
   </data>
   <data name="m_cbIncludeImportAndSum.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_cbIncludeImportAndSum.Text" xml:space="preserve">
     <value>Include &amp;import and sum</value>
@@ -171,20 +178,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbIncludeImportAndSum.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>412, 77</value>
+    <value>415, 371</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_btnOK.Text" xml:space="preserve">
     <value>OK</value>
@@ -199,22 +205,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>493, 77</value>
+    <value>496, 371</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -229,7 +235,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
+  </data>
+  <data name="m_cbAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_cbAutosave.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -238,13 +247,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbAutosave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>12, 292</value>
   </data>
   <data name="m_cbAutosave.Size" type="System.Drawing.Size, System.Drawing">
     <value>178, 17</value>
   </data>
   <data name="m_cbAutosave.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_cbAutosave.Text" xml:space="preserve">
     <value>&amp;Auto-save when running Ecosim</value>
@@ -259,488 +268,61 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAutosave.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
-  <data name="m_pbIPN.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
+  <data name="m_ack.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_pbIPN.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="m_ack.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
   </data>
-  <data name="m_pbIPN.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_ack.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 246</value>
   </data>
-  <data name="m_pbIPN.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 5</value>
-  </data>
-  <data name="m_pbIPN.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbIPN.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbIPN.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 104</value>
-  </data>
-  <data name="m_pbIPN.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_pbIPN.Name" xml:space="preserve">
-    <value>m_pbIPN</value>
-  </data>
-  <data name="&gt;&gt;m_pbIPN.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbIPN.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbIPN.ZOrder" xml:space="preserve">
+  <data name="m_ack.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="TableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+  <data name="&gt;&gt;m_ack.Name" xml:space="preserve">
+    <value>m_ack</value>
   </data>
-  <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;m_ack.Type" xml:space="preserve">
+    <value>EwEResiliencePlugin.ucAcknowledgements, EwEResiliencePlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d3a2cb3f44446acb</value>
   </data>
-  <data name="m_pbCicimar.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="m_pbCicimar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_pbCicimar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 5</value>
-  </data>
-  <data name="m_pbCicimar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbCicimar.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbCicimar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 104</value>
-  </data>
-  <data name="m_pbCicimar.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_pbCicimar.Name" xml:space="preserve">
-    <value>m_pbCicimar</value>
-  </data>
-  <data name="&gt;&gt;m_pbCicimar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbCicimar.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbCicimar.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_pbConacyt.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="m_pbConacyt.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_pbConacyt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>379, 5</value>
-  </data>
-  <data name="m_pbConacyt.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbConacyt.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>5, 5, 5, 5</value>
-  </data>
-  <data name="m_pbConacyt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>178, 104</value>
-  </data>
-  <data name="m_pbConacyt.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_pbConacyt.Name" xml:space="preserve">
-    <value>m_pbConacyt</value>
-  </data>
-  <data name="&gt;&gt;m_pbConacyt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbConacyt.Parent" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;m_pbConacyt.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 280</value>
-  </data>
-  <data name="TableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>562, 114</value>
-  </data>
-  <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
-    <value>TableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_ack.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_ack.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbIPN" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCicimar" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbConacyt" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_hdrSponsors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="m_hdrSponsors.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_hdrOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 271</value>
   </data>
-  <data name="m_hdrSponsors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 108</value>
+  <data name="m_hdrOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 18</value>
   </data>
-  <data name="m_hdrSponsors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>556, 18</value>
+  <data name="m_hdrOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="m_hdrSponsors.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="m_hdrOptions.Text" xml:space="preserve">
+    <value>Options</value>
   </data>
-  <data name="m_hdrSponsors.Text" xml:space="preserve">
-    <value>Sponsors</value>
-  </data>
-  <data name="m_hdrSponsors.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrOptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrSponsors.Name" xml:space="preserve">
-    <value>m_hdrSponsors</value>
+  <data name="&gt;&gt;m_hdrOptions.Name" xml:space="preserve">
+    <value>m_hdrOptions</value>
   </data>
-  <data name="&gt;&gt;m_hdrSponsors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12448.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_hdrOptions.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12879.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_hdrSponsors.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrOptions.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_hdrSponsors.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="TableLayoutPanel2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="TableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_lblAckVal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblAckVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblAckVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblAckVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 3</value>
-  </data>
-  <data name="m_lblAckVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblAckVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 26</value>
-  </data>
-  <data name="m_lblAckVal.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_lblAckVal.Text" xml:space="preserve">
-    <value>Instituto Politécnico Nacional -Centro Interdisciplinario de Ciencias Marinas (IPN-CICIMAR)
-Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
-  </data>
-  <data name="&gt;&gt;m_lblAckVal.Name" xml:space="preserve">
-    <value>m_lblAckVal</value>
-  </data>
-  <data name="&gt;&gt;m_lblAckVal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAckVal.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblAckVal.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrOptions.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_lblRefVal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblRefVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblRefVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblRefVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 35</value>
-  </data>
-  <data name="m_lblRefVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblRefVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 39</value>
-  </data>
-  <data name="m_lblRefVal.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_lblRefVal.Text" xml:space="preserve">
-    <value>Arreguı́n-Sánchez, F., 2014. Measuring resilience in aquatic trophic networks from supply-demand of energy relationships. Ecological Modelling 272, 271-276.
-
-</value>
-  </data>
-  <data name="&gt;&gt;m_lblRefVal.Name" xml:space="preserve">
-    <value>m_lblRefVal</value>
-  </data>
-  <data name="&gt;&gt;m_lblRefVal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblRefVal.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblRefVal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_llContactVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_llContactVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_llContactVal.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>28, 44</value>
-  </data>
-  <data name="m_llContactVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 80</value>
-  </data>
-  <data name="m_llContactVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_llContactVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 17</value>
-  </data>
-  <data name="m_llContactVal.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_llContactVal.Text" xml:space="preserve">
-    <value>Dr. Manuel J. Zetina-Rejon, mzetina@ipn.mx
-</value>
-  </data>
-  <data name="&gt;&gt;m_llContactVal.Name" xml:space="preserve">
-    <value>m_llContactVal</value>
-  </data>
-  <data name="&gt;&gt;m_llContactVal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_llContactVal.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_llContactVal.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_lblAck.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblAck.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblAck.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="m_lblAck.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblAck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 26</value>
-  </data>
-  <data name="m_lblAck.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_lblAck.Text" xml:space="preserve">
-    <value>Acknowledgements:</value>
-  </data>
-  <data name="&gt;&gt;m_lblAck.Name" xml:space="preserve">
-    <value>m_lblAck</value>
-  </data>
-  <data name="&gt;&gt;m_lblAck.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblAck.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblAck.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_lblRef.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblRef.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblRef.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 35</value>
-  </data>
-  <data name="m_lblRef.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblRef.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 39</value>
-  </data>
-  <data name="m_lblRef.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_lblRef.Text" xml:space="preserve">
-    <value>Reference:</value>
-  </data>
-  <data name="&gt;&gt;m_lblRef.Name" xml:space="preserve">
-    <value>m_lblRef</value>
-  </data>
-  <data name="&gt;&gt;m_lblRef.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblRef.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblRef.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_lblContact.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblContact.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 80</value>
-  </data>
-  <data name="m_lblContact.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 17</value>
-  </data>
-  <data name="m_lblContact.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_lblContact.Text" xml:space="preserve">
-    <value>Contact:</value>
-  </data>
-  <data name="&gt;&gt;m_lblContact.Name" xml:space="preserve">
-    <value>m_lblContact</value>
-  </data>
-  <data name="&gt;&gt;m_lblContact.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblContact.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblContact.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_lblGrant.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblGrant.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblGrant.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 103</value>
-  </data>
-  <data name="m_lblGrant.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblGrant.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 13</value>
-  </data>
-  <data name="m_lblGrant.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_lblGrant.Text" xml:space="preserve">
-    <value>Project grant:</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrant.Name" xml:space="preserve">
-    <value>m_lblGrant</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrant.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrant.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrant.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_lblGrantVal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblGrantVal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblGrantVal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 103</value>
-  </data>
-  <data name="m_lblGrantVal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblGrantVal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 13</value>
-  </data>
-  <data name="m_lblGrantVal.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_lblGrantVal.Text" xml:space="preserve">
-    <value>CONACyT project 155900 &amp; grant 206762</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrantVal.Name" xml:space="preserve">
-    <value>m_lblGrantVal</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrantVal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrantVal.Parent" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblGrantVal.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="TableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 133</value>
-  </data>
-  <data name="TableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="TableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 137</value>
-  </data>
-  <data name="TableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Name" xml:space="preserve">
-    <value>TableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TableLayoutPanel2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="TableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblAckVal" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRefVal" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_llContactVal" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAck" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRef" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblContact" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGrant" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGrantVal" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -749,16 +331,13 @@ Consejo Nacional de Ciencia y Tecnología (CONACyT)</value>
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>580, 403</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>583, 406</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Consumption writer options</value>
+    <value>Consumption writer</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmConfig</value>

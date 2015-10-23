@@ -31,7 +31,7 @@ Public Class frmSupplyDemand
 #Region " Internal vars "
 
     Private m_model As cResilienceModel = Nothing
-    Private m_graph As cSupplyDemandGraph = Nothing
+    Private m_graph As cDemandSupplyGraph = Nothing
     Private m_bInUpdate As Boolean = False
     Private m_iTime As Integer = 0
 
@@ -54,7 +54,7 @@ Public Class frmSupplyDemand
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.m_graph = New cSupplyDemandGraph()
+        Me.m_graph = New cDemandSupplyGraph()
         Me.m_graph.Attach(Me.UIContext, Me.m_zgc, Me.m_model.Data, "")
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}

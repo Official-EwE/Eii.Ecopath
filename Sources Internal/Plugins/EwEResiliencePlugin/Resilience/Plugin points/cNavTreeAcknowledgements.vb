@@ -37,7 +37,9 @@ Public Class cNavTreeAcknowledgements
     End Property
 
     Protected Overrides Function GetUI() As System.Windows.Forms.Form
-        Return New frmAcknowledgements(Me.m_uic)
+        Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)
+        dlg.ShowDialog(Me.m_uic.FormMain, My.Resources.NAVTREE_ACKNOWLEDGEMENTS, New ucAcknowledgements())
+        Return Nothing
     End Function
 
 End Class

@@ -51,8 +51,8 @@ Public Class cResilienceWriter
         Me.m_lstrErrors.Clear()
 
         Dim msg As cMessage = Nothing
-        Dim bSuccess As Boolean = Me.SaveSupplyDemand(True) And _
-                                  Me.SaveSupplyDemand(False) And _
+        Dim bSuccess As Boolean = Me.SaveDemandSupply(True) And _
+                                  Me.SaveDemandSupply(False) And _
                                   Me.SaveResilience(True) And _
                                   Me.SaveResilience(False)
 
@@ -81,9 +81,9 @@ Public Class cResilienceWriter
         End Get
     End Property
 
-    Private Function SaveSupplyDemand(ByVal bAnnual As Boolean) As Boolean
+    Private Function SaveDemandSupply(ByVal bAnnual As Boolean) As Boolean
 
-        Dim sw As StreamWriter = Me.Writer(Me.SupplyDemandFileName(Me.OutputPath, bAnnual))
+        Dim sw As StreamWriter = Me.Writer(Me.DemandSupplyFileName(Me.OutputPath, bAnnual))
         Dim grp As cEcoPathGroupInput = Nothing
         Dim n As Integer = 0
         Dim t0 As Integer = 0
@@ -132,16 +132,16 @@ Public Class cResilienceWriter
         Return True
     End Function
 
-    Private Function SupplyDemandFileName(ByVal strPath As String, _
+    Private Function DemandSupplyFileName(ByVal strPath As String, _
                                           ByVal bSaveAnnual As Boolean) As String
 
         Dim strFileName As String = ""
         Dim strExt As String = ".csv"
 
         If bSaveAnnual Then
-            strFileName = "SupplyDemand_annual"
+            strFileName = "DemandSupply_annual"
         Else
-            strFileName = "SupplyDemand_monthly"
+            strFileName = "DemandSupply_monthly"
         End If
 
         Return Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
