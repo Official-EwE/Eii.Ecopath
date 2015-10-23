@@ -101,8 +101,8 @@ Public Class cResilienceWriter
         For i As Integer = 1 To Me.m_core.nGroups
             grp = Me.m_core.EcoPathGroupInputs(i)
             If grp.IsConsumer Then
-                sw.Write("," & cStringUtils.ToCSVField("Supply " & grp.Name))
                 sw.Write("," & cStringUtils.ToCSVField("Demand " & grp.Name))
+                sw.Write("," & cStringUtils.ToCSVField("Supply " & grp.Name))
             End If
         Next
         sw.WriteLine()
@@ -115,11 +115,11 @@ Public Class cResilienceWriter
                 grp = Me.m_core.EcoPathGroupInputs(i)
                 If grp.IsConsumer Then
                     If bAnnual Then
-                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupSupplyAtY(i, t)))
                         sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupDemandAtY(i, t)))
+                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupSupplyAtY(i, t)))
                     Else
-                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupSupplyAtT(i, t)))
                         sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupDemandAtT(i, t)))
+                        sw.Write("," & cStringUtils.ToCSVField(Me.m_data.GroupSupplyAtT(i, t)))
                     End If
                 End If
             Next i
