@@ -188,6 +188,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Not needed at this moment
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IDisposedPlugin.Dispose"/>
+    ''' -----------------------------------------------------------------------
     Public Sub Dispose() _
         Implements EwEPlugin.IDisposedPlugin.Dispose
 
@@ -208,18 +211,33 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Not used.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Function LoadModel(ByVal dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.LoadModel
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Not used.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Function SaveModel(ByVal dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Clean up neatly.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Function Closemodel() As Boolean _
-        Implements EwEPlugin.IEcopathPlugin.CloseModel
+         Implements EwEPlugin.IEcopathPlugin.CloseModel
 
         ' Clear previous results
         Me.m_indEcopath = Nothing
@@ -440,7 +458,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Calculate only if supposed to run with MC
         If (Not Me.m_bRunWithMonteCarlo) Then Return
 
-        ' Get ready to calculate
+        ' Calculate indicators for this MC iteration
         For iTime As Integer = 1 To Me.m_ecosimDS.NTimes
             Dim ind As New cMCIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecosimDS, CInt(man.nTrialIterations), iTime, Me.m_stanzaDS, Me.m_taxonDS, lookup)
             ind.Compute()
@@ -499,6 +517,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Me.ClearEcospaceIndicators()
     End Sub
 
+    Private m_bSavingEcospace As Boolean = False
+
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
         Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
@@ -532,7 +552,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Enable trophic level calculations when plugin is configured to run with Ecospace
         Me.m_ecospaceDS.bCalTrophicLevel = True
 
-        If My.Settings.AutoSaveCSV Then Me.BeginSave(eComponentType.Ecospace)
+        Me.m_bSavingEcospace = My.Settings.AutoSaveCSV
+        If Me.m_bSavingEcospace Then Me.BeginSave(eComponentType.Ecospace)
 
     End Sub
 
@@ -549,7 +570,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             For Each ind As cIndicators In Me.m_dtIndEcospace.Values
                 ind.Compute()
             Next
-            Me.PerformSave(eComponentType.Ecospace)
+            If Me.m_bSavingEcospace Then Me.PerformSave(eComponentType.Ecospace)
         Catch ex As Exception
 
         End Try
@@ -573,7 +594,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Restore old TL calc setting
         Me.m_ecospaceDS.bCalTrophicLevel = Me.m_bCalcExtrasOld
 
-        Me.EndSave()
+        If Me.m_bSavingEcospace Then Me.EndSave()
 
     End Sub
 
@@ -671,8 +692,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Central point to save computed indicators to a CSV file, as initiated 
-    ''' by the user.
+    ''' Central point to manually save computed indicators to a CSV file.
     ''' </summary>
     ''' <param name="component">The <see cref="eComponentType"/> to save indicators for.</param>
     ''' -----------------------------------------------------------------------
@@ -774,9 +794,12 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Begin the (auto)save progress
+    ''' Begin the (auto)save progress by ensuring that destination directories
+    ''' are available and that the save progress message is ready for gathering
+    ''' save details.
     ''' </summary>
-    ''' <param name="component"></param>
+    ''' <param name="component">The <see cref="eComponentType"/> that is starting 
+    ''' the save process.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function BeginSave(component As eComponentType) As Boolean
@@ -799,8 +822,16 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Perform an (auto)save step.
+    ''' </summary>
+    ''' <param name="component">The <see cref="eComponentType"/> that is saving.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function PerformSave(component As eComponentType) As Boolean
 
+        ' Save prepartion failed? Abort!
         If (Me.m_msgStatus Is Nothing) Then Return False
 
         ' Safely encase file access logic to make sure that this method will not get interrupted
@@ -824,19 +855,44 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ends the (auto)save progress by sending the save progress message.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function EndSave() As Boolean
 
+        ' Save prepartion failed? Abort!
         If (Me.m_msgStatus Is Nothing) Then Return False
+
         Me.m_core.Messages.SendMessage(Me.m_msgStatus)
         Me.m_msgStatus = Nothing
 
     End Function
 
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the full file name (not file path!) to save computed indicators 
+    ''' to.
+    ''' </summary>
+    ''' <param name="component">The <see cref="eComponentType"/> to save indicators for.</param>
+    ''' <param name="strStep">The time step, if any, to save indicators for. This
+    ''' value can be left empty.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Private Function FileName(ByVal component As eComponentType, ByVal strStep As String) As String
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}{1}.csv", Me.ComponentName(component), strStep), False)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the localized file name part that indicates the <see cref="eComponentType"/>
+    ''' to save for.
+    ''' </summary>
+    ''' <param name="component">The <see cref="eComponentType"/> to save for.</param>
+    ''' <returns>A localized file name part.</returns>
+    ''' -----------------------------------------------------------------------
     Private Function ComponentName(component As eComponentType) As String
         Select Case component
             Case eComponentType.Ecopath : Return SharedResources.HEADER_ECOPATH
@@ -883,6 +939,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save calculated Ecosim indicators to a CSV file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub SaveEcosimCSV()
 
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecosim)
@@ -929,6 +990,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save calculated MCMC indicators to a CSV file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub SaveMCCSV()
 
         Dim core As cCore = Me.m_uic.Core
@@ -985,6 +1051,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save calculated Ecospace indicators to a CSV file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub SaveEcospaceCSV()
 
         Dim iTS As Integer = CInt(Me.m_ecospaceDS.TimeNow * 12 + 1)
