@@ -3644,6 +3644,7 @@ Public Class cMSE
     Private Sub RecordRealisedFResults(ByVal iTime As Integer, ByVal BiomassAtTimeStep() As Single, ByVal NumberTimeStepsIntoProjection As Integer, ByRef QMult() As Single)
 
         For iGrp = 1 To m_core.nGroups
+            'If we want f's for entire run including hindcast we need to not multiply by qmult for any periods with applied forcing f
             m_RealisedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Me._simdata.FishRateNo(iGrp, iTime) * QMult(iGrp)
             'Calculate the Realised Landed F
             m_RealisedLandedFs(iGrp - 1, NumberTimeStepsIntoProjection - 1) = Calc_RealisedLandedFs(BiomassAtTimeStep(iGrp), iGrp, iTime)
