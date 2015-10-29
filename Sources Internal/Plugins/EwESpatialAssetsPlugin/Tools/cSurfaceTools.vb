@@ -67,7 +67,6 @@ Public Class cSurfaceTools
                                          ByVal strFileName As String,
                                          ByVal log As cSpatialOperationLog) As IRaster
 
-        'Dim projWork As ProjectionInfo = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaworld
         Dim coords As New List(Of Coordinate)
         Dim featToConvert As IFeatureSet = Nothing
         Dim polyToConvert As IGeometry = Nothing
@@ -93,7 +92,7 @@ Public Class cSurfaceTools
                 featToConvert.AddFeature(fs.Features(i))
             Next
 
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
+            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, strFilter), eStatusFlags.ValueComputed)
         Else
             ' #No: grab entire feature set
             featToConvert = fs
@@ -115,7 +114,7 @@ Public Class cSurfaceTools
         rs.NoDataValue = 0
         'rs.Reproject(fs.Projection)
 
-        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, strFilter), eStatusFlags.ValueComputed)
+        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, strFilter), eStatusFlags.ValueComputed)
 
         ' ToDo: This loop can be sped up by only processing those cells that overlap with the extent of the dataset
         ' For all cols, rows
@@ -189,6 +188,7 @@ Public Class cSurfaceTools
     ''' <param name="fs">The polygon feature set to convert.</param>
     ''' <param name="dCellWidth">Cell width, in decimal degrees, of the raster to create.</param>
     ''' <param name="strField">Attribute field to convert.</param>
+    ''' <param name="strFilter">Optional feature filter.</param>
     ''' <param name="strFileName">The output file name to write the raster to.</param>
     ''' <param name="Log"><see cref="cSpatialOperationLog"/> for logging operations.</param>
     ''' <returns>A raster.</returns>
@@ -213,7 +213,6 @@ Public Class cSurfaceTools
                                            ByVal strFileName As String,
                                            ByVal log As cSpatialOperationLog) As IRaster
 
-        'Dim projWork As ProjectionInfo = KnownCoordinateSystems.Projected.World.CylindricalEqualAreaworld
         Dim featToConvert As IFeatureSet = Nothing
         Dim iNumRejected As Integer = 0
         Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
@@ -245,7 +244,7 @@ Public Class cSurfaceTools
         Debug.Assert(cNumberUtils.Approximates(rs.CellWidth, dCellWidth, dCellWidth * 0.1))
         Debug.Assert(cNumberUtils.Approximates(dCellHeight, dCellWidth, rs.CellHeight * 0.1))
 
-        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, ""), eStatusFlags.ValueComputed)
+        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, ""), eStatusFlags.ValueComputed)
 
         ' ToDo: This loop can be sped up by only processing those cells that overlap with the extent of the dataset
         ' For all cols, rows

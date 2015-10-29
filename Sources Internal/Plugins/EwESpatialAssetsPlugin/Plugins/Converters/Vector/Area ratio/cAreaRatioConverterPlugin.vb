@@ -15,11 +15,9 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
 Imports DotSpatial.Data
 Imports EwECore
@@ -27,7 +25,6 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports DotSpatial.Projections
 
 #End Region ' Imports
 
@@ -35,13 +32,14 @@ Namespace SpatialData
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Default spatial data converter.
+    ''' Spatial data converter that converts polygons to fractions of cell sizes.
     ''' </summary>
     ''' <remarks>
-    ''' Converts an incoming vector map to a raster of an Ecospace raster.
+    ''' Converts an incoming vector map to a raster of a given spatial extent, cell 
+    ''' size and standard Ecospace projection.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cVectorConverterPlugin
+    Public Class cAreaRatioConverterPlugin
         Inherits cSpatialDataConverter
         Implements IConfigurable
 
@@ -49,19 +47,35 @@ Namespace SpatialData
             MyBase.New()
         End Sub
 
-        Public Overridable Function GetConfigUI() As System.Windows.Forms.Control _
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="IConfigurable.GetConfigUI"/>
+        ''' -----------------------------------------------------------------------
+        Public Function GetConfigUI() As System.Windows.Forms.Control _
             Implements EwEUtils.Core.IConfigurable.GetConfigUI
-            Dim pg As New ucGenericVectorConverterConfigPage()
+
+            Dim pg As New ucAttributeFilterConfigPage()
             pg.Converter = Me
             Return pg
+
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialDataConverter.IsConfigured"/>
+        ''' <inheritdocs cref="IConfigurable.IsConfigured"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Function IsConfigured() As Boolean _
             Implements EwEUtils.Core.IConfigurable.IsConfigured
-            Return True
+
+            Dim bConfigured As Boolean = True
+
+            ' Cannot work with an attribute name - should be NULL
+            bConfigured = bConfigured And String.IsNullOrWhiteSpace(Me.AttributeName)
+
+            If Not String.IsNullOrWhiteSpace(Me.AttributeFilter) Then
+                ' ToDo: validate if attribute filter is usable?
+                ' NOP
+            End If
+
+            Return bConfigured
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -73,16 +87,18 @@ Namespace SpatialData
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.Convert"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.Convert"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Convert(ByVal data As Object, _
-                                          ByVal ptfTL As PointF,
-                                          ByVal ptfBR As PointF,
-                                          ByVal dCellSize As Double,
+                                          ByVal ptfTL As PointF, _
+                                          ByVal ptfBR As PointF, _
+                                          ByVal dCellSize As Double, _
                                           ByVal strProjectionString As String, _
                                           ByVal strFile As String) As ISpatialRaster
 
             Dim log As cSpatialOperationLog = Nothing
+            Dim rstResult As IRaster = Nothing
+
             If (Me.m_core IsNot Nothing) Then log = Me.m_core.SpatialOperationLog
 
             ' Sanity checks
@@ -97,26 +113,14 @@ Namespace SpatialData
             ' Log
             Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
-            ' Get Ecospace raster bounds
-            Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
-            Dim rstResult As IRaster = Nothing
-
-            If (TypeOf data Is IFeatureSet) Then
+            ' Perform conversion
+            If (TypeOf data Is IRaster) Then
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
+            ElseIf (TypeOf data Is IFeatureSet) Then
                 Try
-
-                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
-
-                    ' Is attribute filter specified?
-                    If Not String.IsNullOrWhiteSpace(Me.AttributeFilter) Then
-                        ' #Yes: extract features that match the filter
-                        Dim lFeatures As List(Of IFeature) = fs.SelectByAttribute(Me.AttributeFilter)
-                        fs = New FeatureSet(lFeatures)
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTPLOYGONS, Me.AttributeFilter), eStatusFlags.ValueComputed)
-                    End If
-
                     ' Rasterize the features
-                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strProjectionString, strFile, log, _
-                                                       New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
+                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
+                    rstResult = cSurfaceTools.RasterizeArea(fs, ptfTL, ptfBR, dCellSize, strProjectionString, Me.AttributeFilter, strFile, log)
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
@@ -125,10 +129,9 @@ Namespace SpatialData
                 Catch ex As Exception
                     Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 End Try
-            Else
-                ' Log error
-                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
+
             End If
+
             Return New cSpatialRaster(rstResult)
 
         End Function
@@ -138,7 +141,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayName As String
             Get
-                Return My.Resources.CONVERTER_DIRECTVECTOR_NAME
+                Return My.Resources.CONVERTER_AREARASTER_NAME
             End Get
         End Property
 
@@ -147,7 +150,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property Description As String
             Get
-                Return My.Resources.CONVERTER_DIRECTVECTOR_DESCR
+                Return My.Resources.CONVERTER_AREARASTER_DESCR
             End Get
         End Property
 
@@ -156,7 +159,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "DotSpatial.DefaultVectorConverter"
+                Return "DotSpatial.VectorAreaConverter"
             End Get
         End Property
 

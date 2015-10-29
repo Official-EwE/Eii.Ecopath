@@ -15,6 +15,7 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -32,25 +33,34 @@ Namespace SpatialData
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Spatial data converter that converts polygons to fractions of cell sizes.
+    ''' Spatial data converter that converts the area of all ploygons with a given
+    ''' attribute value to a fractions of cell area value.
     ''' </summary>
     ''' <remarks>
     ''' Converts an incoming vector map to a raster of a given spatial extent, cell 
     ''' size and standard Ecospace projection.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cAreaRatioConverterPlugin
+    Public Class cIsobarConverterPlugin
         Inherits cSpatialDataConverter
-
-        Public Sub New()
-            MyBase.New()
-        End Sub
+        Implements IConfigurable
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialDataConverter.IsConfigured"/>
+        ''' <inheritdocs cref="ISpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function IsConfigured() As Boolean
-            Return True
+        Public Overrides Function IsConfigured() As Boolean _
+            Implements IConfigurable.IsConfigured
+            Return Not String.IsNullOrWhiteSpace(Me.AttributeName)
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="IConfigurable.GetConfigUI"/>
+        ''' -----------------------------------------------------------------------
+        Public Function GetConfigUI() As System.Windows.Forms.Control _
+            Implements IConfigurable.GetConfigUI
+            Dim pg As New ucAttributeNameConfigPage()
+            pg.Converter = Me
+            Return pg
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -58,11 +68,11 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean
             If (ds Is Nothing) Then Return False
-            Return (ds.ConversionFormat = "DotSpatialVector")
+            Return (ds.ConversionFormat = "DotSpatialVector") And (ds.VarName = eVarNameFlags.LayerDepth)
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialDataConverter.Convert"/>
+        ''' <inheritdocs cref="ISpatialDataConverter.Convert"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Convert(ByVal data As Object, _
                                           ByVal ptfTL As PointF, _
@@ -95,7 +105,8 @@ Namespace SpatialData
                 Try
                     ' Rasterize the features
                     Dim fs As IFeatureSet = CType(data, IFeatureSet)
-                    rstResult = cSurfaceTools.RasterizeArea(fs, ptfTL, ptfBR, dCellSize, Me.AttributeFilter, strProjectionString, strFile, log)
+                    rstResult = cSurfaceTools.RasterizeIsobar(fs, ptfTL, ptfBR, dCellSize, strProjectionString, _
+                                                              Me.AttributeName, strFile, log)
                     rstResult.Close()
                     Debug.Assert(rstResult IsNot Nothing)
 
@@ -116,7 +127,18 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayName As String
             Get
-                Return My.Resources.CONVERTER_AREARASTER_NAME
+                Return My.Resources.CONVERTER_ISOBAR_NAME
+
+                'If String.IsNullOrWhiteSpace(Me.AttributeName) Then
+                '    Return My.Resources.CONVERTER_ISOBAR_NAME
+                'Else
+                '    ' ToDo: globalize this
+                '    'Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, _
+                '    '                     My.Resources.CONVERTER_ISOBAR_NAME, _
+                '    '                     cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, "Field", Me.AttributeName))
+                '    Return (My.Resources.CONVERTER_ISOBAR_NAME & " using values from " & Me.AttributeName)
+                'End If
+
             End Get
         End Property
 
@@ -125,16 +147,16 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property Description As String
             Get
-                Return My.Resources.CONVERTER_AREARASTER_DESCR
+                Return My.Resources.CONVERTER_ISOBAR_DESCR
             End Get
         End Property
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialDataConverter.PluginName"/>
+        ''' <inheritdocs cref="cSpatialDataConverter.pluginName"/>
         ''' -----------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get
-                Return "DotSpatial.VectorAreaConverter"
+                Return "DotSpatial.IsobarConverter"
             End Get
         End Property
 

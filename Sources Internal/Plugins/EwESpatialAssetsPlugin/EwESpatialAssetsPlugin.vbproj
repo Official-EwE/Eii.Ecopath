@@ -167,15 +167,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Converters\cSpatialDataConverter.vb" />
-    <Compile Include="Plugins\Converters\Raster\cAreaRatioConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\Inclusion\cVectorCookieCutterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\Isobar conversion\cIsobarConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\Vector conversion by filter\cVectorConverterPlugin.vb" />
-    <Compile Include="Plugins\Converters\Vector\ucGenericVectorConverterConfigPage.Designer.vb">
-      <DependentUpon>ucGenericVectorConverterConfigPage.vb</DependentUpon>
+    <Compile Include="Plugins\Converters\Vector\Area ratio\cAreaRatioConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.Designer.vb">
+      <DependentUpon>ucAttributeFilterConfigPage.vb</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Converters\Vector\ucGenericVectorConverterConfigPage.vb">
+    <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Plugins\Converters\Vector\Inclusion\cVectorCookieCutterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\Isobar\cIsobarConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Raster\cRasterConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\Presence - absence\cPresenceAbsenceConverterPlugin.vb" />
+    <Compile Include="Plugins\Converters\Vector\ucAttributeNameConfigPage.Designer.vb">
+      <DependentUpon>ucAttributeNameConfigPage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Converters\Vector\ucAttributeNameConfigPage.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Plugins\Datasets\Files\Specific\cASCIIFilesDataSetPlugin.vb" />
@@ -220,8 +226,11 @@
     <Compile Include="Utils\cDotSpatialUtils.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Plugins\Converters\Vector\ucGenericVectorConverterConfigPage.resx">
-      <DependentUpon>ucGenericVectorConverterConfigPage.vb</DependentUpon>
+    <EmbeddedResource Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.resx">
+      <DependentUpon>ucAttributeFilterConfigPage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Converters\Vector\ucAttributeNameConfigPage.resx">
+      <DependentUpon>ucAttributeNameConfigPage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Datasets\Files\ucMultiFileDataSetConfigPage.resx">
       <DependentUpon>ucMultiFileDataSetConfigPage.vb</DependentUpon>

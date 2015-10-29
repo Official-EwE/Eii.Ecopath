@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared
 
 Namespace SpatialData
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucMultiFileDatasetConfigPage
         Inherits System.Windows.Forms.UserControl
 

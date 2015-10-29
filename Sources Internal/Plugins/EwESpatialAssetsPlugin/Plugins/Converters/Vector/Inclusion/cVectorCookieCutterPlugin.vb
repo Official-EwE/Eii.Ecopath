@@ -28,7 +28,7 @@ Imports EwEUtils.SystemUtilities
 Namespace SpatialData
 
     Public Class cCookieCutConverterPlugin
-        Inherits cVectorConverterPlugin
+        Inherits cPresenceAbsenceConverterPlugin
 
         Public Sub New()
             MyBase.New()
@@ -70,14 +70,14 @@ Namespace SpatialData
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cVectorConverterPlugin.IsConfigured"/>.
+        ''' <inheritdocs cref="cPresenceAbsenceConverterPlugin.IsConfigured"/>.
         ''' -------------------------------------------------------------------
         Public Overrides Function IsConfigured() As Boolean
             Return True
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cVectorConverterPlugin.IsCompatible"/>
+        ''' <inheritdocs cref="cPresenceAbsenceConverterPlugin.IsCompatible"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function IsCompatible(ds As EwEUtils.SpatialData.ISpatialDataSet) As Boolean
             Return MyBase.IsCompatible(ds) And (ds.VarName = eVarNameFlags.LayerExclusion)
@@ -106,7 +106,7 @@ Namespace SpatialData
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cVectorConverterPlugin.DisplayName"/>.
+        ''' <inheritdocs cref="cPresenceAbsenceConverterPlugin.DisplayName"/>.
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayName As String
             Get
@@ -115,7 +115,7 @@ Namespace SpatialData
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cVectorConverterPlugin.PluginName"/>.
+        ''' <inheritdocs cref="cPresenceAbsenceConverterPlugin.PluginName"/>.
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property PluginName As String
             Get

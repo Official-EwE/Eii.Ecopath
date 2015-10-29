@@ -136,10 +136,10 @@
     <value>Raster interpolation</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_DESCR" xml:space="preserve">
-    <value>Convert GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace, where a certain vector attribute is matched to an Ecospace entity (MPA, habitat, region, group, ..)</value>
+    <value>Convert GIS vector data (points, multi-points and polygones) to a pesence/absence raster compatible with Ecospace, where a vector attribute is matched to the name of object in Ecospace</value>
   </data>
   <data name="CONVERTER_DIRECTVECTOR_NAME" xml:space="preserve">
-    <value>Vector conversion</value>
+    <value>Presence/absence conversion</value>
   </data>
   <data name="CONVERTER_ISOBAR_DESCR" xml:space="preserve">
     <value>Convert GIS isobar (height contours) to a Ecospace depth map.</value>
@@ -206,13 +206,13 @@
     <value>min {0}, max {1}, mean {2}</value>
     <comment>{0}=min, {1}=max, {2}=mean</comment>
   </data>
-  <data name="OPERATION_EXTRACTPLOYGONS" xml:space="preserve">
-    <value>Polygons extracted by '{0}'</value>
-    <comment>{0}=query</comment>
-  </data>
   <data name="OPERATION_EXTRACTRASTER" xml:space="preserve">
     <value>Extracted raster {0}, {1}</value>
     <comment>{0}=bounds, {1}=grid</comment>
+  </data>
+  <data name="OPERATION_EXTRACTVECTOR" xml:space="preserve">
+    <value>Vector features extracted by '{0}'</value>
+    <comment>{0}=query</comment>
   </data>
   <data name="OPERATION_REPROJECT" xml:space="preserve">
     <value>Projected to {0}</value>

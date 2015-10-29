@@ -59,14 +59,7 @@ Public Class cVectorTools
     ''' <returns>A raster.</returns>
     ''' <remarks>
     ''' <para>This operation uses 'cookie cutter' polygons for clipping polygons and
-    ''' performing area ratio calculations. Due to limitations in the cookie cutter
-    ''' positioning logic this operation is forced to operate on a WGS84 projection,
-    ''' This projection should not be used to calculate areas. Since both the feature 
-    ''' set and the produced raster are sharing this projection this effect is 
-    ''' somewhat mitigated, but area ratios may still be inaccurate in
-    ''' extreme lattitude ranges.</para>
-    ''' <para>The obvious solution would be to make this operation work with 
-    ''' a global cylindrical equal area projection.</para>
+    ''' performing area ratio calculations.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Shared Function Rasterize(ByVal fs As IFeatureSet,
@@ -74,39 +67,36 @@ Public Class cVectorTools
                                      ByVal ptfBR As PointF, _
                                      ByVal dCellSize As Double, _
                                      ByVal dValueNull As Double, _
-                                     ByVal strProjectionString As String, _
+                                     ByVal strProjTo As String, _
                                      ByVal strFileName As String,
                                      ByVal log As cSpatialOperationLog, _
                                      ByVal dgt As TranslateValueDelegate) As IRaster
 
         Debug.Assert(dgt IsNot Nothing)
 
-        Dim coords As New List(Of Coordinate)
-        Dim featToConvert As IFeatureSet = Nothing
-        Dim polyToConvert As IGeometry = Nothing
         Dim dValClear As Double
         Dim dValSet As Double
-        Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
+        Dim projTo As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjTo)
 
         ' -----
         ' Create and position raster 
         ' -----
         Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = proj
+        rs.Projection = projTo
         rs.Bounds = bnds
         rs.NoDataValue = dValueNull
 
         ' Wipe array
-        dValClear = dgt.Invoke(Nothing, cCore.NULL_VALUE)
+        dValClear = dgt.Invoke(Nothing, 0)
         For iRow As Integer = 0 To bnds.NumRows - 1
             For iCol As Integer = 0 To bnds.NumColumns - 1
                 rs.Value(iRow, iCol) = dValClear
             Next
         Next
 
-        If (Not fs.Projection.Equals(proj)) Then
-            fs.Reproject(proj)
+        If (Not fs.Projection.Equals(projTo)) Then
+            fs.Reproject(projTo)
             If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
         End If
 
@@ -118,13 +108,17 @@ Public Class cVectorTools
             dValSet = dgt.Invoke(drow, rs.NoDataValue)
 
             Select Case f.FeatureType
+
                 Case FeatureType.Point
                     ' JS17Feb14: tested OK
-                    Dim pt As IPoint = New DotSpatial.Topology.Point(f.Coordinates(0))
                     If rs.ContainsFeature(f) Then
+                        Dim pt As IPoint = New DotSpatial.Topology.Point(f.Coordinates(0))
                         Dim cellpos As RcIndex = rs.ProjToCell(pt.X, pt.Y)
                         rs.Value(cellpos.Row, cellpos.Column) = dValSet
                     End If
+
+                Case FeatureType.Line
+                    Throw New NotImplementedException("Spatial Assets plug-in - cVectorTools cannot convert line features yet")
 
                 Case FeatureType.MultiPoint
                     ' To test
@@ -164,8 +158,19 @@ Public Class cVectorTools
 
                         For iRow As Integer = y0 To y1
                             For iCol As Integer = x0 To x1
-                                Dim pt As New DotSpatial.Topology.Point(rs.CellToProj(iRow, iCol))
-                                If poly.Contains(pt) Then
+
+                                ' Create cookie cutter for a cell
+                                Dim ptCut = rs.CellToProj(iRow, iCol)
+                                Dim coords As New List(Of Coordinate)
+                                coords.Add(New Coordinate(ptCut.X - rs.CellWidth / 2, ptCut.Y - rs.CellHeight / 2))
+                                coords.Add(New Coordinate(ptCut.X + rs.CellWidth / 2, ptCut.Y - rs.CellHeight / 2))
+                                coords.Add(New Coordinate(ptCut.X + rs.CellWidth / 2, ptCut.Y + rs.CellHeight / 2))
+                                coords.Add(New Coordinate(ptCut.X - rs.CellWidth / 2, ptCut.Y + rs.CellHeight / 2))
+                                coords.Add(coords(0)) ' Close polygon
+
+                                Dim polyCut As New Polygon(coords)
+
+                                If polyCut.Overlaps(poly) Then
                                     rs.Value(iRow, iCol) = dValSet
                                 End If
                             Next

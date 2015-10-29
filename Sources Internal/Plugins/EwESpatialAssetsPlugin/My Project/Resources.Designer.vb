@@ -115,7 +115,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Convert GIS vector data (points, multi-points and polygones) to a raster compatible with Ecospace, where a certain vector attribute is matched to an Ecospace entity (MPA, habitat, region, group, ..).
+        '''  Looks up a localized string similar to Convert GIS vector data (points, multi-points and polygones) to a pesence/absence raster compatible with Ecospace, where a vector attribute is matched to the name of object in Ecospace.
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTVECTOR_DESCR() As String
             Get
@@ -124,7 +124,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Vector conversion.
+        '''  Looks up a localized string similar to Presence/absence conversion.
         '''</summary>
         Friend ReadOnly Property CONVERTER_DIRECTVECTOR_NAME() As String
             Get
@@ -313,20 +313,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Polygons extracted by &apos;{0}&apos;.
-        '''</summary>
-        Friend ReadOnly Property OPERATION_EXTRACTPLOYGONS() As String
-            Get
-                Return ResourceManager.GetString("OPERATION_EXTRACTPLOYGONS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Extracted raster {0}, {1}.
         '''</summary>
         Friend ReadOnly Property OPERATION_EXTRACTRASTER() As String
             Get
                 Return ResourceManager.GetString("OPERATION_EXTRACTRASTER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Vector features extracted by &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property OPERATION_EXTRACTVECTOR() As String
+            Get
+                Return ResourceManager.GetString("OPERATION_EXTRACTVECTOR", resourceCulture)
             End Get
         End Property
         

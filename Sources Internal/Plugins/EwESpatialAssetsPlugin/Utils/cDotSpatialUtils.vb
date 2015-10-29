@@ -512,4 +512,40 @@ Public Class cDotSpatialUtils
 
 #End Region ' Projections
 
+#Region " Feature extraction "
+
+    Friend Shared Function FeatureSet(fs As IFeatureSet, strFilter As String) As FeatureSet
+
+        If (fs Is Nothing) Then Return Nothing
+
+        Dim features As New List(Of IFeature)
+        Try
+            If Not fs.AttributesPopulated Then fs.FillAttributes()
+
+            ' Bug fix for http://dotspatial.codeplex.com/workitem/25308
+            If (fs.FeatureLookup.Count <> fs.Features.Count) Then
+                fs.FeatureLookup.Clear()
+
+                For i As Integer = 0 To fs.Features.Count - 1
+                    Dim f As IFeature = fs.Features(i)
+                    If (f.DataRow IsNot Nothing) Then
+                        fs.FeatureLookup.Add(f.DataRow, f)
+                    End If
+                Next
+            End If
+
+            features = fs.SelectByAttribute(strFilter)
+        Catch ex As Exception
+            ' Whaoh!
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        Dim fsNew As New FeatureSet(features)
+        fsNew.Projection = fs.Projection
+        Return fsNew
+
+    End Function
+
+#End Region ' Feature extraction
+
 End Class

@@ -18,7 +18,7 @@
 Namespace SpatialData
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class ucGenericVectorConverterConfigPage
+    Partial Class ucAttributeFilterConfigPage
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
@@ -41,44 +41,40 @@ Namespace SpatialData
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_lblAttribute = New System.Windows.Forms.Label()
-            Me.m_cmbAttribute = New System.Windows.Forms.ComboBox()
+            Me.m_lblFilter = New System.Windows.Forms.Label()
+            Me.m_tbxValue = New System.Windows.Forms.TextBox()
             Me.SuspendLayout()
             '
-            'm_lblAttribute
+            'm_lblFilter
             '
-            Me.m_lblAttribute.AutoSize = True
-            Me.m_lblAttribute.Location = New System.Drawing.Point(3, 6)
-            Me.m_lblAttribute.Name = "m_lblAttribute"
-            Me.m_lblAttribute.Size = New System.Drawing.Size(49, 13)
-            Me.m_lblAttribute.TabIndex = 0
-            Me.m_lblAttribute.Text = "&Attribute:"
+            Me.m_lblFilter.AutoSize = True
+            Me.m_lblFilter.Location = New System.Drawing.Point(3, 6)
+            Me.m_lblFilter.Name = "m_lblFilter"
+            Me.m_lblFilter.Size = New System.Drawing.Size(32, 13)
+            Me.m_lblFilter.TabIndex = 0
+            Me.m_lblFilter.Text = "&Filter:"
             '
-            'm_cmbAttribute
+            'm_tbxValue
             '
-            Me.m_cmbAttribute.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_cmbAttribute.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbAttribute.FormattingEnabled = True
-            Me.m_cmbAttribute.Location = New System.Drawing.Point(58, 3)
-            Me.m_cmbAttribute.Name = "m_cmbAttribute"
-            Me.m_cmbAttribute.Size = New System.Drawing.Size(192, 21)
-            Me.m_cmbAttribute.TabIndex = 1
+            Me.m_tbxValue.Location = New System.Drawing.Point(58, 3)
+            Me.m_tbxValue.Name = "m_tbxValue"
+            Me.m_tbxValue.Size = New System.Drawing.Size(309, 20)
+            Me.m_tbxValue.TabIndex = 2
             '
-            'ucIsobarConverterConfigPage
+            'ucAttributeFilterConfigPage
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_cmbAttribute)
-            Me.Controls.Add(Me.m_lblAttribute)
-            Me.Name = "ucIsobarConverterConfigPage"
-            Me.Size = New System.Drawing.Size(253, 28)
+            Me.Controls.Add(Me.m_tbxValue)
+            Me.Controls.Add(Me.m_lblFilter)
+            Me.Name = "ucAttributeFilterConfigPage"
+            Me.Size = New System.Drawing.Size(370, 29)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_lblAttribute As System.Windows.Forms.Label
-        Friend WithEvents m_cmbAttribute As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblFilter As System.Windows.Forms.Label
+        Private WithEvents m_tbxValue As System.Windows.Forms.TextBox
 
     End Class
 

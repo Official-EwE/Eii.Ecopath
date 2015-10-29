@@ -30,7 +30,7 @@ Namespace SpatialData
     ''' <summary>
     ''' 
     ''' </summary>
-    Public Class ucGenericVectorConverterConfigPage
+    Public Class ucAttributeNameConfigPage
         Implements IUIElement
         Implements IOptionsPage
 
@@ -109,6 +109,7 @@ Namespace SpatialData
 
             Dim item As cAttributeItem = DirectCast(Me.m_cmbAttribute.SelectedItem, cAttributeItem)
             Me.Converter.AttributeName = item.Attribute
+            Me.Converter.AttributeFilter = ""
 
             Return IOptionsPage.eApplyResultType.Success
         End Function
