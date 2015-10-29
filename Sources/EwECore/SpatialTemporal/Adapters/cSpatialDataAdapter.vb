@@ -369,9 +369,6 @@ Namespace SpatialData
             Dim iRow As Integer
             Dim iCol As Integer
 
-            Dim sum As Double = 0
-            Dim n As Integer = 0
-
             Try
                 ' For all rows
                 iRow = 1
@@ -379,17 +376,11 @@ Namespace SpatialData
                     ' For all columns
                     iCol = 1
                     While (iCol <= iNumCols) And (bSuccess = True)
-                        ' Is a water cell or is this layer affecting depth?
-                        If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
-                            ' #Yes: get value
-                            sValue = dataExternal.Cell(iRow, iCol, dNoData)
-                            ' Is a valid value?
-                            If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
-                                ' #Yes: set value
-                                bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, sValue)
-                                'sum += CDbl(layer.Cell(iRow, iCol))
-                                'n += 1
-                            End If
+                        sValue = dataExternal.Cell(iRow, iCol, dNoData)
+                        ' Is a valid value?
+                        If (sValue <> cCore.NULL_VALUE) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
+                            ' #Yes: set value
+                            bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, sValue)
                         Else
                             bSuccess = bSuccess And Me.SetCell(layer, conn, iRow, iCol, dNoData)
                         End If
@@ -397,8 +388,6 @@ Namespace SpatialData
                     End While ' iCol
                     iRow += 1
                 End While ' iRow
-
-                'System.Console.WriteLine(layer.Name + " mean = " + (sum / n).ToString)
 
                 If bSuccess Then
                     Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), _
