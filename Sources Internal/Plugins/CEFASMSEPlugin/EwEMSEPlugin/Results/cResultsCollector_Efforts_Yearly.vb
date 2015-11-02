@@ -30,4 +30,10 @@
         End Get
     End Property
 
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "EffortsYearly_"
+        End Get
+    End Property
+
 End Class

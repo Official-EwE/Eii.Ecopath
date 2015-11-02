@@ -37,4 +37,11 @@
             Return True
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "HCR_Quota_Targ_"
+        End Get
+    End Property
+
 End Class

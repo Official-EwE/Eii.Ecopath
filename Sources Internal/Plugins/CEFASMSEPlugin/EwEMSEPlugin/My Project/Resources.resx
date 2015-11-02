@@ -374,4 +374,7 @@
   <data name="HEADER_TIMEFRAMERULES" xml:space="preserve">
     <value>N Years for Time Frame Rule</value>
   </data>
+  <data name="PROMPT_QUOTAS_NOT_SUM_TO_ONE" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -39,4 +39,10 @@ Public Class cResultsCollector_Biomass_Yearly
         End Get
     End Property
 
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "BiomassYearly_"
+        End Get
+    End Property
+
 End Class

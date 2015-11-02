@@ -52,4 +52,11 @@
             Return False
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "Value_"
+        End Get
+    End Property
+
 End Class

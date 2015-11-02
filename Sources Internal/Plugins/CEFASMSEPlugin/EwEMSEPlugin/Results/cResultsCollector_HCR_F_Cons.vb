@@ -27,4 +27,10 @@
             Return True
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "HCR_F_Cons_"
+        End Get
+    End Property
 End Class

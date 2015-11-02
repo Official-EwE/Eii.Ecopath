@@ -60,4 +60,10 @@ Public Class cResultsCollector_Biomass
             Return cStringUtils.FormatNumber(GetValue(iStrategy, iElement, iTime))
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "Biomass_"
+        End Get
+    End Property
 End Class

@@ -60,4 +60,10 @@ Public Class cResultsCollector_HighestValueGroup
         End Get
     End Property
 
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "HighestValueGroup_"
+        End Get
+    End Property
+
 End Class

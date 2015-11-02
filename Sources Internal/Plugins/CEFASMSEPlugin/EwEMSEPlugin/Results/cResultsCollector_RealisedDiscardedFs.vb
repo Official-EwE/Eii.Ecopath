@@ -26,4 +26,11 @@
             Return m_MSE.RealisedDiscardFs(iGrp, iTime)
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "RealisedDiscardFs_"
+        End Get
+    End Property
+
 End Class

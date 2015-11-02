@@ -28,6 +28,7 @@ Partial Class frmEditQuotaShares
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.btnSum2One = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridQuotaShares()
         Me.SuspendLayout()
         '
@@ -49,6 +50,12 @@ Partial Class frmEditQuotaShares
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
         Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'btnSum2One
+        '
+        resources.ApplyResources(Me.btnSum2One, "btnSum2One")
+        Me.btnSum2One.Name = "btnSum2One"
+        Me.btnSum2One.UseVisualStyleBackColor = True
         '
         'm_grid
         '
@@ -86,6 +93,7 @@ Partial Class frmEditQuotaShares
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.btnSum2One)
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnSave)
@@ -94,6 +102,7 @@ Partial Class frmEditQuotaShares
         Me.Name = "frmEditQuotaShares"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -102,6 +111,6 @@ Partial Class frmEditQuotaShares
     Friend WithEvents m_btnSave As System.Windows.Forms.Button
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_ts As cEwEToolstrip
-
+    Friend WithEvents btnSum2One As Button
 
 End Class

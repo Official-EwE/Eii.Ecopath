@@ -12,6 +12,8 @@
 
     Public MustOverride ReadOnly Property DataName As String
 
+    Public MustOverride ReadOnly Property FileNamePrefix As String
+
     Protected MustOverride ReadOnly Property DefaultValue As Object
 
     Protected MustOverride Sub SetDefaults(ByVal DefaultValue As Object)

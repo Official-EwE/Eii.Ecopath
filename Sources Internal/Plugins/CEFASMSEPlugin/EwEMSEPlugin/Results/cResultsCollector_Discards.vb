@@ -1,7 +1,6 @@
 ﻿Public Class cResultsCollector_Discards
     Inherits cResultsCollector_Catch
 
-
     Public Overrides ReadOnly Property DataName As String
         Get
             Return "Discard Rate (" & ScientificInterfaceShared.My.Resources.UNIT_CURRENCY_WETWEIGHT & "/year)"
@@ -38,6 +37,12 @@
     Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
             Return (m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear)
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "Discards_"
         End Get
     End Property
 End Class

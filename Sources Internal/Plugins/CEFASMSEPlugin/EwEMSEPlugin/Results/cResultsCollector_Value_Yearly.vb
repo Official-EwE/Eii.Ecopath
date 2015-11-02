@@ -61,4 +61,11 @@
             Return True
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "ValueYearly_"
+        End Get
+    End Property
+
 End Class

@@ -24,4 +24,11 @@
         End Get
     End Property
 
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "RealisedDiscardFsYearly_"
+        End Get
+    End Property
+
+
 End Class

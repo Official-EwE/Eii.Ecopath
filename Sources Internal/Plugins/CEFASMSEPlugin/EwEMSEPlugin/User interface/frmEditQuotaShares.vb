@@ -99,10 +99,43 @@ Public Class frmEditQuotaShares
         Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
     End Sub
 
+    Private Sub OutputMessageNotSum1(ByVal Groups_Not_Summing_to_1 As List(Of Integer))
+
+        Dim strGroupsNotSum1 As String
+
+        strGroupsNotSum1 = m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(0)).Name
+
+        If Groups_Not_Summing_to_1.Count > 1 Then
+            For i = 2 To Groups_Not_Summing_to_1.Count
+                If i = Groups_Not_Summing_to_1.Count Then
+                    strGroupsNotSum1 &= " and " & m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
+                Else
+                    strGroupsNotSum1 &= ", " & m_mse.Core.EcoPathGroupInputs(Groups_Not_Summing_to_1(i - 1)).Name
+                End If
+            Next
+        End If
+
+        'flag an error
+        If Groups_Not_Summing_to_1.Count = 1 Then
+            MessageBox.Show("The quotashares for group " & strGroupsNotSum1 & " do not sum to 1")
+        Else
+            MessageBox.Show("The quotashares for groups " & strGroupsNotSum1 & " do not sum to 1")
+        End If
+
+    End Sub
+
     Private Sub m_btnSave_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSave.Click
 
         Dim lstrSubMessages As New List(Of String)
         Dim strFolder As String = cMSEUtils.MSEFolder(Me.m_mse.DataPath, cMSEUtils.eMSEPaths.Fleet)
+        Dim Groups_Not_Summing_to_1 As New List(Of Integer)
+
+        If Not QuotaSharesSumTo1(Groups_Not_Summing_to_1) Then
+
+            OutputMessageNotSum1(Groups_Not_Summing_to_1)
+            Exit Sub
+
+        End If
 
         'Saves all the parameters to csv when user clicks to save
         If m_quotashares.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "QuotaShares.csv"))
@@ -115,6 +148,30 @@ Public Class frmEditQuotaShares
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
+
+    Private Function QuotaSharesSumTo1(ByRef GroupsNotSum1 As List(Of Integer)) As Boolean
+
+        Const Precision As Single = 0.0001
+        Dim QShares As List(Of cQuotaShares.QuotaShare) = m_quotashares.GetLstGrpShares
+        Dim SumShare(m_mse.Core.nGroups) As Single
+        Dim PassTest As Boolean = True
+
+        For Each iQuotaShare In QShares
+            SumShare(iQuotaShare.mGroupNo) += iQuotaShare.mShare
+        Next
+
+        For iGrp = 1 To m_mse.Core.nGroups
+            If SumShare(iGrp) <> 0 Then
+                If SumShare(iGrp) < 1 - Precision Or SumShare(iGrp) > 1 + Precision Then
+                    GroupsNotSum1.Add(iGrp)
+                    PassTest = False
+                End If
+            End If
+        Next
+
+        Return PassTest
+
+    End Function
 
     Private Sub OnGridEdited()
         Me.m_bIsDirty = True
@@ -129,4 +186,27 @@ Public Class frmEditQuotaShares
 
     End Sub
 
+    Private Sub btnSum2One_Click(sender As Object, e As EventArgs) Handles btnSum2One.Click
+
+        Dim iStart As Integer = 0
+        Dim SumQuotaShare As Single = 0
+
+        SumQuotaShare = m_quotashares.ReadRowDist(0).mShare
+
+        For i = 2 To m_quotashares.CountDist
+            If m_quotashares.ReadRowDist(i - 1).mGroupNo <> m_quotashares.ReadRowDist(i - 2).mGroupNo Then
+                For iChange = iStart To i - 2
+                    m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
+                Next
+                SumQuotaShare = 0
+                iStart = i
+            End If
+            If m_quotashares.ReadRowDist(i - 1).mShare > 0 Then SumQuotaShare += m_quotashares.ReadRowDist(i - 1).mShare
+        Next
+
+        Me.m_grid.Init(Me.m_mse, m_quotashares)
+
+        Me.UpdateGrid(Me.m_quotashares.GetLstGrpShares, My.Resources.HEADER_SURVIVABILITIES)
+
+    End Sub
 End Class

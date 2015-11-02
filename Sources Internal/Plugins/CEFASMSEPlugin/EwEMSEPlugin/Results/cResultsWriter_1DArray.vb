@@ -22,11 +22,7 @@ Public Class cResultsWriter_1DArray
         m_StreamWriters = New List(Of StreamWriter)
 
         For iElement = 1 To m_ResultsArray.nElements
-            If m_ResultsArray.Yearly Then
-                strFile = cFileUtils.ToValidFileName("Yearly_" & m_ResultsArray.ElementName(iElement) & "_" & m_ResultsArray.Dim_Name & "No" & iElement & ".csv", False)
-            Else
-                strFile = cFileUtils.ToValidFileName(m_ResultsArray.ElementName(iElement) & "_" & m_ResultsArray.Dim_Name & "No" & iElement & ".csv", False)
-            End If
+            strFile = cFileUtils.ToValidFileName(m_ResultsArray.FileNamePrefix & m_ResultsArray.ElementName(iElement) & "_" & m_ResultsArray.Dim_Name & "No" & iElement & ".csv", False)
 
             writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, FolderPath, strFile))
             msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))

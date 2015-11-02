@@ -40,4 +40,11 @@
             Return m_MSE.RealisedFs(iGrp, iTime)
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "RealisedTotalFs_"
+        End Get
+    End Property
+
 End Class

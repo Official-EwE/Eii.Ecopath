@@ -60,4 +60,10 @@ Public Class cResultsCollector_Efforts
             Return False
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "Efforts_"
+        End Get
+    End Property
 End Class

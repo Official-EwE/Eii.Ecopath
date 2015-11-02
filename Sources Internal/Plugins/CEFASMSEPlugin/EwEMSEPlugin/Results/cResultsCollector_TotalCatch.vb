@@ -24,4 +24,11 @@
             Return (m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear)
         End Get
     End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "TotalCatch_"
+        End Get
+    End Property
+
 End Class

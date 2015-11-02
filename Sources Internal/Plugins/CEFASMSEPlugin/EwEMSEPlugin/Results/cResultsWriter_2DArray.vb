@@ -52,11 +52,7 @@ Public Class cResultsWriter_2DArray
                 Else
                     FleetName = "_FleetNo" & iFleet
                 End If
-                If m_ResultsArray.Yearly Then
-                    strFile = cFileUtils.ToValidFileName("Yearly_" & GroupName & FleetName & ".csv", False)
-                Else
-                    strFile = cFileUtils.ToValidFileName(GroupName & FleetName & ".csv", False)
-                End If
+                strFile = cFileUtils.ToValidFileName(m_ResultsArray.FileNamePrefix & GroupName & FleetName & ".csv", False)
 
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(MSE.DataPath, FolderPath, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))

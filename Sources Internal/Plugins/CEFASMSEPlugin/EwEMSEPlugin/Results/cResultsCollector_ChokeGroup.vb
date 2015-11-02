@@ -3,7 +3,6 @@
 Public Class cResultsCollector_ChokeGroup
     Inherits cResultsCollector_1DArray
 
-
     Public Overrides ReadOnly Property DataName As String
         Get
             Return "Choke Group"
@@ -58,6 +57,12 @@ Public Class cResultsCollector_ChokeGroup
     Public Overrides ReadOnly Property GetValue_Formatted4CSV(iStrategy As Integer, iElement As Integer, iTime As Integer) As Object
         Get
             Return cStringUtils.ToCSVField(GetValue(iStrategy, iElement, iTime))
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property FileNamePrefix As String
+        Get
+            Return "ChokeGroup_"
         End Get
     End Property
 End Class
