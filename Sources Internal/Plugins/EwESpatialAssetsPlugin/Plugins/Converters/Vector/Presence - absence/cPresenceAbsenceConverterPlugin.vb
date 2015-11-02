@@ -83,56 +83,49 @@ Namespace SpatialData
                                           ByVal strProjToWkt As String, _
                                           ByVal strFile As String) As ISpatialRaster
 
-            Dim log As cSpatialOperationLog = Nothing
-            If (Me.m_core IsNot Nothing) Then log = Me.m_core.SpatialOperationLog
-
             ' Sanity checks
             Debug.Assert((data IsNot Nothing) And (Not String.IsNullOrWhiteSpace(strFile)) And (dCellSize > 0))
 
             ' Validate data
-            If (Not TypeOf data Is IDataSet) Then
-                cLog.Write(Me.DisplayName & ": cannot convert data of type " & data.GetType().ToString, eVerboseLevel.Detailed)
+            If (Not TypeOf data Is IFeatureSet) Then
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
                 Return Nothing
             End If
 
-            ' Log
-            Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
-
-            ' Get Ecospace raster bounds
-            Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
             Dim rstResult As IRaster = Nothing
+            Dim fs As IFeatureSet = CType(data, IFeatureSet)
+            Dim projTo As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjToWkt)
 
-            If (TypeOf data Is IFeatureSet) Then
-                Try
+            Try
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
-                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
+                ' Apply attribute filter
+                If Not String.IsNullOrWhiteSpace(Me.AttributeFilter) Then
+                    fs = cDotSpatialUtils.FeatureSet(fs, Me.AttributeFilter)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, Me.AttributeFilter), eStatusFlags.ValueComputed)
+                End If
 
-                    ' Is attribute filter specified?
-                    If Not String.IsNullOrWhiteSpace(Me.AttributeFilter) Then
-                        ' #Yes: extract features that match the filter
-                        Try
-                            fs = cDotSpatialUtils.FeatureSet(fs, Me.AttributeFilter)
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, Me.AttributeFilter), eStatusFlags.ValueComputed)
-                        Catch ex As Exception
-                            Debug.Assert(False, ex.Message)
-                        End Try
-                    End If
+                ' Reproject
+                If (Not fs.Projection.Equals(projTo)) Then
+                    fs.Reproject(projTo)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+                End If
 
-                    ' Rasterize the features
-                    rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strProjToWkt, strFile, log, _
-                                                       New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
+                ' Rasterize
+                rstResult = cVectorTools.Rasterize(fs, ptfTL, ptfBR, dCellSize, cCore.NULL_VALUE, strFile, _
+                                                   New cVectorTools.TranslateValueDelegate(AddressOf ToValue))
+                If (rstResult IsNot Nothing) Then
                     rstResult.Close()
-                    Debug.Assert(rstResult IsNot Nothing)
+                Else
+                    Debug.Assert(False)
+                End If
 
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
-                Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
-                End Try
-            Else
-                ' Log error
-                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
-            End If
+            Catch ex As Exception
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+            End Try
+
             Return New cSpatialRaster(rstResult)
 
         End Function

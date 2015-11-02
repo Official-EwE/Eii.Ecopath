@@ -55,7 +55,6 @@ Public Class cVectorTools
     ''' <param name="ptfTL"></param>
     ''' <param name="dgt"></param>
     ''' <param name="strFileName">The output file name to write the raster to.</param>
-    ''' <param name="Log"><see cref="cSpatialOperationLog"/> for logging operations.</param>
     ''' <returns>A raster.</returns>
     ''' <remarks>
     ''' <para>This operation uses 'cookie cutter' polygons for clipping polygons and
@@ -67,23 +66,20 @@ Public Class cVectorTools
                                      ByVal ptfBR As PointF, _
                                      ByVal dCellSize As Double, _
                                      ByVal dValueNull As Double, _
-                                     ByVal strProjTo As String, _
                                      ByVal strFileName As String,
-                                     ByVal log As cSpatialOperationLog, _
                                      ByVal dgt As TranslateValueDelegate) As IRaster
 
         Debug.Assert(dgt IsNot Nothing)
 
         Dim dValClear As Double
         Dim dValSet As Double
-        Dim projTo As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjTo)
 
         ' -----
         ' Create and position raster 
         ' -----
         Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = projTo
+        rs.Projection = fs.Projection
         rs.Bounds = bnds
         rs.NoDataValue = dValueNull
 
@@ -94,11 +90,6 @@ Public Class cVectorTools
                 rs.Value(iRow, iCol) = dValClear
             Next
         Next
-
-        If (Not fs.Projection.Equals(projTo)) Then
-            fs.Reproject(projTo)
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
-        End If
 
         Dim dtAttribs As DataTable = fs.DataTable
         For i As Integer = 0 To fs.Features.Count - 1

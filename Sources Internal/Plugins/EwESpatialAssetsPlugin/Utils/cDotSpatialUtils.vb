@@ -514,9 +514,10 @@ Public Class cDotSpatialUtils
 
 #Region " Feature extraction "
 
-    Friend Shared Function FeatureSet(fs As IFeatureSet, strFilter As String) As FeatureSet
+    Friend Shared Function FeatureSet(fs As IFeatureSet, strFilter As String) As IFeatureSet
 
-        If (fs Is Nothing) Then Return Nothing
+        If (fs Is Nothing) Then Return fs
+        If (String.IsNullOrWhiteSpace(strFilter)) Then Return fs
 
         Dim features As New List(Of IFeature)
         Try

@@ -40,9 +40,6 @@ Public Class cSurfaceTools
     ''' </summary>
     ''' <param name="fs">The polygon feature set to convert.</param>
     ''' <param name="dCellSize">Cell size, in decimal degrees, of the raster to create.</param>
-    ''' <param name="strFilter">Attribute value filter to find the polygons to 
-    ''' rasterize. If left empty, all features in the feature set will be 
-    ''' rasterized.</param>
     ''' <param name="strFileName">The output file name to write the raster to.</param>
     ''' <param name="Log"><see cref="cSpatialOperationLog"/> for logging operations.</param>
     ''' <returns>A raster.</returns>
@@ -62,8 +59,6 @@ Public Class cSurfaceTools
                                          ByVal ptfTL As PointF, _
                                          ByVal ptfBR As PointF, _
                                          ByVal dCellSize As Double, _
-                                         ByVal strProjectionString As String, _
-                                         ByVal strFilter As String, _
                                          ByVal strFileName As String,
                                          ByVal log As cSpatialOperationLog) As IRaster
 
@@ -71,33 +66,10 @@ Public Class cSurfaceTools
         Dim featToConvert As IFeatureSet = Nothing
         Dim polyToConvert As IGeometry = Nothing
         Dim iNumRejected As Integer = 0
-        Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjectionString)
-
-        If (Not fs.Projection.Equals(proj)) Then
-            fs.Reproject(proj)
-            'fs.SaveAs("H:\test.asc", True)
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
-        End If
 
         ' -----
         ' Build list of features to rasterize
         ' -----
-
-        ' Has a filter?
-        If Not String.IsNullOrWhiteSpace(strFilter) Then
-            ' #Yes: Grab all features that match the filter
-            featToConvert = New FeatureSet()
-            featToConvert.Projection = fs.Projection
-            For Each i As Integer In fs.SelectIndexByAttribute(strFilter)
-                featToConvert.AddFeature(fs.Features(i))
-            Next
-
-            If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, strFilter), eStatusFlags.ValueComputed)
-        Else
-            ' #No: grab entire feature set
-            featToConvert = fs
-        End If
-
         iNumRejected = cVectorTools.CheckUsablePolygons(featToConvert, True, True)
 
         If ((iNumRejected > 0) And (log IsNot Nothing)) Then
@@ -109,12 +81,9 @@ Public Class cSurfaceTools
         ' -----
         Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = proj
+        rs.Projection = fs.Projection
         rs.Bounds = bnds
         rs.NoDataValue = 0
-        'rs.Reproject(fs.Projection)
-
-        If (log IsNot Nothing) Then log.LogOperation(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, strFilter), eStatusFlags.ValueComputed)
 
         ' ToDo: This loop can be sped up by only processing those cells that overlap with the extent of the dataset
         ' For all cols, rows

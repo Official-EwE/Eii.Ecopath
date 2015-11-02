@@ -25,6 +25,7 @@ Imports System.Collections.Generic
 Imports System.Xml
 Imports System.Text
 Imports EwEUtils.Utilities
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -251,21 +252,29 @@ Namespace SpatialData
 
 #Region " Conversion "
 
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialDataConverter.Convert"/>
+        ''' -----------------------------------------------------------------------
         Public MustOverride Function Convert(data As Object, _
                                              ptfNE As System.Drawing.PointF, ptfSW As System.Drawing.PointF, _
-                                             dCellSize As Double, strProjectionString As String, strFile As String) As ISpatialRaster _
+                                             dCellSize As Double, strProjToWkt As String, strFile As String) As ISpatialRaster _
             Implements ISpatialDataConverter.Convert
 
 #End Region ' Conversion
 
 #Region " Utilities "
 
-        Protected Sub LogMessage(strMessage As String, status As eStatusFlags)
+        Protected Function Log() As cSpatialOperationLog
+            If (Me.m_core IsNot Nothing) Then
+                Return Me.m_core.SpatialOperationLog
+            End If
+            Return Nothing
+        End Function
 
+        Protected Sub LogMessage(strMessage As String, status As eStatusFlags)
             If (Me.m_core IsNot Nothing) Then
                 Me.m_core.SpatialOperationLog.LogOperation(strMessage, status)
             End If
-
         End Sub
 
         Protected Overridable Function ToValue(drow As DataRow, dValueNone As Double) As Double

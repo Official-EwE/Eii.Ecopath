@@ -25,6 +25,7 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports DotSpatial.Projections
 
 #End Region ' Imports
 
@@ -93,44 +94,53 @@ Namespace SpatialData
                                           ByVal ptfTL As PointF, _
                                           ByVal ptfBR As PointF, _
                                           ByVal dCellSize As Double, _
-                                          ByVal strProjectionString As String, _
+                                          ByVal strProjToWkt As String, _
                                           ByVal strFile As String) As ISpatialRaster
 
-            Dim log As cSpatialOperationLog = Nothing
             Dim rstResult As IRaster = Nothing
-
-            If (Me.m_core IsNot Nothing) Then log = Me.m_core.SpatialOperationLog
 
             ' Sanity checks
             Debug.Assert((data IsNot Nothing) And (Not String.IsNullOrWhiteSpace(strFile)) And (dCellSize > 0))
 
             ' Validate data
-            If (Not TypeOf data Is IDataSet) Then
-                cLog.Write(Me.DisplayName & ": cannot convert data of type " & data.GetType().ToString, eVerboseLevel.Detailed)
+            If (Not TypeOf data Is IFeatureSet) Then
+                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
                 Return Nothing
             End If
 
             ' Log
             Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_CONVERTER, Me.DisplayName), eStatusFlags.OK)
 
-            ' Perform conversion
-            If (TypeOf data Is IRaster) Then
-                Me.LogMessage(My.Resources.STATUS_VALIDATIONFAILED_VECTORONLY, eStatusFlags.ErrorEncountered Or eStatusFlags.FailedValidation)
-            ElseIf (TypeOf data Is IFeatureSet) Then
-                Try
-                    ' Rasterize the features
-                    Dim fs As IFeatureSet = CType(data, IFeatureSet)
-                    rstResult = cSurfaceTools.RasterizeArea(fs, ptfTL, ptfBR, dCellSize, strProjectionString, Me.AttributeFilter, strFile, log)
+            Try
+                Dim fs As IFeatureSet = CType(data, IFeatureSet)
+                Dim projTo As ProjectionInfo = cDotSpatialUtils.ToProjection(strProjToWkt)
+
+                ' Filter
+                If Not String.IsNullOrWhiteSpace(Me.AttributeFilter) Then
+                    fs = cDotSpatialUtils.FeatureSet(fs, Me.AttributeFilter)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, Me.AttributeFilter), eStatusFlags.ValueComputed)
+                End If
+
+                ' Reproject
+                If (Not fs.Projection.Equals(projTo)) Then
+                    fs.Reproject(projTo)
+                    Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)
+                End If
+
+                ' Rasterize
+                rstResult = cSurfaceTools.RasterizeArea(fs, ptfTL, ptfBR, dCellSize, strFile, Me.Log)
+
+                If (rstResult IsNot Nothing) Then
                     rstResult.Close()
-                    Debug.Assert(rstResult IsNot Nothing)
+                Else
+                    Debug.Assert(False)
+                End If
 
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_RASTER_CACHED, strFile), eStatusFlags.OK)
 
-                Catch ex As Exception
-                    Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
-                End Try
-
-            End If
+            Catch ex As Exception
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_VECTORCONVERSION_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+            End Try
 
             Return New cSpatialRaster(rstResult)
 
