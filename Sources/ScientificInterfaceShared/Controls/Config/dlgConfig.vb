@@ -77,10 +77,9 @@ Namespace Controls
                 Dim opts As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
                 AddHandler opts.OnChanged, AddressOf OnOptionsPageChanged
                 Me.OnOptionsPageChanged(opts, New EventArgs)
-            Else
-                Me.m_btnDefaults.Visible = False
             End If
 
+            Me.UpdateControls()
             Me.CenterToParent()
 
         End Sub
@@ -156,9 +155,18 @@ Namespace Controls
 
         Protected Overridable Sub UpdateControls()
 
-            Dim page As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
-            Me.m_btnOK.Enabled = page.CanApply
-            Me.m_btnDefaults.Enabled = page.CanSetDefaults
+            Dim bIsConfigPage As Boolean = TypeOf Me.m_ctrl Is IOptionsPage
+
+            If bIsConfigPage Then
+                Dim page As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
+                Me.m_btnOK.Enabled = page.CanApply
+                Me.m_btnDefaults.Enabled = page.CanSetDefaults
+            Else
+                Me.m_btnOK.Enabled = True
+                Me.m_btnCancel.Visible = False
+                Me.m_btnDefaults.Visible = False
+                Me.m_btnOK.Location = Me.m_btnCancel.Location
+            End If
 
         End Sub
 
