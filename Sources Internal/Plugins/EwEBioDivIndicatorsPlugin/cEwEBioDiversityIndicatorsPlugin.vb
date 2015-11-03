@@ -54,7 +54,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Implements EwEPlugin.IEcospaceRunCompletedPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.ISearchPlugin
+    Implements EwEPlugin.IMonteCarloPlugin
     Implements EwEPlugin.IAutoSavePlugin
 
 #Region " Variables "
@@ -75,7 +75,6 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Private m_ecospaceDS As cEcospaceDataStructures = Nothing
     Private m_stanzaDS As cStanzaDatastructures = Nothing
     Private m_taxonDS As cTaxonDataStructures = Nothing
-    Private m_searchDS As cSearchDatastructures = Nothing
 
     ''' <summary>Indicators for Ecopath.</summary>
     Friend m_indEcopath As cEcopathIndicators = Nothing
@@ -205,7 +204,6 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Me.m_ecopathDS = Nothing
         Me.m_ecosimDS = Nothing
         Me.m_ecospaceDS = Nothing
-        Me.m_searchDS = Nothing
         Me.m_taxonDS = Nothing
         Me.m_stanzaDS = Nothing
 
@@ -421,25 +419,23 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
 #Region " Monte Carlo "
 
-    Public Sub SearchInitialized(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.SearchInitialized
-        Me.m_searchDS = DirectCast(SearchDatastructures, cSearchDatastructures)
+    Public Sub MontCarloInitialized(MonteCarloAsObject As Object) _
+        Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
+        ' NOP
     End Sub
 
-    Public Sub SearchIterationsStarting() _
-        Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
-        Me.ClearMCIndicators()
+    Private m_bInitialized As Boolean = False
+
+    Public Sub MonteCarloRunInitialized() _
+        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunInitialized
 
         ' Sanity checks
         Debug.Assert(Me.m_ecopathDS IsNot Nothing)
         Debug.Assert(Me.m_ecosimDS IsNot Nothing)
-        Debug.Assert(Me.m_searchDS IsNot Nothing)
 
-        If (Me.m_searchDS.SearchMode = eSearchModes.MonteCarlo) Then
-            Me.m_bRunWithMonteCarlo = My.Settings.RunWithMC
-        Else
-            Me.m_bRunWithMonteCarlo = False
-        End If
+        If (Me.m_bInitialized) Then Return
+
+        Me.m_bRunWithMonteCarlo = My.Settings.RunWithMC
 
         If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
             Me.m_bCalcExtrasOld = Me.m_ecosimDS.bAlwaysCalcTLc
@@ -448,8 +444,18 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     End Sub
 
-    Public Sub PostRunSearchResults(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.PostRunSearchResults
+    Public Sub MonteCarloBalancedEcopathModel(WaitLock As System.Threading.ManualResetEvent, TrialNumber As Integer, nIterations As Integer) _
+        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
+
+        ' Calculate only if supposed to run with MC
+        If (Not Me.m_bRunWithMonteCarlo) Then Return
+
+        ' ToDo: run indicators for Ecopath, and bin the results
+
+    End Sub
+
+    Public Sub MonteCarloEcosimRunCompleted() _
+        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
 
         Dim man As cMonteCarloManager = Me.m_core.EcosimMonteCarlo
         Dim lIter As New List(Of cMCIndicators)
@@ -487,14 +493,14 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' <summary>
     ''' Search is finished. Restore Sim CalcTL flag
     ''' </summary>
-    ''' <param name="SearchDatastructures"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub SearchCompleted(SearchDatastructures As Object) _
-        Implements EwEPlugin.ISearchPlugin.SearchCompleted
+    Public Sub MonteCarloCompleted() _
+        Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunCompleted
 
         If (Me.m_bRunWithEcosim Or Me.m_bRunWithMonteCarlo) Then
             Me.m_ecosimDS.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
         End If
+        Me.m_bInitialized = False
 
     End Sub
 

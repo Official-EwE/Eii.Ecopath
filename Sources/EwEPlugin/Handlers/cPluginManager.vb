@@ -1905,6 +1905,12 @@ Public Class cPluginManager
 
     End Function
 
+    Public Function MonteCarloRunInitialized() As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloRunInitialized")
+
+    End Function
+
     Public Function MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, TrialNumber As Integer, ByVal nIterations As Integer) As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloBalancedEcopathModel", New Object() {WaitLock, TrialNumber, nIterations})
@@ -1914,6 +1920,12 @@ Public Class cPluginManager
     Public Function MonteCarloEcosimRunCompleted() As Boolean
 
         Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloEcosimRunCompleted")
+
+    End Function
+
+    Public Function MontCarloRunCompleted() As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloRunCompleted")
 
     End Function
 
