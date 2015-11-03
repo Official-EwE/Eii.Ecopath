@@ -1,0 +1,1005 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_lblModel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_lblModel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_lblModel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 40</value>
+  </data>
+  <data name="m_lblModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 13</value>
+  </data>
+  <data name="m_lblModel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblModel.Text" xml:space="preserve">
+    <value>Model name:</value>
+  </data>
+  <data name="&gt;&gt;m_lblModel.Name" xml:space="preserve">
+    <value>m_lblModel</value>
+  </data>
+  <data name="&gt;&gt;m_lblModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblModel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblModel.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="m_tbxModel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxModel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>111, 37</value>
+  </data>
+  <data name="m_tbxModel.MaxLength" type="System.Int32, mscorlib">
+    <value>250</value>
+  </data>
+  <data name="m_tbxModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>545, 20</value>
+  </data>
+  <data name="m_tbxModel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tbxModel.Name" xml:space="preserve">
+    <value>m_tbxModel</value>
+  </data>
+  <data name="&gt;&gt;m_tbxModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxModel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxModel.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="m_lblDOI.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblDOI.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblDOI.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 261</value>
+  </data>
+  <data name="m_lblDOI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
+  </data>
+  <data name="m_lblDOI.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_lblDOI.Text" xml:space="preserve">
+    <value>&amp;DOI:</value>
+  </data>
+  <data name="&gt;&gt;m_lblDOI.Name" xml:space="preserve">
+    <value>m_lblDOI</value>
+  </data>
+  <data name="&gt;&gt;m_lblDOI.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblDOI.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblDOI.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="m_lblAuthor.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblAuthor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblAuthor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 130</value>
+  </data>
+  <data name="m_lblAuthor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 13</value>
+  </data>
+  <data name="m_lblAuthor.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_lblAuthor.Text" xml:space="preserve">
+    <value>&amp;Author:</value>
+  </data>
+  <data name="&gt;&gt;m_lblAuthor.Name" xml:space="preserve">
+    <value>m_lblAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_lblAuthor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblAuthor.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="m_tbxDOI.Location" type="System.Drawing.Point, System.Drawing">
+    <value>111, 258</value>
+  </data>
+  <data name="m_tbxDOI.MaxLength" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_tbxDOI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>273, 20</value>
+  </data>
+  <data name="m_tbxDOI.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDOI.Name" xml:space="preserve">
+    <value>m_tbxDOI</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDOI.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDOI.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDOI.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="m_tbxAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxAuthor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>111, 127</value>
+  </data>
+  <data name="m_tbxAuthor.MaxLength" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="m_tbxAuthor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>545, 20</value>
+  </data>
+  <data name="m_tbxAuthor.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.Name" xml:space="preserve">
+    <value>m_tbxAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxAuthor.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="m_cbConfirmAuthor.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbConfirmAuthor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbConfirmAuthor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 375</value>
+  </data>
+  <data name="m_cbConfirmAuthor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>460, 17</value>
+  </data>
+  <data name="m_cbConfirmAuthor.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_cbConfirmAuthor.Text" xml:space="preserve">
+    <value>I certify that I am the corresponding author of the most recent published version of this model</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmAuthor.Name" xml:space="preserve">
+    <value>m_cbConfirmAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmAuthor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmAuthor.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 312</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>596, 17</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.Text" xml:space="preserve">
+    <value>I allow Ecobase to make my model parameters available for download, according to the EcoBase data access agreement</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmDessiminate.Name" xml:space="preserve">
+    <value>m_cbConfirmDessiminate</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmDessiminate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmDessiminate.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbConfirmDessiminate.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>600, 403</value>
+  </data>
+  <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="m_btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;m_btnCancel.Name" xml:space="preserve">
+    <value>m_btnCancel</value>
+  </data>
+  <data name="&gt;&gt;m_btnCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnCancel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_btnSubmit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnSubmit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnSubmit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>519, 403</value>
+  </data>
+  <data name="m_btnSubmit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnSubmit.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="m_btnSubmit.Text" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="&gt;&gt;m_btnSubmit.Name" xml:space="preserve">
+    <value>m_btnSubmit</value>
+  </data>
+  <data name="&gt;&gt;m_btnSubmit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnSubmit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnSubmit.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_llViewEcobaseDataAgreement.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_llViewEcobaseDataAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_llViewEcobaseDataAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 332</value>
+  </data>
+  <data name="m_llViewEcobaseDataAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 13</value>
+  </data>
+  <data name="m_llViewEcobaseDataAgreement.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="m_llViewEcobaseDataAgreement.Text" xml:space="preserve">
+    <value>Read the Ecobase data agreement online</value>
+  </data>
+  <data name="&gt;&gt;m_llViewEcobaseDataAgreement.Name" xml:space="preserve">
+    <value>m_llViewEcobaseDataAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_llViewEcobaseDataAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_llViewEcobaseDataAgreement.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_llViewEcobaseDataAgreement.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_lblEmail.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblEmail.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblEmail.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 156</value>
+  </data>
+  <data name="m_lblEmail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 13</value>
+  </data>
+  <data name="m_lblEmail.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_lblEmail.Text" xml:space="preserve">
+    <value>&amp;Contact email:</value>
+  </data>
+  <data name="&gt;&gt;m_lblEmail.Name" xml:space="preserve">
+    <value>m_lblEmail</value>
+  </data>
+  <data name="&gt;&gt;m_lblEmail.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblEmail.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblEmail.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="m_tbxEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxEmail.Location" type="System.Drawing.Point, System.Drawing">
+    <value>111, 153</value>
+  </data>
+  <data name="m_tbxEmail.MaxLength" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
+  <data name="m_tbxEmail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>545, 20</value>
+  </data>
+  <data name="m_tbxEmail.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEmail.Name" xml:space="preserve">
+    <value>m_tbxEmail</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEmail.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEmail.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEmail.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="m_llViewPublication.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_llViewPublication.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_llViewPublication.Location" type="System.Drawing.Point, System.Drawing">
+    <value>390, 261</value>
+  </data>
+  <data name="m_llViewPublication.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 13</value>
+  </data>
+  <data name="m_llViewPublication.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="m_llViewPublication.Text" xml:space="preserve">
+    <value>&amp;Validate DOI online</value>
+  </data>
+  <data name="&gt;&gt;m_llViewPublication.Name" xml:space="preserve">
+    <value>m_llViewPublication</value>
+  </data>
+  <data name="&gt;&gt;m_llViewPublication.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_llViewPublication.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_llViewPublication.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_pbModel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbModel.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbModel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbModel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 37</value>
+  </data>
+  <data name="m_pbModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 20</value>
+  </data>
+  <data name="m_pbModel.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_pbModel.Name" xml:space="preserve">
+    <value>m_pbModel</value>
+  </data>
+  <data name="&gt;&gt;m_pbModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbModel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbModel.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_pbAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbAuthor.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbAuthor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbAuthor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 127</value>
+  </data>
+  <data name="m_pbAuthor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 20</value>
+  </data>
+  <data name="m_pbAuthor.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_pbAuthor.Name" xml:space="preserve">
+    <value>m_pbAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_pbAuthor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbAuthor.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_pbContact.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbContact.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbContact.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbContact.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 153</value>
+  </data>
+  <data name="m_pbContact.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 20</value>
+  </data>
+  <data name="m_pbContact.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_pbContact.Name" xml:space="preserve">
+    <value>m_pbContact</value>
+  </data>
+  <data name="&gt;&gt;m_pbContact.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbContact.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbContact.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_pbPublication.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbPublication.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbPublication.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbPublication.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 232</value>
+  </data>
+  <data name="m_pbPublication.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 46</value>
+  </data>
+  <data name="m_pbPublication.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_pbPublication.Name" xml:space="preserve">
+    <value>m_pbPublication</value>
+  </data>
+  <data name="&gt;&gt;m_pbPublication.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbPublication.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbPublication.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_pbConfirmAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbConfirmAuthor.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbConfirmAuthor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbConfirmAuthor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 376</value>
+  </data>
+  <data name="m_pbConfirmAuthor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="m_pbConfirmAuthor.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_pbConfirmAuthor.Name" xml:space="preserve">
+    <value>m_pbConfirmAuthor</value>
+  </data>
+  <data name="&gt;&gt;m_pbConfirmAuthor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbConfirmAuthor.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbConfirmAuthor.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lbLDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbLDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbLDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 66</value>
+  </data>
+  <data name="m_lbLDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="m_lbLDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lbLDescription.Text" xml:space="preserve">
+    <value>&amp;Description:</value>
+  </data>
+  <data name="&gt;&gt;m_lbLDescription.Name" xml:space="preserve">
+    <value>m_lbLDescription</value>
+  </data>
+  <data name="&gt;&gt;m_lbLDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbLDescription.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbLDescription.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="m_tbxDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>111, 63</value>
+  </data>
+  <data name="m_tbxDescription.MaxLength" type="System.Int32, mscorlib">
+    <value>250</value>
+  </data>
+  <data name="m_tbxDescription.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_tbxDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>545, 58</value>
+  </data>
+  <data name="m_tbxDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_tbxDescription.Text" xml:space="preserve">
+    <value>1
+2
+3
+4</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDescription.Name" xml:space="preserve">
+    <value>m_tbxDescription</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDescription.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxDescription.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="m_pbDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbDescription.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>659, 63</value>
+  </data>
+  <data name="m_pbDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 58</value>
+  </data>
+  <data name="m_pbDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_pbDescription.Name" xml:space="preserve">
+    <value>m_pbDescription</value>
+  </data>
+  <data name="&gt;&gt;m_pbDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbDescription.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbDescription.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_tbxHyperlink.Location" type="System.Drawing.Point, System.Drawing">
+    <value>111, 232</value>
+  </data>
+  <data name="m_tbxHyperlink.MaxLength" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_tbxHyperlink.Size" type="System.Drawing.Size, System.Drawing">
+    <value>545, 20</value>
+  </data>
+  <data name="m_tbxHyperlink.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHyperlink.Name" xml:space="preserve">
+    <value>m_tbxHyperlink</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHyperlink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHyperlink.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHyperlink.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblHyperlink.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblHyperlink.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblHyperlink.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 235</value>
+  </data>
+  <data name="m_lblHyperlink.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 13</value>
+  </data>
+  <data name="m_lblHyperlink.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_lblHyperlink.Text" xml:space="preserve">
+    <value>&amp;Web page:</value>
+  </data>
+  <data name="&gt;&gt;m_lblHyperlink.Name" xml:space="preserve">
+    <value>m_lblHyperlink</value>
+  </data>
+  <data name="&gt;&gt;m_lblHyperlink.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblHyperlink.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblHyperlink.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="CEwEHeaderLabel1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 354</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>663, 18</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
+    <value>CEwEHeaderLabel1</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="CEwEHeaderLabel2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="CEwEHeaderLabel2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CEwEHeaderLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
+  </data>
+  <data name="CEwEHeaderLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>663, 18</value>
+  </data>
+  <data name="CEwEHeaderLabel2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="CEwEHeaderLabel2.Text" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="CEwEHeaderLabel2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel2.Name" xml:space="preserve">
+    <value>CEwEHeaderLabel2</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel2.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel2.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_hdrPublication.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrPublication.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrPublication.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 212</value>
+  </data>
+  <data name="m_hdrPublication.Size" type="System.Drawing.Size, System.Drawing">
+    <value>663, 18</value>
+  </data>
+  <data name="m_hdrPublication.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_hdrPublication.Text" xml:space="preserve">
+    <value>Publication</value>
+  </data>
+  <data name="m_hdrPublication.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPublication.Name" xml:space="preserve">
+    <value>m_hdrPublication</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPublication.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPublication.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPublication.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="m_hdrPermission.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrPermission.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrPermission.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 291</value>
+  </data>
+  <data name="m_hdrPermission.Size" type="System.Drawing.Size, System.Drawing">
+    <value>663, 18</value>
+  </data>
+  <data name="m_hdrPermission.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="m_hdrPermission.Text" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="m_hdrPermission.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPermission.Name" xml:space="preserve">
+    <value>m_hdrPermission</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPermission.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPermission.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrPermission.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="m_cbIsUpdate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbIsUpdate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 179</value>
+  </data>
+  <data name="m_cbIsUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>253, 17</value>
+  </data>
+  <data name="m_cbIsUpdate.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_cbIsUpdate.Text" xml:space="preserve">
+    <value>This is an &amp;update to a model already in EcoBase</value>
+  </data>
+  <data name="&gt;&gt;m_cbIsUpdate.Name" xml:space="preserve">
+    <value>m_cbIsUpdate</value>
+  </data>
+  <data name="&gt;&gt;m_cbIsUpdate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbIsUpdate.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbIsUpdate.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>687, 438</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Submit model to Ecobase</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>dlgEcobaseExport</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

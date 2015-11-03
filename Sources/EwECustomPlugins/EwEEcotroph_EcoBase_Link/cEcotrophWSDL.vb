@@ -12,7 +12,7 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
@@ -36,21 +36,24 @@ Imports System.Xml.Serialization
 <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1")> _
 <System.Diagnostics.DebuggerStepThroughAttribute()> _
 <System.ComponentModel.DesignerCategoryAttribute("code")> _
-<System.Web.Services.WebServiceBindingAttribute(Name:="getResultBinding", [Namespace]:="http://sirs.agrocampus-ouest.fr/EcoBase/php/webser/operation_1.wsdl")> _
+<System.Web.Services.WebServiceBindingAttribute(Name:="getResultBinding", [Namespace]:="http://sirs.agrocampus-ouest.fr/EcoTroph/php/webser/operation_1.wsdl")> _
 Partial Public Class getResult
     Inherits System.Web.Services.Protocols.SoapHttpClientProtocol
 
     Private list_modelsOperationCompleted As System.Threading.SendOrPostCallback
 
     Private getModelOperationCompleted As System.Threading.SendOrPostCallback
+    Private Upload_ModelOperationCompleted As System.Threading.SendOrPostCallback
 
     Public Sub New()
-        Me.Url = "http://sirs.agrocampus-ouest.fr/EcoBase/php/webser/soap-server.php"
+        Me.Url = "http://sirs.agrocampus-ouest.fr/EcoTroph/php/webser/soap-server.php"
     End Sub
 
     Public Event list_modelsCompleted As list_modelsCompletedEventHandler
 
     Public Event getModelCompleted As getModelCompletedEventHandler
+
+    Public Event Upload_ModelCompleted As Upload_ModelCompletedEventHandler
 
     <System.Web.Services.Protocols.SoapRpcMethodAttribute("list_models", RequestNamespace:="urn:sirs:getResult", ResponseNamespace:="urn:sirs:getResult")> _
     Public Function list_models(operation As String, model_number As Integer) As <System.Xml.Serialization.SoapElementAttribute("result")> String
@@ -121,6 +124,42 @@ Partial Public Class getResult
 
         End Try
     End Sub
+    <System.Web.Services.Protocols.SoapRpcMethodAttribute("Upload_Model", RequestNamespace:="urn:sirs:getResult", ResponseNamespace:="urn:sirs:getResult")> _
+    Public Function Upload_Model(ByVal model_number As Integer, ByVal model_data As String) As <System.Xml.Serialization.SoapElementAttribute("result")> String
+        Dim results() As Object = Me.Invoke("Upload_Model", New Object() {model_number, model_data})
+        Return CType(results(0), String)
+    End Function
+
+    '''<remarks/>
+    Public Function BeginUpload_Model(ByVal model_number As Integer, ByVal model_data As String, ByVal callback As System.AsyncCallback, ByVal asyncState As Object) As System.IAsyncResult
+        Return Me.BeginInvoke("Upload_Model", New Object() {model_number, model_data}, callback, asyncState)
+    End Function
+
+    '''<remarks/>
+    Public Function EndUpload_Model(ByVal asyncResult As System.IAsyncResult) As String
+        Dim results() As Object = Me.EndInvoke(asyncResult)
+        Return CType(results(0), String)
+    End Function
+
+    '''<remarks/>
+    Public Overloads Sub Upload_ModelAsync(ByVal model_number As String, ByVal model_data As String)
+        Me.Upload_ModelAsync(model_number, model_data, Nothing)
+    End Sub
+
+    '''<remarks/>
+    Public Overloads Sub Upload_ModelAsync(ByVal model_number As String, ByVal model_data As String, ByVal userState As Object)
+        If (Me.Upload_ModelOperationCompleted Is Nothing) Then
+            Me.Upload_ModelOperationCompleted = AddressOf Me.OnUpload_ModelOperationCompleted
+        End If
+        Me.InvokeAsync("Upload_Model", New Object() {model_number, model_data}, Me.Upload_ModelOperationCompleted, userState)
+    End Sub
+
+    Private Sub OnUpload_ModelOperationCompleted(ByVal arg As Object)
+        If (Not (Me.Upload_ModelCompletedEvent) Is Nothing) Then
+            Dim invokeArgs As System.Web.Services.Protocols.InvokeCompletedEventArgs = CType(arg, System.Web.Services.Protocols.InvokeCompletedEventArgs)
+            RaiseEvent Upload_ModelCompleted(Me, New Upload_ModelCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState))
+        End If
+    End Sub
 
     Public Shadows Sub CancelAsync(userState As Object)
         MyBase.CancelAsync(userState)
@@ -175,4 +214,29 @@ Partial Public Class getModelCompletedEventArgs
         End Get
     End Property
 
+End Class
+<System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038")> _
+Public Delegate Sub Upload_ModelCompletedEventHandler(ByVal sender As Object, ByVal e As Upload_ModelCompletedEventArgs)
+
+'''<remarks/>
+<System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "2.0.50727.3038"), _
+ System.Diagnostics.DebuggerStepThroughAttribute(), _
+ System.ComponentModel.DesignerCategoryAttribute("code")> _
+Partial Public Class Upload_ModelCompletedEventArgs
+    Inherits System.ComponentModel.AsyncCompletedEventArgs
+
+    Private results() As Object
+
+    Friend Sub New(ByVal results() As Object, ByVal exception As System.Exception, ByVal cancelled As Boolean, ByVal userState As Object)
+        MyBase.New(exception, cancelled, userState)
+        Me.results = results
+    End Sub
+
+    '''<remarks/>
+    Public ReadOnly Property Result() As String
+        Get
+            Me.RaiseExceptionIfNecessary()
+            Return CType(Me.results(0), String)
+        End Get
+    End Property
 End Class
