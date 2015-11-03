@@ -22,6 +22,8 @@ Option Strict On
 Imports System
 Imports System.Collections.Generic
 Imports System.Diagnostics
+Imports EwECore
+Imports EwEPlugin
 
 #End Region ' Imports
 
@@ -59,6 +61,12 @@ Namespace Commands
         End Sub
 
 #End Region ' Construction
+
+#Region " Public access "
+
+        Public Property PluginManager As cPluginManager = Nothing
+
+#End Region ' Public access
 
 #Region " Command administration "
 

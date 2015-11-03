@@ -239,6 +239,8 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Overridable Sub Invoke()
 
+            Dim bIntercepted As Boolean = False
+
             ' Force the command to update
             Me.Update()
 
@@ -247,28 +249,35 @@ Namespace Commands
                 ' Set invoking flag
                 Me.m_bInvoking = True
 
-                ' #Yes: raise the event in three stages
+                If (Me.m_cmdh.PluginManager IsNot Nothing) Then
+                    ' Is intercepted (and hopefully handled) by a plug-in?
+                    bIntercepted = (Me.m_cmdh.PluginManager.HandleCommand(Me))
+                End If
 
-                Try
-                    ' 1. Pre-invoke
-                    RaiseEvent OnPreInvoke(Me)
-                Catch ex As Exception
-                    ' NOP
-                End Try
+                If (Not bIntercepted) Then
 
-                Try
-                    ' 2. Invoke
-                    RaiseEvent OnInvoke(Me)
-                Catch ex As Exception
-                    ' NOP
-                End Try
+                    Try
+                        ' 1. Pre-invoke
+                        RaiseEvent OnPreInvoke(Me)
+                    Catch ex As Exception
+                        ' NOP
+                    End Try
 
-                Try
-                    ' 3. Post-invoke
-                    RaiseEvent OnPostInvoke(Me)
-                Catch ex As Exception
-                    ' NOP
-                End Try
+                    Try
+                        ' 2. Invoke
+                        RaiseEvent OnInvoke(Me)
+                    Catch ex As Exception
+                        ' NOP
+                    End Try
+
+                    Try
+                        ' 3. Post-invoke
+                        RaiseEvent OnPostInvoke(Me)
+                    Catch ex As Exception
+                        ' NOP
+                    End Try
+
+                End If
 
                 ' Clear invoking flag
                 Me.m_bInvoking = False

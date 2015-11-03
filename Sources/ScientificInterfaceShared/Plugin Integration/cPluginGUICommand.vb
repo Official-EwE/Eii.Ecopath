@@ -19,12 +19,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Windows.Forms
-Imports System.Diagnostics
-Imports EwEUtils.Commands
+Imports EwEPlugin
 Imports EwEUtils.Core
-Imports System.Collections.Generic
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -163,7 +160,7 @@ Public Class cPluginGUICommand
         Me.m_ip = ip
         Me.m_sender = sender
         Me.m_e = e
- 
+
         ' Try to launch plugin via command structure first
         MyBase.Invoke()
         ' Try to run the plug-in manually
