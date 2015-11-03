@@ -20,10 +20,10 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

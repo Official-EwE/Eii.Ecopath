@@ -194,8 +194,8 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cEcotrophWSDL.vb" />
     <Compile Include="cEcotrophPlugIn.vb" />
+    <Compile Include="ETinputtot.vb" />
     <Compile Include="frmEcoTroph.Designer.vb">
       <DependentUpon>frmEcoTroph.vb</DependentUpon>
     </Compile>

@@ -43,12 +43,12 @@ Namespace Import
 
         ''' <summary>Grid columns.</summary>
         Private Enum eColumnTypes As Integer
-            ''' <summary>EwE5 model name column.</summary>
-            EwE5Model = 0
+            ''' <summary>Source model name column.</summary>
+            Source = 0
             ''' <summary>Import selection toggle column.</summary>
             Import
-            ''' <summary>EwE6 target model name column.</summary>
-            EwE6Model
+            ''' <summary>Target model name column.</summary>
+            Target
         End Enum
 
         ''' <summary>The attached import wizard that holds the import settings 
@@ -115,9 +115,9 @@ Namespace Import
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             ' Create columns
-            Me(0, eColumnTypes.EwE5Model) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_EWE5)
+            Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_SOURCE)
             Me(0, eColumnTypes.Import) = New EwEColumnHeaderCell(SharedResources.HEADER_IMPORT)
-            Me(0, eColumnTypes.EwE6Model) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_EWE6)
+            Me(0, eColumnTypes.Target) = New EwEColumnHeaderCell(SharedResources.HEADER_MODEL_TARGET)
 
             ' Configure columns
             Me.FixedColumns = 1
@@ -147,14 +147,14 @@ Namespace Import
 
                 ewec = New EwECell(imp.ModelInfo.Name, GetType(String))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-                Me(iRow, eColumnTypes.EwE5Model) = ewec
+                Me(iRow, eColumnTypes.Source) = ewec
 
                 Me(iRow, eColumnTypes.Import) = New Cells.Real.CheckBox(imp.SelectedForImport)
                 Me(iRow, eColumnTypes.Import).Behaviors.Add(Me.EwEEditHandler)
 
                 ewec = New EwECell("", GetType(String))
                 ewec.Behaviors.Add(Me.EwEEditHandler)
-                Me(iRow, eColumnTypes.EwE6Model) = ewec
+                Me(iRow, eColumnTypes.Target) = ewec
 
                 Me.ImportSettings(iRow) = imp
 
@@ -167,8 +167,8 @@ Namespace Import
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            Me.Columns(eColumnTypes.EwE5Model).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
-            Me.Columns(eColumnTypes.EwE6Model).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.Source).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.Target).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
             Me.StretchColumnsToFitWidth()
         End Sub
 
@@ -192,7 +192,7 @@ Namespace Import
 
             Select Case DirectCast(p.Column, eColumnTypes)
 
-                Case eColumnTypes.EwE6Model
+                Case eColumnTypes.Target
                     ' Update the name
                     settings.EwE6ModelName = CStr(cell.GetValue(p))
                     ' Refresh the cell since the model name may have been 
@@ -267,7 +267,7 @@ Namespace Import
         Private Sub UpdateEwE6ModelCell(ByVal iRow As Integer)
 
             Dim settings As cImportWizard.cImportSettings = Me.ImportSettings(iRow)
-            Dim cellEwE As EwECell = DirectCast(Me(iRow, eColumnTypes.EwE6Model), EwECell)
+            Dim cellEwE As EwECell = DirectCast(Me(iRow, eColumnTypes.Target), EwECell)
 
             ' If a model is selected for import the EwE6 name cell is editable and displays data.
             ' If a model is NOT selected for import the EwE6 name cell is read-only and displays no data.

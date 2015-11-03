@@ -23,7 +23,7 @@ Option Strict On
 
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

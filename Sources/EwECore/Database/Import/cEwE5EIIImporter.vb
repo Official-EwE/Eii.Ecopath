@@ -45,7 +45,6 @@ Namespace Database
                 MyBase.New(CoreMessagePublisher)
             End Sub
 
-
             Public UnitTime As eUnitTimeType = eUnitTimeType.Year
             Public UnitTimeCustom As String = ""
             Public UnitCurrencyCustom As String = ""
@@ -55,9 +54,6 @@ Namespace Database
 #End Region ' Private helper class
 
 #Region " Private vars "
-
-        '''' <summary>Source file index to read from.</summary>
-        'Private m_iFNum As Integer = cCore.NULL_VALUE
 
         ''' <summary>Data buffer.</summary>
         Private m_data As cImportData
@@ -75,7 +71,7 @@ Namespace Database
         Public Sub New(ByVal core As cCore)
             MyBase.New(core)
 
-            m_data = New cImportData(Me.m_core.Messages)
+            Me.m_data = New cImportData(Me.m_core.Messages)
 
         End Sub
 
@@ -87,33 +83,15 @@ Namespace Database
         ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Open(ByVal strSource As String) As Boolean
-
             Debug.Assert(False, Me.ToString & ".Open() removed for Mono compatibility.")
-            'Debug.Assert(Not Me.IsOpen())
-
-            'Me.m_iFNum = FreeFile()
-            'Try
-            '    FileOpen(Me.m_iFNum, Me.m_strEwE5File, OpenMode.Input)
-            'Catch ex As Exception
-            '    Me.LogMessage(".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strEwE5File + vbCrLf + "Error:" + ex.Message())
-            '    Me.m_iFNum = cCore.NULL_VALUE
-            '    Return False
-            'End Try
             Return True
-
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Close()
-
             Debug.Assert(False, Me.ToString & ".Close() removed for Mono compatibility.")
-            'Debug.Assert(Me.IsOpen())
-
-            'FileClose(Me.m_iFNum)
-            'Me.m_iFNum = cCore.NULL_VALUE
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -122,20 +100,14 @@ Namespace Database
         Public Overrides Function IsOpen() As Boolean
             Debug.Assert(False, Me.ToString & ".IsOpen() removed for Mono compatibility.")
             Return False
-            'Return (Me.m_iFNum <> cCore.NULL_VALUE)
-
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Models"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Function Models() As cExternalModelInfo()
-
-            'Debug.Assert(Me.IsOpen())
-
             Dim info As New cExternalModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strSource), "Ecopath 5 EII file", 0)
             Return New cExternalModelInfo() {info}
-
         End Function
 
         Public Overrides Function CanImportFrom(strSource As String) As Boolean
@@ -159,21 +131,23 @@ Namespace Database
 
             Me.m_iNumSteps = 7
 
+            ' ToDo: globalize this
+
             Me.LogProgress("Loading eii file...")
             If Me.LoadEII() Then
                 bSucces = Me.Save()
             End If
 
             ' Set version
-            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from EII file '" & Me.m_strSource & "'")
+            Me.m_dbTarget.SetVersion(Me.m_dbTarget.GetVersion(), "Imported from EII file '" & Me.m_strSource & "'")
 
             ' Now run all available updates on the new EwE6 database
             dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
-            dbUpd.UpdateDatabase(Me.m_dbEwE6)
+            dbUpd.UpdateDatabase(Me.m_dbTarget)
             dbUpd = Nothing
 
             ' Release DB
-            Me.m_dbEwE6 = Nothing
+            Me.m_dbTarget = Nothing
 
             Me.LogMessage(My.Resources.CoreMessages.IMPORT_PROGRESS_COMPLETE)
 
@@ -243,17 +217,17 @@ Namespace Database
                     iNextIndex = 0
 
                     'Debug.Assert(data.Length = 10, "EII DataSource wrong number of recs in group section.")
-                    ecopathDS.GroupName(K) = Me.getNextValid(recs, iNextIndex).Trim(quotes)
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), pvar)
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DtImp(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.Ex(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.fCatch(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DC(K, 0))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.Binput(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.PBinput(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.EEinput(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.GEinput(K))
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.QBinput(K))
+                    ecopathDS.GroupName(K) = Me.GetNextValidValue(recs, iNextIndex).Trim(quotes)
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), pvar)
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.DtImp(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.Ex(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.fCatch(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.DC(K, 0))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.Binput(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.PBinput(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.EEinput(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.GEinput(K))
+                    Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.QBinput(K))
 
                     ecopathDS.BHinput(K) = ecopathDS.Binput(K) / ecopathDS.Area(K)
 
@@ -274,7 +248,7 @@ Namespace Database
                     iNextIndex = 0
                     For j = 1 To ecopathDS.NumGroups
 
-                        Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DCInput(K, j))
+                        Single.TryParse(Me.GetNextValidValue(recs, iNextIndex), ecopathDS.DCInput(K, j))
                         ' Input(fnum, ecopathDS.DCInput(K, j))
                         If ecopathDS.DCInput(K, j) > 0 Then
                             ecopathDS.DietWasChanged(K, j)
@@ -493,16 +467,19 @@ Namespace Database
 
         End Function
 
-
-        Private Function getNextValid(ByVal data() As String, ByRef iNextIndex As Integer) As String
-            Dim validData As String
-            Do While validData = ""
-                validData = data(iNextIndex)
+        ''' <summary>
+        ''' Returns the next valid, non-empty string from a series of input entries.
+        ''' </summary>
+        ''' <param name="data">The input entries to scan.</param>
+        ''' <param name="iNextIndex">The index of that string.</param>
+        ''' <returns></returns>
+        Private Function GetNextValidValue(ByVal data() As String, ByRef iNextIndex As Integer) As String
+            Dim str As String
+            Do While String.IsNullOrWhiteSpace(str)
+                str = data(iNextIndex)
                 iNextIndex += 1
             Loop
-
-            Return validData
-
+            Return str
         End Function
 
 #Region "Old LoadEII (not Mono compatible)"
@@ -733,9 +710,9 @@ Namespace Database
             Dim dt As DateTime = Nothing
 
             ' Clear table
-            Me.m_dbEwE6.Execute("DELETE * FROM EcopathModel")
+            Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
 
-            writer = m_dbEwE6.GetWriter("EcopathModel")
+            writer = m_dbTarget.GetWriter("EcopathModel")
 
             drow = writer.NewRow()
             drow("ModelID") = 1
@@ -756,7 +733,7 @@ Namespace Database
 
             drow("MonetaryUnit") = "EUR"
             writer.AddRow(drow)
-            Me.m_dbEwE6.ReleaseWriter(writer, True)
+            Me.m_dbTarget.ReleaseWriter(writer, True)
 
         End Sub
 
@@ -774,8 +751,8 @@ Namespace Database
             Dim bSucces As Boolean = True
 
             ' Clear table(s)
-            Me.m_dbEwE6.Execute("DELETE * FROM EcopathGroup")
-            writer = m_dbEwE6.GetWriter("EcopathGroup")
+            Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
+            writer = m_dbTarget.GetWriter("EcopathGroup")
 
             Try
                 For iGroup As Integer = 1 To Me.m_data.NumGroups
@@ -818,7 +795,7 @@ Namespace Database
             Catch ex As Exception
                 bSucces = False
             End Try
-            Me.m_dbEwE6.ReleaseWriter(writer)
+            Me.m_dbTarget.ReleaseWriter(writer)
             Return bSucces
 
         End Function
@@ -835,8 +812,8 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbEwE6.Execute("DELETE * FROM EcopathDietComp")
-            writer = Me.m_dbEwE6.GetWriter("EcopathDietComp")
+            Me.m_dbTarget.Execute("DELETE * FROM EcopathDietComp")
+            writer = Me.m_dbTarget.GetWriter("EcopathDietComp")
 
             Try
                 For iPred As Integer = 1 To Me.m_data.NumGroups
@@ -860,7 +837,7 @@ Namespace Database
             Catch ex As Exception
                 bSucces = False
             End Try
-            Me.m_dbEwE6.ReleaseWriter(writer, True)
+            Me.m_dbTarget.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -881,7 +858,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            writer = Me.m_dbEwE6.GetWriter("EcopathFleet")
+            writer = Me.m_dbTarget.GetWriter("EcopathFleet")
             Try
                 For iFleet As Integer = 1 To Me.m_data.NumFleet
 
@@ -903,7 +880,7 @@ Namespace Database
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving EcopathFleet", ex.Message))
                 bSucces = False
             End Try
-            Me.m_dbEwE6.ReleaseWriter(writer, True)
+            Me.m_dbTarget.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -917,8 +894,8 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbEwE6.Execute("DELETE * FROM EcopathCatch")
-            writer = Me.m_dbEwE6.GetWriter("EcopathCatch")
+            Me.m_dbTarget.Execute("DELETE * FROM EcopathCatch")
+            writer = Me.m_dbTarget.GetWriter("EcopathCatch")
             Try
                 For iFleet As Integer = 1 To Me.m_data.NumFleet
                     For iGroup As Integer = 1 To Me.m_data.NumGroups
@@ -946,7 +923,7 @@ Namespace Database
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while saving catch", ex.Message))
                 bSucces = False
             End Try
-            Me.m_dbEwE6.ReleaseWriter(writer)
+            Me.m_dbTarget.ReleaseWriter(writer)
 
             Return bSucces
         End Function
@@ -960,8 +937,8 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbEwE6.Execute("DELETE * FROM EcopathDiscardFate")
-            writer = Me.m_dbEwE6.GetWriter("EcopathDiscardFate")
+            Me.m_dbTarget.Execute("DELETE * FROM EcopathDiscardFate")
+            writer = Me.m_dbTarget.GetWriter("EcopathDiscardFate")
             Try
                 For iFleet As Integer = 1 To Me.m_data.NumFleet
                     For iGroup As Integer = 1 To Me.m_data.NumGroups - Me.m_data.NumLiving
@@ -981,7 +958,7 @@ Namespace Database
                 bSucces = False
             End Try
 
-            Me.m_dbEwE6.ReleaseWriter(writer)
+            Me.m_dbTarget.ReleaseWriter(writer)
             Return bSucces
 
         End Function

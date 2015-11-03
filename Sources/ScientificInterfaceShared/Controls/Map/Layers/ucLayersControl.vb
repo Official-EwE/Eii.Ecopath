@@ -20,7 +20,7 @@
 
 Option Strict On
 
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
 Imports EwECore

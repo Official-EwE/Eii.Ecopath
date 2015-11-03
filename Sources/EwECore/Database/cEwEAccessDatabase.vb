@@ -410,18 +410,22 @@ Namespace Database
                     conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
                 Case eDataSourceTypes.Access2007
                     conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
-                Case eDataSourceTypes.NotSet
+                Case Else
                     conn.ConnectionString = ""
                     datResult = eDatasourceAccessType.Failed_UnknownType
             End Select
 
-            If Not String.IsNullOrEmpty(conn.ConnectionString) Then
+            If Not String.IsNullOrWhiteSpace(conn.ConnectionString) Then
                 Try
                     conn.Open()
                     conn.Close() ' Can't be, but hey
                 Catch ex As InvalidOperationException
                     datResult = eDatasourceAccessType.Failed_OSUnsupported
+                Catch ex As OleDbException
+                    ' At least the OleDB drivers were loaded successfully...
+                    datResult = eDatasourceAccessType.Success
                 Catch ex As Exception
+                    ' Hmm
                 End Try
             End If
 

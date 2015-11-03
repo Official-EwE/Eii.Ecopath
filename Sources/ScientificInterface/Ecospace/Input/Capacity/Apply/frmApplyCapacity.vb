@@ -25,7 +25,7 @@ Option Explicit On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Forms
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

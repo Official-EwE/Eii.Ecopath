@@ -24,9 +24,8 @@ Option Explicit On
 Imports EwECore
 Imports EwECore.MSE
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports ZedGraph
 Imports ScientificInterfaceShared.Commands
+Imports ZedGraph
 
 #End Region
 

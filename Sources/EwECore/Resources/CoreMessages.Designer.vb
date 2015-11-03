@@ -1499,7 +1499,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Importing Ecopath group diets.
+        '''  Looks up a localized string similar to Importing diets.
         '''</summary>
         Friend Shared ReadOnly Property IMPORT_POGRESS_DIETCOMP() As String
             Get
@@ -1747,6 +1747,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property IMPORT_PROGRESS_SUCCES() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_SUCCES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Importing taxonomy.
+        '''</summary>
+        Friend Shared ReadOnly Property IMPORT_PROGRESS_TAXONOMY() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_PROGRESS_TAXONOMY", resourceCulture)
             End Get
         End Property
         

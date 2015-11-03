@@ -21,7 +21,6 @@
 Option Strict On
 Option Explicit On
 
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands

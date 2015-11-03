@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports EwECore.SpatialData
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports ScientificInterfaceShared.Commands

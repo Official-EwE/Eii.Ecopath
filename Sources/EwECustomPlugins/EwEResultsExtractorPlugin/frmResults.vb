@@ -31,7 +31,6 @@ Imports Microsoft.Office.Interop
 Imports EwECore.MSE
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Commands
 
 #End Region
 

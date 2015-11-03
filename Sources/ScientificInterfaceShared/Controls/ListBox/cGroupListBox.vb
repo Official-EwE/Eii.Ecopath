@@ -22,7 +22,7 @@ Option Strict On
 
 Imports System.ComponentModel
 Imports EwECore
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
 

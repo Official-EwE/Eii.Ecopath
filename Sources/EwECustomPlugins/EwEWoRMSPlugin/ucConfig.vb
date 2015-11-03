@@ -22,7 +22,6 @@ Option Strict On
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -91,8 +90,7 @@ Public Class ucConfig
         Return True
     End Function
 
-    Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) _
-        Implements IOptionsPage.OnChanged
+    Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
 
     Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
         Me.m_nudConnTO.Value = 60

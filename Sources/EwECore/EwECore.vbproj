@@ -118,6 +118,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -136,6 +137,8 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerResultWriter.vb" />
     <Compile Include="Contaminant Tracer\Model\cContaminanTracerDataStructures.vb" />
     <Compile Include="Core\cCoreSettings.vb" />
+     <Compile Include="EcoBase\cEcobaseImporter.vb" />
+    <Compile Include="Database\Import\cModelImporter.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_04.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_05.vb" />
@@ -171,6 +174,9 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_18.vb" />
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
+    <Compile Include="EcoBase\cEcobaseSubmission.vb" />
+    <Compile Include="EcoBase\cEcoBaseWDSL.vb" />
+    <Compile Include="EcoBase\cEcobaseData.vb" />
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
@@ -523,9 +529,9 @@
     <Compile Include="Shapes\TimeSeries\Writers\cTimeSeriesCSVWriter.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataset.vb" />
     <Compile Include="Taxon\cTaxonDataStructures.vb" />
+    <None Include="Database\Import\_importers_.cd" />
     <None Include="MSE\BatchAnalysis\MSEBatch.cd" />
     <None Include="Database\Compact\_compacters_.cd" />
-    <None Include="Database\Import\_Importers_.cd" />
     <None Include="EwECore.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -560,6 +566,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EcoBase\Dev progress\ToDo.txt" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\LPSolve\win64\lpsolve55.dll">

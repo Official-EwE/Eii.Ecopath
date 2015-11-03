@@ -22,10 +22,10 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 
@@ -515,7 +515,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As cCommand) _
             Handles m_cmdRunMonteCarlo.OnInvoke
 
             Dim bCheckTimeseries As Boolean = True
@@ -580,7 +580,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdRunMonteCarlo">Run Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As cCommand) _
             Handles m_cmdRunMonteCarlo.OnUpdate
 
             cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And _
@@ -599,7 +599,7 @@ Namespace Ecosim
         ''' <see cref="m_cmdStopMonteCarlo">Stop Monte Carlo command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
+        Private Sub m_cmdStopMonteCarlo_OnUpdate(ByVal cmd As cCommand) Handles m_cmdStopMonteCarlo.OnUpdate
             cmd.Enabled = Me.m_mcmanager.IsRunning
         End Sub
 
@@ -608,7 +608,7 @@ Namespace Ecosim
         ''' The Apply time series Command/button has been invoked
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+        Private Sub m_cmdApplyTS_OnPostInvoke(ByVal cmd As cCommand) _
             Handles m_cmdLoadTS.OnPostInvoke
             'this means the time series data could have changed
             'reload the data into the manager

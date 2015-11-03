@@ -20,13 +20,10 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterface.Other
-Imports ScientificInterfaceShared.Forms
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
-Imports ZedGraph
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region ' Imports
 
@@ -152,7 +149,7 @@ Public Class frmEcotracerOutput
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="frmEwE.IsRunForm" />
+    ''' <inheritdoc cref="ScientificInterfaceShared.Forms.frmEwE.IsRunForm" />
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property IsRunForm() As Boolean
         Get

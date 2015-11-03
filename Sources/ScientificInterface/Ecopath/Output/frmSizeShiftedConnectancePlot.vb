@@ -21,13 +21,9 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterface.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ZedGraph
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
+Imports ZedGraph
 
 #End Region
 

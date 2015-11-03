@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -87,7 +87,7 @@ Public Class cSelectionMonitor
     ''' <see cref="OnSelectionChanged">Selection change event</see> dispatch.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub HandleSelectionChanged(cmd As EwEUtils.Commands.cCommand)
+    Private Sub HandleSelectionChanged(cmd As cCommand)
         Try
             RaiseEvent OnSelectionChanged(Me)
         Catch ex As Exception

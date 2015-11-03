@@ -41,9 +41,9 @@ Namespace Import
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_pbWelcome = New System.Windows.Forms.PictureBox
-            Me.m_lblWelcomeInstructions = New System.Windows.Forms.Label
-            Me.m_lblNext = New System.Windows.Forms.Label
+            Me.m_pbWelcome = New System.Windows.Forms.PictureBox()
+            Me.m_lblWelcomeInstructions = New System.Windows.Forms.Label()
+            Me.m_lblNext = New System.Windows.Forms.Label()
             CType(Me.m_pbWelcome, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -51,7 +51,7 @@ Namespace Import
             '
             Me.m_pbWelcome.Anchor = System.Windows.Forms.AnchorStyles.Left
             Me.m_pbWelcome.BackColor = System.Drawing.Color.White
-            Me.m_pbWelcome.Image = Global.ScientificInterface.My.Resources.logo_EWE5_caption
+            Me.m_pbWelcome.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
             Me.m_pbWelcome.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_pbWelcome.Location = New System.Drawing.Point(9, 9)
             Me.m_pbWelcome.Margin = New System.Windows.Forms.Padding(0)
@@ -63,21 +63,21 @@ Namespace Import
             'm_lblWelcomeInstructions
             '
             Me.m_lblWelcomeInstructions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lblWelcomeInstructions.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_lblWelcomeInstructions.Location = New System.Drawing.Point(173, 214)
             Me.m_lblWelcomeInstructions.Name = "m_lblWelcomeInstructions"
             Me.m_lblWelcomeInstructions.Size = New System.Drawing.Size(290, 46)
             Me.m_lblWelcomeInstructions.TabIndex = 8
-            Me.m_lblWelcomeInstructions.Text = "The file that you are selected contains models created in a previous version of E" & _
-                "copath with Ecosim. It must be converted to the format used by this version."
+            Me.m_lblWelcomeInstructions.Text = "The Ecopath data that you selected contains one or more models that must be conve" & _
+        "rted to the format used by this version of EwE."
             '
             'm_lblNext
             '
             Me.m_lblNext.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lblNext.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_lblNext.Location = New System.Drawing.Point(173, 264)
             Me.m_lblNext.Name = "m_lblNext"

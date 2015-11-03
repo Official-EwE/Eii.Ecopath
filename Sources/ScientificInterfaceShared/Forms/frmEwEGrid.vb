@@ -21,20 +21,9 @@
 Option Strict On
 Option Explicit On
 
-Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports SourceGrid2.Cells
-Imports ScientificInterfaceShared.Commands
-Imports System.Drawing.Printing
+Imports ScientificInterfaceShared.Controls.EwEGrid
 
 #End Region
 

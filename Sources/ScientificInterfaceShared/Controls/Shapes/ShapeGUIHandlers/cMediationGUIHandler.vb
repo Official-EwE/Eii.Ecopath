@@ -23,7 +23,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style

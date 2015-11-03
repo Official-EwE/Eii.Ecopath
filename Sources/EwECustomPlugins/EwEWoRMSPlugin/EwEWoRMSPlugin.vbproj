@@ -152,9 +152,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
     <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -183,24 +180,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwECore\EwECore.vbproj">
-      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore %28EwECore\EwECore%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwEPlugin\EwEPlugin.vbproj">
-      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwEUtils\EwEUtils.vbproj">
-      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
-      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
-      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadataStorage Include="Service References\WoRMSWebService\" />
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +199,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\BlueBridge xparent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
+      <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
+      <Name>EwECore %28EwECore\EwECore%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EwEPlugin\EwEPlugin.vbproj">
+      <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
+      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EwEUtils\EwEUtils.vbproj">
+      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
+      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

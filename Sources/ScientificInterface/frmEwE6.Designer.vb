@@ -98,6 +98,11 @@ Partial Public Class frmEwE6
         Me.m_tsmiFileRecent = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiOpenOutput = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ImportModel = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcobaseImport = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ExportModel = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcobaseExport = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileClose = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileSaveAs = New System.Windows.Forms.ToolStripMenuItem()
@@ -440,7 +445,7 @@ Partial Public Class frmEwE6
         '
         'MenuFile
         '
-        Me.MenuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, Me.m_tsmiFileRecent, Me.m_tsmiOpenOutput, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiPrint, Me.ToolStripSeparator4, Me.m_tsmiFileExit})
+        Me.MenuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, Me.m_tsmiFileRecent, Me.m_tsmiOpenOutput, Me.ToolStripSeparator2, Me.ImportModel, Me.ExportModel, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiPrint, Me.ToolStripSeparator4, Me.m_tsmiFileExit})
         resources.ApplyResources(Me.MenuFile, "MenuFile")
         Me.MenuFile.Name = "MenuFile"
         '
@@ -469,6 +474,33 @@ Partial Public Class frmEwE6
         '
         resources.ApplyResources(Me.m_tsmiOpenOutput, "m_tsmiOpenOutput")
         Me.m_tsmiOpenOutput.Name = "m_tsmiOpenOutput"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        resources.ApplyResources(Me.ToolStripSeparator2, "ToolStripSeparator2")
+        '
+        'ImportModel
+        '
+        Me.ImportModel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcobaseImport})
+        Me.ImportModel.Name = "ImportModel"
+        resources.ApplyResources(Me.ImportModel, "ImportModel")
+        '
+        'm_tsmiEcobaseImport
+        '
+        Me.m_tsmiEcobaseImport.Name = "m_tsmiEcobaseImport"
+        resources.ApplyResources(Me.m_tsmiEcobaseImport, "m_tsmiEcobaseImport")
+        '
+        'ExportModel
+        '
+        Me.ExportModel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcobaseExport})
+        Me.ExportModel.Name = "ExportModel"
+        resources.ApplyResources(Me.ExportModel, "ExportModel")
+        '
+        'm_tsmiEcobaseExport
+        '
+        Me.m_tsmiEcobaseExport.Name = "m_tsmiEcobaseExport"
+        resources.ApplyResources(Me.m_tsmiEcobaseExport, "m_tsmiEcobaseExport")
         '
         'm_tsmiFileClose
         '
@@ -887,6 +919,11 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceClose As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcosimClose As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents m_tslbReadOnly As System.Windows.Forms.ToolStripLabel
+    Private WithEvents ImportModel As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcobaseImport As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents ExportModel As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcobaseExport As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

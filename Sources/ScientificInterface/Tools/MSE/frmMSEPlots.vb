@@ -23,9 +23,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.MSE
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
-
 Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
 

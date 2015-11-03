@@ -19,7 +19,6 @@
 #Region " Imports "
 
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions

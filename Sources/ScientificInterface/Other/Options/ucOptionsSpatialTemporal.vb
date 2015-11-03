@@ -27,7 +27,6 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwECore.SpatialData
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities

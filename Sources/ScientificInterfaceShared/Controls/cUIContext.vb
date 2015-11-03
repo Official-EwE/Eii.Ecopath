@@ -20,11 +20,11 @@
 
 Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Commands
-Imports ScientificInterfaceShared.Properties
 Imports System.Threading
+Imports EwECore
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 

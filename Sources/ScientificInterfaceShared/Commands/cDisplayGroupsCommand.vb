@@ -18,7 +18,7 @@
 
 #Region " Imports "
 
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

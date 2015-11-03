@@ -351,10 +351,15 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelUnitTime = DirectCast(CInt(Me.ReadSafe(row, "UnitTime", eUnitTimeType.Year)), eUnitTimeType)
                 ecopathDS.ModelUnitTimeCustom = CStr(Me.ReadSafe(row, "UnitTimeCustom", ""))
                 ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(row, "UnitMonetary", "EUR"), String)
-                'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(row, "UnitTimeCustom", ""))
                 ecopathDS.FirstYear = CInt(Me.ReadSafe(row, "FirstYear", 0))
-                'ecopathDS.ModelUnitArea = DirectCast(Me.ReadSafe(row, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
-                'ecopathDS.ModelUnitAreaCustom = CStr(Me.ReadSafe(row, "UnitAreaCustom", ""))
+                ecopathDS.ModelCountry = CStr(Me.ReadSafe(row, "Country", ""))
+                ecopathDS.ModelRegion = CStr(Me.ReadSafe(row, "Region", ""))
+                ecopathDS.ModelLME = CStr(Me.ReadSafe(row, "LME", ""))
+                ecopathDS.ModelEcosystemType = CStr(Me.ReadSafe(row, "EcosystemType", ""))
+                ecopathDS.ModelEcosystemCategory = CStr(Me.ReadSafe(row, "EcosystemCategory", ""))
+                ecopathDS.ModelEcobaseCode = CStr(Me.ReadSafe(row, "CodeEcobase", ""))
+                ecopathDS.ModelPublicationDOI = CStr(Me.ReadSafe(row, "PublicationDOI", ""))
+                ecopathDS.ModelPublicationURI = CStr(Me.ReadSafe(row, "PublicationURI", ""))
 
                 Dim sLat1 As Single = CSng(Me.ReadSafe(row, "MaxLat", cCore.NULL_VALUE))
                 Dim sLat2 As Single = CSng(Me.ReadSafe(row, "MinLat", cCore.NULL_VALUE))
@@ -364,7 +369,6 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelWest = CSng(Me.ReadSafe(row, "MinLon", cCore.NULL_VALUE))
                 ecopathDS.ModelEast = CSng(Me.ReadSafe(row, "MaxLon", cCore.NULL_VALUE))
 
-                ecopathDS.ModelAreaName = CStr(Me.ReadSafe(row, "AreaName", ""))
                 ecopathDS.ModelLastSaved = CDbl(Me.ReadSafe(row, "LastSaved", 0))
 
             Next

@@ -18,18 +18,19 @@
 
 Option Strict Off
 Imports System.IO
+Imports System.Text
 Imports System.Windows.Forms
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports EcoTroph.cEcotrophPlugin
 Imports EwECore
+Imports EwECore.WebServices
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports Ionic.Zip
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Commands
-Imports System.Text
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
@@ -38,14 +39,13 @@ Imports System.Text
 ' Ecotroph code audit 1, 21Jun2013, Jeroen Steenbeek
 '
 ' Recommended changes:
-' - Replace all message boxes with cMessages or cFeedbackMessages to ensure events 
-'   integrate with the EwE UI and are logged in cLog
 ' - All lengthy operations should provide status feedback via cApplicationStatusNotifier
 ' - All try/catch blocks should write an entry to cLog
 ' - Use the EwEUtils R interop class for interacting with R
 ' - Use a class to transfer and analyze R results (now in result_tab) that
 '   1) Gathers result strings in a wrapped buffer protected from index out of range issues
-'   2) Provides a command status
+'   2) Provides command and communication status
+' - Globalize all user legible texts
 ' ================================================================================
 
 Public Class frmEcotroph
@@ -73,12 +73,15 @@ Public Class frmEcotroph
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Dim test() As String
-        Dim result() As String
+        Debug.Assert(Me.UIContext IsNot Nothing)
+
+        Dim test() As String = Nothing
+        Dim result() As String = Nothing
         Dim result_tab() As String
         ' Dim repos As String = "http://mirror.ibcp.fr/pub/CRAN/bin/windows/contrib/2.14"
         Dim repos_simple As String = "http://cran.univ-lyon1.fr/"
         Dim repos As String = repos_simple & "bin/windows/contrib/2.14/"
+        Dim bSucces As Boolean = True
 
         'We have to test first if R is present in the Ewe directory
         ReDim test(6)
@@ -90,29 +93,17 @@ Public Class frmEcotroph
         test(4) = "Etat[Etat$Package=='EcoTroph','Status']"
         test(5) = "installed.packages()['EcoTroph','Version']"
 
-        result = execute_r(test)
+        bSucces = execute_r(test, result)
         result_tab = Split(result(1), vbCr)
 
-        If (result(0).Contains("R is not")) Then
+        If (bSucces = False) Then
 
-            ' JS 04Oct13: No need to be adminsitrator when installing R to AppData dir?
-            'If Not cSystemUtils.IsAdministrator Then
-            '    Dim msg As New cMessage("You don't have R installed, you won't be able to run Ecotroph. In order to download and install the minimum R for ecotroph you will need to run EwE with administrator rights", _
-            '                            eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
-            '    Me.Core.Messages.SendMessage(msg)
-            '    Return
-            'End If
-
-            ' JS 21Jun13: Really needed to change this
-            Dim fmsg As New cFeedbackMessage("You don't have R installed, you won't be able to run Ecotroph! Do you wish to download and install the minimum R for ecotroph directory now?", _
-                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-            fmsg.Reply = eMessageReply.YES
-            Me.UIContext.Core.Messages.SendMessage(fmsg)
-
-            If (fmsg.Reply = eMessageReply.OK) Then
+            ' ToDo: globalize this, please...
+            If (Me.AskUser("You don't have R installed, you won't be able to run Ecotroph! Do you wish to download and install the minimum R for ecotroph directory now?", eMessageReplyStyle.YES_NO) = eMessageReply.OK) Then
 
                 Dim ETdownload As String = cFileUtils.MakeTempFile(".zip")
 
+                ' ToDo: globalize this!
                 cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Downloading local copy of R...", -1)
                 Try
                     ' ToDo: Download et.zip exe into Temp folder, and install. This requires administrator rights
@@ -121,20 +112,18 @@ Public Class frmEcotroph
                     '       - To write et files we do need administrator rights. I have added a test in this form
                     My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/R_ET.zip", ETdownload, "", "", True, 500, True)
                 Catch ex As Exception
-                    MessageBox.Show(My.Resources.PB_DOWNLOAD & ex.Message)
-                    cLog.Write(ex, "frmEcotroph.Load")
+                    Me.NotifyUser(cStringUtils.Localize(My.Resources.PB_DOWNLOAD, ex.Message), eMessageImportance.Critical)
+                    cLog.Write(ex, "frmEcotroph.OnLoad(download_r)")
                 End Try
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
+                ' ToDo: globalize this!
                 cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Installing local copy of R...", -1)
                 Try
                     Dim zip As New Ionic.Zip.ZipFile(ETdownload)
 
-                    Dim fmsg2 As New cFeedbackMessage("Do you want to install the R for Ecotroph minimal application in the EwE directory (need administrator right) ? if no it will be install in your profile.", _
-                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-                    fmsg2.Reply = eMessageReply.YES
-                    Me.UIContext.Core.Messages.SendMessage(fmsg2)
-                    If (fmsg2.Reply = eMessageReply.OK) Then
+                    ' ToDo: globalize this!
+                    If (Me.AskUser("Do you want to install the R for Ecotroph minimal application in the EwE directory (need administrator right) ? if no it will be install in your profile.", eMessageReplyStyle.YES_NO) = eMessageReply.OK) Then
                         zip.ExtractAll(CurDir())
                         Me.m_strRPath = Path.Combine(CurDir(), "R\bin\i386\r.exe")
                     Else
@@ -143,12 +132,12 @@ Public Class frmEcotroph
                     End If
 
                 Catch ex As Exception
-
+                    cLog.Write(ex, "frmEcoTroph.OnLoad(install_r)")
                 End Try
                 cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
 
                 ' Test R version again to see if package needs updating
-                result = execute_r(test)
+                bSucces = execute_r(test, result)
                 result_tab = Split(result(1), vbCr)
 
             End If
@@ -159,13 +148,9 @@ Public Class frmEcotroph
 
         If (result_tab.Length > 3) Then
             If (result_tab(4).Contains("upgrade")) Then
-                ' JS 21Jun13: Really needed to change this
-                Dim fmsg As New cFeedbackMessage("A new version of the EcoTroph R package is available. Do you wish to upgrade now?", _
-                                            eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-                fmsg.Reply = eMessageReply.YES
-                Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                If (fmsg.Reply = eMessageReply.OK) Then
+                ' ToDo: globalize this!
+                If (Me.AskUser("A new version of the EcoTroph R package is available. Do you wish to upgrade now?", eMessageReplyStyle.YES_NO) = eMessageReply.OK) Then
 
                     cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Upgrading R package...", -1)
                     Try
@@ -174,9 +159,9 @@ Public Class frmEcotroph
                         test(2) = ""
                         test(3) = ""
                         test(4) = ""
-                        result = execute_r(test)
+                        execute_r(test, result)
                     Catch ex As Exception
-                        cLog.Write(ex, "frmEcotroph::upgrade R package")
+                        cLog.Write(ex, "frmEcotroph.OnLoad(upgrade_r)")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
                 End If
@@ -204,11 +189,15 @@ Public Class frmEcotroph
             End If
         End If
 
+        If Not Me.Core.StateMonitor.HasEcopathLoaded Then
+            Return
+        End If
+
         'a retester ou alors tester si les données sont dispo
         EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
 
         ETgridinput.BringToFront()
-        
+
         If Not (IsNothing(ETinputdatafromEP.TL)) Then
 
             Dim DataGrid As DataGridView = Me.ETgridinput
@@ -216,39 +205,37 @@ Public Class frmEcotroph
             Me.ETgridinput.Rows.Clear()
 
             For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
-            If (DataGrid.RowCount < ETinputdatafromEP.TL.Length) Then
-                DataGrid.Rows.Add()
-            End If
-            DataGrid.Item(0, igrp).Value() = ETinputdatafromEP.groupname(igrp + 1)
-            DataGrid.Item(1, igrp).Value() = ETinputdatafromEP.TL(igrp + 1)
-            DataGrid.Item(2, igrp).Value() = ETinputdatafromEP.B(igrp + 1)
-            DataGrid.Item(3, igrp).Value() = ETinputdatafromEP.PROD(igrp + 1)
-            DataGrid.Item(4, igrp).Value() = ETinputdatafromEP.accessibility(igrp + 1)
-            DataGrid.Item(5, igrp).Value() = ETinputdatafromEP.OI(igrp + 1)
-        Next
-        commentaires.Text = ETinputdata.numfleet
-
-        DataGrid.ColumnCount = 6 + ETinputdatafromEP.numfleet
-        For ifleet As Integer = 0 To ETinputdatafromEP.numfleet - 1
-            DataGrid.Columns(6 + ifleet).Name = ETinputdatafromEP.fleetname(ifleet + 1)
-            For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
-                DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdatafromEP.catches(ifleet)(igrp + 1)
-
+                If (DataGrid.RowCount < ETinputdatafromEP.TL.Length) Then
+                    DataGrid.Rows.Add()
+                End If
+                DataGrid.Item(0, igrp).Value() = ETinputdatafromEP.GroupName(igrp + 1)
+                DataGrid.Item(1, igrp).Value() = ETinputdatafromEP.TL(igrp + 1)
+                DataGrid.Item(2, igrp).Value() = ETinputdatafromEP.B(igrp + 1)
+                DataGrid.Item(3, igrp).Value() = ETinputdatafromEP.PROD(igrp + 1)
+                DataGrid.Item(4, igrp).Value() = ETinputdatafromEP.accessibility(igrp + 1)
+                DataGrid.Item(5, igrp).Value() = ETinputdatafromEP.OI(igrp + 1)
             Next
-            DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
-        Next
-        'ETinputdata = ETinputdatafromEP
-        ETinputdata.numfleet = ETinputdatafromEP.numfleet
-        'If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
-        If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-        If Not (IsNothing(ETinputdata.Modeldescription)) Then modeldescription.Text = ETinputdata.Modeldescription Else modeldescription.Text = ""
-        Button2.Enabled = True
-        Button3.Enabled = True
+            commentaires.Text = ETinputdata.NumFleet
+
+            DataGrid.ColumnCount = 6 + ETinputdatafromEP.NumFleet
+            For ifleet As Integer = 0 To ETinputdatafromEP.NumFleet - 1
+                DataGrid.Columns(6 + ifleet).Name = ETinputdatafromEP.FleetName(ifleet + 1)
+                For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
+                    DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdatafromEP.Catches(ifleet)(igrp + 1)
+
+                Next
+                DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
+            Next
+            'ETinputdata = ETinputdatafromEP
+            ETinputdata.NumFleet = ETinputdatafromEP.NumFleet
+            'If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
+            If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
+            If Not (IsNothing(ETinputdata.ModelDescription)) Then modeldescription.Text = ETinputdata.ModelDescription Else modeldescription.Text = ""
+            Button2.Enabled = True
+            Button3.Enabled = True
             Button4.Enabled = True
-            list_group_diag.Items.Clear()
-            List_fleet1.Items.Clear()
         Else
-            MsgBox(My.Resources.NO_MODEL_DATA)
+            Me.NotifyUser(My.Resources.NO_MODEL_DATA, eMessageImportance.Critical)
         End If
 
         ' frmET.ETgridinput.DataSource = ETinput
@@ -262,10 +249,9 @@ Public Class frmEcotroph
         saveFileDialog1.Filter = My.Resources.FILEFILTER_XML
         saveFileDialog1.Title = My.Resources.SAVE_ECOTROPH
         saveFileDialog1.ShowDialog()
-        ETinputdata.comments = commentaires.Text
+        ETinputdata.Comments = commentaires.Text
         ETinputdata.ModelName = Modelname.Text
-        ETinputdata.Modeldescription = modeldescription.Text
-
+        ETinputdata.ModelDescription = modeldescription.Text
 
         ' If the file name is not an empty string open it for saving.
         If saveFileDialog1.FileName <> "" Then
@@ -278,13 +264,17 @@ Public Class frmEcotroph
 
             'writer.Serialize(file, ETinputdata)
             'file.Close()
-            Dim serializer As New XmlSerializer(GetType(ETinputtot))
-            Dim fs As New FileStream(saveFileDialog1.FileName, FileMode.Create)
-            Dim writer As New XmlTextWriter(fs, Encoding.Unicode)
-            serializer.Serialize(writer, ETinputdata)
-            writer.Close()
+            Try
+                Dim serializer As New XmlSerializer(GetType(ETinputtot))
+                Dim fs As New FileStream(saveFileDialog1.FileName, FileMode.Create)
+                Dim writer As New XmlTextWriter(fs, Encoding.Unicode)
+                serializer.Serialize(writer, ETinputdata)
+                writer.Close()
+            Catch ex As Exception
 
+            End Try
         End If
+
     End Sub
 
     Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -305,7 +295,7 @@ Public Class frmEcotroph
                     ETinputdata = CType(reader.Deserialize(file), ETinputtot)
                 End If
             Catch Ex As Exception
-                MessageBox.Show(My.Resources.ERROR_INPUT_FILE & Ex.Message)
+                Me.NotifyUser(cStringUtils.Localize(My.Resources.ERROR_INPUT_FILE, Ex.Message), eMessageImportance.Critical)
             Finally
                 ' Check this again, since we need to make sure we didn't throw an exception on open.
                 If (myStream IsNot Nothing) Then
@@ -324,7 +314,7 @@ Public Class frmEcotroph
                     DataGrid.Rows.Add()
                 End If
 
-                DataGrid.Item(0, igrp).Value() = ETinputdata.groupname(igrp + 1)
+                DataGrid.Item(0, igrp).Value() = ETinputdata.GroupName(igrp + 1)
                 DataGrid.Item(1, igrp).Value() = ETinputdata.TL(igrp + 1)
                 DataGrid.Item(2, igrp).Value() = ETinputdata.B(igrp + 1)
                 DataGrid.Item(3, igrp).Value() = ETinputdata.PROD(igrp + 1)
@@ -333,22 +323,19 @@ Public Class frmEcotroph
                 If Not (IsNothing(ETinputdata.OI)) Then DataGrid.Item(5, igrp).Value() = ETinputdata.OI(igrp + 1)
 
             Next
-            If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
+            If Not (IsNothing(ETinputdata.Comments)) Then commentaires.Text = ETinputdata.Comments Else commentaires.Text = ""
             If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-            If Not (IsNothing(ETinputdata.Modeldescription)) Then modeldescription.Text = ETinputdata.Modeldescription Else modeldescription.Text = ""
-            DataGrid.ColumnCount = 6 + ETinputdata.numfleet
-            For ifleet As Integer = 0 To ETinputdata.numfleet - 1
-                DataGrid.Columns(6 + ifleet).Name = ETinputdata.fleetname(ifleet)
+            If Not (IsNothing(ETinputdata.ModelDescription)) Then modeldescription.Text = ETinputdata.ModelDescription Else modeldescription.Text = ""
+            DataGrid.ColumnCount = 6 + ETinputdata.NumFleet
+            For ifleet As Integer = 0 To ETinputdata.NumFleet - 1
+                DataGrid.Columns(6 + ifleet).Name = ETinputdata.FleetName(ifleet)
                 For igrp As Integer = 0 To ETinputdata.TL.Length - 2
-                    DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdata.catches(ifleet)(igrp + 1)
+                    DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdata.Catches(ifleet)(igrp + 1)
                 Next
 
             Next
             DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
         End If
-        list_group_diag.Items.Clear()
-        List_fleet1.Items.Clear()
-
         Button2.Enabled = True
         Button3.Enabled = True
         Button4.Enabled = True
@@ -359,29 +346,31 @@ Public Class frmEcotroph
         If (e.ColumnIndex >= 0 And e.RowIndex >= 0) Then
             '  MsgBox(Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).ToString)
             Try
-                
-            Select Case e.ColumnIndex
-                Case 0
-                    ETinputdata.groupname(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-                Case 1
-                    ETinputdata.TL(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-                Case 2
-                    ETinputdata.B(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-                Case 3
-                    ETinputdata.PROD(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-                Case 4
-                    ETinputdata.accessibility(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-                Case 5
-                    ETinputdata.OI(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-                    'Then it's fleet catches
-                Case Is > 5
 
-                    ETinputdata.catches(e.ColumnIndex - 6)(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
-            End Select
+                Select Case e.ColumnIndex
+                    Case 0
+                        ETinputdata.GroupName(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                    Case 1
+                        ETinputdata.TL(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                    Case 2
+                        ETinputdata.B(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                    Case 3
+                        ETinputdata.PROD(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                    Case 4
+                        ETinputdata.accessibility(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                    Case 5
+                        ETinputdata.OI(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                        'Then it's fleet catches
+                    Case Is > 5
+
+                        ETinputdata.Catches(e.ColumnIndex - 6)(e.RowIndex + 1) = Me.ETgridinput.Item(e.ColumnIndex, e.RowIndex).Value
+                End Select
             Catch ex As Exception
-                MessageBox.Show("Problem in modifying data, do you respect decimal seperator ?: " & ex.Message)
+                ' ToDo: globalize this
+                ' ToDo: use EwE messaging system please
+                Me.NotifyUser(cStringUtils.Localize("Problem in modifying data, do you respect decimal seperator? {0}", ex.Message), eMessageImportance.Warning)
+                cLog.Write(ex, "frmEcotroph.ETgridinput_CellValueChanged")
             End Try
-
 
         End If
 
@@ -403,10 +392,14 @@ Public Class frmEcotroph
         Me.parameters_cst.Visible = False
     End Sub
 
-    Public Function execute_r(ByVal code As String()) As String()
+    Public Function execute_r(ByVal code As String(), ByRef result As String()) As Boolean
+
+        ' ToDo: use EwE messaging system instead of MsgBox, please
 
         'Cette fonction execute un code R et renvoie le nom d'un fichier resultat
         Dim myProcess As New Process()
+        Dim bSucces As Boolean = True
+
         myProcess.StartInfo.UseShellExecute = False ' A remettre à false
 
         myProcess.StartInfo.RedirectStandardInput = True
@@ -429,22 +422,28 @@ Public Class frmEcotroph
                 Next
                 myStreamWriter.Close()
 
-                Dim depasse As Boolean = myProcess.WaitForExit(600000)
+                Dim depasse As Boolean = myProcess.WaitForExit(100000)
                 If depasse Then
                     output2(1) = myProcess.StandardOutput.ReadToEnd()
                     output2(0) = myProcess.StandardError.ReadToEnd()
                 Else
-                    MsgBox(My.Resources.EXCEED_TIME_R)
+                    Me.NotifyUser(My.Resources.EXCEED_TIME_R, eMessageImportance.Warning)
+                    bSucces = False
                 End If
 
             Catch ex As Exception
-                MsgBox(My.Resources.PB_R)
+                Me.NotifyUser(My.Resources.PB_R, eMessageImportance.Critical)
+                cLog.Write(ex, "frmEcotroph.execute_r")
+                bSucces = False
             End Try
         Else
             output2(0) = My.Resources.NO_R
+            bSucces = False
         End If
 
-        Return (output2)
+        result = output2
+        Return bSucces
+
 
     End Function
 
@@ -458,23 +457,29 @@ Public Class frmEcotroph
         myProcess.StartInfo.FileName = Me.m_strRPath
         myProcess.StartInfo.Arguments = "--slave"
         myProcess.StartInfo.CreateNoWindow = False
-        myProcess.Start()
 
-        'Shell(myProcess.StartInfo.FileName)
-        'Dim myStreamWriter As StreamWriter = myProcess.
-        For icod As Integer = 0 To code.Count - 1
-            My.Computer.Keyboard.SendKeys(code(icod))
-            'myStreamWriter.WriteLine(code(icod))
-            'MsgBox(myProcess.Threads.Count & "pour " & code(icod))
-        Next
-        'Dim output2 As String = myProcess.StandardError.ReadToEnd()
-        'myStreamWriter.Close()
-        Return (vbOK)
+        Try
+            myProcess.Start()
+
+            'Shell(myProcess.StartInfo.FileName)
+            'Dim myStreamWriter As StreamWriter = myProcess.
+            For icod As Integer = 0 To code.Count - 1
+                My.Computer.Keyboard.SendKeys(code(icod))
+                'myStreamWriter.WriteLine(code(icod))
+                'MsgBox(myProcess.Threads.Count & "pour " & code(icod))
+            Next
+            'Dim output2 As String = myProcess.StandardError.ReadToEnd()
+            'myStreamWriter.Close()
+        Catch ex As Exception
+            cLog.Write(ex, "frmEcotroph.execute_rplot")
+            Return vbCancel
+        End Try
+
+        Return vbOK
 
     End Function
 
     Public Shared Function sauve_datagrid_xml(ByVal grille As ETinputtot, ByVal filename As String) As Boolean
-
 
         Dim serializer As New XmlSerializer(GetType(ETinputtot))
         Dim fs As New FileStream(filename, FileMode.Create)
@@ -603,14 +608,13 @@ Public Class frmEcotroph
         'on execute ce code R
 
         Try
-            Dim output2() As String = execute_r(commandes)
+            Dim output2() As String = Nothing
+            execute_r(commandes, output2)
             ' If Len(output2) > 0 Then MsgBox(output2)
 
         Catch ex As Exception
-            'MessageBox.Show("Problem in R script: " & ex.Message)
+            cLog.Write(ex, "frmEcoTroph.Button2_Click(execute_r_1)")
         End Try
-
-
 
 
         smooth_pdf.Navigate(fichierpdf)
@@ -623,10 +627,11 @@ Public Class frmEcotroph
 
                 charge_grid(recup, datasmooth)
             Catch ex As Exception
-                MessageBox.Show("Problem in reading R script output: " & ex.Message)
+                Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
+                cLog.Write(ex, "frmEcoTroph.Button2_Click(read_pdf)")
             End Try
         Else
-            MsgBox(My.Resources.NO_OUTPUT_R)
+            Me.NotifyUser(My.Resources.NO_OUTPUT_R, eMessageImportance.Critical)
         End If
 
 
@@ -704,11 +709,13 @@ Public Class frmEcotroph
         'on execute ce code R
 
         Try
-            Dim output2() As String = execute_r(commandes)
+            Dim output2() As String = Nothing
+            execute_r(commandes, output2)
             ' If Len(output2) > 0 Then MsgBox(output2)
 
         Catch ex As Exception
             'MessageBox.Show("Problem in R script: " & ex.Message)
+            cLog.Write(ex, "frmEcoTroph.Button3_Click")
         End Try
 
 
@@ -725,9 +732,9 @@ Public Class frmEcotroph
             Dim totales As String = Join(recup, vbNewLine)
             Dim matrices() As String = Split(totales, "-----")
 
-            'A matrice created by commande(12) is not loaded (created but not loaded). i do'nt remember what is the use of this matrice (and the name) JG 07/05/2015
 
-            Dim Ctr() As Control = Me.Controls.Find("Catch." & (ETinputdata.fleetname(0)), True)
+
+            Dim Ctr() As Control = Me.Controls.Find("Catch." & (ETinputdata.FleetName(0)), True)
             Try
 
                 charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main)
@@ -737,40 +744,40 @@ Public Class frmEcotroph
                 charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p_acc)
                 charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_y)
                 '    If panel_result.TabPages.Count = 6 Then
-                For compteur_fleet As Integer = 0 To ETinputdata.numfleet - 1
+                For compteur_fleet As Integer = 0 To ETinputdata.NumFleet - 1
 
-                    Dim ctrl() As Control = panel_result.Controls.Find("Catch." & (ETinputdata.fleetname(compteur_fleet)), True)
+                    Dim ctrl() As Control = panel_result.Controls.Find("Catch." & (ETinputdata.FleetName(compteur_fleet)), True)
 
                     If ctrl.Length = 0 Then
 
                         Dim myTabPage As New TabPage()
-                        myTabPage.Text = "Catch." & (ETinputdata.fleetname(compteur_fleet))
-                        myTabPage.Name = "tabCatch." & (ETinputdata.fleetname(compteur_fleet))
+                        myTabPage.Text = "Catch." & (ETinputdata.FleetName(compteur_fleet))
+                        myTabPage.Name = "tabCatch." & (ETinputdata.FleetName(compteur_fleet))
                         panel_result.TabPages.Add(myTabPage)
                         Dim dtg As New DataGridView
-                        dtg.Name = "Catch." & (ETinputdata.fleetname(compteur_fleet))
+                        dtg.Name = "Catch." & (ETinputdata.FleetName(compteur_fleet))
                         dtg.Height = 391
                         dtg.Width = 782
                         dtg.Top = 6
                         dtg.Left = 3
                         dtg.Dock = DockStyle.Fill
                         panel_result.TabPages(compteur_fleet + 6).Controls.Add(dtg)
-                        charge_grid(matrices(compteur_fleet + 7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
+                        charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
                     Else
-                        charge_grid(matrices(compteur_fleet + 7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
+                        charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ctrl(0))
                     End If
 
 
                 Next
 
-
             Catch ex As Exception
-                MessageBox.Show("Problem in reading R script output: " & ex.Message)
+                Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
+                cLog.Write(ex, "frmEcoTroph.Button3_Click(read_results)")
             End Try
 
 
         Else
-            MsgBox(My.Resources.NO_OUTPUT_R)
+            Me.NotifyUser(My.Resources.NO_OUTPUT_R, eMessageImportance.Critical)
         End If
 
         Cursor.Current = Cursors.Default
@@ -800,7 +807,8 @@ Public Class frmEcotroph
     Private Sub CheckBox1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         If getgraph_diag.Checked = True Then
             result_pdf_et_diag.Visible = True
-        Else : result_pdf_et_diag.Visible = False
+        Else
+            result_pdf_et_diag.Visible = False
         End If
     End Sub
 
@@ -808,7 +816,8 @@ Public Class frmEcotroph
         If smooth_graph.Checked = True Then
             smooth_pdf.BringToFront()
             smooth_pdf.Visible = True
-        Else : smooth_pdf.Visible = False
+        Else
+            smooth_pdf.Visible = False
         End If
     End Sub
 
@@ -901,7 +910,7 @@ Public Class frmEcotroph
             If List_fleet1.SelectedItems.Count = 0 Then
 
                 param_pas2 = param_pas2 & ",same.mE=TRUE"
-                MsgBox(My.Resources.NO_SELECTED_FLEET)
+                Me.NotifyUser(My.Resources.NO_SELECTED_FLEET, eMessageImportance.Warning)
                 same_mf.Checked = True
             Else
 
@@ -974,11 +983,12 @@ Public Class frmEcotroph
 
         'on execute ce code R
         Try
-            Dim output2() As String = execute_r(commandes)
-            ' If Len(output2) > 0 Then MsgBox(output2)
+            Dim output2() As String = Nothing
+            execute_r(commandes, output2)
 
         Catch ex As Exception
             'MessageBox.Show("Problem in R script: " & ex.Message)
+            cLog.Write(ex, "frmEcoTroph.Button4_Click_2")
         End Try
 
 
@@ -1006,8 +1016,9 @@ Public Class frmEcotroph
                 charge_grid(matrices(8).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F_acc)
                 charge_grid(matrices(9).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Y)
             Catch ex As Exception
-                MessageBox.Show("Problem in reading R script output: " & ex.Message)
+                Me.NotifyUser(cStringUtils.Localize("Problem in reading R script output. {0}", ex.Message), eMessageImportance.Critical)
             End Try
+
             'Chargement des résultats du plot_ETdianosis_ispoleth
 
             Dim isopleth_output() As String = {"TOT_biomass", "TOT_biomass_acc", "TOT_P", "TOT_P_acc", "Y", "Y_fleet1", "Y_fleet2", "TL_TOT_biomass", "TL_TOT_biomass_acc", "TL_Catches", "TL_Catches_fleet1", "TL_Catches_fleet2"}
@@ -1063,10 +1074,10 @@ Public Class frmEcotroph
 
             End If
 
-
         Else
-            MsgBox(My.Resources.NO_OUTPUT_R)
+            Me.NotifyUser(My.Resources.NO_OUTPUT_R, eMessageImportance.Critical)
         End If
+
         Cursor.Current = Cursors.Default
     End Sub
 
@@ -1102,19 +1113,11 @@ Public Class frmEcotroph
     End Sub
 
 
-
-
-
-
-
-
-
-
     Private Sub List_fleet1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles List_fleet1.SelectedIndexChanged
 
         Dim compteur_fin As Integer = List_fleet1.SelectedItems.Count
         If compteur_fin = List_fleet1.Items.Count Then
-            MsgBox(My.Resources.TOO_SELECTED_FLEET)
+            Me.NotifyUser(My.Resources.TOO_SELECTED_FLEET, eMessageImportance.Warning)
         End If
 
     End Sub
@@ -1131,18 +1134,18 @@ Public Class frmEcotroph
 
             Dim compteur As Integer
 
-            If (ETinputdata.numfleet < 2) Then
-                MsgBox(My.Resources.NOT_ENOUGH_FLEET)
+            If (ETinputdata.NumFleet < 2) Then
+                Me.NotifyUser(My.Resources.NOT_ENOUGH_FLEET, eMessageImportance.Warning)
                 same_mf.Checked = True
                 List_fleet1.Enabled = False
             Else
 
 
-                If (ETinputdata.numfleet > 1 And List_fleet1.Items.Count = 0) Then
+                If (ETinputdata.NumFleet > 1 And List_fleet1.Items.Count = 0) Then
 
 
-                    For compteur = 0 To ETinputdata.numfleet - 1
-                        List_fleet1.Items.Add(ETinputdata.fleetname(compteur))
+                    For compteur = 0 To ETinputdata.NumFleet - 1
+                        List_fleet1.Items.Add(ETinputdata.FleetName(compteur))
 
                     Next
                 End If
@@ -1166,7 +1169,7 @@ Public Class frmEcotroph
 
 
         Try
-            Dim myservice As New getResult()
+            Dim myservice As New cEcoBaseWDSL()
             Dim myresult As String
             Dim myresult_xml As New XmlDocument()
 
@@ -1179,14 +1182,14 @@ Public Class frmEcotroph
 
 
                 Try
+
                     myresult = myservice.list_models("", Nothing)
                     myresult_xml.LoadXml(myresult)
 
                     Dim nodelist As XmlNodeList = myresult_xml.DocumentElement.ChildNodes
                 Catch ex As Exception
-
-
-                    MessageBox.Show(My.Resources.NO_DB_SERVICES)
+                    Me.NotifyUser(My.Resources.NO_DB_SERVICES, eMessageImportance.Critical)
+                    cLog.Write(ex, "Button7_Click")
                 End Try
 
 
@@ -1208,7 +1211,7 @@ Public Class frmEcotroph
             Cursor.Current = Cursors.Default
         Catch ex As Exception
             cLog.Write(ex, "Ecotroph::Button7-Click")
-            MessageBox.Show(My.Resources.ERROR_NO_WS)
+            Me.NotifyUser(My.Resources.ERROR_NO_WS, eMessageImportance.Critical)
         End Try
 
     End Sub
@@ -1233,7 +1236,7 @@ Public Class frmEcotroph
 
 
         Try
-            Dim myservice As New getResult()
+            Dim myservice As New cEcoBaseWDSL()
 
             ' Jerome refonte et utilisation webservice 13/12/2012
 
@@ -1297,7 +1300,7 @@ Public Class frmEcotroph
                     DataGrid.Rows.Add()
                 End If
 
-                DataGrid.Item(0, igrp).Value() = ETinputdata.groupname(igrp + 1)
+                DataGrid.Item(0, igrp).Value() = ETinputdata.GroupName(igrp + 1)
                 DataGrid.Item(1, igrp).Value() = ETinputdata.TL(igrp + 1)
                 DataGrid.Item(2, igrp).Value() = ETinputdata.B(igrp + 1)
                 DataGrid.Item(3, igrp).Value() = ETinputdata.PROD(igrp + 1)
@@ -1306,14 +1309,14 @@ Public Class frmEcotroph
                 If Not (IsNothing(ETinputdata.OI)) Then DataGrid.Item(5, igrp).Value() = ETinputdata.OI(igrp + 1)
 
             Next
-            If Not (IsNothing(ETinputdata.comments)) Then commentaires.Text = ETinputdata.comments Else commentaires.Text = ""
+            If Not (IsNothing(ETinputdata.Comments)) Then commentaires.Text = ETinputdata.Comments Else commentaires.Text = ""
             If Not (IsNothing(ETinputdata.ModelName)) Then Modelname.Text = ETinputdata.ModelName Else Modelname.Text = ""
-            If Not (IsNothing(ETinputdata.Modeldescription)) Then modeldescription.Text = ETinputdata.Modeldescription Else modeldescription.Text = ""
-            DataGrid.ColumnCount = 6 + ETinputdata.numfleet
-            For ifleet As Integer = 0 To ETinputdata.numfleet - 1
-                DataGrid.Columns(6 + ifleet).Name = ETinputdata.fleetname(ifleet)
+            If Not (IsNothing(ETinputdata.ModelDescription)) Then modeldescription.Text = ETinputdata.ModelDescription Else modeldescription.Text = ""
+            DataGrid.ColumnCount = 6 + ETinputdata.NumFleet
+            For ifleet As Integer = 0 To ETinputdata.NumFleet - 1
+                DataGrid.Columns(6 + ifleet).Name = ETinputdata.FleetName(ifleet)
                 For igrp As Integer = 0 To ETinputdata.TL.Length - 2
-                    DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdata.catches(ifleet)(igrp + 1)
+                    DataGrid.Item(6 + ifleet, igrp).Value() = ETinputdata.Catches(ifleet)(igrp + 1)
                 Next
 
             Next
@@ -1321,18 +1324,14 @@ Public Class frmEcotroph
             Button2.Enabled = True
             Button3.Enabled = True
             Button4.Enabled = True
-            list_group_diag.Items.Clear()
-            List_fleet1.Items.Clear()
 
         Catch Ex As Exception
             cLog.Write(Ex, "Ecotroph::models_list")
-            MessageBox.Show(My.Resources.NO_MODEL_DATA & Ex.Message)
+            Me.NotifyUser(cStringUtils.Localize(My.Resources.NO_MODEL_DATA, Ex.Message), eMessageImportance.Critical)
         Finally
             ' Check this again, since we need to make sure we didn't throw an exception on open.
             If (myStream IsNot Nothing) Then
                 myStream.Close()
-
-
             End If
         End Try
 
@@ -1341,7 +1340,7 @@ Public Class frmEcotroph
     Private Sub models_list_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles models_list.SelectedIndexChanged
 
         Dim url_eco As String
-        url_eco = "http://sirs.agrocampus-ouest.fr/EcoBase/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & num_model(models_list.SelectedIndex)
+        url_eco = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & num_model(models_list.SelectedIndex)
         site_eco.Navigate(New Uri(url_eco))
 
     End Sub
@@ -1420,4 +1419,33 @@ Public Class frmEcotroph
     Private Sub ETgridinput_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles ETgridinput.CellContentClick
 
     End Sub
+
+    Private Sub TabPage1_Click(sender As System.Object, e As System.EventArgs) Handles TabPage1.Click
+
+    End Sub
+
+    Private Sub NotifyUser(strMessage As String, status As eMessageImportance, Optional strLink As String = "")
+
+        Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, status)
+        msg.Hyperlink = strLink
+        Try
+            Me.Core.Messages.SendMessage(msg)
+        Catch ex As Exception
+            cLog.Write(ex, "frmEcoTroph.NotifyUser(" & strMessage & ")")
+        End Try
+
+    End Sub
+
+    Private Function AskUser(strMessage As String, style As eMessageReplyStyle, Optional status As eMessageImportance = eMessageImportance.Question) As eMessageReply
+
+        Dim msg As New cFeedbackMessage(strMessage, eCoreComponentType.External, eMessageType.Any, status, style)
+        Try
+            Me.Core.Messages.SendMessage(msg)
+        Catch ex As Exception
+            cLog.Write(ex, "frmEcoTroph.AskUser(" & strMessage & ")")
+        End Try
+        Return msg.Reply
+
+    End Function
+
 End Class

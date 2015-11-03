@@ -21,7 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -211,8 +211,7 @@ Namespace Ecotracer
 
         Private Sub SetTracerRunMode(ByVal tracerRunMode As eTracerRunModeTypes)
 
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EnableEcotracer")
 
             cmd.Tag = tracerRunMode
             cmd.Invoke()

@@ -22,6 +22,7 @@ Option Strict On
 Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
+Imports EwECore
 
 #End Region
 
@@ -32,9 +33,9 @@ Friend Class cEwENetworkAnalysisData
     Private m_man As cNetworkManager = Nothing
     Private m_strPluginName As String = ""
     Private m_Ascendancy(6, 5) As Single
+    Private m_OI As Single()
 
-    Public Sub New(ByVal strAssemblyName As String, _
-                   ByVal strPluginName As String, _
+    Public Sub New(ByVal strPluginName As String, _
                    ByVal man As cNetworkManager)
         Me.m_strPluginName = strPluginName
         Me.m_man = man
@@ -51,6 +52,12 @@ Friend Class cEwENetworkAnalysisData
         Implements INetworkAnalysisData.Ascendancy
         Get
             Return Me.m_Ascendancy
+        End Get
+    End Property
+
+    Public ReadOnly Property OmnivoryIndex As Single()
+        Get
+            Return Me.m_OI
         End Get
     End Property
 
@@ -73,4 +80,7 @@ Friend Class cEwENetworkAnalysisData
         End Get
     End Property
 
+    Friend Sub Resize(core As cCore)
+        ReDim Me.m_OI(core.nGroups)
+    End Sub
 End Class

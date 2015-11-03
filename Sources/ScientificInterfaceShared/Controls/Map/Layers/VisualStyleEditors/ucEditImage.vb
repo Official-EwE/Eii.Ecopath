@@ -21,7 +21,6 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style

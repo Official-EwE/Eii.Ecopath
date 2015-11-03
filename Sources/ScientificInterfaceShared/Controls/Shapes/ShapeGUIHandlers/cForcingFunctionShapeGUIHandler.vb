@@ -24,7 +24,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

@@ -61,8 +61,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEEcotroph", "EwECustomPlu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Taxonomic searches", "Taxonomic searches", "{6A76F53D-7DE8-4BC0-B420-7CE70EE7B5FD}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEWoRMSPlugin", "EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj", "{4B88BF52-04A7-476B-B2F5-153758A62935}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEFishBasePlugin", "EwECustomPlugins\EwEFishBasePlugin\EwEFishBasePlugin.vbproj", "{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEAquamapsEnvDataImporterPlugin", "EwEAquamapsEnvDataImporterPlugin", "{1E34E7CE-212D-45BF-974B-1856EA4BBE79}"
@@ -72,6 +70,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEFishBasePlugin", "EwEFishBasePlugin", "{EBED1931-6372-4A1D-85BD-9C7E95384F62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEWoRMSPlugin", "EwEWoRMSPlugin", "{DBB7E5D2-4C4C-4043-B629-D66A558776D8}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEWoRMSPlugin", "EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj", "{4B88BF52-04A7-476B-B2F5-153758A62935}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -250,18 +250,6 @@ Global
 		{FEF1031B-9933-4364-AD29-C4F8B2E68382}.Release|x64.Build.0 = Release|x64
 		{FEF1031B-9933-4364-AD29-C4F8B2E68382}.Release|x86.ActiveCfg = Release|x86
 		{FEF1031B-9933-4364-AD29-C4F8B2E68382}.Release|x86.Build.0 = Release|x86
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x64.ActiveCfg = Debug|x64
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x64.Build.0 = Debug|x64
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x86.ActiveCfg = Debug|x86
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x86.Build.0 = Debug|x86
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x64.ActiveCfg = Release|x64
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x64.Build.0 = Release|x64
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x86.ActiveCfg = Release|x86
-		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x86.Build.0 = Release|x86
 		{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}.Debug|x64.ActiveCfg = Debug|x64
@@ -286,6 +274,18 @@ Global
 		{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}.Release|x64.Build.0 = Release|x64
 		{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}.Release|x86.ActiveCfg = Release|x86
 		{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}.Release|x86.Build.0 = Release|x86
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x64.ActiveCfg = Debug|x64
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x64.Build.0 = Debug|x64
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x86.ActiveCfg = Debug|x86
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Debug|x86.Build.0 = Debug|x86
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x64.ActiveCfg = Release|x64
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x64.Build.0 = Release|x64
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x86.ActiveCfg = Release|x86
+		{4B88BF52-04A7-476B-B2F5-153758A62935}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

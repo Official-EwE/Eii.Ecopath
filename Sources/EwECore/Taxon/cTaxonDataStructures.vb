@@ -35,10 +35,10 @@ Public Class cTaxonDataStructures
     ''' <summary>Flag stating whether TaxonTarget(i) refers to a stanza (true) or a group (false)</summary>
     Public IsTaxonStanza() As Boolean
     ''' <summary>Taxon proportion of biomass (xNumTaxa)</summary>
-    Public TaxonProp() As Single
+    Public TaxonPropBiomass() As Single
     ''' <summary>Taxa proportion of catch (xNumTaxa)</summary>
     Public TaxonPropCatch() As Single
-     ''' <summary>Taxonomy class names (xNumTaxa).</summary>
+    ''' <summary>Taxonomy class names (xNumTaxa).</summary>
     Public TaxonClass() As String
     ''' <summary>Taxonomy order names (xNumTaxa).</summary>
     Public TaxonOrder() As String
@@ -121,7 +121,7 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonDBID(Me.NumTaxon)
         ReDim Me.TaxonTarget(Me.NumTaxon)
         ReDim Me.IsTaxonStanza(Me.NumTaxon)
-        ReDim Me.TaxonProp(Me.NumTaxon)
+        ReDim Me.TaxonPropBiomass(Me.NumTaxon)
         ReDim Me.TaxonPropCatch(Me.NumTaxon)
         ReDim Me.TaxonClass(Me.NumTaxon)
         ReDim Me.TaxonCodeSAUP(Me.NumTaxon)

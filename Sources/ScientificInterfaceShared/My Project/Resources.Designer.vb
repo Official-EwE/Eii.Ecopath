@@ -5153,20 +5153,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EwE5 model.
+        '''  Looks up a localized string similar to Source model.
         '''</summary>
-        Public ReadOnly Property HEADER_MODEL_EWE5() As String
+        Public ReadOnly Property HEADER_MODEL_SOURCE() As String
             Get
-                Return ResourceManager.GetString("HEADER_MODEL_EWE5", resourceCulture)
+                Return ResourceManager.GetString("HEADER_MODEL_SOURCE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EwE6 model name.
+        '''  Looks up a localized string similar to Target model name.
         '''</summary>
-        Public ReadOnly Property HEADER_MODEL_EWE6() As String
+        Public ReadOnly Property HEADER_MODEL_TARGET() As String
             Get
-                Return ResourceManager.GetString("HEADER_MODEL_EWE6", resourceCulture)
+                Return ResourceManager.GetString("HEADER_MODEL_TARGET", resourceCulture)
             End Get
         End Property
         
@@ -7330,6 +7330,26 @@ Namespace My.Resources
         Public ReadOnly Property PieChart() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PieChart", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property plugin() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("plugin", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property pluginpoint() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("pluginpoint", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

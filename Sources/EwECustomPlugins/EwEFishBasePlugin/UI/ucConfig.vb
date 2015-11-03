@@ -25,7 +25,6 @@ Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
 
 #End Region ' Imports
 

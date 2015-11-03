@@ -27,7 +27,7 @@ Imports EwECore.SearchObjectives
 Imports ScientificInterface.Controls
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecosim
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 

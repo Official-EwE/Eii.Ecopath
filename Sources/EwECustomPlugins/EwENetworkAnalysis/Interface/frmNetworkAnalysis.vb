@@ -23,7 +23,6 @@ Option Explicit On
 
 Imports System.IO
 Imports System.Windows.Forms
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources

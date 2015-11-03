@@ -245,6 +245,24 @@
     <Setting Name="ColorCustom" Type="System.Collections.ArrayList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Countries" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Regions" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LMEs" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EcosystemTypes" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EcosystemCategories" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LastWSDLUpdate" Type="System.DateTime" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="UseExternalBrowser" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

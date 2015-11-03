@@ -19,12 +19,12 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEPlugin
 Imports EwEPlugin.Data
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
-Imports EwECore
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports 
 

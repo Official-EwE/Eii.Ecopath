@@ -22,7 +22,6 @@ Option Strict On
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities

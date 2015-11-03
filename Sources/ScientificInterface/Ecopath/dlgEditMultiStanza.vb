@@ -25,7 +25,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Windows.Forms
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports ZedGraph
 
 #End Region ' Imports
