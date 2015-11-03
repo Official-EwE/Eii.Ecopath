@@ -246,6 +246,9 @@
   <data name="m_lblPrompt.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
+  <data name="m_lblPrompt.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+    <value>0, 0</value>
+  </data>
   <data name="m_lblPrompt.Location" type="System.Drawing.Point, System.Drawing">
     <value>56, 16</value>
   </data>
@@ -265,7 +268,7 @@
     <value>m_lblPrompt</value>
   </data>
   <data name="&gt;&gt;m_lblPrompt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.5.12879.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblPrompt.Parent" xml:space="preserve">
     <value>$this</value>
@@ -286,7 +289,7 @@
     <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>frmThreeButtons</value>
+    <value>frmCustomMessageBox</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmCustomMessageBox</value>

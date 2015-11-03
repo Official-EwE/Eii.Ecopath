@@ -78,6 +78,7 @@ MZ: THIS IS NOT WORKING YET. Sorry for the capitals, just to attract your attent
 	the regression analysis supply and demand must be higher that zero to be part of the 
 	regression in order to estimate Resilience.
 
+JS: I've flipped the output of depand and supply in the CSV file.
 ---------------
 
 6. Also we don't understand how the annual value of resilience is estimated. I've 

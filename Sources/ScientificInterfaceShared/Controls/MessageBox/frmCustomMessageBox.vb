@@ -244,9 +244,9 @@ Namespace Controls
 
             ' Consider buttons total width
             iButtonsWidth = Me.Spacer
-            If (CInt(m_btnOne.Tag) > 0) Then iButtonsWidth += m_btnOne.Width + Me.Spacer
-            If (CInt(m_btnTwo.Tag) > 0) Then iButtonsWidth += m_btnTwo.Width + Me.Spacer
-            If (CInt(m_btnThree.Tag) > 0) Then iButtonsWidth += m_btnThree.Width + Me.Spacer
+            If (CInt(m_btnOne.Tag) > Windows.Forms.DialogResult.None) Then iButtonsWidth += m_btnOne.Width + Me.Spacer
+            If (CInt(m_btnTwo.Tag) > Windows.Forms.DialogResult.None) Then iButtonsWidth += m_btnTwo.Width + Me.Spacer
+            If (CInt(m_btnThree.Tag) > Windows.Forms.DialogResult.None) Then iButtonsWidth += m_btnThree.Width + Me.Spacer
 
             ' Calc final form width
             iFormWidth = Math.Max(iFormWidth, iButtonsWidth)
@@ -303,11 +303,12 @@ Namespace Controls
                 Case Windows.Forms.DialogResult.Cancel : btn.Text = My.Resources.BUTTON_CANCEL
                 Case Windows.Forms.DialogResult.Ignore : btn.Text = My.Resources.BUTTON_IGNORE
                 Case Windows.Forms.DialogResult.No : btn.Text = My.Resources.BUTTON_NO
-                Case Windows.Forms.DialogResult.None : btn.Text = My.Resources.BUTTON_NONE
+                Case Windows.Forms.DialogResult.None : btn.Text = ""
                 Case Windows.Forms.DialogResult.OK : btn.Text = My.Resources.BUTTON_OK
                 Case Windows.Forms.DialogResult.Retry : btn.Text = My.Resources.BUTTON_RETRY
                 Case Windows.Forms.DialogResult.Yes : btn.Text = My.Resources.BUTTON_YES
             End Select
+
             ' Store tag
             btn.Tag = result
             ' Show/hide button
@@ -362,7 +363,7 @@ Namespace Controls
             Me.m_btnThree = New System.Windows.Forms.Button()
             Me.m_pbIcon = New System.Windows.Forms.PictureBox()
             Me.m_chkOption = New System.Windows.Forms.CheckBox()
-            Me.m_lblPrompt = New ucLinkLabel()
+            Me.m_lblPrompt = New ScientificInterfaceShared.Controls.ucLinkLabel()
             CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -396,6 +397,7 @@ Namespace Controls
             '
             resources.ApplyResources(Me.m_lblPrompt, "m_lblPrompt")
             Me.m_lblPrompt.Name = "m_lblPrompt"
+            Me.m_lblPrompt.UIContext = Nothing
             '
             'frmCustomMessageBox
             '
