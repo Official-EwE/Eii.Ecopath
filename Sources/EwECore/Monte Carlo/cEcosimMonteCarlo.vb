@@ -462,6 +462,8 @@ Public Class cEcosimMonteCarlo
                 m_ecosim.TimeStepDelegate = Nothing
             End If
 
+            If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloRunInitialized()
+
             Me.m_ouputWriter.Init()
 
         Catch ex As Exception
@@ -610,6 +612,9 @@ Public Class cEcosimMonteCarlo
             m_ecopath.suppressMessages = False
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
+
+        If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MontCarloRunCompleted()
+
     End Sub
 
 

@@ -26,8 +26,13 @@ Public Interface IMonteCarloPlugin
     ''' The MonteCarlo model has initialized. Passes the MonteCarlo model to a plugin.
     ''' </summary>
     ''' <param name="MonteCarloAsObject">The cEcosimMonteCarlo object as an Object </param>
-    ''' <remarks></remarks>
     Sub MontCarloInitialized(ByVal MonteCarloAsObject As Object)
+
+    ''' <summary>
+    ''' The MonteCarlo model has initialized for a run. Ecosim SS has been calculated, and
+    ''' the MC will start iterating next.
+    ''' </summary>
+    Sub MonteCarloRunInitialized()
 
     ''' <summary>
     ''' The MonteCarlo has found a balanced model and it about to run Ecosim.
@@ -45,7 +50,11 @@ Public Interface IMonteCarloPlugin
     ''' <summary>
     ''' The MonteCarlo has completed its Ecosim run and will start another trial.
     ''' </summary>
-    ''' <remarks></remarks>
     Sub MonteCarloEcosimRunCompleted()
+
+    ''' <summary>
+    ''' The MonteCarlo has completed its run.
+    ''' </summary>
+    Sub MonteCarloRunCompleted()
 
 End Interface
