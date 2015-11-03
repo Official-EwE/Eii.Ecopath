@@ -276,9 +276,7 @@ Namespace Ecospace.Basemap.Layers
                 sfd.Title = "Pick output location for ASCII file"
                 sfd.Filter = "ASCII files|*.asc"
                 If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                    Dim wr As New StreamWriter(sfd.FileName)
-                    Me.SaveASCFile(wr)
-                    wr.Close()
+                    Me.SaveASCFile(sfd.FileName)
                 End If
             Catch ex As Exception
 
@@ -573,12 +571,20 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Write an entire ASCII file for a group, time step and variable.
         ''' </summary>
-        ''' <param name="strm"></param>
+        ''' <param name="strFileName"></param>
         ''' -----------------------------------------------------------------------
-        Protected Sub SaveASCFile(ByVal strm As StreamWriter)
+        Protected Sub SaveASCFile(ByVal strFileName As String)
             Try
-                Me.WriteASCIIHeader(strm)
-                Me.WriteASCIIBody(strm)
+                Using wr As New StreamWriter(strFileName)
+                    Me.WriteASCIIHeader(wr)
+                    Me.WriteASCIIBody(wr)
+                    wr.Close()
+                End Using
+
+                Using wr As New StreamWriter(Path.ChangeExtension(strFileName, ".prj"))
+                    wr.WriteLine(Me.m_uic.Core.EcospaceBasemap.ProjectionString)
+                    wr.Close()
+                End Using
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
             End Try
