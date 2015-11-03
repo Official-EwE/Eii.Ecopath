@@ -1019,11 +1019,11 @@
   <data name="HEADER_MINWEIGHT" xml:space="preserve">
     <value>Min. weight</value>
   </data>
-  <data name="HEADER_MODEL_EWE5" xml:space="preserve">
-    <value>EwE5 model</value>
+  <data name="HEADER_MODEL_SOURCE" xml:space="preserve">
+    <value>Source model</value>
   </data>
-  <data name="HEADER_MODEL_EWE6" xml:space="preserve">
-    <value>EwE6 model name</value>
+  <data name="HEADER_MODEL_TARGET" xml:space="preserve">
+    <value>Target model name</value>
   </data>
   <data name="HEADER_MORTALITY" xml:space="preserve">
     <value>Mortality</value>
@@ -3322,5 +3322,11 @@
   </data>
   <data name="VARIABLE_Z" xml:space="preserve">
     <value>Z|Tot. mort.|Total mortality</value>
+  </data>
+  <data name="plugin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\plugin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pluginpoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\pluginpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

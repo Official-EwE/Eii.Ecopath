@@ -40,16 +40,19 @@ Public Class cModelImporterFactory
     ''' from a path to an EwE5 source document. 
     ''' </summary>
     ''' <param name="core">The core to associate the importer with.</param>
-    ''' <param name="strFilename">Path to the EwE5 source document to build the
-    ''' importer for.</param>
+    ''' <param name="strSource">Path to data source to build the importer for.</param>
     ''' <returns>A <see cref="cEwE5ModelImporter">EwE5 model importer</see>, if
     ''' all went well, or Nothing otherwise.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function GetModelImporter(ByVal core As cCore, _
-                                            ByVal strFilename As String, _
+                                            ByVal strSource As String, _
                                             ByVal pm As cPluginManager) As IModelImporter
 
-        Select Case cDataSourceFactory.GetSupportedType(strFilename)
+        If (strSource.ToLower().StartsWith("ewe-ecobase:")) Then
+            Return New cEcobaseImporter(core)
+        End If
+
+        Select Case cDataSourceFactory.GetSupportedType(strSource)
 
             Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
                 Return New cEwE5DatabaseImporter(core)
@@ -63,7 +66,7 @@ Public Class cModelImporterFactory
         If (pm IsNot Nothing) Then
             For Each pi As IPlugin In pm.GetPlugins(GetType(EwEPlugin.Data.IModelImportPlugin))
                 Dim imp As EwEPlugin.Data.IModelImportPlugin = DirectCast(pi, EwEPlugin.Data.IModelImportPlugin)
-                If imp.CanImportFrom(strFilename) Then
+                If imp.CanImportFrom(strSource) Then
                     Return imp
                 End If
             Next

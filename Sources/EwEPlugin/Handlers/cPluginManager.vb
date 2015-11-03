@@ -54,7 +54,7 @@ Public Class cPluginManager
     ''' utterly obsolete if the reflection library is properly used, but hey.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Friend Class cPluginContext
+    Public Class cPluginContext
 
         ''' <summary>Plug-in point.</summary>
         Private m_plugin As IPlugin = Nothing
@@ -823,14 +823,14 @@ Public Class cPluginManager
     ''' <param name="ip">The GUI plug-in that changed enabled state.</param>
     ''' <param name="bEnable">The new enabled state of the plug-in.</param>
     ''' -----------------------------------------------------------------------
-    Friend Delegate Sub PluginEnabledHandler(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
+    Public Delegate Sub PluginEnabledHandler(ByVal ip As IGUIPlugin, ByVal bEnable As Boolean)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' A plugin enabled state has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Event PluginEnabled As PluginEnabledHandler
+    Public Event PluginEnabled As PluginEnabledHandler
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -1897,7 +1897,7 @@ Public Class cPluginManager
 
 #End Region ' MSE and MSY
 
-#Region "Monte Carlo"
+#Region " Monte Carlo "
 
     Public Function MontCarloInitialized(ByVal MonteCarloAsObject As Object) As Boolean
 
@@ -1917,7 +1917,27 @@ Public Class cPluginManager
 
     End Function
 
-#End Region
+#End Region ' Monte Carlo
+
+#Region " GUI "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the <see cref="ICommandHandlerPlugin.HandleCommand"/> 
+    ''' plug-in point on any available and responsive <see cref="ICommandHandlerPlugin"/>.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Function HandleCommand(cmd As Object) As Boolean
+
+        ' Invoke ICommandHandlerPlugin.HandleCommand(cmd)
+        Return Me.TryInvokeMethod(GetType(ICommandHandlerPlugin), _
+                                  "HandleCommand", _
+                                  New Object() {cmd}, _
+                                  eInvocationType.Exclusive)
+
+    End Function
+
+#End Region ' GUI
 
 #End Region ' Plugin invocation
 
@@ -1934,7 +1954,7 @@ Public Class cPluginManager
     ''' <returns>A collection of <see cref="cPluginContext">plug-in contexts</see>
     ''' linking to plug-ins of the given type.</returns>
     ''' ---------------------------------------------------------------------------
-    Friend Function GetPluginDefs(ByVal t As Type, _
+    Public Function GetPluginDefs(ByVal t As Type, _
                                   Optional ByVal pa As cPluginAssembly = Nothing) As ICollection(Of cPluginContext)
 
         Dim collPlugins As New List(Of cPluginContext)

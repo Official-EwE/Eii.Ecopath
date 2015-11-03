@@ -20,7 +20,7 @@
 
 Option Strict On
 Imports EwECore.Ecosim
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports System.Drawing.Printing
 
 #End Region ' Imports

@@ -767,6 +767,8 @@ Namespace Controls
             Public Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags) _
                 Implements IControlWrapper.UpdateContent
 
+                If (Me.m_bInUpdate) Then Return
+
                 Dim objValue As Object = Me.m_provider.Value
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
@@ -921,13 +923,14 @@ Namespace Controls
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Event handler, invoked when the Combo box selection or tet have changed. 
+            ''' Event handler, invoked when the Combo box selection or text have changed. 
             ''' This will pass the combo box selection to the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
             Private Sub OnComboBoxValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 
                 If (Me.m_bInUpdate) Then Return
+                Me.m_bInUpdate = True
 
                 ' Update internal value
                 If (Me.m_provider.ValueType Is GetType(Integer)) Then

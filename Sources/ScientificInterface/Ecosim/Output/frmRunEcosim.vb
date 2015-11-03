@@ -22,7 +22,6 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities

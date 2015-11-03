@@ -21,20 +21,19 @@
 Option Strict On
 Option Explicit On
 
+Imports System.Drawing.Imaging
+Imports System.IO
 Imports System.Threading
 Imports EwECore
-Imports EwEUtils.Commands
+Imports EwECore.Auxiliary
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports EwECore.Auxiliary
-Imports System.IO
-Imports EwEUtils.Utilities
-Imports System.Drawing.Imaging
-Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 

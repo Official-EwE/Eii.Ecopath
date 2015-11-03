@@ -20,19 +20,17 @@
 
 Option Strict On
 
+Imports System.ComponentModel
+Imports System.Data
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Controls.cTreeFlowDiagramRenderer
-Imports EwEUtils.Utilities
-Imports System.Data
-Imports System.ComponentModel
 
 #End Region ' Imports
 

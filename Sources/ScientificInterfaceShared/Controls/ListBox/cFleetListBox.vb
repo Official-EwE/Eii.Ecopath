@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports EwECore
 Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

@@ -62,6 +62,10 @@ Friend Class cDBUpdate6_50_00_13
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathModel ADD COLUMN EcosystemCategory TEXT(255)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathModel ADD COLUMN CodeEcobase TEXT(50)")
 
+        bSuccess = bSuccess And db.Execute("UPDATE EcopathModel SET EcopathModel.Region=EcopathModel.AreaName")
+
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathModel DROP COLUMN AreaName")
+
         Return bSuccess
 
     End Function

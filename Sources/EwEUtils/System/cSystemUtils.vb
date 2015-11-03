@@ -51,7 +51,7 @@ Namespace SystemUtilities
         ''' -------------------------------------------------------------------
         Private Shared Function UserInfo() As UserPrincipal
             If (cSystemUtils.s_principal Is Nothing) And Not cSystemUtils.s_bPrincipalChecked Then
-                cSystemUtils.s_principal = UserPrincipal.Current
+                'cSystemUtils.s_principal = UserPrincipal.Current
                 cSystemUtils.s_bPrincipalChecked = True
             End If
             Return cSystemUtils.s_principal

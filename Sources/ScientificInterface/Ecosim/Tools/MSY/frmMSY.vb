@@ -21,7 +21,6 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.MSY
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands

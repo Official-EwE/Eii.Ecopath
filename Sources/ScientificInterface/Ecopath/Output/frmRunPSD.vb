@@ -23,12 +23,10 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports ScientificInterfaceShared.Commands
 
 #End Region 'Imports
 

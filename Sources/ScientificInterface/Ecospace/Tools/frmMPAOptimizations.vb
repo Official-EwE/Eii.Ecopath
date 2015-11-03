@@ -21,16 +21,15 @@
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports ScientificInterfaceShared.Commands
 
 #End Region ' Import
 

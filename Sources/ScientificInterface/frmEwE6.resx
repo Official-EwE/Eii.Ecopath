@@ -395,7 +395,7 @@
   <data name="m_tsmiEcospaceDatasets.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAK
-        wQAACsEBS9fnIgAAAfVJREFUOE+N08tLG1EUBnD/ClcGNMFq8RVduBK6tLVQpEUJWnwSoVloKxalVg22
+        vgAACr4BGQQ9DwAAAfVJREFUOE+N08tLG1EUBnD/ClcGNMFq8RVduBK6tLVQpEUJWnwSoVloKxalVg22
         9QGKaUmiBbVIiIo4G2l9NQqKpApq1JhEGkVMieBjDLZg3H3ee2NGJ3cWXZzNMOd3v3MfcQBYCa6T+Dmv
         iHrBzyq7Y1WqRyYXK73dhx+756D/Rvsk4I3wG/mWbawd/cWheIWAGEYwFKmjizAOzsJwHlxC+8mJlyNe
         0hIDaNuXcRy6/q96UDPAA1nGRTzt34Hrzz8EyIrR1aUEp1dY2Q8hq9WB5GqzAtC2AG3HLzy2bqN3IYBp
@@ -721,6 +721,33 @@
   </data>
   <data name="m_tsmiOpenOutput.Text" xml:space="preserve">
     <value>Open Output Location...</value>
+  </data>
+  <data name="ToolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>238, 6</value>
+  </data>
+  <data name="m_tsmiEcobaseImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>157, 22</value>
+  </data>
+  <data name="m_tsmiEcobaseImport.Text" xml:space="preserve">
+    <value>From &amp;EcoBase...</value>
+  </data>
+  <data name="ImportModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 22</value>
+  </data>
+  <data name="ImportModel.Text" xml:space="preserve">
+    <value>&amp;Import Model</value>
+  </data>
+  <data name="m_tsmiEcobaseExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="m_tsmiEcobaseExport.Text" xml:space="preserve">
+    <value>To &amp;EcoBase...</value>
+  </data>
+  <data name="ExportModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>241, 22</value>
+  </data>
+  <data name="ExportModel.Text" xml:space="preserve">
+    <value>&amp;Export Model</value>
   </data>
   <data name="m_tsmiFileClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>241, 22</value>
@@ -1648,7 +1675,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbnFeedback.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 21</value>
+    <value>136, 21</value>
   </data>
   <data name="m_tsbnFeedback.Text" xml:space="preserve">
     <value>Tell us what you think!</value>
@@ -7018,6 +7045,36 @@
     <value>m_tsmiOpenOutput</value>
   </data>
   <data name="&gt;&gt;m_tsmiOpenOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator2.Name" xml:space="preserve">
+    <value>ToolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ImportModel.Name" xml:space="preserve">
+    <value>ImportModel</value>
+  </data>
+  <data name="&gt;&gt;ImportModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcobaseImport.Name" xml:space="preserve">
+    <value>m_tsmiEcobaseImport</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcobaseImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ExportModel.Name" xml:space="preserve">
+    <value>ExportModel</value>
+  </data>
+  <data name="&gt;&gt;ExportModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcobaseExport.Name" xml:space="preserve">
+    <value>m_tsmiEcobaseExport</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiEcobaseExport.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiFileClose.Name" xml:space="preserve">

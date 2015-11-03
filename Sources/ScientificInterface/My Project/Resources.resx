@@ -13062,4 +13062,23 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="STATUS_ECOSIMFD_SAVING" xml:space="preserve">
     <value>Saving flow diagram images...</value>
   </data>
+  <data name="EcoBase" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecobase.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ECOBASE_ERROR_COMMUNICATION" xml:space="preserve">
+    <value>An error occorred submitting your model to EcoBase. {0}</value>
+    <comment>{0}=reason</comment>
+  </data>
+  <data name="ECOBASE_ERROR_NOCONNECTION" xml:space="preserve">
+    <value>EwE could not communicate with EcoBase. Please make sure you are connected to the Internet and try again. If the problem persists send us a bug report from the Help menu</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_ACCEPTED" xml:space="preserve">
+    <value>Your model was successfully added to EcoBase</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_DENIED" xml:space="preserve">
+    <value>Your model was not submitted to EcoBase</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_REVIEW" xml:space="preserve">
+    <value>Your model was successfully submitted to EcoBase, and is pending review</value>
+  </data>
 </root>

@@ -133,13 +133,13 @@ Public Class cTaxonAnalysis
                 iTaxon = Me.m_taxonDS.GroupTaxa(iGroup, i)
                 If (comp.Compare(CSng(avals.GetValue(iTaxon)), sVal)) Then
                     If bBiomass Then
-                        sProportion += Me.m_taxonDS.TaxonProp(iTaxon)
+                        sProportion += Me.m_taxonDS.TaxonPropBiomass(iTaxon)
                     Else
                         sProportion += Me.m_taxonDS.TaxonPropCatch(iTaxon)
                     End If
                 End If
                 If bBiomass Then
-                    sPropTot += Me.m_taxonDS.TaxonProp(iTaxon)
+                    sPropTot += Me.m_taxonDS.TaxonPropBiomass(iTaxon)
                 Else
                     sPropTot += Me.m_taxonDS.TaxonPropCatch(iTaxon)
                 End If

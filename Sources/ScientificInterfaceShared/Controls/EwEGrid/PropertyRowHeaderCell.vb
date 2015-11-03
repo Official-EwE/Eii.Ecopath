@@ -25,7 +25,7 @@ Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.VisualModels
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 
 #End Region ' Imports

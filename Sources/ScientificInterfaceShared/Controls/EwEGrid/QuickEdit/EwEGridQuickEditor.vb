@@ -22,12 +22,11 @@ Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwECore
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 

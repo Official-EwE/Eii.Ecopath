@@ -23,7 +23,6 @@ Option Strict On
 Imports EwECore.Ecosim
 Imports ScientificInterfaceShared.Style
 Imports EwECore
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.IO

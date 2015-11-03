@@ -26,7 +26,6 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports

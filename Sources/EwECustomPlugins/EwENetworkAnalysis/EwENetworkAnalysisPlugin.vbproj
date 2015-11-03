@@ -186,6 +186,7 @@
     <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
     <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
     <Compile Include="NetworkAnalysis\cResultWriter.vb" />
+    <Compile Include="Plugin\cEwENetworkAnalysisData.vb" />
     <Compile Include="Plugin\cEwENetworkAnalysisPlugin.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -202,7 +203,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Plugin\cEwENetworkAnalysisData.vb" />
     <Compile Include="Plugin\cNavTreePlugin.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree01TLD.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree04TLD_RelFlows.vb" />

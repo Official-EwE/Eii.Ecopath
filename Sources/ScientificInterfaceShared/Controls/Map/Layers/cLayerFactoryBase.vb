@@ -451,7 +451,7 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the name of a <see cref="EwEUtils.Commands.cCommand"/> that can
+        ''' Get the name of a <see cref="ScientificInterfaceShared.Commands.cCommand"/> that can
         ''' be triggered to modify the <see cref="ICoreInputOutput">core items </see>
         ''' reflected by a type of layer.
         ''' </summary>

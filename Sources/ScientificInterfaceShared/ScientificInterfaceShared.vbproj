@@ -126,6 +126,9 @@
     <Compile Include="Commands\cEditRegionsCommand.vb" />
     <Compile Include="Commands\cEditSpatialDatasetCommand.vb" />
     <Compile Include="Commands\cPickColorCommand.vb" />
+    <Compile Include="Commands\Foundation\cCommand.vb" />
+    <Compile Include="Commands\Foundation\cCommandHandler.vb" />
+    <Compile Include="Commands\Foundation\cControlHandler.vb" />
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
     <Compile Include="Controls\Config\dlgConfig.Designer.vb">
       <DependentUpon>dlgConfig.vb</DependentUpon>
@@ -661,6 +664,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Plugin Integration\cPluginAutolaunchHandler.vb" />
+    <Compile Include="Plugin Integration\cPluginGUICommand.vb" />
+    <Compile Include="Plugin Integration\cPluginGUIHandler.vb" />
+    <Compile Include="Plugin Integration\cPluginMenuHandler.vb" />
+    <Compile Include="Plugin Integration\cPluginNavTreeHandler.vb" />
     <Compile Include="Properties\cFormulaProperty.vb" />
     <Compile Include="Properties\cStringProperty.vb" />
     <Compile Include="Properties\cBooleanProperty.vb" />
@@ -1027,6 +1035,8 @@
     <Content Include="Resources\FilterHS.png" />
     <None Include="Resources\fish_dead.png" />
     <Content Include="Resources\NavHS.png" />
+    <None Include="Resources\plugin.png" />
+    <None Include="Resources\pluginpoint.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />
     <Content Include="Resources\Refresh.png" />

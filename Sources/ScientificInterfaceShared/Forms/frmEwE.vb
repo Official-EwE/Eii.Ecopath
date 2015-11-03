@@ -24,7 +24,7 @@ Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style

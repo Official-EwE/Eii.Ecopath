@@ -2166,6 +2166,24 @@ Namespace Style
             Return Nothing
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return a standard image for a given <see cref="cStyleGuide.eStyleFlags">style</see>.
+        ''' </summary>
+        ''' <param name="style">The style pattern to find the image for.</param>
+        ''' <returns>A bitmap, or nothing if not applicable.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetImage(style As cStyleGuide.eStyleFlags) As Bitmap
+
+            If (style And eStyleFlags.ErrorEncountered) > 0 Then
+
+            End If
+            Return Nothing
+
+        End Function
+
+
+
         Public Shared Function GetColor(comp As SpatialData.cDatasetCompatilibity) As Color
             Select Case comp.Status
                 Case eStatusFlags.Null

@@ -756,7 +756,6 @@ Partial Class frmEcotroph
         '
         'TabPage3
         '
-        Me.TabPage3.AutoScroll = True
         Me.TabPage3.Controls.Add(Me.PictureBox4)
         Me.TabPage3.Controls.Add(Me.Log_scale)
         Me.TabPage3.Controls.Add(Me.getgraphs)
@@ -961,7 +960,6 @@ Partial Class frmEcotroph
         '
         'TabPage2
         '
-        Me.TabPage2.AutoScroll = True
         Me.TabPage2.Controls.Add(Me.Label12)
         Me.TabPage2.Controls.Add(Me.ecotroph_version)
         Me.TabPage2.Controls.Add(Me.smooth_pdf)
@@ -1002,7 +1000,7 @@ Partial Class frmEcotroph
         Me.smooth_pdf.Location = New System.Drawing.Point(6, 181)
         Me.smooth_pdf.MinimumSize = New System.Drawing.Size(20, 20)
         Me.smooth_pdf.Name = "smooth_pdf"
-        Me.smooth_pdf.Size = New System.Drawing.Size(892, 535)
+        Me.smooth_pdf.Size = New System.Drawing.Size(885, 552)
         Me.smooth_pdf.TabIndex = 8
         Me.smooth_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         Me.smooth_pdf.Visible = False
@@ -1186,12 +1184,11 @@ Partial Class frmEcotroph
         Me.datasmooth.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.datasmooth.Location = New System.Drawing.Point(8, 185)
         Me.datasmooth.Name = "datasmooth"
-        Me.datasmooth.Size = New System.Drawing.Size(887, 531)
+        Me.datasmooth.Size = New System.Drawing.Size(880, 548)
         Me.datasmooth.TabIndex = 1
         '
         'TabPage1
         '
-        Me.TabPage1.AutoScroll = True
         Me.TabPage1.Controls.Add(Me.Button7)
         Me.TabPage1.Controls.Add(Me.Label13)
         Me.TabPage1.Controls.Add(Me.Label3)
@@ -1421,6 +1418,7 @@ Partial Class frmEcotroph
         Me.Controls.Add(Me.inputdata)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEcotroph"
+        Me.TabText = ""
         Me.Text = "EcoTroph plugin"
         Me.diagnosis_page.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)

@@ -22,9 +22,9 @@ Option Strict On
 
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -381,7 +381,7 @@ Public Class ucResults
 
 #Region " Commands "
 
-    Private Sub OnInvokeRunEcopath(ByVal cmd As EwEUtils.Commands.cCommand)
+    Private Sub OnInvokeRunEcopath(ByVal cmd As cCommand)
 
         Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcopath
 
@@ -419,12 +419,12 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnUpdateRunEcopath(ByVal cmd As EwEUtils.Commands.cCommand)
+    Private Sub OnUpdateRunEcopath(ByVal cmd As cCommand)
         Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
         cmd.Enabled = csm.HasEcopathLoaded And (Not csm.IsEcopathRunning)
     End Sub
 
-    Private Sub OnInvokeRunEcosim(ByVal cmd As EwEUtils.Commands.cCommand)
+    Private Sub OnInvokeRunEcosim(ByVal cmd As cCommand)
 
         Dim bOldRunFlag As Boolean = Me.m_data.Parameters.RunWithEcosim
 
@@ -461,12 +461,12 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnUpdateRunEcosim(ByVal cmd As EwEUtils.Commands.cCommand)
+    Private Sub OnUpdateRunEcosim(ByVal cmd As cCommand)
         Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
         cmd.Enabled = csm.HasEcosimLoaded And (Not csm.IsEcosimRunning)
     End Sub
 
-    Private Sub OnInvokeRunEquilibrium(ByVal cmd As EwEUtils.Commands.cCommand)
+    Private Sub OnInvokeRunEquilibrium(ByVal cmd As cCommand)
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_RUNNING_EQUILIBRIUM)
         ' Switch to manual run mode
@@ -496,7 +496,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnUpdateRunEquilibrium(ByVal cmd As EwEUtils.Commands.cCommand)
+    Private Sub OnUpdateRunEquilibrium(ByVal cmd As cCommand)
         Dim csm As cCoreStateMonitor = Me.m_data.Core.StateMonitor
         cmd.Enabled = csm.HasEcosimLoaded And (Not csm.IsEcosimRunning)
     End Sub

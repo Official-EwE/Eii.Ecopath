@@ -45,12 +45,12 @@ Namespace Import
         ''' 
         ''' </summary>
         ''' <param name="uic">UI context to connect to.</param>
-        ''' <param name="strEwE5File">File path to the database to import.</param>
+        ''' <param name="strSource">Source of to the database to import.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal strEwE5File As String)
+        Public Sub New(ByVal uic As cUIContext, ByVal strSource As String)
 
             Me.InitializeComponent()
-            Me.m_wizard = New cImportWizard(uic, strEwE5File, Me, Me.m_plWizardContent, Me.m_navigator)
+            Me.m_wizard = New cImportWizard(uic, strSource, Me, Me.m_plWizardContent, Me.m_navigator)
 
         End Sub
 

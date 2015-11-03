@@ -27,7 +27,7 @@ Imports System.Text.RegularExpressions
 Imports ScientificInterface.Other
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared
 
 #End Region ' Imports

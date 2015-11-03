@@ -27,6 +27,7 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -104,7 +105,7 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " Generic "
 
-    Public Overrides ReadOnly Property Name() As String 
+    Public Overrides ReadOnly Property Name() As String
         Get
             Return "nwa00"
         End Get
@@ -151,7 +152,7 @@ Public Class cEwENetworkAnalysisPlugin
                 Me.m_manager = New cNetworkManager(Me.m_core)
 
                 Me.m_bInitOK = True
-                Me.m_ddx = New cEwENetworkAnalysisData(Assembly.GetExecutingAssembly().GetName().Name, Me.Name, Me.m_manager)
+                Me.m_ddx = New cEwENetworkAnalysisData(cTypeUtils.TypeToString(Me.GetType()), Me.m_manager)
 
                 'System.Console.WriteLine(Me.ToString & ".Initialize() successful.")
             Else
@@ -440,6 +441,8 @@ Public Class cEwENetworkAnalysisPlugin
             Me.m_manager.RunMainNetwork()
         End If
 
+        Me.m_ddx.Resize(Me.m_core)
+
         Me.m_ddx.Ascendancy(1, 1) = m_manager.AscendancyImportTotal
         Me.m_ddx.Ascendancy(2, 1) = m_manager.AscendancyImportPer
         Me.m_ddx.Ascendancy(3, 1) = m_manager.OverheadImportTotal
@@ -474,6 +477,10 @@ Public Class cEwENetworkAnalysisPlugin
         Me.m_ddx.Ascendancy(4, 5) = m_manager.OverheadTotalsPer
         Me.m_ddx.Ascendancy(5, 5) = m_manager.CapacityTotalsTotal
         Me.m_ddx.Ascendancy(6, 5) = m_manager.CapacityTotalsPer
+
+        For i As Integer = 1 To Me.Manager.nGroups
+            'Me.m_ddx.OmnivoryIndex(i) = m_manager.o
+        Next
 
     End Sub
 

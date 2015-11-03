@@ -17,7 +17,7 @@
 '
 
 Option Strict On
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
 Friend Class frmShapes

@@ -25,7 +25,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

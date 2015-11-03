@@ -54,17 +54,23 @@ Public Class cEcopathDataStructures
     Public ModelAuthor As String = ""
     Public ModelContact As String = ""
     Public ModelLastSaved As Double = 0
-    Public ModelAreaName As String = ""
     Public ModelSouth As Single = 0
     Public ModelNorth As Single = 0
     Public ModelWest As Single = 0
     Public ModelEast As Single = 0
     Public FirstYear As Integer = Date.Now.Year
+    Public ModelCountry As String = ""
+    Public ModelRegion As String = ""
+    Public ModelLME As String = ""
+    Public ModelEcosystemType As String = ""
+    Public ModelEcosystemCategory As String = ""
+    ''' <summary>Code of a model in the Ecobase repository, if any.</summary>
+    Public ModelEcobaseCode As String = ""
+    Public ModelPublicationDOI As String = ""
+    Public ModelPublicationURI As String = ""
 
     ''' <summary>Group names.</summary>
-    ''' <remarks>In EwE5, group names were used to identify groups. In EwE6 this 
-    ''' is done via <see cref="GroupDBID">unique IDs</see></remarks>
-    Public GroupName() As String ' was Specie()
+    Public GroupName() As String
     ''' <summary>Group Database ID - uniquely identifies a group.</summary>
     Friend GroupDBID() As Integer
 
@@ -257,9 +263,10 @@ Public Class cEcopathDataStructures
     Public cost(,) As Single
     Public CostPct(,) As Single
 
-    ''' <summary> discarded biomass by fleet group </summary>
-    ''' <remarks> Includes fish that survived</remarks>
+    ''' <summary>Discarded biomass by fleet group </summary>
+    ''' <remarks>Includes survival!</remarks>
     Public Discard(,) As Single
+    ''' <summary>Fate of discards (by fleet, #detritus)</summary>
     Public DiscardFate(,) As Single
     ''' <summary>Names of fleets.</summary>
     Public FleetName() As String
@@ -1280,7 +1287,6 @@ Public Class cEcopathDataStructures
 
             ' Copy model data
             dest.ModelArea = Me.ModelArea
-            dest.ModelAreaName = Me.ModelAreaName
             dest.ModelAuthor = Me.ModelAuthor
             dest.ModelContact = Me.ModelContact
             dest.ModelDescription = Me.ModelDescription

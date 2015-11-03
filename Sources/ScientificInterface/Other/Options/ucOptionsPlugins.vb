@@ -223,8 +223,8 @@ Namespace Other
 
             ' Prepare image list
             Me.m_ilPlugins.Images.Add(SharedResources.nav8_ecopath)
-            Me.m_ilPlugins.Images.Add(EwEPlugin.My.Resources.plugin)
-            Me.m_ilPlugins.Images.Add(EwEPlugin.My.Resources.pluginpoint)
+            Me.m_ilPlugins.Images.Add(SharedResources.plugin)
+            Me.m_ilPlugins.Images.Add(SharedResources.pluginpoint)
             Me.m_ilPlugins.Images.Add(SharedResources.Cancel)
             Me.m_ilPlugins.Images.Add(SharedResources.Warning)
 

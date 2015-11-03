@@ -22,7 +22,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 

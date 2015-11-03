@@ -22,11 +22,10 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Database.cEwEDatabase
-Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Database.cEwEDatabase
 
 #End Region ' Imports
 

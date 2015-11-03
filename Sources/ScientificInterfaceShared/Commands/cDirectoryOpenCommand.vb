@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports System.Windows.Forms
 
 #End Region ' Imports

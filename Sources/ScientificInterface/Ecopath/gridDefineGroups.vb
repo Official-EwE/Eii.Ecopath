@@ -1447,7 +1447,7 @@ Public Class gridDefineGroups
 
     Public Sub SelectCustomColors()
 
-        Dim cmdh As EwEUtils.Commands.cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmd As cPickColorCommand = CType(cmdh.GetCommand(cPickColorCommand.COMMAND_NAME), cPickColorCommand)
 
         cmd.Invoke()

@@ -3241,13 +3241,21 @@ Public Class cCore
         Me.m_EwEModel.UnitArea = Me.m_EcoPathData.ModelUnitArea
         Me.m_EwEModel.UnitAreaCustomText = Me.m_EcoPathData.ModelUnitAreaCustom
         Me.m_EwEModel.FirstYear = Me.m_EcoPathData.FirstYear
-        Me.m_EwEModel.AreaName = Me.m_EcoPathData.ModelAreaName
         Me.m_EwEModel.South = Me.m_EcoPathData.ModelSouth
         Me.m_EwEModel.North = Me.m_EcoPathData.ModelNorth
         Me.m_EwEModel.West = Me.m_EcoPathData.ModelWest
         Me.m_EwEModel.East = Me.m_EcoPathData.ModelEast
         Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
-        Me.m_EwEModel.isEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
+        Me.m_EwEModel.IsEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
+        Me.m_EwEModel.Country = Me.m_EcoPathData.ModelCountry
+        Me.m_EwEModel.Region = Me.m_EcoPathData.ModelRegion
+        Me.m_EwEModel.LME = Me.m_EcoPathData.ModelLME
+        Me.m_EwEModel.EcosystemCategory = Me.m_EcoPathData.ModelEcosystemCategory
+        Me.m_EwEModel.EcosystemType = Me.m_EcoPathData.ModelEcosystemType
+        Me.m_EwEModel.PublicationDOI = Me.m_EcoPathData.ModelPublicationDOI
+        Me.m_EwEModel.PublicationURI = Me.m_EcoPathData.ModelPublicationURI
+        Me.m_EwEModel.EcobaseCode = Me.m_EcoPathData.ModelEcobaseCode
+
         Me.m_EwEModel.AllowValidation = True
 
         Me.m_EwEModel.ResetStatusFlags()
@@ -3270,11 +3278,19 @@ Public Class cCore
         Me.m_EcoPathData.ModelUnitArea = Me.m_EwEModel.UnitArea
         Me.m_EcoPathData.ModelUnitAreaCustom = Me.m_EwEModel.UnitAreaCustomText
         Me.m_EcoPathData.FirstYear = Me.m_EwEModel.FirstYear
-        Me.m_EcoPathData.ModelAreaName = Me.m_EwEModel.AreaName
         Me.m_EcoPathData.ModelSouth = Me.m_EwEModel.South
         Me.m_EcoPathData.ModelNorth = Me.m_EwEModel.North
         Me.m_EcoPathData.ModelWest = Me.m_EwEModel.West
         Me.m_EcoPathData.ModelEast = Me.m_EwEModel.East
+        Me.m_EcoPathData.ModelCountry = Me.m_EwEModel.Country
+        Me.m_EcoPathData.ModelRegion = Me.m_EwEModel.Region
+        Me.m_EcoPathData.ModelLME = Me.m_EwEModel.LME
+        Me.m_EcoPathData.ModelEcosystemType = Me.m_EwEModel.EcosystemType
+        Me.m_EcoPathData.ModelEcosystemCategory = Me.m_EwEModel.EcosystemCategory
+        Me.m_EcoPathData.ModelPublicationDOI = Me.m_EwEModel.PublicationDOI
+        Me.m_EcoPathData.ModelPublicationURI = Me.m_EwEModel.PublicationURI
+        Me.m_EcoPathData.ModelEcobaseCode = Me.m_EwEModel.EcobaseCode
+
         ' Do not update LastSaved; exclusively set by core
 
         ' Update relevant unit(s) in Ecopath
@@ -3284,7 +3300,7 @@ Public Class cCore
         'This should be fixed by removing currUnitIndex
         Me.m_EcoPathData.ModelUnitCurrency = Me.m_EcoPathData.ModelUnitCurrency
 
-        Me.m_EcoPathData.isEcospaceModelCoupled = Me.m_EwEModel.isEcoSpaceModelCoupled
+        Me.m_EcoPathData.isEcospaceModelCoupled = Me.m_EwEModel.IsEcoSpaceModelCoupled
 
         Return True
     End Function
@@ -4364,7 +4380,7 @@ Public Class cCore
                     taxon.iStanza = NULL_VALUE
                     taxon.iGroup = Me.m_TaxonData.TaxonTarget(iTaxon)
                 End If
-                taxon.Proportion = Me.m_TaxonData.TaxonProp(iTaxon)
+                taxon.Proportion = Me.m_TaxonData.TaxonPropBiomass(iTaxon)
                 taxon.Name = Me.m_TaxonData.TaxonName(iTaxon)
                 taxon.Class = Me.m_TaxonData.TaxonClass(iTaxon)
                 taxon.Order = Me.m_TaxonData.TaxonOrder(iTaxon)
@@ -4428,7 +4444,7 @@ Public Class cCore
             Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.iStanza
             Me.m_TaxonData.IsTaxonStanza(iTaxon) = True
         End If
-        Me.m_TaxonData.TaxonProp(iTaxon) = taxon.Proportion
+        Me.m_TaxonData.TaxonPropBiomass(iTaxon) = taxon.Proportion
         Me.m_TaxonData.TaxonPropCatch(iTaxon) = taxon.ProportionCatch
         Me.m_TaxonData.TaxonName(iTaxon) = taxon.Name
         Me.m_TaxonData.TaxonClass(iTaxon) = taxon.Class

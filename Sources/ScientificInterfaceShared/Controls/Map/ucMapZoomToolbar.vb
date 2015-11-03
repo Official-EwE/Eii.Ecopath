@@ -22,11 +22,10 @@ Option Strict On
 
 Imports System.Drawing.Imaging
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

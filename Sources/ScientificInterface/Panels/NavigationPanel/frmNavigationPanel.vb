@@ -33,6 +33,7 @@ Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Integration
 
 #End Region
 
@@ -45,7 +46,7 @@ Imports ScientificInterfaceShared.Forms
 ''' <remarks>
 ''' <para>The Navigation Panel will not actually create or highlight the GUI items 
 ''' that it provides access to. Instead, the panel will outsource this functionality 
-''' via the central <see cref="EwEUtils.Commands.cCommandHandler">CommandHandler</see> 
+''' via the central <see cref="ScientificInterfaceShared.Commands.cCommandHandler">CommandHandler</see> 
 ''' and the <see cref="ScientificInterfaceShared.Commands.cNavigationCommand">Navigation command</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
@@ -120,7 +121,7 @@ Public Class frmNavigationPanel
         With Me.m_nodeController
 
             'Basic Parameters
-            .Add("ndModelDescription", eCoreExecutionState.EcopathLoaded, GetType(frmModelParameters), "Model description.htm")
+            .Add("ndModelParameters", eCoreExecutionState.EcopathLoaded, GetType(frmModelParameters), "Model description.htm")
             .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), "Basic input.htm", True)
             .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(frmDietComp), "Diet composition.htm")
             .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(gridDetritusFate), "Detritus fate.htm")

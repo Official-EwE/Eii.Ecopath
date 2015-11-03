@@ -130,9 +130,14 @@ Public Class cTaxon
         val = New cValue(New Long, eVarNameFlags.TaxonSearchFields, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonSearchFields))
         m_values.Add(val.varName, val)
 
-        ' Proportion
+        ' Proportion of biomass
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.TaxonProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonProp))
+        m_values.Add(val.varName, val)
+
+        ' Proportion of catch
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.TaxonPropCatch, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonPropCatch))
         m_values.Add(val.varName, val)
 
         ' EcologyType
@@ -143,11 +148,6 @@ Public Class cTaxon
         ' OrganismType
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.OrganismType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.OrganismType))
-        m_values.Add(val.varName, val)
-
-        ' TaxonPropCatch
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Single, eVarNameFlags.TaxonPropCatch, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonPropCatch))
         m_values.Add(val.varName, val)
 
         ' IUCNConservationStatus

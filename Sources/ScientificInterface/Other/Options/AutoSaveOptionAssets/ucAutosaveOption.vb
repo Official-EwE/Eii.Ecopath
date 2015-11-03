@@ -22,7 +22,6 @@ Option Strict On
 
 Imports System.IO
 Imports EwEPlugin
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands

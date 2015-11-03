@@ -23,7 +23,7 @@ Option Strict On
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports

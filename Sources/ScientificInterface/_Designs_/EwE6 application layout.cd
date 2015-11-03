@@ -84,7 +84,7 @@
         <Position X="0.766" Y="0.039" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="CommandHandler" Type="EwEUtils.Commands.cCommandHandler" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="CommandHandler" Type="cCommandHandler" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="10.312" Y="4.171" />
         <Point X="10.312" Y="4.781" />
@@ -135,7 +135,7 @@
     <TypeIdentifier />
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="EwEUtils.Commands.cCommandHandler" Collapsed="true">
+  <Class Name="cCommandHandler" Collapsed="true">
     <Position X="12" Y="4.5" Width="1.75" />
     <TypeIdentifier />
   </Class>

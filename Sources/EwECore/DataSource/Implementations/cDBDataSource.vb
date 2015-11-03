@@ -725,10 +725,15 @@ Namespace DataSources
                 ecopathDS.ModelUnitTime = DirectCast(Me.m_db.ReadSafe(reader, "UnitTime", eUnitTimeType.Year), eUnitTimeType)
                 ecopathDS.ModelUnitTimeCustom = CStr(Me.m_db.ReadSafe(reader, "UnitTimeCustom", ""))
                 ecopathDS.ModelUnitMonetary = DirectCast(Me.m_db.ReadSafe(reader, "UnitMonetary", "EUR"), String)
-                'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.m_db.ReadSafe(reader, "UnitTimeCustom", ""))
                 ecopathDS.FirstYear = CInt(Me.m_db.ReadSafe(reader, "FirstYear", 0))
-                'ecopathDS.ModelUnitArea = DirectCast(Me.m_db.ReadSafe(reader, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
-                'ecopathDS.ModelUnitAreaCustom = CStr(Me.m_db.ReadSafe(reader, "UnitAreaCustom", ""))
+                ecopathDS.ModelCountry = CStr(Me.m_db.ReadSafe(reader, "Country", ""))
+                ecopathDS.ModelRegion = CStr(Me.m_db.ReadSafe(reader, "Region", ""))
+                ecopathDS.ModelLME = CStr(Me.m_db.ReadSafe(reader, "LME", ""))
+                ecopathDS.ModelEcosystemType = CStr(Me.m_db.ReadSafe(reader, "EcosystemType", ""))
+                ecopathDS.ModelEcosystemCategory = CStr(Me.m_db.ReadSafe(reader, "EcosystemCategory", ""))
+                ecopathDS.ModelEcobaseCode = CStr(Me.m_db.ReadSafe(reader, "CodeEcobase", ""))
+                ecopathDS.ModelPublicationDOI = CStr(Me.m_db.ReadSafe(reader, "PublicationDOI", ""))
+                ecopathDS.ModelPublicationURI = CStr(Me.m_db.ReadSafe(reader, "PublicationURI", ""))
 
                 Dim sLat1 As Single = CSng(Me.m_db.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
                 Dim sLat2 As Single = CSng(Me.m_db.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
@@ -738,7 +743,6 @@ Namespace DataSources
                 ecopathDS.ModelWest = CSng(Me.m_db.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
                 ecopathDS.ModelEast = CSng(Me.m_db.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
 
-                ecopathDS.ModelAreaName = CStr(Me.m_db.ReadSafe(reader, "AreaName", ""))
                 ecopathDS.ModelLastSaved = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
 
             Catch ex As Exception
@@ -802,7 +806,15 @@ Namespace DataSources
                 drow("MaxLat") = ecopathDS.ModelNorth
                 drow("MinLon") = ecopathDS.ModelWest
                 drow("MaxLon") = ecopathDS.ModelEast
-                drow("AreaName") = ecopathDS.ModelAreaName
+                drow("Country") = ecopathDS.ModelCountry
+                drow("Region") = ecopathDS.ModelRegion
+                drow("LME") = ecopathDS.ModelLME
+                drow("EcosystemType") = ecopathDS.ModelEcosystemType
+                drow("EcosystemCategory") = ecopathDS.ModelEcosystemCategory
+                drow("CodeEcobase") = ecopathDS.ModelEcobaseCode
+                drow("PublicationDOI") = ecopathDS.ModelPublicationDOI
+                drow("PublicationURI") = ecopathDS.ModelPublicationURI
+
                 ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()
                 drow("LastSavedVersion") = cAssemblyUtils.GetVersion().ToString
@@ -2056,7 +2068,8 @@ Namespace DataSources
                     drow("ConsBiom") = ecopathDS.QBinput(iGroup)
                     drow("ProdCons") = ecopathDS.GEinput(iGroup)
                     drow("Biomass") = ecopathDS.Binput(iGroup)
-                    ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
+                    ' Should not really be here, should it? 
+                    ' ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
                     drow("Immigration") = ecopathDS.Immig(iGroup)
                     drow("Emigration") = ecopathDS.Emigration(iGroup)
@@ -3102,7 +3115,7 @@ Namespace DataSources
                     taxonDS.TaxonCodeSAUP(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSAUP", cCore.NULL_VALUE))
                     taxonDS.TaxonCodeFB(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeFB", cCore.NULL_VALUE))
                     taxonDS.TaxonCodeSLB(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSLB", cCore.NULL_VALUE))
-                    taxonDS.TaxonCodeFAO(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeTaxon", ""))
+                    taxonDS.TaxonCodeFAO(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeFAO", ""))
                     taxonDS.TaxonCodeLSID(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeLCID", ""))
                     taxonDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
                     taxonDS.TaxonOrder(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "OrderName", ""))
@@ -3164,7 +3177,7 @@ Namespace DataSources
                     If (iTaxon > 0 And iGroup > 0) Then
                         taxonDS.TaxonTarget(iTaxon) = iGroup
                         taxonDS.IsTaxonStanza(iTaxon) = False
-                        taxonDS.TaxonProp(iTaxon) = CSng(reader("Proportion"))
+                        taxonDS.TaxonPropBiomass(iTaxon) = CSng(reader("Proportion"))
                         taxonDS.TaxonPropCatch(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "PropCatch", 0))
                     End If
                 End While
@@ -3197,7 +3210,7 @@ Namespace DataSources
                     If (iTaxon > 0 And iStanza > 0) Then
                         taxonDS.TaxonTarget(iTaxon) = iStanza
                         taxonDS.IsTaxonStanza(iTaxon) = True
-                        taxonDS.TaxonProp(iTaxon) = 1
+                        taxonDS.TaxonPropBiomass(iTaxon) = 1
                         taxonDS.TaxonPropCatch(iTaxon) = 1
                     End If
                 End While
@@ -3246,7 +3259,7 @@ Namespace DataSources
                         drow("CodeSAUP") = taxonDS.TaxonCodeSAUP(iTaxon)
                         drow("CodeFB") = taxonDS.TaxonCodeFB(iTaxon)
                         drow("CodeSLB") = taxonDS.TaxonCodeSLB(iTaxon)
-                        drow("CodeTaxon") = taxonDS.TaxonCodeFAO(iTaxon)
+                        drow("CodeFAO") = taxonDS.TaxonCodeFAO(iTaxon)
                         drow("CodeLCID") = taxonDS.TaxonCodeLSID(iTaxon)
                         drow("ClassName") = taxonDS.TaxonClass(iTaxon)
                         drow("OrderName") = taxonDS.TaxonOrder(iTaxon)
@@ -3308,7 +3321,7 @@ Namespace DataSources
                         drow = writer.NewRow()
                         drow("TaxonID") = taxonDS.TaxonDBID(iTaxon)
                         drow("EcopathGroupID") = ecopathDS.GroupDBID(taxonDS.TaxonTarget(iTaxon))
-                        drow("Proportion") = taxonDS.TaxonProp(iTaxon)
+                        drow("Proportion") = taxonDS.TaxonPropBiomass(iTaxon)
                         drow("PropCatch") = taxonDS.TaxonPropCatch(iTaxon)
                         writer.AddRow(drow)
                     End If
@@ -3389,7 +3402,7 @@ Namespace DataSources
                 drow("CodeSAUP") = data.CodeSAUP
                 drow("CodeSLB") = data.CodeSLB
                 drow("CodeFB") = data.CodeFB
-                drow("CodeTaxon") = data.CodeFAO
+                drow("CodeFAO") = data.CodeFAO
                 drow("CodeLCID") = data.CodeLSID
                 drow("ClassName") = data.Class
                 drow("OrderName") = data.Order

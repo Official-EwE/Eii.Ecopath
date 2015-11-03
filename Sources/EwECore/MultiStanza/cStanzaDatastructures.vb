@@ -80,7 +80,7 @@ Public Class cStanzaDatastructures
     Public BaseStanzaCB() As Integer
     Public BABsplit() As Single
 
-    ''' <summary>Number of stanzas in each split group.</summary>
+    ''' <summary>Number of stanzas in each split group (one-based).</summary>
     Public Nstanza() As Integer
     ''' <summary>Group index (iGroup) for this (Nsplit, nStanza).</summary>
     Public EcopathCode(,) As Integer

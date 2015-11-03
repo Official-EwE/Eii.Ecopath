@@ -193,6 +193,12 @@ Namespace Import
                 Me.m_strDatabase = strSource
                 Me.m_strOutputFolder = Path.GetDirectoryName(strSource)
 
+                ' Always make sure there is a path
+                If (String.IsNullOrWhiteSpace(Me.m_strOutputFolder)) Then
+                    ' Not sure how this works on MONO...
+                    Me.m_strOutputFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                End If
+
                 ' Prepare import settings
                 For Each mi As cExternalModelInfo In Me.m_dbImp.Models
                     Dim imp As New cImportSettings(mi)
@@ -201,13 +207,14 @@ Namespace Import
                 Next
 
                 Me.m_dbImp.Close()
+                ' Add pages
+                Me.AddPage(GetType(ucImportPageWelcome))
+                Me.AddPage(GetType(ucImportPageModels))
+                Me.AddPage(GetType(ucImportPageProgress))
+            Else
+                Me.AddPage(GetType(ucImportPageError))
             End If
-
-            ' Add pages
-            Me.AddPage(GetType(ucImportPageWelcome))
-            Me.AddPage(GetType(ucImportPageModels))
-            Me.AddPage(GetType(ucImportPageProgress))
-
+ 
         End Sub
 
 #End Region ' Constructor

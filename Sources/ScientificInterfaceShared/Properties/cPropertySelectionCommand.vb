@@ -21,8 +21,8 @@
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports SourceGrid2
 
 #End Region ' Imports

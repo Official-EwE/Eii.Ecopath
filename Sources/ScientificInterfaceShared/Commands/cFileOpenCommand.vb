@@ -20,7 +20,7 @@
 
 Option Strict On
 Imports System.IO
-Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 

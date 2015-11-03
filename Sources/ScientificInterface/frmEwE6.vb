@@ -29,7 +29,6 @@ Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwECore.SpatialData
 Imports EwEPlugin
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities
@@ -46,6 +45,7 @@ Imports ScientificInterface.Wizard
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Integration
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 
@@ -285,6 +285,11 @@ Public Class frmEwE6
     Private WithEvents m_cmdEcospaceConfigureConnection As cEcospaceConfigureConnectionCommand = Nothing
     ''' <summary>Command to manage external data configurations.</summary>
     Private WithEvents m_cmdEcospaceManageConfigs As cCommand = Nothing
+
+    ' --- Ecobase --
+
+    Private WithEvents m_cmdEcobaseImport As cCommand = Nothing
+    Private WithEvents m_cmdEcobaseExport As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -691,6 +696,17 @@ Public Class frmEwE6
         Me.m_cmdEstimateVs = New cCommand(cmdh, "EstimateVs")
 
         Me.m_cmdExportEcosimResultsToCSV = New cEcosimSaveDataCommand(cmdh)
+
+        ' --- Ecobase ---
+
+        Me.m_cmdEcobaseImport = New cCommand(cmdh, "EcobaseImport")
+        Me.m_cmdEcobaseImport.AddControl(Me.m_tsmiEcobaseImport)
+        'Me.m_tsmiEcobaseImport.Image = My.Resources.EcoBase
+
+        Me.m_cmdEcobaseExport = New cCommand(cmdh, "EcobaseExport")
+        Me.m_cmdEcobaseExport.AddControl(Me.m_tsmiEcobaseExport)
+
+        ' ---
 
         Me.m_tslbReadOnly.Image = SharedResources.ProtectFormHS
         Me.m_tslbReadOnly.Enabled = False
@@ -1343,8 +1359,8 @@ Public Class frmEwE6
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' To test if it is an EwE5 Access database, if it is, convert it using the 
-    ''' database conversion wizard.
+    ''' Test an incoming model link, and convert it to a local Ecopath 6 model if
+    ''' possible.
     ''' </summary>
     ''' <param name="strFileName">File name of the Access database to convert. If a
     ''' conversion is necessary this parameter will receive the file name of the
@@ -1360,27 +1376,65 @@ Public Class frmEwE6
         Dim access As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim links As New cWebLinks(Me.Core)
 
-        ' Get compatibility
-        comp = cDataSourceFactory.GetCompatibility(strFileName, access)
+        If (File.Exists(strFileName)) Then
 
-        ' Has access problems?
-        If (access <> eDatasourceAccessType.Opened) Then
-            ' #Yes: report access error
-            Me.ReportFileAccessError(access, strFileName)
-            ' Abort
-            Return cEwEDatabase.eCompatibilityTypes.Unknown
-        End If
+            ' Get compatibility
+            comp = cDataSourceFactory.GetCompatibility(strFileName, access)
 
-        ' Able to access ok; assess compatibility next
-        Select Case comp
+            ' Has access problems?
+            If (access <> eDatasourceAccessType.Opened) Then
+                ' #Yes: report access error
+                Me.ReportFileAccessError(access, strFileName)
+                ' Abort
+                Return cEwEDatabase.eCompatibilityTypes.Unknown
+            End If
 
-            Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
-                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
+            ' Able to access ok; assess compatibility next
+            Select Case comp
 
-            Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
-                Me.AddModelMRU(strFileName)
+                Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
+                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
+                                   strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
+                Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
+                    Me.AddModelMRU(strFileName)
+
+                    Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
+                    If dlg.ShowDialog(Me) = DialogResult.OK Then
+                        ' Update file name
+                        strFileName = dlg.ImportedFileName
+                        ' Report succes
+                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                    End If
+
+                Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
+                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
+                                   strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
+
+                Case cEwEDatabase.eCompatibilityTypes.EwE6
+                    ' Yippee
+
+                Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
+                    If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
+                                      eMessageImportance.Question, _
+                                      eCoreComponentType.DataSource, _
+                                      eMessageReplyStyle.YES_NO, _
+                                      strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home)) = eMessageReply.NO Then
+                        comp = cEwEDatabase.eCompatibilityTypes.Unknown
+                    End If
+
+                Case cEwEDatabase.eCompatibilityTypes.Unknown
+                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
+
+                Case Else
+                    ' Unsupported enum value?!
+                    Debug.Assert(False)
+                    comp = cEwEDatabase.eCompatibilityTypes.Unknown
+
+            End Select
+        Else
+
+            If strFileName.ToLower().StartsWith("ewe-ecobase:") Then
                 Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
                 If dlg.ShowDialog(Me) = DialogResult.OK Then
                     ' Update file name
@@ -1388,32 +1442,9 @@ Public Class frmEwE6
                     ' Report succes
                     comp = cEwEDatabase.eCompatibilityTypes.EwE6
                 End If
+            End If
 
-            Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
-                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
-
-            Case cEwEDatabase.eCompatibilityTypes.EwE6
-                ' Yippee
-
-            Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
-                                  eMessageImportance.Question, _
-                                  eCoreComponentType.DataSource, _
-                                  eMessageReplyStyle.YES_NO, _
-                                  strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home)) = eMessageReply.NO Then
-                    comp = cEwEDatabase.eCompatibilityTypes.Unknown
-                End If
-
-            Case cEwEDatabase.eCompatibilityTypes.Unknown
-                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
-
-            Case Else
-                ' Unsupported enum value?!
-                Debug.Assert(False)
-                comp = cEwEDatabase.eCompatibilityTypes.Unknown
-
-        End Select
+        End If
 
         Return comp
 
@@ -1995,7 +2026,7 @@ Public Class frmEwE6
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Open Ecopath model from given location.
+    ''' Open Ecopath model from a given location.
     ''' </summary>
     ''' <param name="strFileName">Location of the model to open.</param>
     ''' <param name="loadsource">Flag indicating where the load request came from.</param>
@@ -2005,37 +2036,42 @@ Public Class frmEwE6
     Private Function LoadEcopathModel(ByVal strFileName As String, _
                                       ByVal loadsource As eLoadSourceType) As Boolean
 
+        ' ToDo: rewrite this method, so that the entry in the MRU is removed if anything has failed.
+        '       This new flow will also remove non-file MRU entries, such as EcoBase entries
+
         Dim ds As IEwEDataSource = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim bReadOnly As Boolean = False
 
-        ' Check if target file exists at all before affecting anything
-        If Not File.Exists(strFileName) Then
+        If (Not strFileName.ToLower().StartsWith("ewe-ecobase:")) Then
+            ' Check if target file exists at all before affecting anything
+            If Not File.Exists(strFileName) Then
 
-            ' Handle failure
-            Select Case loadsource
+                ' Handle failure
+                Select Case loadsource
 
-                Case eLoadSourceType.MRU
-                    If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
-                                      replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
-                        Me.RemoveModelMRU(strFileName)
-                        Me.PopulateModelMRUDropdown()
-                    End If
+                    Case eLoadSourceType.MRU
+                        If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                                          replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
+                            Me.RemoveModelMRU(strFileName)
+                            Me.PopulateModelMRUDropdown()
+                        End If
 
-                Case eLoadSourceType.User, _
-                     eLoadSourceType.CommandLine
-                    ' Unable to load model, show generic error
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
-                                   eMessageImportance.Warning, eCoreComponentType.DataSource)
+                    Case eLoadSourceType.User, _
+                         eLoadSourceType.CommandLine
+                        ' Unable to load model, show generic error
+                        Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
+                                       eMessageImportance.Warning, eCoreComponentType.DataSource)
 
-                Case eLoadSourceType.API
-                    ' Do not provide user feedback in response to an API call
+                    Case eLoadSourceType.API
+                        ' Do not provide user feedback in response to an API call
 
-            End Select
+                End Select
 
-            ' Update system settings
-            Me.SaveSettings()
-            Return False
+                ' Update system settings
+                Me.SaveSettings()
+                Return False
+            End If
         End If
 
         ' Can close the current open model, if any?
@@ -3052,6 +3088,52 @@ Public Class frmEwE6
 
     End Sub
 
+    Private Sub OnEcobaseImportInvoke(ByVal cmd As cCommand) Handles m_cmdEcobaseImport.OnInvoke
+
+        Dim strModel As String = ""
+
+        If (String.IsNullOrWhiteSpace(strModel)) Then
+            Dim frm As New dlgEcobaseImport(Me.UIContext)
+            If (frm.ShowDialog() = DialogResult.OK) Then
+                If (frm.CanDownload()) Then
+                    Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
+                    strModel = "ewe-ecobase:" & model.EcobaseCode
+                End If
+            End If
+        End If
+
+        If (Not String.IsNullOrWhiteSpace(strModel)) Then
+            Me.LoadEcopathModel(strModel, eLoadSourceType.User)
+        End If
+
+    End Sub
+
+    Private Sub OnEcobaseImportEnable(ByVal cmd As cCommand) Handles m_cmdEcobaseImport.OnUpdate
+        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
+    End Sub
+
+    Private Sub OnEcobaseExportInvoke(ByVal cmd As cCommand) _
+        Handles m_cmdEcobaseExport.OnInvoke
+
+        Try
+            ' All pending changes must be saved prior to this
+            If (Not Me.Core.SaveChanges()) Then Return
+            ' Ecopath must run ok
+            If (Not Me.Core.StateManager.LoadState(eCoreExecutionState.EcopathCompleted)) Then Return
+
+            Dim dlg As New dlgEcobaseExport(Me.UIContext)
+            dlg.ShowDialog(Me)
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnEcobaseExportEnable(ByVal cmd As cCommand) Handles m_cmdEcobaseExport.OnUpdate
+        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy And Me.Core.StateMonitor.HasEcopathLoaded
+    End Sub
+
 #End Region ' File commands
 
 #Region " View commands "
@@ -3069,7 +3151,7 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdViewPresentationMode">View Presentation Mode command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewPresentationMode(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateViewPresentationMode(ByVal cmd As cCommand) _
         Handles m_cmdViewPresentationMode.OnUpdate
         Me.m_cmdViewPresentationMode.Checked = Me.m_presentationmode.Active
     End Sub
@@ -3084,7 +3166,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdViewStatusbar">View Statusbar command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewMainStatusbar(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewStatusbar.OnUpdate
+    Private Sub OnUpdateViewMainStatusbar(ByVal cmd As cCommand) Handles m_cmdViewStatusbar.OnUpdate
         cmd.Checked = Me.m_ssMain.Visible
     End Sub
 
@@ -3098,7 +3180,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdViewMenu">View menu command</see>.
     ''' </summary>
-    Private Sub OnUpdateViewMenu(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdViewMenu.OnUpdate
+    Private Sub OnUpdateViewMenu(ByVal cmd As cCommand) Handles m_cmdViewMenu.OnUpdate
         cmd.Checked = Me.m_menuMain.Visible
     End Sub
 
@@ -3112,7 +3194,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdAutosaveResults">Auto save results command</see>.
     ''' </summary>
-    Private Sub OnUpdateAutosaveResults(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdAutosaveResults.OnUpdate
+    Private Sub OnUpdateAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveResults.OnUpdate
         ' Check if any autosave option set
         Dim nAutoSaving As Integer = 0
         Dim nodes As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
@@ -3272,7 +3354,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the About... dialog.
     ''' </summary>
-    Private Sub OnShowAboutDialog(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdHelpAbout.OnInvoke
+    Private Sub OnShowAboutDialog(ByVal cmd As cCommand) Handles m_cmdHelpAbout.OnInvoke
         Dim dlgAbout As New frmAboutEwE(Me.UIContext)
         Me.Help.HelpTopic(dlgAbout) = ""
         dlgAbout.ShowDialog(Me)
@@ -3344,7 +3426,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditGroups.OnUpdate
+    Private Sub OnUpdateEditGroups(ByVal cmd As cCommand) Handles m_cmdEditGroups.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
@@ -3377,7 +3459,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditMultiStanza">Edit Multi-stanza command</see>.
     ''' </summary>
-    Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
+    Private Sub OnUpdateMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
         cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded() = True) And _
                       (Me.Core.nStanzas > 0) And _
@@ -3401,7 +3483,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEditFleets">Edit Fleets command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateEditFleets(ByVal cmd As cCommand) _
         Handles m_cmdEditFleets.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
@@ -3588,7 +3670,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the import time series dialog.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdImportTimeSeries_OnInvoke(ByVal cmd As cCommand) _
         Handles m_cmdImportTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Import)
     End Sub
@@ -3596,7 +3678,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnUpdate
+    Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As cCommand) Handles m_cmdImportTimeSeries.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded() And Not m.IsBusy
     End Sub
@@ -3604,7 +3686,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; exports the currently loaded time series dataset to a CSV file.
     ''' </summary>
-    Private Sub m_cmdExportTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdExportTimeSeries_OnInvoke(ByVal cmd As cCommand) _
         Handles m_cmdExportTimeSeries.OnInvoke
 
         Dim sfd As New SaveFileDialog()
@@ -3625,7 +3707,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdExportTimeSeries">Export TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdExportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdExportTimeSeries_OnUpdate(ByVal cmd As cCommand) _
         Handles m_cmdExportTimeSeries.OnUpdate
         cmd.Enabled = (Me.Core.ActiveTimeSeriesDatasetIndex > -1)
     End Sub
@@ -3633,14 +3715,14 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the apply time series dialog.
     ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdWeightTimeSeries.OnInvoke
+    Private Sub m_cmdWeightTimeSeries_OnInvoke(ByVal cmd As cCommand) Handles m_cmdWeightTimeSeries.OnInvoke
         Me.ManageTimeSeries(dlgManageTimeSeries.eModeType.Weight)
     End Sub
 
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdWeightTimeSeries">Apply TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
+    Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
         ' JS 23sept08: dialog will switch to load mode if no ts present
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded() And _
@@ -3651,7 +3733,7 @@ Public Class frmEwE6
     ''' Command handler; invokes the load time series dialog, or loads a time
     ''' series dataset if this dataset is provided as a tag to the command.
     ''' </summary>
-    Private Sub m_cmdEcosimLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdEcosimLoadTimeSeries_OnInvoke(ByVal cmd As cCommand) _
         Handles m_cmdEcosimLoadTimeSeries.OnInvoke
 
         If Not Me.m_coreController.LoadState(eCoreExecutionState.EcosimLoaded) Then Return
@@ -3670,7 +3752,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEcosimLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdEcosimLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdEcosimLoadTimeSeries_OnUpdate(ByVal cmd As cCommand) _
         Handles m_cmdEcosimLoadTimeSeries.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -3699,13 +3781,13 @@ Public Class frmEwE6
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimRan
     End Sub
 
-    Private Sub OnEstimateVsInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnEstimateVsInvoke(ByVal cmd As cCommand) _
         Handles m_cmdEstimateVs.OnInvoke
         Dim dlg As New dlgEstimateVs(Me.UIContext)
         dlg.ShowDialog(Me)
     End Sub
 
-    Private Sub OnEstimateVsUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnEstimateVsUpdate(ByVal cmd As cCommand) _
         Handles m_cmdEstimateVs.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcosimLoaded() And Not m.IsBusy
@@ -3892,7 +3974,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; loads an Ecospace spatial temporal data set
     ''' </summary>
-    Private Sub m_cmdEcospaceLoadTimeSeries_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdEcospaceLoadTimeSeries_OnInvoke(ByVal cmd As cCommand) _
         Handles m_cmdEcospaceLoadTimeSeries.OnInvoke
 
         If Not Me.m_coreController.LoadState(eCoreExecutionState.EcospaceLoaded) Then Return
@@ -3908,7 +3990,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command update handler; enables and disables the <see cref="m_cmdEcosimLoadTimeSeries">Load TimeSeries command</see>.
     ''' </summary>
-    Private Sub m_cmdEcospaceLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub m_cmdEcospaceLoadTimeSeries_OnUpdate(ByVal cmd As cCommand) _
         Handles m_cmdEcospaceLoadTimeSeries.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -4139,7 +4221,7 @@ Public Class frmEwE6
         End Try
     End Sub
 
-    Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnImportLayerData(ByVal cmd As cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
         Try
             Select Case Me.m_cmdImportLayerData.Format
@@ -4159,7 +4241,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler
     ''' </summary>
-    Private Sub OnUpdateImportLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateImportLayer(ByVal cmd As cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
@@ -4168,7 +4250,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the export layers dialog to export data in XYZ format.
     ''' </summary>
-    Private Sub OnExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnExportLayerData(ByVal cmd As cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
         Try
             Dim dlg As New dlgExportLayerDataXYZ(Me.UIContext)
@@ -4183,7 +4265,7 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
-    Private Sub OnUpdateExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateExportLayerData(ByVal cmd As cCommand) _
         Handles m_cmdExportLayerData.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -4194,7 +4276,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; invokes the edit layers dialog.
     ''' </summary>
-    Private Sub OnInvokeEditLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnInvokeEditLayer(ByVal cmd As cCommand) _
         Handles m_cmdEditLayer.OnInvoke
 
         Try
@@ -4211,7 +4293,7 @@ Public Class frmEwE6
     ''' Command update handler; enables and disables the 
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
-    Private Sub OnUpdateEditLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
+    Private Sub OnUpdateEditLayer(ByVal cmd As cCommand) _
         Handles m_cmdEditLayer.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
@@ -4815,7 +4897,6 @@ End Class
 <Obsolete("Please use frmEwE6 instead")> _
 Public Class AppLauncher
     Inherits frmEwE6
-
 End Class
 
 #End Region ' Deprecated

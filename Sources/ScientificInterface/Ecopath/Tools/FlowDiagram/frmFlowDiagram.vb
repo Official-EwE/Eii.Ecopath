@@ -24,7 +24,6 @@ Imports System.ComponentModel
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities

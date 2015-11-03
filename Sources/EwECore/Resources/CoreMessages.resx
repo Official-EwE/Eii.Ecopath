@@ -399,7 +399,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>No description available.</value>
   </data>
   <data name="IMPORT_POGRESS_DIETCOMP" xml:space="preserve">
-    <value>Importing Ecopath group diets</value>
+    <value>Importing diets</value>
   </data>
   <data name="IMPORT_PROGRESS_CATCH" xml:space="preserve">
     <value>Importing Ecopath catches</value>
@@ -1264,5 +1264,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="STATUS_PLUGIN_USERDISABLED" xml:space="preserve">
     <value>Plug-in {0} disabled from loading via user settings</value>
     <comment>{0}=plugin module name</comment>
+  </data>
+  <data name="IMPORT_PROGRESS_TAXONOMY" xml:space="preserve">
+    <value>Importing taxonomy</value>
   </data>
 </root>

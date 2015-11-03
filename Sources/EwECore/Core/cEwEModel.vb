@@ -105,13 +105,6 @@ Public Class cEwEModel
             val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' Author
-            meta = New cVariableMetaData(254)
-            val = New cValue(New String(desc), eVarNameFlags.AreaName, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            val.AffectsRunState = False
-            m_values.Add(val.varName, val)
-
             ' GroupDigits
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
@@ -161,6 +154,54 @@ Public Class cEwEModel
             meta = New cVariableMetaData(20)
             val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' Country
+            meta = New cVariableMetaData(63)
+            val = New cValue(New String(desc), eVarNameFlags.Country, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' Region
+            meta = New cVariableMetaData(254)
+            val = New cValue(New String(desc), eVarNameFlags.Region, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' LME
+            meta = New cVariableMetaData(198)
+            val = New cValue(New String(desc), eVarNameFlags.LME, eStatusFlags.OK, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' Ecosystem type
+            meta = New cVariableMetaData(254)
+            val = New cValue(New String(desc), eVarNameFlags.EcosystemType, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' Ecosystem category
+            meta = New cVariableMetaData(254)
+            val = New cValue(New String(desc), eVarNameFlags.EcosystemCategory, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' Ecobase code
+            meta = New cVariableMetaData(49)
+            val = New cValue(New String(desc), eVarNameFlags.CodeEcobase, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' DOI
+            meta = New cVariableMetaData(2000)
+            val = New cValue(New String(desc), eVarNameFlags.PublicationDOI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' URI
+            meta = New cVariableMetaData(2000)
+            val = New cValue(New String(desc), eVarNameFlags.PublicationURI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
@@ -414,13 +455,14 @@ Public Class cEwEModel
     ''' <summary>
     ''' Get/set the name to represent the model area.
     ''' </summary>
+    <Obsolete("Use Region instead")> _
     Public Property AreaName() As String
         Get
-            Return CStr(GetVariable(eVarNameFlags.AreaName))
+            Return Me.Region
         End Get
 
         Set(ByVal value As String)
-            Me.SetVariable(eVarNameFlags.AreaName, value)
+            Me.Region = value
         End Set
     End Property
 
@@ -437,13 +479,93 @@ Public Class cEwEModel
         End Set
     End Property
 
-    Public Property isEcoSpaceModelCoupled() As Boolean
+    Public Property IsEcoSpaceModelCoupled() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.IsEcospaceModelCoupled))
         End Get
 
-        Set(ByVal bGroupDigits As Boolean)
-            SetVariable(eVarNameFlags.IsEcospaceModelCoupled, bGroupDigits)
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.IsEcospaceModelCoupled, value)
+        End Set
+    End Property
+
+    Public Property Country As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.Country))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.Country, value)
+        End Set
+    End Property
+
+    Public Property Region As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.Region))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.Region, value)
+        End Set
+    End Property
+
+    Public Property LME As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.LME))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.LME, value)
+        End Set
+    End Property
+
+    Public Property EcosystemType As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.EcosystemType))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.EcosystemType, value)
+        End Set
+    End Property
+
+    Public Property EcosystemCategory As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.EcosystemCategory))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.EcosystemCategory, value)
+        End Set
+    End Property
+
+    Public Property EcobaseCode As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.CodeEcobase))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.CodeEcobase, value)
+        End Set
+    End Property
+
+    Public Property PublicationDOI As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.PublicationDOI))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.PublicationDOI, value)
+        End Set
+    End Property
+
+    Public Property PublicationURI As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.PublicationURI))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.PublicationURI, value)
         End Set
     End Property
 

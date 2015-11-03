@@ -19,15 +19,13 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwECore
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Commands
-Imports System.IO
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
