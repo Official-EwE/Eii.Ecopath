@@ -142,7 +142,7 @@
     <value>m_tvIndicators</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.5.10883.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -736,7 +736,7 @@
     <value>m_hdrExport</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10883.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -769,7 +769,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10883.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -934,7 +934,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.10883.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
@@ -996,53 +996,101 @@
   <data name="&gt;&gt;m_tpEcospace.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_graphMC.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_graphMCpath.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_graphMC.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_graphMCpath.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_graphMC.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_graphMCpath.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
   </data>
-  <data name="m_graphMC.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="m_graphMCpath.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;m_graphMC.Name" xml:space="preserve">
-    <value>m_graphMC</value>
+  <data name="&gt;&gt;m_graphMCpath.Name" xml:space="preserve">
+    <value>m_graphMCpath</value>
   </data>
-  <data name="&gt;&gt;m_graphMC.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_graphMCpath.Type" xml:space="preserve">
     <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
-  <data name="&gt;&gt;m_graphMC.Parent" xml:space="preserve">
-    <value>m_tpMC</value>
+  <data name="&gt;&gt;m_graphMCpath.Parent" xml:space="preserve">
+    <value>m_tpMCpath</value>
   </data>
-  <data name="&gt;&gt;m_graphMC.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_graphMCpath.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_tpMC.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tpMCpath.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="m_tpMC.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tpMCpath.Size" type="System.Drawing.Size, System.Drawing">
     <value>541, 479</value>
   </data>
-  <data name="m_tpMC.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="m_tpMCpath.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="m_tpMC.Text" xml:space="preserve">
-    <value>Monte Carlo</value>
+  <data name="m_tpMCpath.Text" xml:space="preserve">
+    <value>MC uncertainty</value>
   </data>
-  <data name="&gt;&gt;m_tpMC.Name" xml:space="preserve">
-    <value>m_tpMC</value>
+  <data name="&gt;&gt;m_tpMCpath.Name" xml:space="preserve">
+    <value>m_tpMCpath</value>
   </data>
-  <data name="&gt;&gt;m_tpMC.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tpMCpath.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tpMC.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tpMCpath.Parent" xml:space="preserve">
     <value>m_tcOutput</value>
   </data>
-  <data name="&gt;&gt;m_tpMC.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tpMCpath.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="m_graphMCsim.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_graphMCsim.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_graphMCsim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>541, 479</value>
+  </data>
+  <data name="m_graphMCsim.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_graphMCsim.Name" xml:space="preserve">
+    <value>m_graphMCsim</value>
+  </data>
+  <data name="&gt;&gt;m_graphMCsim.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_graphMCsim.Parent" xml:space="preserve">
+    <value>m_tpMCsim</value>
+  </data>
+  <data name="&gt;&gt;m_graphMCsim.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tpMCsim.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tpMCsim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>541, 479</value>
+  </data>
+  <data name="m_tpMCsim.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_tpMCsim.Text" xml:space="preserve">
+    <value>Monte Carlo</value>
+  </data>
+  <data name="&gt;&gt;m_tpMCsim.Name" xml:space="preserve">
+    <value>m_tpMCsim</value>
+  </data>
+  <data name="&gt;&gt;m_tpMCsim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpMCsim.Parent" xml:space="preserve">
+    <value>m_tcOutput</value>
+  </data>
+  <data name="&gt;&gt;m_tpMCsim.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_tcOutput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1192,7 +1240,7 @@
     <value>m_llStatus</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.5.10883.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1222,6 +1270,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10883.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

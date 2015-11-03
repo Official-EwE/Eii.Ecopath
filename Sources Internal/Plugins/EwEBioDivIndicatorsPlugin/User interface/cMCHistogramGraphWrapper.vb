@@ -23,35 +23,29 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 Imports System.Text
-Imports System.Drawing
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Helper class to to update the graph that reflects MC sim biodiversity indicators.
+''' Helper class to to update the graph that reflects Ecospace biodiversity indicators.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cMCGraphWrapper
+Public Class cMCHistogramGraphWrapper
     Inherits cZedGraphHelper
 
 #Region " Private variables "
 
     ''' <summary>Indicator grouping etc as centrally defined in the plug-in.</summary>
     Private m_settings As cIndicatorSettings = Nothing
-    ''' <summary>List of Ecosim indicators.</summary>
-    Private m_lind As List(Of List(Of cMCIndicators)) = Nothing
+    ''' <summary>List of Ecopath indicators to show histograms for.</summary>
+    Private m_lind As List(Of cEcopathIndicators) = Nothing
 
     ''' <summary>Current indicator group to display in the graph.</summary>
     Private m_groupCurrent As cIndicatorInfoGroup = Nothing
     ''' <summary>Current indicator to display in the graph.</summary>
     Private m_indCurrent As cIndicatorInfo = Nothing
-
-    ''' <summary>The MC manager.</summary>
-    Private m_man As cMonteCarloManager = Nothing
-
-    Private m_iBest As Integer = -1
 
 #End Region ' Private variables
 
@@ -64,17 +58,17 @@ Public Class cMCGraphWrapper
     ''' <param name="uic"><see cref="cUIContext"/> providing UI contextual information.</param>
     ''' <param name="zgc"><see cref="ZedGraphControl"/> to style and interact with.</param>
     ''' <param name="settings"><see cref="cIndicatorSettings"/> defined centrally in the plug-in.</param>
-    ''' <param name="indicators">List of (hopefully computed) MC indicators.</param>
     ''' -------------------------------------------------------------------
     Public Shadows Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, _
                                 ByVal zgc As ZedGraph.ZedGraphControl, _
                                 ByVal settings As cIndicatorSettings, _
-                                ByVal indicators As List(Of List(Of cMCIndicators)))
+                                ByVal lind As List(Of cEcopathIndicators))
         MyBase.Attach(uic, zgc, 1)
         ' Store important bits
         Me.m_settings = settings
-        Me.m_lind = indicators
-        Me.m_man = uic.Core.EcosimMonteCarlo
+
+        Me.m_lind = lind
+
         Me.ShowPointValue = True
     End Sub
 
@@ -82,9 +76,7 @@ Public Class cMCGraphWrapper
     ''' <inheritdocs cref="cZedGraphHelper.Detach"/>
     ''' -------------------------------------------------------------------
     Public Overrides Sub Detach()
-        Me.m_lind = Nothing
         Me.m_settings = Nothing
-        Me.m_man = Nothing
         MyBase.Detach()
     End Sub
 
@@ -92,16 +84,12 @@ Public Class cMCGraphWrapper
 
 #Region " Refreshing "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Refresh the graph to show a <see cref="cIndicatorSettings.IndicatorGroup">group of indicators</see>.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
     Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup)
 
         Dim lInfo As New List(Of cIndicatorInfo)
         Dim info As cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
+        Dim strLabelPane As String = ""
         Dim strLabelTime As String = SharedResources.UNIT_TIME_YEAR
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
@@ -110,7 +98,6 @@ Public Class cMCGraphWrapper
         Dim sValue As Single = 0
         Dim sXMin As Single = 0
         Dim sXMax As Single = 0
-        Dim clr As Color = Color.Blue
 
         If (indSingle Is Nothing) Then
             ' Group mode
@@ -119,12 +106,17 @@ Public Class cMCGraphWrapper
                     lInfo.Add(indGroup.Indicator(i))
                 Next
             End If
+            strLabelPane = indGroup.Name
         Else
             ' Indicator mode
             If Not Object.ReferenceEquals(indSingle, Me.m_indCurrent) Then
                 lInfo.Add(indSingle)
             End If
+            strLabelPane = indSingle.Name
         End If
+
+        ' Set master pane title
+        Me.Configure(strLabelPane)
 
         If (lInfo.Count > 0) Then
             ' Create and configure panes
@@ -138,81 +130,89 @@ Public Class cMCGraphWrapper
                 Else
                     strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.UnitMask)
                 End If
-                ' Make indicator panel pretty
-                Me.ConfigurePane(info.Name, strLabelTime, Nothing, strLabelValue, info.Units, False, iPane:=iPane)
-
+                Me.ConfigurePane(info.Name, strLabelValue, Nothing, My.Resources.HEADER_FREQUENCY, info.Units, False, iPane:=iPane)
             Next
         End If
 
-        ' Determine best
-        If (Me.m_man.nTrialIterations <= 1) Or (Me.m_man.SS = Me.m_man.SSBestFit) Then
-            Me.m_iBest = CInt(Me.m_man.nTrialIterations)
-        End If
+        Try
+            ' Next populate all panels
+            For iPane As Integer = 1 To Me.NumPanes
+                ' Get pane for indicator iInd
+                gp = Me.GetPane(iPane)
+                ' Prepare for determining axis range
+                sXMin = Single.MaxValue : sXMax = Single.MinValue
+                ' Prepare structures for creating point list for indicator
+                info = DirectCast(gp.Tag, cIndicatorInfo)
 
-        ' Next populate all panels
-        For iPane As Integer = 1 To Me.NumPanes
-            ' Get pane for indicator iInd
-            gp = Me.GetPane(iPane)
-            ' Prepare for determining axis range
-            sXMin = Single.MaxValue : sXMax = Single.MinValue
-            ' Prepare structures for creating point list for indicator
-            info = DirectCast(gp.Tag, cIndicatorInfo)
+                ppl = New PointPairList()
 
-            Try
-                ' For all iterations
-                For iTrial As Integer = 0 To Me.m_lind.Count - 1
+                Dim sBinWidth As Single = 1
+                Dim hist() As Drawing.PointF = Me.Histogram(info, sBinWidth)
 
-                    If (iTrial = Me.m_iBest) Then
-                        clr = Color.Green
-                    Else
-                        clr = Color.Blue
-                    End If
-
-                    ppl = New PointPairList()
-
-                    ' For all times
-                    For iTime As Integer = 0 To Me.m_lind(iTrial).Count - 1
-                        ' Get indicator
-                        ind = Me.m_lind(iTrial)(iTime)
-                        ' Get indicator value
-                        sValue = info.GetValue(ind)
-                        ' Has a positive non-zero value?
-                        If (sValue >= 0) Then
-                            ' #Si: add point and update value min/max range
-                            Dim pt As New PointPair(Me.Core.EcosimFirstYear + (ind.Time / cCore.N_MONTHS), sValue)
-                            ppl.Add(pt)
-                            sXMax = CSng(Math.Max(sXMax, pt.X))
-                            sXMin = CSng(Math.Min(sXMin, pt.X))
-                        End If
-                    Next
-
-                    ' No points added?
-                    If ppl.Count = 0 Then
-                        ' #Oui: clear the list
-                        gp.CurveList.Clear()
-                    Else
-
-                        ' #Non: plot the line and configure the axis min/max range
-                        Me.PlotLines(New LineItem() {Me.CreateLineItem(String.Format(My.Resources.HEADER_TRIAL_N, (iTrial + 1), info.Name), _
-                                                                       ScientificInterfaceShared.Definitions.eLineType.ModelData, clr, ppl, info)}, _
-                                     iPane, True, (iTrial = 0))
-                        gp.XAxis.Scale.Min = sXMin
-                        gp.XAxis.Scale.Max = sXMax
-                    End If
+                'The X value in the histogram is the max value of the bin, right hand side of the bin
+                'So an input value of 1.0 will be in the .X = 1.0 bin
+                For ipt As Integer = 1 To hist.Length - 1
+                    ppl.Add(hist(ipt).X - sBinWidth, hist(ipt).Y)
+                    ppl.Add(hist(ipt).X, hist(ipt).Y)
                 Next
 
+                Dim il As LineItem = Me.CreateLineItem(info.Name, ScientificInterfaceShared.Definitions.eLineType.NotSet, Drawing.Color.RoyalBlue, ppl)
+                Me.PlotLines(New LineItem() {il}, iPane)
+
+                gp.XAxis.Scale.MinGrace = 0
+                gp.XAxis.Scale.MaxGrace = 0
                 gp.AxisChange()
 
-            Catch ex As Exception
-                ' Whoah
-                Debug.Assert(False, ex.Message)
-            End Try
+            Next iPane
 
-        Next
+        Catch ex As Exception
+            ' Ouch
+            Debug.Assert(False, ex.Message)
+        End Try
 
     End Sub
 
 #End Region ' Refreshing
+
+    Private Function Histogram(info As cIndicatorInfo, ByRef sBinWidth As Single) As Drawing.PointF()
+
+        Dim nBins As Integer = 100
+        Dim pts(nBins) As Drawing.PointF
+
+        Dim nValues As Integer = Math.Max(1, Me.m_lind.Count)
+
+        Dim sMin As Single = Single.MaxValue
+        Dim sMax As Single = Single.MinValue
+
+        For Each ind As cEcopathIndicators In Me.m_lind
+            Dim sVal As Single = info.GetValue(ind)
+            sMin = Math.Min(sVal, sMin)
+            sMax = Math.Max(sVal, sMax)
+        Next
+
+        Dim sRange As Single = sMax - sMin
+        If (sRange > 0) Then
+            sBinWidth = sRange / nBins
+        Else
+            'No data in the map so just set a default binwidth 
+            'this will dump all the data into the zero bin
+            sBinWidth = 1.0F / CSng(nBins)
+        End If
+
+        For Each ind As cEcopathIndicators In Me.m_lind
+            Dim sVal As Single = info.GetValue(ind)
+            Dim ipt As Integer = CInt(Math.Truncate((sVal - sMin) / sBinWidth)) + 1
+            ipt = Math.Max(1, Math.Min(nBins, ipt))
+            pts(ipt).Y += 1
+        Next
+
+        For i As Integer = 1 To nBins
+            pts(i).X = CSng(sMin + sBinWidth * i)
+            pts(i).Y = pts(i).Y / nValues
+        Next
+        Return pts
+
+    End Function
 
 #Region " Tooltip "
 

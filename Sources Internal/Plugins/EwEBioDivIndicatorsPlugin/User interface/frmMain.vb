@@ -40,7 +40,8 @@ Public Class frmMain
 
     Private m_ecosimgraph As cEcosimGraphWrapper = Nothing
     Private m_ecospacemap As cEcospaceMapWrapper = Nothing
-    Private m_mcgraph As cMCGraphWrapper = Nothing
+    Private m_mcgraphPath As cMCHistogramGraphWrapper = Nothing
+    Private m_mcgraphSim As cMCGraphWrapper = Nothing
 
     Private m_plugin As cEwEBioDiversityIndicatorsPlugin = Nothing
 
@@ -63,7 +64,8 @@ Public Class frmMain
 
         Me.m_ecosimgraph = New cEcosimGraphWrapper()
         Me.m_ecospacemap = New cEcospaceMapWrapper()
-        Me.m_mcgraph = New cMCGraphWrapper()
+        Me.m_mcgraphSim = New cMCGraphWrapper()
+        Me.m_mcgraphPath = New cMCHistogramGraphWrapper()
 
     End Sub
 
@@ -114,7 +116,13 @@ Public Class frmMain
         End Try
 
         Try
-            Me.m_mcgraph.Attach(Me.UIContext, Me.m_graphMC, Me.m_settings, Me.m_plugin.m_lIndMC)
+            Me.m_mcgraphPath.Attach(Me.UIContext, Me.m_graphMCpath, Me.m_settings, Me.m_plugin.m_lIndMCpath)
+        Catch ex As Exception
+            Debug.Assert(False, "Zed graph handler not able to attach")
+        End Try
+
+        Try
+            Me.m_mcgraphSim.Attach(Me.UIContext, Me.m_graphMCsim, Me.m_settings, Me.m_plugin.m_lIndMCsim)
         Catch ex As Exception
             Debug.Assert(False, "Zed graph handler not able to attach")
         End Try
@@ -494,7 +502,8 @@ Public Class frmMain
             Me.m_ecospacemap.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo) Then
-            Me.m_mcgraph.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
+            Me.m_mcgraphSim.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
+            Me.m_mcgraphPath.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
         End If
 
         ' Update state specific controls as a precaution

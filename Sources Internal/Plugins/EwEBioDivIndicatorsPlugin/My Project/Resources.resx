@@ -452,4 +452,7 @@
   <data name="GROUP_MSDF_DESC" xml:space="preserve">
     <value>Marine Strategy Framework Directive</value>
   </data>
+  <data name="HEADER_FREQUENCY" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
 </root>

@@ -55,6 +55,7 @@ Partial Class frmMain
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbICM = New System.Windows.Forms.PictureBox()
         Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
+        Me.m_pbEII = New System.Windows.Forms.PictureBox()
         Me.m_btnChangeDefault = New System.Windows.Forms.Button()
         Me.m_btnChooseFolder = New System.Windows.Forms.Button()
         Me.m_tbxDefaultLocation = New System.Windows.Forms.TextBox()
@@ -76,12 +77,13 @@ Partial Class frmMain
         Me.m_tpEcospace = New System.Windows.Forms.TabPage()
         Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
         Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
-        Me.m_tpMC = New System.Windows.Forms.TabPage()
-        Me.m_graphMC = New ZedGraph.ZedGraphControl()
+        Me.m_tpMCsim = New System.Windows.Forms.TabPage()
+        Me.m_graphMCsim = New ZedGraph.ZedGraphControl()
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
-        Me.m_pbEII = New System.Windows.Forms.PictureBox()
+        Me.m_tpMCpath = New System.Windows.Forms.TabPage()
+        Me.m_graphMCpath = New ZedGraph.ZedGraphControl()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -92,13 +94,14 @@ Partial Class frmMain
         Me.m_tlpCredits.SuspendLayout()
         CType(Me.m_pbICM, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpEcopath.SuspendLayout()
         Me.m_tpEcosim.SuspendLayout()
         Me.m_tpEcospace.SuspendLayout()
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_tpMC.SuspendLayout()
+        Me.m_tpMCsim.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tpMCpath.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -130,7 +133,8 @@ Partial Class frmMain
         Me.m_tcOutput.Controls.Add(Me.m_tpEcopath)
         Me.m_tcOutput.Controls.Add(Me.m_tpEcosim)
         Me.m_tcOutput.Controls.Add(Me.m_tpEcospace)
-        Me.m_tcOutput.Controls.Add(Me.m_tpMC)
+        Me.m_tcOutput.Controls.Add(Me.m_tpMCpath)
+        Me.m_tcOutput.Controls.Add(Me.m_tpMCsim)
         resources.ApplyResources(Me.m_tcOutput, "m_tcOutput")
         Me.m_tcOutput.Name = "m_tcOutput"
         Me.m_tcOutput.SelectedIndex = 0
@@ -192,6 +196,14 @@ Partial Class frmMain
         Me.m_pbCSIC.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_pbCSIC.Name = "m_pbCSIC"
         Me.m_pbCSIC.TabStop = False
+        '
+        'm_pbEII
+        '
+        Me.m_pbEII.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.eii
+        resources.ApplyResources(Me.m_pbEII, "m_pbEII")
+        Me.m_pbEII.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.m_pbEII.Name = "m_pbEII"
+        Me.m_pbEII.TabStop = False
         '
         'm_btnChangeDefault
         '
@@ -364,24 +376,24 @@ Partial Class frmMain
         Me.m_pbEcospaceMap.Name = "m_pbEcospaceMap"
         Me.m_pbEcospaceMap.TabStop = False
         '
-        'm_tpMC
+        'm_tpMCsim
         '
-        Me.m_tpMC.Controls.Add(Me.m_graphMC)
-        resources.ApplyResources(Me.m_tpMC, "m_tpMC")
-        Me.m_tpMC.Name = "m_tpMC"
-        Me.m_tpMC.UseVisualStyleBackColor = True
+        Me.m_tpMCsim.Controls.Add(Me.m_graphMCsim)
+        resources.ApplyResources(Me.m_tpMCsim, "m_tpMCsim")
+        Me.m_tpMCsim.Name = "m_tpMCsim"
+        Me.m_tpMCsim.UseVisualStyleBackColor = True
         '
-        'm_graphMC
+        'm_graphMCsim
         '
-        resources.ApplyResources(Me.m_graphMC, "m_graphMC")
-        Me.m_graphMC.Name = "m_graphMC"
-        Me.m_graphMC.ScrollGrace = 0.0R
-        Me.m_graphMC.ScrollMaxX = 0.0R
-        Me.m_graphMC.ScrollMaxY = 0.0R
-        Me.m_graphMC.ScrollMaxY2 = 0.0R
-        Me.m_graphMC.ScrollMinX = 0.0R
-        Me.m_graphMC.ScrollMinY = 0.0R
-        Me.m_graphMC.ScrollMinY2 = 0.0R
+        resources.ApplyResources(Me.m_graphMCsim, "m_graphMCsim")
+        Me.m_graphMCsim.Name = "m_graphMCsim"
+        Me.m_graphMCsim.ScrollGrace = 0.0R
+        Me.m_graphMCsim.ScrollMaxX = 0.0R
+        Me.m_graphMCsim.ScrollMaxY = 0.0R
+        Me.m_graphMCsim.ScrollMaxY2 = 0.0R
+        Me.m_graphMCsim.ScrollMinX = 0.0R
+        Me.m_graphMCsim.ScrollMinY = 0.0R
+        Me.m_graphMCsim.ScrollMinY2 = 0.0R
         '
         'm_btnSaveToCSV
         '
@@ -403,13 +415,24 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
-        'm_pbEII
+        'm_tpMCpath
         '
-        Me.m_pbEII.BackgroundImage = Global.EwEBioDiversityIndicatorsPlugin.My.Resources.Resources.eii
-        resources.ApplyResources(Me.m_pbEII, "m_pbEII")
-        Me.m_pbEII.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.m_pbEII.Name = "m_pbEII"
-        Me.m_pbEII.TabStop = False
+        Me.m_tpMCpath.Controls.Add(Me.m_graphMCpath)
+        resources.ApplyResources(Me.m_tpMCpath, "m_tpMCpath")
+        Me.m_tpMCpath.Name = "m_tpMCpath"
+        Me.m_tpMCpath.UseVisualStyleBackColor = True
+        '
+        'm_graphMCpath
+        '
+        resources.ApplyResources(Me.m_graphMCpath, "m_graphMCpath")
+        Me.m_graphMCpath.Name = "m_graphMCpath"
+        Me.m_graphMCpath.ScrollGrace = 0.0R
+        Me.m_graphMCpath.ScrollMaxX = 0.0R
+        Me.m_graphMCpath.ScrollMaxY = 0.0R
+        Me.m_graphMCpath.ScrollMaxY2 = 0.0R
+        Me.m_graphMCpath.ScrollMinX = 0.0R
+        Me.m_graphMCpath.ScrollMinY = 0.0R
+        Me.m_graphMCpath.ScrollMinY2 = 0.0R
         '
         'frmMain
         '
@@ -422,6 +445,7 @@ Partial Class frmMain
         Me.Name = "frmMain"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -433,14 +457,15 @@ Partial Class frmMain
         Me.m_tlpCredits.ResumeLayout(False)
         CType(Me.m_pbICM, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpEcopath.ResumeLayout(False)
         Me.m_tpEcopath.PerformLayout()
         Me.m_tpEcosim.ResumeLayout(False)
         Me.m_tpEcospace.ResumeLayout(False)
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_tpMC.ResumeLayout(False)
+        Me.m_tpMCsim.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tpMCpath.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -470,9 +495,9 @@ Partial Class frmMain
     Private WithEvents m_plCredits As System.Windows.Forms.Panel
     Private WithEvents m_lblCredits As System.Windows.Forms.Label
     Private WithEvents m_cbRunWithMC As System.Windows.Forms.CheckBox
-    Private WithEvents m_tpMC As System.Windows.Forms.TabPage
+    Private WithEvents m_tpMCsim As System.Windows.Forms.TabPage
     Private WithEvents m_graphSim As ZedGraph.ZedGraphControl
-    Private WithEvents m_graphMC As ZedGraph.ZedGraphControl
+    Private WithEvents m_graphMCsim As ZedGraph.ZedGraphControl
     Private WithEvents m_pbStatus As System.Windows.Forms.PictureBox
     Private WithEvents m_llStatus As ScientificInterfaceShared.Controls.ucLinkLabel
     Private WithEvents m_btnChangeDefault As System.Windows.Forms.Button
@@ -480,4 +505,6 @@ Partial Class frmMain
     Private WithEvents m_pbEcospaceMap As System.Windows.Forms.PictureBox
     Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
+    Private WithEvents m_tpMCpath As System.Windows.Forms.TabPage
+    Private WithEvents m_graphMCpath As ZedGraph.ZedGraphControl
 End Class

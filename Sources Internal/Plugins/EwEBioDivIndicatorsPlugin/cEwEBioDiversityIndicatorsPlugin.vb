@@ -81,7 +81,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' <summary>Indicators for each Ecosim time step.</summary>
     Friend m_lIndEcosim As List(Of cEcosimIndicators) = Nothing
     ''' <summary>Indicators for each MC trial and time step.</summary>
-    Friend m_lIndMC As List(Of List(Of cMCIndicators)) = Nothing
+    Friend m_lIndMCsim As List(Of List(Of cMCIndicators)) = Nothing
+    Friend m_lIndMCpath As List(Of cEcopathIndicators)
+
     ''' <summary>Indicators for each Ecospace cell.</summary>
     Friend m_dtIndEcospace As Dictionary(Of Point, cEcospaceIndicators)
     ''' <summary>Indicators grouping.</summary>
@@ -162,12 +164,15 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     ''' can connect to.</param>
     ''' -----------------------------------------------------------------------
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+
         ' Grab and remember core when it is provided via the plug-in mechanism
         Me.m_core = DirectCast(core, cCore)
+
         ' Prepare data
         Me.m_indEcopath = Nothing
         Me.m_lIndEcosim = New List(Of cEcosimIndicators)
-        Me.m_lIndMC = New List(Of List(Of cMCIndicators))
+        Me.m_lIndMCpath = New List(Of cEcopathIndicators)
+        Me.m_lIndMCsim = New List(Of List(Of cMCIndicators))
         Me.m_dtIndEcospace = New Dictionary(Of Point, cEcospaceIndicators)
 
     End Sub
@@ -240,6 +245,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Clear previous results
         Me.m_indEcopath = Nothing
         Me.m_lIndEcosim.Clear()
+        Me.m_lIndMCpath.Clear()
+        Me.m_lIndMCsim.Clear()
         Me.m_dtIndEcospace.Clear()
 
     End Function
@@ -442,6 +449,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             Me.m_ecosimDS.bAlwaysCalcTLc = True
         End If
 
+        Me.ClearMCIndicators()
+
     End Sub
 
     Public Sub MonteCarloBalancedEcopathModel(WaitLock As System.Threading.ManualResetEvent, TrialNumber As Integer, nIterations As Integer) _
@@ -450,7 +459,9 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         ' Calculate only if supposed to run with MC
         If (Not Me.m_bRunWithMonteCarlo) Then Return
 
-        ' ToDo: run indicators for Ecopath, and bin the results
+        Dim ind As New cEcopathIndicators(Me.m_core, Me.m_ecopathDS, Me.m_stanzaDS, Me.m_taxonDS, Me.m_core.TaxonAnalysis)
+        ind.Compute()
+        Me.m_lIndMCpath.Add(ind)
 
     End Sub
 
@@ -470,7 +481,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             ind.Compute()
             lIter.Add(ind)
         Next
-        Me.m_lIndMC.Add(lIter)
+        Me.m_lIndMCsim.Add(lIter)
 
         ' Need to save?
         If (My.Settings.AutoSaveCSV) And (CInt(man.nTrialIterations) = man.nTrials) Then
@@ -753,7 +764,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Friend Sub ClearMCIndicators()
 
         ' Eradicate computed MC indicators
-        Me.m_lIndMC.Clear()
+        Me.m_lIndMCpath.Clear()
+        Me.m_lIndMCsim.Clear()
 
         ' Has UI?
         If (Me.HasUI) Then
@@ -1025,8 +1037,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         sw.WriteLine(sb.ToString())
 
         ' Write a line for each trial + time step
-        For iTrial As Integer = 0 To Me.m_lIndMC.Count - 1
-            Dim lInd As List(Of cMCIndicators) = Me.m_lIndMC(iTrial)
+        For iTrial As Integer = 0 To Me.m_lIndMCsim.Count - 1
+            Dim lInd As List(Of cMCIndicators) = Me.m_lIndMCsim(iTrial)
             For Each ind As cMCIndicators In lInd
 
                 ' Sanity check

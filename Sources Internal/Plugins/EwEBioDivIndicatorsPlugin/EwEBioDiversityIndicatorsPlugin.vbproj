@@ -136,6 +136,7 @@
     <Compile Include="User interface\cEcospaceMapWrapper.vb" />
     <Compile Include="Structure\cIndicatorSettings.vb" />
     <Compile Include="User interface\cMCGraphWrapper.vb" />
+    <Compile Include="User interface\cMCHistogramGraphWrapper.vb" />
     <Compile Include="User interface\frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
