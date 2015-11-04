@@ -687,7 +687,6 @@ Public Class dlgDefineMapResponseAssignments
         Try
             If (Me.m_map Is Nothing) Then Return
 
-            Dim y2max As Single
             Dim histPts() As Drawing.PointF = Me.m_map.Histogram()
             Dim binWidth As Single = Me.m_map.HistogramBinWidth
             Dim lstPts As New PointPairList()
@@ -698,7 +697,6 @@ Public Class dlgDefineMapResponseAssignments
             For ipt As Integer = 1 To histPts.Length - 1
                 lstPts.Add(histPts(ipt).X - binWidth, histPts(ipt).Y)
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
-                y2max = Math.Max(histPts(ipt).Y, y2max)
             Next
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
