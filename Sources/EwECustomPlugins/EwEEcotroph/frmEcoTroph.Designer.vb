@@ -134,7 +134,6 @@ Partial Class frmEcotroph
         Me.type_smooth2 = New System.Windows.Forms.RadioButton()
         Me.datasmooth = New System.Windows.Forms.DataGridView()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Button7 = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.modeldescription = New System.Windows.Forms.TextBox()
@@ -156,6 +155,7 @@ Partial Class frmEcotroph
         Me.Button8 = New System.Windows.Forms.Button()
         Me.models_list = New System.Windows.Forms.ListBox()
         Me.inputdata = New System.Windows.Forms.TabControl()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.diagnosis_page.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1209,15 +1209,6 @@ Partial Class frmEcotroph
         Me.TabPage1.Text = "Input data"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'Button7
-        '
-        Me.Button7.Location = New System.Drawing.Point(8, 66)
-        Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(168, 23)
-        Me.Button7.TabIndex = 2
-        Me.Button7.Text = "Load data from Webservices"
-        Me.Button7.UseVisualStyleBackColor = True
-        '
         'Label13
         '
         Me.Label13.AutoSize = True
@@ -1410,6 +1401,16 @@ Partial Class frmEcotroph
         Me.inputdata.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
         Me.inputdata.TabIndex = 0
         '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(8, 66)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(168, 23)
+        Me.Button7.TabIndex = 2
+        Me.Button7.Text = "Load data from Webservices"
+        Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.Visible = False
+        '
         'frmEcotroph
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1575,7 +1576,6 @@ Partial Class frmEcotroph
     Friend WithEvents type_smooth2 As System.Windows.Forms.RadioButton
     Friend WithEvents datasmooth As System.Windows.Forms.DataGridView
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents Button7 As System.Windows.Forms.Button
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents modeldescription As System.Windows.Forms.TextBox
@@ -1597,4 +1597,5 @@ Partial Class frmEcotroph
     Friend WithEvents Production As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents accessibilty As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents OI As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Button7 As System.Windows.Forms.Button
 End Class
