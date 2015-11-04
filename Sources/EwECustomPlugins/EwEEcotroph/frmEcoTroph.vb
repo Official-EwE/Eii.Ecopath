@@ -594,9 +594,27 @@ Public Class frmEcotroph
         ReDim commandes(9)
         commandes(0) = ""
         commandes(1) = "library(EcoTroph)"
-        commandes(2) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
-        commandes(3) = "A<-create.smooth(ecopath" & param_pas & ")"
-        commandes(4) = ""
+
+        commandes(2) = "read.ecopath.model_2015 <-function(filename){if (missing(filename))  { cat('filename is missing\n')} else {" & _
+            "top <- xmlRoot(xmlTreeParse(filename,useInternalNodes=TRUE));" & _
+            "xmlName(top) ;" & _
+            "names(top) ;" & _
+            "groupname<-as.vector(xmlSApply(top[['GroupName']],xmlValue));" & _
+            "v<-xmlSApply(top,function(x) as.vector(xmlSApply(x,xmlValue)));" & _
+            "catches_tmp<-xmlSApply(top[['Catches']],function(x) as.numeric(xmlSApply(x,xmlValue)));" & _
+            "catches_tmp2<-data.frame(catches_tmp[1:v$NumFleet])[1:length(groupname),];" & _
+            "names(catches_tmp2)<-paste('catch',v$FleetName[-length(v$FleetName)]);" & _
+            "ecopath<-data.frame(v$GroupName,as.numeric(v$TL),as.numeric(v$B),as.numeric(v$PROD),as.numeric(v$accessibility),as.numeric(v$OI));" & _
+            "names(ecopath)<-c('GroupName','TL','B','PROD','accessibility','OI');" & _
+            "if (is.null(dim(catches_tmp2))) {ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath))]));" & _
+            "names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI',paste('catch.',v$FleetName[-length(v$FleetName)],sep=''))};" & _
+            "if (!is.null(dim(catches_tmp2))) {names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI');ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))};" & _
+            "return (ecopath[!(ecopath$group_name==''),])}};"
+
+
+        commandes(3) = "ecopath<-read.ecopath.model_2015('" & Replace(fichier_data_transfert, "\", "\\") & "')"
+        commandes(4) = "A<-create.smooth(ecopath" & param_pas & ")"
+
         commandes(5) = "write.table(A, file ='" & Replace(fichier, "\", "\\") & "', sep = '\t',quote=FALSE)"
         commandes(6) = "pdf(file='" & Replace(fichierpdf, "\", "\\") & "')"
 
@@ -681,8 +699,25 @@ Public Class frmEcotroph
         ReDim commandes(21)
         commandes(0) = "options(warn=0)"
         commandes(1) = "library(EcoTroph)"
-        commandes(2) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
-        commandes(3) = "A<-create.ETmain(ecopath" & param_pas & ")"
+        commandes(2) = "read.ecopath.model_2015 <-function(filename){if (missing(filename))  { cat('filename is missing\n')} else {" & _
+          "top <- xmlRoot(xmlTreeParse(filename,useInternalNodes=TRUE));" & _
+          "xmlName(top) ;" & _
+          "names(top) ;" & _
+          "groupname<-as.vector(xmlSApply(top[['GroupName']],xmlValue));" & _
+          "v<-xmlSApply(top,function(x) as.vector(xmlSApply(x,xmlValue)));" & _
+          "catches_tmp<-xmlSApply(top[['Catches']],function(x) as.numeric(xmlSApply(x,xmlValue)));" & _
+          "catches_tmp2<-data.frame(catches_tmp[1:v$NumFleet])[1:length(groupname),];" & _
+          "names(catches_tmp2)<-paste('catch',v$FleetName[-length(v$FleetName)]);" & _
+          "ecopath<-data.frame(v$GroupName,as.numeric(v$TL),as.numeric(v$B),as.numeric(v$PROD),as.numeric(v$accessibility),as.numeric(v$OI));" & _
+          "names(ecopath)<-c('GroupName','TL','B','PROD','accessibility','OI');" & _
+          "if (is.null(dim(catches_tmp2))) {ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath))]));" & _
+          "names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI',paste('catch.',v$FleetName[-length(v$FleetName)],sep=''))};" & _
+          "if (!is.null(dim(catches_tmp2))) {names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI');ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))};" & _
+          "return (ecopath[!(ecopath$group_name==''),])}};"
+
+
+        commandes(3) = "ecopath<-read.ecopath.model_2015('" & Replace(fichier_data_transfert, "\", "\\") & "');A<-create.ETmain(ecopath" & param_pas & ")"
+
         commandes(4) = "write.table(A$ET_Main[as.numeric(rownames(A$ET_Main))<6,], file ='" & fichier & "', sep = '\t',quote=FALSE)"
         commandes(5) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
         commandes(6) = "write.table(A$biomass[as.numeric(rownames(A$biomass))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
@@ -940,8 +975,24 @@ Public Class frmEcotroph
         Dim liste_tables() As String = {"ET_Main_diagnose", "B", "B_acc", "P", "P_acc", "Kin", "Kin_acc", "Fish_mort", "Fish_mort_acc", "Y"}
 
         commandes(0) = "library(EcoTroph)"
-        commandes(1) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
-        commandes(2) = "ETM<-create.ETmain(ecopath" & param_pas & ");A<-create.ETdiagnosis(ETM" & param_pas2 & param_iso & ")"
+        commandes(1) = "read.ecopath.model_2015 <-function(filename){if (missing(filename))  { cat('filename is missing\n')} else {" & _
+         "top <- xmlRoot(xmlTreeParse(filename,useInternalNodes=TRUE));" & _
+         "xmlName(top) ;" & _
+         "names(top) ;" & _
+         "groupname<-as.vector(xmlSApply(top[['GroupName']],xmlValue));" & _
+         "v<-xmlSApply(top,function(x) as.vector(xmlSApply(x,xmlValue)));" & _
+         "catches_tmp<-xmlSApply(top[['Catches']],function(x) as.numeric(xmlSApply(x,xmlValue)));" & _
+         "catches_tmp2<-data.frame(catches_tmp[1:v$NumFleet])[1:length(groupname),];" & _
+         "names(catches_tmp2)<-paste('catch',v$FleetName[-length(v$FleetName)]);" & _
+         "ecopath<-data.frame(v$GroupName,as.numeric(v$TL),as.numeric(v$B),as.numeric(v$PROD),as.numeric(v$accessibility),as.numeric(v$OI));" & _
+         "names(ecopath)<-c('GroupName','TL','B','PROD','accessibility','OI');" & _
+         "if (is.null(dim(catches_tmp2))) {ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath))]));" & _
+         "names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI',paste('catch.',v$FleetName[-length(v$FleetName)],sep=''))};" & _
+         "if (!is.null(dim(catches_tmp2))) {names(ecopath)<-c('group_name','TL','biomass','prod','accessibility','OI');ecopath<-data.frame(ecopath,as.data.frame(catches_tmp2[1:length(rownames(ecopath)),]))};" & _
+         "return (ecopath[!(ecopath$group_name==''),])}};"
+
+
+        commandes(2) = "ecopath<-read.ecopath.model_2015('" & Replace(fichier_data_transfert, "\", "\\") & "');ETM<-create.ETmain(ecopath" & param_pas & ");A<-create.ETdiagnosis(ETM" & param_pas2 & param_iso & ")"
         commandes(3) = "B<-convert.list2tab(A)"
 
         commandes(4) = "write.table(B$" & liste_tables(0) & ", file ='" & fichier & "',col.names=FALSE,row.names=FALSE, sep = '\t',quote=FALSE);" & "cat('-----\n', file ='" & fichier & "',append=TRUE);"
