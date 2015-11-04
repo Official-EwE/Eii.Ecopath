@@ -62,8 +62,8 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Friend Enum eComponentType As Integer
         Ecopath
         Ecosim
-        Ecospace
         MonteCarlo
+        Ecospace
         Any
     End Enum
 
@@ -937,6 +937,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecopath, ""))
         Dim sw As New StreamWriter(strFile)
 
+        If Me.m_core.SaveWithFileHeader Then
+            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecopath))
+            sw.WriteLine()
+        End If
+
         ' Write header line
         sw.WriteLine("{0},{1}", cStringUtils.ToCSVField(SharedResources.HEADER_INDICATOR), cStringUtils.ToCSVField(SharedResources.HEADER_VALUE))
 
@@ -968,6 +973,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecosim, ""))
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
+
+        If Me.m_core.SaveWithFileHeader Then
+            sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            sw.WriteLine()
+        End If
 
         ' Write header line
         sb.Append(SharedResources.HEADER_TIME)
@@ -1010,19 +1020,73 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Save calculated MCMC indicators to a CSV file.
+    ''' Save calculated MCMC indicators to a CSV file, both for path and sim.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub SaveMCCSV()
+        Me.SaveMCCSVSpath()
+        Me.SaveMCCSVSsim()
+    End Sub
+
+    Private Sub SaveMCCSVSpath()
 
         Dim core As cCore = Me.m_uic.Core
-        Dim strTS As String = core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex).Name
+        Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
+        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.MonteCarlo, "_uncertainty"))
+        Dim sw As New StreamWriter(strFile)
+
+        If core.SaveWithFileHeader Then
+            sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath))
+            sw.WriteLine()
+        End If
+
+        ' Write header line
+        sw.Write(cStringUtils.ToCSVField(SharedResources.HEADER_TRIAL))
+        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            For iInfo As Integer = 0 To grp.NumIndicators - 1
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                sw.Write("," & cStringUtils.ToCSVField(info.Name))
+            Next
+        Next
+        sw.WriteLine()
+
+        Dim iTrial As Integer = 1
+        For Each ind As cEcopathIndicators In Me.m_lIndMCpath
+            sw.Write(iTrial)
+            For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+                Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+                For iInfo As Integer = 0 To grp.NumIndicators - 1
+                    Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                    sw.Write("," & cStringUtils.ToCSVField(info.GetValue(ind)))
+                Next
+            Next
+            sw.WriteLine()
+            iTrial += 1
+        Next
+
+        ' Done
+        sw.Flush()
+        sw.Close()
+
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecopath), strFile), eStatusFlags.OK)
+
+    End Sub
+
+    Private Sub SaveMCCSVSsim()
+
+        Dim core As cCore = Me.m_uic.Core
         Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
         Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.MonteCarlo, ""))
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
-        ' Write header line
+        ' Write header 
+        If core.SaveWithFileHeader Then
+            sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+        End If
+        sw.WriteLine()
+
         sb.Append(My.Resources.HEADER_TRIAL)
         sb.Append(",")
         sb.Append(SharedResources.HEADER_TIME)
@@ -1090,7 +1154,7 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             Next
         Next
 
-        Dim exp As New cEcospaceImportExportXYData(bm, astrFields.ToArray())
+        Dim exp As New cEcospaceImportExportXYData(Me.m_core, astrFields.ToArray())
         ' Write line for cell
         For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
             If (ind.IsComputed) Then

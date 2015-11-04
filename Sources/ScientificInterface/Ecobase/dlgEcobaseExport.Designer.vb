@@ -56,7 +56,6 @@ Partial Class dlgEcobaseExport
         Me.m_llViewPublication = New System.Windows.Forms.LinkLabel()
         Me.m_pbModel = New System.Windows.Forms.PictureBox()
         Me.m_pbAuthor = New System.Windows.Forms.PictureBox()
-        Me.m_pbContact = New System.Windows.Forms.PictureBox()
         Me.m_pbPublication = New System.Windows.Forms.PictureBox()
         Me.m_pbConfirmAuthor = New System.Windows.Forms.PictureBox()
         Me.m_lbLDescription = New System.Windows.Forms.Label()
@@ -69,12 +68,24 @@ Partial Class dlgEcobaseExport
         Me.m_hdrPublication = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrPermission = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_cbIsUpdate = New System.Windows.Forms.CheckBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.CEwEHeaderLabel3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblEcoType = New System.Windows.Forms.Label()
+        Me.m_lblEcoCat = New System.Windows.Forms.Label()
+        Me.m_lblCountry = New System.Windows.Forms.Label()
+        Me.m_lblRegion = New System.Windows.Forms.Label()
+        Me.m_tbxLME = New System.Windows.Forms.TextBox()
+        Me.m_lblLME = New System.Windows.Forms.Label()
+        Me.m_cmbEcoCat = New System.Windows.Forms.ComboBox()
+        Me.m_cmbEcoType = New System.Windows.Forms.ComboBox()
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbContact, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbConfirmAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbDescription, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -165,12 +176,6 @@ Partial Class dlgEcobaseExport
         Me.m_pbAuthor.Name = "m_pbAuthor"
         Me.m_pbAuthor.TabStop = False
         '
-        'm_pbContact
-        '
-        resources.ApplyResources(Me.m_pbContact, "m_pbContact")
-        Me.m_pbContact.Name = "m_pbContact"
-        Me.m_pbContact.TabStop = False
-        '
         'm_pbPublication
         '
         resources.ApplyResources(Me.m_pbPublication, "m_pbPublication")
@@ -247,17 +252,96 @@ Partial Class dlgEcobaseExport
         Me.m_cbIsUpdate.Name = "m_cbIsUpdate"
         Me.m_cbIsUpdate.UseVisualStyleBackColor = True
         '
+        'PictureBox1
+        '
+        resources.ApplyResources(Me.PictureBox1, "PictureBox1")
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.TabStop = False
+        '
+        'CEwEHeaderLabel3
+        '
+        resources.ApplyResources(Me.CEwEHeaderLabel3, "CEwEHeaderLabel3")
+        Me.CEwEHeaderLabel3.CanCollapseParent = False
+        Me.CEwEHeaderLabel3.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel3.IsCollapsed = False
+        Me.CEwEHeaderLabel3.Name = "CEwEHeaderLabel3"
+        '
+        'm_lblEcoType
+        '
+        resources.ApplyResources(Me.m_lblEcoType, "m_lblEcoType")
+        Me.m_lblEcoType.Name = "m_lblEcoType"
+        '
+        'm_lblEcoCat
+        '
+        resources.ApplyResources(Me.m_lblEcoCat, "m_lblEcoCat")
+        Me.m_lblEcoCat.Name = "m_lblEcoCat"
+        '
+        'm_lblCountry
+        '
+        resources.ApplyResources(Me.m_lblCountry, "m_lblCountry")
+        Me.m_lblCountry.Name = "m_lblCountry"
+        '
+        'm_lblRegion
+        '
+        resources.ApplyResources(Me.m_lblRegion, "m_lblRegion")
+        Me.m_lblRegion.Name = "m_lblRegion"
+        '
+        'm_tbxLME
+        '
+        resources.ApplyResources(Me.m_tbxLME, "m_tbxLME")
+        Me.m_tbxLME.Name = "m_tbxLME"
+        '
+        'm_lblLME
+        '
+        resources.ApplyResources(Me.m_lblLME, "m_lblLME")
+        Me.m_lblLME.Name = "m_lblLME"
+        '
+        'm_cmbEcoCat
+        '
+        Me.m_cmbEcoCat.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cmbEcoCat, "m_cmbEcoCat")
+        Me.m_cmbEcoCat.Name = "m_cmbEcoCat"
+        '
+        'm_cmbEcoType
+        '
+        Me.m_cmbEcoType.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cmbEcoType, "m_cmbEcoType")
+        Me.m_cmbEcoType.Name = "m_cmbEcoType"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.FormattingEnabled = True
+        resources.ApplyResources(Me.ComboBox1, "ComboBox1")
+        Me.ComboBox1.Name = "ComboBox1"
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.FormattingEnabled = True
+        resources.ApplyResources(Me.ComboBox2, "ComboBox2")
+        Me.ComboBox2.Name = "ComboBox2"
+        '
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_cmbEcoCat)
+        Me.Controls.Add(Me.ComboBox2)
+        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.m_cmbEcoType)
+        Me.Controls.Add(Me.m_tbxLME)
+        Me.Controls.Add(Me.m_lblLME)
+        Me.Controls.Add(Me.m_lblRegion)
+        Me.Controls.Add(Me.m_lblCountry)
+        Me.Controls.Add(Me.m_lblEcoCat)
+        Me.Controls.Add(Me.m_lblEcoType)
+        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.CEwEHeaderLabel3)
         Me.Controls.Add(Me.m_cbIsUpdate)
         Me.Controls.Add(Me.m_tbxHyperlink)
         Me.Controls.Add(Me.m_lblHyperlink)
         Me.Controls.Add(Me.m_pbConfirmAuthor)
         Me.Controls.Add(Me.m_pbPublication)
-        Me.Controls.Add(Me.m_pbContact)
         Me.Controls.Add(Me.m_pbAuthor)
         Me.Controls.Add(Me.m_pbDescription)
         Me.Controls.Add(Me.m_pbModel)
@@ -288,10 +372,10 @@ Partial Class dlgEcobaseExport
         Me.ShowInTaskbar = False
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbContact, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbConfirmAuthor, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbDescription, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -315,7 +399,6 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_llViewPublication As System.Windows.Forms.LinkLabel
     Private WithEvents m_pbModel As System.Windows.Forms.PictureBox
     Private WithEvents m_pbAuthor As System.Windows.Forms.PictureBox
-    Private WithEvents m_pbContact As System.Windows.Forms.PictureBox
     Private WithEvents m_pbPublication As System.Windows.Forms.PictureBox
     Private WithEvents m_pbConfirmAuthor As System.Windows.Forms.PictureBox
     Private WithEvents m_lbLDescription As System.Windows.Forms.Label
@@ -325,4 +408,16 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_lblHyperlink As System.Windows.Forms.Label
     Private WithEvents m_hdrPublication As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_cbIsUpdate As System.Windows.Forms.CheckBox
+    Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Private WithEvents CEwEHeaderLabel3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lblEcoType As System.Windows.Forms.Label
+    Private WithEvents m_lblEcoCat As System.Windows.Forms.Label
+    Private WithEvents m_lblCountry As System.Windows.Forms.Label
+    Private WithEvents m_lblRegion As System.Windows.Forms.Label
+    Friend WithEvents m_tbxLME As System.Windows.Forms.TextBox
+    Private WithEvents m_lblLME As System.Windows.Forms.Label
+    Private WithEvents m_cmbEcoCat As System.Windows.Forms.ComboBox
+    Private WithEvents m_cmbEcoType As System.Windows.Forms.ComboBox
+    Private WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Private WithEvents ComboBox2 As System.Windows.Forms.ComboBox
 End Class

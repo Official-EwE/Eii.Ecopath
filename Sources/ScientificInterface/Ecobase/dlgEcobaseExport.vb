@@ -179,8 +179,7 @@ Public Class dlgEcobaseExport
 
         Me.m_pbModel.BackgroundImage = CType(cSystemUtils.IIF(bHasModelName, SharedResources.OK, SharedResources.Warning), Image)
         Me.m_pbDescription.BackgroundImage = CType(cSystemUtils.IIF(bHasDescription, SharedResources.OK, SharedResources.Warning), Image)
-        Me.m_pbAuthor.BackgroundImage = CType(cSystemUtils.IIF(bHasAuthor, SharedResources.OK, SharedResources.Warning), Image)
-        Me.m_pbContact.BackgroundImage = CType(cSystemUtils.IIF(bHasContact, SharedResources.OK, SharedResources.Warning), Image)
+        Me.m_pbAuthor.BackgroundImage = CType(cSystemUtils.IIF(bHasAuthor And bHasContact, SharedResources.OK, SharedResources.Warning), Image)
         Me.m_pbPublication.BackgroundImage = CType(cSystemUtils.IIF(bHasPublication, SharedResources.OK, SharedResources.Warning), Image)
         Me.m_pbConfirmAuthor.BackgroundImage = CType(cSystemUtils.IIF(bIsAuthor, SharedResources.OK, SharedResources.Warning), Image)
 

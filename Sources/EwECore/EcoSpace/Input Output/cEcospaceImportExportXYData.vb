@@ -47,6 +47,7 @@ Public Class cEcospaceImportExportXYData
 
     Public Shared cMAPPING_IMPLICIT As String = My.Resources.CoreDefaults.CORE_DEFAULT
 
+    Private m_core As cCore = Nothing
     Private m_bm As cEcospaceBasemap = Nothing
 
     ''' <summary>Buffer that holds the data to read or write.</summary>
@@ -65,15 +66,17 @@ Public Class cEcospaceImportExportXYData
     ''' <summary>
     ''' Construct a new instance of this class.
     ''' </summary>
-    ''' <param name="bm">The <see cref="cEcospaceBasemap"/> to operate onto.</param>
+    ''' <param name="core">The EwE Core to itneract with.</param>
     ''' <param name="astrFields">An optional array of field names.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(bm As cEcospaceBasemap, _
+    Public Sub New(core As cCore, _
                    Optional ByVal astrFields() As String = Nothing)
 
-        Debug.Assert(bm IsNot Nothing)
+        Debug.Assert(core IsNot Nothing)
+        Debug.Assert(core.EcospaceBasemap IsNot Nothing)
 
-        Me.m_bm = bm
+        Me.m_core = core
+        Me.m_bm = core.EcospaceBasemap
         Me.Fields = astrFields
 
     End Sub

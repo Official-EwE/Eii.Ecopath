@@ -189,7 +189,7 @@ Namespace Ecospace.Basemap
             Next
 
             ' Create data
-            Me.m_data = New cEcospaceImportExportXYData(bm, lstrFields.ToArray())
+            Me.m_data = New cEcospaceImportExportXYData(Me.m_uic.Core, lstrFields.ToArray())
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_DATA_SAVING)
 

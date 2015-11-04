@@ -202,7 +202,7 @@ Namespace Ecospace.Basemap
         Private Function ReadCSVFields() As Boolean
 
             ' Create data buffer
-            Me.m_data = New cEcospaceImportExportXYData(Me.m_uic.Core.EcospaceBasemap)
+            Me.m_data = New cEcospaceImportExportXYData(Me.m_uic.Core)
 
             Me.m_grid.Mappings.Clear()
 
