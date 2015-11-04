@@ -148,23 +148,32 @@ Public Class HCR_Group
 
     End Function
 
-    Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iYearProjecting As Integer) As Single
+    Public Function CalcF(ByRef Biomass As Single(), ByRef iYearProjecting As Integer, ByVal iTimeStep As Integer) As Single
 
-        If TimeFrameRule.CheckValidRule(iYearProjecting) And Me.TypeOfHCR = HCRType.Target Then 'Use a time frame rule
+        Dim HCR_F As Single = CalcFfromHCR(Biomass, iYearProjecting)
+
+        If TimeFrameRule.CheckValidRule(iYearProjecting, HCR_F, iTimeStep) And Me.TypeOfHCR = HCRType.Target Then 'Use a time frame rule
 
 #If DEBUG Then
             Console.WriteLine("(HCR_Group.CalcFfromHCR) Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
 #End If
 
-            Return TimeFrameRule.ExtractF(iYearProjecting)
+            Return TimeFrameRule.F(iTimeStep, iYearProjecting, HCR_F)
         Else
-            If Biomass(Me.GroupB.Index) > UpperLimit Then 'otherwise use the standard HCR
-                Return MaxF
-            ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
-                Return 0
-            Else
-                Return ((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF
-            End If
+            Return HCR_F
+        End If
+
+
+    End Function
+
+    Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iYearProjecting As Integer) As Single
+
+        If Biomass(Me.GroupB.Index) > UpperLimit Then 'otherwise use the standard HCR
+            Return MaxF
+        ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
+            Return 0
+        Else
+            Return ((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF
         End If
 
     End Function

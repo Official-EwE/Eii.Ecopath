@@ -3080,7 +3080,7 @@ Public Class cMSE
 
     End Function
 
-    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iYearProjecting As Integer) As Single(,)
+    Private Function DetermineQuotas(BiomassAtTimestep() As Single, iYearProjecting As Integer, ByVal iTimeStep As Integer) As Single(,)
 
         Dim TargConsQuota(m_core.nGroups - 1, 1) As Single
         Dim TempTargConsQuota As Single
@@ -3098,13 +3098,13 @@ Public Class cMSE
         For Each iHCRGroup In Me.currentStrategy
             ' Determines the F for each group
             If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iYearProjecting) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
             ElseIf iHCRGroup.TypeOfHCR = HCRType.Conservation Then
                 If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
-                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iYearProjecting)
+                    FfromHCR = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep)
                     TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                 Else
-                    FfromHCR = iHCRGroup.CalcFfromHCR(BiomassAtTimestep, iYearProjecting)
+                    FfromHCR = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep)
                     TempTargConsQuota = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                     If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) Then
                         TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = TempTargConsQuota
@@ -3551,11 +3551,12 @@ Public Class cMSE
             If (iTime - 1) Mod 12 = 0 Then 'if it is the first timestep of the year
 
                 'if it is the first timestep of the firstyear of the projection then calculate where necessary the fimeframerule f's for the next TimeFrameRule.NYears
-                If iTime = OriginalNTimesteps + 1 Then
-                    For Each HCR As HCR_Group In currentStrategy
-                        HCR.TimeFrameRule.calcFsfromTimeFrameRules(iTime)
-                    Next
-                End If
+                'If iTime = OriginalNTimesteps + 1 Then
+                '    For Each HCR As HCR_Group In currentStrategy
+                '        If currentStrategy.Name = "CFP_TargetF_Weakest stock" And HCR.GroupF.DBID = 21 Then Stop
+                '        HCR.TimeFrameRule.calcFsfromTimeFrameRules(iTime)
+                '    Next
+                'End If
 
                 Me.setQModifiers(iTime)
 
@@ -3566,7 +3567,7 @@ Public Class cMSE
                 'OK Hook the stock assessment model up to the Quota setting
                 'Use the biomass estimated by the stock assessment model as the true biomass to set the Quota
                 Dim NumberofYearProjecting As Integer = CInt((iTime + 11 - OriginalNTimesteps) / 12)
-                TargConsQuota = DetermineQuotas(bioEst, NumberofYearProjecting)
+                TargConsQuota = DetermineQuotas(bioEst, NumberofYearProjecting, iTime)
 
                 SetMinMaxEfforts(iTime)
 
@@ -3926,6 +3927,9 @@ Public Class cMSE
         If FleetsThatFishHCRGrp.Count > 0 Then
 
             For Each iFleet In FleetsThatFishHCRGrp
+
+                'If m_core.FleetInputs(iFleet).Name = "Demersal trawl + dem seine" And CurrentModelID = 2 And currentStrategy.Name = "CFP_TargetF_Weakest stock" Then Stop
+
                 Select Case Me.currentStrategy.Regulations.Method(iFleet)
 
                     Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
