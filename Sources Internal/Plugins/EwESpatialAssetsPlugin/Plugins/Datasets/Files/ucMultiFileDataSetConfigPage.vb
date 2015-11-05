@@ -72,6 +72,14 @@ Namespace SpatialData
 
 #End Region ' Private vars
 
+#Region " Constructor / destructor "
+
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
+#End Region ' Constructor / destructor
+
 #Region " Overrides "
 
         Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
