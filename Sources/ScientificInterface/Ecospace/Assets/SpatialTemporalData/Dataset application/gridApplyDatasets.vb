@@ -200,6 +200,7 @@ Namespace Ecospace.Controls
                 Dim fmt As New cSpatialDatasetCompatibilityFormatter()
                 strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Abbreviation)
             End If
+            Me(iRow, eColumnTypes.SpatOverlap).Value = strVal
 
             Me.InvalidateCells()
 
