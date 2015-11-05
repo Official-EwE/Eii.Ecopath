@@ -483,15 +483,6 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Next
         Me.m_lIndMCsim.Add(lIter)
 
-        ' Need to save?
-        If (My.Settings.AutoSaveCSV) And (CInt(man.nTrialIterations) = man.nTrials) Then
-            ' #Yes: Save
-            If Me.BeginSave(eComponentType.MonteCarlo) Then
-                Me.PerformSave(eComponentType.MonteCarlo)
-                Me.EndSave()
-            End If
-        End If
-
         ' Has UI?
         If (Me.HasUI) Then
             ' #Yes: Update UI
@@ -518,6 +509,16 @@ Public Class cEwEBioDiversityIndicatorsPlugin
             ' #Yes: Update UI
             Me.m_frm.UpdateIndicators(eComponentType.MonteCarlo)
         End If
+
+        ' Need to save?
+        If (My.Settings.AutoSaveCSV) Then
+            ' #Yes: Save
+            If Me.BeginSave(eComponentType.MonteCarlo) Then
+                Me.PerformSave(eComponentType.MonteCarlo)
+                Me.EndSave()
+            End If
+        End If
+
     End Sub
 
 #End Region ' Monte Carlo

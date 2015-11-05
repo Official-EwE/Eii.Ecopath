@@ -154,13 +154,20 @@ Public Class cMCHistogramGraphWrapper
                 For ipt As Integer = 1 To hist.Length - 1
                     ppl.Add(hist(ipt).X - sBinWidth, hist(ipt).Y)
                     ppl.Add(hist(ipt).X, hist(ipt).Y)
+
+                    sXMin = Math.Min(sXMin, hist(ipt).X - sBinWidth)
+                    sXMax = Math.Max(sXMax, hist(ipt).X)
                 Next
 
                 Dim il As LineItem = Me.CreateLineItem(info.Name, ScientificInterfaceShared.Definitions.eLineType.NotSet, Drawing.Color.RoyalBlue, ppl)
                 Me.PlotLines(New LineItem() {il}, iPane)
 
+                gp.XAxis.Scale.MinAuto = False
                 gp.XAxis.Scale.MinGrace = 0
+                gp.XAxis.Scale.Min = sXMin
+                gp.XAxis.Scale.MaxAuto = False
                 gp.XAxis.Scale.MaxGrace = 0
+                gp.XAxis.Scale.Max = sXMax
                 gp.AxisChange()
 
             Next iPane
