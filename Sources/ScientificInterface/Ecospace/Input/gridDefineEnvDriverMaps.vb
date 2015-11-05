@@ -586,7 +586,7 @@ Namespace Ecospace
 
         Public Function CanRemoveRow(Optional ByVal iRow As Integer = -1) As Boolean
             If (iRow <= 0) Then iRow = Me.SelectedRow()
-            If iRow = -1 Then Return False
+            If (iRow <= 0) Then Return False
             Return Me.m_alLayers(iRow - 1).IsEditable
         End Function
 
