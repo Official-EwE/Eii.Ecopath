@@ -66,7 +66,7 @@ Namespace SpatialData
             If Not MyBase.LockDataAtT(datetime, dCellSize, ptfTL, ptfBR, strProjectionString) Then Return False
 
             If (Not Me.IsLocked) Then
-                Dim reader As New cEcospaceImportExportXYData(Me.m_core.EcospaceBasemap)
+                Dim reader As New cEcospaceImportExportXYData(Me.m_core)
                 If reader.ReadXYFields(Me.SourceFileName) Then
                     Me.m_reader = reader
                     Return True
