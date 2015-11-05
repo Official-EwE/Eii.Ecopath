@@ -181,6 +181,7 @@ Namespace WebServices.Ecobase
             Me.Contact = ecopathDS.ModelContact
 
             Me.FirstYear = ecopathDS.FirstYear
+            Me.Area = ecopathDS.ModelArea
 
             Me.North = ecopathDS.ModelNorth
             Me.East = ecopathDS.ModelEast
