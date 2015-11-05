@@ -137,7 +137,7 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerResultWriter.vb" />
     <Compile Include="Contaminant Tracer\Model\cContaminanTracerDataStructures.vb" />
     <Compile Include="Core\cCoreSettings.vb" />
-     <Compile Include="EcoBase\cEcobaseImporter.vb" />
+    <Compile Include="EcoBase\cEcobaseImporter.vb" />
     <Compile Include="Database\Import\cModelImporter.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_04.vb" />
@@ -566,7 +566,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EcoBase\Dev progress\ToDo.txt" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\LPSolve\win64\lpsolve55.dll">
