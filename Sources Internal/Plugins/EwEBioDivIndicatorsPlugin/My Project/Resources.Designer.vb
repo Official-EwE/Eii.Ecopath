@@ -227,11 +227,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Frequency.
+        '''  Looks up a localized string similar to Occurence.
         '''</summary>
-        Friend ReadOnly Property HEADER_FREQUENCY() As String
+        Friend ReadOnly Property HEADER_OCCURRENCE() As String
             Get
-                Return ResourceManager.GetString("HEADER_FREQUENCY", resourceCulture)
+                Return ResourceManager.GetString("HEADER_OCCURRENCE", resourceCulture)
             End Get
         End Property
         

@@ -513,6 +513,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         End If
         Me.m_bInitialized = False
 
+        ' Has UI?
+        If (Me.HasUI) Then
+            ' #Yes: Update UI
+            Me.m_frm.UpdateIndicators(eComponentType.MonteCarlo)
+        End If
     End Sub
 
 #End Region ' Monte Carlo
@@ -612,6 +617,12 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         Me.m_ecospaceDS.bCalTrophicLevel = Me.m_bCalcExtrasOld
 
         If Me.m_bSavingEcospace Then Me.EndSave()
+
+        ' Has UI?
+        If (Me.HasUI) Then
+            ' #Yes: Update UI
+            Me.m_frm.UpdateIndicators(eComponentType.Ecospace)
+        End If
 
     End Sub
 

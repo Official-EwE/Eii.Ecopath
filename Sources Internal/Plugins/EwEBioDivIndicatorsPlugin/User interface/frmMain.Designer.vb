@@ -67,6 +67,7 @@ Partial Class frmMain
         Me.m_cbRunWithMC = New System.Windows.Forms.CheckBox()
         Me.m_cbRunWithEcospace = New System.Windows.Forms.CheckBox()
         Me.m_cbRunWithEcosim = New System.Windows.Forms.CheckBox()
+        Me.m_cbPlotAtEnd = New System.Windows.Forms.CheckBox()
         Me.m_cbRunWithEcopath = New System.Windows.Forms.CheckBox()
         Me.m_hdrExport = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -77,13 +78,13 @@ Partial Class frmMain
         Me.m_tpEcospace = New System.Windows.Forms.TabPage()
         Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
         Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
+        Me.m_tpMCpath = New System.Windows.Forms.TabPage()
+        Me.m_graphMCpath = New ZedGraph.ZedGraphControl()
         Me.m_tpMCsim = New System.Windows.Forms.TabPage()
         Me.m_graphMCsim = New ZedGraph.ZedGraphControl()
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
-        Me.m_tpMCpath = New System.Windows.Forms.TabPage()
-        Me.m_graphMCpath = New ZedGraph.ZedGraphControl()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -99,9 +100,9 @@ Partial Class frmMain
         Me.m_tpEcosim.SuspendLayout()
         Me.m_tpEcospace.SuspendLayout()
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tpMCpath.SuspendLayout()
         Me.m_tpMCsim.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_tpMCpath.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -154,6 +155,7 @@ Partial Class frmMain
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithMC)
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcospace)
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcosim)
+        Me.m_tpSettings.Controls.Add(Me.m_cbPlotAtEnd)
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcopath)
         Me.m_tpSettings.Controls.Add(Me.m_hdrExport)
         Me.m_tpSettings.Controls.Add(Me.m_hdrExecution)
@@ -271,6 +273,12 @@ Partial Class frmMain
         Me.m_cbRunWithEcosim.Name = "m_cbRunWithEcosim"
         Me.m_cbRunWithEcosim.UseVisualStyleBackColor = True
         '
+        'm_cbPlotAtEnd
+        '
+        resources.ApplyResources(Me.m_cbPlotAtEnd, "m_cbPlotAtEnd")
+        Me.m_cbPlotAtEnd.Name = "m_cbPlotAtEnd"
+        Me.m_cbPlotAtEnd.UseVisualStyleBackColor = True
+        '
         'm_cbRunWithEcopath
         '
         resources.ApplyResources(Me.m_cbRunWithEcopath, "m_cbRunWithEcopath")
@@ -376,6 +384,25 @@ Partial Class frmMain
         Me.m_pbEcospaceMap.Name = "m_pbEcospaceMap"
         Me.m_pbEcospaceMap.TabStop = False
         '
+        'm_tpMCpath
+        '
+        Me.m_tpMCpath.Controls.Add(Me.m_graphMCpath)
+        resources.ApplyResources(Me.m_tpMCpath, "m_tpMCpath")
+        Me.m_tpMCpath.Name = "m_tpMCpath"
+        Me.m_tpMCpath.UseVisualStyleBackColor = True
+        '
+        'm_graphMCpath
+        '
+        resources.ApplyResources(Me.m_graphMCpath, "m_graphMCpath")
+        Me.m_graphMCpath.Name = "m_graphMCpath"
+        Me.m_graphMCpath.ScrollGrace = 0.0R
+        Me.m_graphMCpath.ScrollMaxX = 0.0R
+        Me.m_graphMCpath.ScrollMaxY = 0.0R
+        Me.m_graphMCpath.ScrollMaxY2 = 0.0R
+        Me.m_graphMCpath.ScrollMinX = 0.0R
+        Me.m_graphMCpath.ScrollMinY = 0.0R
+        Me.m_graphMCpath.ScrollMinY2 = 0.0R
+        '
         'm_tpMCsim
         '
         Me.m_tpMCsim.Controls.Add(Me.m_graphMCsim)
@@ -415,25 +442,6 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
-        'm_tpMCpath
-        '
-        Me.m_tpMCpath.Controls.Add(Me.m_graphMCpath)
-        resources.ApplyResources(Me.m_tpMCpath, "m_tpMCpath")
-        Me.m_tpMCpath.Name = "m_tpMCpath"
-        Me.m_tpMCpath.UseVisualStyleBackColor = True
-        '
-        'm_graphMCpath
-        '
-        resources.ApplyResources(Me.m_graphMCpath, "m_graphMCpath")
-        Me.m_graphMCpath.Name = "m_graphMCpath"
-        Me.m_graphMCpath.ScrollGrace = 0.0R
-        Me.m_graphMCpath.ScrollMaxX = 0.0R
-        Me.m_graphMCpath.ScrollMaxY = 0.0R
-        Me.m_graphMCpath.ScrollMaxY2 = 0.0R
-        Me.m_graphMCpath.ScrollMinX = 0.0R
-        Me.m_graphMCpath.ScrollMinY = 0.0R
-        Me.m_graphMCpath.ScrollMinY2 = 0.0R
-        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -463,9 +471,9 @@ Partial Class frmMain
         Me.m_tpEcosim.ResumeLayout(False)
         Me.m_tpEcospace.ResumeLayout(False)
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tpMCpath.ResumeLayout(False)
         Me.m_tpMCsim.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_tpMCpath.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -507,4 +515,5 @@ Partial Class frmMain
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
     Private WithEvents m_tpMCpath As System.Windows.Forms.TabPage
     Private WithEvents m_graphMCpath As ZedGraph.ZedGraphControl
+    Private WithEvents m_cbPlotAtEnd As System.Windows.Forms.CheckBox
 End Class

@@ -130,7 +130,7 @@ Public Class cMCHistogramGraphWrapper
                 Else
                     strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.UnitMask)
                 End If
-                Me.ConfigurePane(info.Name, strLabelValue, Nothing, My.Resources.HEADER_FREQUENCY, info.Units, False, iPane:=iPane)
+                Me.ConfigurePane(info.Name, strLabelValue, Nothing, My.Resources.HEADER_OCCURRENCE, info.Units, False, iPane:=iPane)
             Next
         End If
 
@@ -208,7 +208,7 @@ Public Class cMCHistogramGraphWrapper
 
         For i As Integer = 1 To nBins
             pts(i).X = CSng(sMin + sBinWidth * i)
-            pts(i).Y = pts(i).Y / nValues
+            'pts(i).Y = pts(i).Y / nValues
         Next
         Return pts
 

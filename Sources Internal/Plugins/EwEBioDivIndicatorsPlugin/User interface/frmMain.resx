@@ -681,6 +681,36 @@
   <data name="&gt;&gt;m_cbRunWithEcosim.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
+  <data name="m_cbPlotAtEnd.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbPlotAtEnd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbPlotAtEnd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 21</value>
+  </data>
+  <data name="m_cbPlotAtEnd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 17</value>
+  </data>
+  <data name="m_cbPlotAtEnd.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_cbPlotAtEnd.Text" xml:space="preserve">
+    <value>Update plots only when run completed</value>
+  </data>
+  <data name="&gt;&gt;m_cbPlotAtEnd.Name" xml:space="preserve">
+    <value>m_cbPlotAtEnd</value>
+  </data>
+  <data name="&gt;&gt;m_cbPlotAtEnd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbPlotAtEnd.Parent" xml:space="preserve">
+    <value>m_tpSettings</value>
+  </data>
+  <data name="&gt;&gt;m_cbPlotAtEnd.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
   <data name="m_cbRunWithEcopath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -709,7 +739,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_cbRunWithEcopath.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_hdrExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -742,7 +772,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_hdrExecution.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -775,7 +805,7 @@
     <value>m_tpSettings</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="m_tpSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>

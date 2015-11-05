@@ -172,6 +172,8 @@ Public Class frmMain
         Me.m_cbRunWithEcosim.Checked = My.Settings.RunWithEcosim
         Me.m_cbRunWithEcospace.Checked = My.Settings.RunWithEcospace
         Me.m_cbRunWithMC.Checked = My.Settings.RunWithMC
+        Me.m_cbPlotAtEnd.Checked = My.Settings.PlotAtEnd
+
         If (My.Settings.SaveToDefault) Then
             Me.m_rbDefault.Checked = True
         Else
@@ -408,6 +410,15 @@ Public Class frmMain
 
     End Sub
 
+    Private Sub OnPlotAtEndCheckedChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbPlotAtEnd.CheckedChanged
+
+        If Me.m_bInUpdate Then Return
+        My.Settings.PlotAtEnd = m_cbPlotAtEnd.Checked
+        My.Settings.Save()
+
+    End Sub
+
     Private Sub OnTabSelected(sender As Object, e As System.EventArgs) _
         Handles m_tcOutput.SelectedIndexChanged
 
@@ -490,6 +501,9 @@ Public Class frmMain
     ''' <param name="component">The component that needs updating.</param>
     ''' -----------------------------------------------------------------------
     Friend Sub UpdateIndicators(component As cEwEBioDiversityIndicatorsPlugin.eComponentType)
+
+        ' Optimization: only plot when done
+        If (Me.Core.StateMonitor.IsSearching) And (My.Settings.PlotAtEnd) Then Return
 
         ' Optimization: only update the component that was changed
         If (component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Any Or component = cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecopath) Then
