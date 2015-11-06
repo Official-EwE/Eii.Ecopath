@@ -452,6 +452,10 @@ Public Class cWoRMSPluginPoint
             taxon.SourceKey = Me.Validate(record.AphiaID.ToString)
             taxon.CodeLSID = Me.Validate(record.lsid)
 
+            If taxon.Species.StartsWith(taxon.Genus) Then
+                taxon.Species = taxon.Species.Substring(taxon.Genus.Length).Trim
+            End If
+
         Catch ex As Exception
             cLog.Write(ex, "cWoRMSPluginPoint.ReadTaxon")
         End Try
