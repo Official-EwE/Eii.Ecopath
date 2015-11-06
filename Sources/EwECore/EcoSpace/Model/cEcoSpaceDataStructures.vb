@@ -213,7 +213,9 @@ Public Class cEcospaceDataStructures
     Public RelVulBad() As Single
     Public IsAdvected() As Boolean
 
+    ''' <summary>Biomass by cell (row, col, group)</summary>
     Public Bcell(,,) As Single
+    ''' <summary>Catch by cell (row, col, group)</summary>
     Public Ccell(,,) As Single
     Public Clast(,,) As Single
     Public AMmTr(,,) As Single

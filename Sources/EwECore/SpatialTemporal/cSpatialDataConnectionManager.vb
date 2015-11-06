@@ -345,7 +345,7 @@ Namespace SpatialData
                 For Each ip As IPlugin In pm.GetPlugins(GetType(ISpatialDataSetPlugin))
                     If (TypeOf ip Is ISpatialDataSet) Then
                         Dim ds As ISpatialDataSet = DirectCast(ip, ISpatialDataSet)
-                        If (ds.VarName = vn Or ds.VarName = eVarNameFlags.NotSet) Then
+                        If (ds.VarName = vn Or ds.VarName = eVarNameFlags.NotSet Or vn = eVarNameFlags.NotSet) Then
                             lDatasets.Add(ds)
                         End If
                     End If
