@@ -97,17 +97,20 @@ Namespace SpatialData
                 Me.m_dataset = New cMultiFileDataSetPlugin()
             End If
 
-            Dim aTimes As DateTime() = Me.m_dataset.TimeSteps
             Dim dt As DateTime = Nothing
             Dim iRow As Integer = 0
             Dim strFile As String = ""
 
+            Dim dtStart As Date = Me.m_dataset.TimeStart
             Me.m_mtbIntervalStart.ValidatingType = GetType(Date)
-            For i As Integer = 0 To aTimes.Length - 1
-                dt = aTimes(i)
-                If (i = 0) Then Me.m_mtbIntervalStart.Text = dt.ToString("yyyy") & dt.ToString("MM")
-                Me.m_lFiles.Add(New cFileEntry(Me.m_dataset.File(dt), dt))
-            Next
+            Me.m_mtbIntervalStart.Text = dtStart.ToString("yyyy") & dtStart.ToString("MM")
+
+            While dt <= m_dataset.TimeEnd
+                If (Me.m_dataset.HasDataAtT(dt)) Then
+                    Me.m_lFiles.Add(New cFileEntry(Me.m_dataset.File(dt), dt))
+                End If
+                dt = dt.AddMonths(1)
+            End While
 
             Me.UpdateGrid()
 

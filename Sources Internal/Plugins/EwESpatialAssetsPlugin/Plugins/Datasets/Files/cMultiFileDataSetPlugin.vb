@@ -128,19 +128,19 @@ Namespace SpatialData
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.TimeSteps" />
-        ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property TimeSteps As DateTime()
-            Get
-                Dim lTimeSteps As New List(Of DateTime)
-                Me.Sort()
-                For i As Integer = 0 To Me.m_lFiles.Count - 1
-                    lTimeSteps.Add(Me.m_lFiles(i).Date)
-                Next
-                Return lTimeSteps.ToArray
-            End Get
-        End Property
+        ' ''' -------------------------------------------------------------------
+        ' ''' <inheritdocs cref="cFileDataSetPlugin.TimeSteps" />
+        ' ''' -------------------------------------------------------------------
+        'Public Overrides ReadOnly Property TimeSteps As DateTime()
+        '    Get
+        '        Dim lTimeSteps As New List(Of DateTime)
+        '        Me.Sort()
+        '        For i As Integer = 0 To Me.m_lFiles.Count - 1
+        '            lTimeSteps.Add(Me.m_lFiles(i).Date)
+        '        Next
+        '        Return lTimeSteps.ToArray
+        '    End Get
+        'End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.TimeEnd"/>

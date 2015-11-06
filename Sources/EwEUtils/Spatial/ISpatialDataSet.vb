@@ -90,13 +90,6 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Possible range of available time steps, may be NULL
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        ReadOnly Property TimeSteps As DateTime()
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Get the <see cref="eVarNameFlags">core variable</see> associated 
         ''' with the dataset, if any.
         ''' </summary>
@@ -194,12 +187,12 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
         ''' purposes, time is assumed to be rounded to months.</param>
-        ''' <param name="ptfNE">Point to receive top-left extent value.</param>
+        ''' <param name="ptfNW">Point to receive top-left extent value.</param>
         ''' <param name="ptfSE">Point to receive bottom-right extent value.</param>
         ''' <returns>True if valid values were retrieved.</returns>
         ''' -------------------------------------------------------------------
         Function GetExtentAtT(ByVal datetime As DateTime, _
-                              ByRef ptfNE As PointF, _
+                              ByRef ptfNW As PointF, _
                               ByRef ptfSE As PointF) As Boolean
 
         ''' -------------------------------------------------------------------

@@ -87,14 +87,14 @@ Namespace SpatialData
             End Set
         End Property
 
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.TimeSteps" />
-        ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property TimeSteps As DateTime()
-            Get
-                Return Nothing
-            End Get
-        End Property
+        ' ''' -------------------------------------------------------------------
+        ' ''' <inheritdocs cref="cFileDataSetPlugin.TimeSteps" />
+        ' ''' -------------------------------------------------------------------
+        'Public Overrides ReadOnly Property TimeSteps As DateTime()
+        '    Get
+        '        Return Nothing
+        '    End Get
+        'End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.TimeStart"/>

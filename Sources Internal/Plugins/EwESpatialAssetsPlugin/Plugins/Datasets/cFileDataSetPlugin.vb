@@ -122,12 +122,6 @@ Namespace SpatialData
             Implements ISpatialDataSet.Source
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.TimeSteps" />
-        ''' -------------------------------------------------------------------
-        Public MustOverride ReadOnly Property TimeSteps As DateTime() _
-            Implements ISpatialDataSet.TimeSteps
-
-        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.TimeEnd"/>
         ''' -------------------------------------------------------------------
         Public MustOverride ReadOnly Property TimeEnd As DateTime _
