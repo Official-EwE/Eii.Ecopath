@@ -1376,75 +1376,57 @@ Public Class frmEwE6
         Dim access As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim links As New cWebLinks(Me.Core)
 
-        If (File.Exists(strFileName)) Then
+        ' Get compatibility
+        comp = cDataSourceFactory.GetCompatibility(strFileName, access)
 
-            ' Get compatibility
-            comp = cDataSourceFactory.GetCompatibility(strFileName, access)
+        ' Has access problems?
+        If (access <> eDatasourceAccessType.Opened) Then
+            ' #Yes: report access error
+            Me.ReportFileAccessError(access, strFileName)
+            Return cEwEDatabase.eCompatibilityTypes.Unknown
+        End If
 
-            ' Has access problems?
-            If (access <> eDatasourceAccessType.Opened) Then
-                ' #Yes: report access error
-                Me.ReportFileAccessError(access, strFileName)
-                ' Abort
-                Return cEwEDatabase.eCompatibilityTypes.Unknown
-            End If
+        ' Able to access ok; assess compatibility next
+        Select Case comp
 
-            ' Able to access ok; assess compatibility next
-            Select Case comp
+            Case cEwEDatabase.eCompatibilityTypes.TooOld
+                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
+                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
-                Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
-                                   strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
+            Case cEwEDatabase.eCompatibilityTypes.Importable
 
-                Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
+                If (File.Exists(strFileName)) Then
                     Me.AddModelMRU(strFileName)
+                End If
 
-                    Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
-                    If dlg.ShowDialog(Me) = DialogResult.OK Then
-                        ' Update file name
-                        strFileName = dlg.ImportedFileName
-                        ' Report succes
-                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
-                    End If
-
-                Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
-                                   strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
-
-                Case cEwEDatabase.eCompatibilityTypes.EwE6
-                    ' Yippee
-
-                Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                    If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
-                                      eMessageImportance.Question, _
-                                      eCoreComponentType.DataSource, _
-                                      eMessageReplyStyle.YES_NO, _
-                                      strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home)) = eMessageReply.NO Then
-                        comp = cEwEDatabase.eCompatibilityTypes.Unknown
-                    End If
-
-                Case cEwEDatabase.eCompatibilityTypes.Unknown
-                    Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
-
-                Case Else
-                    ' Unsupported enum value?!
-                    Debug.Assert(False)
-                    comp = cEwEDatabase.eCompatibilityTypes.Unknown
-
-            End Select
-        Else
-
-            If strFileName.ToLower().StartsWith("ewe-ecobase:") Then
                 Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
                 If dlg.ShowDialog(Me) = DialogResult.OK Then
                     ' Update file name
                     strFileName = dlg.ImportedFileName
-                    ' Report succes
                     comp = cEwEDatabase.eCompatibilityTypes.EwE6
                 End If
-            End If
 
-        End If
+            Case cEwEDatabase.eCompatibilityTypes.EwE6
+                ' Yippee
+
+            Case cEwEDatabase.eCompatibilityTypes.Future
+                If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
+                                  eMessageImportance.Question, _
+                                  eCoreComponentType.DataSource, _
+                                  eMessageReplyStyle.YES_NO, _
+                                  strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home)) = eMessageReply.NO Then
+                    comp = cEwEDatabase.eCompatibilityTypes.Unknown
+                End If
+
+            Case cEwEDatabase.eCompatibilityTypes.Unknown
+                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
+
+            Case Else
+                ' Unsupported enum value?!
+                Debug.Assert(False)
+                comp = cEwEDatabase.eCompatibilityTypes.Unknown
+
+        End Select
 
         Return comp
 
@@ -2036,43 +2018,48 @@ Public Class frmEwE6
     Private Function LoadEcopathModel(ByVal strFileName As String, _
                                       ByVal loadsource As eLoadSourceType) As Boolean
 
-        ' ToDo: rewrite this method, so that the entry in the MRU is removed if anything has failed.
-        '       This new flow will also remove non-file MRU entries, such as EcoBase entries
-
         Dim ds As IEwEDataSource = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
         Dim bReadOnly As Boolean = False
 
-        If (Not strFileName.ToLower().StartsWith("ewe-ecobase:")) Then
-            ' Check if target file exists at all before affecting anything
-            If Not File.Exists(strFileName) Then
+        Select Case cDataSourceFactory.GetSupportedType(strFileName)
 
-                ' Handle failure
-                Select Case loadsource
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007, _
+                 eDataSourceTypes.EII, eDataSourceTypes.EIIXML
 
-                    Case eLoadSourceType.MRU
-                        If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
-                                          replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
-                            Me.RemoveModelMRU(strFileName)
-                            Me.PopulateModelMRUDropdown()
-                        End If
+                ' Check if target file exists at all before affecting anything
+                If Not File.Exists(strFileName) Then
 
-                    Case eLoadSourceType.User, _
-                         eLoadSourceType.CommandLine
-                        ' Unable to load model, show generic error
-                        Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
-                                       eMessageImportance.Warning, eCoreComponentType.DataSource)
+                    ' Handle failure
+                    Select Case loadsource
 
-                    Case eLoadSourceType.API
-                        ' Do not provide user feedback in response to an API call
+                        Case eLoadSourceType.MRU
+                            If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                                              replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
+                                Me.RemoveModelMRU(strFileName)
+                                Me.PopulateModelMRUDropdown()
+                            End If
 
-                End Select
+                        Case eLoadSourceType.User, _
+                             eLoadSourceType.CommandLine
+                            ' Unable to load model, show generic error
+                            Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
+                                           eMessageImportance.Warning, eCoreComponentType.DataSource)
 
-                ' Update system settings
-                Me.SaveSettings()
-                Return False
-            End If
-        End If
+                        Case eLoadSourceType.API
+                            ' Do not provide user feedback in response to an API call
+
+                    End Select
+
+                    ' Update system settings
+                    Me.SaveSettings()
+                    Return False
+                End If
+
+            Case Else
+                'NOP
+
+        End Select
 
         ' Can close the current open model, if any?
         If Not CloseEcopathModel() Then
@@ -2083,7 +2070,7 @@ Public Class frmEwE6
         Select Case CovertToEwE6(strFileName)
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' EwE6 database? OK
-            Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
+            Case cEwEDatabase.eCompatibilityTypes.Future
                 ' Newer version: try to open
                 bReadOnly = True
             Case Else
