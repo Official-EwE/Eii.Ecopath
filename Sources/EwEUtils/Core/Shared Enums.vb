@@ -2697,14 +2697,16 @@ Namespace Core
     Public Enum eDataSourceTypes
         ''' <summary>No support</summary>
         NotSet = 0
-        ''' <summary>Datasource capable of handling EII formatted data</summary>
+        ''' <summary>Datasource capable of handling EII formatted data.</summary>
         EII = 1
-        ''' <summary>Datasource capable of handling MDB formatted data</summary>
+        ''' <summary>Datasource capable of handling MDB formatted data.</summary>
         Access2003 = 2
-        ''' <summary>Datasource capable of handling ACCDB and MDB formatted data</summary>
+        ''' <summary>Datasource capable of handling ACCDB and MDB formatted data.</summary>
         Access2007 = 3
-        ''' <summary>Datasource capable of handling EIIXML formatted data</summary>
+        ''' <summary>Datasource capable of handling EIIXML formatted data.</summary>
         EIIXML = 5
+        ''' <summary>Data importable from EcoBase.</summary>
+        EcoBase
     End Enum
 
     ''' -------------------------------------------------------------------

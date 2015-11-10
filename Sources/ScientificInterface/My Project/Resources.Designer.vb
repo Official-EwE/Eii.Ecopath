@@ -2858,15 +2858,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please &lt;a href=&quot;{0}&quot;&gt;download&lt;/a&gt; and install the latest version of EwE6..
-        '''</summary>
-        Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_NEW() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE5_TOO_NEW", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to This database was written by an outdated version of Ecopath 5, which is not supported by the EwE6 import process. 
         '''
         '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.

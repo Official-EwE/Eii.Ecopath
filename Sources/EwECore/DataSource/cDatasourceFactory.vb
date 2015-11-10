@@ -62,10 +62,23 @@ Namespace DataSources
                     Else
                         Return eDataSourceTypes.Access2003
                     End If
+
                 Case ".eiixml"
                     Return eDataSourceTypes.EIIXML
 
             End Select
+
+            ' Explore URL protocols
+            Dim i As Integer = strFile.IndexOf(":"c)
+
+            ' Is probably a URL protocol?
+            If (i > 0) Then
+                Select Case strFile.Substring(0, i)
+                    Case "ewe-ecobase"
+                        Return eDataSourceTypes.EcoBase
+                End Select
+            End If
+
             Return eDataSourceTypes.NotSet
 
         End Function
@@ -105,24 +118,42 @@ Namespace DataSources
             ' Detect file type
             Select Case dst
 
-                Case eDataSourceTypes.Access2007, _
-                     eDataSourceTypes.Access2003
-                    ' Is database, whoohoo
-                    Dim db As New cEwEAccessDatabase()
-                    access = db.Open(strDatabase)
-                    If (access = eDatasourceAccessType.Opened) Then
-                        comp = db.Compatibility
-                        db.Close()
+                Case eDataSourceTypes.Access2007, eDataSourceTypes.Access2003
+
+                    If File.Exists(strDatabase) Then
+                        Dim db As New cEwEAccessDatabase()
+                        access = db.Open(strDatabase)
+                        If (access = eDatasourceAccessType.Opened) Then
+                            comp = db.Compatibility
+                            db.Close()
+                        End If
+                    Else
+                        access = eDatasourceAccessType.Failed_FileNotFound
                     End If
 
                 Case eDataSourceTypes.EII, eDataSourceTypes.EIIXML
-                    ' Is EII
-                    comp = cEwEDatabase.eCompatibilityTypes.EwE6
-                    access = eDatasourceAccessType.Opened
+
+                    If File.Exists(strDatabase) Then
+                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                        access = eDatasourceAccessType.Opened
+                    Else
+                        access = eDatasourceAccessType.Failed_FileNotFound
+                    End If
+
+                Case eDataSourceTypes.EcoBase
+
+                    If cSystemUtils.IsConnectedToInternet Then
+                        comp = cEwEDatabase.eCompatibilityTypes.Importable
+                        access = eDatasourceAccessType.Success
+                    Else
+                        ' ToDo: create explicit enum value Failed_NoInternet
+                        access = eDatasourceAccessType.Failed_FileNotFound
+                    End If
 
                 Case eDataSourceTypes.NotSet
-                    ' ?Que?
+
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
+                    access = eDatasourceAccessType.Failed_Unknown
 
             End Select
 

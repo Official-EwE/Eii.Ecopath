@@ -6881,10 +6881,6 @@ Description: {1}</value>
   <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
   </data>
-  <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
-    <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please &lt;a href="{0}"&gt;download&lt;/a&gt; and install the latest version of EwE6.</value>
-    <comment>{0}=EwE home URL</comment>
-  </data>
   <data name="MSE_ITERATION_LINE" xml:space="preserve">
     <value>{1}{0}{2}</value>
     <comment>{0}=tab, {1}=fleet index, {2}=effort value</comment>

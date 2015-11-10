@@ -424,8 +424,6 @@ Namespace Database
         Private Const cDBVERSION_EWE5_MIN As Single = 1.6!
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73!
-        ''' <summary>Oldest EwE6 version number supported</summary>
-        Private Const cDBVERSION_EWE6_MIN As Single = 6.0!
 
 #End Region ' Private vars and consts
 
@@ -518,16 +516,14 @@ Namespace Database
         Public Enum eCompatibilityTypes As Integer
             ''' <summary>Combatibility unknown. Most likely the accessed file is not an EwE database.</summary>
             Unknown = 0
-            ''' <summary>EwE5 database that is too old, and is not supported.</summary>
-            EwE5TooOld
-            ''' <summary>EwE5 database that is supported.</summary>
-            EwE5Supported
-            ''' <summary>EwE5 database that is too new, and is not supported.</summary>
-            EwE5TooNew
+            ''' <summary>An older database, too old to be imported.</summary>
+            TooOld
+            ''' <summary>An older database that can be imported.</summary>
+            Importable
             ''' <summary>EwE6 database that is supported.</summary>
             EwE6
-            ''' <summary>EwEX database that is of a newer format and is not supported.</summary>
-            UnknownFuture
+            ''' <summary>A database that is of a newer format and is not supported.</summary>
+            Future
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -540,11 +536,10 @@ Namespace Database
         Public Function Compatibility() As eCompatibilityTypes
             Dim sVersion As Single = Me.GetVersion()
             If (sVersion = 0.0!) Then Return eCompatibilityTypes.Unknown
-            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.EwE5TooOld
-            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.EwE5Supported
-            If (sVersion < cDBVERSION_EWE6_MIN) Then Return eCompatibilityTypes.EwE5TooNew
+            If (sVersion < cDBVERSION_EWE5_MIN) Then Return eCompatibilityTypes.TooOld
+            If (sVersion <= cDBVERSION_EWE5_MAX) Then Return eCompatibilityTypes.Importable
             If (sVersion <= Me.MaxDBVersion) Then Return eCompatibilityTypes.EwE6
-            Return eCompatibilityTypes.UnknownFuture
+            Return eCompatibilityTypes.Future
         End Function
 
         Public MustOverride Function MaxDBVersion() As Single

@@ -125,6 +125,9 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>5A8DF073C299AE0828E5FFB5439926BD7D32B957</ManifestCertificateThumbprint>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
