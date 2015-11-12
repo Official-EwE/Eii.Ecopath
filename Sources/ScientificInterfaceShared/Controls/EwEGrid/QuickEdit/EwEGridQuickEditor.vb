@@ -52,8 +52,8 @@ Namespace Controls.EwEGrid
 
         ''' <summary>The toolstrip that is managed by this handler.</summary>
         Private m_ts As ToolStrip = Nothing
-        ''' <summary>The value edit box that is managed by this handler.</summary>
-        Private m_ttbValue As ToolStripTextBox = Nothing
+        ''' <summary>The value control that is managed by this handler.</summary>
+        Private m_ctrlValue As ToolStripItem = Nothing
         ''' <summary>The edit box label that is managed by this handler.</summary>
         Private m_lblSet As ToolStripLabel = Nothing
         ''' <summary>Set button that is managed by this handler.</summary>
@@ -65,8 +65,9 @@ Namespace Controls.EwEGrid
         ''' <summary>Flag stating whether the grid is used for showing outputs only.</summary>
         Private m_bIsOutputGrid As Boolean = True
 
-        ''' <summary>Set box original value.</summary>
-        Private m_strValueOrg As String = ""
+        ''' <summary>Original value.</summary>
+        Private m_strValueOrg As String = Nothing
+
         ' Import Export
         Private m_sep As ToolStripSeparator = Nothing
         Private m_btnImport As ToolStripButton = Nothing
@@ -113,12 +114,8 @@ Namespace Controls.EwEGrid
             ' Create quick edit label
             Me.m_lblSet = New ToolStripLabel(cStyleGuide.ToControlLabel(My.Resources.LABEL_SET))
 
-            ' Create quick edit text box
-            Me.m_ttbValue = New ToolStripTextBox("~tsqeValue")
-            Me.m_ttbValue.AcceptsReturn = True
-            AddHandler Me.m_ttbValue.Enter, AddressOf OnSetBoxEnter
-            AddHandler Me.m_ttbValue.Leave, AddressOf OnSetBoxLeave
-            AddHandler Me.m_ttbValue.KeyDown, AddressOf OnSetBoxKeyDown
+            ' Create quick edit control
+            Me.SetEditControl(eControlType.TextBox)
 
             ' Create quick edit set button
             Me.m_btnSet = New ToolStripButton(My.Resources.GENERIC_LABEL_APPLY)
@@ -146,9 +143,9 @@ Namespace Controls.EwEGrid
                 Me.m_btnExport.Alignment = ToolStripItemAlignment.Left
                 Me.m_sep.Alignment = ToolStripItemAlignment.Left
                 Me.m_lblSet.Alignment = ToolStripItemAlignment.Left
-                Me.m_ttbValue.Alignment = ToolStripItemAlignment.Left
+                Me.m_ctrlValue.Alignment = ToolStripItemAlignment.Left
                 Me.m_btnSet.Alignment = ToolStripItemAlignment.Left
-                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_lblSet, Me.m_ttbValue, Me.m_btnSet})
+                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_lblSet, Me.m_ctrlValue, Me.m_btnSet})
             Else
                 If (Me.m_btnImport IsNot Nothing) Then
                     Me.m_btnImport.Alignment = ToolStripItemAlignment.Right
@@ -157,9 +154,9 @@ Namespace Controls.EwEGrid
                 Me.m_btnExport.Alignment = ToolStripItemAlignment.Right
                 Me.m_sep.Alignment = ToolStripItemAlignment.Right
                 Me.m_lblSet.Alignment = ToolStripItemAlignment.Right
-                Me.m_ttbValue.Alignment = ToolStripItemAlignment.Right
+                Me.m_ctrlValue.Alignment = ToolStripItemAlignment.Right
                 Me.m_btnSet.Alignment = ToolStripItemAlignment.Right
-                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_btnSet, Me.m_ttbValue, Me.m_lblSet})
+                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_btnSet, Me.m_ctrlValue, Me.m_lblSet})
             End If
 
             ' Set attached flag
@@ -182,7 +179,7 @@ Namespace Controls.EwEGrid
 
             If Not m_bAttached Then Return
 
-            Me.m_ts.Items.Remove(Me.m_ttbValue)
+            Me.m_ts.Items.Remove(Me.m_ctrlValue)
             Me.m_ts.Items.Remove(Me.m_lblSet)
 
             If Me.m_btnImport IsNot Nothing Then
@@ -195,11 +192,7 @@ Namespace Controls.EwEGrid
             Me.m_btnExport.Dispose()
             Me.m_btnExport = Nothing
 
-            RemoveHandler Me.m_ttbValue.KeyDown, AddressOf OnSetBoxKeyDown
-            RemoveHandler Me.m_ttbValue.Enter, AddressOf OnSetBoxEnter
-            RemoveHandler Me.m_ttbValue.Leave, AddressOf OnSetBoxLeave
-            Me.m_ttbValue.Dispose()
-            Me.m_ttbValue = Nothing
+            Me.SetEditControl(eControlType.NotSet)
 
             RemoveHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
             Me.m_btnSet.Dispose()
@@ -242,6 +235,8 @@ Namespace Controls.EwEGrid
 
 #Region " Control events "
 
+#Region " Text box "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event handler; responds to an [ENTER] key press to apply entered text
@@ -250,7 +245,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Private Sub OnSetBoxKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
             ' Is [ENTER]?
-            If e.KeyCode = Keys.Enter Then Me.ApplyValueToSelection(Me.m_ttbValue.Text)
+            If e.KeyCode = Keys.Enter Then Me.ApplyValueToSelection(Me.m_ctrlValue.Text)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -261,7 +256,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnSetBoxEnter(ByVal sender As Object, ByVal e As EventArgs)
-            Me.m_strValueOrg = Me.m_ttbValue.Text
+            Me.m_strValueOrg = Me.m_ctrlValue.Text
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -272,10 +267,26 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnSetBoxLeave(ByVal sender As Object, ByVal e As EventArgs)
-            If String.Compare(Me.m_strValueOrg, Me.m_ttbValue.Text) <> 0 Then
-                Me.ApplyValueToSelection(Me.m_ttbValue.Text)
+            If String.Compare(Me.m_strValueOrg, Me.m_ctrlValue.Text) <> 0 Then
+                Me.ApplyValueToSelection(Me.m_ctrlValue.Text)
+                Me.m_strValueOrg = Me.m_ctrlValue.Text
             End If
         End Sub
+
+#End Region ' Text box
+
+#Region " Combo box "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler; called when the user changes the value of the combo box.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub OnSelectedValueChanged(ByVal sender As Object, ByVal e As EventArgs)
+            Me.ApplyValueToSelection(DirectCast(Me.m_ctrlValue, ToolStripComboBox).SelectedItem)
+        End Sub
+
+#End Region ' Combo box
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -284,7 +295,8 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnBtnSetClick(ByVal sender As Object, ByVal e As EventArgs)
-            Me.ApplyValueToSelection(Me.m_ttbValue.Text)
+            Me.ApplyValueToSelection(Me.m_ctrlValue.Text)
+            Me.m_strValueOrg = Me.m_ctrlValue.Text
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -338,10 +350,14 @@ Namespace Controls.EwEGrid
 
             ' Flag stating that the selection contains different values
             Dim bIsMixedValue As Boolean = False
+            Dim bIsStandardValuesExclusive As Boolean = False
             Dim objValue As Object = Nothing
 
             ' Iterate through cells
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
+
+                bIsStandardValuesExclusive = bIsStandardValuesExclusive Or cell.DataModel.StandardValuesExclusive
+
                 ' Is this cell editable?
                 If cell.DataModel.EnableEdit Then
                     ' #Yes: explore the variable this cell represents by checking an attached property
@@ -384,15 +400,15 @@ Namespace Controls.EwEGrid
 
             ' Enable set label if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_lblSet, Nothing) Then
-                Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection
+                Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection And Not bIsStandardValuesExclusive
                 Me.m_lblSet.Visible = bIsInputGrid
             End If
 
             ' Enable edit control if the grid has editable cells that represent only one type of variable.
-            If Not Object.ReferenceEquals(Me.m_ttbValue, Nothing) Then
-                Me.m_ttbValue.Enabled = bHasEditableCells And Not bIsMixedSelection
-                Me.m_ttbValue.Visible = bIsInputGrid
-                Me.m_ttbValue.Text = ""
+            If Not Object.ReferenceEquals(Me.m_ctrlValue, Nothing) Then
+                Me.m_ctrlValue.Enabled = bHasEditableCells And Not bIsMixedSelection And Not bIsStandardValuesExclusive
+                Me.m_ctrlValue.Visible = bIsInputGrid
+                Me.m_ctrlValue.Text = ""
 
                 ' ToDo_JS: replace text box with a dynamic control that is smartly configured to
                 '   - Use cell variable metadata to determine a value range
@@ -400,19 +416,19 @@ Namespace Controls.EwEGrid
                 '   - Use cell editor properties to limit the combo box to discreet values
                 If ((objValue IsNot Nothing) And (bIsMixedValue = False)) Then
                     If TypeOf objValue Is String Then
-                        Me.m_ttbValue.Text = CStr(objValue)
+                        Me.m_ctrlValue.Text = CStr(objValue)
                     ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Then
                         Try
-                            Me.m_ttbValue.Text = Me.m_uic.StyleGuide.FormatNumber(CSng(objValue))
+                            Me.m_ctrlValue.Text = Me.m_uic.StyleGuide.FormatNumber(CSng(objValue))
                         Catch ex As Exception
                         End Try
                     ElseIf (TypeOf objValue Is Integer) Then
                         Try
-                            Me.m_ttbValue.Text = Me.m_uic.StyleGuide.FormatNumber(CInt(objValue))
+                            Me.m_ctrlValue.Text = Me.m_uic.StyleGuide.FormatNumber(CInt(objValue))
                         Catch ex As Exception
                         End Try
                     ElseIf TypeOf objValue Is Boolean Then
-                        Me.m_ttbValue.Text = IIF(CBool(objValue) = True, "1", "0")
+                        Me.m_ctrlValue.Text = IIF(CBool(objValue) = True, "1", "0")
                     End If
                 End If
             End If
@@ -440,9 +456,9 @@ Namespace Controls.EwEGrid
         ''' Apply a string to all selected cells that are 
         ''' <see cref="SourceGrid2.DataModels.DataModelBase.EnableEdit">Editable</see>.
         ''' </summary>
-        ''' <param name="strValue">The value to apply.</param>
+        ''' <param name="newval">The value to apply.</param>
         ''' -------------------------------------------------------------------
-        Private Sub ApplyValueToSelection(ByVal strValue As String)
+        Private Sub ApplyValueToSelection(ByVal newval As Object)
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
@@ -459,24 +475,36 @@ Namespace Controls.EwEGrid
                 If TypeOf cell Is PropertyCell Then
                     Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
                     If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                        pcell.GetProperty().SetValue(strValue)
+                        pcell.GetProperty().SetValue(newval)
                     End If
                 Else
                     If cell.DataModel.EnableEdit Then
                         If (cell.DataModel.ValueType Is GetType(String)) Then
-                            objValue = strValue
+                            objValue = newval
                         ElseIf ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double))) Then
                             Try
-                                objValue = cStringUtils.ConvertToSingle(strValue)
+                                If (TypeOf newval Is String) Then
+                                    objValue = cStringUtils.ConvertToSingle(CStr(newval))
+                                Else
+                                    objValue = newval
+                                End If
                             Catch ex As Exception
                             End Try
                         ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
                             Try
-                                objValue = cStringUtils.ConvertToInteger(strValue)
+                                If (TypeOf newval Is String) Then
+                                    objValue = cStringUtils.ConvertToInteger(CStr(newval))
+                                Else
+                                    objValue = newval
+                                End If
                             Catch ex As Exception
                             End Try
                         ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                            objValue = (strValue = "1")
+                            If (TypeOf newval Is String) Then
+                                objValue = (CStr(newval) = "1")
+                            Else
+                                objValue = newval
+                            End If
                         End If
 
                         Try
@@ -487,9 +515,6 @@ Namespace Controls.EwEGrid
                     End If
                 End If
             Next
-
-            ' Remember last applied value
-            Me.m_strValueOrg = strValue
 
             Me.m_grid.EndBatchEdit()
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
@@ -603,6 +628,54 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        Private Enum eControlType As Byte
+            NotSet = 0
+            TextBox
+            ComboBox
+        End Enum
+
+        Private m_controlType As eControlType = eControlType.NotSet
+
+        Private Sub SetEditControl(controltype As eControlType)
+
+            Select Case Me.m_controlType
+
+                Case eControlType.TextBox
+                    Dim ctrl As ToolStripTextBox = DirectCast(Me.m_ctrlValue, ToolStripTextBox)
+                    RemoveHandler ctrl.KeyDown, AddressOf OnSetBoxKeyDown
+                    RemoveHandler ctrl.Enter, AddressOf OnSetBoxEnter
+                    RemoveHandler ctrl.Leave, AddressOf OnSetBoxLeave
+                    ctrl.Dispose()
+
+                Case eControlType.ComboBox
+                    Dim ctrl As ToolStripComboBox = DirectCast(Me.m_ctrlValue, ToolStripComboBox)
+                    RemoveHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
+                    ctrl.Dispose()
+
+            End Select
+
+            Me.m_ctrlValue = Nothing
+            Me.m_controlType = controltype
+
+            Select Case controltype
+
+                Case eControlType.TextBox
+                    Dim ctrl As New ToolStripTextBox("~tsqeValue")
+                    ctrl.AcceptsReturn = True
+                    AddHandler ctrl.Enter, AddressOf OnSetBoxEnter
+                    AddHandler ctrl.Leave, AddressOf OnSetBoxLeave
+                    AddHandler ctrl.KeyDown, AddressOf OnSetBoxKeyDown
+                    Me.m_ctrlValue = ctrl
+
+                Case eControlType.ComboBox
+                    Dim ctrl As New ToolStripComboBox("~tsqeValue")
+                    ctrl.DropDownStyle = ComboBoxStyle.DropDownList
+                    AddHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
+                    Me.m_ctrlValue = ctrl
+
+            End Select
+
+        End Sub
 
 #End Region ' Internal implementation
 
