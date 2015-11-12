@@ -77,6 +77,8 @@ Namespace Controls.EwEGrid
 
 #Region " Public interfaces "
 
+        Private m_iValuePos As Integer = -1
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' <para>Connect the QuickEditHandler to a <see cref="EwEGrid">EwE grid</see>.
@@ -158,6 +160,8 @@ Namespace Controls.EwEGrid
                 Me.m_btnSet.Alignment = ToolStripItemAlignment.Right
                 Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_btnSet, Me.m_ctrlValue, Me.m_lblSet})
             End If
+
+            Me.m_iValuePos = Me.m_ts.Items.IndexOf(Me.m_ctrlValue)
 
             ' Set attached flag
             Me.m_bAttached = True
@@ -338,6 +342,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
+            ' ToDo: remove flashing of editor control
+
             If (Not Me.m_bAttached) Then Return
 
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
@@ -351,12 +357,17 @@ Namespace Controls.EwEGrid
             ' Flag stating that the selection contains different values
             Dim bIsMixedValue As Boolean = False
             Dim bIsStandardValuesExclusive As Boolean = False
+
             Dim objValue As Object = Nothing
+            Dim items As ICollection = Nothing
 
             ' Iterate through cells
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
 
-                bIsStandardValuesExclusive = bIsStandardValuesExclusive Or cell.DataModel.StandardValuesExclusive
+                If cell.DataModel.StandardValuesExclusive Then
+                    items = cell.DataModel.StandardValues
+                    bIsStandardValuesExclusive = True
+                End If
 
                 ' Is this cell editable?
                 If cell.DataModel.EnableEdit Then
@@ -398,15 +409,24 @@ Namespace Controls.EwEGrid
                 End If
             Next
 
+            ' Switch control type
+            If (bHasEditableCells And Not bIsMixedSelection) Then
+                If bIsStandardValuesExclusive Then
+                    Me.SetEditControl(eControlType.ComboBox, items)
+                Else
+                    Me.SetEditControl(eControlType.TextBox)
+                End If
+            End If
+
             ' Enable set label if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_lblSet, Nothing) Then
-                Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection And Not bIsStandardValuesExclusive
+                Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection
                 Me.m_lblSet.Visible = bIsInputGrid
             End If
 
             ' Enable edit control if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_ctrlValue, Nothing) Then
-                Me.m_ctrlValue.Enabled = bHasEditableCells And Not bIsMixedSelection And Not bIsStandardValuesExclusive
+                Me.m_ctrlValue.Enabled = bHasEditableCells And Not bIsMixedSelection
                 Me.m_ctrlValue.Visible = bIsInputGrid
                 Me.m_ctrlValue.Text = ""
 
@@ -415,28 +435,34 @@ Namespace Controls.EwEGrid
                 '   - Use cell editor properties to allow entry or selections (e.g. text box or combo box) via cTypeFormatterFactory.GetTypeFormatter
                 '   - Use cell editor properties to limit the combo box to discreet values
                 If ((objValue IsNot Nothing) And (bIsMixedValue = False)) Then
-                    If TypeOf objValue Is String Then
-                        Me.m_ctrlValue.Text = CStr(objValue)
-                    ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Then
-                        Try
-                            Me.m_ctrlValue.Text = Me.m_uic.StyleGuide.FormatNumber(CSng(objValue))
-                        Catch ex As Exception
-                        End Try
-                    ElseIf (TypeOf objValue Is Integer) Then
-                        Try
-                            Me.m_ctrlValue.Text = Me.m_uic.StyleGuide.FormatNumber(CInt(objValue))
-                        Catch ex As Exception
-                        End Try
-                    ElseIf TypeOf objValue Is Boolean Then
-                        Me.m_ctrlValue.Text = IIF(CBool(objValue) = True, "1", "0")
-                    End If
+                Select Me.m_controlType
+                        Case eControlType.TextBox
+                            If TypeOf objValue Is String Then
+                                Me.m_ctrlValue.Text = CStr(objValue)
+                            ElseIf (TypeOf objValue Is Single) Or (TypeOf objValue Is Double) Then
+                                Try
+                                    Me.m_ctrlValue.Text = Me.m_uic.StyleGuide.FormatNumber(CSng(objValue))
+                                Catch ex As Exception
+                                End Try
+                            ElseIf (TypeOf objValue Is Integer) Then
+                                Try
+                                    Me.m_ctrlValue.Text = Me.m_uic.StyleGuide.FormatNumber(CInt(objValue))
+                                Catch ex As Exception
+                                End Try
+                            ElseIf TypeOf objValue Is Boolean Then
+                                Me.m_ctrlValue.Text = IIF(CBool(objValue) = True, "1", "0")
+                            End If
+
+                        Case eControlType.ComboBox
+                            DirectCast(Me.m_ctrlValue, ToolStripComboBox).SelectedItem = objValue
+                    End Select
                 End If
             End If
 
             ' Enable set button if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_btnSet, Nothing) Then
                 Me.m_btnSet.Enabled = bHasEditableCells And Not bIsMixedSelection
-                Me.m_btnSet.Visible = bIsInputGrid
+                Me.m_btnSet.Visible = bIsInputGrid And Not bIsStandardValuesExclusive
             End If
 
             ' Show import button only for input forms - and when allowed to show
@@ -505,6 +531,8 @@ Namespace Controls.EwEGrid
                             Else
                                 objValue = newval
                             End If
+                        Else
+                            objValue = newval
                         End If
 
                         Try
@@ -636,7 +664,7 @@ Namespace Controls.EwEGrid
 
         Private m_controlType As eControlType = eControlType.NotSet
 
-        Private Sub SetEditControl(controltype As eControlType)
+        Private Sub SetEditControl(controltype As eControlType, Optional items As ICollection = Nothing)
 
             Select Case Me.m_controlType
 
@@ -653,6 +681,10 @@ Namespace Controls.EwEGrid
                     ctrl.Dispose()
 
             End Select
+
+            If (Me.m_ctrlValue IsNot Nothing) Then
+                Me.m_ts.Items.Remove(Me.m_ctrlValue)
+            End If
 
             Me.m_ctrlValue = Nothing
             Me.m_controlType = controltype
@@ -672,9 +704,26 @@ Namespace Controls.EwEGrid
                     ctrl.DropDownStyle = ComboBoxStyle.DropDownList
                     AddHandler ctrl.SelectedIndexChanged, AddressOf OnSelectedValueChanged
                     Me.m_ctrlValue = ctrl
-
+                    If (items IsNot Nothing) Then
+                        For Each item As Object In items
+                            ctrl.Items.Add(item)
+                        Next
+                    End If
             End Select
 
+            If (Me.m_ctrlValue IsNot Nothing) Then
+                If (cSystemUtils.IsRightToLeft) Then
+                    Me.m_ctrlValue.Alignment = ToolStripItemAlignment.Left
+                Else
+                    Me.m_ctrlValue.Alignment = ToolStripItemAlignment.Right
+                End If
+
+                If (Me.m_iValuePos >= 0) Then
+                    ' The first time the control is added iValuePos is determined. Do not try
+                    ' to insert the item if iValuePos is not known yet
+                    Me.m_ts.Items.Insert(Me.m_iValuePos, Me.m_ctrlValue)
+                End If
+            End If
         End Sub
 
 #End Region ' Internal implementation
