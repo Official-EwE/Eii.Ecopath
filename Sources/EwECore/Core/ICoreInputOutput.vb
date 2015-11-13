@@ -643,7 +643,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Return <see cref="cVariableMetaData">metadata</see> associated with a 
-    ''' variable. Note that not every variable my have metadata associated with 
+    ''' variable. Note that not every variable massy have metadata associated with 
     ''' it.
     ''' </summary>
     ''' <param name="varName">The variable to return metadata for.</param>
