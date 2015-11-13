@@ -780,16 +780,15 @@ Namespace Controls
                 If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
                     ' Sanity checks
-                    If (objValue Is Nothing) Then Return
+                    If (objValue IsNot Nothing) Then
+                        ' Update control
+                        ' - Set selection state
+                        Try
+                            Me.SelectItem(objValue)
+                        Catch ex As Exception
 
-                    ' Update control
-                    ' - Set selection state
-                    Try
-                        Me.SelectItem(objValue)
-                    Catch ex As Exception
-
-                    End Try
-
+                        End Try
+                    End If
                 End If
 
                 If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
