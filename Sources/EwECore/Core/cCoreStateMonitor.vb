@@ -56,6 +56,8 @@ Public Class cCoreStateMonitor
     'This is done in a hack way (via a temp handler array) in CoreExecutionStateEvent this should change to not managing the handlers ourselves 
     'or using a blocking object during broadcasting, adding and removal of events
 
+    ' ToDO 12-Nov-15: add means to query if searches are running or have been completed: IsMonteCarloRunning, HasMonteCarloRan, etc
+
 #Region " Private members "
 
     ''' <summary>Reference to the monitored core.</summary>
