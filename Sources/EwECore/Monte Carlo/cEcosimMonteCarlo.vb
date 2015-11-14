@@ -187,17 +187,6 @@ Public Class cEcosimMonteCarlo
 
     Private m_isVariable(,) As Boolean
 
-
-    '<CLSCompliant(False)> _
-    'Public Property PluginManager() As cPluginManager
-    '    Get
-    '        Return Me.m_pluginManager
-    '    End Get
-    '    Set(ByVal pm As cPluginManager)
-    '        Me.m_pluginManager = pm
-    '    End Set
-    'End Property
-
     Public Sub New(ByRef theCore As cCore)
 
         m_core = theCore
@@ -532,7 +521,7 @@ Public Class cEcosimMonteCarlo
 
                 If BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
 
-                    Me.WaitForExternalProcess(iTrial, iter)
+                    Me.BalancedEcopathModel(iTrial, iter)
 
                     m_ecosim.Init(True)
 
@@ -617,8 +606,7 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-
-    Private Sub WaitForExternalProcess(ByVal iTrial As Integer, ByVal iter As Integer)
+    Private Sub BalancedEcopathModel(ByVal iTrial As Integer, ByVal iter As Integer)
         Dim WaitLock As ManualResetEvent = New ManualResetEvent(True)
         If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloBalancedEcopathModel(WaitLock, iTrial, iter)
         WaitLock.WaitOne()
@@ -891,7 +879,7 @@ Public Class cEcosimMonteCarlo
                     'Return False
                 End If
 
-                m_ecopath.DetritusCalculations()
+                'm_ecopath.DetritusCalculations()
 
                 bEcopathNeedsBalancing = False
                 For igrp = 1 To m_core.nGroups
