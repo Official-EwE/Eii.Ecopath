@@ -232,7 +232,7 @@ Public MustInherit Class cMPAOptBaseClass
             For impa As Integer = 1 To m_SpaceData.MPAno
                 impanew = 0
                 If impa = MAPIndex Then
-                    impanew = MAPIndex
+                    impanew = 1
                 End If
 
                 For ir As Integer = 1 To m_SpaceData.InRow

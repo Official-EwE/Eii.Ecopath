@@ -3138,6 +3138,8 @@ Namespace Core
     Public Enum eExploitationTypes As Integer
         ''' <summary>Exploitation status is unknown</summary>
         NotSet = 0
+        ''' <summary>Exploitation status is not assessed</summary>
+        NotAssessed
         ''' <summary>Not being exploited</summary>
         ''' <remarks>Wouldn't that be nice...?</remarks>
         NotExploited
