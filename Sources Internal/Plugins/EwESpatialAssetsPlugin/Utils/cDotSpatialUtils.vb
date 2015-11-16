@@ -270,10 +270,22 @@ Public Class cDotSpatialUtils
     ''' <param name="dCellSize">The cells size to take into account.</param>
     ''' <returns>A valid <see cref="IRasterBounds"/> instance.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function EcospaceToBounds(ByVal ptfTL As PointF, ByVal ptfBR As PointF, ByVal dCellSize As Double) As IRasterBounds
+    Public Shared Function EcospaceToBounds(ByVal ptfTL As PointF, ByVal ptfBR As PointF, ByVal dCellSize As Double, ByVal proj As ProjectionInfo) As IRasterBounds
 
-        Dim iNumRows As Integer = CInt(Math.Ceiling((ptfTL.Y - ptfBR.Y) / dCellSize - (dCellSize * cDotSpatialUtils.EQUALS_FACTOR)))
-        Dim iNumCols As Integer = CInt(Math.Ceiling((ptfBR.X - ptfTL.X) / dCellSize - (dCellSize * cDotSpatialUtils.EQUALS_FACTOR)))
+        Dim iNumRows As Integer = 0
+        Dim iNumCols As Integer = 0
+
+        If (proj Is Nothing) Then
+            proj = ProjectionInfo.FromProj4String(cEcospaceDataStructures.DEFAULT_COORDINATESYSTEM)
+        End If
+
+        If proj.IsLatLon Then
+            iNumRows = CInt(Math.Ceiling((ptfTL.Y - ptfBR.Y) / dCellSize - (dCellSize * cDotSpatialUtils.EQUALS_FACTOR)))
+            iNumCols = CInt(Math.Ceiling((ptfBR.X - ptfTL.X) / dCellSize - (dCellSize * cDotSpatialUtils.EQUALS_FACTOR)))
+        Else
+            iNumRows = CInt(Math.Ceiling((ptfTL.Y - ptfBR.Y) / dCellSize))
+            iNumCols = CInt(Math.Ceiling((ptfBR.X - ptfTL.X) / dCellSize))
+        End If
         Dim ext As New Extent(ptfTL.X, ptfTL.Y - iNumRows * dCellSize, ptfTL.X + dCellSize * iNumCols, ptfTL.Y)
         Dim bounds As New RasterBounds(iNumRows, iNumCols, ext)
 
@@ -304,7 +316,8 @@ Public Class cDotSpatialUtils
     Public Shared Function CreateRaster(ptfTL As PointF, ptfBR As PointF, dCellSize As Double,
                                         datatype As Type, dNoDataValue As Double, strFile As String, _
                                         Optional ByRef iNumRow As Integer = Nothing, _
-                                        Optional ByRef iNumCol As Integer = Nothing) As IRaster
+                                        Optional ByRef iNumCol As Integer = Nothing, _
+                                        Optional ByVal proj As ProjectionInfo = Nothing) As IRaster
 
         If (iNumRow = Nothing) Then iNumRow = New Integer
         If (iNumCol = Nothing) Then iNumCol = New Integer
@@ -313,7 +326,7 @@ Public Class cDotSpatialUtils
         iNumCol = Convert.ToInt32(Math.Abs(Math.Round((ptfBR.X - ptfTL.X) / dCellSize)))
 
         Dim output As IRaster = Raster.CreateRaster(strFile, String.Empty, iNumCol, iNumRow, 1, datatype, New String() {})
-        output.Bounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
+        output.Bounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize, proj)
         output.NoDataValue = dNoDataValue
 
         For iRow As Integer = output.StartRow To output.EndRow
@@ -434,7 +447,7 @@ Public Class cDotSpatialUtils
         If (rsSource Is Nothing) Then Return Nothing
 
         Dim iNumRow, iNumCol As Integer
-        Dim output As IRaster = cDotSpatialUtils.CreateRaster(ptfTL, ptfBR, dCellSize, rsSource.DataType, rsSource.NoDataValue, strFile, iNumRow, iNumCol)
+        Dim output As IRaster = cDotSpatialUtils.CreateRaster(ptfTL, ptfBR, dCellSize, rsSource.DataType, rsSource.NoDataValue, strFile, iNumRow, iNumCol, rsSource.Projection)
         Dim cellCenter As Coordinate = Nothing
         Dim index1 As RcIndex = Nothing
         Dim val As Double = 0

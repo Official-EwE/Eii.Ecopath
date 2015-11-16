@@ -288,7 +288,7 @@ Namespace SpatialData
                 rs = New Raster(Of Single)(nRows, nCols)
                 rs.Bounds = cDotSpatialUtils.EcospaceToBounds(New PointF(sXLLpos, sYLLpos + nRows * sCellSize), _
                                                               New PointF(sXLLpos + nCols * sCellSize, sYLLpos), _
-                                                              sCellSize)
+                                                              sCellSize, Nothing)
                 rs.NoDataValue = sValueNone
             Else
                 ' #No: trash raster

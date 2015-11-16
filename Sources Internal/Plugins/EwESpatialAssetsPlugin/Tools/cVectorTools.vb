@@ -77,11 +77,11 @@ Public Class cVectorTools
         ' -----
         ' Create and position raster 
         ' -----
-        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
+        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize, fs.Projection)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
-        rs.Projection = fs.Projection
         rs.Bounds = bnds
         rs.NoDataValue = dValueNull
+        rs.Projection = fs.Projection
 
         ' Wipe array
         dValClear = dgt.Invoke(Nothing, 0)
@@ -90,6 +90,12 @@ Public Class cVectorTools
                 rs.Value(iRow, iCol) = dValClear
             Next
         Next
+
+        'Try
+        '    rs.SaveAs("vectorized.tiff")
+        'Catch ex As Exception
+
+        'End Try
 
         Dim dtAttribs As DataTable = fs.DataTable
         For i As Integer = 0 To fs.Features.Count - 1
@@ -147,6 +153,7 @@ Public Class cVectorTools
                             End If
                         End If
 
+                        Dim n As Integer = 0
                         For iRow As Integer = y0 To y1
                             For iCol As Integer = x0 To x1
 
@@ -163,9 +170,11 @@ Public Class cVectorTools
 
                                 If polyCut.Overlaps(poly) Then
                                     rs.Value(iRow, iCol) = dValSet
+                                    n += 1
                                 End If
                             Next
                         Next
+
                     End If
 
                 Case FeatureType.Line

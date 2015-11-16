@@ -79,7 +79,7 @@ Public Class cSurfaceTools
         ' -----
         ' Create and position raster 
         ' -----
-        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize)
+        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellSize, fs.Projection)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
         rs.Projection = fs.Projection
         rs.Bounds = bnds
@@ -202,7 +202,7 @@ Public Class cSurfaceTools
         ' -----
         ' Create and position raster 
         ' -----
-        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellWidth)
+        Dim bnds As IRasterBounds = cDotSpatialUtils.EcospaceToBounds(ptfTL, ptfBR, dCellWidth, proj)
         Dim rs As IRaster = Raster.Create(strFileName, "", bnds.NumColumns, bnds.NumRows, 1, GetType(Double), Nothing)
         rs.Projection = proj
         rs.Bounds = bnds
