@@ -3329,4 +3329,7 @@
   <data name="pluginpoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\pluginpoint.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="EXPLOITATIONSTATUS_NOTASSESSED" xml:space="preserve">
+    <value>Not assessed</value>
+  </data>
 </root>

@@ -37,14 +37,14 @@ Public Class cEcospaceLayerMPA
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
-            If Me.ValidateCellPosition(iRow, iCol) Then Return d(Me.Index)(iRow, iCol) Else Return CInt(cCore.NULL_VALUE)
+            If Me.ValidateCellPosition(iRow, iCol) Then Return Math.Min(1, d(Me.Index)(iRow, iCol)) Else Return CInt(cCore.NULL_VALUE)
         End Get
         Set(ByVal value As Object)
             Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
             Dim s As Integer = Convert.ToInt16(value)
             If Me.ValidateCellValue(value) Then
                 If Me.ValidateCellPosition(iRow, iCol) Then
-                    d(Me.Index)(iRow, iCol) = s
+                    d(Me.Index)(iRow, iCol) = Math.Min(1, s)
                     Me.Invalidate()
                 End If
             End If

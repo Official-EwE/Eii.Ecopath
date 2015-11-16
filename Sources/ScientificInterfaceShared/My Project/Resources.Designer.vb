@@ -1403,6 +1403,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Not assessed.
+        '''</summary>
+        Public ReadOnly Property EXPLOITATIONSTATUS_NOTASSESSED() As String
+            Get
+                Return ResourceManager.GetString("EXPLOITATIONSTATUS_NOTASSESSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Not exploited.
         '''</summary>
         Public ReadOnly Property EXPLOITATIONSTATUS_NOTEXPLOITED() As String
