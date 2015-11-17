@@ -192,8 +192,8 @@
   <data name="UNIT_TIME_YEAR" xml:space="preserve">
     <value>y</value>
   </data>
-  <data name="UNIT_WEIGHT_KG" xml:space="preserve">
-    <value>kg</value>
+  <data name="UNIT_WEIGHT_G" xml:space="preserve">
+    <value>g</value>
   </data>
   <data name="IND_COMMB" xml:space="preserve">
     <value>Commercial B</value>
@@ -213,16 +213,16 @@
   <data name="IND_DEMC_DESC" xml:space="preserve">
     <value>Catch (C) of demersal species</value>
   </data>
-  <data name="IND_DEMPELB" xml:space="preserve">
+  <data name="IND_DEMPELB_RATIO" xml:space="preserve">
     <value>Demersal / Pelagic B</value>
   </data>
-  <data name="IND_DEMPELB_DESC" xml:space="preserve">
+  <data name="IND_DEMPELB_RATIO_DESC" xml:space="preserve">
     <value>Biomass (B) of demersal over pelagic species</value>
   </data>
-  <data name="IND_DEMPELC" xml:space="preserve">
+  <data name="IND_DEMPELC_RATIO" xml:space="preserve">
     <value>Demersal / pelagic C</value>
   </data>
-  <data name="IND_DEMPELC_DESC" xml:space="preserve">
+  <data name="IND_DEMPELC_RATIO_DESC" xml:space="preserve">
     <value>Catch (C) of demersal over pelagic species</value>
   </data>
   <data name="IND_DIS" xml:space="preserve">
@@ -267,14 +267,14 @@
   <data name="IND_INVEB_DESC" xml:space="preserve">
     <value>Biomass (B) of invertebrate species</value>
   </data>
-  <data name="IND_INVFISHB" xml:space="preserve">
+  <data name="IND_INVFISHB_RATIO" xml:space="preserve">
     <value>Invertebrates / Fish B</value>
   </data>
-  <data name="IND_INVFISHB_DESC" xml:space="preserve">
+  <data name="IND_INVFISHB_RATIO_DESC" xml:space="preserve">
     <value>Biomass (B) of invertebrates over fish</value>
   </data>
   <data name="IND_INVFISHC" xml:space="preserve">
-    <value>Invertebrates/Fish C</value>
+    <value>Invertebrates / Fish C</value>
   </data>
   <data name="IND_INVFISHC_DESC" xml:space="preserve">
     <value>Catch (C) of invertebrates over fish</value>
@@ -454,5 +454,11 @@
   </data>
   <data name="HEADER_OCCURRENCE" xml:space="preserve">
     <value>Occurence</value>
+  </data>
+  <data name="IND_VALUE_B_RATIO" xml:space="preserve">
+    <value>Biomass ratio</value>
+  </data>
+  <data name="IND_VALUE_C_RATIO" xml:space="preserve">
+    <value>Catch ratio</value>
   </data>
 </root>

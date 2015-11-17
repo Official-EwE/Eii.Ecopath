@@ -218,12 +218,7 @@ Public Class cMCGraphWrapper
 
     Protected Overrides Function FormatTooltip(pane As ZedGraph.GraphPane, curve As ZedGraph.CurveItem, iPoint As Integer) As String
 
-        ' Ok, this is a bit far-fetched but it works
-        ' Every curve created by ZedGraphHelper has a cCurveInfo attached to its tag. The curveinfo provides generic contextual information for the curve
-        ' In turn, the curveinfo has an extra field that is populated in RefreshContent, which contains the indicatorinfo for the curve
-
-        Dim crv As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
-        Dim ind As cIndicatorInfo = DirectCast(crv.Tag, cIndicatorInfo)
+        Dim ind As cIndicatorInfo = DirectCast(pane.Tag, cIndicatorInfo)
         Dim sb As New StringBuilder()
 
         ' Tooltip should show the indicator description, if available, instead of repeating the pane title

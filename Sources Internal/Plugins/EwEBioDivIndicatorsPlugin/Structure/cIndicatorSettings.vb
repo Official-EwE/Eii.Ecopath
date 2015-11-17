@@ -103,22 +103,22 @@ Public Class cIndicatorSettings
         grp.Add("CommercialB", My.Resources.IND_COMMB, My.Resources.IND_COMMB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("FishB", My.Resources.IND_FISHB, My.Resources.IND_FISHB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("InveB", My.Resources.IND_INVEB, My.Resources.IND_INVEB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
-        grp.Add("InveFishB", My.Resources.IND_INVFISHB, My.Resources.IND_INVFISHB_DESC, My.Resources.IND_VALUE)
+        grp.Add("InveFishB", My.Resources.IND_INVFISHB_RATIO, My.Resources.IND_INVFISHB_RATIO_DESC, My.Resources.IND_VALUE_B_RATIO)
         grp.Add("DemB", My.Resources.IND_DEMB, My.Resources.IND_DEMB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
         grp.Add("PelB", My.Resources.IND_PELB, My.Resources.IND_PELB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
-        grp.Add("DemPelB", My.Resources.IND_DEMPELB, My.Resources.IND_DEMPELB_DESC, My.Resources.IND_VALUE_B, My.Resources.IND_VALUE)
+        grp.Add("DemPelB", My.Resources.IND_DEMPELB_RATIO, My.Resources.IND_DEMPELB_RATIO_DESC, My.Resources.IND_VALUE_B_RATIO)
         grp.Add("PredB", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
-        grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC, My.Resources.IND_VALUE)
+        grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC, My.Resources.IND_KEMPTONSQ)
 
         ' 2 catch-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_CATCH, My.Resources.GROUP_CATCH_DESC)
         grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
         grp.Add("FishC", My.Resources.IND_FISHC, My.Resources.IND_FISHC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
         grp.Add("InveC", My.Resources.IND_INVC, My.Resources.IND_INVC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
-        grp.Add("InveFishC", My.Resources.IND_INVFISHC, My.Resources.IND_INVFISHC_DESC, My.Resources.IND_VALUE_C)
+        grp.Add("InveFishC", My.Resources.IND_INVFISHC, My.Resources.IND_INVFISHC_DESC, My.Resources.IND_VALUE_C_RATIO)
         grp.Add("DemC", My.Resources.IND_DEMC, My.Resources.IND_DEMC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
         grp.Add("PelC", My.Resources.IND_PELC, My.Resources.IND_PELC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
-        grp.Add("DemPelC", My.Resources.IND_DEMPELC, My.Resources.IND_DEMPELC_DESC, My.Resources.IND_VALUE_C)
+        grp.Add("DemPelC", My.Resources.IND_DEMPELC_RATIO, My.Resources.IND_DEMPELC_RATIO_DESC, My.Resources.IND_VALUE_C_RATIO)
         grp.Add("sC4", My.Resources.IND_PREDC, My.Resources.IND_PREDC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
         grp.Add("DT", My.Resources.IND_DIS, My.Resources.IND_DIS_DESC, My.Resources.IND_VALUE_DISCARDS, aunitCatch)
 
@@ -145,15 +145,15 @@ Public Class cIndicatorSettings
         grp = Me.AddGroup(My.Resources.GROUP_SIZE, My.Resources.GROUP_SIZE_DESC)
         grp.Add("MLengthB", My.Resources.IND_MLB, My.Resources.IND_MLB_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
         grp.Add("MLengthC", My.Resources.IND_MLC, My.Resources.IND_MLC_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
-        grp.Add("MWeightB", My.Resources.IND_MWB, My.Resources.IND_MWB_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_KG)
-        grp.Add("MWeightC", My.Resources.IND_MWC, My.Resources.IND_MWC_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_KG)
+        grp.Add("MWeightB", My.Resources.IND_MWB, My.Resources.IND_MWB_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_G)
+        grp.Add("MWeightC", My.Resources.IND_MWC, My.Resources.IND_MWC_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_G)
         grp.Add("MLifeSpanB", My.Resources.IND_MLSC, My.Resources.IND_MLSC_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
         grp.Add("MLifeSpanC", My.Resources.IND_MLSB, My.Resources.IND_MLSB_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
 
-        ' 6 MSFD
-        grp = Me.AddGroup(My.Resources.GROUP_MSDF, My.Resources.GROUP_MSDF_DESC)
-        grp.Add("TotalB", My.Resources.IND_TOTALB, My.Resources.IND_TOTALB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
-        grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
+        '' 6 MSFD
+        'grp = Me.AddGroup(My.Resources.GROUP_MSDF, My.Resources.GROUP_MSDF_DESC)
+        'grp.Add("TotalB", My.Resources.IND_TOTALB, My.Resources.IND_TOTALB_DESC, My.Resources.IND_VALUE_B, cStyleGuide.eUnitType.Currency)
+        'grp.Add("Ctotal", My.Resources.IND_TOTALC, My.Resources.IND_TOTALC_DESC, My.Resources.IND_VALUE_C, aunitCatch)
 
     End Sub
 

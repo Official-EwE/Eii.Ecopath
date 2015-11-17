@@ -275,9 +275,13 @@ Public Class frmMain
                 bCanSave = My.Settings.RunWithEcosim And csm.HasEcosimRan
             Case cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace
                 bCanSave = My.Settings.RunWithEcospace And csm.HasEcospaceRan
+            Case cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo
+                ' Unfortunately this cannot be asked from the state monitor. 
+                ' Perhaps we should add this; I added a ToDo to the Core State Monitor file.
+                bCanSave = My.Settings.RunWithMC And Me.m_plugin.HasMonteCarloRan
         End Select
 
-        Me.m_btnSaveToCSV.Enabled = bCanSave
+        Me.m_btnSaveToCSV.Enabled = bCanSave And Not csm.IsBusy
 
         Me.m_llStatus.Visible = Not bHasTaxa
         Me.m_pbStatus.Visible = Not bHasTaxa
@@ -578,6 +582,7 @@ Public Class frmMain
             Case 1 : Return cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecopath
             Case 2 : Return cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecosim
             Case 3 : Return cEwEBioDiversityIndicatorsPlugin.eComponentType.Ecospace
+            Case 4, 5 : Return cEwEBioDiversityIndicatorsPlugin.eComponentType.MonteCarlo
         End Select
         Return cEwEBioDiversityIndicatorsPlugin.eComponentType.Any
     End Function

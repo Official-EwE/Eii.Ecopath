@@ -1232,4 +1232,10 @@ Public Class cEwEBioDiversityIndicatorsPlugin
 
 #End Region ' Autosave
 
+    Public ReadOnly Property HasMonteCarloRan As Boolean
+        Get
+            Return (Me.m_lIndMCsim.Count > 0) And Not Me.m_core.StateMonitor.IsSearching
+        End Get
+    End Property
+
 End Class

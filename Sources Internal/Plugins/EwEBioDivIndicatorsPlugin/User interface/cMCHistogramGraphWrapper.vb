@@ -90,7 +90,6 @@ Public Class cMCHistogramGraphWrapper
         Dim info As cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
         Dim strLabelPane As String = ""
-        Dim strLabelTime As String = SharedResources.UNIT_TIME_YEAR
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
         Dim ind As cEcosimIndicators = Nothing
@@ -130,7 +129,7 @@ Public Class cMCHistogramGraphWrapper
                 Else
                     strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.UnitMask)
                 End If
-                Me.ConfigurePane(info.Name, strLabelValue, Nothing, My.Resources.HEADER_OCCURRENCE, info.Units, False, iPane:=iPane)
+                Me.ConfigurePane(info.Name, strLabelValue, info.Units, My.Resources.HEADER_OCCURRENCE, Nothing, False, iPane:=iPane)
             Next
         End If
 
@@ -191,11 +190,16 @@ Public Class cMCHistogramGraphWrapper
         Dim sMin As Single = Single.MaxValue
         Dim sMax As Single = Single.MinValue
 
-        For Each ind As cEcopathIndicators In Me.m_lind
-            Dim sVal As Single = info.GetValue(ind)
-            sMin = Math.Min(sVal, sMin)
-            sMax = Math.Max(sVal, sMax)
-        Next
+        If (Me.m_lind.Count > 0) Then
+            For Each ind As cEcopathIndicators In Me.m_lind
+                Dim sVal As Single = info.GetValue(ind)
+                sMin = Math.Min(sVal, sMin)
+                sMax = Math.Max(sVal, sMax)
+            Next
+        Else
+            sMin = 0
+            sMax = 100
+        End If
 
         Dim sRange As Single = sMax - sMin
         If (sRange > 0) Then
@@ -225,12 +229,7 @@ Public Class cMCHistogramGraphWrapper
 
     Protected Overrides Function FormatTooltip(pane As ZedGraph.GraphPane, curve As ZedGraph.CurveItem, iPoint As Integer) As String
 
-        ' Ok, this is a bit far-fetched but it works
-        ' Every curve created by ZedGraphHelper has a cCurveInfo attached to its tag. The curveinfo provides generic contextual information for the curve
-        ' In turn, the curveinfo has an extra field that is populated in RefreshContent, which contains the indicatorinfo for the curve
-
-        Dim crv As cCurveInfo = DirectCast(curve.Tag, cCurveInfo)
-        Dim ind As cIndicatorInfo = DirectCast(crv.Tag, cIndicatorInfo)
+        Dim ind As cIndicatorInfo = DirectCast(pane.Tag, cIndicatorInfo)
         Dim sb As New StringBuilder()
 
         ' Tooltip should show the indicator description, if available, instead of repeating the pane title

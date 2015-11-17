@@ -320,36 +320,36 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Demersal / Pelagic B.
         '''</summary>
-        Friend ReadOnly Property IND_DEMPELB() As String
+        Friend ReadOnly Property IND_DEMPELB_RATIO() As String
             Get
-                Return ResourceManager.GetString("IND_DEMPELB", resourceCulture)
+                Return ResourceManager.GetString("IND_DEMPELB_RATIO", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Biomass (B) of demersal over pelagic species.
         '''</summary>
-        Friend ReadOnly Property IND_DEMPELB_DESC() As String
+        Friend ReadOnly Property IND_DEMPELB_RATIO_DESC() As String
             Get
-                Return ResourceManager.GetString("IND_DEMPELB_DESC", resourceCulture)
+                Return ResourceManager.GetString("IND_DEMPELB_RATIO_DESC", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Demersal / pelagic C.
         '''</summary>
-        Friend ReadOnly Property IND_DEMPELC() As String
+        Friend ReadOnly Property IND_DEMPELC_RATIO() As String
             Get
-                Return ResourceManager.GetString("IND_DEMPELC", resourceCulture)
+                Return ResourceManager.GetString("IND_DEMPELC_RATIO", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Catch (C) of demersal over pelagic species.
         '''</summary>
-        Friend ReadOnly Property IND_DEMPELC_DESC() As String
+        Friend ReadOnly Property IND_DEMPELC_RATIO_DESC() As String
             Get
-                Return ResourceManager.GetString("IND_DEMPELC_DESC", resourceCulture)
+                Return ResourceManager.GetString("IND_DEMPELC_RATIO_DESC", resourceCulture)
             End Get
         End Property
         
@@ -482,23 +482,23 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Invertebrates / Fish B.
         '''</summary>
-        Friend ReadOnly Property IND_INVFISHB() As String
+        Friend ReadOnly Property IND_INVFISHB_RATIO() As String
             Get
-                Return ResourceManager.GetString("IND_INVFISHB", resourceCulture)
+                Return ResourceManager.GetString("IND_INVFISHB_RATIO", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Biomass (B) of invertebrates over fish.
         '''</summary>
-        Friend ReadOnly Property IND_INVFISHB_DESC() As String
+        Friend ReadOnly Property IND_INVFISHB_RATIO_DESC() As String
             Get
-                Return ResourceManager.GetString("IND_INVFISHB_DESC", resourceCulture)
+                Return ResourceManager.GetString("IND_INVFISHB_RATIO_DESC", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Invertebrates/Fish C.
+        '''  Looks up a localized string similar to Invertebrates / Fish C.
         '''</summary>
         Friend ReadOnly Property IND_INVFISHC() As String
             Get
@@ -939,11 +939,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass ratio.
+        '''</summary>
+        Friend ReadOnly Property IND_VALUE_B_RATIO() As String
+            Get
+                Return ResourceManager.GetString("IND_VALUE_B_RATIO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Catch.
         '''</summary>
         Friend ReadOnly Property IND_VALUE_C() As String
             Get
                 Return ResourceManager.GetString("IND_VALUE_C", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch ratio.
+        '''</summary>
+        Friend ReadOnly Property IND_VALUE_C_RATIO() As String
+            Get
+                Return ResourceManager.GetString("IND_VALUE_C_RATIO", resourceCulture)
             End Get
         End Property
         
@@ -1047,11 +1065,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to kg.
+        '''  Looks up a localized string similar to g.
         '''</summary>
-        Friend ReadOnly Property UNIT_WEIGHT_KG() As String
+        Friend ReadOnly Property UNIT_WEIGHT_G() As String
             Get
-                Return ResourceManager.GetString("UNIT_WEIGHT_KG", resourceCulture)
+                Return ResourceManager.GetString("UNIT_WEIGHT_G", resourceCulture)
             End Get
         End Property
     End Module
