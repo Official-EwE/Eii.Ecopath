@@ -74,8 +74,14 @@ Public Class cTimeFrameRule
         'iCurrentTimestep is the first time step of the forecast
         For iTimeStep = (iCurrentTimestep - 12) To (iCurrentTimestep - 1)
             BiomassAtT = m_EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, GroupIndex, iTimeStep)
-            Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
-            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) ' * Q
+
+            'time series include density dependent q implicity so dont need to multiply by it here (set Q =1). In all other cases do so.
+            If m_EcosimData.FisForced(GroupIndex) Then
+                Q = 1
+            Else
+                Q = m_EcosimData.QmQo(GroupIndex) / (1 + (m_EcosimData.QmQo(GroupIndex) - 1) * BiomassAtT / m_EcosimData.StartBiomass(GroupIndex))
+            End If
+            MeanF += m_EcosimData.FishRateNo(m_HCR.GroupF.Index, iTimeStep) * Q
         Next
         MeanF /= 12
 
