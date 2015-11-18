@@ -38,11 +38,6 @@ Friend Class cCoreSettings
     ''' <summary>Autosave formats</summary>
     Private m_strAutosaveFormat() As String
 
-    ''' <summary>Default author name.</summary>
-    Private m_strAuthor As String = ""
-    ''' <summary>Default author contact information.</summary>
-    Private m_strContact As String = ""
-
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -117,14 +112,6 @@ Friend Class cCoreSettings
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Author As String
-        Get
-            If (String.IsNullOrWhiteSpace(Me.m_strAuthor)) Then Return cSystemUtils.GetUserName()
-            Return Me.m_strAuthor
-        End Get
-        Set(value As String)
-            Me.m_strAuthor = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -132,14 +119,6 @@ Friend Class cCoreSettings
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Contact As String
-        Get
-            If (String.IsNullOrWhiteSpace(Me.m_strContact)) Then Return cSystemUtils.GetUserEmail()
-            Return Me.m_strContact
-        End Get
-        Set(value As String)
-            Me.m_strContact = value
-        End Set
-    End Property
 
 #End Region ' Accessors
 

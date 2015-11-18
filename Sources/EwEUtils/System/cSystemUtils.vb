@@ -21,7 +21,6 @@
 Option Strict On
 Imports System
 Imports System.Diagnostics
-Imports System.DirectoryServices.AccountManagement
 Imports System.Globalization
 Imports System.IO
 Imports System.Net
@@ -33,67 +32,10 @@ Imports EwEUtils.Utilities
 
 Namespace SystemUtilities
 
+    ''' <summary>
+    ''' Utilities for obtaining system properties.
+    ''' </summary>
     Public Class cSystemUtils
-
-#Region " User account details caching "
-
-        Private Shared s_principal As UserPrincipal = Nothing
-        Private Shared s_bPrincipalChecked As Boolean = False
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Obtain UserPrincipal information for the current user account.
-        ''' This can take a while, but thankfully has to be done only once
-        ''' per EwE session.
-        ''' </summary>
-        ''' <returns><see cref="UserPrincipal">User information</see>, or
-        ''' nothing if something went wrong.</returns>
-        ''' -------------------------------------------------------------------
-        Private Shared Function UserInfo() As UserPrincipal
-            If (cSystemUtils.s_principal Is Nothing) And Not cSystemUtils.s_bPrincipalChecked Then
-                'cSystemUtils.s_principal = UserPrincipal.Current
-                cSystemUtils.s_bPrincipalChecked = True
-            End If
-            Return cSystemUtils.s_principal
-        End Function
-
-#End Region ' User account details caching
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the username for the active logged-in user.
-        ''' </summary>
-        ''' <returns>The username for the active logged-in user.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function GetUserName() As String
-
-            Dim strName As String = ""
-
-            If (cSystemUtils.UserInfo() IsNot Nothing) Then
-                strName = cSystemUtils.UserInfo().DisplayName
-            End If
-
-            If (String.IsNullOrWhiteSpace(strName)) Then
-                strName = My.User.Name
-                strName = strName.Substring(strName.IndexOf("\") + 1)
-            End If
-
-            Return strName
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the email address for the active logged-in user.
-        ''' </summary>
-        ''' <returns>The email address for the active logged-in user.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function GetUserEmail() As String
-            If (cSystemUtils.UserInfo() IsNot Nothing) Then
-                Return cSystemUtils.UserInfo().EmailAddress
-            End If
-            Return ""
-        End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
