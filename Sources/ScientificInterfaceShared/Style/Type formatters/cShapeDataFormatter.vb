@@ -50,6 +50,7 @@ Namespace Style
                                       Implements ITypeFormatter.GetDescriptor
 
             If (value Is Nothing) Then Return Me.m_strNone
+            If (Not TypeOf value Is cShapeData) Then Return Me.m_strNone
 
             Try
                 Dim obj As cShapeData = DirectCast(value, cShapeData)
