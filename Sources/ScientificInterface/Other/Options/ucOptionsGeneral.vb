@@ -150,8 +150,8 @@ Namespace Other
                 Me.m_cbShowTime.Checked = CBool(My.Settings.GetDefaultValue("StatusShowTime"))
                 Me.m_fpVerboseLevel.Value = My.Settings.GetDefaultValue("LogVerboseLevel")
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
-                Me.m_tbxAuthor.Text = cSystemUtils.GetUserName()
-                Me.m_tbxContact.Text = cSystemUtils.GetUserEmail()
+                Me.m_tbxAuthor.Text = Environment.UserName
+                Me.m_tbxContact.Text = ""
             Catch ex As Exception
 
             End Try

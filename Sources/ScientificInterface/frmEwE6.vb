@@ -4659,7 +4659,7 @@ Public Class frmEwE6
             Me.UpdateCorePaths(True)
 
             If String.IsNullOrWhiteSpace(My.Settings.Author) Then
-                My.Settings.Author = EwEUtils.SystemUtilities.cSystemUtils.GetUserName()
+                My.Settings.Author = Environment.UserName
             End If
             Me.Core.DefaultAuthor = My.Settings.Author
             Me.Core.DefaultContact = My.Settings.Contact
