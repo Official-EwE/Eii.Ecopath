@@ -45,9 +45,6 @@ Namespace Ecosim
         Private m_fpContact As cEwEFormatProvider = Nothing
         Private m_fpNumYears As cEwEFormatProvider = Nothing
         Private m_fpNutBaseFreeProp As cEwEFormatProvider = Nothing
-        Private m_fpNutrientForceNumber As cEwEFormatProvider = Nothing
-        Private m_fpSalinityForceNumber As cEwEFormatProvider = Nothing
-        Private m_fpTempForceNumber As cEwEFormatProvider = Nothing
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpUseVarPQ As cEwEFormatProvider = Nothing
         Private m_fpForagingTimeLowerLimit As cEwEFormatProvider = Nothing
@@ -67,30 +64,35 @@ Namespace Ecosim
 
             MyBase.OnLoad(e)
 
-            Dim ecosimModelParams As cEcoSimModelParameters = Core.EcoSimModelParameters()
+            Me.m_bInUpdate = True
+
+            Dim parms As cEcoSimModelParameters = Core.EcoSimModelParameters()
             Dim pm As cPropertyManager = Me.PropertyManager
 
-            Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumberYears, ecosimModelParams, eVarNameFlags.EcoSimNYears)
-            Me.m_fpNutBaseFreeProp = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNutBaseFreeProp, ecosimModelParams, eVarNameFlags.NutBaseFreeProp)
+            Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumberYears, parms, eVarNameFlags.EcoSimNYears)
+            Me.m_fpNutBaseFreeProp = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNutBaseFreeProp, parms, eVarNameFlags.NutBaseFreeProp)
 
-            Me.m_fpNutrientForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbNutForcing, ecosimModelParams, eVarNameFlags.NutForceFunctionNumber)
-            Me.m_fpSalinityForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbSalinityForcing, ecosimModelParams, eVarNameFlags.SalinityForceFunctionNumber)
-            Me.m_fpTempForceNumber = New cPropertyFormatProvider(Me.UIContext, Me.cmbTempLoading, ecosimModelParams, eVarNameFlags.TemperatureForceFunctionNumber)
-            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPredictEffort, ecosimModelParams, eVarNameFlags.PredictEffort)
-            Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseVarPQ, ecosimModelParams, eVarNameFlags.UseVarPQ)
-            Me.m_fpForagingTimeLowerLimit = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinFeedingRateAdjustment, ecosimModelParams, eVarNameFlags.ForagingTimeLowerLimit)
-            Me.m_propConTracing = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
+            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPredictEffort, parms, eVarNameFlags.PredictEffort)
+            Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseVarPQ, parms, eVarNameFlags.UseVarPQ)
+            Me.m_fpForagingTimeLowerLimit = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinFeedingRateAdjustment, parms, eVarNameFlags.ForagingTimeLowerLimit)
+            Me.m_propConTracing = DirectCast(pm.GetProperty(parms, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
             AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
 
-            Me.m_propPredictEffort = DirectCast(pm.GetProperty(ecosimModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+            Me.m_propPredictEffort = DirectCast(pm.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
             AddHandler Me.m_propPredictEffort.PropertyChanged, AddressOf OnPredictEffortChanged
 
             ' Listen to shapes data added or removed messages
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager, eCoreComponentType.EcoSim}
 
-            Me.UpdateFFFormatProviders()
+            Me.UpdateEnvForcingControls()
             Me.RebuildScenarioFormatProviders()
             Me.UpdateControls()
+
+            Me.m_cmbNutForcing.SelectedIndex = Math.Max(0, parms.NutForceFunctionNumber)
+            Me.m_cmbSalinityForcing.SelectedIndex = Math.Max(0, parms.SalinityForceFunctionNumber)
+            Me.m_cmbTempLoading.SelectedIndex = Math.Max(0, parms.TemperatureForceFunctionNumber)
+
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -102,12 +104,9 @@ Namespace Ecosim
             Me.m_fpContact.Release()
             Me.m_fpNumYears.Release()
             Me.m_fpNutBaseFreeProp.Release()
-            Me.m_fpNutrientForceNumber.Release()
-            Me.m_fpSalinityForceNumber.Release()
             Me.m_fpPredictEffort.Release()
             Me.m_fpUseVarPQ.Release()
             Me.m_fpForagingTimeLowerLimit.Release()
-            Me.m_fpTempForceNumber.Release()
 
             RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
             Me.m_propConTracing = Nothing
@@ -158,13 +157,38 @@ Namespace Ecosim
             Me.UpdateControls()
         End Sub
 
+        Private Sub OnFormatFF(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbNutForcing.Format, m_cmbSalinityForcing.Format, m_cmbTempLoading.Format
+            Try
+                Dim fmt As New cShapeDataFormatter()
+                e.Value = fmt.GetDescriptor(e.ListItem)
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
+        End Sub
+
+        Private Sub OnFFSelectionChanged(sender As Object, e As System.EventArgs) _
+            Handles m_cmbNutForcing.SelectedIndexChanged, m_cmbSalinityForcing.SelectedIndexChanged, m_cmbTempLoading.SelectedIndexChanged
+
+            If Me.m_bInUpdate Then Return
+
+            Try
+                Dim parms As cEcoSimModelParameters = Core.EcoSimModelParameters()
+                parms.NutForceFunctionNumber = Me.m_cmbNutForcing.SelectedIndex
+                parms.SalinityForceFunctionNumber = Me.m_cmbSalinityForcing.SelectedIndex
+                parms.TemperatureForceFunctionNumber = Me.m_cmbTempLoading.SelectedIndex
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Events
 
 #Region " Overrides "
 
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
             If ((msg.Source = eCoreComponentType.ShapesManager) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
-                Me.UpdateFFFormatProviders()
+                Me.UpdateEnvForcingControls()
             End If
 
             If msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.DataAddedOrRemoved Then
@@ -198,18 +222,18 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub UpdateFFFormatProviders()
-            ' Assemble list of FFs
+        Private Sub UpdateEnvForcingControls()
             Dim ffm As cForcingFunctionManager = Me.Core.ForcingShapeManager()
             Dim aItems(ffm.Count) As Object
 
-            aItems(0) = SharedResources.GENERIC_VALUE_NONE
+            aItems(0) = ""
             For iFF As Integer = 0 To ffm.Count - 1
                 aItems(iFF + 1) = ffm(iFF)
             Next
-            Me.m_fpNutrientForceNumber.Items = aItems
-            Me.m_fpSalinityForceNumber.Items = aItems
-            Me.m_fpTempForceNumber.Items = aItems
+
+            Me.m_cmbNutForcing.Items.AddRange(aItems)
+            Me.m_cmbSalinityForcing.Items.AddRange(aItems)
+            Me.m_cmbTempLoading.Items.AddRange(aItems)
         End Sub
 
         Protected Overrides Sub UpdateControls()

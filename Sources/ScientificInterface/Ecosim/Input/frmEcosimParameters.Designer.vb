@@ -63,7 +63,7 @@ Namespace Ecosim
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox()
-            Me.cmbTempLoading = New System.Windows.Forms.ComboBox()
+            Me.m_cmbTempLoading = New System.Windows.Forms.ComboBox()
             Me.m_lblTempLoading = New System.Windows.Forms.Label()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDescription = New System.Windows.Forms.Panel()
@@ -201,12 +201,12 @@ Namespace Ecosim
             Me.m_chkUseVarPQ.Name = "m_chkUseVarPQ"
             Me.m_chkUseVarPQ.UseVisualStyleBackColor = True
             '
-            'cmbTempLoading
+            'm_cmbTempLoading
             '
-            Me.cmbTempLoading.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.cmbTempLoading.FormattingEnabled = True
-            resources.ApplyResources(Me.cmbTempLoading, "cmbTempLoading")
-            Me.cmbTempLoading.Name = "cmbTempLoading"
+            Me.m_cmbTempLoading.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbTempLoading.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbTempLoading, "m_cmbTempLoading")
+            Me.m_cmbTempLoading.Name = "m_cmbTempLoading"
             '
             'm_lblTempLoading
             '
@@ -241,7 +241,7 @@ Namespace Ecosim
             Me.m_plInit.Controls.Add(Me.m_lblTempLoading)
             Me.m_plInit.Controls.Add(Me.Label1)
             Me.m_plInit.Controls.Add(Me.m_lblNumberYears)
-            Me.m_plInit.Controls.Add(Me.cmbTempLoading)
+            Me.m_plInit.Controls.Add(Me.m_cmbTempLoading)
             Me.m_plInit.Controls.Add(Me.m_lblNutBaseFreeProp)
             Me.m_plInit.Controls.Add(Me.m_nudNutBaseFreeProp)
             Me.m_plInit.Controls.Add(Me.m_lblNutForcing)
@@ -271,6 +271,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Name = "frmEcosimParameters"
+            Me.TabText = ""
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel1.ResumeLayout(False)
@@ -296,7 +297,7 @@ Namespace Ecosim
         Private WithEvents m_lblNutForcing As System.Windows.Forms.Label
         Private WithEvents m_cmbSalinityForcing As System.Windows.Forms.ComboBox
         Private WithEvents m_lblSalinityForcing As System.Windows.Forms.Label
-        Private WithEvents cmbTempLoading As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbTempLoading As System.Windows.Forms.ComboBox
         Private WithEvents m_lblTempLoading As System.Windows.Forms.Label
         Private WithEvents m_chkPredictEffort As System.Windows.Forms.CheckBox
         Private WithEvents m_chkConTracing As System.Windows.Forms.CheckBox
