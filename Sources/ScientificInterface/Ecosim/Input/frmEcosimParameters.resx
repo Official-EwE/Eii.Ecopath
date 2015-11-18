@@ -132,7 +132,7 @@
     <value>m_nudNutBaseFreeProp</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -153,7 +153,7 @@
     <value>m_nudNumberYears</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -394,7 +394,7 @@
     <value>m_hdrInitialization</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -427,7 +427,7 @@
     <value>m_hdrScenario</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Parent" xml:space="preserve">
     <value>m_plDescription</value>
@@ -694,25 +694,25 @@
   <data name="&gt;&gt;m_chkUseVarPQ.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="cmbTempLoading.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cmbTempLoading.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 152</value>
   </data>
-  <data name="cmbTempLoading.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cmbTempLoading.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 21</value>
   </data>
-  <data name="cmbTempLoading.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cmbTempLoading.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="&gt;&gt;cmbTempLoading.Name" xml:space="preserve">
-    <value>cmbTempLoading</value>
+  <data name="&gt;&gt;m_cmbTempLoading.Name" xml:space="preserve">
+    <value>m_cmbTempLoading</value>
   </data>
-  <data name="&gt;&gt;cmbTempLoading.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTempLoading.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cmbTempLoading.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTempLoading.Parent" xml:space="preserve">
     <value>m_plInit</value>
   </data>
-  <data name="&gt;&gt;cmbTempLoading.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTempLoading.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="m_lblTempLoading.AutoSize" type="System.Boolean, mscorlib">
@@ -896,6 +896,6 @@
     <value>frmEcosimParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11826.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
