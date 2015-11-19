@@ -256,6 +256,9 @@ Public Class Strategy
             strFilename = Me.FileName
         End If
 
+        Dim index_of_csv As Integer = strFilename.IndexOf(".csv")
+        strFilename = strFilename.Insert(index_of_csv, "_hcr")
+
         Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then
 

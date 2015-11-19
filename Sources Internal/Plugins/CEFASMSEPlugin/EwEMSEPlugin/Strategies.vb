@@ -137,6 +137,8 @@ Public Class Strategies
         Dim strRegulationDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim StratCounter As Integer = 1
         Dim bSuccess As Boolean = True
+        Dim StrategyFileWithoutHCRReg As String
+        Dim StrategyFileWithoutExtension As String
 
         If Not Directory.Exists(strStategyDir) Then Return False
 
@@ -148,7 +150,10 @@ Public Class Strategies
 
         For Each StrategyFile As String In StrategiesFileNames 'loop through reading each HCR file
 
-            Strategy = New Strategy(Path.GetFileNameWithoutExtension(StrategyFile), StratCounter, StrategyFile, mCore, mMSE)
+            StrategyFileWithoutHCRReg = StrategyFile.Replace("_hcr", "").Replace("_reg", "")
+            StrategyFileWithoutExtension = Path.GetFileNameWithoutExtension(StrategyFile).Replace("_hcr", "").Replace("_reg", "")
+
+            Strategy = New Strategy(StrategyFileWithoutExtension, StratCounter, StrategyFile, mCore, mMSE)
 
             'Only add the Strategy if it read both strategy and regulations from file
             If Strategy.Load(msg) And Strategy.Regulations.Load(msg, Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv")) Then
@@ -187,7 +192,7 @@ Public Class Strategies
 
                 'Save the Regulations that are part of the Strategy
                 'Done here instead of inside the Strategy.Save() for clarity 
-                Strategy.Regulations.Save(Path.Combine(strRegulationDir, Path.GetFileName(Strategy.FileName)))
+                Strategy.Regulations.Save(Path.Combine(strRegulationDir, Path.GetFileName(Strategy.FileName.Replace("hcr", "reg"))))
 
             Next
         Catch ex As Exception

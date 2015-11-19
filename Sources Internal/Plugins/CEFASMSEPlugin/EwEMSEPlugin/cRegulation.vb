@@ -86,6 +86,8 @@ Public Class cRegulations
         Dim recs() As String
         Dim breturn As Boolean = True
 
+        strFilename = strFilename.Replace("_hcr", "_reg")
+
         Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
         Try
             If (reader IsNot Nothing) Then
@@ -125,14 +127,17 @@ Public Class cRegulations
     Public Function Save(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
+        Dim index_of_csv As Integer = strFilename.IndexOf(".csv")
+        strFilename = strFilename.Insert(index_of_csv, "_reg")
+
         Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then
 
             strm.WriteLine("FleetName,FleetIndex,Regulation")
             For i As Integer = 1 To Me.m_Core.nFleets
                 Dim flt As cFleetInput = Me.m_Core.FleetInputs(i)
-                strm.WriteLine(cStringUtils.ToCSVField(flt.Name) & "," & _
-                                          cStringUtils.ToCSVField(flt.Index) & "," & _
+                strm.WriteLine(cStringUtils.ToCSVField(flt.Name) & "," &
+                                          cStringUtils.ToCSVField(flt.Index) & "," &
                                           cStringUtils.ToCSVField(Me.m_methods(i)))
             Next
             cMSEUtils.ReleaseWriter(strm)
