@@ -630,39 +630,6 @@
   <data name="m_tlpTechnicalDetails.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_lblOSVersion.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblOSVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblOSVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 241</value>
-  </data>
-  <data name="m_lblOSVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>578, 20</value>
-  </data>
-  <data name="m_lblOSVersion.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_lblOSVersion.Text" xml:space="preserve">
-    <value>&lt;system&gt;</value>
-  </data>
-  <data name="m_lblOSVersion.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblOSVersion.Name" xml:space="preserve">
-    <value>m_lblOSVersion</value>
-  </data>
-  <data name="&gt;&gt;m_lblOSVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblOSVersion.Parent" xml:space="preserve">
-    <value>m_tlpTechnicalDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblOSVersion.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_lblNetVersion.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -670,16 +637,19 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNetVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 261</value>
+    <value>0, 261</value>
+  </data>
+  <data name="m_lblNetVersion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblNetVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>578, 20</value>
+    <value>584, 20</value>
   </data>
   <data name="m_lblNetVersion.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_lblNetVersion.Text" xml:space="preserve">
-    <value>&lt;.net&gt;</value>
+    <value>&lt;system&gt;; &lt;.net&gt;</value>
   </data>
   <data name="m_lblNetVersion.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -694,7 +664,7 @@
     <value>m_tlpTechnicalDetails</value>
   </data>
   <data name="&gt;&gt;m_lblNetVersion.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_gridTechnical.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -706,7 +676,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridTechnical.Size" type="System.Drawing.Size, System.Drawing">
-    <value>584, 218</value>
+    <value>584, 238</value>
   </data>
   <data name="m_gridTechnical.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -715,13 +685,13 @@
     <value>m_gridTechnical</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Type" xml:space="preserve">
-    <value>ScientificInterface.gridAboutEwE, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridAboutEwE, EwE6, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <metadata name="m_tsTechnical.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -769,13 +739,13 @@
     <value>m_tsTechnical</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_tlpTechnicalDetails.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -805,7 +775,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpTechnicalDetails.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblOSVersion" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNetVersion" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gridTechnical" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsTechnical" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,23,Percent,100,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblNetVersion" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_gridTechnical" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsTechnical" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,23,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpTechnical.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -886,7 +856,7 @@
     <value>m_gridDatabase</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDatabase, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDatabase, EwE6, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Parent" xml:space="preserve">
     <value>TableLayoutPanel2</value>

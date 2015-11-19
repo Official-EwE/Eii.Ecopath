@@ -76,8 +76,7 @@ Namespace Other
             Me.m_rtbAcknowledgements.Rtf = StyleRTF(My.Resources.acknowledgements)
 
             ' Format technical page
-            Me.m_lblOSVersion.Text = cSysConfig.OSVersion()
-            Me.m_lblNetVersion.Text = cSysConfig.NETVersion()
+            Me.m_lblNetVersion.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, cSysConfig.OSVersion(), cSysConfig.NETVersion())
 
             Me.m_qehTech = New cQuickEditHandler()
             Me.m_qehTech.IsOutputGrid = True

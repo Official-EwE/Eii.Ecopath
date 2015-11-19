@@ -44,8 +44,12 @@ Namespace Other
             Me.m_tlpGeneral = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbFish0 = New System.Windows.Forms.PictureBox()
             Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lbCopyright = New System.Windows.Forms.TextBox()
             Me.m_rtbDisclaimer = New System.Windows.Forms.RichTextBox()
             Me.m_rtbDistribution = New System.Windows.Forms.RichTextBox()
+            Me.m_lbVersion = New System.Windows.Forms.TextBox()
+            Me.m_lbLicense = New System.Windows.Forms.TextBox()
+            Me.m_lbTitle = New System.Windows.Forms.TextBox()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpGeneral = New System.Windows.Forms.TabPage()
             Me.m_tpLicense = New System.Windows.Forms.TabPage()
@@ -56,18 +60,13 @@ Namespace Other
             Me.m_rtbAcknowledgements = New System.Windows.Forms.RichTextBox()
             Me.m_tpTechnical = New System.Windows.Forms.TabPage()
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_lblOSVersion = New System.Windows.Forms.Label()
-            Me.m_lblNetVersion = New System.Windows.Forms.Label()
             Me.m_tsTechnical = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnShowEwEAssembliesOnly = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
             Me.m_tpDatabase = New System.Windows.Forms.TabPage()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
-            Me.m_lbVersion = New System.Windows.Forms.TextBox()
-            Me.m_lbLicense = New System.Windows.Forms.TextBox()
-            Me.m_lbTitle = New System.Windows.Forms.TextBox()
-            Me.m_lbCopyright = New System.Windows.Forms.TextBox()
+            Me.m_lblNetVersion = New System.Windows.Forms.Label()
             Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
             Me.m_tlpGeneral.SuspendLayout()
@@ -117,6 +116,13 @@ Namespace Other
             Me.m_tlpDetails.Controls.Add(Me.m_lbTitle, 0, 0)
             Me.m_tlpDetails.Name = "m_tlpDetails"
             '
+            'm_lbCopyright
+            '
+            Me.m_lbCopyright.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbCopyright, "m_lbCopyright")
+            Me.m_lbCopyright.Name = "m_lbCopyright"
+            Me.m_lbCopyright.ReadOnly = True
+            '
             'm_rtbDisclaimer
             '
             Me.m_rtbDisclaimer.BackColor = System.Drawing.SystemColors.Control
@@ -130,6 +136,27 @@ Namespace Other
             Me.m_rtbDistribution.BorderStyle = System.Windows.Forms.BorderStyle.None
             resources.ApplyResources(Me.m_rtbDistribution, "m_rtbDistribution")
             Me.m_rtbDistribution.Name = "m_rtbDistribution"
+            '
+            'm_lbVersion
+            '
+            Me.m_lbVersion.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbVersion, "m_lbVersion")
+            Me.m_lbVersion.Name = "m_lbVersion"
+            Me.m_lbVersion.ReadOnly = True
+            '
+            'm_lbLicense
+            '
+            Me.m_lbLicense.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbLicense, "m_lbLicense")
+            Me.m_lbLicense.Name = "m_lbLicense"
+            Me.m_lbLicense.ReadOnly = True
+            '
+            'm_lbTitle
+            '
+            Me.m_lbTitle.BorderStyle = System.Windows.Forms.BorderStyle.None
+            resources.ApplyResources(Me.m_lbTitle, "m_lbTitle")
+            Me.m_lbTitle.Name = "m_lbTitle"
+            Me.m_lbTitle.ReadOnly = True
             '
             'm_tcMain
             '
@@ -206,21 +233,10 @@ Namespace Other
             'm_tlpTechnicalDetails
             '
             resources.ApplyResources(Me.m_tlpTechnicalDetails, "m_tlpTechnicalDetails")
-            Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lblOSVersion, 0, 2)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lblNetVersion, 0, 2)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_gridTechnical, 0, 1)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_tsTechnical, 0, 0)
             Me.m_tlpTechnicalDetails.Name = "m_tlpTechnicalDetails"
-            '
-            'm_lblOSVersion
-            '
-            resources.ApplyResources(Me.m_lblOSVersion, "m_lblOSVersion")
-            Me.m_lblOSVersion.Name = "m_lblOSVersion"
-            '
-            'm_lblNetVersion
-            '
-            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
-            Me.m_lblNetVersion.Name = "m_lblNetVersion"
             '
             'm_tsTechnical
             '
@@ -261,33 +277,10 @@ Namespace Other
             resources.ApplyResources(Me.m_lblDatabase, "m_lblDatabase")
             Me.m_lblDatabase.Name = "m_lblDatabase"
             '
-            'm_lbVersion
+            'm_lblNetVersion
             '
-            Me.m_lbVersion.BorderStyle = System.Windows.Forms.BorderStyle.None
-            resources.ApplyResources(Me.m_lbVersion, "m_lbVersion")
-            Me.m_lbVersion.Name = "m_lbVersion"
-            Me.m_lbVersion.ReadOnly = True
-            '
-            'm_lbLicense
-            '
-            Me.m_lbLicense.BorderStyle = System.Windows.Forms.BorderStyle.None
-            resources.ApplyResources(Me.m_lbLicense, "m_lbLicense")
-            Me.m_lbLicense.Name = "m_lbLicense"
-            Me.m_lbLicense.ReadOnly = True
-            '
-            'm_lbTitle
-            '
-            Me.m_lbTitle.BorderStyle = System.Windows.Forms.BorderStyle.None
-            resources.ApplyResources(Me.m_lbTitle, "m_lbTitle")
-            Me.m_lbTitle.Name = "m_lbTitle"
-            Me.m_lbTitle.ReadOnly = True
-            '
-            'm_lbCopyright
-            '
-            Me.m_lbCopyright.BorderStyle = System.Windows.Forms.BorderStyle.None
-            resources.ApplyResources(Me.m_lbCopyright, "m_lbCopyright")
-            Me.m_lbCopyright.Name = "m_lbCopyright"
-            Me.m_lbCopyright.ReadOnly = True
+            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
+            Me.m_lblNetVersion.Name = "m_lblNetVersion"
             '
             'm_gridTechnical
             '
@@ -408,8 +401,6 @@ Namespace Other
         Private WithEvents m_tpLicense As System.Windows.Forms.TabPage
         Private WithEvents m_rtbLicense As System.Windows.Forms.RichTextBox
         Private WithEvents m_rtbDisclaimer As System.Windows.Forms.RichTextBox
-        Private WithEvents m_lblOSVersion As System.Windows.Forms.Label
-        Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_tsTechnical As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tsbnShowEwEAssembliesOnly As System.Windows.Forms.ToolStripButton
         Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
@@ -417,6 +408,7 @@ Namespace Other
         Private WithEvents m_lbVersion As System.Windows.Forms.TextBox
         Private WithEvents m_lbLicense As System.Windows.Forms.TextBox
         Private WithEvents m_lbTitle As System.Windows.Forms.TextBox
+        Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
 
     End Class
 End Namespace
