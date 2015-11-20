@@ -413,6 +413,11 @@ Public Class cMSE
         Me.m_ecopath = Ecopath
         Me.m_ecosim = Ecosim
 
+        'Check whether there are any forcing catch time series and if there are then flag an error - we need to change fisforced here into a similar boolean for catch
+        'For iGrp = 1 To m_core.nGroups
+        '    If m_ecosim.EcosimData.FisForced(iGrp) Then Stop
+        'Next
+
         Me.InvalidateConfigurationState()
 
     End Sub
@@ -440,7 +445,7 @@ Public Class cMSE
             ' Check if input structure is compatible
             ' JS: this check is for ow ruled out by disabling the 'Review dist params' button in the UI
             If Not Me.IsInputDataCompatible() Then
-                If (bInteractive) And Me.AskUser("The selected folder is not compatible with the currently loaded model. If you continue, previously saved MSE settings will be lost. Do you wish to continue, delete existing MSE settings, and start anew?", _
+                If (bInteractive) And Me.AskUser("The selected folder is not compatible with the currently loaded model. If you continue, previously saved MSE settings will be lost. Do you wish to continue, delete existing MSE settings, and start anew?",
                                eMessageReplyStyle.YES_NO, eMessageImportance.Warning, eMessageReply.NO) = eMessageReply.NO Then
                     Return False
                 End If
@@ -484,6 +489,17 @@ Public Class cMSE
 
     End Function
 
+    Public Sub CheckNoForcedCatchesTimeseries()
+
+        For iTimeSeries = 1 To m_core.nTimeSeries
+            If m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.CatchesForcing Then
+                MessageBox.Show("You are applying forcing catch time series. The MSE Plugin does not handle forcing catch timeseries.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Throw New ApplicationException(Me.ToString & ".CheckNoForcedCatchesTimeseries(). ")
+            End If
+        Next
+
+    End Sub
+
     Public Sub LoadSampledParams()
 
         Me.RunState = eRunStates.RunningModels
@@ -491,6 +507,7 @@ Public Class cMSE
         cApplicationStatusNotifier.StartProgress(Me.Core, "", -1)
 
         Try
+            Me.CheckNoForcedCatchesTimeseries()
             Me.InvalidateConfigurationState(True)
             Me.Run()
         Catch ex As Exception
@@ -3691,6 +3708,12 @@ Public Class cMSE
         Emax = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
         Return Emax
     End Function
+
+    'Private Sub ReportQuotaShareExists(ByVal iFleet As Integer, ByVal iGroup As Integer)
+    '    If m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGroup).mShare = Nothing Then
+    '        MessageBox.Show("A quotashare, that is not specified for fleet " & m_core.FleetInputs(iFleet).Name & " group " & m_core.EcoPathGroupInputs(iGroup).Name & " is required. Please specify and then rerun", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+    '    End If
+    'End Sub
 
     Private Function ChangeMaxEffortIfConsRequires(ByVal iMax As Integer, ByVal iFleet As Integer, Emax As Single, ByVal QMult() As Single, ByVal BiomassAtTimestep() As Single) As Single
         'ToDo jb Check that this is using FishMGear() correctly

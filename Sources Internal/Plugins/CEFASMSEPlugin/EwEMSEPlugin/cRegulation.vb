@@ -127,8 +127,10 @@ Public Class cRegulations
     Public Function Save(Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Save
 
-        Dim index_of_csv As Integer = strFilename.IndexOf(".csv")
-        strFilename = strFilename.Insert(index_of_csv, "_reg")
+        If Not strFilename.Contains("_reg") Then
+            Dim index_of_csv As Integer = strFilename.IndexOf(".csv")
+            strFilename = strFilename.Insert(index_of_csv, "_reg")
+        End If
 
         Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then

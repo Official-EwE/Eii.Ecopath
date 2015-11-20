@@ -238,6 +238,8 @@ Public Class cQuotaShares
             If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGroup Then Return m_lstQuotaShares(iRow)
         Next
 
+        MessageBox.Show("A quotashare, that is not specified for fleet " & m_core.FleetInputs(iFleet).Name & " group " & m_core.EcoPathGroupInputs(iGroup).Name & " is required. Please specify and then rerun", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+
         Return Nothing
 
     End Function

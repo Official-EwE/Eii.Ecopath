@@ -178,6 +178,12 @@ Public Class Strategy
         Return False
     End Function
 
+    Private Sub CheckNotNoneRegWhenForcingFTimeSeries(HCRGroup As HCR_Group)
+
+
+
+    End Sub
+
     Public Function Load(Optional msg As cMessage = Nothing, _
                          Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
@@ -217,6 +223,7 @@ Public Class Strategy
                     tempHCRGroup.MaxF = cStringUtils.ConvertToSingle(recs(6))
                     If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
                         tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
+
                     End If
                     'backwards compatability with older file that don't contain Time Frame Rules
                     If recs.Length > 8 Then
@@ -256,8 +263,10 @@ Public Class Strategy
             strFilename = Me.FileName
         End If
 
-        Dim index_of_csv As Integer = strFilename.IndexOf(".csv")
-        strFilename = strFilename.Insert(index_of_csv, "_hcr")
+        If Not strFilename.Contains("_hcr") Then
+            Dim index_of_csv As Integer = strFilename.IndexOf(".csv")
+            strFilename = strFilename.Insert(index_of_csv, "_hcr")
+        End If
 
         Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then

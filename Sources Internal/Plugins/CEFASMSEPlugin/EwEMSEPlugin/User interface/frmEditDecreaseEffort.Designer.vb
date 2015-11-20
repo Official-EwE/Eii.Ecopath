@@ -118,6 +118,7 @@ Partial Class frmEditDecreaseEffort
         Me.MinimizeBox = False
         Me.Name = "frmEditDecreaseEffort"
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.ResumeLayout(False)
 
     End Sub

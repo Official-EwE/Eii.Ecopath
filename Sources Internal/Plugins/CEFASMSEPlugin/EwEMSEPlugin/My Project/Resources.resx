@@ -247,7 +247,7 @@
     <value>Max. rel. feeding time</value>
   </data>
   <data name="HEADER_MAX_CHANGE_F" xml:space="preserve">
-    <value>Max Change in Effort</value>
+    <value>Max Increase in Effort</value>
   </data>
   <data name="HEADER_MIDPOINT" xml:space="preserve">
     <value>Mid-point</value>
