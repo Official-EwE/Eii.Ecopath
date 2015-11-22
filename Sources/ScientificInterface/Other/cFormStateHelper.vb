@@ -181,8 +181,14 @@ Friend Class cEwEFormStateHelper
                 End If
 
                 If bMustCloseForm Then
-                    ' #Yes: Close the form
-                    f.Close()
+                    If Not f.IsDisposed Then
+                        Try
+                            ' #Yes: Close the form
+                            f.Close()
+                        Catch ex As Exception
+                            cLog.Write(ex, "cEwEFormStateHelper.UpdateFormState(" & f.Name & ")")
+                        End Try
+                    End If
                 Else
                     ' #No: update enabled state
                     f.Enabled = (bMustDisableForm = False)
