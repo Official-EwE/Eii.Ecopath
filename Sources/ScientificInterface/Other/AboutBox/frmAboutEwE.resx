@@ -951,9 +951,6 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>604, 353</value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>9, 9, 9, 9</value>
   </data>

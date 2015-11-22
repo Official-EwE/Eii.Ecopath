@@ -24,6 +24,7 @@ Option Strict On
 Imports System.IO
 Imports System.Net
 Imports System.Web
+Imports System.Web.Services
 Imports EwECore
 Imports EwECore.WebServices
 Imports EwEUtils.Core

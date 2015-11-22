@@ -60,14 +60,14 @@ Namespace Other
             Me.m_rtbAcknowledgements = New System.Windows.Forms.RichTextBox()
             Me.m_tpTechnical = New System.Windows.Forms.TabPage()
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblNetVersion = New System.Windows.Forms.Label()
+            Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_tsTechnical = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnShowEwEAssembliesOnly = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
             Me.m_tpDatabase = New System.Windows.Forms.TabPage()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
-            Me.m_lblNetVersion = New System.Windows.Forms.Label()
-            Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -238,6 +238,43 @@ Namespace Other
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_tsTechnical, 0, 0)
             Me.m_tlpTechnicalDetails.Name = "m_tlpTechnicalDetails"
             '
+            'm_lblNetVersion
+            '
+            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
+            Me.m_lblNetVersion.Name = "m_lblNetVersion"
+            '
+            'm_gridTechnical
+            '
+            Me.m_gridTechnical.AllowBlockSelect = False
+            resources.ApplyResources(Me.m_gridTechnical, "m_gridTechnical")
+            Me.m_gridTechnical.AutoSizeMinHeight = 10
+            Me.m_gridTechnical.AutoSizeMinWidth = 10
+            Me.m_gridTechnical.AutoStretchColumnsToFitWidth = False
+            Me.m_gridTechnical.AutoStretchRowsToFitHeight = False
+            Me.m_gridTechnical.BackColor = System.Drawing.Color.White
+            Me.m_gridTechnical.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridTechnical.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridTechnical.CustomSort = False
+            Me.m_gridTechnical.DataName = "EwE components"
+            Me.m_gridTechnical.FixedColumnWidths = False
+            Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridTechnical.GridToolTipActive = True
+            Me.m_gridTechnical.IsLayoutSuspended = False
+            Me.m_gridTechnical.Name = "m_gridTechnical"
+            Me.m_gridTechnical.ShowEwEComponentsOnly = True
+            Me.m_gridTechnical.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridTechnical.UIContext = Nothing
+            '
             'm_tsTechnical
             '
             Me.m_tsTechnical.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -276,43 +313,6 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_lblDatabase, "m_lblDatabase")
             Me.m_lblDatabase.Name = "m_lblDatabase"
-            '
-            'm_lblNetVersion
-            '
-            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
-            Me.m_lblNetVersion.Name = "m_lblNetVersion"
-            '
-            'm_gridTechnical
-            '
-            Me.m_gridTechnical.AllowBlockSelect = False
-            resources.ApplyResources(Me.m_gridTechnical, "m_gridTechnical")
-            Me.m_gridTechnical.AutoSizeMinHeight = 10
-            Me.m_gridTechnical.AutoSizeMinWidth = 10
-            Me.m_gridTechnical.AutoStretchColumnsToFitWidth = False
-            Me.m_gridTechnical.AutoStretchRowsToFitHeight = False
-            Me.m_gridTechnical.BackColor = System.Drawing.Color.White
-            Me.m_gridTechnical.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridTechnical.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridTechnical.CustomSort = False
-            Me.m_gridTechnical.DataName = "EwE components"
-            Me.m_gridTechnical.FixedColumnWidths = False
-            Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridTechnical.GridToolTipActive = True
-            Me.m_gridTechnical.IsLayoutSuspended = False
-            Me.m_gridTechnical.Name = "m_gridTechnical"
-            Me.m_gridTechnical.ShowEwEComponentsOnly = True
-            Me.m_gridTechnical.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridTechnical.UIContext = Nothing
             '
             'm_gridDatabase
             '
