@@ -513,5 +513,12 @@ Public Class cEcospaceMonteCarloPluginPoint
 #End Region
 
 
+    Public Sub MonteCarloRunCompleted() Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunCompleted
+
+    End Sub
+
+    Public Sub MonteCarloRunInitialized() Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunInitialized
+
+    End Sub
 End Class
 
