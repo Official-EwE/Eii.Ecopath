@@ -933,7 +933,7 @@ Public Class cMSE
 
         ' JS 09Oct13: Used standard readers/writers, and made robust
 
-        Dim nIterations As Integer = Me.NModels
+        Dim nIterations As Integer = Me.NModels2Run
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, m_ecopath.EcopathData.NumGroups - 1, m_ecopath.EcopathData.NumGroups - 1) As Double
 
@@ -1660,6 +1660,7 @@ Public Class cMSE
 
     End Sub
 
+
     Private Sub Run()
 
         ' JS 20Oct13: Fixed path usage
@@ -1793,6 +1794,8 @@ Public Class cMSE
                             'Clear out the catch results from the last HCR
                             Me.initCatchResults()
 
+                            Check_All_Necessary_QuotaShares_Exist()
+
                             If Me.RunEcosim() Then
                                 'Save the Ecosim results
 
@@ -1830,6 +1833,7 @@ Public Class cMSE
 
                     Catch ex As Exception
                         Debug.Assert(False, Me.ToString & ".Run() Exception: " & ex.Message)
+                        If ex.Message = "EwEMSEPlugin.cMSE.Check_All_Necessary_QuotaShares_Exist(). " Then Throw ex
                     End Try
                 End If
 
@@ -1855,7 +1859,7 @@ Public Class cMSE
         Catch ex As Exception
             cLog.Write(ex)
             'Warn the user
-            Me.Core.Messages.SendMessage(New cMessage("CEFAS MSE Failed to run MSE trials due to exception " + ex.Message, _
+            Me.Core.Messages.SendMessage(New cMessage("CEFAS MSE Failed to run MSE trials due to exception " + ex.Message,
                                                       eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
         End Try
 
@@ -1874,6 +1878,23 @@ Public Class cMSE
 
         Me.RestoreOriginalState()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    End Sub
+
+    Private Sub Check_All_Necessary_QuotaShares_Exist()
+
+        For iGrp = 1 To m_core.nGroups
+            If currentStrategy.StrategyContainsHCRforiGrp(iGrp) Then
+                For iFleet = 1 To m_core.nFleets
+                    If m_core.FleetInputs(iFleet).Landings(iGrp) > 0 Then
+                        If Not m_quotashares.QuotaShareExistsForGroupFleet(iGrp, iFleet) Then
+                            MessageBox.Show("A quotashare, that is not specified for fleet " & m_core.FleetInputs(iFleet).Name & " group " & m_core.EcoPathGroupInputs(iGrp).Name & " is required. Please specify and then rerun", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                            Throw New ApplicationException(Me.ToString & ".Check_All_Necessary_QuotaShares_Exist(). ")
+                        End If
+                    End If
+                Next
+            End If
+        Next
 
     End Sub
 
@@ -3138,7 +3159,7 @@ Public Class cMSE
                 TargetFs(iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Target) / BiomassAtTimestep(iGrp)
                 For iFleet = 1 To m_core.nFleets
                     If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 Then
-                        TargetQuotas(iFleet - 1, iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Target) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare
+                        TargetQuotas(iFleet - 1, iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Target) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, True).mShare
                     End If
                 Next
             End If
@@ -3146,7 +3167,7 @@ Public Class cMSE
                 ConservationFs(iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) / BiomassAtTimestep(iGrp)
                 For iFleet = 1 To m_core.nFleets
                     If m_ecopath.EcopathData.Landing(iFleet, iGrp) > 0 Then
-                        ConservationQuotas(iFleet - 1, iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare
+                        ConservationQuotas(iFleet - 1, iGrp - 1, iYearProjecting - 1) = TargConsQuota(iGrp - 1, HCRType.Conservation) * m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, True).mShare
                     End If
                 Next
             End If
@@ -3678,10 +3699,10 @@ Public Class cMSE
         Dim v As Single
         For iGrp = 1 To m_ecopath.EcopathData.NumGroups
             If (m_ecopath.EcopathData.Landing(iFleet, iGrp)) > 0 And TargConsQuota(iGrp - 1, HCRType.Target) >= 0 And IsTargetSpecies(iGrp, iFleet) Then
-                If m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target) >= m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) Then
-                    v = CSng(m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target) * m_ecopath.EcopathData.Market(iFleet, iGrp))
+                If m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Target) >= m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) Then
+                    v = CSng(m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Target) * m_ecopath.EcopathData.Market(iFleet, iGrp))
                 Else
-                    v = CSng(m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) * m_ecopath.EcopathData.Market(iFleet, iGrp))
+                    v = CSng(m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) * m_ecopath.EcopathData.Market(iFleet, iGrp))
                 End If
                 If v > vmax Then
                     vmax = v
@@ -3705,7 +3726,7 @@ Public Class cMSE
         'ToDo jb Check that this is using FishMGear() correctly
         Emax = 0
         'Emax = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
-        Emax = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
+        Emax = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax, False).mShare * TargConsQuota(iMax - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
         Return Emax
     End Function
 
@@ -3720,7 +3741,7 @@ Public Class cMSE
         Dim Elim_Conservation As Single = 200
         If TargConsQuota(iMax - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F And TargConsQuota(iMax - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
             'Elim_Conservation = CSng((m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (1.0E-20 + QMult(iMax) * m_ecosim.EcosimData.FishMGear(iFleet, iMax) * BiomassAtTimestep(iMax)))
-            Elim_Conservation = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
+            Elim_Conservation = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iMax, False).mShare * TargConsQuota(iMax - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iMax)) / (CSng(1.0E-20) + QMult(iMax) * m_ecosim.EcosimData.relQ(iFleet, iMax) * BiomassAtTimestep(iMax))
             If Elim_Conservation < Emax Then Emax = Elim_Conservation
         End If
         Return Emax
@@ -3786,8 +3807,8 @@ Public Class cMSE
         Dim FleetTargQuota As Double
         Dim FleetQuota As Double
 
-        FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
-        FleetConsQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation)
+        FleetTargQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
+        FleetConsQuota = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation)
         If FleetTargQuota <= FleetConsQuota Then
             FleetQuota = FleetTargQuota
         Else
@@ -3800,7 +3821,7 @@ Public Class cMSE
 
     Private Function Calc_Fleet_Quota_Given_Only_Target_HCR_Exists(ByVal iGrp As Integer, ByVal iFleet As Integer) As Double
 
-        Return m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
+        Return m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Target)
 
     End Function
 
@@ -3830,7 +3851,7 @@ Public Class cMSE
 
     Private Function IsTargetSpecies(ByVal iGrp As Integer, ByVal iFleet As Integer) As Boolean
 
-        Dim qshare As cQuotaShares.QuotaShare = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp)
+        Dim qshare As cQuotaShares.QuotaShare = m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False)
 
         If qshare Is Nothing Then
             Return False
@@ -3905,11 +3926,11 @@ Public Class cMSE
         Dim Elim_Conservation As Single
 
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F Then
-            Elim_Target = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (CSng(1.0E-20) + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+            Elim_Target = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Target) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (CSng(1.0E-20) + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp))
             Elim = Elim_Target 'sets this because if both cons and targ don't exist then this is what it will be
         End If
         If TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then
-            Elim_Conservation = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (CSng(1.0E-20) + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp))
+            Elim_Conservation = (m_quotashares.ReadiFleetiGroupQuotaShare(iFleet, iGrp, False).mShare * TargConsQuota(iGrp - 1, HCRType.Conservation) / m_ecopath.EcopathData.PropLanded(iFleet, iGrp)) / (CSng(1.0E-20) + QMult(iGrp) * _simdata.relQ(iFleet, iGrp) * BiomassAtTimestep(iGrp))
             Elim = Elim_Conservation 'sets this because if both cons and targ don't exist then this is what it will be
         End If
         If TargConsQuota(iGrp - 1, HCRType.Target) <> cEffortLimits.NoHCR_F And TargConsQuota(iGrp - 1, HCRType.Conservation) <> cEffortLimits.NoHCR_F Then

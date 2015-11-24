@@ -40,12 +40,12 @@ Public Class Strategies
     Implements IMSEData
 
     Private m_strName As String = ""
-    Private mMSE As cMSE = Nothing
-    Private mCore As cCore = Nothing
+    Private m_MSE As cMSE = Nothing
+    Private m_Core As cCore = Nothing
 
     Sub New(MSE As cMSE, Core As cCore)
-        mMSE = MSE
-        mCore = Core
+        m_MSE = MSE
+        m_Core = Core
     End Sub
 
     ''' <summary>
@@ -92,8 +92,8 @@ Public Class Strategies
     ''' <remarks>Note that name comparison is not case sensitive.</remarks>
     ''' -----------------------------------------------------------------------
     Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
-        If (iIndex < 1) Or (iIndex > Me.mCore.nGroups) Then Return Nothing
-        Dim grp As cEcoPathGroupInput = Me.mCore.EcoPathGroupInputs(iIndex)
+        If (iIndex < 1) Or (iIndex > Me.m_Core.nGroups) Then Return Nothing
+        Dim grp As cEcoPathGroupInput = Me.m_Core.EcoPathGroupInputs(iIndex)
         If String.Compare(grp.Name, strName, True) <> 0 Then
             Return Nothing
         End If
@@ -127,14 +127,14 @@ Public Class Strategies
         Return False
     End Function
 
-    Public Function Load(Optional msg As cMessage = Nothing, _
+    Public Function Load(Optional msg As cMessage = Nothing,
                          Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
         Dim StrategiesFileNames As String()
         Dim Strategy As Strategy
-        Dim strStategyDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
-        Dim strRegulationDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
+        Dim strStategyDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Strategies)
+        Dim strRegulationDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim StratCounter As Integer = 1
         Dim bSuccess As Boolean = True
         Dim StrategyFileWithoutHCRReg As String
@@ -153,7 +153,7 @@ Public Class Strategies
             StrategyFileWithoutHCRReg = StrategyFile.Replace("_hcr", "").Replace("_reg", "")
             StrategyFileWithoutExtension = Path.GetFileNameWithoutExtension(StrategyFile).Replace("_hcr", "").Replace("_reg", "")
 
-            Strategy = New Strategy(StrategyFileWithoutExtension, StratCounter, StrategyFile, mCore, mMSE)
+            Strategy = New Strategy(StrategyFileWithoutExtension, StratCounter, StrategyFile, m_Core, m_MSE)
 
             'Only add the Strategy if it read both strategy and regulations from file
             If Strategy.Load(msg) And Strategy.Regulations.Load(msg, Path.Combine(strRegulationDir, Path.GetFileNameWithoutExtension(StrategyFile) & ".csv")) Then
@@ -162,6 +162,8 @@ Public Class Strategies
                 bSuccess = False
             End If
 
+
+
             StratCounter += 1
         Next StrategyFile
 
@@ -169,9 +171,11 @@ Public Class Strategies
 
     End Function
 
+
+
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
-        Dim strRegulationDir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
+        Dim strRegulationDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
         Dim csvStrategyFile As StreamWriter = Nothing
         Dim strFile As String = ""
         Dim strPath As String = ""
@@ -198,11 +202,11 @@ Public Class Strategies
         Catch ex As Exception
             breturn = False
             'Both the Strategy.Save() and  Strategy.Regulations.Save() will throw exceptions out to here
-            Me.mCore.Messages.SendMessage(New cMessage("Exception saving Strategies to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
+            Me.m_Core.Messages.SendMessage(New cMessage("Exception saving Strategies to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
         End Try
 
         If msg IsNot Nothing Then
-            Me.mCore.Messages.SendMessage(msg)
+            Me.m_Core.Messages.SendMessage(msg)
         End If
 
         Return breturn

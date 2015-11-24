@@ -178,13 +178,9 @@ Public Class Strategy
         Return False
     End Function
 
-    Private Sub CheckNotNoneRegWhenForcingFTimeSeries(HCRGroup As HCR_Group)
 
 
-
-    End Sub
-
-    Public Function Load(Optional msg As cMessage = Nothing, _
+    Public Function Load(Optional msg As cMessage = Nothing,
                          Optional strFilename As String = "") As Boolean _
         Implements IMSEData.Load
 
@@ -223,7 +219,6 @@ Public Class Strategy
                     tempHCRGroup.MaxF = cStringUtils.ConvertToSingle(recs(6))
                     If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
                         tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
-
                     End If
                     'backwards compatability with older file that don't contain Time Frame Rules
                     If recs.Length > 8 Then
@@ -235,6 +230,7 @@ Public Class Strategy
                     ' Whoah!
                     cMSEUtils.LogError(msg, "Strategy could not load from " & strFilename & ". " & ex.Message)
                     bSuccess = False
+                    Exit Do
                 End Try
 
                 ' Only add valid strategies!
@@ -251,7 +247,7 @@ Public Class Strategy
         cMSEUtils.ReleaseReader(reader)
 
         'for debugging
-        Debug.Assert(bSuccess, Me.ToString + ".Read() Failed to read strategies from file.")
+        Debug.Assert(bSuccess, Me.ToString + ".Read() Failed to read hcrs from file.")
 
         Return bSuccess
     End Function

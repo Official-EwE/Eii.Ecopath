@@ -329,6 +329,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmMSE.resx">
       <DependentUpon>frmMSE.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmCEFASRecruitment.resx">
       <DependentUpon>frmCEFASRecruitment.vb</DependentUpon>

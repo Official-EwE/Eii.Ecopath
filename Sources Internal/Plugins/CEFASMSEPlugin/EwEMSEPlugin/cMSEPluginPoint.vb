@@ -272,7 +272,9 @@ Public Class cMSEPluginPoint
         Try
             Me.MSE.onEcosimBeginTimeStep(BiomassAtTimestep, iTime)
         Catch ex As Exception
-
+            If ex.Message = "EwEMSEPlugin.cQuotaShares.ReadiFleetiGroupQuotaShare(). " Then
+                Throw ex
+            End If
         End Try
 
     End Sub

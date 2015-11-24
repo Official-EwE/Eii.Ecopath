@@ -229,7 +229,7 @@ Public Class cQuotaShares
     ''' <param name="iGroup"></param>
     ''' <returns></returns>
     ''' <remarks>iFleet and iGroup are zero-based</remarks>
-    Public Function ReadiFleetiGroupQuotaShare(iFleet As Integer, iGroup As Integer) As QuotaShare
+    Public Function ReadiFleetiGroupQuotaShare(iFleet As Integer, iGroup As Integer, ByVal FlagNoQuotaShare As Boolean) As QuotaShare
 
         If iFleet < 1 Or iFleet > m_core.nFleets Then Return Nothing
         If iGroup < 1 Or iGroup > m_core.nGroups Then Return Nothing
@@ -238,13 +238,9 @@ Public Class cQuotaShares
             If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGroup Then Return m_lstQuotaShares(iRow)
         Next
 
-        MessageBox.Show("A quotashare, that is not specified for fleet " & m_core.FleetInputs(iFleet).Name & " group " & m_core.EcoPathGroupInputs(iGroup).Name & " is required. Please specify and then rerun", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-
-        Return Nothing
-
     End Function
 
-    Public Function QuotaSharesExistForFleet(iGrp As Integer) As Boolean
+    Public Function QuotaSharesExistForGroup(iGrp As Integer) As Boolean
 
         For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
             If m_lstQuotaShares(iRow).mGroupNo = iGrp Then
@@ -253,6 +249,14 @@ Public Class cQuotaShares
         Next
 
         Return False
+
+    End Function
+
+    Public Function QuotaShareExistsForGroupFleet(ByVal iGrp As Integer, ByVal iFleet As Integer) As Boolean
+
+        For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
+            If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGrp Then Return True
+        Next
 
     End Function
 
@@ -286,7 +290,7 @@ Public Class cQuotaShares
         Return True
     End Function
 
-    Public Function Load(Optional msg As cMessage = Nothing, _
+    Public Function Load(Optional msg As cMessage = Nothing,
                          Optional strFilename As String = "") As Boolean Implements IMSEData.Load
 
         If (String.IsNullOrWhiteSpace(strFilename)) Then
@@ -376,10 +380,10 @@ Public Class cQuotaShares
             writer.WriteLine("GroupNumber,GroupName,FleetNumber,FleetName,QuotaShare")
 
             For Each entry As QuotaShare In m_lstQuotaShares
-                writer.WriteLine(cStringUtils.ToCSVField(entry.mGroupNo) & "," & _
-                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," & _
-                                 cStringUtils.ToCSVField(entry.mFleetNo) & "," & _
-                                 cStringUtils.ToCSVField(m_core.FleetInputs(entry.mFleetNo).Name) & "," & _
+                writer.WriteLine(cStringUtils.ToCSVField(entry.mGroupNo) & "," &
+                                 cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," &
+                                 cStringUtils.ToCSVField(entry.mFleetNo) & "," &
+                                 cStringUtils.ToCSVField(m_core.FleetInputs(entry.mFleetNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mShare))
             Next
 
@@ -439,7 +443,7 @@ Public Class cQuotaShares
         'Loop through each group
         For iGroup = 1 To m_core.nGroups
             'Check that the group has no hcr associated with it and whether there are shares associated with this group
-            If Not strategies.HCRExistsForGroup(iGroup) And Me.QuotaSharesExistForFleet(iGroup) Then
+            If Not strategies.HCRExistsForGroup(iGroup) And Me.QuotaSharesExistForGroup(iGroup) Then
                 'If there are then delete them
                 For iShare As Integer = Me.m_lstQuotaShares.Count - 1 To 0 Step -1
                     If Me.m_lstQuotaShares(iShare).mGroupNo = iGroup Then Me.m_lstQuotaShares.RemoveAt(iShare)
@@ -462,7 +466,7 @@ Public Class cQuotaShares
             'Loop though each group
             For iGrp = 1 To m_core.nGroups
                 'Check whether the group has an hcr for it and check whether there are quotashares set up for it
-                If strategies.HCRExistsForGroup(iGrp) And Not Me.QuotaSharesExistForFleet(iGrp) Then
+                If strategies.HCRExistsForGroup(iGrp) And Not Me.QuotaSharesExistForGroup(iGrp) Then
                     'if a strategy exists for the group but there aren't any quotashares create default quotashares in memory
                     TotalLandingsF = 0
                     For iFleet = 1 To m_core.nFleets
