@@ -2096,305 +2096,306 @@ Public Class cEcoSpace
                 'm_ConTracer.CInitialize()
                 Basebiomass(0) = 1
                 m_Data.IsAdvected(0) = True
-            End If
+                'VC with CJW 20151124: first detritus group has to be advected for ecotracter environment to be moved around
+                m_Data.IsAdvected(Me.EcoPathData.NumLiving + 1) = True            End If
 
-            Dim btot(ip) As Single
+                Dim btot(ip) As Single
 
-            For iflt As Integer = 1 To Me.m_Data.nFleets
-                For i = 0 To m_Data.InRow + 1
-                    For j = 0 To m_Data.InCol + 1
-                        If m_Data.Sail(iflt)(i, j) = 0 Then m_Data.Sail(iflt)(i, j) = 0.000001
-                    Next
-                Next
-            Next iflt
-
-            Dim sumb(Me.m_Data.NGroups) As Single
-            For ip = 0 To m_Data.NGroups
-                Btime(ip) = 0
-                For i = 0 To m_Data.InRow + 1
-                    For j = 0 To m_Data.InCol + 1
-
-                        'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
-
-                        If m_Data.IsAdvected(ip) Then
-                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(ip)(i, j) * m_SimData.StartBiomass(ip)
-                        Else
-                            m_Data.Bcell(i, j, ip) = 0
-                        End If
-
-                        If m_Data.Depth(i, j) > 0 Then
-
-                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(ip)(i, j) * m_SimData.StartBiomass(ip)
-                            'sumb(ip) += m_Data.Bcell(i, j, ip)
-
-                            If m_Data.IsMigratory(ip) Then
-                                If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
-                            End If
-                        Else
-                            'Depth(i,j) <= 0
-                            AMm(i, j, ip) = -1.0 'E+30
-                        End If ' If m_Data.Depth(i, j) > 0 Then
-
-                        If ip = 0 Then m_Data.Bcell(i, j, ip) = 1
-
-                        m_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
-                        If i > 0 And j > 0 And i <= m_Data.InRow And j <= m_Data.InCol Then Btime(ip) = Btime(ip) + m_Data.Bcell(i, j, ip)
-
-                        If m_tracerData.EcoSpaceConSimOn And ip <= m_Data.NGroups Then
-                            'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
-                            'jb in EwE5 Ccell() is initialized using ConcTr()
-                            'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
-                            m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
-                            m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
-                        End If
-
-                        Cper(i, j, ip) = m_SimData.Cbase(ip)
-                        FtimeCell(i, j, ip) = 1
-                        HdenCell(i, j, ip) = m_SimData.Hden(ip)
-                        btot(ip) += m_Data.Bcell(i, j, ip)
-                    Next j
-                Next i
-                Btime(ip) = Btime(ip) / m_Data.nWaterCells
-                'If ip > 0 Then
-                '    System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
-                'End If
-            Next ip
-
-            Dim isc As Integer, ieco As Integer
-            isc = 0
-            For isp = 1 To m_Stanza.Nsplit
-                For ist = 1 To m_Stanza.Nstanza(isp)
-                    isc = isc + 1
-
-                    ieco = m_Stanza.EcopathCode(isp, ist)
-                    If m_Data.NewMultiStanza Or m_Data.UseIBM Then
-                        'these flags turn off implicit integration for multistanza biomasses when newmultistanza=true
-                        m_Data.ByPassIntegrate(ieco) = True
-                        If m_Data.UseIBM Then m_Data.ByPassIntegrate(nvar2 + isc) = True
-                    End If
-
-                    Ecode(isc) = ieco
-                    If m_Data.IsMigratory(ieco) = True Then m_Data.IsMigratory(nvar2 + isc) = True
+                For iflt As Integer = 1 To Me.m_Data.nFleets
                     For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
+                            If m_Data.Sail(iflt)(i, j) = 0 Then m_Data.Sail(iflt)(i, j) = 0.000001
+                        Next
+                    Next
+                Next iflt
+
+                Dim sumb(Me.m_Data.NGroups) As Single
+                For ip = 0 To m_Data.NGroups
+                    Btime(ip) = 0
+                    For i = 0 To m_Data.InRow + 1
+                        For j = 0 To m_Data.InCol + 1
+
+                            'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
+
+                            If m_Data.IsAdvected(ip) Then
+                                m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(ip)(i, j) * m_SimData.StartBiomass(ip)
+                            Else
+                                m_Data.Bcell(i, j, ip) = 0
+                            End If
+
                             If m_Data.Depth(i, j) > 0 Then
 
-                                m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(ieco)(i, j) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
-                                If m_Data.NewMultiStanza Then
-                                    m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(ieco)(i, j) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
-                                End If
+                                m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(ip)(i, j) * m_SimData.StartBiomass(ip)
+                                'sumb(ip) += m_Data.Bcell(i, j, ip)
 
-                            Else 'm_Data.Depth(i, j) > 0
-                                'Land
-                                m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
-                            End If 'm_Data.Depth(i, j) > 0
-                            m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
+                                If m_Data.IsMigratory(ip) Then
+                                    If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
+                                End If
+                            Else
+                                'Depth(i,j) <= 0
+                                AMm(i, j, ip) = -1.0 'E+30
+                            End If ' If m_Data.Depth(i, j) > 0 Then
+
+                            If ip = 0 Then m_Data.Bcell(i, j, ip) = 1
+
+                            m_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
+                            If i > 0 And j > 0 And i <= m_Data.InRow And j <= m_Data.InCol Then Btime(ip) = Btime(ip) + m_Data.Bcell(i, j, ip)
+
+                            If m_tracerData.EcoSpaceConSimOn And ip <= m_Data.NGroups Then
+                                'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
+                                'jb in EwE5 Ccell() is initialized using ConcTr()
+                                'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
+                                m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
+                                m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
+                            End If
+
+                            Cper(i, j, ip) = m_SimData.Cbase(ip)
+                            FtimeCell(i, j, ip) = 1
+                            HdenCell(i, j, ip) = m_SimData.Hden(ip)
+                            btot(ip) += m_Data.Bcell(i, j, ip)
                         Next j
                     Next i
-                Next ist
-            Next isp
+                    Btime(ip) = Btime(ip) / m_Data.nWaterCells
+                    'If ip > 0 Then
+                    '    System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
+                    'End If
+                Next ip
 
-            'set dispersal rate arrays for solvegrid
-            SetMovementParameters()
+                Dim isc As Integer, ieco As Integer
+                isc = 0
+                For isp = 1 To m_Stanza.Nsplit
+                    For ist = 1 To m_Stanza.Nstanza(isp)
+                        isc = isc + 1
 
-            'Need to call this to initialize DepthY and DepthX arrays.  
-            If m_Data.CurrentForce Then SetXYBoundaryDepths()
-
-            'set some solvegrid solution parameters
-            Dim iter As Double
-            Dim TimeStep2 As Single
-
-            Dim ihalf As Integer = Math.Truncate(m_Data.InCol / 2)
-            j = 0
-            For i = ihalf To 1 Step -1
-                j = j + 1
-                Me.m_Data.jord(i) = j
-            Next
-            For i = ihalf + 1 To m_Data.InCol
-                j = j + 1
-                Me.m_Data.jord(i) = j
-            Next
-
-            iter = 0
-            TimeStep2 = m_Data.TimeStep '/ 2
-
-            ReDim RelRepStanza(m_Stanza.Nsplit)
-            For i = 1 To m_Stanza.Nsplit
-                RelRepStanza(i) = 1 / m_SimData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
-            Next i
-
-            Dim waterCtr As Integer = 0
-            Dim foundRow As Boolean
-            ReDim m_Data.iWaterCellIndex(m_Data.InCol * m_Data.InRow)
-            ReDim m_Data.jWaterCellIndex(m_Data.InCol * m_Data.InRow)
-            ReDim m_Data.iStartRow(m_Data.InCol)
-            ReDim m_Data.iEndRow(m_Data.InCol)
-            ReDim m_Data.jStartCol(m_Data.InRow)
-            ReDim m_Data.jEndCol(m_Data.InRow)
-
-
-            'this finds the start and end rows and columns so that solvegrid doesn't go through every one
-            For j = 1 To m_Data.InCol
-                foundRow = False
-                m_Data.iStartRow(j) = m_Data.InRow + 1
-                m_Data.iEndRow(j) = 0
-                For i = 1 To m_Data.InRow
-                    If m_Data.Depth(i, j) > 0 Then
-                        waterCtr = waterCtr + 1
-                        m_Data.iWaterCellIndex(waterCtr) = i
-                        m_Data.jWaterCellIndex(waterCtr) = j
-                        If m_Data.iStartRow(j) = m_Data.InRow + 1 Then
-                            m_Data.iStartRow(j) = i
-                            foundRow = True
+                        ieco = m_Stanza.EcopathCode(isp, ist)
+                        If m_Data.NewMultiStanza Or m_Data.UseIBM Then
+                            'these flags turn off implicit integration for multistanza biomasses when newmultistanza=true
+                            m_Data.ByPassIntegrate(ieco) = True
+                            If m_Data.UseIBM Then m_Data.ByPassIntegrate(nvar2 + isc) = True
                         End If
-                        m_Data.iEndRow(j) = i
-                    End If
-                Next
-                'm_Data.iStartRow(j) = 1
-                'm_Data.iEndRow(j) = m_Data.Inrow
-            Next
-            m_Data.iTotalWaterCells = waterCtr
 
-            For i = 1 To m_Data.InRow
-                m_Data.jStartCol(i) = m_Data.InCol + 1
-                m_Data.jEndCol(i) = 0
+                        Ecode(isc) = ieco
+                        If m_Data.IsMigratory(ieco) = True Then m_Data.IsMigratory(nvar2 + isc) = True
+                        For i = 0 To m_Data.InRow + 1
+                            For j = 0 To m_Data.InCol + 1
+                                If m_Data.Depth(i, j) > 0 Then
+
+                                    m_Data.Bcell(i, j, nvar2 + isc) = NstanzaBase(isc) * Me.m_Data.HabCap(ieco)(i, j) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                    If m_Data.NewMultiStanza Then
+                                        m_Data.PredCell(i, j, ieco) = m_SimData.pred(ieco) * Me.m_Data.HabCap(ieco)(i, j) * Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ieco)
+                                    End If
+
+                                Else 'm_Data.Depth(i, j) > 0
+                                    'Land
+                                    m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
+                                End If 'm_Data.Depth(i, j) > 0
+                                m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
+                            Next j
+                        Next i
+                    Next ist
+                Next isp
+
+                'set dispersal rate arrays for solvegrid
+                SetMovementParameters()
+
+                'Need to call this to initialize DepthY and DepthX arrays.  
+                If m_Data.CurrentForce Then SetXYBoundaryDepths()
+
+                'set some solvegrid solution parameters
+                Dim iter As Double
+                Dim TimeStep2 As Single
+
+                Dim ihalf As Integer = Math.Truncate(m_Data.InCol / 2)
+                j = 0
+                For i = ihalf To 1 Step -1
+                    j = j + 1
+                    Me.m_Data.jord(i) = j
+                Next
+                For i = ihalf + 1 To m_Data.InCol
+                    j = j + 1
+                    Me.m_Data.jord(i) = j
+                Next
+
+                iter = 0
+                TimeStep2 = m_Data.TimeStep '/ 2
+
+                ReDim RelRepStanza(m_Stanza.Nsplit)
+                For i = 1 To m_Stanza.Nsplit
+                    RelRepStanza(i) = 1 / m_SimData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
+                Next i
+
+                Dim waterCtr As Integer = 0
+                Dim foundRow As Boolean
+                ReDim m_Data.iWaterCellIndex(m_Data.InCol * m_Data.InRow)
+                ReDim m_Data.jWaterCellIndex(m_Data.InCol * m_Data.InRow)
+                ReDim m_Data.iStartRow(m_Data.InCol)
+                ReDim m_Data.iEndRow(m_Data.InCol)
+                ReDim m_Data.jStartCol(m_Data.InRow)
+                ReDim m_Data.jEndCol(m_Data.InRow)
+
+
+                'this finds the start and end rows and columns so that solvegrid doesn't go through every one
                 For j = 1 To m_Data.InCol
-                    If m_Data.Depth(i, j) > 0 Then
-                        If m_Data.jStartCol(i) = m_Data.InCol + 1 Then
-                            m_Data.jStartCol(i) = j
+                    foundRow = False
+                    m_Data.iStartRow(j) = m_Data.InRow + 1
+                    m_Data.iEndRow(j) = 0
+                    For i = 1 To m_Data.InRow
+                        If m_Data.Depth(i, j) > 0 Then
+                            waterCtr = waterCtr + 1
+                            m_Data.iWaterCellIndex(waterCtr) = i
+                            m_Data.jWaterCellIndex(waterCtr) = j
+                            If m_Data.iStartRow(j) = m_Data.InRow + 1 Then
+                                m_Data.iStartRow(j) = i
+                                foundRow = True
+                            End If
+                            m_Data.iEndRow(j) = i
                         End If
-                        m_Data.jEndCol(i) = j
+                    Next
+                    'm_Data.iStartRow(j) = 1
+                    'm_Data.iEndRow(j) = m_Data.Inrow
+                Next
+                m_Data.iTotalWaterCells = waterCtr
+
+                For i = 1 To m_Data.InRow
+                    m_Data.jStartCol(i) = m_Data.InCol + 1
+                    m_Data.jEndCol(i) = 0
+                    For j = 1 To m_Data.InCol
+                        If m_Data.Depth(i, j) > 0 Then
+                            If m_Data.jStartCol(i) = m_Data.InCol + 1 Then
+                                m_Data.jStartCol(i) = j
+                            End If
+                            m_Data.jEndCol(i) = j
+                        End If
+                    Next
+                Next
+
+                'jb move to RedimForRun
+                ' ReDim BEQlast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+
+                '**** this functionality has been moved below **** 
+                'this finds which groups are being integrated, so they can be adeq
+                'ReDim m_Data.integratedGroups(m_Data.nvartot)
+                'Dim integrateIndex As Integer = 0
+                'For i = 1 To m_Data.nvartot
+                '    If m_Data.ByPassIntegrate(i) = False Then
+                '        integrateIndex = integrateIndex + 1
+                '        m_Data.integratedGroups(integrateIndex) = i
+                '    End If
+                'Next
+                'm_Data.totalIntegratedGroups = integrateIndex
+
+                'ww set up thread alocation for gridsolver, since migratory takes much longer
+                nMigratory = 0
+                ReDim migratoryIndex(m_Data.nvartot)
+                For i = 1 To m_Data.nvartot
+                    'find all the migratory species
+                    If m_Data.IsMigratory(i) And m_Data.ByPassIntegrate(i) = False Then
+                        nMigratory += 1
+                        migratoryIndex(nMigratory) = i
                     End If
                 Next
-            Next
 
-            'jb move to RedimForRun
-            ' ReDim BEQlast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-
-            '**** this functionality has been moved below **** 
-            'this finds which groups are being integrated, so they can be adeq
-            'ReDim m_Data.integratedGroups(m_Data.nvartot)
-            'Dim integrateIndex As Integer = 0
-            'For i = 1 To m_Data.nvartot
-            '    If m_Data.ByPassIntegrate(i) = False Then
-            '        integrateIndex = integrateIndex + 1
-            '        m_Data.integratedGroups(integrateIndex) = i
-            '    End If
-            'Next
-            'm_Data.totalIntegratedGroups = integrateIndex
-
-            'ww set up thread alocation for gridsolver, since migratory takes much longer
-            nMigratory = 0
-            ReDim migratoryIndex(m_Data.nvartot)
-            For i = 1 To m_Data.nvartot
-                'find all the migratory species
-                If m_Data.IsMigratory(i) And m_Data.ByPassIntegrate(i) = False Then
-                    nMigratory += 1
-                    migratoryIndex(nMigratory) = i
+                If Me.m_Data.nEffortDistThreads > Me.m_Data.nFleets Then
+                    Me.m_Data.nEffortDistThreads = Me.m_Data.nFleets
+                    System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of effort distribution threads limited to number of fleets.")
                 End If
-            Next
 
-            If Me.m_Data.nEffortDistThreads > Me.m_Data.nFleets Then
-                Me.m_Data.nEffortDistThreads = Me.m_Data.nFleets
-                System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of effort distribution threads limited to number of fleets.")
-            End If
+                If Me.m_Data.nGridSolverThreads > Me.m_Data.NGroups Then
+                    Me.m_Data.nGridSolverThreads = Me.m_Data.NGroups
+                    System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of grid threads limited to number of groups.")
+                End If
 
-            If Me.m_Data.nGridSolverThreads > Me.m_Data.NGroups Then
-                Me.m_Data.nGridSolverThreads = Me.m_Data.NGroups
-                System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of grid threads limited to number of groups.")
-            End If
+                If Me.m_Data.nSpaceSolverThreads > Me.m_Data.iTotalWaterCells Then
+                    Me.m_Data.nSpaceSolverThreads = Me.m_Data.iTotalWaterCells
+                    System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of group threads limited to number of water cells.")
+                End If
 
-            If Me.m_Data.nSpaceSolverThreads > Me.m_Data.iTotalWaterCells Then
-                Me.m_Data.nSpaceSolverThreads = Me.m_Data.iTotalWaterCells
-                System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of group threads limited to number of water cells.")
-            End If
-
-            Dim thread As Integer
-            ReDim nGroupsInThread(m_Data.nGridSolverThreads)
-            ReDim threadGroups(m_Data.nGridSolverThreads, m_Data.nvartot)
-            For i = 1 To nMigratory
-                'allocate the migratory species to threads
-                thread = (i - 1) Mod m_Data.nGridSolverThreads + 1
-                nGroupsInThread(thread) += 1
-                threadGroups(thread, nGroupsInThread(thread)) = migratoryIndex(i)
-            Next
-
-            Dim nNonMigThreads As Integer = (m_Data.nGridSolverThreads - nMigratory Mod m_Data.nGridSolverThreads)
-            Dim numNonMig As Integer
-            For i = 1 To m_Data.nvartot
-                'assign the nonmigratory integrated variables to the least used threads
-                If m_Data.IsMigratory(i) = False And m_Data.ByPassIntegrate(i) = False Then
-                    numNonMig += 1
-                    thread = m_Data.nGridSolverThreads - (numNonMig - 1) Mod nNonMigThreads
+                Dim thread As Integer
+                ReDim nGroupsInThread(m_Data.nGridSolverThreads)
+                ReDim threadGroups(m_Data.nGridSolverThreads, m_Data.nvartot)
+                For i = 1 To nMigratory
+                    'allocate the migratory species to threads
+                    thread = (i - 1) Mod m_Data.nGridSolverThreads + 1
                     nGroupsInThread(thread) += 1
-                    threadGroups(thread, nGroupsInThread(thread)) = i
-                End If
-            Next
+                    threadGroups(thread, nGroupsInThread(thread)) = migratoryIndex(i)
+                Next
 
-            InitGridSolverThreads() 'init the solver objects one for each thread
-            InitSpaceSolverThreads()
-            If m_Data.UseIBM Then InitIBMSolverThreads()
-
-            If nMigratory > 0 Then 'And useMigratoryGrad Then
-                SetMigGrad()
-            End If
-
-            If m_tracerData.EcoSpaceConSimOn Then
-                'initialize the contaminant tracing
-                Try
-                    'contaminant tracer grid solver runs on one thread
-                    'process all groups on the single thread
-                    ReDim Me.threadGroupsConSim(1, m_Data.NGroups)
-                    For igrp = 1 To m_Data.NGroups
-                        threadGroupsConSim(1, igrp) = igrp
-                    Next
-
-                    'bypass integrated for contaminants should be false for all groups
-                    ReDim m_ConBypassIntegrated(m_Data.NGroups)
-
-                    If grdslvConSim Is Nothing Then
-                        'grid solver object for the contaminant tracer
-                        grdslvConSim = New cGridSolver(1)
+                Dim nNonMigThreads As Integer = (m_Data.nGridSolverThreads - nMigratory Mod m_Data.nGridSolverThreads)
+                Dim numNonMig As Integer
+                For i = 1 To m_Data.nvartot
+                    'assign the nonmigratory integrated variables to the least used threads
+                    If m_Data.IsMigratory(i) = False And m_Data.ByPassIntegrate(i) = False Then
+                        numNonMig += 1
+                        thread = m_Data.nGridSolverThreads - (numNonMig - 1) Mod nNonMigThreads
+                        nGroupsInThread(thread) += 1
+                        threadGroups(thread, nGroupsInThread(thread)) = i
                     End If
+                Next
 
-                    'init the grid solver object
-                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, _
-                                       m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, _
-                                       m_Data.jEndCol, m_Data.IsMigratory, threadGroupsConSim, m_Data.UseExact)
+                InitGridSolverThreads() 'init the solver objects one for each thread
+                InitSpaceSolverThreads()
+                If m_Data.UseIBM Then InitIBMSolverThreads()
 
-                Catch ex As Exception
-                    'something went very wrong with the initialization
-                    m_tracerData.EcoSpaceConSimOn = False
-                    Debug.Assert(False, ex.StackTrace)
-                    cLog.Write(ex)
-                End Try
+                If nMigratory > 0 Then 'And useMigratoryGrad Then
+                    SetMigGrad()
+                End If
 
-            End If
+                If m_tracerData.EcoSpaceConSimOn Then
+                    'initialize the contaminant tracing
+                    Try
+                        'contaminant tracer grid solver runs on one thread
+                        'process all groups on the single thread
+                        ReDim Me.threadGroupsConSim(1, m_Data.NGroups)
+                        For igrp = 1 To m_Data.NGroups
+                            threadGroupsConSim(1, igrp) = igrp
+                        Next
 
-            m_Ecosim.InitializeDataInfo()
-            m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
+                        'bypass integrated for contaminants should be false for all groups
+                        ReDim m_ConBypassIntegrated(m_Data.NGroups)
 
-            'Spin-up Initialization
+                        If grdslvConSim Is Nothing Then
+                            'grid solver object for the contaminant tracer
+                            grdslvConSim = New cGridSolver(1)
+                        End If
 
-            'Does the current run use a Spin-Up period
-            Me.m_Data.bInSpinUp = Me.m_Data.UseSpinUp
+                        'init the grid solver object
+                        grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, _
+                                           m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, _
+                                           m_Data.jEndCol, m_Data.IsMigratory, threadGroupsConSim, m_Data.UseExact)
 
-            'Total number of time steps in the Spin-Up 
-            Me.nSpinUp = CInt(Me.m_Data.SpinUpYears * (1 / Me.m_Data.TimeStep))
-            'Number of time steps in one year. 
-            'Use to cycle through the first year for the Spin-Up period
-            Me.nSpinUpYear = CInt(1 * (1 / Me.m_Data.TimeStep))
-            'Clear the counters
-            Me.iSpinUp = 0
-            Me.iSpinUpYear = 0
-            'Spin-Up biomass base has not been initialized yet
-            Me.bInitSpinUpBase = True
+                    Catch ex As Exception
+                        'something went very wrong with the initialization
+                        m_tracerData.EcoSpaceConSimOn = False
+                        Debug.Assert(False, ex.StackTrace)
+                        cLog.Write(ex)
+                    End Try
 
-            'For debugging Effort Zones code
-            'sets up some zones with modified effort
-            'Me.m_Data.DebugTestEffortZones()
+                End If
 
-            Return True
+                m_Ecosim.InitializeDataInfo()
+                m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
+
+                'Spin-up Initialization
+
+                'Does the current run use a Spin-Up period
+                Me.m_Data.bInSpinUp = Me.m_Data.UseSpinUp
+
+                'Total number of time steps in the Spin-Up 
+                Me.nSpinUp = CInt(Me.m_Data.SpinUpYears * (1 / Me.m_Data.TimeStep))
+                'Number of time steps in one year. 
+                'Use to cycle through the first year for the Spin-Up period
+                Me.nSpinUpYear = CInt(1 * (1 / Me.m_Data.TimeStep))
+                'Clear the counters
+                Me.iSpinUp = 0
+                Me.iSpinUpYear = 0
+                'Spin-Up biomass base has not been initialized yet
+                Me.bInitSpinUpBase = True
+
+                'For debugging Effort Zones code
+                'sets up some zones with modified effort
+                'Me.m_Data.DebugTestEffortZones()
+
+                Return True
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
