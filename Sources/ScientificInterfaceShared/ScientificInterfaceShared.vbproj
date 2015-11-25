@@ -1016,7 +1016,6 @@
     <None Include="Resources\OK.png" />
     <None Include="Resources\PieChart.png" />
     <None Include="Resources\synonym.png" />
-    <None Include="Resources\database_warning.png" />
     <None Include="Resources\basemap.png" />
     <Content Include="Resources\bing.ico" />
     <None Include="Resources\Computer.png" />
