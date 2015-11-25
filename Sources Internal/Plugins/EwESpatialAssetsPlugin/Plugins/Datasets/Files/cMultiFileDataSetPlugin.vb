@@ -464,10 +464,10 @@ Namespace SpatialData
                             Me.IsSourceRelative = Convert.ToBoolean(xn.InnerText)
                         Case "Variable"
                             Me.VarName = cin.GetVarName(xn.InnerText)
-                            ' Backwards compatibility
-                            If (Me.VarName = eVarNameFlags.NotSet And cStringUtils.IsNumber(xn.InnerText)) Then
-                                Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
-                            End If
+                            ' JS 25Nov15 (Happy first birthday Lara) removed dangerous backward compatibility
+                            'If (Me.VarName = eVarNameFlags.NotSet And cStringUtils.IsNumber(xn.InnerText)) Then
+                            '    Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                            'End If
                         Case "Seasonal"
                             Me.IsSeasonal = Convert.ToBoolean(xn.InnerText)
                             Me.SeasonsEnd = Date.MaxValue

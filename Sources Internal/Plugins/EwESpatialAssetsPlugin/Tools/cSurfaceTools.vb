@@ -157,7 +157,6 @@ Public Class cSurfaceTools
     ''' <param name="fs">The polygon feature set to convert.</param>
     ''' <param name="dCellWidth">Cell width, in decimal degrees, of the raster to create.</param>
     ''' <param name="strField">Attribute field to convert.</param>
-    ''' <param name="strFilter">Optional feature filter.</param>
     ''' <param name="strFileName">The output file name to write the raster to.</param>
     ''' <param name="Log"><see cref="cSpatialOperationLog"/> for logging operations.</param>
     ''' <returns>A raster.</returns>

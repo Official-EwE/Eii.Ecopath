@@ -18,11 +18,12 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore
 
 #End Region ' Imports
 
@@ -37,6 +38,7 @@ Namespace Ecospace.Controls
 
         Private m_uic As cUIContext = Nothing
         Private m_filter As eVarNameFlags = Nothing
+        Private m_manConn As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_mhEcospace As cMessageHandler = Nothing
 
@@ -53,6 +55,7 @@ Namespace Ecospace.Controls
             End Get
             Set(uic As ScientificInterfaceShared.Controls.cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
+                    Me.m_manConn = Nothing
                     Me.m_manSets = Nothing
                     If (Me.m_mhEcospace IsNot Nothing) Then
                         Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
@@ -62,7 +65,8 @@ Namespace Ecospace.Controls
                 End If
                 Me.m_uic = uic
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.m_manSets = Me.m_uic.Core.SpatialDataConnectionManager.DatasetManager
+                    Me.m_manConn = Me.m_uic.Core.SpatialDataConnectionManager
+                    Me.m_manSets = Me.m_manConn.DatasetManager
                     Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.External, eMessageType.Progress, Me.UIContext.SyncObject)
                     Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
 #If DEBUG Then
@@ -86,8 +90,6 @@ Namespace Ecospace.Controls
 
         Public Sub RefreshContent()
 
-            Dim dsSel As ISpatialDataSet = Nothing
-
             Me.SuspendLayout()
             Me.Items.Clear()
             For Each ds As ISpatialDataSet In Me.m_manSets
@@ -95,6 +97,7 @@ Namespace Ecospace.Controls
                     Me.Items.Add(ds)
                 End If
             Next
+
             Me.ResumeLayout()
 
         End Sub
@@ -119,8 +122,7 @@ Namespace Ecospace.Controls
             If (ds Is Nothing) Then Return
 
             Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-            Dim img As Image = cStyleGuide.GetImage(comp)
-            Dim strStatus As String = ""
+            Dim img As Image = cSystemUtils.IIF(Me.m_manConn.IsApplied(ds), SharedResources.Database, SharedResources.database_NA)
             Dim clrText As Color = e.ForeColor
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center
@@ -133,16 +135,6 @@ Namespace Ecospace.Controls
             ' Render default background 
             e.DrawBackground()
 
-            ' Render compatibility image
-            If Me.m_manSets.IsIndexing(ds) Then
-                ' ToDo: globalize this
-                strStatus = String.Format("indexing " & comp.PercentIndexed & "%")
-                img = SharedResources.Question
-            Else
-                Dim sdcf As New cSpatialDatasetCompatibilityFormatter()
-                strStatus = sdcf.GetDescriptor(comp)
-            End If
-
             If (img IsNot Nothing) Then
                 ' Render image
                 e.Graphics.DrawImage(img, e.Bounds.X + 2, e.Bounds.Y + 2, 16, 16)
@@ -150,25 +142,12 @@ Namespace Ecospace.Controls
             ' Render default text, bumped to the right by 22 pixels
             Using br As New SolidBrush(clrText)
                 Dim rcText As New Rectangle(e.Bounds.X + 22, e.Bounds.Y, e.Bounds.Width - 22, e.Bounds.Height)
-                e.Graphics.DrawString(String.Format(SharedResources.GENERIC_LABEL_DETAILED, ds.DisplayName, strStatus), _
-                                      e.Font, br, rcText, fmt)
+                e.Graphics.DrawString(ds.DisplayName, e.Font, br, rcText, fmt)
             End Using
 
             ' Render default focus rectangle
             e.DrawFocusRectangle()
 
-        End Sub
-
-        Private m_strTooltipText As String = ""
-
-        Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
-            Me.UpdateTooltip(False)
-            MyBase.OnMouseMove(e)
-        End Sub
-
-        Protected Overrides Sub OnMouseHover(e As System.EventArgs)
-            Me.UpdateTooltip(True)
-            MyBase.OnMouseHover(e)
         End Sub
 
         Private Sub OnCoreMessage(ByRef msg As cMessage)
@@ -185,39 +164,12 @@ Namespace Ecospace.Controls
                             Me.Invalidate()
 
                     End Select
-                    Me.UpdateTooltip(False)
 
                 End If
 
             Catch ex As Exception
 
             End Try
-
-        End Sub
-
-        Private Sub UpdateTooltip(bShowTip As Boolean)
-
-            If (Me.UIContext Is Nothing) Then Return
-
-            Dim strTextOld As String = Me.m_strTooltipText
-
-            If (Not bShowTip) Then
-                Me.m_strTooltipText = ""
-            Else
-                If (String.IsNullOrWhiteSpace(Me.m_strTooltipText)) Then
-                    Dim pt As Point = Me.PointToClient(MousePosition)
-                    Dim i As Integer = Me.IndexFromPoint(pt)
-                    If (i >= 0) Then
-                        Dim ds As ISpatialDataSet = CType(Me.Items(i), ISpatialDataSet)
-                        Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, ds)
-                        Me.m_strTooltipText = comp.ToString
-                    End If
-                End If
-            End If
-
-            If String.Compare(Me.m_strTooltipText, strTextOld) <> 0 Then
-                cToolTipShared.GetInstance().SetToolTip(Me, Me.m_strTooltipText)
-            End If
 
         End Sub
 

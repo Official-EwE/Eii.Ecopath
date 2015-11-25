@@ -20,18 +20,16 @@
 
 Option Strict On
 Imports System.Collections.Generic
+Imports System.Drawing
 Imports System.IO
+Imports System.Text
 Imports System.Windows.Forms
 Imports EwECore.SpatialData
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports System.Text
-Imports System.Drawing
 
 #End Region ' Imports
 

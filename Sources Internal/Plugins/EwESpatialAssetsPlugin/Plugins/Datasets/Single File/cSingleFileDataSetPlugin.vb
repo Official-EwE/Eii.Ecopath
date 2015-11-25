@@ -21,14 +21,14 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
+Imports System.Text
 Imports System.Windows.Forms
 Imports System.Xml
 Imports DotSpatial.Data
+Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports EwECore
-Imports System.Text
 
 #End Region ' Imports
 
@@ -293,10 +293,10 @@ Namespace SpatialData
 
                         Case "Variable"
                             Me.VarName = cin.GetVarName(xn.InnerText)
-                            ' Backwards compatibility
-                            If (Me.VarName = eVarNameFlags.NotSet And cStringUtils.IsNumber(xn.InnerText)) Then
-                                Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
-                            End If
+                            ' JS 25Nov15 (Happy first birthday Lara) removed dangerous backward compatibility
+                            'If (Me.VarName = eVarNameFlags.NotSet And cStringUtils.IsNumber(xn.InnerText)) Then
+                            '    Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                            'End If
 
                         Case "File"
                             ' -- Source --

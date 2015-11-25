@@ -4202,7 +4202,7 @@ Public Class frmEwE6
     Private Sub OnUpdateExportEcospaceDatasets(cmd As cCommand) Handles m_cmdEcospaceExportSpatialDatasets.OnUpdate
         Try
             Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-            cmd.Enabled = Not m.IsBusy And (Me.Core.SpatialDataConnectionManager.nDatasets > 0)
+            cmd.Enabled = Not m.IsBusy And (Me.Core.SpatialDataConnectionManager.DatasetManager.Count > 0)
         Catch ex As Exception
 
         End Try

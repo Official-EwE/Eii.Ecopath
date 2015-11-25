@@ -307,31 +307,6 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the number of datasets in the manager
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property nDatasets As Integer
-            Get
-                Return Me.m_datasetManager.Count
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get a dataset at a given position.
-        ''' </summary>
-        ''' <param name="iDataset">Zero-based index of the dataset.</param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property Dataset(ByVal iDataset As Integer) As ISpatialDataSet
-            Get
-                Debug.Assert(iDataset > 0 And iDataset <= nDatasets, "Index out of range")
-                Return Me.m_datasetManager(iDataset)
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Returns an array of dataset templates.
         ''' </summary>
         ''' <param name="vn">The varname to filter by, if any.</param>
@@ -392,6 +367,19 @@ Namespace SpatialData
                 'Ouch
             End Try
         End Sub
+
+        Public Function IsApplied(ds As ISpatialDataSet, Optional bEnabledOnly As Boolean = False) As Boolean
+            For Each adt As cSpatialDataAdapter In Me.Adapters
+                For i As Integer = 1 To adt.MaxLength
+                    If adt.IsEnabled(i) Or bEnabledOnly = False Then
+                        For Each conn As cSpatialDataConnection In adt.Connections(i)
+                            If Object.ReferenceEquals(conn.Dataset, ds) Then Return True
+                        Next
+                    End If
+                Next
+            Next
+            Return False
+        End Function
 
 #End Region ' Data sets
 

@@ -24,6 +24,7 @@ Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -655,7 +656,18 @@ Namespace Ecospace.Controls
                     Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, conn.Dataset)
                     Dim fmt As New cSpatialDatasetCompatibilityFormatter()
                     Me.m_lblCompatibility.Text = fmt.Summary(comp)
-                    Me.m_pbCompat.Image = cStyleGuide.GetImage(comp)
+
+                    Select Case comp.Compatibility
+                        Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed, _
+                             cDatasetCompatilibity.eCompatibilityTypes.NotSet
+                            Me.m_pbCompat.Image = SharedResources.Question
+                        Case cDatasetCompatilibity.eCompatibilityTypes.Errors
+                            Me.m_pbCompat.Image = SharedResources.Critical
+                        Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
+                            Me.m_pbCompat.Image = SharedResources.Warning
+                        Case Else
+                            Me.m_pbCompat.Image = SharedResources.OK
+                    End Select
 
                 Catch ex As Exception
 

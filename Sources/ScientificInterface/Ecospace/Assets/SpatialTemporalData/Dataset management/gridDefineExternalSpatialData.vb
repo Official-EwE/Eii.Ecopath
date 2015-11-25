@@ -179,19 +179,6 @@ Namespace Ecospace.Controls
             datasets.AddRange(Me.m_manSets)
             datasets.Sort(New cDatasetSorter)
 
-            ' Make snapshot of all used adapters
-            Dim htUsed As New HashSet(Of ISpatialDataSet)
-            For Each adt As cSpatialDataAdapter In Me.m_man.Adapters
-                For Each conn As cSpatialDataConnection In adt.Connections()
-                    ds = conn.Dataset
-                    If (ds IsNot Nothing) Then
-                        If (Not htUsed.Contains(ds)) Then
-                            htUsed.Add(ds)
-                        End If
-                    End If
-                Next
-            Next
-
             ' Add dataset rows
             For i As Integer = 0 To datasets.Count - 1
                 ds = datasets(i)
@@ -230,7 +217,7 @@ Namespace Ecospace.Controls
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))
                 Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
-                Me(iRow, eColumnTypes.Applied) = New EwECheckboxCell(htUsed.Contains(ds), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Applied) = New EwECheckboxCell(Me.m_man.IsApplied(ds), cStyleGuide.eStyleFlags.NotEditable)
                 cell = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Select Case comp.Compatibility
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
