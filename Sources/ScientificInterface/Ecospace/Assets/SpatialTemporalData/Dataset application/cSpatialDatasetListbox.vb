@@ -93,7 +93,7 @@ Namespace Ecospace.Controls
             Me.SuspendLayout()
             Me.Items.Clear()
             For Each ds As ISpatialDataSet In Me.m_manSets
-                If (Me.m_filter = eVarNameFlags.NotSet) Or ((ds.VarName = Me.m_filter) Or (ds.VarName = eVarNameFlags.NotSet)) Then
+                If (Me.m_filter = eVarNameFlags.NotSet) Or (ds.VarName = eVarNameFlags.NotSet) Or ((ds.VarName = Me.m_filter)) Then
                     Me.Items.Add(ds)
                 End If
             Next
