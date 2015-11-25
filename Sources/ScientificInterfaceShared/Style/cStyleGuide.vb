@@ -2139,35 +2139,6 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return a standard image for a given <see cref="SpatialData.cDatasetCompatilibity"/>.
-        ''' </summary>
-        ''' <param name="comp">The <see cref="SpatialData.cDatasetCompatilibity"/> to find the image for.</param>
-        ''' <returns>A bitmap, or nothing if not applicable.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function GetImage(comp As SpatialData.cDatasetCompatilibity) As Bitmap
-            Select Case comp.Compatibility
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                    Return My.Resources.Question
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.Errors
-                    Return My.Resources.Critical
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                    Return My.Resources.database_NA
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                    Return My.Resources.Question
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    Return My.Resources.database_warning
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                    Return My.Resources.database_warning
-                Case SpatialData.cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                    Return My.Resources.Database
-                Case Else
-                    Debug.Assert(False)
-            End Select
-            Return Nothing
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Return a standard image for a given <see cref="cStyleGuide.eStyleFlags">style</see>.
         ''' </summary>
         ''' <param name="style">The style pattern to find the image for.</param>
