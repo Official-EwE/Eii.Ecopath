@@ -1352,7 +1352,6 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-
     Private Function LoadShapes() As Boolean
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -1936,6 +1935,126 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Shape load helpers
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Load all time series for a given dataset.
+    ''' </summary>
+    ''' <param name="iDataset">Index of dataset to load.</param>
+    ''' <returns>Always false.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function LoadTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
+         Implements DataSources.IEcosimDatasource.LoadTimeSeriesDataset
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+        Dim strSQL As String = ""
+        Dim astrTimeValues() As String
+        Dim iDatasetID As Integer = tsDS.iDatasetDBID(iDataset)
+        Dim iTimeSeriesID As Integer = 0
+        Dim iSeries As Integer = 1
+        Dim iIndex As Integer = 0
+        Dim iPoint As Integer = 0
+        Dim bSucces As Boolean = True
+        Dim dtTS As DataTable = Me.ReadTable("EcosimTimeSeries")
+        Dim dtGrp As DataTable = Me.ReadTable("EcosimTimeSeriesGroup")
+        Dim dtFlt As DataTable = Me.ReadTable("EcosimTimeSeriesFleet")
+
+        dtTS.DefaultView.RowFilter = CStr("DatasetID=" & iDatasetID)
+        dtTS.DefaultView.Sort = "Sequence ASC"
+
+        Dim rows As DataRowCollection = dtTS.DefaultView.ToTable.Rows()
+
+        tsDS.ClearTimeSeries()
+        tsDS.ActiveDatasetIndex = iDataset
+        tsDS.nMaxYears = tsDS.nDatasetNumPoints(iDataset)
+        tsDS.DataSetInterval = tsDS.DataSetIntervals(iDataset)
+
+        ' JS 20oct07: data source should NOT do this; is responsibility of core logic
+        tsDS.nGroups = ecopathDS.NumGroups
+
+        ' JS 02Nov12: The database structure cannot cascadingly delete time series when
+        ' a pool code target is deleted. This is not a big problem, as PoolCode (indexes)
+        ' are translated to database IDs (persistent) upon import. However, lingering 
+        ' time series create a bit of a mess.
+
+        If (iDataset > 0) Then
+            Try
+                tsDS.nTimeSeries = rows.Count
+            Catch ex As Exception
+                tsDS.nTimeSeries = 0
+            End Try
+        End If
+
+        tsDS.RedimTimeSeries()
+        tsDS.RedimEnabledTimeSeries()
+
+        If tsDS.nTimeSeries = 0 Then Return bSucces
+
+        Try
+            For iRow As Integer = 0 To rows.Count - 1
+
+                Dim drow As DataRow = rows(iRow)
+                Dim iTSID As Integer = CInt(drow("TimeSeriesID"))
+
+                tsDS.iTimeSeriesDBID(iSeries) = iTSID
+                tsDS.strName(iSeries) = CStr(drow("DatName"))
+                tsDS.TimeSeriesType(iSeries) = DirectCast(CInt(drow("DatType")), eTimeSeriesType)
+                tsDS.sWeight(iSeries) = CSng(drow("WtType"))
+                tsDS.sCV(iSeries) = CSng(Me.ReadSafe(drow, "CV", 0.0!))
+
+                Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
+
+                    Case eTimeSeriesCategoryType.Group
+                        For Each drowSub As DataRow In dtGrp.Select("TimeSeriesID=" & iTSID)
+                            Try
+                                iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(drowSub("GroupID")))
+                            Catch ex As Exception
+                                iIndex = -1
+                            End Try
+                        Next
+
+                    Case eTimeSeriesCategoryType.Fleet
+                        For Each drowSub As DataRow In dtFlt.Select("TimeSeriesID=" & iTSID)
+                            Try
+                                iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(drowSub("FleetID")))
+                            Catch ex As Exception
+                                iIndex = -1
+                            End Try
+                        Next
+
+                    Case eTimeSeriesCategoryType.Forcing
+                        Debug.Assert(False, String.Format("Time series {0} should have been imported as a forcing function", iTSID))
+                        bSucces = False
+
+                    Case eTimeSeriesCategoryType.NotSet
+                        Debug.Assert(False, String.Format("Time series {0} is of an unknown type", iTSID))
+                        bSucces = False
+
+                End Select
+
+                tsDS.iPool(iSeries) = iIndex
+
+                astrTimeValues = CStr(drow("TimeValues")).Split(CChar(" "))
+
+                For iPoint = 1 To Math.Min(tsDS.nDatasetNumPoints(iDataset), astrTimeValues.Length)
+                    Try
+                        tsDS.sValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
+                    Catch ex As Exception
+                        ' Woops
+                    End Try
+                Next
+
+                iSeries += 1
+            Next iRow
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        Return bSucces
+    End Function
+
 #End Region ' Ecosim
 
 #Region " Ecospace "
@@ -2129,7 +2248,7 @@ Public Class cEIIXMLDataSource
         dtHab.DefaultView.Sort = "Sequence ASC"
         ecospaceDS.NoHabitats = dtHab.DefaultView.ToTable.Rows.Count()
 
-          ecospaceDS.RedimHabitatVariables(False)
+        ecospaceDS.RedimHabitatVariables(False)
 
         For Each drow As DataRow In dtHab.DefaultView.ToTable.Rows
             Try
@@ -3139,18 +3258,6 @@ Public Class cEIIXMLDataSource
     ''' -------------------------------------------------------------------
     Friend Function RemoveTimeSeries(ByVal iTimeSeriesID As Integer) As Boolean _
             Implements DataSources.IEcosimDatasource.RemoveTimeSeries
-        Return False
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Load all time series for a given dataset.
-    ''' </summary>
-    ''' <param name="iDataset">Index of dataset to load.</param>
-    ''' <returns>Always false.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function LoadTimeSeriesDataset(ByVal iDataset As Integer) As Boolean _
-         Implements DataSources.IEcosimDatasource.LoadTimeSeriesDataset
         Return False
     End Function
 

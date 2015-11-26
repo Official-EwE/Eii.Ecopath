@@ -4166,6 +4166,8 @@ Namespace DataSources
             bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
 
+            ' ToDo: cascadingly delete all time series for this fleet
+
             Return bSucces
         End Function
 
@@ -4190,7 +4192,9 @@ Namespace DataSources
                 ' Big sigh, it's even worse...
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
+
+                ' ToDo: cascadingly delete all time series for this group
 
             Catch ex As Exception
                 bSucces = False
@@ -6744,11 +6748,10 @@ Namespace DataSources
             ' JS 20oct07: data source should NOT do this; is responsibility of core logic
             tsDS.nGroups = ecopathDS.NumGroups
 
-            ' JS 02Nov12: The data base structure shows a severy limitation. If an Ecopath group is deleted, the associated
-            ' record in EcosimTimeSeriesGroup is automaticall removed through cascading data rules which is correct.
-            ' However, the master EcosimTimeSeries record is left in place. Althoug this has no implications for the
-            ' functioning of Ecosim, this deficiendcy breaks the time series structure which cannot be repaired with any 
-            ' EwE tool other a time series reimport.
+            ' JS 02Nov12: The database structure cannot cascadingly delete time series when
+            ' a pool code target is deleted. This is not a big problem, as PoolCode (indexes)
+            ' are translated to database IDs (persistent) upon import. However, lingering 
+            ' time series create a bit of a mess.
 
             If (iDataset > 0) Then
 
@@ -6814,13 +6817,10 @@ Namespace DataSources
 
                     astrTimeValues = CStr(reader("TimeValues")).Split(CChar(" "))
 
-                    'Debug.Assert((astrTimeValues.Length - 1) <= tsDS.nMaxYears)
-
                     For iPoint = 1 To Math.Min(tsDS.nDatasetNumPoints(iDataset), astrTimeValues.Length)
                         Try
                             tsDS.sValues(iPoint, iSeries) = cStringUtils.ConvertToSingle(astrTimeValues(iPoint - 1))
                         Catch ex As Exception
-                            ex = ex
                             ' Woops
                         End Try
                     Next
