@@ -94,7 +94,7 @@ Namespace Ecosim
 
 #End Region ' Constructor
 
-#Region " Events "
+#Region " Form overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
@@ -213,8 +213,6 @@ Namespace Ecosim
 
         End Sub
 
-
-        ' Public Overrides sub 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -267,12 +265,22 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Public Overrides ReadOnly Property IsRunForm As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
+#End Region ' Form overrides
+
+#Region " Events "
+
+        Private Sub OnStop(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_btnStop.Click
             Me.StopRun()
         End Sub
 
-        Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnApply.Click
             If Not Me.m_mcmanager Is Nothing Then
                 Try
