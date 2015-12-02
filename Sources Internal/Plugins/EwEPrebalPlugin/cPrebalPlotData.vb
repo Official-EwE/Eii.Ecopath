@@ -27,11 +27,15 @@ Imports EwECore
 
 Public Class cPrebalPlotData
 
+#Region " Private vars "
+
     Private m_nGroups As Integer = 0
     Private m_iGroup As Integer()
     Private m_data As Single()
     Private m_status As eStatusFlags()
     Private m_result As cPrebalModel.eResultTypes = cPrebalModel.eResultTypes.NotSet
+
+#End Region ' Private vars
 
     Public Sub New(result As cPrebalModel.eResultTypes)
         Me.m_result = result

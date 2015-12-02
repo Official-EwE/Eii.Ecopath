@@ -67,6 +67,8 @@ Public Class cPrebalZedGraphHelper
     ''' -----------------------------------------------------------------------
     Public Shadows Sub Attach(uic As cUIContext, zgc As ZedGraph.ZedGraphControl, model As cPrebalModel, strTitle As String)
 
+        ' ToDo: globalize this
+
         MyBase.Attach(uic, zgc, 4)
 
         ' Store ref
@@ -141,30 +143,32 @@ Public Class cPrebalZedGraphHelper
         For iPane As Integer = 1 To Me.NumPanes
 
             Dim p As GraphPane = Me.GetPane(iPane)
-            Dim pptlEntered As New PointPairList()
-            Dim pptlComputed As New PointPairList()
-            Dim pplRegression As New PointPairList()
-
+ 
             Dim bi As BarItem = Nothing
             Dim li As LineItem = Nothing
             Dim clr As Color = Nothing
             Dim sMin As Single = 1
             Dim sMax As Single = 1
             Dim j As Integer = 1
-            Dim bComputed As Boolean = False
+            Dim bIsComputed As Boolean = False
+            Dim bShowRegression As Boolean = True
             Dim pd As cPrebalPlotData = Me.GetDataForPlot(iPane)
 
             Debug.Assert(pd IsNot Nothing)
+
+            Dim pptlEntered As New PointPairList()
+            Dim pptlComputed As New PointPairList()
+            Dim pplRegression As New PointPairList()
 
             p.Tag = iPane
 
             For i As Integer = 1 To pd.nGroups
 
                 grp = core.EcoPathGroupOutputs(pd.EcopathGroupIndexes(i))
-                bComputed = ((pd.Status(i) And eStatusFlags.ValueComputed) = eStatusFlags.ValueComputed)
+                bIsComputed = ((pd.Status(i) And eStatusFlags.ValueComputed) = eStatusFlags.ValueComputed)
 
                 If (sg.GroupVisible(grp.Index)) Then
-                    If (bComputed) Then
+                    If (bIsComputed) Then
                         pptlComputed.Add(New PointPair(j, pd.Data(i)))
                     Else
                         pptlEntered.Add(New PointPair(j, pd.Data(i)))
@@ -186,8 +190,10 @@ Public Class cPrebalZedGraphHelper
                      cPrebalModel.eResultTypes.PB, _
                      cPrebalModel.eResultTypes.QB
                     p.YAxis.Type = AxisType.Log
+                    bShowRegression = True
                 Case cPrebalModel.eResultTypes.PQ
                     p.YAxis.Type = AxisType.Linear
+                    bShowRegression = False
                 Case Else
                     Debug.Assert(False, "Unknown pane indicated")
             End Select
@@ -210,40 +216,43 @@ Public Class cPrebalZedGraphHelper
 
             ' Format graph area
             p.BarSettings.Type = BarType.Overlay
-
-            ' Calculate regression line
-            Dim iSampleSize As Integer
-            Dim sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation As Single
-            Dim strLabel As String = ""
-
-            FindRegression(pplRegression, sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, sMin, sMax, iSampleSize)
-
-            If iSampleSize = 2 Then
-                'Without std err
-                strLabel = String.Format(My.Resources.LABEL_REGRESSION_WO_STDERR, _
-                                         sg.FormatNumber(sSlope), _
-                                         sg.FormatNumber(sIntercept), _
-                                         sg.FormatNumber(sCorrelation))
-            Else
-                'With std err
-                strLabel = String.Format(My.Resources.LABEL_REGRESSION_W_STDERR, _
-                                         sg.FormatNumber(sSlope), _
-                                         sg.FormatNumber(sSlopeStdErr), _
-                                         sg.FormatNumber(sIntercept), _
-                                         sg.FormatNumber(sInterceptStdErr), _
-                                         sg.FormatNumber(sCorrelation))
-            End If
-
-            ' -- add all computed data --
             p.CurveList.Clear()
 
-            ' Regression
-            pplRegression.Clear()
-            pplRegression.Add(1, sIntercept)
-            pplRegression.Add(pd.nGroups, sSlope * (pd.nGroups - 1) + sIntercept)
+            If (bShowRegression) Then
 
-            li = p.AddCurve(strLabel, pplRegression, Color.Black)
-            li.Symbol.Type = SymbolType.None
+                ' Calculate regression line
+                Dim iSampleSize As Integer
+                Dim sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation As Single
+                Dim strLabel As String = ""
+
+                FindRegression(pplRegression, sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, sMin, sMax, iSampleSize)
+
+                If iSampleSize = 2 Then
+                    ' Without std err
+                    strLabel = String.Format(My.Resources.LABEL_REGRESSION_WO_STDERR, _
+                                             sg.FormatNumber(sSlope), _
+                                             sg.FormatNumber(sIntercept), _
+                                             sg.FormatNumber(sCorrelation))
+                Else
+                    ' With std err
+                    strLabel = String.Format(My.Resources.LABEL_REGRESSION_W_STDERR, _
+                                             sg.FormatNumber(sSlope), _
+                                             sg.FormatNumber(sSlopeStdErr), _
+                                             sg.FormatNumber(sIntercept), _
+                                             sg.FormatNumber(sInterceptStdErr), _
+                                             sg.FormatNumber(sCorrelation))
+                End If
+
+                ' Regression
+                pplRegression.Clear()
+                For i As Integer = 1 To pd.nGroups
+                    pplRegression.Add(i, sIntercept + sSlope * (i - 1))
+                Next
+
+                li = p.AddCurve(strLabel, pplRegression, Color.Black)
+                li.Symbol.Type = SymbolType.None
+
+            End If
 
             ' Entered data
             bi = p.AddBar(My.Resources.LABEL_ENTERED, pptlEntered, Color.White)

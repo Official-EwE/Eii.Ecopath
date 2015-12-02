@@ -57,10 +57,10 @@ Namespace Ecopath
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPrebal))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tslbShow = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnShowTL = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowName = New System.Windows.Forms.ToolStripButton()
             Me.m_graph = New ZedGraph.ZedGraphControl()
-            Me.m_tslbShow = New System.Windows.Forms.ToolStripLabel()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -71,6 +71,11 @@ Namespace Ecopath
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tslbShow
+            '
+            Me.m_tslbShow.Name = "m_tslbShow"
+            resources.ApplyResources(Me.m_tslbShow, "m_tslbShow")
             '
             'm_tsbnShowTL
             '
@@ -98,11 +103,6 @@ Namespace Ecopath
             Me.m_graph.ScrollMinY = 0.0R
             Me.m_graph.ScrollMinY2 = 0.0R
             '
-            'm_tslbShow
-            '
-            Me.m_tslbShow.Name = "m_tslbShow"
-            resources.ApplyResources(Me.m_tslbShow, "m_tslbShow")
-            '
             'frmPrebal
             '
             resources.ApplyResources(Me, "$this")
@@ -112,6 +112,7 @@ Namespace Ecopath
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.Name = "frmPrebal"
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
