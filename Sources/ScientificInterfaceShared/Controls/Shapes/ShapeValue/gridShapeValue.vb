@@ -23,6 +23,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -40,6 +41,7 @@ Public Class gridShapeValue
     Private m_iNumValues As Integer = 50
     Private m_bSuppressZeroes As Boolean = False
     Private m_shape As cShapeData = Nothing
+    Private m_handler As cShapeGUIHandler = Nothing
     Private m_displayMode As frmShapeValue.eDisplayMode = frmShapeValue.eDisplayMode.Monthly
 
 #End Region ' Private vars
@@ -81,6 +83,7 @@ Public Class gridShapeValue
         Me.m_bSuppressZeroes = (TypeOf shape Is cTimeSeries)
         Me.m_shape = shape
         Me.m_displayMode = displayMode
+        Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, Me.UIContext)
 
         Me.InitLayout()
 
@@ -191,6 +194,13 @@ Public Class gridShapeValue
         ' StartIndex used for display purposes only, has no effect on data whatsoever
         Dim iStartIndex As Integer = Me.Core.EcosimFirstYear
         Dim sValue As Single = 0.0!
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
+
+        If (Me.m_shape IsNot Nothing) Then
+            If Me.m_handler.CanEditPoints(Me.m_shape) Then
+                style = cStyleGuide.eStyleFlags.OK
+            End If
+        End If
 
         For iValue As Integer = 1 To Me.m_iNumValues
 
@@ -210,7 +220,7 @@ Public Class gridShapeValue
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
-                    cell = New EwECell(sValue, GetType(Single))
+                    cell = New EwECell(sValue, GetType(Single), style)
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     Me(iValue, 1) = cell
 
@@ -220,7 +230,7 @@ Public Class gridShapeValue
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
-                    cell = New EwECell(sValue, GetType(Single))
+                    cell = New EwECell(sValue, GetType(Single), style)
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     cell.DataModel.DefaultValue = 0.0!
                     Me(iValue, 1) = cell
@@ -238,7 +248,7 @@ Public Class gridShapeValue
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iValue, 0) = cell
 
-                    cell = New EwECell(sValue, GetType(Single))
+                    cell = New EwECell(sValue, GetType(Single), style)
                     cell.SuppressZero = Me.m_bSuppressZeroes
                     cell.DataModel.DefaultValue = 0.0!
                     Me(iValue, 1) = cell

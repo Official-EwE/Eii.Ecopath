@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -73,13 +74,14 @@ Public MustInherit Class gridForcingBase
         If (Me.UIContext Is Nothing) Then Return
         If (Me.Handler.UIContext Is Nothing) Then Return
 
-        Dim ats As cShapeData() = Me.Shapes
-        Dim iNumShapes As Integer = ats.Length
+        Dim shapes As cShapeData() = Me.Shapes
+        Dim iNumShapes As Integer = shapes.Length
         Dim iNumPoints As Integer = 0
         Dim iNumHeaders As Integer = 0
         Dim cell As SourceGrid2.Cells.ICell = Nothing
         Dim bSeasonal As Boolean = Me.IsSeasonal
         Dim bMonthly As Boolean = Me.IsMonthly
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         If bSeasonal Then
             iNumPoints = cCore.N_MONTHS
@@ -97,7 +99,7 @@ Public MustInherit Class gridForcingBase
 
         ' Create row header cells
         For i As Integer = 0 To iNumPoints - 1
-            cell = New EwERowHeaderCell(Me.TimeLabel(i))
+            cell = New EwERowHeaderCell(Me.Label(i))
             If ((i Mod cCore.N_MONTHS) > 0) Or (Not bMonthly) Then
                 cell.VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleCenter
             End If
@@ -107,25 +109,26 @@ Public MustInherit Class gridForcingBase
         ' Populate shape columns
         For i As Integer = 0 To iNumShapes - 1
 
-            Me.Shape(i + 1) = ats(i)
+            Me.Shape(i + 1) = shapes(i)
+            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.OK)
 
-            Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(ats(i).Index))
+            Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))
 
             cell = New SourceGrid2.Cells.Real.Cell
-            cell.Value = ats(i)
+            cell.Value = shapes(i)
             cell.VisualModel = New cVisualModelThumbnail(Me.Handler)
             Me(eRowType.Thumbnail, i + 1) = cell
 
-            cell = New EwECell(ats(i).Name, GetType(String))
+            cell = New EwECell(shapes(i).Name, GetType(String))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Name, i + 1) = cell
 
-            For j As Integer = 0 To Math.Min(iNumPoints, ats(i).nPoints) - 1
-                cell = New EwECell(ats(i).ShapeData(j + 1), GetType(Single))
+            For j As Integer = 0 To Math.Min(iNumPoints, shapes(i).nPoints) - 1
+                cell = New EwECell(shapes(i).ShapeData(j + 1), GetType(Single), style)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
-            For j As Integer = ats(i).nPoints To iNumPoints - 1
+            For j As Integer = shapes(i).nPoints To iNumPoints - 1
                 cell = New EwECell(0, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
@@ -226,7 +229,7 @@ Public MustInherit Class gridForcingBase
 
 #End Region ' Updates
 
-    Protected Overrides Function TimeLabel(ByVal iPoint As Integer) As String
+    Protected Overrides Function Label(ByVal iPoint As Integer) As String
 
         Dim iMonth As Integer = (iPoint Mod 12) + 1
         If Not Me.IsSeasonal And (iMonth = 1) Then

@@ -103,7 +103,7 @@ Public Class gridTimeSeries
         Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
 
         For i As Integer = 0 To nPoints - 1
-            Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(Me.TimeLabel(i))
+            Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(Me.Label(i))
         Next
 
         For i As Integer = 0 To nTS - 1
@@ -327,7 +327,7 @@ Public Class gridTimeSeries
         Return lstrNames.ToArray
     End Function
 
-    Protected Overrides Function TimeLabel(ByVal iPoint As Integer) As String
+    Protected Overrides Function Label(ByVal iPoint As Integer) As String
         Dim ds As cTimeSeriesDataset = Nothing
         If (Me.Core.ActiveTimeSeriesDatasetIndex = -1) Then Return "?"
         ds = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
