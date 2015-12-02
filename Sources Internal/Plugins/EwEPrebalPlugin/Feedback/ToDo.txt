@@ -1,0 +1,3 @@
+﻿Sheila Heymans 12Sep15: 
+- The Biomass and P/B graphs don’t have the trend line drawn
+ - P/Q should not have a trend line because that needs to be between 0.1 and 0.3 … so putting the trend line in there is misleading. 
