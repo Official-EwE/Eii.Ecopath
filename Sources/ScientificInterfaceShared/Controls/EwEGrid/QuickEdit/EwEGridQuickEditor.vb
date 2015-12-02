@@ -721,7 +721,11 @@ Namespace Controls.EwEGrid
                 If (Me.m_iValuePos >= 0) Then
                     ' The first time the control is added iValuePos is determined. Do not try
                     ' to insert the item if iValuePos is not known yet
-                    Me.m_ts.Items.Insert(Me.m_iValuePos, Me.m_ctrlValue)
+                    If (Me.m_iValuePos > Me.m_ts.Items.Count) Then
+                        Me.m_ts.Items.Add(Me.m_ctrlValue)
+                    Else
+                        Me.m_ts.Items.Insert(Me.m_iValuePos, Me.m_ctrlValue)
+                    End If
                 End If
             End If
         End Sub
