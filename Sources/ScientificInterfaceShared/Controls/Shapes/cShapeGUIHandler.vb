@@ -346,7 +346,10 @@ Namespace Controls
                     If (value.Length = 1) Then shapeSelected = value(0)
                 End If
 
-                If (Me.SketchPad IsNot Nothing) Then Me.SketchPad.Shape = shapeSelected
+                If (Me.SketchPad IsNot Nothing) Then
+                    Me.SketchPad.Shape = shapeSelected
+                    Me.SketchPad.Enabled = Me.CanEditPoints(shapeSelected)
+                End If
                 If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.Selection = value
 
                 If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Refresh()
