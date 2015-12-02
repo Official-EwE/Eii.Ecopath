@@ -171,6 +171,19 @@ Namespace Controls
 
 #Region " Obligatory overrides "
 
+        Public Overridable Function CanEditPoints(shape As cShapeData) As Boolean
+
+            Dim bCanEditPoints As Boolean = True
+
+            If (TypeOf shape Is cForcingFunction) Then
+                Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
+                bCanEditPoints = (ff.ShapeFunctionType = eShapeFunctionType.NotSet)
+            End If
+
+            Return bCanEditPoints
+
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Overridable method to filter out specific forcing functions.
