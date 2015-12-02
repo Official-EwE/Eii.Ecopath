@@ -25,6 +25,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -78,6 +79,7 @@ Public Class gridHabitatCapacity
         Dim iNumPoints As Integer = 0
         Dim iNumHeaders As Integer = 0
         Dim cell As SourceGrid2.Cells.ICell = Nothing
+        Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
         iNumPoints = Me.XAxisMax
         Me.Redim(iNumPoints + [Enum].GetValues(GetType(eRowType)).Length, iNumShapes + 1)
@@ -103,6 +105,7 @@ Public Class gridHabitatCapacity
         For i As Integer = 0 To iNumShapes - 1
 
             Dim env As cEnviroResponseFunction = DirectCast(shapes(i), cEnviroResponseFunction)
+            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.OK)
 
             Me.Shape(i + 1) = env
             Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))
@@ -131,7 +134,7 @@ Public Class gridHabitatCapacity
             'Me(eRowType.LimMean, i + 1) = cell
 
             For j As Integer = 0 To Math.Min(iNumPoints, env.nPoints) - 1
-                cell = New EwECell(env.ShapeData(j + 1), GetType(Single))
+                cell = New EwECell(env.ShapeData(j + 1), GetType(Single), style)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
