@@ -96,8 +96,11 @@ Public Class cPrebalZedGraphHelper
         Next
 
         Me.ShowHoverMenu = True
+
+        ' ToDo: globalize this
         Me.m_itemShowHideTL = Me.HoverMenu.AddItem("TL", "Show group Trophic Levels", Nothing, AddressOf OnShowHideTrophicLevels)
         Me.m_itemShowHideName = Me.HoverMenu.AddItem("Name", "Show group names", Nothing, AddressOf OnShowHideNames)
+        Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, "Show regression formula", Nothing, AddressOf OnShowHideFormula)
 
     End Sub
 
@@ -135,6 +138,13 @@ Public Class cPrebalZedGraphHelper
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property ShowName As Boolean = False
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether to show the regression formula in the regression label.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ShowRegressionFormula As Boolean = False
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -237,20 +247,12 @@ Public Class cPrebalZedGraphHelper
 
                 FindRegression(pplRegression, sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, sMin, sMax, iSampleSize)
 
-                If iSampleSize = 2 Then
-                    ' Without std err
-                    strLabel = String.Format(My.Resources.LABEL_REGRESSION_WO_STDERR, _
-                                             sg.FormatNumber(sSlope), _
-                                             sg.FormatNumber(sIntercept), _
-                                             sg.FormatNumber(sCorrelation))
+                If Me.ShowRegressionFormula Then
+                    strLabel = cStringUtils.Localize(My.Resources.LABEL_REGRESSION_FORMULA, _
+                                                     sg.FormatNumber(sSlope), _
+                                                     IIf(sIntercept < 0, "-", "+"), sg.FormatNumber(Math.Abs(sIntercept)))
                 Else
-                    ' With std err
-                    strLabel = String.Format(My.Resources.LABEL_REGRESSION_W_STDERR, _
-                                             sg.FormatNumber(sSlope), _
-                                             sg.FormatNumber(sSlopeStdErr), _
-                                             sg.FormatNumber(sIntercept), _
-                                             sg.FormatNumber(sInterceptStdErr), _
-                                             sg.FormatNumber(sCorrelation))
+                    strLabel = My.Resources.LABEL_REGRESSION
                 End If
 
                 ' Regression
@@ -342,23 +344,47 @@ Public Class cPrebalZedGraphHelper
     End Function
 
     Private Sub OnShowHideTrophicLevels(sender As Object, args As EventArgs)
-        Me.ShowTL = Not Me.ShowTL
-        Me.Refresh()
+        Try
+            Me.ShowTL = Not Me.ShowTL
+            Me.Refresh()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub OnShowHideNames(sender As Object, args As EventArgs)
-        Me.ShowName = Not Me.ShowName
-        Me.Refresh()
+        Try
+            Me.ShowName = Not Me.ShowName
+            Me.Refresh()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
-    Protected Overrides Sub UpdateHoverMenuItems()
-        MyBase.UpdateHoverMenuItems()
-        Me.m_itemShowHideTL.Checked = Me.ShowTL
-        Me.m_itemShowHideName.Checked = Me.ShowName
-        'Me.m_itemShowHideFormula.Checked = Me.ShowFormula
+    Private Sub OnShowHideFormula(sender As Object, args As EventArgs)
+        Try
+            Me.ShowRegressionFormula = Not Me.ShowRegressionFormula
+            Me.Refresh()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Events
+
+#Region " Overrides "
+
+    Protected Overrides Sub UpdateHoverMenuItems()
+
+        MyBase.UpdateHoverMenuItems()
+
+        Me.m_itemShowHideTL.Checked = Me.ShowTL
+        Me.m_itemShowHideName.Checked = Me.ShowName
+        Me.m_itemShowHideFormula.Checked = Me.ShowRegressionFormula
+
+    End Sub
+
+#End Region ' Overrides 
 
 #Region " Private bits "
 

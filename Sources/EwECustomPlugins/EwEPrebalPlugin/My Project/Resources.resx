@@ -126,10 +126,11 @@
   <data name="LABEL_ESTIMATED" xml:space="preserve">
     <value>Estimated</value>
   </data>
-  <data name="LABEL_REGRESSION_WO_STDERR" xml:space="preserve">
-    <value>Slope = {0}, Y-intercept = {1}, Correlation = {2}</value>
+  <data name="LABEL_REGRESSION" xml:space="preserve">
+    <value>Regression</value>
   </data>
-  <data name="LABEL_REGRESSION_W_STDERR" xml:space="preserve">
-    <value>Slope = {0} ({1} SE), Y-intercept = {2} ({3} SE), Correlation = {4}</value>
+  <data name="LABEL_REGRESSION_FORMULA" xml:space="preserve">
+    <value>Regression f(x)={0}x{1}{2}</value>
+    <comment>{0}=slope, {1}=sign of intercept, {2}=absolute value of intercept</comment>
   </data>
 </root>
