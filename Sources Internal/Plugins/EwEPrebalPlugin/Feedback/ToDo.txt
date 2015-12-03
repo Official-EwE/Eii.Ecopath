@@ -1,5 +1,0 @@
-﻿Open:
-
-Done:
-JS 01Dec15 (SH: The Biomass and P/B graphs don’t have the trend line drawn)
-JS 01Dec15 (SH: P/Q should not have a trend line) 
