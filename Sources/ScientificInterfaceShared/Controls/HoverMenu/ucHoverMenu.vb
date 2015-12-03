@@ -89,6 +89,13 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Event notifying the world that the however menu is about to be shown.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Event OnHoverVisible(sender As Object, args As EventArgs)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Attach the hover menu to a <see cref="Control">Windows control</see>.
         ''' </summary>
         ''' <param name="target">The windows control to attach the hover menu
@@ -97,6 +104,10 @@ Namespace Controls
         Public Sub Attach(ByVal target As Control)
 
             Me.Detach()
+
+            If (target Is Nothing) Then Return
+            If (target.IsDisposed) Then Return
+            If Me.IsDisposed Then Return
 
             Me.m_ctrlTarget = target
             Me.m_ctrlParent = DirectCast(IIF(target.Parent Is Nothing, target, target.Parent), Control)
@@ -137,17 +148,23 @@ Namespace Controls
         ''' </summary>
         ''' <param name="img">The image to display.</param>
         ''' <param name="strTooltip">Tool tip text to display.</param>
-        ''' <param name="tag">Custom tag to add to the button. This data will be 
-        ''' broadcasted in the <see cref="OnItemClicked">click event</see> to
-        ''' identify the item that was clicked.</param>
+        ''' <param name="tag">Custom tag to add to the item. This tag will be 
+        ''' used in the default click handler to identify the item that was clicked.</param>
+        ''' <param name="handler">Optional handler for click events.</param>
+        ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Sub AddItem(img As Image, strTooltip As String, tag As Object)
-            Dim item As New ToolStripButton(strTooltip, img, AddressOf OnItemClicked)
+        Public Function AddItem(ByVal img As Image, ByVal strTooltip As String, _
+                                Optional ByVal tag As Object = Nothing, _
+                                Optional handler As System.EventHandler = Nothing) As ToolStripButton
+
+            Dim item As New ToolStripButton(strTooltip, img, cSystemUtils.IIF(handler Is Nothing, AddressOf OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Image
             item.ToolTipText = strTooltip
             Me.m_ts.Items.Add(item)
-        End Sub
+            Return item
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -156,45 +173,62 @@ Namespace Controls
         ''' <param name="strText">The text to display on the menu.</param>
         ''' <param name="img">The image to display.</param>
         ''' <param name="strTooltip">Tool tip text to display.</param>
-        ''' <param name="tag">Custom tag to add to the button. This data will be 
-        ''' broadcasted in the <see cref="OnItemClicked">click event</see> to
-        ''' identify the item that was clicked.</param>
+        ''' <param name="tag">Custom tag to add to the item. This tag will be 
+        ''' used in the default click handler to identify the item that was clicked.</param>
+        ''' <param name="handler">Optional handler for click events.</param>
+        ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Sub AddItem(strText As String, img As Image, strTooltip As String, tag As Object)
-            Dim item As New ToolStripButton(strText, img, AddressOf OnItemClicked)
+        Public Function AddItem(ByVal strText As String, ByVal img As Image, ByVal strTooltip As String, _
+                                Optional tag As Object = Nothing, _
+                                Optional handler As System.EventHandler = Nothing) As ToolStripButton
+
+            Dim item As New ToolStripButton(strText, img, cSystemUtils.IIF(handler Is Nothing, AddressOf OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
             item.TextImageRelation = TextImageRelation.ImageAboveText
             item.ToolTipText = strTooltip
             Me.m_ts.Items.Add(item)
-        End Sub
+            Return item
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add an item to the hover menu.
         ''' </summary>
+        ''' <param name="strText">Item text to display.</param>
         ''' <param name="strTooltip">Tool tip text to display.</param>
-        ''' <param name="tag">Custom tag to add to the button. This data will be 
-        ''' broadcasted in the <see cref="OnItemClicked">click event</see> to
-        ''' identify the item that was clicked.</param>
+        ''' <param name="tag">Custom tag to add to the item. This tag will be 
+        ''' used in the default click handler to identify the item that was clicked.</param>
+        ''' <param name="handler">Optional handler for click events.</param>
+        ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Sub AddItem(strText As String, strTooltip As String, tag As Object)
-            Dim item As New ToolStripButton(strText, Nothing, AddressOf OnItemClicked)
+        Public Function AddItem(strText As String, strTooltip As String, tag As Object, _
+                                Optional handler As System.EventHandler = Nothing) As ToolStripButton
+
+            Dim item As New ToolStripButton(strText, Nothing, cSystemUtils.IIF(handler Is Nothing, AddressOf OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Text
             item.ToolTipText = strTooltip
             Me.m_ts.Items.Add(item)
-        End Sub
+
+            Return item
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add a separator to the hover menu.
         ''' </summary>
+        ''' <returns>The added separator.</returns>
         ''' -------------------------------------------------------------------
-        Public Sub AddSeparator()
+        Public Function AddSeparator() As ToolStripSeparator
+
             Dim item As New ToolStripSeparator()
             Me.m_ts.Items.Add(item)
-        End Sub
+            Return item
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -308,9 +342,17 @@ Namespace Controls
             ' Optimization
             If bShow = Me.Visible Then Return
 
+            ' Callback to update item states
+
             Dim ptHover As System.Drawing.Point = Me.m_ctrlTarget.ClientRectangle.Location
 
-            If (Me.m_uic IsNot Nothing) Then
+            If (Me.m_uic IsNot Nothing And bShow) Then
+
+                Try
+                    RaiseEvent OnHoverVisible(Me, New EventArgs())
+                Catch ex As Exception
+
+                End Try
 
                 ' Express my target control (0,0) location in the coordinate system of my parent
                 If Not Object.ReferenceEquals(Me.m_ctrlTarget, Me.m_ctrlParent) Then
