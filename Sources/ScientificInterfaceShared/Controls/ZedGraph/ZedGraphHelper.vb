@@ -2198,6 +2198,15 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Return the current instance of the hover menu.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Function HoverMenu() As ucHoverMenu
+            Return Me.m_hovermenu
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Create an EwE-styled line.
         ''' </summary>
         ''' <param name="ppl"></param>
@@ -2577,7 +2586,6 @@ Namespace Controls
                 gp.Legend.IsVisible = bShow
             End If
 
-            Me.UpdateHoverMenuItems()
             Me.m_zgc.Invalidate()
 
         End Sub
@@ -2809,13 +2817,15 @@ Namespace Controls
             Set(value As Boolean)
 
                 If (Me.m_hovermenu IsNot Nothing) Then
+                    RemoveHandler Me.m_hovermenu.OnHoverVisible, AddressOf OnShowHoverMenu
                     Me.DestroyHoverMenu()
                 End If
 
                 Me.m_bShowHoverMenu = value
 
                 If (Me.m_bShowHoverMenu And Me.IsAttached()) Then
-                    Me.m_zgc.BeginInvoke(New MethodInvoker(AddressOf CreateHoverMenu))
+                    Me.CreateHoverMenu()
+                    AddHandler Me.m_hovermenu.OnHoverVisible, AddressOf OnShowHoverMenu
                 End If
 
             End Set
@@ -2896,6 +2906,14 @@ Namespace Controls
 
         End Sub
 
+        Private Sub OnShowHoverMenu(sender As Object, args As EventArgs)
+            Try
+                Me.UpdateHoverMenuItems()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
         Protected Overridable Sub UpdateHoverMenuItems()
 
             If (Me.m_hovermenu Is Nothing) Then Return
@@ -2928,7 +2946,6 @@ Namespace Controls
             Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
-            Me.UpdateHoverMenuItems()
             Me.m_hovermenu.Attach(Me.m_zgc)
 
         End Sub
@@ -2940,6 +2957,7 @@ Namespace Controls
             Me.m_hovermenu.Detach()
             Me.m_hovermenu.Dispose()
             Me.m_hovermenu = Nothing
+
         End Sub
 
 #End Region ' Hover menu handling
