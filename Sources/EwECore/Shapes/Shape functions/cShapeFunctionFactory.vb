@@ -36,11 +36,12 @@ Public Class cShapeFunctionFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns all <see cref="IShapeFunction">shape functions</see> compatible
-    ''' with a given shape.
+    ''' Returns all <see cref="IShapeFunction">shape functions</see>, optionally
+    ''' filtered for compatibility with - and initialized to - a given 
+    ''' <see cref="cForcingFunction"/>.
     ''' </summary>
-    ''' <param name="shape">The <see cref="cForcingFunction"/> to find compatible
-    ''' <see cref="IShapeFunction">shape functions</see> for.</param>
+    ''' <param name="shape">The optional <see cref="cForcingFunction"/> to find 
+    ''' compatible <see cref="IShapeFunction">shape functions</see> for.</param>
     ''' <param name="pm">The <see cref="cPluginManager"/> to find plug-in shapes for.</param>
     ''' <returns>
     ''' An array of compatible <see cref="IShapeFunction">shape function</see> instances.
@@ -50,25 +51,49 @@ Public Class cShapeFunctionFactory
                                              Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction()
 
         Dim lfs As New List(Of IShapeFunction)
+        For Each fs As IShapeFunction In GetShapeFunctions(pm)
+            Dim bCompatible As Boolean = False
+
+            Try
+                If (shape Is Nothing) Then
+                    bCompatible = True
+                Else
+                    bCompatible = (fs.IsCompatible(shape.DataType))
+                End If
+
+                If (bCompatible) Then
+                    If (shape IsNot Nothing) Then fs.Init(shape)
+                    lfs.Add(fs)
+                End If
+            Catch ex As Exception
+
+            End Try
+        Next
+        Return lfs.ToArray()
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns all <see cref="IShapeFunction">shape functions</see> compatible
+    ''' with a given <see cref="eDataTypes">data type</see>.
+    ''' </summary>
+    ''' <param name="pm">The <see cref="cPluginManager"/> to find plug-in shapes for.</param>
+    ''' <returns>
+    ''' An array of compatible <see cref="IShapeFunction">shape function</see> instances.
+    ''' </returns> 
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetShapeFunctions(Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction()
+
+        Dim lfs As New List(Of IShapeFunction)
         Dim fs As IShapeFunction = Nothing
 
         ' Get all shape functions provided by the core
         For Each c As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
             If (c.IsPublic) And (Not c.IsAbstract) And (GetType(cShapeFunction).IsAssignableFrom(c)) Then
-                Dim bCompatible As Boolean = False
-
                 Try
                     fs = CType(Activator.CreateInstance(c), IShapeFunction)
-                    If (shape Is Nothing) Then
-                        bCompatible = True
-                    Else
-                        bCompatible = (fs.IsCompatible(shape.DataType))
-                    End If
-
-                    If (bCompatible) Then
-                        fs.Init(shape)
-                        lfs.Add(fs)
-                    End If
+                    lfs.Add(fs)
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
                     cLog.Write(ex, "cShapeFunctionFactory.GetShapeFunctions(" & c.ToString & ")")
@@ -80,19 +105,8 @@ Public Class cShapeFunctionFactory
         If (pm IsNot Nothing) Then
             ' Get all shape functions provided as plug-ins
             For Each c As IPlugin In pm.GetPlugins(GetType(IEcosimShapeFunctionPlugin))
-                Dim bCompatible As Boolean = False
                 fs = CType(c, IShapeFunction)
-
-                If (shape Is Nothing) Then
-                    bCompatible = True
-                Else
-                    bCompatible = (fs.IsCompatible(shape.DataType))
-                End If
-
-                If (bCompatible) Then
-                    fs.Init(shape)
-                    lfs.Add(fs)
-                End If
+                lfs.Add(fs)
             Next
         End If
 

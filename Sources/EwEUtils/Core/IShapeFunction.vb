@@ -32,7 +32,7 @@ Namespace Core
         ''' <summary>
         ''' Initialize to a given shape.
         ''' </summary>
-        ''' <param name="shape"></param>
+        ''' <param name="shape">The shape to init to.</param>
         ''' -----------------------------------------------------------------------
         Sub Init(shape As Object)
 

@@ -21,12 +21,10 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Definitions
-Imports ScientificInterfaceShared.Style
 Imports System.Drawing.Drawing2D
+Imports EwECore
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -87,10 +85,9 @@ Namespace Controls
             ' Show available options
             For Each sft As IShapeFunction In cShapeFunctionFactory.GetShapeFunctions(Me.m_shape, Me.m_uic.Core.PluginManager)
                 Me.m_lbShapeFunctionTypes.Items.Add(sft)
-
                 ' This selection logic will have to change when plug-in provided shape function types become available
-                If (TypeOf sft Is cShapeFunction) Then
-                    If (DirectCast(sft, cShapeFunction).ShapeFunctionType = Me.m_shape.ShapeFunctionType) Then
+                If (TypeOf sft Is IShapeFunction) Then
+                    If (DirectCast(sft, IShapeFunction).ShapeFunctionType = Me.m_shape.ShapeFunctionType) Then
                         Me.SelectedShapeFunction = sft
                     End If
                 End If
