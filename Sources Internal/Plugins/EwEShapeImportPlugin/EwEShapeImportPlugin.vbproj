@@ -92,6 +92,9 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -112,7 +115,10 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\cData.vb" />
     <Compile Include="cShapeImportPluginPoint.vb" />
+    <Compile Include="Data\cFunctionDefinition.vb" />
+    <Compile Include="Importer\cImporter.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -128,6 +134,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UI\cDataTypeFormatter.vb" />
     <Compile Include="UI\frmImportShapes.Designer.vb">
       <DependentUpon>frmImportShapes.vb</DependentUpon>
     </Compile>

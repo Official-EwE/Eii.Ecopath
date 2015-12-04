@@ -30,17 +30,15 @@ Partial Class frmImportShapes
         Me.m_tbImportFileName = New System.Windows.Forms.TextBox()
         Me.m_lblImportDecimalSeparator = New System.Windows.Forms.Label()
         Me.m_lblImportDelimiter = New System.Windows.Forms.Label()
-        Me.m_rbImportSourceClipboard = New System.Windows.Forms.RadioButton()
         Me.m_btnImportBrowse = New System.Windows.Forms.Button()
-        Me.m_rbImportSourceTextFile = New System.Windows.Forms.RadioButton()
-        Me.m_dgvImportPreview = New System.Windows.Forms.DataGridView()
         Me.m_hdrTarget = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrPreview = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnOk = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_cmbTarget = New System.Windows.Forms.ComboBox()
         Me.m_lblImportAs = New System.Windows.Forms.Label()
-        CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_lblTextFile = New System.Windows.Forms.Label()
+        Me.m_grid = New EwEShapeImportPlugin.gridImportShapes()
         Me.SuspendLayout()
         '
         'm_hdrSource
@@ -79,6 +77,7 @@ Partial Class frmImportShapes
         '
         resources.ApplyResources(Me.m_tbImportFileName, "m_tbImportFileName")
         Me.m_tbImportFileName.Name = "m_tbImportFileName"
+        Me.m_tbImportFileName.ReadOnly = True
         '
         'm_lblImportDecimalSeparator
         '
@@ -90,38 +89,11 @@ Partial Class frmImportShapes
         resources.ApplyResources(Me.m_lblImportDelimiter, "m_lblImportDelimiter")
         Me.m_lblImportDelimiter.Name = "m_lblImportDelimiter"
         '
-        'm_rbImportSourceClipboard
-        '
-        resources.ApplyResources(Me.m_rbImportSourceClipboard, "m_rbImportSourceClipboard")
-        Me.m_rbImportSourceClipboard.Name = "m_rbImportSourceClipboard"
-        Me.m_rbImportSourceClipboard.UseVisualStyleBackColor = True
-        '
         'm_btnImportBrowse
         '
         resources.ApplyResources(Me.m_btnImportBrowse, "m_btnImportBrowse")
         Me.m_btnImportBrowse.Name = "m_btnImportBrowse"
         Me.m_btnImportBrowse.UseVisualStyleBackColor = True
-        '
-        'm_rbImportSourceTextFile
-        '
-        resources.ApplyResources(Me.m_rbImportSourceTextFile, "m_rbImportSourceTextFile")
-        Me.m_rbImportSourceTextFile.Checked = True
-        Me.m_rbImportSourceTextFile.Name = "m_rbImportSourceTextFile"
-        Me.m_rbImportSourceTextFile.TabStop = True
-        Me.m_rbImportSourceTextFile.UseVisualStyleBackColor = True
-        '
-        'm_dgvImportPreview
-        '
-        Me.m_dgvImportPreview.AllowUserToAddRows = False
-        Me.m_dgvImportPreview.AllowUserToDeleteRows = False
-        resources.ApplyResources(Me.m_dgvImportPreview, "m_dgvImportPreview")
-        Me.m_dgvImportPreview.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells
-        Me.m_dgvImportPreview.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.m_dgvImportPreview.ColumnHeadersVisible = False
-        Me.m_dgvImportPreview.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
-        Me.m_dgvImportPreview.Name = "m_dgvImportPreview"
-        Me.m_dgvImportPreview.ReadOnly = True
-        Me.m_dgvImportPreview.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
         '
         'm_hdrTarget
         '
@@ -153,25 +125,66 @@ Partial Class frmImportShapes
         'm_cmbTarget
         '
         resources.ApplyResources(Me.m_cmbTarget, "m_cmbTarget")
+        Me.m_cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbTarget.FormattingEnabled = True
         Me.m_cmbTarget.Name = "m_cmbTarget"
+        Me.m_cmbTarget.Sorted = True
         '
         'm_lblImportAs
         '
         resources.ApplyResources(Me.m_lblImportAs, "m_lblImportAs")
         Me.m_lblImportAs.Name = "m_lblImportAs"
         '
+        'm_lblTextFile
+        '
+        resources.ApplyResources(Me.m_lblTextFile, "m_lblTextFile")
+        Me.m_lblTextFile.Name = "m_lblTextFile"
+        '
+        'm_grid
+        '
+        Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
+        Me.m_grid.AutoSizeMinHeight = 10
+        Me.m_grid.AutoSizeMinWidth = 10
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
+        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.BackColor = System.Drawing.Color.White
+        Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
+        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_grid.Functions = Nothing
+        Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.Name = "m_grid"
+        Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_grid.UIContext = Nothing
+        '
         'frmImportShapes
         '
+        Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_grid)
+        Me.Controls.Add(Me.m_lblTextFile)
         Me.Controls.Add(Me.m_lblImportAs)
         Me.Controls.Add(Me.m_cmbTarget)
         Me.Controls.Add(Me.m_btnOk)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_dgvImportPreview)
         Me.Controls.Add(Me.m_hdrTarget)
         Me.Controls.Add(Me.m_hdrPreview)
         Me.Controls.Add(Me.m_hdrSource)
@@ -180,12 +193,9 @@ Partial Class frmImportShapes
         Me.Controls.Add(Me.m_tbImportFileName)
         Me.Controls.Add(Me.m_lblImportDecimalSeparator)
         Me.Controls.Add(Me.m_lblImportDelimiter)
-        Me.Controls.Add(Me.m_rbImportSourceClipboard)
         Me.Controls.Add(Me.m_btnImportBrowse)
-        Me.Controls.Add(Me.m_rbImportSourceTextFile)
         Me.Name = "frmImportShapes"
         Me.ShowInTaskbar = False
-        CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -196,14 +206,13 @@ Partial Class frmImportShapes
     Private WithEvents m_tbImportFileName As System.Windows.Forms.TextBox
     Private WithEvents m_lblImportDecimalSeparator As System.Windows.Forms.Label
     Private WithEvents m_lblImportDelimiter As System.Windows.Forms.Label
-    Private WithEvents m_rbImportSourceClipboard As System.Windows.Forms.RadioButton
     Private WithEvents m_btnImportBrowse As System.Windows.Forms.Button
-    Private WithEvents m_rbImportSourceTextFile As System.Windows.Forms.RadioButton
-    Private WithEvents m_dgvImportPreview As System.Windows.Forms.DataGridView
     Private WithEvents m_hdrTarget As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrPreview As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_btnOk As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_cmbTarget As System.Windows.Forms.ComboBox
     Private WithEvents m_lblImportAs As System.Windows.Forms.Label
+    Private WithEvents m_lblTextFile As System.Windows.Forms.Label
+    Private WithEvents m_grid As EwEShapeImportPlugin.gridImportShapes
 End Class
