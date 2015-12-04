@@ -60,7 +60,7 @@ Public Class cData
 
         strLine = text.ReadLine()
         While Not String.IsNullOrWhiteSpace(strLine)
-            Dim bits As String() = strLine.Split(Delimiter)
+            Dim bits As String() = cStringUtils.SplitQualified(strLine, Delimiter)
             If bits.Length >= 7 Then
                 Dim fn As IShapeFunction = Me.ShapeFunction(Long.Parse(bits(1)))
                 If (fn IsNot Nothing) Then
