@@ -161,7 +161,9 @@ Namespace Controls.EwEGrid
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Me.ForeColor
 
-            sg.GetStyleColors(style, clrFore, clrBack)
+            If (sg IsNot Nothing) Then
+                sg.GetStyleColors(style, clrFore, clrBack)
+            End If
 
             If Not cell.Grid.Enabled Then
                 clrFore = EwEUtils.Utilities.cColorUtils.GetVariant(clrFore, 0.5)
