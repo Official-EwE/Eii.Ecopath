@@ -21,6 +21,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports System.Text
 
 #End Region ' Imports
 
@@ -40,7 +41,7 @@ Public Class cData
         Dim fns As IShapeFunction() = cShapeFunctionFactory.GetShapeFunctions(pm:=Me.m_core.PluginManager)
         For Each fn As IShapeFunction In fns
             If (fn.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
-                m_fns(fn.ShapeFunctionType) = fn
+                Me.m_fns(fn.ShapeFunctionType) = fn
             End If
         Next
     End Sub
@@ -92,6 +93,10 @@ Public Class cData
             End If
         Next
         Return lDefs.ToArray()
+    End Function
+
+    Public Function ShapeFunctions() As IEnumerable(Of IShapeFunction)
+        Return From fn As IShapeFunction In Me.m_fns.Values Order By fn.ShapeFunctionType
     End Function
 
 #Region " Internals "

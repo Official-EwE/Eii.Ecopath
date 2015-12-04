@@ -25,6 +25,9 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
 Imports System.Windows.Forms
+Imports System.Text
+Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -50,6 +53,8 @@ Public Class frmImportShapes
         Me.m_cmbTarget.Items.Add(eDataTypes.Forcing)
         Me.m_cmbTarget.Items.Add(eDataTypes.EggProd)
         Me.m_cmbTarget.SelectedIndex = 0
+
+        Me.m_pbHelp.Image = SharedResources.Info
 
         Me.CenterToScreen()
         Me.UpdateControls()
@@ -104,6 +109,11 @@ Public Class frmImportShapes
         Me.Read()
     End Sub
 
+    Private Sub OnHelp(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbHelp.Click
+        Me.CheatSheet()
+    End Sub
+
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOk.Click
 
@@ -135,7 +145,6 @@ Public Class frmImportShapes
 
 #End Region ' Events
 
-
 #Region " Drag and drop "
 
     Protected Overrides Sub OnDragOver(e As DragEventArgs)
@@ -166,6 +175,65 @@ Public Class frmImportShapes
 #End Region ' Drag and drop
 
 #Region " Internals "
+
+    Private Function CheatSheet() As Boolean
+
+        Dim strPath As String = Path.Combine(Me.m_uic.Core.OutputPath, "Examples")
+        Dim strFile As String = Path.Combine(strPath, "Shape import cheat sheet.csv")
+        Dim fmt As New cShapeFunctionTypeFormatter()
+        Dim wr As StreamWriter = Nothing
+
+        If (Not cFileUtils.IsDirectoryAvailable(strPath, True)) Then
+            ' ToDo: Alert user
+            Return False
+        End If
+
+        Try
+            wr = New StreamWriter(strFile, False)
+        Catch ex As Exception
+            ' ToDo: Alert user
+            Return False
+        End Try
+
+        If Me.m_uic.Core.SaveWithFileHeader Then
+            wr.WriteLine(Me.m_uic.Core.DefaultFileHeader(eAutosaveTypes.NotSet))
+            wr.WriteLine()
+        End If
+
+        wr.WriteLine(cStringUtils.ToCSVField("CSV file format to import shapes:"))
+        wr.WriteLine()
+        wr.WriteLine("""Function name"",""Function type"",""Param 1"",""Param 2"",""Param 3"",""Param 4"",""Param 5""")
+        wr.WriteLine("<text>,""<number>"",<value>,<value>,<value>,<value>,<value>")
+        wr.WriteLine()
+        wr.WriteLine(cStringUtils.ToCSVField("Where available function types and parameters are:"))
+        wr.WriteLine()
+        wr.WriteLine("""Function type"",Type,""Param 1"",""Param 2"",""Param 3"",""Param 4"",""Param 5""")
+
+        For Each f As IShapeFunction In Me.m_data.ShapeFunctions
+            wr.Write(cStringUtils.ToCSVField(f.ShapeFunctionType) & ", " & cStringUtils.ToCSVField(fmt.GetDescriptor(f.ShapeFunctionType)))
+            For i As Integer = 1 To f.nParameters
+                wr.Write("," & cStringUtils.ToCSVField(f.ParamName(i)))
+            Next
+            For i As Integer = f.nParameters + 1 To 5
+                wr.Write(",")
+            Next
+            wr.WriteLine()
+        Next
+
+        wr.Flush()
+        wr.Close()
+
+        Try
+            Dim cmd As cBrowserCommand = CType(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke("file://" & strFile)
+        Catch ex As Exception
+            ' ToDo: Alert user
+            Return False
+        End Try
+
+        Return True
+
+    End Function
 
     Private Sub UpdateControls()
 

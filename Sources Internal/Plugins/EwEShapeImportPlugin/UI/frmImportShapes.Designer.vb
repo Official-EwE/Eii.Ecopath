@@ -39,6 +39,8 @@ Partial Class frmImportShapes
         Me.m_lblImportAs = New System.Windows.Forms.Label()
         Me.m_lblTextFile = New System.Windows.Forms.Label()
         Me.m_grid = New EwEShapeImportPlugin.gridImportShapes()
+        Me.m_pbHelp = New System.Windows.Forms.PictureBox()
+        CType(Me.m_pbHelp, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_hdrSource
@@ -172,6 +174,12 @@ Partial Class frmImportShapes
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
+        'm_pbHelp
+        '
+        resources.ApplyResources(Me.m_pbHelp, "m_pbHelp")
+        Me.m_pbHelp.Name = "m_pbHelp"
+        Me.m_pbHelp.TabStop = False
+        '
         'frmImportShapes
         '
         Me.AllowDrop = True
@@ -179,6 +187,7 @@ Partial Class frmImportShapes
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_pbHelp)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_lblTextFile)
         Me.Controls.Add(Me.m_lblImportAs)
@@ -196,6 +205,7 @@ Partial Class frmImportShapes
         Me.Controls.Add(Me.m_btnImportBrowse)
         Me.Name = "frmImportShapes"
         Me.ShowInTaskbar = False
+        CType(Me.m_pbHelp, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -215,4 +225,5 @@ Partial Class frmImportShapes
     Private WithEvents m_lblImportAs As System.Windows.Forms.Label
     Private WithEvents m_lblTextFile As System.Windows.Forms.Label
     Private WithEvents m_grid As EwEShapeImportPlugin.gridImportShapes
+    Private WithEvents m_pbHelp As System.Windows.Forms.PictureBox
 End Class
