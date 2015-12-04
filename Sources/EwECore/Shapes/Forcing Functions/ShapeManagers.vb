@@ -432,36 +432,6 @@ Public Class cForcingFunctionManager
 
     End Sub
 
-    'jb 15-Apr-2012 Removed Item(index) because it is the same as the base class Item(index)
-    ' ''' <summary>
-    ' ''' Retrieve a <see cref="cForcingFunction">shape</see> at a given index.
-    ' ''' </summary>
-    ' ''' <param name="ItemIndex">The zero-based index of the shape.</param>
-    ' ''' <returns>A shape, or nothing if an error occurred.</returns>
-    'Default Public Overrides ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
-
-    '    Get
-    '        Try
-
-    '            'Debug.Assert((ItemIndex < m_shapes.Count) And (ItemIndex > -1), Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
-
-    '            If ItemIndex < m_shapes.Count And ItemIndex > -1 Then
-    '                Return m_shapes.Item(ItemIndex)
-    '            Else
-    '                cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
-    '                System.Console.WriteLine(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
-    '                Return Nothing
-    '            End If
-    '        Catch ex As Exception
-    '            cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") Error: " & ex.Message)
-    '            Debug.Assert(False, Me.ToString & ".Item(" & ItemIndex & ") Error: " & ex.Message)
-    '            Return Nothing
-    '        End Try
-
-    '    End Get
-
-    'End Property
-
     ''' <summary>
     ''' Number of points in the underlying Shape data
     ''' </summary>
@@ -478,7 +448,7 @@ Public Class cForcingFunctionManager
     ''' Creates a new shape
     ''' </summary>
     ''' <returns>A shape that has been added to the Shape Manager</returns>
-    ''' <remarks>A shapes can not be created on its own. It must be created by this factory so that it is hooked up to the core data on creation. </remarks>
+    ''' <remarks>A shape cannot be created on its own. It must be created by this factory so that it is hooked up to the core data on creation. </remarks>
     Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
