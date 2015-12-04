@@ -62,19 +62,18 @@ Public Class cData
         strLine = text.ReadLine()
         While Not String.IsNullOrWhiteSpace(strLine)
             Dim bits As String() = cStringUtils.SplitQualified(strLine, Delimiter)
-            If bits.Length >= 7 Then
-                Dim fn As IShapeFunction = Me.ShapeFunction(Long.Parse(bits(1)))
-                If (fn IsNot Nothing) Then
-                    Dim f As New cFunctionDefinition(bits(0), fn, _
-                                                     cStringUtils.ConvertToSingle(bits(2), 0, Me.DecimalSeparator), _
-                                                     cStringUtils.ConvertToSingle(bits(3), 0, Me.DecimalSeparator), _
-                                                     cStringUtils.ConvertToSingle(bits(4), 0, Me.DecimalSeparator), _
-                                                     cStringUtils.ConvertToSingle(bits(5), 0, Me.DecimalSeparator), _
-                                                     cStringUtils.ConvertToSingle(bits(6), 0, Me.DecimalSeparator))
-                    Me.m_defs.Add(f)
-                Else
-                    bSucces = False
-                End If
+            Dim fn As IShapeFunction = Me.ShapeFunction(Long.Parse(bits(1)))
+            If (fn IsNot Nothing) Then
+                Dim parms(4) As Single
+                For i As Integer = 0 To 4
+                    If bits.Length > i + 2 Then
+                        parms(i) = cStringUtils.ConvertToSingle(bits(i + 2), 0, Me.DecimalSeparator)
+                    Else
+                        parms(i) = cCore.NULL_VALUE
+                    End If
+                Next
+                Dim f As New cFunctionDefinition(bits(0), fn, parms(0), parms(1), parms(2), parms(3), parms(4))
+                Me.m_defs.Add(f)
             Else
                 bSucces = False
             End If
