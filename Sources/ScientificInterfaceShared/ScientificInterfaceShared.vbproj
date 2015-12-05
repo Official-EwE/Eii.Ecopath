@@ -169,7 +169,6 @@
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerFleet.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerGroup.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />
-    <Compile Include="Controls\Shapes\ShapeImport\UI\cDataTypeFormatter.vb" />
     <Compile Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.Designer.vb">
       <DependentUpon>dlgImportShapes.vb</DependentUpon>
     </Compile>
