@@ -115,10 +115,9 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\cData.vb" />
+    <Compile Include="Data\cShapeImportData.vb" />
     <Compile Include="cShapeImportPluginPoint.vb" />
-    <Compile Include="Data\cFunctionDefinition.vb" />
-    <Compile Include="Importer\cImporter.vb" />
+    <Compile Include="Importer\cShapeImporter.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

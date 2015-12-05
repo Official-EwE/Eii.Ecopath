@@ -23,6 +23,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
+Imports EwEShapeImportPlugin.Controls.Shapes
 
 #End Region ' Imports
 
