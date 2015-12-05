@@ -57,11 +57,6 @@ Namespace Controls
 
             Me.m_pbHelp.Image = SharedResources.Info
 
-            ' Kick-off
-            If (Me.m_data.DataType <> eDataTypes.NotSet) Then
-                Me.m_cmbTarget.Enabled = False
-            End If
-
             Me.CenterToScreen()
             Me.UpdateControls()
 
