@@ -72,6 +72,8 @@ Namespace Controls
                     Return False
                 Case eShapeCommandTypes.SetMaxValue
                     Return True
+                Case eShapeCommandTypes.Import
+                    Return True
             End Select
             Return MyBase.SupportCommand(cmd)
         End Function
@@ -90,6 +92,12 @@ Namespace Controls
                         Debug.Assert((TypeOf Me.SelectedShape Is EwECore.cEnviroResponseFunction), "OPPSSS...")
                         Dim dlgDefBP As New dlgDefineMapResponseAssignments(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.CapacityMapInteractionManager)
                         If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                            Me.MediationAssignments.RefreshContent()
+                        End If
+
+                    Case eShapeCommandTypes.Import
+                        Dim dlg As New dlgImportShapes(Me.UIContext, Me.ShapeManager)
+                        If dlg.ShowDialog() = DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
 

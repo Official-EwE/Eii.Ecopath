@@ -169,6 +169,16 @@
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerFleet.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerGroup.vb" />
     <Compile Include="Controls\Options\IOptionsPage.vb" />
+    <Compile Include="Controls\Shapes\ShapeImport\UI\cDataTypeFormatter.vb" />
+    <Compile Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.Designer.vb">
+      <DependentUpon>dlgImportShapes.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeImport\UI\gridImportShapes.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Shapes\Utility\dlgChangeShape.Designer.vb">
       <DependentUpon>dlgChangeShape.vb</DependentUpon>
     </Compile>
@@ -858,6 +868,9 @@
     <EmbeddedResource Include="Controls\MessageBox\frmCustomMessageBox.resx">
       <DependentUpon>frmCustomMessageBox.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.resx">
+      <DependentUpon>dlgImportShapes.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMapResponseAssignments.resx">
       <DependentUpon>dlgDefineMapResponseAssignments.vb</DependentUpon>
