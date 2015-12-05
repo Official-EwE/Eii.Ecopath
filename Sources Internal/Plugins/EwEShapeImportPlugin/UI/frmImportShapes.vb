@@ -36,10 +36,14 @@ Public Class frmImportShapes
     Private m_uic As cUIContext = Nothing
     Private m_data As cData = Nothing
 
-    Public Sub New(uic As cUIContext)
+    Public Sub New(uic As cUIContext, Optional dt As eDataTypes = eDataTypes.NotSet)
+
         Me.m_uic = uic
         Me.m_data = New cData(Me.m_uic.Core)
+        Me.m_data.DataType = dt
+
         Me.InitializeComponent()
+
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -55,6 +59,11 @@ Public Class frmImportShapes
         Me.m_cmbTarget.SelectedIndex = 0
 
         Me.m_pbHelp.Image = SharedResources.Info
+
+        ' Kick-off
+        If (Me.m_data.DataType <> eDataTypes.NotSet) Then
+            Me.m_cmbTarget.Enabled = False
+        End If
 
         Me.CenterToScreen()
         Me.UpdateControls()
