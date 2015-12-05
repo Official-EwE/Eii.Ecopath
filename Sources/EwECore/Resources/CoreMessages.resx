@@ -1268,4 +1268,16 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="IMPORT_PROGRESS_TAXONOMY" xml:space="preserve">
     <value>Importing taxonomy</value>
   </data>
+  <data name="SHAPE_IMPORT_DETAIL" xml:space="preserve">
+    <value>Shape {0} imported</value>
+    <comment>{0}=shape name</comment>
+  </data>
+  <data name="SHAPE_IMPORT_FAILED" xml:space="preserve">
+    <value>Failed to import shapes of type {0}, please check the data.</value>
+    <comment>{0}=shape type</comment>
+  </data>
+  <data name="SHAPE_IMPORT_SUCCESS" xml:space="preserve">
+    <value>Shapes of type {0} imported successfully</value>
+    <comment>{0}=shape type</comment>
+  </data>
 </root>

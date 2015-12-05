@@ -268,9 +268,11 @@ Namespace Controls
                     Return False
                 Case eShapeCommandTypes.DefineMediation
                     Return True
-                Case eShapeCommandTypes.ShowExtraData
+                Case eShapeCommandTypes.ShowExtraData, eShapeCommandTypes.DiscardExtraData
                     Return False
                 Case eShapeCommandTypes.ViewMode
+                    Return True
+                Case eShapeCommandTypes.Import
                     Return True
             End Select
             Return MyBase.SupportCommand(cmd)
@@ -284,6 +286,8 @@ Namespace Controls
                 Case eShapeCommandTypes.DefineMediation, _
                      eShapeCommandTypes.ViewMode
                     Return (Me.SelectedShape IsNot Nothing)
+                Case eShapeCommandTypes.Import
+                    Return True
             End Select
             Return MyBase.EnableCommand(cmd)
         End Function
@@ -306,6 +310,12 @@ Namespace Controls
 
                     Case eShapeCommandTypes.ViewMode
                         Me.m_medass.ViewMode = DirectCast(data, ucMediationAssignments.eViewModeTypes)
+
+                    Case eShapeCommandTypes.Import
+                        Dim dlg As New dlgImportShapes(Me.UIContext, Me.ShapeManager)
+                        If dlg.ShowDialog() = DialogResult.OK Then
+                            Me.MediationAssignments.RefreshContent()
+                        End If
 
                     Case Else
                         MyBase.ExecuteCommand(cmd, ashapes, data)
