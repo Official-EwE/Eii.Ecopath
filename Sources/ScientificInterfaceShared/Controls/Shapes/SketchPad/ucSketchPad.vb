@@ -931,7 +931,10 @@ Namespace Controls
 
                 Me.m_ptPosPrevious = ptPosCurrent
                 Me.Refresh()
-                Me.OnShapeChanged()
+
+                If Me.EditMode = eMouseInteractionMode.DrawShape Then
+                    Me.OnShapeChanged()
+                End If
             Else
 
                 Me.UpdateTooltip(ptPosCurrent)
