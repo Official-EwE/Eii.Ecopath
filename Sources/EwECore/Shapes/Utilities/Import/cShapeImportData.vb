@@ -25,6 +25,11 @@ Imports EwEUtils.Utilities
 
 Namespace Shapes.Utility
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Data for <see cref="cShapeImporter">importing shapes</see>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cShapeImportData
 
 #Region " Helper classes "
@@ -80,21 +85,59 @@ Namespace Shapes.Utility
 
 #End Region ' Private vars
 
+#Region " Constructor "
+
         Public Sub New(core As cCore)
             Me.m_core = core
 
             Dim fns As IShapeFunction() = cShapeFunctionFactory.GetShapeFunctions(pm:=Me.m_core.PluginManager)
             For Each fn As IShapeFunction In fns
-                If (fn.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
-                    Me.m_fns(fn.ShapeFunctionType) = fn
-                End If
+                'If (fn.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
+                Me.m_fns(fn.ShapeFunctionType) = fn
+                'End If
             Next
         End Sub
 
-        Public Property Delimiter As Char = ","c
-        Public Property DecimalSeparator As Char = "."c
-        Public Property DataType As eDataTypes = eDataTypes.Forcing
+#End Region ' Constructor
 
+#Region " Public properties "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the CSV text separator character to use when importing.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Delimiter As Char = ","c
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the decimal separator character character to use when importing.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property DecimalSeparator As Char = "."c
+
+#End Region ' Public properties
+
+#Region " Public methods "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read the shape import text.
+        ''' </summary>
+        ''' <param name="text">The text to read.</param>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>
+        ''' <para>The CSV separated text must follow a strict layout:</para>
+        ''' <code>
+        ''' ShapeName,ShapeType,Parameter1,Parameter2,Parameter3,Parameter4,Parameter5
+        ''' {text},{number},{value},{value},{value},{value},{value} 
+        ''' </code>
+        ''' <para>The header line must be present but is not parsed (yet).</para>
+        ''' <para>The shape type value must match one of the pre-defined <see cref="eShapeFunctionType"/>
+        ''' values, or a numerical value that matches a <see cref="IShapeFunction.ShapeFunctionType"/>
+        ''' value delivered plug-ins that offer extra shape functions.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Function Read(text As System.IO.TextReader) As Boolean
 
             Me.m_defs.Clear()
@@ -129,19 +172,37 @@ Namespace Shapes.Utility
 
         End Function
 
-        Public Function FunctionDefinitions() As cFunctionDefinition()
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all the <see cref="cFunctionDefinition">function definitions</see>
+        ''' read from the import text via <seealso cref="Read"/>, and that are
+        ''' <see cref="IShapeFunction.IsCompatible">compatible</see> with the 
+        ''' provided <paramref name="dt">data type</paramref>
+        ''' </summary>
+        ''' <returns>An array of <see cref="cFunctionDefinition">function definitions</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function FunctionDefinitions(ByVal dt As eDataTypes) As cFunctionDefinition()
             Dim lDefs As New List(Of cFunctionDefinition)
             For Each fn As cFunctionDefinition In Me.m_defs
-                If fn.ShapeFunction.IsCompatible(Me.DataType) Then
+                If fn.ShapeFunction.IsCompatible(dt) Then
                     lDefs.Add(fn)
                 End If
             Next
             Return lDefs.ToArray()
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all avaliable <see cref="IShapeFunction">shape functions</see>, provuded
+        ''' by the EwE core and plug-ins.
+        ''' </summary>
+        ''' <returns>All avaliable <see cref="IShapeFunction">shape functions</see>.</returns>
+        ''' -------------------------------------------------------------------
         Public Function ShapeFunctions() As IEnumerable(Of IShapeFunction)
             Return From fn As IShapeFunction In Me.m_fns.Values Order By fn.ShapeFunctionType
         End Function
+
+#End Region ' Public methods
 
 #Region " Internals "
 
