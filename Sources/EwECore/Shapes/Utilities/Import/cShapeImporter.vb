@@ -27,30 +27,53 @@ Imports EwEUtils.Utilities
 
 Namespace Shapes.Utility
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Importer to create new shapes from text.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cShapeImporter
+
+#Region " Private vars "
 
         Private m_core As cCore
         Private m_data As cShapeImportData
+
+#End Region ' Private vars
+
+#Region " Constructor "
 
         Public Sub New(core As cCore, data As cShapeImportData)
             Me.m_core = core
             Me.m_data = data
         End Sub
 
-        Public Function Import(man As cBaseShapeManager) As Boolean
+#End Region ' Constructor 
 
-            Dim defs As cShapeImportData.cFunctionDefinition() = Me.m_data.FunctionDefinitions
+#Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Perform the actual import.
+        ''' </summary>
+        ''' <param name="man"></param>
+        ''' <param name="nPoints"></param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Import(man As cBaseShapeManager, nPoints As Integer) As Boolean
+
+            Dim defs As cShapeImportData.cFunctionDefinition() = Me.m_data.FunctionDefinitions(man.DataType)
             Dim msgStatus As cMessage = Nothing
             Dim bSuccess As Boolean = True
 
             If (man IsNot Nothing) Then
                 Try
-                    Dim strMessage As String = cStringUtils.Localize(My.Resources.CoreMessages.SHAPE_IMPORT_SUCCESS, Me.m_data.DataType)
+                    Dim strMessage As String = cStringUtils.Localize(My.Resources.CoreMessages.SHAPE_IMPORT_SUCCESS, man.DataType)
 
                     msgStatus = New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                     Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
                     For Each def As cShapeImportData.cFunctionDefinition In defs
-                        Dim ff As cForcingFunction = man.CreateNewShape(def.Name, def.ShapeFunction.Shape(1200), def.Parms(1), def.Parms(2), def.Parms(3), def.Parms(4), def.ShapeFunction.ShapeFunctionType)
+                        Dim ff As cForcingFunction = man.CreateNewShape(def.Name, def.ShapeFunction.Shape(nPoints), def.Parms(1), def.Parms(2), def.Parms(3), def.Parms(4), def.ShapeFunction.ShapeFunctionType)
                         Dim vs As cVariableStatus = Nothing
                         If (ff IsNot Nothing) Then
                             vs = New cVariableStatus(eStatusFlags.OK, _
@@ -66,7 +89,7 @@ Namespace Shapes.Utility
                 End Try
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim, bSuccess)
             Else
-                msgStatus = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SHAPE_IMPORT_FAILED, Me.m_data.DataType), _
+                msgStatus = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SHAPE_IMPORT_FAILED, man.DataType), _
                                          eMessageType.DataImport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
                 bSuccess = False
             End If
@@ -74,7 +97,10 @@ Namespace Shapes.Utility
             Me.m_core.Messages.SendMessage(msgStatus)
 
             Return bSuccess
+
         End Function
+
+#End Region ' Public access
 
     End Class
 
