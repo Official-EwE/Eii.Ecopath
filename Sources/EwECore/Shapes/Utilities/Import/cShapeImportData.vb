@@ -18,11 +18,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports System.Text
-Imports System.Data.Linq
 
 #End Region ' Imports
 
