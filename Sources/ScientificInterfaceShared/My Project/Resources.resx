@@ -3329,4 +3329,70 @@
   <data name="EXPLOITATIONSTATUS_NOTASSESSED" xml:space="preserve">
     <value>Not assessed</value>
   </data>
+  <data name="glyph_hl_fine_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_dblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_dblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_dgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_dgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_lblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_lblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_lgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_lgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_lorange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_lorange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_orange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_pink" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_pink.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_fine_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_fine_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_med_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_med_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_hl_med_dblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_hl_med_dblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_dblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_dblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_dgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_dgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_lblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_lblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_lgreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_lgreen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_lorange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_lorange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_orange" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_orange.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_pink" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_pink.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_fine_red" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_fine_red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_med_blue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_med_blue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="glyph_vl_med_dblue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\glyph_vl_med_dblue.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

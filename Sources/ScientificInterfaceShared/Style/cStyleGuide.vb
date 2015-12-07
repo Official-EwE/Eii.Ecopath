@@ -1956,6 +1956,28 @@ Namespace Style
             My.Resources.glyph_seagrass_red, _
             My.Resources.glyph_arrows_down, _
             My.Resources.glyph_arrows_up, _
+            My.Resources.glyph_hl_fine_dblue, _
+            My.Resources.glyph_hl_fine_blue, _
+            My.Resources.glyph_hl_fine_lblue, _
+            My.Resources.glyph_hl_fine_lgreen, _
+            My.Resources.glyph_hl_fine_dgreen, _
+            My.Resources.glyph_hl_fine_pink, _
+            My.Resources.glyph_hl_fine_lorange, _
+            My.Resources.glyph_hl_fine_orange, _
+            My.Resources.glyph_hl_fine_red, _
+            My.Resources.glyph_hl_med_blue, _
+            My.Resources.glyph_hl_med_dblue, _
+            My.Resources.glyph_vl_fine_dblue, _
+            My.Resources.glyph_vl_fine_blue, _
+            My.Resources.glyph_vl_fine_lblue, _
+            My.Resources.glyph_vl_fine_lgreen, _
+            My.Resources.glyph_vl_fine_dgreen, _
+            My.Resources.glyph_vl_fine_pink, _
+            My.Resources.glyph_vl_fine_lorange, _
+            My.Resources.glyph_vl_fine_orange, _
+            My.Resources.glyph_vl_fine_red, _
+            My.Resources.glyph_vl_med_blue, _
+            My.Resources.glyph_vl_med_dblue, _
             My.Resources.glyph_blocks_large, _
             My.Resources.glyph_blocks_small, _
             My.Resources.glyph_squares_large, _
