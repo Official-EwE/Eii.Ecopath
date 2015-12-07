@@ -146,7 +146,9 @@ Namespace Commands
             Me.m_tsi.Available = Me.Command.IsAvailable
             Me.m_tsi.Enabled = Me.Command.Enabled
             Me.m_tsi.Checked = Me.Command.Checked
-            Me.m_tsi.ToolTipText = Me.Command.Description
+            If (String.IsNullOrWhiteSpace(Me.m_tsi.ToolTipText) Or (String.Compare(Me.m_tsi.Text, Me.m_tsi.ToolTipText, False) = 0)) Then
+                Me.m_tsi.ToolTipText = Me.Command.Description
+            End If
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsi.Click
@@ -189,7 +191,9 @@ Namespace Commands
             Me.m_tsb.Available = Me.Command.IsAvailable
             Me.m_tsb.Enabled = Me.Command.Enabled
             Me.m_tsb.Checked = Me.Command.Checked
-            Me.m_tsb.ToolTipText = Me.Command.Description
+            If (String.IsNullOrWhiteSpace(Me.m_tsb.ToolTipText) Or (String.Compare(Me.m_tsb.Text, Me.m_tsb.ToolTipText, False) = 0)) Then
+                Me.m_tsb.ToolTipText = Me.Command.Description
+            End If
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.Click
@@ -231,7 +235,9 @@ Namespace Commands
         Public Overrides Sub Update()
             Me.m_tsb.Available = Me.Command.IsAvailable
             Me.m_tsb.Enabled = Me.Command.Enabled
-            Me.m_tsb.ToolTipText = Me.Command.Description
+            If (String.IsNullOrWhiteSpace(Me.m_tsb.ToolTipText) Or (String.Compare(Me.m_tsb.Text, Me.m_tsb.ToolTipText, False) = 0)) Then
+                Me.m_tsb.ToolTipText = Me.Command.Description
+            End If
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.Click
@@ -273,7 +279,9 @@ Namespace Commands
         Public Overrides Sub Update()
             Me.m_tsb.Available = Me.Command.IsAvailable
             Me.m_tsb.Enabled = Me.Command.Enabled
-            Me.m_tsb.ToolTipText = Me.Command.Description
+            If (String.IsNullOrWhiteSpace(Me.m_tsb.ToolTipText) Or (String.Compare(Me.m_tsb.Text, Me.m_tsb.ToolTipText, False) = 0)) Then
+                Me.m_tsb.ToolTipText = Me.Command.Description
+            End If
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.ButtonClick
