@@ -671,8 +671,8 @@ Public Class frmEwE6
         Me.m_cmdPickColor = New cPickColorCommand(cmdh)
 
 #If BETA = 1 Then
-        Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
-        Me.m_tsbnBeta.Visible = True
+        Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnPreview)
+        Me.m_tsbnPreview.Visible = True
 
         Me.m_cmdHelpFeedback.AddControl(Me.m_tsbnFeedback)
         Me.m_cmdHelpFeedback.AddControl(Me.m_tsmiHelpFeedback)
