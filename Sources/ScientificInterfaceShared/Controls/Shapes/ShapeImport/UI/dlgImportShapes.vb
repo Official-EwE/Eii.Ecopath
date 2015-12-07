@@ -44,7 +44,6 @@ Namespace Controls
             Me.m_manager = manager
 
             Me.m_data = New cShapeImportData(Me.m_uic.Core)
-            Me.m_data.DataType = manager.DataType
 
             Me.InitializeComponent()
 
@@ -109,7 +108,7 @@ Namespace Controls
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, "", -1)
             Try
-                bSuccess = importer.Import(Me.m_manager)
+                bSuccess = importer.Import(Me.m_manager, Me.m_manager.NPoints)
             Catch ex As Exception
 
             End Try
@@ -238,7 +237,8 @@ Namespace Controls
             Using reader As New StreamReader(Me.m_tbImportFileName.Text)
                 Me.m_data.Read(reader)
             End Using
-            Me.m_grid.Functions = Me.m_data.FunctionDefinitions()
+
+            Me.m_grid.Functions = Me.m_data.FunctionDefinitions(Me.m_manager.DataType)
 
             Me.UpdateControls()
 
