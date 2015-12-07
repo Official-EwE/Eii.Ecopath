@@ -147,7 +147,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
-        Me.m_tsbnBeta = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnPreview = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
@@ -733,20 +733,20 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.m_tsbnAutosaveResults, Me.m_tsbnFeedback, Me.m_tslbReadOnly})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.m_tsbnAutosaveResults, Me.m_tsbnFeedback, Me.m_tslbReadOnly})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
         Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_tsModel.Stretch = True
         '
-        'm_tsbnBeta
+        'm_tsbnPreview
         '
-        Me.m_tsbnBeta.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.m_tsbnBeta.DoubleClickEnabled = True
-        resources.ApplyResources(Me.m_tsbnBeta, "m_tsbnBeta")
-        Me.m_tsbnBeta.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.m_tsbnBeta.Name = "m_tsbnBeta"
+        Me.m_tsbnPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tsbnPreview.DoubleClickEnabled = True
+        resources.ApplyResources(Me.m_tsbnPreview, "m_tsbnPreview")
+        Me.m_tsbnPreview.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.m_tsbnPreview.Name = "m_tsbnPreview"
         '
         'm_tsbSave
         '
@@ -906,7 +906,7 @@ Partial Public Class frmEwE6
     Private WithEvents m_tssEcospace4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiOpenOutput As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbnAutosaveResults As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnBeta As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnPreview As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsmiViewLog As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDefineRegions As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiHelpViewReports As System.Windows.Forms.ToolStripMenuItem

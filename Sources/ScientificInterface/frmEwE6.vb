@@ -679,7 +679,7 @@ Public Class frmEwE6
         Me.m_tsbnFeedback.Visible = True
         Me.m_tsmiHelpFeedback.Visible = True
 #Else
-        Me.m_tsbnBeta.Visible = False
+        Me.m_tsbnPreview.Visible = False
         Me.m_tsbnFeedback.Visible = False
         Me.m_tsmiHelpFeedback.Visible = False
 #End If
