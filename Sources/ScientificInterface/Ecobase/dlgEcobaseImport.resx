@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_scEcobaseContent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
+    <value>12, 28</value>
   </data>
   <data name="m_hdrModels.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -148,7 +148,7 @@
     <value>m_hdrModels</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13052.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel1</value>
@@ -169,7 +169,7 @@
     <value>0, 3, 0, 0</value>
   </data>
   <data name="m_lbxModels.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 367</value>
+    <value>175, 351</value>
   </data>
   <data name="m_lbxModels.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -211,7 +211,7 @@
     <value>20, 20</value>
   </data>
   <data name="m_browser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 370</value>
+    <value>541, 354</value>
   </data>
   <data name="m_browser.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -250,7 +250,7 @@
     <value>m_hdrDetails</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13052.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel2</value>
@@ -271,7 +271,7 @@
     <value>1</value>
   </data>
   <data name="m_scEcobaseContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>720, 388</value>
+    <value>720, 372</value>
   </data>
   <data name="m_scEcobaseContent.SplitterDistance" type="System.Int32, mscorlib">
     <value>175</value>
@@ -289,7 +289,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_scEcobaseContent.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -316,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -343,7 +343,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <metadata name="m_wrkGetModels.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -379,7 +379,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAccept.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_llViewEcobaseDataAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -412,6 +412,60 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_llViewEcobaseDataAgreement.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="m_tsFilter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>163, 17</value>
+  </metadata>
+  <data name="ToolStripLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 22</value>
+  </data>
+  <data name="ToolStripLabel1.Text" xml:space="preserve">
+    <value>Category:</value>
+  </data>
+  <data name="m_tscmbCategory.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 25</value>
+  </data>
+  <data name="m_tslLME.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 22</value>
+  </data>
+  <data name="m_tslLME.Text" xml:space="preserve">
+    <value>LME:</value>
+  </data>
+  <data name="m_tscmbLME.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 25</value>
+  </data>
+  <data name="m_tslCountry.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 22</value>
+  </data>
+  <data name="m_tslCountry.Text" xml:space="preserve">
+    <value>Country:</value>
+  </data>
+  <data name="m_tstbxCountry.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 25</value>
+  </data>
+  <data name="m_tsFilter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>744, 25</value>
+  </data>
+  <data name="m_tsFilter.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_tsFilter.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_tsFilter.Name" xml:space="preserve">
+    <value>m_tsFilter</value>
+  </data>
+  <data name="&gt;&gt;m_tsFilter.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13052.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsFilter.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tsFilter.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -435,10 +489,46 @@
   <data name="&gt;&gt;m_wrkGetModels.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;ToolStripLabel1.Name" xml:space="preserve">
+    <value>ToolStripLabel1</value>
+  </data>
+  <data name="&gt;&gt;ToolStripLabel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbCategory.Name" xml:space="preserve">
+    <value>m_tscmbCategory</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbCategory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslLME.Name" xml:space="preserve">
+    <value>m_tslLME</value>
+  </data>
+  <data name="&gt;&gt;m_tslLME.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbLME.Name" xml:space="preserve">
+    <value>m_tscmbLME</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbLME.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslCountry.Name" xml:space="preserve">
+    <value>m_tslCountry</value>
+  </data>
+  <data name="&gt;&gt;m_tslCountry.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxCountry.Name" xml:space="preserve">
+    <value>m_tstbxCountry</value>
+  </data>
+  <data name="&gt;&gt;m_tstbxCountry.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgEcobaseImport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12839.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13052.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

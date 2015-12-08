@@ -22,8 +22,9 @@ Imports EwECore
 Imports EwECore.WebServices
 Imports EwECore.WebServices.Ecobase
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -56,6 +57,7 @@ Public Class dlgEcobaseImport
         Me.m_ecobase = New cEcoBaseWDSL()
         Me.m_wrkGetModels.RunWorkerAsync(Nothing)
 
+        Me.PopulateFilterControls()
         Me.UpdateControls()
 
     End Sub
@@ -156,7 +158,6 @@ Public Class dlgEcobaseImport
         Handles m_llViewEcobaseDataAgreement.LinkClicked
 
         Try
-
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             Debug.Assert(cmd IsNot Nothing)
@@ -186,6 +187,31 @@ Public Class dlgEcobaseImport
     End Sub
 
 #End Region ' Control events
+
+#Region " Filter events "
+
+    Private Sub OnFilterCategory(sender As Object, e As System.EventArgs) _
+        Handles m_tscmbCategory.SelectedIndexChanged
+
+        Me.UpdateModelList()
+
+    End Sub
+
+    Private Sub OnFilterLME(sender As System.Object, e As System.EventArgs) _
+        Handles m_tscmbLME.Click
+
+        Me.UpdateModelList()
+
+    End Sub
+
+    Private Sub OnFilterCountry(sender As System.Object, e As System.EventArgs) _
+        Handles m_tstbxCountry.TextChanged
+
+        Me.UpdateModelList()
+
+    End Sub
+
+#End Region ' Filter events
 
 #Region " Background workers "
 
@@ -221,6 +247,7 @@ Public Class dlgEcobaseImport
                                      e As System.ComponentModel.RunWorkerCompletedEventArgs) _
         Handles m_wrkGetModels.RunWorkerCompleted
 
+        Me.UpdateEcoBaseLists()
         Me.UpdateModelList()
         Me.UpdateControls()
 
@@ -232,16 +259,118 @@ Public Class dlgEcobaseImport
 
     Private Sub UpdateModelList()
 
+        Dim strCat As String = Me.m_tscmbCategory.Text
+        Dim strLME As String = Me.m_tscmbLME.Text
+        Dim strCtr As String = Me.m_tstbxCountry.Text
+        Dim bUseModel As Boolean = True
+
         Me.m_lbxModels.SuspendLayout()
         Me.m_lbxModels.Items.Clear()
 
         For Each model As cModelData In Me.m_models
             If (model.AllowDissemination) Then
-                Me.m_lbxModels.Items.Add(model)
-                If (Me.m_model Is Nothing) Then Me.m_lbxModels.SelectedItem = model
+                bUseModel = True
+
+                ' Filters
+                If (Not String.IsNullOrWhiteSpace(strCat)) Then
+                    bUseModel = bUseModel And (String.Compare(model.EcosystemCategory, strCat, True) = 0)
+                End If
+
+                If (Not String.IsNullOrWhiteSpace(strLME)) Then
+                    Dim bLMEFound As Boolean = False
+                    For Each strT As String In model.LME.Split(","c)
+                        If (strT = strLME) Then bLMEFound = True
+                    Next
+                    bUseModel = bUseModel And bLMEFound
+                End If
+
+                If (Not String.IsNullOrWhiteSpace(strCtr)) Then
+                    bUseModel = bUseModel And model.Country.StartsWith(strCtr, StringComparison.OrdinalIgnoreCase)
+                End If
+
+                If (bUseModel) Then
+                    Me.m_lbxModels.Items.Add(model)
+                    If (Me.m_model Is Nothing) Then Me.m_lbxModels.SelectedItem = model
+                End If
             End If
         Next
         Me.m_lbxModels.ResumeLayout()
+
+    End Sub
+
+    Private Sub UpdateEcoBaseLists()
+
+        Dim lCountry As New List(Of String)
+        Dim lRegion As New List(Of String)
+        Dim lLME As New List(Of String)
+        Dim lEcoTyp As New List(Of String)
+        Dim lEcoCat As New List(Of String)
+
+        For Each model As cModelData In Me.m_models
+            If Not String.IsNullOrWhiteSpace(model.Country) Then lCountry.Add(model.Country)
+            If Not String.IsNullOrWhiteSpace(model.Region) Then lRegion.Add(model.Region)
+            If Not String.IsNullOrWhiteSpace(model.LME_ecobase) Then lLME.Add(model.LME_ecobase)
+            If Not String.IsNullOrWhiteSpace(model.EcosystemCategory) Then lEcoCat.Add(model.EcosystemCategory)
+            If Not String.IsNullOrWhiteSpace(model.EcosystemType) Then lEcoTyp.Add(model.EcosystemType)
+        Next
+
+        If (My.Settings.CountryNames IsNot Nothing) Then
+            For Each str As String In My.Settings.CountryNames : lCountry.Add(str) : Next
+        End If
+
+        If (My.Settings.RegionNames IsNot Nothing) Then
+            For Each str As String In My.Settings.RegionNames : lRegion.Add(str) : Next
+        End If
+
+        If (My.Settings.LMENumbers IsNot Nothing) Then
+            For Each str As String In My.Settings.LMENumbers : lLME.Add(str) : Next
+        End If
+
+        If (My.Settings.EcosystemCategories IsNot Nothing) Then
+            For Each str As String In My.Settings.EcosystemCategories : lEcoTyp.Add(str) : Next
+        End If
+
+        If (My.Settings.EcosystemTypes IsNot Nothing) Then
+            For Each str As String In My.Settings.EcosystemTypes : lEcoCat.Add(str) : Next
+        End If
+
+        Dim sgu As New cStyleGuideUpdater(Me.UIContext)
+        sgu.Save()
+
+        My.Settings.CountryNames.Clear()
+        My.Settings.CountryNames.AddRange(lCountry.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+
+        My.Settings.RegionNames.Clear()
+        My.Settings.RegionNames.AddRange(lRegion.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+
+        My.Settings.LMENumbers.Clear()
+        My.Settings.LMENumbers.AddRange(lLME.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+
+        My.Settings.EcosystemCategories.Clear()
+        My.Settings.EcosystemCategories.AddRange(lEcoCat.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+
+        My.Settings.EcosystemTypes.Clear()
+        My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+
+        sgu.Load()
+
+        Me.PopulateFilterControls()
+
+    End Sub
+
+    Private Sub PopulateFilterControls()
+
+        Me.m_tscmbCategory.Items.Clear()
+        Me.m_tscmbCategory.Items.Add("")
+        For Each str As String In Me.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType)
+            Me.m_tscmbCategory.Items.Add(cStringUtils.ToSentenceCase(str))
+        Next
+
+        Me.m_tscmbLME.Items.Clear()
+        Me.m_tscmbLME.Items.Add("")
+        For Each str As String In Me.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.LMENumber)
+            Me.m_tscmbLME.Items.Add(cStringUtils.ToSentenceCase(str))
+        Next
 
     End Sub
 

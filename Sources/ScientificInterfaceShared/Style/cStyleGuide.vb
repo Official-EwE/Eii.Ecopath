@@ -31,6 +31,7 @@ Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports System.Text
+Imports System.Collections.Specialized
 
 #End Region ' Imports
 
@@ -126,6 +127,9 @@ Namespace Style
         ' -- pedigree --
         Private m_bShowPedigree As Boolean = True
 
+        ' -- EcoBase --
+        Private m_dtEcoBaseFields As New Dictionary(Of eEcobaseFieldType, StringCollection)
+
         ' -- event locks --
         ''' <summary>Event lock count.</summary>
         Private m_nEventLock As Integer = 0
@@ -211,9 +215,11 @@ Namespace Style
 
 #Region " Enums and events "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Public enumerator stating the visual feedback required for rendering a value
+        ''' Public enumerator stating the visual feedback required for rendering a value.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Enum eStyleFlags As Integer
 
             '-----------------------------------------------------------------
@@ -300,9 +306,11 @@ Namespace Style
 
         End Enum
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Types of changes that can occur in the StyleGuide.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Enum eChangeType As Integer
             None = 0
             Colours = &H1
@@ -365,6 +373,14 @@ Namespace Style
                 Me.m_pendingChangeEventTypes = eChangeType.None
             End If
         End Sub
+
+        Public Enum eEcobaseFieldType As Integer
+            CountryName
+            RegionName
+            EcosystemType
+            EcosystemCategory
+            LMENumber
+        End Enum
 
 #End Region ' Enums and events
 
@@ -2285,6 +2301,68 @@ Namespace Style
         End Function
 
 #End Region ' Labels, headers and menus 
+
+#Region " Ecobase fields "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the collection of values for a given <see cref="eEcobaseFieldType">
+        ''' Ecobase field type</see>.
+        ''' </summary>
+        ''' <param name="ft">The <see cref="eEcobaseFieldType">EcoBase field type</see>
+        ''' to filter by.</param>
+        ''' -------------------------------------------------------------------
+        Public Property EcoBaseFields(ft As eEcobaseFieldType) As StringCollection
+            Get
+                If (Me.m_dtEcoBaseFields.ContainsKey(ft)) Then
+                    Return Me.m_dtEcoBaseFields(ft)
+                End If
+                Select Case ft
+                    Case eEcobaseFieldType.CountryName
+                        Return DefaultCountryNames()
+                    Case eEcobaseFieldType.EcosystemType
+                        Return DefaultEcosystemTypes()
+                End Select
+                Return New StringCollection()
+            End Get
+            Set(value As StringCollection)
+                If (value Is Nothing) Then
+                    If (Me.m_dtEcoBaseFields.ContainsKey(ft)) Then Me.m_dtEcoBaseFields.Remove(ft)
+                Else
+                    Me.m_dtEcoBaseFields(ft) = value
+                End If
+            End Set
+        End Property
+
+        Private Function DefaultCountryNames() As StringCollection
+
+            Dim sc As New StringCollection()
+            Dim lNames As New List(Of String)
+
+            For Each ci As CultureInfo In CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+                Dim ri As New RegionInfo(ci.Name)
+                lNames.Add(ri.EnglishName)
+            Next
+
+            lNames.Sort()
+            sc.AddRange(lNames.ToArray())
+            Return sc
+
+        End Function
+
+        Private Function DefaultEcosystemTypes() As StringCollection
+
+            ' Do NOT localize these strings; they serve as keys to EcoBase
+            Dim names() As String = New String() {"Estuary", "Open ocean", "Coral reef", "Channel/strait", "Terrestrial", _
+                                                  "Reservoir", "River", "Continental shelf", "Bay/fjord", _
+                                                  "Coastal lagoon", "Upwelling", "Beach", "Fish farm", "Lake"}
+            Dim sc As New StringCollection()
+            sc.AddRange(names)
+            Return sc
+
+        End Function
+
+#End Region ' Ecobase
 
 #End Region ' Public access
 

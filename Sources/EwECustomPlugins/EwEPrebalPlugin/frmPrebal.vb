@@ -21,11 +21,8 @@
 Option Explicit On
 Option Strict On
 
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
 #End Region
 
