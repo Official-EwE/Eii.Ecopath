@@ -172,6 +172,9 @@ Friend Class cStyleGuideUpdater
         End With
     End Sub
 
+    ''' <summary>
+    ''' Load the style guide from application settings
+    ''' </summary>
     Public Sub Load()
 
         With Me.StyleGuide
@@ -212,6 +215,11 @@ Friend Class cStyleGuideUpdater
 
             .PreferredDPI = My.Settings.OutputDPI
 
+            .EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName) = My.Settings.CountryNames
+            .EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName) = My.Settings.RegionNames
+            .EcoBaseFields(cStyleGuide.eEcobaseFieldType.LMENumber) = My.Settings.LMENumbers
+            .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType) = My.Settings.EcosystemTypes
+            .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory) = My.Settings.EcosystemCategories
         End With
 
         Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
@@ -259,6 +267,12 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLayerRefLatMin = .MapReferenceLayerBR.Y
             My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
             My.Settings.MapShowExcludedCells = .ShowExcludedCells
+
+            My.Settings.CountryNames = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName)
+            My.Settings.RegionNames = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName)
+            My.Settings.LMENumbers = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.LMENumber)
+            My.Settings.EcosystemTypes = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType)
+            My.Settings.EcosystemCategories = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory)
 
             My.Settings.OutputDPI = .PreferredDPI
 

@@ -15,6 +15,7 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
 Partial Class dlgEcobaseImport
@@ -46,10 +47,18 @@ Partial Class dlgEcobaseImport
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
         Me.m_cbAccept = New System.Windows.Forms.CheckBox()
         Me.m_llViewEcobaseDataAgreement = New System.Windows.Forms.LinkLabel()
+        Me.m_tsFilter = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tscmbCategory = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tslLME = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tscmbLME = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tslCountry = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tstbxCountry = New System.Windows.Forms.ToolStripTextBox()
         CType(Me.m_scEcobaseContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scEcobaseContent.Panel1.SuspendLayout()
         Me.m_scEcobaseContent.Panel2.SuspendLayout()
         Me.m_scEcobaseContent.SuspendLayout()
+        Me.m_tsFilter.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_scEcobaseContent
@@ -126,11 +135,53 @@ Partial Class dlgEcobaseImport
         Me.m_llViewEcobaseDataAgreement.Name = "m_llViewEcobaseDataAgreement"
         Me.m_llViewEcobaseDataAgreement.TabStop = True
         '
+        'm_tsFilter
+        '
+        Me.m_tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsFilter.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.m_tscmbCategory, Me.m_tslLME, Me.m_tscmbLME, Me.m_tslCountry, Me.m_tstbxCountry})
+        resources.ApplyResources(Me.m_tsFilter, "m_tsFilter")
+        Me.m_tsFilter.Name = "m_tsFilter"
+        Me.m_tsFilter.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'ToolStripLabel1
+        '
+        Me.ToolStripLabel1.Name = "ToolStripLabel1"
+        resources.ApplyResources(Me.ToolStripLabel1, "ToolStripLabel1")
+        '
+        'm_tscmbCategory
+        '
+        Me.m_tscmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmbCategory.Name = "m_tscmbCategory"
+        resources.ApplyResources(Me.m_tscmbCategory, "m_tscmbCategory")
+        '
+        'm_tslLME
+        '
+        Me.m_tslLME.Name = "m_tslLME"
+        resources.ApplyResources(Me.m_tslLME, "m_tslLME")
+        '
+        'm_tscmbLME
+        '
+        Me.m_tscmbLME.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmbLME.DropDownWidth = 75
+        Me.m_tscmbLME.Name = "m_tscmbLME"
+        resources.ApplyResources(Me.m_tscmbLME, "m_tscmbLME")
+        '
+        'm_tslCountry
+        '
+        Me.m_tslCountry.Name = "m_tslCountry"
+        resources.ApplyResources(Me.m_tslCountry, "m_tslCountry")
+        '
+        'm_tstbxCountry
+        '
+        Me.m_tstbxCountry.Name = "m_tstbxCountry"
+        resources.ApplyResources(Me.m_tstbxCountry, "m_tstbxCountry")
+        '
         'dlgEcobaseImport
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_tsFilter)
         Me.Controls.Add(Me.m_llViewEcobaseDataAgreement)
         Me.Controls.Add(Me.m_cbAccept)
         Me.Controls.Add(Me.m_btnOK)
@@ -148,10 +199,13 @@ Partial Class dlgEcobaseImport
         Me.m_scEcobaseContent.Panel2.ResumeLayout(False)
         CType(Me.m_scEcobaseContent, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scEcobaseContent.ResumeLayout(False)
+        Me.m_tsFilter.ResumeLayout(False)
+        Me.m_tsFilter.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
+
     Private WithEvents m_scEcobaseContent As System.Windows.Forms.SplitContainer
     Private WithEvents m_lbxModels As System.Windows.Forms.ListBox
     Private WithEvents m_btnOK As System.Windows.Forms.Button
@@ -162,4 +216,11 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_cbAccept As System.Windows.Forms.CheckBox
     Private WithEvents m_llViewEcobaseDataAgreement As System.Windows.Forms.LinkLabel
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
+    Private WithEvents m_tsFilter As cEwEToolstrip
+    Private WithEvents m_tslCountry As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tstbxCountry As System.Windows.Forms.ToolStripTextBox
+    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tscmbCategory As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tslLME As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tscmbLME As System.Windows.Forms.ToolStripComboBox
 End Class

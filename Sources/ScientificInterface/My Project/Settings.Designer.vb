@@ -1023,6 +1023,72 @@ Partial Friend NotInheritable Class Settings
     End Property
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property CountryNames() As Global.System.Collections.Specialized.StringCollection
+        Get
+            Return CType(Me("CountryNames"),Global.System.Collections.Specialized.StringCollection)
+        End Get
+        Set(value As Global.System.Collections.Specialized.StringCollection)
+            Me("CountryNames") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property RegionNames() As Global.System.Collections.Specialized.StringCollection
+        Get
+            Return CType(Me("RegionNames"),Global.System.Collections.Specialized.StringCollection)
+        End Get
+        Set(value As Global.System.Collections.Specialized.StringCollection)
+            Me("RegionNames") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property LMENumbers() As Global.System.Collections.Specialized.StringCollection
+        Get
+            Return CType(Me("LMENumbers"),Global.System.Collections.Specialized.StringCollection)
+        End Get
+        Set(value As Global.System.Collections.Specialized.StringCollection)
+            Me("LMENumbers") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property EcosystemTypes() As Global.System.Collections.Specialized.StringCollection
+        Get
+            Return CType(Me("EcosystemTypes"),Global.System.Collections.Specialized.StringCollection)
+        End Get
+        Set(value As Global.System.Collections.Specialized.StringCollection)
+            Me("EcosystemTypes") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property EcosystemCategories() As Global.System.Collections.Specialized.StringCollection
+        Get
+            Return CType(Me("EcosystemCategories"),Global.System.Collections.Specialized.StringCollection)
+        End Get
+        Set
+            Me("EcosystemCategories") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property LastWSDLUpdate() As Date
+        Get
+            Return CType(Me("LastWSDLUpdate"),Date)
+        End Get
+        Set
+            Me("LastWSDLUpdate") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
     Public Property UseExternalBrowser() As Boolean

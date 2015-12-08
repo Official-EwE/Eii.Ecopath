@@ -245,22 +245,22 @@
     <Setting Name="ColorCustom" Type="System.Collections.ArrayList" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Countries" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+    <Setting Name="CountryNames" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Regions" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+    <Setting Name="RegionNames" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LMEs" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+    <Setting Name="LMENumbers" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EcosystemTypes" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+    <Setting Name="EcosystemTypes" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EcosystemCategories" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+    <Setting Name="EcosystemCategories" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LastWSDLUpdate" Type="System.DateTime" Scope="Application">
+    <Setting Name="LastWSDLUpdate" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UseExternalBrowser" Type="System.Boolean" Scope="User">
