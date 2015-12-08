@@ -59,6 +59,7 @@ Public Class cEcopathDataStructures
     Public ModelWest As Single = 0
     Public ModelEast As Single = 0
     Public FirstYear As Integer = Date.Now.Year
+    Public NumYears As Integer = 1
     Public ModelCountry As String = ""
     Public ModelRegion As String = ""
     Public ModelLME As String = ""

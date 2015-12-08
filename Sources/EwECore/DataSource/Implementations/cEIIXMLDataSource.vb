@@ -352,6 +352,7 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelUnitTimeCustom = CStr(Me.ReadSafe(row, "UnitTimeCustom", ""))
                 ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(row, "UnitMonetary", "EUR"), String)
                 ecopathDS.FirstYear = CInt(Me.ReadSafe(row, "FirstYear", 0))
+                ecopathDS.NumYears = CInt(Me.ReadSafe(row, "NumYears", 1))
                 ecopathDS.ModelCountry = CStr(Me.ReadSafe(row, "Country", ""))
                 ecopathDS.ModelRegion = CStr(Me.ReadSafe(row, "Region", ""))
                 ecopathDS.ModelLME = CStr(Me.ReadSafe(row, "LME", ""))

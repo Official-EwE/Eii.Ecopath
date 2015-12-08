@@ -65,6 +65,9 @@ Namespace WebServices.Ecobase
         <XmlElement("model_year")> _
         Public Property FirstYear As Integer = 0
 
+        <XmlElement("model_period")> _
+        Public Property NumYears As Integer = 1
+
         <XmlElement("country")> _
         Public Property Country As String = ""
 
@@ -151,6 +154,10 @@ Namespace WebServices.Ecobase
         <XmlElement("url")> _
         Public Property URI As String = ""
 
+        ''' <summary>The reference of the publication for this model.</summary>
+        <XmlElement("reference")> _
+        Public Property Reference As String = ""
+
         ''' <summary>EwE version</summary>
         <XmlElement("ewe_version")> _
         Public Property EwEVersion As String = ""
@@ -159,6 +166,44 @@ Namespace WebServices.Ecobase
         <XmlElement("is_update")> _
         Public Property IsUpdate As Boolean = False
 
+        ''' <summary></summary>
+        <XmlElement("temperature_mean")> _
+        Public Property TempMean As Single = 0
+        ''' <summary></summary>
+        <XmlElement("temperature_min")> _
+        Public Property TempMin As Single = 0
+        ''' <summary></summary>
+        <XmlElement("temperature_max")> _
+        Public Property TempMax As Single = 0
+
+        ''' <summary></summary>
+        <XmlElement("depth_mean")> _
+        Public Property DepthMean As Single = 0
+        ''' <summary></summary>
+        <XmlElement("depth_min")> _
+        Public Property DepthMin As Single = 0
+        ''' <summary></summary>
+        <XmlElement("depth_max")> _
+        Public Property DepthMax As Single = 0
+
+        ''' <summary>Is Ecosim used?</summary>
+        <XmlElement("ecosim_used")> _
+        Public Property EcosimUsed As Boolean = False
+        ''' <summary>Is Ecospace used?</summary>
+        <XmlElement("ecospace_used")> _
+        Public Property EcospaceUsed As Boolean = False
+
+        ''' <summary>Comments if there is difference between model used for the references and model upload</summary>
+        <XmlElement("comments_difference")> _
+        Public Property CommentsDifference As String
+
+        ''' <summary>Comments if model is not declared as open access.</summary>
+        <XmlElement("comments_access")> _
+        Public Property CommentsAccess As String
+
+        ''' <summary>Objectives of the model.</summary>
+        <XmlElement("comments_objectives")> _
+        Public Property CommentsObjectives As String
 
 #End Region ' Variables
 
@@ -181,6 +226,8 @@ Namespace WebServices.Ecobase
             Me.Contact = ecopathDS.ModelContact
 
             Me.FirstYear = ecopathDS.FirstYear
+            Me.NumYears = ecopathDS.NumYears
+
             Me.Area = ecopathDS.ModelArea
 
             Me.North = ecopathDS.ModelNorth
