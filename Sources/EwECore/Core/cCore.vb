@@ -3241,6 +3241,7 @@ Public Class cCore
         Me.m_EwEModel.UnitArea = Me.m_EcoPathData.ModelUnitArea
         Me.m_EwEModel.UnitAreaCustomText = Me.m_EcoPathData.ModelUnitAreaCustom
         Me.m_EwEModel.FirstYear = Me.m_EcoPathData.FirstYear
+        Me.m_EwEModel.NumYears = Me.m_EcoPathData.NumYears
         Me.m_EwEModel.South = Me.m_EcoPathData.ModelSouth
         Me.m_EwEModel.North = Me.m_EcoPathData.ModelNorth
         Me.m_EwEModel.West = Me.m_EcoPathData.ModelWest
@@ -3278,6 +3279,7 @@ Public Class cCore
         Me.m_EcoPathData.ModelUnitArea = Me.m_EwEModel.UnitArea
         Me.m_EcoPathData.ModelUnitAreaCustom = Me.m_EwEModel.UnitAreaCustomText
         Me.m_EcoPathData.FirstYear = Me.m_EwEModel.FirstYear
+        Me.m_EcoPathData.NumYears = Me.m_EwEModel.NumYears
         Me.m_EcoPathData.ModelSouth = Me.m_EwEModel.South
         Me.m_EcoPathData.ModelNorth = Me.m_EwEModel.North
         Me.m_EcoPathData.ModelWest = Me.m_EwEModel.West

@@ -323,6 +323,7 @@ Namespace Style
             GraphStyle = &H80
             Map = &H100
             Pedigree = &H200
+            EcobaseLists = &H400
             All = &HFFFFFFFF
         End Enum
 
@@ -343,8 +344,13 @@ Namespace Style
                 Return
             End If
 
-            ' Broadcast change event to listeners
-            RaiseEvent StyleGuideChanged(changeType)
+            Try
+                ' Broadcast change event to listeners
+                RaiseEvent StyleGuideChanged(changeType)
+            Catch ex As Exception
+                cLog.Write(ex, "cStyleGuide.FireChangeEvent(" & changeType & ")")
+            End Try
+
             ' No more change events pending
             Me.m_pendingChangeEventTypes = eChangeType.None
         End Sub
@@ -2333,6 +2339,10 @@ Namespace Style
                 End If
             End Set
         End Property
+
+        Public Sub EcoBaseFieldsChanged()
+            FireChangeEvent(eChangeType.EcobaseLists)
+        End Sub
 
         Private Function DefaultCountryNames() As StringCollection
 

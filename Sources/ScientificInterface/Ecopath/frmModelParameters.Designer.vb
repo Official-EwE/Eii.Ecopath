@@ -96,7 +96,9 @@ Partial Class frmModelParameters
         Me.m_plDescr = New System.Windows.Forms.Panel()
         Me.m_tbContact = New System.Windows.Forms.TextBox()
         Me.m_tbDescription = New System.Windows.Forms.TextBox()
+        Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
         Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
+        Me.m_lblNoYears = New System.Windows.Forms.Label()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plExecution = New System.Windows.Forms.Panel()
@@ -412,26 +414,26 @@ Partial Class frmModelParameters
         '
         'm_nudNorth
         '
-        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
         Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
         Me.m_nudNorth.Name = "m_nudNorth"
         '
         'm_nudSouth
         '
-        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
         Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
         Me.m_nudSouth.Name = "m_nudSouth"
         '
         'm_nudWest
         '
-        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
         Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
         Me.m_nudWest.Name = "m_nudWest"
         '
         'm_nudEast
         '
-        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
         Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
         Me.m_nudEast.Name = "m_nudEast"
         '
         'm_lblNorth
@@ -465,7 +467,9 @@ Partial Class frmModelParameters
         Me.m_plDescr.Controls.Add(Me.m_lbContact)
         Me.m_plDescr.Controls.Add(Me.m_tbName)
         Me.m_plDescr.Controls.Add(Me.m_tbAuthor)
+        Me.m_plDescr.Controls.Add(Me.m_tbxNumYears)
         Me.m_plDescr.Controls.Add(Me.m_tbxFirstYear)
+        Me.m_plDescr.Controls.Add(Me.m_lblNoYears)
         Me.m_plDescr.Controls.Add(Me.m_tbArea)
         Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_lblAreaUnit)
@@ -483,10 +487,20 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
         Me.m_tbDescription.Name = "m_tbDescription"
         '
+        'm_tbxNumYears
+        '
+        resources.ApplyResources(Me.m_tbxNumYears, "m_tbxNumYears")
+        Me.m_tbxNumYears.Name = "m_tbxNumYears"
+        '
         'm_tbxFirstYear
         '
         resources.ApplyResources(Me.m_tbxFirstYear, "m_tbxFirstYear")
         Me.m_tbxFirstYear.Name = "m_tbxFirstYear"
+        '
+        'm_lblNoYears
+        '
+        resources.ApplyResources(Me.m_lblNoYears, "m_lblNoYears")
+        Me.m_lblNoYears.Name = "m_lblNoYears"
         '
         'Panel2
         '
@@ -740,5 +754,7 @@ Partial Class frmModelParameters
     Private WithEvents m_tbxPublication As System.Windows.Forms.TextBox
     Private WithEvents m_lblPublication As System.Windows.Forms.Label
     Friend WithEvents m_tbxLME As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxNumYears As System.Windows.Forms.TextBox
+    Private WithEvents m_lblNoYears As System.Windows.Forms.Label
 
 End Class

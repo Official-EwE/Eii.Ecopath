@@ -1792,8 +1792,10 @@ Namespace Core
         FIBPM
         ''' <summary>To document</summary>
         KemptonsQPM
-        ''' <summary>To document</summary>
+        ''' <summary>Start year of the Ecopath model</summary>
         EcopathFirstYear
+        ''' <summary>Number of years that the Ecopath model represents</summary>
+        EcopathNumYears
         ''' <summary>Southern extent of the EwE model</summary>
         South
         ''' <summary>Northern extent of the EwE model</summary>

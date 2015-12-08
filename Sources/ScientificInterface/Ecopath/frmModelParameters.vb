@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports System.Collections.Specialized
 
 #End Region ' Imports
 
@@ -37,6 +38,7 @@ Public Class frmModelParameters
     Private m_fpGroupDigits As cEwEFormatProvider = Nothing
     Private m_fpPSD As cEwEFormatProvider = Nothing
     Private m_fpFirstYear As cEwEFormatProvider = Nothing
+    Private m_fpNumYears As cEwEFormatProvider = Nothing
     Private m_fpCountry As cEwEFormatProvider = Nothing
     Private m_fpRegion As cEwEFormatProvider = Nothing
     Private m_fpLME As cEwEFormatProvider = Nothing
@@ -81,6 +83,7 @@ Public Class frmModelParameters
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
+        Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxNumYears, eweModel, eVarNameFlags.EcopathNumYears)
         Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
         Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
         Me.m_fpWest = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.West)
@@ -135,6 +138,8 @@ Public Class frmModelParameters
 
         Me.OnPublicationChanged(Nothing, cProperty.eChangeFlags.All)
 
+        Me.FillEcoBaseCombos()
+
         Me.UpdateControls()
 
     End Sub
@@ -149,6 +154,7 @@ Public Class frmModelParameters
         Me.m_fpNumDigits.Release()
         Me.m_fpGroupDigits.Release()
         Me.m_fpFirstYear.Release()
+        Me.m_fpNumYears.Release()
         Me.m_fpNorth.Release()
         Me.m_fpSouth.Release()
         Me.m_fpWest.Release()
@@ -185,6 +191,15 @@ Public Class frmModelParameters
         Me.m_propUnitMonetary = Nothing
 
         MyBase.OnFormClosed(e)
+
+    End Sub
+
+    Protected Overrides Sub OnStyleGuideChanged(ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
+        MyBase.OnStyleGuideChanged(ct)
+
+        If ((ct And cStyleGuide.eChangeType.EcobaseLists) > 0) Then
+            Me.FillEcoBaseCombos()
+        End If
 
     End Sub
 
@@ -373,5 +388,29 @@ Public Class frmModelParameters
     End Sub
 
 #End Region ' Control events
+
+#Region " Internals "
+
+    Private Sub FillEcoBaseCombos()
+
+        Me.FillCombo(Me.m_cmbCountry, Me.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName))
+        Me.FillCombo(Me.m_cmbEcoType, Me.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType))
+
+    End Sub
+
+    Private Sub FillCombo(cmb As ComboBox, data As StringCollection)
+
+        Dim obj As Object = cmb.SelectedItem()
+        cmb.Items.Clear()
+        If (data IsNot Nothing) Then
+            For Each str As String In data
+                cmb.Items.Add(str)
+            Next
+        End If
+        cmb.SelectedItem = obj
+
+    End Sub
+
+#End Region ' Internals
 
 End Class

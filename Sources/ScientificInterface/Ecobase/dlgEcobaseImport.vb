@@ -356,6 +356,8 @@ Public Class dlgEcobaseImport
 
         Me.PopulateFilterControls()
 
+        Me.StyleGuide.EcoBaseFieldsChanged()
+
     End Sub
 
     Private Sub PopulateFilterControls()
