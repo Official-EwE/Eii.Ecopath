@@ -95,7 +95,9 @@ Partial Class frmModelParameters
         Me.m_lblSouth = New System.Windows.Forms.Label()
         Me.m_plDescr = New System.Windows.Forms.Panel()
         Me.m_tbContact = New System.Windows.Forms.TextBox()
+        Me.m_tbxObjectives = New System.Windows.Forms.TextBox()
         Me.m_tbDescription = New System.Windows.Forms.TextBox()
+        Me.m_lblObjectives = New System.Windows.Forms.Label()
         Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
         Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
         Me.m_lblNoYears = New System.Windows.Forms.Label()
@@ -117,8 +119,11 @@ Partial Class frmModelParameters
         Me.m_hdrClassification = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_plPublication = New System.Windows.Forms.Panel()
         Me.m_hdrPublication = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tbxReference = New System.Windows.Forms.TextBox()
         Me.m_tbxPublication = New System.Windows.Forms.TextBox()
+        Me.m_lblReference = New System.Windows.Forms.Label()
         Me.m_lblPublication = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -381,7 +386,6 @@ Partial Class frmModelParameters
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.UIContext = Nothing
-        Me.m_cmbMonetaryUnit.Unit = "EUR"
         '
         'm_gbNumFormatting
         '
@@ -414,26 +418,26 @@ Partial Class frmModelParameters
         '
         'm_nudNorth
         '
-        Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+        Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudNorth.Name = "m_nudNorth"
         '
         'm_nudSouth
         '
-        Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+        Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudSouth.Name = "m_nudSouth"
         '
         'm_nudWest
         '
-        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudWest.Name = "m_nudWest"
         '
         'm_nudEast
         '
-        Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+        Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudEast.Name = "m_nudEast"
         '
         'm_lblNorth
@@ -459,21 +463,31 @@ Partial Class frmModelParameters
         'm_plDescr
         '
         Me.m_plDescr.Controls.Add(Me.m_tbContact)
+        Me.m_plDescr.Controls.Add(Me.m_tbxObjectives)
         Me.m_plDescr.Controls.Add(Me.m_tbDescription)
         Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
         Me.m_plDescr.Controls.Add(Me.m_lblModel)
         Me.m_plDescr.Controls.Add(Me.m_lbScenarioName)
+        Me.m_plDescr.Controls.Add(Me.m_lblObjectives)
+        Me.m_plDescr.Controls.Add(Me.m_nudEast)
         Me.m_plDescr.Controls.Add(Me.m_lbDescription)
         Me.m_plDescr.Controls.Add(Me.m_lbContact)
         Me.m_plDescr.Controls.Add(Me.m_tbName)
+        Me.m_plDescr.Controls.Add(Me.m_nudSouth)
         Me.m_plDescr.Controls.Add(Me.m_tbAuthor)
         Me.m_plDescr.Controls.Add(Me.m_tbxNumYears)
         Me.m_plDescr.Controls.Add(Me.m_tbxFirstYear)
+        Me.m_plDescr.Controls.Add(Me.m_nudWest)
         Me.m_plDescr.Controls.Add(Me.m_lblNoYears)
         Me.m_plDescr.Controls.Add(Me.m_tbArea)
         Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
+        Me.m_plDescr.Controls.Add(Me.m_nudNorth)
+        Me.m_plDescr.Controls.Add(Me.m_lblSouth)
         Me.m_plDescr.Controls.Add(Me.m_lblAreaUnit)
+        Me.m_plDescr.Controls.Add(Me.m_lblEast)
         Me.m_plDescr.Controls.Add(Me.m_lblArea)
+        Me.m_plDescr.Controls.Add(Me.m_lblWest)
+        Me.m_plDescr.Controls.Add(Me.m_lblNorth)
         resources.ApplyResources(Me.m_plDescr, "m_plDescr")
         Me.m_plDescr.Name = "m_plDescr"
         '
@@ -482,10 +496,20 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_tbContact, "m_tbContact")
         Me.m_tbContact.Name = "m_tbContact"
         '
+        'm_tbxObjectives
+        '
+        resources.ApplyResources(Me.m_tbxObjectives, "m_tbxObjectives")
+        Me.m_tbxObjectives.Name = "m_tbxObjectives"
+        '
         'm_tbDescription
         '
         resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
         Me.m_tbDescription.Name = "m_tbDescription"
+        '
+        'm_lblObjectives
+        '
+        resources.ApplyResources(Me.m_lblObjectives, "m_lblObjectives")
+        Me.m_lblObjectives.Name = "m_lblObjectives"
         '
         'm_tbxNumYears
         '
@@ -540,20 +564,12 @@ Partial Class frmModelParameters
         Me.m_plMetadata.Controls.Add(Me.m_lblEcoCat)
         Me.m_plMetadata.Controls.Add(Me.m_cmbEcoType)
         Me.m_plMetadata.Controls.Add(Me.m_lblEcoType)
-        Me.m_plMetadata.Controls.Add(Me.m_nudEast)
         Me.m_plMetadata.Controls.Add(Me.m_lblLME)
         Me.m_plMetadata.Controls.Add(Me.m_cmbRegion)
-        Me.m_plMetadata.Controls.Add(Me.m_nudSouth)
         Me.m_plMetadata.Controls.Add(Me.m_lblRegion)
         Me.m_plMetadata.Controls.Add(Me.m_cmbCountry)
-        Me.m_plMetadata.Controls.Add(Me.m_nudWest)
         Me.m_plMetadata.Controls.Add(Me.m_lblCountry)
         Me.m_plMetadata.Controls.Add(Me.m_hdrClassification)
-        Me.m_plMetadata.Controls.Add(Me.m_nudNorth)
-        Me.m_plMetadata.Controls.Add(Me.m_lblSouth)
-        Me.m_plMetadata.Controls.Add(Me.m_lblEast)
-        Me.m_plMetadata.Controls.Add(Me.m_lblWest)
-        Me.m_plMetadata.Controls.Add(Me.m_lblNorth)
         resources.ApplyResources(Me.m_plMetadata, "m_plMetadata")
         Me.m_plMetadata.Name = "m_plMetadata"
         '
@@ -622,7 +638,9 @@ Partial Class frmModelParameters
         'm_plPublication
         '
         Me.m_plPublication.Controls.Add(Me.m_hdrPublication)
+        Me.m_plPublication.Controls.Add(Me.m_tbxReference)
         Me.m_plPublication.Controls.Add(Me.m_tbxPublication)
+        Me.m_plPublication.Controls.Add(Me.m_lblReference)
         Me.m_plPublication.Controls.Add(Me.m_lblPublication)
         resources.ApplyResources(Me.m_plPublication, "m_plPublication")
         Me.m_plPublication.Name = "m_plPublication"
@@ -635,15 +653,30 @@ Partial Class frmModelParameters
         Me.m_hdrPublication.IsCollapsed = False
         Me.m_hdrPublication.Name = "m_hdrPublication"
         '
+        'm_tbxReference
+        '
+        resources.ApplyResources(Me.m_tbxReference, "m_tbxReference")
+        Me.m_tbxReference.Name = "m_tbxReference"
+        '
         'm_tbxPublication
         '
         resources.ApplyResources(Me.m_tbxPublication, "m_tbxPublication")
         Me.m_tbxPublication.Name = "m_tbxPublication"
         '
+        'm_lblReference
+        '
+        resources.ApplyResources(Me.m_lblReference, "m_lblReference")
+        Me.m_lblReference.Name = "m_lblReference"
+        '
         'm_lblPublication
         '
         resources.ApplyResources(Me.m_lblPublication, "m_lblPublication")
         Me.m_lblPublication.Name = "m_lblPublication"
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
         '
         'frmModelParameters
         '
@@ -651,7 +684,6 @@ Partial Class frmModelParameters
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlpContent)
         Me.Name = "frmModelParameters"
-        Me.TabText = ""
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpUnits.ResumeLayout(False)
         Me.m_gbCurrencyUnit.ResumeLayout(False)
@@ -756,5 +788,10 @@ Partial Class frmModelParameters
     Friend WithEvents m_tbxLME As System.Windows.Forms.TextBox
     Private WithEvents m_tbxNumYears As System.Windows.Forms.TextBox
     Private WithEvents m_lblNoYears As System.Windows.Forms.Label
+    Private WithEvents m_tbxReference As System.Windows.Forms.TextBox
+    Private WithEvents m_lblReference As System.Windows.Forms.Label
+    Private WithEvents m_tbxObjectives As System.Windows.Forms.TextBox
+    Private WithEvents m_lblObjectives As System.Windows.Forms.Label
+    Private WithEvents Label1 As System.Windows.Forms.Label
 
 End Class
