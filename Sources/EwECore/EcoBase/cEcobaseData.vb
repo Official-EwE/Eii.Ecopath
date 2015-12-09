@@ -53,6 +53,10 @@ Namespace WebServices.Ecobase
         <XmlElement("description")> _
         Public Property Description As String = ""
 
+        ''' <summary>Objectives of the model.</summary>
+        <XmlElement("comments_objectives")> _
+        Public Property Objectives As String
+
         <XmlElement("author")> _
         Public Property Author As String = ""
 
@@ -187,11 +191,15 @@ Namespace WebServices.Ecobase
         Public Property DepthMax As Single = 0
 
         ''' <summary>Is Ecosim used?</summary>
-        <XmlElement("ecosim_used")> _
+        <XmlElement("is_ecosim_used")> _
         Public Property EcosimUsed As Boolean = False
         ''' <summary>Is Ecospace used?</summary>
-        <XmlElement("ecospace_used")> _
+        ''' 
+        <XmlElement("is_ecospace_used")> _
         Public Property EcospaceUsed As Boolean = False
+
+        <XmlElement("is_fitted")> _
+        Public Property IsFittedToTimeSeries As Boolean = False
 
         ''' <summary>Comments if there is difference between model used for the references and model upload</summary>
         <XmlElement("comments_difference")> _
@@ -200,10 +208,6 @@ Namespace WebServices.Ecobase
         ''' <summary>Comments if model is not declared as open access.</summary>
         <XmlElement("comments_access")> _
         Public Property CommentsAccess As String
-
-        ''' <summary>Objectives of the model.</summary>
-        <XmlElement("comments_objectives")> _
-        Public Property CommentsObjectives As String
 
 #End Region ' Variables
 

@@ -361,6 +361,8 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelEcobaseCode = CStr(Me.ReadSafe(row, "CodeEcobase", ""))
                 ecopathDS.ModelPublicationDOI = CStr(Me.ReadSafe(row, "PublicationDOI", ""))
                 ecopathDS.ModelPublicationURI = CStr(Me.ReadSafe(row, "PublicationURI", ""))
+                ecopathDS.ModelPublicationRef = CStr(Me.ReadSafe(row, "PublicationRef", ""))
+                ecopathDS.ModelObjectives = CStr(Me.ReadSafe(row, "Objectives", ""))
 
                 Dim sLat1 As Single = CSng(Me.ReadSafe(row, "MaxLat", cCore.NULL_VALUE))
                 Dim sLat2 As Single = CSng(Me.ReadSafe(row, "MinLat", cCore.NULL_VALUE))

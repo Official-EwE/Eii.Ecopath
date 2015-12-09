@@ -735,6 +735,8 @@ Namespace DataSources
                 ecopathDS.ModelEcobaseCode = CStr(Me.m_db.ReadSafe(reader, "CodeEcobase", ""))
                 ecopathDS.ModelPublicationDOI = CStr(Me.m_db.ReadSafe(reader, "PublicationDOI", ""))
                 ecopathDS.ModelPublicationURI = CStr(Me.m_db.ReadSafe(reader, "PublicationURI", ""))
+                ecopathDS.ModelPublicationRef = CStr(Me.m_db.ReadSafe(reader, "PublicationRef", ""))
+                ecopathDS.ModelObjectives = CStr(Me.m_db.ReadSafe(reader, "Objectives", ""))
 
                 Dim sLat1 As Single = CSng(Me.m_db.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
                 Dim sLat2 As Single = CSng(Me.m_db.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
@@ -816,6 +818,8 @@ Namespace DataSources
                 drow("CodeEcobase") = ecopathDS.ModelEcobaseCode
                 drow("PublicationDOI") = ecopathDS.ModelPublicationDOI
                 drow("PublicationURI") = ecopathDS.ModelPublicationURI
+                drow("PublicationRef") = ecopathDS.ModelPublicationRef
+                drow("Objectives") = ecopathDS.ModelObjectives
 
                 ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()

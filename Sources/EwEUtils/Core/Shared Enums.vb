@@ -1927,6 +1927,10 @@ Namespace Core
         PublicationDOI
         ''' <summary>URI of the publication for this model.</summary>
         PublicationURI
+        ''' <summary>Formatted reference to the publication for this model.</summary>
+        PublicationReference
+        ''' <summary>Model objectives</summary>
+        Objectives
 
         Z
     End Enum
