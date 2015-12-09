@@ -224,6 +224,7 @@ Namespace WebServices.Ecobase
 
             Me.Name = ecopathDS.ModelName
             Me.Description = ecopathDS.ModelDescription
+            Me.Objectives = ecopathDS.ModelObjectives
             Me.EcobaseCode = ecopathDS.ModelEcobaseCode
 
             Me.Author = ecopathDS.ModelAuthor
@@ -241,16 +242,26 @@ Namespace WebServices.Ecobase
 
             Me.DOI = ecopathDS.ModelPublicationDOI
             Me.URI = ecopathDS.ModelPublicationURI
+            Me.Reference = ecopathDS.ModelPublicationRef
 
             Me.UnitCurrencyIsCustom = Not String.IsNullOrWhiteSpace(ecopathDS.ModelUnitCurrencyCustom)
             Me.UnitCurrency = cSystemUtils.IIF(Me.UnitCurrencyIsCustom, _
                                                ecopathDS.ModelUnitCurrencyCustom, _
                                                DirectCast(ecopathDS.ModelUnitCurrency, eUnitCurrencyType).ToString())
-            Me.LME = ecopathDS.ModelLME
+
+            Me.EcosystemCategory = ecopathDS.ModelEcosystemCategory
+            Me.EcosystemType = ecopathDS.ModelEcosystemType
             Me.Country = ecopathDS.ModelCountry
             Me.Region = ecopathDS.ModelRegion
-            Me.EcosystemType = ecopathDS.ModelEcosystemType
-            Me.EcosystemCategory = ecopathDS.ModelEcosystemCategory
+            Me.LME = ecopathDS.ModelLME
+
+            Me.DepthMin = 0
+            Me.DepthMean = 0
+            Me.DepthMax = 0
+
+            Me.TempMin = 0
+            Me.TempMean = 0
+            Me.TempMax = 0
 
             Me.EwEVersion = cCore.Version
 
@@ -1380,7 +1391,7 @@ Namespace WebServices.Ecobase
 #End If
 
             'strModel = strModel.Replace(""" & vbLF && """, "")
-            'strModel = strModel.Replace("ETinputtot", "cEcobaseModelParameters")
+            strModel = strModel.Replace("ETinputtot", "cEcobaseModelParameters")
 
             Dim reader As New StringReader(strModel)
             Dim serializer As New XmlSerializer(GetType(cEcobaseModelParameters))
