@@ -55,6 +55,13 @@ Public Class cEwEModel
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            ' Objectives
+            meta = New cVariableMetaData(60000)
+            val = New cValue(New String(desc), eVarNameFlags.Objectives, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             ' Author
             meta = New cVariableMetaData(250)
             val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
@@ -210,6 +217,12 @@ Public Class cEwEModel
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            ' Reference
+            meta = New cVariableMetaData(2000)
+            val = New cValue(New String(desc), eVarNameFlags.PublicationReference, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             ' Last saved julian date
             meta = New cVariableMetaData(0, Double.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
@@ -243,6 +256,16 @@ Public Class cEwEModel
 
         Set(ByVal str As String)
             SetVariable(eVarNameFlags.Description, str)
+        End Set
+    End Property
+
+    Public Property Objectives() As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.Objectives))
+        End Get
+
+        Set(ByVal str As String)
+            SetVariable(eVarNameFlags.Objectives, str)
         End Set
     End Property
 
@@ -587,6 +610,15 @@ Public Class cEwEModel
         End Set
     End Property
 
+    Public Property PublicationReference As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.PublicationReference))
+        End Get
+
+        Set(ByVal value As String)
+            SetVariable(eVarNameFlags.PublicationReference, value)
+        End Set
+    End Property
 
 #End Region ' Variable via dot(.) operator
 
@@ -603,6 +635,17 @@ Public Class cEwEModel
 
     End Property
 
+    Public Property ObjectivesStatus() As eStatusFlags
+
+        Get
+            Return GetStatus(eVarNameFlags.Objectives)
+        End Get
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.Objectives, value)
+        End Set
+
+    End Property
+
     Public Property NumDigitsStatus() As eStatusFlags
 
         Get
@@ -613,6 +656,8 @@ Public Class cEwEModel
         End Set
 
     End Property
+
+    ' ToDo: all all other vars
 
 #End Region ' Status Flags via dot(.) operator
 

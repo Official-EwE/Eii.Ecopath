@@ -40,6 +40,7 @@ Public Class cEcopathDataStructures
     Public ModelDBID As Integer = 0
     Public ModelName As String = ""
     Public ModelDescription As String = ""
+    Public ModelObjectives As String = ""
     Public ModelArea As Single = 0
     Public ModelNumDigits As Integer = 0
     Public ModelGroupDigits As Boolean = False
@@ -69,6 +70,7 @@ Public Class cEcopathDataStructures
     Public ModelEcobaseCode As String = ""
     Public ModelPublicationDOI As String = ""
     Public ModelPublicationURI As String = ""
+    Public ModelPublicationRef As String = ""
 
     ''' <summary>Group names.</summary>
     Public GroupName() As String
