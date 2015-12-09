@@ -583,6 +583,7 @@ Partial Class frmModelParameters
         Me.m_cmbEcoCat.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbEcoCat, "m_cmbEcoCat")
         Me.m_cmbEcoCat.Name = "m_cmbEcoCat"
+        Me.m_cmbEcoCat.Sorted = True
         '
         'm_lblEcoCat
         '
@@ -594,6 +595,7 @@ Partial Class frmModelParameters
         Me.m_cmbEcoType.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbEcoType, "m_cmbEcoType")
         Me.m_cmbEcoType.Name = "m_cmbEcoType"
+        Me.m_cmbEcoType.Sorted = True
         '
         'm_lblEcoType
         '
@@ -610,6 +612,7 @@ Partial Class frmModelParameters
         Me.m_cmbRegion.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbRegion, "m_cmbRegion")
         Me.m_cmbRegion.Name = "m_cmbRegion"
+        Me.m_cmbRegion.Sorted = True
         '
         'm_lblRegion
         '
@@ -621,6 +624,7 @@ Partial Class frmModelParameters
         Me.m_cmbCountry.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbCountry, "m_cmbCountry")
         Me.m_cmbCountry.Name = "m_cmbCountry"
+        Me.m_cmbCountry.Sorted = True
         '
         'm_lblCountry
         '
