@@ -31,6 +31,7 @@ Public Class frmModelParameters
 
     Private m_fpName As cEwEFormatProvider = Nothing
     Private m_fpDescription As cEwEFormatProvider = Nothing
+    Private m_fpObjectives As cEwEFormatProvider = Nothing
     Private m_fpAuthor As cEwEFormatProvider = Nothing
     Private m_fpContact As cEwEFormatProvider = Nothing
     Private m_fpArea As cEwEFormatProvider = Nothing
@@ -51,6 +52,7 @@ Public Class frmModelParameters
 
     Private m_propDOI As cProperty = Nothing
     Private m_propURI As cProperty = Nothing
+    Private m_fpReference As cEwEFormatProvider = Nothing
 
     Private m_fpIsCoupled As cEwEFormatProvider = Nothing
 
@@ -77,6 +79,7 @@ Public Class frmModelParameters
 
         Me.m_fpName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, eweModel, eVarNameFlags.Name)
         Me.m_fpDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, eweModel, eVarNameFlags.Description)
+        Me.m_fpObjectives = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxObjectives, eweModel, eVarNameFlags.Objectives)
         Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, eweModel, eVarNameFlags.Author)
         Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, eweModel, eVarNameFlags.Contact)
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, Me.m_tbArea, eweModel, eVarNameFlags.Area)
@@ -98,6 +101,7 @@ Public Class frmModelParameters
         Me.m_propURI = Me.PropertyManager.GetProperty(eweModel, eVarNameFlags.PublicationURI)
         AddHandler Me.m_propDOI.PropertyChanged, AddressOf OnPublicationChanged
         AddHandler Me.m_propURI.PropertyChanged, AddressOf OnPublicationChanged
+        Me.m_fpReference = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxReference, eweModel, eVarNameFlags.PublicationReference)
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
         Me.m_fpIsCoupled = New cPropertyFormatProvider(Me.UIContext, Me.m_chkIsCoupled, eweModel, eVarNameFlags.IsEcospaceModelCoupled)
@@ -140,6 +144,9 @@ Public Class frmModelParameters
 
         Me.FillEcoBaseCombos()
 
+        Me.m_hdrClassification.IsCollapsed = True
+        Me.m_hdrPublication.IsCollapsed = True
+
         Me.UpdateControls()
 
     End Sub
@@ -148,6 +155,7 @@ Public Class frmModelParameters
 
         Me.m_fpName.Release() '
         Me.m_fpDescription.Release()
+        Me.m_fpObjectives.Release()
         Me.m_fpAuthor.Release()
         Me.m_fpContact.Release()
         Me.m_fpArea.Release()
@@ -171,6 +179,7 @@ Public Class frmModelParameters
         RemoveHandler Me.m_propURI.PropertyChanged, AddressOf OnPublicationChanged
         Me.m_propDOI = Nothing
         Me.m_propURI = Nothing
+        Me.m_fpReference.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
         Me.CoreComponents = Nothing
@@ -364,7 +373,7 @@ Public Class frmModelParameters
     End Sub
 
     Private Sub OnPublicationTextChanged(sender As Object, e As System.EventArgs) _
-        Handles m_tbxPublication.TextChanged
+        Handles m_tbxPublication.TextChanged, m_tbxReference.TextChanged
 
         If (Me.m_bInUpdate) Then Return
 
