@@ -2351,7 +2351,7 @@ Namespace Style
 
             For Each ci As CultureInfo In CultureInfo.GetCultures(CultureTypes.SpecificCultures)
                 Dim ri As New RegionInfo(ci.Name)
-                lNames.Add(ri.EnglishName)
+                If (Not lNames.Contains(ri.EnglishName)) Then lNames.Add(ri.EnglishName)
             Next
 
             lNames.Sort()
