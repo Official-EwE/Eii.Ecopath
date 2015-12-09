@@ -286,6 +286,7 @@ Public Class dlgEcobaseExport
         Dim bHasBoundingBox As Boolean = (CSng(Me.m_fpNorth.Value) <> CSng(Me.m_fpSouth.Value)) And (CSng(Me.m_fpWest.Value) <> CSng(Me.m_fpEast.Value))
         Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.SelectedText(Me.m_cmbEcoCat))) And (Not String.IsNullOrWhiteSpace(Me.SelectedText(Me.m_cmbEcoType)))
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
+        Dim bClassOK As Boolean = bHasArea And bHasBoundingBox And bHasEcosystem 
 
         Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasArea, SharedResources.OK, SharedResources.Critical)
         Me.m_pbBoundingBox.BackgroundImage = cSystemUtils.IIF(bHasBoundingBox, SharedResources.OK, SharedResources.Critical)
@@ -298,9 +299,18 @@ Public Class dlgEcobaseExport
             Me.m_tpClassification.ImageIndex = 2
         End If
 
-        ' -- Agreement page --
+        Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
 
-        Me.m_btnSubmit.Enabled = bModelOK And bPubsOK
+        ' -- Agreement page --
+        Dim bHasPermComments As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
+        Dim bHasAgreed As Boolean = Me.m_cbDataAgreed.Checked
+        Dim pAgreementOK As Boolean = bHasPermComments And bHasAgreed
+
+        Me.m_pbPermissionComment.Image = cSystemUtils.IIF(bHasPermComments, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbAgreement.Image = cSystemUtils.IIF(bHasAgreed, SharedResources.OK, SharedResources.Critical)
+
+        ' -- SUBMIT --
+        Me.m_btnSubmit.Enabled = bModelOK And bPubsOK And bClassOK And pAgreementOK
 
         Me.m_bInUpdate = False
 
@@ -449,6 +459,8 @@ Public Class dlgEcobaseExport
         md.TempMax = CSng(Me.m_fpTmax.Value)
 
         md.AllowDissemination = Me.m_cbConfirmDessiminate.Checked
+        md.CommentsAccess = Me.m_tbxPermissionComments.Text
+
         md.IsUpdate = Me.m_cbIsUpdate.Checked
 
         ' Obtain XML

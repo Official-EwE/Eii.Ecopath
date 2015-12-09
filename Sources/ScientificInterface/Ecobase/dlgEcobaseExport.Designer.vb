@@ -773,7 +773,6 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_pbIsAuthor As System.Windows.Forms.PictureBox
     Private WithEvents m_pbRef As System.Windows.Forms.PictureBox
     Private WithEvents m_tbxLME As System.Windows.Forms.TextBox
-    Friend WithEvents m_cbDataAgreed As System.Windows.Forms.CheckBox
     Private WithEvents m_lblPermissionComments As System.Windows.Forms.Label
     Private WithEvents m_tbxPermissionComments As System.Windows.Forms.TextBox
     Private WithEvents m_lblTempMax As System.Windows.Forms.Label
@@ -801,4 +800,5 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_cbEcospaceUsed As System.Windows.Forms.CheckBox
     Private WithEvents m_cbFittedToTimeSeries As System.Windows.Forms.CheckBox
     Private WithEvents m_cbEcosimUsed As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbDataAgreed As System.Windows.Forms.CheckBox
 End Class
