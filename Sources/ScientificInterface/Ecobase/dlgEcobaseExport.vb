@@ -165,6 +165,7 @@ Public Class dlgEcobaseExport
                 m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged, _
                 m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged, _
                 m_cmbCountry.TextChanged, m_cmbRegion.TextChanged, m_tbxLME.TextChanged, _
+                m_cmbEcoCat.TextChanged, m_cmbEcoType.TextChanged, _
                 m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
                 m_cbDifferentFromPaper.CheckedChanged, m_tbxDifference.TextChanged
         Try
@@ -295,9 +296,9 @@ Public Class dlgEcobaseExport
         Me.m_tpPublication.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
 
         ' -- Classification page --
-        Dim bHasArea As Boolean = (Not String.IsNullOrWhiteSpace(Me.SelectedText(Me.m_cmbCountry))) And (Not String.IsNullOrWhiteSpace(Me.SelectedText(Me.m_cmbRegion)))
+        Dim bHasArea As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbRegion.Text))
         Dim bHasBoundingBox As Boolean = (CSng(Me.m_fpNorth.Value) <> CSng(Me.m_fpSouth.Value)) And (CSng(Me.m_fpWest.Value) <> CSng(Me.m_fpEast.Value))
-        Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.SelectedText(Me.m_cmbEcoCat))) And (Not String.IsNullOrWhiteSpace(Me.SelectedText(Me.m_cmbEcoType)))
+        Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoCat.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoType.Text))
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
         Dim bClassOK As Boolean = bHasArea And bHasBoundingBox And bHasEcosystem 
 
@@ -312,7 +313,7 @@ Public Class dlgEcobaseExport
             Me.m_tpClassification.ImageIndex = 2
         End If
 
-        Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
+        Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bClassOK, 0, 2)
 
         ' -- Agreement page --
         Dim bHasPermComments As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
@@ -344,10 +345,10 @@ Public Class dlgEcobaseExport
         Dim strObjs As String = Me.m_tbxObjectives.Text
         Dim strAuthor As String = Me.m_tbxAuthor.Text
         Dim strContact As String = Me.m_tbxEmail.Text
-        Dim strCountry As String = Me.SelectedText(Me.m_cmbCountry)
-        Dim strRegion As String = Me.SelectedText(Me.m_cmbRegion)
-        Dim strEcoType As String = Me.SelectedText(Me.m_cmbEcoType)
-        Dim strEcoCat As String = Me.SelectedText(Me.m_cmbEcoCat)
+        Dim strCountry As String = Me.m_cmbCountry.Text
+        Dim strRegion As String = Me.m_cmbRegion.Text
+        Dim strEcoType As String = Me.m_cmbEcoType.Text
+        Dim strEcoCat As String = Me.m_cmbEcoCat.Text
         Dim strLME As String = Me.m_tbxLME.Text
 
         Dim strDOI As String = Me.m_tbxDOI.Text
@@ -542,12 +543,6 @@ Public Class dlgEcobaseExport
         End If
 
     End Sub
-
-    Private Function SelectedText(cmb As ComboBox) As String
-        If (cmb Is Nothing) Then Return ""
-        If (cmb.SelectedItem Is Nothing) Then Return ""
-        Return cmb.SelectedItem.ToString()
-    End Function
 
 #End Region ' Internals
 
