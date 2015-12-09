@@ -95,6 +95,8 @@ Public Class dlgEcobaseExport
         Me.m_tbxEmail.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
         Me.m_tbxObjectives.Text = ""
 
+        Me.m_cbIsUpdate.Checked = Not String.IsNullOrWhiteSpace(model.EcobaseCode)
+
         ' -- Publication page --
         Me.m_tbxHyperlink.Text = model.PublicationURI
         Me.m_tbxDOI.Text = model.PublicationDOI
@@ -163,7 +165,8 @@ Public Class dlgEcobaseExport
                 m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged, _
                 m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged, _
                 m_cmbCountry.TextChanged, m_cmbRegion.TextChanged, m_tbxLME.TextChanged, _
-                m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged
+                m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
+                m_cbDifferentFromPaper.CheckedChanged, m_tbxDifference.TextChanged
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -273,10 +276,20 @@ Public Class dlgEcobaseExport
         ' -- Publication page --
         Dim bHasPublication As Boolean = (Me.m_tbxDOI.Text.Trim().Length > 5) Or (Me.m_tbxHyperlink.Text.Trim().Length > 12)
         Dim bHasReference As Boolean = (Me.m_tbxReference.Text.Trim().Length > 20)
+        Dim bHasDifferences As Boolean = (Me.m_tbxDifference.Text.Trim().Length > 20)
         Dim bPubsOK As Boolean = bHasPublication Or bHasReference
+
+        If (Me.m_cbDifferentFromPaper.Checked) Then
+            Me.m_tbxDifference.Enabled = True
+            Me.m_pbDifference.Image = cSystemUtils.IIF(bHasDifferences, SharedResources.OK, SharedResources.Critical)
+        Else
+            Me.m_tbxDifference.Enabled = False
+            Me.m_pbDifference.Image = Nothing
+        End If
 
         Me.m_pbPublication.BackgroundImage = cSystemUtils.IIF(bHasPublication, SharedResources.OK, SharedResources.Critical)
         Me.m_pbRef.BackgroundImage = cSystemUtils.IIF(bHasReference, SharedResources.OK, SharedResources.Critical)
+
         Me.m_llViewPublication.Enabled = bHasPublication
 
         Me.m_tpPublication.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
@@ -459,9 +472,10 @@ Public Class dlgEcobaseExport
         md.TempMax = CSng(Me.m_fpTmax.Value)
 
         md.AllowDissemination = Me.m_cbConfirmDessiminate.Checked
-        md.CommentsAccess = Me.m_tbxPermissionComments.Text
+        md.CommentsAccess = Me.m_tbxPermissionComments.Text.Trim()
 
         md.IsUpdate = Me.m_cbIsUpdate.Checked
+        md.CommentsDifference = Me.m_tbxDifference.Text.Trim()
 
         ' Obtain XML
         Dim strXML As String = WebServices.Ecobase.cEcobaseModelParameters.ToXML(data)

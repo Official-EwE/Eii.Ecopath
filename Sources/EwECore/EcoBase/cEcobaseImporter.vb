@@ -228,8 +228,12 @@ Namespace Database
                 drow("ModelID") = 1
                 drow("Name") = md.Name
                 drow("Description") = md.Description
+                drow("Objectives") = md.Objectives
+                drow("CodeEcobase") = md.EcobaseCode
+
                 drow("Author") = md.Author
                 drow("Contact") = md.Contact
+
                 drow("Area") = md.Area
                 drow("NumDigits") = Math.Min(md.NumDigits, 3)
                 drow("GroupDigits") = False
@@ -248,18 +252,22 @@ Namespace Database
                 drow("UnitCurrencyCustom") = strUnit
 
                 drow("FirstYear") = md.FirstYear
+                drow("NumYears") = md.NumYears
+
                 drow("MinLat") = md.South
                 drow("MaxLat") = md.North
                 drow("MinLon") = md.West
                 drow("MaxLon") = md.East
+
                 drow("Country") = md.Country
                 drow("Region") = md.Region
                 drow("LME") = md.LME
                 drow("EcosystemType") = md.EcosystemType
                 drow("EcosystemCategory") = md.EcosystemCategory
-                drow("CodeEcobase") = md.EcobaseCode
+
                 drow("PublicationDOI") = md.DOI
                 drow("PublicationURI") = md.URI
+                drow("PublicationRef") = md.URI
                 drow("LastSaved") = cDateUtils.DateToJulian()
 
                 drow("UnitTime") = eUnitTimeType.Year

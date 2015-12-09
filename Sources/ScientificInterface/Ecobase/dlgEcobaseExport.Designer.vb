@@ -61,7 +61,6 @@ Partial Class dlgEcobaseExport
         Me.m_pbDescription = New System.Windows.Forms.PictureBox()
         Me.m_tbxHyperlink = New System.Windows.Forms.TextBox()
         Me.m_lblHyperlink = New System.Windows.Forms.Label()
-        Me.m_cbIsUpdate = New System.Windows.Forms.CheckBox()
         Me.m_pbAreaName = New System.Windows.Forms.PictureBox()
         Me.m_lblEcoType = New System.Windows.Forms.Label()
         Me.m_lblEcoCat = New System.Windows.Forms.Label()
@@ -85,8 +84,11 @@ Partial Class dlgEcobaseExport
         Me.m_pbObjectives = New System.Windows.Forms.PictureBox()
         Me.m_tbxObjectives = New System.Windows.Forms.TextBox()
         Me.m_tpPublication = New System.Windows.Forms.TabPage()
+        Me.m_cbDifferentFromPaper = New System.Windows.Forms.CheckBox()
         Me.m_lblReference = New System.Windows.Forms.Label()
+        Me.m_pbDifference = New System.Windows.Forms.PictureBox()
         Me.m_pbRef = New System.Windows.Forms.PictureBox()
+        Me.m_tbxDifference = New System.Windows.Forms.TextBox()
         Me.m_tbxReference = New System.Windows.Forms.TextBox()
         Me.m_tpClassification = New System.Windows.Forms.TabPage()
         Me.m_lblTempMax = New System.Windows.Forms.Label()
@@ -121,6 +123,8 @@ Partial Class dlgEcobaseExport
         Me.m_cbDataAgreed = New System.Windows.Forms.CheckBox()
         Me.m_lblPermissionComments = New System.Windows.Forms.Label()
         Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
+        Me.m_cbIsUpdate = New System.Windows.Forms.CheckBox()
+        Me.m_lblExplanation = New System.Windows.Forms.Label()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -131,6 +135,7 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbIsAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbObjectives, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpPublication.SuspendLayout()
+        CType(Me.m_pbDifference, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbRef, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpClassification.SuspendLayout()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -259,12 +264,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_lblHyperlink, "m_lblHyperlink")
         Me.m_lblHyperlink.Name = "m_lblHyperlink"
         '
-        'm_cbIsUpdate
-        '
-        resources.ApplyResources(Me.m_cbIsUpdate, "m_cbIsUpdate")
-        Me.m_cbIsUpdate.Name = "m_cbIsUpdate"
-        Me.m_cbIsUpdate.UseVisualStyleBackColor = True
-        '
         'm_pbAreaName
         '
         resources.ApplyResources(Me.m_pbAreaName, "m_pbAreaName")
@@ -338,6 +337,7 @@ Partial Class dlgEcobaseExport
         'm_tpModel
         '
         Me.m_tpModel.Controls.Add(Me.m_cbEcospaceUsed)
+        Me.m_tpModel.Controls.Add(Me.m_cbIsUpdate)
         Me.m_tpModel.Controls.Add(Me.m_cbFittedToTimeSeries)
         Me.m_tpModel.Controls.Add(Me.m_cbEcosimUsed)
         Me.m_tpModel.Controls.Add(Me.m_hdrAuthor)
@@ -417,29 +417,50 @@ Partial Class dlgEcobaseExport
         '
         'm_tpPublication
         '
+        Me.m_tpPublication.Controls.Add(Me.m_cbDifferentFromPaper)
+        Me.m_tpPublication.Controls.Add(Me.m_lblExplanation)
         Me.m_tpPublication.Controls.Add(Me.m_lblReference)
         Me.m_tpPublication.Controls.Add(Me.m_lblHyperlink)
         Me.m_tpPublication.Controls.Add(Me.m_tbxHyperlink)
+        Me.m_tpPublication.Controls.Add(Me.m_pbDifference)
         Me.m_tpPublication.Controls.Add(Me.m_pbRef)
         Me.m_tpPublication.Controls.Add(Me.m_pbPublication)
         Me.m_tpPublication.Controls.Add(Me.m_lblDOI)
         Me.m_tpPublication.Controls.Add(Me.m_llViewPublication)
+        Me.m_tpPublication.Controls.Add(Me.m_tbxDifference)
         Me.m_tpPublication.Controls.Add(Me.m_tbxReference)
         Me.m_tpPublication.Controls.Add(Me.m_tbxDOI)
         resources.ApplyResources(Me.m_tpPublication, "m_tpPublication")
         Me.m_tpPublication.Name = "m_tpPublication"
         Me.m_tpPublication.UseVisualStyleBackColor = True
         '
+        'm_cbDifferentFromPaper
+        '
+        resources.ApplyResources(Me.m_cbDifferentFromPaper, "m_cbDifferentFromPaper")
+        Me.m_cbDifferentFromPaper.Name = "m_cbDifferentFromPaper"
+        Me.m_cbDifferentFromPaper.UseVisualStyleBackColor = True
+        '
         'm_lblReference
         '
         resources.ApplyResources(Me.m_lblReference, "m_lblReference")
         Me.m_lblReference.Name = "m_lblReference"
+        '
+        'm_pbDifference
+        '
+        resources.ApplyResources(Me.m_pbDifference, "m_pbDifference")
+        Me.m_pbDifference.Name = "m_pbDifference"
+        Me.m_pbDifference.TabStop = False
         '
         'm_pbRef
         '
         resources.ApplyResources(Me.m_pbRef, "m_pbRef")
         Me.m_pbRef.Name = "m_pbRef"
         Me.m_pbRef.TabStop = False
+        '
+        'm_tbxDifference
+        '
+        resources.ApplyResources(Me.m_tbxDifference, "m_tbxDifference")
+        Me.m_tbxDifference.Name = "m_tbxDifference"
         '
         'm_tbxReference
         '
@@ -676,6 +697,17 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_tbxPermissionComments, "m_tbxPermissionComments")
         Me.m_tbxPermissionComments.Name = "m_tbxPermissionComments"
         '
+        'm_cbIsUpdate
+        '
+        resources.ApplyResources(Me.m_cbIsUpdate, "m_cbIsUpdate")
+        Me.m_cbIsUpdate.Name = "m_cbIsUpdate"
+        Me.m_cbIsUpdate.UseVisualStyleBackColor = True
+        '
+        'm_lblExplanation
+        '
+        resources.ApplyResources(Me.m_lblExplanation, "m_lblExplanation")
+        Me.m_lblExplanation.Name = "m_lblExplanation"
+        '
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
@@ -684,7 +716,6 @@ Partial Class dlgEcobaseExport
         Me.Controls.Add(Me.m_tcExport)
         Me.Controls.Add(Me.m_btnSubmit)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_cbIsUpdate)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -702,6 +733,7 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbObjectives, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpPublication.ResumeLayout(False)
         Me.m_tpPublication.PerformLayout()
+        CType(Me.m_pbDifference, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbRef, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpClassification.ResumeLayout(False)
         Me.m_tpClassification.PerformLayout()
@@ -717,7 +749,6 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_lblModel As System.Windows.Forms.Label
@@ -741,7 +772,6 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_pbDescription As System.Windows.Forms.PictureBox
     Private WithEvents m_tbxHyperlink As System.Windows.Forms.TextBox
     Private WithEvents m_lblHyperlink As System.Windows.Forms.Label
-    Private WithEvents m_cbIsUpdate As System.Windows.Forms.CheckBox
     Private WithEvents m_pbAreaName As System.Windows.Forms.PictureBox
     Private WithEvents m_lblEcoType As System.Windows.Forms.Label
     Private WithEvents m_lblEcoCat As System.Windows.Forms.Label
@@ -801,4 +831,9 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_cbFittedToTimeSeries As System.Windows.Forms.CheckBox
     Private WithEvents m_cbEcosimUsed As System.Windows.Forms.CheckBox
     Private WithEvents m_cbDataAgreed As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbDifferentFromPaper As System.Windows.Forms.CheckBox
+    Private WithEvents m_pbDifference As System.Windows.Forms.PictureBox
+    Private WithEvents m_tbxDifference As System.Windows.Forms.TextBox
+    Private WithEvents m_cbIsUpdate As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblExplanation As System.Windows.Forms.Label
 End Class
