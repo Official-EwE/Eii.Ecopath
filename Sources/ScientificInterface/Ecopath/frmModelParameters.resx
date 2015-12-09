@@ -181,7 +181,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_lblOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 18</value>
+    <value>695, 18</value>
   </data>
   <data name="m_lblOptions.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -274,7 +274,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_lblModel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 18</value>
+    <value>695, 18</value>
   </data>
   <data name="m_lblModel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -304,7 +304,7 @@
     <value>109, 25</value>
   </data>
   <data name="m_tbName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 20</value>
+    <value>576, 20</value>
   </data>
   <data name="m_tbName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -361,7 +361,7 @@
     <value>60</value>
   </data>
   <data name="m_tbAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 20</value>
+    <value>576, 20</value>
   </data>
   <data name="m_tbAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -580,7 +580,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>646, 278</value>
+    <value>663, 278</value>
   </data>
   <data name="m_tlpUnits.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -766,7 +766,7 @@
     <value>0, 3, 3, 0</value>
   </data>
   <data name="m_gbCurrencyUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 192</value>
+    <value>359, 192</value>
   </data>
   <data name="m_gbCurrencyUnit.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1216,13 +1216,13 @@
     <value>Fill</value>
   </data>
   <data name="m_gbTimeUnits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 86</value>
+    <value>365, 86</value>
   </data>
   <data name="m_gbTimeUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 0</value>
   </data>
   <data name="m_gbTimeUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 192</value>
+    <value>298, 192</value>
   </data>
   <data name="m_gbTimeUnits.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1249,7 +1249,7 @@
     <value>8, 92</value>
   </data>
   <data name="m_lblNote.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 93</value>
+    <value>284, 93</value>
   </data>
   <data name="m_lblNote.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1411,13 +1411,13 @@
     <value>Fill</value>
   </data>
   <data name="m_gbMonetaryUnits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 0</value>
+    <value>365, 0</value>
   </data>
   <data name="m_gbMonetaryUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 3</value>
   </data>
   <data name="m_gbMonetaryUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>290, 80</value>
+    <value>298, 80</value>
   </data>
   <data name="m_gbMonetaryUnits.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1474,7 +1474,7 @@
     <value>16</value>
   </data>
   <data name="m_cmbMonetaryUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 21</value>
+    <value>194, 21</value>
   </data>
   <data name="m_cmbMonetaryUnit.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1513,7 +1513,7 @@
     <value>0, 0, 3, 3</value>
   </data>
   <data name="m_gbNumFormatting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 80</value>
+    <value>359, 80</value>
   </data>
   <data name="m_gbNumFormatting.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1597,7 +1597,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrExecution.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 18</value>
+    <value>695, 18</value>
   </data>
   <data name="m_hdrExecution.TabIndex" type="System.Int32, mscorlib">
     <value>28</value>
@@ -1624,7 +1624,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudNorth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>308, 282</value>
+    <value>316, 282</value>
   </data>
   <data name="m_nudNorth.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1648,7 +1648,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudSouth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>308, 341</value>
+    <value>316, 341</value>
   </data>
   <data name="m_nudSouth.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1672,7 +1672,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>211, 308</value>
+    <value>219, 308</value>
   </data>
   <data name="m_nudWest.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1696,7 +1696,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>404, 310</value>
+    <value>412, 310</value>
   </data>
   <data name="m_nudEast.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1726,7 +1726,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNorth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>266, 284</value>
+    <value>274, 284</value>
   </data>
   <data name="m_lblNorth.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 13</value>
@@ -1759,7 +1759,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 310</value>
+    <value>178, 310</value>
   </data>
   <data name="m_lblWest.Size" type="System.Drawing.Size, System.Drawing">
     <value>35, 13</value>
@@ -1792,7 +1792,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>367, 312</value>
+    <value>375, 312</value>
   </data>
   <data name="m_lblEast.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -1825,7 +1825,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSouth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>264, 343</value>
+    <value>272, 343</value>
   </data>
   <data name="m_lblSouth.Size" type="System.Drawing.Size, System.Drawing">
     <value>38, 13</value>
@@ -1939,7 +1939,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_plDescr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 364</value>
+    <value>695, 364</value>
   </data>
   <data name="m_plDescr.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1966,7 +1966,7 @@
     <value>True</value>
   </data>
   <data name="m_tbContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 32</value>
+    <value>576, 32</value>
   </data>
   <data name="m_tbContact.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1997,7 +1997,7 @@
     <value>True</value>
   </data>
   <data name="m_tbxObjectives.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 46</value>
+    <value>576, 46</value>
   </data>
   <data name="m_tbxObjectives.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -2029,7 +2029,7 @@
     <value>True</value>
   </data>
   <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 46</value>
+    <value>576, 46</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2166,7 +2166,7 @@
     <value>3, 617</value>
   </data>
   <data name="Panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 309</value>
+    <value>695, 309</value>
   </data>
   <data name="Panel2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2280,7 +2280,7 @@
     <value>3, 932</value>
   </data>
   <data name="m_plExecution.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 66</value>
+    <value>695, 66</value>
   </data>
   <data name="m_plExecution.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2463,7 +2463,7 @@
     <value>3, 499</value>
   </data>
   <data name="m_plMetadata.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 112</value>
+    <value>695, 112</value>
   </data>
   <data name="m_plMetadata.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2742,7 +2742,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrClassification.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 18</value>
+    <value>695, 18</value>
   </data>
   <data name="m_hdrClassification.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2832,7 +2832,7 @@
     <value>3, 373</value>
   </data>
   <data name="m_plPublication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 120</value>
+    <value>695, 120</value>
   </data>
   <data name="m_plPublication.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2859,7 +2859,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrPublication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>678, 18</value>
+    <value>695, 18</value>
   </data>
   <data name="m_hdrPublication.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2892,7 +2892,7 @@
     <value>True</value>
   </data>
   <data name="m_tbxReference.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 62</value>
+    <value>576, 62</value>
   </data>
   <data name="m_tbxReference.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2916,7 +2916,7 @@
     <value>109, 29</value>
   </data>
   <data name="m_tbxPublication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>559, 20</value>
+    <value>576, 20</value>
   </data>
   <data name="m_tbxPublication.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
