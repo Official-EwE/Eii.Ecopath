@@ -157,8 +157,8 @@ Public Class dlgEcobaseExport
 #Region " Event handlers "
 
     Private Sub OnContentChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_tbxAuthor.TextChanged, _
-                m_tbxModel.TextChanged, m_tbxEmail.TextChanged, m_tbxDescription.TextChanged, m_tbxObjectives.TextChanged, _
+        Handles m_cbEcoBaseAgreement.CheckedChanged, _
+                m_tbxAuthor.TextChanged, m_tbxModel.TextChanged, m_tbxEmail.TextChanged, m_tbxDescription.TextChanged, m_tbxObjectives.TextChanged, _
                 m_tbxDOI.TextChanged, m_tbxHyperlink.TextChanged, m_tbxReference.TextChanged, _
                 m_cbConfirmAuthor.CheckedChanged, m_cbConfirmDessiminate.CheckedChanged, _
                 m_cbEcosimUsed.CheckedChanged, m_cbFittedToTimeSeries.CheckedChanged, m_cbEcospaceUsed.CheckedChanged, _
@@ -191,23 +191,6 @@ Public Class dlgEcobaseExport
 
         Catch ex As Exception
             cLog.Write(ex, "dlgEcobaseExport.OnViewDOIOnline(" & strDOI & ")")
-        End Try
-
-    End Sub
-
-    Private Sub OnViewDataAgreement(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
-        Handles m_llViewEcobaseDataAgreement.LinkClicked
-
-        Try
-
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            Debug.Assert(cmd IsNot Nothing)
-
-            cmd.Invoke("http://sirs.agrocampus-ouest.fr/EcoBase/index.php?action=base")
-
-        Catch ex As Exception
-            cLog.Write(ex, "dlgEcobaseExport.OnViewTermsConditions")
         End Try
 
     End Sub
@@ -251,6 +234,12 @@ Public Class dlgEcobaseExport
         Me.m_bInUpdate = True
 
         Dim core As cCore = Me.m_uic.Core
+
+        ' -- Ecobase page --
+        Dim bAgreementOK As Boolean = Me.m_cbEcoBaseAgreement.Checked
+        Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
+        Me.m_tpModel.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
+        Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 1)
 
         ' -- Model page --
         Dim bHasModelName As Boolean = (Me.m_tbxModel.Text.Trim().Length > 5)
@@ -315,16 +304,23 @@ Public Class dlgEcobaseExport
 
         Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bClassOK, 0, 2)
 
-        ' -- Agreement page --
-        Dim bHasPermComments As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
-        Dim bHasAgreed As Boolean = Me.m_cbDataAgreed.Checked
-        Dim pAgreementOK As Boolean = bHasPermComments And bHasAgreed
-
-        Me.m_pbPermissionComment.Image = cSystemUtils.IIF(bHasPermComments, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbAgreement.Image = cSystemUtils.IIF(bHasAgreed, SharedResources.OK, SharedResources.Critical)
+        ' -- Open access --
+        Dim bAccessOK As Boolean = False
+        If (Me.m_cbConfirmDessiminate.Checked) Then
+            Me.m_lblPermissionComments.Enabled = False
+            Me.m_tbxPermissionComments.Enabled = False
+            Me.m_pbPermissionComment.Image = Nothing
+            bAccessOK = True
+        Else
+            Me.m_lblPermissionComments.Enabled = True
+            Me.m_tbxPermissionComments.Enabled = True
+            Me.m_pbPermissionComment.Image = cSystemUtils.IIF(bAccessOK, SharedResources.OK, SharedResources.Critical)
+            bAccessOK = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
+        End If
+        Me.m_tpAccess.ImageIndex = cSystemUtils.IIF(bAccessOK, 0, 1)
 
         ' -- SUBMIT --
-        Me.m_btnSubmit.Enabled = bModelOK And bPubsOK And bClassOK And pAgreementOK
+        Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK
 
         Me.m_bInUpdate = False
 
