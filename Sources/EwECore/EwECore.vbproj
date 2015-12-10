@@ -179,6 +179,7 @@
     <Compile Include="EcoBase\cEcobaseSubmission.vb" />
     <Compile Include="EcoBase\cEcoBaseWDSL.vb" />
     <Compile Include="EcoBase\cEcobaseData.vb" />
+    <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
