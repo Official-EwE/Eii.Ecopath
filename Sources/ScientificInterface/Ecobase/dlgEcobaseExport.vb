@@ -93,7 +93,6 @@ Public Class dlgEcobaseExport
         Me.m_tbxObjectives.Text = model.Objectives
         Me.m_tbxAuthor.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Author), core.DefaultAuthor, model.Author)
         Me.m_tbxEmail.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
-        Me.m_tbxObjectives.Text = ""
 
         Me.m_cbIsUpdate.Checked = Not String.IsNullOrWhiteSpace(model.EcobaseCode)
 
@@ -103,6 +102,16 @@ Public Class dlgEcobaseExport
         Me.m_tbxReference.Text = model.PublicationReference
 
         ' -- Classification page --
+        Me.FillCombo(Me.m_cmbCountry, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName))
+        Me.FillCombo(Me.m_cmbRegion, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName))
+        Me.FillCombo(Me.m_cmbEcoCat, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory))
+        Me.FillCombo(Me.m_cmbEcoType, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType))
+
+        Me.m_cmbCountry.Text = model.Country
+        Me.m_cmbRegion.Text = model.Region
+        Me.m_cmbEcoCat.Text = model.EcosystemCategory
+        Me.m_cmbEcoType.Text = model.EcosystemType
+
         Me.m_fpNorth = New cEwEFormatProvider(Me.m_uic, Me.m_nudNorth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.North))
         Me.m_fpNorth.Value = model.North
         Me.m_fpEast = New cEwEFormatProvider(Me.m_uic, Me.m_nudEast, GetType(Single), model.GetVariableMetadata(eVarNameFlags.East))
@@ -111,12 +120,6 @@ Public Class dlgEcobaseExport
         Me.m_fpWest.Value = model.West
         Me.m_fpSouth = New cEwEFormatProvider(Me.m_uic, Me.m_nudSouth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.South))
         Me.m_fpSouth.Value = model.South
-
-        Me.FillCombo(Me.m_cmbCountry, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName))
-        Me.FillCombo(Me.m_cmbRegion, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName))
-
-        Me.FillCombo(Me.m_cmbEcoCat, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory))
-        Me.FillCombo(Me.m_cmbEcoType, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType))
 
         Dim mdDepth As New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         Me.m_fpDmin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxDepthMin, GetType(Single), mdDepth)
@@ -241,12 +244,12 @@ Public Class dlgEcobaseExport
         Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
 
         ' -- Model page --
-        Dim bHasModelName As Boolean = (Me.m_tbxModel.Text.Trim().Length > 5)
-        Dim bHasDescription As Boolean = (Me.m_tbxDescription.Text.Trim().Length > 5)
-        Dim bHasAuthor As Boolean = (Me.m_tbxAuthor.Text.Trim().Length > 5) And (Me.m_tbxAuthor.Text.Trim().Contains(" "c))
+        Dim bHasModelName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxModel.Text)
+        Dim bHasDescription As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDescription.Text)
+        Dim bHasAuthor As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxAuthor.Text)
         Dim bHasContact As Boolean = cStringUtils.IsEmail(Me.m_tbxEmail.Text)
         Dim bIsAuthor As Boolean = (Me.m_cbConfirmAuthor.Checked = True)
-        Dim bHasObjectives As Boolean = (Me.m_tbxObjectives.Text.Trim().Length > 15)
+        Dim bHasObjectives As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
         Dim bModelOK As Boolean = bHasModelName And bHasDescription And bHasAuthor And bIsAuthor And bHasObjectives
 
         Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bHasModelName, SharedResources.OK, SharedResources.Critical)
@@ -263,9 +266,9 @@ Public Class dlgEcobaseExport
         Me.m_tpModel.ImageIndex = cSystemUtils.IIF(bModelOK, 0, 2)
 
         ' -- Publication page --
-        Dim bHasPublication As Boolean = (Me.m_tbxDOI.Text.Trim().Length > 5) Or (Me.m_tbxHyperlink.Text.Trim().Length > 12)
-        Dim bHasReference As Boolean = (Me.m_tbxReference.Text.Trim().Length > 20)
-        Dim bHasDifferences As Boolean = (Me.m_tbxDifference.Text.Trim().Length > 20)
+        Dim bHasPublication As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDOI.Text) Or Not String.IsNullOrWhiteSpace(Me.m_tbxHyperlink.Text)
+        Dim bHasReference As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxReference.Text)
+        Dim bHasDifferences As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDifference.Text)
         Dim bPubsOK As Boolean = bHasPublication Or bHasReference
 
         If (Me.m_cbDifferentFromPaper.Checked) Then
@@ -273,7 +276,7 @@ Public Class dlgEcobaseExport
             Me.m_pbDifference.Image = cSystemUtils.IIF(bHasDifferences, SharedResources.OK, SharedResources.Critical)
         Else
             Me.m_tbxDifference.Enabled = False
-            Me.m_pbDifference.Image = Nothing
+            Me.m_pbDifference.Image = SharedResources.OK
         End If
 
         Me.m_pbPublication.BackgroundImage = cSystemUtils.IIF(bHasPublication, SharedResources.OK, SharedResources.Critical)
@@ -308,7 +311,7 @@ Public Class dlgEcobaseExport
         If (Me.m_cbConfirmDessiminate.Checked) Then
             Me.m_lblPermissionComments.Enabled = False
             Me.m_tbxPermissionComments.Enabled = False
-            Me.m_pbPermissionComment.Image = Nothing
+            Me.m_pbPermissionComment.Image = SharedResources.OK
             bAccessOK = True
         Else
             Me.m_lblPermissionComments.Enabled = True
@@ -488,7 +491,6 @@ Public Class dlgEcobaseExport
         core.Messages.SendMessage(msg)
         msg = Nothing
 #End If
-        Return True
 
         Try
             strXML = wdsl.Upload_Model(1, strXML)
