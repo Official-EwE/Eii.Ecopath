@@ -36,7 +36,7 @@ Public Class cWebLinks
 
     Private Const cStart As String = "http://www.ecopath.org/nonewe/eweexe/index.php"
     Private Const cHome As String = "http://www.ecopath.org"
-    Private Const cRSS As String = "http://www.ecopath.org/aggregator/categories/1"
+    'Private Const cRSS As String = "http://www.ecopath.org/aggregator/categories/1"
     Private Const cTrac As String = "http://sources.ecopath.org/trac/Ecopath/report/1"
     Private Const cCourse As String = "http://www.ecopath.org/courses"
     Private Const cForum As String = "http://www.ecopath.org/forum"
@@ -70,7 +70,7 @@ Public Class cWebLinks
         Select Case type
             Case eLinkType.Start : Return Me.EwEHomeURL()
             Case eLinkType.Home : Return cWebLinks.cHome
-            Case eLinkType.HomeRSS : Return cWebLinks.cRSS
+                'Case eLinkType.HomeRSS : Return cWebLinks.cRSS
             Case eLinkType.Trac : Return cWebLinks.cTrac
             Case eLinkType.Courses : Return cWebLinks.cCourse
             Case eLinkType.Forums : Return cWebLinks.cForum

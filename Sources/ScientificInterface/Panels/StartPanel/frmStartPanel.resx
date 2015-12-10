@@ -353,31 +353,6 @@
   <data name="m_tsbnRefresh.Text" xml:space="preserve">
     <value>&amp;Refresh</value>
   </data>
-  <data name="m_tsbnRSS.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACQAAAASCAYAAAAzI3woAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD6SURBVEhLxZaxDsFQFIZtIjEYDBaLwWCw9CUkLIxeQCIx
-        WETCYGmCEIOFNxBezNYHED3a6tF77rn01tDzJ196z/3P8A1N2gI8PIiQTuzxEfIvc/Bvy/y5vp+JUJDn
-        pgcwKopyH0YqsdCub1zKEyq0HwCMS6JwoUmZYkraTtZegQtNKxSM7Yx3tr0GF5pVKRjbWQdj6gxwoUWN
-        gkmb1WBn02twoVWdYkrWHVPUXoEKuR0At0HB6OdvYExdCMbUBXChbZOC+TXj+Z9egwsdWhTMrzs96q5N
-        r8DfoWNbFCbknxxRqNC6C3B2REmE4s9+eCFJ8vsRH8QTeXjwArp/qNi/F4UdAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="m_tsbnRSS.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="m_tsbnRSS.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnRSS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 22</value>
-  </data>
-  <data name="m_tsbnRSS.Text" xml:space="preserve">
-    <value>Ecopath forums RSS feed</value>
-  </data>
-  <data name="m_tsbnRSS.ToolTipText" xml:space="preserve">
-    <value>Ecopath forums RSS feed</value>
-  </data>
   <data name="m_sep2.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
@@ -394,7 +369,7 @@
     <value>m_ts1</value>
   </data>
   <data name="&gt;&gt;m_ts1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.4.9755.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13052.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts1.Parent" xml:space="preserve">
     <value>m_tlp</value>
@@ -896,6 +871,12 @@
   <data name="&gt;&gt;m_tsbnBugTracker.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnBetaFeedback.Name" xml:space="preserve">
+    <value>m_tsbnBetaFeedback</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnBetaFeedback.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_sep1.Name" xml:space="preserve">
     <value>m_sep1</value>
   </data>
@@ -920,28 +901,16 @@
   <data name="&gt;&gt;m_tsbnRefresh.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnRSS.Name" xml:space="preserve">
-    <value>m_tsbnRSS</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnRSS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_sep2.Name" xml:space="preserve">
     <value>m_sep2</value>
   </data>
   <data name="&gt;&gt;m_sep2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnBetaFeedback.Name" xml:space="preserve">
-    <value>m_tsbnBetaFeedback</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnBetaFeedback.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmStartPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.9755.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13052.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
