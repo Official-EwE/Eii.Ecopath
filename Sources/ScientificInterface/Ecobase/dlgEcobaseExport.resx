@@ -2631,7 +2631,7 @@
   <data name="&gt;&gt;m_tcExport.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_workerAgreement.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_wrkGetAgreement.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -2649,10 +2649,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Submit model to EcoBase</value>
   </data>
-  <data name="&gt;&gt;m_workerAgreement.Name" xml:space="preserve">
-    <value>m_workerAgreement</value>
+  <data name="&gt;&gt;m_wrkGetAgreement.Name" xml:space="preserve">
+    <value>m_wrkGetAgreement</value>
   </data>
-  <data name="&gt;&gt;m_workerAgreement.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_wrkGetAgreement.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

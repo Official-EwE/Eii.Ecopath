@@ -145,7 +145,7 @@ Public Class dlgEcobaseExport
 
         Me.m_bInUpdate = False
 
-        Me.m_workerAgreement.RunWorkerAsync()
+        Me.m_wrkGetAgreement.RunWorkerAsync()
         Me.CenterToParent()
         Me.UpdateControls()
 
@@ -550,7 +550,7 @@ Public Class dlgEcobaseExport
 #End Region ' Internals
 
     Private Sub OnGetAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
-        Handles m_workerAgreement.DoWork
+        Handles m_wrkGetAgreement.DoWork
 
         Try
             Dim wdsl As New cEcoBaseWDSL()
@@ -566,7 +566,7 @@ Public Class dlgEcobaseExport
     End Sub
 
     Private Sub OnGetAgreementComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) _
-        Handles m_workerAgreement.RunWorkerCompleted
+        Handles m_wrkGetAgreement.RunWorkerCompleted
 
         Try
             Me.UpdateControls()
