@@ -238,8 +238,7 @@ Public Class dlgEcobaseExport
         ' -- Ecobase page --
         Dim bAgreementOK As Boolean = Me.m_cbEcoBaseAgreement.Checked
         Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
-        Me.m_tpModel.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
-        Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 1)
+        Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
 
         ' -- Model page --
         Dim bHasModelName As Boolean = (Me.m_tbxModel.Text.Trim().Length > 5)
@@ -317,7 +316,7 @@ Public Class dlgEcobaseExport
             Me.m_pbPermissionComment.Image = cSystemUtils.IIF(bAccessOK, SharedResources.OK, SharedResources.Critical)
             bAccessOK = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
         End If
-        Me.m_tpAccess.ImageIndex = cSystemUtils.IIF(bAccessOK, 0, 1)
+        Me.m_tpAccess.ImageIndex = cSystemUtils.IIF(bAccessOK, 0, 2)
 
         ' -- SUBMIT --
         Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK
@@ -489,6 +488,7 @@ Public Class dlgEcobaseExport
         core.Messages.SendMessage(msg)
         msg = Nothing
 #End If
+        Return True
 
         Try
             strXML = wdsl.Upload_Model(1, strXML)

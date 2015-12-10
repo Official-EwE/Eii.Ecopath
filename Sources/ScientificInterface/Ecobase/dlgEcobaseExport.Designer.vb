@@ -73,6 +73,7 @@ Partial Class dlgEcobaseExport
         Me.m_cmbRegion = New System.Windows.Forms.ComboBox()
         Me.m_tcExport = New System.Windows.Forms.TabControl()
         Me.m_tpEcoBase = New System.Windows.Forms.TabPage()
+        Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
         Me.m_rtfAgreemenmt = New System.Windows.Forms.RichTextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.m_cbEcoBaseAgreement = New System.Windows.Forms.CheckBox()
@@ -127,7 +128,6 @@ Partial Class dlgEcobaseExport
         Me.m_pbPermissionComment = New System.Windows.Forms.PictureBox()
         Me.m_lblPermissionComments = New System.Windows.Forms.Label()
         Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
-        Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -135,6 +135,7 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbAreaName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcExport.SuspendLayout()
         Me.m_tpEcoBase.SuspendLayout()
+        CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpModel.SuspendLayout()
         CType(Me.m_pbIsAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -152,7 +153,6 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbBoundingBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpAccess.SuspendLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -188,8 +188,6 @@ Partial Class dlgEcobaseExport
         'm_cbConfirmDessiminate
         '
         resources.ApplyResources(Me.m_cbConfirmDessiminate, "m_cbConfirmDessiminate")
-        Me.m_cbConfirmDessiminate.Checked = True
-        Me.m_cbConfirmDessiminate.CheckState = System.Windows.Forms.CheckState.Checked
         Me.m_cbConfirmDessiminate.Name = "m_cbConfirmDessiminate"
         Me.m_cbConfirmDessiminate.UseVisualStyleBackColor = True
         '
@@ -345,6 +343,12 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_tpEcoBase, "m_tpEcoBase")
         Me.m_tpEcoBase.Name = "m_tpEcoBase"
         Me.m_tpEcoBase.UseVisualStyleBackColor = True
+        '
+        'm_pbAgreement
+        '
+        resources.ApplyResources(Me.m_pbAgreement, "m_pbAgreement")
+        Me.m_pbAgreement.Name = "m_pbAgreement"
+        Me.m_pbAgreement.TabStop = False
         '
         'm_rtfAgreemenmt
         '
@@ -734,12 +738,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_tbxPermissionComments, "m_tbxPermissionComments")
         Me.m_tbxPermissionComments.Name = "m_tbxPermissionComments"
         '
-        'm_pbAgreement
-        '
-        resources.ApplyResources(Me.m_pbAgreement, "m_pbAgreement")
-        Me.m_pbAgreement.Name = "m_pbAgreement"
-        Me.m_pbAgreement.TabStop = False
-        '
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
@@ -761,6 +759,7 @@ Partial Class dlgEcobaseExport
         Me.m_tcExport.ResumeLayout(False)
         Me.m_tpEcoBase.ResumeLayout(False)
         Me.m_tpEcoBase.PerformLayout()
+        CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpModel.ResumeLayout(False)
         Me.m_tpModel.PerformLayout()
@@ -782,7 +781,6 @@ Partial Class dlgEcobaseExport
         Me.m_tpAccess.ResumeLayout(False)
         Me.m_tpAccess.PerformLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
