@@ -1172,6 +1172,7 @@
     <None Include="Resources\Ecopath6_joepie.ico" />
     <None Include="Resources\ecopath5_30.ico" />
     <Content Include="Resources\EcoBase.ico" />
+    <Content Include="Resources\EcoBase.png" />
     <Content Include="Resources\logo_mgel.png" />
     <Content Include="Resources\logo_sm.png" />
     <None Include="Resources\Warning.png" />
