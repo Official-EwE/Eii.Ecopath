@@ -88,14 +88,12 @@ Namespace WebServices.Ecobase
 
                 ' Patch up XML
                 If Not strXML.StartsWith("<?") Then
-                    Dim xnRoot As XmlNode = Nothing
-                    Dim doc As XmlDocument = cXMLUtils.NewDoc("Ecobase", xnRoot)
-                    xnRoot.InnerXml = strXML
-                    xnData = xnRoot.ChildNodes(0)
+                    Dim doc As XmlDocument = cXMLUtils.NewDoc("Agreement", xnData)
+                    xnData.InnerXml = strXML
                 Else
                     Dim doc As New XmlDocument()
                     doc.LoadXml(strXML)
-                    xnData = doc.ChildNodes(0).ChildNodes(0)
+                    xnData = doc.ChildNodes(0)
                 End If
 
                 Dim selfie As New cEcobaseDataAccessAgreement()
