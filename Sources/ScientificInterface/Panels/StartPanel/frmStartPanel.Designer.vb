@@ -47,13 +47,12 @@ Partial Class frmStartPanel
         Me.m_tsbnEcopathSite = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFacebook = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnBugTracker = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnBetaFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnRSS = New System.Windows.Forms.ToolStripButton()
         Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tsbnBetaFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tlp.SuspendLayout()
         Me.m_ts1.SuspendLayout()
         Me.SuspendLayout()
@@ -74,7 +73,7 @@ Partial Class frmStartPanel
         'm_ts1
         '
         Me.m_ts1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnFacebook, Me.m_tsbnBugTracker, Me.m_tsbnBetaFeedback, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_tsbnRSS, Me.m_sep2})
+        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnFacebook, Me.m_tsbnBugTracker, Me.m_tsbnBetaFeedback, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_sep2})
         resources.ApplyResources(Me.m_ts1, "m_ts1")
         Me.m_ts1.Name = "m_ts1"
         Me.m_ts1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -103,6 +102,12 @@ Partial Class frmStartPanel
         resources.ApplyResources(Me.m_tsbnBugTracker, "m_tsbnBugTracker")
         Me.m_tsbnBugTracker.Name = "m_tsbnBugTracker"
         '
+        'm_tsbnBetaFeedback
+        '
+        Me.m_tsbnBetaFeedback.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnBetaFeedback, "m_tsbnBetaFeedback")
+        Me.m_tsbnBetaFeedback.Name = "m_tsbnBetaFeedback"
+        '
         'm_sep1
         '
         Me.m_sep1.Name = "m_sep1"
@@ -125,23 +130,10 @@ Partial Class frmStartPanel
         resources.ApplyResources(Me.m_tsbnRefresh, "m_tsbnRefresh")
         Me.m_tsbnRefresh.Name = "m_tsbnRefresh"
         '
-        'm_tsbnRSS
-        '
-        Me.m_tsbnRSS.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsbnRSS.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnRSS, "m_tsbnRSS")
-        Me.m_tsbnRSS.Name = "m_tsbnRSS"
-        '
         'm_sep2
         '
         Me.m_sep2.Name = "m_sep2"
         resources.ApplyResources(Me.m_sep2, "m_sep2")
-        '
-        'm_tsbnBetaFeedback
-        '
-        Me.m_tsbnBetaFeedback.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnBetaFeedback, "m_tsbnBetaFeedback")
-        Me.m_tsbnBetaFeedback.Name = "m_tsbnBetaFeedback"
         '
         'frmStartPanel
         '
@@ -150,6 +142,7 @@ Partial Class frmStartPanel
         Me.Controls.Add(Me.m_tlp)
         Me.HideOnClose = True
         Me.Name = "frmStartPanel"
+        Me.TabText = ""
         Me.m_tlp.ResumeLayout(False)
         Me.m_tlp.PerformLayout()
         Me.m_ts1.ResumeLayout(False)
@@ -167,7 +160,6 @@ Partial Class frmStartPanel
     Private WithEvents m_tsbnStartPage As System.Windows.Forms.ToolStripButton
     Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsbnRSS As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnEcopathSite As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnBugTracker As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnBetaFeedback As System.Windows.Forms.ToolStripButton

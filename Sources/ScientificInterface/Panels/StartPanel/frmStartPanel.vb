@@ -189,14 +189,14 @@ Public Class frmStartPanel
         End If
     End Sub
 
-    Private Sub OnViewRSS(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbnRSS.Click
-        Try
-            Me.Browse(cWebLinks.eLinkType.HomeRSS)
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-    End Sub
+    'Private Sub OnViewRSS(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    '    Handles m_tsbnRSS.Click
+    '    Try
+    '        Me.Browse(cWebLinks.eLinkType.HomeRSS)
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '    End Try
+    'End Sub
 
     Private Sub OnGoHome(sender As System.Object, e As System.EventArgs) Handles m_tsbnEcopathSite.Click
         Try
