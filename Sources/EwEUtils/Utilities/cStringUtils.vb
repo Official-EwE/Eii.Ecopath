@@ -1219,7 +1219,7 @@ Namespace Utilities
         ''' outsourced to more dedicated logic that performs Locale aware hyphenation
         ''' etc. Perhaps NHunSpell? Ugh, that is for later.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ToParagraph(ByVal str As String, Optional iNumChars As Integer = 100) As String
+        Public Shared Function Wrap(ByVal str As String, Optional iNumChars As Integer = 100) As String
 
             If (String.IsNullOrWhiteSpace(str)) Then Return ""
 
@@ -1251,6 +1251,34 @@ Namespace Utilities
             sbBlock.Append(sbLine.ToString())
 
             Return sbBlock.ToString()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Removes all single line breaks from a piece of text. Double line breaks
+        ''' are preserved as they are interpreted as paragraph separators.
+        ''' </summary>
+        ''' <param name="strText"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Unwrap(strText As String) As String
+
+            Dim pars As String() = strText.Split(New String() {cStringUtils.vbCrLf & cStringUtils.vbCrLf, cStringUtils.vbCr & cStringUtils.vbCr, cStringUtils.vbLf & cStringUtils.vbLf}, StringSplitOptions.None)
+            Dim sb As New StringBuilder()
+
+            Dim i As Integer = 0
+            For Each par As String In pars
+                If (i > 0) Then
+                    sb.AppendLine()
+                    sb.AppendLine()
+                End If
+                For Each sentence As String In par.Split(New String() {cStringUtils.vbCrLf, cStringUtils.vbCr, cStringUtils.vbLf}, StringSplitOptions.None)
+                    sb.Append(sentence)
+                Next
+                i += 1
+            Next
+            Return sb.ToString
 
         End Function
 

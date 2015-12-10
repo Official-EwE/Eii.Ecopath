@@ -74,7 +74,6 @@ Partial Class dlgEcobaseExport
         Me.m_tcExport = New System.Windows.Forms.TabControl()
         Me.m_tpEcoBase = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
-        Me.m_rtfAgreemenmt = New System.Windows.Forms.RichTextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.m_cbEcoBaseAgreement = New System.Windows.Forms.CheckBox()
         Me.m_tpModel = New System.Windows.Forms.TabPage()
@@ -82,7 +81,6 @@ Partial Class dlgEcobaseExport
         Me.m_cbIsUpdate = New System.Windows.Forms.CheckBox()
         Me.m_cbFittedToTimeSeries = New System.Windows.Forms.CheckBox()
         Me.m_cbEcosimUsed = New System.Windows.Forms.CheckBox()
-        Me.m_hdrAuthor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_cbConfirmAuthor = New System.Windows.Forms.CheckBox()
         Me.m_lblObjectives = New System.Windows.Forms.Label()
         Me.m_pbIsAuthor = New System.Windows.Forms.PictureBox()
@@ -103,17 +101,10 @@ Partial Class dlgEcobaseExport
         Me.m_lblDepthMean = New System.Windows.Forms.Label()
         Me.m_lblTempMin = New System.Windows.Forms.Label()
         Me.m_lblDepthMin = New System.Windows.Forms.Label()
-        Me.m_hdrEcosystem = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_hdrClassification = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_lblSouth = New System.Windows.Forms.Label()
         Me.m_lblEast = New System.Windows.Forms.Label()
         Me.m_lblWest = New System.Windows.Forms.Label()
         Me.m_lblNorth = New System.Windows.Forms.Label()
-        Me.m_hdrArea = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_pbEnvVars = New System.Windows.Forms.PictureBox()
         Me.m_pbEcosystem = New System.Windows.Forms.PictureBox()
         Me.m_pbBoundingBox = New System.Windows.Forms.PictureBox()
@@ -124,10 +115,20 @@ Partial Class dlgEcobaseExport
         Me.m_tbxTempMin = New System.Windows.Forms.TextBox()
         Me.m_tbxDepthMin = New System.Windows.Forms.TextBox()
         Me.m_tpAccess = New System.Windows.Forms.TabPage()
-        Me.m_hdrAccess = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_pbPermissionComment = New System.Windows.Forms.PictureBox()
         Me.m_lblPermissionComments = New System.Windows.Forms.Label()
         Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
+        Me.m_workerAgreement = New System.ComponentModel.BackgroundWorker()
+        Me.m_rtfAgreement = New System.Windows.Forms.RichTextBox()
+        Me.m_hdrAuthor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrEcosystem = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_hdrClassification = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_hdrArea = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrAccess = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -144,15 +145,15 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbDifference, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbRef, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpClassification.SuspendLayout()
-        CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEnvVars, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEcosystem, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbBoundingBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpAccess.SuspendLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -337,7 +338,7 @@ Partial Class dlgEcobaseExport
         'm_tpEcoBase
         '
         Me.m_tpEcoBase.Controls.Add(Me.m_pbAgreement)
-        Me.m_tpEcoBase.Controls.Add(Me.m_rtfAgreemenmt)
+        Me.m_tpEcoBase.Controls.Add(Me.m_rtfAgreement)
         Me.m_tpEcoBase.Controls.Add(Me.PictureBox1)
         Me.m_tpEcoBase.Controls.Add(Me.m_cbEcoBaseAgreement)
         resources.ApplyResources(Me.m_tpEcoBase, "m_tpEcoBase")
@@ -349,13 +350,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_pbAgreement, "m_pbAgreement")
         Me.m_pbAgreement.Name = "m_pbAgreement"
         Me.m_pbAgreement.TabStop = False
-        '
-        'm_rtfAgreemenmt
-        '
-        resources.ApplyResources(Me.m_rtfAgreemenmt, "m_rtfAgreemenmt")
-        Me.m_rtfAgreemenmt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_rtfAgreemenmt.Cursor = System.Windows.Forms.Cursors.Default
-        Me.m_rtfAgreemenmt.Name = "m_rtfAgreemenmt"
         '
         'PictureBox1
         '
@@ -376,7 +370,6 @@ Partial Class dlgEcobaseExport
         Me.m_tpModel.Controls.Add(Me.m_cbIsUpdate)
         Me.m_tpModel.Controls.Add(Me.m_cbFittedToTimeSeries)
         Me.m_tpModel.Controls.Add(Me.m_cbEcosimUsed)
-        Me.m_tpModel.Controls.Add(Me.m_hdrAuthor)
         Me.m_tpModel.Controls.Add(Me.m_cbConfirmAuthor)
         Me.m_tpModel.Controls.Add(Me.m_lblModel)
         Me.m_tpModel.Controls.Add(Me.m_lblObjectives)
@@ -393,6 +386,7 @@ Partial Class dlgEcobaseExport
         Me.m_tpModel.Controls.Add(Me.m_lblEmail)
         Me.m_tpModel.Controls.Add(Me.m_tbxEmail)
         Me.m_tpModel.Controls.Add(Me.m_pbAuthor)
+        Me.m_tpModel.Controls.Add(Me.m_hdrAuthor)
         resources.ApplyResources(Me.m_tpModel, "m_tpModel")
         Me.m_tpModel.Name = "m_tpModel"
         Me.m_tpModel.UseVisualStyleBackColor = True
@@ -420,14 +414,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_cbEcosimUsed, "m_cbEcosimUsed")
         Me.m_cbEcosimUsed.Name = "m_cbEcosimUsed"
         Me.m_cbEcosimUsed.UseVisualStyleBackColor = True
-        '
-        'm_hdrAuthor
-        '
-        resources.ApplyResources(Me.m_hdrAuthor, "m_hdrAuthor")
-        Me.m_hdrAuthor.CanCollapseParent = False
-        Me.m_hdrAuthor.CollapsedParentHeight = 0
-        Me.m_hdrAuthor.IsCollapsed = False
-        Me.m_hdrAuthor.Name = "m_hdrAuthor"
         '
         'm_cbConfirmAuthor
         '
@@ -522,17 +508,10 @@ Partial Class dlgEcobaseExport
         Me.m_tpClassification.Controls.Add(Me.m_lblDepthMean)
         Me.m_tpClassification.Controls.Add(Me.m_lblTempMin)
         Me.m_tpClassification.Controls.Add(Me.m_lblDepthMin)
-        Me.m_tpClassification.Controls.Add(Me.m_hdrEcosystem)
-        Me.m_tpClassification.Controls.Add(Me.m_nudEast)
-        Me.m_tpClassification.Controls.Add(Me.m_nudSouth)
-        Me.m_tpClassification.Controls.Add(Me.m_nudWest)
-        Me.m_tpClassification.Controls.Add(Me.m_hdrClassification)
-        Me.m_tpClassification.Controls.Add(Me.m_nudNorth)
         Me.m_tpClassification.Controls.Add(Me.m_lblSouth)
         Me.m_tpClassification.Controls.Add(Me.m_lblEast)
         Me.m_tpClassification.Controls.Add(Me.m_lblWest)
         Me.m_tpClassification.Controls.Add(Me.m_lblNorth)
-        Me.m_tpClassification.Controls.Add(Me.m_hdrArea)
         Me.m_tpClassification.Controls.Add(Me.m_lblEcoType)
         Me.m_tpClassification.Controls.Add(Me.m_pbEnvVars)
         Me.m_tpClassification.Controls.Add(Me.m_pbEcosystem)
@@ -553,6 +532,13 @@ Partial Class dlgEcobaseExport
         Me.m_tpClassification.Controls.Add(Me.m_cmbEcoType)
         Me.m_tpClassification.Controls.Add(Me.m_lblRegion)
         Me.m_tpClassification.Controls.Add(Me.m_lblCountry)
+        Me.m_tpClassification.Controls.Add(Me.m_hdrEcosystem)
+        Me.m_tpClassification.Controls.Add(Me.m_nudEast)
+        Me.m_tpClassification.Controls.Add(Me.m_nudSouth)
+        Me.m_tpClassification.Controls.Add(Me.m_nudWest)
+        Me.m_tpClassification.Controls.Add(Me.m_hdrClassification)
+        Me.m_tpClassification.Controls.Add(Me.m_nudNorth)
+        Me.m_tpClassification.Controls.Add(Me.m_hdrArea)
         resources.ApplyResources(Me.m_tpClassification, "m_tpClassification")
         Me.m_tpClassification.Name = "m_tpClassification"
         Me.m_tpClassification.UseVisualStyleBackColor = True
@@ -587,46 +573,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_lblDepthMin, "m_lblDepthMin")
         Me.m_lblDepthMin.Name = "m_lblDepthMin"
         '
-        'm_hdrEcosystem
-        '
-        Me.m_hdrEcosystem.CanCollapseParent = False
-        Me.m_hdrEcosystem.CollapsedParentHeight = 0
-        Me.m_hdrEcosystem.IsCollapsed = False
-        resources.ApplyResources(Me.m_hdrEcosystem, "m_hdrEcosystem")
-        Me.m_hdrEcosystem.Name = "m_hdrEcosystem"
-        '
-        'm_nudEast
-        '
-        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
-        Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudEast.Name = "m_nudEast"
-        '
-        'm_nudSouth
-        '
-        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
-        Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudSouth.Name = "m_nudSouth"
-        '
-        'm_nudWest
-        '
-        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
-        Me.m_nudWest.Name = "m_nudWest"
-        '
-        'm_hdrClassification
-        '
-        Me.m_hdrClassification.CanCollapseParent = False
-        Me.m_hdrClassification.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrClassification, "m_hdrClassification")
-        Me.m_hdrClassification.IsCollapsed = False
-        Me.m_hdrClassification.Name = "m_hdrClassification"
-        '
-        'm_nudNorth
-        '
-        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
-        Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-        Me.m_nudNorth.Name = "m_nudNorth"
-        '
         'm_lblSouth
         '
         resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
@@ -646,14 +592,6 @@ Partial Class dlgEcobaseExport
         '
         resources.ApplyResources(Me.m_lblNorth, "m_lblNorth")
         Me.m_lblNorth.Name = "m_lblNorth"
-        '
-        'm_hdrArea
-        '
-        Me.m_hdrArea.CanCollapseParent = False
-        Me.m_hdrArea.CollapsedParentHeight = 0
-        Me.m_hdrArea.IsCollapsed = False
-        resources.ApplyResources(Me.m_hdrArea, "m_hdrArea")
-        Me.m_hdrArea.Name = "m_hdrArea"
         '
         'm_pbEnvVars
         '
@@ -714,14 +652,6 @@ Partial Class dlgEcobaseExport
         Me.m_tpAccess.Name = "m_tpAccess"
         Me.m_tpAccess.UseVisualStyleBackColor = True
         '
-        'm_hdrAccess
-        '
-        Me.m_hdrAccess.CanCollapseParent = False
-        Me.m_hdrAccess.CollapsedParentHeight = 0
-        Me.m_hdrAccess.IsCollapsed = False
-        resources.ApplyResources(Me.m_hdrAccess, "m_hdrAccess")
-        Me.m_hdrAccess.Name = "m_hdrAccess"
-        '
         'm_pbPermissionComment
         '
         resources.ApplyResources(Me.m_pbPermissionComment, "m_pbPermissionComment")
@@ -737,6 +667,80 @@ Partial Class dlgEcobaseExport
         '
         resources.ApplyResources(Me.m_tbxPermissionComments, "m_tbxPermissionComments")
         Me.m_tbxPermissionComments.Name = "m_tbxPermissionComments"
+        '
+        'm_workerAgreement
+        '
+        '
+        'm_rtfAgreement
+        '
+        resources.ApplyResources(Me.m_rtfAgreement, "m_rtfAgreement")
+        Me.m_rtfAgreement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_rtfAgreement.Name = "m_rtfAgreement"
+        Me.m_rtfAgreement.ReadOnly = True
+        '
+        'm_hdrAuthor
+        '
+        resources.ApplyResources(Me.m_hdrAuthor, "m_hdrAuthor")
+        Me.m_hdrAuthor.CanCollapseParent = False
+        Me.m_hdrAuthor.CollapsedParentHeight = 0
+        Me.m_hdrAuthor.IsCollapsed = False
+        Me.m_hdrAuthor.Name = "m_hdrAuthor"
+        '
+        'm_hdrEcosystem
+        '
+        Me.m_hdrEcosystem.CanCollapseParent = False
+        Me.m_hdrEcosystem.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrEcosystem, "m_hdrEcosystem")
+        Me.m_hdrEcosystem.IsCollapsed = False
+        Me.m_hdrEcosystem.Name = "m_hdrEcosystem"
+        '
+        'm_nudEast
+        '
+        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+        Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudEast.Name = "m_nudEast"
+        '
+        'm_nudSouth
+        '
+        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+        Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudSouth.Name = "m_nudSouth"
+        '
+        'm_nudWest
+        '
+        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+        Me.m_nudWest.Name = "m_nudWest"
+        '
+        'm_hdrClassification
+        '
+        Me.m_hdrClassification.CanCollapseParent = False
+        Me.m_hdrClassification.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrClassification, "m_hdrClassification")
+        Me.m_hdrClassification.IsCollapsed = False
+        Me.m_hdrClassification.Name = "m_hdrClassification"
+        '
+        'm_nudNorth
+        '
+        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+        Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        Me.m_nudNorth.Name = "m_nudNorth"
+        '
+        'm_hdrArea
+        '
+        Me.m_hdrArea.CanCollapseParent = False
+        Me.m_hdrArea.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrArea, "m_hdrArea")
+        Me.m_hdrArea.IsCollapsed = False
+        Me.m_hdrArea.Name = "m_hdrArea"
+        '
+        'm_hdrAccess
+        '
+        Me.m_hdrAccess.CanCollapseParent = False
+        Me.m_hdrAccess.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrAccess, "m_hdrAccess")
+        Me.m_hdrAccess.IsCollapsed = False
+        Me.m_hdrAccess.Name = "m_hdrAccess"
         '
         'dlgEcobaseExport
         '
@@ -771,16 +775,16 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbRef, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpClassification.ResumeLayout(False)
         Me.m_tpClassification.PerformLayout()
-        CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEnvVars, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEcosystem, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbBoundingBox, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpAccess.ResumeLayout(False)
         Me.m_tpAccess.PerformLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -870,6 +874,7 @@ Partial Class dlgEcobaseExport
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Private WithEvents m_cbEcoBaseAgreement As System.Windows.Forms.CheckBox
     Private WithEvents m_tpEcoBase As System.Windows.Forms.TabPage
-    Private WithEvents m_rtfAgreemenmt As System.Windows.Forms.RichTextBox
     Private WithEvents m_pbAgreement As System.Windows.Forms.PictureBox
+    Private WithEvents m_workerAgreement As System.ComponentModel.BackgroundWorker
+    Private WithEvents m_rtfAgreement As System.Windows.Forms.RichTextBox
 End Class

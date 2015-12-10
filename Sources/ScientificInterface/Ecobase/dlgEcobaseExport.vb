@@ -21,18 +21,18 @@
 Option Explicit On
 Option Strict On
 
+Imports System.Collections.Specialized
 Imports System.IO
 Imports System.Net
 Imports System.Web
-Imports System.Web.Services
 Imports EwECore
 Imports EwECore.WebServices
+Imports EwECore.WebServices.Ecobase
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Collections.Specialized
 
 #End Region
 
@@ -59,6 +59,8 @@ Public Class dlgEcobaseExport
     Private m_fpTmin As cEwEFormatProvider = Nothing
     Private m_fpTmean As cEwEFormatProvider = Nothing
     Private m_fpTmax As cEwEFormatProvider = Nothing
+
+    Private m_strAgreement As String = ""
 
 #End Region ' Private vars
 
@@ -143,6 +145,7 @@ Public Class dlgEcobaseExport
 
         Me.m_bInUpdate = False
 
+        Me.m_workerAgreement.RunWorkerAsync()
         Me.CenterToParent()
         Me.UpdateControls()
 
@@ -240,6 +243,8 @@ Public Class dlgEcobaseExport
 
         ' -- Ecobase page --
         Dim bAgreementOK As Boolean = Me.m_cbEcoBaseAgreement.Checked
+
+        Me.m_rtfAgreement.Text = Me.m_strAgreement
         Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
         Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
 
@@ -291,7 +296,7 @@ Public Class dlgEcobaseExport
         Dim bHasBoundingBox As Boolean = (CSng(Me.m_fpNorth.Value) <> CSng(Me.m_fpSouth.Value)) And (CSng(Me.m_fpWest.Value) <> CSng(Me.m_fpEast.Value))
         Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoCat.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoType.Text))
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
-        Dim bClassOK As Boolean = bHasArea And bHasBoundingBox And bHasEcosystem 
+        Dim bClassOK As Boolean = bHasArea And bHasBoundingBox And bHasEcosystem
 
         Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasArea, SharedResources.OK, SharedResources.Critical)
         Me.m_pbBoundingBox.BackgroundImage = cSystemUtils.IIF(bHasBoundingBox, SharedResources.OK, SharedResources.Critical)
@@ -543,5 +548,32 @@ Public Class dlgEcobaseExport
     End Sub
 
 #End Region ' Internals
+
+    Private Sub OnGetAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+        Handles m_workerAgreement.DoWork
+
+        Try
+            Dim wdsl As New cEcoBaseWDSL()
+            Dim strAgreement As String = wdsl.getModel("agreement", -1)
+            Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
+
+            Me.m_strAgreement = data.Agreement
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnGetAgreementComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+        Handles m_workerAgreement.RunWorkerCompleted
+
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
 
 End Class
