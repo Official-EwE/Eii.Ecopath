@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -35,6 +36,7 @@ Public Class dlgEcobaseImport
     Private m_ecobase As cEcoBaseWDSL = Nothing
     Private m_models As New List(Of cModelData)
     Private m_model As cModelData = Nothing
+    Private m_strAgreement As String = ""
 
 #End Region ' Private vars
 
@@ -54,7 +56,14 @@ Public Class dlgEcobaseImport
 
         Me.CenterToScreen()
 
+        Dim il As New ImageList()
+        il.Images.Add(SharedResources.OK)
+        il.Images.Add(SharedResources.Warning)
+        il.Images.Add(SharedResources.Critical)
+        Me.m_tcContent.ImageList = il
+
         Me.m_ecobase = New cEcoBaseWDSL()
+        Me.m_wrkGetAgreement.RunWorkerAsync(Nothing)
         Me.m_wrkGetModels.RunWorkerAsync(Nothing)
 
         Me.PopulateFilterControls()
@@ -79,7 +88,7 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        Dim bIsBusy As Boolean = Me.m_wrkGetModels.IsBusy
+        Me.m_rtfAgreement.Text = Me.m_strAgreement
         Me.m_btnOK.Enabled = Me.CanDownload
 
     End Sub
@@ -98,7 +107,7 @@ Public Class dlgEcobaseImport
         Get
             Dim bCanDownload As Boolean = False
             If (Me.m_model IsNot Nothing) Then
-                bCanDownload = (Me.m_model.AllowDissemination And Me.m_cbAccept.Checked)
+                bCanDownload = (Me.m_model.AllowDissemination And Me.m_cbEcoBaseAgreement.Checked)
             End If
             Return bCanDownload
         End Get
@@ -146,7 +155,8 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnAcceptAgreement(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbAccept.CheckedChanged
+        Handles m_cbEcoBaseAgreement.CheckedChanged
+
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -154,8 +164,8 @@ Public Class dlgEcobaseImport
         End Try
     End Sub
 
-    Private Sub OnReadAgreement(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
-        Handles m_llViewEcobaseDataAgreement.LinkClicked
+    Private Sub OnReadAgreement(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs)
+
 
         Try
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
@@ -250,6 +260,34 @@ Public Class dlgEcobaseImport
         Me.UpdateEcoBaseLists()
         Me.UpdateModelList()
         Me.UpdateControls()
+
+    End Sub
+
+
+    Private Sub OnGetAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+        Handles m_wrkGetAgreement.DoWork
+
+        Try
+            Dim wdsl As New cEcoBaseWDSL()
+            Dim strAgreement As String = wdsl.getModel("agreement", -1)
+            Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
+
+            Me.m_strAgreement = data.Agreement
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnGetAgreementComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+        Handles m_wrkGetAgreement.RunWorkerCompleted
+
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

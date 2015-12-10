@@ -45,8 +45,6 @@ Partial Class dlgEcobaseImport
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
-        Me.m_cbAccept = New System.Windows.Forms.CheckBox()
-        Me.m_llViewEcobaseDataAgreement = New System.Windows.Forms.LinkLabel()
         Me.m_tsFilter = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbCategory = New System.Windows.Forms.ToolStripComboBox()
@@ -54,11 +52,24 @@ Partial Class dlgEcobaseImport
         Me.m_tscmbLME = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tslCountry = New System.Windows.Forms.ToolStripLabel()
         Me.m_tstbxCountry = New System.Windows.Forms.ToolStripTextBox()
+        Me.m_tcContent = New System.Windows.Forms.TabControl()
+        Me.m_tpAgreement = New System.Windows.Forms.TabPage()
+        Me.m_tpImport = New System.Windows.Forms.TabPage()
+        Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
+        Me.m_rtfAgreement = New System.Windows.Forms.RichTextBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.m_cbEcoBaseAgreement = New System.Windows.Forms.CheckBox()
+        Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
         CType(Me.m_scEcobaseContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scEcobaseContent.Panel1.SuspendLayout()
         Me.m_scEcobaseContent.Panel2.SuspendLayout()
         Me.m_scEcobaseContent.SuspendLayout()
         Me.m_tsFilter.SuspendLayout()
+        Me.m_tcContent.SuspendLayout()
+        Me.m_tpAgreement.SuspendLayout()
+        Me.m_tpImport.SuspendLayout()
+        CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_scEcobaseContent
@@ -123,18 +134,6 @@ Partial Class dlgEcobaseImport
         'm_wrkGetModels
         '
         '
-        'm_cbAccept
-        '
-        resources.ApplyResources(Me.m_cbAccept, "m_cbAccept")
-        Me.m_cbAccept.Name = "m_cbAccept"
-        Me.m_cbAccept.UseVisualStyleBackColor = True
-        '
-        'm_llViewEcobaseDataAgreement
-        '
-        resources.ApplyResources(Me.m_llViewEcobaseDataAgreement, "m_llViewEcobaseDataAgreement")
-        Me.m_llViewEcobaseDataAgreement.Name = "m_llViewEcobaseDataAgreement"
-        Me.m_llViewEcobaseDataAgreement.TabStop = True
-        '
         'm_tsFilter
         '
         Me.m_tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -176,17 +175,66 @@ Partial Class dlgEcobaseImport
         Me.m_tstbxCountry.Name = "m_tstbxCountry"
         resources.ApplyResources(Me.m_tstbxCountry, "m_tstbxCountry")
         '
+        'm_tcContent
+        '
+        resources.ApplyResources(Me.m_tcContent, "m_tcContent")
+        Me.m_tcContent.Controls.Add(Me.m_tpAgreement)
+        Me.m_tcContent.Controls.Add(Me.m_tpImport)
+        Me.m_tcContent.Name = "m_tcContent"
+        Me.m_tcContent.SelectedIndex = 0
+        '
+        'm_tpAgreement
+        '
+        Me.m_tpAgreement.Controls.Add(Me.m_pbAgreement)
+        Me.m_tpAgreement.Controls.Add(Me.m_rtfAgreement)
+        Me.m_tpAgreement.Controls.Add(Me.PictureBox1)
+        Me.m_tpAgreement.Controls.Add(Me.m_cbEcoBaseAgreement)
+        resources.ApplyResources(Me.m_tpAgreement, "m_tpAgreement")
+        Me.m_tpAgreement.Name = "m_tpAgreement"
+        Me.m_tpAgreement.UseVisualStyleBackColor = True
+        '
+        'm_tpImport
+        '
+        Me.m_tpImport.Controls.Add(Me.m_scEcobaseContent)
+        Me.m_tpImport.Controls.Add(Me.m_tsFilter)
+        resources.ApplyResources(Me.m_tpImport, "m_tpImport")
+        Me.m_tpImport.Name = "m_tpImport"
+        Me.m_tpImport.UseVisualStyleBackColor = True
+        '
+        'm_pbAgreement
+        '
+        resources.ApplyResources(Me.m_pbAgreement, "m_pbAgreement")
+        Me.m_pbAgreement.Name = "m_pbAgreement"
+        Me.m_pbAgreement.TabStop = False
+        '
+        'm_rtfAgreement
+        '
+        resources.ApplyResources(Me.m_rtfAgreement, "m_rtfAgreement")
+        Me.m_rtfAgreement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_rtfAgreement.Name = "m_rtfAgreement"
+        Me.m_rtfAgreement.ReadOnly = True
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.EcoBase1
+        resources.ApplyResources(Me.PictureBox1, "PictureBox1")
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.TabStop = False
+        '
+        'm_cbEcoBaseAgreement
+        '
+        resources.ApplyResources(Me.m_cbEcoBaseAgreement, "m_cbEcoBaseAgreement")
+        Me.m_cbEcoBaseAgreement.Name = "m_cbEcoBaseAgreement"
+        Me.m_cbEcoBaseAgreement.UseVisualStyleBackColor = True
+        '
         'dlgEcobaseImport
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.Controls.Add(Me.m_tsFilter)
-        Me.Controls.Add(Me.m_llViewEcobaseDataAgreement)
-        Me.Controls.Add(Me.m_cbAccept)
+        Me.Controls.Add(Me.m_tcContent)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.Controls.Add(Me.m_scEcobaseContent)
         Me.DoubleBuffered = True
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -201,8 +249,14 @@ Partial Class dlgEcobaseImport
         Me.m_scEcobaseContent.ResumeLayout(False)
         Me.m_tsFilter.ResumeLayout(False)
         Me.m_tsFilter.PerformLayout()
+        Me.m_tcContent.ResumeLayout(False)
+        Me.m_tpAgreement.ResumeLayout(False)
+        Me.m_tpAgreement.PerformLayout()
+        Me.m_tpImport.ResumeLayout(False)
+        Me.m_tpImport.PerformLayout()
+        CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -213,8 +267,6 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_wrkGetModels As System.ComponentModel.BackgroundWorker
     Private WithEvents m_hdrModels As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_cbAccept As System.Windows.Forms.CheckBox
-    Private WithEvents m_llViewEcobaseDataAgreement As System.Windows.Forms.LinkLabel
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
     Private WithEvents m_tsFilter As cEwEToolstrip
     Private WithEvents m_tslCountry As System.Windows.Forms.ToolStripLabel
@@ -223,4 +275,12 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_tscmbCategory As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tslLME As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tscmbLME As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tcContent As System.Windows.Forms.TabControl
+    Private WithEvents m_tpAgreement As System.Windows.Forms.TabPage
+    Private WithEvents m_tpImport As System.Windows.Forms.TabPage
+    Private WithEvents m_pbAgreement As System.Windows.Forms.PictureBox
+    Private WithEvents m_rtfAgreement As System.Windows.Forms.RichTextBox
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Private WithEvents m_cbEcoBaseAgreement As System.Windows.Forms.CheckBox
+    Private WithEvents m_wrkGetAgreement As System.ComponentModel.BackgroundWorker
 End Class

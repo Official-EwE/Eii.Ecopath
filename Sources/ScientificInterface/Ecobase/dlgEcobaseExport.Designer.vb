@@ -74,6 +74,7 @@ Partial Class dlgEcobaseExport
         Me.m_tcExport = New System.Windows.Forms.TabControl()
         Me.m_tpEcoBase = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
+        Me.m_rtfAgreement = New System.Windows.Forms.RichTextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.m_cbEcoBaseAgreement = New System.Windows.Forms.CheckBox()
         Me.m_tpModel = New System.Windows.Forms.TabPage()
@@ -86,6 +87,7 @@ Partial Class dlgEcobaseExport
         Me.m_pbIsAuthor = New System.Windows.Forms.PictureBox()
         Me.m_pbObjectives = New System.Windows.Forms.PictureBox()
         Me.m_tbxObjectives = New System.Windows.Forms.TextBox()
+        Me.m_hdrAuthor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tpPublication = New System.Windows.Forms.TabPage()
         Me.m_cbDifferentFromPaper = New System.Windows.Forms.CheckBox()
         Me.m_lblExplanation = New System.Windows.Forms.Label()
@@ -114,13 +116,6 @@ Partial Class dlgEcobaseExport
         Me.m_tbxDepthMean = New System.Windows.Forms.TextBox()
         Me.m_tbxTempMin = New System.Windows.Forms.TextBox()
         Me.m_tbxDepthMin = New System.Windows.Forms.TextBox()
-        Me.m_tpAccess = New System.Windows.Forms.TabPage()
-        Me.m_pbPermissionComment = New System.Windows.Forms.PictureBox()
-        Me.m_lblPermissionComments = New System.Windows.Forms.Label()
-        Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
-        Me.m_workerAgreement = New System.ComponentModel.BackgroundWorker()
-        Me.m_rtfAgreement = New System.Windows.Forms.RichTextBox()
-        Me.m_hdrAuthor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrEcosystem = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -128,7 +123,12 @@ Partial Class dlgEcobaseExport
         Me.m_hdrClassification = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_hdrArea = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tpAccess = New System.Windows.Forms.TabPage()
         Me.m_hdrAccess = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_pbPermissionComment = New System.Windows.Forms.PictureBox()
+        Me.m_lblPermissionComments = New System.Windows.Forms.Label()
+        Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
+        Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -148,12 +148,12 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbEnvVars, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEcosystem, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbBoundingBox, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_tpAccess.SuspendLayout()
-        CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tpAccess.SuspendLayout()
+        CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -351,6 +351,13 @@ Partial Class dlgEcobaseExport
         Me.m_pbAgreement.Name = "m_pbAgreement"
         Me.m_pbAgreement.TabStop = False
         '
+        'm_rtfAgreement
+        '
+        resources.ApplyResources(Me.m_rtfAgreement, "m_rtfAgreement")
+        Me.m_rtfAgreement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_rtfAgreement.Name = "m_rtfAgreement"
+        Me.m_rtfAgreement.ReadOnly = True
+        '
         'PictureBox1
         '
         Me.PictureBox1.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.EcoBase1
@@ -442,6 +449,14 @@ Partial Class dlgEcobaseExport
         '
         resources.ApplyResources(Me.m_tbxObjectives, "m_tbxObjectives")
         Me.m_tbxObjectives.Name = "m_tbxObjectives"
+        '
+        'm_hdrAuthor
+        '
+        resources.ApplyResources(Me.m_hdrAuthor, "m_hdrAuthor")
+        Me.m_hdrAuthor.CanCollapseParent = False
+        Me.m_hdrAuthor.CollapsedParentHeight = 0
+        Me.m_hdrAuthor.IsCollapsed = False
+        Me.m_hdrAuthor.Name = "m_hdrAuthor"
         '
         'm_tpPublication
         '
@@ -641,51 +656,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_tbxDepthMin, "m_tbxDepthMin")
         Me.m_tbxDepthMin.Name = "m_tbxDepthMin"
         '
-        'm_tpAccess
-        '
-        Me.m_tpAccess.Controls.Add(Me.m_hdrAccess)
-        Me.m_tpAccess.Controls.Add(Me.m_pbPermissionComment)
-        Me.m_tpAccess.Controls.Add(Me.m_lblPermissionComments)
-        Me.m_tpAccess.Controls.Add(Me.m_tbxPermissionComments)
-        Me.m_tpAccess.Controls.Add(Me.m_cbConfirmDessiminate)
-        resources.ApplyResources(Me.m_tpAccess, "m_tpAccess")
-        Me.m_tpAccess.Name = "m_tpAccess"
-        Me.m_tpAccess.UseVisualStyleBackColor = True
-        '
-        'm_pbPermissionComment
-        '
-        resources.ApplyResources(Me.m_pbPermissionComment, "m_pbPermissionComment")
-        Me.m_pbPermissionComment.Name = "m_pbPermissionComment"
-        Me.m_pbPermissionComment.TabStop = False
-        '
-        'm_lblPermissionComments
-        '
-        resources.ApplyResources(Me.m_lblPermissionComments, "m_lblPermissionComments")
-        Me.m_lblPermissionComments.Name = "m_lblPermissionComments"
-        '
-        'm_tbxPermissionComments
-        '
-        resources.ApplyResources(Me.m_tbxPermissionComments, "m_tbxPermissionComments")
-        Me.m_tbxPermissionComments.Name = "m_tbxPermissionComments"
-        '
-        'm_workerAgreement
-        '
-        '
-        'm_rtfAgreement
-        '
-        resources.ApplyResources(Me.m_rtfAgreement, "m_rtfAgreement")
-        Me.m_rtfAgreement.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_rtfAgreement.Name = "m_rtfAgreement"
-        Me.m_rtfAgreement.ReadOnly = True
-        '
-        'm_hdrAuthor
-        '
-        resources.ApplyResources(Me.m_hdrAuthor, "m_hdrAuthor")
-        Me.m_hdrAuthor.CanCollapseParent = False
-        Me.m_hdrAuthor.CollapsedParentHeight = 0
-        Me.m_hdrAuthor.IsCollapsed = False
-        Me.m_hdrAuthor.Name = "m_hdrAuthor"
-        '
         'm_hdrEcosystem
         '
         Me.m_hdrEcosystem.CanCollapseParent = False
@@ -734,6 +704,17 @@ Partial Class dlgEcobaseExport
         Me.m_hdrArea.IsCollapsed = False
         Me.m_hdrArea.Name = "m_hdrArea"
         '
+        'm_tpAccess
+        '
+        Me.m_tpAccess.Controls.Add(Me.m_hdrAccess)
+        Me.m_tpAccess.Controls.Add(Me.m_pbPermissionComment)
+        Me.m_tpAccess.Controls.Add(Me.m_lblPermissionComments)
+        Me.m_tpAccess.Controls.Add(Me.m_tbxPermissionComments)
+        Me.m_tpAccess.Controls.Add(Me.m_cbConfirmDessiminate)
+        resources.ApplyResources(Me.m_tpAccess, "m_tpAccess")
+        Me.m_tpAccess.Name = "m_tpAccess"
+        Me.m_tpAccess.UseVisualStyleBackColor = True
+        '
         'm_hdrAccess
         '
         Me.m_hdrAccess.CanCollapseParent = False
@@ -741,6 +722,25 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_hdrAccess, "m_hdrAccess")
         Me.m_hdrAccess.IsCollapsed = False
         Me.m_hdrAccess.Name = "m_hdrAccess"
+        '
+        'm_pbPermissionComment
+        '
+        resources.ApplyResources(Me.m_pbPermissionComment, "m_pbPermissionComment")
+        Me.m_pbPermissionComment.Name = "m_pbPermissionComment"
+        Me.m_pbPermissionComment.TabStop = False
+        '
+        'm_lblPermissionComments
+        '
+        resources.ApplyResources(Me.m_lblPermissionComments, "m_lblPermissionComments")
+        Me.m_lblPermissionComments.Name = "m_lblPermissionComments"
+        '
+        'm_tbxPermissionComments
+        '
+        resources.ApplyResources(Me.m_tbxPermissionComments, "m_tbxPermissionComments")
+        Me.m_tbxPermissionComments.Name = "m_tbxPermissionComments"
+        '
+        'm_wrkGetAgreement
+        '
         '
         'dlgEcobaseExport
         '
@@ -778,13 +778,13 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbEnvVars, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEcosystem, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbBoundingBox, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_tpAccess.ResumeLayout(False)
-        Me.m_tpAccess.PerformLayout()
-        CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tpAccess.ResumeLayout(False)
+        Me.m_tpAccess.PerformLayout()
+        CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -875,6 +875,6 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_cbEcoBaseAgreement As System.Windows.Forms.CheckBox
     Private WithEvents m_tpEcoBase As System.Windows.Forms.TabPage
     Private WithEvents m_pbAgreement As System.Windows.Forms.PictureBox
-    Private WithEvents m_workerAgreement As System.ComponentModel.BackgroundWorker
+    Private WithEvents m_wrkGetAgreement As System.ComponentModel.BackgroundWorker
     Private WithEvents m_rtfAgreement As System.Windows.Forms.RichTextBox
 End Class
