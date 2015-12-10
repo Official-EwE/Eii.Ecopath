@@ -24,6 +24,8 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports System.Collections.Specialized
+Imports ScientificInterfaceShared.Commands
+Imports System.Web
 
 #End Region ' Imports
 
@@ -50,8 +52,8 @@ Public Class frmModelParameters
     Private m_fpWest As cEwEFormatProvider = Nothing
     Private m_fpEast As cEwEFormatProvider = Nothing
 
-    Private m_propDOI As cProperty = Nothing
-    Private m_propURI As cProperty = Nothing
+    Private m_fpDOI As cEwEFormatProvider = Nothing
+    Private m_fpURI As cEwEFormatProvider = Nothing
     Private m_fpReference As cEwEFormatProvider = Nothing
 
     Private m_fpIsCoupled As cEwEFormatProvider = Nothing
@@ -97,10 +99,8 @@ Public Class frmModelParameters
         Me.m_fpEcosystemCategory = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoCat, eweModel, eVarNameFlags.EcosystemCategory)
         Me.m_fpEcosystemType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoType, eweModel, eVarNameFlags.EcosystemType)
 
-        Me.m_propDOI = Me.PropertyManager.GetProperty(eweModel, eVarNameFlags.PublicationDOI)
-        Me.m_propURI = Me.PropertyManager.GetProperty(eweModel, eVarNameFlags.PublicationURI)
-        AddHandler Me.m_propDOI.PropertyChanged, AddressOf OnPublicationChanged
-        AddHandler Me.m_propURI.PropertyChanged, AddressOf OnPublicationChanged
+        Me.m_fpURI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationURL, eweModel, eVarNameFlags.PublicationURI)
+        Me.m_fpDOI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationDOI, eweModel, eVarNameFlags.PublicationDOI)
         Me.m_fpReference = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxReference, eweModel, eVarNameFlags.PublicationReference)
 
         Me.m_fpPSD = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPSD, psdParms, eVarNameFlags.PSDEnabled)
@@ -140,8 +140,6 @@ Public Class frmModelParameters
         Me.OnUnitTimeTextChanged(Me.m_propUnitTimeText, cProperty.eChangeFlags.All)
         Me.OnUnitMonetaryChanged(Me.m_propUnitMonetary, cProperty.eChangeFlags.All)
 
-        Me.OnPublicationChanged(Nothing, cProperty.eChangeFlags.All)
-
         Me.FillEcoBaseCombos()
 
         Me.m_hdrClassification.IsCollapsed = True
@@ -175,10 +173,8 @@ Public Class frmModelParameters
         Me.m_fpEcosystemType.Release()
         Me.m_fpEcosystemCategory.Release()
 
-        RemoveHandler Me.m_propDOI.PropertyChanged, AddressOf OnPublicationChanged
-        RemoveHandler Me.m_propURI.PropertyChanged, AddressOf OnPublicationChanged
-        Me.m_propDOI = Nothing
-        Me.m_propURI = Nothing
+        Me.m_fpURI.Release()
+        Me.m_fpDOI.Release()
         Me.m_fpReference.Release()
 
         ' Clean up ( not really necessary since bas class takes care of this, but hey :) )
@@ -358,41 +354,22 @@ Public Class frmModelParameters
 
 #Region " Control events "
 
-    Private Sub OnPublicationChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+    Private Sub OnViewPublication(sender As System.Object, e As System.EventArgs) _
+        Handles m_llViewPublication.Click
 
-        If (Me.m_bInUpdate) Then Return
-        Me.m_bInUpdate = True
+        Dim strDOI As String = Me.m_tbxPublicationDOI.Text
 
-        Dim strDOI As String = CStr(Me.m_propDOI.GetValue())
-        Dim strURI As String = CStr(Me.m_propURI.GetValue())
+        Try
 
-        Me.m_tbxPublication.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(strDOI), strURI, strDOI)
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            Debug.Assert(cmd IsNot Nothing)
 
-        Me.m_bInUpdate = False
+            cmd.Invoke("http://doi.org/" & HttpUtility.UrlEncode(strDOI))
 
-    End Sub
-
-    Private Sub OnPublicationTextChanged(sender As Object, e As System.EventArgs) _
-        Handles m_tbxPublication.TextChanged, m_tbxReference.TextChanged
-
-        If (Me.m_bInUpdate) Then Return
-
-        Me.m_bInUpdate = True
-
-        Dim strPub As String = Me.m_tbxPublication.Text
-        Dim strDOI As String = ""
-        Dim strURI As String = ""
-
-        If strPub.Contains("http://") Or strPub.Contains("https://") Then
-            strURI = strPub
-        Else
-            strDOI = strPub
-        End If
-
-        Me.m_propDOI.SetValue(strDOI)
-        Me.m_propURI.SetValue(strURI)
-
-        Me.m_bInUpdate = False
+        Catch ex As Exception
+            cLog.Write(ex, "frmModelParameters.OnViewDOIOnline(" & strDOI & ")")
+        End Try
 
     End Sub
 

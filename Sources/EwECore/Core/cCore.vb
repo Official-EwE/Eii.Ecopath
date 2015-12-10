@@ -3247,8 +3247,6 @@ Public Class cCore
         Me.m_EwEModel.North = Me.m_EcoPathData.ModelNorth
         Me.m_EwEModel.West = Me.m_EcoPathData.ModelWest
         Me.m_EwEModel.East = Me.m_EcoPathData.ModelEast
-        Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
-        Me.m_EwEModel.IsEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
         Me.m_EwEModel.Country = Me.m_EcoPathData.ModelCountry
         Me.m_EwEModel.Region = Me.m_EcoPathData.ModelRegion
         Me.m_EwEModel.LME = Me.m_EcoPathData.ModelLME
@@ -3258,6 +3256,8 @@ Public Class cCore
         Me.m_EwEModel.PublicationURI = Me.m_EcoPathData.ModelPublicationURI
         Me.m_EwEModel.PublicationReference = Me.m_EcoPathData.ModelPublicationRef
         Me.m_EwEModel.EcobaseCode = Me.m_EcoPathData.ModelEcobaseCode
+        Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
+        Me.m_EwEModel.IsEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
 
         Me.m_EwEModel.AllowValidation = True
 

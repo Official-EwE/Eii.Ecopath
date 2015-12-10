@@ -118,11 +118,14 @@ Partial Class frmModelParameters
         Me.m_lblCountry = New System.Windows.Forms.Label()
         Me.m_hdrClassification = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_plPublication = New System.Windows.Forms.Panel()
+        Me.m_llViewPublication = New System.Windows.Forms.LinkLabel()
         Me.m_hdrPublication = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tbxReference = New System.Windows.Forms.TextBox()
-        Me.m_tbxPublication = New System.Windows.Forms.TextBox()
+        Me.m_tbxPublicationDOI = New System.Windows.Forms.TextBox()
+        Me.m_tbxPublicationURL = New System.Windows.Forms.TextBox()
         Me.m_lblReference = New System.Windows.Forms.Label()
-        Me.m_lblPublication = New System.Windows.Forms.Label()
+        Me.m_lblPublicationDOI = New System.Windows.Forms.Label()
+        Me.m_lblPublicationURL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
@@ -386,6 +389,7 @@ Partial Class frmModelParameters
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
         Me.m_cmbMonetaryUnit.Sorted = True
         Me.m_cmbMonetaryUnit.UIContext = Nothing
+        Me.m_cmbMonetaryUnit.Unit = "EUR"
         '
         'm_gbNumFormatting
         '
@@ -641,13 +645,22 @@ Partial Class frmModelParameters
         '
         'm_plPublication
         '
+        Me.m_plPublication.Controls.Add(Me.m_llViewPublication)
         Me.m_plPublication.Controls.Add(Me.m_hdrPublication)
         Me.m_plPublication.Controls.Add(Me.m_tbxReference)
-        Me.m_plPublication.Controls.Add(Me.m_tbxPublication)
+        Me.m_plPublication.Controls.Add(Me.m_tbxPublicationDOI)
+        Me.m_plPublication.Controls.Add(Me.m_tbxPublicationURL)
         Me.m_plPublication.Controls.Add(Me.m_lblReference)
-        Me.m_plPublication.Controls.Add(Me.m_lblPublication)
+        Me.m_plPublication.Controls.Add(Me.m_lblPublicationDOI)
+        Me.m_plPublication.Controls.Add(Me.m_lblPublicationURL)
         resources.ApplyResources(Me.m_plPublication, "m_plPublication")
         Me.m_plPublication.Name = "m_plPublication"
+        '
+        'm_llViewPublication
+        '
+        resources.ApplyResources(Me.m_llViewPublication, "m_llViewPublication")
+        Me.m_llViewPublication.Name = "m_llViewPublication"
+        Me.m_llViewPublication.TabStop = True
         '
         'm_hdrPublication
         '
@@ -662,20 +675,30 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_tbxReference, "m_tbxReference")
         Me.m_tbxReference.Name = "m_tbxReference"
         '
-        'm_tbxPublication
+        'm_tbxPublicationDOI
         '
-        resources.ApplyResources(Me.m_tbxPublication, "m_tbxPublication")
-        Me.m_tbxPublication.Name = "m_tbxPublication"
+        resources.ApplyResources(Me.m_tbxPublicationDOI, "m_tbxPublicationDOI")
+        Me.m_tbxPublicationDOI.Name = "m_tbxPublicationDOI"
+        '
+        'm_tbxPublicationURL
+        '
+        resources.ApplyResources(Me.m_tbxPublicationURL, "m_tbxPublicationURL")
+        Me.m_tbxPublicationURL.Name = "m_tbxPublicationURL"
         '
         'm_lblReference
         '
         resources.ApplyResources(Me.m_lblReference, "m_lblReference")
         Me.m_lblReference.Name = "m_lblReference"
         '
-        'm_lblPublication
+        'm_lblPublicationDOI
         '
-        resources.ApplyResources(Me.m_lblPublication, "m_lblPublication")
-        Me.m_lblPublication.Name = "m_lblPublication"
+        resources.ApplyResources(Me.m_lblPublicationDOI, "m_lblPublicationDOI")
+        Me.m_lblPublicationDOI.Name = "m_lblPublicationDOI"
+        '
+        'm_lblPublicationURL
+        '
+        resources.ApplyResources(Me.m_lblPublicationURL, "m_lblPublicationURL")
+        Me.m_lblPublicationURL.Name = "m_lblPublicationURL"
         '
         'Label1
         '
@@ -688,6 +711,7 @@ Partial Class frmModelParameters
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tlpContent)
         Me.Name = "frmModelParameters"
+        Me.TabText = ""
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpUnits.ResumeLayout(False)
         Me.m_gbCurrencyUnit.ResumeLayout(False)
@@ -787,8 +811,8 @@ Partial Class frmModelParameters
     Private WithEvents m_hdrClassification As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_plPublication As System.Windows.Forms.Panel
     Private WithEvents m_hdrPublication As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_tbxPublication As System.Windows.Forms.TextBox
-    Private WithEvents m_lblPublication As System.Windows.Forms.Label
+    Private WithEvents m_tbxPublicationURL As System.Windows.Forms.TextBox
+    Private WithEvents m_lblPublicationURL As System.Windows.Forms.Label
     Friend WithEvents m_tbxLME As System.Windows.Forms.TextBox
     Private WithEvents m_tbxNumYears As System.Windows.Forms.TextBox
     Private WithEvents m_lblNoYears As System.Windows.Forms.Label
@@ -797,5 +821,8 @@ Partial Class frmModelParameters
     Private WithEvents m_tbxObjectives As System.Windows.Forms.TextBox
     Private WithEvents m_lblObjectives As System.Windows.Forms.Label
     Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_tbxPublicationDOI As System.Windows.Forms.TextBox
+    Private WithEvents m_lblPublicationDOI As System.Windows.Forms.Label
+    Private WithEvents m_llViewPublication As System.Windows.Forms.LinkLabel
 
 End Class
