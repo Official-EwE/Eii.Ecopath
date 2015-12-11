@@ -47,6 +47,10 @@ Public Class dlgEcobaseExport
 
     Private m_uic As cUIContext = Nothing
 
+    Private m_fpYear As cEwEFormatProvider = Nothing
+    Private m_fpYears As cEwEFormatProvider = Nothing
+    Private m_fpArea As cEwEFormatProvider = Nothing
+
     Private m_fpNorth As cEwEFormatProvider = Nothing
     Private m_fpEast As cEwEFormatProvider = Nothing
     Private m_fpWest As cEwEFormatProvider = Nothing
@@ -95,7 +99,12 @@ Public Class dlgEcobaseExport
         Me.m_tbxObjectives.Text = model.Objectives
         Me.m_tbxAuthor.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Author), core.DefaultAuthor, model.Author)
         Me.m_tbxEmail.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
-
+        Me.m_fpYear = New cEwEFormatProvider(Me.m_uic, Me.m_tbxFirstYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathFirstYear))
+        Me.m_fpYear.Value = model.FirstYear
+        Me.m_fpYears = New cEwEFormatProvider(Me.m_uic, Me.m_tbxNumYears, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathNumYears))
+        Me.m_fpYears.Value = model.NumYears
+        Me.m_fpArea = New cEwEFormatProvider(Me.m_uic, Me.m_tbxArea, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.Area))
+        Me.m_fpArea.Value = model.Area
         Me.m_cbIsUpdate.Checked = Not String.IsNullOrWhiteSpace(model.EcobaseCode)
 
         ' -- Publication page --
@@ -167,13 +176,15 @@ Public Class dlgEcobaseExport
                 m_tbxAuthor.TextChanged, m_tbxModel.TextChanged, m_tbxEmail.TextChanged, m_tbxDescription.TextChanged, m_tbxObjectives.TextChanged, _
                 m_tbxDOI.TextChanged, m_tbxHyperlink.TextChanged, m_tbxReference.TextChanged, _
                 m_cbConfirmAuthor.CheckedChanged, m_cbConfirmDessiminate.CheckedChanged, _
+                m_tbxFirstYear.TextChanged, m_tbxNumYears.TextChanged, m_tbxArea.TextChanged, _
                 m_cbEcosimUsed.CheckedChanged, m_cbFittedToTimeSeries.CheckedChanged, m_cbEcospaceUsed.CheckedChanged, _
                 m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged, _
                 m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged, _
                 m_cmbCountry.TextChanged, m_cmbRegion.TextChanged, m_tbxLME.TextChanged, _
                 m_cmbEcoCat.TextChanged, m_cmbEcoType.TextChanged, _
                 m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
-                m_cbDifferentFromPaper.CheckedChanged, m_tbxDifference.TextChanged
+                m_cbDifferentFromPaper.CheckedChanged, m_tbxDifference.TextChanged, _
+                m_tbxPermissionComments.TextChanged
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -255,12 +266,16 @@ Public Class dlgEcobaseExport
         Dim bHasContact As Boolean = cStringUtils.IsEmail(Me.m_tbxEmail.Text)
         Dim bIsAuthor As Boolean = (Me.m_cbConfirmAuthor.Checked = True)
         Dim bHasObjectives As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
-        Dim bModelOK As Boolean = bHasModelName And bHasDescription And bHasAuthor And bIsAuthor And bHasObjectives
+        Dim bHasYears As Boolean = (CInt(Me.m_fpYears.Value) > 0)
+        Dim bHasArea As Boolean = (CInt(Me.m_fpArea.Value) > 0)
+        Dim bModelOK As Boolean = bHasModelName And bHasDescription And bHasAuthor And bIsAuthor And bHasObjectives And bHasYears And bHasArea
 
         Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bHasModelName, SharedResources.OK, SharedResources.Critical)
         Me.m_pbDescription.BackgroundImage = cSystemUtils.IIF(bHasDescription, SharedResources.OK, SharedResources.Critical)
         Me.m_pbObjectives.BackgroundImage = cSystemUtils.IIF(bHasObjectives, SharedResources.OK, SharedResources.Critical)
         Me.m_pbAuthor.BackgroundImage = cSystemUtils.IIF(bHasAuthor And bHasContact, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbYear.BackgroundImage = cSystemUtils.IIF(bHasYears, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbArea.BackgroundImage = cSystemUtils.IIF(bHasArea, SharedResources.OK, SharedResources.Critical)
         Me.m_pbIsAuthor.BackgroundImage = cSystemUtils.IIF(bIsAuthor, SharedResources.OK, SharedResources.Critical)
 
         Me.m_cbEcosimUsed.Enabled = (core.nEcosimScenarios > 0)
@@ -292,18 +307,18 @@ Public Class dlgEcobaseExport
         Me.m_tpPublication.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
 
         ' -- Classification page --
-        Dim bHasArea As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbRegion.Text))
+        Dim bHasAreaName As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbRegion.Text))
         Dim bHasBoundingBox As Boolean = (CSng(Me.m_fpNorth.Value) <> CSng(Me.m_fpSouth.Value)) And (CSng(Me.m_fpWest.Value) <> CSng(Me.m_fpEast.Value))
         Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoCat.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoType.Text))
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
-        Dim bClassOK As Boolean = bHasArea And bHasBoundingBox And bHasEcosystem
+        Dim bClassOK As Boolean = bHasAreaName And bHasBoundingBox And bHasEcosystem
 
-        Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasArea, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasAreaName, SharedResources.OK, SharedResources.Critical)
         Me.m_pbBoundingBox.BackgroundImage = cSystemUtils.IIF(bHasBoundingBox, SharedResources.OK, SharedResources.Critical)
         Me.m_pbEcosystem.BackgroundImage = cSystemUtils.IIF(bHasEcosystem, SharedResources.OK, SharedResources.Critical)
         Me.m_pbEnvVars.BackgroundImage = cSystemUtils.IIF(bHasEnv, SharedResources.OK, SharedResources.Warning)
 
-        If (bHasArea And bHasBoundingBox And bHasBoundingBox) Then
+        If (bHasAreaName And bHasBoundingBox And bHasBoundingBox) Then
             Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bHasEnv, 0, 1)
         Else
             Me.m_tpClassification.ImageIndex = 2
@@ -314,15 +329,15 @@ Public Class dlgEcobaseExport
         ' -- Open access --
         Dim bAccessOK As Boolean = False
         If (Me.m_cbConfirmDessiminate.Checked) Then
+            bAccessOK = True
             Me.m_lblPermissionComments.Enabled = False
             Me.m_tbxPermissionComments.Enabled = False
             Me.m_pbPermissionComment.Image = SharedResources.OK
-            bAccessOK = True
         Else
+            bAccessOK = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
             Me.m_lblPermissionComments.Enabled = True
             Me.m_tbxPermissionComments.Enabled = True
             Me.m_pbPermissionComment.Image = cSystemUtils.IIF(bAccessOK, SharedResources.OK, SharedResources.Critical)
-            bAccessOK = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
         End If
         Me.m_tpAccess.ImageIndex = cSystemUtils.IIF(bAccessOK, 0, 2)
 
@@ -354,6 +369,10 @@ Public Class dlgEcobaseExport
         Dim strEcoCat As String = Me.m_cmbEcoCat.Text
         Dim strLME As String = Me.m_tbxLME.Text
 
+        Dim iYear As Integer = CInt(Me.m_fpYear.Value)
+        Dim iYears As Integer = CInt(Me.m_fpYears.Value)
+        Dim sArea As Single = CSng(Me.m_fpArea.Value)
+
         Dim strDOI As String = Me.m_tbxDOI.Text
         Dim strURI As String = Me.m_tbxHyperlink.Text
         Dim strRef As String = Me.m_tbxReference.Text
@@ -378,7 +397,10 @@ Public Class dlgEcobaseExport
                                  (String.Compare(strRegion, model.Region) <> 0) Or _
                                  (String.Compare(strEcoCat, model.EcosystemCategory) <> 0) Or _
                                  (String.Compare(strEcoType, model.EcosystemType) <> 0) Or _
-                                 (String.Compare(strLME, model.LME) <> 0)
+                                 (String.Compare(strLME, model.LME) <> 0) Or _
+                                 (model.Area <> sArea) Or _
+                                 (model.FirstYear <> iYear) Or _
+                                 (model.NumYears <> iYears)
 
         bChange = bChange Or (model.North <> sNorth) Or _
                              (model.East <> sEast) Or _
@@ -392,6 +414,10 @@ Public Class dlgEcobaseExport
             model.Objectives = strObjs
             model.Author = strAuthor
             model.Contact = strContact
+
+            model.FirstYear = iYear
+            model.NumYears = iYears
+            model.Area = sArea
 
             model.PublicationDOI = strDOI
             model.PublicationURI = strURI
