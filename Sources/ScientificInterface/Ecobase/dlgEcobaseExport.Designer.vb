@@ -129,6 +129,14 @@ Partial Class dlgEcobaseExport
         Me.m_lblPermissionComments = New System.Windows.Forms.Label()
         Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
         Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
+        Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
+        Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
+        Me.m_lblNoYears = New System.Windows.Forms.Label()
+        Me.m_tbxArea = New System.Windows.Forms.TextBox()
+        Me.m_lblFirstYear = New System.Windows.Forms.Label()
+        Me.m_lblArea = New System.Windows.Forms.Label()
+        Me.m_pbYear = New System.Windows.Forms.PictureBox()
+        Me.m_pbArea = New System.Windows.Forms.PictureBox()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -154,6 +162,8 @@ Partial Class dlgEcobaseExport
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpAccess.SuspendLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbYear, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbArea, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -373,6 +383,12 @@ Partial Class dlgEcobaseExport
         '
         'm_tpModel
         '
+        Me.m_tpModel.Controls.Add(Me.m_tbxNumYears)
+        Me.m_tpModel.Controls.Add(Me.m_tbxFirstYear)
+        Me.m_tpModel.Controls.Add(Me.m_lblNoYears)
+        Me.m_tpModel.Controls.Add(Me.m_tbxArea)
+        Me.m_tpModel.Controls.Add(Me.m_lblFirstYear)
+        Me.m_tpModel.Controls.Add(Me.m_lblArea)
         Me.m_tpModel.Controls.Add(Me.m_cbEcospaceUsed)
         Me.m_tpModel.Controls.Add(Me.m_cbIsUpdate)
         Me.m_tpModel.Controls.Add(Me.m_cbFittedToTimeSeries)
@@ -384,6 +400,8 @@ Partial Class dlgEcobaseExport
         Me.m_tpModel.Controls.Add(Me.m_lblAuthor)
         Me.m_tpModel.Controls.Add(Me.m_tbxModel)
         Me.m_tpModel.Controls.Add(Me.m_pbIsAuthor)
+        Me.m_tpModel.Controls.Add(Me.m_pbArea)
+        Me.m_tpModel.Controls.Add(Me.m_pbYear)
         Me.m_tpModel.Controls.Add(Me.m_pbObjectives)
         Me.m_tpModel.Controls.Add(Me.m_pbModel)
         Me.m_tpModel.Controls.Add(Me.m_tbxObjectives)
@@ -742,6 +760,48 @@ Partial Class dlgEcobaseExport
         'm_wrkGetAgreement
         '
         '
+        'm_tbxNumYears
+        '
+        resources.ApplyResources(Me.m_tbxNumYears, "m_tbxNumYears")
+        Me.m_tbxNumYears.Name = "m_tbxNumYears"
+        '
+        'm_tbxFirstYear
+        '
+        resources.ApplyResources(Me.m_tbxFirstYear, "m_tbxFirstYear")
+        Me.m_tbxFirstYear.Name = "m_tbxFirstYear"
+        '
+        'm_lblNoYears
+        '
+        resources.ApplyResources(Me.m_lblNoYears, "m_lblNoYears")
+        Me.m_lblNoYears.Name = "m_lblNoYears"
+        '
+        'm_tbxArea
+        '
+        resources.ApplyResources(Me.m_tbxArea, "m_tbxArea")
+        Me.m_tbxArea.Name = "m_tbxArea"
+        '
+        'm_lblFirstYear
+        '
+        resources.ApplyResources(Me.m_lblFirstYear, "m_lblFirstYear")
+        Me.m_lblFirstYear.Name = "m_lblFirstYear"
+        '
+        'm_lblArea
+        '
+        resources.ApplyResources(Me.m_lblArea, "m_lblArea")
+        Me.m_lblArea.Name = "m_lblArea"
+        '
+        'm_pbYear
+        '
+        resources.ApplyResources(Me.m_pbYear, "m_pbYear")
+        Me.m_pbYear.Name = "m_pbYear"
+        Me.m_pbYear.TabStop = False
+        '
+        'm_pbArea
+        '
+        resources.ApplyResources(Me.m_pbArea, "m_pbArea")
+        Me.m_pbArea.Name = "m_pbArea"
+        Me.m_pbArea.TabStop = False
+        '
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
@@ -785,6 +845,8 @@ Partial Class dlgEcobaseExport
         Me.m_tpAccess.ResumeLayout(False)
         Me.m_tpAccess.PerformLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbYear, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbArea, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -877,4 +939,12 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_pbAgreement As System.Windows.Forms.PictureBox
     Private WithEvents m_wrkGetAgreement As System.ComponentModel.BackgroundWorker
     Private WithEvents m_rtfAgreement As System.Windows.Forms.RichTextBox
+    Private WithEvents m_tbxNumYears As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxFirstYear As System.Windows.Forms.TextBox
+    Private WithEvents m_lblNoYears As System.Windows.Forms.Label
+    Private WithEvents m_tbxArea As System.Windows.Forms.TextBox
+    Private WithEvents m_lblFirstYear As System.Windows.Forms.Label
+    Private WithEvents m_lblArea As System.Windows.Forms.Label
+    Private WithEvents m_pbArea As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbYear As System.Windows.Forms.PictureBox
 End Class
