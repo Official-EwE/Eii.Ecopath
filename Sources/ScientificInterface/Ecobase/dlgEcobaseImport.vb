@@ -38,6 +38,26 @@ Public Class dlgEcobaseImport
     Private m_model As cModelData = Nothing
     Private m_strAgreement As String = ""
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <remarks>
+    ''' Tags in <see cref="m_tsddValue">filter dropdown items</see> must correspond to the values in this enum.
+    ''' </remarks>
+    Private Enum eFilterTypes As Integer
+        None = 0
+        Author = 1
+        Country = 2
+        Region = 3
+        LME = 4
+        EcosystemCategory = 5
+        EcosystemType = 6
+        Depth = 7
+        Temperature = 8
+    End Enum
+
+    Private m_filter As eFilterTypes = eFilterTypes.None
+
 #End Region ' Private vars
 
 #Region " Construction "
@@ -62,11 +82,12 @@ Public Class dlgEcobaseImport
         il.Images.Add(SharedResources.Critical)
         Me.m_tcContent.ImageList = il
 
+        Me.m_tsddValue.Image = SharedResources.FilterHS
+
         Me.m_ecobase = New cEcoBaseWDSL()
         Me.m_wrkGetAgreement.RunWorkerAsync(Nothing)
         Me.m_wrkGetModels.RunWorkerAsync(Nothing)
 
-        Me.PopulateFilterControls()
         Me.UpdateControls()
 
     End Sub
@@ -87,6 +108,8 @@ Public Class dlgEcobaseImport
 
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
+
+        Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
 
         Me.m_rtfAgreement.Text = Me.m_strAgreement
         Me.m_btnOK.Enabled = Me.CanDownload
@@ -164,22 +187,6 @@ Public Class dlgEcobaseImport
         End Try
     End Sub
 
-    Private Sub OnReadAgreement(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs)
-
-
-        Try
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            Debug.Assert(cmd IsNot Nothing)
-
-            cmd.Invoke("")
-
-        Catch ex As Exception
-            cLog.Write(ex, "dlgEcobaseImport.OnViewTermsConditions")
-        End Try
-
-    End Sub
-
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
@@ -200,26 +207,48 @@ Public Class dlgEcobaseImport
 
 #Region " Filter events "
 
-    Private Sub OnFilterCategory(sender As Object, e As System.EventArgs) _
-        Handles m_tscmbCategory.SelectedIndexChanged
+    Private Sub OnSearchTextChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_tstbSearch.TextChanged
 
         Me.UpdateModelList()
 
     End Sub
 
-    Private Sub OnFilterLME(sender As System.Object, e As System.EventArgs) _
-        Handles m_tscmbLME.Click
+    Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiLME.Click, m_tsmiEcoType.Click, m_tsmiEcoCat.Click, m_tsmiRegion.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click
 
-        Me.UpdateModelList()
+        Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
+        If (tsmi.Tag IsNot Nothing) Then
+            Dim iVal As Integer
+            If (Integer.TryParse(CStr(tsmi.Tag), iVal)) Then
+                Try
+                    Me.m_filter = DirectCast(iVal, eFilterTypes)
+                Catch ex As Exception
+                    Me.m_filter = eFilterTypes.None
+                End Try
+            End If
+        End If
+        Me.UpdateControls()
 
     End Sub
 
-    Private Sub OnFilterCountry(sender As System.Object, e As System.EventArgs) _
-        Handles m_tstbxCountry.TextChanged
+    Private Function FilterItemText(filter As Integer) As String
 
-        Me.UpdateModelList()
+        Dim strFilterText As String = SharedResources.GENERIC_VALUE_NONE
 
-    End Sub
+        For Each tsmi As ToolStripItem In Me.m_tsddValue.DropDownItems
+            Dim iVal As Integer = cCore.NULL_VALUE
+            If tsmi.Tag IsNot Nothing Then
+                If Integer.TryParse(CStr(tsmi.Tag), iVal) Then
+                    If CInt(filter) = iVal Then
+                        strFilterText = tsmi.Text
+                    End If
+                End If
+            End If
+        Next
+        Return strFilterText
+
+    End Function
 
 #End Region ' Filter events
 
@@ -297,44 +326,63 @@ Public Class dlgEcobaseImport
 
     Private Sub UpdateModelList()
 
-        Dim strCat As String = Me.m_tscmbCategory.Text
-        Dim strLME As String = Me.m_tscmbLME.Text
-        Dim strCtr As String = Me.m_tstbxCountry.Text
+        Dim strFilter As String = Me.m_tstbSearch.Text
         Dim bUseModel As Boolean = True
 
         Me.m_lbxModels.SuspendLayout()
         Me.m_lbxModels.Items.Clear()
 
         For Each model As cModelData In Me.m_models
-            If (model.AllowDissemination) Then
-                bUseModel = True
+            'If (model.AllowDissemination) Then
+            bUseModel = True
 
-                ' Filters
-                If (Not String.IsNullOrWhiteSpace(strCat)) Then
-                    bUseModel = bUseModel And (String.Compare(model.EcosystemCategory, strCat, True) = 0)
-                End If
-
-                If (Not String.IsNullOrWhiteSpace(strLME)) Then
-                    Dim bLMEFound As Boolean = False
-                    For Each strT As String In model.LME.Split(","c)
-                        If (strT = strLME) Then bLMEFound = True
-                    Next
-                    bUseModel = bUseModel And bLMEFound
-                End If
-
-                If (Not String.IsNullOrWhiteSpace(strCtr)) Then
-                    bUseModel = bUseModel And model.Country.StartsWith(strCtr, StringComparison.OrdinalIgnoreCase)
-                End If
-
-                If (bUseModel) Then
-                    Me.m_lbxModels.Items.Add(model)
-                    If (Me.m_model Is Nothing) Then Me.m_lbxModels.SelectedItem = model
-                End If
+            ' Filters
+            If (Not String.IsNullOrWhiteSpace(strFilter)) Then
+                Select Case Me.m_filter
+                    Case eFilterTypes.None
+                    Case eFilterTypes.Author : bUseModel = Me.StartsWith(strFilter, model.Author)
+                    Case eFilterTypes.Country : bUseModel = Me.StartsWith(strFilter, model.Country)
+                    Case eFilterTypes.Region : bUseModel = Me.StartsWith(strFilter, model.Region)
+                    Case eFilterTypes.LME : bUseModel = Me.ContainsSubItem(strFilter, model.LME)
+                    Case eFilterTypes.EcosystemCategory : bUseModel = Me.StartsWith(strFilter, model.EcosystemCategory)
+                    Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
+                    Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
+                    Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
+                End Select
             End If
+
+            If (bUseModel) Then
+                Me.m_lbxModels.Items.Add(model)
+                If (Me.m_model Is Nothing) Then Me.m_lbxModels.SelectedItem = model
+            End If
+            'End If
         Next
         Me.m_lbxModels.ResumeLayout()
 
     End Sub
+
+    Private Function StartsWith(strFilter As String, strValue As String) As Boolean
+        If (String.IsNullOrWhiteSpace(strValue)) Then Return False
+        Return strValue.StartsWith(strFilter, StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    Private Function ContainsSubItem(strFilter As String, strLMEs As String, Optional cSplit As Char = ","c) As Boolean
+
+        ' Can be greatly refined later on
+
+        If (String.IsNullOrWhiteSpace(strLMEs)) Then Return False
+        Dim bits As String() = strLMEs.Split(","c)
+        Return bits.Contains(strFilter.Trim())
+
+    End Function
+
+    Private Function IsInRange(strFilter As String, sMin As Single, sMax As Single) As Boolean
+
+        Dim sVal As Single = 0
+        If Not Single.TryParse(strFilter.Trim, sVal) Then Return False
+        Return (sMin <= sVal) And (sVal <= sMax)
+
+    End Function
 
     Private Sub UpdateEcoBaseLists()
 
@@ -392,25 +440,7 @@ Public Class dlgEcobaseImport
 
         sgu.Load()
 
-        Me.PopulateFilterControls()
-
         Me.StyleGuide.EcoBaseFieldsChanged()
-
-    End Sub
-
-    Private Sub PopulateFilterControls()
-
-        Me.m_tscmbCategory.Items.Clear()
-        Me.m_tscmbCategory.Items.Add("")
-        For Each str As String In Me.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType)
-            Me.m_tscmbCategory.Items.Add(cStringUtils.ToSentenceCase(str))
-        Next
-
-        Me.m_tscmbLME.Items.Clear()
-        Me.m_tscmbLME.Items.Add("")
-        For Each str As String In Me.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.LMENumber)
-            Me.m_tscmbLME.Items.Add(cStringUtils.ToSentenceCase(str))
-        Next
 
     End Sub
 

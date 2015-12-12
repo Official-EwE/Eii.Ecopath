@@ -46,19 +46,24 @@ Partial Class dlgEcobaseImport
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
         Me.m_tsFilter = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tscmbCategory = New System.Windows.Forms.ToolStripComboBox()
-        Me.m_tslLME = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tscmbLME = New System.Windows.Forms.ToolStripComboBox()
-        Me.m_tslCountry = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tstbxCountry = New System.Windows.Forms.ToolStripTextBox()
+        Me.m_tstbSearch = New System.Windows.Forms.ToolStripTextBox()
+        Me.m_tsddValue = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.m_tsmiAuthor = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiCountry = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiRegion = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiLME = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcoCat = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcoType = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiDepth = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiTemperature = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tcContent = New System.Windows.Forms.TabControl()
         Me.m_tpAgreement = New System.Windows.Forms.TabPage()
-        Me.m_tpImport = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
         Me.m_rtfAgreement = New System.Windows.Forms.RichTextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.m_cbEcoBaseAgreement = New System.Windows.Forms.CheckBox()
+        Me.m_tpImport = New System.Windows.Forms.TabPage()
         Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
         CType(Me.m_scEcobaseContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scEcobaseContent.Panel1.SuspendLayout()
@@ -67,9 +72,9 @@ Partial Class dlgEcobaseImport
         Me.m_tsFilter.SuspendLayout()
         Me.m_tcContent.SuspendLayout()
         Me.m_tpAgreement.SuspendLayout()
-        Me.m_tpImport.SuspendLayout()
         CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tpImport.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_scEcobaseContent
@@ -137,43 +142,78 @@ Partial Class dlgEcobaseImport
         'm_tsFilter
         '
         Me.m_tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsFilter.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.m_tscmbCategory, Me.m_tslLME, Me.m_tscmbLME, Me.m_tslCountry, Me.m_tstbxCountry})
+        Me.m_tsFilter.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tstbSearch, Me.m_tsddValue})
         resources.ApplyResources(Me.m_tsFilter, "m_tsFilter")
         Me.m_tsFilter.Name = "m_tsFilter"
         Me.m_tsFilter.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'ToolStripLabel1
+        'm_tstbSearch
         '
-        Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        resources.ApplyResources(Me.ToolStripLabel1, "ToolStripLabel1")
+        Me.m_tstbSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tstbSearch.Name = "m_tstbSearch"
+        resources.ApplyResources(Me.m_tstbSearch, "m_tstbSearch")
         '
-        'm_tscmbCategory
+        'm_tsddValue
         '
-        Me.m_tscmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmbCategory.Name = "m_tscmbCategory"
-        resources.ApplyResources(Me.m_tscmbCategory, "m_tscmbCategory")
+        Me.m_tsddValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tsddValue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiRegion, Me.m_tsmiLME, Me.m_tsmiEcoCat, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature})
+        resources.ApplyResources(Me.m_tsddValue, "m_tsddValue")
+        Me.m_tsddValue.Name = "m_tsddValue"
         '
-        'm_tslLME
+        'm_tsmiAuthor
         '
-        Me.m_tslLME.Name = "m_tslLME"
-        resources.ApplyResources(Me.m_tslLME, "m_tslLME")
+        Me.m_tsmiAuthor.Name = "m_tsmiAuthor"
+        resources.ApplyResources(Me.m_tsmiAuthor, "m_tsmiAuthor")
+        Me.m_tsmiAuthor.Tag = "1"
         '
-        'm_tscmbLME
+        'm_tsmiCountry
         '
-        Me.m_tscmbLME.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmbLME.DropDownWidth = 75
-        Me.m_tscmbLME.Name = "m_tscmbLME"
-        resources.ApplyResources(Me.m_tscmbLME, "m_tscmbLME")
+        Me.m_tsmiCountry.Name = "m_tsmiCountry"
+        resources.ApplyResources(Me.m_tsmiCountry, "m_tsmiCountry")
+        Me.m_tsmiCountry.Tag = "2"
         '
-        'm_tslCountry
+        'm_tsmiRegion
         '
-        Me.m_tslCountry.Name = "m_tslCountry"
-        resources.ApplyResources(Me.m_tslCountry, "m_tslCountry")
+        Me.m_tsmiRegion.Name = "m_tsmiRegion"
+        resources.ApplyResources(Me.m_tsmiRegion, "m_tsmiRegion")
+        Me.m_tsmiRegion.Tag = "3"
         '
-        'm_tstbxCountry
+        'm_tsmiLME
         '
-        Me.m_tstbxCountry.Name = "m_tstbxCountry"
-        resources.ApplyResources(Me.m_tstbxCountry, "m_tstbxCountry")
+        Me.m_tsmiLME.Name = "m_tsmiLME"
+        resources.ApplyResources(Me.m_tsmiLME, "m_tsmiLME")
+        Me.m_tsmiLME.Tag = "4"
+        '
+        'm_tsmiEcoCat
+        '
+        Me.m_tsmiEcoCat.Name = "m_tsmiEcoCat"
+        resources.ApplyResources(Me.m_tsmiEcoCat, "m_tsmiEcoCat")
+        Me.m_tsmiEcoCat.Tag = "5"
+        '
+        'm_tsmiEcoType
+        '
+        Me.m_tsmiEcoType.Name = "m_tsmiEcoType"
+        resources.ApplyResources(Me.m_tsmiEcoType, "m_tsmiEcoType")
+        Me.m_tsmiEcoType.Tag = "6"
+        '
+        'm_tsmiDepth
+        '
+        Me.m_tsmiDepth.Name = "m_tsmiDepth"
+        resources.ApplyResources(Me.m_tsmiDepth, "m_tsmiDepth")
+        Me.m_tsmiDepth.Tag = "7"
+        '
+        'm_tsmiTemperature
+        '
+        Me.m_tsmiTemperature.Name = "m_tsmiTemperature"
+        resources.ApplyResources(Me.m_tsmiTemperature, "m_tsmiTemperature")
+        Me.m_tsmiTemperature.Tag = "8"
+        '
+        'm_tsmiNone
+        '
+        Me.m_tsmiNone.Name = "m_tsmiNone"
+        resources.ApplyResources(Me.m_tsmiNone, "m_tsmiNone")
+        Me.m_tsmiNone.Tag = "0"
         '
         'm_tcContent
         '
@@ -192,14 +232,6 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_tpAgreement, "m_tpAgreement")
         Me.m_tpAgreement.Name = "m_tpAgreement"
         Me.m_tpAgreement.UseVisualStyleBackColor = True
-        '
-        'm_tpImport
-        '
-        Me.m_tpImport.Controls.Add(Me.m_scEcobaseContent)
-        Me.m_tpImport.Controls.Add(Me.m_tsFilter)
-        resources.ApplyResources(Me.m_tpImport, "m_tpImport")
-        Me.m_tpImport.Name = "m_tpImport"
-        Me.m_tpImport.UseVisualStyleBackColor = True
         '
         'm_pbAgreement
         '
@@ -227,6 +259,17 @@ Partial Class dlgEcobaseImport
         Me.m_cbEcoBaseAgreement.Name = "m_cbEcoBaseAgreement"
         Me.m_cbEcoBaseAgreement.UseVisualStyleBackColor = True
         '
+        'm_tpImport
+        '
+        Me.m_tpImport.Controls.Add(Me.m_scEcobaseContent)
+        Me.m_tpImport.Controls.Add(Me.m_tsFilter)
+        resources.ApplyResources(Me.m_tpImport, "m_tpImport")
+        Me.m_tpImport.Name = "m_tpImport"
+        Me.m_tpImport.UseVisualStyleBackColor = True
+        '
+        'm_wrkGetAgreement
+        '
+        '
         'dlgEcobaseImport
         '
         resources.ApplyResources(Me, "$this")
@@ -252,10 +295,10 @@ Partial Class dlgEcobaseImport
         Me.m_tcContent.ResumeLayout(False)
         Me.m_tpAgreement.ResumeLayout(False)
         Me.m_tpAgreement.PerformLayout()
-        Me.m_tpImport.ResumeLayout(False)
-        Me.m_tpImport.PerformLayout()
         CType(Me.m_pbAgreement, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tpImport.ResumeLayout(False)
+        Me.m_tpImport.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -269,12 +312,6 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
     Private WithEvents m_tsFilter As cEwEToolstrip
-    Private WithEvents m_tslCountry As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_tstbxCountry As System.Windows.Forms.ToolStripTextBox
-    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_tscmbCategory As System.Windows.Forms.ToolStripComboBox
-    Private WithEvents m_tslLME As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_tscmbLME As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tcContent As System.Windows.Forms.TabControl
     Private WithEvents m_tpAgreement As System.Windows.Forms.TabPage
     Private WithEvents m_tpImport As System.Windows.Forms.TabPage
@@ -283,4 +320,15 @@ Partial Class dlgEcobaseImport
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Private WithEvents m_cbEcoBaseAgreement As System.Windows.Forms.CheckBox
     Private WithEvents m_wrkGetAgreement As System.ComponentModel.BackgroundWorker
+    Private WithEvents m_tstbSearch As System.Windows.Forms.ToolStripTextBox
+    Private WithEvents m_tsddValue As System.Windows.Forms.ToolStripDropDownButton
+    Friend WithEvents m_tsmiCountry As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsmiRegion As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsmiLME As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsmiEcoCat As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsmiEcoType As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiDepth As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiAuthor As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsmiTemperature As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents m_tsmiNone As System.Windows.Forms.ToolStripMenuItem
 End Class
