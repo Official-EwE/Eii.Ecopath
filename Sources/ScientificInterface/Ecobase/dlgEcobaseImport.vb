@@ -110,6 +110,7 @@ Public Class dlgEcobaseImport
         MyBase.UpdateControls()
 
         Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
+        Me.m_tstbSearch.Enabled = (Me.m_filter <> eFilterTypes.None)
 
         Me.m_rtfAgreement.Text = Me.m_strAgreement
         Me.m_btnOK.Enabled = Me.CanDownload
@@ -154,20 +155,26 @@ Public Class dlgEcobaseImport
 
     End Sub
 
+    Private m_strURL As String = ""
+
     Private Sub OnModelSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_lbxModels.SelectedIndexChanged
 
         Dim weblinks As New cWebLinks(Me.Core)
         Dim strModel As String = ""
+        Dim strURL As String = "about:blank"
 
         Try
             If (Me.m_lbxModels.SelectedIndex > -1) Then
                 Me.m_model = DirectCast(Me.m_lbxModels.SelectedItem, cModelData)
-                Dim strURL As String = String.Format(weblinks.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
+                strURL = String.Format(weblinks.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
+            End If
+
+            If (String.Compare(strURL, Me.m_strURL) <> 0) Then
+                Me.m_strURL = strURL
                 Me.m_browser.Navigate(strURL)
                 Me.m_browser.Refresh(WebBrowserRefreshOption.Completely)
-            Else
-                Me.m_model = Nothing
+                Me.m_browser.Invalidate(True)
             End If
         Catch ex As Exception
 
@@ -333,30 +340,38 @@ Public Class dlgEcobaseImport
         Me.m_lbxModels.Items.Clear()
 
         For Each model As cModelData In Me.m_models
-            'If (model.AllowDissemination) Then
-            bUseModel = True
+            If (model.AllowDissemination) Then
+                bUseModel = True
 
-            ' Filters
-            If (Not String.IsNullOrWhiteSpace(strFilter)) Then
-                Select Case Me.m_filter
-                    Case eFilterTypes.None
-                    Case eFilterTypes.Author : bUseModel = Me.StartsWith(strFilter, model.Author)
-                    Case eFilterTypes.Country : bUseModel = Me.StartsWith(strFilter, model.Country)
-                    Case eFilterTypes.Region : bUseModel = Me.StartsWith(strFilter, model.Region)
-                    Case eFilterTypes.LME : bUseModel = Me.ContainsSubItem(strFilter, model.LME)
-                    Case eFilterTypes.EcosystemCategory : bUseModel = Me.StartsWith(strFilter, model.EcosystemCategory)
-                    Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
-                    Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
-                    Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
-                End Select
-            End If
+                ' Filters
+                If (Not String.IsNullOrWhiteSpace(strFilter)) Then
+                    Select Case Me.m_filter
+                        Case eFilterTypes.None
+                        Case eFilterTypes.Author : bUseModel = Me.StartsWith(strFilter, model.Author)
+                        Case eFilterTypes.Country : bUseModel = Me.StartsWith(strFilter, model.Country)
+                        Case eFilterTypes.Region : bUseModel = Me.StartsWith(strFilter, model.Region)
+                        Case eFilterTypes.LME : bUseModel = Me.ContainsSubItem(strFilter, model.LME)
+                        Case eFilterTypes.EcosystemCategory : bUseModel = Me.StartsWith(strFilter, model.EcosystemCategory)
+                        Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
+                        Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
+                        Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
+                    End Select
+                End If
 
-            If (bUseModel) Then
-                Me.m_lbxModels.Items.Add(model)
-                If (Me.m_model Is Nothing) Then Me.m_lbxModels.SelectedItem = model
+                If (bUseModel) Then
+                    Me.m_lbxModels.Items.Add(model)
+                End If
             End If
-            'End If
         Next
+
+        If (Me.m_model Is Nothing) Then
+            If (Me.m_lbxModels.Items.Count > 0) Then
+                Me.m_lbxModels.SelectedIndex = 0
+            End If
+        Else
+            Me.m_lbxModels.SelectedItem = Me.m_model
+        End If
+
         Me.m_lbxModels.ResumeLayout()
 
     End Sub

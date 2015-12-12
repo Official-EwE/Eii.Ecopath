@@ -48,6 +48,7 @@ Partial Class dlgEcobaseImport
         Me.m_tsFilter = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tstbSearch = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tsddValue = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiAuthor = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiCountry = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiRegion = New System.Windows.Forms.ToolStripMenuItem()
@@ -56,7 +57,6 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiEcoType = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiDepth = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiTemperature = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tcContent = New System.Windows.Forms.TabControl()
         Me.m_tpAgreement = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
@@ -156,10 +156,15 @@ Partial Class dlgEcobaseImport
         'm_tsddValue
         '
         Me.m_tsddValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsddValue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiRegion, Me.m_tsmiLME, Me.m_tsmiEcoCat, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature})
         resources.ApplyResources(Me.m_tsddValue, "m_tsddValue")
         Me.m_tsddValue.Name = "m_tsddValue"
+        '
+        'm_tsmiNone
+        '
+        Me.m_tsmiNone.Name = "m_tsmiNone"
+        resources.ApplyResources(Me.m_tsmiNone, "m_tsmiNone")
+        Me.m_tsmiNone.Tag = "0"
         '
         'm_tsmiAuthor
         '
@@ -208,12 +213,6 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiTemperature.Name = "m_tsmiTemperature"
         resources.ApplyResources(Me.m_tsmiTemperature, "m_tsmiTemperature")
         Me.m_tsmiTemperature.Tag = "8"
-        '
-        'm_tsmiNone
-        '
-        Me.m_tsmiNone.Name = "m_tsmiNone"
-        resources.ApplyResources(Me.m_tsmiNone, "m_tsmiNone")
-        Me.m_tsmiNone.Tag = "0"
         '
         'm_tcContent
         '

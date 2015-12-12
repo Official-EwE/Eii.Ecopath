@@ -430,7 +430,7 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsddValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 22</value>
+    <value>75, 22</value>
   </data>
   <data name="m_tsddValue.Text" xml:space="preserve">
     <value>&lt;field&gt;</value>
@@ -462,24 +462,6 @@
   <data name="m_tcContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_pbAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_pbAgreement.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Center</value>
-  </data>
-  <data name="m_pbAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_pbAgreement.Location" type="System.Drawing.Point, System.Drawing">
-    <value>690, 340</value>
-  </data>
-  <data name="m_pbAgreement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="m_pbAgreement.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
-  </data>
   <data name="&gt;&gt;m_pbAgreement.Name" xml:space="preserve">
     <value>m_pbAgreement</value>
   </data>
@@ -491,21 +473,6 @@
   </data>
   <data name="&gt;&gt;m_pbAgreement.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_rtfAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_rtfAgreement.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 6</value>
-  </data>
-  <data name="m_rtfAgreement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>579, 328</value>
-  </data>
-  <data name="m_rtfAgreement.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="m_rtfAgreement.Text" xml:space="preserve">
-    <value />
   </data>
   <data name="&gt;&gt;m_rtfAgreement.Name" xml:space="preserve">
     <value>m_rtfAgreement</value>
@@ -519,21 +486,6 @@
   <data name="&gt;&gt;m_rtfAgreement.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="PictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="PictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
-  </data>
-  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 124</value>
-  </data>
-  <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
   <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
     <value>PictureBox1</value>
   </data>
@@ -545,27 +497,6 @@
   </data>
   <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 340</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 17</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="m_cbEcoBaseAgreement.Text" xml:space="preserve">
-    <value>I have read and agree to the EcoBase data access agreement</value>
   </data>
   <data name="&gt;&gt;m_cbEcoBaseAgreement.Name" xml:space="preserve">
     <value>m_cbEcoBaseAgreement</value>
@@ -654,6 +585,123 @@
   <data name="&gt;&gt;m_tcContent.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_pbAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_pbAgreement.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>689, 416</value>
+  </data>
+  <data name="m_pbAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="m_pbAgreement.TabIndex" type="System.Int32, mscorlib">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;m_pbAgreement.Name" xml:space="preserve">
+    <value>m_pbAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_pbAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbAgreement.Parent" xml:space="preserve">
+    <value>m_tpAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_pbAgreement.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rtfAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_rtfAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 6</value>
+  </data>
+  <data name="m_rtfAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>578, 404</value>
+  </data>
+  <data name="m_rtfAgreement.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="m_rtfAgreement.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;m_rtfAgreement.Name" xml:space="preserve">
+    <value>m_rtfAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_rtfAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rtfAgreement.Parent" xml:space="preserve">
+    <value>m_tpAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_rtfAgreement.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="PictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="PictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 124</value>
+  </data>
+  <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
+    <value>PictureBox1</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.Parent" xml:space="preserve">
+    <value>m_tpAgreement</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 416</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 17</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="m_cbEcoBaseAgreement.Text" xml:space="preserve">
+    <value>I have read and agree to the EcoBase data access agreement</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcoBaseAgreement.Name" xml:space="preserve">
+    <value>m_cbEcoBaseAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcoBaseAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcoBaseAgreement.Parent" xml:space="preserve">
+    <value>m_tpAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcoBaseAgreement.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <metadata name="m_wrkGetAgreement.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>267, 17</value>
   </metadata>
@@ -689,6 +737,12 @@
   </data>
   <data name="&gt;&gt;m_tsddValue.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiNone.Name" xml:space="preserve">
+    <value>m_tsmiNone</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiNone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiAuthor.Name" xml:space="preserve">
     <value>m_tsmiAuthor</value>
@@ -736,12 +790,6 @@
     <value>m_tsmiTemperature</value>
   </data>
   <data name="&gt;&gt;m_tsmiTemperature.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiNone.Name" xml:space="preserve">
-    <value>m_tsmiNone</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiNone.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_wrkGetAgreement.Name" xml:space="preserve">
