@@ -147,7 +147,6 @@ Public Class dlgEcobaseImport
             Me.m_lblEcospaceUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcospaceUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblRefValue.Text = Me.ReferenceLabel()
 
-            Me.m_pbImage.Visible = True
             If (Me.m_img Is Nothing) Then
                 Me.m_pbImage.BackgroundImageLayout = ImageLayout.Center
                 Me.m_pbImage.BackgroundImage = SharedResources.ani_loader
@@ -163,6 +162,8 @@ Public Class dlgEcobaseImport
             Me.m_lblTempMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMean)
 
         Else
+            Me.m_lblModelNameValue.Text = ""
+            Me.m_lblAreaValue.Text = ""
             Me.m_lblAuthorValue.Text = ""
             Me.m_lblCountryValue.Text = ""
             Me.m_lblRegionValue.Text = ""
@@ -175,7 +176,7 @@ Public Class dlgEcobaseImport
             Me.m_lblFittedValue.Text = ""
             Me.m_lblEcospaceUsedValue.Text = ""
             Me.m_lblRefValue.Text = ""
-            Me.m_pbImage.Visible = False
+            Me.m_pbImage.Image = Nothing
             Me.m_lblLonVal.Text = ""
             Me.m_lblLatVal.Text = ""
             Me.m_lblDepthRangeVal.Text = ""
@@ -438,6 +439,7 @@ Public Class dlgEcobaseImport
 
         Dim strFilter As String = Me.m_tstbSearch.Text
         Dim bUseModel As Boolean = True
+        Dim bKeepSelection As Boolean = False
 
         Me.m_lbxModels.SuspendLayout()
         Me.m_lbxModels.Items.Clear()
@@ -462,19 +464,24 @@ Public Class dlgEcobaseImport
 
                 If (bUseModel) Then
                     Me.m_lbxModels.Items.Add(model)
+                    bKeepSelection = bKeepSelection Or (Object.ReferenceEquals(model, Me.m_model))
                 End If
             End If
         Next
 
-        If (Me.m_model Is Nothing) Then
+        Me.m_lbxModels.ResumeLayout()
+
+        If (bKeepSelection) Then
+            Me.m_lbxModels.SelectedItem = Me.m_model
+        Else
             If (Me.m_lbxModels.Items.Count > 0) Then
                 Me.m_lbxModels.SelectedIndex = 0
+            Else
+                Me.m_lbxModels.SelectedIndex = -1
+                Me.m_model = Nothing
             End If
-        Else
-            Me.m_lbxModels.SelectedItem = Me.m_model
         End If
-
-        Me.m_lbxModels.ResumeLayout()
+        Me.UpdateControls()
 
     End Sub
 
