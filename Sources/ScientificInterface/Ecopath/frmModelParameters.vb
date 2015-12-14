@@ -46,7 +46,6 @@ Public Class frmModelParameters
     Private m_fpRegion As cEwEFormatProvider = Nothing
     Private m_fpLME As cEwEFormatProvider = Nothing
     Private m_fpEcosystemType As cEwEFormatProvider = Nothing
-    Private m_fpEcosystemCategory As cEwEFormatProvider = Nothing
     Private m_fpSouth As cEwEFormatProvider = Nothing
     Private m_fpNorth As cEwEFormatProvider = Nothing
     Private m_fpWest As cEwEFormatProvider = Nothing
@@ -96,7 +95,6 @@ Public Class frmModelParameters
         Me.m_fpCountry = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbCountry, eweModel, eVarNameFlags.Country)
         Me.m_fpRegion = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbRegion, eweModel, eVarNameFlags.Region)
         Me.m_fpLME = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxLME, eweModel, eVarNameFlags.LME)
-        Me.m_fpEcosystemCategory = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoCat, eweModel, eVarNameFlags.EcosystemCategory)
         Me.m_fpEcosystemType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoType, eweModel, eVarNameFlags.EcosystemType)
 
         Me.m_fpURI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationURL, eweModel, eVarNameFlags.PublicationURI)
@@ -171,7 +169,6 @@ Public Class frmModelParameters
         Me.m_fpRegion.Release()
         Me.m_fpLME.Release()
         Me.m_fpEcosystemType.Release()
-        Me.m_fpEcosystemCategory.Release()
 
         Me.m_fpURI.Release()
         Me.m_fpDOI.Release()

@@ -1028,7 +1028,7 @@ Partial Friend NotInheritable Class Settings
         Get
             Return CType(Me("CountryNames"),Global.System.Collections.Specialized.StringCollection)
         End Get
-        Set(value As Global.System.Collections.Specialized.StringCollection)
+        Set
             Me("CountryNames") = value
         End Set
     End Property
@@ -1039,7 +1039,7 @@ Partial Friend NotInheritable Class Settings
         Get
             Return CType(Me("RegionNames"),Global.System.Collections.Specialized.StringCollection)
         End Get
-        Set(value As Global.System.Collections.Specialized.StringCollection)
+        Set
             Me("RegionNames") = value
         End Set
     End Property
@@ -1050,7 +1050,7 @@ Partial Friend NotInheritable Class Settings
         Get
             Return CType(Me("LMENumbers"),Global.System.Collections.Specialized.StringCollection)
         End Get
-        Set(value As Global.System.Collections.Specialized.StringCollection)
+        Set
             Me("LMENumbers") = value
         End Set
     End Property
@@ -1061,19 +1061,8 @@ Partial Friend NotInheritable Class Settings
         Get
             Return CType(Me("EcosystemTypes"),Global.System.Collections.Specialized.StringCollection)
         End Get
-        Set(value As Global.System.Collections.Specialized.StringCollection)
-            Me("EcosystemTypes") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
-    Public Property EcosystemCategories() As Global.System.Collections.Specialized.StringCollection
-        Get
-            Return CType(Me("EcosystemCategories"),Global.System.Collections.Specialized.StringCollection)
-        End Get
         Set
-            Me("EcosystemCategories") = value
+            Me("EcosystemTypes") = value
         End Set
     End Property
     

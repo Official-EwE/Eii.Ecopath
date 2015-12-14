@@ -1918,8 +1918,6 @@ Namespace Core
         LME
         ''' <summary>Type of ecosystem that a model represents (estuary, reef, etc).</summary>
         EcosystemType
-        ''' <summary>Category of ecosystem that a model represents (fresh water, marine, terrestrial, ect).</summary>
-        EcosystemCategory
         ''' <summary>Code of a model in the EcoBase repository.</summary>
         CodeEcobase
 

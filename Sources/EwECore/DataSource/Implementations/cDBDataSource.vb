@@ -731,7 +731,6 @@ Namespace DataSources
                 ecopathDS.ModelRegion = CStr(Me.m_db.ReadSafe(reader, "Region", ""))
                 ecopathDS.ModelLME = CStr(Me.m_db.ReadSafe(reader, "LME", ""))
                 ecopathDS.ModelEcosystemType = CStr(Me.m_db.ReadSafe(reader, "EcosystemType", ""))
-                ecopathDS.ModelEcosystemCategory = CStr(Me.m_db.ReadSafe(reader, "EcosystemCategory", ""))
                 ecopathDS.ModelEcobaseCode = CStr(Me.m_db.ReadSafe(reader, "CodeEcobase", ""))
                 ecopathDS.ModelPublicationDOI = CStr(Me.m_db.ReadSafe(reader, "PublicationDOI", ""))
                 ecopathDS.ModelPublicationURI = CStr(Me.m_db.ReadSafe(reader, "PublicationURI", ""))
@@ -814,7 +813,6 @@ Namespace DataSources
                 drow("Region") = ecopathDS.ModelRegion
                 drow("LME") = ecopathDS.ModelLME
                 drow("EcosystemType") = ecopathDS.ModelEcosystemType
-                drow("EcosystemCategory") = ecopathDS.ModelEcosystemCategory
                 drow("CodeEcobase") = ecopathDS.ModelEcobaseCode
                 drow("PublicationDOI") = ecopathDS.ModelPublicationDOI
                 drow("PublicationURI") = ecopathDS.ModelPublicationURI

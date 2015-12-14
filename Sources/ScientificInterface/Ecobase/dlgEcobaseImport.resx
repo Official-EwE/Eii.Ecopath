@@ -151,7 +151,7 @@
     <value>m_hdrModels</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13080.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel1</value>
@@ -232,7 +232,7 @@
     <value>m_hdrDetails</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13080.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -286,7 +286,7 @@
     <value>109, 0</value>
   </data>
   <data name="m_lblModelNameValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 21</value>
+    <value>140, 21</value>
   </data>
   <data name="m_lblModelNameValue.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -316,10 +316,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblCountryValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 0</value>
+    <value>345, 0</value>
   </data>
   <data name="m_lblCountryValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 21</value>
+    <value>141, 21</value>
   </data>
   <data name="m_lblCountryValue.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -352,10 +352,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNoFleetsValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 122</value>
+    <value>345, 122</value>
   </data>
   <data name="m_lblNoFleetsValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>141, 20</value>
   </data>
   <data name="m_lblNoFleetsValue.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -385,10 +385,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblNoGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 102</value>
+    <value>255, 102</value>
   </data>
   <data name="m_lblNoGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 20</value>
+    <value>84, 20</value>
   </data>
   <data name="m_lblNoGroups.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -421,10 +421,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNoFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 122</value>
+    <value>255, 122</value>
   </data>
   <data name="m_lblNoFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 20</value>
+    <value>84, 20</value>
   </data>
   <data name="m_lblNoFleets.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -454,10 +454,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblCountry.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 0</value>
+    <value>255, 0</value>
   </data>
   <data name="m_lblCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 21</value>
+    <value>84, 21</value>
   </data>
   <data name="m_lblCountry.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -487,10 +487,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblNoGroupsValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 102</value>
+    <value>345, 102</value>
   </data>
   <data name="m_lblNoGroupsValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>141, 20</value>
   </data>
   <data name="m_lblNoGroupsValue.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -556,7 +556,7 @@
     <value>109, 21</value>
   </data>
   <data name="m_lblAuthorValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 21</value>
+    <value>140, 21</value>
   </data>
   <data name="m_lblAuthorValue.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -622,7 +622,7 @@
     <value>109, 42</value>
   </data>
   <data name="m_lblAreaValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>140, 20</value>
   </data>
   <data name="m_lblAreaValue.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -652,10 +652,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 21</value>
+    <value>255, 21</value>
   </data>
   <data name="m_lblRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 21</value>
+    <value>84, 21</value>
   </data>
   <data name="m_lblRegion.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -685,10 +685,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblRegionValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 21</value>
+    <value>345, 21</value>
   </data>
   <data name="m_lblRegionValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 21</value>
+    <value>141, 21</value>
   </data>
   <data name="m_lblRegionValue.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -754,7 +754,7 @@
     <value>109, 62</value>
   </data>
   <data name="m_lblPeriodValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>140, 20</value>
   </data>
   <data name="m_lblPeriodValue.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -784,10 +784,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblFAO.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 42</value>
+    <value>255, 42</value>
   </data>
   <data name="m_lblFAO.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 20</value>
+    <value>84, 20</value>
   </data>
   <data name="m_lblFAO.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -817,10 +817,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblFAOValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 42</value>
+    <value>345, 42</value>
   </data>
   <data name="m_lblFAOValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>141, 20</value>
   </data>
   <data name="m_lblFAOValue.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -889,7 +889,7 @@
     <value>109, 82</value>
   </data>
   <data name="m_lblEcosimUsedValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>140, 20</value>
   </data>
   <data name="m_lblEcosimUsedValue.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -919,10 +919,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblEcosystemType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 62</value>
+    <value>255, 62</value>
   </data>
   <data name="m_lblEcosystemType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 20</value>
+    <value>84, 20</value>
   </data>
   <data name="m_lblEcosystemType.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -952,10 +952,10 @@
     <value>Fill</value>
   </data>
   <data name="m_lblEcosystemTypeValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 62</value>
+    <value>345, 62</value>
   </data>
   <data name="m_lblEcosystemTypeValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>141, 20</value>
   </data>
   <data name="m_lblEcosystemTypeValue.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1027,7 +1027,7 @@
     <value>109, 102</value>
   </data>
   <data name="m_lblFittedValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>140, 20</value>
   </data>
   <data name="m_lblFittedValue.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -1049,42 +1049,6 @@
   </data>
   <data name="&gt;&gt;m_lblFittedValue.ZOrder" xml:space="preserve">
     <value>23</value>
-  </data>
-  <data name="m_lblEcosystemCategory.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblEcosystemCategory.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblEcosystemCategory.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblEcosystemCategory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 82</value>
-  </data>
-  <data name="m_lblEcosystemCategory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 20</value>
-  </data>
-  <data name="m_lblEcosystemCategory.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_lblEcosystemCategory.Text" xml:space="preserve">
-    <value>Ecosystem category:</value>
-  </data>
-  <data name="m_lblEcosystemCategory.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategory.Name" xml:space="preserve">
-    <value>m_lblEcosystemCategory</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategory.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategory.Parent" xml:space="preserve">
-    <value>m_tlpFields</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategory.ZOrder" xml:space="preserve">
-    <value>24</value>
   </data>
   <data name="m_lblEcospaceUsed.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1120,43 +1084,7 @@
     <value>m_tlpFields</value>
   </data>
   <data name="&gt;&gt;m_lblEcospaceUsed.ZOrder" xml:space="preserve">
-    <value>25</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 82</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.Text" xml:space="preserve">
-    <value>&lt;system category&gt;</value>
-  </data>
-  <data name="m_lblEcosystemCategoryValue.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategoryValue.Name" xml:space="preserve">
-    <value>m_lblEcosystemCategoryValue</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategoryValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategoryValue.Parent" xml:space="preserve">
-    <value>m_tlpFields</value>
-  </data>
-  <data name="&gt;&gt;m_lblEcosystemCategoryValue.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>24</value>
   </data>
   <data name="m_lblEcospaceUsedValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1171,7 +1099,7 @@
     <value>109, 122</value>
   </data>
   <data name="m_lblEcospaceUsedValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 20</value>
+    <value>140, 20</value>
   </data>
   <data name="m_lblEcospaceUsedValue.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -1192,7 +1120,7 @@
     <value>m_tlpFields</value>
   </data>
   <data name="&gt;&gt;m_lblEcospaceUsedValue.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>25</value>
   </data>
   <data name="m_tlpFields.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1225,7 +1153,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpFields.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblModelName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblModelNameValue" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCountryValue" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoFleetsValue" Row="6" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoGroups" Row="5" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoFleets" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCountry" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoGroupsValue" Row="5" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAuthor" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAuthorValue" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblArea" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAreaValue" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRegion" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRegionValue" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPeriod" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPeriodValue" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFAO" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFAOValue" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosimUsed" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosimUsedValue" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosystemType" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosystemTypeValue" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFitted" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFittedValue" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosystemCategory" Row="4" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcospaceUsed" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosystemCategoryValue" Row="4" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcospaceUsedValue" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,AutoSize,0,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,20,Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblModelName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblModelNameValue" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCountryValue" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoFleetsValue" Row="6" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoGroups" Row="5" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoFleets" Row="6" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCountry" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoGroupsValue" Row="5" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAuthor" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAuthorValue" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblArea" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblAreaValue" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRegion" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblRegionValue" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPeriod" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPeriodValue" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFAO" Row="2" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFAOValue" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosimUsed" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosimUsedValue" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosystemType" Row="3" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcosystemTypeValue" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFitted" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblFittedValue" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcospaceUsed" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEcospaceUsedValue" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,AutoSize,0,Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,20,Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrRefs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1252,7 +1180,7 @@
     <value>m_hdrRefs</value>
   </data>
   <data name="&gt;&gt;m_hdrRefs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13080.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRefs.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1840,7 +1768,7 @@
     <value>4</value>
   </data>
   <data name="m_hdrSpatial.Text" xml:space="preserve">
-    <value>Geo-spatial details</value>
+    <value>Location</value>
   </data>
   <data name="m_hdrSpatial.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1849,7 +1777,7 @@
     <value>m_hdrSpatial</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatial.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13080.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatial.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1984,55 +1912,49 @@
     <value>100, 25</value>
   </data>
   <data name="m_tsmiNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiNone.Text" xml:space="preserve">
     <value>(None)</value>
   </data>
   <data name="m_tsmiAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiAuthor.Text" xml:space="preserve">
     <value>Author</value>
   </data>
   <data name="m_tsmiCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiCountry.Text" xml:space="preserve">
     <value>Country</value>
   </data>
   <data name="m_tsmiRegion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiRegion.Text" xml:space="preserve">
     <value>Region</value>
   </data>
   <data name="m_tsmiLME.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiLME.Text" xml:space="preserve">
     <value>LME(s)</value>
   </data>
-  <data name="m_tsmiEcoCat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
-  </data>
-  <data name="m_tsmiEcoCat.Text" xml:space="preserve">
-    <value>Ecosystem Category</value>
-  </data>
   <data name="m_tsmiEcoType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiEcoType.Text" xml:space="preserve">
     <value>Ecosystem Type</value>
   </data>
   <data name="m_tsmiDepth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiDepth.Text" xml:space="preserve">
     <value>Depth</value>
   </data>
   <data name="m_tsmiTemperature.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 22</value>
+    <value>158, 22</value>
   </data>
   <data name="m_tsmiTemperature.Text" xml:space="preserve">
     <value>Temperature</value>
@@ -2077,7 +1999,7 @@
     <value>m_tsFilter</value>
   </data>
   <data name="&gt;&gt;m_tsFilter.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13080.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsFilter.Parent" xml:space="preserve">
     <value>m_tpImport</value>
@@ -2352,12 +2274,6 @@
   <data name="&gt;&gt;m_tsmiLME.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsmiEcoCat.Name" xml:space="preserve">
-    <value>m_tsmiEcoCat</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiEcoCat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsmiEcoType.Name" xml:space="preserve">
     <value>m_tsmiEcoType</value>
   </data>
@@ -2392,6 +2308,6 @@
     <value>dlgEcobaseImport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13080.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -62,12 +62,10 @@ Partial Class dlgEcobaseExport
         Me.m_lblHyperlink = New System.Windows.Forms.Label()
         Me.m_pbAreaName = New System.Windows.Forms.PictureBox()
         Me.m_lblEcoType = New System.Windows.Forms.Label()
-        Me.m_lblEcoCat = New System.Windows.Forms.Label()
         Me.m_lblCountry = New System.Windows.Forms.Label()
         Me.m_lblRegion = New System.Windows.Forms.Label()
         Me.m_tbxLME = New System.Windows.Forms.TextBox()
         Me.m_lblLME = New System.Windows.Forms.Label()
-        Me.m_cmbEcoCat = New System.Windows.Forms.ComboBox()
         Me.m_cmbEcoType = New System.Windows.Forms.ComboBox()
         Me.m_cmbCountry = New System.Windows.Forms.ComboBox()
         Me.m_cmbRegion = New System.Windows.Forms.ComboBox()
@@ -78,6 +76,12 @@ Partial Class dlgEcobaseExport
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.m_cbEcoBaseAgreement = New System.Windows.Forms.CheckBox()
         Me.m_tpModel = New System.Windows.Forms.TabPage()
+        Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
+        Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
+        Me.m_lblNoYears = New System.Windows.Forms.Label()
+        Me.m_tbxArea = New System.Windows.Forms.TextBox()
+        Me.m_lblFirstYear = New System.Windows.Forms.Label()
+        Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_cbEcospaceUsed = New System.Windows.Forms.CheckBox()
         Me.m_cbIsUpdate = New System.Windows.Forms.CheckBox()
         Me.m_cbFittedToTimeSeries = New System.Windows.Forms.CheckBox()
@@ -85,6 +89,8 @@ Partial Class dlgEcobaseExport
         Me.m_cbConfirmAuthor = New System.Windows.Forms.CheckBox()
         Me.m_lblObjectives = New System.Windows.Forms.Label()
         Me.m_pbIsAuthor = New System.Windows.Forms.PictureBox()
+        Me.m_pbArea = New System.Windows.Forms.PictureBox()
+        Me.m_pbYear = New System.Windows.Forms.PictureBox()
         Me.m_pbObjectives = New System.Windows.Forms.PictureBox()
         Me.m_tbxObjectives = New System.Windows.Forms.TextBox()
         Me.m_hdrAuthor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -129,14 +135,6 @@ Partial Class dlgEcobaseExport
         Me.m_lblPermissionComments = New System.Windows.Forms.Label()
         Me.m_tbxPermissionComments = New System.Windows.Forms.TextBox()
         Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
-        Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
-        Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
-        Me.m_lblNoYears = New System.Windows.Forms.Label()
-        Me.m_tbxArea = New System.Windows.Forms.TextBox()
-        Me.m_lblFirstYear = New System.Windows.Forms.Label()
-        Me.m_lblArea = New System.Windows.Forms.Label()
-        Me.m_pbYear = New System.Windows.Forms.PictureBox()
-        Me.m_pbArea = New System.Windows.Forms.PictureBox()
         CType(Me.m_pbModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -148,6 +146,8 @@ Partial Class dlgEcobaseExport
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpModel.SuspendLayout()
         CType(Me.m_pbIsAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbArea, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbYear, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbObjectives, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpPublication.SuspendLayout()
         CType(Me.m_pbDifference, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -162,8 +162,6 @@ Partial Class dlgEcobaseExport
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpAccess.SuspendLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbYear, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbArea, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -285,11 +283,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_lblEcoType, "m_lblEcoType")
         Me.m_lblEcoType.Name = "m_lblEcoType"
         '
-        'm_lblEcoCat
-        '
-        resources.ApplyResources(Me.m_lblEcoCat, "m_lblEcoCat")
-        Me.m_lblEcoCat.Name = "m_lblEcoCat"
-        '
         'm_lblCountry
         '
         resources.ApplyResources(Me.m_lblCountry, "m_lblCountry")
@@ -309,12 +302,6 @@ Partial Class dlgEcobaseExport
         '
         resources.ApplyResources(Me.m_lblLME, "m_lblLME")
         Me.m_lblLME.Name = "m_lblLME"
-        '
-        'm_cmbEcoCat
-        '
-        Me.m_cmbEcoCat.FormattingEnabled = True
-        resources.ApplyResources(Me.m_cmbEcoCat, "m_cmbEcoCat")
-        Me.m_cmbEcoCat.Name = "m_cmbEcoCat"
         '
         'm_cmbEcoType
         '
@@ -416,6 +403,36 @@ Partial Class dlgEcobaseExport
         Me.m_tpModel.Name = "m_tpModel"
         Me.m_tpModel.UseVisualStyleBackColor = True
         '
+        'm_tbxNumYears
+        '
+        resources.ApplyResources(Me.m_tbxNumYears, "m_tbxNumYears")
+        Me.m_tbxNumYears.Name = "m_tbxNumYears"
+        '
+        'm_tbxFirstYear
+        '
+        resources.ApplyResources(Me.m_tbxFirstYear, "m_tbxFirstYear")
+        Me.m_tbxFirstYear.Name = "m_tbxFirstYear"
+        '
+        'm_lblNoYears
+        '
+        resources.ApplyResources(Me.m_lblNoYears, "m_lblNoYears")
+        Me.m_lblNoYears.Name = "m_lblNoYears"
+        '
+        'm_tbxArea
+        '
+        resources.ApplyResources(Me.m_tbxArea, "m_tbxArea")
+        Me.m_tbxArea.Name = "m_tbxArea"
+        '
+        'm_lblFirstYear
+        '
+        resources.ApplyResources(Me.m_lblFirstYear, "m_lblFirstYear")
+        Me.m_lblFirstYear.Name = "m_lblFirstYear"
+        '
+        'm_lblArea
+        '
+        resources.ApplyResources(Me.m_lblArea, "m_lblArea")
+        Me.m_lblArea.Name = "m_lblArea"
+        '
         'm_cbEcospaceUsed
         '
         resources.ApplyResources(Me.m_cbEcospaceUsed, "m_cbEcospaceUsed")
@@ -456,6 +473,18 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_pbIsAuthor, "m_pbIsAuthor")
         Me.m_pbIsAuthor.Name = "m_pbIsAuthor"
         Me.m_pbIsAuthor.TabStop = False
+        '
+        'm_pbArea
+        '
+        resources.ApplyResources(Me.m_pbArea, "m_pbArea")
+        Me.m_pbArea.Name = "m_pbArea"
+        Me.m_pbArea.TabStop = False
+        '
+        'm_pbYear
+        '
+        resources.ApplyResources(Me.m_pbYear, "m_pbYear")
+        Me.m_pbYear.Name = "m_pbYear"
+        Me.m_pbYear.TabStop = False
         '
         'm_pbObjectives
         '
@@ -560,8 +589,6 @@ Partial Class dlgEcobaseExport
         Me.m_tpClassification.Controls.Add(Me.m_lblLME)
         Me.m_tpClassification.Controls.Add(Me.m_cmbRegion)
         Me.m_tpClassification.Controls.Add(Me.m_cmbCountry)
-        Me.m_tpClassification.Controls.Add(Me.m_cmbEcoCat)
-        Me.m_tpClassification.Controls.Add(Me.m_lblEcoCat)
         Me.m_tpClassification.Controls.Add(Me.m_cmbEcoType)
         Me.m_tpClassification.Controls.Add(Me.m_lblRegion)
         Me.m_tpClassification.Controls.Add(Me.m_lblCountry)
@@ -760,48 +787,6 @@ Partial Class dlgEcobaseExport
         'm_wrkGetAgreement
         '
         '
-        'm_tbxNumYears
-        '
-        resources.ApplyResources(Me.m_tbxNumYears, "m_tbxNumYears")
-        Me.m_tbxNumYears.Name = "m_tbxNumYears"
-        '
-        'm_tbxFirstYear
-        '
-        resources.ApplyResources(Me.m_tbxFirstYear, "m_tbxFirstYear")
-        Me.m_tbxFirstYear.Name = "m_tbxFirstYear"
-        '
-        'm_lblNoYears
-        '
-        resources.ApplyResources(Me.m_lblNoYears, "m_lblNoYears")
-        Me.m_lblNoYears.Name = "m_lblNoYears"
-        '
-        'm_tbxArea
-        '
-        resources.ApplyResources(Me.m_tbxArea, "m_tbxArea")
-        Me.m_tbxArea.Name = "m_tbxArea"
-        '
-        'm_lblFirstYear
-        '
-        resources.ApplyResources(Me.m_lblFirstYear, "m_lblFirstYear")
-        Me.m_lblFirstYear.Name = "m_lblFirstYear"
-        '
-        'm_lblArea
-        '
-        resources.ApplyResources(Me.m_lblArea, "m_lblArea")
-        Me.m_lblArea.Name = "m_lblArea"
-        '
-        'm_pbYear
-        '
-        resources.ApplyResources(Me.m_pbYear, "m_pbYear")
-        Me.m_pbYear.Name = "m_pbYear"
-        Me.m_pbYear.TabStop = False
-        '
-        'm_pbArea
-        '
-        resources.ApplyResources(Me.m_pbArea, "m_pbArea")
-        Me.m_pbArea.Name = "m_pbArea"
-        Me.m_pbArea.TabStop = False
-        '
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
@@ -828,6 +813,8 @@ Partial Class dlgEcobaseExport
         Me.m_tpModel.ResumeLayout(False)
         Me.m_tpModel.PerformLayout()
         CType(Me.m_pbIsAuthor, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbArea, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbYear, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbObjectives, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpPublication.ResumeLayout(False)
         Me.m_tpPublication.PerformLayout()
@@ -845,8 +832,6 @@ Partial Class dlgEcobaseExport
         Me.m_tpAccess.ResumeLayout(False)
         Me.m_tpAccess.PerformLayout()
         CType(Me.m_pbPermissionComment, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbYear, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbArea, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -872,11 +857,9 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_lblHyperlink As System.Windows.Forms.Label
     Private WithEvents m_pbAreaName As System.Windows.Forms.PictureBox
     Private WithEvents m_lblEcoType As System.Windows.Forms.Label
-    Private WithEvents m_lblEcoCat As System.Windows.Forms.Label
     Private WithEvents m_lblCountry As System.Windows.Forms.Label
     Private WithEvents m_lblRegion As System.Windows.Forms.Label
     Private WithEvents m_lblLME As System.Windows.Forms.Label
-    Private WithEvents m_cmbEcoCat As System.Windows.Forms.ComboBox
     Private WithEvents m_cmbEcoType As System.Windows.Forms.ComboBox
     Private WithEvents m_cmbCountry As System.Windows.Forms.ComboBox
     Private WithEvents m_cmbRegion As System.Windows.Forms.ComboBox
