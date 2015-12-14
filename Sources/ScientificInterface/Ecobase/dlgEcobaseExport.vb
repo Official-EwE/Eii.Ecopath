@@ -115,12 +115,10 @@ Public Class dlgEcobaseExport
         ' -- Classification page --
         Me.FillCombo(Me.m_cmbCountry, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName))
         Me.FillCombo(Me.m_cmbRegion, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName))
-        Me.FillCombo(Me.m_cmbEcoCat, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory))
         Me.FillCombo(Me.m_cmbEcoType, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType))
 
         Me.m_cmbCountry.Text = model.Country
         Me.m_cmbRegion.Text = model.Region
-        Me.m_cmbEcoCat.Text = model.EcosystemCategory
         Me.m_cmbEcoType.Text = model.EcosystemType
 
         Me.m_fpNorth = New cEwEFormatProvider(Me.m_uic, Me.m_nudNorth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.North))
@@ -181,7 +179,7 @@ Public Class dlgEcobaseExport
                 m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged, _
                 m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged, _
                 m_cmbCountry.TextChanged, m_cmbRegion.TextChanged, m_tbxLME.TextChanged, _
-                m_cmbEcoCat.TextChanged, m_cmbEcoType.TextChanged, _
+                 m_cmbEcoType.TextChanged, _
                 m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
                 m_cbDifferentFromPaper.CheckedChanged, m_tbxDifference.TextChanged, _
                 m_tbxPermissionComments.TextChanged
@@ -309,7 +307,7 @@ Public Class dlgEcobaseExport
         ' -- Classification page --
         Dim bHasAreaName As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbRegion.Text))
         Dim bHasBoundingBox As Boolean = (CSng(Me.m_fpNorth.Value) <> CSng(Me.m_fpSouth.Value)) And (CSng(Me.m_fpWest.Value) <> CSng(Me.m_fpEast.Value))
-        Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoCat.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoType.Text))
+        Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoType.Text))
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
         Dim bClassOK As Boolean = bHasAreaName And bHasBoundingBox And bHasEcosystem
 
@@ -366,7 +364,6 @@ Public Class dlgEcobaseExport
         Dim strCountry As String = Me.m_cmbCountry.Text
         Dim strRegion As String = Me.m_cmbRegion.Text
         Dim strEcoType As String = Me.m_cmbEcoType.Text
-        Dim strEcoCat As String = Me.m_cmbEcoCat.Text
         Dim strLME As String = Me.m_tbxLME.Text
 
         Dim iYear As Integer = CInt(Me.m_fpYear.Value)
@@ -395,7 +392,6 @@ Public Class dlgEcobaseExport
                                  (String.Compare(strRef, model.PublicationReference) <> 0) Or _
                                  (String.Compare(strCountry, model.Country) <> 0) Or _
                                  (String.Compare(strRegion, model.Region) <> 0) Or _
-                                 (String.Compare(strEcoCat, model.EcosystemCategory) <> 0) Or _
                                  (String.Compare(strEcoType, model.EcosystemType) <> 0) Or _
                                  (String.Compare(strLME, model.LME) <> 0) Or _
                                  (model.Area <> sArea) Or _
@@ -426,7 +422,6 @@ Public Class dlgEcobaseExport
             model.Country = strCountry
             model.Region = strRegion
             model.LME = strLME
-            model.EcosystemCategory = strEcoCat
             model.EcosystemType = strEcoType
 
             model.North = sNorth

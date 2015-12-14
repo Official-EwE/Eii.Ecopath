@@ -219,7 +219,6 @@ Friend Class cStyleGuideUpdater
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName) = My.Settings.RegionNames
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.LMENumber) = My.Settings.LMENumbers
             .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType) = My.Settings.EcosystemTypes
-            .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory) = My.Settings.EcosystemCategories
         End With
 
         Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
@@ -272,7 +271,6 @@ Friend Class cStyleGuideUpdater
             My.Settings.RegionNames = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName)
             My.Settings.LMENumbers = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.LMENumber)
             My.Settings.EcosystemTypes = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType)
-            My.Settings.EcosystemCategories = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemCategory)
 
             My.Settings.OutputDPI = .PreferredDPI
 

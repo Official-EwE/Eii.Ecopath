@@ -263,7 +263,6 @@ Namespace Database
                 drow("Region") = md.Region
                 drow("LME") = md.LME
                 drow("EcosystemType") = md.EcosystemType
-                drow("EcosystemCategory") = md.EcosystemCategory
 
                 drow("PublicationDOI") = md.DOI
                 drow("PublicationURI") = md.URI

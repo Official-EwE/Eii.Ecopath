@@ -107,8 +107,6 @@ Partial Class frmModelParameters
         Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
         Me.m_plMetadata = New System.Windows.Forms.Panel()
         Me.m_tbxLME = New System.Windows.Forms.TextBox()
-        Me.m_cmbEcoCat = New System.Windows.Forms.ComboBox()
-        Me.m_lblEcoCat = New System.Windows.Forms.Label()
         Me.m_cmbEcoType = New System.Windows.Forms.ComboBox()
         Me.m_lblEcoType = New System.Windows.Forms.Label()
         Me.m_lblLME = New System.Windows.Forms.Label()
@@ -564,8 +562,6 @@ Partial Class frmModelParameters
         'm_plMetadata
         '
         Me.m_plMetadata.Controls.Add(Me.m_tbxLME)
-        Me.m_plMetadata.Controls.Add(Me.m_cmbEcoCat)
-        Me.m_plMetadata.Controls.Add(Me.m_lblEcoCat)
         Me.m_plMetadata.Controls.Add(Me.m_cmbEcoType)
         Me.m_plMetadata.Controls.Add(Me.m_lblEcoType)
         Me.m_plMetadata.Controls.Add(Me.m_lblLME)
@@ -581,18 +577,6 @@ Partial Class frmModelParameters
         '
         resources.ApplyResources(Me.m_tbxLME, "m_tbxLME")
         Me.m_tbxLME.Name = "m_tbxLME"
-        '
-        'm_cmbEcoCat
-        '
-        Me.m_cmbEcoCat.FormattingEnabled = True
-        resources.ApplyResources(Me.m_cmbEcoCat, "m_cmbEcoCat")
-        Me.m_cmbEcoCat.Name = "m_cmbEcoCat"
-        Me.m_cmbEcoCat.Sorted = True
-        '
-        'm_lblEcoCat
-        '
-        resources.ApplyResources(Me.m_lblEcoCat, "m_lblEcoCat")
-        Me.m_lblEcoCat.Name = "m_lblEcoCat"
         '
         'm_cmbEcoType
         '
@@ -799,8 +783,6 @@ Partial Class frmModelParameters
     Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
     Private WithEvents m_tbxFirstYear As System.Windows.Forms.TextBox
     Private WithEvents m_plMetadata As System.Windows.Forms.Panel
-    Private WithEvents m_cmbEcoCat As System.Windows.Forms.ComboBox
-    Private WithEvents m_lblEcoCat As System.Windows.Forms.Label
     Private WithEvents m_cmbEcoType As System.Windows.Forms.ComboBox
     Private WithEvents m_lblEcoType As System.Windows.Forms.Label
     Private WithEvents m_lblLME As System.Windows.Forms.Label

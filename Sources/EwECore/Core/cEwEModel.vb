@@ -193,12 +193,6 @@ Public Class cEwEModel
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' Ecosystem category
-            meta = New cVariableMetaData(254)
-            val = New cValue(New String(desc), eVarNameFlags.EcosystemCategory, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            val.AffectsRunState = False
-            m_values.Add(val.varName, val)
-
             ' Ecobase code
             meta = New cVariableMetaData(49)
             val = New cValue(New String(desc), eVarNameFlags.CodeEcobase, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -567,16 +561,6 @@ Public Class cEwEModel
 
         Set(ByVal value As String)
             SetVariable(eVarNameFlags.EcosystemType, value)
-        End Set
-    End Property
-
-    Public Property EcosystemCategory As String
-        Get
-            Return CStr(GetVariable(eVarNameFlags.EcosystemCategory))
-        End Get
-
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.EcosystemCategory, value)
         End Set
     End Property
 

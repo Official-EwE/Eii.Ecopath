@@ -91,7 +91,7 @@ Namespace WebServices.Ecobase
 
         ''' <summary>Reformatter for <see cref="LME_ecobase"/> field.</summary>
         <XmlIgnore()> _
-        Public Property LME As String = ""
+        Public Property LME As String
 
         ''' <summary>Area size.</summary>
         <XmlElement("area")> _
@@ -133,10 +133,6 @@ Namespace WebServices.Ecobase
         ''' <summary>Ecosystem type.</summary>
         <XmlElement("ecosystem_type")> _
         Public Property EcosystemType As String = ""
-
-        ''' <summary>Ecosystem type.</summary>
-        <XmlElement("ecosystem_category")> _
-        Public Property EcosystemCategory As String = ""
 
         ''' <summary>Currency unit.</summary>
         <XmlElement("currency_units")> _
@@ -249,7 +245,6 @@ Namespace WebServices.Ecobase
                                                ecopathDS.ModelUnitCurrencyCustom, _
                                                DirectCast(ecopathDS.ModelUnitCurrency, eUnitCurrencyType).ToString())
 
-            Me.EcosystemCategory = ecopathDS.ModelEcosystemCategory
             Me.EcosystemType = ecopathDS.ModelEcosystemType
             Me.Country = ecopathDS.ModelCountry
             Me.Region = ecopathDS.ModelRegion

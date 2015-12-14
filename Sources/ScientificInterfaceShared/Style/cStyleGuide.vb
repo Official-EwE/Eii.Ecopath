@@ -384,7 +384,6 @@ Namespace Style
             CountryName
             RegionName
             EcosystemType
-            EcosystemCategory
             LMENumber
         End Enum
 

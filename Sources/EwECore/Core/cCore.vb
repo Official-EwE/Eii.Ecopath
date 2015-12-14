@@ -3250,7 +3250,6 @@ Public Class cCore
         Me.m_EwEModel.Country = Me.m_EcoPathData.ModelCountry
         Me.m_EwEModel.Region = Me.m_EcoPathData.ModelRegion
         Me.m_EwEModel.LME = Me.m_EcoPathData.ModelLME
-        Me.m_EwEModel.EcosystemCategory = Me.m_EcoPathData.ModelEcosystemCategory
         Me.m_EwEModel.EcosystemType = Me.m_EcoPathData.ModelEcosystemType
         Me.m_EwEModel.PublicationDOI = Me.m_EcoPathData.ModelPublicationDOI
         Me.m_EwEModel.PublicationURI = Me.m_EcoPathData.ModelPublicationURI
@@ -3291,7 +3290,6 @@ Public Class cCore
         Me.m_EcoPathData.ModelRegion = Me.m_EwEModel.Region
         Me.m_EcoPathData.ModelLME = Me.m_EwEModel.LME
         Me.m_EcoPathData.ModelEcosystemType = Me.m_EwEModel.EcosystemType
-        Me.m_EcoPathData.ModelEcosystemCategory = Me.m_EwEModel.EcosystemCategory
         Me.m_EcoPathData.ModelPublicationDOI = Me.m_EwEModel.PublicationDOI
         Me.m_EcoPathData.ModelPublicationURI = Me.m_EwEModel.PublicationURI
         Me.m_EcoPathData.ModelPublicationRef = Me.m_EwEModel.PublicationReference

@@ -65,7 +65,6 @@ Public Class cEcopathDataStructures
     Public ModelRegion As String = ""
     Public ModelLME As String = ""
     Public ModelEcosystemType As String = ""
-    Public ModelEcosystemCategory As String = ""
     ''' <summary>Code of a model in the Ecobase repository, if any.</summary>
     Public ModelEcobaseCode As String = ""
     Public ModelPublicationDOI As String = ""

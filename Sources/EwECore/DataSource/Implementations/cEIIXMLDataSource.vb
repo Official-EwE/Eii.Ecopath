@@ -357,7 +357,6 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelRegion = CStr(Me.ReadSafe(row, "Region", ""))
                 ecopathDS.ModelLME = CStr(Me.ReadSafe(row, "LME", ""))
                 ecopathDS.ModelEcosystemType = CStr(Me.ReadSafe(row, "EcosystemType", ""))
-                ecopathDS.ModelEcosystemCategory = CStr(Me.ReadSafe(row, "EcosystemCategory", ""))
                 ecopathDS.ModelEcobaseCode = CStr(Me.ReadSafe(row, "CodeEcobase", ""))
                 ecopathDS.ModelPublicationDOI = CStr(Me.ReadSafe(row, "PublicationDOI", ""))
                 ecopathDS.ModelPublicationURI = CStr(Me.ReadSafe(row, "PublicationURI", ""))

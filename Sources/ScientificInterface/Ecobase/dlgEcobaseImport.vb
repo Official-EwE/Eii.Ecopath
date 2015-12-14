@@ -54,10 +54,9 @@ Public Class dlgEcobaseImport
         Country = 2
         Region = 3
         LME = 4
-        EcosystemCategory = 5
-        EcosystemType = 6
-        Depth = 7
-        Temperature = 8
+        EcosystemType = 5
+        Depth = 6
+        Temperature = 7
     End Enum
 
     Private m_filter As eFilterTypes = eFilterTypes.None
@@ -121,6 +120,8 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
+        ' ToDo: Globalize this method
+
         Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
         Me.m_tstbSearch.Enabled = (Me.m_filter <> eFilterTypes.None)
 
@@ -131,32 +132,20 @@ Public Class dlgEcobaseImport
         If (Me.m_model IsNot Nothing) Then
             Dim sb As New StringBuilder()
 
-            Me.m_lblModelNameValue.Text = Me.m_model.Name
+            Me.m_lblModelNameValue.Text = cStringUtils.ToSentenceCase(Me.m_model.Name)
             Me.m_lblAreaValue.Text = cStringUtils.FormatNumber(Me.m_model.Area)
-            Me.m_lblAuthorValue.Text = Me.m_model.Author
-            Me.m_lblCountryValue.Text = Me.m_model.Country
-            Me.m_lblRegionValue.Text = Me.m_model.Region
+            Me.m_lblAuthorValue.Text = cStringUtils.ToTitleCase(Me.m_model.Author)
+            Me.m_lblCountryValue.Text = cStringUtils.ToTitleCase(Me.m_model.Country)
+            Me.m_lblRegionValue.Text = cStringUtils.ToTitleCase(Me.m_model.Region)
             Me.m_lblFAOValue.Text = Me.m_model.LME
-            Me.m_lblEcosystemCategoryValue.Text = Me.m_model.EcosystemCategory
-            Me.m_lblEcosystemTypeValue.Text = Me.m_model.EcosystemType
-            Me.m_lblNoGroupsValue.Text = "(not known)"
-            Me.m_lblNoFleetsValue.Text = "(not known)"
-            Me.m_lblPeriodValue.Text = CStr(m_model.FirstYear) & " - ?"
+            Me.m_lblEcosystemTypeValue.Text = cStringUtils.ToSentenceCase(Me.m_model.EcosystemType)
+            Me.m_lblNoGroupsValue.Text = "?"
+            Me.m_lblNoFleetsValue.Text = "?"
+            Me.m_lblPeriodValue.Text = Me.PeriodLabel()
             Me.m_lblEcosimUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcosimUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblFittedValue.Text = cSystemUtils.IIF(Me.m_model.IsFittedToTimeSeries, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblEcospaceUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcospaceUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
-
-            sb.Clear()
-            If (Not String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
-                sb.AppendLine(cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, "DOI", Me.m_model.DOI))
-            End If
-            If (Not String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
-                sb.AppendLine(Me.m_model.URI)
-            End If
-            If (Not String.IsNullOrWhiteSpace(Me.m_model.Reference)) Then
-                sb.AppendLine(Me.m_model.Reference)
-            End If
-            Me.m_lblRefValue.Text = sb.ToString()
+            Me.m_lblRefValue.Text = Me.ReferenceLabel()
 
             Me.m_pbImage.Visible = True
             If (Me.m_img Is Nothing) Then
@@ -166,8 +155,8 @@ Public Class dlgEcobaseImport
                 Me.m_pbImage.BackgroundImage = Me.m_img
                 Me.m_pbImage.BackgroundImageLayout = ImageLayout.Zoom
             End If
-            Me.m_lblLonVal.Text = cStringUtils.FormatNumber(Me.m_model.West) & "W, " & cStringUtils.FormatNumber(Me.m_model.East) & "E"
-            Me.m_lblLatVal.Text = cStringUtils.FormatNumber(Me.m_model.North) & "N, " & cStringUtils.FormatNumber(Me.m_model.South) & "S"
+            Me.m_lblLonVal.Text = Me.LonLabel()
+            Me.m_lblLatVal.Text = Me.LatLabel()
             Me.m_lblDepthRangeVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMin) & " - " & cStringUtils.FormatNumber(Me.m_model.DepthMax)
             Me.m_lblDepthMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMean)
             Me.m_lblTempRangeVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMin) & " - " & cStringUtils.FormatNumber(Me.m_model.TempMax)
@@ -178,7 +167,6 @@ Public Class dlgEcobaseImport
             Me.m_lblCountryValue.Text = ""
             Me.m_lblRegionValue.Text = ""
             Me.m_lblFAOValue.Text = ""
-            Me.m_lblEcosystemCategoryValue.Text = ""
             Me.m_lblEcosystemTypeValue.Text = ""
             Me.m_lblNoGroupsValue.Text = ""
             Me.m_lblNoFleetsValue.Text = ""
@@ -308,7 +296,7 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiLME.Click, m_tsmiEcoType.Click, m_tsmiEcoCat.Click, m_tsmiRegion.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiLME.Click, m_tsmiEcoType.Click, m_tsmiRegion.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click
 
         Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
         If (tsmi.Tag IsNot Nothing) Then
@@ -466,7 +454,6 @@ Public Class dlgEcobaseImport
                         Case eFilterTypes.Country : bUseModel = Me.StartsWith(strFilter, model.Country)
                         Case eFilterTypes.Region : bUseModel = Me.StartsWith(strFilter, model.Region)
                         Case eFilterTypes.LME : bUseModel = Me.ContainsSubItem(strFilter, model.LME)
-                        Case eFilterTypes.EcosystemCategory : bUseModel = Me.StartsWith(strFilter, model.EcosystemCategory)
                         Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
                         Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
                         Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
@@ -520,13 +507,11 @@ Public Class dlgEcobaseImport
         Dim lRegion As New List(Of String)
         Dim lLME As New List(Of String)
         Dim lEcoTyp As New List(Of String)
-        Dim lEcoCat As New List(Of String)
 
         For Each model As cModelData In Me.m_models
             If Not String.IsNullOrWhiteSpace(model.Country) Then lCountry.Add(model.Country)
             If Not String.IsNullOrWhiteSpace(model.Region) Then lRegion.Add(model.Region)
             If Not String.IsNullOrWhiteSpace(model.LME) Then lLME.Add(model.LME)
-            If Not String.IsNullOrWhiteSpace(model.EcosystemCategory) Then lEcoCat.Add(model.EcosystemCategory)
             If Not String.IsNullOrWhiteSpace(model.EcosystemType) Then lEcoTyp.Add(model.EcosystemType)
         Next
 
@@ -542,12 +527,8 @@ Public Class dlgEcobaseImport
             For Each str As String In My.Settings.LMENumbers : lLME.Add(str) : Next
         End If
 
-        If (My.Settings.EcosystemCategories IsNot Nothing) Then
-            For Each str As String In My.Settings.EcosystemCategories : lEcoTyp.Add(str) : Next
-        End If
-
         If (My.Settings.EcosystemTypes IsNot Nothing) Then
-            For Each str As String In My.Settings.EcosystemTypes : lEcoCat.Add(str) : Next
+            For Each str As String In My.Settings.EcosystemTypes : lEcoTyp.Add(str) : Next
         End If
 
         Dim sgu As New cStyleGuideUpdater(Me.UIContext)
@@ -562,9 +543,6 @@ Public Class dlgEcobaseImport
         My.Settings.LMENumbers.Clear()
         My.Settings.LMENumbers.AddRange(lLME.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
 
-        My.Settings.EcosystemCategories.Clear()
-        My.Settings.EcosystemCategories.AddRange(lEcoCat.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
-
         My.Settings.EcosystemTypes.Clear()
         My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
 
@@ -573,6 +551,58 @@ Public Class dlgEcobaseImport
         Me.StyleGuide.EcoBaseFieldsChanged()
 
     End Sub
+
+    Private Function PeriodLabel() As String
+
+        If (Me.m_model Is Nothing) Then Return ""
+        If (Me.m_model.FirstYear = 0) Then Return "?"
+        If (Me.m_model.NumYears <= 1) Then Return CStr(Me.m_model.FirstYear)
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                     Me.m_model.FirstYear, _
+                                     Me.m_model.FirstYear + Math.Max(1, Me.m_model.NumYears) - 1)
+
+    End Function
+
+    Private Function ReferenceLabel() As String
+
+        If (Me.m_model Is Nothing) Then Return ""
+
+        Dim sb As New StringBuilder()
+        If (Not String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
+            sb.AppendLine(cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, "DOI", Me.m_model.DOI))
+        End If
+        If (Not String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
+            sb.AppendLine(Me.m_model.URI)
+        End If
+        If (Not String.IsNullOrWhiteSpace(Me.m_model.Reference)) Then
+            sb.AppendLine(Me.m_model.Reference)
+        End If
+        If (sb.Length = 0) Then sb.Append("?")
+        Return sb.ToString()
+
+    End Function
+
+    Private Function LatLabel() As String
+
+        ' ToDo: globalize this method
+        If (Me.m_model Is Nothing) Then Return ""
+        If (Me.m_model.North = Me.m_model.South) Then Return "?"
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, _
+                                     cStringUtils.Localize("{0} dd N", cStringUtils.FormatNumber(Me.m_model.North)), _
+                                     cStringUtils.Localize("{0} dd S", cStringUtils.FormatNumber(Me.m_model.South)))
+
+    End Function
+
+    Private Function LonLabel() As String
+
+        ' ToDo: globalize this method
+        If (Me.m_model Is Nothing) Then Return ""
+        If (Me.m_model.North = Me.m_model.South) Then Return "?"
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, _
+                                     cStringUtils.Localize("{0} dd W", cStringUtils.FormatNumber(Me.m_model.West)), _
+                                     cStringUtils.Localize("{0} dd E", cStringUtils.FormatNumber(Me.m_model.East)))
+
+    End Function
 
 #End Region ' Internals
 

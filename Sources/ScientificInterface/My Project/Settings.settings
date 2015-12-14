@@ -257,9 +257,6 @@
     <Setting Name="EcosystemTypes" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="EcosystemCategories" Type="System.Collections.Specialized.StringCollection" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="LastWSDLUpdate" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
