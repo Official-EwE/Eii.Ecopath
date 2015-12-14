@@ -26,6 +26,8 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities
+Imports System.Text
 
 #End Region ' Imports
 
@@ -36,7 +38,9 @@ Public Class dlgEcobaseImport
     Private m_ecobase As cEcoBaseWDSL = Nothing
     Private m_models As New List(Of cModelData)
     Private m_model As cModelData = Nothing
+
     Private m_strAgreement As String = ""
+    Private m_img As Image = Nothing
 
     ''' <summary>
     ''' 
@@ -82,6 +86,10 @@ Public Class dlgEcobaseImport
         il.Images.Add(SharedResources.Critical)
         Me.m_tcContent.ImageList = il
 
+        Me.m_lblRefValue.AutoSize = False
+        Me.m_lblRefValue.MaximumSize = New Size(100, 0)
+        Me.m_lblRefValue.AutoSize = True
+
         Me.m_tsddValue.Image = SharedResources.FilterHS
 
         Me.m_ecobase = New cEcoBaseWDSL()
@@ -95,6 +103,10 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
         e.Cancel = (Me.DialogResult = Windows.Forms.DialogResult.OK) And Not Me.CanDownload
         MyBase.OnFormClosing(e)
+    End Sub
+
+    Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
+        MyBase.OnSizeChanged(e)
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -114,6 +126,75 @@ Public Class dlgEcobaseImport
 
         Me.m_rtfAgreement.Text = Me.m_strAgreement
         Me.m_btnOK.Enabled = Me.CanDownload
+
+        ' Populate model controls
+        If (Me.m_model IsNot Nothing) Then
+            Dim sb As New StringBuilder()
+
+            Me.m_lblModelNameValue.Text = Me.m_model.Name
+            Me.m_lblAreaValue.Text = cStringUtils.FormatNumber(Me.m_model.Area)
+            Me.m_lblAuthorValue.Text = Me.m_model.Author
+            Me.m_lblCountryValue.Text = Me.m_model.Country
+            Me.m_lblRegionValue.Text = Me.m_model.Region
+            Me.m_lblFAOValue.Text = Me.m_model.LME
+            Me.m_lblEcosystemCategoryValue.Text = Me.m_model.EcosystemCategory
+            Me.m_lblEcosystemTypeValue.Text = Me.m_model.EcosystemType
+            Me.m_lblNoGroupsValue.Text = "(not known)"
+            Me.m_lblNoFleetsValue.Text = "(not known)"
+            Me.m_lblPeriodValue.Text = CStr(m_model.FirstYear) & " - ?"
+            Me.m_lblEcosimUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcosimUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblFittedValue.Text = cSystemUtils.IIF(Me.m_model.IsFittedToTimeSeries, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblEcospaceUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcospaceUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+
+            sb.Clear()
+            If (Not String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
+                sb.AppendLine(cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, "DOI", Me.m_model.DOI))
+            End If
+            If (Not String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
+                sb.AppendLine(Me.m_model.URI)
+            End If
+            If (Not String.IsNullOrWhiteSpace(Me.m_model.Reference)) Then
+                sb.AppendLine(Me.m_model.Reference)
+            End If
+            Me.m_lblRefValue.Text = sb.ToString()
+
+            Me.m_pbImage.Visible = True
+            If (Me.m_img Is Nothing) Then
+                Me.m_pbImage.BackgroundImageLayout = ImageLayout.Center
+                Me.m_pbImage.BackgroundImage = SharedResources.ani_loader
+            Else
+                Me.m_pbImage.BackgroundImage = Me.m_img
+                Me.m_pbImage.BackgroundImageLayout = ImageLayout.Zoom
+            End If
+            Me.m_lblLonVal.Text = cStringUtils.FormatNumber(Me.m_model.West) & "W, " & cStringUtils.FormatNumber(Me.m_model.East) & "E"
+            Me.m_lblLatVal.Text = cStringUtils.FormatNumber(Me.m_model.North) & "N, " & cStringUtils.FormatNumber(Me.m_model.South) & "S"
+            Me.m_lblDepthRangeVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMin) & " - " & cStringUtils.FormatNumber(Me.m_model.DepthMax)
+            Me.m_lblDepthMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMean)
+            Me.m_lblTempRangeVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMin) & " - " & cStringUtils.FormatNumber(Me.m_model.TempMax)
+            Me.m_lblTempMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMean)
+
+        Else
+            Me.m_lblAuthorValue.Text = ""
+            Me.m_lblCountryValue.Text = ""
+            Me.m_lblRegionValue.Text = ""
+            Me.m_lblFAOValue.Text = ""
+            Me.m_lblEcosystemCategoryValue.Text = ""
+            Me.m_lblEcosystemTypeValue.Text = ""
+            Me.m_lblNoGroupsValue.Text = ""
+            Me.m_lblNoFleetsValue.Text = ""
+            Me.m_lblPeriodValue.Text = ""
+            Me.m_lblEcosimUsedValue.Text = ""
+            Me.m_lblFittedValue.Text = ""
+            Me.m_lblEcospaceUsedValue.Text = ""
+            Me.m_lblRefValue.Text = ""
+            Me.m_pbImage.Visible = False
+            Me.m_lblLonVal.Text = ""
+            Me.m_lblLatVal.Text = ""
+            Me.m_lblDepthRangeVal.Text = ""
+            Me.m_lblDepthMeanVal.Text = ""
+            Me.m_lblTempRangeVal.Text = ""
+            Me.m_lblTempMeanVal.Text = ""
+        End If
 
     End Sub
 
@@ -155,27 +236,32 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    Private m_strURL As String = ""
+    'Private m_strURL As String = ""
 
     Private Sub OnModelSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_lbxModels.SelectedIndexChanged
 
-        Dim weblinks As New cWebLinks(Me.Core)
-        Dim strModel As String = ""
-        Dim strURL As String = "about:blank"
+        'Dim weblinks As New cWebLinks(Me.Core)
+        'Dim strModel As String = ""
+        'Dim strURL As String = "about:blank"
 
         Try
+            Me.m_model = Nothing
             If (Me.m_lbxModels.SelectedIndex > -1) Then
                 Me.m_model = DirectCast(Me.m_lbxModels.SelectedItem, cModelData)
-                strURL = String.Format(weblinks.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
+                '        strURL = String.Format(weblinks.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
+                If (Me.m_wrkGetImage.IsBusy) Then
+                    Me.m_wrkGetImage.CancelAsync()
+                End If
+                Me.m_wrkGetImage.RunWorkerAsync(Nothing)
             End If
 
-            If (String.Compare(strURL, Me.m_strURL) <> 0) Then
-                Me.m_strURL = strURL
-                Me.m_browser.Navigate(strURL)
-                Me.m_browser.Refresh(WebBrowserRefreshOption.Completely)
-                Me.m_browser.Invalidate(True)
-            End If
+            '    If (String.Compare(strURL, Me.m_strURL) <> 0) Then
+            '        Me.m_strURL = strURL
+            '        Me.m_browser.Navigate(strURL)
+            '        Me.m_browser.Refresh(WebBrowserRefreshOption.Completely)
+            '        Me.m_browser.Invalidate(True)
+            '    End If
         Catch ex As Exception
 
         End Try
@@ -327,6 +413,35 @@ Public Class dlgEcobaseImport
 
     End Sub
 
+    Private Sub OnGetImage(sender As System.Object, e As System.ComponentModel.DoWorkEventArgs) _
+    Handles m_wrkGetImage.DoWork
+
+        Try
+            If (Me.m_model Is Nothing) Then
+                Me.m_img = Nothing
+                Return
+            End If
+
+            Dim MyWebClient As New System.Net.WebClient()
+            Dim data() As Byte = MyWebClient.DownloadData("http://sirs.agrocampus-ouest.fr/EcoBase/php/mapserver.php?model=" & m_model.EcobaseCode)
+            Dim strm As New IO.MemoryStream(data)
+            Me.m_img = New System.Drawing.Bitmap(strm)
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnGetImageCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles m_wrkGetImage.RunWorkerCompleted
+
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
 #End Region ' Background workers
 
 #Region " Internals "
@@ -410,7 +525,7 @@ Public Class dlgEcobaseImport
         For Each model As cModelData In Me.m_models
             If Not String.IsNullOrWhiteSpace(model.Country) Then lCountry.Add(model.Country)
             If Not String.IsNullOrWhiteSpace(model.Region) Then lRegion.Add(model.Region)
-            If Not String.IsNullOrWhiteSpace(model.LME_ecobase) Then lLME.Add(model.LME_ecobase)
+            If Not String.IsNullOrWhiteSpace(model.LME) Then lLME.Add(model.LME)
             If Not String.IsNullOrWhiteSpace(model.EcosystemCategory) Then lEcoCat.Add(model.EcosystemCategory)
             If Not String.IsNullOrWhiteSpace(model.EcosystemType) Then lEcoTyp.Add(model.EcosystemType)
         Next
