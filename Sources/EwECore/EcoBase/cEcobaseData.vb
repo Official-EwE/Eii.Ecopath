@@ -150,10 +150,6 @@ Namespace WebServices.Ecobase
         <XmlElement("match_paper")> _
         Public Property ModelMatchesPaper As Boolean = False
 
-        ''' <summary>Flag, stating if this is a model update.</summary>
-        <XmlElement("is_update")> _
-        Public Property IsUpdate As Boolean = False
-
         ''' <summary></summary>
         <XmlElement("temperature_mean")> _
         Public Property TempMean As Single = 0
@@ -177,13 +173,17 @@ Namespace WebServices.Ecobase
         ''' <summary>Is Ecosim used?</summary>
         <XmlElement("ecosim")> _
         Public Property EcosimUsed As Boolean = False
+
         ''' <summary>Is Ecospace used?</summary>
-        ''' 
         <XmlElement("ecospace")> _
         Public Property EcospaceUsed As Boolean = False
 
         <XmlElement("is_fitted")> _
         Public Property IsFittedToTimeSeries As Boolean = False
+
+        ''' <summary>Is the entire foodweb accounted for?</summary>
+        <XmlElement("whole_food_web")> _
+        Public Property IsWholeFoodWeb As Boolean = False
 
         ''' <summary>Comments if there is difference between model used for the references and model upload</summary>
         <XmlElement("comments_difference")> _
@@ -208,6 +208,22 @@ Namespace WebServices.Ecobase
         ''' <summary>Description of objectives of the model.</summary>
         <XmlElement("comments_objectives")> _
         Public Property Objectives As String
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks>Set as <see cref="eSubmissionType"/></remarks>
+        <XmlElement("submission_type")> _
+        Public Property SubmissionType As Integer
+
+        ''' <summary>
+        ''' Linked / updated EcoBase model
+        ''' </summary>
+        <XmlElement("modification_child")> _
+        Public Property SubmissionLink As String
+
+        <XmlElement("modification_comments")> _
+        Public Property SubmissionComments As String
 
 #End Region ' Variables
 
