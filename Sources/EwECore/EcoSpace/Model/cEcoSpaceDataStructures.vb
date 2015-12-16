@@ -1323,6 +1323,23 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+
+    Friend Sub debugSetAdvectionVectors()
+        Debug.Assert(False, "Warning Advection Vectors have been hardcoded for debuging...")
+        ReDim Me.Xvel(Me.InRow + 1, Me.InCol + 1)
+        ReDim Me.Yvel(Me.InRow + 1, Me.InCol + 1)
+        Dim vel As Single = 0
+        For i As Integer = 0 To Me.InRow + 1
+            For j As Integer = 0 To Me.InCol + 1
+                '  If Me.Depth(i, j) > 0 Then
+                Me.Xvel(i, j) = vel
+                Me.Yvel(i, j) = vel
+                vel += 1
+                '  End If
+            Next j
+        Next i
+    End Sub
+
     Friend Sub debugTestDiscardsMaps()
         Dim sumDiscards As Single
         Dim n As Integer
