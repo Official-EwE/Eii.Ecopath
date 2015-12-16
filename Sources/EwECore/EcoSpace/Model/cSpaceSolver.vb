@@ -1188,13 +1188,13 @@ Public Class cSpaceSolver
 
                 'If m_PathData.NumFleet > 0 Then     'Only if there is fishery
                 For K = 1 To m_PathData.NumFleet
-                    Dim PropDiscMort As Single = m_SimData.Propdiscardtime(K, i) / (m_SimData.PropLandedTime(K, i) + m_SimData.Propdiscardtime(K, i))
+                    Dim PropDiscMort As Single = m_SimData.Propdiscardtime(K, i) / (m_SimData.PropLandedTime(K, i) + m_SimData.Propdiscardtime(K, i) + 1.0E-20F)
                     'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
                     'discard mort is included in Propdiscardtime() by initialization and MSE 
                     DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_SimData.FishMGear(K, i) * PropDiscMort 'Me.m_SimData.Propdiscardtime(K, i)
                     ToDet = ToDet + DetFlowN
 
-                    If m_TracerData.EcoSimConSimOn = True Then
+                    If m_TracerData.EcoSpaceConSimOn = True Then
                         m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
                     End If
 
