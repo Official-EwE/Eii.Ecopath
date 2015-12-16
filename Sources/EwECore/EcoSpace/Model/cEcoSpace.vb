@@ -2098,6 +2098,11 @@ Public Class cEcoSpace
                 m_Data.IsAdvected(0) = True
                 'VC with CJW 20151124: first detritus group has to be advected for ecotracter environment to be moved around
                 m_Data.IsAdvected(Me.EcoPathData.NumLiving + 1) = True
+
+                'Temporary for debuging advected contaminants
+                'Hardcode some Velocity vectors
+                'Me.m_Data.debugSetAdvectionVectors()
+
             End If
 
             Dim btot(ip) As Single
