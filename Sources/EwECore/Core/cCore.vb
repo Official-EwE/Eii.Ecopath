@@ -3228,7 +3228,6 @@ Public Class cCore
         Me.m_EwEModel.DBID = Me.m_EcoPathData.ModelDBID
         Me.m_EwEModel.Name = Me.m_EcoPathData.ModelName
         Me.m_EwEModel.Description = Me.m_EcoPathData.ModelDescription
-        Me.m_EwEModel.Objectives = Me.m_EcoPathData.ModelObjectives
         Me.m_EwEModel.Area = Me.m_EcoPathData.ModelArea
         Me.m_EwEModel.Author = Me.m_EcoPathData.ModelAuthor
         Me.m_EwEModel.Contact = Me.m_EcoPathData.ModelContact
@@ -3248,8 +3247,6 @@ Public Class cCore
         Me.m_EwEModel.West = Me.m_EcoPathData.ModelWest
         Me.m_EwEModel.East = Me.m_EcoPathData.ModelEast
         Me.m_EwEModel.Country = Me.m_EcoPathData.ModelCountry
-        Me.m_EwEModel.Region = Me.m_EcoPathData.ModelRegion
-        Me.m_EwEModel.LME = Me.m_EcoPathData.ModelLME
         Me.m_EwEModel.EcosystemType = Me.m_EcoPathData.ModelEcosystemType
         Me.m_EwEModel.PublicationDOI = Me.m_EcoPathData.ModelPublicationDOI
         Me.m_EwEModel.PublicationURI = Me.m_EcoPathData.ModelPublicationURI
@@ -3267,7 +3264,6 @@ Public Class cCore
     Friend Function UpdateEwEModel() As Boolean
         Me.m_EcoPathData.ModelName = Me.m_EwEModel.Name
         Me.m_EcoPathData.ModelDescription = Me.m_EwEModel.Description
-        Me.m_EcoPathData.ModelObjectives = Me.m_EwEModel.Objectives
         Me.m_EcoPathData.ModelAuthor = Me.m_EwEModel.Author
         Me.m_EcoPathData.ModelContact = Me.m_EwEModel.Contact
         Me.m_EcoPathData.ModelArea = Me.m_EwEModel.Area
@@ -3287,8 +3283,6 @@ Public Class cCore
         Me.m_EcoPathData.ModelWest = Me.m_EwEModel.West
         Me.m_EcoPathData.ModelEast = Me.m_EwEModel.East
         Me.m_EcoPathData.ModelCountry = Me.m_EwEModel.Country
-        Me.m_EcoPathData.ModelRegion = Me.m_EwEModel.Region
-        Me.m_EcoPathData.ModelLME = Me.m_EwEModel.LME
         Me.m_EcoPathData.ModelEcosystemType = Me.m_EwEModel.EcosystemType
         Me.m_EcoPathData.ModelPublicationDOI = Me.m_EwEModel.PublicationDOI
         Me.m_EcoPathData.ModelPublicationURI = Me.m_EwEModel.PublicationURI

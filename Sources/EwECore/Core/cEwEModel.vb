@@ -55,13 +55,6 @@ Public Class cEwEModel
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' Objectives
-            meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Objectives, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            val.AffectsRunState = False
-            m_values.Add(val.varName, val)
-
             ' Author
             meta = New cVariableMetaData(250)
             val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
@@ -175,18 +168,6 @@ Public Class cEwEModel
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' Region
-            meta = New cVariableMetaData(254)
-            val = New cValue(New String(desc), eVarNameFlags.Region, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            val.AffectsRunState = False
-            m_values.Add(val.varName, val)
-
-            ' LME
-            meta = New cVariableMetaData(198)
-            val = New cValue(New String(desc), eVarNameFlags.LME, eStatusFlags.OK, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            val.AffectsRunState = False
-            m_values.Add(val.varName, val)
-
             ' Ecosystem type
             meta = New cVariableMetaData(254)
             val = New cValue(New String(desc), eVarNameFlags.EcosystemType, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -250,16 +231,6 @@ Public Class cEwEModel
 
         Set(ByVal str As String)
             SetVariable(eVarNameFlags.Description, str)
-        End Set
-    End Property
-
-    Public Property Objectives() As String
-        Get
-            Return CStr(GetVariable(eVarNameFlags.Objectives))
-        End Get
-
-        Set(ByVal str As String)
-            SetVariable(eVarNameFlags.Objectives, str)
         End Set
     End Property
 
@@ -488,20 +459,6 @@ Public Class cEwEModel
     End Property
 
     ''' <summary>
-    ''' Get/set the name to represent the model area.
-    ''' </summary>
-    <Obsolete("Use Region instead")> _
-    Public Property AreaName() As String
-        Get
-            Return Me.Region
-        End Get
-
-        Set(ByVal value As String)
-            Me.Region = value
-        End Set
-    End Property
-
-    ''' <summary>
     ''' Get/set the Julian date the model was last saved.
     ''' </summary>
     Public Property LastSaved() As Double
@@ -531,26 +488,6 @@ Public Class cEwEModel
 
         Set(ByVal value As String)
             SetVariable(eVarNameFlags.Country, value)
-        End Set
-    End Property
-
-    Public Property Region As String
-        Get
-            Return CStr(GetVariable(eVarNameFlags.Region))
-        End Get
-
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.Region, value)
-        End Set
-    End Property
-
-    Public Property LME As String
-        Get
-            Return CStr(GetVariable(eVarNameFlags.LME))
-        End Get
-
-        Set(ByVal value As String)
-            SetVariable(eVarNameFlags.LME, value)
         End Set
     End Property
 
@@ -615,17 +552,6 @@ Public Class cEwEModel
         End Get
         Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.Description, value)
-        End Set
-
-    End Property
-
-    Public Property ObjectivesStatus() As eStatusFlags
-
-        Get
-            Return GetStatus(eVarNameFlags.Objectives)
-        End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Objectives, value)
         End Set
 
     End Property

@@ -260,8 +260,6 @@ Namespace Database
                 drow("MaxLon") = md.East
 
                 drow("Country") = md.Country
-                drow("Region") = md.Region
-                drow("LME") = md.LME
                 drow("EcosystemType") = md.EcosystemType
 
                 drow("PublicationDOI") = md.DOI
