@@ -530,6 +530,20 @@ Public Class dlgEcobaseExport
         Dim md As Ecobase.cModelData = data.Model
 
         ' Update values not stored in the model
+        If (Me.m_rbSubmNew.Checked) Then
+            md.SubmissionType = cModelData.eSubmissionType.New
+            md.SubmissionLink = ""
+            md.SubmissionComments = ""
+        ElseIf (Me.m_rbSubmDerived.Checked) Then
+            md.SubmissionType = cModelData.eSubmissionType.Derived
+            md.SubmissionLink = DirectCast(Me.m_cmbSubmEcobaseModel.SelectedItem, cModelData).EcobaseCode
+            md.SubmissionComments = Me.m_tbxSubmModifications.Text
+        ElseIf (Me.m_rbSubmUpdate.Checked) Then
+            md.SubmissionType = cModelData.eSubmissionType.Replacement
+            md.SubmissionLink = DirectCast(Me.m_cmbSubmEcobaseModel.SelectedItem, cModelData).EcobaseCode
+            md.SubmissionComments = Me.m_tbxSubmModifications.Text
+        End If
+
         md.EcosimUsed = Me.m_cbEcosimUsed.Checked
         md.EcospaceUsed = Me.m_cbEcospaceUsed.Checked
         md.IsFittedToTimeSeries = Me.m_cbFittedToTimeSeries.Checked
@@ -547,6 +561,14 @@ Public Class dlgEcobaseExport
 
         md.ModelMatchesPaper = Me.m_cbPubMatchesPaper.Checked
         md.CommentsDifference = Me.m_tbxDifference.Text.Trim()
+
+        md.ObjectiveFisheries = Me.m_cbObjectiveFisheries.Checked
+        md.ObjectiveAquaculture = Me.m_cbObjectiveAquaculture.Checked
+        md.ObjectiveEcosystemFunctioning = Me.m_cbObjectiveEcosystemFunctioning.Checked
+        md.ObjectiveEnvironmentalVariability = Me.m_cbObjectiveEnvironmentalVariability.Checked
+        md.ObjectivePollution = Me.m_cbObjectivePollution.Checked
+        md.ObjectiveOtherImpactAssessment = Me.m_cbObjectiveOtherImpactAssessment.Checked
+        md.Objectives = Me.m_tbxObjectives.Text
 
         ' Obtain XML
         Dim strXML As String = WebServices.Ecobase.cEcobaseModelParameters.ToXML(data)
