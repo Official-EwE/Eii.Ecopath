@@ -728,14 +728,11 @@ Namespace DataSources
                 ecopathDS.FirstYear = CInt(Me.m_db.ReadSafe(reader, "FirstYear", 0))
                 ecopathDS.NumYears = CInt(Me.m_db.ReadSafe(reader, "NumYears", 1))
                 ecopathDS.ModelCountry = CStr(Me.m_db.ReadSafe(reader, "Country", ""))
-                ecopathDS.ModelRegion = CStr(Me.m_db.ReadSafe(reader, "Region", ""))
-                ecopathDS.ModelLME = CStr(Me.m_db.ReadSafe(reader, "LME", ""))
                 ecopathDS.ModelEcosystemType = CStr(Me.m_db.ReadSafe(reader, "EcosystemType", ""))
                 ecopathDS.ModelEcobaseCode = CStr(Me.m_db.ReadSafe(reader, "CodeEcobase", ""))
                 ecopathDS.ModelPublicationDOI = CStr(Me.m_db.ReadSafe(reader, "PublicationDOI", ""))
                 ecopathDS.ModelPublicationURI = CStr(Me.m_db.ReadSafe(reader, "PublicationURI", ""))
                 ecopathDS.ModelPublicationRef = CStr(Me.m_db.ReadSafe(reader, "PublicationRef", ""))
-                ecopathDS.ModelObjectives = CStr(Me.m_db.ReadSafe(reader, "Objectives", ""))
 
                 Dim sLat1 As Single = CSng(Me.m_db.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
                 Dim sLat2 As Single = CSng(Me.m_db.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
@@ -810,14 +807,11 @@ Namespace DataSources
                 drow("MinLon") = ecopathDS.ModelWest
                 drow("MaxLon") = ecopathDS.ModelEast
                 drow("Country") = ecopathDS.ModelCountry
-                drow("Region") = ecopathDS.ModelRegion
-                drow("LME") = ecopathDS.ModelLME
                 drow("EcosystemType") = ecopathDS.ModelEcosystemType
                 drow("CodeEcobase") = ecopathDS.ModelEcobaseCode
                 drow("PublicationDOI") = ecopathDS.ModelPublicationDOI
                 drow("PublicationURI") = ecopathDS.ModelPublicationURI
                 drow("PublicationRef") = ecopathDS.ModelPublicationRef
-                drow("Objectives") = ecopathDS.ModelObjectives
 
                 ' ------------------------------------------
                 drow("LastSaved") = cDateUtils.DateToJulian()

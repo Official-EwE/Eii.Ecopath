@@ -45,10 +45,11 @@ Public Class dlgEcobaseExport
 
 #Region " Private vars "
 
-    Private m_uic As cUIContext = Nothing
+    Private m_ecobase As cEcoBaseWDSL = Nothing
+    Private m_models As New List(Of cModelData)
 
-    Private m_fpYear As cEwEFormatProvider = Nothing
-    Private m_fpYears As cEwEFormatProvider = Nothing
+    Private m_fpFirstYear As cEwEFormatProvider = Nothing
+    Private m_fpLastYear As cEwEFormatProvider = Nothing
     Private m_fpArea As cEwEFormatProvider = Nothing
 
     Private m_fpNorth As cEwEFormatProvider = Nothing
@@ -71,7 +72,8 @@ Public Class dlgEcobaseExport
 #Region " Construction "
 
     Public Sub New(uic As cUIContext)
-        Me.m_uic = uic
+        MyBase.New()
+        Me.UIContext = uic
         Me.InitializeComponent()
     End Sub
 
@@ -82,7 +84,7 @@ Public Class dlgEcobaseExport
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.Core
         Dim model As cEwEModel = core.EwEModel
 
         Me.m_bInUpdate = True
@@ -94,18 +96,16 @@ Public Class dlgEcobaseExport
         Me.m_tcExport.ImageList = il
 
         ' -- Model page --
-        Me.m_tbxModel.Text = model.Name
-        Me.m_tbxDescription.Text = model.Description
-        Me.m_tbxObjectives.Text = model.Objectives
-        Me.m_tbxAuthor.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Author), core.DefaultAuthor, model.Author)
-        Me.m_tbxEmail.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
-        Me.m_fpYear = New cEwEFormatProvider(Me.m_uic, Me.m_tbxFirstYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathFirstYear))
-        Me.m_fpYear.Value = model.FirstYear
-        Me.m_fpYears = New cEwEFormatProvider(Me.m_uic, Me.m_tbxNumYears, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathNumYears))
-        Me.m_fpYears.Value = model.NumYears
-        Me.m_fpArea = New cEwEFormatProvider(Me.m_uic, Me.m_tbxArea, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.Area))
+        Me.m_tbxModelName.Text = model.Name
+        Me.m_tbxModelDescription.Text = model.Description
+        Me.m_tbxModelAuthor.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Author), core.DefaultAuthor, model.Author)
+        Me.m_tbxModelEmail.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
+        Me.m_fpFirstYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelFirstYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathFirstYear))
+        Me.m_fpFirstYear.Value = model.FirstYear
+        Me.m_fpLastYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelLastYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathNumYears))
+        Me.m_fpLastYear.Value = Math.Max(model.NumYears - 1 + model.FirstYear, model.FirstYear)
+        Me.m_fpArea = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelArea, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.Area))
         Me.m_fpArea.Value = model.Area
-        Me.m_cbIsUpdate.Checked = Not String.IsNullOrWhiteSpace(model.EcobaseCode)
 
         ' -- Publication page --
         Me.m_tbxHyperlink.Text = model.PublicationURI
@@ -113,46 +113,48 @@ Public Class dlgEcobaseExport
         Me.m_tbxReference.Text = model.PublicationReference
 
         ' -- Classification page --
-        Me.FillCombo(Me.m_cmbCountry, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName))
-        Me.FillCombo(Me.m_cmbRegion, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.RegionName))
-        Me.FillCombo(Me.m_cmbEcoType, Me.m_uic.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType))
+        Me.FillCombo(Me.m_cmbCountry, Me.UIContext.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName))
+        Me.FillCombo(Me.m_cmbEcoType, Me.UIContext.StyleGuide.EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType))
 
         Me.m_cmbCountry.Text = model.Country
-        Me.m_cmbRegion.Text = model.Region
         Me.m_cmbEcoType.Text = model.EcosystemType
 
-        Me.m_fpNorth = New cEwEFormatProvider(Me.m_uic, Me.m_nudNorth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.North))
+        Me.m_fpNorth = New cEwEFormatProvider(Me.UIContext, Me.m_nudNorth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.North))
         Me.m_fpNorth.Value = model.North
-        Me.m_fpEast = New cEwEFormatProvider(Me.m_uic, Me.m_nudEast, GetType(Single), model.GetVariableMetadata(eVarNameFlags.East))
+        Me.m_fpEast = New cEwEFormatProvider(Me.UIContext, Me.m_nudEast, GetType(Single), model.GetVariableMetadata(eVarNameFlags.East))
         Me.m_fpEast.Value = model.East
-        Me.m_fpWest = New cEwEFormatProvider(Me.m_uic, Me.m_nudWest, GetType(Single), model.GetVariableMetadata(eVarNameFlags.West))
+        Me.m_fpWest = New cEwEFormatProvider(Me.UIContext, Me.m_nudWest, GetType(Single), model.GetVariableMetadata(eVarNameFlags.West))
         Me.m_fpWest.Value = model.West
-        Me.m_fpSouth = New cEwEFormatProvider(Me.m_uic, Me.m_nudSouth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.South))
+        Me.m_fpSouth = New cEwEFormatProvider(Me.UIContext, Me.m_nudSouth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.South))
         Me.m_fpSouth.Value = model.South
 
         Dim mdDepth As New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        Me.m_fpDmin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxDepthMin, GetType(Single), mdDepth)
+        Me.m_fpDmin = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMin, GetType(Single), mdDepth)
         Me.m_fpDmin.Value = 0
-        Me.m_fpDmean = New cEwEFormatProvider(Me.m_uic, Me.m_tbxDepthMean, GetType(Single), mdDepth)
+        Me.m_fpDmean = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMean, GetType(Single), mdDepth)
         Me.m_fpDmean.Value = 0
-        Me.m_fpDmax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxDepthMax, GetType(Single), mdDepth)
+        Me.m_fpDmax = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMax, GetType(Single), mdDepth)
         Me.m_fpDmax.Value = 0
 
         Dim mdTemp As New cVariableMetaData(-8, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        Me.m_fpTmin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxTempMin, GetType(Single), mdTemp)
+        Me.m_fpTmin = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTempMin, GetType(Single), mdTemp)
         Me.m_fpTmin.Value = 0
-        Me.m_fpTmean = New cEwEFormatProvider(Me.m_uic, Me.m_tbxTempMean, GetType(Single), mdTemp)
+        Me.m_fpTmean = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTempMean, GetType(Single), mdTemp)
         Me.m_fpTmean.Value = 0
-        Me.m_fpTmax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxTempMax, GetType(Single), mdTemp)
+        Me.m_fpTmax = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTempMax, GetType(Single), mdTemp)
         Me.m_fpTmax.Value = 0
 
-        ' -- Agreement page --
+        Me.m_rbSubmNew.Enabled = (String.IsNullOrWhiteSpace(model.EcobaseCode))
 
-        Me.m_cbIsUpdate.Checked = (Not String.IsNullOrWhiteSpace(model.EcobaseCode))
+        ' -- Obejctives page --
+        Me.m_tbxObjectives.Text = ""
 
         Me.m_bInUpdate = False
 
-        Me.m_wrkGetAgreement.RunWorkerAsync()
+        Me.m_ecobase = New cEcoBaseWDSL()
+        Me.m_wrkGetAuthorAgreement.RunWorkerAsync(Nothing)
+        Me.m_wrkGetModels.RunWorkerAsync(Nothing)
+
         Me.CenterToParent()
         Me.UpdateControls()
 
@@ -170,18 +172,20 @@ Public Class dlgEcobaseExport
 #Region " Event handlers "
 
     Private Sub OnContentChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbEcoBaseAgreement.CheckedChanged, _
-                m_tbxAuthor.TextChanged, m_tbxModel.TextChanged, m_tbxEmail.TextChanged, m_tbxDescription.TextChanged, m_tbxObjectives.TextChanged, _
+        Handles m_cbAuthorAgreement.CheckedChanged, _
+                m_tbxModelAuthor.TextChanged, m_tbxModelName.TextChanged, m_tbxModelEmail.TextChanged, m_tbxModelDescription.TextChanged, m_tbxObjectives.TextChanged, _
                 m_tbxDOI.TextChanged, m_tbxHyperlink.TextChanged, m_tbxReference.TextChanged, _
-                m_cbConfirmAuthor.CheckedChanged, m_cbConfirmDessiminate.CheckedChanged, _
-                m_tbxFirstYear.TextChanged, m_tbxNumYears.TextChanged, m_tbxArea.TextChanged, _
+                m_cbModelIsAuthor.CheckedChanged, m_cbConfirmDessiminate.CheckedChanged, _
+                m_tbxModelFirstYear.TextChanged, m_tbxModelLastYear.TextChanged, m_tbxModelArea.TextChanged, _
                 m_cbEcosimUsed.CheckedChanged, m_cbFittedToTimeSeries.CheckedChanged, m_cbEcospaceUsed.CheckedChanged, _
                 m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged, _
                 m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged, _
-                m_cmbCountry.TextChanged, m_cmbRegion.TextChanged, m_tbxLME.TextChanged, _
-                 m_cmbEcoType.TextChanged, _
+                m_cmbCountry.TextChanged, m_cmbEcoType.TextChanged, _
                 m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
-                m_cbDifferentFromPaper.CheckedChanged, m_tbxDifference.TextChanged, _
+                m_cbPubMatchesPaper.CheckedChanged, m_tbxDifference.TextChanged, _
+                m_cbObjectiveAquaculture.CheckedChanged, m_cbObjectiveFisheries.CheckedChanged, m_cbObjectiveEcosystemFunctioning.CheckedChanged, _
+                m_cbObjectiveEnvironmentalVariability.CheckedChanged, m_cbObjectiveOtherImpactAssessment.CheckedChanged, m_cbObjectivePollution.CheckedChanged, _
+                m_rbSubmNew.CheckedChanged, m_rbSubmDerived.CheckedChanged, m_rbSubmUpdate.CheckedChanged, m_tbxSubmModifications.TextChanged, m_cmbSubmEcobaseModel.SelectedIndexChanged, _
                 m_tbxPermissionComments.TextChanged
         Try
             Me.UpdateControls()
@@ -198,7 +202,7 @@ Public Class dlgEcobaseExport
 
         Try
 
-            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             Debug.Assert(cmd IsNot Nothing)
 
@@ -207,6 +211,14 @@ Public Class dlgEcobaseExport
         Catch ex As Exception
             cLog.Write(ex, "dlgEcobaseExport.OnViewDOIOnline(" & strDOI & ")")
         End Try
+
+    End Sub
+
+    Private Sub OnFormatModel(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbSubmEcobaseModel.Format
+
+        Dim m As cModelData = DirectCast(e.ListItem, cModelData)
+        e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, m.Name, m.FirstYear)
 
     End Sub
 
@@ -243,38 +255,36 @@ Public Class dlgEcobaseExport
 
     Private Sub UpdateControls()
 
-        If (Me.m_uic Is Nothing) Then Return
+        If (Me.UIContext Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
 
         Me.m_bInUpdate = True
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.UIContext.Core
 
         ' -- Ecobase page --
-        Dim bAgreementOK As Boolean = Me.m_cbEcoBaseAgreement.Checked
+        Dim bAgreementOK As Boolean = Me.m_cbAuthorAgreement.Checked
 
-        Me.m_rtfAgreement.Text = Me.m_strAgreement
-        Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
+        Me.m_rtfAuthorAgreement.Text = Me.m_strAgreement
+        Me.m_pbModelName.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
         Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
 
         ' -- Model page --
-        Dim bHasModelName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxModel.Text)
-        Dim bHasDescription As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDescription.Text)
-        Dim bHasAuthor As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxAuthor.Text)
-        Dim bHasContact As Boolean = cStringUtils.IsEmail(Me.m_tbxEmail.Text)
-        Dim bIsAuthor As Boolean = (Me.m_cbConfirmAuthor.Checked = True)
-        Dim bHasObjectives As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
-        Dim bHasYears As Boolean = (CInt(Me.m_fpYears.Value) > 0)
+        Dim bHasModelName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxModelName.Text)
+        Dim bHasDescription As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxModelDescription.Text)
+        Dim bHasAuthor As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxModelAuthor.Text)
+        Dim bHasContact As Boolean = cStringUtils.IsEmail(Me.m_tbxModelEmail.Text)
+        Dim bIsAuthor As Boolean = (Me.m_cbModelIsAuthor.Checked = True)
+        Dim bHasYears As Boolean = (CInt(Me.m_fpFirstYear.Value) <= CInt(Me.m_fpLastYear.Value))
         Dim bHasArea As Boolean = (CInt(Me.m_fpArea.Value) > 0)
-        Dim bModelOK As Boolean = bHasModelName And bHasDescription And bHasAuthor And bIsAuthor And bHasObjectives And bHasYears And bHasArea
+        Dim bModelOK As Boolean = bHasModelName And bHasDescription And bHasAuthor And bIsAuthor And bHasYears And bHasArea
 
-        Me.m_pbModel.BackgroundImage = cSystemUtils.IIF(bHasModelName, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbDescription.BackgroundImage = cSystemUtils.IIF(bHasDescription, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbObjectives.BackgroundImage = cSystemUtils.IIF(bHasObjectives, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbAuthor.BackgroundImage = cSystemUtils.IIF(bHasAuthor And bHasContact, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbYear.BackgroundImage = cSystemUtils.IIF(bHasYears, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelName.BackgroundImage = cSystemUtils.IIF(bHasModelName, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelDescription.BackgroundImage = cSystemUtils.IIF(bHasDescription, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelAuthorEmail.BackgroundImage = cSystemUtils.IIF(bHasAuthor And bHasContact, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelYear.BackgroundImage = cSystemUtils.IIF(bHasYears, SharedResources.OK, SharedResources.Critical)
         Me.m_pbArea.BackgroundImage = cSystemUtils.IIF(bHasArea, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbIsAuthor.BackgroundImage = cSystemUtils.IIF(bIsAuthor, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelIsAuthor.BackgroundImage = cSystemUtils.IIF(bIsAuthor, SharedResources.OK, SharedResources.Critical)
 
         Me.m_cbEcosimUsed.Enabled = (core.nEcosimScenarios > 0)
         If (Not Me.m_cbEcosimUsed.Enabled) Then Me.m_cbFittedToTimeSeries.Checked = False
@@ -289,12 +299,12 @@ Public Class dlgEcobaseExport
         Dim bHasDifferences As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDifference.Text)
         Dim bPubsOK As Boolean = bHasPublication Or bHasReference
 
-        If (Me.m_cbDifferentFromPaper.Checked) Then
-            Me.m_tbxDifference.Enabled = True
-            Me.m_pbDifference.Image = cSystemUtils.IIF(bHasDifferences, SharedResources.OK, SharedResources.Critical)
-        Else
+        If (Me.m_cbPubMatchesPaper.Checked) Then
             Me.m_tbxDifference.Enabled = False
             Me.m_pbDifference.Image = SharedResources.OK
+        Else
+            Me.m_tbxDifference.Enabled = True
+            Me.m_pbDifference.Image = cSystemUtils.IIF(bHasDifferences, SharedResources.OK, SharedResources.Critical)
         End If
 
         Me.m_pbPublication.BackgroundImage = cSystemUtils.IIF(bHasPublication, SharedResources.OK, SharedResources.Critical)
@@ -305,24 +315,48 @@ Public Class dlgEcobaseExport
         Me.m_tpPublication.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
 
         ' -- Classification page --
-        Dim bHasAreaName As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text)) And (Not String.IsNullOrWhiteSpace(Me.m_cmbRegion.Text))
+        Dim bHasCountry As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text))
         Dim bHasBoundingBox As Boolean = (CSng(Me.m_fpNorth.Value) <> CSng(Me.m_fpSouth.Value)) And (CSng(Me.m_fpWest.Value) <> CSng(Me.m_fpEast.Value))
         Dim bHasEcosystem As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbEcoType.Text))
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
-        Dim bClassOK As Boolean = bHasAreaName And bHasBoundingBox And bHasEcosystem
+        Dim bClassOK As Boolean = bHasCountry And bHasBoundingBox And bHasEcosystem
 
-        Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasAreaName, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasCountry, SharedResources.OK, SharedResources.Critical)
         Me.m_pbBoundingBox.BackgroundImage = cSystemUtils.IIF(bHasBoundingBox, SharedResources.OK, SharedResources.Critical)
         Me.m_pbEcosystem.BackgroundImage = cSystemUtils.IIF(bHasEcosystem, SharedResources.OK, SharedResources.Critical)
         Me.m_pbEnvVars.BackgroundImage = cSystemUtils.IIF(bHasEnv, SharedResources.OK, SharedResources.Warning)
 
-        If (bHasAreaName And bHasBoundingBox And bHasBoundingBox) Then
+        If (bHasCountry And bHasBoundingBox And bHasBoundingBox) Then
             Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bHasEnv, 0, 1)
         Else
             Me.m_tpClassification.ImageIndex = 2
         End If
 
         Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bClassOK, 0, 2)
+
+        ' -- Objectives --
+        Dim bHasObjOptions As Boolean = (Me.m_cbObjectiveFisheries.Checked Or Me.m_cbObjectiveAquaculture.Checked Or _
+                                         Me.m_cbObjectiveEcosystemFunctioning.Checked Or Me.m_cbObjectiveEnvironmentalVariability.Checked Or _
+                                         Me.m_cbObjectivePollution.Checked)
+        Dim bHasObjOther As Boolean = Me.m_cbObjectiveOtherImpactAssessment.Checked
+        Dim bHasObjOtherText As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
+        Dim bObjectivesOK As Boolean = bHasObjOptions
+
+        If bHasObjOther Then bObjectivesOK = bObjectivesOK And bHasObjOtherText
+
+        If (bHasObjOptions) Then
+            Me.m_pbOtherNeeded.BackgroundImage = Nothing
+        Else
+            Me.m_pbOtherNeeded.BackgroundImage = cSystemUtils.IIF(bHasObjOther, SharedResources.OK, SharedResources.Critical)
+        End If
+        If (bHasObjOther) Then
+            Me.m_pbOtherText.BackgroundImage = cSystemUtils.IIF(bHasObjOtherText, SharedResources.OK, SharedResources.Critical)
+        Else
+            Me.m_pbOtherText.BackgroundImage = Nothing
+        End If
+
+        Me.m_pbObjectives.BackgroundImage = cSystemUtils.IIF(bObjectivesOK, SharedResources.OK, SharedResources.Critical)
+        Me.m_tpObjectives.ImageIndex = cSystemUtils.IIF(bObjectivesOK, 0, 2)
 
         ' -- Open access --
         Dim bAccessOK As Boolean = False
@@ -339,8 +373,29 @@ Public Class dlgEcobaseExport
         End If
         Me.m_tpAccess.ImageIndex = cSystemUtils.IIF(bAccessOK, 0, 2)
 
+        ' -- Submission --
+        Dim bIsModification As Boolean = Me.m_rbSubmUpdate.Checked Or Me.m_rbSubmDerived.Checked
+        Dim bIsNew As Boolean = Me.m_rbSubmNew.Checked
+        Dim bHasModelLink As Boolean = (Me.m_cmbSubmEcobaseModel.SelectedItem IsNot Nothing)
+        Dim bHasModificationText As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_tbxSubmModifications.Text))
+        Dim bHasModDetails As Boolean = bHasModelLink And bHasModificationText
+        Dim bSubmissionOk As Boolean = bIsNew Or bHasModDetails
+
+        Me.m_tbxSubmModifications.Enabled = bIsModification
+        Me.m_cmbSubmEcobaseModel.Enabled = bIsModification
+
+        If bIsModification Then
+            Me.m_pbSubmExistingModel.Image = cSystemUtils.IIF(bHasModelLink, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbSubmModifications.Image = cSystemUtils.IIF(bHasModificationText, SharedResources.OK, SharedResources.Critical)
+        Else
+            Me.m_pbSubmModifications.Image = Nothing
+            Me.m_pbSubmExistingModel.Image = Nothing
+        End If
+
+        Me.m_tpSubmission.ImageIndex = cSystemUtils.IIF(bSubmissionOk, 0, 2)
+
         ' -- SUBMIT --
-        Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK
+        Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK And bObjectivesOK
 
         Me.m_bInUpdate = False
 
@@ -356,18 +411,15 @@ Public Class dlgEcobaseExport
     ''' -----------------------------------------------------------------------
     Private Function UpdateModelParameters() As Boolean
 
-        Dim strName As String = Me.m_tbxModel.Text
-        Dim strDescr As String = Me.m_tbxDescription.Text
-        Dim strObjs As String = Me.m_tbxObjectives.Text
-        Dim strAuthor As String = Me.m_tbxAuthor.Text
-        Dim strContact As String = Me.m_tbxEmail.Text
+        Dim strName As String = Me.m_tbxModelName.Text
+        Dim strDescr As String = Me.m_tbxModelDescription.Text
+        Dim strAuthor As String = Me.m_tbxModelAuthor.Text
+        Dim strContact As String = Me.m_tbxModelEmail.Text
         Dim strCountry As String = Me.m_cmbCountry.Text
-        Dim strRegion As String = Me.m_cmbRegion.Text
         Dim strEcoType As String = Me.m_cmbEcoType.Text
-        Dim strLME As String = Me.m_tbxLME.Text
 
-        Dim iYear As Integer = CInt(Me.m_fpYear.Value)
-        Dim iYears As Integer = CInt(Me.m_fpYears.Value)
+        Dim iYear As Integer = CInt(Me.m_fpFirstYear.Value)
+        Dim iYears As Integer = CInt(Me.m_fpLastYear.Value) - iYear + 1
         Dim sArea As Single = CSng(Me.m_fpArea.Value)
 
         Dim strDOI As String = Me.m_tbxDOI.Text
@@ -378,7 +430,7 @@ Public Class dlgEcobaseExport
         Dim sWest As Single = CSng(Me.m_fpWest.Value)
         Dim sSouth As Single = CSng(Me.m_fpSouth.Value)
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.UIContext.Core
         Dim model As cEwEModel = core.EwEModel
         Dim bSucces As Boolean = True
 
@@ -386,14 +438,11 @@ Public Class dlgEcobaseExport
                                  (String.Compare(strAuthor, model.Author) <> 0) Or _
                                  (String.Compare(strContact, model.Contact) <> 0) Or _
                                  (String.Compare(strDescr, model.Description) <> 0) Or _
-                                 (String.Compare(strObjs, model.Objectives) <> 0) Or _
                                  (String.Compare(strDOI, model.PublicationDOI) <> 0) Or _
                                  (String.Compare(strURI, model.PublicationURI) <> 0) Or _
                                  (String.Compare(strRef, model.PublicationReference) <> 0) Or _
                                  (String.Compare(strCountry, model.Country) <> 0) Or _
-                                 (String.Compare(strRegion, model.Region) <> 0) Or _
                                  (String.Compare(strEcoType, model.EcosystemType) <> 0) Or _
-                                 (String.Compare(strLME, model.LME) <> 0) Or _
                                  (model.Area <> sArea) Or _
                                  (model.FirstYear <> iYear) Or _
                                  (model.NumYears <> iYears)
@@ -407,7 +456,6 @@ Public Class dlgEcobaseExport
 
             model.Name = strName
             model.Description = strDescr
-            model.Objectives = strObjs
             model.Author = strAuthor
             model.Contact = strContact
 
@@ -420,8 +468,6 @@ Public Class dlgEcobaseExport
             model.PublicationReference = strRef
 
             model.Country = strCountry
-            model.Region = strRegion
-            model.LME = strLME
             model.EcosystemType = strEcoType
 
             model.North = sNorth
@@ -448,7 +494,7 @@ Public Class dlgEcobaseExport
     ''' -----------------------------------------------------------------------
     Private Function UpdateModelNumber(ByVal strNumber As String) As Boolean
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.UIContext.Core
         Dim model As cEwEModel = core.EwEModel
 
         If (String.IsNullOrWhiteSpace(strNumber)) Then Return False
@@ -471,7 +517,7 @@ Public Class dlgEcobaseExport
     ''' -----------------------------------------------------------------------
     Private Function SubmitToEcobase() As Boolean
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = Me.UIContext.Core
         Dim msg As cMessage = Nothing
         Dim wdsl As New cEcoBaseWDSL()
         Dim bSucces As Boolean = True
@@ -499,7 +545,7 @@ Public Class dlgEcobaseExport
         md.AllowDissemination = Me.m_cbConfirmDessiminate.Checked
         md.CommentsAccess = Me.m_tbxPermissionComments.Text.Trim()
 
-        md.IsUpdate = Me.m_cbIsUpdate.Checked
+        md.ModelMatchesPaper = Me.m_cbPubMatchesPaper.Checked
         md.CommentsDifference = Me.m_tbxDifference.Text.Trim()
 
         ' Obtain XML
@@ -568,10 +614,58 @@ Public Class dlgEcobaseExport
 
     End Sub
 
+    Private Sub FillModelCombo()
+
+        Me.m_cmbSubmEcobaseModel.Items.Clear()
+        For Each m As cModelData In Me.m_models
+            Me.m_cmbSubmEcobaseModel.Items.Add(m)
+        Next
+
+    End Sub
+
 #End Region ' Internals
 
-    Private Sub OnGetAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
-        Handles m_wrkGetAgreement.DoWork
+#Region " Background workers "
+
+    Private Sub OnGetModels(sender As System.Object, e As System.ComponentModel.DoWorkEventArgs) _
+        Handles m_wrkGetModels.DoWork
+
+        Dim msg As cMessage = Nothing
+
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LOADING, -1)
+        Me.m_models.Clear()
+
+        Try
+            Dim strModels As String = Me.m_ecobase.list_models("", Nothing)
+            Dim data As cEcobaseModelList = cEcobaseModelList.FromXML(strModels)
+            Me.m_models.AddRange(data.Models)
+
+        Catch exWeb As Net.WebException
+            msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+        Catch ex As Exception
+            msg = New cMessage(String.Format(My.Resources.ECOBASE_ERROR_COMMUNICATION, ex.Message), _
+                                    eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+        End Try
+
+        If (msg IsNot Nothing) Then
+            Me.Core.Messages.SendMessage(msg)
+        End If
+
+        cApplicationStatusNotifier.EndProgress(Me.Core)
+
+    End Sub
+
+    Private Sub OnGetModelsCompleted(sender As Object, _
+                                     e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+        Handles m_wrkGetModels.RunWorkerCompleted
+
+        Me.FillModelCombo()
+        Me.UpdateControls()
+
+    End Sub
+
+    Private Sub OnGetAuthorAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+        Handles m_wrkGetAuthorAgreement.DoWork
 
         Try
             Dim wdsl As New cEcoBaseWDSL()
@@ -586,8 +680,8 @@ Public Class dlgEcobaseExport
 
     End Sub
 
-    Private Sub OnGetAgreementComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) _
-        Handles m_wrkGetAgreement.RunWorkerCompleted
+    Private Sub OnGetAuthorAgreementComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+        Handles m_wrkGetAuthorAgreement.RunWorkerCompleted
 
         Try
             Me.UpdateControls()
@@ -596,5 +690,7 @@ Public Class dlgEcobaseExport
         End Try
 
     End Sub
+
+#End Region
 
 End Class

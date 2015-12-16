@@ -33,7 +33,6 @@ Public Class frmModelParameters
 
     Private m_fpName As cEwEFormatProvider = Nothing
     Private m_fpDescription As cEwEFormatProvider = Nothing
-    Private m_fpObjectives As cEwEFormatProvider = Nothing
     Private m_fpAuthor As cEwEFormatProvider = Nothing
     Private m_fpContact As cEwEFormatProvider = Nothing
     Private m_fpArea As cEwEFormatProvider = Nothing
@@ -43,8 +42,6 @@ Public Class frmModelParameters
     Private m_fpFirstYear As cEwEFormatProvider = Nothing
     Private m_fpNumYears As cEwEFormatProvider = Nothing
     Private m_fpCountry As cEwEFormatProvider = Nothing
-    Private m_fpRegion As cEwEFormatProvider = Nothing
-    Private m_fpLME As cEwEFormatProvider = Nothing
     Private m_fpEcosystemType As cEwEFormatProvider = Nothing
     Private m_fpSouth As cEwEFormatProvider = Nothing
     Private m_fpNorth As cEwEFormatProvider = Nothing
@@ -80,7 +77,6 @@ Public Class frmModelParameters
 
         Me.m_fpName = New cPropertyFormatProvider(Me.UIContext, Me.m_tbName, eweModel, eVarNameFlags.Name)
         Me.m_fpDescription = New cPropertyFormatProvider(Me.UIContext, Me.m_tbDescription, eweModel, eVarNameFlags.Description)
-        Me.m_fpObjectives = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxObjectives, eweModel, eVarNameFlags.Objectives)
         Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, eweModel, eVarNameFlags.Author)
         Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, eweModel, eVarNameFlags.Contact)
         Me.m_fpArea = New cPropertyFormatProvider(Me.UIContext, Me.m_tbArea, eweModel, eVarNameFlags.Area)
@@ -93,8 +89,6 @@ Public Class frmModelParameters
         Me.m_fpWest = New cPropertyFormatProvider(Me.UIContext, Me.m_nudWest, eweModel, eVarNameFlags.West)
         Me.m_fpEast = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.East)
         Me.m_fpCountry = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbCountry, eweModel, eVarNameFlags.Country)
-        Me.m_fpRegion = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbRegion, eweModel, eVarNameFlags.Region)
-        Me.m_fpLME = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxLME, eweModel, eVarNameFlags.LME)
         Me.m_fpEcosystemType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoType, eweModel, eVarNameFlags.EcosystemType)
 
         Me.m_fpURI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationURL, eweModel, eVarNameFlags.PublicationURI)
@@ -151,7 +145,6 @@ Public Class frmModelParameters
 
         Me.m_fpName.Release() '
         Me.m_fpDescription.Release()
-        Me.m_fpObjectives.Release()
         Me.m_fpAuthor.Release()
         Me.m_fpContact.Release()
         Me.m_fpArea.Release()
@@ -166,8 +159,6 @@ Public Class frmModelParameters
         Me.m_fpPSD.Release()
         Me.m_fpIsCoupled.Release()
         Me.m_fpCountry.Release()
-        Me.m_fpRegion.Release()
-        Me.m_fpLME.Release()
         Me.m_fpEcosystemType.Release()
 
         Me.m_fpURI.Release()

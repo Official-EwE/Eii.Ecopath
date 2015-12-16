@@ -55,12 +55,8 @@ Partial Class dlgEcobaseImport
         Me.m_lblAuthorValue = New System.Windows.Forms.Label()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_lblAreaValue = New System.Windows.Forms.Label()
-        Me.m_lblRegion = New System.Windows.Forms.Label()
-        Me.m_lblRegionValue = New System.Windows.Forms.Label()
         Me.m_lblPeriod = New System.Windows.Forms.Label()
         Me.m_lblPeriodValue = New System.Windows.Forms.Label()
-        Me.m_lblFAO = New System.Windows.Forms.Label()
-        Me.m_lblFAOValue = New System.Windows.Forms.Label()
         Me.m_lblEcosimUsed = New System.Windows.Forms.Label()
         Me.m_lblEcosimUsedValue = New System.Windows.Forms.Label()
         Me.m_lblEcosystemType = New System.Windows.Forms.Label()
@@ -182,30 +178,26 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_tlpFields, "m_tlpFields")
         Me.m_tlpFields.Controls.Add(Me.m_lblModelName, 0, 0)
         Me.m_tlpFields.Controls.Add(Me.m_lblModelNameValue, 1, 0)
-        Me.m_tlpFields.Controls.Add(Me.m_lblCountryValue, 3, 0)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoFleetsValue, 3, 6)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoGroups, 2, 5)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoFleets, 2, 6)
-        Me.m_tlpFields.Controls.Add(Me.m_lblCountry, 2, 0)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoGroupsValue, 3, 5)
         Me.m_tlpFields.Controls.Add(Me.m_lblAuthor, 0, 1)
         Me.m_tlpFields.Controls.Add(Me.m_lblAuthorValue, 1, 1)
-        Me.m_tlpFields.Controls.Add(Me.m_lblArea, 0, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblAreaValue, 1, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblRegion, 2, 1)
-        Me.m_tlpFields.Controls.Add(Me.m_lblRegionValue, 3, 1)
-        Me.m_tlpFields.Controls.Add(Me.m_lblPeriod, 0, 3)
-        Me.m_tlpFields.Controls.Add(Me.m_lblPeriodValue, 1, 3)
-        Me.m_tlpFields.Controls.Add(Me.m_lblFAO, 2, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblFAOValue, 3, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcosimUsed, 0, 4)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcosimUsedValue, 1, 4)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemType, 2, 3)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemTypeValue, 3, 3)
-        Me.m_tlpFields.Controls.Add(Me.m_lblFitted, 0, 5)
-        Me.m_tlpFields.Controls.Add(Me.m_lblFittedValue, 1, 5)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcospaceUsed, 0, 6)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcospaceUsedValue, 1, 6)
+        Me.m_tlpFields.Controls.Add(Me.m_lblArea, 0, 5)
+        Me.m_tlpFields.Controls.Add(Me.m_lblAreaValue, 1, 5)
+        Me.m_tlpFields.Controls.Add(Me.m_lblPeriod, 0, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblPeriodValue, 1, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblCountry, 0, 2)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemType, 0, 3)
+        Me.m_tlpFields.Controls.Add(Me.m_lblCountryValue, 1, 2)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemTypeValue, 1, 3)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcosimUsed, 2, 0)
+        Me.m_tlpFields.Controls.Add(Me.m_lblFitted, 2, 1)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcospaceUsed, 2, 2)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcosimUsedValue, 3, 0)
+        Me.m_tlpFields.Controls.Add(Me.m_lblFittedValue, 3, 1)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcospaceUsedValue, 3, 2)
+        Me.m_tlpFields.Controls.Add(Me.m_lblNoGroups, 2, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblNoGroupsValue, 3, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblNoFleets, 2, 5)
+        Me.m_tlpFields.Controls.Add(Me.m_lblNoFleetsValue, 3, 5)
         Me.m_tlpFields.Name = "m_tlpFields"
         '
         'm_lblModelName
@@ -268,16 +260,6 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_lblAreaValue, "m_lblAreaValue")
         Me.m_lblAreaValue.Name = "m_lblAreaValue"
         '
-        'm_lblRegion
-        '
-        resources.ApplyResources(Me.m_lblRegion, "m_lblRegion")
-        Me.m_lblRegion.Name = "m_lblRegion"
-        '
-        'm_lblRegionValue
-        '
-        resources.ApplyResources(Me.m_lblRegionValue, "m_lblRegionValue")
-        Me.m_lblRegionValue.Name = "m_lblRegionValue"
-        '
         'm_lblPeriod
         '
         resources.ApplyResources(Me.m_lblPeriod, "m_lblPeriod")
@@ -287,16 +269,6 @@ Partial Class dlgEcobaseImport
         '
         resources.ApplyResources(Me.m_lblPeriodValue, "m_lblPeriodValue")
         Me.m_lblPeriodValue.Name = "m_lblPeriodValue"
-        '
-        'm_lblFAO
-        '
-        resources.ApplyResources(Me.m_lblFAO, "m_lblFAO")
-        Me.m_lblFAO.Name = "m_lblFAO"
-        '
-        'm_lblFAOValue
-        '
-        resources.ApplyResources(Me.m_lblFAOValue, "m_lblFAOValue")
-        Me.m_lblFAOValue.Name = "m_lblFAOValue"
         '
         'm_lblEcosimUsed
         '
@@ -669,10 +641,6 @@ Partial Class dlgEcobaseImport
     Friend WithEvents m_lblCountryValue As System.Windows.Forms.Label
     Friend WithEvents m_lblArea As System.Windows.Forms.Label
     Friend WithEvents m_lblAreaValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblFAO As System.Windows.Forms.Label
-    Friend WithEvents m_lblRegion As System.Windows.Forms.Label
-    Friend WithEvents m_lblRegionValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblFAOValue As System.Windows.Forms.Label
     Friend WithEvents m_lblPeriod As System.Windows.Forms.Label
     Friend WithEvents m_lblPeriodValue As System.Windows.Forms.Label
     Friend WithEvents m_lblEcosimUsed As System.Windows.Forms.Label

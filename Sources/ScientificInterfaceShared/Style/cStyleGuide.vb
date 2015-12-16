@@ -382,9 +382,7 @@ Namespace Style
 
         Public Enum eEcobaseFieldType As Integer
             CountryName
-            RegionName
             EcosystemType
-            LMENumber
         End Enum
 
 #End Region ' Enums and events

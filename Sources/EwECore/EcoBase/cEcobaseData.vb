@@ -41,6 +41,12 @@ Namespace WebServices.Ecobase
     ''' -----------------------------------------------------------------------
     Public Class cModelData
 
+        Public Enum eSubmissionType As Integer
+            [New] = 0
+            Replacement = 1
+            Derived = 2
+        End Enum
+
 #Region " Variables "
 
         ''' <summary>Ecobase ID.</summary>
@@ -52,10 +58,6 @@ Namespace WebServices.Ecobase
 
         <XmlElement("description")> _
         Public Property Description As String = ""
-
-        ''' <summary>Objectives of the model.</summary>
-        <XmlElement("comments_objectives")> _
-        Public Property Objectives As String
 
         <XmlElement("author")> _
         Public Property Author As String = ""
@@ -74,24 +76,6 @@ Namespace WebServices.Ecobase
 
         <XmlElement("country")> _
         Public Property Country As String = ""
-
-        <XmlElement("region")> _
-        Public Property Region As String = ""
-
-        ''' <summary>Large Marine Ecosystem ID.</summary>
-        <XmlElement("lme")> _
-        Public Property LME_ecobase As String
-            Get
-                Return Me.LME.Replace(","c, "_"c).Replace(" ", "")
-            End Get
-            Set(value As String)
-                Me.LME = value.Replace("_", ", ")
-            End Set
-        End Property
-
-        ''' <summary>Reformatter for <see cref="LME_ecobase"/> field.</summary>
-        <XmlIgnore()> _
-        Public Property LME As String
 
         ''' <summary>Area size.</summary>
         <XmlElement("area")> _
@@ -162,6 +146,10 @@ Namespace WebServices.Ecobase
         <XmlElement("ewe_version")> _
         Public Property EwEVersion As String = ""
 
+        ''' <summary>Flag, stating if the model matches the paper version.</summary>
+        <XmlElement("match_paper")> _
+        Public Property ModelMatchesPaper As Boolean = False
+
         ''' <summary>Flag, stating if this is a model update.</summary>
         <XmlElement("is_update")> _
         Public Property IsUpdate As Boolean = False
@@ -187,11 +175,11 @@ Namespace WebServices.Ecobase
         Public Property DepthMax As Single = 0
 
         ''' <summary>Is Ecosim used?</summary>
-        <XmlElement("is_ecosim_used")> _
+        <XmlElement("ecosim")> _
         Public Property EcosimUsed As Boolean = False
         ''' <summary>Is Ecospace used?</summary>
         ''' 
-        <XmlElement("is_ecospace_used")> _
+        <XmlElement("ecospace")> _
         Public Property EcospaceUsed As Boolean = False
 
         <XmlElement("is_fitted")> _
@@ -204,6 +192,22 @@ Namespace WebServices.Ecobase
         ''' <summary>Comments if model is not declared as open access.</summary>
         <XmlElement("comments_access")> _
         Public Property CommentsAccess As String
+
+        <XmlElement("fisheries")> _
+        Public Property ObjectiveFisheries As Boolean
+        <XmlElement("aquaculture")> _
+        Public Property ObjectiveAquaculture As Boolean
+        <XmlElement("environment_variability")> _
+        Public Property ObjectiveEnvironmentalVariability As Boolean
+        <XmlElement("ecosyst_functioning")> _
+        Public Property ObjectiveEcosystemFunctioning As Boolean
+        <XmlElement("pollution")> _
+        Public Property ObjectivePollution As Boolean
+        <XmlElement("other_impact_assessment")> _
+        Public Property ObjectiveOtherImpactAssessment As Boolean
+        ''' <summary>Description of objectives of the model.</summary>
+        <XmlElement("comments_objectives")> _
+        Public Property Objectives As String
 
 #End Region ' Variables
 
@@ -220,7 +224,6 @@ Namespace WebServices.Ecobase
 
             Me.Name = ecopathDS.ModelName
             Me.Description = ecopathDS.ModelDescription
-            Me.Objectives = ecopathDS.ModelObjectives
             Me.EcobaseCode = ecopathDS.ModelEcobaseCode
 
             Me.Author = ecopathDS.ModelAuthor
@@ -247,8 +250,6 @@ Namespace WebServices.Ecobase
 
             Me.EcosystemType = ecopathDS.ModelEcosystemType
             Me.Country = ecopathDS.ModelCountry
-            Me.Region = ecopathDS.ModelRegion
-            Me.LME = ecopathDS.ModelLME
 
             Me.DepthMin = 0
             Me.DepthMean = 0

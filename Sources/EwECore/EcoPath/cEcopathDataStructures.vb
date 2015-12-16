@@ -40,7 +40,6 @@ Public Class cEcopathDataStructures
     Public ModelDBID As Integer = 0
     Public ModelName As String = ""
     Public ModelDescription As String = ""
-    Public ModelObjectives As String = ""
     Public ModelArea As Single = 0
     Public ModelNumDigits As Integer = 0
     Public ModelGroupDigits As Boolean = False
@@ -62,8 +61,6 @@ Public Class cEcopathDataStructures
     Public FirstYear As Integer = Date.Now.Year
     Public NumYears As Integer = 1
     Public ModelCountry As String = ""
-    Public ModelRegion As String = ""
-    Public ModelLME As String = ""
     Public ModelEcosystemType As String = ""
     ''' <summary>Code of a model in the Ecobase repository, if any.</summary>
     Public ModelEcobaseCode As String = ""

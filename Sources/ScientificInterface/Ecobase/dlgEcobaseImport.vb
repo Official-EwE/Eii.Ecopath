@@ -52,8 +52,6 @@ Public Class dlgEcobaseImport
         None = 0
         Author = 1
         Country = 2
-        Region = 3
-        LME = 4
         EcosystemType = 5
         Depth = 6
         Temperature = 7
@@ -136,8 +134,6 @@ Public Class dlgEcobaseImport
             Me.m_lblAreaValue.Text = cStringUtils.FormatNumber(Me.m_model.Area)
             Me.m_lblAuthorValue.Text = cStringUtils.ToTitleCase(Me.m_model.Author)
             Me.m_lblCountryValue.Text = cStringUtils.ToTitleCase(Me.m_model.Country)
-            Me.m_lblRegionValue.Text = cStringUtils.ToTitleCase(Me.m_model.Region)
-            Me.m_lblFAOValue.Text = Me.m_model.LME
             Me.m_lblEcosystemTypeValue.Text = cStringUtils.ToSentenceCase(Me.m_model.EcosystemType)
             Me.m_lblNoGroupsValue.Text = "?"
             Me.m_lblNoFleetsValue.Text = "?"
@@ -166,8 +162,6 @@ Public Class dlgEcobaseImport
             Me.m_lblAreaValue.Text = ""
             Me.m_lblAuthorValue.Text = ""
             Me.m_lblCountryValue.Text = ""
-            Me.m_lblRegionValue.Text = ""
-            Me.m_lblFAOValue.Text = ""
             Me.m_lblEcosystemTypeValue.Text = ""
             Me.m_lblNoGroupsValue.Text = ""
             Me.m_lblNoFleetsValue.Text = ""
@@ -217,11 +211,7 @@ Public Class dlgEcobaseImport
         If (e.ListItem Is Nothing) Then Return
 
         Dim model As cModelData = DirectCast(e.ListItem, cModelData)
-#If DEBUG Then
-        e.Value = model.Name & " (" & model.EcobaseCode & ")"
-#Else
-        e.Value = model.Name
-#End If
+        e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, model.Name, model.FirstYear)
 
     End Sub
 
@@ -454,8 +444,6 @@ Public Class dlgEcobaseImport
                         Case eFilterTypes.None
                         Case eFilterTypes.Author : bUseModel = Me.StartsWith(strFilter, model.Author)
                         Case eFilterTypes.Country : bUseModel = Me.StartsWith(strFilter, model.Country)
-                        Case eFilterTypes.Region : bUseModel = Me.StartsWith(strFilter, model.Region)
-                        Case eFilterTypes.LME : bUseModel = Me.ContainsSubItem(strFilter, model.LME)
                         Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
                         Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
                         Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
@@ -511,27 +499,15 @@ Public Class dlgEcobaseImport
     Private Sub UpdateEcoBaseLists()
 
         Dim lCountry As New List(Of String)
-        Dim lRegion As New List(Of String)
-        Dim lLME As New List(Of String)
         Dim lEcoTyp As New List(Of String)
 
         For Each model As cModelData In Me.m_models
             If Not String.IsNullOrWhiteSpace(model.Country) Then lCountry.Add(model.Country)
-            If Not String.IsNullOrWhiteSpace(model.Region) Then lRegion.Add(model.Region)
-            If Not String.IsNullOrWhiteSpace(model.LME) Then lLME.Add(model.LME)
             If Not String.IsNullOrWhiteSpace(model.EcosystemType) Then lEcoTyp.Add(model.EcosystemType)
         Next
 
         If (My.Settings.CountryNames IsNot Nothing) Then
             For Each str As String In My.Settings.CountryNames : lCountry.Add(str) : Next
-        End If
-
-        If (My.Settings.RegionNames IsNot Nothing) Then
-            For Each str As String In My.Settings.RegionNames : lRegion.Add(str) : Next
-        End If
-
-        If (My.Settings.LMENumbers IsNot Nothing) Then
-            For Each str As String In My.Settings.LMENumbers : lLME.Add(str) : Next
         End If
 
         If (My.Settings.EcosystemTypes IsNot Nothing) Then
@@ -543,12 +519,6 @@ Public Class dlgEcobaseImport
 
         My.Settings.CountryNames.Clear()
         My.Settings.CountryNames.AddRange(lCountry.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
-
-        My.Settings.RegionNames.Clear()
-        My.Settings.RegionNames.AddRange(lRegion.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
-
-        My.Settings.LMENumbers.Clear()
-        My.Settings.LMENumbers.AddRange(lLME.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
 
         My.Settings.EcosystemTypes.Clear()
         My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())

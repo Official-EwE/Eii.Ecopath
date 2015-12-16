@@ -95,9 +95,7 @@ Partial Class frmModelParameters
         Me.m_lblSouth = New System.Windows.Forms.Label()
         Me.m_plDescr = New System.Windows.Forms.Panel()
         Me.m_tbContact = New System.Windows.Forms.TextBox()
-        Me.m_tbxObjectives = New System.Windows.Forms.TextBox()
         Me.m_tbDescription = New System.Windows.Forms.TextBox()
-        Me.m_lblObjectives = New System.Windows.Forms.Label()
         Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
         Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
         Me.m_lblNoYears = New System.Windows.Forms.Label()
@@ -106,12 +104,8 @@ Partial Class frmModelParameters
         Me.m_plExecution = New System.Windows.Forms.Panel()
         Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
         Me.m_plMetadata = New System.Windows.Forms.Panel()
-        Me.m_tbxLME = New System.Windows.Forms.TextBox()
         Me.m_cmbEcoType = New System.Windows.Forms.ComboBox()
         Me.m_lblEcoType = New System.Windows.Forms.Label()
-        Me.m_lblLME = New System.Windows.Forms.Label()
-        Me.m_cmbRegion = New System.Windows.Forms.ComboBox()
-        Me.m_lblRegion = New System.Windows.Forms.Label()
         Me.m_cmbCountry = New System.Windows.Forms.ComboBox()
         Me.m_lblCountry = New System.Windows.Forms.Label()
         Me.m_hdrClassification = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -465,12 +459,10 @@ Partial Class frmModelParameters
         'm_plDescr
         '
         Me.m_plDescr.Controls.Add(Me.m_tbContact)
-        Me.m_plDescr.Controls.Add(Me.m_tbxObjectives)
         Me.m_plDescr.Controls.Add(Me.m_tbDescription)
         Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
         Me.m_plDescr.Controls.Add(Me.m_lblModel)
         Me.m_plDescr.Controls.Add(Me.m_lbScenarioName)
-        Me.m_plDescr.Controls.Add(Me.m_lblObjectives)
         Me.m_plDescr.Controls.Add(Me.m_nudEast)
         Me.m_plDescr.Controls.Add(Me.m_lbDescription)
         Me.m_plDescr.Controls.Add(Me.m_lbContact)
@@ -498,20 +490,10 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_tbContact, "m_tbContact")
         Me.m_tbContact.Name = "m_tbContact"
         '
-        'm_tbxObjectives
-        '
-        resources.ApplyResources(Me.m_tbxObjectives, "m_tbxObjectives")
-        Me.m_tbxObjectives.Name = "m_tbxObjectives"
-        '
         'm_tbDescription
         '
         resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
         Me.m_tbDescription.Name = "m_tbDescription"
-        '
-        'm_lblObjectives
-        '
-        resources.ApplyResources(Me.m_lblObjectives, "m_lblObjectives")
-        Me.m_lblObjectives.Name = "m_lblObjectives"
         '
         'm_tbxNumYears
         '
@@ -561,22 +543,13 @@ Partial Class frmModelParameters
         '
         'm_plMetadata
         '
-        Me.m_plMetadata.Controls.Add(Me.m_tbxLME)
         Me.m_plMetadata.Controls.Add(Me.m_cmbEcoType)
         Me.m_plMetadata.Controls.Add(Me.m_lblEcoType)
-        Me.m_plMetadata.Controls.Add(Me.m_lblLME)
-        Me.m_plMetadata.Controls.Add(Me.m_cmbRegion)
-        Me.m_plMetadata.Controls.Add(Me.m_lblRegion)
         Me.m_plMetadata.Controls.Add(Me.m_cmbCountry)
         Me.m_plMetadata.Controls.Add(Me.m_lblCountry)
         Me.m_plMetadata.Controls.Add(Me.m_hdrClassification)
         resources.ApplyResources(Me.m_plMetadata, "m_plMetadata")
         Me.m_plMetadata.Name = "m_plMetadata"
-        '
-        'm_tbxLME
-        '
-        resources.ApplyResources(Me.m_tbxLME, "m_tbxLME")
-        Me.m_tbxLME.Name = "m_tbxLME"
         '
         'm_cmbEcoType
         '
@@ -589,23 +562,6 @@ Partial Class frmModelParameters
         '
         resources.ApplyResources(Me.m_lblEcoType, "m_lblEcoType")
         Me.m_lblEcoType.Name = "m_lblEcoType"
-        '
-        'm_lblLME
-        '
-        resources.ApplyResources(Me.m_lblLME, "m_lblLME")
-        Me.m_lblLME.Name = "m_lblLME"
-        '
-        'm_cmbRegion
-        '
-        Me.m_cmbRegion.FormattingEnabled = True
-        resources.ApplyResources(Me.m_cmbRegion, "m_cmbRegion")
-        Me.m_cmbRegion.Name = "m_cmbRegion"
-        Me.m_cmbRegion.Sorted = True
-        '
-        'm_lblRegion
-        '
-        resources.ApplyResources(Me.m_lblRegion, "m_lblRegion")
-        Me.m_lblRegion.Name = "m_lblRegion"
         '
         'm_cmbCountry
         '
@@ -785,9 +741,6 @@ Partial Class frmModelParameters
     Private WithEvents m_plMetadata As System.Windows.Forms.Panel
     Private WithEvents m_cmbEcoType As System.Windows.Forms.ComboBox
     Private WithEvents m_lblEcoType As System.Windows.Forms.Label
-    Private WithEvents m_lblLME As System.Windows.Forms.Label
-    Private WithEvents m_cmbRegion As System.Windows.Forms.ComboBox
-    Private WithEvents m_lblRegion As System.Windows.Forms.Label
     Private WithEvents m_cmbCountry As System.Windows.Forms.ComboBox
     Private WithEvents m_lblCountry As System.Windows.Forms.Label
     Private WithEvents m_hdrClassification As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -795,13 +748,10 @@ Partial Class frmModelParameters
     Private WithEvents m_hdrPublication As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tbxPublicationURL As System.Windows.Forms.TextBox
     Private WithEvents m_lblPublicationURL As System.Windows.Forms.Label
-    Friend WithEvents m_tbxLME As System.Windows.Forms.TextBox
     Private WithEvents m_tbxNumYears As System.Windows.Forms.TextBox
     Private WithEvents m_lblNoYears As System.Windows.Forms.Label
     Private WithEvents m_tbxReference As System.Windows.Forms.TextBox
     Private WithEvents m_lblReference As System.Windows.Forms.Label
-    Private WithEvents m_tbxObjectives As System.Windows.Forms.TextBox
-    Private WithEvents m_lblObjectives As System.Windows.Forms.Label
     Private WithEvents Label1 As System.Windows.Forms.Label
     Private WithEvents m_tbxPublicationDOI As System.Windows.Forms.TextBox
     Private WithEvents m_lblPublicationDOI As System.Windows.Forms.Label

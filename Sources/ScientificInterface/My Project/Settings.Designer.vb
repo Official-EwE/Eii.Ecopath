@@ -1035,28 +1035,6 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
-    Public Property RegionNames() As Global.System.Collections.Specialized.StringCollection
-        Get
-            Return CType(Me("RegionNames"),Global.System.Collections.Specialized.StringCollection)
-        End Get
-        Set
-            Me("RegionNames") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
-    Public Property LMENumbers() As Global.System.Collections.Specialized.StringCollection
-        Get
-            Return CType(Me("LMENumbers"),Global.System.Collections.Specialized.StringCollection)
-        End Get
-        Set
-            Me("LMENumbers") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
     Public Property EcosystemTypes() As Global.System.Collections.Specialized.StringCollection
         Get
             Return CType(Me("EcosystemTypes"),Global.System.Collections.Specialized.StringCollection)

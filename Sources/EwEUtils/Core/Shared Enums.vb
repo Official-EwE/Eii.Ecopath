@@ -1912,10 +1912,6 @@ Namespace Core
 
         ''' <summary>Country that a model represents.</summary>
         Country
-        ''' <summary>Region that a model represents.</summary>
-        Region
-        ''' <summary>LME a model represents.</summary>
-        LME
         ''' <summary>Type of ecosystem that a model represents (estuary, reef, etc).</summary>
         EcosystemType
         ''' <summary>Code of a model in the EcoBase repository.</summary>
@@ -1927,8 +1923,6 @@ Namespace Core
         PublicationURI
         ''' <summary>Formatted reference to the publication for this model.</summary>
         PublicationReference
-        ''' <summary>Model objectives</summary>
-        Objectives
 
         Z
     End Enum
