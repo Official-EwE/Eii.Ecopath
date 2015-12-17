@@ -203,6 +203,8 @@ Namespace WebServices.Ecobase
         Public Property ObjectiveEcosystemFunctioning As Boolean
         <XmlElement("pollution")> _
         Public Property ObjectivePollution As Boolean
+        <XmlElement("mpa")> _
+        Public Property ObjectiveMarineProtection As Boolean
         <XmlElement("other_impact_assessment")> _
         Public Property ObjectiveOtherImpactAssessment As Boolean
         ''' <summary>Description of objectives of the model.</summary>

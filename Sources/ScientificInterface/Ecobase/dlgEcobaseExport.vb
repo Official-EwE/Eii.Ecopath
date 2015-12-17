@@ -183,9 +183,9 @@ Public Class dlgEcobaseExport
                 m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
                 m_cbPubMatchesPaper.CheckedChanged, m_tbxDifference.TextChanged, _
                 m_cbObjectiveAquaculture.CheckedChanged, m_cbObjectiveFisheries.CheckedChanged, m_cbObjectiveEcosystemFunctioning.CheckedChanged, _
-                m_cbObjectiveEnvironmentalVariability.CheckedChanged, m_cbObjectiveOtherImpactAssessment.CheckedChanged, m_cbObjectivePollution.CheckedChanged, _
+                m_cbObjectiveEnvironmentalVariability.CheckedChanged, m_cbObjectiveOtherImpactAssessment.CheckedChanged, m_cbObjectivePollution.CheckedChanged, m_cbObjectiveMarineProtection.CheckedChanged, _
                 m_rbSubmNew.CheckedChanged, m_rbSubmDerived.CheckedChanged, m_rbSubmUpdate.CheckedChanged, m_tbxSubmModifications.TextChanged, m_cmbSubmEcobaseModel.SelectedIndexChanged, _
-                m_tbxPermissionComments.TextChanged
+                m_tbxPermissionComments.TextChanged, m_cbObjectiveMarineProtection.CheckedChanged
 
         Try
             Me.UpdateControls()
@@ -337,7 +337,7 @@ Public Class dlgEcobaseExport
         ' -- Objectives --
         Dim bHasObjOptions As Boolean = (Me.m_cbObjectiveFisheries.Checked Or Me.m_cbObjectiveAquaculture.Checked Or _
                                          Me.m_cbObjectiveEcosystemFunctioning.Checked Or Me.m_cbObjectiveEnvironmentalVariability.Checked Or _
-                                         Me.m_cbObjectivePollution.Checked)
+                                         Me.m_cbObjectivePollution.Checked Or m_cbObjectiveMarineProtection.Checked)
         Dim bHasObjOther As Boolean = Me.m_cbObjectiveOtherImpactAssessment.Checked
         Dim bHasObjOtherText As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
         Dim bObjectivesOK As Boolean = bHasObjOptions
@@ -395,7 +395,7 @@ Public Class dlgEcobaseExport
         Me.m_tpSubmission.ImageIndex = cSystemUtils.IIF(bSubmissionOk, 0, 2)
 
         ' -- SUBMIT --
-        Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK And bObjectivesOK
+        Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK And bObjectivesOK And bSubmissionOk
 
         Me.m_bInUpdate = False
 
@@ -566,6 +566,7 @@ Public Class dlgEcobaseExport
         md.ObjectiveEcosystemFunctioning = Me.m_cbObjectiveEcosystemFunctioning.Checked
         md.ObjectiveEnvironmentalVariability = Me.m_cbObjectiveEnvironmentalVariability.Checked
         md.ObjectivePollution = Me.m_cbObjectivePollution.Checked
+        md.ObjectiveMarineProtection = Me.m_cbObjectiveMarineProtection.Checked
         md.ObjectiveOtherImpactAssessment = Me.m_cbObjectiveOtherImpactAssessment.Checked
         md.Objectives = Me.m_tbxObjectives.Text
 
@@ -584,6 +585,8 @@ Public Class dlgEcobaseExport
         core.Messages.SendMessage(msg)
         msg = Nothing
 #End If
+
+        Return True
 
         Try
             strXML = wdsl.Upload_Model(1, strXML)
@@ -625,13 +628,17 @@ Public Class dlgEcobaseExport
 
     Private Sub FillCombo(cmb As ComboBox, values As StringCollection)
 
-        cmb.Items.Clear()
-
+        Dim col As New AutoCompleteStringCollection()
         If (values IsNot Nothing) Then
             For Each str As String In values
-                cmb.Items.Add(str)
+                col.Add(str)
             Next
         End If
+
+        cmb.Items.Clear()
+        cmb.AutoCompleteSource = AutoCompleteSource.CustomSource
+        cmb.AutoCompleteCustomSource = col
+        cmb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
 
     End Sub
 

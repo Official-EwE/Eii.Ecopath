@@ -215,32 +215,19 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    'Private m_strURL As String = ""
-
     Private Sub OnModelSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_lbxModels.SelectedIndexChanged
-
-        'Dim weblinks As New cWebLinks(Me.Core)
-        'Dim strModel As String = ""
-        'Dim strURL As String = "about:blank"
 
         Try
             Me.m_model = Nothing
             If (Me.m_lbxModels.SelectedIndex > -1) Then
                 Me.m_model = DirectCast(Me.m_lbxModels.SelectedItem, cModelData)
-                '        strURL = String.Format(weblinks.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
                 If (Me.m_wrkGetImage.IsBusy) Then
                     Me.m_wrkGetImage.CancelAsync()
                 End If
                 Me.m_wrkGetImage.RunWorkerAsync(Nothing)
             End If
 
-            '    If (String.Compare(strURL, Me.m_strURL) <> 0) Then
-            '        Me.m_strURL = strURL
-            '        Me.m_browser.Navigate(strURL)
-            '        Me.m_browser.Refresh(WebBrowserRefreshOption.Completely)
-            '        Me.m_browser.Invalidate(True)
-            '    End If
         Catch ex As Exception
 
         End Try
