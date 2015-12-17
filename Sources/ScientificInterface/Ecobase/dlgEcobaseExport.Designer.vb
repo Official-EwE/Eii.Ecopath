@@ -146,6 +146,7 @@ Partial Class dlgEcobaseExport
         Me.m_tpSubmission = New System.Windows.Forms.TabPage()
         Me.m_pbSubmModifications = New System.Windows.Forms.PictureBox()
         Me.m_pbSubmExistingModel = New System.Windows.Forms.PictureBox()
+        Me.m_pbSubmType = New System.Windows.Forms.PictureBox()
         Me.m_tbxSubmModifications = New System.Windows.Forms.TextBox()
         Me.m_cmbSubmEcobaseModel = New System.Windows.Forms.ComboBox()
         Me.m_lblSubmModications = New System.Windows.Forms.Label()
@@ -156,7 +157,7 @@ Partial Class dlgEcobaseExport
         Me.m_lblSubmInfo = New System.Windows.Forms.Label()
         Me.m_wrkGetAuthorAgreement = New System.ComponentModel.BackgroundWorker()
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
-        Me.m_pbSubmType = New System.Windows.Forms.PictureBox()
+        Me.m_cbObjectiveMarineProtection = New System.Windows.Forms.CheckBox()
         CType(Me.m_pbModelName, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbModelAuthorEmail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -326,8 +327,8 @@ Partial Class dlgEcobaseExport
         '
         'm_cmbCountry
         '
-        Me.m_cmbCountry.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbCountry, "m_cmbCountry")
+        Me.m_cmbCountry.FormattingEnabled = True
         Me.m_cmbCountry.Name = "m_cmbCountry"
         '
         'm_tcExport
@@ -463,6 +464,7 @@ Partial Class dlgEcobaseExport
         'm_tpObjectives
         '
         Me.m_tpObjectives.Controls.Add(Me.m_cbObjectiveOtherImpactAssessment)
+        Me.m_tpObjectives.Controls.Add(Me.m_cbObjectiveMarineProtection)
         Me.m_tpObjectives.Controls.Add(Me.m_cbObjectivePollution)
         Me.m_tpObjectives.Controls.Add(Me.m_cbObjectiveEcosystemFunctioning)
         Me.m_tpObjectives.Controls.Add(Me.m_cbObjectiveEnvironmentalVariability)
@@ -891,6 +893,12 @@ Partial Class dlgEcobaseExport
         Me.m_pbSubmExistingModel.Name = "m_pbSubmExistingModel"
         Me.m_pbSubmExistingModel.TabStop = False
         '
+        'm_pbSubmType
+        '
+        resources.ApplyResources(Me.m_pbSubmType, "m_pbSubmType")
+        Me.m_pbSubmType.Name = "m_pbSubmType"
+        Me.m_pbSubmType.TabStop = False
+        '
         'm_tbxSubmModifications
         '
         resources.ApplyResources(Me.m_tbxSubmModifications, "m_tbxSubmModifications")
@@ -923,9 +931,7 @@ Partial Class dlgEcobaseExport
         'm_rbSubmUpdate
         '
         resources.ApplyResources(Me.m_rbSubmUpdate, "m_rbSubmUpdate")
-        Me.m_rbSubmUpdate.Checked = True
         Me.m_rbSubmUpdate.Name = "m_rbSubmUpdate"
-        Me.m_rbSubmUpdate.TabStop = True
         Me.m_rbSubmUpdate.UseVisualStyleBackColor = True
         '
         'm_lblSubmExistingModel
@@ -944,11 +950,11 @@ Partial Class dlgEcobaseExport
         'm_wrkGetModels
         '
         '
-        'm_pbSubmType
+        'm_cbObjectiveMarineProtection
         '
-        resources.ApplyResources(Me.m_pbSubmType, "m_pbSubmType")
-        Me.m_pbSubmType.Name = "m_pbSubmType"
-        Me.m_pbSubmType.TabStop = False
+        resources.ApplyResources(Me.m_cbObjectiveMarineProtection, "m_cbObjectiveMarineProtection")
+        Me.m_cbObjectiveMarineProtection.Name = "m_cbObjectiveMarineProtection"
+        Me.m_cbObjectiveMarineProtection.UseVisualStyleBackColor = True
         '
         'dlgEcobaseExport
         '
@@ -1125,4 +1131,5 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_pbOtherNeeded As System.Windows.Forms.PictureBox
     Private WithEvents m_wrkGetModels As System.ComponentModel.BackgroundWorker
     Private WithEvents m_pbSubmType As System.Windows.Forms.PictureBox
+    Private WithEvents m_cbObjectiveMarineProtection As System.Windows.Forms.CheckBox
 End Class

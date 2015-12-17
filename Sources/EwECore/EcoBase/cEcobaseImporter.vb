@@ -264,7 +264,7 @@ Namespace Database
 
                 drow("PublicationDOI") = md.DOI
                 drow("PublicationURI") = md.URI
-                drow("PublicationRef") = md.URI
+                drow("PublicationRef") = md.Reference
                 drow("LastSaved") = cDateUtils.DateToJulian()
 
                 drow("UnitTime") = eUnitTimeType.Year

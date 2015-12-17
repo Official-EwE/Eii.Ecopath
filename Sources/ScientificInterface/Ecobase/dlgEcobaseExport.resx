@@ -822,11 +822,14 @@
   <data name="&gt;&gt;m_cmbEcoType.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="m_cmbCountry.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_cmbCountry.Location" type="System.Drawing.Point, System.Drawing">
     <value>80, 28</value>
   </data>
   <data name="m_cmbCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 21</value>
+    <value>485, 21</value>
   </data>
   <data name="m_cmbCountry.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1306,13 +1309,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbObjectiveOtherImpactAssessment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>37, 144</value>
+    <value>37, 167</value>
   </data>
   <data name="m_cbObjectiveOtherImpactAssessment.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 17</value>
   </data>
   <data name="m_cbObjectiveOtherImpactAssessment.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_cbObjectiveOtherImpactAssessment.Text" xml:space="preserve">
     <value>&amp;Other impact assessment:</value>
@@ -1328,6 +1331,36 @@
   </data>
   <data name="&gt;&gt;m_cbObjectiveOtherImpactAssessment.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 144</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 17</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.Text" xml:space="preserve">
+    <value>&amp;Marine Protection</value>
+  </data>
+  <data name="&gt;&gt;m_cbObjectiveMarineProtection.Name" xml:space="preserve">
+    <value>m_cbObjectiveMarineProtection</value>
+  </data>
+  <data name="&gt;&gt;m_cbObjectiveMarineProtection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbObjectiveMarineProtection.Parent" xml:space="preserve">
+    <value>m_tpObjectives</value>
+  </data>
+  <data name="&gt;&gt;m_cbObjectiveMarineProtection.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_cbObjectivePollution.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1357,7 +1390,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_cbObjectivePollution.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_cbObjectiveEcosystemFunctioning.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1387,7 +1420,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_cbObjectiveEcosystemFunctioning.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_cbObjectiveEnvironmentalVariability.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1417,7 +1450,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_cbObjectiveEnvironmentalVariability.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_cbObjectiveAquaculture.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1447,7 +1480,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_cbObjectiveAquaculture.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_cbObjectiveFisheries.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1474,7 +1507,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_cbObjectiveFisheries.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_lblObjectives.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1504,13 +1537,13 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_lblObjectives.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_tbxObjectives.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_tbxObjectives.Location" type="System.Drawing.Point, System.Drawing">
-    <value>37, 167</value>
+    <value>37, 191</value>
   </data>
   <data name="m_tbxObjectives.MaxLength" type="System.Int32, mscorlib">
     <value>250</value>
@@ -1522,10 +1555,10 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbxObjectives.Size" type="System.Drawing.Size, System.Drawing">
-    <value>537, 188</value>
+    <value>537, 164</value>
   </data>
   <data name="m_tbxObjectives.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_tbxObjectives.Name" xml:space="preserve">
     <value>m_tbxObjectives</value>
@@ -1537,7 +1570,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_tbxObjectives.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_pbOtherText.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1549,7 +1582,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbOtherText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>580, 167</value>
+    <value>580, 191</value>
   </data>
   <data name="m_pbOtherText.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 22</value>
@@ -1567,7 +1600,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_pbOtherText.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_pbOtherNeeded.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1579,7 +1612,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbOtherNeeded.Location" type="System.Drawing.Point, System.Drawing">
-    <value>580, 144</value>
+    <value>580, 167</value>
   </data>
   <data name="m_pbOtherNeeded.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 17</value>
@@ -1597,7 +1630,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_pbOtherNeeded.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_pbObjectives.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1627,7 +1660,7 @@
     <value>m_tpObjectives</value>
   </data>
   <data name="&gt;&gt;m_pbObjectives.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_tpObjectives.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1663,7 +1696,7 @@
     <value>260, 17</value>
   </data>
   <data name="m_cbIsEntireFoodWeb.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
+    <value>20</value>
   </data>
   <data name="m_cbIsEntireFoodWeb.Text" xml:space="preserve">
     <value>The entire food web is accounted for in the model</value>
@@ -2935,7 +2968,7 @@
     <value>419, 13</value>
   </data>
   <data name="m_lblPermissionComments.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>2</value>
   </data>
   <data name="m_lblPermissionComments.Text" xml:space="preserve">
     <value>&amp;Please motivate why you do not wish to provide open access to your model parameters:</value>
@@ -2968,7 +3001,7 @@
     <value>537, 262</value>
   </data>
   <data name="m_tbxPermissionComments.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_tbxPermissionComments.Name" xml:space="preserve">
     <value>m_tbxPermissionComments</value>
@@ -3109,7 +3142,7 @@
     <value>534, 176</value>
   </data>
   <data name="m_tbxSubmModifications.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_tbxSubmModifications.Name" xml:space="preserve">
     <value>m_tbxSubmModifications</value>
@@ -3133,7 +3166,7 @@
     <value>534, 21</value>
   </data>
   <data name="m_cmbSubmEcobaseModel.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_cmbSubmEcobaseModel.Name" xml:space="preserve">
     <value>m_cmbSubmEcobaseModel</value>
@@ -3160,7 +3193,7 @@
     <value>139, 13</value>
   </data>
   <data name="m_lblSubmModications.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
+    <value>6</value>
   </data>
   <data name="m_lblSubmModications.Text" xml:space="preserve">
     <value>Description of &amp;modifications:</value>
@@ -3190,7 +3223,7 @@
     <value>109, 17</value>
   </data>
   <data name="m_rbSubmNew.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>1</value>
   </data>
   <data name="m_rbSubmNew.Text" xml:space="preserve">
     <value>A &amp;new submission</value>
@@ -3220,7 +3253,7 @@
     <value>258, 17</value>
   </data>
   <data name="m_rbSubmDerived.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>3</value>
   </data>
   <data name="m_rbSubmDerived.Text" xml:space="preserve">
     <value>A model &amp;derived from a model already in EcoBase</value>
@@ -3250,7 +3283,7 @@
     <value>258, 17</value>
   </data>
   <data name="m_rbSubmUpdate.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
+    <value>2</value>
   </data>
   <data name="m_rbSubmUpdate.Text" xml:space="preserve">
     <value>An &amp;update to replace a model already in EcoBase</value>
@@ -3280,7 +3313,7 @@
     <value>123, 13</value>
   </data>
   <data name="m_lblSubmExistingModel.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>4</value>
   </data>
   <data name="m_lblSubmExistingModel.Text" xml:space="preserve">
     <value>&amp;Existing EcoBase model:</value>
@@ -3310,7 +3343,7 @@
     <value>94, 13</value>
   </data>
   <data name="m_lblSubmInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>0</value>
   </data>
   <data name="m_lblSubmInfo.Text" xml:space="preserve">
     <value>&amp;This submission is:</value>
@@ -3392,9 +3425,6 @@
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>460, 400</value>
