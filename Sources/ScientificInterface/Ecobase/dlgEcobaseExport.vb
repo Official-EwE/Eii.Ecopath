@@ -47,6 +47,7 @@ Public Class dlgEcobaseExport
 
     Private m_ecobase As cEcoBaseWDSL = Nothing
     Private m_models As New List(Of cModelData)
+    Private m_strAuthorAgreement As String = ""
 
     Private m_fpFirstYear As cEwEFormatProvider = Nothing
     Private m_fpLastYear As cEwEFormatProvider = Nothing
@@ -64,8 +65,6 @@ Public Class dlgEcobaseExport
     Private m_fpTmin As cEwEFormatProvider = Nothing
     Private m_fpTmean As cEwEFormatProvider = Nothing
     Private m_fpTmax As cEwEFormatProvider = Nothing
-
-    Private m_strAgreement As String = ""
 
 #End Region ' Private vars
 
@@ -187,6 +186,7 @@ Public Class dlgEcobaseExport
                 m_cbObjectiveEnvironmentalVariability.CheckedChanged, m_cbObjectiveOtherImpactAssessment.CheckedChanged, m_cbObjectivePollution.CheckedChanged, _
                 m_rbSubmNew.CheckedChanged, m_rbSubmDerived.CheckedChanged, m_rbSubmUpdate.CheckedChanged, m_tbxSubmModifications.TextChanged, m_cmbSubmEcobaseModel.SelectedIndexChanged, _
                 m_tbxPermissionComments.TextChanged
+
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -253,7 +253,7 @@ Public Class dlgEcobaseExport
 
     Private m_bInUpdate As Boolean = False
 
-    Private Sub UpdateControls()
+    Protected Overrides Sub UpdateControls()
 
         If (Me.UIContext Is Nothing) Then Return
         If (Me.m_bInUpdate) Then Return
@@ -265,7 +265,7 @@ Public Class dlgEcobaseExport
         ' -- Ecobase page --
         Dim bAgreementOK As Boolean = Me.m_cbAuthorAgreement.Checked
 
-        Me.m_rtfAuthorAgreement.Text = Me.m_strAgreement
+        Me.m_rtfAuthorAgreement.Text = Me.m_strAuthorAgreement
         Me.m_pbModelName.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
         Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
 
@@ -517,13 +517,12 @@ Public Class dlgEcobaseExport
     ''' -----------------------------------------------------------------------
     Private Function SubmitToEcobase() As Boolean
 
-        Dim core As cCore = Me.UIContext.Core
         Dim msg As cMessage = Nothing
         Dim wdsl As New cEcoBaseWDSL()
         Dim bSucces As Boolean = True
 
         ' Sanity checks
-        Debug.Assert(core.StateMonitor.HasEcopathRan)
+        Debug.Assert(Me.Core.IsModelBalanced)
 
         ' Prepare data to send to Ecobase
         Dim data As New WebServices.Ecobase.cEcobaseModelParameters(core)
@@ -694,7 +693,7 @@ Public Class dlgEcobaseExport
             Dim strAgreement As String = wdsl.getModel("agreement", -1)
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
 
-            Me.m_strAgreement = data.Agreement
+            Me.m_strAuthorAgreement = data.Agreement
 
         Catch ex As Exception
 

@@ -3105,9 +3105,12 @@ Public Class frmEwE6
         Try
             ' All pending changes must be saved prior to this
             If (Not Me.Core.SaveChanges()) Then Return
+
             ' Ecopath must run ok
             If (Not Me.Core.StateManager.LoadState(eCoreExecutionState.EcopathCompleted)) Then Return
+            If (Not Me.Core.IsModelBalanced()) Then Return
 
+            ' Export
             Dim dlg As New dlgEcobaseExport(Me.UIContext)
             dlg.ShowDialog(Me)
 

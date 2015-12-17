@@ -1355,8 +1355,10 @@ Namespace WebServices.Ecobase
         ''' <param name="core">The core that has the loaded model.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(core As cCore)
-            ' Sanity check
+
+            ' Sanity checks
             Debug.Assert(core.StateMonitor.HasEcopathLoaded(), "Ecopath not loaded, cannot continue")
+            Debug.Assert(core.IsModelBalanced(), "Ecopath not balanced, cannot continue")
 
             Me.Model = New cModelData(core)
 
