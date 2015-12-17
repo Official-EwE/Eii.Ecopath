@@ -45,26 +45,26 @@ Partial Class dlgEcobaseImport
         Me.m_tlpFields = New System.Windows.Forms.TableLayoutPanel()
         Me.m_lblModelName = New System.Windows.Forms.Label()
         Me.m_lblModelNameValue = New System.Windows.Forms.Label()
-        Me.m_lblCountryValue = New System.Windows.Forms.Label()
-        Me.m_lblNoFleetsValue = New System.Windows.Forms.Label()
-        Me.m_lblNoGroups = New System.Windows.Forms.Label()
-        Me.m_lblNoFleets = New System.Windows.Forms.Label()
-        Me.m_lblCountry = New System.Windows.Forms.Label()
-        Me.m_lblNoGroupsValue = New System.Windows.Forms.Label()
         Me.m_lblAuthor = New System.Windows.Forms.Label()
         Me.m_lblAuthorValue = New System.Windows.Forms.Label()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_lblAreaValue = New System.Windows.Forms.Label()
         Me.m_lblPeriod = New System.Windows.Forms.Label()
         Me.m_lblPeriodValue = New System.Windows.Forms.Label()
-        Me.m_lblEcosimUsed = New System.Windows.Forms.Label()
-        Me.m_lblEcosimUsedValue = New System.Windows.Forms.Label()
+        Me.m_lblCountry = New System.Windows.Forms.Label()
         Me.m_lblEcosystemType = New System.Windows.Forms.Label()
+        Me.m_lblCountryValue = New System.Windows.Forms.Label()
         Me.m_lblEcosystemTypeValue = New System.Windows.Forms.Label()
+        Me.m_lblEcosimUsed = New System.Windows.Forms.Label()
         Me.m_lblFitted = New System.Windows.Forms.Label()
-        Me.m_lblFittedValue = New System.Windows.Forms.Label()
         Me.m_lblEcospaceUsed = New System.Windows.Forms.Label()
+        Me.m_lblEcosimUsedValue = New System.Windows.Forms.Label()
+        Me.m_lblFittedValue = New System.Windows.Forms.Label()
         Me.m_lblEcospaceUsedValue = New System.Windows.Forms.Label()
+        Me.m_lblNoGroups = New System.Windows.Forms.Label()
+        Me.m_lblNoGroupsValue = New System.Windows.Forms.Label()
+        Me.m_lblNoFleets = New System.Windows.Forms.Label()
+        Me.m_lblNoFleetsValue = New System.Windows.Forms.Label()
         Me.m_hdrRefs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblRefValue = New System.Windows.Forms.Label()
         Me.m_tlpSpatial = New System.Windows.Forms.TableLayoutPanel()
@@ -92,8 +92,6 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiAuthor = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiCountry = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiRegion = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiLME = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcoType = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiDepth = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiTemperature = New System.Windows.Forms.ToolStripMenuItem()
@@ -210,36 +208,6 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_lblModelNameValue, "m_lblModelNameValue")
         Me.m_lblModelNameValue.Name = "m_lblModelNameValue"
         '
-        'm_lblCountryValue
-        '
-        resources.ApplyResources(Me.m_lblCountryValue, "m_lblCountryValue")
-        Me.m_lblCountryValue.Name = "m_lblCountryValue"
-        '
-        'm_lblNoFleetsValue
-        '
-        resources.ApplyResources(Me.m_lblNoFleetsValue, "m_lblNoFleetsValue")
-        Me.m_lblNoFleetsValue.Name = "m_lblNoFleetsValue"
-        '
-        'm_lblNoGroups
-        '
-        resources.ApplyResources(Me.m_lblNoGroups, "m_lblNoGroups")
-        Me.m_lblNoGroups.Name = "m_lblNoGroups"
-        '
-        'm_lblNoFleets
-        '
-        resources.ApplyResources(Me.m_lblNoFleets, "m_lblNoFleets")
-        Me.m_lblNoFleets.Name = "m_lblNoFleets"
-        '
-        'm_lblCountry
-        '
-        resources.ApplyResources(Me.m_lblCountry, "m_lblCountry")
-        Me.m_lblCountry.Name = "m_lblCountry"
-        '
-        'm_lblNoGroupsValue
-        '
-        resources.ApplyResources(Me.m_lblNoGroupsValue, "m_lblNoGroupsValue")
-        Me.m_lblNoGroupsValue.Name = "m_lblNoGroupsValue"
-        '
         'm_lblAuthor
         '
         resources.ApplyResources(Me.m_lblAuthor, "m_lblAuthor")
@@ -270,45 +238,75 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_lblPeriodValue, "m_lblPeriodValue")
         Me.m_lblPeriodValue.Name = "m_lblPeriodValue"
         '
-        'm_lblEcosimUsed
+        'm_lblCountry
         '
-        resources.ApplyResources(Me.m_lblEcosimUsed, "m_lblEcosimUsed")
-        Me.m_lblEcosimUsed.Name = "m_lblEcosimUsed"
-        '
-        'm_lblEcosimUsedValue
-        '
-        resources.ApplyResources(Me.m_lblEcosimUsedValue, "m_lblEcosimUsedValue")
-        Me.m_lblEcosimUsedValue.Name = "m_lblEcosimUsedValue"
+        resources.ApplyResources(Me.m_lblCountry, "m_lblCountry")
+        Me.m_lblCountry.Name = "m_lblCountry"
         '
         'm_lblEcosystemType
         '
         resources.ApplyResources(Me.m_lblEcosystemType, "m_lblEcosystemType")
         Me.m_lblEcosystemType.Name = "m_lblEcosystemType"
         '
+        'm_lblCountryValue
+        '
+        resources.ApplyResources(Me.m_lblCountryValue, "m_lblCountryValue")
+        Me.m_lblCountryValue.Name = "m_lblCountryValue"
+        '
         'm_lblEcosystemTypeValue
         '
         resources.ApplyResources(Me.m_lblEcosystemTypeValue, "m_lblEcosystemTypeValue")
         Me.m_lblEcosystemTypeValue.Name = "m_lblEcosystemTypeValue"
+        '
+        'm_lblEcosimUsed
+        '
+        resources.ApplyResources(Me.m_lblEcosimUsed, "m_lblEcosimUsed")
+        Me.m_lblEcosimUsed.Name = "m_lblEcosimUsed"
         '
         'm_lblFitted
         '
         resources.ApplyResources(Me.m_lblFitted, "m_lblFitted")
         Me.m_lblFitted.Name = "m_lblFitted"
         '
-        'm_lblFittedValue
-        '
-        resources.ApplyResources(Me.m_lblFittedValue, "m_lblFittedValue")
-        Me.m_lblFittedValue.Name = "m_lblFittedValue"
-        '
         'm_lblEcospaceUsed
         '
         resources.ApplyResources(Me.m_lblEcospaceUsed, "m_lblEcospaceUsed")
         Me.m_lblEcospaceUsed.Name = "m_lblEcospaceUsed"
         '
+        'm_lblEcosimUsedValue
+        '
+        resources.ApplyResources(Me.m_lblEcosimUsedValue, "m_lblEcosimUsedValue")
+        Me.m_lblEcosimUsedValue.Name = "m_lblEcosimUsedValue"
+        '
+        'm_lblFittedValue
+        '
+        resources.ApplyResources(Me.m_lblFittedValue, "m_lblFittedValue")
+        Me.m_lblFittedValue.Name = "m_lblFittedValue"
+        '
         'm_lblEcospaceUsedValue
         '
         resources.ApplyResources(Me.m_lblEcospaceUsedValue, "m_lblEcospaceUsedValue")
         Me.m_lblEcospaceUsedValue.Name = "m_lblEcospaceUsedValue"
+        '
+        'm_lblNoGroups
+        '
+        resources.ApplyResources(Me.m_lblNoGroups, "m_lblNoGroups")
+        Me.m_lblNoGroups.Name = "m_lblNoGroups"
+        '
+        'm_lblNoGroupsValue
+        '
+        resources.ApplyResources(Me.m_lblNoGroupsValue, "m_lblNoGroupsValue")
+        Me.m_lblNoGroupsValue.Name = "m_lblNoGroupsValue"
+        '
+        'm_lblNoFleets
+        '
+        resources.ApplyResources(Me.m_lblNoFleets, "m_lblNoFleets")
+        Me.m_lblNoFleets.Name = "m_lblNoFleets"
+        '
+        'm_lblNoFleetsValue
+        '
+        resources.ApplyResources(Me.m_lblNoFleetsValue, "m_lblNoFleetsValue")
+        Me.m_lblNoFleetsValue.Name = "m_lblNoFleetsValue"
         '
         'm_hdrRefs
         '
@@ -455,7 +453,7 @@ Partial Class dlgEcobaseImport
         'm_tsddValue
         '
         Me.m_tsddValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiRegion, Me.m_tsmiLME, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature})
+        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature})
         resources.ApplyResources(Me.m_tsddValue, "m_tsddValue")
         Me.m_tsddValue.Name = "m_tsddValue"
         '
@@ -477,35 +475,23 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_tsmiCountry, "m_tsmiCountry")
         Me.m_tsmiCountry.Tag = "2"
         '
-        'm_tsmiRegion
-        '
-        Me.m_tsmiRegion.Name = "m_tsmiRegion"
-        resources.ApplyResources(Me.m_tsmiRegion, "m_tsmiRegion")
-        Me.m_tsmiRegion.Tag = "3"
-        '
-        'm_tsmiLME
-        '
-        Me.m_tsmiLME.Name = "m_tsmiLME"
-        resources.ApplyResources(Me.m_tsmiLME, "m_tsmiLME")
-        Me.m_tsmiLME.Tag = "4"
-        '
         'm_tsmiEcoType
         '
         Me.m_tsmiEcoType.Name = "m_tsmiEcoType"
         resources.ApplyResources(Me.m_tsmiEcoType, "m_tsmiEcoType")
-        Me.m_tsmiEcoType.Tag = "5"
+        Me.m_tsmiEcoType.Tag = "3"
         '
         'm_tsmiDepth
         '
         Me.m_tsmiDepth.Name = "m_tsmiDepth"
         resources.ApplyResources(Me.m_tsmiDepth, "m_tsmiDepth")
-        Me.m_tsmiDepth.Tag = "6"
+        Me.m_tsmiDepth.Tag = "4"
         '
         'm_tsmiTemperature
         '
         Me.m_tsmiTemperature.Name = "m_tsmiTemperature"
         resources.ApplyResources(Me.m_tsmiTemperature, "m_tsmiTemperature")
-        Me.m_tsmiTemperature.Tag = "7"
+        Me.m_tsmiTemperature.Tag = "5"
         '
         'm_tcContent
         '
@@ -624,8 +610,6 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_tstbSearch As System.Windows.Forms.ToolStripTextBox
     Private WithEvents m_tsddValue As System.Windows.Forms.ToolStripDropDownButton
     Friend WithEvents m_tsmiCountry As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiRegion As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiLME As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents m_tsmiEcoType As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiDepth As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiAuthor As System.Windows.Forms.ToolStripMenuItem

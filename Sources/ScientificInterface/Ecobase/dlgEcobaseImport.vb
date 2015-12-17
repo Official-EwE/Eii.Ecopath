@@ -52,9 +52,9 @@ Public Class dlgEcobaseImport
         None = 0
         Author = 1
         Country = 2
-        EcosystemType = 5
-        Depth = 6
-        Temperature = 7
+        EcosystemType = 3
+        Depth = 4
+        Temperature = 5
     End Enum
 
     Private m_filter As eFilterTypes = eFilterTypes.None
@@ -287,7 +287,7 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiLME.Click, m_tsmiEcoType.Click, m_tsmiRegion.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click
 
         Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
         If (tsmi.Tag IsNot Nothing) Then
