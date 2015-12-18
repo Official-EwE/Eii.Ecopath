@@ -300,6 +300,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This model cannot be exported to EcoBase because it does not mass-balance.
+        '''</summary>
+        Public ReadOnly Property ECOBASE_ERROR_BALANCE() As String
+            Get
+                Return ResourceManager.GetString("ECOBASE_ERROR_BALANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to An error occorred submitting your model to EcoBase. {0}.
         '''</summary>
         Public ReadOnly Property ECOBASE_ERROR_COMMUNICATION() As String
