@@ -3103,12 +3103,16 @@ Public Class frmEwE6
         Handles m_cmdEcobaseExport.OnInvoke
 
         Try
-            ' All pending changes must be saved prior to this
-            If (Not Me.Core.SaveChanges()) Then Return
+            Me.m_coreController.LoadState(eCoreExecutionState.EcopathCompleted)
 
             ' Ecopath must run ok
-            If (Not Me.Core.StateManager.LoadState(eCoreExecutionState.EcopathCompleted)) Then Return
-            If (Not Me.Core.IsModelBalanced()) Then Return
+            If (Not Me.Core.IsModelBalanced()) Then
+                Me.SendMessage(My.Resources.ECOBASE_ERROR_BALANCE)
+                Return
+            End If
+
+            ' All pending changes must be saved prior to this
+            If (Not Me.Core.SaveChanges()) Then Return
 
             ' Export
             Dim dlg As New dlgEcobaseExport(Me.UIContext)
