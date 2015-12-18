@@ -586,8 +586,6 @@ Public Class dlgEcobaseExport
         msg = Nothing
 #End If
 
-        Return True
-
         Try
             strXML = wdsl.Upload_Model(1, strXML)
 
