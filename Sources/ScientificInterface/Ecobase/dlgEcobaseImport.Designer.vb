@@ -92,7 +92,7 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiEcoType = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiDepth = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiTemperature = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ReferenceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiReference = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tcContent = New System.Windows.Forms.TabControl()
         Me.m_tpAgreement = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
@@ -434,7 +434,7 @@ Partial Class dlgEcobaseImport
         'm_tsddValue
         '
         Me.m_tsddValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature, Me.ReferenceToolStripMenuItem})
+        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature, Me.m_tsmiReference})
         resources.ApplyResources(Me.m_tsddValue, "m_tsddValue")
         Me.m_tsddValue.Name = "m_tsddValue"
         '
@@ -474,11 +474,11 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_tsmiTemperature, "m_tsmiTemperature")
         Me.m_tsmiTemperature.Tag = "5"
         '
-        'ReferenceToolStripMenuItem
+        'm_tsmiReference
         '
-        Me.ReferenceToolStripMenuItem.Name = "ReferenceToolStripMenuItem"
-        resources.ApplyResources(Me.ReferenceToolStripMenuItem, "ReferenceToolStripMenuItem")
-        Me.ReferenceToolStripMenuItem.Tag = "6"
+        Me.m_tsmiReference.Name = "m_tsmiReference"
+        resources.ApplyResources(Me.m_tsmiReference, "m_tsmiReference")
+        Me.m_tsmiReference.Tag = "6"
         '
         'm_tcContent
         '
@@ -643,5 +643,5 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_lblAreaValue As System.Windows.Forms.Label
     Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_llToEcoBase As System.Windows.Forms.LinkLabel
-    Private WithEvents ReferenceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiReference As System.Windows.Forms.ToolStripMenuItem
 End Class
