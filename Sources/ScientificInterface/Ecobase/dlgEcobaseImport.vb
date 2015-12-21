@@ -55,6 +55,7 @@ Public Class dlgEcobaseImport
         EcosystemType = 3
         Depth = 4
         Temperature = 5
+        Reference = 6
     End Enum
 
     Private m_filter As eFilterTypes = eFilterTypes.None
@@ -83,6 +84,7 @@ Public Class dlgEcobaseImport
         il.Images.Add(SharedResources.Critical)
         Me.m_tcContent.ImageList = il
 
+        ' Make scrollbars appear when needed
         Me.m_lblRefValue.AutoSize = False
         Me.m_lblRefValue.MaximumSize = New Size(100, 0)
         Me.m_lblRefValue.AutoSize = True
@@ -135,8 +137,6 @@ Public Class dlgEcobaseImport
             Me.m_lblAuthorValue.Text = cStringUtils.ToTitleCase(Me.m_model.Author)
             Me.m_lblCountryValue.Text = cStringUtils.ToTitleCase(Me.m_model.Country)
             Me.m_lblEcosystemTypeValue.Text = cStringUtils.ToSentenceCase(Me.m_model.EcosystemType)
-            Me.m_lblNoGroupsValue.Text = "?"
-            Me.m_lblNoFleetsValue.Text = "?"
             Me.m_lblPeriodValue.Text = Me.PeriodLabel()
             Me.m_lblEcosimUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcosimUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblFittedValue.Text = cSystemUtils.IIF(Me.m_model.IsFittedToTimeSeries, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
@@ -163,8 +163,6 @@ Public Class dlgEcobaseImport
             Me.m_lblAuthorValue.Text = ""
             Me.m_lblCountryValue.Text = ""
             Me.m_lblEcosystemTypeValue.Text = ""
-            Me.m_lblNoGroupsValue.Text = ""
-            Me.m_lblNoFleetsValue.Text = ""
             Me.m_lblPeriodValue.Text = ""
             Me.m_lblEcosimUsedValue.Text = ""
             Me.m_lblFittedValue.Text = ""
@@ -211,7 +209,11 @@ Public Class dlgEcobaseImport
         If (e.ListItem Is Nothing) Then Return
 
         Dim model As cModelData = DirectCast(e.ListItem, cModelData)
-        e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, model.Name, model.FirstYear)
+        Dim strYear As String = CStr(model.FirstYear)
+        Dim strModelName As String = model.Name.Replace(strYear, "").Trim()
+        Dim strAuthor As String = model.Author
+
+        e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, model.Name, model.FirstYear) & " " & strAuthor
 
     End Sub
 
@@ -243,6 +245,19 @@ Public Class dlgEcobaseImport
             Me.UpdateControls()
         Catch ex As Exception
             ' NOP
+        End Try
+    End Sub
+
+    Private Sub OnVisitEcobase(sender As System.Object, e As EventArgs) _
+        Handles m_llToEcoBase.Click
+
+        Try
+            Dim link As New cWebLinks(Me.Core)
+            Dim cmd As cBrowserCommand = CType(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            Dim strURL As String = String.Format(link.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
+            cmd.Invoke(strURL)
+        Catch ex As Exception
+
         End Try
     End Sub
 
@@ -434,6 +449,7 @@ Public Class dlgEcobaseImport
                         Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
                         Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
                         Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
+                        Case eFilterTypes.Reference : bUseModel = (model.Reference.IndexOf(strFilter, 0, StringComparison.CurrentCultureIgnoreCase) >= 0)
                     End Select
                 End If
 
