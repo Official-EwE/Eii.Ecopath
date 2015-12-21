@@ -1091,7 +1091,7 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_tbxDifference As System.Windows.Forms.TextBox
     Private WithEvents m_lblExplanation As System.Windows.Forms.Label
     Private WithEvents m_hdrAccess As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Private WithEvents m_cbAuthorAgreement As System.Windows.Forms.CheckBox
     Private WithEvents m_tpEcoBase As System.Windows.Forms.TabPage
     Private WithEvents m_pbEcobaseAgreement As System.Windows.Forms.PictureBox
@@ -1107,18 +1107,18 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_pbModelYear As System.Windows.Forms.PictureBox
     Private WithEvents m_lblExtraInfo As System.Windows.Forms.Label
     Private WithEvents m_plExtent As System.Windows.Forms.Panel
-    Friend WithEvents m_tpObjectives As System.Windows.Forms.TabPage
+    Private WithEvents m_tpObjectives As System.Windows.Forms.TabPage
     Private WithEvents m_cbObjectiveOtherImpactAssessment As System.Windows.Forms.CheckBox
     Private WithEvents m_cbObjectivePollution As System.Windows.Forms.CheckBox
     Private WithEvents m_cbObjectiveEcosystemFunctioning As System.Windows.Forms.CheckBox
     Private WithEvents m_cbObjectiveEnvironmentalVariability As System.Windows.Forms.CheckBox
     Private WithEvents m_cbObjectiveAquaculture As System.Windows.Forms.CheckBox
     Private WithEvents m_cbObjectiveFisheries As System.Windows.Forms.CheckBox
-    Friend WithEvents m_tpSubmission As System.Windows.Forms.TabPage
-    Friend WithEvents m_lblSubmModications As System.Windows.Forms.Label
+    Private WithEvents m_tpSubmission As System.Windows.Forms.TabPage
+    Private WithEvents m_lblSubmModications As System.Windows.Forms.Label
     Private WithEvents m_lblSubmInfo As System.Windows.Forms.Label
     Private WithEvents m_pbSubmExistingModel As System.Windows.Forms.PictureBox
-    Friend WithEvents m_tbxSubmModifications As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxSubmModifications As System.Windows.Forms.TextBox
     Private WithEvents m_cmbSubmEcobaseModel As System.Windows.Forms.ComboBox
     Private WithEvents m_lblSubmExistingModel As System.Windows.Forms.Label
     Private WithEvents m_pbSubmModifications As System.Windows.Forms.PictureBox
