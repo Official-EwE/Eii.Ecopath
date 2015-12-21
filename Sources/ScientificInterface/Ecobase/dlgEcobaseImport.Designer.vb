@@ -596,15 +596,15 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_wrkGetAgreement As System.ComponentModel.BackgroundWorker
     Private WithEvents m_tstbSearch As System.Windows.Forms.ToolStripTextBox
     Private WithEvents m_tsddValue As System.Windows.Forms.ToolStripDropDownButton
-    Friend WithEvents m_tsmiCountry As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiEcoType As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiCountry As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiEcoType As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiDepth As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiAuthor As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiTemperature As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tsmiNone As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents m_hdrRefs As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents m_lblRefValue As System.Windows.Forms.Label
+    Private WithEvents m_tsmiTemperature As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiNone As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_hdrRefs As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lblRefValue As System.Windows.Forms.Label
     Private WithEvents m_wrkGetImage As System.ComponentModel.BackgroundWorker
     Private WithEvents m_pbImage As System.Windows.Forms.PictureBox
     Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
@@ -622,26 +622,26 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_lblDepth As System.Windows.Forms.Label
     Private WithEvents m_lblTempRangeVal As System.Windows.Forms.Label
     Private WithEvents m_lblTempMeanVal As System.Windows.Forms.Label
-    Friend WithEvents m_hdrSpatial As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents m_tlpFields As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_hdrSpatial As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_tlpFields As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_lblModelName As System.Windows.Forms.Label
-    Friend WithEvents m_lblModelNameValue As System.Windows.Forms.Label
+    Private WithEvents m_lblModelNameValue As System.Windows.Forms.Label
     Private WithEvents m_lblAuthor As System.Windows.Forms.Label
-    Friend WithEvents m_lblAuthorValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblCountry As System.Windows.Forms.Label
-    Friend WithEvents m_lblCountryValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosimUsed As System.Windows.Forms.Label
-    Friend WithEvents m_lblFitted As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcospaceUsed As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosimUsedValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblFittedValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcospaceUsedValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosystemType As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosystemTypeValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblPeriod As System.Windows.Forms.Label
-    Friend WithEvents m_lblPeriodValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblAreaValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblArea As System.Windows.Forms.Label
-    Friend WithEvents m_llToEcoBase As System.Windows.Forms.LinkLabel
-    Friend WithEvents ReferenceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_lblAuthorValue As System.Windows.Forms.Label
+    Private WithEvents m_lblCountry As System.Windows.Forms.Label
+    Private WithEvents m_lblCountryValue As System.Windows.Forms.Label
+    Private WithEvents m_lblEcosimUsed As System.Windows.Forms.Label
+    Private WithEvents m_lblFitted As System.Windows.Forms.Label
+    Private WithEvents m_lblEcospaceUsed As System.Windows.Forms.Label
+    Private WithEvents m_lblEcosimUsedValue As System.Windows.Forms.Label
+    Private WithEvents m_lblFittedValue As System.Windows.Forms.Label
+    Private WithEvents m_lblEcospaceUsedValue As System.Windows.Forms.Label
+    Private WithEvents m_lblEcosystemType As System.Windows.Forms.Label
+    Private WithEvents m_lblEcosystemTypeValue As System.Windows.Forms.Label
+    Private WithEvents m_lblPeriod As System.Windows.Forms.Label
+    Private WithEvents m_lblPeriodValue As System.Windows.Forms.Label
+    Private WithEvents m_lblAreaValue As System.Windows.Forms.Label
+    Private WithEvents m_lblArea As System.Windows.Forms.Label
+    Private WithEvents m_llToEcoBase As System.Windows.Forms.LinkLabel
+    Private WithEvents ReferenceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
