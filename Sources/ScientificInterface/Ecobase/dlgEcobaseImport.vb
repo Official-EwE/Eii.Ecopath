@@ -289,7 +289,7 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click, m_tsmiReference.Click
 
         Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
         If (tsmi.Tag IsNot Nothing) Then
