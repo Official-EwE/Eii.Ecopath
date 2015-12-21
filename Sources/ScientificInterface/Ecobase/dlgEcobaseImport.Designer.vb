@@ -47,24 +47,20 @@ Partial Class dlgEcobaseImport
         Me.m_lblModelNameValue = New System.Windows.Forms.Label()
         Me.m_lblAuthor = New System.Windows.Forms.Label()
         Me.m_lblAuthorValue = New System.Windows.Forms.Label()
-        Me.m_lblArea = New System.Windows.Forms.Label()
-        Me.m_lblAreaValue = New System.Windows.Forms.Label()
-        Me.m_lblPeriod = New System.Windows.Forms.Label()
-        Me.m_lblPeriodValue = New System.Windows.Forms.Label()
         Me.m_lblCountry = New System.Windows.Forms.Label()
-        Me.m_lblEcosystemType = New System.Windows.Forms.Label()
         Me.m_lblCountryValue = New System.Windows.Forms.Label()
-        Me.m_lblEcosystemTypeValue = New System.Windows.Forms.Label()
         Me.m_lblEcosimUsed = New System.Windows.Forms.Label()
         Me.m_lblFitted = New System.Windows.Forms.Label()
         Me.m_lblEcospaceUsed = New System.Windows.Forms.Label()
         Me.m_lblEcosimUsedValue = New System.Windows.Forms.Label()
         Me.m_lblFittedValue = New System.Windows.Forms.Label()
         Me.m_lblEcospaceUsedValue = New System.Windows.Forms.Label()
-        Me.m_lblNoGroups = New System.Windows.Forms.Label()
-        Me.m_lblNoGroupsValue = New System.Windows.Forms.Label()
-        Me.m_lblNoFleets = New System.Windows.Forms.Label()
-        Me.m_lblNoFleetsValue = New System.Windows.Forms.Label()
+        Me.m_lblEcosystemType = New System.Windows.Forms.Label()
+        Me.m_lblEcosystemTypeValue = New System.Windows.Forms.Label()
+        Me.m_lblPeriod = New System.Windows.Forms.Label()
+        Me.m_lblPeriodValue = New System.Windows.Forms.Label()
+        Me.m_lblAreaValue = New System.Windows.Forms.Label()
+        Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_hdrRefs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblRefValue = New System.Windows.Forms.Label()
         Me.m_tlpSpatial = New System.Windows.Forms.TableLayoutPanel()
@@ -82,6 +78,7 @@ Partial Class dlgEcobaseImport
         Me.m_lblDepth = New System.Windows.Forms.Label()
         Me.m_lblTempRangeVal = New System.Windows.Forms.Label()
         Me.m_lblTempMeanVal = New System.Windows.Forms.Label()
+        Me.m_llToEcoBase = New System.Windows.Forms.LinkLabel()
         Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnOK = New System.Windows.Forms.Button()
@@ -95,6 +92,7 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiEcoType = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiDepth = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiTemperature = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ReferenceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tcContent = New System.Windows.Forms.TabControl()
         Me.m_tpAgreement = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
@@ -178,24 +176,20 @@ Partial Class dlgEcobaseImport
         Me.m_tlpFields.Controls.Add(Me.m_lblModelNameValue, 1, 0)
         Me.m_tlpFields.Controls.Add(Me.m_lblAuthor, 0, 1)
         Me.m_tlpFields.Controls.Add(Me.m_lblAuthorValue, 1, 1)
-        Me.m_tlpFields.Controls.Add(Me.m_lblArea, 0, 5)
-        Me.m_tlpFields.Controls.Add(Me.m_lblAreaValue, 1, 5)
-        Me.m_tlpFields.Controls.Add(Me.m_lblPeriod, 0, 4)
-        Me.m_tlpFields.Controls.Add(Me.m_lblPeriodValue, 1, 4)
         Me.m_tlpFields.Controls.Add(Me.m_lblCountry, 0, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemType, 0, 3)
         Me.m_tlpFields.Controls.Add(Me.m_lblCountryValue, 1, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemTypeValue, 1, 3)
         Me.m_tlpFields.Controls.Add(Me.m_lblEcosimUsed, 2, 0)
         Me.m_tlpFields.Controls.Add(Me.m_lblFitted, 2, 1)
         Me.m_tlpFields.Controls.Add(Me.m_lblEcospaceUsed, 2, 2)
         Me.m_tlpFields.Controls.Add(Me.m_lblEcosimUsedValue, 3, 0)
         Me.m_tlpFields.Controls.Add(Me.m_lblFittedValue, 3, 1)
         Me.m_tlpFields.Controls.Add(Me.m_lblEcospaceUsedValue, 3, 2)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoGroups, 2, 4)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoGroupsValue, 3, 4)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoFleets, 2, 5)
-        Me.m_tlpFields.Controls.Add(Me.m_lblNoFleetsValue, 3, 5)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemType, 2, 3)
+        Me.m_tlpFields.Controls.Add(Me.m_lblEcosystemTypeValue, 3, 3)
+        Me.m_tlpFields.Controls.Add(Me.m_lblPeriod, 0, 3)
+        Me.m_tlpFields.Controls.Add(Me.m_lblPeriodValue, 1, 3)
+        Me.m_tlpFields.Controls.Add(Me.m_lblAreaValue, 1, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblArea, 0, 4)
         Me.m_tlpFields.Name = "m_tlpFields"
         '
         'm_lblModelName
@@ -218,45 +212,15 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_lblAuthorValue, "m_lblAuthorValue")
         Me.m_lblAuthorValue.Name = "m_lblAuthorValue"
         '
-        'm_lblArea
-        '
-        resources.ApplyResources(Me.m_lblArea, "m_lblArea")
-        Me.m_lblArea.Name = "m_lblArea"
-        '
-        'm_lblAreaValue
-        '
-        resources.ApplyResources(Me.m_lblAreaValue, "m_lblAreaValue")
-        Me.m_lblAreaValue.Name = "m_lblAreaValue"
-        '
-        'm_lblPeriod
-        '
-        resources.ApplyResources(Me.m_lblPeriod, "m_lblPeriod")
-        Me.m_lblPeriod.Name = "m_lblPeriod"
-        '
-        'm_lblPeriodValue
-        '
-        resources.ApplyResources(Me.m_lblPeriodValue, "m_lblPeriodValue")
-        Me.m_lblPeriodValue.Name = "m_lblPeriodValue"
-        '
         'm_lblCountry
         '
         resources.ApplyResources(Me.m_lblCountry, "m_lblCountry")
         Me.m_lblCountry.Name = "m_lblCountry"
         '
-        'm_lblEcosystemType
-        '
-        resources.ApplyResources(Me.m_lblEcosystemType, "m_lblEcosystemType")
-        Me.m_lblEcosystemType.Name = "m_lblEcosystemType"
-        '
         'm_lblCountryValue
         '
         resources.ApplyResources(Me.m_lblCountryValue, "m_lblCountryValue")
         Me.m_lblCountryValue.Name = "m_lblCountryValue"
-        '
-        'm_lblEcosystemTypeValue
-        '
-        resources.ApplyResources(Me.m_lblEcosystemTypeValue, "m_lblEcosystemTypeValue")
-        Me.m_lblEcosystemTypeValue.Name = "m_lblEcosystemTypeValue"
         '
         'm_lblEcosimUsed
         '
@@ -288,25 +252,35 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_lblEcospaceUsedValue, "m_lblEcospaceUsedValue")
         Me.m_lblEcospaceUsedValue.Name = "m_lblEcospaceUsedValue"
         '
-        'm_lblNoGroups
+        'm_lblEcosystemType
         '
-        resources.ApplyResources(Me.m_lblNoGroups, "m_lblNoGroups")
-        Me.m_lblNoGroups.Name = "m_lblNoGroups"
+        resources.ApplyResources(Me.m_lblEcosystemType, "m_lblEcosystemType")
+        Me.m_lblEcosystemType.Name = "m_lblEcosystemType"
         '
-        'm_lblNoGroupsValue
+        'm_lblEcosystemTypeValue
         '
-        resources.ApplyResources(Me.m_lblNoGroupsValue, "m_lblNoGroupsValue")
-        Me.m_lblNoGroupsValue.Name = "m_lblNoGroupsValue"
+        resources.ApplyResources(Me.m_lblEcosystemTypeValue, "m_lblEcosystemTypeValue")
+        Me.m_lblEcosystemTypeValue.Name = "m_lblEcosystemTypeValue"
         '
-        'm_lblNoFleets
+        'm_lblPeriod
         '
-        resources.ApplyResources(Me.m_lblNoFleets, "m_lblNoFleets")
-        Me.m_lblNoFleets.Name = "m_lblNoFleets"
+        resources.ApplyResources(Me.m_lblPeriod, "m_lblPeriod")
+        Me.m_lblPeriod.Name = "m_lblPeriod"
         '
-        'm_lblNoFleetsValue
+        'm_lblPeriodValue
         '
-        resources.ApplyResources(Me.m_lblNoFleetsValue, "m_lblNoFleetsValue")
-        Me.m_lblNoFleetsValue.Name = "m_lblNoFleetsValue"
+        resources.ApplyResources(Me.m_lblPeriodValue, "m_lblPeriodValue")
+        Me.m_lblPeriodValue.Name = "m_lblPeriodValue"
+        '
+        'm_lblAreaValue
+        '
+        resources.ApplyResources(Me.m_lblAreaValue, "m_lblAreaValue")
+        Me.m_lblAreaValue.Name = "m_lblAreaValue"
+        '
+        'm_lblArea
+        '
+        resources.ApplyResources(Me.m_lblArea, "m_lblArea")
+        Me.m_lblArea.Name = "m_lblArea"
         '
         'm_hdrRefs
         '
@@ -350,6 +324,7 @@ Partial Class dlgEcobaseImport
         Me.m_tlpSpatFields.Controls.Add(Me.m_lblDepth, 0, 2)
         Me.m_tlpSpatFields.Controls.Add(Me.m_lblTempRangeVal, 1, 4)
         Me.m_tlpSpatFields.Controls.Add(Me.m_lblTempMeanVal, 1, 5)
+        Me.m_tlpSpatFields.Controls.Add(Me.m_llToEcoBase, 1, 7)
         Me.m_tlpSpatFields.Name = "m_tlpSpatFields"
         '
         'm_lblNS
@@ -412,6 +387,12 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_lblTempMeanVal, "m_lblTempMeanVal")
         Me.m_lblTempMeanVal.Name = "m_lblTempMeanVal"
         '
+        'm_llToEcoBase
+        '
+        resources.ApplyResources(Me.m_llToEcoBase, "m_llToEcoBase")
+        Me.m_llToEcoBase.Name = "m_llToEcoBase"
+        Me.m_llToEcoBase.TabStop = True
+        '
         'm_hdrSpatial
         '
         Me.m_hdrSpatial.CanCollapseParent = False
@@ -453,7 +434,7 @@ Partial Class dlgEcobaseImport
         'm_tsddValue
         '
         Me.m_tsddValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature})
+        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature, Me.ReferenceToolStripMenuItem})
         resources.ApplyResources(Me.m_tsddValue, "m_tsddValue")
         Me.m_tsddValue.Name = "m_tsddValue"
         '
@@ -492,6 +473,12 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiTemperature.Name = "m_tsmiTemperature"
         resources.ApplyResources(Me.m_tsmiTemperature, "m_tsmiTemperature")
         Me.m_tsmiTemperature.Tag = "5"
+        '
+        'ReferenceToolStripMenuItem
+        '
+        Me.ReferenceToolStripMenuItem.Name = "ReferenceToolStripMenuItem"
+        resources.ApplyResources(Me.ReferenceToolStripMenuItem, "ReferenceToolStripMenuItem")
+        Me.ReferenceToolStripMenuItem.Tag = "6"
         '
         'm_tcContent
         '
@@ -616,29 +603,6 @@ Partial Class dlgEcobaseImport
     Friend WithEvents m_tsmiTemperature As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents m_tsmiNone As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents m_tlpFields As System.Windows.Forms.TableLayoutPanel
-    Private WithEvents m_lblModelName As System.Windows.Forms.Label
-    Friend WithEvents m_lblModelNameValue As System.Windows.Forms.Label
-    Private WithEvents m_lblAuthor As System.Windows.Forms.Label
-    Friend WithEvents m_lblAuthorValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblCountry As System.Windows.Forms.Label
-    Friend WithEvents m_lblCountryValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblArea As System.Windows.Forms.Label
-    Friend WithEvents m_lblAreaValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblPeriod As System.Windows.Forms.Label
-    Friend WithEvents m_lblPeriodValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosimUsed As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosimUsedValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblFitted As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcospaceUsed As System.Windows.Forms.Label
-    Friend WithEvents m_lblFittedValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcospaceUsedValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosystemType As System.Windows.Forms.Label
-    Friend WithEvents m_lblEcosystemTypeValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblNoGroups As System.Windows.Forms.Label
-    Friend WithEvents m_lblNoGroupsValue As System.Windows.Forms.Label
-    Friend WithEvents m_lblNoFleets As System.Windows.Forms.Label
-    Friend WithEvents m_lblNoFleetsValue As System.Windows.Forms.Label
     Friend WithEvents m_hdrRefs As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents m_lblRefValue As System.Windows.Forms.Label
     Private WithEvents m_wrkGetImage As System.ComponentModel.BackgroundWorker
@@ -659,4 +623,25 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_lblTempRangeVal As System.Windows.Forms.Label
     Private WithEvents m_lblTempMeanVal As System.Windows.Forms.Label
     Friend WithEvents m_hdrSpatial As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents m_tlpFields As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_lblModelName As System.Windows.Forms.Label
+    Friend WithEvents m_lblModelNameValue As System.Windows.Forms.Label
+    Private WithEvents m_lblAuthor As System.Windows.Forms.Label
+    Friend WithEvents m_lblAuthorValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblCountry As System.Windows.Forms.Label
+    Friend WithEvents m_lblCountryValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblEcosimUsed As System.Windows.Forms.Label
+    Friend WithEvents m_lblFitted As System.Windows.Forms.Label
+    Friend WithEvents m_lblEcospaceUsed As System.Windows.Forms.Label
+    Friend WithEvents m_lblEcosimUsedValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblFittedValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblEcospaceUsedValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblEcosystemType As System.Windows.Forms.Label
+    Friend WithEvents m_lblEcosystemTypeValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblPeriod As System.Windows.Forms.Label
+    Friend WithEvents m_lblPeriodValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblAreaValue As System.Windows.Forms.Label
+    Friend WithEvents m_lblArea As System.Windows.Forms.Label
+    Friend WithEvents m_llToEcoBase As System.Windows.Forms.LinkLabel
+    Friend WithEvents ReferenceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
