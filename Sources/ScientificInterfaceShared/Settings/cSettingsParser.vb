@@ -104,14 +104,14 @@ Public Class cSettingsParser
     ''' -----------------------------------------------------------------------
     Default Public Property Parameter(strName As String, Optional strDefault As String = "") As String
         Get
-            strName = cFileUtils.ToValidFileName(strName, False)
+            strName = cFileUtils.ToValidFileName(strName, False).ToLower
             If (Me.m_dtParams.ContainsKey(strName)) Then
                 Return Me.m_dtParams(strName)
             End If
             Return strDefault
         End Get
         Set(value As String)
-            strName = cFileUtils.ToValidFileName(strName, False)
+            strName = cFileUtils.ToValidFileName(strName, False).ToLower
             Me.m_dtParams(strName) = value
             Me.Encode()
         End Set

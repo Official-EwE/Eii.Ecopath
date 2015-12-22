@@ -89,7 +89,15 @@ Public Class dlgEcobaseImport
         Me.m_lblRefValue.MaximumSize = New Size(100, 0)
         Me.m_lblRefValue.AutoSize = True
 
+        Me.m_tsbnShowYear.Image = SharedResources.CalendarHS
+        Me.m_tsbnShowAuthor.Image = SharedResources.PersonHS
+        Me.m_tsbnShowLocked.Image = SharedResources.NotEditable
         Me.m_tsddValue.Image = SharedResources.FilterHS
+
+        Dim p As New cSettingsParser(Me.Settings)
+        Me.m_tsbnShowYear.Checked = p.Parameter("Year", "1") = "1"
+        Me.m_tsbnShowAuthor.Checked = p.Parameter("Author", "0") = "1"
+        Me.m_tsbnShowLocked.Checked = p.Parameter("Locked", "0") = "1"
 
         Me.m_ecobase = New cEcoBaseWDSL()
         Me.m_wrkGetAgreement.RunWorkerAsync(Nothing)
@@ -101,6 +109,17 @@ Public Class dlgEcobaseImport
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
         e.Cancel = (Me.DialogResult = Windows.Forms.DialogResult.OK) And Not Me.CanDownload
+
+        If (Not e.Cancel) Then
+
+            Dim p As New cSettingsParser()
+            p.Parameter("Year") = cSystemUtils.IIF(Me.m_tsbnShowYear.Checked, "1", "0")
+            p.Parameter("Author") = cSystemUtils.IIF(Me.m_tsbnShowAuthor.Checked, "1", "0")
+            p.Parameter("Locked") = cSystemUtils.IIF(Me.m_tsbnShowLocked.Checked, "1", "0")
+            Me.Settings = p.Buffer
+
+        End If
+
         MyBase.OnFormClosing(e)
     End Sub
 
@@ -128,6 +147,8 @@ Public Class dlgEcobaseImport
         Me.m_rtfAgreement.Text = Me.m_strAgreement
         Me.m_btnOK.Enabled = Me.CanDownload
 
+        Me.m_cbEcoBaseAgreement.Enabled = Not String.IsNullOrWhiteSpace(Me.m_strAgreement)
+
         ' Populate model controls
         If (Me.m_model IsNot Nothing) Then
             Dim sb As New StringBuilder()
@@ -141,6 +162,10 @@ Public Class dlgEcobaseImport
             Me.m_lblEcosimUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcosimUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblFittedValue.Text = cSystemUtils.IIF(Me.m_model.IsFittedToTimeSeries, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblEcospaceUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcospaceUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+
+            Me.m_lblDessimAllowValue.Text = cSystemUtils.IIF(Me.m_model.AllowDissemination, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblDessimAllowValue.Image = cSystemUtils.IIF(Me.m_model.AllowDissemination, SharedResources.OK, SharedResources.Critical)
+
             Me.m_lblRefValue.Text = Me.ReferenceLabel()
 
             If (Me.m_img Is Nothing) Then
@@ -167,6 +192,8 @@ Public Class dlgEcobaseImport
             Me.m_lblEcosimUsedValue.Text = ""
             Me.m_lblFittedValue.Text = ""
             Me.m_lblEcospaceUsedValue.Text = ""
+            Me.m_lblDessimAllowValue.Text = ""
+            Me.m_lblDessimAllowValue.Image = Nothing
             Me.m_lblRefValue.Text = ""
             Me.m_pbImage.Image = Nothing
             Me.m_lblLonVal.Text = ""
@@ -175,6 +202,10 @@ Public Class dlgEcobaseImport
             Me.m_lblDepthMeanVal.Text = ""
             Me.m_lblTempRangeVal.Text = ""
             Me.m_lblTempMeanVal.Text = ""
+        End If
+
+        If Me.m_tsbnShowLocked.Checked Then
+        Else
         End If
 
     End Sub
@@ -203,17 +234,41 @@ Public Class dlgEcobaseImport
 
 #Region " Control events "
 
+
+    Private Sub OnShowOptionChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnShowYear.CheckedChanged, m_tsbnShowAuthor.CheckedChanged, m_tsbnShowLocked.CheckedChanged
+
+        Me.UpdateModelList()
+
+    End Sub
+
     Private Sub OnModelFormat(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_lbxModels.Format
 
         If (e.ListItem Is Nothing) Then Return
 
-        Dim model As cModelData = DirectCast(e.ListItem, cModelData)
-        Dim strYear As String = CStr(model.FirstYear)
-        Dim strModelName As String = model.Name.Replace(strYear, "").Trim()
-        Dim strAuthor As String = model.Author
+        Dim bShowYear As Boolean = Me.m_tsbnShowYear.Checked
+        Dim bShowAuth As Boolean = Me.m_tsbnShowAuthor.Checked
 
-        e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, model.Name, model.FirstYear) & " " & strAuthor
+        Dim model As cModelData = DirectCast(e.ListItem, cModelData)
+        Dim strModelName As String = model.Name
+
+        If (bShowYear Or bShowAuth) Then
+            Dim strDetail As String = ""
+            Dim strAuthor As String = model.Author
+            Dim strYear As String = CStr(model.FirstYear)
+
+            If (bShowYear = bShowAuth) Then
+                strDetail = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strYear, strAuthor)
+            ElseIf bShowYear Then
+                strDetail = strYear
+            Else
+                strDetail = strAuthor
+            End If
+            e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strModelName, strDetail)
+        Else
+            e.Value = strModelName
+        End If
 
     End Sub
 
@@ -302,6 +357,8 @@ Public Class dlgEcobaseImport
                 End Try
             End If
         End If
+
+        Me.UpdateModelList()
         Me.UpdateControls()
 
     End Sub
@@ -430,14 +487,15 @@ Public Class dlgEcobaseImport
     Private Sub UpdateModelList()
 
         Dim strFilter As String = Me.m_tstbSearch.Text
+        Dim bShowLocked As Boolean = Me.m_tsbnShowLocked.Checked
         Dim bUseModel As Boolean = True
         Dim bKeepSelection As Boolean = False
 
-        Me.m_lbxModels.SuspendLayout()
+        Me.m_lbxModels.BeginUpdate()
         Me.m_lbxModels.Items.Clear()
 
         For Each model As cModelData In Me.m_models
-            If (model.AllowDissemination) Then
+            If (model.AllowDissemination Or bShowLocked) Then
                 bUseModel = True
 
                 ' Filters
@@ -460,7 +518,7 @@ Public Class dlgEcobaseImport
             End If
         Next
 
-        Me.m_lbxModels.ResumeLayout()
+        Me.m_lbxModels.EndUpdate()
 
         If (bKeepSelection) Then
             Me.m_lbxModels.SelectedItem = Me.m_model
