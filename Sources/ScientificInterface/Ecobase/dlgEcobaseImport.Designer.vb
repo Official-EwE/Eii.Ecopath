@@ -93,6 +93,10 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiDepth = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiTemperature = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiReference = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsllShow = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsbnShowYear = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnShowAuthor = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnShowLocked = New System.Windows.Forms.ToolStripButton()
         Me.m_tcContent = New System.Windows.Forms.TabControl()
         Me.m_tpAgreement = New System.Windows.Forms.TabPage()
         Me.m_pbAgreement = New System.Windows.Forms.PictureBox()
@@ -102,6 +106,8 @@ Partial Class dlgEcobaseImport
         Me.m_tpImport = New System.Windows.Forms.TabPage()
         Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
         Me.m_wrkGetImage = New System.ComponentModel.BackgroundWorker()
+        Me.m_lblDessimAllow = New System.Windows.Forms.Label()
+        Me.m_lblDessimAllowValue = New System.Windows.Forms.Label()
         CType(Me.m_scEcobaseContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scEcobaseContent.Panel1.SuspendLayout()
         Me.m_scEcobaseContent.Panel2.SuspendLayout()
@@ -190,6 +196,8 @@ Partial Class dlgEcobaseImport
         Me.m_tlpFields.Controls.Add(Me.m_lblPeriodValue, 1, 3)
         Me.m_tlpFields.Controls.Add(Me.m_lblAreaValue, 1, 4)
         Me.m_tlpFields.Controls.Add(Me.m_lblArea, 0, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblDessimAllow, 2, 4)
+        Me.m_tlpFields.Controls.Add(Me.m_lblDessimAllowValue, 3, 4)
         Me.m_tlpFields.Name = "m_tlpFields"
         '
         'm_lblModelName
@@ -420,7 +428,7 @@ Partial Class dlgEcobaseImport
         'm_tsFilter
         '
         Me.m_tsFilter.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsFilter.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tstbSearch, Me.m_tsddValue})
+        Me.m_tsFilter.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tstbSearch, Me.m_tsddValue, Me.m_tsllShow, Me.m_tsbnShowYear, Me.m_tsbnShowAuthor, Me.m_tsbnShowLocked})
         resources.ApplyResources(Me.m_tsFilter, "m_tsFilter")
         Me.m_tsFilter.Name = "m_tsFilter"
         Me.m_tsFilter.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -480,6 +488,34 @@ Partial Class dlgEcobaseImport
         resources.ApplyResources(Me.m_tsmiReference, "m_tsmiReference")
         Me.m_tsmiReference.Tag = "6"
         '
+        'm_tsllShow
+        '
+        Me.m_tsllShow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tsllShow.Image = Global.ScientificInterface.My.Resources.Resources.EcoBase1
+        Me.m_tsllShow.Name = "m_tsllShow"
+        resources.ApplyResources(Me.m_tsllShow, "m_tsllShow")
+        '
+        'm_tsbnShowYear
+        '
+        Me.m_tsbnShowYear.CheckOnClick = True
+        Me.m_tsbnShowYear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnShowYear, "m_tsbnShowYear")
+        Me.m_tsbnShowYear.Name = "m_tsbnShowYear"
+        '
+        'm_tsbnShowAuthor
+        '
+        Me.m_tsbnShowAuthor.CheckOnClick = True
+        Me.m_tsbnShowAuthor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnShowAuthor, "m_tsbnShowAuthor")
+        Me.m_tsbnShowAuthor.Name = "m_tsbnShowAuthor"
+        '
+        'm_tsbnShowLocked
+        '
+        Me.m_tsbnShowLocked.CheckOnClick = True
+        Me.m_tsbnShowLocked.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnShowLocked, "m_tsbnShowLocked")
+        Me.m_tsbnShowLocked.Name = "m_tsbnShowLocked"
+        '
         'm_tcContent
         '
         resources.ApplyResources(Me.m_tcContent, "m_tcContent")
@@ -537,6 +573,16 @@ Partial Class dlgEcobaseImport
         '
         'm_wrkGetImage
         '
+        '
+        'm_lblDessimAllow
+        '
+        resources.ApplyResources(Me.m_lblDessimAllow, "m_lblDessimAllow")
+        Me.m_lblDessimAllow.Name = "m_lblDessimAllow"
+        '
+        'm_lblDessimAllowValue
+        '
+        resources.ApplyResources(Me.m_lblDessimAllowValue, "m_lblDessimAllowValue")
+        Me.m_lblDessimAllowValue.Name = "m_lblDessimAllowValue"
         '
         'dlgEcobaseImport
         '
@@ -644,4 +690,10 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_llToEcoBase As System.Windows.Forms.LinkLabel
     Private WithEvents m_tsmiReference As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsbnShowYear As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnShowAuthor As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsllShow As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tsbnShowLocked As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_lblDessimAllow As System.Windows.Forms.Label
+    Private WithEvents m_lblDessimAllowValue As System.Windows.Forms.Label
 End Class

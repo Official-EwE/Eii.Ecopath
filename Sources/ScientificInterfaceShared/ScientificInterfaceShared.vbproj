@@ -1070,6 +1070,7 @@
     <Content Include="Resources\NavHS.png" />
     <None Include="Resources\plugin.png" />
     <None Include="Resources\pluginpoint.png" />
+    <None Include="Resources\PersonHS.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />
     <Content Include="Resources\Refresh.png" />
