@@ -662,7 +662,6 @@ Public Class dlgEcobaseExport
 
         Dim msg As cMessage = Nothing
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LOADING, -1)
         Me.m_models.Clear()
 
         Try
@@ -682,8 +681,6 @@ Public Class dlgEcobaseExport
         If (msg IsNot Nothing) Then
             Me.Core.Messages.SendMessage(msg)
         End If
-
-        cApplicationStatusNotifier.EndProgress(Me.Core)
 
     End Sub
 
