@@ -100,6 +100,11 @@ Public Class dlgEcobaseImport
         Me.m_tsbnShowLocked.Checked = p.Parameter("Locked", "0") = "1"
 
         Me.m_ecobase = New cEcoBaseWDSL()
+
+        Me.m_wrkGetAgreement.WorkerSupportsCancellation = True
+        Me.m_wrkGetModels.WorkerSupportsCancellation = True
+        Me.m_wrkGetImage.WorkerSupportsCancellation = True
+
         Me.m_wrkGetAgreement.RunWorkerAsync(Nothing)
         Me.m_wrkGetModels.RunWorkerAsync(Nothing)
 
@@ -118,6 +123,15 @@ Public Class dlgEcobaseImport
             p.Parameter("Locked") = cSystemUtils.IIF(Me.m_tsbnShowLocked.Checked, "1", "0")
             Me.Settings = p.Buffer
 
+            Try
+                Me.m_ecobase.CancelAsync(Nothing)
+                Me.m_wrkGetAgreement.CancelAsync()
+                Me.m_wrkGetImage.CancelAsync()
+                Me.m_wrkGetModels.CancelAsync()
+            Catch ex As Exception
+
+            End Try
+
         End If
 
         MyBase.OnFormClosing(e)
@@ -130,9 +144,12 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         MyBase.OnFormClosed(e)
 
-        Me.m_ecobase.CancelAsync(Nothing)
-        Me.m_ecobase.Dispose()
-        Me.m_ecobase = Nothing
+        Try
+            Me.m_ecobase.Dispose()
+            Me.m_ecobase = Nothing
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -390,13 +407,14 @@ Public Class dlgEcobaseImport
 
         Dim msg As cMessage = Nothing
 
-        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LOADING, -1)
         Me.m_models.Clear()
 
         Try
             Dim strModels As String = Me.m_ecobase.list_models("", Nothing)
             Dim data As cEcobaseModelList = cEcobaseModelList.FromXML(strModels)
             Me.m_models.AddRange(data.Models)
+
+            If Me.m_wrkGetModels.CancellationPending Then e.Cancel = True
 
         Catch exWeb As Net.WebException
             msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -409,17 +427,20 @@ Public Class dlgEcobaseImport
             Me.Core.Messages.SendMessage(msg)
         End If
 
-        cApplicationStatusNotifier.EndProgress(Me.Core)
-
     End Sub
 
     Private Sub OnGetModelsCompleted(sender As Object, _
                                      e As System.ComponentModel.RunWorkerCompletedEventArgs) _
         Handles m_wrkGetModels.RunWorkerCompleted
 
-        Me.UpdateEcoBaseLists()
-        Me.UpdateModelList()
-        Me.UpdateControls()
+        Try
+            If e.Cancelled Then Return
+            Me.UpdateEcoBaseLists()
+            Me.UpdateModelList()
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -431,6 +452,7 @@ Public Class dlgEcobaseImport
             Dim wdsl As New cEcoBaseWDSL()
             Dim strAgreement As String = wdsl.getModel("agreement", -1)
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
+            If Me.m_wrkGetAgreement.CancellationPending Then e.Cancel = True
 
             Me.m_strAgreement = data.Agreement
 
@@ -444,6 +466,7 @@ Public Class dlgEcobaseImport
         Handles m_wrkGetAgreement.RunWorkerCompleted
 
         Try
+            If e.Cancelled Then Return
             Me.UpdateControls()
         Catch ex As Exception
 
@@ -464,6 +487,8 @@ Public Class dlgEcobaseImport
             Dim data() As Byte = MyWebClient.DownloadData("http://sirs.agrocampus-ouest.fr/EcoBase/php/mapserver.php?model=" & m_model.EcobaseCode)
             Dim strm As New IO.MemoryStream(data)
             Me.m_img = New System.Drawing.Bitmap(strm)
+
+            If Me.m_wrkGetImage.CancellationPending Then e.Cancel = True
         Catch ex As Exception
 
         End Try
@@ -473,6 +498,7 @@ Public Class dlgEcobaseImport
     Private Sub OnGetImageCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles m_wrkGetImage.RunWorkerCompleted
 
         Try
+            If e.Cancelled Then Return
             Me.UpdateControls()
         Catch ex As Exception
 
