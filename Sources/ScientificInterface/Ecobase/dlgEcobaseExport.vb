@@ -151,7 +151,11 @@ Public Class dlgEcobaseExport
         Me.m_bInUpdate = False
 
         Me.m_ecobase = New cEcoBaseWDSL()
+
+        Me.m_wrkGetAuthorAgreement.WorkerSupportsCancellation = True
         Me.m_wrkGetAuthorAgreement.RunWorkerAsync(Nothing)
+
+        Me.m_wrkGetModels.WorkerSupportsCancellation = True
         Me.m_wrkGetModels.RunWorkerAsync(Nothing)
 
         Me.CenterToParent()
@@ -666,6 +670,8 @@ Public Class dlgEcobaseExport
             Dim data As cEcobaseModelList = cEcobaseModelList.FromXML(strModels)
             Me.m_models.AddRange(data.Models)
 
+            e.Cancel = Me.m_wrkGetModels.CancellationPending
+
         Catch exWeb As Net.WebException
             msg = New cMessage(My.Resources.ECOBASE_ERROR_NOCONNECTION, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
         Catch ex As Exception
@@ -685,8 +691,13 @@ Public Class dlgEcobaseExport
                                      e As System.ComponentModel.RunWorkerCompletedEventArgs) _
         Handles m_wrkGetModels.RunWorkerCompleted
 
-        Me.FillModelCombo()
-        Me.UpdateControls()
+        Try
+            If e.Cancelled Then Return
+            Me.FillModelCombo()
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -699,6 +710,7 @@ Public Class dlgEcobaseExport
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
 
             Me.m_strAuthorAgreement = data.Agreement
+            e.Cancel = Me.m_wrkGetAuthorAgreement.CancellationPending
 
         Catch ex As Exception
 
@@ -710,6 +722,7 @@ Public Class dlgEcobaseExport
         Handles m_wrkGetAuthorAgreement.RunWorkerCompleted
 
         Try
+            If (e.Cancelled) Then Return
             Me.UpdateControls()
         Catch ex As Exception
 
