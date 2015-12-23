@@ -77,7 +77,6 @@ Public Class dlgManageTimeSeries
 
     Private m_tr As cTimeSeriesTextReader = Nothing
     Private m_strImportFileName As String = ""
-    Private m_bLimitPreview As Boolean = True
 
     Public Sub New(ByVal uic As cUIContext, ByVal mode As eModeType)
 
@@ -284,12 +283,6 @@ Public Class dlgManageTimeSeries
         Me.ReloadTimeSeries()
     End Sub
 
-    Private Sub m_cbShowFirst50_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cbShowFirst50.CheckedChanged
-        Me.m_bLimitPreview = Me.m_cbShowFirst50.Checked
-        Me.UpdatePreview()
-    End Sub
-
     ' -- Interval --
 
     Private Sub m_cmbIntervalChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -396,8 +389,6 @@ Public Class dlgManageTimeSeries
 
         ' Update file name control
         Me.m_tbImportFileName.Text = Me.m_strImportFileName
-        ' Update checkerdicheck
-        Me.m_cbShowFirst50.Checked = Me.m_bLimitPreview
 
         ' Update source radio buttons
         If TypeOf Me.m_tr Is cTimeSeriesCSVReader Then
@@ -632,14 +623,14 @@ Public Class dlgManageTimeSeries
         ' Populate preview grid
 
         ' JS 23Dec15: performance was awful due to smart content resizing. Disable resizing during update ;)
+        ' JS 23Dec15: removed 'preview 50' option now performance is acceptable again
         Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
         For Each col As DataGridViewColumn In Me.m_dgvImportPreview.Columns
             col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
         Next
         Me.m_dgvImportPreview.SuspendLayout()
 
-        'vc had a model with 3000 years run & time series; takes forever to make the preview, so truncating it
-        Me.m_dgvImportPreview.RowCount = Math.Min(IIF(Me.m_bLimitPreview, 50, tsrPreview.RowCount), tsrPreview.RowCount)
+        Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
 
         For iRow As Integer = 1 To Me.m_dgvImportPreview.RowCount
