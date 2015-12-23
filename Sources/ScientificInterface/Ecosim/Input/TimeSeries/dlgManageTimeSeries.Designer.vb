@@ -55,7 +55,6 @@ Partial Class dlgManageTimeSeries
         Me.m_tpImport = New System.Windows.Forms.TabPage()
         Me.m_cmbImportInterval = New System.Windows.Forms.ComboBox()
         Me.m_lblImportInterval = New System.Windows.Forms.Label()
-        Me.m_cbShowFirst50 = New System.Windows.Forms.CheckBox()
         Me.m_cbImportEnableOnImport = New System.Windows.Forms.CheckBox()
         Me.m_dgvImportPreview = New System.Windows.Forms.DataGridView()
         Me.m_hdrTarget = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -86,9 +85,9 @@ Partial Class dlgManageTimeSeries
         Me.m_lvLoadDatasets = New System.Windows.Forms.ListView()
         Me.m_colLoadDataset = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colLoaded = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_clInterval = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_tcMain = New System.Windows.Forms.TabControl()
-        Me.m_clInterval = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_tpDelete.SuspendLayout()
         Me.m_tpImport.SuspendLayout()
         CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -184,7 +183,6 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_tpImport.Controls.Add(Me.m_cmbImportInterval)
         Me.m_tpImport.Controls.Add(Me.m_lblImportInterval)
-        Me.m_tpImport.Controls.Add(Me.m_cbShowFirst50)
         Me.m_tpImport.Controls.Add(Me.m_cbImportEnableOnImport)
         Me.m_tpImport.Controls.Add(Me.m_dgvImportPreview)
         Me.m_tpImport.Controls.Add(Me.m_hdrTarget)
@@ -234,17 +232,6 @@ Partial Class dlgManageTimeSeries
         Me.m_lblImportInterval.TabIndex = 9
         Me.m_lblImportInterval.Text = "&Interval:"
         '
-        'm_cbShowFirst50
-        '
-        Me.m_cbShowFirst50.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.m_cbShowFirst50.AutoSize = True
-        Me.m_cbShowFirst50.Location = New System.Drawing.Point(4, 374)
-        Me.m_cbShowFirst50.Name = "m_cbShowFirst50"
-        Me.m_cbShowFirst50.Size = New System.Drawing.Size(164, 17)
-        Me.m_cbShowFirst50.TabIndex = 13
-        Me.m_cbShowFirst50.Text = "&Limit preview to 50 time steps"
-        Me.m_cbShowFirst50.UseVisualStyleBackColor = True
-        '
         'm_cbImportEnableOnImport
         '
         Me.m_cbImportEnableOnImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
@@ -275,7 +262,7 @@ Partial Class dlgManageTimeSeries
         Me.m_dgvImportPreview.Name = "m_dgvImportPreview"
         Me.m_dgvImportPreview.ReadOnly = True
         Me.m_dgvImportPreview.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
-        Me.m_dgvImportPreview.Size = New System.Drawing.Size(493, 231)
+        Me.m_dgvImportPreview.Size = New System.Drawing.Size(493, 254)
         Me.m_dgvImportPreview.TabIndex = 12
         '
         'm_hdrTarget
@@ -628,6 +615,11 @@ Partial Class dlgManageTimeSeries
         Me.m_colLoaded.Text = "Loaded"
         Me.m_colLoaded.Width = 50
         '
+        'm_clInterval
+        '
+        Me.m_clInterval.Text = "Interval"
+        Me.m_clInterval.Width = 88
+        '
         'm_colDescription
         '
         Me.m_colDescription.Text = "Number of Time Series"
@@ -650,11 +642,6 @@ Partial Class dlgManageTimeSeries
         Me.m_tcMain.SelectedIndex = 0
         Me.m_tcMain.Size = New System.Drawing.Size(507, 600)
         Me.m_tcMain.TabIndex = 0
-        '
-        'm_clInterval
-        '
-        Me.m_clInterval.Text = "Interval"
-        Me.m_clInterval.Width = 88
         '
         'dlgManageTimeSeries
         '
@@ -731,7 +718,6 @@ Partial Class dlgManageTimeSeries
     Private WithEvents m_hdrPreview As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrSource As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrTarget As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_cbShowFirst50 As System.Windows.Forms.CheckBox
     Private WithEvents m_cmbImportInterval As System.Windows.Forms.ComboBox
     Private WithEvents m_lblImportInterval As System.Windows.Forms.Label
     Private WithEvents m_clInterval As System.Windows.Forms.ColumnHeader
