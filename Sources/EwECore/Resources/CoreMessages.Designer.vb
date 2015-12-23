@@ -2696,6 +2696,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Data row expected.
+        '''</summary>
+        Friend Shared ReadOnly Property TIMESERIES_ERROR_LINEMISSING() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_ERROR_LINEMISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Data row for {0} missing.
+        '''</summary>
+        Friend Shared ReadOnly Property TIMESERIES_ERROR_MISSING() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_ERROR_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more pool code values cannot be read.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_POOLFORMAT() As String
@@ -2768,6 +2786,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Value(s) missing for row {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property TIMESERIES_ERROR_VALUEMISSING() As String
+            Get
+                Return ResourceManager.GetString("TIMESERIES_ERROR_VALUEMISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Value cannot be negative.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_VALUENEGATIVE() As String
@@ -2791,33 +2818,6 @@ Namespace My.Resources
         Friend Shared ReadOnly Property TIMESERIES_ERROR_WEIGHTVALUEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_WEIGHTVALUEMISSING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Year data expected.
-        '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_YEARLINEMISSING() As String
-            Get
-                Return ResourceManager.GetString("TIMESERIES_ERROR_YEARLINEMISSING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Data for year {0} missing.
-        '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_YEARMISSING() As String
-            Get
-                Return ResourceManager.GetString("TIMESERIES_ERROR_YEARMISSING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Value for year {0} missing.
-        '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_YEARVALUEMISSING() As String
-            Get
-                Return ResourceManager.GetString("TIMESERIES_ERROR_YEARVALUEMISSING", resourceCulture)
             End Get
         End Property
         
