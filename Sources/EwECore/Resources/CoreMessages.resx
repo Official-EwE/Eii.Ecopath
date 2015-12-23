@@ -594,16 +594,16 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="TIMESERIES_ERROR_WEIGHTFORMAT" xml:space="preserve">
     <value>One or more weight values cannot be read</value>
   </data>
-  <data name="TIMESERIES_ERROR_YEARLINEMISSING" xml:space="preserve">
-    <value>Year data expected</value>
+  <data name="TIMESERIES_ERROR_LINEMISSING" xml:space="preserve">
+    <value>Data row expected</value>
   </data>
-  <data name="TIMESERIES_ERROR_YEARMISSING" xml:space="preserve">
-    <value>Data for year {0} missing</value>
-    <comment>{0}=year</comment>
+  <data name="TIMESERIES_ERROR_MISSING" xml:space="preserve">
+    <value>Data row for {0} missing</value>
+    <comment>{0}=time label</comment>
   </data>
-  <data name="TIMESERIES_ERROR_YEARVALUEMISSING" xml:space="preserve">
-    <value>Value for year {0} missing</value>
-    <comment>{0}=year</comment>
+  <data name="TIMESERIES_ERROR_VALUEMISSING" xml:space="preserve">
+    <value>Value(s) missing for row {0}</value>
+    <comment>{0}=time label</comment>
   </data>
   <data name="VARIABLE_NOT_FOUND" xml:space="preserve">
     <value>Unable to find variable for '{0}'</value>
