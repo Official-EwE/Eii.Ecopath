@@ -630,6 +630,12 @@ Public Class dlgManageTimeSeries
         End If
 
         ' Populate preview grid
+
+        ' JS 23Dec15: performance was awful due to smart content resizing. Disable resizing during update ;)
+        Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        For Each col As DataGridViewColumn In Me.m_dgvImportPreview.Columns
+            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+        Next
         Me.m_dgvImportPreview.SuspendLayout()
 
         'vc had a model with 3000 years run & time series; takes forever to make the preview, so truncating it
@@ -638,12 +644,17 @@ Public Class dlgManageTimeSeries
 
         For iRow As Integer = 1 To Me.m_dgvImportPreview.RowCount
             drow = Me.m_dgvImportPreview.Rows(iRow - 1)
-            drow.ErrorText = tsrPreview.RowError(iRow).ToString()
+            drow.ErrorText = tsrPreview.RowError(iRow)
             For iCol As Integer = 1 To tsrPreview.ColumnCount
                 drow.Cells(iCol - 1).Value = tsrPreview.Value(iCol, iRow)
             Next
         Next
+
         Me.m_dgvImportPreview.ResumeLayout()
+        Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
+        For Each col As DataGridViewColumn In Me.m_dgvImportPreview.Columns
+            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+        Next
 
     End Sub
 
