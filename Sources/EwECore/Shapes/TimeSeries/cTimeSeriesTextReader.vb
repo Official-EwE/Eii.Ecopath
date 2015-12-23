@@ -79,7 +79,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <summary>Lines of text from the time series text, split by delimiter.</summary>
         Private m_alRowValues As New List(Of String())
         ''' <summary>Errors encountered for each line of text.</summary>
-        Private m_alRowErrors As New List(Of StringBuilder)
+        Private m_alRowErrors As New List(Of String)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -102,7 +102,7 @@ Public MustInherit Class cTimeSeriesTextReader
             If String.IsNullOrEmpty(strLine) Then Return
             Me.m_alRows.Add(strLine)
             Me.m_alRowValues.Add(astrValues)
-            Me.m_alRowErrors.Add(New Text.StringBuilder)
+            Me.m_alRowErrors.Add("")
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -147,11 +147,14 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <value></value>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property RowError(ByVal iRow As Integer) As StringBuilder
+        Public Property RowError(ByVal iRow As Integer) As String
             Get
                 If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return Me.m_alRowErrors(iRow - 1)
-                Return Nothing
+                Return ""
             End Get
+            Friend Set(value As String)
+                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Me.m_alRowErrors(iRow - 1) = value
+            End Set
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -187,16 +190,12 @@ Public MustInherit Class cTimeSeriesTextReader
 
         Public Function HasErrors() As Boolean
 
-            Dim sb As StringBuilder = Nothing
             Dim bHasErrors As Boolean = (Me.RowCount <= 3) Or (Me.m_iColumnCount <= 1)
-
             For iRow As Integer = 1 To Me.RowCount
-                sb = Me.RowError(iRow)
-                If (sb IsNot Nothing) Then
-                    bHasErrors = bHasErrors Or (sb.Length > 0)
-                End If
+                bHasErrors = bHasErrors Or Not String.IsNullOrWhiteSpace(Me.RowError(iRow))
             Next
             Return bHasErrors
+
         End Function
 
     End Class
@@ -430,7 +429,7 @@ Public MustInherit Class cTimeSeriesTextReader
                     End Try
 
                     If (iYear = -9999) Then
-                        Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
+                        Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_LINEMISSING, iLineNumber)
                         bSucces = False
                     Else
 
@@ -442,7 +441,7 @@ Public MustInherit Class cTimeSeriesTextReader
                         Me.m_iNumPoints += 1
 
                         If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
-                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUEMISSING, iYear), iLineNumber)
                             bSucces = False
                         End If
 
@@ -710,7 +709,8 @@ Public MustInherit Class cTimeSeriesTextReader
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method; reports that an error has occurred.
+    ''' Helper method; adds an error message to the data preview for a given line.
+    ''' If the line is not specified the error message is directly sent to the EwE system.
     ''' </summary>
     ''' <param name="strError">Error text to report.</param>
     ''' <param name="iLineNumber">Text line that this error occurred at, or
@@ -721,19 +721,16 @@ Public MustInherit Class cTimeSeriesTextReader
                             Optional ByVal iLineNumber As Integer = cCore.NULL_VALUE)
 
         ' Flag line error if possible
-        If iLineNumber = cCore.NULL_VALUE Then
-            ' Send warning message
-            Me.m_core.m_publisher.SendMessage(New cMessage(strError, eMessageType.DataImport, eCoreComponentType.TimeSeries, eMessageImportance.Warning))
+        If iLineNumber <> cCore.NULL_VALUE Then
+            'Dim sb As New StringBuilder()
+            'Dim strLineError As String = Me.m_tsPreview.RowError(iLineNumber)
+            'If (Not String.IsNullOrWhiteSpace(strLineError)) Then
+            '    sb.AppendLine(strLineError)
+            'End If
+            'sb.Append(strError)
+            Me.m_tsPreview.RowError(iLineNumber) = strError
         Else
-            Dim sb As StringBuilder = Nothing
-
-            sb = Me.m_tsPreview.RowError(iLineNumber)
-            If (sb IsNot Nothing) Then
-                If (sb.Length > 0) Then
-                    sb.AppendLine()
-                End If
-                sb.Append(strError)
-            End If
+            Me.m_core.m_publisher.SendMessage(New cMessage(strError, eMessageType.DataImport, eCoreComponentType.TimeSeries, eMessageImportance.Warning))
         End If
 
     End Sub
