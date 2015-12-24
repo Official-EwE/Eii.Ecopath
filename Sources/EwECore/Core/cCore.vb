@@ -2727,6 +2727,9 @@ Public Class cCore
         End If
 
         If (savetype >= eAutosaveTypes.Ecospace) And (sm.HasEcospaceLoaded) Then
+            Dim bm As cEcospaceBasemap = Me.m_EcospaceBasemap
+            Dim ld As cEcospaceLayerDepth = bm.LayerDepth
+
             sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
             sb.AppendLine("MapRows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
             sb.AppendLine("MapCols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
@@ -2734,7 +2737,7 @@ Public Class cCore
             sb.AppendLine("MapCellSize," & cStringUtils.FormatNumber(Me.m_EcospaceBasemap.CellSize()))
             sb.AppendLine("MapLatitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
             sb.AppendLine("MapLongitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
-            sb.AppendLine("NoActiveCells," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.iTotalWaterCells))
+            sb.AppendLine("NoActiveCells," & cStringUtils.FormatNumber(ld.NumActiveCells))
             sb.AppendLine("EcoSpaceTimeStepLength," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
             sb.AppendLine("CoordinateSystemWKT," & cStringUtils.ToCSVField(Me.m_EcoSpaceData.ProjectionString.Replace("""", "'")))
         End If
