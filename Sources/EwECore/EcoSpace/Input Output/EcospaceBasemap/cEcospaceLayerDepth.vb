@@ -80,11 +80,11 @@ Public Class cEcospaceLayerDepth
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the number of water cells in the map.
+    ''' Returns the number of cells with ecosystem dynamics in the map.
     ''' </summary>
-    ''' <returns>The number of water cells in the map.</returns>
+    ''' <returns>The number of cells with ecosystem dynamics in the map.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function NumWaterCells() As Integer
+    Public Function NumActiveCells() As Integer
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim iNumCells As Integer = 0
         For iRow As Integer = 1 To bm.InRow
