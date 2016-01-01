@@ -119,6 +119,7 @@ Partial Class frmModelParameters
         Me.m_lblPublicationDOI = New System.Windows.Forms.Label()
         Me.m_lblPublicationURL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lblModelBounds = New System.Windows.Forms.Label()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -479,6 +480,7 @@ Partial Class frmModelParameters
         Me.m_plDescr.Controls.Add(Me.m_lblSouth)
         Me.m_plDescr.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plDescr.Controls.Add(Me.m_lblEast)
+        Me.m_plDescr.Controls.Add(Me.m_lblModelBounds)
         Me.m_plDescr.Controls.Add(Me.m_lblArea)
         Me.m_plDescr.Controls.Add(Me.m_lblWest)
         Me.m_plDescr.Controls.Add(Me.m_lblNorth)
@@ -645,6 +647,11 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
+        'm_lblModelBounds
+        '
+        resources.ApplyResources(Me.m_lblModelBounds, "m_lblModelBounds")
+        Me.m_lblModelBounds.Name = "m_lblModelBounds"
+        '
         'frmModelParameters
         '
         resources.ApplyResources(Me, "$this")
@@ -756,5 +763,6 @@ Partial Class frmModelParameters
     Private WithEvents m_tbxPublicationDOI As System.Windows.Forms.TextBox
     Private WithEvents m_lblPublicationDOI As System.Windows.Forms.Label
     Private WithEvents m_llViewPublication As System.Windows.Forms.LinkLabel
+    Private WithEvents m_lblModelBounds As System.Windows.Forms.Label
 
 End Class
