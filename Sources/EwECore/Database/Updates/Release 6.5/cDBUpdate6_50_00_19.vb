@@ -47,7 +47,7 @@ Friend Class cDBUpdate6_50_00_19
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added EcoBase ref, objectives"
+            Return "Added EcoBase reference field"
         End Get
     End Property
 
@@ -57,7 +57,6 @@ Friend Class cDBUpdate6_50_00_19
 
         ' Add two more metadata fields the EwE model
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathModel ADD COLUMN PublicationRef MEMO")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathModel ADD COLUMN Objectives MEMO")
 
         Return bSuccess
 
