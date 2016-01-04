@@ -222,6 +222,24 @@ Public Class frmStartPanel
         End Try
     End Sub
 
+    Private Sub OnBrowserNavigating(sender As Object, e As System.Windows.Forms.WebBrowserNavigatingEventArgs) _
+        Handles m_browser.Navigating
+
+        ' Overridden to intercept ewe-ecobase clicks
+        Try
+            Dim url As String = e.Url.ToString()
+            If (url.ToLower().StartsWith("ewe-ecobase")) Then
+                e.Cancel = True
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim cmd As cBrowserCommand = CType(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                cmd.Invoke(url)
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
 #End Region ' Events
 
 #Region " Internals "

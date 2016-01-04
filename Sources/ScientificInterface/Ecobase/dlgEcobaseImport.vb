@@ -484,7 +484,7 @@ Public Class dlgEcobaseImport
             End If
 
             Dim MyWebClient As New System.Net.WebClient()
-            Dim data() As Byte = MyWebClient.DownloadData("http://sirs.agrocampus-ouest.fr/EcoBase/php/mapserver.php?model=" & m_model.EcobaseCode)
+            Dim data() As Byte = MyWebClient.DownloadData("http://ecobase.ecopath.org/php/mapserver.php?model=" & m_model.EcobaseCode)
             Dim strm As New IO.MemoryStream(data)
             Me.m_img = New System.Drawing.Bitmap(strm)
 

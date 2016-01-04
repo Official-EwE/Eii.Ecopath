@@ -3239,6 +3239,9 @@ Public Class frmEwE6
             If (cmd IsNot Nothing) Then
                 cmd.Invoke()
             End If
+        ElseIf cStringUtils.BeginsWith(strURL, "ewe-ecobase:", True) Then
+            ' #No: Is ecobase link?
+            Me.LoadEcopathModel(strURL, eLoadSourceType.User)
         Else
             ' #No: presume we're talking files here. Let the OS deal with it
             Try

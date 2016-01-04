@@ -228,7 +228,6 @@ Namespace Database
                 drow("ModelID") = 1
                 drow("Name") = md.Name
                 drow("Description") = md.Description
-                drow("Objectives") = md.Objectives
                 drow("CodeEcobase") = md.EcobaseCode
 
                 drow("Author") = md.Author

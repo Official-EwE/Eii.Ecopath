@@ -42,7 +42,7 @@ Public Class cWebLinks
     Private Const cForum As String = "http://www.ecopath.org/forum"
     Private Const cFacebook As String = "http://www.facebook.com/eweconsortium"
     Private Const cFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
-    Private Const cEcoBaseModelInfo As String = "http://sirs.agrocampus-ouest.fr/EcoBase/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
+    Private Const cEcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
 
     Private m_core As cCore = Nothing
 
