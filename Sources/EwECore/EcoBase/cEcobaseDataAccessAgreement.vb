@@ -39,16 +39,26 @@ Namespace WebServices.Ecobase
     ''' -----------------------------------------------------------------------
     Public Class cEcobaseDataAccessAgreement
 
-        Private m_strAgreement As String = ""
+        Private m_strAuthorAgreement As String = ""
+        Private m_strUserAgreement As String = ""
 
 #Region " Variables "
 
-        Public Property Agreement As String
+        Public Property AuthorAgreement As String
             Get
-                Return Me.m_strAgreement
+                Return Me.m_strAuthorAgreement
             End Get
             Set(value As String)
-                Me.m_strAgreement = cStringUtils.Unwrap(value)
+                Me.m_strAuthorAgreement = cStringUtils.Unwrap(value)
+            End Set
+        End Property
+
+        Public Property UserAgreement As String
+            Get
+                Return Me.m_strUserAgreement
+            End Get
+            Set(value As String)
+                Me.m_strUserAgreement = cStringUtils.Unwrap(value)
             End Set
         End Property
 
@@ -84,20 +94,23 @@ Namespace WebServices.Ecobase
             ' Parsing CData is no fun through XML serializers
 
             Try
-                Dim xnData As XmlNode = Nothing
-
                 ' Patch up XML
                 If Not strXML.StartsWith("<?") Then
-                    Dim doc As XmlDocument = cXMLUtils.NewDoc("Agreement", xnData)
-                    xnData.InnerXml = strXML
-                Else
-                    Dim doc As New XmlDocument()
-                    doc.LoadXml(strXML)
-                    xnData = doc.ChildNodes(0)
+                    strXML = "<?xml version=""1.0"" encoding=""utf-8""?><Agreements>" & strXML & "</Agreements>"
                 End If
 
+                Dim doc As New XmlDocument()
+                doc.LoadXml(strXML)
                 Dim selfie As New cEcobaseDataAccessAgreement()
-                selfie.Agreement = xnData.InnerText.Trim()
+
+                For Each node As XmlNode In doc.GetElementsByTagName("dissemination_agreement")
+                    selfie.AuthorAgreement = node.InnerText
+                Next
+
+                For Each node As XmlNode In doc.GetElementsByTagName("agreement")
+                   selfie.UserAgreement = node.InnerText
+                Next
+
                 Return selfie
             Catch ex As Exception
                 ' Hmm

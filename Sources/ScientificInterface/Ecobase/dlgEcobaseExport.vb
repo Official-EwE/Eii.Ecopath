@@ -706,7 +706,7 @@ Public Class dlgEcobaseExport
             Dim strAgreement As String = wdsl.getModel("agreement", -1)
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
 
-            Me.m_strAuthorAgreement = data.Agreement
+            Me.m_strAuthorAgreement = data.AuthorAgreement
             e.Cancel = Me.m_wrkGetAuthorAgreement.CancellationPending
 
         Catch ex As Exception
