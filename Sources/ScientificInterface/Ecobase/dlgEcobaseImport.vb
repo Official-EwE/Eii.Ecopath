@@ -39,7 +39,7 @@ Public Class dlgEcobaseImport
     Private m_models As New List(Of cModelData)
     Private m_model As cModelData = Nothing
 
-    Private m_strAgreement As String = ""
+    Private m_strUserAgreement As String = ""
     Private m_img As Image = Nothing
 
     ''' <summary>
@@ -161,10 +161,10 @@ Public Class dlgEcobaseImport
         Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
         Me.m_tstbSearch.Enabled = (Me.m_filter <> eFilterTypes.None)
 
-        Me.m_rtfAgreement.Text = Me.m_strAgreement
+        Me.m_rtfAgreement.Text = Me.m_strUserAgreement
         Me.m_btnOK.Enabled = Me.CanDownload
 
-        Me.m_cbEcoBaseAgreement.Enabled = Not String.IsNullOrWhiteSpace(Me.m_strAgreement)
+        Me.m_cbEcoBaseAgreement.Enabled = Not String.IsNullOrWhiteSpace(Me.m_strUserAgreement)
 
         ' Populate model controls
         If (Me.m_model IsNot Nothing) Then
@@ -445,7 +445,7 @@ Public Class dlgEcobaseImport
     End Sub
 
 
-    Private Sub OnGetAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+    Private Sub OnGetUserAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
         Handles m_wrkGetAgreement.DoWork
 
         Try
@@ -454,7 +454,7 @@ Public Class dlgEcobaseImport
             Dim data As cEcobaseDataAccessAgreement = cEcobaseDataAccessAgreement.FromXML(strAgreement)
             If Me.m_wrkGetAgreement.CancellationPending Then e.Cancel = True
 
-            Me.m_strAgreement = data.Agreement
+            Me.m_strUserAgreement = data.UserAgreement
 
         Catch ex As Exception
 

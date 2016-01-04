@@ -8771,10 +8771,6 @@ Namespace DataSources
                 drow("SailCostMap") = ""
                 drow("PortMap") = ""
 
-                ' ToDo_JS: Figure out defaults for remaining row values
-                ' EffPower:   ?
-                ' MPAFishery: isn't the value for this implicied by EcospaceScenarioMPAFishery?
-
                 writer.AddRow(drow)
                 Me.m_db.ReleaseWriter(writer)
 

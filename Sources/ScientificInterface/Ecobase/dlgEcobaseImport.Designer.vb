@@ -61,6 +61,8 @@ Partial Class dlgEcobaseImport
         Me.m_lblPeriodValue = New System.Windows.Forms.Label()
         Me.m_lblAreaValue = New System.Windows.Forms.Label()
         Me.m_lblArea = New System.Windows.Forms.Label()
+        Me.m_lblDessimAllow = New System.Windows.Forms.Label()
+        Me.m_lblDessimAllowValue = New System.Windows.Forms.Label()
         Me.m_hdrRefs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblRefValue = New System.Windows.Forms.Label()
         Me.m_tlpSpatial = New System.Windows.Forms.TableLayoutPanel()
@@ -106,8 +108,6 @@ Partial Class dlgEcobaseImport
         Me.m_tpImport = New System.Windows.Forms.TabPage()
         Me.m_wrkGetAgreement = New System.ComponentModel.BackgroundWorker()
         Me.m_wrkGetImage = New System.ComponentModel.BackgroundWorker()
-        Me.m_lblDessimAllow = New System.Windows.Forms.Label()
-        Me.m_lblDessimAllowValue = New System.Windows.Forms.Label()
         CType(Me.m_scEcobaseContent, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scEcobaseContent.Panel1.SuspendLayout()
         Me.m_scEcobaseContent.Panel2.SuspendLayout()
@@ -289,6 +289,16 @@ Partial Class dlgEcobaseImport
         '
         resources.ApplyResources(Me.m_lblArea, "m_lblArea")
         Me.m_lblArea.Name = "m_lblArea"
+        '
+        'm_lblDessimAllow
+        '
+        resources.ApplyResources(Me.m_lblDessimAllow, "m_lblDessimAllow")
+        Me.m_lblDessimAllow.Name = "m_lblDessimAllow"
+        '
+        'm_lblDessimAllowValue
+        '
+        resources.ApplyResources(Me.m_lblDessimAllowValue, "m_lblDessimAllowValue")
+        Me.m_lblDessimAllowValue.Name = "m_lblDessimAllowValue"
         '
         'm_hdrRefs
         '
@@ -573,16 +583,6 @@ Partial Class dlgEcobaseImport
         '
         'm_wrkGetImage
         '
-        '
-        'm_lblDessimAllow
-        '
-        resources.ApplyResources(Me.m_lblDessimAllow, "m_lblDessimAllow")
-        Me.m_lblDessimAllow.Name = "m_lblDessimAllow"
-        '
-        'm_lblDessimAllowValue
-        '
-        resources.ApplyResources(Me.m_lblDessimAllowValue, "m_lblDessimAllowValue")
-        Me.m_lblDessimAllowValue.Name = "m_lblDessimAllowValue"
         '
         'dlgEcobaseImport
         '
