@@ -36,7 +36,7 @@ Namespace WebServices
     <System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1")> _
     <System.Diagnostics.DebuggerStepThroughAttribute()> _
     <System.ComponentModel.DesignerCategoryAttribute("code")> _
-    <System.Web.Services.WebServiceBindingAttribute(Name:="getResultBinding", [Namespace]:="http://sirs.agrocampus-ouest.fr/EcoBase/php/webser/operation_1.wsdl")> _
+    <System.Web.Services.WebServiceBindingAttribute(Name:="getResultBinding", [Namespace]:="http://ecobase.ecopath.org/php/webser/operation_1.wsdl")> _
     Partial Public Class cEcoBaseWDSL
         Inherits System.Web.Services.Protocols.SoapHttpClientProtocol
 
@@ -47,7 +47,7 @@ Namespace WebServices
         Private Upload_ModelOperationCompleted As System.Threading.SendOrPostCallback
 
         Public Sub New()
-            Me.Url = "http://sirs.agrocampus-ouest.fr/EcoBase/php/webser/soap-server.php"
+            Me.Url = "http://ecobase.ecopath.org/php/webser/soap-server.php"
         End Sub
 
         Public Event ListModelsCompleted As ListModelsCompletedEventHandler
