@@ -122,6 +122,15 @@ Namespace Shapes.Utility
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Clear the shape import data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Clear()
+            Me.m_defs.Clear()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Read the shape import text.
         ''' </summary>
         ''' <param name="text">The text to read.</param>
@@ -140,7 +149,7 @@ Namespace Shapes.Utility
         ''' -------------------------------------------------------------------
         Public Function Read(text As System.IO.TextReader) As Boolean
 
-            Me.m_defs.Clear()
+            Me.Clear()
 
             Dim strLine As String = text.ReadLine()
             Dim bSucces As Boolean = True
