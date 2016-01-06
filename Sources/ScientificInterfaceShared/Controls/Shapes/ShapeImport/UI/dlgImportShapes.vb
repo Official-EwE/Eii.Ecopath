@@ -232,11 +232,24 @@ Namespace Controls
 
         Private Sub Read()
 
-            If Not File.Exists(Me.m_tbImportFileName.Text) Then Return
+            Dim strFile As String = Me.m_tbImportFileName.Text
+            Me.m_data.Clear()
 
-            Using reader As New StreamReader(Me.m_tbImportFileName.Text)
-                Me.m_data.Read(reader)
-            End Using
+            If Not File.Exists(strFile) Then
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.FILE_LOAD_ERROR_MISSING, strFile), _
+                                        eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+            Else
+                Try
+                    Using reader As New StreamReader(strFile)
+                        Me.m_data.Read(reader)
+                    End Using
+                Catch ex As Exception
+                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.FILE_LOAD_ERROR_DETAIL, strFile, ex.Message), _
+                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                    Me.m_uic.Core.Messages.SendMessage(msg)
+                End Try
+            End If
 
             Me.m_grid.Functions = Me.m_data.FunctionDefinitions(Me.m_manager.DataType)
 

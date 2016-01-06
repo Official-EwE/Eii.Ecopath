@@ -1580,7 +1580,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to load from file &apos;{0}&apos;: {1}.
+        '''  Looks up a localized string similar to Unable to load from file &apos;{0}&apos;. {1}.
         '''</summary>
         Public ReadOnly Property FILE_LOAD_ERROR_DETAIL() As String
             Get
@@ -1598,6 +1598,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to File &apos;{0}&apos; cannot be found..
+        '''</summary>
+        Public ReadOnly Property FILE_LOAD_ERROR_MISSING() As String
+            Get
+                Return ResourceManager.GetString("FILE_LOAD_ERROR_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The file &apos;{0}&apos; could not be read..
         '''</summary>
         Public ReadOnly Property FILE_LOAD_ERROR_READ() As String
@@ -1607,7 +1616,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to save to file &apos;{0}&apos;: {1}.
+        '''  Looks up a localized string similar to Unable to save to file &apos;{0}&apos;. {1}.
         '''</summary>
         Public ReadOnly Property FILE_SAVE_ERROR_DETAIL() As String
             Get
