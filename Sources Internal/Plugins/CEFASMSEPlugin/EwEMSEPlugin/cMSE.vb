@@ -2917,8 +2917,8 @@ Public Class cMSE
         Dim TimeFindingBalanced As New Stopwatch
         'Dim nPPers As Integer 'number of primary producers
         'Dim nLivingMinusPPers As Integer 'number of living groups minus primary producers
-        'Const PQThreshold As Double = 0.5
-        'Const RespirThreshold As Double = 0
+        Const PQThreshold As Double = 0.5
+        Const RespirThreshold As Double = 0
         Dim isbalanced As Boolean
         Dim iNumFound As Integer = 0
 
@@ -2986,13 +2986,13 @@ Public Class cMSE
                         Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
 
-                            'For iGrp = 1 To mCore.nGroups
-                            '    If mCore.EcoPathGroupInputs(iGrp).IsLiving Then
-                            '        If _ecopath.EcopathData.GE(iGrp) > PQThreshold Or _ecopath.EcopathData.Resp(iGrp) < RespirThreshold Then
-                            '            isbalanced = False
-                            '        End If
-                            '    End If
-                            'Next
+                            For iGrp = 1 To m_core.nGroups
+                                If m_core.EcoPathGroupInputs(iGrp).IsLiving Then
+                                    If _pathdata.GE(iGrp) > PQThreshold Or _pathdata.Resp(iGrp) < RespirThreshold Then
+                                        isbalanced = False
+                                    End If
+                                End If
+                            Next
 
                             If isbalanced = True Then
 
@@ -4658,6 +4658,7 @@ Public Class cMSE
     ''' <returns>Proportion of fishing mortality cause by a fleet</returns>
     ''' <remarks></remarks>
     Private Function PropTotCatchFleet(iTime As Integer, iFleet As Integer, iGroup As Integer) As Single
+
         Dim sumCatchMortality As Single
 
         'Debug.Assert(iTime = OriginalNTimesteps, "Oppss PropTotCatchFleet(t) called at the wrong time step.")
