@@ -18,16 +18,17 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
+Imports System.Text
 Imports EwECore
 Imports EwECore.WebServices
 Imports EwECore.WebServices.Ecobase
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.SystemUtilities
-Imports System.Text
 
 #End Region ' Imports
 
@@ -94,6 +95,7 @@ Public Class dlgEcobaseImport
         Me.m_tsbnShowLocked.Image = SharedResources.NotEditable
         Me.m_tsddValue.Image = SharedResources.FilterHS
 
+        ' Retrieve persistent settings
         Dim p As New cSettingsParser(Me.Settings)
         Me.m_tsbnShowYear.Checked = p.Parameter("Year", "1") = "1"
         Me.m_tsbnShowAuthor.Checked = p.Parameter("Author", "0") = "1"
@@ -113,10 +115,20 @@ Public Class dlgEcobaseImport
     End Sub
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
-        e.Cancel = (Me.DialogResult = Windows.Forms.DialogResult.OK) And Not Me.CanDownload
 
+        ' See if form can apply on OK
+        If (Me.DialogResult = Windows.Forms.DialogResult.OK) Then
+            If (Me.m_model Is Nothing) Then
+                e.Cancel = True
+            Else
+                e.Cancel = (Me.m_model.AllowDissemination = False)
+            End If
+        End If
+
+        ' Going to close?
         If (Not e.Cancel) Then
 
+            ' #Yes: store persistent settings
             Dim p As New cSettingsParser()
             p.Parameter("Year") = cSystemUtils.IIF(Me.m_tsbnShowYear.Checked, "1", "0")
             p.Parameter("Author") = cSystemUtils.IIF(Me.m_tsbnShowAuthor.Checked, "1", "0")
@@ -124,17 +136,18 @@ Public Class dlgEcobaseImport
             Me.Settings = p.Buffer
 
             Try
+                ' Shoot workers
                 Me.m_ecobase.CancelAsync(Nothing)
                 Me.m_wrkGetAgreement.CancelAsync()
                 Me.m_wrkGetImage.CancelAsync()
                 Me.m_wrkGetModels.CancelAsync()
             Catch ex As Exception
-
+                ' Do not tell the union why
             End Try
-
         End If
 
         MyBase.OnFormClosing(e)
+
     End Sub
 
     Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
@@ -156,14 +169,14 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        ' ToDo: Globalize this method
+        Dim bCanDissiminate As Boolean = False
+        Dim bAgreementOK As Boolean = Me.m_cbEcoBaseAgreement.Checked
+        Dim bCanDownload As Boolean = False
 
         Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
         Me.m_tstbSearch.Enabled = (Me.m_filter <> eFilterTypes.None)
 
         Me.m_rtfAgreement.Text = Me.m_strUserAgreement
-        Me.m_btnOK.Enabled = Me.CanDownload
-
         Me.m_cbEcoBaseAgreement.Enabled = Not String.IsNullOrWhiteSpace(Me.m_strUserAgreement)
 
         ' Populate model controls
@@ -194,11 +207,16 @@ Public Class dlgEcobaseImport
             End If
             Me.m_lblLonVal.Text = Me.LonLabel()
             Me.m_lblLatVal.Text = Me.LatLabel()
-            Me.m_lblDepthRangeVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMin) & " - " & cStringUtils.FormatNumber(Me.m_model.DepthMax)
+            Me.m_lblDepthRangeVal.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                                               cStringUtils.FormatNumber(Me.m_model.DepthMin), _
+                                                               cStringUtils.FormatNumber(Me.m_model.DepthMax))
             Me.m_lblDepthMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMean)
-            Me.m_lblTempRangeVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMin) & " - " & cStringUtils.FormatNumber(Me.m_model.TempMax)
+            Me.m_lblTempRangeVal.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                                              cStringUtils.FormatNumber(Me.m_model.TempMin), _
+                                                              cStringUtils.FormatNumber(Me.m_model.TempMax))
             Me.m_lblTempMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMean)
 
+            bCanDissiminate = Me.m_model.AllowDissemination
         Else
             Me.m_lblModelNameValue.Text = ""
             Me.m_lblAreaValue.Text = ""
@@ -221,9 +239,12 @@ Public Class dlgEcobaseImport
             Me.m_lblTempMeanVal.Text = ""
         End If
 
-        If Me.m_tsbnShowLocked.Checked Then
-        Else
-        End If
+        bCanDownload = bCanDissiminate And bAgreementOK
+
+        Me.m_tpAgreement.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
+        Me.m_tpImport.ImageIndex = cSystemUtils.IIF(bCanDownload, 0, 2)
+
+        Me.m_btnOK.Enabled = bCanDownload
 
     End Sub
 
@@ -234,16 +255,6 @@ Public Class dlgEcobaseImport
     Public ReadOnly Property SelectedModel As cModelData
         Get
             Return Me.m_model
-        End Get
-    End Property
-
-    Public ReadOnly Property CanDownload As Boolean
-        Get
-            Dim bCanDownload As Boolean = False
-            If (Me.m_model IsNot Nothing) Then
-                bCanDownload = (Me.m_model.AllowDissemination And Me.m_cbEcoBaseAgreement.Checked)
-            End If
-            Return bCanDownload
         End Get
     End Property
 
@@ -328,6 +339,12 @@ Public Class dlgEcobaseImport
             Dim cmd As cBrowserCommand = CType(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             Dim strURL As String = String.Format(link.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
             cmd.Invoke(strURL)
+
+            If Not My.Settings.UseExternalBrowser Then
+                ' Close this dialog to reveal start screen
+                Me.DialogResult = Windows.Forms.DialogResult.Cancel
+                Me.Close()
+            End If
         Catch ex As Exception
 
         End Try
@@ -402,7 +419,7 @@ Public Class dlgEcobaseImport
 
 #Region " Background workers "
 
-    Private Sub OnGetModels(sender As System.Object, e As System.ComponentModel.DoWorkEventArgs) _
+    Private Sub OnGetModels(sender As System.Object, e As DoWorkEventArgs) _
         Handles m_wrkGetModels.DoWork
 
         Dim msg As cMessage = Nothing
@@ -429,8 +446,7 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    Private Sub OnGetModelsCompleted(sender As Object, _
-                                     e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+    Private Sub OnGetModelsCompleted(sender As Object, e As RunWorkerCompletedEventArgs) _
         Handles m_wrkGetModels.RunWorkerCompleted
 
         Try
@@ -445,7 +461,7 @@ Public Class dlgEcobaseImport
     End Sub
 
 
-    Private Sub OnGetUserAgreement(sender As Object, e As System.ComponentModel.DoWorkEventArgs) _
+    Private Sub OnGetUserAgreement(sender As Object, e As DoWorkEventArgs) _
         Handles m_wrkGetAgreement.DoWork
 
         Try
@@ -462,7 +478,7 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    Private Sub OnGetAgreementComplete(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) _
+    Private Sub OnGetAgreementComplete(sender As Object, e As RunWorkerCompletedEventArgs) _
         Handles m_wrkGetAgreement.RunWorkerCompleted
 
         Try
@@ -474,8 +490,8 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    Private Sub OnGetImage(sender As System.Object, e As System.ComponentModel.DoWorkEventArgs) _
-    Handles m_wrkGetImage.DoWork
+    Private Sub OnGetImage(sender As System.Object, e As DoWorkEventArgs) _
+        Handles m_wrkGetImage.DoWork
 
         Try
             If (Me.m_model Is Nothing) Then
@@ -495,7 +511,8 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    Private Sub OnGetImageCompleted(sender As Object, e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles m_wrkGetImage.RunWorkerCompleted
+    Private Sub OnGetImageCompleted(sender As Object, e As RunWorkerCompletedEventArgs) _
+        Handles m_wrkGetImage.RunWorkerCompleted
 
         Try
             If e.Cancelled Then Return
@@ -549,12 +566,8 @@ Public Class dlgEcobaseImport
         If (bKeepSelection) Then
             Me.m_lbxModels.SelectedItem = Me.m_model
         Else
-            If (Me.m_lbxModels.Items.Count > 0) Then
-                Me.m_lbxModels.SelectedIndex = 0
-            Else
-                Me.m_lbxModels.SelectedIndex = -1
-                Me.m_model = Nothing
-            End If
+            Me.m_lbxModels.SelectedIndex = -1
+            Me.m_model = Nothing
         End If
         Me.UpdateControls()
 
@@ -563,16 +576,6 @@ Public Class dlgEcobaseImport
     Private Function StartsWith(strFilter As String, strValue As String) As Boolean
         If (String.IsNullOrWhiteSpace(strValue)) Then Return False
         Return strValue.StartsWith(strFilter, StringComparison.OrdinalIgnoreCase)
-    End Function
-
-    Private Function ContainsSubItem(strFilter As String, strLMEs As String, Optional cSplit As Char = ","c) As Boolean
-
-        ' Can be greatly refined later on
-
-        If (String.IsNullOrWhiteSpace(strLMEs)) Then Return False
-        Dim bits As String() = strLMEs.Split(","c)
-        Return bits.Contains(strFilter.Trim())
-
     End Function
 
     Private Function IsInRange(strFilter As String, sMin As Single, sMax As Single) As Boolean
@@ -649,22 +652,28 @@ Public Class dlgEcobaseImport
     Private Function LatLabel() As String
 
         ' ToDo: globalize this method
+
+        Dim sg As cStyleGuide = Me.StyleGuide
+
         If (Me.m_model Is Nothing) Then Return ""
-        If (Me.m_model.North = Me.m_model.South) Then Return "?"
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, _
-                                     cStringUtils.Localize("{0} dd N", cStringUtils.FormatNumber(Me.m_model.North)), _
-                                     cStringUtils.Localize("{0} dd S", cStringUtils.FormatNumber(Me.m_model.South)))
+        If (Me.m_model.North = Me.m_model.South) Then Return SharedResources.GENERIC_VALUE_NONE
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                     cStringUtils.Localize("{0}N", sg.FormatNumber(Me.m_model.North)), _
+                                     cStringUtils.Localize("{0}S", sg.FormatNumber(Me.m_model.South)))
 
     End Function
 
     Private Function LonLabel() As String
 
         ' ToDo: globalize this method
+
+        Dim sg As cStyleGuide = Me.StyleGuide
+
         If (Me.m_model Is Nothing) Then Return ""
-        If (Me.m_model.North = Me.m_model.South) Then Return "?"
-        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, _
-                                     cStringUtils.Localize("{0} dd W", cStringUtils.FormatNumber(Me.m_model.West)), _
-                                     cStringUtils.Localize("{0} dd E", cStringUtils.FormatNumber(Me.m_model.East)))
+        If (Me.m_model.North = Me.m_model.South) Then Return SharedResources.GENERIC_VALUE_NONE
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
+                                     cStringUtils.Localize("{0}W", sg.FormatNumber(Me.m_model.West)), _
+                                     cStringUtils.Localize("{0}E", sg.FormatNumber(Me.m_model.East)))
 
     End Function
 

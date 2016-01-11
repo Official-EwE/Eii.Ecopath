@@ -3082,10 +3082,8 @@ Public Class frmEwE6
         If (String.IsNullOrWhiteSpace(strModel)) Then
             Dim frm As New dlgEcobaseImport(Me.UIContext)
             If (frm.ShowDialog() = DialogResult.OK) Then
-                If (frm.CanDownload()) Then
-                    Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
-                    strModel = "ewe-ecobase:" & model.EcobaseCode
-                End If
+                Dim model As EwECore.WebServices.Ecobase.cModelData = frm.SelectedModel
+                strModel = "ewe-ecobase:" & model.EcobaseCode
             End If
         End If
 
