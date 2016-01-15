@@ -229,7 +229,9 @@ Namespace Ecosim
 
         Private Function GenerateImage() As System.Drawing.Image
 
-            Dim img As Image = New Bitmap(m_pbPlots.Width, m_pbPlots.Height)
+            Dim img As Bitmap = New Bitmap(m_pbPlots.Width, m_pbPlots.Height)
+            img.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
+
             Dim bg As Graphics = Graphics.FromImage(img)
             bg.Clear(m_pbPlots.BackColor)
             DrawPlots(bg, img.Width, img.Height)
@@ -698,7 +700,7 @@ Namespace Ecosim
                         Debug.Assert(False)
                 End Select
                 img = Me.GenerateImage()
-                img.Save(cmdFS.FileName, imgFormat)
+                img.Save(Path.ChangeExtension(cmdFS.FileName, imgFormat.ToString()), imgFormat)
             End If
         End Sub
 

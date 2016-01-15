@@ -318,7 +318,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     Case 5
                         fmt = Imaging.ImageFormat.Tiff
                     Case 6
-                        fs = New FileStream(cmdFS.FileName, FileMode.Create)
+                        fs = New FileStream(cFileUtils.MakeTempFile(), FileMode.Create)
                         Using g As Graphics = Graphics.FromImage(bmp)
                             hdc = g.GetHdc()
                             mf = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -341,7 +341,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 End Using
 
                 Try
-                    bmp.Save(cmdFS.FileName, fmt)
+                    bmp.Save(Path.ChangeExtension(cmdFS.FileName, fmt.ToString), fmt)
 
                     ' ToDo: globalize this
                     Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Flow diagram image", cmdFS.FileName), _

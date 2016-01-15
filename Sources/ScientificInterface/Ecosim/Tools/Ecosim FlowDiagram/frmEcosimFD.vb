@@ -678,7 +678,7 @@ Namespace Ecosim
                     Case 5
                         fmt = Imaging.ImageFormat.Tiff
                     Case 6
-                        fs = New FileStream(cmdfs.FileName, FileMode.Create)
+                        fs = New FileStream(cFileUtils.MakeTempFile(), FileMode.Create)
                         Using g As Graphics = Graphics.FromImage(bmp)
                             hdc = g.GetHdc()
                             mf = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -710,7 +710,7 @@ Namespace Ecosim
                 End Using
 
                 Try
-                    bmp.Save(cmdfs.FileName, fmt)
+                    bmp.Save(Path.ChangeExtension(cmdfs.FileName, fmt.ToString()), fmt)
 
                     Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "flow diagram image", cmdfs.FileName), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
@@ -767,7 +767,7 @@ Namespace Ecosim
                 Dim totTimeSteps As Integer = Core.nEcosimTimeSteps
                 Dim strPath As String = Path.GetDirectoryName(cmdfs.FileName)
                 Dim strFile As String = Path.GetFileNameWithoutExtension(cmdfs.FileName)
-                Dim strExt As String = Path.GetExtension(cmdfs.FileName)
+                Dim strExt As String = fmt.ToString()
 
                 cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSIMFD_SAVING, 0)
 
@@ -789,10 +789,11 @@ Namespace Ecosim
                     cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIMFD_SAVING, CSng(currTimeStep / totTimeSteps))
 
                     'Saving each timestep with a Regular file name pattern
-                    Dim strDestFileName As String = cFileUtils.ToValidFileName(strFile & "_" & currentYear.ToString("D4") & "-" & month.ToString("D2") & "-" & currTimeStep.ToString("D4") & strExt, False)
+                    Dim strDestFileName As String = cFileUtils.ToValidFileName(strFile & "_" & currentYear.ToString("D4") & "-" & month.ToString("D2") & "-" & currTimeStep.ToString("D4"), False)
+
                     Try
 
-                        bmp.Save(Path.Combine(strPath, strDestFileName), fmt)
+                        bmp.Save(Path.Combine(strPath, Path.ChangeExtension(strDestFileName, strExt)), fmt)
 
                         Dim strSuccess As String = String.Format(My.Resources.ECOSIM_FD_SAVE_SUCCESS_DETAIL, currTimeStep)
                         Dim vs As New cVariableStatus(eStatusFlags.OK, strSuccess, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
