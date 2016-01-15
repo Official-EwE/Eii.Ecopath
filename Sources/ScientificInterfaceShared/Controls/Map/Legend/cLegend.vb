@@ -25,6 +25,7 @@ Imports System.Drawing.Imaging
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports EwECore
+Imports System.IO
 
 #End Region ' Imports
 
@@ -361,6 +362,7 @@ Namespace Controls.Map
                 End Using ' g
 
                 Try
+                    strFileName = Path.ChangeExtension(strFileName, format.ToString.ToLower())
                     bmp.Save(strFileName, format)
                 Catch ex As Exception
                     bSuccess = False

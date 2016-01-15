@@ -115,7 +115,10 @@ Namespace Controls.Map
 
             Try
                 Dim bmp As New Bitmap(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height))
+                bmp.SetResolution(Me.UIContext.StyleGuide.PreferredDPI, Me.UIContext.StyleGuide.PreferredDPI)
+
                 Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
+                strFileName = Path.ChangeExtension(strFileName, format.ToString.ToLower())
                 bmp.Save(strFileName, format)
 
                 Dim lgd As cLegend = cLegend.FromMap(Me)
