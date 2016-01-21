@@ -10133,6 +10133,7 @@ Namespace DataSources
                     ad.DBID = CInt(reader("DBID"))
                     ad.Remark = strRemark
                     ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
+                    ad.Settings.Load(CStr(Me.m_db.ReadSafe(reader, "Settings", "")))
 
                     ad.AllowValidation = True
 
@@ -10178,6 +10179,7 @@ Namespace DataSources
                         drow("ValueID") = strValueID
                         drow("Remark") = ad.Remark
                         drow("VisualStyle") = cVisualStyleReader.StyleToString(ad.VisualStyle)
+                        drow("Settings") = ad.Settings.ToString()
 
                         writer.AddRow(drow)
                     End If

@@ -339,36 +339,26 @@ Namespace Controls.Map
 
             If (Me.m_uic Is Nothing) Then Return False
 
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim szLegend As Size = Nothing
             Dim bSuccess As Boolean = True
 
             Using bmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
-                bmp.SetResolution(Me.m_uic.StyleGuide.PreferredDPI, Me.m_uic.StyleGuide.PreferredDPI)
                 Using g As Graphics = Graphics.FromImage(bmp)
                     szLegend = Me.Size(g)
                 End Using ' g
             End Using ' bmp
 
-            Using bmp As New Bitmap(szLegend.Width, szLegend.Height, Imaging.PixelFormat.Format32bppArgb)
-                bmp.SetResolution(Me.m_uic.StyleGuide.PreferredDPI, Me.m_uic.StyleGuide.PreferredDPI)
-                Using g As Graphics = Graphics.FromImage(bmp)
-
-                    If format Is ImageFormat.Png Then
-                        g.FillRectangle(Brushes.Transparent, 0, 0, szLegend.Width, szLegend.Height)
-                    Else
-                        g.FillRectangle(Brushes.White, 0, 0, szLegend.Width, szLegend.Height)
-                    End If
-                    bSuccess = Me.Draw(g, New Point(0, 0))
-                End Using ' g
-
-                Try
-                    strFileName = Path.ChangeExtension(strFileName, format.ToString.ToLower())
+            Try
+                Using bmp As Bitmap = sg.GetImage(szLegend.Width, szLegend.Height, format, strFileName)
+                    Using g As Graphics = Graphics.FromImage(bmp)
+                        bSuccess = Me.Draw(g, New Point(0, 0))
+                    End Using ' g
                     bmp.Save(strFileName, format)
-                Catch ex As Exception
-                    bSuccess = False
-                End Try
-
-            End Using ' bmp
+                End Using ' bmp
+            Catch ex As Exception
+                bSuccess = False
+            End Try
 
             Return bSuccess
 

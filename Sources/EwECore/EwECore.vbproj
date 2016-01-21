@@ -133,12 +133,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auxiliary\cAuxiliaryData.vb" />
-    <Compile Include="Auxiliary\cReference.vb" />
     <Compile Include="Auxiliary\cVisualStyle.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerResultWriter.vb" />
     <Compile Include="Contaminant Tracer\Model\cContaminanTracerDataStructures.vb" />
     <Compile Include="Core\cCoreSettings.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_19.vb" />
+    <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_20.vb" />
+    <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_21.vb" />
     <Compile Include="EcoBase\cEcobaseImporter.vb" />
     <Compile Include="Database\Import\cModelImporter.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />

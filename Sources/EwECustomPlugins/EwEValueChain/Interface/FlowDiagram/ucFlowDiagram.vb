@@ -209,7 +209,7 @@ Public Class ucFlowDiagram
 
         If (Me.m_uic Is Nothing) Then Return
 
-        Dim ifData As cXMLINIfile = Nothing
+        Dim ifData As cXMLSettings = Nothing
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
@@ -217,8 +217,9 @@ Public Class ucFlowDiagram
 
         If (cmdFO.Result = DialogResult.OK) Then
             Try
-                ifData = New cXMLINIfile(cmdFO.FileName)
-                m_doodler.LoadFromFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+                ifData = New cXMLSettings()
+                ifData.LoadFromFile(cmdFO.FileName)
+                m_doodler.Load(ifData, Me.m_pbFlowDiagram)
             Catch ex As Exception
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -233,7 +234,7 @@ Public Class ucFlowDiagram
 
         If (Me.m_uic Is Nothing) Then Return
 
-        Dim ifData As cXMLINIfile = Nothing
+        Dim ifData As cXMLSettings = Nothing
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
         Dim strModelName As String = Me.m_uic.Core.EwEModel.Name
@@ -242,8 +243,9 @@ Public Class ucFlowDiagram
 
         If cmdFS.Result = Windows.Forms.DialogResult.OK Then
             Try
-                ifData = New cXMLINIfile(cmdFS.FileName)
-                m_doodler.SaveToFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+                ifData = New cXMLSettings()
+                ifData.LoadFromFile(cmdFS.FileName)
+                m_doodler.Save(ifData, Me.m_pbFlowDiagram)
             Catch ex As Exception
                 Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)

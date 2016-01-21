@@ -108,17 +108,15 @@ Namespace Controls.Map
         Public Function SaveToBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
 
             Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
             Dim szCellSize As SizeF = Me.GetCellSize(InRow, InCol)
             Dim strFilenameLegend As String = ""
 
             Try
-                Dim bmp As New Bitmap(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height))
-                bmp.SetResolution(Me.UIContext.StyleGuide.PreferredDPI, Me.UIContext.StyleGuide.PreferredDPI)
-
+                Dim bmp As Bitmap = sg.GetImage(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height), format, strFileName)
                 Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
-                strFileName = Path.ChangeExtension(strFileName, format.ToString.ToLower())
                 bmp.Save(strFileName, format)
 
                 Dim lgd As cLegend = cLegend.FromMap(Me)

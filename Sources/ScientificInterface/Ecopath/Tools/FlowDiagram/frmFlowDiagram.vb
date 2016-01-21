@@ -24,6 +24,7 @@ Imports System.ComponentModel
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
@@ -63,6 +64,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tslLayout As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
 
         Private m_bInUpdate As Boolean = False
 
@@ -96,6 +98,8 @@ Namespace Ecopath.Controls.FlowDiagram
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            Me.m_tsmiResetLayout.Image = SharedResources.ResetHS
+
             If (Me.UIContext Is Nothing) Then Return
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -119,6 +123,10 @@ Namespace Ecopath.Controls.FlowDiagram
             End If
 
             Me.LoadSettings()
+
+            ' Restore last layout
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD01")
+            Me.m_doodler.Load(ad.Settings, Me.m_pbFlowDiagram)
 
         End Sub
 
@@ -175,12 +183,14 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Drawing "
 
-        Private Sub FlowDiagram_Resize(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnFlowDiagramResize(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_pbFlowDiagram.Resize
+
             Me.m_pbFlowDiagram.Invalidate()
+
         End Sub
 
-        Private Sub FlowDiagram_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnFlowDiagramPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
             Handles m_pbFlowDiagram.Paint
 
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
@@ -188,15 +198,19 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        '' Overrides the paint routine so it elimates the flicker
+        ''' <summary>
+        ''' Override the bakcground paint routine to elimate flickering.
+        ''' </summary>
+        ''' <param name="pevent"></param>
         Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
+            ' NOP
         End Sub
 
 #End Region ' Drawing
 
 #Region " Mouse Events "
 
-        Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseDown
 
             Using g As Graphics = Me.CreateGraphics()
@@ -205,12 +219,13 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Private Sub FDPictBox_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseUp
             Me.m_doodler.EndDrag(Me.m_data, e.Location)
+            Me.OnTreeChanged(Me.m_tree)
         End Sub
 
-        Private Sub FDPictBox_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseMove
 
             Using g As Graphics = Me.CreateGraphics()
@@ -237,16 +252,28 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_pbFlowDiagram.Invalidate(True)
             Me.SaveSettings()
 
+            ' Preserve layout
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD01")
+            Me.m_doodler.Save(ad.Settings, Me.m_pbFlowDiagram)
+
         End Sub
 
 #End Region ' Tree events
 
 #Region " Commands "
 
+        Private Sub OnResetLayout(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiResetLayout.Click
+
+            Me.m_tree.ResetLayout()
+            Me.m_pbFlowDiagram.Invalidate()
+
+        End Sub
+
         Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiLoad.Click
 
-            Dim ifData As cXMLINIfile = Nothing
+            Dim ifData As cXMLSettings = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
@@ -255,8 +282,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
-                    ifData = New cXMLINIfile(cmdFO.FileName)
-                    m_doodler.LoadFromFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+                    ifData = New cXMLSettings()
+                    ifData.LoadFromFile(cmdFO.FileName)
+                    m_doodler.Load(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -269,7 +297,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSave.Click
 
-            Dim ifData As cXMLINIfile = Nothing
+            Dim ifData As cXMLSettings = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
@@ -277,8 +305,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try
-                    ifData = New cXMLINIfile(cmdFS.FileName)
-                    m_doodler.SaveToFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+                    ifData = New cXMLSettings()
+                    ifData.LoadFromFile(cmdFS.FileName)
+                    m_doodler.Save(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -303,7 +332,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim fs As FileStream = Nothing
             Dim hdc As IntPtr = Nothing ' :)
             Dim mf As Metafile = Nothing
-            Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
+            Dim bmp As Bitmap = Nothing
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
 
             cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
@@ -318,7 +347,8 @@ Namespace Ecopath.Controls.FlowDiagram
                     Case 5
                         fmt = Imaging.ImageFormat.Tiff
                     Case 6
-                        fs = New FileStream(cFileUtils.MakeTempFile(), FileMode.Create)
+                        bmp = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
+                        fs = New FileStream(cmdFS.FileName, FileMode.Create)
                         Using g As Graphics = Graphics.FromImage(bmp)
                             hdc = g.GetHdc()
                             mf = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -335,13 +365,16 @@ Namespace Ecopath.Controls.FlowDiagram
                         fmt = Imaging.ImageFormat.Bmp
                 End Select
 
-                bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
+                bmp = Me.StyleGuide.GetImage(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, fmt, cmdFS.FileName)
                 Using g As Graphics = Graphics.FromImage(bmp)
+                    g.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+                    g.TextRenderingHint = Drawing.Text.TextRenderingHint.ClearTypeGridFit
+                    g.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
                     Me.m_doodler.DrawFlowDiagram(g, rc)
                 End Using
 
                 Try
-                    bmp.Save(Path.ChangeExtension(cmdFS.FileName, fmt.ToString), fmt)
+                    bmp.Save(cmdFS.FileName, fmt)
 
                     ' ToDo: globalize this
                     Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Flow diagram image", cmdFS.FileName), _
@@ -373,12 +406,15 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' <param name="e"></param>
         ''' -----------------------------------------------------------------------
         Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+
             Try
+                If (Me.m_bInUpdate) Then Return
                 Me.LoadSettings()
                 Me.m_pgFlowDiagram.Invalidate()
             Catch ex As Exception
 
             End Try
+
         End Sub
 
 #End Region ' Settings
@@ -417,6 +453,8 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If (Me.m_bInUpdate) Then Return
 
+            Me.m_bInUpdate = True
+
             My.Settings.FDShowTitle = Me.m_tree.ShowTitle
             My.Settings.FDShowLegend = Me.m_tree.ShowLegend
             My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
@@ -431,6 +469,9 @@ Namespace Ecopath.Controls.FlowDiagram
             My.Settings.FDShowHiddenNodes = Me.m_tree.ShowHiddenMode
 
             My.Settings.Save()
+
+            Me.m_bInUpdate = False
+
         End Sub
 
         Protected Overrides Sub UpdateControls()
@@ -452,6 +493,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tslLayout = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
@@ -488,7 +530,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -537,12 +579,19 @@ Namespace Ecopath.Controls.FlowDiagram
             resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
             Me.m_tsmiSave.Name = "m_tsmiSave"
             '
+            'm_tsmiResetLayout
+            '
+            Me.m_tsmiResetLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsmiResetLayout, "m_tsmiResetLayout")
+            Me.m_tsmiResetLayout.Name = "m_tsmiResetLayout"
+            '
             'frmFlowDiagram
             '
             resources.ApplyResources(Me, "$this")
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
             Me.Name = "frmFlowDiagram"
+            Me.TabText = ""
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel2.ResumeLayout(False)

@@ -39,8 +39,9 @@ Namespace Utilities
         ''' <param name="xnRoot"></param>
         ''' <param name="strEncoding"></param>
         ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Shared Function NewDoc(ByVal strRootElement As String, ByRef xnRoot As XmlNode, Optional strEncoding As String = "") As XmlDocument
+        Public Shared Function NewDoc(ByVal strRootElement As String, _
+                                      Optional ByRef xnRoot As XmlNode = Nothing, _
+                                      Optional strEncoding As String = "") As XmlDocument
             Dim doc As New XmlDocument()
             Dim xnData As XmlElement = Nothing
             Dim xaData As XmlAttribute = Nothing
