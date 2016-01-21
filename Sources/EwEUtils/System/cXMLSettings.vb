@@ -36,46 +36,19 @@ Namespace SystemUtilities
     ''' Foundation obtained 15 April 2012 from http://content.gpwiki.org/index.php/VBNET:Class_XMLINI.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Class cXMLINIfile
+    Public Class cXMLSettings
 
 #Region " Private vars "
 
         Private m_strFileName As String = ""
-        Private m_doc As New XmlDocument()
+        Private m_doc As XmlDocument = Nothing
 
 #End Region ' Private vars
 
 #Region " Construction / destruction "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Create an instance of this class. If the indicated XML file exists
-        ''' it is opened and loaded in the instance.
-        ''' </summary>
-        ''' <param name="strFileName">Name of the file to open. A ".xml" extension
-        ''' is assumed if none is provide.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strFileName As String)
-
-            ' Add extension to file name if missing
-            If String.IsNullOrWhiteSpace(Path.GetExtension(strFileName)) Then
-                strFileName = Path.ChangeExtension(strFileName, ".xml")
-            End If
-
-            ' Store file name prior to opening
-            Me.m_strFileName = strFileName
-
-            If (File.Exists(Me.m_strFileName)) Then
-                Try
-                    ' Attempt to load doc
-                    Me.m_doc.Load(strFileName)
-                Catch ex As Exception
-                    ' Create declaration if load failed
-                    Dim dec As XmlDeclaration = m_doc.CreateXmlDeclaration("1.0", Nothing, Nothing)
-                    Me.m_doc.AppendChild(dec)
-                End Try
-            End If
-
+        Public Sub New()
+            ' NOP
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -91,6 +64,47 @@ Namespace SystemUtilities
 #End Region ' 
 
 #Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load settings from file.
+        ''' </summary>
+        ''' <param name="strFileName">Name of the file to open. A ".xml" extension
+        ''' is assumed if none is provide.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub LoadFromFile(ByVal strFileName As String)
+
+            ' Add extension to file name if missing
+            If String.IsNullOrWhiteSpace(Path.GetExtension(strFileName)) Then
+                strFileName = Path.ChangeExtension(strFileName, ".xml")
+            End If
+
+
+            If (File.Exists(strFileName)) Then
+                Try
+                    Me.EnsureHasDoc()
+                    Me.m_doc.Load(strFileName)
+                    Me.m_strFileName = strFileName
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Public Sub Load(strXML As String)
+
+            If (String.IsNullOrWhiteSpace(strXML)) Then Return
+
+            Try
+                Dim xn As XmlNode = Nothing
+                Me.EnsureHasDoc()
+                Me.m_doc = EwEUtils.Utilities.cXMLUtils.NewDoc("sections", xn)
+                xn.InnerXml = strXML
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Public Event OnSettingsChanged(sender As Object, args As EventArgs)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -131,6 +145,8 @@ Namespace SystemUtilities
             Dim node As XmlNode = Nothing
             Dim keynode As XmlNode = Nothing
 
+            Me.EnsureHasDoc()
+
             ' check for/create section
             node = m_doc.SelectSingleNode("/sections")
             If (node Is Nothing) Then
@@ -165,9 +181,14 @@ Namespace SystemUtilities
                     att.Value = strNewValue
                     newnode.Attributes.Append(att)
                     node.AppendChild(newnode)
+
+                    RaiseEvent OnSettingsChanged(Me, New EventArgs())
                 Else
-                    ' just update key value
-                    keynode.Attributes("value").Value = strNewValue
+                    ' Just update key value
+                    If (String.Compare(keynode.Attributes("value").Value, strNewValue, False) <> 0) Then
+                        keynode.Attributes("value").Value = strNewValue
+                        RaiseEvent OnSettingsChanged(Me, New EventArgs())
+                    End If
                 End If
             Catch ex As Exception
             End Try
@@ -192,6 +213,8 @@ Namespace SystemUtilities
             Debug.Assert(Not String.IsNullOrWhiteSpace(strSection))
             Debug.Assert(Not String.IsNullOrWhiteSpace(strKey))
 
+            If (Me.m_doc Is Nothing) Then Return strDefaultValue
+
             Dim node As XmlNode = Nothing
 
             Try
@@ -212,13 +235,30 @@ Namespace SystemUtilities
         ''' -------------------------------------------------------------------
         Public Sub Flush()
             Try
-                Me.m_doc.Save(Me.m_strFileName)
+                If Not String.IsNullOrWhiteSpace(Me.m_strFileName) Then
+                    Me.m_doc.Save(Me.m_strFileName)
+                End If
             Catch ex As Exception
                 ' Whoah
             End Try
         End Sub
 
+        Public Overrides Function ToString() As String
+            If (Me.m_doc Is Nothing) Then Return ""
+            Return m_doc.SelectSingleNode("/sections").InnerXml
+        End Function
+
 #End Region ' Public access
+
+#Region " Internals "
+
+        Private Sub EnsureHasDoc()
+            If (Me.m_doc Is Nothing) Then
+                Me.m_doc = EwEUtils.Utilities.cXMLUtils.NewDoc("sections")
+            End If
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

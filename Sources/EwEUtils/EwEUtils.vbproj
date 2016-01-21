@@ -147,7 +147,7 @@
     <Compile Include="Interop\cExcelBridge.vb" />
     <Compile Include="Logging\cXMLLogWriter.vb" />
     <Compile Include="Net\cFlexibleEncodingStringWriter.vb" />
-    <Compile Include="System\cXMLINIFile.vb" />
+    <Compile Include="System\cXMLSettings.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
     <Compile Include="Spatial\ISpatialRaster.vb" />
     <Compile Include="Drawing\HSV.vb" />

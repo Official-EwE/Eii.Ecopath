@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Math
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
@@ -107,7 +108,6 @@ Namespace Controls
         ''' <param name="rc">Rectangle to draw within.</param>
         ''' -------------------------------------------------------------------
         Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
-
 
             Me.m_tree.DrawBackground(g, rc)
             Me.m_tree.DrawTitle(g, rc)
@@ -255,21 +255,24 @@ Namespace Controls
         ''' <summary>
         ''' Save the diagram layout to a file.
         ''' </summary>
-        ''' <param name="inifile">The <see cref="cXMLINIfile">file</see> to save to.</param>
-        ''' <param name="rc">The rectangle to scale the diagram to.</param>
+        ''' <param name="settings">The <see cref="cXMLSettings">settings</see> to save to.</param>
+        ''' <param name="ctrl">The control that renders the diagram.</param>
         ''' -------------------------------------------------------------------
-        Public Function SaveToFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle) As Boolean
+        Public Function Save(ByVal settings As cXMLSettings, ByVal ctrl As Control) As Boolean
 
             Try
+                Dim rc As Rectangle = ctrl.ClientRectangle()
 
-                inifile.SaveSetting("Global", "NumGroups", Me.m_data.NumGroups)
+                settings.SaveSetting("Global", "NumGroups", Me.m_data.NumGroups)
+                settings.SaveSetting("Global", "Width", rc.Width)
+                settings.SaveSetting("Global", "Height", rc.Height)
                 For i As Integer = 1 To Me.m_data.NumGroups
-                    inifile.SaveSetting("Locations", i.ToString + "x", CStr(Me.m_tree.NodeLocation(i, rc).X))
-                    inifile.SaveSetting("Locations", i.ToString + "y", CStr(Me.m_tree.NodeLocation(i, rc).Y))
-                    inifile.SaveSetting("Locations", i.ToString + "xlabel", CStr(Me.m_tree.LabelLocation(i, rc).X))
-                    inifile.SaveSetting("Locations", i.ToString + "ylabel", CStr(Me.m_tree.LabelLocation(i, rc).Y))
+                    settings.SaveSetting("Locations", i.ToString + "x", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).X))
+                    settings.SaveSetting("Locations", i.ToString + "y", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).Y))
+                    settings.SaveSetting("Locations", i.ToString + "xlabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).X))
+                    settings.SaveSetting("Locations", i.ToString + "ylabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).Y))
                 Next i
-                inifile.Flush()
+                settings.Flush()
 
             Catch ex As Exception
                 ' ToDo: send an error message
@@ -284,21 +287,24 @@ Namespace Controls
         ''' <summary>
         ''' Load the diagram layout from a file.
         ''' </summary>
-        ''' <param name="inifile">The <see cref="cXMLINIfile">file</see> to load from.</param>
-        ''' <param name="rc">The rectangle to scale the diagram to.</param>
+        ''' <param name="settings">The <see cref="cXMLSettings">file</see> to load from.</param>
+        ''' <param name="ctrl">The control that draws the diagram.</param>
         ''' -------------------------------------------------------------------
-        Public Function LoadFromFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle) As Boolean
+        Public Function Load(ByVal settings As cXMLSettings, ByVal ctrl As Control) As Boolean
 
             Try
 
                 Dim ptf As PointF
-                Dim iNumGroups As Integer = Math.Min(CInt(inifile.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumGroups)
+                Dim iNumGroups As Integer = Math.Min(CInt(settings.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumGroups)
+                ctrl.ClientSize = New Size(CInt(settings.GetSetting("Global", "Width", "100")), CInt(settings.GetSetting("Global", "Height", "100")))
+                Dim rc As Rectangle = ctrl.ClientRectangle()
+
                 For i As Integer = 1 To iNumGroups
-                    ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "x", "0"))
-                    ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "y", "0"))
+                    ptf.X = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "x", "0"))
+                    ptf.Y = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "y", "0"))
                     Me.m_tree.NodeLocation(i, rc) = ptf
-                    ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "xlabel", "10"))
-                    ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "ylabel", "10"))
+                    ptf.X = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "xlabel", "10"))
+                    ptf.Y = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "ylabel", "10"))
                     Me.m_tree.LabelLocation(i, rc) = ptf
                 Next i
 

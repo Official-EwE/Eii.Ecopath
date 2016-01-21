@@ -31,6 +31,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore.Auxiliary
 
 #End Region ' Imports
 
@@ -89,11 +90,11 @@ Namespace Ecosim
         Private m_dataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         'ShowFlowRateLegend
         Private m_mdataGridView As DataGridView
-        Private previousHighlightNod As Integer
+        Private m_iHighlightedNodePrev As Integer
         Private WithEvents m_tbxDelay As System.Windows.Forms.TextBox
         Private WithEvents m_lblDelay As System.Windows.Forms.Label
         Private WithEvents m_btnPlay As System.Windows.Forms.Button
-        Private hightlightNod As Integer
+        Private m_iHighlightedNode As Integer
         Private WithEvents m_btnStop As System.Windows.Forms.Button
 
         'SaveToBatchImages
@@ -104,6 +105,7 @@ Namespace Ecosim
         'Private preferdDPI As Integer = 300  
 
         Private m_fpDelay As cEwEFormatProvider = Nothing
+        Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
 
         ' -- Animation(Play/Stop) --
 
@@ -115,7 +117,6 @@ Namespace Ecosim
         End Enum
 
         Private m_animationstate As eAnimationState = eAnimationState.Idle
-
 
 #End Region ' Private variables
 
@@ -202,6 +203,10 @@ Namespace Ecosim
 
             Me.LoadSettings()
 
+            ' Restore last layout for this scenario
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD" & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID)
+            Me.m_doodler.Load(ad.Settings, Me.m_pbFlowDiagram)
+
         End Sub
 
         Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
@@ -270,12 +275,12 @@ Namespace Ecosim
 
 #Region " Drawing "
 
-        Private Sub FlowDiagram_Resize(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnFlowDiagramResize(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_pbFlowDiagram.Resize
             Me.m_pbFlowDiagram.Invalidate()
         End Sub
 
-        Private Sub FlowDiagram_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
+        Private Sub OnFlowDiagramPaint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
             Handles m_pbFlowDiagram.Paint
 
             Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
@@ -283,15 +288,19 @@ Namespace Ecosim
 
         End Sub
 
-        '' Overrides the paint routine so it elimates the flicker
+        ''' <summary>
+        ''' Override the bakcground paint routine to elimate flickering.
+        ''' </summary>
+        ''' <param name="pevent"></param>
         Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
+            ' NOP
         End Sub
 
 #End Region ' Drawing
 
 #Region " Mouse Events "
 
-        Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseDown
 
             Using g As Graphics = Me.CreateGraphics()
@@ -300,13 +309,12 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub FDPictBox_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseUp
             Me.m_doodler.EndDrag(Me.m_data, e.Location)
         End Sub
 
-
-        Private Sub FDPictBox_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseMove
 
             Using g As Graphics = Me.CreateGraphics()
@@ -316,25 +324,25 @@ Namespace Ecosim
         End Sub
 
 
-        Private Sub FDPictBox_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Private Sub OnFlowDiagramMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
             Handles m_pbFlowDiagram.MouseClick
 
-
+            ' ToDo: globalize this method
 
             If Me.m_tree.ShowFlowRateLegend = True Then
 
-                hightlightNod = Me.m_doodler.HighlightNode
+                Me.m_iHighlightedNode = Me.m_doodler.HighlightNode
 
-                If (hightlightNod > 0) Then
+                If (Me.m_iHighlightedNode > 0) Then
 
                     'DataTable should be created only Once for highlighNode
-                    If (hightlightNod <> previousHighlightNod) Then
+                    If (Me.m_iHighlightedNode <> Me.m_iHighlightedNodePrev) Then
 
                         Try  'Delete previous DataTable if still exiting on the form
 
                             Me.m_mdataGridView.Dispose()  'Dellocating all the resources to DataGridView
                             Me.m_mdataGridView.ClearSelection()
-                            Me.m_pbFlowDiagram.Controls.Remove(m_mdataGridView)
+                            Me.m_pbFlowDiagram.Controls.Remove(Me.m_mdataGridView)
 
                         Catch
                             'Noting
@@ -346,16 +354,16 @@ Namespace Ecosim
                         m_mdataGridView.Rows.Add()
                         'adding first column values
                         m_mdataGridView.Rows(0).Cells(0).Value = "Prey/Pred Rates"
-                        m_mdataGridView.Rows(1).Cells(0).Value = Me.m_data.GroupName(hightlightNod)
+                        m_mdataGridView.Rows(1).Cells(0).Value = Me.m_data.GroupName(m_iHighlightedNode)
                         m_mdataGridView.Rows(1).Cells(0).Style.BackColor = Color.Gold
 
                         'Dim rowval As Integer = 0
                         Dim celval As Integer = 1
                         For j As Integer = 1 To Me.m_data.NumGroups
 
-                            If (Me.m_data.Diet(hightlightNod, j) > 0) Then   'Pred:highlightNod Pray:j
+                            If (Me.m_data.Diet(m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
 
-                                Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(hightlightNod)
+                                Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(m_iHighlightedNode)
                                 Dim gpnm As String = Me.m_data.GroupName(j)
 
                                 m_mdataGridView.Columns.Add("column", "header")
@@ -365,9 +373,9 @@ Namespace Ecosim
                                 m_mdataGridView.Rows(1).Cells(celval).Style.ForeColor = Color.Green
                                 celval += 1
 
-                            ElseIf (Me.m_data.Diet(j, hightlightNod) > 0) Then   'Pred:j Pray:highlightNod
+                            ElseIf (Me.m_data.Diet(j, m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
 
-                                Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(hightlightNod).Consumption(j)
+                                Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(m_iHighlightedNode).Consumption(j)
                                 Dim gpnm1 As String = Me.m_data.GroupName(j)
 
                                 m_mdataGridView.Columns.Add("column", "header")
@@ -380,7 +388,7 @@ Namespace Ecosim
                             End If
 
                         Next j
-                        previousHighlightNod = hightlightNod
+                        m_iHighlightedNodePrev = m_iHighlightedNode
 
                         'Displaying DataGridView on the form with properties set to it
                         m_mdataGridView.Dock = DockStyle.Top
@@ -404,7 +412,7 @@ Namespace Ecosim
 
             If Me.m_tree.ShowFlowRateLegend = False Then
                 Try
-                    previousHighlightNod = 0 'we can again select the same node
+                    m_iHighlightedNodePrev = 0 'we can again select the same node
                     If (Me.m_mdataGridView IsNot Nothing) Then
                         Me.m_mdataGridView.Dispose()  'Dellocating all the resources to DataGridView
                         Me.m_mdataGridView.ClearSelection()
@@ -423,7 +431,8 @@ Namespace Ecosim
 
         Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
-            ' ToDo: globalize this
+            ' ToDo: globalize this method
+
             Dim strMessage As String = ""
 
             ' Enabling only one legend to display at a time
@@ -451,6 +460,11 @@ Namespace Ecosim
             End If
 
             Me.SaveSettings()
+
+            ' Preserve layout
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD" & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID)
+            Me.m_doodler.Save(ad.Settings, Me.m_pbFlowDiagram)
+
         End Sub
 
         Private Sub OnTreeBiomassLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
@@ -600,10 +614,18 @@ Namespace Ecosim
 
 #Region " Commands "
 
-        Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnResetLayout(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiResetLayout.Click
+
+            Me.m_tree.ResetLayout()
+            Me.m_pbFlowDiagram.Invalidate()
+
+        End Sub
+
+        Private Sub OnLoadLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiLoad.Click
 
-            Dim ifData As cXMLINIfile = Nothing
+            Dim ifData As cXMLSettings = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
@@ -612,8 +634,9 @@ Namespace Ecosim
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
-                    ifData = New cXMLINIfile(cmdFO.FileName)
-                    m_doodler.LoadFromFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+                    ifData = New cXMLSettings()
+                    ifData.LoadFromFile(cmdFO.FileName)
+                    m_doodler.Load(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -623,10 +646,10 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnSaveLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSave.Click
 
-            Dim ifData As cXMLINIfile = Nothing
+            Dim ifData As cXMLSettings = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
@@ -634,8 +657,9 @@ Namespace Ecosim
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try
-                    ifData = New cXMLINIfile(cmdFS.FileName)
-                    m_doodler.SaveToFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+                    ifData = New cXMLSettings()
+                    ifData.LoadFromFile(cmdFS.FileName)
+                    m_doodler.Save(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
@@ -654,12 +678,14 @@ Namespace Ecosim
         Private Sub OnSaveToImage(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSaveToImage.Click
 
+            ' ToDo: globalize this
+
             Dim dpi As Integer = Me.StyleGuide.PreferredDPI
             Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
             Dim fs As FileStream = Nothing
             Dim hdc As IntPtr = Nothing ' :)
             Dim mf As Metafile = Nothing
-            Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
+            Dim bmp As Bitmap = Nothing
             Dim s As Size = Me.Size
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -678,7 +704,8 @@ Namespace Ecosim
                     Case 5
                         fmt = Imaging.ImageFormat.Tiff
                     Case 6
-                        fs = New FileStream(cFileUtils.MakeTempFile(), FileMode.Create)
+                        bmp = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
+                        fs = New FileStream(cmdfs.FileName, FileMode.Create)
                         Using g As Graphics = Graphics.FromImage(bmp)
                             hdc = g.GetHdc()
                             mf = New Metafile(fs, hdc, EmfType.EmfOnly)
@@ -699,7 +726,7 @@ Namespace Ecosim
                         fmt = Imaging.ImageFormat.Bmp
                 End Select
 
-                bmp.SetResolution(dpi, dpi)
+                bmp = Me.StyleGuide.GetImage(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, fmt, cmdfs.FileName)
                 Using g As Graphics = Graphics.FromImage(bmp)
                     Threading.Thread.Sleep(500)
                     Dim xx As Integer = Me.m_pbFlowDiagram.ClientRectangle.X
@@ -710,7 +737,7 @@ Namespace Ecosim
                 End Using
 
                 Try
-                    bmp.Save(Path.ChangeExtension(cmdfs.FileName, fmt.ToString()), fmt)
+                    bmp.Save(cmdfs.FileName, fmt)
 
                     Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "flow diagram image", cmdfs.FileName), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
@@ -1021,12 +1048,15 @@ Namespace Ecosim
         ''' <param name="e"></param>
         ''' -----------------------------------------------------------------------
         Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
+
             Try
+                If (Me.m_bInUpdate) Then Return
                 Me.LoadSettings()
                 Me.m_pgFlowDiagram.Invalidate()
             Catch ex As Exception
 
             End Try
+
         End Sub
 
 #End Region ' Settings
@@ -1083,6 +1113,8 @@ Namespace Ecosim
 
             If (Me.m_bInUpdate) Then Return
 
+            Me.m_bInUpdate = True
+
             My.Settings.FDShowTitle = Me.m_tree.ShowTitle
             My.Settings.FDShowLegend = Me.m_tree.ShowLegend
             My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
@@ -1098,6 +1130,9 @@ Namespace Ecosim
             My.Settings.FDAnimateDelay = CInt(Me.m_fpDelay.Value)
 
             My.Settings.Save()
+
+            Me.m_bInUpdate = False
+
         End Sub
 
         Protected Overrides Sub UpdateControls()
@@ -1149,6 +1184,7 @@ Namespace Ecosim
             Me.m_tslLayout = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
@@ -1274,7 +1310,7 @@ Namespace Ecosim
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiSaveToBatchImage, Me.m_tss3, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiSaveToBatchImage, Me.m_tss3, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -1335,13 +1371,19 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
             Me.m_tsmiSave.Name = "m_tsmiSave"
             '
+            'm_tsmiResetLayout
+            '
+            Me.m_tsmiResetLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsmiResetLayout, "m_tsmiResetLayout")
+            Me.m_tsmiResetLayout.Name = "m_tsmiResetLayout"
+            '
             'frmEcosimFD
             '
             resources.ApplyResources(Me, "$this")
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
             Me.Name = "frmEcosimFD"
-            Me.TabText = ""
+            Me.TabText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel1.PerformLayout()

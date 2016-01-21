@@ -21,6 +21,8 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
+Imports System.Xml
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -48,20 +50,18 @@ Namespace Auxiliary
 
 #Region " Private vars "
 
+        Private m_core As cCore = Nothing
+
+        Private m_settings As cXMLSettings = Nothing
+
         ''' <summary>Unique database ID</summary>
         Private m_iDBID As Integer = 0
         ''' <summary>Remark text for this data.</summary>
         Private m_strRemark As String = ""
         ''' <summary>Visual style for this data.</summary>
-        Private m_visualStyle As cVisualStyle = Nothing
+        Private m_visualstyle As cVisualStyle = Nothing
         ''' <summary>Key to identify core variable this data refers to.</summary>
         Private m_key As cValueID = Nothing
-        Private m_core As cCore = Nothing
-
-#If USE_REFERENCES Then
-        ''' <summary>List of <see cref="cReference">references</see> for this data.</summary>
-        Private m_references As New List(Of cReference)
-#End If
 
 #End Region ' Private vars
 
@@ -95,8 +95,12 @@ Namespace Auxiliary
 
             Me.m_key = key
             Me.m_core = core
-            Me.AllowValidation = False
+            Me.m_settings = New cXMLSettings()
 
+            AddHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
+
+            Me.AllowValidation = False
+            ' NOP
             Me.AllowValidation = True
 
         End Sub
@@ -151,19 +155,6 @@ Namespace Auxiliary
             End Set
         End Property
 
-#If USE_REFERENCES Then
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the list of <see cref="cReference">references</see> for this data.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Function References() As List(Of cReference)
-            Return Me.m_references
-        End Function
-
-#End If
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get or set the visual style for this data.
@@ -171,25 +162,36 @@ Namespace Auxiliary
         ''' -------------------------------------------------------------------
         Public Property VisualStyle() As cVisualStyle
             Get
-                Return Me.m_visualStyle
+                Return Me.m_visualstyle
             End Get
             Set(ByVal value As cVisualStyle)
 
                 If Object.ReferenceEquals(value, Me.VisualStyle) Then Return
 
-                If (Me.m_visualStyle IsNot Nothing) Then
-                    Me.m_visualStyle.Container = Nothing
+                If (Me.m_visualstyle IsNot Nothing) Then
+                    Me.m_visualstyle.Container = Nothing
                 End If
 
-                Me.m_visualStyle = value
+                Me.m_visualstyle = value
 
-                If (Me.m_visualStyle IsNot Nothing) Then
-                    Me.m_visualStyle.Container = Me
+                If (Me.m_visualstyle IsNot Nothing) Then
+                    Me.m_visualstyle.Container = Me
                 End If
 
                 Me.Update()
 
             End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get or set settings for this data.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Settings() As cXMLSettings
+            Get
+                Return Me.m_settings
+            End Get
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -199,8 +201,9 @@ Namespace Auxiliary
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property IsEmpty() As Boolean
             Get
-                Return String.IsNullOrEmpty(Me.Remark) And _
-                       (Me.m_visualStyle Is Nothing)
+                Return String.IsNullOrWhiteSpace(Me.Remark) And _
+                       (Me.m_visualstyle Is Nothing) And _
+                       String.IsNullOrWhiteSpace(Me.Settings.ToString())
             End Get
         End Property
 
@@ -293,6 +296,14 @@ Namespace Auxiliary
                 Me.Remark = value
             End Set
         End Property
+
+        Private Sub OnSettingsChanged(sender As Object, args As EventArgs)
+            Try
+                Me.Update()
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
     End Class
 

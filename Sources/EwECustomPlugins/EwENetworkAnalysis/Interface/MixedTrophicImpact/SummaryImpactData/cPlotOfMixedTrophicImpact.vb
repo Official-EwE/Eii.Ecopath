@@ -16,7 +16,6 @@
 ' ===============================================================================
 '
 
-' ToDo_JS: fix bolded and horrible fonts in EMF
 #Region " Imports "
 
 Option Strict On
@@ -167,7 +166,7 @@ Public Class cPlotOfMixedTrophicImpact
         End Using
         Try
             bmp.Save(strFileName)
-            msg = New cMessage(cStringUtils.Localize(SharedResources.GENERIC_FILESAVE_SUCCES, strFileName), _
+            msg = New cMessage(cStringUtils.Localize(SharedResources.GENERIC_FILESAVE_SUCCES, "MTI plot", strFileName), _
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(strFileName)
         Catch ex As Exception

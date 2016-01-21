@@ -12506,23 +12506,6 @@ Public Class cCore
 
     End Property
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns an array with all <see cref="cAuxiliaryData"/> containing remarks.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Public ReadOnly Property Remarks() As cAuxiliaryData()
-        Get
-            Dim lAux As New List(Of cAuxiliaryData)
-            For Each aux As cAuxiliaryData In Me.m_dtAuxiliaryData.Values
-                If Not String.IsNullOrWhiteSpace(aux.Remark) Then
-                    lAux.Add(aux)
-                End If
-            Next
-            Return lAux.ToArray()
-        End Get
-    End Property
-
 #Region " Pedigree "
 
     Private Function InitPedigreeManagers() As Boolean

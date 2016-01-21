@@ -500,7 +500,7 @@ Namespace Controls
             Set(ByVal value As String)
                 If (value <> Me.m_data.Title) Then
                     Me.m_data.Title = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -517,7 +517,7 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bShowTitle) Then
                     Me.m_bShowTitle = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -531,9 +531,9 @@ Namespace Controls
                 Return Me.m_iNumTrophicLevels - 1
             End Get
             Set(ByVal value As Integer)
-                If (value <> (Me.m_iNumTrophicLevels + 1)) Then
+                If ((value + 1) <> Me.m_iNumTrophicLevels) Then
                     Me.m_iNumTrophicLevels = value + 1
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                     Me.InitNodePositions()
                 End If
             End Set
@@ -550,7 +550,7 @@ Namespace Controls
             Set(ByVal value As eFDColorUsageTypes)
                 If (value <> Me.m_colorusagetype) Then
                     Me.m_colorusagetype = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -566,7 +566,7 @@ Namespace Controls
             Set(ByVal value As TriState)
                 If (value <> Me.m_tsShowLegend) Then
                     Me.m_tsShowLegend = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -583,7 +583,7 @@ Namespace Controls
                 If (value <> Me.m_tsShowBiomassLegend) Then
                     Me.m_tsShowBiomassLegend = value
                     RaiseEvent OnBiomassLegendChanged(Me)
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -600,7 +600,7 @@ Namespace Controls
                 If (value <> Me.m_tsShowFlowRateLegend) Then
                     Me.m_tsShowFlowRateLegend = value
                     RaiseEvent OnFlowRateLegendChanged(Me)
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -616,7 +616,7 @@ Namespace Controls
             Set(ByVal value As Color)
                 If (value <> Me.m_clrNode) Then
                     Me.m_clrNode = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -632,7 +632,7 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bAutoNodeSize) Then
                     Me.m_bAutoNodeSize = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -648,7 +648,7 @@ Namespace Controls
             Set(ByVal value As Integer)
                 If (value <> Me.m_iNodeSize) Then
                     Me.m_iNodeSize = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -664,7 +664,7 @@ Namespace Controls
             Set(ByVal value As eFDNodeTypes)
                 If (value <> Me.m_nodetype) Then
                     Me.m_nodetype = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -680,7 +680,7 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bAutoLineWidth) Then
                     Me.m_bAutoLineWidth = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -696,7 +696,7 @@ Namespace Controls
             Set(ByVal value As Single)
                 If (value <> Me.m_sLineWidth) Then
                     Me.m_sLineWidth = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -711,7 +711,7 @@ Namespace Controls
             Set(ByVal value As Color)
                 If (value <> Me.m_clrLine) Then
                     Me.m_clrLine = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -727,7 +727,7 @@ Namespace Controls
             Set(ByVal value As eFDConnectionType)
                 If (value <> Me.m_connectiontype) Then
                     Me.m_connectiontype = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -743,7 +743,7 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bIsNodeDrawValue) Then
                     Me.m_bIsNodeDrawValue = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -759,7 +759,7 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bIsDrawLabel) Then
                     Me.m_bIsDrawLabel = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
@@ -776,14 +776,18 @@ Namespace Controls
             Set(ByVal value As eFDShowHiddenType)
                 If (value <> Me.m_nodeshowtype) Then
                     Me.m_nodeshowtype = value
-                    RaiseEvent OnChanged(Me)
+                    Me.Update()
                 End If
             End Set
         End Property
 
 #End Region ' Configuration
 
-#Region " Public properties "
+#Region " Public access "
+
+        Public Sub ResetLayout()
+            Me.InitNodePositions()
+        End Sub
 
         Public Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF _
             Implements IFlowDiagramRenderer.NodeLocation
@@ -909,6 +913,14 @@ Namespace Controls
 #End Region ' EwE styling
 
 #Region " Internals "
+
+        Private Sub Update()
+            Try
+                RaiseEvent OnChanged(Me)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Sub
 
         Private ReadOnly Property CalcNodeSize(ByVal sValue As Single, ByVal sValueMax As Single) As Integer
             Get

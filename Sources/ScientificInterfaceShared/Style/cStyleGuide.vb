@@ -32,6 +32,7 @@ Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports System.Text
 Imports System.Collections.Specialized
+Imports System.Drawing.Imaging
 
 #End Region ' Imports
 
@@ -2180,22 +2181,70 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return a standard image for a given <see cref="cStyleGuide.eStyleFlags">style</see>.
+        ''' Return an image of requested format, size, at <see cref="PreferredDPI">the preferred dpi</see>.
+        ''' The extension of the optionally provided filename will be adjusted
+        ''' to match the image format.
         ''' </summary>
-        ''' <param name="style">The style pattern to find the image for.</param>
+        ''' <param name="format">The <see cref="ImageFormat">formats</see> of the image to create.</param>
+        ''' <param name="size">The width and height of the image, in pixels.</param>
+        ''' <param name="strFileName">Optional filename of the image.</param>
         ''' <returns>A bitmap, or nothing if not applicable.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetImage(style As cStyleGuide.eStyleFlags) As Bitmap
+        Public Function GetImage(size As Size, format As ImageFormat, Optional ByRef strFileName As String = "") As Bitmap
 
-            If (style And eStyleFlags.ErrorEncountered) > 0 Then
+            Return Me.GetImage(size.Width, size.Height, format, strFileName)
 
-            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return an image of requested format, size, at <see cref="PreferredDPI">the preferred dpi</see>
+        ''' for writing to disk. The extension of the optionally provided filename 
+        ''' will be adjusted to match the image format.
+        ''' </summary>
+        ''' <param name="format">The <see cref="ImageFormat">formats</see> of the image to create.</param>
+        ''' <param name="width">The width of the image, in pixels.</param>
+        ''' <param name="height">The height of the image, in pixels.</param>
+        ''' <param name="strFileName">Optional filename of the image.</param>
+        ''' <returns>A bitmap, or nothing if not applicable.</returns>
+        ''' <remarks>
+        ''' PNG images are 
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function GetImage(width As Integer, height As Integer, format As ImageFormat, _
+                                 Optional ByRef strFileName As String = "") As Bitmap
+
+            Try
+
+                Dim bmp As New Bitmap(width, height, PixelFormat.Format32bppArgb)
+                bmp.SetResolution(Me.PreferredDPI, Me.PreferredDPI)
+
+                Using g As Graphics = Graphics.FromImage(bmp)
+                    If ((format Is ImageFormat.Gif) Or (format Is ImageFormat.Png)) Then
+                        g.FillRectangle(Brushes.Transparent, 0, 0, width, height)
+                    Else
+                        g.FillRectangle(Brushes.White, 0, 0, width, height)
+                    End If
+                End Using
+
+                If (Not String.IsNullOrWhiteSpace(strFileName)) Then
+                    strFileName = Path.ChangeExtension(strFileName, format.ToString().ToLower)
+                End If
+
+                Return bmp
+            Catch ex As Exception
+                ' Some kind of error?!
+                Debug.Assert(False)
+            End Try
             Return Nothing
 
         End Function
 
-
-
+        ''' <summary>
+        ''' Get the system color to reflect spatial data set compatibility
+        ''' </summary>
+        ''' <param name="comp"></param>
+        ''' <returns></returns>
         Public Shared Function GetColor(comp As SpatialData.cDatasetCompatilibity) As Color
             Select Case comp.Status
                 Case eStatusFlags.Null
