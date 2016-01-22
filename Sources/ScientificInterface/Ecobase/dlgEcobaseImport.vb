@@ -92,14 +92,14 @@ Public Class dlgEcobaseImport
 
         Me.m_tsbnShowYear.Image = SharedResources.CalendarHS
         Me.m_tsbnShowAuthor.Image = SharedResources.PersonHS
-        Me.m_tsbnShowLocked.Image = SharedResources.NotEditable
+        Me.m_tsbnShowDownloadable.Image = SharedResources.DownloadHS
         Me.m_tsddValue.Image = SharedResources.FilterHS
 
         ' Retrieve persistent settings
         Dim p As New cSettingsParser(Me.Settings)
         Me.m_tsbnShowYear.Checked = p.Parameter("Year", "1") = "1"
         Me.m_tsbnShowAuthor.Checked = p.Parameter("Author", "0") = "1"
-        Me.m_tsbnShowLocked.Checked = p.Parameter("Locked", "0") = "1"
+        Me.m_tsbnShowDownloadable.Checked = p.Parameter("Downloadable", "1") = "1"
 
         Me.m_ecobase = New cEcoBaseWDSL()
 
@@ -132,7 +132,7 @@ Public Class dlgEcobaseImport
             Dim p As New cSettingsParser()
             p.Parameter("Year") = cSystemUtils.IIF(Me.m_tsbnShowYear.Checked, "1", "0")
             p.Parameter("Author") = cSystemUtils.IIF(Me.m_tsbnShowAuthor.Checked, "1", "0")
-            p.Parameter("Locked") = cSystemUtils.IIF(Me.m_tsbnShowLocked.Checked, "1", "0")
+            p.Parameter("Downloadable") = cSystemUtils.IIF(Me.m_tsbnShowDownloadable.Checked, "1", "0")
             Me.Settings = p.Buffer
 
             Try
@@ -183,7 +183,7 @@ Public Class dlgEcobaseImport
         If (Me.m_model IsNot Nothing) Then
             Dim sb As New StringBuilder()
 
-            Me.m_lblModelNameValue.Text = cStringUtils.ToSentenceCase(Me.m_model.Name)
+            Me.m_lblModelNameValue.Text = cStringUtils.ToSentenceCase(Me.m_model.Name.Trim)
             Me.m_lblAreaValue.Text = cStringUtils.FormatNumber(Me.m_model.Area)
             Me.m_lblAuthorValue.Text = cStringUtils.ToTitleCase(Me.m_model.Author)
             Me.m_lblCountryValue.Text = cStringUtils.ToTitleCase(Me.m_model.Country)
@@ -264,7 +264,7 @@ Public Class dlgEcobaseImport
 
 
     Private Sub OnShowOptionChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsbnShowYear.CheckedChanged, m_tsbnShowAuthor.CheckedChanged, m_tsbnShowLocked.CheckedChanged
+        Handles m_tsbnShowYear.CheckedChanged, m_tsbnShowAuthor.CheckedChanged, m_tsbnShowDownloadable.CheckedChanged
 
         Me.UpdateModelList()
 
@@ -279,7 +279,7 @@ Public Class dlgEcobaseImport
         Dim bShowAuth As Boolean = Me.m_tsbnShowAuthor.Checked
 
         Dim model As cModelData = DirectCast(e.ListItem, cModelData)
-        Dim strModelName As String = model.Name
+        Dim strModelName As String = model.Name.Trim
 
         If (bShowYear Or bShowAuth) Then
             Dim strDetail As String = ""
@@ -530,7 +530,7 @@ Public Class dlgEcobaseImport
     Private Sub UpdateModelList()
 
         Dim strFilter As String = Me.m_tstbSearch.Text
-        Dim bShowLocked As Boolean = Me.m_tsbnShowLocked.Checked
+        Dim bShowDownloadsOnly As Boolean = Me.m_tsbnShowDownloadable.Checked
         Dim bUseModel As Boolean = True
         Dim bKeepSelection As Boolean = False
 
@@ -538,7 +538,7 @@ Public Class dlgEcobaseImport
         Me.m_lbxModels.Items.Clear()
 
         For Each model As cModelData In Me.m_models
-            If (model.AllowDissemination Or bShowLocked) Then
+            If (model.AllowDissemination Or Not bShowDownloadsOnly) Then
                 bUseModel = True
 
                 ' Filters
