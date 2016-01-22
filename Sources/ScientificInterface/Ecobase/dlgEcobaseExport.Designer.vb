@@ -86,6 +86,7 @@ Partial Class dlgEcobaseExport
         Me.m_pbModelYear = New System.Windows.Forms.PictureBox()
         Me.m_tpObjectives = New System.Windows.Forms.TabPage()
         Me.m_cbObjectiveOtherImpactAssessment = New System.Windows.Forms.CheckBox()
+        Me.m_cbObjectiveMarineProtection = New System.Windows.Forms.CheckBox()
         Me.m_cbObjectivePollution = New System.Windows.Forms.CheckBox()
         Me.m_cbObjectiveEcosystemFunctioning = New System.Windows.Forms.CheckBox()
         Me.m_cbObjectiveEnvironmentalVariability = New System.Windows.Forms.CheckBox()
@@ -157,7 +158,6 @@ Partial Class dlgEcobaseExport
         Me.m_lblSubmInfo = New System.Windows.Forms.Label()
         Me.m_wrkGetAuthorAgreement = New System.ComponentModel.BackgroundWorker()
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
-        Me.m_cbObjectiveMarineProtection = New System.Windows.Forms.CheckBox()
         CType(Me.m_pbModelName, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbModelAuthorEmail, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbPublication, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -484,6 +484,12 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_cbObjectiveOtherImpactAssessment, "m_cbObjectiveOtherImpactAssessment")
         Me.m_cbObjectiveOtherImpactAssessment.Name = "m_cbObjectiveOtherImpactAssessment"
         Me.m_cbObjectiveOtherImpactAssessment.UseVisualStyleBackColor = True
+        '
+        'm_cbObjectiveMarineProtection
+        '
+        resources.ApplyResources(Me.m_cbObjectiveMarineProtection, "m_cbObjectiveMarineProtection")
+        Me.m_cbObjectiveMarineProtection.Name = "m_cbObjectiveMarineProtection"
+        Me.m_cbObjectiveMarineProtection.UseVisualStyleBackColor = True
         '
         'm_cbObjectivePollution
         '
@@ -950,12 +956,6 @@ Partial Class dlgEcobaseExport
         'm_wrkGetModels
         '
         '
-        'm_cbObjectiveMarineProtection
-        '
-        resources.ApplyResources(Me.m_cbObjectiveMarineProtection, "m_cbObjectiveMarineProtection")
-        Me.m_cbObjectiveMarineProtection.Name = "m_cbObjectiveMarineProtection"
-        Me.m_cbObjectiveMarineProtection.UseVisualStyleBackColor = True
-        '
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
@@ -964,7 +964,6 @@ Partial Class dlgEcobaseExport
         Me.Controls.Add(Me.m_tcExport)
         Me.Controls.Add(Me.m_btnSubmit)
         Me.Controls.Add(Me.m_btnCancel)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEcobaseExport"
