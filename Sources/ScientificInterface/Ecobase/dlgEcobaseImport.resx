@@ -1026,20 +1026,23 @@
   <data name="&gt;&gt;m_hdrRefs.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_lblRefValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
   <data name="m_lblRefValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="m_lblRefValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="m_lblRefValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_lblRefValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 146</value>
+    <value>0, 146</value>
+  </data>
+  <data name="m_lblRefValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblRefValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>483, 13</value>
+    <value>489, 13</value>
   </data>
   <data name="m_lblRefValue.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>

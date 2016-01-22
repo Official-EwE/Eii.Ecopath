@@ -85,11 +85,6 @@ Public Class dlgEcobaseImport
         il.Images.Add(SharedResources.Critical)
         Me.m_tcContent.ImageList = il
 
-        ' Make scrollbars appear when needed
-        Me.m_lblRefValue.AutoSize = False
-        Me.m_lblRefValue.MaximumSize = New Size(100, 0)
-        Me.m_lblRefValue.AutoSize = True
-
         Me.m_tsbnShowYear.Image = SharedResources.CalendarHS
         Me.m_tsbnShowAuthor.Image = SharedResources.PersonHS
         Me.m_tsbnShowDownloadable.Image = SharedResources.DownloadHS
