@@ -1041,6 +1041,7 @@
     <Content Include="Resources\CogHS.png" />
     <Content Include="Resources\ConnectHS.png" />
     <Content Include="Resources\DisconnectHS.png" />
+    <None Include="Resources\DownloadHS.png" />
     <Content Include="Resources\ExportDatabaseHS.PNG" />
     <None Include="Resources\FilterHS off.png" />
     <Content Include="Resources\FilterHS.png" />
