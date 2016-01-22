@@ -630,14 +630,16 @@ Public Class dlgEcobaseImport
         If (Me.m_model Is Nothing) Then Return ""
 
         Dim sb As New StringBuilder()
-        If (Not String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
-            sb.AppendLine(cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, "DOI", Me.m_model.DOI))
-        End If
-        If (Not String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
-            sb.AppendLine(Me.m_model.URI)
-        End If
         If (Not String.IsNullOrWhiteSpace(Me.m_model.Reference)) Then
             sb.AppendLine(Me.m_model.Reference)
+        End If
+        If (Not String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
+            If (sb.Length > 0) Then sb.AppendLine()
+            sb.AppendLine(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, "DOI", Me.m_model.DOI))
+        End If
+        If (Not String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
+            If (sb.Length > 0) Then sb.AppendLine()
+            sb.AppendLine(Me.m_model.URI)
         End If
         If (sb.Length = 0) Then sb.Append("?")
         Return sb.ToString()
