@@ -1725,7 +1725,8 @@ Namespace Core
         PSDEnabled
         ''' <summary>To document</summary>
         PSDComputed
-        ''' <summary>To document</summary>
+        ''' <summary>Von Bertalanffy growth curvature (VBGF) parameter.</summary>
+        ''' <remarks>http://www.fao.org/docrep/w5449e/w5449e05.htm</remarks>
         VBK
         ''' <summary>To document</summary>
         BiomassAvgSzWt
