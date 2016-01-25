@@ -72,7 +72,7 @@ Friend Class cDBUpdate6_50_00_20
             Dim iScenarioID As Long = CLng(readerScenario("ScenarioID"))
             Dim InRow As Integer = CInt(readerScenario("InRow"))
             Dim InCol As Integer = CInt(readerScenario("InCol"))
-            Dim depth(InCol, InRow) As Single
+            Dim depth(InRow, InCol) As Single
             bSucces = bSucces And cStringUtils.StringToArray(CStr(db.ReadSafe(readerScenario, "DepthMap", "")), depth, InRow, InCol)
 
             ' For each migratory group
