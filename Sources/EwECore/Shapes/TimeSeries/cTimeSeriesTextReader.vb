@@ -653,19 +653,10 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' </summary>
     ''' <param name="iNumCols">The number of columns that is expected.</param>
     ''' <param name="astrCols">The columns in the line of text.</param>
-    ''' <param name="bAllowMissing">Flag that indicates that validation requires
-    ''' whether a row must contain exactly the expected number of columns (false) or
-    ''' whether a row is allowed to contain less columns (true).</param>
     ''' <returns>True if the number of columns validated succesfully.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ValidateLine(ByVal iNumCols As Integer, ByVal astrCols() As String, _
-                Optional ByVal bAllowMissing As Boolean = False) As Boolean
-
-        If bAllowMissing Then
-            Return iNumCols >= astrCols.Length
-        Else
-            Return iNumCols = astrCols.Length And (iNumCols > 0)
-        End If
+    Private Function ValidateLine(ByVal iNumCols As Integer, ByVal astrCols() As String) As Boolean
+        Return iNumCols >= astrCols.Length
     End Function
 
     ''' -----------------------------------------------------------------------
