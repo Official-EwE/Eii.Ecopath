@@ -152,6 +152,7 @@ Partial Class dlgEcobaseImport
         'm_lbxModels
         '
         resources.ApplyResources(Me.m_lbxModels, "m_lbxModels")
+        Me.m_lbxModels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbxModels.FormattingEnabled = True
         Me.m_lbxModels.Name = "m_lbxModels"
         Me.m_lbxModels.Sorted = True

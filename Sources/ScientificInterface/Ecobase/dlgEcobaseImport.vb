@@ -265,15 +265,45 @@ Public Class dlgEcobaseImport
 
     End Sub
 
-    Private Sub OnModelFormat(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-        Handles m_lbxModels.Format
+    Private Sub OnModelDrawItem(sender As Object, e As System.Windows.Forms.DrawItemEventArgs) _
+        Handles m_lbxModels.DrawItem
 
-        If (e.ListItem Is Nothing) Then Return
+        If (e.Index >= m_lbxModels.Items.Count Or e.Index < 0) Then Return
+
+        ' Sanity check
+        If Me.UIContext Is Nothing Then Return
+
+        Dim item As Object = m_lbxModels.Items(e.Index)
+        Dim model As cModelData = Nothing
+        Dim clrText As Color = Me.ForeColor
+        Dim strText As String = e.ToString()
+
+        ' Attempt to get item 
+        If (TypeOf item Is cModelData) Then
+            ' Get item fleet
+            model = DirectCast(item, cModelData)
+            If Not model.AllowDissemination Then
+                clrText = SystemColors.GrayText
+            End If
+            strText = Me.ModelItemText(model)
+        End If
+
+        ' Render default background 
+        e.DrawBackground()
+
+        Using br As New SolidBrush(clrText)
+            e.Graphics.DrawString(strText, e.Font, br, e.Bounds.X, e.Bounds.Y)
+        End Using
+
+        ' Render default focus rectangle
+        e.DrawFocusRectangle()
+
+    End Sub
+
+    Private Function ModelItemText(model As cModelData) As String
 
         Dim bShowYear As Boolean = Me.m_tsbnShowYear.Checked
         Dim bShowAuth As Boolean = Me.m_tsbnShowAuthor.Checked
-
-        Dim model As cModelData = DirectCast(e.ListItem, cModelData)
         Dim strModelName As String = model.Name.Trim
 
         If (bShowYear Or bShowAuth) Then
@@ -288,12 +318,12 @@ Public Class dlgEcobaseImport
             Else
                 strDetail = strAuthor
             End If
-            e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strModelName, strDetail)
-        Else
-            e.Value = strModelName
+            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strModelName, strDetail)
         End If
 
-    End Sub
+        Return strModelName
+
+    End Function
 
     Private Sub OnModelSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_lbxModels.SelectedIndexChanged
