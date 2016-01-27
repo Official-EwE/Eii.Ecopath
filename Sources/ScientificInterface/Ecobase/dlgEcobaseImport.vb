@@ -271,29 +271,28 @@ Public Class dlgEcobaseImport
         If (e.Index >= m_lbxModels.Items.Count Or e.Index < 0) Then Return
 
         ' Sanity check
-        If Me.UIContext Is Nothing Then Return
+        If (Me.UIContext Is Nothing) Then Return
 
         Dim item As Object = m_lbxModels.Items(e.Index)
-        Dim model As cModelData = Nothing
-        Dim clrText As Color = Me.ForeColor
         Dim strText As String = e.ToString()
-
-        ' Attempt to get item 
-        If (TypeOf item Is cModelData) Then
-            ' Get item fleet
-            model = DirectCast(item, cModelData)
-            If Not model.AllowDissemination Then
-                clrText = SystemColors.GrayText
-            End If
-            strText = Me.ModelItemText(model)
-        End If
 
         ' Render default background 
         e.DrawBackground()
 
-        Using br As New SolidBrush(clrText)
-            e.Graphics.DrawString(strText, e.Font, br, e.Bounds.X, e.Bounds.Y)
-        End Using
+        ' Attempt to get item 
+        If (TypeOf item Is cModelData) Then
+            ' Get item fleet
+            Dim model As cModelData = DirectCast(item, cModelData)
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            If (Not model.AllowDissemination) Then
+                Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND))
+                    e.Graphics.FillRectangle(br, e.Bounds)
+                End Using
+            End If
+            strText = Me.ModelItemText(model)
+        End If
+
+        e.Graphics.DrawString(strText, e.Font, SystemBrushes.ControlText, e.Bounds.X, e.Bounds.Y)
 
         ' Render default focus rectangle
         e.DrawFocusRectangle()
