@@ -79,6 +79,10 @@ Public Class dlgEcobaseImport
 
         Me.CenterToScreen()
 
+        If (Me.UIContext Is Nothing) Then Return
+
+        Me.m_lbxModels.UIContext = Me.UIContext
+
         Dim il As New ImageList()
         il.Images.Add(SharedResources.OK)
         il.Images.Add(SharedResources.Warning)
@@ -143,6 +147,16 @@ Public Class dlgEcobaseImport
 
         MyBase.OnFormClosing(e)
 
+    End Sub
+
+    ''' <summary>
+    ''' Overridden to redraw models listbox that uses StyleGuide colours.
+    ''' </summary>
+    Protected Overrides Sub OnStyleGuideChanged(ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
+        If ((ct And cStyleGuide.eChangeType.Colours) > 0) Then
+            Me.m_lbxModels.Invalidate()
+        End If
+        MyBase.OnStyleGuideChanged(ct)
     End Sub
 
     Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
@@ -257,72 +271,12 @@ Public Class dlgEcobaseImport
 
 #Region " Control events "
 
-
     Private Sub OnShowOptionChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnShowYear.CheckedChanged, m_tsbnShowAuthor.CheckedChanged, m_tsbnShowDownloadable.CheckedChanged
 
         Me.UpdateModelList()
 
     End Sub
-
-    Private Sub OnModelDrawItem(sender As Object, e As System.Windows.Forms.DrawItemEventArgs) _
-        Handles m_lbxModels.DrawItem
-
-        If (e.Index >= m_lbxModels.Items.Count Or e.Index < 0) Then Return
-
-        ' Sanity check
-        If (Me.UIContext Is Nothing) Then Return
-
-        Dim item As Object = m_lbxModels.Items(e.Index)
-        Dim strText As String = e.ToString()
-
-        ' Render default background 
-        e.DrawBackground()
-
-        ' Attempt to get item 
-        If (TypeOf item Is cModelData) Then
-            ' Get item fleet
-            Dim model As cModelData = DirectCast(item, cModelData)
-            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            If (Not model.AllowDissemination) Then
-                Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND))
-                    e.Graphics.FillRectangle(br, e.Bounds)
-                End Using
-            End If
-            strText = Me.ModelItemText(model)
-        End If
-
-        e.Graphics.DrawString(strText, e.Font, SystemBrushes.ControlText, e.Bounds.X, e.Bounds.Y)
-
-        ' Render default focus rectangle
-        e.DrawFocusRectangle()
-
-    End Sub
-
-    Private Function ModelItemText(model As cModelData) As String
-
-        Dim bShowYear As Boolean = Me.m_tsbnShowYear.Checked
-        Dim bShowAuth As Boolean = Me.m_tsbnShowAuthor.Checked
-        Dim strModelName As String = model.Name.Trim
-
-        If (bShowYear Or bShowAuth) Then
-            Dim strDetail As String = ""
-            Dim strAuthor As String = model.Author
-            Dim strYear As String = CStr(model.FirstYear)
-
-            If (bShowYear = bShowAuth) Then
-                strDetail = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strYear, strAuthor)
-            ElseIf bShowYear Then
-                strDetail = strYear
-            Else
-                strDetail = strAuthor
-            End If
-            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strModelName, strDetail)
-        End If
-
-        Return strModelName
-
-    End Function
 
     Private Sub OnModelSelected(sender As System.Object, e As System.EventArgs) _
         Handles m_lbxModels.SelectedIndexChanged
@@ -557,6 +511,9 @@ Public Class dlgEcobaseImport
         Dim bShowDownloadsOnly As Boolean = Me.m_tsbnShowDownloadable.Checked
         Dim bUseModel As Boolean = True
         Dim bKeepSelection As Boolean = False
+
+        Me.m_lbxModels.ShowAuthor = Me.m_tsbnShowAuthor.Checked
+        Me.m_lbxModels.ShowYear = Me.m_tsbnShowYear.Checked
 
         Me.m_lbxModels.BeginUpdate()
         Me.m_lbxModels.Items.Clear()

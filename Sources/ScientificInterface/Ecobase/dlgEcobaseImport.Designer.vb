@@ -39,7 +39,7 @@ Partial Class dlgEcobaseImport
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEcobaseImport))
         Me.m_scEcobaseContent = New System.Windows.Forms.SplitContainer()
         Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lbxModels = New System.Windows.Forms.ListBox()
+        Me.m_lbxModels = New cEcoBaseModelListBox()
         Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpFields = New System.Windows.Forms.TableLayoutPanel()
@@ -627,7 +627,7 @@ Partial Class dlgEcobaseImport
     End Sub
 
     Private WithEvents m_scEcobaseContent As System.Windows.Forms.SplitContainer
-    Private WithEvents m_lbxModels As System.Windows.Forms.ListBox
+    Private WithEvents m_lbxModels As cEcoBaseModelListBox
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_wrkGetModels As System.ComponentModel.BackgroundWorker

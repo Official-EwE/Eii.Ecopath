@@ -168,6 +168,9 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ecobase\cEcoBaseModelListBox.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecobase\dlgEcobaseExport.Designer.vb">
       <DependentUpon>dlgEcobaseExport.vb</DependentUpon>
     </Compile>
