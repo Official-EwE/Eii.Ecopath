@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports 
 
@@ -32,21 +33,26 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorMigration
-        Inherits cLayerEditor
-        Implements IGroupFilter
+        Inherits cLayerEditorTwoState
+        Implements IMonthFilter
 
 #Region " Construction "
 
         Public Sub New()
-            MyBase.New(GetType(ucLayerEditorMigration))
-            Me.CellValue = 1
+            MyBase.New(GetType(ucLayerEditorMigration), True)
+            Me.AutoToggleCellValue = True
         End Sub
 
 #End Region ' Construction
 
 #Region " Public interfaces "
 
-        Public Event OnFilterChanged(sender As IContentFilter) Implements IGroupFilter.FilterChanged
+        Public Event OnFilterChanged(sender As IContentFilter) _
+            Implements IContentFilter.FilterChanged
+
+        Public Sub [Next]()
+            Me.Month = cSystemUtils.IIF(Me.Month = cCore.N_MONTHS, 1, Me.Month + 1)
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -54,18 +60,18 @@ Namespace Controls.Map.Layers
         ''' is being edited.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Group() As Integer _
-            Implements IGroupFilter.Group
+        Public Property Month() As Integer _
+            Implements IMonthFilter.Month
             Get
-                Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                Return layerCore.iLayer
+                Dim layerMig As cEcospaceLayerMigration = CType((Me.Layer.Data), cEcospaceLayerMigration)
+                Return layerMig.Month
             End Get
             Set(ByVal value As Integer)
-                Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                ' Will Group index change?
-                If (value <> layerCore.iLayer) Then
-                    ' #Yes: update Group index in the underlying Ecospace layer
-                    layerCore.iLayer = value
+                Dim layerMig As cEcospaceLayerMigration = CType((Me.Layer.Data), cEcospaceLayerMigration)
+                ' Will month index change?
+                If (value <> layerMig.Month) Then
+                    ' #Yes: update month index in the underlying Ecospace layer
+                    layerMig.Month = value
                     ' Force map update
                     Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
@@ -77,30 +83,6 @@ Namespace Controls.Map.Layers
                 End If
             End Set
         End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' This editor requires a 1 pt cursor
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overrides Property CursorSize As Integer
-            Get
-                Return 1
-            End Get
-            Set(value As Integer)
-                'NOP
-            End Set
-        End Property
-
-        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
-                                             value As Object, _
-                                             e As System.Windows.Forms.MouseEventArgs, _
-                                             ptClick As System.Drawing.Point)
-            Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-            Dim grp As cEcospaceGroup = Me.UIContext.Core.EcospaceGroups(layerCore.iLayer)
-            grp.IsMigratory = True
-            MyBase.SetCellValue(ptSet, value, e, ptClick)
-        End Sub
 
 #End Region ' Public interfaces
 

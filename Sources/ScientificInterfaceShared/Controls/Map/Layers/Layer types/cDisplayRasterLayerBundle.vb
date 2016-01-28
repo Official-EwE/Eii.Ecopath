@@ -116,28 +116,6 @@ Namespace Controls.Map.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the secundary data index for a raster bundle. The type of 
-        ''' object is derived from the bundle <see cref="CoreCounter"/>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property SourceSec As cCoreInputOutputBase
-            Get
-                If (Me.m_iLayer = 0) Then Return Nothing
-
-                Select Case Me.m_cc
-                    Case eCoreCounterTypes.nGroups
-                        Return Me.m_uic.Core.EcoPathGroupInputs(Me.m_iLayer)
-                    Case eCoreCounterTypes.nFleets
-                        Return Me.m_uic.Core.FleetInputs(Me.m_iLayer)
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-                Return Nothing
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Get the Ecospace layer <see cref="iLayer">currently active</see> in
         ''' the bundle.
         ''' </summary>

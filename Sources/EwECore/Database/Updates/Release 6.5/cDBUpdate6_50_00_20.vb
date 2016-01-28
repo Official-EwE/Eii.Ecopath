@@ -48,7 +48,7 @@ Friend Class cDBUpdate6_50_00_20
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added migration maps"
+            Return "Updated to new migration maps"
         End Get
     End Property
 
@@ -128,7 +128,7 @@ Friend Class cDBUpdate6_50_00_20
         db.ReleaseWriter(writer, bSucces)
 
         ' DO NOT YET CHANGE THE STRUCTURE OF THE OLD DATABASE. 
-        ' This will happen in a new database update when the migration code changes are done
+        ' This will happen in a new database update when the migration code has been finalized
 #If 0 Then
         ' Delete EcospaceScenarioGroup fields MigConcRow, MigConcCol, PrefRow, PrefCol
         bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioGroup DROP COLUMN MigConcRow")

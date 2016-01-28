@@ -204,10 +204,10 @@ Namespace Ecospace.Basemap
             l.Renderer.IsVisible = False
 
             Me.AddData(eVarNameFlags.LayerMigration)
-            Me.AddData(eVarNameFlags.LayerRelPP, False)
-            Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerRegion)
-            Me.AddData(eVarNameFlags.LayerDepth)
+            Me.AddData(eVarNameFlags.LayerRelPP)
+            Me.AddData(eVarNameFlags.LayerRelCin, False)
+            Me.AddData(eVarNameFlags.LayerDepth, False)
             Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
             Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
@@ -238,7 +238,15 @@ Namespace Ecospace.Basemap
             Dim strGroup As String = factory.GetLayerGroup(varName)
             Dim strCommand As String = factory.GetLayerEditCommand(varName)
 
-            ' Define group
+            ' Need to clear group?
+            If bClearGroup Then
+                ' #Yes; first remove all layers in the group
+                For Each l As cDisplayLayer In Me.m_ucLayers.Layers(strGroup)
+                    Me.RemoveLayer(l)
+                Next
+            End If
+
+            ' (Re)define group
             Me.m_ucLayers.AddGroup(strGroup, strCommand, True, bClearGroup)
 
             For iLayer As Integer = 0 To alayers.Length - 1
@@ -265,11 +273,13 @@ Namespace Ecospace.Basemap
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, strCommand As String)
+
             Me.m_layers.Add(l)
             Me.m_ucBasemap.AddLayer(l)
             Me.m_ucLayers.AddLayer(l, strGroup, strCommand)
 
             AddHandler l.LayerChanged, AddressOf OnLayerChanged
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -278,9 +288,14 @@ Namespace Ecospace.Basemap
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub RemoveLayer(ByVal l As cDisplayLayer)
+
             Me.m_layers.Remove(l)
             Me.m_ucBasemap.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)
+
+            If (Object.ReferenceEquals(Me.SelectedLayer, l)) Then
+                Me.SelectedLayer = Nothing
+            End If
 
             RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
             l.Dispose()
@@ -353,10 +368,17 @@ Namespace Ecospace.Basemap
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
+            If Me.IsDisposed Then Return
+
             ' Refresh basemap on ANY data added or removed message from Ecospace
-            If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
-                ' Refresh it all
-                Me.Invalidate()
+            If (msg.Source = eCoreComponentType.EcoSpace) Then
+                If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                    ' Redraw it all
+                    Me.Invalidate()
+                ElseIf (msg.Type = eMessageType.DataValidation And msg.HasVariable(eVarNameFlags.IsMigratory)) Then
+                    ' Refresh the migration map group
+                    Me.AddData(eVarNameFlags.LayerMigration, True)
+                End If
             End If
 
             ' Trigger refresh for external data icons. Should really not be here, but ok

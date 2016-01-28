@@ -17,3 +17,11 @@ Public Interface IFleetFilter
     ''' </summary>
     Property Fleet As Integer
 End Interface
+
+Public Interface IMonthFilter
+    Inherits IContentFilter
+    ''' <summary>
+    ''' One-based month index 
+    ''' </summary>
+    Property Month As Integer
+End Interface

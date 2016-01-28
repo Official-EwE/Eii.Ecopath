@@ -8096,21 +8096,27 @@ Namespace DataSources
                     ' ecospaceDS.RiskSens(i) = CSng(reader("RiskSens"))
                     ecospaceDS.IsAdvected(iGroup) = (CInt(reader("IsAdvected")) <> 0)
                     ecospaceDS.IsMigratory(iGroup) = (CInt(reader("IsMigratory")) <> 0)
-                    ecospaceDS.MigConcRow(iGroup) = CSng(reader("MigConcRow"))
-                    ecospaceDS.MigConcCol(iGroup) = CSng(reader("MigConcCol"))
+
+                    '' ---------------------------
+                    '' MIGRATION_UPD: BEGIN REMOVE
+                    'ecospaceDS.MigConcRow(iGroup) = CSng(reader("MigConcRow"))
+                    'ecospaceDS.MigConcCol(iGroup) = CSng(reader("MigConcCol"))
+
+                    '' Monthly PrefRow
+                    'astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
+                    'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
+                    '    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                    'Next
+                    '' Monthly PrefCol
+                    'astrSplit = CStr(reader("PrefCol")).Split(CChar(" "))
+                    'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
+                    '    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                    'Next
+                    '' MIGRATION_UPD: END REMOVE
+                    '' ---------------------------
+
                     ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
                     ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
-
-                    ' Monthly PrefRow
-                    astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
-                    For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                        ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                    Next
-                    ' Monthly PrefCol
-                    astrSplit = CStr(reader("PrefCol")).Split(CChar(" "))
-                    For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                        ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                    Next
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "CapacityMap", ""))
                     cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
@@ -8125,6 +8131,8 @@ Namespace DataSources
 
             ' Load habitat preferences
             bSucces = bSucces And Me.LoadEcospaceGroupHabitats(iScenarioID)
+            ' Load migration maps
+            bSucces = bSucces And Me.LoadEcospaceGroupMigration(iScenarioID)
             Return bSucces
 
         End Function
@@ -8171,6 +8179,49 @@ Namespace DataSources
 
             Return bSucces
         End Function
+
+        Private Function LoadEcospaceGroupMigration(ByVal iScenarioID As Integer) As Boolean
+
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim reader As IDataReader = Nothing
+            Dim iGroupID As Integer = 0
+            Dim iGroup As Integer = -1
+            Dim iMonth As Integer = 0
+            Dim bSucces As Boolean = True
+
+            ecospaceDS.allocateMigrationMaps()
+
+            Try
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroupMigration WHERE (ScenarioID={0})", iScenarioID))
+                While reader.Read()
+
+                    ' Get group index
+                    iGroupID = CInt(reader("GroupID"))
+                    iGroup = Array.IndexOf(ecospaceDS.GroupDBID, iGroupID)
+                    ' Get habitat index
+                    iMonth = CInt(reader("MonthID"))
+                    ' Sanity check
+                    If (iGroup = -1) Then
+                        Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                    Else
+                        Debug.Assert(ecospaceDS.IsMigratory(iGroup))
+
+                        ' Read only water cells 
+                        Dim strMap As String = CStr(Me.m_db.ReadSafe(reader, "Map", ""))
+                        cStringUtils.StringToArray(strMap, ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    End If
+
+                End While
+                Me.m_db.ReleaseReader(reader)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                bSucces = False
+            End Try
+
+            Return bSucces
+        End Function
+
 
 #End Region ' Load
 
@@ -8231,24 +8282,30 @@ Namespace DataSources
                     drow("EatEffBad") = ecospaceDS.EatEffBad(iGroup)
                     drow("IsAdvected") = ecospaceDS.IsAdvected(iGroup)
                     drow("IsMigratory") = ecospaceDS.IsMigratory(iGroup)
-                    drow("MigConcRow") = ecospaceDS.MigConcRow(iGroup)
-                    drow("MigConcCol") = ecospaceDS.MigConcCol(iGroup)
+
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
 
-                    sbTemp.Length = 0
-                    For iMonth As Integer = 1 To cCore.N_MONTHS
-                        If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                        sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.PrefRow(iGroup, iMonth)))
-                    Next
-                    drow("PrefRow") = sbTemp.ToString()
+                    '' ---------------------------
+                    '' MIGRATION_UPD: BEGIN REMOVE
+                    'drow("MigConcRow") = ecospaceDS.MigConcRow(iGroup)
+                    'drow("MigConcCol") = ecospaceDS.MigConcCol(iGroup)
+                    'sbTemp.Length = 0
+                    'For iMonth As Integer = 1 To cCore.N_MONTHS
+                    '    If iMonth > 1 Then sbTemp.Append(CChar(" "))
+                    '    sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.PrefRow(iGroup, iMonth)))
+                    'Next
+                    'drow("PrefRow") = sbTemp.ToString()
 
-                    sbTemp.Length = 0
-                    For iMonth As Integer = 1 To cCore.N_MONTHS
-                        If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                        sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
-                    Next
-                    drow("PrefCol") = sbTemp.ToString()
+                    'sbTemp.Length = 0
+                    'For iMonth As Integer = 1 To cCore.N_MONTHS
+                    '    If iMonth > 1 Then sbTemp.Append(CChar(" "))
+                    '    sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
+                    'Next
+                    'drow("PrefCol") = sbTemp.ToString()
+                    '' MIGRATION_UPD: END REMOVE
+                    '' ---------------------------
+
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, _
                                                                      ecospaceDS.DepthInput, True)
 
@@ -8271,6 +8328,7 @@ Namespace DataSources
             ' Save changes
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
             bSucces = bSucces And Me.SaveEcospaceGroupHabitats(idm)
+            bSucces = bSucces And Me.SaveEcospaceGroupMigration(idm)
 
             Return bSucces
 
@@ -8321,6 +8379,48 @@ Namespace DataSources
                 bSucces = False
             End Try
 
+            Return bSucces
+
+        End Function
+
+        Private Function SaveEcospaceGroupMigration(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
+            Dim iGroupID As Integer = 0
+            Dim iGroup As Integer = 0
+            Dim iHabitat As Integer = 0
+
+            Dim bSucces As Boolean = True
+
+            ' No incremental save for now
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMigration WHERE ScenarioID={0}", iScenarioID))
+
+            writer = Me.m_db.GetWriter("EcospaceScenarioGroupMigration")
+            Try
+                For iGroup = 1 To ecopathDS.NumGroups
+                    ' We can decide to save all maps that have once been defined...
+                    If ecospaceDS.IsMigratory(iGroup) Then
+                        iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
+                        For iMonth As Integer = 1 To 12
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("GroupID") = iGroupID
+                            drow("MonthID") = iMonth
+                            drow("Map") = cStringUtils.ArrayToString(ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                            writer.AddRow(drow)
+                        Next iMonth
+                    End If
+                Next iGroup
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            Me.m_db.ReleaseWriter(writer, bSucces)
             Return bSucces
 
         End Function
@@ -8424,6 +8524,8 @@ Namespace DataSources
 
                 ' Delete capacity drivers
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
+                ' Delete migration maps
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMigration WHERE GroupID={0}", iGroupID))
                 ' Finally delete group
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iGroupID))
 

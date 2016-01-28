@@ -28,7 +28,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace migration data.
 ''' </summary>
 Public Class cEcospaceLayerMigration
-    Inherits cEcospaceLayer
+    Inherits cEcospaceLayerBoolean
 
 #Region " Construction "
 
@@ -41,7 +41,7 @@ Public Class cEcospaceLayerMigration
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, "", eVarNameFlags.LayerMigration, iIndex, Nothing)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerMigration, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerMigration
     End Sub
 
@@ -49,44 +49,15 @@ Public Class cEcospaceLayerMigration
 
 #Region " Cell interaction "
 
-    Private m_asData As Single(,)
+    Public Property Month As Integer = 1
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            If Me.m_asData Is Nothing Then
-                Me.Refresh()
-            End If
-            Return Me.m_asData(iRow, iCol)
+            Return DirectCast(Me.Data, Boolean(,)(,))(Me.Index, Me.Month)(iRow, iCol)
         End Get
         Set(ByVal value As Object)
-            Dim i As Integer = CInt(Math.Max(Math.Min(cCore.N_MONTHS, CInt(value)), 1))
-
-            Me.PrefRow(Me.Index, i) = iRow
-            Me.PrefCol(Me.Index, i) = iCol
-            Me.Invalidate()
+            DirectCast(Me.Data, Boolean(,)(,))(Me.Index, Me.Month)(iRow, iCol) = CBool(value)
         End Set
-    End Property
-
-    Public Overrides Sub Invalidate()
-        Me.m_asData = Nothing
-    End Sub
-
-    Public Overrides ReadOnly Property MaxValue() As Single
-        Get
-            Return cCore.N_MONTHS
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property MinValue() As Single
-        Get
-            Return 0
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property NumValueCells As Integer
-        Get
-            Return cCore.N_MONTHS
-        End Get
     End Property
 
 #End Region ' Cell interaction
@@ -98,42 +69,5 @@ Public Class cEcospaceLayerMigration
     End Function
 
 #End Region ' Overrides
-
-#Region " Private bits "
-
-    Private Function PrefRow() As Integer(,)
-        Dim d As Object = Me.Data
-        Return DirectCast(d, Integer()(,))(0)
-    End Function
-
-    Private Function PrefCol() As Integer(,)
-        Dim d As Object = Me.Data
-        Return DirectCast(d, Integer()(,))(1)
-    End Function
-
-    Private Sub Refresh()
-
-        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim aiPrefRow As Integer(,) = Me.PrefRow
-        Dim aiPrefCol As Integer(,) = Me.PrefCol
-
-        ReDim m_asData(bm.InRow, bm.InCol)
-
-        For iRowTest As Integer = 1 To bm.InRow
-            For iColTest As Integer = 1 To bm.InCol
-                Me.m_asData(iRowTest, iColTest) = cCore.NULL_VALUE
-            Next
-        Next
-
-        For iMonth As Integer = 1 To cCore.N_MONTHS
-            Dim iRow As Integer = CInt(aiPrefRow(Me.Index, iMonth))
-            Dim iCol As Integer = CInt(aiPrefCol(Me.Index, iMonth))
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                Me.m_asData(iRow, iCol) = iMonth
-            End If
-        Next
-    End Sub
-
-#End Region ' Private bits
 
 End Class

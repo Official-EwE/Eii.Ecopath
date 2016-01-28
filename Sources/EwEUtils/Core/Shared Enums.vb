@@ -464,10 +464,6 @@ Namespace Core
         ''' <summary>To document</summary>
         IsMigratory
         ''' <summary>To document</summary>
-        MigrationConcRow
-        ''' <summary>To document</summary>
-        MigrationConcCol
-        ''' <summary>To document</summary>
         PreferredHabitat
         ''' <summary>A habitat that a given fleet is allowed to fish in</summary>
         HabitatFishery

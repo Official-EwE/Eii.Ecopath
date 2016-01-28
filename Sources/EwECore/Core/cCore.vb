@@ -10411,8 +10411,6 @@ Public Class cCore
                 grp.EatEffBad = m_EcoSpaceData.EatEffBad(iGroup)
                 grp.IsMigratory = m_EcoSpaceData.IsMigratory(iGroup)
                 grp.IsAdvected = m_EcoSpaceData.IsAdvected(iGroup)
-                grp.MigrationNSCon = m_EcoSpaceData.MigConcRow(iGroup)
-                grp.MigrationEWCon = m_EcoSpaceData.MigConcCol(iGroup)
                 grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
                 grp.PP = m_EcoPathData.PP(iGroup)
                 grp.CapacityCalculationType = m_EcoSpaceData.CapCalType(iGroup)
@@ -10455,8 +10453,6 @@ Public Class cCore
             m_EcoSpaceData.EatEffBad(iGroup) = grp.EatEffBad
             m_EcoSpaceData.IsAdvected(iGroup) = grp.IsAdvected
             m_EcoSpaceData.IsMigratory(iGroup) = grp.IsMigratory
-            m_EcoSpaceData.MigConcCol(iGroup) = grp.MigrationEWCon
-            m_EcoSpaceData.MigConcRow(iGroup) = grp.MigrationNSCon
             m_EcoSpaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
             m_EcoSpaceData.CapCalType(iGroup) = grp.CapacityCalculationType
 
@@ -13668,6 +13664,11 @@ Public Class cCore
                         End If
                         Me.Set_BadHab_Flags(grp)
                         Me.Set_HabPref_Flags(grp)
+
+                    Case eVarNameFlags.IsMigratory
+
+                        ' Tell Ecospace to allocate migration maps
+                        Me.m_EcoSpaceData.allocateMigrationMaps()
 
                 End Select
 

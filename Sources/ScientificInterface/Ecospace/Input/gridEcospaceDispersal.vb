@@ -49,8 +49,6 @@ Namespace Ecospace
             RelFeedRate
             Advected
             Migrating
-            NSCont
-            EWCont
             BarrierAvoidance
         End Enum
 
@@ -76,8 +74,6 @@ Namespace Ecospace
             Me(0, eColumnTypes.RelFeedRate) = New EwEColumnHeaderCell(eVarNameFlags.EatEffBad)
             Me(0, eColumnTypes.Advected) = New EwEColumnHeaderCell(eVarNameFlags.IsAdvected)
             Me(0, eColumnTypes.Migrating) = New EwEColumnHeaderCell(eVarNameFlags.IsMigratory)
-            Me(0, eColumnTypes.NSCont) = New EwEColumnHeaderCell(eVarNameFlags.MigrationConcRow)
-            Me(0, eColumnTypes.EWCont) = New EwEColumnHeaderCell(eVarNameFlags.MigrationConcCol)
             Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
 
         End Sub
@@ -108,10 +104,6 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.Advected) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsAdvected)
                 'Migrating?
                 Me(iGroup, eColumnTypes.Migrating) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsMigratory)
-                'North/south concentration
-                Me(iGroup, eColumnTypes.NSCont) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MigrationConcRow)
-                'East/west concentration
-                Me(iGroup, eColumnTypes.EWCont) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MigrationConcCol)
                 'Barrier avoidance weight
                 Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
 

@@ -355,11 +355,26 @@ Public Class cEcospaceDataStructures
 
     Public PPupWell As Single
 
-    Public PrefRow(,) As Integer
-    Public Prefcol(,) As Integer
+    ''' <summary>IsMigratory flag, per group.</summary>
     Public IsMigratory() As Boolean
-    Public MigConcRow() As Single
-    Public MigConcCol() As Single
+
+    ''' <summary>Migration preferred row (group, month).</summary>
+    ''' <remarks>In the original version of Ecospace this value was entered as point.
+    ''' In the migration update of Ecospace this value will be calculated from a monthly migration map</remarks>
+    Friend PrefRow(,) As Integer
+    ''' <summary>Migration preferred column (group, month).</summary>
+    ''' <remarks>In the original version of Ecospace this value was entered as point.
+    ''' In the migration update of Ecospace this value will be calculated from a monthly migration map</remarks>
+    Friend Prefcol(,) As Integer
+
+    ''' <summary>North-south migration concentration, per group.</summary>
+    ''' <remarks>In the oringial version of Ecospace this value was entered as a fixed value per group.
+    ''' In the migration update of Ecospace this value will be calculated from a monthly migration map</remarks>
+    Friend MigConcRow() As Single
+    ''' <summary>East-west migration concentration, per group.</summary>
+    ''' <remarks>In the oringial version of Ecospace this value was entered as a fixed value per group.
+    ''' In the migration update of Ecospace this value will be calculated from a monthly migration map</remarks>
+    Friend MigConcCol() As Single
 
     ''' <summary>
     ''' Average value in the <see cref="cEcospaceDataStructures.Sail">Sail(fleet,row,col)</see> map for all water cells.
@@ -748,6 +763,13 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public FirstOutputTimeStep As Integer = 1
 
+    ''' <summary>
+    ''' Monthly Migration maps stored in a ragged array 
+    ''' Dimensioned by (group,month)(row,col)
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public MigMaps(,)(,) As Boolean
+
 #End Region
 
 #Region "Private Data"
@@ -911,7 +933,8 @@ Public Class cEcospaceDataStructures
             IsMigratory = Nothing
             MigConcRow = Nothing
             MigConcCol = Nothing
-            barrierAvoidanceWeight = Nothing '
+            barrierAvoidanceWeight = Nothing
+            MigMaps = Nothing
 
             MPADBID = Nothing '(Me.MPAno)
             MPAname = Nothing '(Me.MPAno)
@@ -977,7 +1000,7 @@ Public Class cEcospaceDataStructures
 
             CellLength = 100 'this is from the EwE5 database
 
-            MoveScale = 2 '0.2
+            MoveScale = 2.0 '0.2
             If TotalTime = 0 Then TotalTime = 50 'default of 50 year simulation
 
             'redimTimeVaraibles()
@@ -1106,9 +1129,9 @@ Public Class cEcospaceDataStructures
     Public Sub RedimMigratoryVariables()
         Try
 
+            ReDim IsMigratory(nvartot)
             ReDim PrefRow(NGroups, 12)
             ReDim Prefcol(NGroups, 12)
-            ReDim IsMigratory(nvartot)
             ReDim MigConcRow(NGroups)
             ReDim MigConcCol(NGroups)
             ReDim barrierAvoidanceWeight(NGroups)
@@ -1299,6 +1322,24 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+    ''' <summary>
+    ''' Make sure there are migration maps for all migrating groups.
+    ''' </summary>
+    ''' <remarks>
+    ''' This code 
+    ''' </remarks>
+    Friend Sub allocateMigrationMaps()
+        If (Me.MigMaps Is Nothing) Then
+            Me.MigMaps = New Boolean(NGroups, 12)(,) {}
+        End If
+        For iGrp As Integer = 1 To Me.NGroups
+            If (Me.MigMaps(iGrp, 1) Is Nothing) And IsMigratory(iGrp) Then
+                For iMonth As Integer = 1 To 12
+                    Me.MigMaps(iGrp, iMonth) = New Boolean(InRow + 1, InCol + 1) {}
+                Next
+            End If
+        Next
+    End Sub
 
     Friend Sub DebugTestEffortZones()
 
@@ -1324,21 +1365,85 @@ Public Class cEcospaceDataStructures
     End Sub
 
 
-    Friend Sub debugSetAdvectionVectors()
-        Debug.Assert(False, "Warning Advection Vectors have been hardcoded for debuging...")
-        ReDim Me.Xvel(Me.InRow + 1, Me.InCol + 1)
-        ReDim Me.Yvel(Me.InRow + 1, Me.InCol + 1)
-        Dim vel As Single = 0
-        For i As Integer = 0 To Me.InRow + 1
-            For j As Integer = 0 To Me.InCol + 1
-                '  If Me.Depth(i, j) > 0 Then
-                Me.Xvel(i, j) = vel
-                Me.Yvel(i, j) = vel
-                vel += 1
-                '  End If
-            Next j
-        Next i
+    'Friend Sub debugSetAdvectionVectors()
+    '    Debug.Assert(False, "Warning Advection Vectors have been hardcoded for debuging...")
+    '    ReDim Me.Xvel(Me.InRow + 1, Me.InCol + 1)
+    '    ReDim Me.Yvel(Me.InRow + 1, Me.InCol + 1)
+    '    Dim vel As Single = 0
+    '    For i As Integer = 0 To Me.InRow + 1
+    '        For j As Integer = 0 To Me.InCol + 1
+    '            '  If Me.Depth(i, j) > 0 Then
+    '            Me.Xvel(i, j) = vel
+    '            Me.Yvel(i, j) = vel
+    '            vel += 1
+    '            '  End If
+    '        Next j
+    '    Next i
+    'End Sub
+
+    'Friend Sub debugSetMigMapsFromPrefRowCol()
+
+    '    Debug.Assert(False, "Warning debugSetMigrationMaps() Setting Migration Maps with values in PrefRow() and PrefCol()")
+    '    Dim OffSet As Integer = 1
+    '    Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer
+    '    For igrp As Integer = 1 To NGroups
+    '        For imon As Integer = 1 To 12
+    '            If IsMigratory(igrp) Then
+    '                For irow As Integer = 1 To InRow
+    '                    For icol As Integer = 1 To InCol
+
+    '                        If PrefRow(igrp, imon) = irow And icol = Prefcol(igrp, imon) Then
+
+    '                            i1 = irow - OffSet : If i1 < 1 Then i1 = 1
+    '                            i2 = irow + OffSet : If i2 > InRow Then i2 = InRow
+    '                            j1 = icol - OffSet : If j1 < 1 Then j1 = 1
+    '                            j2 = icol + OffSet : If j2 > InCol Then j2 = InCol
+    '                            For ii As Integer = i1 To i2
+    '                                For jj As Integer = j1 To j2
+    '                                    Me.MigMaps(igrp, imon)(ii, jj) = True
+    '                                Next
+    '                            Next
+
+
+    '                        End If
+
+    '                    Next icol
+    '                Next irow
+    '            End If 'If IsMigratory(igrp) Then
+    '        Next imon
+    '    Next igrp
+    'End Sub
+
+    Friend Sub calcPrefRowColFromMigrationMap()
+
+        Debug.Assert(False, "Warning debugCalcPrefRowColFromMap() Calculating PrefRow() PrefCol() from Migration Maps")
+        Dim minRow As Integer, maxRow As Integer, minCol As Integer, maxCol As Integer
+        For igrp As Integer = 1 To NGroups
+            If IsMigratory(igrp) Then
+                For imon As Integer = 1 To 12
+                    minRow = InRow + 1
+                    minCol = InCol + 1
+                    maxRow = 0
+                    maxCol = 0
+
+                    For irow As Integer = 1 To InRow
+                        For icol As Integer = 1 To InCol
+                            If Me.MigMaps(igrp, imon)(irow, icol) Then
+                                minRow = Math.Min(irow, minRow)
+                                minCol = Math.Min(icol, minCol)
+                                maxRow = Math.Max(irow, maxRow)
+                                maxCol = Math.Max(icol, maxCol)
+                            End If
+                        Next icol
+                    Next irow
+                    PrefRow(igrp, imon) = (minRow + maxRow) \ 2
+                    Prefcol(igrp, imon) = (minCol + maxCol) \ 2
+
+                Next imon
+            End If 'If IsMigratory(igrp) Then
+        Next igrp
     End Sub
+
 
     Friend Sub debugTestDiscardsMaps()
         Dim sumDiscards As Single
