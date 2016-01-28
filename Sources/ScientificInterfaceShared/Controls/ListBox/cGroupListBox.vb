@@ -36,7 +36,7 @@ Namespace Controls
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cGroupListBox
-        Inherits ListBox
+        Inherits cFlickerFreeListBox
         Implements IUIElement
 
 #Region " Public enums "
