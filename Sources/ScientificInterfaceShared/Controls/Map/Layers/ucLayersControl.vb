@@ -43,6 +43,7 @@ Namespace Controls.Map
 
         Private m_lEditorsGroup As New List(Of IGroupFilter)
         Private m_lEditorsFleet As New List(Of IFleetFilter)
+        Private m_lEditorsMonth As New List(Of IMonthFilter)
 
         Public Sub New()
             Me.InitializeComponent()
@@ -99,6 +100,10 @@ Namespace Controls.Map
                     Me.m_lEditorsFleet.Add(DirectCast(edt, IFleetFilter))
                     bFilter = True
                 End If
+                If (TypeOf edt Is IMonthFilter) Then
+                    Me.m_lEditorsMonth.Add(DirectCast(edt, IMonthFilter))
+                    bFilter = True
+                End If
 
                 If bFilter Then
                     AddHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf OnLayerFilterChanged
@@ -135,6 +140,10 @@ Namespace Controls.Map
                     Me.m_lEditorsFleet.Remove(DirectCast(edt, IFleetFilter))
                     bFilter = True
                 End If
+                If (TypeOf edt Is IMonthFilter) Then
+                    Me.m_lEditorsMonth.Remove(DirectCast(edt, IMonthFilter))
+                    bFilter = True
+                End If
 
                 If bFilter Then
                     RemoveHandler DirectCast(edt, IContentFilter).FilterChanged, AddressOf OnLayerFilterChanged
@@ -149,6 +158,16 @@ Namespace Controls.Map
 
         End Sub
 
+        Public Function Layers(strGroup As String) As cDisplayLayer()
+            Dim ucg As ucLayerGroup = Nothing
+            If Me.m_dtGroups.ContainsKey(strGroup) Then
+                ' #Yes: get group layer control
+                ucg = Me.FindGroup(strGroup)
+                Return ucg.Layers
+            End If
+            Return New cDisplayLayer() {}
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Add a layer group to this control.
@@ -159,6 +178,7 @@ Namespace Controls.Map
                             ByVal strCommand As String, _
                             Optional ByVal bVisible As Boolean = True, _
                             Optional ByVal bClearGroup As Boolean = True)
+
             Dim ucg As ucLayerGroup = Nothing
 
             ' Group already exists?
@@ -334,6 +354,12 @@ Namespace Controls.Map
                     Dim iFleet As Integer = DirectCast(filter, IFleetFilter).Fleet
                     For Each f As IFleetFilter In Me.m_lEditorsFleet
                         f.Fleet = iFleet
+                    Next
+                End If
+                If (TypeOf filter Is IMonthFilter) Then
+                    Dim iMonth As Integer = DirectCast(filter, IMonthFilter).Month
+                    For Each f As IMonthFilter In Me.m_lEditorsMonth
+                        f.Month = iMonth
                     Next
                 End If
 

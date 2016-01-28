@@ -2349,21 +2349,26 @@ Public Class cEIIXMLDataSource
                 ' ecospaceDS.RiskSens(i) = CSng(drow("RiskSens"))
                 ecospaceDS.IsAdvected(iGroup) = (CInt(drow("IsAdvected")) <> 0)
                 ecospaceDS.IsMigratory(iGroup) = (CInt(drow("IsMigratory")) <> 0)
-                ecospaceDS.MigConcRow(iGroup) = CSng(drow("MigConcRow"))
-                ecospaceDS.MigConcCol(iGroup) = CSng(drow("MigConcCol"))
                 ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
                 ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
 
-                ' Monthly PrefRow
-                astrSplit = CStr(drow("PrefRow")).Split(CChar(" "))
-                For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                Next
-                ' Monthly PrefCol
-                astrSplit = CStr(drow("PrefCol")).Split(CChar(" "))
-                For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                Next
+                '' ---------------------------
+                '' MIGRATION_UPD: BEGIN REMOVE
+                'ecospaceDS.MigConcRow(iGroup) = CSng(drow("MigConcRow"))
+                'ecospaceDS.MigConcCol(iGroup) = CSng(drow("MigConcCol"))
+
+                '' Monthly PrefRow
+                'astrSplit = CStr(drow("PrefRow")).Split(CChar(" "))
+                'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
+                '    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                'Next
+                '' Monthly PrefCol
+                'astrSplit = CStr(drow("PrefCol")).Split(CChar(" "))
+                'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
+                '    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                'Next
+                '' MIGRATION_UPD: END REMOVE
+                '' ---------------------------
 
                 strMap = CStr(Me.ReadSafe(drow, "CapacityMap", ""))
                 cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
@@ -2376,8 +2381,8 @@ Public Class cEIIXMLDataSource
 
         dtGroup.Clear()
 
-        ' Load habitat preferences
-        bSucces = bSucces And Me.LoadEcospaceGroupHabitats(iScenarioID)
+        ' Load habitat preferences and migration
+        bSucces = bSucces And Me.LoadEcospaceGroupHabitats(iScenarioID) And Me.LoadEcospaceGroupMigration(iScenarioID)
         Return bSucces
 
     End Function
@@ -2411,6 +2416,46 @@ Public Class cEIIXMLDataSource
                     ' Flag as preferred
                     ecospaceDS.PrefHab(iGroup, 0) = 0
                     ecospaceDS.PrefHab(iGroup, iHabitat) = sPreference
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dtGH.Clear()
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceGroupMigration(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dtGH As DataTable = Me.ReadTable("EcospaceScenarioGroupMigration")
+        Dim iGroupID As Integer = 0
+        Dim iGroup As Integer = -1
+        Dim iMonth As Integer = 0
+        'Dim sConcentration As Single = 0.0!
+        Dim strMap As String = ""
+        Dim bSucces As Boolean = True
+
+        ecospaceDS.allocateMigrationMaps()
+
+        dtGH.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dtGH.DefaultView.ToTable.Rows()
+            Try
+                iGroupID = CInt(drow("GroupID"))
+                iGroup = Array.IndexOf(ecospaceDS.GroupDBID, iGroupID)
+                iMonth = CInt(drow("MonthID"))
+                'sConcentration = CSng(Me.ReadSafe(drow, "Concentration", 1.0))
+                ' Sanity check
+                If (iGroup = -1) Then
+                    Me.LogMessage(cStringUtils.Localize("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                Else
+                    strMap = CStr(Me.ReadSafe(drow, "Map", ""))
+                    cStringUtils.StringToArray(strMap, ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    '' Read monthly concentration value
+                    'ecospaceDS.MigConc(iGroup, iMonth) = CSng(Me.ReadSafe(drow, "Concentration", 1.0))
                 End If
 
             Catch ex As Exception

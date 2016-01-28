@@ -1247,6 +1247,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Basemap.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_BASEMAP() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_BASEMAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass forcing.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_BIOMASSFORCING() As String
@@ -1261,24 +1270,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Data layers.
-        '''</summary>
-        Public ReadOnly Property ECOSPACE_LAYERGROUP_DATA() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_DATA", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Basemap.
-        '''</summary>
-        Public ReadOnly Property ECOSPACE_LAYERGROUP_DEPTH() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_DEPTH", resourceCulture)
             End Get
         End Property
         
@@ -1324,6 +1315,15 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_LAYERGROUP_IMPORTANCE() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_IMPORTANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Migration.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_MIGRATION() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_MIGRATION", resourceCulture)
             End Get
         End Property
         
@@ -7588,6 +7588,26 @@ Namespace My.Resources
         Public ReadOnly Property PieChart() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PieChart", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property PlayHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PlayHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property PlayStepHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PlayStepHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

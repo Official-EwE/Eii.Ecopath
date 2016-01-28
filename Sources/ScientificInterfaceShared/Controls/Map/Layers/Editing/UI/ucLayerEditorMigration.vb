@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -33,71 +34,47 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Private Sub OnMonthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cmbMonth.SelectedIndexChanged
-            Try
-                Me.Editor.CellValue = Me.m_cmbMonth.SelectedIndex + 1
-            Catch ex As Exception
-            End Try
-        End Sub
-
-        Private Sub OnGroupChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cmbGroup.SelectedIndexChanged
-            Try
-                Me.Editor.Group = Me.m_cmbGroup.SelectedIndex + 1
-            Catch ex As Exception
-            End Try
-        End Sub
-
-        Public Overrides Sub EndEdit(ByVal editor As cLayerEditor)
-            If Me.m_chkAutoRotate.Checked Then
-                Try
-                    Me.Editor.CellValue = CInt(CInt(editor.CellValue) Mod cCore.N_MONTHS) + 1
-                Catch ex As Exception
-
-                End Try
-            End If
-        End Sub
-
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
 
-            ' Initialize group combo 
-            Dim core As cCore = Me.UIContext.Core
-            Dim group As cEcoPathGroupInput = Nothing
-
-            Me.m_cmbGroup.Items.Clear()
-            For i As Integer = 1 To core.nLivingGroups
-                group = core.EcoPathGroupInputs(i)
-                Me.m_cmbGroup.Items.Add(group)
-            Next i
+            Me.m_btnNext.Image = My.Resources.PlayStepHS
+            Me.m_btnNext.Text = ""
 
             Me.UpdateContent(Me.Editor)
         End Sub
+
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+
+        End Sub
+
+        Private m_bInUpdate As Boolean = False
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)
 
             If (Me.UIContext Is Nothing) Then Return
-
-            If (Me.m_cmbGroup Is Nothing) Then Return
             If (Me.m_cmbMonth Is Nothing) Then Return
-            If (Me.m_chkAutoRotate Is Nothing) Then Return
-
-            ' Should only be called after OnLoad, yet another bail-out.
-            If (Me.m_cmbGroup.Items.Count = 0) Then Return
 
             If (editor IsNot Nothing) Then
+                Me.m_bInUpdate = True
                 Try
-                    Me.m_cmbMonth.SelectedIndex = CInt(editor.CellValue) - 1
-                    Me.m_cmbGroup.SelectedIndex = CInt(Me.Editor.Group) - 1
+                    Dim layer As cEcospaceLayer = Me.Editor.Layer.Data
+                    Dim grp As cEcospaceGroup = Me.UIContext.Core.EcospaceGroups(layer.Index)
 
-                    Me.m_chkAutoRotate.Enabled = editor.IsEditable
+                    Me.m_cmbMonth.SelectedIndex = Math.Max(0, Me.Editor.Month - 1)
                 Catch ex As Exception
 
                 End Try
+                Me.m_bInUpdate = False
             End If
 
         End Sub
@@ -116,18 +93,23 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_cmbGroup.Format
+#Region " Event handlers "
 
-            If (Not Object.ReferenceEquals(sender, Me.m_cmbGroup)) Then
-                ' For some reason this Format may be called for the Month combo. Weird, weird, weird.
-                Return
-            End If
-
-            Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
-            Dim fmt As New cCoreInterfaceFormatter()
-            e.Value = fmt.GetDescriptor(io)
+        Private Sub OnMonthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbMonth.SelectedIndexChanged
+            Try
+                Me.Editor.Month = Me.m_cmbMonth.SelectedIndex + 1
+            Catch ex As Exception
+            End Try
         End Sub
+
+        Private Sub OnNextMonth(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnNext.Click
+            Me.Editor.Next()
+            Me.UpdateContent(Me.Editor)
+        End Sub
+
+#End Region ' Event handlers
 
     End Class
 

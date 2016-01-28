@@ -703,6 +703,7 @@ Public Class cEcospaceBasemap
     ''' <summary>
     ''' Get the Ecospace MPA layer.
     ''' </summary>
+    ''' <param name="iMPA">One-based MPA index</param>
     ''' <remarks>
     ''' This layer provides access to the one and only array that holds all
     ''' MPAs in Ecospace.
@@ -796,12 +797,13 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the migration layer for a given group.
     ''' </summary>
+    ''' <param name="iGroup">One-based group index.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerMigration() As cEcospaceLayerMigration
+    Public ReadOnly Property LayerMigration(iGroup As Integer) As cEcospaceLayerMigration
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMigration)(0), cEcospaceLayerMigration)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMigration)(iGroup - 1), cEcospaceLayerMigration)
         End Get
     End Property
 
@@ -897,7 +899,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerAdvection
                 Return New Single()(,) {Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel}
             Case eVarNameFlags.LayerMigration
-                Return New Integer()(,) {Me.m_core.m_EcoSpaceData.PrefRow, Me.m_core.m_EcoSpaceData.Prefcol}
+                Return Me.m_core.m_EcoSpaceData.MigMaps
             Case eVarNameFlags.LayerWind
                 Return New Single()(,,) {Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv}
             Case eVarNameFlags.LayerUpwelling

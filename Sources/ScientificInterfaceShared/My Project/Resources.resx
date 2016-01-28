@@ -2247,7 +2247,7 @@
   <data name="glyph_rubble_sand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\glyph_rubble_sand.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_DEPTH" xml:space="preserve">
+  <data name="ECOSPACE_LAYERGROUP_BASEMAP" xml:space="preserve">
     <value>Basemap</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_ENVDRIVERS" xml:space="preserve">
@@ -2265,8 +2265,8 @@
   <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
     <value>Importance</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_DATA" xml:space="preserve">
-    <value>Data layers</value>
+  <data name="ECOSPACE_LAYERGROUP_MIGRATION" xml:space="preserve">
+    <value>Migration</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
     <value>MPAs</value>
@@ -3403,6 +3403,12 @@
   </data>
   <data name="FILE_LOAD_ERROR_MISSING" xml:space="preserve">
     <value>File '{0}' cannot be found.</value>
+  </data>
+  <data name="PlayHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayStepHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayStepHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ResetHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\reseths.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

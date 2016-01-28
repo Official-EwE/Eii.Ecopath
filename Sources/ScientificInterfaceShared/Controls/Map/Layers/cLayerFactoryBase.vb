@@ -222,20 +222,24 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerMigration
 
-                    key = New cValueID(eDataTypes.EcospaceLayerMigration, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                    For iLayer As Integer = 1 To core.nGroups
+                        Dim grp As cEcospaceGroup = core.EcospaceGroups(iLayer)
+                        If grp.IsMigratory Then
+                            Dim src As cEcospaceLayerMigration = core.EcospaceBasemap.LayerMigration(iLayer)
+                            key = New cValueID(eDataTypes.EcospaceLayerMigration, src.DBID, eVarNameFlags.Name)
+                            ad = core.AuxillaryData(key)
 
-                    ' Get or create Visual Style
-                    vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                            vs = ad.VisualStyle
+                            If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                            renderer = New cLayerRendererValue(vs)
+                            renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                            editor = New cLayerEditorMigration()
+                            layer = New cDisplayRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name, CSng(True), CSng(False))
 
-                    editor = New cLayerEditorMigration()
-                    layer = New cDisplayRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerMigration), _
-                                            renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerMigration)
+                            lLayers.Add(layer)
 
-                    lLayers.Add(layer)
+                        End If
+                    Next
 
                 Case eVarNameFlags.LayerAdvection
 
@@ -401,8 +405,10 @@ Namespace Controls.Map
             Select Case varName
 
                 Case eVarNameFlags.LayerDepth, _
-                     eVarNameFlags.LayerExclusion
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_DEPTH
+                     eVarNameFlags.LayerExclusion, _
+                     eVarNameFlags.LayerRelPP, _
+                     eVarNameFlags.LayerRelCin
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_BASEMAP
 
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS
@@ -417,10 +423,8 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerMPA
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_MPAS
 
-                Case eVarNameFlags.LayerRelPP, _
-                     eVarNameFlags.LayerRelCin, _
-                     eVarNameFlags.LayerMigration
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_DATA
+                Case eVarNameFlags.LayerMigration
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MIGRATION
 
                 Case eVarNameFlags.LayerPort, _
                       eVarNameFlags.LayerSail

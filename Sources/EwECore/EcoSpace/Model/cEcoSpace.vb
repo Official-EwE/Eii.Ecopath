@@ -975,7 +975,8 @@ Public Class cEcoSpace
                     SetMovementParameters()
                 End If
 
-                VaryMovementParameters2(m_Data.MonthNow)
+                'Set b(),c(),d() and e() cell movement parameters based on the migration movement gradient MigGrad()
+                VaryMigMovementParameters(m_Data.MonthNow)
 
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
@@ -2037,7 +2038,7 @@ Public Class cEcoSpace
             ReDim m_Data.SpatialFieldStdLeft(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdRight(m_Data.nLiving, m_Data.nSpatialFields)
 
-            'jb 12-Ma7-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
+            'jb 12-May-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
             Me.m_Ecosim.Init(True)
 
             'Tell all the capacity map variables that they need to be recomputed
@@ -2344,6 +2345,7 @@ Public Class cEcoSpace
 
             If nMigratory > 0 Then 'And useMigratoryGrad Then
                 SetMigGrad()
+                'SetMigGrad_Distance()
             End If
 
             If m_tracerData.EcoSpaceConSimOn Then
@@ -3382,130 +3384,6 @@ Public Class cEcoSpace
                 Stop
         End Select
     End Function
-
-
-    Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal ieco As Integer)
-        'EwE5 definition IsIad and IsIju indexes remove these are iAdult and iJuvenial indexes for the split pool code
-        'Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal IsIad As Integer, ByVal IsIju As Integer, ByVal ieco As Integer)
-
-        'sets solvegrid movement arrays based on depth map
-        Dim i As Integer, j As Integer, AdScale As Single
-        Dim nvar2 As Integer, ir As Integer, Distort As Single
-        Dim Ep As Single
-        Dim MaxCh As Single
-        Dim FitRatio As Single
-        AdScale = 1 '/ (2 * 3.14159 * CellLength)
-        MaxCh = 1
-
-        'calculate relative emigration rate from each cell as function
-        'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
-        For i = 0 To m_Data.InRow + 1
-            For j = 0 To m_Data.InCol + 1
-                If m_Data.FitRespType > 0 Then
-                    Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
-                    If Ep < -MaxCh Then Ep = -MaxCh
-                    If Ep > MaxCh Then Ep = MaxCh
-                    Ep = Math.Exp(Ep)
-                    RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
-                    '        If ip = 18 And imonth > 1 And i > 30 And i <  m_data.inrow + 1 And j > 1 And j < 5 Then Stop
-                Else
-                    RelMoveFit(i, j) = 1
-                End If
-            Next
-        Next
-
-        For i = 0 To m_Data.InRow
-            For j = 0 To m_Data.InCol
-                If m_Data.Depth(i, j) > 0 Then
-
-                    'check depth on right face of this cell
-                    If m_Data.Depth(i, j + 1) > 0 Then
-
-                        If MigPowj(ip, j) > 0 Then
-                            Distort = 2 * MigPowj(ip, j) / (PrefColP(ip, imonth) + MigPowj(ip, j))
-                        Else
-                            Distort = 1
-                        End If
-
-                        If m_Data.FitRespType < 2 Then
-                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1) * (Distort)
-                            d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j) * (2 - Distort)
-                        Else
-                            FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * FitRatio * (Distort)
-                            d(i, j, ip) = dNomig(i, j, ip) / FitRatio * (2 - Distort)
-                        End If
-
-                        If j = 0 Or j = m_Data.InCol Then
-                            e(i, j + 1, ip) = 0
-                            d(i, j, ip) = 0
-                        End If
-
-                        'jb split pool code removed
-                        'If IsIad > 0 Then
-                        '    e(i, j + 1, nvar + IsIad) = e(i, j + 1, ip)
-                        '    d(i, j, nvar + IsIad) = d(i, j, ip)
-                        'End If
-                        'If IsIju > 0 Then
-                        '    e(i, j + 1, nvar + npairs + IsIju) = e(i, j + 1, ip)
-                        '    d(i, j, nvar + npairs + IsIju) = d(i, j, ip)
-                        'End If
-
-                        nvar2 = m_Data.NGroups
-                        If ieco > 0 Then
-                            ir = IecoCode(ip)
-                            e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
-                            d(i, j, nvar2 + ir) = d(i, j, ip)
-                            'Enomig(i, j + 1, nvar2 + ir) = E(i, j + 1, ieco)
-                            'dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
-                        End If
-                    End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
-
-                    'then check depths on bottom face of this cell
-                    If m_Data.Depth(i + 1, j) > 0 Then
-                        If MigPowi(ip, i) > 0 Then
-                            Distort = 2 * MigPowi(ip, i) / (PrefRowP(ip, imonth) + MigPowi(ip, i))
-                        Else
-                            Distort = 1
-                        End If
-
-                        If m_Data.FitRespType < 2 Then
-                            C(i, j, ip) = CNomig(i, j, ip) * Distort * RelMoveFit(i + 1, j)
-                            Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i, j) * (2 - Distort)
-                        Else
-                            FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
-                            C(i, j, ip) = CNomig(i, j, ip) * Distort * FitRatio
-                            Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) / FitRatio * (2 - Distort)
-                        End If
-
-                        If i = 0 Or i = m_Data.InRow Then
-                            C(i, j, ip) = 0
-                            Bcw(i + 1, j, ip) = 0
-                        End If
-
-                        ''jb split pool code removed
-                        'If IsIad > 0 Then
-                        '    Bcw(i + 1, j, nvar + IsIad) = Bcw(i + 1, j, ip)
-                        '    C(i, j, nvar + IsIad) = C(i, j, ip)
-                        'End If
-                        'If IsIju > 0 Then
-                        '    Bcw(i + 1, j, nvar + npairs + IsIju) = Bcw(i + 1, j, ip)
-                        '    C(i, j, nvar + npairs + IsIju) = C(i, j, ip)
-                        'End If
-
-                        If ieco > 0 Then
-                            ir = ieco
-                            Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
-                            C(i, j, nvar2 + ir) = C(i, j, ip)
-                        End If
-                    End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
-
-                End If 'If m_Data.Depth(i, j) > 0 Then
-
-            Next j
-        Next i
-
-    End Sub
 
 
     Sub SolveGrid(ByVal ip As Integer, ByVal Aloc(,,) As Single, ByVal Floc(,,) As Single, ByVal X(,,) As Single, ByVal M As Integer, ByVal NomCols As Integer, ByVal Tol As Single, ByVal jord() As Integer, ByVal W As Single)
@@ -4573,7 +4451,250 @@ exitline:
 
     Private Sub SetMigGrad()
         'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
-        Dim i As Integer, j As Integer, ii As Integer, jj As Integer, ihab As Integer
+        Dim i As Integer, j As Integer, ii As Integer, jj As Integer, iMigGrp As Integer
+        Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer, Sweep As Integer, imonth As Integer
+        Dim nsweep As Integer
+        Dim smallestDist As Single
+        Dim pathFound As Integer
+
+        Dim nMig As Integer
+        Dim migIndex() As Integer
+        ReDim migIndex(m_Data.NGroups)
+        Dim diagAdjust As Single
+
+        '  Me.m_Data.debugSetMigMapsFromPrefRowCol()
+
+        Try
+            For i = 1 To m_Data.NGroups
+                If m_Data.IsMigratory(i) Then
+                    nMig = nMig + 1
+                    migIndex(nMig) = i
+                End If
+            Next
+            ReDim MigGrad(m_Data.InRow + 1, m_Data.InCol + 1, nMig, 12)
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Initialize the MigGrad(row,col,group,month) migration gradient matrix with
+            '0 for cells inside a migration area
+            '1000 for cells outside migration area
+            '2000 for cells in low capacity habitat or land
+            For iMigGrp = 1 To nMig
+                For imonth = 1 To 12
+
+                    For i = 0 To m_Data.InRow + 1
+                        For j = 0 To m_Data.InCol + 1
+
+                            MigGrad(i, j, iMigGrp, imonth) = 1000
+
+                            If m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) Then
+                                MigGrad(i, j, iMigGrp, imonth) = 0
+                            End If
+
+                            If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(iMigGrp))(i, j) < 0.1 Then
+                                MigGrad(i, j, iMigGrp, imonth) = 2000
+                            End If
+
+                        Next j
+                    Next i
+                Next imonth
+            Next iMigGrp
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+            If m_Data.InRow > m_Data.InCol Then nsweep = m_Data.InRow Else nsweep = m_Data.InCol
+            nsweep = nsweep * 2
+            iWindow = 1
+            For iMigGrp = 1 To nMig
+                For imonth = 1 To 12
+                    For Sweep = 1 To nsweep
+                        For i = 0 To m_Data.InRow + 1
+                            For j = 0 To m_Data.InCol + 1
+                                If MigGrad(i, j, iMigGrp, imonth) <> 0 Then
+                                    smallestDist = 2000
+                                    diagAdjust = 0
+                                    'smallesti = -1
+                                    'smallestJ = -1
+                                    pathFound = False
+                                    i1 = i - iWindow : If i1 < 0 Then i1 = 0
+                                    i2 = i + iWindow : If i2 > m_Data.InRow + 1 Then i2 = m_Data.InRow + 1
+                                    j1 = j - iWindow : If j1 < 0 Then j1 = 0
+                                    j2 = j + iWindow : If j2 > m_Data.InCol + 1 Then j2 = m_Data.InCol + 1
+                                    For ii = i1 To i2 : For jj = j1 To j2
+                                            If ii = i Or jj = j Then
+                                                diagAdjust = 0
+                                            Else
+                                                diagAdjust = 0.4142 'sqrt(2)-1
+                                            End If
+
+                                            If MigGrad(ii, jj, iMigGrp, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(migIndex(iMigGrp))(i, j) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
+                                                smallestDist = MigGrad(ii, jj, iMigGrp, imonth) + diagAdjust
+                                                pathFound = True
+                                            End If
+                                        Next
+                                    Next
+
+                                    If pathFound Then
+                                        MigGrad(i, j, iMigGrp, imonth) = smallestDist + 1
+                                    End If
+
+                                End If
+
+                            Next j
+                        Next i
+                    Next Sweep 'Sweep = 1 To nsweep
+                Next imonth 'imonth = 1 To 12
+            Next iMigGrp 'iMigGrp = 1 To nMig
+
+            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            ''DUBUGGING
+            ''Dump the migration maps to the debug/immediate window
+            'Dim tempstr As String
+            'For iMigGrp = 1 To nMig 'm_Data.NGroups
+            '    For imonth = 1 To 12
+            '        Debug.Print("")
+            '        Debug.Print(Me.m_EPdata.GroupName(migIndex(nMig)) + ", imonth = " + imonth.ToString)
+            '        For i = 0 To m_Data.InRow + 1
+            '            For j = 0 To m_Data.InCol + 1
+            '                tempstr = tempstr + Math.Round(MigGrad(i, j, iMigGrp, imonth), 3).ToString.PadRight(10)
+
+            '            Next j
+            '            Debug.Print(tempstr)
+            '            tempstr = ""
+            '        Next i
+            '    Next imonth
+            'Next iMigGrp
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
+
+
+
+    Private Sub SetMigGrad_Distance()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        '20-Jan-2016 This was for debugging the Area based migration movements 
+        'based on cell distance from centroid of area
+        'Not used here
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
+        Dim i As Integer, j As Integer, ii As Integer, jj As Integer, iMigGrp As Integer, imonth As Integer
+        'Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer, Sweep As Integer, 
+        'Dim nsweep As Integer
+        'Dim smallestDist As Single
+        'Dim pathFound As Integer
+
+        Dim nMig As Integer
+        Dim migIndex() As Integer
+        ReDim migIndex(m_Data.NGroups)
+        'Dim diagAdjust As Single
+
+        '  Me.m_Data.debugSetMigMapsFromPrefRowCol()
+
+        Me.m_Data.calcPrefRowColFromMigrationMap()
+
+        Try
+            For i = 1 To m_Data.NGroups
+                If m_Data.IsMigratory(i) Then
+                    nMig = nMig + 1
+                    migIndex(nMig) = i
+                End If
+            Next
+            ReDim MigGrad(m_Data.InRow + 1, m_Data.InCol + 1, nMig, 12)
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Initialize the MigGrad(row,col,group,month) migration gradient matrix with
+            '0 for cells inside a migration area
+            '1000 for cells outside migration area
+            '2000 for cells in low capacity habitat or land
+            For iMigGrp = 1 To nMig
+                For imonth = 1 To 12
+
+                    For i = 0 To m_Data.InRow + 1
+                        For j = 0 To m_Data.InCol + 1
+
+                            MigGrad(i, j, iMigGrp, imonth) = 1000
+
+                            If m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) Then
+                                MigGrad(i, j, iMigGrp, imonth) = 0
+                            End If
+
+                            If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(iMigGrp))(i, j) < 0.1 Then
+                                MigGrad(i, j, iMigGrp, imonth) = 2000
+                            End If
+
+                        Next j
+                    Next i
+                Next imonth
+            Next iMigGrp
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            Dim dist As Double
+
+            For iMigGrp = 1 To nMig
+                For imonth = 1 To 12
+
+                    Dim row As Integer = Me.m_Data.PrefRow(migIndex(iMigGrp), imonth)
+                    Dim col As Integer = Me.m_Data.Prefcol(migIndex(iMigGrp), imonth)
+
+                    For i = 0 To m_Data.InRow + 1
+                        For j = 0 To m_Data.InCol + 1
+
+                            If Not m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) Then
+                                dist = Math.Sqrt((j - col) ^ 2 + (i - row) ^ 2)
+                                MigGrad(i, j, iMigGrp, imonth) = dist
+                            Else
+                                MigGrad(i, j, iMigGrp, imonth) = 0
+                            End If
+
+                            If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(iMigGrp))(i, j) < 0.1 Then
+                                MigGrad(i, j, iMigGrp, imonth) = 2000
+                            End If
+
+                        Next j
+                    Next i
+                Next imonth
+            Next iMigGrp
+
+
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'DUBUGGING
+            'Dump the migration maps to the debug/immediate window
+            Dim tempstr As String
+            For iMigGrp = 1 To 1 'nMig 'm_Data.NGroups
+                For imonth = 1 To 12
+                    Debug.Print("")
+                    Debug.Print("imonth = " + imonth.ToString)
+                    For i = 0 To m_Data.InRow + 1
+                        For j = 0 To m_Data.InCol + 1
+                            tempstr = tempstr + Math.Round(MigGrad(i, j, iMigGrp, imonth), 3).ToString.PadRight(10)
+
+                        Next j
+                        Debug.Print(tempstr)
+                        tempstr = ""
+                    Next i
+                Next imonth
+            Next iMigGrp
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
+
+
+    Private Sub SetMigGrad_SinglePoint()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        '20-Jan-2016 original code to set MigGrad(),migration movement gradients, base on a preferred row and col/ single cell
+        'change to use the migration areas
+        'Not used any more but left in for a reference
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
+        Dim i As Integer, j As Integer, ii As Integer, jj As Integer, iMigGrp As Integer
         Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer, Sweep As Integer, imonth As Integer
         Dim nsweep As Integer
         Dim smallestDist As Single
@@ -4597,14 +4718,14 @@ exitline:
             If m_Data.InRow > m_Data.InCol Then nsweep = m_Data.InRow Else nsweep = m_Data.InCol
             nsweep = nsweep * 2
             iWindow = 1
-            For ihab = 1 To nMig
+            For iMigGrp = 1 To nMig
                 For imonth = 1 To 12
                     For Sweep = 1 To nsweep
-                        'If NcellsHab(ihab) > 0 Then
-                        For i = 0 To m_Data.InRow + 1 : For j = 0 To m_Data.InCol + 1
+                        For i = 0 To m_Data.InRow + 1
+                            For j = 0 To m_Data.InCol + 1
                                 If Sweep = 1 Then
-                                    MigGrad(i, j, ihab, imonth) = 1000
-                                ElseIf MigGrad(i, j, ihab, imonth) <> 0 Then
+                                    MigGrad(i, j, iMigGrp, imonth) = 1000
+                                ElseIf MigGrad(i, j, iMigGrp, imonth) <> 0 Then
                                     smallestDist = 2000
                                     diagAdjust = 0
                                     'smallesti = -1
@@ -4621,212 +4742,176 @@ exitline:
                                                 diagAdjust = 0.4142 'sqrt(2)-1
                                             End If
 
-                                            If MigGrad(ii, jj, ihab, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(migIndex(ihab))(i, j) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
-                                                smallestDist = MigGrad(ii, jj, ihab, imonth) + diagAdjust
+                                            If MigGrad(ii, jj, iMigGrp, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(migIndex(iMigGrp))(i, j) > 0.1) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
+                                                smallestDist = MigGrad(ii, jj, iMigGrp, imonth) + diagAdjust
                                                 pathFound = True
                                             End If
                                         Next
                                     Next
-                                    If pathFound Then MigGrad(i, j, ihab, imonth) = smallestDist + 1
-                                End If
+                                    If pathFound Then
+                                        MigGrad(i, j, iMigGrp, imonth) = smallestDist + 1
+                                    End If
 
-                                If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(ihab))(i, j) < 0.1 Then
-                                    MigGrad(i, j, ihab, imonth) = 2000
+                                End If 'Sweep = 1
+
+                                If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(iMigGrp))(i, j) < 0.1 Then
+                                    MigGrad(i, j, iMigGrp, imonth) = 2000
                                 End If
 
                             Next j
                         Next i
                         If Sweep = 1 Then
-                            i = Math.Max(0, Math.Min(Me.m_Data.InRow, m_Data.PrefRow(migIndex(ihab), imonth)))
-                            j = Math.Max(0, Math.Min(Me.m_Data.InCol, m_Data.Prefcol(migIndex(ihab), imonth)))
-                            MigGrad(i, j, ihab, imonth) = 0
+                            i = Math.Max(0, Math.Min(Me.m_Data.InRow, m_Data.PrefRow(migIndex(iMigGrp), imonth)))
+                            j = Math.Max(0, Math.Min(Me.m_Data.InCol, m_Data.Prefcol(migIndex(iMigGrp), imonth)))
+                            MigGrad(i, j, iMigGrp, imonth) = 0
                         End If
+                    Next Sweep 'Sweep = 1 To nsweep
+                Next imonth 'imonth = 1 To 12
+            Next iMigGrp 'iMigGrp = 1 To nMig
+
+            Dim tempstr As String
+            For iMigGrp = 1 To 1 'nMig 'm_Data.NGroups
+                For imonth = 1 To 12
+                    Debug.Print("")
+                    Debug.Print("imonth = " + imonth.ToString)
+                    For i = 0 To m_Data.InRow + 1
+                        For j = 0 To m_Data.InCol + 1
+                            If Math.Round(MigGrad(i, j, iMigGrp, imonth)) < 100 Or MigGrad(i, j, iMigGrp, imonth) = 2000 Then
+                                tempstr = tempstr + " "
+                                If Math.Round(MigGrad(i, j, iMigGrp, imonth)) < 10 Or MigGrad(i, j, iMigGrp, imonth) = 2000 Then
+                                    tempstr = tempstr + " "
+                                End If
+                            End If
+                            If MigGrad(i, j, iMigGrp, imonth) >= 0 And MigGrad(i, j, iMigGrp, imonth) < 2000 Then
+                                tempstr = tempstr + Math.Round(MigGrad(i, j, iMigGrp, imonth)).ToString + " "
+                                'ElseIf MigGrad(i, j, ihab, imonth) = 0 Then
+                                '    tempstr = tempstr + "X "
+                            Else
+                                tempstr = tempstr + "  "
+                            End If
+                        Next
+                        Debug.Print(tempstr)
+                        tempstr = ""
                     Next
                 Next
             Next
-
-            'Dim tempstr As String
-            'For ihab = 1 To 1 'nMig 'm_Data.NGroups
-            '    For imonth = 1 To 12
-            '        Debug.Print("")
-            '        'Debug.Print("imonth = " + imonth.ToString)
-            '        For i = 0 To m_Data.Inrow + 1
-            '            For j = 0 To m_Data.InCol + 1
-            '                If Math.Round(MigGrad(i, j, ihab, imonth)) < 100 Or MigGrad(i, j, ihab, imonth) = 2000 Then
-            '                    tempstr = tempstr + " "
-            '                    If Math.Round(MigGrad(i, j, ihab, imonth)) < 10 Or MigGrad(i, j, ihab, imonth) = 2000 Then
-            '                        tempstr = tempstr + " "
-            '                    End If
-            '                End If
-            '                If MigGrad(i, j, ihab, imonth) >= 0 And MigGrad(i, j, ihab, imonth) < 2000 Then
-            '                    tempstr = tempstr + Math.Round(MigGrad(i, j, ihab, imonth)).ToString + " "
-            '                    'ElseIf MigGrad(i, j, ihab, imonth) = 0 Then
-            '                    '    tempstr = tempstr + "X "
-            '                Else
-            '                    tempstr = tempstr + "  "
-            '                End If
-            '            Next
-            '            'System.Console.WriteLine(tempstr)
-            '            tempstr = ""
-            '        Next
-            '    Next
-            'Next
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
     End Sub
+   
 
     Sub VaryMigMovementParameters(ByVal imonth As Integer)
-        'sets solvegrid movement arrays based on depth map
-        Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
-        Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
+        '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
+        'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
+        Dim ip As Integer
+        Dim i As Integer, j As Integer, AdScale As Single
+        Dim nvar2 As Integer, ir As Integer
+        Dim Ep As Single
+        Dim MaxCh As Single
+        Dim FitRatio As Single
+        AdScale = 1 '/ (2 * 3.14159 * CellLength)
+        MaxCh = 1
+        Dim ieco As Integer
         Dim imig As Integer
         Dim nMig As Integer
         Dim migIndex() As Integer
-        'Dim distortNS As Single
-        'Dim distortEW As Single
-        Dim distort As Single
-        Try
+        Dim migGradWeight As Single = 0.05
 
-            ReDim migIndex(m_Data.NGroups)
-            For i = 1 To m_Data.NGroups
-                If m_Data.IsMigratory(i) Then
-                    nMig = nMig + 1
-                    migIndex(nMig) = i
-                End If
+        ReDim migIndex(m_Data.NGroups)
+        For i = 1 To m_Data.NGroups
+            If m_Data.IsMigratory(i) Then
+                nMig = nMig + 1
+                migIndex(nMig) = i
+            End If
+        Next
+
+        For imig = 1 To nMig
+            ip = migIndex(imig)
+            ieco = IecoCode(ip)
+
+            'calculate relative emigration rate from each cell as function
+            'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
+            For i = 0 To m_Data.InRow + 1
+                For j = 0 To m_Data.InCol + 1
+                    If m_Data.FitRespType > 0 Then
+                        Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
+                        If Ep < -MaxCh Then Ep = -MaxCh
+                        If Ep > MaxCh Then Ep = MaxCh
+                        Ep = Math.Exp(Ep)
+                        RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
+
+                    Else
+                        RelMoveFit(i, j) = 1
+                    End If
+                Next
             Next
 
-            AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
             For i = 0 To m_Data.InRow
                 For j = 0 To m_Data.InCol
-                    'check depth on right face of this cell
                     If m_Data.Depth(i, j) > 0 Then
+
+                        'check depth on right face of this cell
                         If m_Data.Depth(i, j + 1) > 0 Then
-                            For imig = 1 To nMig
-                                ip = migIndex(imig)
-                                If MigPowj(ip, j) > 0 Then
-                                    distort = 1 * MigPowj(ip, j) / (PrefColP(ip, imonth) + MigPowj(ip, j))
-                                Else
-                                    distort = 0.5
-                                End If
-                                If j > 0 And j < m_Data.InCol Then
-                                    e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMove(ip, i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * distort
-                                    d(i, j, ip) = dNomig(i, j, ip) * RelMove(ip, i, j) * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip) * (1 - distort)
-                                    If m_Data.IsAdvected(ip) Then
-                                        If m_Data.Xvel(i, j) > 0 Then
-                                            d(i, j, ip) = d(i, j, ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
-                                        Else
-                                            e(i, j + 1, ip) = e(i, j + 1, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
-                                        End If
 
-                                    End If
-                                Else
-                                    If m_Data.IsAdvected(ip) Then
-                                        If m_Data.Xvel(i, j) > 0 Then
-                                            e(i, j + 1, ip) = m_Data.Mrate(ip) 'into j from right
-                                            d(i, j, ip) = m_Data.Mrate(ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
-                                        Else
-                                            e(i, j + 1, ip) = m_Data.Mrate(ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
-                                            d(i, j, ip) = m_Data.Mrate(ip) 'from j to the right
+                            If m_Data.FitRespType < 2 Then
+                                e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                            Else
+                                FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
+                                e(i, j + 1, ip) = Enomig(i, j + 1, ip) * FitRatio * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = dNomig(i, j, ip) / FitRatio * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                            End If
 
-                                        End If
-                                    Else
-                                        e(i, j + 1, ip) = 0
-                                        d(i, j, ip) = 0
-                                    End If
-                                End If
-                                'Enomig(i, j + 1, ip) = e(i, j + 1, ip)
-                                'dNomig(i, j, ip) = d(i, j, ip)
-                            Next
+                            If j = 0 Or j = m_Data.InCol Then
+                                e(i, j + 1, ip) = 0
+                                d(i, j, ip) = 0
+                            End If
 
                             nvar2 = m_Data.NGroups
-                            ir = 0
-                            For isp = 1 To m_Stanza.Nsplit
-                                For ist = 1 To m_Stanza.Nstanza(isp)
-                                    ieco = m_Stanza.EcopathCode(isp, ist)
-                                    ir = ir + 1
-                                    e(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
-                                    d(i, j, nvar2 + ir) = d(i, j, ieco)
-                                    'Enomig(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
-                                    'dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
-                                Next
-                            Next
-                        End If
+                            If ieco > 0 Then
+                                ir = IecoCode(ip)
+                                e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
+                                d(i, j, nvar2 + ir) = d(i, j, ip)
+                            End If
+                        End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
+
                         'then check depths on bottom face of this cell
                         If m_Data.Depth(i + 1, j) > 0 Then
-                            For imig = 1 To nMig
-                                If i > 0 And i < m_Data.InRow Then
-                                    ip = migIndex(imig)
-                                    C(i, j, ip) = CNomig(i, j, ip) * RelMove(ip, i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * distort
-                                    Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMove(ip, i, j) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * (1 - distort)
-                                    If m_Data.IsAdvected(ip) Then
-                                        If m_Data.Yvel(i, j) > 0 Then
-                                            Bcw(i + 1, j, ip) = Bcw(i + 1, j, ip) + m_Data.Yvel(i, j) * AdScale 'from j to the right
-                                        Else
-                                            C(i, j, ip) = C(i, j, ip) - m_Data.Yvel(i, j) * AdScale   'into j from right
-                                        End If
+                            If m_Data.FitRespType < 2 Then
+                                C(i, j, ip) = CNomig(i, j, ip) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                            Else
+                                FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
+                                C(i, j, ip) = CNomig(i, j, ip) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                            End If
 
-                                    End If
-                                Else
-                                    If m_Data.IsAdvected(ip) Then
-                                        If m_Data.Yvel(i, j) > 0 Then
-                                            C(i, j, ip) = m_Data.Mrate(ip) 'from row i+1 to i
-                                            Bcw(i + 1, j, ip) = m_Data.Mrate(ip) + m_Data.Yvel(i, j) * AdScale ' + AdvectSouth 'from i to i+1
-                                        Else
-                                            C(i, j, ip) = m_Data.Mrate(ip) - m_Data.Yvel(i, j) * AdScale 'from row i+1 to i
-                                            Bcw(i + 1, j, ip) = m_Data.Mrate(ip)
-                                        End If
-                                    Else
-                                        C(i, j, ip) = 0
-                                        Bcw(i + 1, j, ip) = 0
-                                    End If
-                                End If
-                                'CNomig(i, j, ip) = C(i, j, ip)
-                                'BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
-                            Next
+                            If i = 0 Or i = m_Data.InRow Then
+                                C(i, j, ip) = 0
+                                Bcw(i + 1, j, ip) = 0
+                            End If
 
-                            nvar2 = m_Data.NGroups
-                            ir = 0
-                            For isp = 1 To m_Stanza.Nsplit
-                                For ist = 1 To m_Stanza.Nstanza(isp)
-                                    ieco = m_Stanza.EcopathCode(isp, ist)
-                                    ir = ir + 1
-                                    Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
-                                    C(i, j, nvar2 + ir) = C(i, j, ieco)
-                                    BcwNomig(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
-                                    CNomig(i, j, nvar2 + ir) = C(i, j, ieco)
-                                Next
-                            Next
-                        End If
-                    End If
+                            If ieco > 0 Then
+                                ir = ieco
+                                Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
+                                C(i, j, nvar2 + ir) = C(i, j, ip)
+                            End If
+
+                        End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
+
+                    End If 'If m_Data.Depth(i, j) > 0 Then
 
                 Next j
             Next i
-
-            If m_tracerData.EcoSpaceConSimOn Then
-                'set movement rates for physical contaminant concentration to
-                'rates for first detritus pool
-                For i = 0 To m_Data.InRow + 1
-                    For j = 0 To m_Data.InCol + 1
-                        Bcw(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
-                        C(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
-                        d(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
-                        e(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
-                        BcwNomig(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
-                        CNomig(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
-                        dNomig(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
-                        Enomig(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
-                    Next
-                Next
-            End If
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
+        Next imig
     End Sub
 
-    Sub VaryMovementParameters2(ByVal imonth As Integer) ', ByVal ip As Integer, ByVal ieco As Integer)
-        'EwE5 definition IsIad and IsIju indexes remove these are iAdult and iJuvenial indexes for the split pool code
-        'Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal IsIad As Integer, ByVal IsIju As Integer, ByVal ieco As Integer)
+
+
+    Sub VaryMigMovementParameters_SinglePoint(ByVal imonth As Integer)
+        '20-Jan-2016 Original code to set migration movement based on a single point
+        'Update to set migration movement based on an area
 
         Dim ip As Integer
         'sets solvegrid movement arrays based on depth map
@@ -4935,21 +5020,12 @@ exitline:
                                 Bcw(i + 1, j, ip) = 0
                             End If
 
-                            ''jb split pool code removed
-                            'If IsIad > 0 Then
-                            '    Bcw(i + 1, j, nvar + IsIad) = Bcw(i + 1, j, ip)
-                            '    C(i, j, nvar + IsIad) = C(i, j, ip)
-                            'End If
-                            'If IsIju > 0 Then
-                            '    Bcw(i + 1, j, nvar + npairs + IsIju) = Bcw(i + 1, j, ip)
-                            '    C(i, j, nvar + npairs + IsIju) = C(i, j, ip)
-                            'End If
-
                             If ieco > 0 Then
                                 ir = ieco
                                 Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
                                 C(i, j, nvar2 + ir) = C(i, j, ip)
                             End If
+
                         End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
 
                     End If 'If m_Data.Depth(i, j) > 0 Then
@@ -4960,44 +5036,61 @@ exitline:
     End Sub
 
 
+
     Function RelMigMove(ByVal i1 As Integer, ByVal j1 As Integer, ByVal i2 As Integer, ByVal j2 As Integer, ByVal G(,,,) As Single, ByVal gk As Single, ByVal ihab As Integer, ByVal imonth As Integer, ByVal ip As Integer) As Single
         'sets relative movement rate using slope of g() function between origin (i1,j1) and destination (i2,j2) cells
         'function is 1 when slope ss is zero
         RelMigMove = 1
-        If m_Data.barrierAvoidanceWeight(ip) > 0 Then
-            Dim Ss As Single
-            Dim multDir As Single
-            Dim numDir As Single
-            Try
-                multDir = 1
-                If i1 > 0 And j1 > 0 And i1 <= m_Data.InRow And j1 <= m_Data.InCol Then
-                    If (G(i1 + 1, j1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
-                    If (G(i1 - 1, j1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
-                    If (G(i1, j1 - 1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
-                    If (G(i1, j1 + 1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
-                    multDir = 1 / numDir
-                    'If multDir = 1 Then multDir = 2
-                End If
-                Ss = G(i2, j2, ihab, imonth) - G(i1, j1, ihab, imonth)
-                Select Case Ss
-                    'Case 0
-                    'RelMigMove = 1
-                    Case Is < 0
-                        RelMigMove = 1 + m_Data.barrierAvoidanceWeight(ip) * multDir * G(i1, j1, ihab, imonth) / (0.5 * m_Data.InRow + G(i1, j1, ihab, imonth)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
-                    Case Is > 0
-                        RelMigMove = 1 - m_Data.barrierAvoidanceWeight(ip) * multDir * G(i1, j1, ihab, imonth) / (0.5 * m_Data.InRow + G(i1, j1, ihab, imonth))
-                    Case Else
-                        Stop
-                End Select
+        Dim BarrierAvoid As Single = m_Data.barrierAvoidanceWeight(ip)
+        If BarrierAvoid <= 0 Then BarrierAvoid = 0.0000000001
 
-                If G(i1, j1, ihab, imonth) = 0 Then
-                    RelMigMove = 1
+        'In the original code this value was m_Data.InRow
+        'The meant there would be different migration rates with different maps
+        Dim movementWeight As Single = gk ' m_Data.MoveScale m_Data.InRow
+
+        Dim Ss As Single
+        Dim multDir As Single
+        Dim numDir As Single
+        Try
+            multDir = 1
+            If i1 > 0 And j1 > 0 And i1 <= m_Data.InRow And j1 <= m_Data.InCol Then
+                'Calculate the number of cells to migrated into
+                If (G(i1 + 1, j1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
+                If (G(i1 - 1, j1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
+                If (G(i1, j1 - 1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
+                If (G(i1, j1 + 1, ihab, imonth) - G(i1, j1, ihab, imonth)) < 0 Then numDir += 1.0
+                'numDir will = zero if this cell is in preferred migratory area
+                If numDir <> 0.0F Then
+                    'Multiple direction weighting
+                    'Each cell gets an equal weight
+                    multDir = 1 / numDir
+                Else
+                    multDir = 1
                 End If
+
+            End If
+
+            Ss = G(i2, j2, ihab, imonth) - G(i1, j1, ihab, imonth)
+            Select Case Ss
+                'Case 0
                 'RelMigMove = 1
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
-        End If
+                Case Is < 0
+                    RelMigMove = 1 + BarrierAvoid * multDir * G(i1, j1, ihab, imonth) / (0.5 * movementWeight + G(i1, j1, ihab, imonth)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
+                Case Is > 0
+                    RelMigMove = 1 - BarrierAvoid * multDir * G(i1, j1, ihab, imonth) / (0.5 * movementWeight + G(i1, j1, ihab, imonth))
+                Case Else
+                    RelMigMove = 1 'Stop
+            End Select
+
+            If G(i1, j1, ihab, imonth) = 0 Then
+                'don't migrate out of preferred area
+                RelMigMove = 1
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
     End Function
 
     Sub AdjustSpaceParsNew()
@@ -7735,6 +7828,280 @@ exitline:
             Next
         Next
     End Sub
+
+
+     Sub VaryMigMovementParameters(ByVal imonth As Integer)
+        'sets solvegrid movement arrays based on depth map
+        Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
+        Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
+        Dim imig As Integer
+        Dim nMig As Integer
+        Dim migIndex() As Integer
+        'Dim distortNS As Single
+        'Dim distortEW As Single
+        Dim distort As Single
+        Try
+
+            ReDim migIndex(m_Data.NGroups)
+            For i = 1 To m_Data.NGroups
+                If m_Data.IsMigratory(i) Then
+                    nMig = nMig + 1
+                    migIndex(nMig) = i
+                End If
+            Next
+
+            AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
+            For i = 0 To m_Data.InRow
+                For j = 0 To m_Data.InCol
+                    'check depth on right face of this cell
+                    If m_Data.Depth(i, j) > 0 Then
+                        If m_Data.Depth(i, j + 1) > 0 Then
+                            For imig = 1 To nMig
+                                ip = migIndex(imig)
+                                If MigPowj(ip, j) > 0 Then
+                                    distort = 1 * MigPowj(ip, j) / (PrefColP(ip, imonth) + MigPowj(ip, j))
+                                Else
+                                    distort = 0.5
+                                End If
+                                If j > 0 And j < m_Data.InCol Then
+                                    e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMove(ip, i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * distort
+                                    d(i, j, ip) = dNomig(i, j, ip) * RelMove(ip, i, j) * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip) * (1 - distort)
+                                    If m_Data.IsAdvected(ip) Then
+                                        If m_Data.Xvel(i, j) > 0 Then
+                                            d(i, j, ip) = d(i, j, ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
+                                        Else
+                                            e(i, j + 1, ip) = e(i, j + 1, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                        End If
+
+                                    End If
+                                Else
+                                    If m_Data.IsAdvected(ip) Then
+                                        If m_Data.Xvel(i, j) > 0 Then
+                                            e(i, j + 1, ip) = m_Data.Mrate(ip) 'into j from right
+                                            d(i, j, ip) = m_Data.Mrate(ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
+                                        Else
+                                            e(i, j + 1, ip) = m_Data.Mrate(ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                            d(i, j, ip) = m_Data.Mrate(ip) 'from j to the right
+
+                                        End If
+                                    Else
+                                        e(i, j + 1, ip) = 0
+                                        d(i, j, ip) = 0
+                                    End If
+                                End If
+                                'Enomig(i, j + 1, ip) = e(i, j + 1, ip)
+                                'dNomig(i, j, ip) = d(i, j, ip)
+                            Next
+
+                            nvar2 = m_Data.NGroups
+                            ir = 0
+                            For isp = 1 To m_Stanza.Nsplit
+                                For ist = 1 To m_Stanza.Nstanza(isp)
+                                    ieco = m_Stanza.EcopathCode(isp, ist)
+                                    ir = ir + 1
+                                    e(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
+                                    d(i, j, nvar2 + ir) = d(i, j, ieco)
+                                    'Enomig(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
+                                    'dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
+                                Next
+                            Next
+                        End If
+                        'then check depths on bottom face of this cell
+                        If m_Data.Depth(i + 1, j) > 0 Then
+                            For imig = 1 To nMig
+                                If i > 0 And i < m_Data.InRow Then
+                                    ip = migIndex(imig)
+                                    C(i, j, ip) = CNomig(i, j, ip) * RelMove(ip, i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * distort
+                                    Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMove(ip, i, j) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip) * (1 - distort)
+                                    If m_Data.IsAdvected(ip) Then
+                                        If m_Data.Yvel(i, j) > 0 Then
+                                            Bcw(i + 1, j, ip) = Bcw(i + 1, j, ip) + m_Data.Yvel(i, j) * AdScale 'from j to the right
+                                        Else
+                                            C(i, j, ip) = C(i, j, ip) - m_Data.Yvel(i, j) * AdScale   'into j from right
+                                        End If
+
+                                    End If
+                                Else
+                                    If m_Data.IsAdvected(ip) Then
+                                        If m_Data.Yvel(i, j) > 0 Then
+                                            C(i, j, ip) = m_Data.Mrate(ip) 'from row i+1 to i
+                                            Bcw(i + 1, j, ip) = m_Data.Mrate(ip) + m_Data.Yvel(i, j) * AdScale ' + AdvectSouth 'from i to i+1
+                                        Else
+                                            C(i, j, ip) = m_Data.Mrate(ip) - m_Data.Yvel(i, j) * AdScale 'from row i+1 to i
+                                            Bcw(i + 1, j, ip) = m_Data.Mrate(ip)
+                                        End If
+                                    Else
+                                        C(i, j, ip) = 0
+                                        Bcw(i + 1, j, ip) = 0
+                                    End If
+                                End If
+                                'CNomig(i, j, ip) = C(i, j, ip)
+                                'BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
+                            Next
+
+                            nvar2 = m_Data.NGroups
+                            ir = 0
+                            For isp = 1 To m_Stanza.Nsplit
+                                For ist = 1 To m_Stanza.Nstanza(isp)
+                                    ieco = m_Stanza.EcopathCode(isp, ist)
+                                    ir = ir + 1
+                                    Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
+                                    C(i, j, nvar2 + ir) = C(i, j, ieco)
+                                    BcwNomig(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
+                                    CNomig(i, j, nvar2 + ir) = C(i, j, ieco)
+                                Next
+                            Next
+                        End If
+                    End If
+
+                Next j
+            Next i
+
+            If m_tracerData.EcoSpaceConSimOn Then
+                'set movement rates for physical contaminant concentration to
+                'rates for first detritus pool
+                For i = 0 To m_Data.InRow + 1
+                    For j = 0 To m_Data.InCol + 1
+                        Bcw(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
+                        C(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
+                        d(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
+                        e(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
+                        BcwNomig(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
+                        CNomig(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
+                        dNomig(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
+                        Enomig(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
+                    Next
+                Next
+            End If
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
+
+
+    Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal ieco As Integer)
+        'EwE5 definition IsIad and IsIju indexes remove these are iAdult and iJuvenial indexes for the split pool code
+        'Sub VaryMovementParameters(ByVal imonth As Integer, ByVal ip As Integer, ByVal IsIad As Integer, ByVal IsIju As Integer, ByVal ieco As Integer)
+
+        'sets solvegrid movement arrays based on depth map
+        Dim i As Integer, j As Integer, AdScale As Single
+        Dim nvar2 As Integer, ir As Integer, Distort As Single
+        Dim Ep As Single
+        Dim MaxCh As Single
+        Dim FitRatio As Single
+        AdScale = 1 '/ (2 * 3.14159 * CellLength)
+        MaxCh = 1
+
+        'calculate relative emigration rate from each cell as function
+        'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
+        For i = 0 To m_Data.InRow + 1
+            For j = 0 To m_Data.InCol + 1
+                If m_Data.FitRespType > 0 Then
+                    Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
+                    If Ep < -MaxCh Then Ep = -MaxCh
+                    If Ep > MaxCh Then Ep = MaxCh
+                    Ep = Math.Exp(Ep)
+                    RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
+                    '        If ip = 18 And imonth > 1 And i > 30 And i <  m_data.inrow + 1 And j > 1 And j < 5 Then Stop
+                Else
+                    RelMoveFit(i, j) = 1
+                End If
+            Next
+        Next
+
+        For i = 0 To m_Data.InRow
+            For j = 0 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+
+                    'check depth on right face of this cell
+                    If m_Data.Depth(i, j + 1) > 0 Then
+
+                        If MigPowj(ip, j) > 0 Then
+                            Distort = 2 * MigPowj(ip, j) / (PrefColP(ip, imonth) + MigPowj(ip, j))
+                        Else
+                            Distort = 1
+                        End If
+
+                        If m_Data.FitRespType < 2 Then
+                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1) * (Distort)
+                            d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j) * (2 - Distort)
+                        Else
+                            FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
+                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * FitRatio * (Distort)
+                            d(i, j, ip) = dNomig(i, j, ip) / FitRatio * (2 - Distort)
+                        End If
+
+                        If j = 0 Or j = m_Data.InCol Then
+                            e(i, j + 1, ip) = 0
+                            d(i, j, ip) = 0
+                        End If
+
+                        'jb split pool code removed
+                        'If IsIad > 0 Then
+                        '    e(i, j + 1, nvar + IsIad) = e(i, j + 1, ip)
+                        '    d(i, j, nvar + IsIad) = d(i, j, ip)
+                        'End If
+                        'If IsIju > 0 Then
+                        '    e(i, j + 1, nvar + npairs + IsIju) = e(i, j + 1, ip)
+                        '    d(i, j, nvar + npairs + IsIju) = d(i, j, ip)
+                        'End If
+
+                        nvar2 = m_Data.NGroups
+                        If ieco > 0 Then
+                            ir = IecoCode(ip)
+                            e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
+                            d(i, j, nvar2 + ir) = d(i, j, ip)
+                            'Enomig(i, j + 1, nvar2 + ir) = E(i, j + 1, ieco)
+                            'dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
+                        End If
+                    End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
+
+                    'then check depths on bottom face of this cell
+                    If m_Data.Depth(i + 1, j) > 0 Then
+                        If MigPowi(ip, i) > 0 Then
+                            Distort = 2 * MigPowi(ip, i) / (PrefRowP(ip, imonth) + MigPowi(ip, i))
+                        Else
+                            Distort = 1
+                        End If
+
+                        If m_Data.FitRespType < 2 Then
+                            C(i, j, ip) = CNomig(i, j, ip) * Distort * RelMoveFit(i + 1, j)
+                            Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i, j) * (2 - Distort)
+                        Else
+                            FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
+                            C(i, j, ip) = CNomig(i, j, ip) * Distort * FitRatio
+                            Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) / FitRatio * (2 - Distort)
+                        End If
+
+                        If i = 0 Or i = m_Data.InRow Then
+                            C(i, j, ip) = 0
+                            Bcw(i + 1, j, ip) = 0
+                        End If
+
+                        ''jb split pool code removed
+                        'If IsIad > 0 Then
+                        '    Bcw(i + 1, j, nvar + IsIad) = Bcw(i + 1, j, ip)
+                        '    C(i, j, nvar + IsIad) = C(i, j, ip)
+                        'End If
+                        'If IsIju > 0 Then
+                        '    Bcw(i + 1, j, nvar + npairs + IsIju) = Bcw(i + 1, j, ip)
+                        '    C(i, j, nvar + npairs + IsIju) = C(i, j, ip)
+                        'End If
+
+                        If ieco > 0 Then
+                            ir = ieco
+                            Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
+                            C(i, j, nvar2 + ir) = C(i, j, ip)
+                        End If
+                    End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
+
+                End If 'If m_Data.Depth(i, j) > 0 Then
+
+            Next j
+        Next i
+
+    End Sub
+
 
 #End If
 #End Region

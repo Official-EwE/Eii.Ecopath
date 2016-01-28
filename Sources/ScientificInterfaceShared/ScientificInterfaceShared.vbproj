@@ -1072,6 +1072,8 @@
     <None Include="Resources\plugin.png" />
     <None Include="Resources\pluginpoint.png" />
     <None Include="Resources\PersonHS.png" />
+    <None Include="Resources\PlayHS.png" />
+    <None Include="Resources\PlayStepHS.png" />
     <Content Include="Resources\ResetHS.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />

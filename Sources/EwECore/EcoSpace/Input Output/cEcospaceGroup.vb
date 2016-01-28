@@ -23,7 +23,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceGroup
     Inherits cCoreGroupBase
 
-#Region "Constructor"
+#Region " Constructor "
 
     Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
         MyBase.New(theCore)
@@ -72,18 +72,6 @@ Public Class cEcospaceGroup
             ' IsMigratory
             meta = New cVariableMetaData(False)
             val = New cValue(New Boolean, eVarNameFlags.IsMigratory, eStatusFlags.Null, eValueTypes.Bool, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' MigrationConcRow N/S concentration
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MigrationConcRow, eStatusFlags.Null, eValueTypes.Sng, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' MigrationConcCol E/W concentration
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MigrationConcCol, eStatusFlags.Null, eValueTypes.Sng, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -232,26 +220,6 @@ Public Class cEcospaceGroup
         End Set
     End Property
 
-    Public Property MigrationNSCon() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.MigrationConcRow))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MigrationConcRow, value)
-        End Set
-    End Property
-
-    Public Property MigrationEWCon() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.MigrationConcCol))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.MigrationConcCol, value)
-        End Set
-    End Property
-
     Public Property BarrierAvoidanceWeight() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.BarrierAvoidanceWeight))
@@ -333,27 +301,6 @@ Public Class cEcospaceGroup
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.PreferredHabitat, value, iHabitat)
-        End Set
-    End Property
-
-
-    Public Property MigrationNSConStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.MigrationConcRow)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MigrationConcRow, value)
-        End Set
-    End Property
-
-    Public Property MigrationEWConStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.MigrationConcCol)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.MigrationConcCol, value)
         End Set
     End Property
 
