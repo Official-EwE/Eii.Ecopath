@@ -252,12 +252,15 @@ Public Class cEcosimMonteCarlo
 
             ' Fire plug-in point
             If Me.m_pluginmanager IsNot Nothing Then
-                Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
-                Me.m_pluginmanager.SearchInitialized(Me.m_core.m_SearchData)
-                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+                Try
+                    Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
+                    Me.m_pluginmanager.SearchInitialized(Me.m_core.m_SearchData)
+                    Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+                    Me.m_pluginmanager.MontCarloInitialized(Me)
+                Catch ex As Exception
+                    cLog.Write(ex, "cEcosimMonteCarlo::Init")
+                End Try
             End If
-
-            If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MontCarloInitialized(Me)
 
             Return True
         Catch ex As Exception
@@ -451,7 +454,13 @@ Public Class cEcosimMonteCarlo
                 m_ecosim.TimeStepDelegate = Nothing
             End If
 
-            If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloRunInitialized()
+            If Me.m_pluginmanager IsNot Nothing Then
+                Try
+                    Me.m_pluginmanager.MonteCarloRunInitialized()
+                Catch ex As Exception
+                    cLog.Write(ex, "cEcosimMonteCarlo::InitForRun")
+                End Try
+            End If
 
             Me.m_ouputWriter.Init()
 
@@ -528,7 +537,13 @@ Public Class cEcosimMonteCarlo
                     'the ecosim time step delegate was set before the loop
                     m_ecosim.Run()
 
-                    If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
+                    If Me.m_pluginmanager IsNot Nothing Then
+                        Try
+                            Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
+                        Catch ex As Exception
+                            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & iTrial & ")")
+                        End Try
+                    End If
 
                     'xxxxxxxxxxxxxxxxxxxx Below is for global Nereus model, June 2013 xxxxxxxxxxxxxxxxxx
                     'Calculate penalty for being away from reasonable fishing mortality
@@ -589,7 +604,7 @@ Public Class cEcosimMonteCarlo
                 Try
                     Me.m_pluginmanager.SearchCompleted(Me.m_core.m_SearchData)
                 Catch ex As Exception
-                    cLog.Write(ex, "cEcosimMonteCarlo::finished")
+                    cLog.Write(ex, "cEcosimMonteCarlo::Run SearchCompleted")
                 End Try
             End If
 
@@ -602,13 +617,25 @@ Public Class cEcosimMonteCarlo
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
 
-        If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MontCarloRunCompleted()
+        If Me.m_pluginmanager IsNot Nothing Then
+            Try
+                Me.m_pluginmanager.MontCarloRunCompleted()
+            Catch ex As Exception
+                cLog.Write(ex, "cEcosimMonteCarlo::Run MontCarloRunCompleted")
+            End Try
+        End If
 
     End Sub
 
     Private Sub BalancedEcopathModel(ByVal iTrial As Integer, ByVal iter As Integer)
         Dim WaitLock As ManualResetEvent = New ManualResetEvent(True)
-        If Me.m_pluginmanager IsNot Nothing Then Me.m_pluginmanager.MonteCarloBalancedEcopathModel(WaitLock, iTrial, iter)
+        If Me.m_pluginmanager IsNot Nothing Then
+            Try
+                Me.m_pluginmanager.MonteCarloBalancedEcopathModel(WaitLock, iTrial, iter)
+            Catch ex As Exception
+                cLog.Write(ex, "cEcosimMonteCarlo::Run BalancedEcopathModel(" & iTrial & ", " & iter & ")")
+            End Try
+        End If
         WaitLock.WaitOne()
     End Sub
 
@@ -879,7 +906,7 @@ Public Class cEcosimMonteCarlo
                     'Return False
                 End If
 
-                'm_ecopath.DetritusCalculations()
+                m_ecopath.DetritusCalculations()
 
                 bEcopathNeedsBalancing = False
                 For igrp = 1 To m_core.nGroups
