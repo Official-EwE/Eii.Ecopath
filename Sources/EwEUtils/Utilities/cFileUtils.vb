@@ -97,7 +97,6 @@ Namespace Utilities
                 strText = Path.Combine(strPath, strFile)
                 ' Replace all accidental 'double dots'
                 'removed ".." replacement so ToValidFileName can resolve relative paths
-                'strText = cStringUtils.ReplaceAll(strText, "..", ".")
             Else
                 strText = strFile
             End If
@@ -263,7 +262,7 @@ Namespace Utilities
 
             Dim strPath As String = (Path.GetDirectoryName(strDest))
             If (Not String.IsNullOrWhiteSpace(strPath)) Then
-                If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest)) Then
+                If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest), True) Then
                     Return False
                 End If
             End If
