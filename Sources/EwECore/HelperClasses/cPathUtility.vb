@@ -140,6 +140,12 @@ Public Class cPathUtility
             End If
         Next
 
+        ' Remove double-dot extension errors, if any
+        Dim strExt As String = Path.GetExtension(strPathOut)
+        While strPathOut.EndsWith("." & strExt)
+            strPathOut = strPathOut.Replace("." & strExt, strExt)
+        End While
+
         ' Remove invalid path chars
         strPathOut = cFileUtils.ToValidFileName(strPathOut, True)
 
