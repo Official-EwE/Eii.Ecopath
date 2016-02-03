@@ -61,6 +61,7 @@ Namespace Controls.Map.Layers
 
             Dim meta As New cVariableMetaData(0.1, 10000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             Me.m_fpDepth = New cEwEFormatProvider(Me.UIContext, Me.m_nudDepth, GetType(Single), meta)
+            Me.m_fpDepth.Value = 1
             AddHandler Me.m_fpDepth.OnValueChanged, AddressOf OnValueChanged
 
             Me.m_cbProtectCoastline.Checked = DirectCast(editor, cLayerEditorDepth).ProtectCoastLine
@@ -187,7 +188,7 @@ Namespace Controls.Map.Layers
             If (Me.UIContext Is Nothing) Then Return
 
             If Me.m_rbWater.Checked Then
-                Me.Editor.CellValue = Me.m_fpDepth.Value
+                Me.Editor.CellValue = CSng(Me.m_fpDepth.Value)
                 Me.m_cbProtectCoastline.Enabled = True
             Else
                 Me.Editor.CellValue = 0
