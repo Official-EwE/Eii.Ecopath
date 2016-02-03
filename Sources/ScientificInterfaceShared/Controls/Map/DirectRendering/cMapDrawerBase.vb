@@ -228,7 +228,7 @@ Namespace Controls.Map
 
             If (Me.Map Is Nothing) Then Return
 
-            Dim iMPA As Integer = 0
+            Dim sMPA As Single = 0
             Dim rcfCell As RectangleF = Nothing
             Dim brCell As Brush = Nothing
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
@@ -237,23 +237,23 @@ Namespace Controls.Map
                 If Me.ShowMPA Then
                     For i As Integer = 1 To Me.InRow
                         For j As Integer = 1 To Me.InCol
-                            For k As Integer = 1 To Me.m_core.nMPAs - 1
+                            For k As Integer = 1 To Me.m_core.nMPAs
                                 Dim mpa As cEcospaceLayerMPA = m_core.EcospaceBasemap.LayerMPA(k)
-                                iMPA = CInt(mpa.Cell(i, j))
-                                If iMPA > 0 Then
-                                    If CBool(excl.Cell(i, j)) = False Then
-                                        rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                     CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                     CSng(rcPos.Width() / Me.InCol), _
-                                                                     CSng(rcPos.Height() / Me.InRow))
-                                        If Me.m_core.EcospaceMPAs(iMPA).MPAMonth(Me.Month) Then
-                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
-                                        Else
-                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
-                                        End If
-                                        Me.Graphics.FillRectangle(brCell, rcfCell)
-                                        brCell.Dispose()
+                                sMPA = CSng(mpa.Cell(i, j))
+                                If sMPA > 0 Then
+                                    'If CBool(excl.Cell(i, j)) = False Then
+                                    rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
+                                                                 CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
+                                                                 CSng(rcPos.Width() / Me.InCol), _
+                                                                 CSng(rcPos.Height() / Me.InRow))
+                                    If Me.m_core.EcospaceMPAs(k).MPAMonth(Me.Month) Then
+                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                                    Else
+                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
                                     End If
+                                    Me.Graphics.FillRectangle(brCell, rcfCell)
+                                    brCell.Dispose()
+                                    'End If
                                 End If
                             Next k
                         Next
