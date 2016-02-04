@@ -205,6 +205,7 @@ Public Class cPSDModel
                             For ist As Integer = 1 To m_stanza.Nstanza(isp) ' No. of stanza in a split group
                                 If m_stanza.EcopathCode(isp, ist) = i Then
                                     'Is first stanza with catches?
+                                    ' WTF, string comparison!? This really needs to change
                                     If m_stanza.StanzaName(isp) <> strTemp Then
                                         'Yes first stanza with catches
                                         sngTemp = CSng(m_stanza.Age1(isp, ist) / cCore.N_MONTHS)

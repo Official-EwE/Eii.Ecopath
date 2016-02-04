@@ -964,6 +964,8 @@ Public Class cEcopathDataStructures
         Dim j As Integer, K As Integer
         Dim FoundPredPrey As Boolean
 
+        If (DietChanged Is Nothing) Then ReDim DietChanged(1, 0)
+
         ' j = UBound(DietChanged, 2)
         j = DietChanged.GetUpperBound(1)
         For K = 0 To j
