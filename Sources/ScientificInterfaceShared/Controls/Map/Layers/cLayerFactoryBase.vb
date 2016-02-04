@@ -196,7 +196,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
-                    renderer.ScaleMin = 0
+                    'renderer.ScaleMin = 0
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
                     editor = New cLayerEditorRange()

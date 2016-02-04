@@ -28,20 +28,11 @@ Namespace Controls.Map.Layers
     Public Class cLayerEditorDepth
         Inherits cLayerEditor
 
-        Private m_bProtectLand As Boolean = False
-
         Public Sub New()
             MyBase.New(GetType(ucLayerEditorDepth))
         End Sub
 
         Public Property ProtectCoastLine() As Boolean
-            Get
-                Return Me.m_bProtectLand
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bProtectLand = value
-            End Set
-        End Property
 
         Protected Overrides Sub SetCellValue(ByVal ptSet As Point, _
                                              ByVal value As Object, _
@@ -54,7 +45,7 @@ Namespace Controls.Map.Layers
             Dim bIsLandCell As Boolean = (layerDepth.IsLandCell(ptSet.Y, ptSet.X))
             Dim bIsLandValue As Boolean = (CInt(value) = 0)
 
-            If Me.m_bProtectLand Then
+            If Me.ProtectCoastLine Then
                 If (bIsLandCell <> bIsLandValue) Then
                     Return
                 End If
@@ -64,6 +55,29 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Fill the layer with the current <see cref="CellValue"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Fill()
+
+            If (Not Me.IsEditable) Then Return
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+
+            For i As Integer = 1 To bm.InRow
+                For j As Integer = 1 To bm.InCol
+                    ' JS 01Feb16: Allow depth layer to be filled when protect coastline is OFF
+                    If (layerDepth.IsWaterCell(i, j) Or ProtectCoastLine = False) Then
+                        Me.Layer.Value(i, j) = Me.CellValue
+                    End If
+                Next j
+            Next i
+            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
+
+        End Sub
     End Class
 
 End Namespace

@@ -48,10 +48,11 @@ Namespace Ecopath.Input
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+            If (Me.CommandHandler IsNot Nothing) Then
+                Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditFleets")
+                If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditFleets)
+            End If
             MyBase.OnFormClosed(e)
-            If (Me.CommandHandler Is Nothing) Then Return
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditFleets")
-            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditFleets)
         End Sub
 
     End Class

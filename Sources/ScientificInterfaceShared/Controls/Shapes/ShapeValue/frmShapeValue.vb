@@ -245,10 +245,6 @@ Public Class frmShapeValue
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
-    End Sub
-
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnOK.Click
 

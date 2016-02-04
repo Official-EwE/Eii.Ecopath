@@ -115,18 +115,6 @@ Public Class dlgManageTimeSeries
 
     End Sub
 
-#Region " Form overrides "
-
-    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-        MyBase.OnLoad(e)
-    End Sub
-
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
-    End Sub
-
-#End Region ' Form overrides
-
 #Region " Events "
 
 #Region " Generic "

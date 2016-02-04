@@ -53,8 +53,6 @@ Namespace Controls.Map.Layers
         Private m_typeGUI As Type = Nothing
         ''' <summary>A GUI, if any.</summary>
         Private m_gui As ILayerEditorGUI = Nothing
-        ''' <summary>UI context to operate on.</summary>
-        Private m_uic As cUIContext = Nothing
 
         ' === FEEDBACK SUPPORT ===
         Private Shared s_iCursorSize As Integer = 1
@@ -171,7 +169,7 @@ Namespace Controls.Map.Layers
                 Debug.Assert(TypeOf obj Is ucLayerEditor)
 
                 gui = DirectCast(obj, ucLayerEditor)
-                gui.Attach(Me.m_uic, Me, Me.m_layer)
+                gui.Attach(Me.UIContext, Me, Me.m_layer)
                 gui.Initialize(Me)
 
                 ' Remember GUI
@@ -281,7 +279,7 @@ Namespace Controls.Map.Layers
             Dim ptDraw As Point = Nothing
             Dim ptCell As Point = Nothing
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
 
             ' Draw every step between the two draw points
             For iStep As Integer = 1 To iNumSteps
@@ -378,7 +376,7 @@ Namespace Controls.Map.Layers
 
             If (Not Me.IsEditable) Then Return
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim cnew(,) As Single, i As Integer, j As Integer
             Dim t As Single
@@ -392,7 +390,8 @@ Namespace Controls.Map.Layers
                     n = 0
                     For ii As Integer = i - 1 To i + 1
                         For jj As Integer = j - 1 To j + 1
-                            If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And layerDepth.IsWaterCell(ii, jj) Then
+                            If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And _
+                                (layerDepth.IsWaterCell(ii, jj) Or Layer.VarName = EwEUtils.Core.eVarNameFlags.LayerDepth) Then
                                 t += CSng(Me.Layer.Value(ii, jj))
                                 n += 1
                             End If
@@ -422,7 +421,7 @@ Namespace Controls.Map.Layers
 
             If (Not Me.IsEditable) Then Return
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
 
             For i As Integer = 1 To bm.InRow
@@ -606,13 +605,6 @@ Namespace Controls.Map.Layers
         End Property
 
         Public Property UIContext() As cUIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Protected Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         Protected Sub UpdateGUI()
             If (Me.m_gui IsNot Nothing) Then

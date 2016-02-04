@@ -124,8 +124,6 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
-            MyBase.OnFormClosed(e)
-
             Me.Visible = False
             Me.SelectedLayer = Nothing
 
@@ -146,6 +144,8 @@ Namespace Ecospace.Basemap
                 RemoveHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditBasemap = Nothing
             End If
+
+            MyBase.OnFormClosed(e)
 
         End Sub
 

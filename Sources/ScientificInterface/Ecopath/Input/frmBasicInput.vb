@@ -52,16 +52,15 @@ Namespace Ecopath.Input
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            Dim cmd As cCommand = Nothing
 
+            If (Me.CommandHandler IsNot Nothing) Then
+                Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditGroups")
+                If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditGroups)
+                cmd = Me.CommandHandler.GetCommand("EditMultiStanza")
+                If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditMultiStanza)
+            End If
             MyBase.OnFormClosed(e)
 
-            If (Me.CommandHandler Is Nothing) Then Return
-
-            cmd = Me.CommandHandler.GetCommand("EditGroups")
-            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditGroups)
-            cmd = Me.CommandHandler.GetCommand("EditMultiStanza")
-            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditMultiStanza)
         End Sub
 
     End Class

@@ -164,7 +164,6 @@ Public Class dlgEcobaseImport
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
 
         Try
             Me.m_ecobase.Dispose()
@@ -172,6 +171,7 @@ Public Class dlgEcobaseImport
         Catch ex As Exception
 
         End Try
+        MyBase.OnFormClosed(e)
 
     End Sub
 
