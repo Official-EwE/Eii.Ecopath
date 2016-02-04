@@ -4972,14 +4972,15 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Stanza index for this iGroup. This index is one-based.
+    ''' Get the zero-based stanza index for a group index, or <see cref="NULL_VALUE"/>
+    ''' if the group does not belong to a stanza..
     ''' </summary>
-    ''' <param name="iGroup"></param>
+    ''' <param name="iGroup">The one-based group index to get the stanza for.</param>
     ''' <returns>Gets Stanza index if this group is a stanza group, or
     ''' cCore.NULL_VALUE if this group does not belong to a stanza configuration.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Private Function getStanzaIndexForGroup(ByVal iGroup As Integer) As Integer
+    Friend Function getStanzaIndexForGroup(ByVal iGroup As Integer) As Integer
 
         For i As Integer = 1 To m_Stanza.Nsplit
 
@@ -13835,6 +13836,11 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerDepth))
                     Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
 
+                    ' Depth layer changes invalidate all layer stats
+                    For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers
+                        l.Invalidate()
+                    Next
+
                 Case eDataTypes.EcospaceLayerMPA, _
                      eDataTypes.EcospaceLayerImportance, _
                      eDataTypes.EcospaceLayerRegion, _
@@ -13849,6 +13855,14 @@ Public Class cCore
                      eDataTypes.EcospaceLayerExclusion
 
                     DirectCast(obj, cEcospaceLayer).Invalidate()
+
+                    ' Exclusion layer changes invalidate all layer stats
+                    If (obj.DataType = eDataTypes.EcospaceLayerExclusion) Then
+                        Me.m_Ecospace.UpdateDepthMap()
+                        For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers
+                            l.Invalidate()
+                        Next
+                    End If
 
                     'update the map/response interactions to the new data
                     Me.m_mapInteractionManager.Update()
