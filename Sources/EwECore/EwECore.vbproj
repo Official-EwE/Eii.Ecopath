@@ -181,7 +181,8 @@
     <Compile Include="EcoBase\cEcoBaseWDSL.vb" />
     <Compile Include="EcoBase\cEcobaseData.vb" />
     <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
-    <Compile Include="EcoPath\cEcopathResultWriter.vb" />
+    <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
+    <Compile Include="EcoPath\Utility\cEcopathMergeGroups.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
@@ -260,13 +261,13 @@
     <Compile Include="DataSource\IEcosimDatasource.vb" />
     <Compile Include="DataSource\IEcopathDataSource.vb" />
     <Compile Include="DataSource\IEcospaceDatasource.vb" />
-    <Compile Include="EcoPath\cEcoPathGroupInput.vb" />
+    <Compile Include="EcoPath\Input Output\cEcoPathGroupInput.vb" />
     <Compile Include="DataSource\Implementations\cDBDataSource.vb" />
     <Compile Include="DataSource\IEwEDataSource.vb" />
-    <Compile Include="EcoPath\cEcopathDataStructures.vb" />
-    <Compile Include="EcoPath\cEcoPathGroupOutput.vb" />
-    <Compile Include="EcoPath\cEcoPathModel.vb" />
-    <Compile Include="EcoPath\cFleetInput.vb" />
+    <Compile Include="EcoPath\Model\cEcopathDataStructures.vb" />
+    <Compile Include="EcoPath\Input Output\cEcoPathGroupOutput.vb" />
+    <Compile Include="EcoPath\Model\cEcoPathModel.vb" />
+    <Compile Include="EcoPath\Input Output\cFleetInput.vb" />
     <Compile Include="EcoSim\Model\cEcoSimDatastructures.vb" />
     <Compile Include="EcoSim\Input Output\cEcoSimGroupInput.vb" />
     <Compile Include="EcoSim\Model\cEcoSimModel.vb" />
@@ -395,7 +396,7 @@
     </Compile>
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_02.vb" />
     <Compile Include="DataSource\IEwEDatasourceMetadata.vb" />
-    <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
+    <Compile Include="EcoPath\Utility\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceBaseResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceCSVMapResultsWriter.vb" />
@@ -470,7 +471,7 @@
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
-    <Compile Include="EcoPath\cEcoPathStats.vb" />
+    <Compile Include="EcoPath\Input Output\cEcoPathStats.vb" />
     <Compile Include="Shapes\Forcing Functions\cMapResponseInteractionManager.vb" />
     <Compile Include="Taxon\cTaxon.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
