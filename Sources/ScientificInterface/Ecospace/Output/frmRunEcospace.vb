@@ -255,7 +255,7 @@ Namespace Ecospace
                 drawer = New cMapDrawerGroup(Me.Core, Me.StyleGuide)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
                 drawer.Colors = Me.m_legend.Colors
-                drawer.ShowExcluded = My.Settings.MapShowExcludedCells
+                drawer.ShowExcluded = Me.StyleGuide.ShowExcludedCells
                 Me.m_drawers.Add(drawer)
             Next
 

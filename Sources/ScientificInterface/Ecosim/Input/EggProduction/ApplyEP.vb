@@ -59,11 +59,6 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-            ' Done
-            MyBase.OnFormClosed(e)
-        End Sub
-
         Public Overrides Property UIContext() As cUIContext
             Get
                 Return MyBase.UIContext

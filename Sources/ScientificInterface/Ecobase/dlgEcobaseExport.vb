@@ -163,13 +163,6 @@ Public Class dlgEcobaseExport
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
-
-        ' NOP
-
-    End Sub
-
 #End Region ' Overrides
 
 #Region " Event handlers "
