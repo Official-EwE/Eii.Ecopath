@@ -94,7 +94,7 @@ Namespace Controls.Map.Layers
 
             ' Set control value
             val = CSng(Me.Editor.CellValue)
-            If (val = 0) Then
+            If (val <= 0) Then
                 Me.m_rbLand.Checked = True
             Else
                 Me.m_rbWater.Checked = True
