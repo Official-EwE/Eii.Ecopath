@@ -910,7 +910,7 @@ Public Class cEcosimMonteCarlo
 
                 bEcopathNeedsBalancing = False
                 For igrp = 1 To m_core.nGroups
-                    If m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or m_epdata.EE(igrp) < 0 Then
+                    If m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or m_epdata.EE(igrp) < 0 And m_epdata.EE(igrp) <> cCore.NULL_VALUE Then
                         'this loop did not balance Ecopath
                         bEcopathNeedsBalancing = True
                         Exit For
