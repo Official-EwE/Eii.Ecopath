@@ -221,6 +221,7 @@ Namespace Other
             Me.m_rtbAcknowledgements.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.m_rtbAcknowledgements.Cursor = System.Windows.Forms.Cursors.Default
             resources.ApplyResources(Me.m_rtbAcknowledgements, "m_rtbAcknowledgements")
+            Me.m_rtbAcknowledgements.HideSelection = False
             Me.m_rtbAcknowledgements.Name = "m_rtbAcknowledgements"
             '
             'm_tpTechnical

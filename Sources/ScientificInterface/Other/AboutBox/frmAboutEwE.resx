@@ -576,6 +576,9 @@
   <data name="m_rtbAcknowledgements.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="m_rtbAcknowledgements.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 6, 6, 6</value>
+  </data>
   <data name="m_rtbAcknowledgements.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
@@ -685,7 +688,7 @@
     <value>m_gridTechnical</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Type" xml:space="preserve">
-    <value>ScientificInterface.gridAboutEwE, EwE6, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridAboutEwE, EwE6, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
@@ -739,7 +742,7 @@
     <value>m_tsTechnical</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsTechnical.Parent" xml:space="preserve">
     <value>m_tlpTechnicalDetails</value>
@@ -856,7 +859,7 @@
     <value>m_gridDatabase</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDatabase, EwE6, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDatabase, EwE6, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDatabase.Parent" xml:space="preserve">
     <value>TableLayoutPanel2</value>
