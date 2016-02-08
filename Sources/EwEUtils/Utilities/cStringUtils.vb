@@ -2126,12 +2126,25 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Interprets a text pattern to describe a range of integer values.
         ''' </summary>
-        ''' <param name="strValue"></param>
-        ''' <returns></returns>
+        ''' <param name="strValue">The text pattern to analyze.</param>
+        ''' <returns>An array of integer values.</returns>
+        ''' <remarks>
+        ''' <para>Supported value expressions are:</para>
+        ''' <list>
+        ''' <item><term>A-B</term><description>Range from A to B</description></item>
+        ''' <item><term>A-B@C</term><description>Range from A to B with step size C</description></item>
+        ''' </list>
+        ''' <para>Expressions are separated by commas.</para>
+        ''' <para>If <paramref name="strValue"> is left empty, and empty array is returned.</paramref>.</para>
+        ''' <para>If <paramref name="strValue"> equals *, all values from 1 to iMax are returned.</paramref>.</para>
+        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function Range(ByVal strValue As String) As Integer()
+        Public Shared Function Range(ByVal strValue As String, _
+                                     Optional iMax As Integer = -1) As Integer()
+
+            ' RegEx are too confusing for users.
 
             Dim lValues As New List(Of Integer)
             Dim temp As String() = strValue.Split("-"c)
@@ -2139,6 +2152,14 @@ Namespace Utilities
             Dim iTo As Integer = -9999
             Dim iIncr As Integer = 1
             Dim bSuccess As Boolean = True
+
+            ' Special case
+            If (strValue.Trim = "*") Then
+                For i As Integer = 1 To iMax
+                    lValues.Add(i)
+                Next
+                Return lValues.ToArray()
+            End If
 
             For i As Integer = 0 To temp.Length - 1
                 Dim nums As String() = temp(i).Split(","c)
