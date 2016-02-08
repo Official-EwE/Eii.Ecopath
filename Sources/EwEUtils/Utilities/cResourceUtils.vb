@@ -20,14 +20,15 @@
 
 Option Strict On
 Imports System
+Imports System.Collections
+Imports System.Collections.Generic
 Imports System.Diagnostics
-Imports System.Reflection
-Imports System.Globalization
-Imports System.Resources
-Imports System.IO
 Imports System.Drawing
+Imports System.Globalization
+Imports System.IO
+Imports System.Reflection
+Imports System.Resources
 Imports System.Windows.Forms
-Imports System.Text
 
 #End Region ' Imports
 
@@ -196,6 +197,46 @@ Namespace Utilities
 
             Dim ass As Assembly = Assembly.GetAssembly(typeAssembly)
             Return LoadString(strName, ass, strNamespace, culture)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all the resources for the current culture.
+        ''' </summary>
+        ''' <param name="ass">The assembly to load the resources from. 
+        ''' If left empty the current executing assembly is used.</param>
+        ''' <param name="strNamespace">The namespace within the assembly, if any.
+        ''' If left empty the name of the <paramref name="ass">provided assembly</paramref> 
+        ''' is used.</param>
+        ''' <param name="culture">The culture info, if any. If left empty the
+        ''' current loaded culture is used.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetResources(Optional ByVal ass As Assembly = Nothing, _
+                                            Optional ByVal strNamespace As String = "", _
+                                            Optional ByVal culture As CultureInfo = Nothing) As Dictionary(Of String, Object)
+
+            Dim dic As New Dictionary(Of String, Object)
+            Dim e As System.Collections.IDictionaryEnumerator = Nothing
+            Dim rm As ResourceManager = Nothing
+            Dim strRes As String = ""
+
+            ' Provide defaults
+            If (ass Is Nothing) Then ass = Assembly.GetExecutingAssembly()
+            If (culture Is Nothing) Then culture = Threading.Thread.CurrentThread.CurrentUICulture
+            If (String.IsNullOrEmpty(strNamespace)) Then strNamespace = ass.GetName.Name
+
+            rm = New ResourceManager(strNamespace & ".resources", ass)
+
+            Using recset As Resources.ResourceSet = rm.GetResourceSet(System.Globalization.CultureInfo.CurrentCulture, False, True)
+                For Each entry As DictionaryEntry In recset
+                    Dim strName As String = entry.Key.ToString
+                    dic.Add(strName, My.Resources.ResourceManager.GetObject(strName))
+                Next
+            End Using
+
+            Return dic
+
         End Function
 
     End Class
