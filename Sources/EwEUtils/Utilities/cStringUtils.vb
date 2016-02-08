@@ -2136,9 +2136,10 @@ Namespace Utilities
         ''' <item><term>A-B</term><description>Range from A to B</description></item>
         ''' <item><term>A-B@C</term><description>Range from A to B with step size C</description></item>
         ''' </list>
+        ''' <para>If value B equals * then B is set to the value of <paramref name="iMax"/></para>.
         ''' <para>Expressions are separated by commas.</para>
-        ''' <para>If <paramref name="strValue"> is left empty, and empty array is returned.</paramref>.</para>
-        ''' <para>If <paramref name="strValue"> equals *, all values from 1 to iMax are returned.</paramref>.</para>
+        ''' <para>If <paramref name="strValue"> is left empty and empty array is returned.</paramref>.</para>
+        ''' <para>If <paramref name="strValue"> equals * then all values from 1 to iMax are returned.</paramref>.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function Range(ByVal strValue As String, _
@@ -2169,7 +2170,11 @@ Namespace Utilities
                         bSuccess = bSuccess And Integer.TryParse(its(0), iTo)
                         bSuccess = bSuccess And Integer.TryParse(its(1), iIncr)
                     Else
-                        bSuccess = bSuccess And Integer.TryParse(nums(0), iTo)
+                        If (nums(0).Trim = "*") Then
+                            iTo = iMax
+                        Else
+                            bSuccess = bSuccess And Integer.TryParse(nums(0), iTo)
+                        End If
                         iIncr = 1
                     End If
                     For j As Integer = iFrom To iTo - 1 Step iIncr
