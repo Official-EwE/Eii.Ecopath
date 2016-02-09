@@ -37,21 +37,32 @@ Namespace Ecopath.Output
             MyBase.new()
         End Sub
 
+        Private Enum eColumnTypes As Integer
+            Index = 0
+            Name
+            BA
+            BArate
+            NetMig
+            FlowToDet
+            NetEff
+            OI
+        End Enum
+
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
 
             Dim aUnitType As cStyleGuide.eUnitType() = {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
 
-            Me.Redim(1, 8)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, aUnitType)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, aUnitType)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_OMNIVORYINDEX)
+            Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
+            Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, aUnitType)
+            Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, aUnitType)
+            Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
+            Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(SharedResources.HEADER_OMNIVORYINDEX)
 
             Me.FixedColumns = 2
 
@@ -78,7 +89,7 @@ Namespace Ecopath.Output
                 If Not group.isMultiStanza Then
 
                     iRow = Me.AddRow
-                    FillInRows(iRow, group)
+                    UpdateRow(iRow, group)
 
                 Else
 
@@ -86,7 +97,7 @@ Namespace Ecopath.Output
                     sg = Core.StanzaGroups(group.iStanza)
                     If group.iStanza <> iStanzaPrev Then
 
-                       ' Complete row with dummy cells
+                        ' Complete row with dummy cells
                         iRow = Me.AddRow()
                         For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
 
@@ -102,27 +113,27 @@ Namespace Ecopath.Output
 
                     'Add row index as stanza child
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, True)
+                    UpdateRow(iRow, group, True)
 
                 End If
             Next i
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+        Private Sub UpdateRow(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal isIndented As Boolean = False)
+            Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
-                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Else
-                Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
-            Me(iRow, 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
-            Me(iRow, 4) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
-            Me(iRow, 5) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
-            Me(iRow, 6) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
-            Me(iRow, 7) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)
+            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+            Me(iRow, eColumnTypes.BArate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
+            Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
+            Me(iRow, eColumnTypes.FlowToDet) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
+            Me(iRow, eColumnTypes.NetEff) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
+            Me(iRow, eColumnTypes.OI) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
