@@ -1442,7 +1442,7 @@ Namespace Ecospace
             Me.m_plMapLabels.Visible = bShowMap
             Me.m_plDisplayOptions.Visible = True
             Me.m_plMapSaveImages.Visible = bShowMap
-            Me.m_plPlotData.Visible = Not bShowMap
+            Me.m_plGraphData.Visible = Not bShowMap
 
             Me.m_cbMPA.Enabled = bShowMap And (Me.Core.nMPAs > 0)
             Me.m_cbShowIBMPackets.Enabled = bShowMap And (CBool(Me.m_bpUseIBM.GetValue()) = True)

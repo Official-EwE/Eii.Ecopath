@@ -84,7 +84,7 @@ Namespace Ecospace
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
             Me.m_btnPause = New System.Windows.Forms.Button()
             Me.m_cmbRunType = New System.Windows.Forms.ComboBox()
-            Me.m_plPlotData = New System.Windows.Forms.Panel()
+            Me.m_plGraphData = New System.Windows.Forms.Panel()
             Me.m_rbCatchGraph = New System.Windows.Forms.RadioButton()
             Me.m_rbConsumpGraph = New System.Windows.Forms.RadioButton()
             Me.m_rbPredMortGraph = New System.Windows.Forms.RadioButton()
@@ -94,7 +94,7 @@ Namespace Ecospace
             Me.m_tcOutputs = New System.Windows.Forms.TabControl()
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
-            Me.m_tabPlot = New System.Windows.Forms.TabPage()
+            Me.m_tabGraph = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -108,10 +108,10 @@ Namespace Ecospace
             Me.m_plDisplayOptions.SuspendLayout()
             Me.m_plRun.SuspendLayout()
             Me.m_tlpRun.SuspendLayout()
-            Me.m_plPlotData.SuspendLayout()
+            Me.m_plGraphData.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
-            Me.m_tabPlot.SuspendLayout()
+            Me.m_tabGraph.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -188,7 +188,7 @@ Namespace Ecospace
             Me.m_tlpOptions.Controls.Add(Me.m_plMapData, 0, 1)
             Me.m_tlpOptions.Controls.Add(Me.m_plDisplayOptions, 0, 0)
             Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 6)
-            Me.m_tlpOptions.Controls.Add(Me.m_plPlotData, 0, 4)
+            Me.m_tlpOptions.Controls.Add(Me.m_plGraphData, 0, 4)
             Me.m_tlpOptions.Name = "m_tlpOptions"
             '
             'm_plMapSaveImages
@@ -424,16 +424,16 @@ Namespace Ecospace
             Me.m_cmbRunType.Items.AddRange(New Object() {resources.GetString("m_cmbRunType.Items"), resources.GetString("m_cmbRunType.Items1"), resources.GetString("m_cmbRunType.Items2")})
             Me.m_cmbRunType.Name = "m_cmbRunType"
             '
-            'm_plPlotData
+            'm_plGraphData
             '
-            Me.m_plPlotData.Controls.Add(Me.m_rbCatchGraph)
-            Me.m_plPlotData.Controls.Add(Me.m_rbConsumpGraph)
-            Me.m_plPlotData.Controls.Add(Me.m_rbPredMortGraph)
-            Me.m_plPlotData.Controls.Add(Me.m_rbFishMortGraph)
-            Me.m_plPlotData.Controls.Add(Me.m_rbRelBiomassGraph)
-            Me.m_plPlotData.Controls.Add(Me.m_hdrGraphTypes)
-            resources.ApplyResources(Me.m_plPlotData, "m_plPlotData")
-            Me.m_plPlotData.Name = "m_plPlotData"
+            Me.m_plGraphData.Controls.Add(Me.m_rbCatchGraph)
+            Me.m_plGraphData.Controls.Add(Me.m_rbConsumpGraph)
+            Me.m_plGraphData.Controls.Add(Me.m_rbPredMortGraph)
+            Me.m_plGraphData.Controls.Add(Me.m_rbFishMortGraph)
+            Me.m_plGraphData.Controls.Add(Me.m_rbRelBiomassGraph)
+            Me.m_plGraphData.Controls.Add(Me.m_hdrGraphTypes)
+            resources.ApplyResources(Me.m_plGraphData, "m_plGraphData")
+            Me.m_plGraphData.Name = "m_plGraphData"
             '
             'm_rbCatchGraph
             '
@@ -483,7 +483,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
             Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
-            Me.m_tcOutputs.Controls.Add(Me.m_tabPlot)
+            Me.m_tcOutputs.Controls.Add(Me.m_tabGraph)
             Me.m_tcOutputs.Name = "m_tcOutputs"
             Me.m_tcOutputs.SelectedIndex = 0
             '
@@ -507,12 +507,12 @@ Namespace Ecospace
             Me.m_legend.Name = "m_legend"
             Me.m_legend.UIContext = Nothing
             '
-            'm_tabPlot
+            'm_tabGraph
             '
-            Me.m_tabPlot.Controls.Add(Me.m_zgPlotLarge)
-            resources.ApplyResources(Me.m_tabPlot, "m_tabPlot")
-            Me.m_tabPlot.Name = "m_tabPlot"
-            Me.m_tabPlot.UseVisualStyleBackColor = True
+            Me.m_tabGraph.Controls.Add(Me.m_zgPlotLarge)
+            resources.ApplyResources(Me.m_tabGraph, "m_tabGraph")
+            Me.m_tabGraph.Name = "m_tabGraph"
+            Me.m_tabGraph.UseVisualStyleBackColor = True
             '
             'm_zgPlotLarge
             '
@@ -549,11 +549,11 @@ Namespace Ecospace
             Me.m_plDisplayOptions.PerformLayout()
             Me.m_plRun.ResumeLayout(False)
             Me.m_tlpRun.ResumeLayout(False)
-            Me.m_plPlotData.ResumeLayout(False)
-            Me.m_plPlotData.PerformLayout()
+            Me.m_plGraphData.ResumeLayout(False)
+            Me.m_plGraphData.PerformLayout()
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabMap.ResumeLayout(False)
-            Me.m_tabPlot.ResumeLayout(False)
+            Me.m_tabGraph.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -568,7 +568,7 @@ Namespace Ecospace
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_tcOutputs As System.Windows.Forms.TabControl
         Private WithEvents m_tabMap As System.Windows.Forms.TabPage
-        Private WithEvents m_tabPlot As System.Windows.Forms.TabPage
+        Private WithEvents m_tabGraph As System.Windows.Forms.TabPage
         Private WithEvents m_tlpRun As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_hdrDispOpt As cEwEHeaderLabel
         Private WithEvents m_hdrDist As cEwEHeaderLabel
@@ -607,7 +607,7 @@ Namespace Ecospace
         Private WithEvents m_plMapSaveImages As System.Windows.Forms.Panel
         Private WithEvents m_tbxAutosaveTimeSteps As System.Windows.Forms.TextBox
         Private WithEvents m_hdrAutosave As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Private WithEvents m_plPlotData As System.Windows.Forms.Panel
+        Private WithEvents m_plGraphData As System.Windows.Forms.Panel
         Private WithEvents m_cbAutoSavePNG As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveTimeSteps As System.Windows.Forms.Label
 
