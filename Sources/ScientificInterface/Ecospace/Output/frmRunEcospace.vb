@@ -125,6 +125,8 @@ Namespace Ecospace
 
         ' -- plot settings --
         Private m_plottype As ePlotTypes = ePlotTypes.RelB
+        ''' <summary>Tracker to detect plot type changes. Initial value indicates fleet stuff, not groups</summary>
+        Private m_plottypelast As ePlotTypes = ePlotTypes.Effort
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
         Private m_bShowIBM As Boolean = True
@@ -205,7 +207,7 @@ Namespace Ecospace
             'Plot speed 1-slowest 10-fastest
             Me.m_iPlotStepSize = 1
 
-            RefreshSingleItemDropdown()
+            Me.CheckRefreshSingleItemDropdown()
 
         End Sub
 
@@ -308,9 +310,8 @@ Namespace Ecospace
             Me.m_bpUseIBM = DirectCast(pm.GetProperty(parms, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(parms, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
 
-            ' Initially collapse some headers
+            ' Initially collapse some panels to save screen estate
             Me.m_hdrLabelOptions.IsCollapsed = True
-            Me.m_hdrGraphTypes.IsCollapsed = True
             Me.m_hdrAutosave.IsCollapsed = Not Me.m_cbAutoSavePNG.Checked
 
             Me.InitCoreParams()
@@ -374,12 +375,6 @@ Namespace Ecospace
             Me.m_rbConsumpGraph.Tag = ePlotTypes.ConsumpRateGraph
             Me.m_rbCatchGraph.Tag = ePlotTypes.CatchGraph
 
-            ' JS 04Jul14: we cannot show this until better implemented
-#If DEBUG Then
-            Me.m_plGraphTypes.Visible = True
-#Else
-            Me.m_plGraphTypes.Visible = False
-#End If
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         End Sub
@@ -466,7 +461,7 @@ Namespace Ecospace
 
 #Region " Biomass graph "
 
-        Private Sub UpdateBiomassPlot()
+        Private Sub AppendPlotData()
             Try
                 'get the data from the dictionary of graph plot types
                 Dim data(,) As Single = Me.m_graphData.Item(Me.m_graphPlotType)
@@ -809,6 +804,13 @@ Namespace Ecospace
 
 #Region " Events "
 
+        Private Sub OnOutputTabSelected(sender As Object, e As System.EventArgs) _
+            Handles m_tcOutputs.SelectedIndexChanged
+
+            Me.UpdateControls()
+
+        End Sub
+
         Private Sub OnRun(ByVal sender As Object, ByVal e As EventArgs) Handles m_btnRun.Click
 
             Me.ClearResults()
@@ -825,7 +827,7 @@ Namespace Ecospace
             ' Save map image
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
             If (Me.m_cbAutoSavePNG.Checked) Then
-                Me.m_iAutosaveTS = cStringUtils.Range(Me.m_tbxAutosaveTimeSteps.Text)
+                Me.m_iAutosaveTS = cStringUtils.Range(Me.m_tbxAutosaveTimeSteps.Text, Me.Core.nEcospaceTimeSteps)
             Else
                 Me.m_iAutosaveTS = Nothing
             End If
@@ -867,7 +869,7 @@ Namespace Ecospace
                 Me.m_plottype = ePlotTypes.FOverB
             End If
 
-            Me.RefreshSingleItemDropdown()
+            Me.CheckRefreshSingleItemDropdown()
             Me.UpdateControls()
             Me.RefreshPlot()
             Me.RefreshMap()
@@ -1168,7 +1170,7 @@ Namespace Ecospace
             End If
 
 
-            Me.UpdateBiomassPlot()
+            Me.AppendPlotData()
             Me.m_pbMap.Invalidate()
             Me.UpdateControls()
 
@@ -1275,9 +1277,8 @@ Namespace Ecospace
                 Array.Clear(dataarray, 0, dataarray.Length)
             Next
 
-            ' Reset plot drawer if overlay is not needed
             If Me.m_bOverlay = False Then
-                Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, parms.NumberOfTimeStepsPerYear)
+                Me.ResetGraph()
             Else
                 Me.m_zgh.Overlay(Me.Core.nGroups)
             End If
@@ -1285,20 +1286,63 @@ Namespace Ecospace
             Me.RefreshMap()
         End Sub
 
+        Private Sub ResetGraph()
+
+            ' ToDo: globalize this
+
+            ' THSI CODE IS NOT DONE YET! NEED TO PROVIDE UNITS TO AXIS!!
+
+            Dim strTitle As String = ""
+            Dim strYLabel As String = ""
+
+            Select Case Me.m_graphPlotType
+                Case ePlotTypes.RelB
+                    strTitle = My.Resources.ECOSPACE_HEADER_LOGBREL
+                    strYLabel = My.Resources.ECOSPACE_HEADER_LOGBREL
+                Case ePlotTypes.CatchGraph
+                    strTitle = "Relative catch"
+                    strYLabel = "?"
+                Case ePlotTypes.ConsumpRateGraph
+                    strTitle = "Relative consumption rates"
+                    strYLabel = "?"
+                Case ePlotTypes.Contaminant
+                    strTitle = "Relative contaminants"
+                    strYLabel = "?"
+                Case ePlotTypes.CoverB
+                    strTitle = "C/B"
+                    strYLabel = "?"
+                Case ePlotTypes.Effort
+                    strTitle = "Effort"
+                    strYLabel = "?"
+                Case ePlotTypes.F
+                    strTitle = "F"
+                    strYLabel = "?"
+                Case ePlotTypes.FishingMortGraph
+                    strTitle = "Relative fishing mortality"
+                    strYLabel = "?"
+                Case ePlotTypes.FOverB
+                    strTitle = "F/B"
+                    strYLabel = "?"
+                Case ePlotTypes.PredMortRateGraph
+                    strTitle = "Relative predation mortality rate"
+                    strYLabel = "?"
+                Case Else
+                    Debug.Assert(False)
+
+            End Select
+            Me.m_zgh.Reset(strTitle, strYLabel, Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+
+        End Sub
+
         Private Sub UpdateGraph()
 
-            Dim useLogScale As Boolean = False
-            If Me.m_graphPlotType = ePlotTypes.RelB Then
-                useLogScale = True
-            End If
-            Me.m_zgh.useLogScale = useLogScale
-
-            Me.m_zgh.Reset(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+            Me.m_zgh.LogScale = (Me.m_graphPlotType = ePlotTypes.RelB)
+            Me.ResetGraph()
 
             Dim orgTime As Integer = Me.m_iTimeStepPrev
             Me.m_iTimeStepPrev = 0
             Me.RefreshPlot()
-            Me.UpdateBiomassPlot()
+            Me.AppendPlotData()
             Me.m_iTimeStepPrev = orgTime
 
         End Sub
@@ -1392,11 +1436,30 @@ Namespace Ecospace
             Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
 
             Me.m_tbxAutosaveTimeSteps.Enabled = (Me.m_cbAutoSavePNG.Checked = True)
+
+            Dim bShowMap As Boolean = (Me.m_tcOutputs.SelectedIndex = 0)
+            Me.m_plMapData.Visible = bShowMap
+            Me.m_plMapLabels.Visible = bShowMap
+            Me.m_plDisplayOptions.Visible = True
+            Me.m_plMapSaveImages.Visible = bShowMap
+            Me.m_plPlotData.Visible = Not bShowMap
+
+            Me.m_cbMPA.Enabled = bShowMap And (Me.Core.nMPAs > 0)
+            Me.m_cbShowIBMPackets.Enabled = bShowMap And (CBool(Me.m_bpUseIBM.GetValue()) = True)
+            Me.m_cbOverlay.Enabled = Not bShowMap
+
             Me.m_bInUpdate = False
 
         End Sub
 
-        Private Sub RefreshSingleItemDropdown()
+        Private Sub CheckRefreshSingleItemDropdown()
+
+            ' No need to refresh if nothing changes
+            If (Me.m_plottypelast = Me.m_plottype) Then Return
+            ' Exit if not switching between group and fleet views
+            If ((Me.m_plottypelast = ePlotTypes.Effort) = (Me.m_plottype = ePlotTypes.Effort)) Then Return
+
+            Me.m_plottypelast = Me.m_plottype
 
             Dim desc As New cCoreInterfaceFormatter()
             Me.m_cmbDisplayItem.Items.Clear()
