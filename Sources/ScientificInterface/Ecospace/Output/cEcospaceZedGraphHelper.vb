@@ -70,7 +70,9 @@ Namespace Ecospace
             MyBase.Detach()
         End Sub
 
-        Public Sub Reset(ByVal nGroups As Integer, _
+        Public Sub Reset(ByVal strTitle As String, _
+                         ByVal strYAxisLabel As String, _
+                         ByVal nGroups As Integer, _
                          ByVal nTotalSteps As Integer, _
                          ByVal iFirstYear As Integer, _
                          ByVal sNumStepsPerYear As Single)
@@ -82,9 +84,9 @@ Namespace Ecospace
                 YMax = 1
             End If
 
-            Me.m_pane = Me.ConfigurePane(My.Resources.ECOSPACE_HEADER_RELB, _
-                                        ScientificInterfaceShared.My.Resources.HEADER_YEAR, _
-                                       0, nTotalSteps, My.Resources.ECOSPACE_HEADER_LOGBREL, YMin, YMax, False)
+            Me.m_pane = Me.ConfigurePane(strTitle, _
+                                         ScientificInterfaceShared.My.Resources.HEADER_YEAR, _
+                                         0, nTotalSteps, strYAxisLabel, YMin, YMax, False)
             'Auto Scale the Y Axis if not using a log scale
             Me.m_pane.YAxis.Scale.MaxAuto = (Not Me.m_useLogScale)
 
@@ -157,7 +159,7 @@ Namespace Ecospace
             End Set
         End Property
 
-        Public Property useLogScale() As Boolean
+        Public Property LogScale() As Boolean
             Get
                 Return Me.m_useLogScale
             End Get
@@ -201,7 +203,7 @@ Namespace Ecospace
                                            ByVal axis As Axis, _
                                            ByVal dValue As Double, _
                                            ByVal iIndex As Integer) As String
-            If Me.useLogScale Then
+            If Me.LogScale Then
                 Return Me.StyleGuide.FormatNumber(Math.Pow(10, dValue))
             Else
                 Return Me.StyleGuide.FormatNumber(dValue)
