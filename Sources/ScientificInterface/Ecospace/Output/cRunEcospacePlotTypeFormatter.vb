@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

@@ -523,7 +523,7 @@ Friend Class cMSEPlotter
                             Return SharedResources.HEADER_EFFORT
                         Case eMSEPlotData.FleetValue
                             Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
-                                                                        New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
+                                                                        New eUnitType() {eUnitType.Monetary})
                         Case eMSEPlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
                         Case eMSEPlotData.FishingMortalityComparison
@@ -555,7 +555,7 @@ Friend Class cMSEPlotter
                             Return SharedResources.HEADER_EFFORT
                         Case eMSEPlotData.FleetValue
                             Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
-                                                                        New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
+                                                                        New eUnitType() {eUnitType.Monetary})
                         Case eMSEPlotData.GroupCatch
                             ' ToDo: add unit
                             Return SharedResources.HEADER_CATCH_WEIGHT

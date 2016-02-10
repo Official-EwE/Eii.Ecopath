@@ -714,7 +714,6 @@
     <Compile Include="Style\Localization\cLocalizedDescriptionAttribute.vb" />
     <Compile Include="Style\Type formatters\cBACalcTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />
-    <Compile Include="Style\Type formatters\cCurrencyUnitFormatter.vb" />
     <Compile Include="Style\Type formatters\cEcologyTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cEcosimResultTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cFFApplicationTypeFormatter.vb" />
@@ -744,7 +743,6 @@
     <Compile Include="Style\Type formatters\cTimeSeriesTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTypeFormatterFactory.vb" />
     <Compile Include="Style\Type formatters\cVarnameTypeFormatter.vb" />
-    <Compile Include="Style\Type formatters\ITypeFormatter.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.resx">

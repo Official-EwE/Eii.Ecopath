@@ -40,8 +40,6 @@ Namespace Ecopath.Output
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            BA
-            BArate
             NetMig
             FlowToDet
             NetEff
@@ -52,13 +50,11 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            Dim aUnitType As cStyleGuide.eUnitType() = {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
+            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
-            Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, aUnitType)
             Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, aUnitType)
             Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
@@ -128,9 +124,7 @@ Namespace Ecopath.Output
                 Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
-            Me(iRow, eColumnTypes.BArate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
-            Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
+             Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
             Me(iRow, eColumnTypes.FlowToDet) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
             Me(iRow, eColumnTypes.NetEff) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
             Me(iRow, eColumnTypes.OI) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)

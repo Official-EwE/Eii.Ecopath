@@ -21,9 +21,8 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports System.Windows.Forms
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region
 

@@ -68,10 +68,10 @@ Namespace Ecopath.Output
 
             Dim source As cEcoPathStats = Core.EcopathStats
 
-            Dim aunitCurrOverTime As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
+            Dim aunitCurrOverTime As eUnitType() = New eUnitType() {eUnitType.Currency, eUnitType.Time}
             Dim strMaskCurrOverTime As String = SharedResources.HEADER_A_PER_B
 
-            Dim aunitCurrTime As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Time}
+            Dim aunitCurrTime As eUnitType() = New eUnitType() {eUnitType.Time}
             Dim strMaskCurrTime As String = "/{0}" ' Ah well
 
             Me.AddRow(SharedResources.HEADER_SUM_CONSUMPTION, source, eVarNameFlags.EcopathStatsTotalConsumption, aunitCurrOverTime, strMaskCurrOverTime)
@@ -87,17 +87,17 @@ Namespace Ecopath.Output
             Me.AddRow(SharedResources.HEADER_NET_PROD, source, eVarNameFlags.EcopathStatsNetSystemProduction, aunitCurrOverTime, strMaskCurrOverTime)
             Me.AddRow(SharedResources.HEADER_SUM_PPB, source, eVarNameFlags.EcopathStatsTotalPB)
             Me.AddRow(SharedResources.HEADER_SUM_BT, source, eVarNameFlags.EcopathStatsTotalBT, aunitCurrTime, strMaskCurrTime)
-            Me.AddRow(SharedResources.HEADER_SUM_BnonDET, source, eVarNameFlags.EcopathStatsTotalBNonDet, cStyleGuide.eUnitType.Currency)
+            Me.AddRow(SharedResources.HEADER_SUM_BnonDET, source, eVarNameFlags.EcopathStatsTotalBNonDet, eUnitType.Currency)
             Me.AddRow(SharedResources.HEADER_SUM_CATCH, source, eVarNameFlags.EcopathStatsTotalCatch, aunitCurrOverTime, strMaskCurrOverTime)
             Me.AddRow(SharedResources.HEADER_INDEX_CONNECTANCE, source, eVarNameFlags.EcopathStatsConnectanceIndex)
             Me.AddRow(SharedResources.HEADER_INDEX_ONMIVORY, source, eVarNameFlags.EcopathStatsOmnivIndex)
-            Me.AddRow(SharedResources.HEADER_SUM_VALUE_MARKET, source, eVarNameFlags.EcopathStatsTotalMarketValue, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_VALUE_SHADOW, source, eVarNameFlags.EcopathStatsTotalShadowValue, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_VALUE, source, eVarNameFlags.EcopathStatsTotalValue, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_COST_FIXED, source, eVarNameFlags.EcopathStatsTotalFixedCost, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_COST_VARIABLE, source, eVarNameFlags.EcopathStatsTotalVarCost, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_COST, source, eVarNameFlags.EcopathStatsTotalCost, cStyleGuide.eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsProfit, cStyleGuide.eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_VALUE_MARKET, source, eVarNameFlags.EcopathStatsTotalMarketValue, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_VALUE_SHADOW, source, eVarNameFlags.EcopathStatsTotalShadowValue, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_VALUE, source, eVarNameFlags.EcopathStatsTotalValue, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_COST_FIXED, source, eVarNameFlags.EcopathStatsTotalFixedCost, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_COST_VARIABLE, source, eVarNameFlags.EcopathStatsTotalVarCost, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_COST, source, eVarNameFlags.EcopathStatsTotalCost, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsProfit, eUnitType.Monetary)
             Me.AddRow(SharedResources.HEADER_ECOPATH_PEDIGREE, source, eVarNameFlags.EcopathStatsPedigree)
             Me.AddRow(SharedResources.HEADER_MEASUREOFFIT, source, eVarNameFlags.EcopathStatsMeasureOfFit)
 
@@ -116,13 +116,13 @@ Namespace Ecopath.Output
 
         Private Overloads Sub AddRow(ByVal strHeader As String, _
                         ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags, _
-                        ByVal unitType As cStyleGuide.eUnitType)
-            Me.AddRow(strHeader, source, vnf, New cStyleGuide.eUnitType() {unitType}, "{0}")
+                        ByVal unitType As eUnitType)
+            Me.AddRow(strHeader, source, vnf, New eUnitType() {unitType}, "{0}")
         End Sub
 
         Private Overloads Sub AddRow(ByVal strHeader As String, _
                         ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags, _
-                        ByVal aUnitTypes() As cStyleGuide.eUnitType, ByVal strUnitMask As String)
+                        ByVal aUnitTypes() As eUnitType, ByVal strUnitMask As String)
 
             Dim iRow As Integer = Me.AddRow()
             Me(iRow, eColumnTypes.Header) = New EwERowHeaderCell(strHeader)

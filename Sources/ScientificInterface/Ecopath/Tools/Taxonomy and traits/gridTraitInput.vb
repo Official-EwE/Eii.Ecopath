@@ -190,7 +190,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LENGTH)
             Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MAX_LENGTH)
             Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_WEIGHT)
-            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LIFESPAN_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LIFESPAN_UNIT, eUnitType.Time)
             Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_INDEX)
 
             Me.FixedColumns = 2

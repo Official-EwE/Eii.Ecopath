@@ -48,11 +48,11 @@ Namespace Ecosim
         Private Class cSimPlotFormatter
             Implements ITypeFormatter
 
-            Public Function GetDescribedType() As System.Type Implements ScientificInterfaceShared.Style.ITypeFormatter.GetDescribedType
+            Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
                 Return GetType(ePlot)
             End Function
 
-            Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As ScientificInterfaceShared.Style.eDescriptorTypes = ScientificInterfaceShared.Style.eDescriptorTypes.Name) As String Implements ScientificInterfaceShared.Style.ITypeFormatter.GetDescriptor
+            Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.GetDescriptor
                 Select Case DirectCast(value, ePlot)
                     Case ePlot.AvgWeightOrProdCons : Return SharedResources.HEADER_PRODCONS
                     Case ePlot.Biomass : Return SharedResources.HEADER_BIOMASS
@@ -798,13 +798,13 @@ Namespace Ecosim
 
                 Case ePlot.AvgWeightOrProdCons
                     If group.isMultiStanza() Then
-                        Return StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency)
+                        Return StyleGuide.GetUnitString(eUnitType.Currency)
                     Else
                         Return ""
                     End If
 
                 Case ePlot.Biomass
-                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency))
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNIT, StyleGuide.GetUnitString(eUnitType.Currency))
 
                 Case ePlot.FeedingTime
                     Return ""
@@ -813,18 +813,18 @@ Namespace Ecosim
                      ePlot.FleetFishingMortality, _
                      ePlot.Mortality, _
                      ePlot.PredationMortality
-                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_PERUNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
+                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_PERUNIT, StyleGuide.GetUnitString(eUnitType.Time))
 
                 Case ePlot.Prey
                     Return SharedResources.HEADER_PREY_PERCENTAGE
 
                 Case ePlot.Value
                     Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
-                                       StyleGuide.GetUnitString(cStyleGuide.eUnitType.Monetary), StyleGuide.GetUnitString(cStyleGuide.eUnitType.Biomass))
+                                       StyleGuide.GetUnitString(eUnitType.Monetary), StyleGuide.GetUnitString(eUnitType.Biomass))
 
                 Case ePlot.[Catch]
                     Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
-                                         StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency), StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
+                                         StyleGuide.GetUnitString(eUnitType.Currency), StyleGuide.GetUnitString(eUnitType.Time))
             End Select
 
             Return ""

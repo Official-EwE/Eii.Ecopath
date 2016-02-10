@@ -50,7 +50,7 @@ Namespace Ecopath.Input
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE_UNIT_PER_UNIT, _
-                                               New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Biomass})
+                                               New eUnitType() {eUnitType.Monetary, eUnitType.Biomass})
 
             Me.FixedColumns = 2
 

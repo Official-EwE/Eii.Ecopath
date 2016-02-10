@@ -56,16 +56,16 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Dim aUnitType As cStyleGuide.eUnitType() = {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
+            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.Immig) = New EwEColumnHeaderCell(SharedResources.HEADER_IMMIGRATION_UNIT, aUnitType)
             Me(0, eColumnTypes.Emig) = New EwEColumnHeaderCell(SharedResources.HEADER_EMIGRATION_UNIT, aUnitType)
-            Me(0, eColumnTypes.EmigRate) = New EwEColumnHeaderCell(SharedResources.HEADER_EMIGRATIONRATE_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.EmigRate) = New EwEColumnHeaderCell(SharedResources.HEADER_EMIGRATIONRATE_UNIT, eUnitType.Time)
             Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
-            Me(0, eColumnTypes.BioAccumRate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.BioAccumRate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, eUnitType.Time)
 
             Me.FixedColumns = 2
 

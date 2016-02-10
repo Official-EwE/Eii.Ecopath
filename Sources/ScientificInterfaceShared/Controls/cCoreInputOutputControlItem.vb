@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region
 

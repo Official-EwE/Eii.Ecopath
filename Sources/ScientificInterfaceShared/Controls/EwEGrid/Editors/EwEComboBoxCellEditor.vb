@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 Imports SourceGrid2.DataModels
 
 #End Region ' Imports

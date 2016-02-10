@@ -51,12 +51,12 @@ Namespace Controls.EwEGrid
             Me.DataModel.EnableEdit = False
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal unitType As eUnitType)
             Me.New("")
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.New("")
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -83,7 +83,7 @@ Namespace Controls.EwEGrid
 
 #Region " Unit header text "
 
-        Protected m_aUnitTypes() As cStyleGuide.eUnitType
+        Protected m_aUnitTypes() As eUnitType
         Protected m_strUnitMask As String = ""
 
         ''' -------------------------------------------------------------------
@@ -100,7 +100,7 @@ Namespace Controls.EwEGrid
         ''' header cell.</param>
         ''' -------------------------------------------------------------------
         Public Sub SetUnitHeader(ByVal strUnitMask As String, _
-                                 ByVal aUnitTypes() As cStyleGuide.eUnitType)
+                                 ByVal aUnitTypes() As eUnitType)
             ' Sanity checks
             Debug.Assert(aUnitTypes.Length = 1 Or aUnitTypes.Length = 2)
             ' Store

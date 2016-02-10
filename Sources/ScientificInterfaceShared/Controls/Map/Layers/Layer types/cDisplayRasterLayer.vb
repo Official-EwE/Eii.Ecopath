@@ -122,7 +122,7 @@ Namespace Controls.Map.Layers
         ''' </remarks>
         Private m_propBacklink As cProperty = Nothing
 
-        Private m_aUnitTypes() As cStyleGuide.eUnitType = Nothing
+        Private m_aUnitTypes() As eUnitType = Nothing
         Private m_strUnitMask As String = ""
 
         ' --- shared defaults ---
@@ -234,8 +234,8 @@ Namespace Controls.Map.Layers
         ''' <param name="unitType">Definition of the unit to place in the layer
         ''' display text.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal unitType As eUnitType)
+            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -250,7 +250,7 @@ Namespace Controls.Map.Layers
         ''' <param name="aUnitTypes">Definitions of units to place in the layer
         ''' display text.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
 
@@ -601,7 +601,7 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.m_strUnitMask = strUnitMask
             Me.m_aUnitTypes = aUnitTypes
         End Sub

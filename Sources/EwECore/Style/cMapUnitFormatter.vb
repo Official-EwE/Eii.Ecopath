@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -28,46 +28,43 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of 
-    ''' <see cref="cCoreInputOutputBase">cCoreInputOutputBase-derived</see> objects.
+    ''' Class for providing a textual description of <see cref="eUnitAreaType"/> objects.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cCoreInterfaceFormatter
+    Public Class cAreaUnitFormatter
         Implements ITypeFormatter
 
-        Private m_strNone As String = ""
+        Private m_strCustom As String = ""
 
-        Public Sub New()
-            Me.New(My.Resources.GENERIC_VALUE_NONE)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new type <see cref="eUnitCurrencyType"/>formatter.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub New(strCustom As String)
+            Me.m_strCustom = strCustom
         End Sub
 
-        Public Sub New(ByVal strNone As String)
-            Me.m_strNone = strNone
-        End Sub
-
-        Public Function GetDescribedType() As System.Type _
-            Implements ITypeFormatter.GetDescribedType
-            Return GetType(ICoreInterface)
+        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
+            Return GetType(eUnitAreaType)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                  Implements ITypeFormatter.GetDescriptor
 
-            If (value Is Nothing) Then Return Me.m_strNone
+            Dim unit As eUnitAreaType = DirectCast(value, eUnitAreaType)
 
-            Try
-                Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
-                ' Only include index in desciptor only if object has a valid index
-                If (obj.Index >= 1) Then
-                    Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
-                End If
-                Return obj.Name
-            Catch ex As Exception
-                Debug.Assert(False)
-            End Try
-            Return value.ToString
+            Select Case unit
+                Case eUnitAreaType.Km2
+                    Return My.Resources.CoreDefaults.UNIT_AREA_KM2
+                Case eUnitAreaType.Mi2
+                    Return My.Resources.CoreDefaults.UNIT_AREA_MI2
+                Case eUnitAreaType.Custom
+                    Return Me.m_strCustom
+            End Select
 
+            Return String.Empty
         End Function
 
     End Class

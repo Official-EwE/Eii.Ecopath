@@ -578,6 +578,132 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to km².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_AREA_KM2() As String
+            Get
+                Return ResourceManager.GetString("UNIT_AREA_KM2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to mi².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_AREA_MI2() As String
+            Get
+                Return ResourceManager.GetString("UNIT_AREA_MI2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to kcal/m².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_CALORIE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_CALORIE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to g/m².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_CARBON() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_CARBON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to g/m².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_DRYWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_DRYWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to J/m².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_JOULES() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_JOULES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to mg N/m².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_NITROGEN() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_NITROGEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to mg P/m².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_PHOSPOROUS() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_PHOSPOROUS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to t/km².
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_CURRENCY_WETWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("UNIT_CURRENCY_WETWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to dd.
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_DECIMALDEGREE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_DECIMALDEGREE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to km.
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_KILOMETER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_KILOMETER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to m.
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_METER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_METER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to day.
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_TIME_DAY() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TIME_DAY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to year.
+        '''</summary>
+        Friend Shared ReadOnly Property UNIT_TIME_YEAR() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TIME_YEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} (compiled {1}).
         '''</summary>
         Friend Shared ReadOnly Property VERSION_EXT_COMPILED() As String

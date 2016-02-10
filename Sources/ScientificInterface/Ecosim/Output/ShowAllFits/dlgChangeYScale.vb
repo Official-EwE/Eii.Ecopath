@@ -22,7 +22,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region
 

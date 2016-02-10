@@ -43,7 +43,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
-            Dim aunits As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary, cStyleGuide.eUnitType.Time}
+            Dim aunits As eUnitType() = New eUnitType() {eUnitType.Monetary, eUnitType.Time}
 
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
@@ -200,7 +200,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALVALUE, cStyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALVALUE, eUnitType.Monetary)
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -262,7 +262,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCOST, cStyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCOST, eUnitType.Monetary)
 
             alSumCost.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -315,7 +315,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT, cStyleGuide.eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT, eUnitType.Monetary)
 
             alSumProfit.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets

@@ -337,6 +337,11 @@
     <Compile Include="SpatialTemporal\Model\cSpatialDataStructures.vb" />
     <Compile Include="SpatialTemporal\Model\cSpatialOperationLog.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialScalarDataAdapter.vb" />
+    <Compile Include="Style\cCurrencyUnitFormatter.vb" />
+    <Compile Include="Style\cAreaUnitFormatter.vb" />
+    <Compile Include="Style\cMapUnitFormatter.vb" />
+    <Compile Include="Style\cTimeUnitFormatter.vb" />
+    <Compile Include="Style\cUnitFormatter.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />

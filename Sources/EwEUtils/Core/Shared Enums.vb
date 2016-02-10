@@ -2603,6 +2603,28 @@ Namespace Core
 
 #Region " System units "
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Types of dynamic units supported by EwE.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Enum eUnitType As Byte
+        ''' <summary>Not a dynamic unit.</summary>
+        None = 0
+        ''' <summary>Currency unit.</summary>
+        Currency
+        ''' <summary>Time unit.</summary>
+        Time
+        ''' <summary>Monetary unit.</summary>
+        Monetary
+        ''' <summary>Nominal unit.</summary>
+        Nominal
+        ''' <summary>Area unit.</summary>
+        Area
+        ''' <summary>Biomass unit.</summary>
+        Biomass
+    End Enum
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated types providing currency types.
@@ -2659,6 +2681,21 @@ Namespace Core
         Mi2
     End Enum
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated types providing map unit types.
+    '''</summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eUnitMapType As Integer
+        ''' <summary>Custom area measure</summary>
+        Custom = 0
+        ''' <summary>Meters</summary>
+        m
+        ''' <summary>Kilometers</summary>
+        km
+        ''' <summary>Decimal degrees</summary>
+        dd
+    End Enum
 #End Region ' System units
 
 #Region " Quota types "

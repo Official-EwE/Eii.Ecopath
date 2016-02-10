@@ -125,15 +125,9 @@
     <value>Relative biomass  (reference)</value>
     <comment>Time series type</comment>
   </data>
-  <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
-    <value>kcal/m²</value>
-  </data>
   <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
     <value>Total mortality</value>
     <comment>Time series type</comment>
-  </data>
-  <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
-    <value>g/m²</value>
   </data>
   <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
     <value>Adding time series {0}...</value>
@@ -154,9 +148,6 @@
   </data>
   <data name="SHAPE_PROMPT_SET_TO_VALUE" xml:space="preserve">
     <value>Enter one or more values, separated by commas, to repeat across the shape.</value>
-  </data>
-  <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
-    <value>J/m²</value>
   </data>
   <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
     <value>Rel. weight</value>
@@ -180,14 +171,8 @@
     <value>. (period)</value>
     <comment>'Period' character description</comment>
   </data>
-  <data name="UNIT_TIME_DAY" xml:space="preserve">
-    <value>day</value>
-  </data>
   <data name="HEADER_VALUE" xml:space="preserve">
     <value>Value</value>
-  </data>
-  <data name="UNIT_TIME_YEAR" xml:space="preserve">
-    <value>year</value>
   </data>
   <data name="FILEFILTER_IMAGE" xml:space="preserve">
     <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
@@ -200,9 +185,6 @@
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>{0} ({1}, {2})</value>
     <comment>{0}=point value, {1}=X label, {2}=Y label</comment>
-  </data>
-  <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
-    <value>mg N/m²</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
     <value>Egg production shape {0}</value>
@@ -236,9 +218,6 @@
   </data>
   <data name="HEADER_VALUES" xml:space="preserve">
     <value>Values</value>
-  </data>
-  <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
-    <value>g/m²</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
     <value>Mediation shape {0}</value>
@@ -302,15 +281,9 @@
   <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
     <value>Changing a shape from 'Long term' to 'Seasonal' will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
-  <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
-    <value>mg P/m²</value>
-  </data>
   <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
     <value>Updating time series {0}...</value>
     <comment>{0}: time series name</comment>
-  </data>
-  <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
-    <value>t/km²</value>
   </data>
   <data name="TS_TYPE_CATCHES" xml:space="preserve">
     <value>Catches (reference)</value>
@@ -1671,12 +1644,6 @@
     <value>{0} ({1})</value>
     <comment>{0}: value, {1}: unit</comment>
   </data>
-  <data name="UNIT_AREA_KM2" xml:space="preserve">
-    <value>km²</value>
-  </data>
-  <data name="UNIT_AREA_MI2" xml:space="preserve">
-    <value>mi²</value>
-  </data>
   <data name="HEADER_CATCHVALUE_UNIT" xml:space="preserve">
     <value>Catch value ({0})</value>
     <comment>{0}: monetary unit</comment>
@@ -3033,15 +3000,6 @@
   </data>
   <data name="HEADER_ENABLED" xml:space="preserve">
     <value>Enabled</value>
-  </data>
-  <data name="UNIT_DECIMALDEGREE" xml:space="preserve">
-    <value>dd</value>
-  </data>
-  <data name="UNIT_KILOMETER" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UNIT_METER" xml:space="preserve">
-    <value>m</value>
   </data>
   <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
     <value>Migration||Migration map</value>
