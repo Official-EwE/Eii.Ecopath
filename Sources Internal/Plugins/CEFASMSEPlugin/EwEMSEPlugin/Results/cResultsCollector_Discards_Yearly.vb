@@ -1,4 +1,6 @@
-﻿Public Class cResultsCollector_Discards_Yearly
+﻿Imports EwEUtils.Core
+
+Public Class cResultsCollector_Discards_Yearly
     Inherits cResultsCollector_Catch
 
     Public Overrides ReadOnly Property ResultsThroughProjection(iGrp As Integer, iFleet As Integer, iTime As Integer) As Double
@@ -27,7 +29,8 @@
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "Discard Rate (" & ScientificInterfaceShared.My.Resources.UNIT_CURRENCY_WETWEIGHT & "/year)"
+            Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
+            Return "Discard Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 

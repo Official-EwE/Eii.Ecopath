@@ -510,14 +510,16 @@ Public Class cDotSpatialUtils
     Public Shared Sub GetProjectionInfo(ByVal strProj As String, ByRef strName As String, ByRef bIsLatLon As Boolean, ByRef strUnit As String)
 
         Dim proj As ProjectionInfo = cDotSpatialUtils.ToProjection(strProj)
+        Dim fmt As New EwECore.Style.cMapUnitFormatter()
+
         strName = proj.Name
         bIsLatLon = proj.IsLatLon() Or proj.IsGeocentric()
         If (bIsLatLon) Then
-            strUnit = SharedResources.UNIT_DECIMALDEGREE
+            strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapType.dd)
         Else
             Select Case proj.Unit.Name.ToLower()
-                Case "meter", "meters" : strUnit = SharedResources.UNIT_METER
-                Case "kilometer", "kilometers" : strUnit = SharedResources.UNIT_KILOMETER
+                Case "meter", "meters" : strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapType.m)
+                Case "kilometer", "kilometers" : strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapType.km)
                 Case Else : strUnit = "?"
             End Select
         End If

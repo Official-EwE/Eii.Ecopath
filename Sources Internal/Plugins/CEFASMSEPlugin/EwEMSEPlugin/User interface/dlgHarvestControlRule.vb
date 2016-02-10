@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 Public Class dlgHarvestControlRule
 

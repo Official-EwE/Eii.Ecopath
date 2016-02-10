@@ -1,9 +1,12 @@
-﻿Public Class cResultsCollector_TotalCatch
+﻿Imports EwEUtils.Core
+
+Public Class cResultsCollector_TotalCatch
     Inherits cResultsCollector_Catch
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "Catch Rate (" & ScientificInterfaceShared.My.Resources.UNIT_CURRENCY_WETWEIGHT & "/year)"
+            Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
+            Return "Catch Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 

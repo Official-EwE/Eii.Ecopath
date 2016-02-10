@@ -1,4 +1,6 @@
-﻿Public Class cResultsCollector_Landings_Yearly
+﻿Imports EwEUtils.Core
+
+Public Class cResultsCollector_Landings_Yearly
     Inherits cResultsCollector_Catch
 
     Public Overrides ReadOnly Property ResultsThroughProjection(iGrp As Integer, iFleet As Integer, iTime As Integer) As Double
@@ -14,7 +16,8 @@
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "Landings Rate (" & ScientificInterfaceShared.My.Resources.UNIT_CURRENCY_WETWEIGHT & "/year)"
+            Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
+            Return "Landings Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 

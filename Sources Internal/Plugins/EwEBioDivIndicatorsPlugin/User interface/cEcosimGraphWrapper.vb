@@ -90,7 +90,8 @@ Public Class cEcosimGraphWrapper
         Dim info As cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
         Dim strLabelPane As String = ""
-        Dim strLabelTime As String = SharedResources.UNIT_TIME_YEAR
+        Dim fmt As New EwECore.Style.cUnitFormatter(Me.UIContext.Core)
+        Dim strLabelTime As String = fmt.UnitString(EwEUtils.Core.eUnitType.Time)
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
         Dim ind As cEcosimIndicators = Nothing

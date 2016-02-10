@@ -19,13 +19,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports System.IO
-Imports System.Text
-Imports ScientificInterfaceShared.Style
-Imports EwEUtils
-Imports EwEUtils.Utilities
+Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

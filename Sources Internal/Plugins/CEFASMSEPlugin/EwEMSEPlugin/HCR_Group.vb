@@ -22,10 +22,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports System.Text
+Imports EwECore
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

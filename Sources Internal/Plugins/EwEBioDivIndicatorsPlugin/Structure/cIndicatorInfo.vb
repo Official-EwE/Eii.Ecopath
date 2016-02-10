@@ -22,6 +22,7 @@ Option Strict On
 Imports System.Reflection
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -41,7 +42,7 @@ Public Class cIndicatorInfo
     ''' <summary>The description of the unit of the indicator (for display on axis)</summary>
     Private m_strValueDescription As String = ""
     ''' <summary>The units of the indicator</summary>
-    Private m_aunits() As cStyleGuide.eUnitType = Nothing
+    Private m_aunits() As eUnitType = Nothing
     ''' <summary>Mask to use for formatting units.</summary>
     Private m_strUnitMask As String = ""
     ''' <summary>The function name of the indicator in the <see cref="cIndicators">indicator</see></summary>
@@ -60,13 +61,13 @@ Public Class cIndicatorInfo
     ''' <param name="strDescription">Description to assign to the indicator.</param>
     ''' <param name="strValueDescription">Description of the value of indicator (biomass, catch, etc).</param>
     ''' <param name="strUnitMask">Mask how to fit the units into this monster.</param>
-    ''' <param name="aunits">EwE <see cref="cStyleGuide.eUnitType">units</see> to show for the indicator.</param>
+    ''' <param name="aunits">EwE <see cref="eUnitType">units</see> to show for the indicator.</param>
     ''' -------------------------------------------------------------------
     Public Sub New(ByVal strFunctionName As String, _
                    ByVal strName As String, _
                    ByVal strDescription As String, _
                    ByVal strValueDescription As String, _
-                   ByVal aunits() As cStyleGuide.eUnitType, _
+                   ByVal aunits() As eUnitType, _
                    ByVal strUnitMask As String)
 
         Me.m_strName = strName
@@ -115,7 +116,7 @@ Public Class cIndicatorInfo
     ''' Get the units of the indicator.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Units As cStyleGuide.eUnitType()
+    Public ReadOnly Property Units As eUnitType()
         Get
             Return Me.m_aunits
         End Get

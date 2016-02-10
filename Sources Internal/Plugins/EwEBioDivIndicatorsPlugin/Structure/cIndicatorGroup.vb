@@ -22,6 +22,7 @@ Option Strict On
 Imports System.Reflection
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -99,7 +100,7 @@ Public Class cIndicatorInfoGroup
                         ByVal strDescription As String, _
                         ByVal strValueDescription As String, _
                         Optional strFixedUnit As String = "") As cIndicatorInfo
-        Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.None}, strFixedUnit)
+        Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New eUnitType() {eUnitType.None}, strFixedUnit)
     End Function
 
     ''' -------------------------------------------------------------------
@@ -115,9 +116,9 @@ Public Class cIndicatorInfoGroup
                         ByVal strName As String, _
                         ByVal strDescription As String, _
                         ByVal strValueDescription As String, _
-                        ByVal unit As cStyleGuide.eUnitType, _
+                        ByVal unit As eUnitType, _
                         Optional ByVal strUnitMask As String = "{0}") As cIndicatorInfo
-        Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New cStyleGuide.eUnitType() {unit}, strUnitMask)
+        Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New eUnitType() {unit}, strUnitMask)
     End Function
 
     ''' -------------------------------------------------------------------
@@ -136,7 +137,7 @@ Public Class cIndicatorInfoGroup
                         ByVal strName As String, _
                         ByVal strDescription As String, _
                         ByVal strValueDescription As String, _
-                        ByVal aunits() As cStyleGuide.eUnitType, _
+                        ByVal aunits() As eUnitType, _
                         Optional ByVal strUnitMask As String = "{0}/{1}") As cIndicatorInfo
         Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, strValueDescription, aunits, strUnitMask)
         Me.m_lIndicators.Add(ind)

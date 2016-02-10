@@ -1,9 +1,12 @@
-﻿Public Class cResultsCollector_Discards
+﻿Imports EwEUtils.Core
+
+Public Class cResultsCollector_Discards
     Inherits cResultsCollector_Catch
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "Discard Rate (" & ScientificInterfaceShared.My.Resources.UNIT_CURRENCY_WETWEIGHT & "/year)"
+            Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
+            Return "Discard Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 
