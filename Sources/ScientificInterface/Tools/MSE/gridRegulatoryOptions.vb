@@ -72,7 +72,7 @@ Namespace Ecosim
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            ' Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXEFFORT, cStyleGuide.eUnitType.Currency)
+            ' Me(0, eColumnTypes.MaxEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXEFFORT, eUnitType.Currency)
             Me(0, eColumnTypes.OptionNotUsed) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_NOTUSED)
             '  Me(0, eColumnTypes.OptionEffort) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_EFFORT)
             Me(0, eColumnTypes.OptionWeakest) = New EwEColumnHeaderCell(SharedResources.HEADER_QUOTA_WEAKESTSTOCK)

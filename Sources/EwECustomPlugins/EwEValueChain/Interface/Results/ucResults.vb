@@ -692,7 +692,7 @@ Public Class ucResults
         Dim strGraphTitle As String = ""
         Dim strXAxisLabel As String = CStr(IIF(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year"))
         Dim strYAxisLabel As String = ""
-        Dim aUnitsYAxis() As cStyleGuide.eUnitType = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary}
+        Dim aUnitsYAxis() As eUnitType = New eUnitType() {eUnitType.Monetary}
         Dim avars() As cResults.eVariableType = Nothing
 
         Select Case graphmode

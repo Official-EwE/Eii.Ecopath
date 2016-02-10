@@ -757,7 +757,7 @@ Public Class frmEwE6
         End If
 
         Dim core As New cCore()
-        Dim sg As New cStyleGuide()
+        Dim sg As New cStyleGuide(core)
         Dim cmdh As New cCommandHandler()
         Dim pm As New cPropertyManager(core, so)
         Dim fps As New cFormSettings()

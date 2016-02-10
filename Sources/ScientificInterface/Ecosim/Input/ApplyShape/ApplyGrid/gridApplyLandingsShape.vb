@@ -21,13 +21,13 @@
 Option Explicit On
 Option Strict On
 
-Imports System.Text
 Imports System.Globalization
+Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports SourceLibrary
 
 #End Region
 
@@ -142,7 +142,7 @@ Namespace Ecosim
                         Dim sb As New StringBuilder()
 
                         If interaction IsNot Nothing Then
-                            For i As Integer = 1 To interaction.NAppliedShapes
+                            For i As Integer = 1 To interaction.nAppliedShapes
                                 interaction.getShape(i, shape, aplType)
                                 If shape IsNot Nothing Then
                                     If sb.Length > 0 Then sb.Append(" ")

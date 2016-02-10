@@ -145,12 +145,16 @@ Public Class dlgEditBasemap
 
     Private Sub UpdateControls()
 
-        Dim strUnit As String = cSystemUtils.IIF(Me.m_cbAssumeSquareCells.Checked, SharedResources.UNIT_METER, SharedResources.UNIT_DECIMALDEGREE)
+        Dim fmt As New EwECore.Style.cMapUnitFormatter()
+
+        Dim strUnit As String = cSystemUtils.IIF(Me.m_cbAssumeSquareCells.Checked, _
+                                                 fmt.GetDescriptor(eUnitMapType.m), _
+                                                 fmt.GetDescriptor(eUnitMapType.dd))
 
         Me.m_lblUnitLon.Text = strUnit
         Me.m_lblUnitLat.Text = strUnit
         Me.m_lblUnitCellSize.Text = strUnit
-        Me.m_lblUnitCellLen.Text = SharedResources.UNIT_KILOMETER
+        Me.m_lblUnitCellLen.Text = fmt.GetDescriptor(eUnitMapType.km)
 
         Me.m_btnOk.Enabled = True
 

@@ -21,8 +21,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region
@@ -86,10 +87,10 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
         Me(0, eColumnTypes.LeadingB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
-        Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-        Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
+        Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
         Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
-        Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
@@ -102,7 +103,7 @@ Public Class gridEditMultiStanza
         Dim source As cEcoPathGroupInput = Nothing
         Dim ewec As EwECell = Nothing
         Dim iRow As Integer
-        Dim bIsEcosimLoaded As Boolean = (core.ActiveEcosimScenarioIndex > -1)
+        Dim bIsEcosimLoaded As Boolean = (Core.ActiveEcosimScenarioIndex > -1)
 
         ' Remove existing rows
         Me.RowsCount = 1

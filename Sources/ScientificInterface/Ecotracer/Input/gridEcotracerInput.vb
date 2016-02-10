@@ -66,8 +66,8 @@ Namespace Ecotracer
             Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.ConcEnv) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_INITIAL)
             Me(0, eColumnTypes.ConcImmBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_IN_IMM_B)
-            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE_UNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.DecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DECAY_RATE_UNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE_UNIT, eUnitType.Time)
+            Me(0, eColumnTypes.DecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DECAY_RATE_UNIT, eUnitType.Time)
             Me(0, eColumnTypes.ExcretionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_C_ASSIMILATION_RATE)
 
             Me.FixedColumns = 2

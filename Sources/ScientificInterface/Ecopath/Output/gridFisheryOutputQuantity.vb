@@ -41,7 +41,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
-            Dim aunits As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time}
+            Dim aunits As eUnitType() = New eUnitType() {eUnitType.Currency, eUnitType.Time}
 
             MyBase.InitStyle()
 

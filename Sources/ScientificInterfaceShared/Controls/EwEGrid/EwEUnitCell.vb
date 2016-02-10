@@ -19,6 +19,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
@@ -35,7 +36,7 @@ Namespace Controls.EwEGrid
     Public Class EwEUnitCell
         : Inherits EwECell
 
-        Protected m_aUnitTypes() As cStyleGuide.eUnitType
+        Protected m_aUnitTypes() As eUnitType
         Protected m_strUnitMask As String = ""
 
 #Region " Construction "
@@ -45,8 +46,8 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal unitType As cStyleGuide.eUnitType)
-            Me.New("{0}", New cStyleGuide.eUnitType() {unitType})
+        Public Sub New(ByVal unitType As eUnitType)
+            Me.New("{0}", New eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -54,7 +55,7 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             MyBase.New(Nothing, GetType(String))
 
             Me.m_strUnitMask = strUnitMask
@@ -88,7 +89,7 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
+        Private Function GetUnitString(ByVal unitType As eUnitType) As String
 
             If (Me.StyleGuide Is Nothing) Then Return "u1"
             Return Me.StyleGuide.GetUnitString(unitType)

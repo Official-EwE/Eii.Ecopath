@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -98,8 +99,8 @@ Public Class ucEquilibriumGraph
     End Sub
 
     Public Sub SetData(ByVal strGraphTitle As String, _
-                       ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, _
-                       ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType, _
+                       ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, _
+                       ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, _
                        ByVal aVars() As cResults.eVariableType) Implements IGraphView.SetData
 
         Me.m_zgh.ConfigurePane(strGraphTitle, strXAxisLabel, aUnitsXAxis, strYAxisLabel, aUnitsYAxis, True)

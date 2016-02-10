@@ -30,6 +30,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
+Imports EwECore.Style
 
 #End Region ' Imports
 
@@ -472,7 +473,7 @@ Namespace Controls
             ' Kick the hover menu. Kick.
             Me.ShowHoverMenu = Me.ShowHoverMenu
 
-         End Sub
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -678,8 +679,8 @@ Namespace Controls
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ConfigurePane(ByVal strTitle As String, _
-            ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
-            ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
+            ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
+            ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
             Optional ByVal iPane As Integer = 1) As GraphPane
 
@@ -744,8 +745,8 @@ Namespace Controls
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ConfigurePane(ByVal strTitle As String, _
-             ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, _
-             ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType, _
+             ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, _
+             ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, _
              ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
              Optional ByVal iPane As Integer = 1) As GraphPane
 
@@ -1420,13 +1421,13 @@ Namespace Controls
 
             Private m_uic As cUIContext = Nothing
             Private m_axis As Axis = Nothing
-            Protected m_aUnitTypes() As cStyleGuide.eUnitType
+            Protected m_aUnitTypes() As eUnitType
             Protected m_strUnitMask As String = ""
 
             Public Sub New(ByVal uic As cUIContext, _
                            ByVal axis As Axis, _
                            ByVal strUnitMask As String, _
-                           ByVal aUnitTypes() As cStyleGuide.eUnitType)
+                           ByVal aUnitTypes() As eUnitType)
 
                 Me.m_uic = uic
                 Me.m_axis = axis
@@ -1462,24 +1463,9 @@ Namespace Controls
                 End Get
             End Property
 
-            Private Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
-                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-                Dim strUnitString As String = ""
-                Select Case unitType
-                    Case cStyleGuide.eUnitType.Currency
-                        strUnitString = sg.CurrencyUnitText(sg.CurrencyUnit)
-                    Case cStyleGuide.eUnitType.Time
-                        strUnitString = sg.TimeUnitText(sg.TimeUnit)
-                    Case cStyleGuide.eUnitType.Monetary
-                        strUnitString = sg.MonetaryUnit
-                    Case cStyleGuide.eUnitType.Nominal
-                        strUnitString = sg.NominalUnitText()
-                    Case cStyleGuide.eUnitType.None
-                        ' NOP
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-                Return strUnitString
+            Private Function GetUnitString(ByVal unitType As eUnitType) As String
+                Dim fmt As New cUnitFormatter(Me.m_uic.Core)
+                Return fmt.GetUnitString(unitType)
             End Function
         End Class
 
@@ -1492,7 +1478,7 @@ Namespace Controls
 
         Public Sub AxisLabel(ByVal axis As Axis, _
                              ByVal strLabel As String, _
-                             Optional ByVal aUnitTypes() As cStyleGuide.eUnitType = Nothing)
+                             Optional ByVal aUnitTypes() As eUnitType = Nothing)
             If String.IsNullOrEmpty(strLabel) Then
                 Try
                     Me.m_dtAxisLabels.Remove(axis)

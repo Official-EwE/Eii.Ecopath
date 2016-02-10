@@ -63,16 +63,16 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="cStyleGuide.eUnitType">unit of measurement</see> into
+        ''' <see cref="eUnitType">unit of measurement</see> into
         ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
+        ''' <param name="unitType">The <see cref="eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal prop As cProperty, _
                        ByVal strUnitMask As String, _
-                       ByVal unitType As cStyleGuide.eUnitType)
+                       ByVal unitType As eUnitType)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -81,12 +81,12 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="cStyleGuide.eUnitType">unit of measurements</see> into
+        ''' of <see cref="eUnitType">unit of measurements</see> into
         ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
+        ''' <param name="aUnitTypes">The <see cref="eUnitType">unit of measurements</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -116,9 +116,9 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="cStyleGuide.eUnitType">unit of measurement</see> into
+        ''' <see cref="eUnitType">unit of measurement</see> into
         ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit of measurement</see>
+        ''' <param name="unitType">The <see cref="eUnitType">unit of measurement</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal pm As cPropertyManager, _
@@ -126,8 +126,8 @@ Namespace Controls.EwEGrid
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String, _
-                       ByVal unitType As cStyleGuide.eUnitType)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
+                       ByVal unitType As eUnitType)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -139,9 +139,9 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="cStyleGuide.eUnitType">unit of measurements</see> into
+        ''' of <see cref="eUnitType">unit of measurements</see> into
         ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">unit of measurements</see>
+        ''' <param name="aUnitTypes">The <see cref="eUnitType">unit of measurements</see>
         ''' to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal pm As cPropertyManager, _
@@ -149,7 +149,7 @@ Namespace Controls.EwEGrid
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String, _
-                       ByVal aUnitTypes() As cStyleGuide.eUnitType)
+                       ByVal aUnitTypes() As eUnitType)
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 
@@ -175,7 +175,7 @@ Namespace Controls.EwEGrid
 
 #Region " Unit header text "
 
-        Protected m_aUnitTypes() As cStyleGuide.eUnitType
+        Protected m_aUnitTypes() As eUnitType
         Protected m_strUnitMask As String = ""
 
         ''' -------------------------------------------------------------------
@@ -191,7 +191,7 @@ Namespace Controls.EwEGrid
         ''' <param name="aUnitTypes">An array of unit types to format into the
         ''' header cell.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.m_strUnitMask = strUnitMask
             Me.m_aUnitTypes = aUnitTypes
         End Sub

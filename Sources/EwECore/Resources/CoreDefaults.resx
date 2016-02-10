@@ -306,6 +306,48 @@
   <data name="SOURCE_CLIPBOARD" xml:space="preserve">
     <value>From clipboard</value>
   </data>
+  <data name="UNIT_AREA_KM2" xml:space="preserve">
+    <value>km²</value>
+  </data>
+  <data name="UNIT_AREA_MI2" xml:space="preserve">
+    <value>mi²</value>
+  </data>
+  <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
+    <value>kcal/m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
+    <value>g/m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
+    <value>g/m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
+    <value>J/m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
+    <value>mg N/m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
+    <value>mg P/m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
+    <value>t/km²</value>
+  </data>
+  <data name="UNIT_DECIMALDEGREE" xml:space="preserve">
+    <value>dd</value>
+  </data>
+  <data name="UNIT_KILOMETER" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="UNIT_METER" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="UNIT_TIME_DAY" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>year</value>
+  </data>
   <data name="VERSION_EXT_COMPILED" xml:space="preserve">
     <value>{0} (compiled {1})</value>
   </data>

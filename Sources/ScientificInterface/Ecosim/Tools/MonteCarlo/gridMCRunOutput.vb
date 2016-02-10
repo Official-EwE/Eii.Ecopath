@@ -23,6 +23,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region

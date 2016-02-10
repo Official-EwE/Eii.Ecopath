@@ -19,14 +19,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -61,11 +56,11 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="strUnitMask">The mask should contain ONE {0} placeholder where
         ''' the <paramref name="unitType">unit</paramref> will be displayed.</param>
-        ''' <param name="unitType">The <see cref="cStyleGuide.eUnitType">unit</see>
+        ''' <param name="unitType">The <see cref="eUnitType">unit</see>
         ''' to dynamically substitute in the cell display text.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
-            Me.New(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+        Public Sub New(ByVal strUnitMask As String, ByVal unitType As eUnitType)
+            Me.New(strUnitMask, New eUnitType() {unitType})
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -74,10 +69,10 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="strUnitMask">The mask should contain a string format 
         ''' placeholder for each <paramref name="aunitTypes">unit</paramref>.</param>
-        ''' <param name="aUnitTypes">The <see cref="cStyleGuide.eUnitType">units</see>
+        ''' <param name="aUnitTypes">The <see cref="eUnitType">units</see>
         ''' to dynamically substitute in the cell display text.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.New()
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -86,14 +81,14 @@ Namespace Controls.EwEGrid
             Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name))
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As eUnitType)
             Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
                                  New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
                                  strUnitMask), _
-                   New cStyleGuide.eUnitType() {unitType})
+                   New eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
                                  New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
                                  strUnitMask), _

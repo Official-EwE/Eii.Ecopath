@@ -39,13 +39,15 @@ Namespace Ecopath.Output
             Name
             TL
             Area
-            BA
+            BArea
             B
             Z
             PB
             QB
             EE
             GE
+            BA
+            BArate
         End Enum
 
         Public Sub New()
@@ -55,18 +57,23 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
+
+            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
+
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(eVarNameFlags.TTLX)
             Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.Area)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBOutput, SharedResources.GENERIC_LABEL_PERUNIT, cStyleGuide.eUnitType.Time)
+            Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
+            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBOutput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(eVarNameFlags.EEOutput)
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(eVarNameFlags.GEOutput)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
+            Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, eUnitType.Time)
 
             Me.FixedColumns = 2
 
@@ -94,7 +101,7 @@ Namespace Ecopath.Output
                 If Not group.isMultiStanza Then
 
                     iRow = Me.AddRow
-                    FillInRows(iRow, group)
+                    UpdateRow(iRow, group)
 
                 Else
                     ' Group is stanza
@@ -117,13 +124,13 @@ Namespace Ecopath.Output
 
                     'Display group info
                     hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, True)
+                    UpdateRow(iRow, group, True)
                 End If
             Next i
 
         End Sub
 
-        Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal bIsStanza As Boolean = False)
+        Private Sub UpdateRow(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase, Optional ByVal bIsStanza As Boolean = False)
 
             Dim cell As EwECellBase = Nothing
 
@@ -136,8 +143,10 @@ Namespace Ecopath.Output
 
             Me(iRow, eColumnTypes.TL) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TTLX)
             Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
-            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
+            Me(iRow, eColumnTypes.BArea) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
             Me(iRow, eColumnTypes.B) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Biomass)
+            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+            Me(iRow, eColumnTypes.BArate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
 
             If bIsStanza Then
                 Me(iRow, eColumnTypes.Z) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBOutput)

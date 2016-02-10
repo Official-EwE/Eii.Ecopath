@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -28,46 +28,40 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of 
-    ''' <see cref="cCoreInputOutputBase">cCoreInputOutputBase-derived</see> objects.
+    ''' Class for providing a textual description of <see cref="eUnitAreaType"/> objects.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cCoreInterfaceFormatter
+    Public Class cMapUnitFormatter
         Implements ITypeFormatter
 
-        Private m_strNone As String = ""
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a new type <see cref="eUnitCurrencyType"/>formatter.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub New()
-            Me.New(My.Resources.GENERIC_VALUE_NONE)
         End Sub
 
-        Public Sub New(ByVal strNone As String)
-            Me.m_strNone = strNone
-        End Sub
-
-        Public Function GetDescribedType() As System.Type _
-            Implements ITypeFormatter.GetDescribedType
-            Return GetType(ICoreInterface)
+        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
+            Return GetType(eUnitMapType)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                  Implements ITypeFormatter.GetDescriptor
 
-            If (value Is Nothing) Then Return Me.m_strNone
+            Dim unit As eUnitMapType = DirectCast(value, eUnitMapType)
 
-            Try
-                Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
-                ' Only include index in desciptor only if object has a valid index
-                If (obj.Index >= 1) Then
-                    Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
-                End If
-                Return obj.Name
-            Catch ex As Exception
-                Debug.Assert(False)
-            End Try
-            Return value.ToString
+            Select Case unit
+                Case eUnitMapType.m
+                    Return My.Resources.CoreDefaults.UNIT_METER
+                Case eUnitMapType.km
+                    Return My.Resources.CoreDefaults.UNIT_KILOMETER
+                Case eUnitMapType.dd
+                    Return My.Resources.CoreDefaults.UNIT_DECIMALDEGREE
+            End Select
 
+            Return String.Empty
         End Function
 
     End Class

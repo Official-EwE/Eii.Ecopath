@@ -31,6 +31,8 @@ Imports ScientificInterfaceShared.Properties
 Imports System.Reflection
 Imports System.Security.Permissions
 Imports EwEUtils.SystemUtilities
+Imports EwECore.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -346,7 +348,10 @@ Namespace Controls.Map
 
                 Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(sLat)
                 Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(sLon)
-                Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells, My.Resources.UNIT_METER, My.Resources.UNIT_DECIMALDEGREE)
+                Dim fmt As New cMapUnitFormatter()
+                Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells, _
+                                                         fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol), _
+                                                         fmt.GetDescriptor(eUnitMapType.dd, eDescriptorTypes.Symbol))
 
                 If Not String.IsNullOrWhiteSpace(strVal) Then
                     strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _

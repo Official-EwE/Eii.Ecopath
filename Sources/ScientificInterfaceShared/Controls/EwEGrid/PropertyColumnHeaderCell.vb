@@ -92,7 +92,7 @@ Namespace Controls.EwEGrid
         Public Sub New(ByVal prop As cProperty, _
                        ByVal strUnitMask As String)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {})
+            Me.SetUnitHeader(strUnitMask, New eUnitType() {})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -100,7 +100,7 @@ Namespace Controls.EwEGrid
         ''' Constructor to create a column header cell that derives its 
         ''' <see cref="DisplayText">display text</see> from a 
         ''' <see cref="cProperty">cProperty</see> and a 
-        ''' <see cref="cStyleGuide.eUnitType">system unit</see>. 
+        ''' <see cref="eUnitType">system unit</see>. 
         ''' Both the property value and the unit mask text are inserted in the 
         ''' cell display text via a format mask.
         ''' </summary>
@@ -113,9 +113,9 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal prop As cProperty, _
                        ByVal strUnitMask As String, _
-                       ByVal unitType As cStyleGuide.eUnitType)
+                       ByVal unitType As eUnitType)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -123,7 +123,7 @@ Namespace Controls.EwEGrid
         ''' Constructor to create a column header cell that derives its 
         ''' <see cref="DisplayText">display text</see> from a 
         ''' <see cref="cProperty">cProperty</see> and a series of
-        ''' <see cref="cStyleGuide.eUnitType">system units</see>. 
+        ''' <see cref="eUnitType">system units</see>. 
         ''' Both the property value and the unit texts are inserted in the 
         ''' cell display text via a format mask.
         ''' </summary>
@@ -138,7 +138,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal prop As cProperty, _
                        ByVal strUnitMask As String, _
-                       ByVal aUnitTypes() As cStyleGuide.eUnitType)
+                       ByVal aUnitTypes() As eUnitType)
             Me.New(prop)
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -198,7 +198,7 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Constructor to create a row header cell that synchronizes 
         ''' its <see cref="DisplayText">display text</see> live with core data
-        ''' and a <see cref="cStyleGuide.eUnitType">system unit</see>.
+        ''' and a <see cref="eUnitType">system unit</see>.
         ''' Both the core value and the unit text are inserted in the cell 
         ''' display text via a format mask.
         ''' </summary>
@@ -225,15 +225,15 @@ Namespace Controls.EwEGrid
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String, _
-                       ByVal unitType As cStyleGuide.eUnitType)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New cStyleGuide.eUnitType() {unitType})
+                       ByVal unitType As eUnitType)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New eUnitType() {unitType})
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor to create a column header cell that synchronizes 
         ''' its <see cref="DisplayText">display text</see> live with core data
-        ''' and a series of<see cref="cStyleGuide.eUnitType">system units</see>.
+        ''' and a series of<see cref="eUnitType">system units</see>.
         ''' Both the core value and the unit texts are inserted in the cell 
         ''' display text via a format mask.
         ''' </summary>
@@ -260,7 +260,7 @@ Namespace Controls.EwEGrid
                        ByVal VarName As eVarNameFlags, _
                        ByVal SourceSec As cCoreInputOutputBase, _
                        ByVal strUnitMask As String, _
-                       ByVal aUnitTypes() As cStyleGuide.eUnitType)
+                       ByVal aUnitTypes() As eUnitType)
             Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
         End Sub
 

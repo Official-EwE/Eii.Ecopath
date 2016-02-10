@@ -33,6 +33,7 @@ Imports EwEUtils.SystemUtilities
 Imports System.Text
 Imports System.Collections.Specialized
 Imports System.Drawing.Imaging
+Imports EwECore.Style
 
 #End Region ' Imports
 
@@ -48,6 +49,8 @@ Namespace Style
         Implements IDisposable
 
 #Region " Private bits "
+
+        Private m_core As cCore = Nothing
 
         ''' <summary>States the number of decimal digits to be displayed</summary>
         Private m_iNumDigits As Integer = 3
@@ -147,7 +150,9 @@ Namespace Style
         ''' </summary>
         ''' <remarks>Singleton enforced: constructor is only accessible locally</remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New()
+        Public Sub New(core As cCore)
+
+            Me.m_core = core
 
             ' Control how colour ramp delivers its colours
             Me.m_colorrampGroups.ColorOffsetStart = c_sRampOffsetStart
@@ -623,28 +628,6 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Types of dynamic units supported by the StyleGuide.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eUnitType As Byte
-            ''' <summary>Not a dynamic unit.</summary>
-            None = 0
-            ''' <summary>Currency unit.</summary>
-            Currency
-            ''' <summary>Time unit.</summary>
-            Time
-            ''' <summary>Monetary unit.</summary>
-            Monetary
-            ''' <summary>Nominal unit.</summary>
-            Nominal
-            ''' <summary>Area unit.</summary>
-            Area
-            ''' <summary>Biomass unit.</summary>
-            Biomass
-        End Enum
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Call this when application unit settings have changed.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -659,27 +642,49 @@ Namespace Style
         ''' <param name="unitType"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function GetUnitString(ByVal unitType As cStyleGuide.eUnitType) As String
-            Dim strUnitString As String = ""
-            Select Case unitType
-                Case cStyleGuide.eUnitType.Currency
-                    strUnitString = Me.CurrencyUnitText(Me.CurrencyUnit)
-                Case cStyleGuide.eUnitType.Time
-                    strUnitString = Me.TimeUnitText(Me.TimeUnit)
-                Case cStyleGuide.eUnitType.Monetary
-                    strUnitString = Me.MonetaryUnit
-                Case cStyleGuide.eUnitType.Nominal
-                    strUnitString = Me.NominalUnitText()
-                Case cStyleGuide.eUnitType.Area
-                    strUnitString = Me.AreaUnitText(Me.AreaUnit)
-                Case eUnitType.Biomass
-                    strUnitString = My.Resources.UNIT_BIOMASS ' Fixed
-                Case eUnitType.None
-                    ' NOP
-                Case Else
-                    Debug.Assert(False)
-            End Select
-            Return strUnitString
+        Public Function GetUnitString(ByVal unitType As eUnitType) As String
+            Dim fmt As New cUnitFormatter(Me.m_core)
+            Return fmt.GetUnitString(unitType)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Format a string from one or more units.
+        ''' </summary>
+        ''' <param name="strUnitMask">The mask to format values with.</param>
+        ''' <param name="aUnitTypes">An array of units to format into the mask.</param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' <para>The unit mask will be formatted as follows:</para>
+        ''' <list type="table">
+        ''' <listheader><term>Mask item</term><term>Will format to</term></listheader>
+        ''' <item><term>{0}</term><term><paramref name="strUnitMask"/> item 0</term></item>
+        ''' <item><term>{1}</term><term><paramref name="strUnitMask"/> item 1 (if applicable)</term></item>
+        ''' </list>
+        ''' <para>The maximum number of <paramref name="aUnitTypes"/> is 2.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function FormatUnitString(ByVal strUnitMask As String, _
+                                         ByVal aUnitTypes As eUnitType()) As String
+
+            If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
+
+                Try
+                    Select Case aUnitTypes.Length
+                        Case 0
+                            Debug.Assert(False)
+                        Case 1
+                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
+                        Case 2
+                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
+                Catch ex As Exception
+                    Debug.Assert(False, "Unable to format unit string '" & strUnitMask & "'")
+                End Try
+            End If
+            Return strUnitMask
         End Function
 
         ''' -------------------------------------------------------------------
@@ -723,60 +728,31 @@ Namespace Style
             Return cStringUtils.Localize(strUnitMask, strValue)
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Format a string from one or more units.
-        ''' </summary>
-        ''' <param name="strUnitMask">The mask to format values with.</param>
-        ''' <param name="aUnitTypes">An array of units to format into the mask.</param>
-        ''' <returns></returns>
-        ''' <remarks>
-        ''' <para>The unit mask will be formatted as follows:</para>
-        ''' <list type="table">
-        ''' <listheader><term>Mask item</term><term>Will format to</term></listheader>
-        ''' <item><term>{0}</term><term><paramref name="strUnitMask"/> item 0</term></item>
-        ''' <item><term>{1}</term><term><paramref name="strUnitMask"/> item 1 (if applicable)</term></item>
-        ''' </list>
-        ''' <para>The maximum number of <paramref name="aUnitTypes"/> is 2.</para>
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Function FormatUnitString(ByVal strUnitMask As String, _
-                                         ByVal aUnitTypes As eUnitType()) As String
-
-            If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
-
-                Try
-                    Select Case aUnitTypes.Length
-                        Case 0
-                            Debug.Assert(False)
-                        Case 1
-                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
-                        Case 2
-                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
-                        Case Else
-                            Debug.Assert(False)
-                    End Select
-                Catch ex As Exception
-                    Debug.Assert(False, "Unable to format unit string '" & strUnitMask & "'")
-                End Try
-            End If
-            Return strUnitMask
-        End Function
-
 #Region " Currency units "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method, get/set the currency unit text.
+        ''' Helper method to cascade currency unit changes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property CurrencyUnit() As eUnitCurrencyType
-            Get
-                Return Me.m_unitCurrency
-            End Get
+        Public WriteOnly Property CurrencyUnit() As eUnitCurrencyType
             Set(ByVal value As eUnitCurrencyType)
                 If (Me.m_unitCurrency <> value) Then
                     Me.m_unitCurrency = value
+                    Me.UnitsChanged()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method to cascade custom currency unit text changes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public WriteOnly Property CustomCurrencyUnitText() As String
+            Set(ByVal value As String)
+                If (String.Compare(Me.m_strUnitCurrencyCustom, value) <> 0) Then
+                    Me.m_strUnitCurrencyCustom = value
                     Me.UnitsChanged()
                 End If
             End Set
@@ -789,18 +765,6 @@ Namespace Style
             End Get
         End Property
 
-        Public Property CustomCurrencyUnitText() As String
-            Get
-                Return Me.m_strUnitCurrencyCustom
-            End Get
-            Set(ByVal value As String)
-                If (String.Compare(Me.m_strUnitCurrencyCustom, value) <> 0) Then
-                    Me.m_strUnitCurrencyCustom = value
-                    Me.UnitsChanged()
-                End If
-            End Set
-        End Property
-
 #End Region ' Currency units
 
 #Region " Time units "
@@ -810,10 +774,7 @@ Namespace Style
         ''' Helper method, get/set the time unit text.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property TimeUnit() As eUnitTimeType
-            Get
-                Return Me.m_unitTime
-            End Get
+        Public WriteOnly Property TimeUnit() As eUnitTimeType
             Set(ByVal value As eUnitTimeType)
                 If (Me.m_unitTime <> value) Then
                     Me.m_unitTime = value
@@ -830,11 +791,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public ReadOnly Property TimeUnitText(ByVal unit As eUnitTimeType) As String
             Get
-                Select Case unit
-                    Case eUnitTimeType.Day : Return My.Resources.UNIT_TIME_DAY
-                    Case eUnitTimeType.Year : Return My.Resources.UNIT_TIME_YEAR
-                End Select
-                Return Me.CustomTimeUnitText()
+                Dim fmt As New cTimeUnitFormatter(Me.m_strUnitTimeCustom)
+                Return fmt.GetDescriptor(unit)
             End Get
         End Property
 
@@ -843,10 +801,7 @@ Namespace Style
         ''' Get/set the custom time unit text.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property CustomTimeUnitText() As String
-            Get
-                Return Me.m_strUnitTimeCustom
-            End Get
+        Public WriteOnly Property CustomTimeUnitText() As String
             Set(ByVal value As String)
                 If (String.Compare(Me.m_strUnitTimeCustom, value) <> 0) Then
                     Me.m_strUnitTimeCustom = value
@@ -864,10 +819,7 @@ Namespace Style
         ''' Helper method, get/set the monetary unit to show in the application.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property MonetaryUnit() As String
-            Get
-                Return Me.m_unitMonetary
-            End Get
+        Public WriteOnly Property MonetaryUnit() As String
             Set(ByVal value As String)
                 If (Me.m_unitMonetary <> value) Then
                     Me.m_unitMonetary = value
@@ -885,10 +837,7 @@ Namespace Style
         ''' Helper method, get/set the area unit to show in the application.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property AreaUnit() As eUnitAreaType
-            Get
-                Return Me.m_unitArea
-            End Get
+        Public WriteOnly Property AreaUnit() As eUnitAreaType
             Set(ByVal value As eUnitAreaType)
                 If (Me.m_unitArea <> value) Then
                     Me.m_unitArea = value
@@ -904,11 +853,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public ReadOnly Property AreaUnitText(ByVal unit As eUnitAreaType) As String
             Get
-                Select Case unit
-                    Case eUnitAreaType.Km2 : Return My.Resources.UNIT_AREA_KM2
-                    Case eUnitAreaType.Mi2 : Return My.Resources.UNIT_AREA_MI2
-                End Select
-                Return Me.CustomAreaUnitText
+                Dim fmt As New cAreaUnitFormatter(Me.m_strUnitAreaCustom)
+                Return fmt.GetDescriptor(unit)
             End Get
         End Property
 
@@ -918,10 +864,7 @@ Namespace Style
         ''' in the application.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property CustomAreaUnitText() As String
-            Get
-                Return Me.m_strUnitAreaCustom
-            End Get
+        Public WriteOnly Property CustomAreaUnitText() As String
             Set(ByVal value As String)
                 If (String.Compare(Me.m_strUnitAreaCustom, value) <> 0) Then
                     Me.m_strUnitAreaCustom = value

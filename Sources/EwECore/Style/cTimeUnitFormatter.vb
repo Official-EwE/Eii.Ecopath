@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -27,10 +28,10 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eUnitCurrencyType"/> objects.
+    ''' Class for providing a textual description of <see cref="eUnitTimeType"/> objects.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cCurrencyUnitFormatter
+    Public Class cTimeUnitFormatter
         Implements ITypeFormatter
 
         Private m_strCustom As String = ""
@@ -39,43 +40,29 @@ Namespace Style
         ''' <summary>
         ''' Create a new type <see cref="eUnitCurrencyType"/>formatter.
         ''' </summary>
-        ''' <param name="strCustom">Any custom unit text as entered by the user. 
-        ''' by the user.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strCustom As String)
+        Public Sub New(strCustom As String)
             Me.m_strCustom = strCustom
         End Sub
 
         Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
-            Return GetType(eUnitCurrencyType)
+            Return GetType(eUnitAreaType)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                   Implements ITypeFormatter.GetDescriptor
 
-            Dim unit As eUnitCurrencyType = DirectCast(value, eUnitCurrencyType)
+            Dim unit As eUnitTimeType = DirectCast(value, eUnitTimeType)
 
             Select Case unit
-                Case eUnitCurrencyType.Calorie
-                    Return My.Resources.UNIT_CURRENCY_CALORIE
-                Case eUnitCurrencyType.Carbon
-                    Return My.Resources.UNIT_CURRENCY_CARBON
-                Case eUnitCurrencyType.DryWeight
-                    Return My.Resources.UNIT_CURRENCY_DRYWEIGHT
-                Case eUnitCurrencyType.Joules
-                    Return My.Resources.UNIT_CURRENCY_JOULES
-                Case eUnitCurrencyType.Nitrogen
-                    Return My.Resources.UNIT_CURRENCY_NITROGEN
-                Case eUnitCurrencyType.Phosporous
-                    Return My.Resources.UNIT_CURRENCY_PHOSPOROUS
-                Case eUnitCurrencyType.WetWeight
-                    Return My.Resources.UNIT_CURRENCY_WETWEIGHT
+                Case eUnitTimeType.Year
+                    Return My.Resources.CoreDefaults.UNIT_TIME_YEAR
+                Case eUnitTimeType.Day
+                    Return My.Resources.CoreDefaults.UNIT_TIME_DAY
+                Case eUnitTimeType.Custom
+                    Return Me.m_strCustom
             End Select
-
-            If Not String.IsNullOrWhiteSpace(Me.m_strCustom) Then
-                Return Me.m_strCustom
-            End If
 
             Return String.Empty
         End Function

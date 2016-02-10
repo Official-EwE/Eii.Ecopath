@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwECore.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports System.Globalization
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

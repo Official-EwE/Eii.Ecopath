@@ -19,14 +19,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
+Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
 
@@ -41,7 +37,7 @@ Namespace Controls.EwEGrid
     Public Class EwEColumnHeaderCell
         : Inherits EwEHeaderCell
 
-         Private m_vizDefault As IVisualModel = Nothing
+        Private m_vizDefault As IVisualModel = Nothing
 
 #Region " Construction / destruction "
 
@@ -51,12 +47,12 @@ Namespace Controls.EwEGrid
             Me.VisualModel = New cEwEGridColumnHeaderVisualizer()
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal unitType As eUnitType)
             Me.New("")
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
+            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.New("")
             Me.SetUnitHeader(strUnitMask, aUnitTypes)
         End Sub
@@ -69,18 +65,18 @@ Namespace Controls.EwEGrid
             Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, detail))
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As eUnitType)
             Me.New(varname, eDescriptorTypes.Name, strUnitMask, unitType)
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
+        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, ByVal strUnitMask As String, ByVal unitType As eUnitType)
             Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
                                  New cVarnameTypeFormatter().GetDescriptor(varname, detail), _
                                  strUnitMask), _
-                   New cStyleGuide.eUnitType() {unitType})
+                   New eUnitType() {unitType})
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
+        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
             Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
                                  New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
                                  strUnitMask), _

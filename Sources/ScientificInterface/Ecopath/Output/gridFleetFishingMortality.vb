@@ -58,7 +58,7 @@ Namespace Ecopath.Output
                 fleet = Core.FleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                                  fleet, eVarNameFlags.Name, Nothing, _
-                                                                 SharedResources.HEADER_X_PER_UNIT, cStyleGuide.eUnitType.Time)
+                                                                 SharedResources.HEADER_X_PER_UNIT, eUnitType.Time)
             Next iFleet
 
             For iGroup = 1 To Core.nLivingGroups

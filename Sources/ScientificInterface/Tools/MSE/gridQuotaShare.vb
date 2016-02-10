@@ -60,7 +60,7 @@ Namespace Ecosim
                 src = Core.FleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
                                                                  src, eVarNameFlags.Name, Nothing, _
-                                                                 SharedResources.GENERIC_LABEL_DETAILED, cStyleGuide.eUnitType.Currency)
+                                                                 SharedResources.GENERIC_LABEL_DETAILED, eUnitType.Currency)
             Next
             Me(0, 1 + Core.nFleets + 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
 

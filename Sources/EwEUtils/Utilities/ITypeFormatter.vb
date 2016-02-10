@@ -15,8 +15,14 @@
 ' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
 
-Namespace Style
+Option Strict On
+Imports System
+
+#End Region ' Imports 
+
+Namespace Utilities
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

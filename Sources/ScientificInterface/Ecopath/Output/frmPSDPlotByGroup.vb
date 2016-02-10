@@ -65,7 +65,7 @@ Namespace Ecopath.Output
             Debug.Assert(Me.UIContext IsNot Nothing)
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
-            Dim unitTime As cStyleGuide.eUnitType() = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Time}
+            Dim unitTime As eUnitType() = New eUnitType() {eUnitType.Time}
 
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
@@ -123,8 +123,8 @@ Namespace Ecopath.Output
 
         Private Sub CreatePane(ByVal PaneNo As ePaneTypes, _
                        ByVal strPaneTitle As String, _
-                       ByVal strXaxisTitle As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, _
-                       ByVal strYaxisTitle As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType)
+                       ByVal strXaxisTitle As String, ByVal aUnitsXAxis() As eUnitType, _
+                       ByVal strYaxisTitle As String, ByVal aUnitsYAxis() As eUnitType)
 
             'Define a new graph pane
             Dim pane As New GraphPane
@@ -139,8 +139,8 @@ Namespace Ecopath.Output
         End Sub
 
         Private Sub InitGraphPane(ByVal strPaneTitle As String, _
-                                  ByVal strXAxisTitle As String, ByVal aUnitsXAxis() As cStyleGuide.eUnitType, _
-                                  ByVal strYAxisTitle As String, ByVal aUnitsYAxis() As cStyleGuide.eUnitType, _
+                                  ByVal strXAxisTitle As String, ByVal aUnitsXAxis() As eUnitType, _
+                                  ByVal strYAxisTitle As String, ByVal aUnitsYAxis() As eUnitType, _
                                   ByVal paneType As ePaneTypes, _
                                   ByVal iPane As Integer)
 
