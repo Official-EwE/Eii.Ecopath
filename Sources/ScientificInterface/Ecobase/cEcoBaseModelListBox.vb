@@ -45,7 +45,7 @@ Public Class cEcoBaseModelListBox
             ' Get item fleet
             Dim model As cModelData = DirectCast(item, cModelData)
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            If (Not model.AllowDissemination) Then
+            If (Not model.AllowDissemination And e.State <> DrawItemState.Selected) Then
                 Using br As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND))
                     e.Graphics.FillRectangle(br, e.Bounds)
                 End Using
@@ -87,5 +87,12 @@ Public Class cEcoBaseModelListBox
         Return strModelName
 
     End Function
+
+    Protected Overrides Sub OnFormat(e As System.Windows.Forms.ListControlConvertEventArgs)
+        If (TypeOf e.ListItem Is cModelData) Then
+            e.Value = Me.ModelItemText(DirectCast(e.ListItem, cModelData))
+        End If
+        MyBase.OnFormat(e)
+    End Sub
 
 End Class
