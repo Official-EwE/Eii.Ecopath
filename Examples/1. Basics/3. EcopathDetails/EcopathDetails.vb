@@ -105,7 +105,7 @@ Module EcopathDetails
         writer.WriteLine("Last saved : " & modelDate.ToLongDateString)
         writer.WriteLine()
 
-        writer.WriteLine("Area name  : " & model.AreaName)
+        writer.WriteLine("Country    : " & model.Country)
         writer.WriteLine("Spatial ref: " & model.North & "N, " & model.West & "W, " & model.South & "S, " & model.East & "E")
         writer.WriteLine("Area size  : " & model.Area & " km2")
         writer.WriteLine()
