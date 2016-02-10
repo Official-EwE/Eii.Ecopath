@@ -39,7 +39,7 @@ Partial Class dlgEcobaseImport
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEcobaseImport))
         Me.m_scEcobaseContent = New System.Windows.Forms.SplitContainer()
         Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lbxModels = New cEcoBaseModelListBox()
+        Me.m_lbxModels = New ScientificInterface.cEcoBaseModelListBox()
         Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpFields = New System.Windows.Forms.TableLayoutPanel()
@@ -64,7 +64,6 @@ Partial Class dlgEcobaseImport
         Me.m_lblDessimAllow = New System.Windows.Forms.Label()
         Me.m_lblDessimAllowValue = New System.Windows.Forms.Label()
         Me.m_hdrRefs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_lblRefValue = New System.Windows.Forms.Label()
         Me.m_tlpSpatial = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbImage = New System.Windows.Forms.PictureBox()
         Me.m_tlpSpatFields = New System.Windows.Forms.TableLayoutPanel()
@@ -82,6 +81,9 @@ Partial Class dlgEcobaseImport
         Me.m_lblTempMeanVal = New System.Windows.Forms.Label()
         Me.m_llToEcoBase = New System.Windows.Forms.LinkLabel()
         Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_llDOI = New System.Windows.Forms.LinkLabel()
+        Me.m_lblRefValue = New System.Windows.Forms.Label()
+        Me.m_llURL = New System.Windows.Forms.LinkLabel()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
@@ -89,6 +91,7 @@ Partial Class dlgEcobaseImport
         Me.m_tstbSearch = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tsddValue = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiModelName = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiAuthor = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiCountry = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcoType = New System.Windows.Forms.ToolStripMenuItem()
@@ -155,7 +158,10 @@ Partial Class dlgEcobaseImport
         Me.m_lbxModels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbxModels.FormattingEnabled = True
         Me.m_lbxModels.Name = "m_lbxModels"
+        Me.m_lbxModels.ShowAuthor = True
+        Me.m_lbxModels.ShowYear = True
         Me.m_lbxModels.Sorted = True
+        Me.m_lbxModels.UIContext = Nothing
         '
         'm_tlpMain
         '
@@ -163,9 +169,11 @@ Partial Class dlgEcobaseImport
         Me.m_tlpMain.Controls.Add(Me.m_hdrDetails, 0, 0)
         Me.m_tlpMain.Controls.Add(Me.m_tlpFields, 0, 1)
         Me.m_tlpMain.Controls.Add(Me.m_hdrRefs, 0, 2)
+        Me.m_tlpMain.Controls.Add(Me.m_tlpSpatial, 0, 8)
+        Me.m_tlpMain.Controls.Add(Me.m_hdrSpatial, 0, 6)
+        Me.m_tlpMain.Controls.Add(Me.m_llDOI, 0, 5)
         Me.m_tlpMain.Controls.Add(Me.m_lblRefValue, 0, 3)
-        Me.m_tlpMain.Controls.Add(Me.m_tlpSpatial, 0, 6)
-        Me.m_tlpMain.Controls.Add(Me.m_hdrSpatial, 0, 4)
+        Me.m_tlpMain.Controls.Add(Me.m_llURL, 0, 4)
         Me.m_tlpMain.Name = "m_tlpMain"
         '
         'm_hdrDetails
@@ -309,11 +317,6 @@ Partial Class dlgEcobaseImport
         Me.m_hdrRefs.IsCollapsed = False
         Me.m_hdrRefs.Name = "m_hdrRefs"
         '
-        'm_lblRefValue
-        '
-        resources.ApplyResources(Me.m_lblRefValue, "m_lblRefValue")
-        Me.m_lblRefValue.Name = "m_lblRefValue"
-        '
         'm_tlpSpatial
         '
         resources.ApplyResources(Me.m_tlpSpatial, "m_tlpSpatial")
@@ -420,6 +423,25 @@ Partial Class dlgEcobaseImport
         Me.m_hdrSpatial.IsCollapsed = False
         Me.m_hdrSpatial.Name = "m_hdrSpatial"
         '
+        'm_llDOI
+        '
+        resources.ApplyResources(Me.m_llDOI, "m_llDOI")
+        Me.m_llDOI.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline
+        Me.m_llDOI.Name = "m_llDOI"
+        Me.m_llDOI.TabStop = True
+        '
+        'm_lblRefValue
+        '
+        resources.ApplyResources(Me.m_lblRefValue, "m_lblRefValue")
+        Me.m_lblRefValue.Name = "m_lblRefValue"
+        '
+        'm_llURL
+        '
+        resources.ApplyResources(Me.m_llURL, "m_llURL")
+        Me.m_llURL.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline
+        Me.m_llURL.Name = "m_llURL"
+        Me.m_llURL.TabStop = True
+        '
         'm_btnCancel
         '
         resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
@@ -453,7 +475,7 @@ Partial Class dlgEcobaseImport
         'm_tsddValue
         '
         Me.m_tsddValue.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature, Me.m_tsmiReference})
+        Me.m_tsddValue.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiNone, Me.m_tsmiModelName, Me.m_tsmiAuthor, Me.m_tsmiCountry, Me.m_tsmiEcoType, Me.m_tsmiDepth, Me.m_tsmiTemperature, Me.m_tsmiReference})
         resources.ApplyResources(Me.m_tsddValue, "m_tsddValue")
         Me.m_tsddValue.Name = "m_tsddValue"
         '
@@ -462,6 +484,12 @@ Partial Class dlgEcobaseImport
         Me.m_tsmiNone.Name = "m_tsmiNone"
         resources.ApplyResources(Me.m_tsmiNone, "m_tsmiNone")
         Me.m_tsmiNone.Tag = "0"
+        '
+        'm_tsmiModelName
+        '
+        Me.m_tsmiModelName.Name = "m_tsmiModelName"
+        resources.ApplyResources(Me.m_tsmiModelName, "m_tsmiModelName")
+        Me.m_tsmiModelName.Tag = "7"
         '
         'm_tsmiAuthor
         '
@@ -697,4 +725,7 @@ Partial Class dlgEcobaseImport
     Private WithEvents m_tsbnShowDownloadable As System.Windows.Forms.ToolStripButton
     Private WithEvents m_lblDessimAllow As System.Windows.Forms.Label
     Private WithEvents m_lblDessimAllowValue As System.Windows.Forms.Label
+    Private WithEvents m_llDOI As System.Windows.Forms.LinkLabel
+    Private WithEvents m_tsmiModelName As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_llURL As System.Windows.Forms.LinkLabel
 End Class

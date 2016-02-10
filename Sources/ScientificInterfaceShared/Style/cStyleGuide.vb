@@ -644,7 +644,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function GetUnitString(ByVal unitType As eUnitType) As String
             Dim fmt As New cUnitFormatter(Me.m_core)
-            Return fmt.GetUnitString(unitType)
+            Return fmt.UnitString(unitType)
         End Function
 
         ''' -------------------------------------------------------------------

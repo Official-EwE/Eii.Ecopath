@@ -456,7 +456,7 @@ Namespace WebServices.Ecobase
             Me.GE = cSystemUtils.IIF(Me.GEIsInput, ecopathDS.GEinput(iGroup), ecopathDS.GE(iGroup))
 
             Me.Immig = ecopathDS.Immig(iGroup)
-            Me.EmigRate = ecopathDS.Emigration(iGroup)
+            Me.Emig = ecopathDS.Emigration(iGroup)
             Me.EmigRate = ecopathDS.Emig(iGroup)
             Me.Color = ecopathDS.GroupColor(iGroup)
             Me.vbK = ecopathDS.vbK(iGroup)
