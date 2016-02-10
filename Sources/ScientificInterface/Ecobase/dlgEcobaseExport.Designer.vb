@@ -328,6 +328,8 @@ Partial Class dlgEcobaseExport
         'm_cmbCountry
         '
         resources.ApplyResources(Me.m_cmbCountry, "m_cmbCountry")
+        Me.m_cmbCountry.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.m_cmbCountry.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
         Me.m_cmbCountry.FormattingEnabled = True
         Me.m_cmbCountry.Name = "m_cmbCountry"
         '

@@ -203,7 +203,13 @@ Public Class dlgEcobaseExport
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             Debug.Assert(cmd IsNot Nothing)
 
-            cmd.Invoke("http://doi.org/" & HttpUtility.UrlEncode(strDOI))
+            Dim strURL As String = ""
+            If strDOI.StartsWith("http://", StringComparison.OrdinalIgnoreCase) Then
+                strURL = strDOI
+            Else
+                strURL = "http://doi.org/" & HttpUtility.UrlEncode(strDOI)
+            End If
+            cmd.Invoke(strURL)
 
         Catch ex As Exception
             cLog.Write(ex, "dlgEcobaseExport.OnViewDOIOnline(" & strDOI & ")")

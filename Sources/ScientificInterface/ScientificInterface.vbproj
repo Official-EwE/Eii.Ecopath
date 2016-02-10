@@ -154,9 +154,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Import Include="ScientificInterfaceShared.Commands" />
     <Import Include="ScientificInterfaceShared.Controls" />
     <Import Include="ScientificInterfaceShared.Controls.EwEGrid" />
     <Import Include="ScientificInterfaceShared.Definitions" />
+    <Import Include="ScientificInterfaceShared.Extensions" />
+    <Import Include="ScientificInterfaceShared.Forms" />
     <Import Include="ScientificInterfaceShared.Properties" />
     <Import Include="ScientificInterfaceShared.Style" />
     <Import Include="System" />

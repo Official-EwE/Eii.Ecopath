@@ -29,6 +29,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Web
 
 #End Region ' Imports
 
@@ -57,6 +58,7 @@ Public Class dlgEcobaseImport
         Depth = 4
         Temperature = 5
         Reference = 6
+        ModelName = 7
     End Enum
 
     Private m_filter As eFilterTypes = eFilterTypes.None
@@ -205,7 +207,21 @@ Public Class dlgEcobaseImport
             Me.m_lblDessimAllowValue.Text = cSystemUtils.IIF(Me.m_model.AllowDissemination, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
             Me.m_lblDessimAllowValue.Image = cSystemUtils.IIF(Me.m_model.AllowDissemination, SharedResources.OK, SharedResources.Critical)
 
-            Me.m_lblRefValue.Text = Me.ReferenceLabel()
+            Me.m_lblRefValue.Text = Me.m_model.Reference()
+
+            If (String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
+                Me.m_llDOI.Visible = False
+            Else
+                Me.m_llDOI.Text = Me.m_model.DOI
+                Me.m_llDOI.Visible = True
+            End If
+
+            If (String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
+                Me.m_llURL.Visible = False
+            Else
+                Me.m_llURL.Text = Me.m_model.URI
+                Me.m_llURL.Visible = True
+            End If
 
             If (Me.m_img Is Nothing) Then
                 Me.m_pbImage.BackgroundImageLayout = ImageLayout.Center
@@ -246,6 +262,8 @@ Public Class dlgEcobaseImport
             Me.m_lblDepthMeanVal.Text = ""
             Me.m_lblTempRangeVal.Text = ""
             Me.m_lblTempMeanVal.Text = ""
+            Me.m_llDOI.Visible = False
+            Me.m_llURL.Visible = False
         End If
 
         bCanDownload = bCanDissiminate And bAgreementOK
@@ -309,6 +327,43 @@ Public Class dlgEcobaseImport
         End Try
     End Sub
 
+    Private Sub OnViewDOI(sender As System.Object, e As System.EventArgs) _
+        Handles m_llDOI.Click
+
+        Dim strLink As String = Me.m_llDOI.Text
+
+        Try
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            Debug.Assert(cmd IsNot Nothing)
+
+            cmd.Invoke("http://doi.org/" & HttpUtility.UrlEncode(strLink))
+
+        Catch ex As Exception
+            cLog.Write(ex, "dlgEcobaseImport.OnViewDOI(" & strLink & ")")
+        End Try
+
+    End Sub
+
+    Private Sub OnViewLink(sender As System.Object, e As System.EventArgs) _
+        Handles m_llURL.Click
+
+        Dim strLink As String = Me.m_llURL.Text
+
+        Try
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            Debug.Assert(cmd IsNot Nothing)
+
+            cmd.Invoke(strLink)
+
+        Catch ex As Exception
+            cLog.Write(ex, "dlgEcobaseImport.OnViewLink(" & strLink & ")")
+        End Try
+
+    End Sub
     Private Sub OnVisitEcobase(sender As System.Object, e As EventArgs) _
         Handles m_llToEcoBase.Click
 
@@ -356,7 +411,8 @@ Public Class dlgEcobaseImport
     End Sub
 
     Private Sub OnFilterSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, m_tsmiDepth.Click, m_tsmiTemperature.Click, m_tsmiReference.Click
+        Handles m_tsmiNone.Click, m_tsmiAuthor.Click, m_tsmiCountry.Click, m_tsmiEcoType.Click, _
+                m_tsmiDepth.Click, m_tsmiTemperature.Click, m_tsmiReference.Click, m_tsmiModelName.Click
 
         Dim tsmi As ToolStripItem = DirectCast(sender, ToolStripItem)
         If (tsmi.Tag IsNot Nothing) Then
@@ -515,6 +571,7 @@ Public Class dlgEcobaseImport
         Me.m_lbxModels.ShowAuthor = Me.m_tsbnShowAuthor.Checked
         Me.m_lbxModels.ShowYear = Me.m_tsbnShowYear.Checked
 
+        Me.m_lbxModels.Sorted = True
         Me.m_lbxModels.BeginUpdate()
         Me.m_lbxModels.Items.Clear()
 
@@ -531,7 +588,8 @@ Public Class dlgEcobaseImport
                         Case eFilterTypes.EcosystemType : bUseModel = Me.StartsWith(strFilter, model.EcosystemType)
                         Case eFilterTypes.Depth : bUseModel = Me.IsInRange(strFilter, model.DepthMin, model.DepthMax)
                         Case eFilterTypes.Temperature : bUseModel = Me.IsInRange(strFilter, model.TempMean, model.TempMax)
-                        Case eFilterTypes.Reference : bUseModel = (model.Reference.IndexOf(strFilter, 0, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        Case eFilterTypes.Reference : bUseModel = (model.Reference.IndexOf(strFilter, 0, StringComparison.OrdinalIgnoreCase) >= 0)
+                        Case eFilterTypes.ModelName : bUseModel = Me.StartsWith(strFilter, model.Name)
                     End Select
                 End If
 
@@ -589,10 +647,10 @@ Public Class dlgEcobaseImport
         sgu.Save()
 
         My.Settings.CountryNames.Clear()
-        My.Settings.CountryNames.AddRange(lCountry.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+        My.Settings.CountryNames.AddRange(lCountry.Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
 
         My.Settings.EcosystemTypes.Clear()
-        My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.CurrentCultureIgnoreCase).ToArray())
+        My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
 
         sgu.Load()
 
@@ -608,27 +666,6 @@ Public Class dlgEcobaseImport
         Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
                                      Me.m_model.FirstYear, _
                                      Me.m_model.FirstYear + Math.Max(1, Me.m_model.NumYears) - 1)
-
-    End Function
-
-    Private Function ReferenceLabel() As String
-
-        If (Me.m_model Is Nothing) Then Return ""
-
-        Dim sb As New StringBuilder()
-        If (Not String.IsNullOrWhiteSpace(Me.m_model.Reference)) Then
-            sb.AppendLine(Me.m_model.Reference)
-        End If
-        If (Not String.IsNullOrWhiteSpace(Me.m_model.DOI)) Then
-            If (sb.Length > 0) Then sb.AppendLine()
-            sb.AppendLine(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, "DOI", Me.m_model.DOI))
-        End If
-        If (Not String.IsNullOrWhiteSpace(Me.m_model.URI)) Then
-            If (sb.Length > 0) Then sb.AppendLine()
-            sb.AppendLine(Me.m_model.URI)
-        End If
-        If (sb.Length = 0) Then sb.Append("?")
-        Return sb.ToString()
 
     End Function
 

@@ -46,8 +46,8 @@ Imports System.Xml
 ''' <summary>
 ''' Class to handle all interactions between a user interface layer, a 
 ''' <see cref="IEwEDataSource">data source</see> and the 
-''' <see cref="Ecopath.cEcoPathModel">EcoPath</see>, 
-''' <see cref="EcoSim.cEcoSimModel">EcoSim</see> and EcoSpace models.
+''' <see cref="Ecopath.cEcoPathModel">EcoPath</see>, <see cref="EcoSim.cEcoSimModel">EcoSim</see> 
+''' and <see cref="cEcoSpace">EcoSpace</see> models.
 ''' </summary>
 ''' <remarks>
 ''' <para>This class provides a wrapper for the underlying EcoPath, EcoSim and
@@ -62,9 +62,8 @@ Imports System.Xml
 ''' model data structures are handled by the core.</para>
 ''' <para>Data structures for each model that need to be made public for setting
 ''' of parameters or storing to file are held in a wrapper class for each model
-''' (<see cref="cEcopathDataStructures">cEcopathDataStructures</see> or 
-''' <see cref="cEcosimDatastructures">cEcoSimDatastructures</see>). These classes
-''' provide a thin wrapper as well as a way to pass data back and forth between 
+''' (<see cref="cEcopathDataStructures"/> or <see cref="cEcosimDatastructures"/>). 
+''' These classes provide a thin wrapper, and a means to pass data back and forth between 
 ''' each other and a <see cref="IEwEDataSource">data source</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------

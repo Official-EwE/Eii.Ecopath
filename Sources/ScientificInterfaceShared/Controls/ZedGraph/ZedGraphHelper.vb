@@ -1442,31 +1442,10 @@ Namespace Controls
 
             Private ReadOnly Property LabelText() As String
                 Get
-                    Dim strDisplayText As String = ""
-
-                    If Me.m_aUnitTypes IsNot Nothing Then
-
-                        Select Case m_aUnitTypes.Length
-                            Case 0
-                                ' NOP
-                            Case 1
-                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
-                            Case 2
-                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
-                            Case Else
-                                Debug.Assert(False)
-                        End Select
-
-                    End If
-
-                    Return strDisplayText
+                    Return Me.m_uic.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
                 End Get
             End Property
 
-            Private Function GetUnitString(ByVal unitType As eUnitType) As String
-                Dim fmt As New cUnitFormatter(Me.m_uic.Core)
-                Return fmt.GetUnitString(unitType)
-            End Function
         End Class
 
         Private Sub RefreshAxisLabels()
@@ -1486,7 +1465,7 @@ Namespace Controls
                 End Try
             End If
 
-            If aUnitTypes IsNot Nothing Then
+            If (aUnitTypes IsNot Nothing) Then
                 Try
                     Dim alf As New cAxisLabelFormatter(Me.m_uic, axis, strLabel, aUnitTypes)
                     Me.m_dtAxisLabels(axis) = alf
