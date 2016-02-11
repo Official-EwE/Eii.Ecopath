@@ -65,7 +65,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(eVarNameFlags.TTLX)
             Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.Area)
-            Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
+            Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaOutput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
             Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
             Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
             Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
