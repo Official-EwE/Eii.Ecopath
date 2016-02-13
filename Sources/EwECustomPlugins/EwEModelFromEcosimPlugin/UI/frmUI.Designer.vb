@@ -59,7 +59,7 @@ Partial Class frmUI
         Me.m_cmbFormat = New System.Windows.Forms.ComboBox()
         Me.m_lblFormat = New System.Windows.Forms.Label()
         Me.m_tabBA = New System.Windows.Forms.TabPage()
-        Me.m_ts = New cEwEToolstrip()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnAll = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnNone = New System.Windows.Forms.ToolStripButton()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -114,6 +114,7 @@ Partial Class frmUI
         '
         resources.ApplyResources(Me.m_tbxOutputPath, "m_tbxOutputPath")
         Me.m_tbxOutputPath.Name = "m_tbxOutputPath"
+        Me.m_tbxOutputPath.ReadOnly = True
         '
         'm_btnChoose
         '
@@ -203,8 +204,10 @@ Partial Class frmUI
         'm_ts
         '
         resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAll, Me.m_tsbnNone})
         Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_ts.Stretch = True
         '
         'm_tsbnAll
@@ -228,6 +231,7 @@ Partial Class frmUI
         Me.Controls.Add(Me.m_tcMain)
         Me.Controls.Add(Me.m_grid)
         Me.Name = "frmUI"
+        Me.TabText = ""
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tcMain.ResumeLayout(False)
         Me.m_tabOutput.ResumeLayout(False)
