@@ -101,8 +101,8 @@ Public Class cConsWriterPlugin
     End Function
 
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        Return ""
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        Return Me.m_core.DefaultOutputPath(Me.AutoSaveType)
     End Function
 
     Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _

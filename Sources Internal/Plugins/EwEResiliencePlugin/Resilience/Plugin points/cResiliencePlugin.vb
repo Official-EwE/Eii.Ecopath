@@ -78,9 +78,9 @@ Public Class cResiliencePlugin
     End Function
 
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        ' No fancy sub-directories
-        Return ""
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        ' Default directories
+        Return Me.m_core.DefaultOutputPath(Me.AutoSaveType)
     End Function
 
     Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _

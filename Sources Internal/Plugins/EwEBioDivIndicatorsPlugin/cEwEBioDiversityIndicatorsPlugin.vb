@@ -1214,10 +1214,10 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     End Function
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IAutoSavePlugin.AutoSaveSubPath"/>
+    ''' <inheritdocs cref="EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath"/>
     ''' -----------------------------------------------------------------------
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
         ' Not used
         Return ""
     End Function
