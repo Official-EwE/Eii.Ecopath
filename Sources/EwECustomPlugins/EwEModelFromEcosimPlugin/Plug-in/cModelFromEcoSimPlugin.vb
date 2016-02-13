@@ -34,13 +34,15 @@ Imports ScientificInterfaceShared.Controls
 ''' Plug-in point for the 'Ecopath model from Ecosim' plug-in.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cPluginPoint
+Public Class cModelFromEcosimPluginPoint
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
     Implements IEcosimPlugin
     Implements IEcosimRunInitializedPlugin
     Implements IEcosimEndTimestepPostPlugin
     Implements IEcosimRunCompletedPlugin
+    Implements IMenuItemPlugin
+    Implements IAutoSavePlugin
 
     ' ToDo: consider what month to generate the models for. Right now, the default is the first month of the year
 
@@ -51,6 +53,7 @@ Public Class cPluginPoint
     Private m_core As cCore = Nothing
     Private m_data As cData = Nothing
     Private m_generator As cEcopathModelFromEcosim = Nothing
+    Private m_bAutosaving As Boolean = False
 
 #End Region ' Private vars
 
@@ -58,7 +61,7 @@ Public Class cPluginPoint
 
     Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "UBC Fisheries Centre"
+            Return "Ecopath International Initiative"
         End Get
     End Property
 
@@ -109,7 +112,7 @@ Public Class cPluginPoint
 
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Ecopath model from Ecosim"
+            Return My.Resources.CONTROL_TEXT
         End Get
     End Property
 
@@ -136,6 +139,13 @@ Public Class cPluginPoint
         End Get
     End Property
 
+    Public ReadOnly Property MenuItemLocation As String _
+        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Get
+            Return "MenuFile\ExportModel"
+        End Get
+    End Property
+
     Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
         Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
@@ -144,6 +154,34 @@ Public Class cPluginPoint
     End Property
 
 #End Region ' UI integration
+
+#Region " Autosaving "
+
+    Public Property AutoSave As Boolean Implements EwEPlugin.IAutoSavePlugin.AutoSave
+        Get
+            Return Me.m_data.Enabled
+        End Get
+        Set(value As Boolean)
+            Me.m_data.Enabled = value
+        End Set
+    End Property
+
+    Public Function AutoSaveName() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
+        Return Me.ControlText
+    End Function
+
+    Public Function AutoSaveSubPath() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
+        Return Me.m_data.AutosaveSubPath
+    End Function
+
+    Public Function AutoSaveType() As eAutosaveTypes _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
+        Return Me.m_data.AutosaveType
+    End Function
+
+#End Region ' Autosaving 
 
 #Region " Ecosim integration "
 
@@ -160,8 +198,6 @@ Public Class cPluginPoint
         Me.m_data.BACalcMode = bac
         Me.m_data.NumYears = Me.m_core.nEcosimYears
         Me.m_data.EwEModelName = cFileUtils.ToValidFileName(Me.m_core.EwEModel.Name, False)
-        Me.m_data.OutputPath = My.Settings.OutputPath
-        Me.m_data.Enabled = My.Settings.GenerationEnabled
         Me.m_data.WPower = My.Settings.WPower
         Me.m_data.BAAverageYears = My.Settings.BANumYears
 
@@ -171,14 +207,12 @@ Public Class cPluginPoint
         Implements EwEPlugin.IEcosimPlugin.SaveEcosimScenario
 
         ' Save settings
-        ' ToDo_JS: save to Ecosim Scenario in DB
-        My.Settings.GenerationEnabled = Me.m_data.Enabled
         My.Settings.BACalcMode = Me.m_data.BACalcMode
-        If String.Compare(Me.m_data.OutputPath, Me.m_core.OutputPath, True) <> 0 Then
-            My.Settings.OutputPath = Me.m_data.OutputPath
-        Else
-            My.Settings.OutputPath = ""
-        End If
+        'If String.Compare(Me.m_data.CustomOutputPath, Me.m_core.OutputPath, True) <> 0 Then
+        '    My.Settings.OutputPath = Me.m_data.CustomOutputPath
+        'Else
+        '    My.Settings.OutputPath = ""
+        'End If
         My.Settings.BANumYears = Me.m_data.NumYears
         My.Settings.WPower = Me.m_data.WPower
         My.Settings.Save()
@@ -200,7 +234,11 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
-        If Me.m_data.Enabled Then
+
+        ' Use a static version of the enabled flag for the duration of an Ecosim run 
+        Me.m_bAutosaving = Me.AutoSave
+
+        If Me.m_bAutosaving Then
             Me.m_generator.InitRun(Me.m_data.OutputPath)
         End If
     End Sub
@@ -213,7 +251,7 @@ Public Class cPluginPoint
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
-        If Me.m_data.Enabled Then
+        If Me.m_bAutosaving Then
             Me.m_generator.EndRun()
         End If
     End Sub
@@ -230,7 +268,7 @@ Public Class cPluginPoint
         Dim iMonth As Integer = iTime Mod cCore.N_MONTHS
         Dim iYear As Integer = CInt(iTime / cCore.N_MONTHS)
 
-        If (Not Me.m_data.Enabled) Then Return
+        If (Not Me.m_bAutosaving) Then Return
         If (iMonth <> 0) Then Return
 
         ' Is generator explicitly enabled and should a model be created for the current time step?

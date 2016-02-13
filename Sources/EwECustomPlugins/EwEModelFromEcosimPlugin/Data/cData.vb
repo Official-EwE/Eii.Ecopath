@@ -81,7 +81,15 @@ Friend Class cData
     ''' Get/set whether model generation should be enabled.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Enabled() As Boolean = True
+    Public Property Enabled() As Boolean
+        Get
+            Return My.Settings.GenerationEnabled
+        End Get
+        Set(value As Boolean)
+            My.Settings.GenerationEnabled = value
+            My.Settings.Save()
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -161,7 +169,7 @@ Friend Class cData
     ''' Get/set the model output directory.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property OutputPath() As String
+    Public Property CustomOutputPath() As String
         Get
             If Not Directory.Exists(Me.m_strOutputPath) Then
                 Return Me.m_core.OutputPath
@@ -171,6 +179,27 @@ Friend Class cData
         Set(value As String)
             Me.m_strOutputPath = value
         End Set
+    End Property
+
+    Public ReadOnly Property OutputPath As String
+        Get
+            'If Not String.IsNullOrWhiteSpace(Me.CustomOutputPath) Then
+            '    Return Me.CustomOutputPath
+            'End If
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), Me.AutosaveSubPath)
+        End Get
+    End Property
+
+    Public ReadOnly Property AutosaveType As eAutosaveTypes
+        Get
+            Return eAutosaveTypes.Ecosim
+        End Get
+    End Property
+
+    Public ReadOnly Property AutosaveSubPath As String
+        Get
+            Return cFileUtils.ToValidFileName(My.Resources.CONTROL_TEXT, False)
+        End Get
     End Property
 
     ''' -----------------------------------------------------------------------

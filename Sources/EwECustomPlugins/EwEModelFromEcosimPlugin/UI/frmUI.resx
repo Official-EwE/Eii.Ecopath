@@ -166,7 +166,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEModelFromEcosim.gridUI, EwEModelFromEcosim, Version=6.5.10625.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
+    <value>EwEModelFromEcosim.gridUI, EwEModelFromEcosim, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -208,7 +208,7 @@
     <value>80, 28</value>
   </data>
   <data name="m_tbxOutputPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>385, 20</value>
+    <value>466, 20</value>
   </data>
   <data name="m_tbxOutputPath.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -229,7 +229,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>471, 26</value>
+    <value>471, 51</value>
   </data>
   <data name="m_btnChoose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -239,6 +239,9 @@
   </data>
   <data name="m_btnChoose.Text" xml:space="preserve">
     <value>&amp;Choose...</value>
+  </data>
+  <data name="m_btnChoose.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;m_btnChoose.Name" xml:space="preserve">
     <value>m_btnChoose</value>
@@ -625,7 +628,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -664,6 +667,6 @@
     <value>frmUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.10625.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

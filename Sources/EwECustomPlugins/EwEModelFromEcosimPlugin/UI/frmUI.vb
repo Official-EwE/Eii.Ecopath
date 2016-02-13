@@ -52,6 +52,7 @@ Friend Class frmUI
         MyBase.New()
         Me.InitializeComponent()
         Me.m_data = data
+
     End Sub
 
 #End Region ' Construction
@@ -89,11 +90,9 @@ Friend Class frmUI
             Me.m_cmbFormat.Items.Add(eDataSourceTypes.Access2003)
             Me.m_cmbFormat.Items.Add(eDataSourceTypes.Access2007)
 
-            Me.m_cbEnable.Checked = Me.m_data.Enabled
             Me.m_nudNumYears.Minimum = 1
             Me.m_nudNumYears.Maximum = Core.nEcosimYears
             Me.m_nudNumYears.Value = Math.Max(1, Math.Min(Me.m_data.NumYears, Me.m_nudNumYears.Maximum))
-            Me.m_tbxOutputPath.Text = Me.m_data.OutputPath
             Me.m_tbxWeightPower.Text = Me.m_data.WPower.ToString
             Me.m_cmbBACalcType.SelectedItem = Me.m_data.BACalcMode
             Me.m_cmbFormat.SelectedItem = Me.m_data.OutputFormat
@@ -115,6 +114,8 @@ Friend Class frmUI
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.TimeSeries}
         Me.UpdateControls()
 
+        AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+
         ' Populate form async
         Me.BeginInvoke(New MethodInvoker(AddressOf Me.m_grid.RefreshContent))
 
@@ -124,6 +125,8 @@ Friend Class frmUI
 
         Me.m_qeh.Detach()
         Me.m_qeh = Nothing
+
+        RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
@@ -161,22 +164,22 @@ Friend Class frmUI
 
     End Sub
 
-    Private Sub OnBrowseOutputPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnChoose.Click
+    'Private Sub OnBrowseOutputPath(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    '    Handles m_btnChoose.Click
 
-        If (Not Me.m_bReady) Then Return
-        Try
-            Dim cmd As cDirectoryOpenCommand = DirectCast(Me.CommandHandler.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
-            cmd.Invoke(Me.m_data.OutputPath, My.Resources.PROMPT_OUTPUT_FOLDER)
-            If (cmd.Result = DialogResult.OK) Then
-                Me.m_tbxOutputPath.Text = cmd.Directory
-                Me.Apply()
-            End If
-        Catch ex As Exception
-            cLog.Write(ex, "frmUI::OnBrowseOutputPath")
-        End Try
+    '    If (Not Me.m_bReady) Then Return
+    '    Try
+    '        Dim cmd As cDirectoryOpenCommand = DirectCast(Me.CommandHandler.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
+    '        cmd.Invoke(Me.m_data.CustomOutputPath, My.Resources.PROMPT_OUTPUT_FOLDER)
+    '        If (cmd.Result = DialogResult.OK) Then
+    '            Me.m_tbxOutputPath.Text = cmd.Directory
+    '            Me.Apply()
+    '        End If
+    '    Catch ex As Exception
+    '        cLog.Write(ex, "frmUI::OnBrowseOutputPath")
+    '    End Try
 
-    End Sub
+    'End Sub
 
     Private Sub OnOutputPathTextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tbxOutputPath.TextChanged
@@ -263,6 +266,14 @@ Friend Class frmUI
 
 #End Region ' Control events
 
+#Region " Settings events "
+
+    Private Sub OnSettingsChanged(sender As Object, args As EventArgs)
+        Me.UpdateControls()
+    End Sub
+
+#End Region ' Settings events
+
 #Region " Internals "
 
     ''' <summary>
@@ -275,7 +286,7 @@ Friend Class frmUI
 
         Me.m_data.Enabled = Me.m_cbEnable.Checked
         Me.m_data.NumYears = Me.Core.nEcosimYears
-        Me.m_data.OutputPath = Me.m_tbxOutputPath.Text
+        'Me.m_data.CustomOutputPath = Me.m_tbxOutputPath.Text
         Me.m_data.OutputFormat = DirectCast(Me.m_cmbFormat.SelectedItem, eDataSourceTypes)
         Me.m_data.BACalcMode = DirectCast(Me.m_cmbBACalcType.SelectedIndex, cEcopathModelFromEcosim.eBACalcTypes)
         Me.m_data.BAAverageYears = CInt(Me.m_nudNumYears.Value)
@@ -302,6 +313,8 @@ Friend Class frmUI
                 bReqNYears = True
         End Select
 
+        Me.m_cbEnable.Checked = Me.m_data.Enabled
+        Me.m_tbxOutputPath.Text = Me.m_data.OutputPath
         Me.m_tbxOutputPath.Enabled = Me.m_data.Enabled
         Me.m_cmbFormat.Enabled = Me.m_data.Enabled
         Me.m_btnChoose.Enabled = Me.m_data.Enabled
