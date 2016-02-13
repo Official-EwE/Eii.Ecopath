@@ -221,9 +221,10 @@ Public Class cSFPPluginPoint
         Return Me.ControlText
     End Function
 
-    Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        Return cFileUtils.ToValidFileName(Me.ControlText, False)
+    Public Function AutoSaveOutputPath() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        Return System.IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(Me.AutoSaveType), _
+                                      cFileUtils.ToValidFileName(Me.ControlText, False))
     End Function
 
     Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _

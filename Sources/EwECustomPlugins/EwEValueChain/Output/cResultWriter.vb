@@ -166,9 +166,9 @@ Public Class cResultWriter
 
         Select Case m_results.RunType
             Case cModel.eRunTypes.Ecopath
-                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), cData.SaveSubPath)
+                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), "ValueChain")
             Case cModel.eRunTypes.Ecosim
-                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), cData.SaveSubPath)
+                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "ValueChain")
             Case cModel.eRunTypes.Equilibrium
                 Return ""
                 'strPath = Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath, strPrefix:="ValueChain_")

@@ -186,19 +186,14 @@ Friend Class cData
             'If Not String.IsNullOrWhiteSpace(Me.CustomOutputPath) Then
             '    Return Me.CustomOutputPath
             'End If
-            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), Me.AutosaveSubPath)
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), _
+                                cFileUtils.ToValidFileName(My.Resources.CONTROL_TEXT, False))
         End Get
     End Property
 
     Public ReadOnly Property AutosaveType As eAutosaveTypes
         Get
             Return eAutosaveTypes.Ecosim
-        End Get
-    End Property
-
-    Public ReadOnly Property AutosaveSubPath As String
-        Get
-            Return cFileUtils.ToValidFileName(My.Resources.CONTROL_TEXT, False)
         End Get
     End Property
 

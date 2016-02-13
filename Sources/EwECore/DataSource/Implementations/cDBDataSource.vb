@@ -3383,8 +3383,6 @@ Namespace DataSources
                                  ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddTaxon
 
-            If (data Is Nothing) Then Return False
-
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -3396,43 +3394,59 @@ Namespace DataSources
 
             Try
                 drow = writer.NewRow()
-                drow("TaxonID") = iDBID
-                drow("CodeSAUP") = data.CodeSAUP
-                drow("CodeSLB") = data.CodeSLB
-                drow("CodeFB") = data.CodeFB
-                drow("CodeFAO") = data.CodeFAO
-                drow("CodeLCID") = data.CodeLSID
-                drow("ClassName") = data.Class
-                drow("OrderName") = data.Order
-                drow("FamilyName") = data.Family
-                drow("GenusName") = data.Genus
-                drow("SpeciesName") = data.Species
-                drow("CommonName") = data.Common
-                drow("SourceName") = data.Source
-                drow("SourceKey") = data.SourceKey
-                drow("LastUpdated") = cDateUtils.DateToJulian()
 
-                ' Add bonus data if available
-                If TypeOf (data) Is ITaxonDetailsData Then
-                    Dim dataDetails As ITaxonDetailsData = DirectCast(data, ITaxonDetailsData)
-                    drow("EcologyType") = dataDetails.EcologyType
-                    drow("OrganismType") = dataDetails.OrganismType
-                    drow("ConservationStatus") = dataDetails.IUCNConservationStatus
-                    drow("OccurrenceStatus") = dataDetails.OccurrenceStatus
-                    drow("MeanWeight") = dataDetails.MeanWeight
-                    drow("MeanLength") = dataDetails.MeanLength
-                    drow("MaxLength") = dataDetails.MaxLength
-                    drow("MeanLifeSpan") = dataDetails.MeanLifespan
-                    drow("Winf") = dataDetails.Winf
-                    drow("vbgfK") = dataDetails.vbgfK
-                    drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
+                drow("TaxonID") = iDBID
+                drow("CodeFAO") = ""
+                drow("CodeLCID") = ""
+                drow("ClassName") = ""
+                drow("OrderName") = ""
+                drow("FamilyName") = ""
+                drow("GenusName") = ""
+                drow("SpeciesName") = ""
+                drow("CommonName") = ""
+                drow("SourceName") = ""
+                drow("SourceKey") = ""
+                drow("Winf") = 0
+                drow("vbgfK") = 0
+
+                If (data IsNot Nothing) Then
+                    drow("CodeSAUP") = data.CodeSAUP
+                    drow("CodeSLB") = data.CodeSLB
+                    drow("CodeFB") = data.CodeFB
+                    drow("CodeFAO") = data.CodeFAO
+                    drow("CodeLCID") = data.CodeLSID
+                    drow("ClassName") = data.Class
+                    drow("OrderName") = data.Order
+                    drow("FamilyName") = data.Family
+                    drow("GenusName") = data.Genus
+                    drow("SpeciesName") = data.Species
+                    drow("CommonName") = data.Common
+                    drow("SourceName") = data.Source
+                    drow("SourceKey") = data.SourceKey
+
+                    ' Add bonus data if available
+                    If TypeOf (data) Is ITaxonDetailsData Then
+                        Dim dataDetails As ITaxonDetailsData = DirectCast(data, ITaxonDetailsData)
+                        drow("EcologyType") = dataDetails.EcologyType
+                        drow("OrganismType") = dataDetails.OrganismType
+                        drow("ConservationStatus") = dataDetails.IUCNConservationStatus
+                        drow("OccurrenceStatus") = dataDetails.OccurrenceStatus
+                        drow("MeanWeight") = dataDetails.MeanWeight
+                        drow("MeanLength") = dataDetails.MeanLength
+                        drow("MaxLength") = dataDetails.MaxLength
+                        drow("MeanLifeSpan") = dataDetails.MeanLifespan
+                        drow("Winf") = dataDetails.Winf
+                        drow("vbgfK") = dataDetails.vbgfK
+                        drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
+                    End If
                 End If
+                drow("LastUpdated") = cDateUtils.DateToJulian()
 
                 writer.AddRow(drow)
                 bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
             Catch ex As Exception
                 bSucces = False
-                Me.LogMessage(String.format("Error {0} occurred while adding taxon", ex.Message))
+                Me.LogMessage(String.Format("Error {0} occurred while adding taxon", ex.Message))
             End Try
 
             Try

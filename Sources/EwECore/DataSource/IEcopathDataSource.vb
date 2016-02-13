@@ -270,7 +270,7 @@ Namespace DataSources
         ''' <param name="iTargetDBID">DBIDs of the target to assign this taxon to.</param>
         ''' <param name="bIsStanza">Flag stating whether the <paramref name="iTargetDBID"/>
         ''' is a stanza (true) or a group (false).</param>
-        ''' <param name="data">Data to populate taxonomy definition with.</param>
+        ''' <param name="data">Data to populate taxonomy definition with. This data can be NULL.</param>
         ''' <param name="sProportion">Proportion this taxon contributes to the group.</param>
         ''' <param name="iDBID">Database ID assigned to the new taxon.</param>
         ''' <returns>True if succesful.</returns>

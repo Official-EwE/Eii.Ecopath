@@ -460,6 +460,7 @@ Namespace Ecosim
             End If
 
             Me.SaveSettings()
+            Me.m_pbFlowDiagram.Invalidate()
 
             ' Preserve layout
             Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD" & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID)
@@ -1091,20 +1092,24 @@ Namespace Ecosim
 
             Me.m_bInUpdate = True
 
-            Me.m_tree.ShowTitle = My.Settings.FDShowTitle
-            Me.m_tree.ShowLegend = CType(My.Settings.FDShowLegend, TriState)
-            Me.m_tree.NumberOfTrophicLevels = My.Settings.FDNumTL
-            Me.m_tree.AutoColorUsage = CType(My.Settings.FDAutoColorUsage, eFDColorUsageTypes)
-            Me.m_tree.NodeType = DirectCast(My.Settings.FDNodeType, eFDNodeTypes)
-            Me.m_tree.CustomNodeColor = My.Settings.FDCustomNodeColor
-            Me.m_tree.AutoNodeSize = My.Settings.FDNodeAutoSize
-            Me.m_tree.CustomNodeSize = My.Settings.FDNodeCustomSize
-            Me.m_tree.AutoLineWidth = My.Settings.FDAutoLineWidth
-            Me.m_tree.CustomLineWidth = My.Settings.FDCustomLineWidth
-            Me.m_tree.CustomLineColor = My.Settings.FDCustomLineColor
-            Me.m_tree.ShowHiddenMode = CType(My.Settings.FDShowHiddenNodes, eFDShowHiddenType)
-            Me.m_fpDelay.Value = My.Settings.FDAnimateDelay
-
+            Try
+                Me.m_tree.ShowTitle = My.Settings.FDShowTitle
+                Me.m_tree.ShowLegend = CType(My.Settings.FDShowLegend, TriState)
+                Me.m_tree.NumberOfTrophicLevels = My.Settings.FDNumTL
+                Me.m_tree.AutoColorUsage = CType(My.Settings.FDAutoColorUsage, eFDColorUsageTypes)
+                Me.m_tree.NodeType = DirectCast(My.Settings.FDNodeType, eFDNodeTypes)
+                Me.m_tree.CustomNodeColor = My.Settings.FDCustomNodeColor
+                Me.m_tree.AutoNodeSize = My.Settings.FDNodeAutoSize
+                Me.m_tree.CustomNodeSize = My.Settings.FDNodeCustomSize
+                Me.m_tree.AutoLineWidth = My.Settings.FDAutoLineWidth
+                Me.m_tree.CustomLineWidth = My.Settings.FDCustomLineWidth
+                Me.m_tree.CustomLineColor = My.Settings.FDCustomLineColor
+                Me.m_tree.ShowHiddenMode = CType(My.Settings.FDShowHiddenNodes, eFDShowHiddenType)
+                Me.m_fpDelay.Value = My.Settings.FDAnimateDelay
+            Catch ex As Exception
+                cLog.Write(ex, "frmEcosimFD.LoadSettings")
+            End Try
+  
             Me.m_bInUpdate = False
 
         End Sub
@@ -1115,21 +1120,26 @@ Namespace Ecosim
 
             Me.m_bInUpdate = True
 
-            My.Settings.FDShowTitle = Me.m_tree.ShowTitle
-            My.Settings.FDShowLegend = Me.m_tree.ShowLegend
-            My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
-            My.Settings.FDAutoColorUsage = Me.m_tree.AutoColorUsage
-            My.Settings.FDNodeType = Me.m_tree.NodeType
-            My.Settings.FDCustomNodeColor = Me.m_tree.CustomNodeColor
-            My.Settings.FDNodeAutoSize = Me.m_tree.AutoNodeSize
-            My.Settings.FDNodeCustomSize = Me.m_tree.CustomNodeSize
-            My.Settings.FDAutoLineWidth = Me.m_tree.AutoLineWidth
-            My.Settings.FDCustomLineWidth = Me.m_tree.CustomLineWidth
-            My.Settings.FDCustomLineColor = Me.m_tree.CustomLineColor
-            My.Settings.FDShowHiddenNodes = Me.m_tree.ShowHiddenMode
-            My.Settings.FDAnimateDelay = CInt(Me.m_fpDelay.Value)
+            Try
+                My.Settings.FDShowTitle = Me.m_tree.ShowTitle
+                My.Settings.FDShowLegend = Me.m_tree.ShowLegend
+                My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
+                My.Settings.FDAutoColorUsage = Me.m_tree.AutoColorUsage
+                My.Settings.FDNodeType = Me.m_tree.NodeType
+                My.Settings.FDCustomNodeColor = Me.m_tree.CustomNodeColor
+                My.Settings.FDNodeAutoSize = Me.m_tree.AutoNodeSize
+                My.Settings.FDNodeCustomSize = Me.m_tree.CustomNodeSize
+                My.Settings.FDAutoLineWidth = Me.m_tree.AutoLineWidth
+                My.Settings.FDCustomLineWidth = Me.m_tree.CustomLineWidth
+                My.Settings.FDCustomLineColor = Me.m_tree.CustomLineColor
+                My.Settings.FDShowHiddenNodes = Me.m_tree.ShowHiddenMode
+                My.Settings.FDAnimateDelay = CInt(Me.m_fpDelay.Value)
 
-            My.Settings.Save()
+                My.Settings.Save()
+
+            Catch ex As Exception
+                cLog.Write(ex, "frmEcosimFD.SaveSettings")
+            End Try
 
             Me.m_bInUpdate = False
 
