@@ -67,11 +67,12 @@ Public Interface IAutoSavePlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the relative path under the <see cref="AutoSaveType"/> path
-    ''' that this plug-in saves to.
+    ''' Get/set the output path to save to. A plug-in is responsible for ensuting
+    ''' that the default output path is nested under the EwE location for the 
+    ''' provided <see cref="AutoSaveType"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Function AutoSaveSubPath() As String
+    Function AutoSaveOutputPath() As String
 
 End Interface
 

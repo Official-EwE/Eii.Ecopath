@@ -110,6 +110,7 @@ Public Class cEcopathModelFromEcosim
                               ByVal WeightPower As Single) As eDatasourceAccessType
 
         ' ToDo: localize this
+        ' ToDo: support other datasource formats too, please!
 
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
@@ -161,7 +162,7 @@ Public Class cEcopathModelFromEcosim
 
     End Function
 
-#End Region
+#End Region ' Public access
 
 #Region " Internals "
 
@@ -177,10 +178,12 @@ Public Class cEcopathModelFromEcosim
         Dim bSuccess As Boolean = True
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim taxonSrc As cTaxonDataStructures = Me.m_core.m_TaxonData
 
         Dim aiGroupID(pathSrc.NumGroups) As Integer
         Dim aiFleetID(pathSrc.NumFleet) As Integer
         Dim aiStanzaID(stanzaSrc.Nsplit) As Integer
+        Dim aiTaxonID(taxonSrc.NumTaxon) As Integer
 
         If Not coreNew.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
@@ -235,7 +238,18 @@ Public Class cEcopathModelFromEcosim
 
         coreNew.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
 
-        ' Validate cores
+        ' Define taxa in a second step AFTER all groups and stanza have been created
+        coreNew.SetBatchLock(cCore.eBatchLockType.Restructure)
+        For iTaxon As Integer = 1 To Me.m_core.nTaxon
+            Dim iIDNew As Integer = 0
+            If taxonSrc.IsTaxonStanza(iTaxon) Then
+                bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), True, Nothing, 1, iIDNew)
+            Else
+                bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), False, Nothing, taxonSrc.TaxonPropBiomass(iTaxon), iIDNew)
+            End If
+            aiTaxonID(iTaxon) = iIDNew
+        Next
+        coreNew.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
 
         Return bSuccess
 
@@ -267,6 +281,10 @@ Public Class cEcopathModelFromEcosim
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
         Dim stanzaDest As cStanzaDatastructures = coreNew.m_Stanza
         Dim StanzaDBIDs(coreNew.nStanzas) As Integer
+        Dim TaxonDBIDs(coreNew.nTaxon) As Integer
+
+        Dim taxonSrc As cTaxonDataStructures = Me.m_core.m_TaxonData
+        Dim taxonDest As cTaxonDataStructures = coreNew.m_TaxonData
 
         Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
@@ -295,15 +313,18 @@ Public Class cEcopathModelFromEcosim
         Array.Copy(pathDest.GroupDBID, GroupDBIDs, pathDest.GroupDBID.Length)
         Array.Copy(pathDest.FleetDBID, FleetDBIDs, pathDest.FleetDBID.Length)
         Array.Copy(stanzaDest.StanzaDBID, StanzaDBIDs, stanzaDest.StanzaDBID.Length)
+        Array.Copy(taxonDest.TaxonDBID, TaxonDBIDs, taxonDest.TaxonDBID.Length)
 
         ' Copy bulk of data
         pathSrc.copyTo(pathDest, False)
         stanzaSrc.copyTo(stanzaDest)
+        taxonSrc.copyto(taxonDest)
 
         ' Restore DBIDs
         Array.Copy(GroupDBIDs, pathDest.GroupDBID, pathDest.GroupDBID.Length)
         Array.Copy(FleetDBIDs, pathDest.FleetDBID, pathDest.FleetDBID.Length)
         Array.Copy(StanzaDBIDs, stanzaDest.StanzaDBID, stanzaDest.StanzaDBID.Length)
+        Array.Copy(TaxonDBIDs, taxonDest.TaxonDBID, taxonDest.TaxonDBID.Length)
 
         ' Clear data that is not going to be copied
         pathDest.NumEcosimScenarios = 0

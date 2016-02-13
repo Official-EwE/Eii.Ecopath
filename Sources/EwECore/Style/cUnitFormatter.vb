@@ -77,6 +77,9 @@ Namespace Style
                     ' ToDo: localize this
                     strUnitString = "unit biomass" ' Fixed
 
+                Case eUnitType.Proportion
+                    strUnitString = "prop"
+
                 Case eUnitType.None
                     ' NOP
 

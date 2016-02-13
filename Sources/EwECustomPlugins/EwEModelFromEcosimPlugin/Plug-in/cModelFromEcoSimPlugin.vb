@@ -172,8 +172,8 @@ Public Class cModelFromEcosimPluginPoint
     End Function
 
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        Return Me.m_data.AutosaveSubPath
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        Return Me.m_data.OutputPath
     End Function
 
     Public Function AutoSaveType() As eAutosaveTypes _

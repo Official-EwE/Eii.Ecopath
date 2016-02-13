@@ -130,8 +130,6 @@ Namespace ValueWrapper
                 ByVal Status As eStatusFlags, _
                 ByVal VarType As eValueTypes, _
                 ByVal MetaData As cVariableMetaData)
-            ' JS 15Feb15: Metadata was not passed along which seems like a bug to me
-            'Me.New(Value, VarName, Status, VarType, Nothing, Nothing)
             Me.New(Value, VarName, Status, VarType, MetaData, Nothing)
         End Sub
 
@@ -163,6 +161,11 @@ Namespace ValueWrapper
 
             Me.m_bStored = True
             Me.m_bAffectsRunState = True
+
+            ' Find shared metadata
+            If (Me.m_metadata Is Nothing) Then
+                Me.m_metadata = cVariableMetadataFactory.GetInstance().Metadata(VarName)
+            End If
 
             ' Complement metadata
             If (Me.m_metadata Is Nothing) Then

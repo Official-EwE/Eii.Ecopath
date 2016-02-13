@@ -2623,6 +2623,8 @@ Namespace Core
         Area
         ''' <summary>Biomass unit.</summary>
         Biomass
+        ''' <summary>Propotion unit.</summary>
+        Proportion
     End Enum
 
     ''' ---------------------------------------------------------------------------

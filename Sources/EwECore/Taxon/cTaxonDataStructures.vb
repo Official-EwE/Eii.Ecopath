@@ -158,6 +158,50 @@ Public Class cTaxonDataStructures
 
     End Sub
 
+    Friend Sub copyTo(ByRef d As cTaxonDataStructures)
+
+        d.NumTaxon = Me.NumTaxon
+        d.RedimTaxon()
+
+        TaxonDBID.CopyTo(d.TaxonDBID, 0)
+        TaxonTarget.CopyTo(d.TaxonTarget, 0)
+        IsTaxonStanza.CopyTo(d.IsTaxonStanza, 0)
+        TaxonPropBiomass.CopyTo(d.TaxonPropBiomass, 0)
+        TaxonPropCatch.CopyTo(d.TaxonPropCatch, 0)
+        TaxonClass.CopyTo(d.TaxonClass, 0)
+        TaxonCodeSAUP.CopyTo(d.TaxonCodeSAUP, 0)
+        TaxonCodeFB.CopyTo(d.TaxonCodeFB, 0)
+        TaxonCodeSLB.CopyTo(d.TaxonCodeSLB, 0)
+        TaxonCodeFAO.CopyTo(d.TaxonCodeFAO, 0)
+        TaxonCodeLSID.CopyTo(d.TaxonCodeLSID, 0)
+        TaxonName.CopyTo(d.TaxonName, 0)
+        TaxonGenus.CopyTo(d.TaxonGenus, 0)
+        TaxonFamily.CopyTo(d.TaxonFamily, 0)
+        TaxonGenus.CopyTo(d.TaxonGenus, 0)
+        TaxonOrder.CopyTo(d.TaxonOrder, 0)
+        TaxonSourceKey.CopyTo(d.TaxonSourceKey, 0)
+        TaxonSource.CopyTo(d.TaxonSource, 0)
+        TaxonSpecies.CopyTo(d.TaxonSpecies, 0)
+        TaxonNorth.CopyTo(d.TaxonNorth, 0)
+        TaxonSouth.CopyTo(d.TaxonSouth, 0)
+        TaxonEast.CopyTo(d.TaxonEast, 0)
+        TaxonWest.CopyTo(d.TaxonWest, 0)
+        TaxonEcologyType.CopyTo(d.TaxonEcologyType, 0)
+        TaxonOrganismType.CopyTo(d.TaxonOrganismType, 0)
+        TaxonIUCNConservationStatus.CopyTo(d.TaxonIUCNConservationStatus, 0)
+        TaxonExploitationStatus.CopyTo(d.TaxonExploitationStatus, 0)
+        TaxonOccurrenceStatus.CopyTo(d.TaxonOccurrenceStatus, 0)
+        TaxonMeanWeight.CopyTo(d.TaxonMeanWeight, 0)
+        TaxonMeanLength.CopyTo(d.TaxonMeanLength, 0)
+        TaxonMaxLength.CopyTo(d.TaxonMaxLength, 0)
+        TaxonMeanLifeSpan.CopyTo(d.TaxonMeanLifeSpan, 0)
+        TaxonVulnerabilityIndex.CopyTo(d.TaxonVulnerabilityIndex, 0)
+        TaxonLastUpdated.CopyTo(d.TaxonLastUpdated, 0)
+        TaxonWinf.CopyTo(d.TaxonWinf, 0)
+        TaxonK.CopyTo(d.TaxonK, 0)
+
+    End Sub
+
 #Region " Taxon index "
 
     ''' <summary>

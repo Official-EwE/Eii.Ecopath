@@ -108,10 +108,6 @@ Public Class cData
         Me.m_strDBName = ""
     End Sub
 
-    Public Shared Function SaveSubPath() As String
-        Return "ValueChain"
-    End Function
-
 #Region " Database access "
 
     Public Function Load(ByVal strModelName As String) As Boolean

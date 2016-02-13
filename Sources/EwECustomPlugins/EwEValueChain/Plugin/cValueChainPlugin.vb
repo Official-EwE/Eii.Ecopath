@@ -745,11 +745,11 @@ Public Class cValueChainPlugin
     End Function
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveSubPath"/>
+    ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveOutputPath"/>
     ''' -----------------------------------------------------------------------
     Public Function AutoSaveSubPath() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        Return cData.SaveSubPath()
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
+        Return ""
     End Function
 
     ''' -----------------------------------------------------------------------
