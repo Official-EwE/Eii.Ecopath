@@ -870,11 +870,11 @@ Public Class cMonteCarloManager
                 grp.SetStatusFlags(eVarNameFlags.mcQBbf, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput, True))
 
                 ' BA
-                grp.SetStatusFlags(eVarNameFlags.mcBA, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
-                grp.SetStatusFlags(eVarNameFlags.mcBAcv, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
-                grp.SetStatusFlags(eVarNameFlags.mcBALower, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
-                grp.SetStatusFlags(eVarNameFlags.mcBAUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
-                grp.SetStatusFlags(eVarNameFlags.mcBAbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum, True))
+                grp.SetStatusFlags(eVarNameFlags.mcBA, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBAcv, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBALower, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBAUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBAbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput, True))
 
                 ' EE
                 grp.SetStatusFlags(eVarNameFlags.mcEE, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
