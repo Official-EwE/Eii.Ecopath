@@ -309,7 +309,7 @@ Namespace Database
                 buff = eiiStrm.ReadLine()
                 recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
                 For i = 1 To ecopathDS.NumGroups
-                    Single.TryParse(recs(i - 1), ecopathDS.BA(i))
+                    Single.TryParse(recs(i - 1), ecopathDS.BAInput(i))
                 Next i
 
                 ' Diet Fate array added July 1994/VC
@@ -764,7 +764,7 @@ Namespace Database
                     drow("GroupName") = Me.m_data.GroupName(iGroup)
                     drow("Type") = Me.m_data.PP(iGroup)
                     drow("Area") = Me.m_data.Area(iGroup)
-                    drow("BiomAcc") = Me.m_data.BA(iGroup)
+                    drow("BiomAcc") = Me.m_data.BAInput(iGroup)
                     drow("BiomAccRate") = Me.m_data.BaBi(iGroup)
                     drow("Unassim") = Me.m_data.GS(iGroup)
                     drow("DtImports") = Me.m_data.DtImp(iGroup)

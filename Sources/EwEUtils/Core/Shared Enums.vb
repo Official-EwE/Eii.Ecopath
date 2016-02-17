@@ -108,10 +108,12 @@ Namespace Core
         BiomassAreaInput
         ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see></summary>
         BiomassAreaOutput
-        ''' <summary>Net. biomass accumulation</summary>
-        BioAccum
+        ''' <summary>Net. biomass accumulation as entered by the user</summary>
+        BioAccumInput
         ''' <summary>Biomass accumulation rate per year</summary>
         BioAccumRatePerYear
+        ''' <summary>Net. biomass accumulation</summary>
+        BioAccumOutput
         ''' <summary>To document</summary>
         GS
         ''' <summary>To document</summary>

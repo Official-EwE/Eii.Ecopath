@@ -1953,7 +1953,7 @@ Namespace DataSources
                     ecopathDS.PP(iGroup) = CSng(reader("Type"))
                     ecopathDS.Area(iGroup) = CSng(reader("Area"))
                     ecopathDS.BH(iGroup) = ecopathDS.B(iGroup) / ecopathDS.Area(iGroup)
-                    ecopathDS.BA(iGroup) = CSng(reader("BiomAcc"))
+                    ecopathDS.BAInput(iGroup) = CSng(reader("BiomAcc"))
                     ' VERIFY_JS: Check default value for BiomAccRate. 0 is assumed
                     ecopathDS.BaBi(iGroup) = CSng(reader("BiomAccRate"))
                     ecopathDS.GS(iGroup) = CSng(reader("Unassim"))
@@ -2047,7 +2047,7 @@ Namespace DataSources
                     drow("GroupName") = ecopathDS.GroupName(iGroup)
                     drow("Type") = ecopathDS.PP(iGroup)
                     drow("Area") = ecopathDS.Area(iGroup)
-                    drow("BiomAcc") = ecopathDS.BA(iGroup)
+                    drow("BiomAcc") = ecopathDS.BAInput(iGroup)
                     drow("BiomAccRate") = ecopathDS.BaBi(iGroup)
                     drow("Unassim") = ecopathDS.GS(iGroup)
                     drow("DtImports") = ecopathDS.DtImp(iGroup)

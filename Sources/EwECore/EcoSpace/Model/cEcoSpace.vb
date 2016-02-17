@@ -1473,10 +1473,10 @@ Public Class cEcoSpace
     Friend Sub UpdateDepthMap()
         For i As Integer = 1 To m_Data.InRow
             For j As Integer = 1 To m_Data.InCol
-                If Me.m_Data.Excluded(i, j) Then
+                If Me.m_Data.Excluded(i, j) Or (Me.m_Data.Depth(i, j) = cCore.NULL_VALUE) Then
                     Me.m_Data.Depth(i, j) = cCore.NULL_VALUE
                 Else
-                    Me.m_Data.Depth(i, j) = Me.m_Data.DepthInput(i, j)
+                    Me.m_Data.Depth(i, j) = Math.Max(0, Me.m_Data.DepthInput(i, j))
                 End If
             Next
         Next

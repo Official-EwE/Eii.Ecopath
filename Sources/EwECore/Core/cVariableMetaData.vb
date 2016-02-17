@@ -63,7 +63,7 @@ Public Class cVariableMetadataFactory
         Me.Metadata(eVarNameFlags.Area) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
                                                         cCore.NULL_VALUE, _
                                                         unitsProp)
-        Me.Metadata(eVarNameFlags.BioAccum) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
+        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
                                                         , _
                                                         unitsNotAssesed)
         Me.Metadata(eVarNameFlags.Biomass) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _

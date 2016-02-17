@@ -145,7 +145,7 @@ Namespace Ecopath.Output
             Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
             Me(iRow, eColumnTypes.BArea) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
             Me(iRow, eColumnTypes.B) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Biomass)
-            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+            Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumOutput)
             Me(iRow, eColumnTypes.BArate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
 
             If bIsStanza Then

@@ -2467,7 +2467,7 @@
   <data name="VARIABLE_MSEBBASE" xml:space="preserve">
     <value>MSE base biomass </value>
   </data>
-  <data name="VARIABLE_BIOACCUM" xml:space="preserve">
+  <data name="VARIABLE_BIOACCUMINPUT" xml:space="preserve">
     <value>BA||Biomass accumulation</value>
   </data>
   <data name="VARIABLE_BIOACCUMRATEPERYEAR" xml:space="preserve">
@@ -3373,5 +3373,8 @@
   </data>
   <data name="DownloadHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DownloadHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMOUTPUT" xml:space="preserve">
+    <value>BA||Biomass accumulation</value>
   </data>
 </root>

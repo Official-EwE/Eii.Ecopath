@@ -1465,7 +1465,7 @@ Namespace Database
                     Case 5 : varName = eVarNameFlags.QBInput
                     Case 6 : varName = eVarNameFlags.EEInput
                     Case 7 : varName = eVarNameFlags.GEInput
-                    Case 8 : varName = eVarNameFlags.BioAccum
+                    Case 8 : varName = eVarNameFlags.BioAccumOutput
                     Case 9 : varName = eVarNameFlags.GS
                     Case 10 : varName = eVarNameFlags.DetImp
                     Case Else : varName = eVarNameFlags.NotSet

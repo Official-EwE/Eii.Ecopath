@@ -419,7 +419,7 @@ Public Class cEIIXMLDataSource
                 ecopathDS.PP(iGroup) = CSng(row("Type"))
                 ecopathDS.Area(iGroup) = CSng(row("Area"))
                 ecopathDS.BH(iGroup) = ecopathDS.B(iGroup) / ecopathDS.Area(iGroup)
-                ecopathDS.BA(iGroup) = CSng(row("BiomAcc"))
+                ecopathDS.BAInput(iGroup) = CSng(row("BiomAcc"))
                 ' VERIFY_JS: Check default value for BiomAccRate. 0 is assumed
                 ecopathDS.BaBi(iGroup) = CSng(row("BiomAccRate"))
                 ecopathDS.GS(iGroup) = CSng(row("Unassim"))

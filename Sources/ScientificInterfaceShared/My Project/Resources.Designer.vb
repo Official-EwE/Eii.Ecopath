@@ -8671,9 +8671,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to BA||Biomass accumulation.
         '''</summary>
-        Public ReadOnly Property VARIABLE_BIOACCUM() As String
+        Public ReadOnly Property VARIABLE_BIOACCUMINPUT() As String
             Get
-                Return ResourceManager.GetString("VARIABLE_BIOACCUM", resourceCulture)
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BA||Biomass accumulation.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_BIOACCUMOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMOUTPUT", resourceCulture)
             End Get
         End Property
         

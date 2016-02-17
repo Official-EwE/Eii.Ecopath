@@ -113,7 +113,7 @@ Namespace Ecopath.Input
                 Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Immig)
                 Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Emig)
                 Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.EmigRate)
-                Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccum)
+                Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumInput)
                 Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumRate)
 
             Next

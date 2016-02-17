@@ -543,7 +543,7 @@ Namespace Ecopath
                             ' Send out notification
                             msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
                                                 cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_BA, Me.m_Data.GroupName(i)), _
-                                                eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                                                eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                         End If
 
                     Case eEstimateTypes.Migration
@@ -705,6 +705,7 @@ Namespace Ecopath
                 'DetEaten(i) is amount eaten of the group by all consumers
                 Surplus = m_Data.InputToDet(i) - m_Data.DetEaten(i) - m_Data.fCatch(i)
                 'jb Add detritus fate from this group to BA (biomass accumulation)
+                'js add to computed BA, not BA input
                 ' m_Data.BA(i) = Surplus * m_Data.DF(i, i - m_Data.NumLiving)
                 m_Data.BA(i) += Surplus * m_Data.DF(i, i - m_Data.NumLiving)
             Next i
@@ -1114,7 +1115,7 @@ Namespace Ecopath
                     If m_Data.EE(i) < 0 Then
                         msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                         If m_Data.BA(i) < 0 Then
-                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccum, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                         End If
                     End If
                 Next

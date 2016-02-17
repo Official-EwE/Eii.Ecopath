@@ -345,6 +345,8 @@ Namespace WebServices.Ecobase
         Public Property PP As Single
         <XmlElement("gs")> _
         Public Property GS As Single
+        <XmlElement("biomass_accum_rate_input")> _
+        Public BAIsInput As Boolean
         <XmlElement("biomass_accum")> _
         Public Property BA As Single
         <XmlElement("biomass_accum_rate")> _
@@ -427,7 +429,8 @@ Namespace WebServices.Ecobase
             Me.Name = ecopathDS.GroupName(iGroup)
             Me.PP = ecopathDS.PP(iGroup)
             Me.Area = ecopathDS.Area(iGroup)
-            Me.BA = ecopathDS.BA(iGroup)
+            Me.BA = ecopathDS.BAInput(iGroup)
+            Me.BAIsInput = (ecopathDS.BAInput(iGroup) = ecopathDS.BA(iGroup))
             Me.BaBi = ecopathDS.BaBi(iGroup)
             Me.GS = ecopathDS.GS(iGroup)
             Me.DtImp = ecopathDS.DtImp(iGroup)
