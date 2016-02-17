@@ -141,10 +141,10 @@ Friend Class frmUI
             Me.UpdateEcosimRunTime()
         End If
 
-        If (msg.Source = EwEUtils.Core.eCoreComponentType.TimeSeries) And _
-           (msg.Type = eMessageType.DataAddedOrRemoved) Then
-            Me.UpdateEcosimRunTime()
-        End If
+        'If (msg.Source = EwEUtils.Core.eCoreComponentType.TimeSeries) And _
+        '   (msg.Type = eMessageType.DataAddedOrRemoved) Then
+        '    Me.UpdateEcosimRunTime()
+        'End If
 
     End Sub
 
