@@ -211,8 +211,14 @@ Public Class cEcoPathGroupOutput
             SetNullFlag(eVarNameFlags.TmaxOutput, m_core.m_PSDData.Tmax(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonCoreNull)
             'End Joeh
 
+            If m_core.m_EcoPathData.BA(Me.Index) <> m_core.m_EcoPathData.BAInput(Me.Index) Then
+                Me.SetStatusFlags(eVarNameFlags.BioAccumOutput, eStatusFlags.ValueComputed)
+            Else
+                Me.ClearStatusFlags(eVarNameFlags.BioAccumOutput, eStatusFlags.ValueComputed)
+            End If
+            SetNullFlag(eVarNameFlags.BioAccumOutput, m_core.m_EcoPathData.BA(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonZero)
+
             'test for NULL values in other variables
-            SetNullFlag(eVarNameFlags.BioAccum, m_core.m_EcoPathData.BA(Me.Index), cCore.NULL_VALUE, eNullTestTypes.NonZero)
             SetNullFlag(eVarNameFlags.BioAccumRatePerYear, Me.BioAccumRatePerYear, cCore.NULL_VALUE, eNullTestTypes.NonZero)
 
             SetNullFlag(eVarNameFlags.MortCoBioAcumRate, Me.MortCoBioAcumRate, cCore.NULL_VALUE, eNullTestTypes.NonZero)
@@ -291,7 +297,7 @@ Public Class cEcoPathGroupOutput
 
         val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.BioAccum, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.BioAccumOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
@@ -450,12 +456,12 @@ Public Class cEcoPathGroupOutput
 
     Public Property BioAccum() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.BioAccum))
+            Return CSng(GetVariable(eVarNameFlags.BioAccumOutput))
         End Get
 
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.BioAccum, newValue)
+                SetVariable(eVarNameFlags.BioAccumOutput, newValue)
             End If
         End Set
 
@@ -1192,11 +1198,11 @@ Public Class cEcoPathGroupOutput
     Public Property BiomassAccumStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.BioAccum)
+            Return GetStatus(eVarNameFlags.BioAccumOutput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BioAccum, value)
+            SetStatus(eVarNameFlags.BioAccumOutput, value)
         End Set
 
     End Property

@@ -128,10 +128,12 @@ Public Class cEcopathDataStructures
     Public B() As Single
     ''' <summary>Biomass in habitat area (t/km²)</summary>
     Public BH() As Single
-    ''' <summary>Biomass accumulation (t/km²/year)</summary>
-    Public BA() As Single
+    ''' <summary>Biomass accumulation (t/km²/year) as entered by the user</summary>
+    Public BAInput() As Single
     ''' <summary>Biomass accumulation / biomass</summary>
     Public BaBi() As Single
+    ''' <summary>Biomass accumulation (t/km²/year)</summary>
+    Public BA() As Single
     ''' <summary>Production / biomass (/year)</summary>
     Public PB() As Single
     ''' <summary>Consumption / biomass (/year)</summary>
@@ -426,8 +428,9 @@ Public Class cEcopathDataStructures
         For i = 1 To NumGroups
             Area(i) = 1
         Next
-        ReDim BA(NumGroups)
+        ReDim BAInput(NumGroups)
         ReDim BaBi(NumGroups)
+        ReDim BA(NumGroups)
         ReDim DCInput(NumGroups + 1, NumGroups + 1)
         ReDim DC(NumGroups + 1, NumGroups + 1)
         ReDim DCChanged(NumGroups + 1, NumGroups + 1) 'jb added to tell the core which diet comp values where changed
@@ -999,6 +1002,7 @@ Public Class cEcopathDataStructures
             PBinput.CopyTo(PB, 0)
             QBinput.CopyTo(QB, 0)
             GEinput.CopyTo(GE, 0)
+            BAInput.CopyTo(BA, 0)
 
             ' deal with EE and other mort (1-EE)
             'EEinput.CopyTo(EE, 0)
@@ -1181,6 +1185,7 @@ Public Class cEcopathDataStructures
             B.CopyTo(dest.B, 0)
             BH.CopyTo(dest.BH, 0)
             BA.CopyTo(dest.BA, 0)
+            BAInput.CopyTo(dest.BAInput, 0)
             BaBi.CopyTo(dest.BaBi, 0)
             PB.CopyTo(dest.PB, 0)
             QB.CopyTo(dest.QB, 0)

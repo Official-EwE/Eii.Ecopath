@@ -394,7 +394,7 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine().Replace("  ", " ")
             recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups
-                Single.TryParse(recs(i - 1), ecopathDS.BA(i))
+                Single.TryParse(recs(i - 1), ecopathDS.BAInput(i))
             Next i
 
             ' Diet Fate array added July 1994/VC

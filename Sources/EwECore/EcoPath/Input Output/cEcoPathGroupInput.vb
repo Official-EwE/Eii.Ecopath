@@ -91,7 +91,7 @@ Public Class cEcoPathGroupInput
 
         'BioAccum
         meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Single, eVarNameFlags.BioAccum, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.BioAccumInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'biomass set to NULL_VALUE when cleared
@@ -276,14 +276,14 @@ Public Class cEcoPathGroupInput
     ''' value for this group.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property BioAccum() As Single
+    Public Property BioAccumInput() As Single
 
         Get
-            Return CSng(getVariable(eVarNameFlags.BioAccum))
+            Return CSng(GetVariable(eVarNameFlags.BioAccumInput))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.BioAccum, value)
+            SetVariable(eVarNameFlags.BioAccumInput, value)
         End Set
 
     End Property
@@ -948,11 +948,11 @@ Public Class cEcoPathGroupInput
     Public Property BioAccumStatus() As EwECore.eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.BioAccum)
+            Return GetStatus(eVarNameFlags.BioAccumInput)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.BioAccum, value)
+            SetStatus(eVarNameFlags.BioAccumInput, value)
         End Set
 
     End Property

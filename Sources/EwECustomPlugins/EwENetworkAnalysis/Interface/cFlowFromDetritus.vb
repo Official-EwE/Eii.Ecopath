@@ -59,7 +59,7 @@ Public Class cFlowFromDetritus
 
         'Set up grid rows
         Grid.RowHeadersVisible = False
-        Grid.RowCount = NetworkManager.nGroups
+        Grid.RowCount = NetworkManager.nGroups + 1
         Grid.Rows(0).DefaultCellStyle.WrapMode = DataGridViewTriState.True
         Grid.Rows(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
         Grid.Rows(0).Frozen = True
@@ -72,7 +72,7 @@ Public Class cFlowFromDetritus
         Grid.Rows(0).SetValues(astrRowContent)
         Grid.Rows(0).Visible = True
 
-        For i As Integer = 1 To NetworkManager.nGroups - 1
+        For i As Integer = 1 To NetworkManager.nGroups
             astrRowContent(0) = CStr(i)
             astrRowContent(1) = NetworkManager.GroupName(i)
             astrRowContent(2) = Me.StyleGuide.FormatNumber(NetworkManager.FlowFromDetritus(i))

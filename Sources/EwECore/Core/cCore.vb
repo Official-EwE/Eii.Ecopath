@@ -3903,7 +3903,7 @@ Public Class cCore
                 Input.PoolColor = m_EcoPathData.GroupColor(iGroup)
                 Input.NonMarketValue = m_EcoPathData.Shadow(iGroup)
 
-                Input.BioAccum = CSng((IIf(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BA(iGroup))))
+                Input.BioAccumInput = CSng((IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup))))
 
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
                 'from original code
@@ -3979,7 +3979,7 @@ Public Class cCore
                 'mEcoPathData.B(iGroup) = input.Biomass
                 m_EcoPathData.BaBi(iGroup) = Input.BioAccumRate
                 m_EcoPathData.Immig(iGroup) = Input.Immigration
-                m_EcoPathData.BA(iGroup) = Input.BioAccum
+                m_EcoPathData.BAInput(iGroup) = Input.BioAccumInput
                 m_EcoPathData.Emig(iGroup) = Input.EmigRate
                 m_EcoPathData.PP(iGroup) = Input.PP
 
@@ -4003,8 +4003,8 @@ Public Class cCore
                 m_EcoPathData.Shadow(iGroup) = Input.NonMarketValue()
 
                 'from the original code MakeUnknownUnknown
-                m_EcoPathData.BA(iGroup) = CSng(IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, _
-                                                m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BA(iGroup)))
+                m_EcoPathData.BAInput(iGroup) = CSng(IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, _
+                                                m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup)))
 
                 'Emigi(igroup) = inputVars.EmigRate
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
@@ -4138,9 +4138,9 @@ Public Class cCore
                 output.DBID = m_EcoPathData.GroupDBID(iGroup)
                 output.Name = m_EcoPathData.GroupName(iGroup)
                 output.Area = m_EcoPathData.Area(iGroup)
-                output.BioAccum = CSng(m_EcoPathData.BA(iGroup))
                 output.Biomass = CSng(m_EcoPathData.B(iGroup))
                 output.BiomassArea = CSng(m_EcoPathData.BH(iGroup))
+                output.BioAccum = CSng(m_EcoPathData.BA(iGroup))
                 Try
                     output.BioAccumRatePerYear = CSng(m_EcoPathData.BA(iGroup) / m_EcoPathData.B(iGroup))
                 Catch ex As Exception
@@ -5393,7 +5393,7 @@ Public Class cCore
         Dim sQB As Single = CSng(obj.GetVariable(eVarNameFlags.QBInput))
         Dim sGE As Single = CSng(obj.GetVariable(eVarNameFlags.GEInput))
         Dim sPB As Single = CSng(obj.GetVariable(eVarNameFlags.PBInput))
-        Dim sBA As Single = CSng(obj.GetVariable(eVarNameFlags.BioAccum))
+        Dim sBA As Single = CSng(obj.GetVariable(eVarNameFlags.BioAccumInput))
         Dim sBAr As Single = CSng(obj.GetVariable(eVarNameFlags.BioAccumRate))
         Dim bLockGE As Boolean = False
         Dim bLockQB As Boolean = False
@@ -5492,15 +5492,15 @@ Public Class cCore
 
         ' -- biomass accumulation --
         If bLockBA Then
-            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable)
+            obj.SetStatusFlags(eVarNameFlags.BioAccumInput, eStatusFlags.NotEditable)
         Else
-            obj.ClearStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.NotEditable)
+            obj.ClearStatusFlags(eVarNameFlags.BioAccumInput, eStatusFlags.NotEditable)
         End If
 
         If bClearBA Then
-            obj.SetStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.Null)
+            obj.SetStatusFlags(eVarNameFlags.BioAccumInput, eStatusFlags.Null)
         Else
-            obj.ClearStatusFlags(eVarNameFlags.BioAccum, eStatusFlags.Null)
+            obj.ClearStatusFlags(eVarNameFlags.BioAccumInput, eStatusFlags.Null)
         End If
 
         If bLockBARate Then
@@ -5541,13 +5541,13 @@ Public Class cCore
         obj.AllowValidation = False
 
         If (obj.PP >= 1.0 Or Me.m_EcoPathData.areUnitCurrencyNutrients()) Then
-            ' obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable Or eStatusFlags.Null)
-            obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
+            ' JS 08Feb16: Do not show GS values for producers or detritus
+            obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            ' obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
             'obj.GS = 0
         Else
-            obj.ClearStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
+            obj.ClearStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable Or eStatusFlags.Null)
             ' obj.ClearStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
-
         End If
 
         If bSendMessage Then
@@ -11571,7 +11571,7 @@ Public Class cCore
             m_EcoPathData.BHinput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Biomass(iLifeStage) * m_EcoPathData.Area(m_Stanza.EcopathCode(iStanza, iLifeStage))
             m_EcoPathData.QBinput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.CB(iLifeStage)
             m_EcoPathData.PBinput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Mortality(iLifeStage)
-            m_EcoPathData.BA(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Biomass(iLifeStage) * stanza.BiomassAccumulationRate
+            m_EcoPathData.BAInput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Biomass(iLifeStage) * stanza.BiomassAccumulationRate
 
         Next iLifeStage
 
@@ -13144,14 +13144,14 @@ Public Class cCore
                         ' Cascade PP change to other Groups
                         Me.Cascade_PP(group.PP, group, msg)
 
-                    Case eVarNameFlags.BioAccum
+                    Case eVarNameFlags.BioAccumOutput
                         group.AllowValidation = False
                         group.BioAccumRate = 0.0
                         group.AllowValidation = True
 
                     Case eVarNameFlags.BioAccumRate
                         group.AllowValidation = False
-                        group.BioAccum = 0.0
+                        group.BioAccumInput = 0.0
                         group.AllowValidation = True
 
                 End Select
@@ -13511,7 +13511,7 @@ Public Class cCore
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
                         bRecalcStanza = (grp.iStanza > 0)
 
-                    Case eVarNameFlags.BioAccum, eVarNameFlags.BioAccumRate
+                    Case eVarNameFlags.BioAccumOutput, eVarNameFlags.BioAccumRate
                         Me.Set_PB_QB_GE_BA_Flags(grp)
                         Me.LoadEcopathInput(grp)
 
