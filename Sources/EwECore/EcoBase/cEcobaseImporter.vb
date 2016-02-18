@@ -25,6 +25,7 @@ Imports EwEUtils.Utilities
 Imports System.IO
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports System.Net
 
 #End Region ' Imports 
 
@@ -226,12 +227,12 @@ Namespace Database
                 drow = writer.NewRow()
 
                 drow("ModelID") = 1
-                drow("Name") = md.Name
-                drow("Description") = md.Description
+                drow("Name") = WebUtility.HtmlDecode(md.Name)
+                drow("Description") = WebUtility.HtmlDecode(md.Description)
                 drow("CodeEcobase") = md.EcobaseCode
 
-                drow("Author") = md.Author
-                drow("Contact") = md.Contact
+                drow("Author") = WebUtility.HtmlDecode(md.Author)
+                drow("Contact") = WebUtility.HtmlDecode(md.Contact)
 
                 drow("Area") = md.Area
                 drow("NumDigits") = Math.Min(md.NumDigits, 3)
@@ -258,12 +259,12 @@ Namespace Database
                 drow("MinLon") = md.West
                 drow("MaxLon") = md.East
 
-                drow("Country") = md.Country
+                drow("Country") = WebUtility.HtmlDecode(md.Country)
                 drow("EcosystemType") = md.EcosystemType
 
-                drow("PublicationDOI") = md.DOI
-                drow("PublicationURI") = md.URI
-                drow("PublicationRef") = md.Reference
+                drow("PublicationDOI") = WebUtility.HtmlDecode(md.DOI)
+                drow("PublicationURI") = WebUtility.HtmlDecode(md.URI)
+                drow("PublicationRef") = WebUtility.HtmlDecode(md.Reference)
                 drow("LastSaved") = cDateUtils.DateToJulian()
 
                 drow("UnitTime") = eUnitTimeType.Year
@@ -299,7 +300,7 @@ Namespace Database
 
                     drow("GroupID") = gd.Index
                     drow("Sequence") = gd.Index
-                    drow("GroupName") = gd.Name
+                    drow("GroupName") = WebUtility.HtmlDecode(gd.Name)
                     drow("Type") = gd.PP
                     drow("Area") = gd.Area
                     drow("BiomAcc") = gd.BA
@@ -372,7 +373,7 @@ Namespace Database
                     drow = writerStanza.NewRow()
 
                     drow("StanzaID") = stz.Index
-                    drow("StanzaName") = stz.Name
+                    drow("StanzaName") = WebUtility.HtmlDecode(stz.Name)
                     drow("RecPower") = stz.RecPower
                     drow("BABsplit") = stz.BaBSplit
                     drow("WmatWinf") = stz.WmatWinf
@@ -469,7 +470,7 @@ Namespace Database
 
                     drow("Sequence") = fd.Index
                     drow("FleetID") = fd.Index
-                    drow("FleetName") = fd.Name
+                    drow("FleetName") = WebUtility.HtmlDecode(fd.Name)
                     drow("FixedCost") = fd.FixedCost
                     drow("SailingCost") = fd.SailCost
                     drow("variableCost") = fd.VarCost
@@ -611,8 +612,9 @@ Namespace Database
 
                         drow = writer.NewRow()
 
-                        drow("Sequence") = pd.Sequence
-                        drow("LevelName") = pd.Name
+                        drow("LevelID") = pd.Index
+                        drow("Sequence") = pd.Index
+                        drow("LevelName") = WebUtility.HtmlDecode(pd.Name)
                         drow("Description") = pd.Description
                         drow("VarName") = cin.GetVarName(pd.VarName)
                         drow("IndexValue") = pd.IndexValue
@@ -709,14 +711,14 @@ Namespace Database
                     drow("CodeSLB") = td.CodeSLB
                     drow("CodeFAO") = td.CodeFAO
                     drow("CodeLCID") = td.CodeLSID ' Field issue
-                    drow("ClassName") = td.Class
-                    drow("OrderName") = td.Order
-                    drow("FamilyName") = td.Family
-                    drow("GenusName") = td.Genus
-                    drow("SpeciesName") = td.Species
-                    drow("CommonName") = td.CommonName
-                    drow("SourceName") = td.Source
-                    drow("SourceKey") = td.SourceKey
+                    drow("ClassName") = WebUtility.HtmlDecode(td.Class)
+                    drow("OrderName") = WebUtility.HtmlDecode(td.Order)
+                    drow("FamilyName") = WebUtility.HtmlDecode(td.Family)
+                    drow("GenusName") = WebUtility.HtmlDecode(td.Genus)
+                    drow("SpeciesName") = WebUtility.HtmlDecode(td.Species)
+                    drow("CommonName") = WebUtility.HtmlDecode(td.CommonName)
+                    drow("SourceName") = WebUtility.HtmlDecode(td.Source)
+                    drow("SourceKey") = WebUtility.HtmlDecode(td.SourceKey)
                     drow("EcologyType") = td.EcologyType
                     drow("OrganismType") = td.OrganismType
                     drow("ConservationStatus") = td.IUCNConservationStatusType
