@@ -944,7 +944,7 @@ Namespace WebServices.Ecobase
 
         ''' <summary>Index of the pedigree level.</summary>
         <XmlElement("pedigree_seq")> _
-        Public Property Sequence As Integer
+        Public Property Index As Integer
         <XmlElement("pedigree_name")> _
         Public Property Name As String
         <XmlElement("description")> _
@@ -986,7 +986,7 @@ Namespace WebServices.Ecobase
 
             Dim ecopathDS As cEcopathDataStructures = core.m_EcoPathData
 
-            Me.Sequence = iLevel
+            Me.Index = iLevel
             Me.Name = ecopathDS.PedigreeLevelName(iLevel)
             Me.Description = ecopathDS.PedigreeLevelDescription(iLevel)
             Me.Color = ecopathDS.PedigreeLevelColor(iLevel)
