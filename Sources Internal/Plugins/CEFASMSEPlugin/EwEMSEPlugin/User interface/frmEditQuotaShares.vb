@@ -191,6 +191,7 @@ Public Class frmEditQuotaShares
         Dim iStart As Integer = 0
         Dim SumQuotaShare As Single = 0
 
+
         SumQuotaShare = m_quotashares.ReadRowDist(0).mShare
 
         For i = 2 To m_quotashares.CountDist
@@ -199,9 +200,13 @@ Public Class frmEditQuotaShares
                     m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
                 Next
                 SumQuotaShare = 0
-                iStart = i
+                iStart = i - 1
             End If
             If m_quotashares.ReadRowDist(i - 1).mShare > 0 Then SumQuotaShare += m_quotashares.ReadRowDist(i - 1).mShare
+        Next
+
+        For iChange = iStart To m_quotashares.CountDist - 1
+            m_quotashares.ReadRowDist(iChange).mShare /= SumQuotaShare
         Next
 
         Me.m_grid.Init(Me.m_mse, m_quotashares)
