@@ -602,6 +602,10 @@ Public Class cMSE
 
     Private Sub runCreateModelsThread()
 
+#If DEBUG Then
+        Console.WriteLine("Starting creating models at: " & DateTime.Now.ToShortTimeString)
+#End If
+
         Me.m_StopRun = False
         Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
         Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
@@ -630,6 +634,10 @@ Public Class cMSE
         Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
         Me.m_core.SetStopRunDelegate(Nothing)
         Me.RunState = eRunStates.Idle
+
+#If DEBUG Then
+        Console.WriteLine("Finished creating models at: " & DateTime.Now.ToShortTimeString)
+#End If
 
     End Sub
 
@@ -972,18 +980,19 @@ Public Class cMSE
         Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, strFile)
         Dim writer As StreamWriter = Nothing
 
-        If Not File.Exists(strPath) Then
-            writer = cMSEUtils.GetWriter(strPath)
-            If (writer Is Nothing) Then Return False
+        'If Not File.Exists(strPath) Then
+        writer = cMSEUtils.GetWriter(strPath)
+        If (writer Is Nothing) Then Return False
 
-            For igrp As Integer = 1 To Me.Core.nLivingGroups
-                If (igrp > 1) Then writer.Write(",")
-                writer.Write(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name))
-            Next
-        Else
-            writer = cMSEUtils.GetWriter(strPath, True)
-            If (writer Is Nothing) Then Return False
-        End If
+        For igrp As Integer = 1 To Me.Core.nLivingGroups
+            If (igrp > 1) Then writer.Write(",")
+            writer.Write(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name))
+        Next
+
+        'Else
+        '    writer = cMSEUtils.GetWriter(strPath, True)
+        '    If (writer Is Nothing) Then Return False
+        'End If
 
         writer.WriteLine()
         For igrp As Integer = 1 To Me.Core.nLivingGroups
@@ -2983,11 +2992,13 @@ Public Class cMSE
                         Me.NormalizeDiet(Me._pathdata.DCInput)
                         'Me.dumpDietMatrix()
 
-                        Console.WriteLine("Iteration = " & i)
+                        'Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
 
                             For iGrp = 1 To m_core.nGroups
                                 If m_core.EcoPathGroupInputs(iGrp).IsLiving Then
+                                    If _pathdata.GE(iGrp) > PQThreshold Then Console.WriteLine("Group " & iGrp & " failed PQ<0.5 test")
+                                    If _pathdata.Resp(iGrp) < RespirThreshold Then Console.WriteLine("Group" & iGrp & " failing the respiration>0 test")
                                     If _pathdata.GE(iGrp) > PQThreshold Or _pathdata.Resp(iGrp) < RespirThreshold Then
                                         isbalanced = False
                                     End If
@@ -3001,7 +3012,7 @@ Public Class cMSE
                                 Try
                                     For iPrey = 0 To nGroups
                                         For iPred = 1 To m_core.nLivingGroups
-                                            If iPred > 1 Then csv_dietout.Write(",")
+                                            If iPred > 1 Then csv_dietout.Write(", ")
                                             csv_dietout.Write(cStringUtils.FormatNumber(Me.m_ecopath.EcopathData.DC(iPred, iPrey)))
                                         Next
                                         csv_dietout.WriteLine()
@@ -3043,7 +3054,7 @@ Public Class cMSE
 
                     End While
 
-                    'Console.WriteLine("Number of seconds to run iteration: " & (TimeFindingBalanced.ElapsedMilliseconds / 1000).ToString)
+                    'Console.WriteLine("Number of seconds to run iteration:  " & (TimeFindingBalanced.ElapsedMilliseconds / 1000).ToString)
                     TimeFindingBalanced.Reset()
 
                     iTrial += 1
@@ -3942,7 +3953,7 @@ Public Class cMSE
 
     End Function
 
-    Private Sub SetEffortWithinPermissableRange_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal QMult() As Single, _
+    Private Sub SetEffortWithinPermissableRange_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal QMult() As Single,
                                                       ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer, ByVal NumberTimeStepsIntoProjection As Integer)
 
         Dim Elim As Single 'the maximum effort that can be exerted without causing discards
