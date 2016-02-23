@@ -325,7 +325,7 @@ Namespace Ecospace.Advection
             Implements ILayerEditorGUI.StartEdit
 
             If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
-                Me.m_edtWind.ScaleFactor = CSng(Me.m_nudWind.Value)
+                Me.m_edtWind.CellValue = CSng(Me.m_nudWind.Value)
             ElseIf (Object.ReferenceEquals(editor, Me.m_edtUpwell)) Then
                 Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
             ElseIf (Object.ReferenceEquals(editor, Me.m_edtMLD)) Then
@@ -343,7 +343,7 @@ Namespace Ecospace.Advection
             Implements ILayerEditorGUI.UpdateContent
 
             If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
-                Me.m_nudWind.Value = CDec(Me.m_edtWind.ScaleFactor)
+                Me.m_nudWind.Value = CDec(Me.m_edtWind.CellValue)
             ElseIf (Object.ReferenceEquals(editor, Me.m_edtUpwell)) Then
                 Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
             ElseIf (Object.ReferenceEquals(editor, Me.m_edtMLD)) Then

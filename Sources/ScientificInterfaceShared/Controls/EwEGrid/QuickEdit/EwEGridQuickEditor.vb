@@ -579,16 +579,17 @@ Namespace Controls.EwEGrid
 
         End Function
 
-        Public Sub ImportGridFromCSV()
+        Public Function ImportGridFromCSV() As Boolean
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
             Dim msg As cMessage = Nothing
             Dim fs As Stream = Nothing
             Dim sr As StreamReader = Nothing
+            Dim bSuccess As Boolean = True
 
             cmdOF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
-            If cmdOF.Result <> Windows.Forms.DialogResult.OK Then Return
+            If (cmdOF.Result <> Windows.Forms.DialogResult.OK) Then Return bSuccess
 
             Try
                 fs = New FileStream(cmdOF.FileName, _
@@ -598,6 +599,7 @@ Namespace Controls.EwEGrid
             Catch ex As Exception
                 msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message), _
                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+                bSuccess = False
             End Try
 
             If (fs IsNot Nothing) Then
@@ -615,8 +617,9 @@ Namespace Controls.EwEGrid
 
             ' Log!
             Me.m_uic.Core.Messages.SendMessage(msg)
+            Return bSuccess
 
-        End Sub
+        End Function
 
         Public Sub ExportGridToCSV()
 

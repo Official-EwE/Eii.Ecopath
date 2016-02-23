@@ -209,6 +209,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerDepth, False)
             Me.AddData(eVarNameFlags.LayerExclusion, False)
+            Me.AddData(eVarNameFlags.LayerAdvection, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
             Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
             Me.AddData(eVarNameFlags.LayerDriver)

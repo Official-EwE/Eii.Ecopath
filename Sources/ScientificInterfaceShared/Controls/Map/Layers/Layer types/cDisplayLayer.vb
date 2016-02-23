@@ -234,11 +234,15 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        Public ReadOnly Property RenderMode As eLayerRenderType
+        Public Property RenderMode As eLayerRenderType
             Get
                 If (Me.m_renderer Is Nothing) Then Return eLayerRenderType.Always
                 Return Me.m_renderer.RenderMode
             End Get
+            Set(value As eLayerRenderType)
+                If (Me.m_renderer Is Nothing) Then Return
+                Me.m_renderer.RenderMode = value
+            End Set
         End Property
 
         Public Overridable ReadOnly Property GetProperty() As cProperty

@@ -35,8 +35,10 @@ Public MustInherit Class cEcospaceLayerVector
 
 #Region " Private variables "
 
-    ''' <summary>Layer max vector value.</summary>
+    ''' <summary>Layer max velocity value.</summary>
     Protected m_sMaxValue As Single = 0.0!
+    ''' <summary>Layer min velocity value.</summary>
+    Protected m_sMinValue As Single = 0.0!
     ''' <summary>Layer num of cells with a value.</summary>
     Private m_iNumValueCells As Integer = 0
 
@@ -135,7 +137,7 @@ Public MustInherit Class cEcospaceLayerVector
     ''' </summary>
     Public Overrides ReadOnly Property MinValue() As Single
         Get
-            Return 0
+            Return Me.m_sMinValue
         End Get
     End Property
 
@@ -168,6 +170,7 @@ Public MustInherit Class cEcospaceLayerVector
         Dim iCols As Integer = bm.InCol
 
         Me.m_sMaxValue = 0
+        Me.m_sMinValue = Single.MaxValue
         Me.m_iNumValueCells = 0
 
         For iRow As Integer = 1 To iRows
@@ -175,9 +178,8 @@ Public MustInherit Class cEcospaceLayerVector
                 If depth.IsWaterCell(iRow, iCol) Then
                     Dim dx As Single = Me.XVelocity(iRow, iCol)
                     Dim dy As Single = Me.YVelocity(iRow, iCol)
-                    Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, _
-                                              Math.Max(Math.Abs(dx), _
-                                                       Math.Abs(dy)))
+                    Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, Math.Max(Math.Abs(dx), Math.Abs(dy)))
+                    Me.m_sMinValue = Math.Min(Me.m_sMinValue, Math.Max(Math.Abs(dx), Math.Abs(dy)))
                     If (dx <> 0 And dy <> 0) Then
                         Me.m_iNumValueCells += 1
                     End If

@@ -7699,6 +7699,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Data is missing for {0} cell(s).
+        '''</summary>
+        Public ReadOnly Property PROMPT_MAPLOAD_MISSING() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_MAPLOAD_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You cannot assign a mix of groups and fleets.
         '''</summary>
         Public ReadOnly Property PROMPT_MEDIATION_CANNOTMIX() As String

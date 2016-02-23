@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -119,6 +120,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_qehGrid = New cQuickEditHandler()
             Me.m_qehGrid.ShowImportExport = False
             Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid)
+            Me.m_qehGrid.IsOutputGrid = Me.m_layerWork.Editor.IsReadOnly
 
             ' Show your stuff
             Me.m_zoommap.Map.AddLayer(Me.m_layerWork)
@@ -235,12 +237,11 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnImportAscii(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiAsc.Click
 
-            ' ToDo: globalize this
-
             Try
                 Dim ofd As New OpenFileDialog()
-                ofd.Title = "Pick ASCII file to load"
-                ofd.Filter = "ASCII files|*.asc"
+                ofd.Title = SharedResources.CAPTION_SELECT_FILE
+                ofd.Filter = SharedResources.FILEFILTER_ASCFILE
+
                 If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
                     If Me.ReadASCFile(ofd.FileName) Then
                         Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
@@ -268,15 +269,15 @@ Namespace Ecospace.Basemap.Layers
         Private Sub OnExportAsc(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiExportAsc.Click
 
-            ' ToDo: globalize this
-
             Try
                 Dim sfd As New SaveFileDialog()
+
                 sfd.CheckPathExists = True
-                sfd.Title = "Pick output location for ASCII file"
-                sfd.Filter = "ASCII files|*.asc"
+                sfd.Title = SharedResources.CAPTION_SELECT_FILE
+                sfd.Filter = SharedResources.FILEFILTER_ASCFILE
+
                 If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                    Me.SaveASCFile(sfd.FileName)
+                    Me.WriteASCFile(sfd.FileName)
                 End If
             Catch ex As Exception
 
@@ -430,7 +431,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_grid.Apply(Me.m_layerOriginal)
             cf = cf Or cDisplayLayer.eChangeFlags.Map
-            
+
             ' Fire layer changed notification
             Me.m_layerOriginal.Update(cf)
 
@@ -443,38 +444,35 @@ Namespace Ecospace.Basemap.Layers
 #Region " This should really live somewhere else... "
 
         ' ToDo_JS: merge with core ASCII map logic, and build provisions to use spatial temporal framework
-        Protected Function ReadASCFile(ByVal filename As String) As Boolean
-            Dim bloaded As Boolean
-            Dim strm As New StreamReader(filename)
-            Dim nNullCells As Integer
-            'jb 19-Aug-2015 changed to be more robust
-            'Send a message if the file fails to read
-            'Send a message if there are null values in water cells
-            Try
-                bloaded = Me.ReadASCIIHeader(strm)
-                bloaded = bloaded And Me.ReadASCIIBody(strm, nNullCells)
-            Catch ex As Exception
-                'shouldn't happen... 
-                'the methods above handle there own exceptions
-                bloaded = False
-            End Try
+        Protected Function ReadASCFile(ByVal strFilename As String) As Boolean
+
+            Dim bLoaded As Boolean
+            Dim strm As New StreamReader(strFilename)
+            Dim iNullCells As Integer
+            Dim msg As cMessage = Nothing
+
+            bLoaded = Me.ReadASCIIHeader(strm) And Me.ReadASCIIBody(strm, iNullCells)
 
             strm.Close()
 
-            If Not bloaded Then
-                Me.m_uic.Core.Messages.SendMessage(New cMessage("Failed to load ASCII map file. " + filename, _
-                                                               eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            If Not bLoaded Then
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, strFilename), _
+                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+            Else
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, strFilename), _
+                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFilename)
+
+                If (iNullCells > 0) Then
+                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
+                                                  String.Format(SharedResources.PROMPT_MAPLOAD_MISSING, iNullCells), _
+                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                    msg.AddVariable(vs)
+                End If
             End If
 
-            If bloaded And nNullCells > 0 Then
-                'The current .asc file contains null values in water cells
-                'Warn the user this may be a problem for the model
-                Me.m_uic.Core.Messages.SendMessage(New cMessage("Waring: The ASCII file contains " + nNullCells.ToString + " null values (-9999) in water cells. This could cause problems for Ecospace.", _
-                                                              eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
-
-            End If
-
-            Return bloaded
+            Me.m_uic.Core.Messages.SendMessage(msg)
+            Return bLoaded
 
         End Function
 
@@ -573,7 +571,10 @@ Namespace Ecospace.Basemap.Layers
         ''' </summary>
         ''' <param name="strFileName"></param>
         ''' -----------------------------------------------------------------------
-        Protected Sub SaveASCFile(ByVal strFileName As String)
+        Protected Sub WriteASCFile(ByVal strFileName As String)
+
+            Dim msg As cMessage = Nothing
+
             Try
                 Using wr As New StreamWriter(strFileName)
                     Me.WriteASCIIHeader(wr)
@@ -585,9 +586,19 @@ Namespace Ecospace.Basemap.Layers
                     wr.WriteLine(Me.m_uic.Core.EcospaceBasemap.ProjectionString)
                     wr.Close()
                 End Using
+
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, strFileName), _
+                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFileName)
+
             Catch ex As Exception
-                System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, strFileName, ex.Message), _
+                  eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
+
+            ' Log!
+            Me.m_uic.Core.Messages.SendMessage(msg)
+
         End Sub
 
         ''' -----------------------------------------------------------------------
