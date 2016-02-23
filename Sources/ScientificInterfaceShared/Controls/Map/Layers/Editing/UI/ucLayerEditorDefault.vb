@@ -127,7 +127,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Diagnostic method, states if a layer has a unique core variable 
-        ''' link. Layers with unique sources support extra's that can be stored
+        ''' link. Layers with unique sources support extras that can be stored
         ''' in the database such as remarks and visual styles.
         ''' </summary>
         ''' <returns></returns>
@@ -153,6 +153,7 @@ Namespace Controls.Map.Layers
             End Try
 
         End Sub
+
     End Class
 
 End Namespace

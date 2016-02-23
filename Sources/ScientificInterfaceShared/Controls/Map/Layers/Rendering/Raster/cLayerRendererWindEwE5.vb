@@ -93,33 +93,6 @@ Namespace Controls.Map.Layers
 
                     cArrowIndicator.DrawArrowDxDy(g, Me.VisualStyle.ForeColour, rc, sScaleX, sScaleY)
 
-                    '' Leave a margin
-                    'rc.Inflate(-2, -2)
-                    '' Calc center
-                    'ptfCenter = New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
-                    '' Calc arrow size
-                    'szfHalfArrow = New SizeF(rc.Width * sScaleX / 2.0!, rc.Height * sScaleY / 2.0!)
-
-                    'Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
-
-                    '    p.StartCap = LineCap.Round
-                    '    p.CustomEndCap = New AdjustableArrowCap(3, 3)
-
-                    '    g.DrawLine(p, _
-                    '                   ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
-                    '                   ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
-                    '    'g.DrawEllipse(p, _
-                    '    '              ptfCenter.X + szfHalfArrow.Width - rc.Width / 8.0!, _
-                    '    '              ptfCenter.Y + szfHalfArrow.Height - rc.Height / 8.0!, _
-                    '    '              rc.Width / 4.0!, _
-                    '    '              rc.Height / 4.0!)
-                    'End Using
-
-                    ' If Depth(i, j + 1) > 0 Then Vxp = Xvloc(i, j) Else Vxp = 0
-                    ' If Depth(i + 1, j) > 0 Then Vyp = Yvloc(i, j) Else Vyp = 0
-                    ' WF.Circle (j + 0.5 + Vxp / Xmax, i + 0.5 + Vyp / Xmax), 0.03
-                    ' WF.Line (j + 0.5, i + 0.5)-Step(Vxp / Xmax, Vyp / Xmax)
-
                 End If
             End If
 

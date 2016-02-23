@@ -239,6 +239,7 @@ Namespace Ecospace.Advection
             End If
 
             For Each l In layers
+                l.RenderMode = eLayerRenderType.Always
                 If bEditable Then
                     l.Editor.IsEditable = True
                     l.IsSelected = True

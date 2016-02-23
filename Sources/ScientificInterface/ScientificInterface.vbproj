@@ -2060,6 +2060,10 @@
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
       <Name>EwENetworkAnalysisPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEPrebalPlugin\EwEPrebalPlugin.vbproj">
+      <Project>{095FF758-1CA2-4949-8815-CB46055539FD}</Project>
+      <Name>EwEPrebalPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwERemarksPlugin\EwERemarksPlugin.vbproj">
       <Project>{804DA432-10C6-418C-B323-99C4FDB5CB67}</Project>
       <Name>EwERemarksPlugin %28EwE plugins\EwERemarksPlugin\EwERemarksPlugin%29</Name>

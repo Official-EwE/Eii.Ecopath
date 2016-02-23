@@ -3377,4 +3377,8 @@
   <data name="VARIABLE_BIOACCUMOUTPUT" xml:space="preserve">
     <value>BA||Biomass accumulation</value>
   </data>
+  <data name="PROMPT_MAPLOAD_MISSING" xml:space="preserve">
+    <value>Data is missing for {0} cell(s)</value>
+    <comment>{0}: cell count</comment>
+  </data>
 </root>

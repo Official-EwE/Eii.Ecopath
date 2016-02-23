@@ -114,7 +114,7 @@ Namespace Controls.Map.Layers
                         If (sValRange > 0.0) Then
                             ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
                             ' not (0, sValueMax)!!!
-                            Using br As New SolidBrush(ColorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
+                            Using br As New SolidBrush(Me.ColorRamp.GetColor(sValue - sValMin, sValRange))
                                 g.FillRectangle(br, rc)
                             End Using
                         Else

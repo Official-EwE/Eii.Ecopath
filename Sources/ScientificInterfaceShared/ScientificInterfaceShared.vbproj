@@ -340,12 +340,6 @@
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorAdvection.Designer.vb">
-      <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorAdvection.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.Designer.vb">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
     </Compile>
@@ -400,16 +394,9 @@
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.Designer.vb">
-      <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Controls\Map\Layers\Layer types\cStyleguideImageLayer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cImageLayerRenderer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cVectorLayerRenderer.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererArrow.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererBitmap.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererDepth.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererHatched.vb" />
@@ -778,10 +765,6 @@
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorAdvection.resx">
-      <DependentUpon>ucLayerEditorAdvection.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.resx">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -815,10 +798,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.resx">
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.resx">
-      <DependentUpon>ucLayerEditorVector.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\ucLayer.resx">

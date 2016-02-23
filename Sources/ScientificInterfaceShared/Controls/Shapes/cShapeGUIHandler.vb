@@ -677,6 +677,7 @@ Namespace Controls
                 Case eDataTypes.GroupTimeSeries : Return New cTimeSeriesShapeGUIHandler(uic)
                 Case eDataTypes.FleetTimeSeries : Return New cTimeSeriesShapeGUIHandler(uic)
                 Case eDataTypes.CapacityMediation : Return New cCapacityShapeGUIHandler(uic)
+                Case eDataTypes.EggProd : Return New cEggProductionShapeGUIHandler(uic)
             End Select
             Return Nothing
         End Function

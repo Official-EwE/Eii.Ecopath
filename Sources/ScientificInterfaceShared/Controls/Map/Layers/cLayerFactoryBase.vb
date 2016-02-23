@@ -249,8 +249,9 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Always
-                    layer = New cDisplayRasterLayer(uic, bmd.LayerAdvection, renderer, Nothing, bmd, eVarNameFlags.LayerAdvection)
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                    editor = New cLayerEditorAdvection()
+                    layer = New cDisplayRasterLayer(uic, bmd.LayerAdvection, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
 
                     lLayers.Add(layer)
 
@@ -262,7 +263,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Always
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVector(Nothing)
                     layer = New cDisplayRasterLayer(uic, bmd.LayerWind, renderer, editor, bmd, eVarNameFlags.LayerWind)
 
@@ -278,7 +279,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererUpwelling(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Always
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorRange()
                     layer = New cDisplayRasterLayer(uic, bmd.LayerUpwelling, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
                     layer.Name = "Upwelling"
@@ -294,8 +295,8 @@ Namespace Controls.Map
 
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererText(vs) ' MLD rendered as text on top of gradiented layers such as habitats, etc
-                    renderer.RenderMode = Definitions.eLayerRenderType.Always
+                    renderer = New cLayerRendererValue(vs)
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorMLD()
                     layer = New cDisplayRasterLayer(uic, bmd.LayerMixedLayerDepths, renderer, editor, bmd, varName)
                     layer.Name = "Mixed layer depths"
