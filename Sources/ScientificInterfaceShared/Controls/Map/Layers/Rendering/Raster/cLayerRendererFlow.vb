@@ -35,10 +35,10 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererWindEwE5
-        Inherits cRasterLayerRenderer
+        Inherits cLayerRendererValue
 
         Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
+            MyBase.New(vs)
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
@@ -91,7 +91,9 @@ Namespace Controls.Map.Layers
                         sScaleY = 0
                     End Try
 
-                    cArrowIndicator.DrawArrowDxDy(g, Me.VisualStyle.ForeColour, rc, sScaleX, sScaleY)
+                    Dim sCol As Single = CSng(Math.Sqrt(sScaleX * sScaleX + sScaleY * sScaleY))
+                    Dim clr As Color = Me.ColorRamp.GetColor(sCol)
+                    cArrowIndicator.DrawArrowDxDy(g, clr, rc, sScaleX, sScaleY)
 
                 End If
             End If

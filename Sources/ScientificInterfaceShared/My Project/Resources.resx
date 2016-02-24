@@ -2757,7 +2757,7 @@
     <value>Sailing cost||Sailing cost map</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
-    <value>Advection</value>
+    <value>Flow</value>
   </data>
   <data name="VARIABLE_NOTSET" xml:space="preserve">
     <value>(None)||(No variable)</value>
