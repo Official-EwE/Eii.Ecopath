@@ -477,6 +477,8 @@ Namespace SpatialData
             Dim dtStart As Date = CType(Me.m_mtbIntervalStart.ValidateText, Date)
             Dim dt As Date
 
+            If (dtStart.Year > 5000) Then dtStart = New Date(2000, 1, 1)
+
             If Me.m_rbInterval.Checked Then
                 dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile)
             ElseIf Me.m_rbFromName.Checked Then
