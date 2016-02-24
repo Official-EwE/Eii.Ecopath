@@ -1238,7 +1238,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advection.
+        '''  Looks up a localized string similar to Flow.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_ADVECTION() As String
             Get

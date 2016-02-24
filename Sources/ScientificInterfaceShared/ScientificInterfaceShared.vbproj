@@ -404,7 +404,7 @@
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererText.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererUpwelling.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererValue.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererWindEwE5.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererFlow.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cLayerRenderer.vb" />
     <Compile Include="Controls\Map\Layers\ucLayer.Designer.vb">
       <DependentUpon>ucLayer.vb</DependentUpon>
