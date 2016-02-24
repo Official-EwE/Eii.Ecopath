@@ -103,11 +103,11 @@ Friend Class cDBUpdate6_50_00_20
                     ' For each month
                     For iMonth As Integer = 1 To cCore.N_MONTHS
 
-                        Dim map(InCol, InRow) As Boolean
+                        Dim map(InRow, InCol) As Boolean
                         Dim iRow As Integer = Math.Max(1, Math.Min(InRow, PrefRow(iMonth)))
                         Dim iCol As Integer = Math.Max(1, Math.Min(InCol, PrefCol(iMonth)))
 
-                        map(iCol, iRow) = True
+                        map(iRow, iCol) = True
 
                         ' Add this map to EcospaceScenarioGroupMigration
                         Dim drow As DataRow = writer.NewRow()
