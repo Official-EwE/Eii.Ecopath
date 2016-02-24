@@ -7136,7 +7136,14 @@ exitline:
                     Dim MaxNoOfCellsToMoveInALifetime As Integer = CInt(EcoSpaceData.Mvel(k) / EcoPathData.PB(k) / (EcoSpaceData.CellLength / 2))
                     '                                           = Dispersal           * Longevity          /half the cell length
                     Maxiter = Min(MaxNoOfCellsToMoveInALifetime, MaxDist)
-                    If Maxiter = 0 Then Maxiter = 1
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'jb 24-Feb-2016
+                    'Allow Maxitter to be zero. 
+                    'This means there will be no dispersal across areas of low habitat for groups with very low dispersal rates
+                    'This came to light because of a model with fish farming
+                    'that seemed to "leak" biomass toward the closest edge
+                    'If Maxiter = 0 Then Maxiter = 1
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     'Longevity for this species:
                     'Dim Longevity As Single = 1 / Me.EcoPathData.PB(k)
