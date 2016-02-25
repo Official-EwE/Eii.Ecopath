@@ -46,7 +46,7 @@ Namespace Controls.Map
         ''' <param name="varName">Name of the core variable to wrap</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetLayers(ByVal uic As cUIContext, _
+        Public Overridable Function GetLayers(ByVal uic As cUIContext,
                                               ByVal varName As eVarNameFlags) As cDisplayRasterLayer()
 
             Dim lLayers As New List(Of cDisplayRasterLayer)
@@ -118,7 +118,7 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
-                    layer = New cDisplayRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput), _
+                    layer = New cDisplayRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput),
                                             renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacityInput)
 
                     lLayers.Add(layer)
@@ -137,7 +137,7 @@ Namespace Controls.Map
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
                     editor.IsReadOnly = True
 
-                    layer = New cDisplayRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity), _
+                    layer = New cDisplayRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity),
                                             renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacity)
 
                     lLayers.Add(layer)
@@ -405,16 +405,16 @@ Namespace Controls.Map
             Dim strGroup As String = ""
             Select Case varName
 
-                Case eVarNameFlags.LayerDepth, _
-                     eVarNameFlags.LayerExclusion, _
-                     eVarNameFlags.LayerRelPP, _
+                Case eVarNameFlags.LayerDepth,
+                     eVarNameFlags.LayerExclusion,
+                     eVarNameFlags.LayerRelPP,
                      eVarNameFlags.LayerRelCin
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BASEMAP
 
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS
 
-                Case eVarNameFlags.LayerHabitatCapacity, _
+                Case eVarNameFlags.LayerHabitatCapacity,
                      eVarNameFlags.LayerHabitatCapacityInput
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABCAP
 
@@ -427,7 +427,7 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerMigration
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_MIGRATION
 
-                Case eVarNameFlags.LayerPort, _
+                Case eVarNameFlags.LayerPort,
                       eVarNameFlags.LayerSail
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_FISHING
 
@@ -443,10 +443,11 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerBiomassRelativeForcing
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING '"Relative biomass forcing"
 
-                Case eVarNameFlags.LayerAdvection, _
-                     eVarNameFlags.LayerMLD, _
-                     eVarNameFlags.LayerWind, _
-                     eVarNameFlags.LayerUpwelling
+                Case eVarNameFlags.LayerAdvection,
+                     eVarNameFlags.LayerMLD,
+                     eVarNameFlags.LayerWind,
+                     eVarNameFlags.LayerUpwelling,
+                     eVarNameFlags.LayerAdvectionForcing
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_ADVECTION
 
             End Select

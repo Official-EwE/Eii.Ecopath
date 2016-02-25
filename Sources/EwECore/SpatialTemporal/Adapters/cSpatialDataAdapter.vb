@@ -632,7 +632,7 @@ Namespace SpatialData
         ''' Return configured connections for this adapter.
         ''' </summary>
         ''' <param name="iLayer">The one-based index of the layer to return connections for.
-        ''' If less than one, cnofigured connections for all layers in the adapter are returned.</param>
+        ''' If less than one, configured connections for all layers in the adapter are returned.</param>
         ''' <param name="bEnabledOnly">If true, only those layers specified by <paramref name="iLayer"/>
         ''' that are <see cref="IsEnabled">enabled</see> are examined. If this flag is False, 
         ''' all layers specified by <paramref name="iLayer"/> are examined.</param>

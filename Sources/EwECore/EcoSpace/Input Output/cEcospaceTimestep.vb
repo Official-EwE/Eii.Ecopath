@@ -647,7 +647,8 @@ Public Class cEcospaceTimestep
     End Function
 
     ''' <inheritdocs cref="IEcospaceLayerManager.LayerData"/>
-    Public Function LayerData(varName As EwEUtils.Core.eVarNameFlags) As Object Implements Core.IEcospaceLayerManager.LayerData
+    Public Function LayerData(varName As EwEUtils.Core.eVarNameFlags, iIndex As Integer) As Object _
+        Implements Core.IEcospaceLayerManager.LayerData
 
         Select Case varName
 

@@ -186,7 +186,7 @@ Public MustInherit Class cEcospaceLayer
     Protected ReadOnly Property Data() As Object
         Get
             If (Me.m_data Is Nothing) Then
-                Me.m_data = Me.m_manager.LayerData(Me.m_vnData)
+                Me.m_data = Me.m_manager.LayerData(Me.m_vnData, Me.Index)
             End If
             Return Me.m_data
         End Get

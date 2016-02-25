@@ -38,12 +38,14 @@ Namespace Ecospace
         Inherits EwEGrid
 
         Private Class cConnectionInfo
-            Public Sub New(adt As cSpatialDataAdapter, layer As cEcospaceLayer)
+            Public Sub New(adt As cSpatialDataAdapter, layer As cEcospaceLayer, Optional iIndex As Integer = 0)
                 Me.Adapter = adt
                 Me.Layer = layer
+                Me.Index = iIndex
             End Sub
             Public Property Adapter As cSpatialDataAdapter
             Public Property Layer As cEcospaceLayer
+            Public Property Index As Integer
         End Class
 
         Private m_man As cSpatialDataConnectionManager

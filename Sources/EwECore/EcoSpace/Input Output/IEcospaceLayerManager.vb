@@ -48,9 +48,10 @@ Namespace Core
         ''' Method that managed layers can call to request their data.
         ''' </summary>
         ''' <param name="varName">The <see cref="eVarNameFlags">variable</see> to get layer data for.</param>
+        ''' <param name="iIndex">Index of the layer to obtain data for.</param>
         ''' <returns>Data in a format that the layer should understand.</returns>
         ''' -----------------------------------------------------------------------
-        Function LayerData(ByVal varName As eVarNameFlags) As Object
+        Function LayerData(ByVal varName As eVarNameFlags, iIndex As Integer) As Object
 
     End Interface
 
