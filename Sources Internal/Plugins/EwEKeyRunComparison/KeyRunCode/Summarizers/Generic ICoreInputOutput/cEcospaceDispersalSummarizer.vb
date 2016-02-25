@@ -46,8 +46,8 @@ Public Class cEcospaceDispersalSummarizer
         Me.m_variables.Add(eVarNameFlags.EatEffBad)
         Me.m_variables.Add(eVarNameFlags.IsAdvected)
         Me.m_variables.Add(eVarNameFlags.IsMigratory)
-        Me.m_variables.Add(eVarNameFlags.MigrationConcRow)
-        Me.m_variables.Add(eVarNameFlags.MigrationConcCol)
+        'Me.m_variables.Add(eVarNameFlags.MigrationConcRow)
+        'Me.m_variables.Add(eVarNameFlags.MigrationConcCol)
         Me.m_variables.Add(eVarNameFlags.BarrierAvoidanceWeight)
 
     End Sub

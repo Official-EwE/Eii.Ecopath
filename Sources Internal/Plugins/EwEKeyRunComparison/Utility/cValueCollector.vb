@@ -116,11 +116,15 @@ Public Class cValueCollector
     End Function
 
     Public Function Add(nRow As Integer, nCol As Integer, value As cEcospaceLayerBoolean) As Boolean
-        For i As Integer = 1 To nRow
-            For j As Integer = 1 To nCol
-                Me.Add(CBool(value.Cell(i, j)))
+        Try
+            For i As Integer = 1 To nRow
+                For j As Integer = 1 To nCol
+                    Me.Add(CBool(value.Cell(i, j)))
+                Next
             Next
-        Next
+        Catch ex As Exception
+
+        End Try
         Return True
     End Function
 

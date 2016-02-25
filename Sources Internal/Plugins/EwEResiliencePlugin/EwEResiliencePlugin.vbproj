@@ -91,7 +91,6 @@
     <AssemblyOriginatorKeyFile>EwEResiliencePlugin.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EwEResiliencePlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d3a2cb3f44446acb, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />

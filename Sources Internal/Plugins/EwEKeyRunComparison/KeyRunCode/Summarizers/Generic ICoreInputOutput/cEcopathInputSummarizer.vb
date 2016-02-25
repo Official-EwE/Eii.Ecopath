@@ -47,7 +47,7 @@ Public Class cEcopathInputSummarizer
         Me.m_variables.Add(eVarNameFlags.GEInput)
         Me.m_variables.Add(eVarNameFlags.GS)
 
-        Me.m_variables.Add(eVarNameFlags.BioAccum)
+        Me.m_variables.Add(eVarNameFlags.BioAccumInput)
         Me.m_variables.Add(eVarNameFlags.Immig)
         Me.m_variables.Add(eVarNameFlags.Emig)
         Me.m_variables.Add(eVarNameFlags.BioAccumRate)

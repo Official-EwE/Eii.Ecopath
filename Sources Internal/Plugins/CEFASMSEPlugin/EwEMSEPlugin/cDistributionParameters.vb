@@ -408,7 +408,7 @@ Public Class cEcopathDistributionParams
             If ParameterType = eDistrParamName.B Then
                 TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BiomassAreaInput
             ElseIf ParameterType = eDistrParamName.BA Then
-                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BioAccum
+                TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).BioAccumInput
             ElseIf ParameterType = eDistrParamName.QB Then
                 TMean = Me.Core.EcoPathGroupInputs(TGroupNumber).QBInput
             ElseIf ParameterType = eDistrParamName.PB Then
