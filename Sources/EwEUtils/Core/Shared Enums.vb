@@ -496,7 +496,7 @@ Namespace Core
         ''' <summary>Ecospace cell advection assignments</summary>
         LayerAdvection
         ' ''' <summary>Ecospace transport rate layer</summary>
-        'LayerTransportRate
+        LayerAdvectionForcing
         ''' <summary>Ecospace MLD (mixed layer depths) layer</summary>
         LayerMLD
         ''' <summary>Ecospace wind layer</summary>
@@ -511,8 +511,6 @@ Namespace Core
         LayerPort
         ''' <summary>Ecospace sailing cost</summary>
         LayerSail
-        ' ''' <summary>Ecospace distribution envelope</summary>
-        'LayerDistribution
         ''' <summary>To document</summary>
         LayerBiomassForcing
         ''' <summary>To document</summary>
@@ -521,8 +519,6 @@ Namespace Core
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type</summary>
         HabAreaProportion
-        ' ''' <summary>Ecospace IBM packets layer</summary>
-        'LayerIBMPackets
         ''' <summary>Ecospace excluded cells layer</summary>
         LayerExclusion
         ''' <summary>Total Effort multiplier</summary>

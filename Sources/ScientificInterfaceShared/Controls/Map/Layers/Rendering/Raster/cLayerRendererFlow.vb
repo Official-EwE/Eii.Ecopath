@@ -108,23 +108,12 @@ Namespace Controls.Map.Layers
 
             Dim asValues As Single() = Nothing
             Dim sMax As Single = 1
-            Dim sScaleX As Single = 0.0!
-            Dim sScaleY As Single = 0.0!
 
             If TypeOf value Is Single() Then
                 asValues = DirectCast(value, Single())
                 If asValues.Length = 2 Then
-
-                    ' Calc display scale, rounded to two decimals between -1 and 1
-                    Try
-                        sScaleX = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(0) / sMax, 2))), 1))
-                        sScaleY = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(1) / sMax, 2))), 1))
-                    Catch ex As Exception
-                        sScaleX = 0
-                        sScaleY = 0
-                    End Try
                     Return String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
-                                         cStringUtils.FormatNumber(sScaleX), cStringUtils.FormatNumber(sScaleY))
+                                         cStringUtils.FormatNumber(asValues(0)), cStringUtils.FormatNumber(asValues(1)))
                 End If
             End If
             Return ""

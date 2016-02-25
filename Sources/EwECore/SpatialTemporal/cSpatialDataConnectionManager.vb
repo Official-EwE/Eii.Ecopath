@@ -513,6 +513,7 @@ Namespace SpatialData
             Me.AddAdapter(New cBiomassForcingAdapter(Me.m_core, eVarNameFlags.LayerBiomassForcing, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cBiomassRelativeAdapter(Me.m_core, eVarNameFlags.LayerBiomassRelativeForcing, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerSail, eCoreCounterTypes.nFleets))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerAdvectionForcing, eCoreCounterTypes.NotSet))
 
         End Sub
 

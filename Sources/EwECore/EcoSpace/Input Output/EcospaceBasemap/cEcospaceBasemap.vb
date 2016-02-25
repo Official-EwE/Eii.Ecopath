@@ -22,6 +22,7 @@ Option Strict On
 Imports EwECore.Core
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -195,6 +196,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerMLD, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' Advection forcing
+            meta = New cVariableMetaData(-1000, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            val = New cValue(0, eVarNameFlags.LayerAdvectionForcing, eStatusFlags.Null, eValueTypes.SingleArray, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' LayerDriver
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerDriver, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -319,6 +325,11 @@ Public Class cEcospaceBasemap
 
             ' Advection
             Me.m_dictLayers(eVarNameFlags.LayerAdvection) = New cEcospaceLayer() {New cEcospaceLayerAdvection(theCore, Me)}
+            ' Advection forcing
+            llayers.Clear()
+            llayers.Add(New cEcospaceLayerAdvectionForcing(theCore, Me, 0))
+            llayers.Add(New cEcospaceLayerAdvectionForcing(theCore, Me, 1))
+            Me.m_dictLayers(eVarNameFlags.LayerAdvectionForcing) = llayers.ToArray()
 
             ' Wind
             Me.m_dictLayers(eVarNameFlags.LayerWind) = New cEcospaceLayer() {New cEcospaceLayerWind(theCore, Me)}
@@ -872,7 +883,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.LayerData"/>
     ''' -----------------------------------------------------------------------
-    Friend Function LayerData(ByVal varName As eVarNameFlags) As Object _
+    Friend Function LayerData(ByVal varName As eVarNameFlags, iIndex As Integer) As Object _
         Implements IEcospaceLayerManager.LayerData
 
         Select Case varName
@@ -898,6 +909,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection
                 Return New Single()(,) {Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel}
+            Case eVarNameFlags.LayerAdvectionForcing
+                Return cSystemUtils.IIF(iIndex = 0, Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel)
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcoSpaceData.MigMaps
             Case eVarNameFlags.LayerWind
@@ -920,7 +933,7 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Bcell
             Case eVarNameFlags.LayerExclusion
                 Return Me.m_core.m_EcoSpaceData.Excluded
-          End Select
+        End Select
         Return Nothing
     End Function
 
