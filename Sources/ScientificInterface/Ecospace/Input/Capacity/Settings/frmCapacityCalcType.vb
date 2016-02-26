@@ -59,7 +59,11 @@ Namespace Ecospace
 
             Me.m_tsbnHabitats.Image = SharedResources.Habitat
             Me.m_tsbnEnvResponses.Image = SharedResources.FunctionHS
+#If DEBUG Then
             Me.m_tsbnBoth.Image = SharedResources.OK
+#Else
+            Me.m_tsbnBoth.Visible = False
+#End If
 
             For i As Integer = 1 To Me.Core.nGroups
                 Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(i)
@@ -90,6 +94,7 @@ Namespace Ecospace
             Dim iHab As Integer = 0
             Dim iCap As Integer = 0
             Dim iBoth As Integer = 0
+
             For Each prop As cProperty In Me.m_lProps
                 Select Case DirectCast(prop.GetValue, eEcospaceCapacityCalType)
                     Case eEcospaceCapacityCalType.EnvResponses : iCap += 1
