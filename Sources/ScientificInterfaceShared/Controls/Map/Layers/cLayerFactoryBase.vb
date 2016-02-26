@@ -234,7 +234,7 @@ Namespace Controls.Map
                             renderer = New cLayerRendererValue(vs)
                             renderer.RenderMode = Definitions.eLayerRenderType.Selected
                             editor = New cLayerEditorMigration()
-                            layer = New cDisplayRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name, CSng(True), CSng(False))
+                            layer = New cDisplayRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
                             lLayers.Add(layer)
 

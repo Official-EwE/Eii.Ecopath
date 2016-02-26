@@ -28,7 +28,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace migration data.
 ''' </summary>
 Public Class cEcospaceLayerMigration
-    Inherits cEcospaceLayerBoolean
+    Inherits cEcospaceLayerSingle
 
 #Region " Construction "
 
@@ -53,10 +53,10 @@ Public Class cEcospaceLayerMigration
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Return DirectCast(Me.Data, Boolean(,)(,))(Me.Index, Me.Month)(iRow, iCol)
+            Return DirectCast(Me.Data, Single(,)(,))(Me.Index, Me.Month)(iRow, iCol)
         End Get
         Set(ByVal value As Object)
-            DirectCast(Me.Data, Boolean(,)(,))(Me.Index, Me.Month)(iRow, iCol) = CBool(value)
+            DirectCast(Me.Data, Single(,)(,))(Me.Index, Me.Month)(iRow, iCol) = CSng(value)
         End Set
     End Property
 

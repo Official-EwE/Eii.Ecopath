@@ -483,7 +483,7 @@ Namespace Ecospace
             Try
                 If Me.m_seltype = eSelectionType.MapGroup Then
                     If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
-                        If Me.UIContext.Core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses Then
+                        If Me.UIContext.Core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType <> eEcospaceCapacityCalType.Habitat Then
                             m_map.ResponseIndexForGroup(m_iSelGrp) = Me.AppliedResponseIndex
                         End If
                         Return True
@@ -492,7 +492,7 @@ Namespace Ecospace
                     'Apply the same shape to all the groups of the current map
                     Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
                     For igrp As Integer = 1 To Me.m_nGroups
-                        If Me.UIContext.Core.EcospaceGroups(igrp).CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses Then
+                        If Me.UIContext.Core.EcospaceGroups(igrp).CapacityCalculationType <> eEcospaceCapacityCalType.Habitat Then
                             m_map.ResponseIndexForGroup(igrp) = iSelResponseShape
                         End If
                     Next
@@ -500,7 +500,7 @@ Namespace Ecospace
                 ElseIf Me.m_seltype = eSelectionType.Group Then
                     'Apply the selected shape to the same group for all the maps
                     Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
-                    If Me.UIContext.Core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses Then
+                    If Me.UIContext.Core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType <> eEcospaceCapacityCalType.Habitat Then
                         For imap As Integer = 1 To Me.m_mapmanager.nMaps
                             Me.m_mapmanager.Map(imap).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
                         Next

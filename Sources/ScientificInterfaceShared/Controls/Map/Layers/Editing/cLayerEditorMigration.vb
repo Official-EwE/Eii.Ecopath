@@ -33,14 +33,13 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorMigration
-        Inherits cLayerEditorTwoState
+        Inherits cLayerEditorRange
         Implements IMonthFilter
 
 #Region " Construction "
 
         Public Sub New()
-            MyBase.New(GetType(ucLayerEditorMigration), True)
-            Me.AutoToggleCellValue = True
+            MyBase.New(GetType(ucLayerEditorMigration))
         End Sub
 
 #End Region ' Construction
@@ -48,7 +47,7 @@ Namespace Controls.Map.Layers
 #Region " Public interfaces "
 
         Public Event OnFilterChanged(sender As IContentFilter) _
-            Implements IContentFilter.FilterChanged
+            Implements IMonthFilter.FilterChanged
 
         Public Sub [Next]()
             Me.Month = cSystemUtils.IIF(Me.Month = cCore.N_MONTHS, 1, Me.Month + 1)

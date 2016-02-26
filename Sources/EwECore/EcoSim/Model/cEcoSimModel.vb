@@ -340,8 +340,10 @@ Namespace Ecosim
 
                 SetRelativeCatchabilities()
 
+#If DEBUG Then
                 'Make sure FishMGear and relQ are set correctly 
                 Me.debugTestRelQFishMGear()
+#End If
 
                 If bFullInitialization Then
 
@@ -1602,6 +1604,7 @@ Namespace Ecosim
 
         End Sub
 
+#If DEBUG Then
 
         ''' <summary>
         ''' For Debugging. Test that relQ() and FishMGear have been set correctly. 
@@ -1629,8 +1632,9 @@ Namespace Ecosim
 
             Next iGrp
 
-
         End Sub
+
+#End If
 
 
         'Private Sub Cupdate(ByVal Biom() As Single)

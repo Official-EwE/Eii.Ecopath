@@ -4486,7 +4486,7 @@ exitline:
 
                             MigGrad(i, j, iMigGrp, imonth) = 1000
 
-                            If m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) Then
+                            If m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) > 0 Then
                                 MigGrad(i, j, iMigGrp, imonth) = 0
                             End If
 
@@ -6916,9 +6916,8 @@ exitline:
     Private Sub setHabCapFromHabitat()
         Dim i As Integer, j As Integer, K As Integer
 
-
         For K = 1 To Me.m_Data.NGroups
-            If Me.m_Data.isGroupHabCapChanged(K) And Me.m_Data.CapCalType(K) = eEcospaceCapacityCalType.Habitat Then
+            If Me.m_Data.isGroupHabCapChanged(K) And Me.m_Data.CapCalType(K) <> eEcospaceCapacityCalType.EnvResponses Then
                 For i = 1 To Me.m_Data.InRow
                     For j = 1 To Me.m_Data.InCol
 
@@ -7023,7 +7022,7 @@ exitline:
                     m_Data.MaxHabCap(igrp) = 0.0F
                 End If
 
-                m_Data.TotHabCap(igrp) = 0.0F
+                'm_Data.TotHabCap(igrp) = 0.0F
 
                 For irow As Integer = 1 To Me.m_Data.InRow
                     For icol As Integer = 1 To Me.m_Data.InCol
@@ -7242,7 +7241,7 @@ exitline:
         bReturn = True
         For igrp = 1 To Me.m_Data.NGroups
             'Have the Habitat Capacity input maps changed
-            If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
+            If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) <> eEcospaceCapacityCalType.Habitat Then
                 'Yes the map has changed
                 'Debug.Assert(igrp <> 45)
                 For irow = 1 To Me.m_Data.InRow
@@ -7342,7 +7341,11 @@ exitline:
 
         'now normalize the capacity map
         For iGrp = 1 To Me.m_Data.NGroups
+
             If Me.m_Data.isGroupHabCapChanged(iGrp) Then
+
+                m_Data.TotHabCap(iGrp) = 0.0F
+
                 'Capacity Model has a one time initialization of the max capacity used for normalization
                 If Not Me.m_Data.hasCapInitialized Then
                     For ir = 1 To Me.m_Data.InRow
@@ -7354,7 +7357,6 @@ exitline:
                     Next
                 End If
 
-                Dim tempmax As Single = 0
                 'Normalize and get the total cap by group
                 For ir = 1 To Me.m_Data.InRow
                     For ic = 1 To Me.m_Data.InCol
@@ -7366,7 +7368,6 @@ exitline:
 
                             'sum of capacity
                             Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(iGrp)(ir, ic)
-                            tempmax = Math.Max(Me.m_Data.HabCap(iGrp)(ir, ic), tempmax)
                         End If 'Me.m_Data.Depth(ir, ic) > 0 
                     Next ic
                 Next ir
@@ -7485,7 +7486,7 @@ exitline:
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses Then
+                    If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) <> eEcospaceCapacityCalType.Habitat Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'System.Console.Write(igrp.ToString + ",")

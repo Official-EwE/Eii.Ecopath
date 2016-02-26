@@ -87,6 +87,8 @@ Public Class cEcoFunctions
                 End If
             Next
 
+            If NumGr = 0 Then Return 0
+
             'if there are very few groups we better include all
             'VC Nov 2008
             If NumGr < 10 Then

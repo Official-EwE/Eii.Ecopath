@@ -19,7 +19,7 @@
 Namespace Controls.Map.Layers
 
     Partial Class ucLayerEditorMigration
-        Inherits ucLayerEditorDefault
+        Inherits ucLayerEditorRange
 
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer

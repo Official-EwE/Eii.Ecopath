@@ -44,8 +44,9 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index
             Name
-            FromHabitat
-            FromEnvDrivers
+            Habitat
+            EnvDrivers
+            Both
         End Enum
 
         Private m_lProps As New List(Of cProperty)
@@ -55,6 +56,8 @@ Namespace Ecospace
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
+
+            ' ToDo: globalize this
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -67,8 +70,9 @@ Namespace Ecospace
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.FromHabitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
-            Me(0, eColumnTypes.FromEnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
+            Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
+            Me(0, eColumnTypes.EnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
+            Me(0, eColumnTypes.Both) = New EwEColumnHeaderCell("Both")
 
             For iGroup As Integer = 1 To Core.nGroups
 
@@ -79,11 +83,14 @@ Namespace Ecospace
                 ' # Group name row header cells
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.FromHabitat) = New EwECheckboxCell(False)
-                Me(iGroup, eColumnTypes.FromHabitat).Behaviors.Add(EwEEditHandler)
+                Me(iGroup, eColumnTypes.Habitat) = New EwECheckboxCell(False)
+                Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(EwEEditHandler)
 
-                Me(iGroup, eColumnTypes.FromEnvDrivers) = New EwECheckboxCell(False)
-                Me(iGroup, eColumnTypes.FromEnvDrivers).Behaviors.Add(EwEEditHandler)
+                Me(iGroup, eColumnTypes.EnvDrivers) = New EwECheckboxCell(False)
+                Me(iGroup, eColumnTypes.EnvDrivers).Behaviors.Add(EwEEditHandler)
+
+                Me(iGroup, eColumnTypes.Both) = New EwECheckboxCell(False)
+                Me(iGroup, eColumnTypes.Both).Behaviors.Add(EwEEditHandler)
 
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(group, eVarNameFlags.EcospaceCapCalType)
                 Me.m_lProps.Add(prop)
@@ -117,16 +124,15 @@ Namespace Ecospace
                 Me.m_bInUpdate = True
                 Try
                     Select Case DirectCast(p.Column, eColumnTypes)
-                        Case eColumnTypes.FromHabitat
-                            Dim val As eEcospaceCapacityCalType = CType(cSystemUtils.IIF(CBool(cell.GetValue(p)) = True, _
-                                                                                         eEcospaceCapacityCalType.Habitat, _
-                                                                                         eEcospaceCapacityCalType.EnvResponses), eEcospaceCapacityCalType)
-                            Me.m_lProps(p.Row - 1).SetValue(val)
-                        Case eColumnTypes.FromEnvDrivers
-                            Dim val As eEcospaceCapacityCalType = CType(cSystemUtils.IIF(CBool(cell.GetValue(p)) = False, _
-                                                                                         eEcospaceCapacityCalType.Habitat, _
-                                                                                         eEcospaceCapacityCalType.EnvResponses), eEcospaceCapacityCalType)
-                            Me.m_lProps(p.Row - 1).SetValue(val)
+                        Case eColumnTypes.Habitat
+                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.Habitat)
+
+                        Case eColumnTypes.EnvDrivers
+                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.EnvResponses)
+
+                        Case eColumnTypes.Both
+                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.Both)
+
                     End Select
 
                 Catch ex As Exception
@@ -150,11 +156,14 @@ Namespace Ecospace
 
             Dim iGroup As Integer = grp.Index
 
-            Me(iGroup, eColumnTypes.FromHabitat).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
-            Me.InvalidateCell(Me(iGroup, eColumnTypes.FromHabitat))
+            Me(iGroup, eColumnTypes.Habitat).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
+            Me.InvalidateCell(Me(iGroup, eColumnTypes.Habitat))
 
-            Me(iGroup, eColumnTypes.FromEnvDrivers).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses)
-            Me.InvalidateCell(Me(iGroup, eColumnTypes.FromEnvDrivers))
+            Me(iGroup, eColumnTypes.EnvDrivers).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses)
+            Me.InvalidateCell(Me(iGroup, eColumnTypes.EnvDrivers))
+
+            Me(iGroup, eColumnTypes.Both).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both)
+            Me.InvalidateCell(Me(iGroup, eColumnTypes.Both))
 
         End Sub
 
