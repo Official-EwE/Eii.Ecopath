@@ -160,7 +160,7 @@ Namespace Controls.Map.Layers
         ''' <param name="rc">Area to render to.</param>
         ''' -----------------------------------------------------------------------
         Protected Sub RenderError(ByVal g As Graphics, ByVal rc As Rectangle)
-            g.FillRectangle(Brushes.White, rc)
+            'g.FillRectangle(Brushes.White, rc)
             g.DrawLine(Pens.Red, rc.Left, rc.Top, rc.Right, rc.Bottom)
             g.DrawLine(Pens.Red, rc.Left, rc.Bottom, rc.Right, rc.Top)
         End Sub

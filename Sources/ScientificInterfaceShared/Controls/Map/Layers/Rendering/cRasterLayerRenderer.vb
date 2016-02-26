@@ -79,6 +79,8 @@ Namespace Controls.Map.Layers
                                            ByVal value As Object, _
                                            ByVal style As cStyleGuide.eStyleFlags)
 
+        Public Property SuppressZero As Boolean
+
     End Class
 
 End Namespace
