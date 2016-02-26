@@ -83,7 +83,7 @@ Namespace Controls.Map.Layers
                 Return
             End If
 
-            If Not cNumberUtils.IsFinite(sValue) Then
+            If (Not cNumberUtils.IsFinite(sValue)) Or (sValue = cCore.NULL_VALUE) Or (sValue = 0 And Me.SuppressZero) Then
                 Me.RenderError(g, rc)
                 Return
             End If

@@ -233,6 +233,7 @@ Namespace Controls.Map
                             If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                             renderer = New cLayerRendererValue(vs)
                             renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                            DirectCast(renderer, cLayerRendererValue).SuppressZero = True
                             editor = New cLayerEditorMigration()
                             layer = New cDisplayRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
