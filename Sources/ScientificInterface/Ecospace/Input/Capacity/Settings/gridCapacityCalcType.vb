@@ -46,7 +46,9 @@ Namespace Ecospace
             Name
             Habitat
             EnvDrivers
+#If DEBUG Then
             Both
+#End If
         End Enum
 
         Private m_lProps As New List(Of cProperty)
@@ -72,8 +74,9 @@ Namespace Ecospace
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
             Me(0, eColumnTypes.EnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
+#If DEBUG Then
             Me(0, eColumnTypes.Both) = New EwEColumnHeaderCell("Both")
-
+#End If
             For iGroup As Integer = 1 To Core.nGroups
 
                 group = Core.EcospaceGroups(iGroup)
@@ -89,8 +92,10 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.EnvDrivers) = New EwECheckboxCell(False)
                 Me(iGroup, eColumnTypes.EnvDrivers).Behaviors.Add(EwEEditHandler)
 
+#If DEBUG Then
                 Me(iGroup, eColumnTypes.Both) = New EwECheckboxCell(False)
                 Me(iGroup, eColumnTypes.Both).Behaviors.Add(EwEEditHandler)
+#End If
 
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(group, eVarNameFlags.EcospaceCapCalType)
                 Me.m_lProps.Add(prop)
@@ -130,8 +135,10 @@ Namespace Ecospace
                         Case eColumnTypes.EnvDrivers
                             If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.EnvResponses)
 
+#If DEBUG Then
                         Case eColumnTypes.Both
                             If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.Both)
+#End If
 
                     End Select
 
@@ -162,8 +169,10 @@ Namespace Ecospace
             Me(iGroup, eColumnTypes.EnvDrivers).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses)
             Me.InvalidateCell(Me(iGroup, eColumnTypes.EnvDrivers))
 
+#If DEBUG Then
             Me(iGroup, eColumnTypes.Both).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both)
             Me.InvalidateCell(Me(iGroup, eColumnTypes.Both))
+#End If
 
         End Sub
 
