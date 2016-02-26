@@ -89,6 +89,9 @@ Namespace Controls.EwEGrid
                             p = New Position(iRow Mod grid.RowsCount, e.Position.Column)
                             ' Get cell
                             cell = grid.GetCell(p)
+                            ' Abort if grid has insufficient cells to rotate
+                            If (cell Is Nothing) Then Return
+
                             ' Stop searching if cell is editable OR back at start position
                             bFound = (iRow = e.Position.Row) Or (cell.DataModel.EnableEdit = True)
                         End While

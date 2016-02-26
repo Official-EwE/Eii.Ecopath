@@ -5990,23 +5990,23 @@ Public Class cCore
 
     Friend Function Set_BadHab_Flags(ByVal grp As cEcospaceGroup) As Boolean
 
-        Dim b As Boolean = grp.AllowValidation()
-        Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
-        grp.AllowValidation = False
+        'Dim b As Boolean = grp.AllowValidation()
+        'Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
+        'grp.AllowValidation = False
 
-        Select Case grp.CapacityCalculationType
-            Case eEcospaceCapacityCalType.Habitat
-                grp.ClearStatusFlags(eVarNameFlags.RelMoveBad, s)
-                grp.ClearStatusFlags(eVarNameFlags.RelVulBad, s)
-                grp.ClearStatusFlags(eVarNameFlags.EatEffBad, s)
-            Case eEcospaceCapacityCalType.EnvResponses
-                grp.SetStatusFlags(eVarNameFlags.RelMoveBad, s)
-                grp.SetStatusFlags(eVarNameFlags.RelVulBad, s)
-                grp.SetStatusFlags(eVarNameFlags.EatEffBad, s)
-            Case Else
-                Debug.Assert(False)
-        End Select
-        grp.AllowValidation = b
+        'Select Case grp.CapacityCalculationType
+        '    Case eEcospaceCapacityCalType.Habitat
+        '        grp.ClearStatusFlags(eVarNameFlags.RelMoveBad, s)
+        '        grp.ClearStatusFlags(eVarNameFlags.RelVulBad, s)
+        '        grp.ClearStatusFlags(eVarNameFlags.EatEffBad, s)
+        '    Case eEcospaceCapacityCalType.EnvResponses
+        '        grp.SetStatusFlags(eVarNameFlags.RelMoveBad, s)
+        '        grp.SetStatusFlags(eVarNameFlags.RelVulBad, s)
+        '        grp.SetStatusFlags(eVarNameFlags.EatEffBad, s)
+        '    Case Else
+        '        Debug.Assert(False)
+        'End Select
+        'grp.AllowValidation = b
 
     End Function
 
@@ -6022,6 +6022,8 @@ Public Class cCore
                     grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
                 Case eEcospaceCapacityCalType.EnvResponses
                     grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
+                Case eEcospaceCapacityCalType.Both
+                    grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
                 Case Else
                     Debug.Assert(False)
             End Select

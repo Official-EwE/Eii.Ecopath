@@ -57,8 +57,9 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_tsbnUseOnlyHabitat.Image = SharedResources.Habitat
-            Me.m_tsbnUseOnlyEnvResponses.Image = SharedResources.FunctionHS
+            Me.m_tsbnHabitats.Image = SharedResources.Habitat
+            Me.m_tsbnEnvResponses.Image = SharedResources.FunctionHS
+            Me.m_tsbnBoth.Image = SharedResources.OK
 
             For i As Integer = 1 To Me.Core.nGroups
                 Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(i)
@@ -88,15 +89,19 @@ Namespace Ecospace
 
             Dim iHab As Integer = 0
             Dim iCap As Integer = 0
+            Dim iBoth As Integer = 0
             For Each prop As cProperty In Me.m_lProps
                 Select Case DirectCast(prop.GetValue, eEcospaceCapacityCalType)
                     Case eEcospaceCapacityCalType.EnvResponses : iCap += 1
                     Case eEcospaceCapacityCalType.Habitat : iHab += 1
+                    Case eEcospaceCapacityCalType.Both : iBoth += 1
+
                 End Select
             Next
 
-            Me.m_tsbnUseOnlyHabitat.Checked = (iHab = Me.Core.nGroups)
-            Me.m_tsbnUseOnlyEnvResponses.Checked = (iCap = Me.Core.nGroups)
+            Me.m_tsbnHabitats.Checked = (iHab = Me.Core.nGroups)
+            Me.m_tsbnEnvResponses.Checked = (iCap = Me.Core.nGroups)
+            Me.m_tsbnBoth.Checked = (iBoth = Me.Core.nGroups)
 
             MyBase.UpdateControls()
 
@@ -107,7 +112,7 @@ Namespace Ecospace
 #Region " Events "
 
         Private Sub OnUseOnlyHabitat(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnUseOnlyHabitat.Click
+            Handles m_tsbnHabitats.Click
 
             Try
                 Me.SetAllTo(eEcospaceCapacityCalType.Habitat)
@@ -118,12 +123,23 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnUseOnlyEnvResponses(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnUseOnlyEnvResponses.Click
+            Handles m_tsbnEnvResponses.Click
 
             Try
                 Me.SetAllTo(eEcospaceCapacityCalType.EnvResponses)
             Catch ex As Exception
                 cLog.Write(ex, "frmCapacityCalcType.OnUseOnlyEnvResponses")
+            End Try
+
+        End Sub
+
+        Private Sub OnUseOnlyBoth(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnBoth.Click
+
+            Try
+                Me.SetAllTo(eEcospaceCapacityCalType.Both)
+            Catch ex As Exception
+                cLog.Write(ex, "frmCapacityCalcType.OnUseOnlyHabitat")
             End Try
 
         End Sub

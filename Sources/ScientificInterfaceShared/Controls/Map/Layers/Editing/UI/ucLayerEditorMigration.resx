@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lbMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 125</value>
+    <value>3, 184</value>
   </data>
   <data name="m_lbMonth.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
@@ -187,13 +187,13 @@
     <value>December</value>
   </data>
   <data name="m_cmbMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 122</value>
+    <value>68, 181</value>
   </data>
   <data name="m_cmbMonth.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="m_cmbMonth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>103, 21</value>
+    <value>96, 21</value>
   </data>
   <data name="m_cmbMonth.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -214,10 +214,10 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 121</value>
+    <value>170, 179</value>
   </data>
   <data name="m_btnNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>20, 22</value>
+    <value>27, 23</value>
   </data>
   <data name="m_btnNext.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -244,12 +244,12 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 149</value>
+    <value>200, 210</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucLayerEditorMigration</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.13153.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorRange, ScientificInterfaceShared, Version=6.5.13339.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

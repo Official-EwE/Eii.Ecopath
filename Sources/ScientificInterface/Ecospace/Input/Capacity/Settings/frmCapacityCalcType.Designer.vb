@@ -53,29 +53,30 @@ Namespace Ecospace
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCapacityCalcType))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnUseOnlyHabitat = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnUseOnlyEnvResponses = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnHabitats = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnEnvResponses = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.gridCapacityCalcType(Me.components)
+            Me.m_tsbnBoth = New System.Windows.Forms.ToolStripButton()
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnUseOnlyHabitat, Me.m_tsbnUseOnlyEnvResponses})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHabitats, Me.m_tsbnEnvResponses, Me.m_tsbnBoth})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnUseOnlyHabitat
+            'm_tsbnHabitats
             '
-            resources.ApplyResources(Me.m_tsbnUseOnlyHabitat, "m_tsbnUseOnlyHabitat")
-            Me.m_tsbnUseOnlyHabitat.Name = "m_tsbnUseOnlyHabitat"
+            resources.ApplyResources(Me.m_tsbnHabitats, "m_tsbnHabitats")
+            Me.m_tsbnHabitats.Name = "m_tsbnHabitats"
             '
-            'm_tsbnUseOnlyEnvResponses
+            'm_tsbnEnvResponses
             '
-            resources.ApplyResources(Me.m_tsbnUseOnlyEnvResponses, "m_tsbnUseOnlyEnvResponses")
-            Me.m_tsbnUseOnlyEnvResponses.Name = "m_tsbnUseOnlyEnvResponses"
+            resources.ApplyResources(Me.m_tsbnEnvResponses, "m_tsbnEnvResponses")
+            Me.m_tsbnEnvResponses.Name = "m_tsbnEnvResponses"
             '
             'm_grid
             '
@@ -108,6 +109,11 @@ Namespace Ecospace
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
+            'm_tsbnBoth
+            '
+            resources.ApplyResources(Me.m_tsbnBoth, "m_tsbnBoth")
+            Me.m_tsbnBoth.Name = "m_tsbnBoth"
+            '
             'frmCapacityCalcType
             '
             resources.ApplyResources(Me, "$this")
@@ -115,6 +121,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmCapacityCalcType"
+            Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)
@@ -123,9 +130,10 @@ Namespace Ecospace
         End Sub
 
         Private WithEvents m_tsMain As cEwEToolstrip
-        Private WithEvents m_tsbnUseOnlyHabitat As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbnUseOnlyEnvResponses As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnHabitats As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnEnvResponses As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As gridCapacityCalcType
+        Friend WithEvents m_tsbnBoth As System.Windows.Forms.ToolStripButton
 
     End Class
 

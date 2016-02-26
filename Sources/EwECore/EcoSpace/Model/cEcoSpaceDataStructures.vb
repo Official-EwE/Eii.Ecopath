@@ -767,8 +767,7 @@ Public Class cEcospaceDataStructures
     ''' Monthly Migration maps stored in a ragged array 
     ''' Dimensioned by (group,month)(row,col)
     ''' </summary>
-    ''' <remarks></remarks>
-    Public MigMaps(,)(,) As Boolean
+    Public MigMaps(,)(,) As Single
 
 #End Region
 
@@ -1330,12 +1329,12 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Friend Sub allocateMigrationMaps()
         If (Me.MigMaps Is Nothing) Then
-            Me.MigMaps = New Boolean(NGroups, 12)(,) {}
+            Me.MigMaps = New Single(NGroups, 12)(,) {}
         End If
         For iGrp As Integer = 1 To Me.NGroups
             If (Me.MigMaps(iGrp, 1) Is Nothing) And IsMigratory(iGrp) Then
                 For iMonth As Integer = 1 To 12
-                    Me.MigMaps(iGrp, iMonth) = New Boolean(InRow + 1, InCol + 1) {}
+                    Me.MigMaps(iGrp, iMonth) = New Single(InRow + 1, InCol + 1) {}
                 Next
             End If
         Next
@@ -1428,7 +1427,7 @@ Public Class cEcospaceDataStructures
 
                     For irow As Integer = 1 To InRow
                         For icol As Integer = 1 To InCol
-                            If Me.MigMaps(igrp, imon)(irow, icol) Then
+                            If Me.MigMaps(igrp, imon)(irow, icol) > 0 Then
                                 minRow = Math.Min(irow, minRow)
                                 minCol = Math.Min(icol, minCol)
                                 maxRow = Math.Max(irow, maxRow)
