@@ -57,7 +57,7 @@ Namespace Controls.Map.Layers
 
             If Me.Editor Is Nothing Then Return
 
-            Me.Editor.ScaleFactor = CSng(Me.m_nudValue.Value)
+            Me.Editor.CellValue = CSng(Me.m_nudValue.Value)
             Me.RaiseChangedEvent()
 
         End Sub
