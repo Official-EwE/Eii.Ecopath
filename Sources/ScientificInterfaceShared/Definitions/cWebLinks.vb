@@ -34,12 +34,11 @@ Imports EwEUtils.Utilities
 ''' </remarks>
 Public Class cWebLinks
 
-    Private Const cStart As String = "http://www.ecopath.org/nonewe/eweexe/index.php"
+    Private Const cStart As String = "http://www.ecopath.org/ewestart"
     Private Const cHome As String = "http://www.ecopath.org"
     'Private Const cRSS As String = "http://www.ecopath.org/aggregator/categories/1"
     Private Const cTrac As String = "http://sources.ecopath.org/trac/Ecopath/report/1"
     Private Const cCourse As String = "http://www.ecopath.org/courses"
-    Private Const cForum As String = "http://www.ecopath.org/forum"
     Private Const cFacebook As String = "http://www.facebook.com/eweconsortium"
     Private Const cFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
     Private Const cEcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
@@ -57,7 +56,6 @@ Public Class cWebLinks
         HomeRSS
         Trac
         Facebook
-        Forums
         Courses
         Feedback
         EcoBaseModelInfo
@@ -71,7 +69,6 @@ Public Class cWebLinks
                 'Case eLinkType.HomeRSS : Return cWebLinks.cRSS
             Case eLinkType.Trac : Return cWebLinks.cTrac
             Case eLinkType.Courses : Return cWebLinks.cCourse
-            Case eLinkType.Forums : Return cWebLinks.cForum
             Case eLinkType.Facebook : Return cWebLinks.cFacebook
             Case eLinkType.Feedback : Return cWebLinks.cFeedback
             Case eLinkType.EcoBaseModelInfo : Return cWebLinks.cEcoBaseModelInfo
