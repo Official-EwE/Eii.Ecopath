@@ -80,7 +80,6 @@ Partial Public Class frmEwE6
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiHelpViewForums = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
@@ -362,7 +361,7 @@ Partial Public Class frmEwE6
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewForums, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiViewLog, m_tssHelp2, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiViewLog, m_tssHelp2, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -380,11 +379,6 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiHelpViewMainSite.Name = "m_tsmiHelpViewMainSite"
         resources.ApplyResources(Me.m_tsmiHelpViewMainSite, "m_tsmiHelpViewMainSite")
-        '
-        'm_tsmiHelpViewForums
-        '
-        Me.m_tsmiHelpViewForums.Name = "m_tsmiHelpViewForums"
-        resources.ApplyResources(Me.m_tsmiHelpViewForums, "m_tsmiHelpViewForums")
         '
         'm_tsmiHelpViewFacebook
         '
@@ -897,7 +891,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiPresentation As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiHelpViewForums As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiPrint As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiEcospaceInputMaps As System.Windows.Forms.ToolStripMenuItem

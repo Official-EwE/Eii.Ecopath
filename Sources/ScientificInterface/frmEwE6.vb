@@ -3385,10 +3385,6 @@ Public Class frmEwE6
         Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Feedback)
     End Sub
 
-    Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpViewForums.Click
-        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Forums)
-    End Sub
-
     Private Sub m_tsmiHelpViewMainSite_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewMainSite.Click
         Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Home)
     End Sub
