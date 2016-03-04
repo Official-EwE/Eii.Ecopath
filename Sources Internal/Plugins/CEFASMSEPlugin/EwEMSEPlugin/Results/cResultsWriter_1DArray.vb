@@ -32,7 +32,7 @@ Public Class cResultsWriter_1DArray
             'Setup the HCR F Targ file for igrp
             m_StreamWriters.Add(writer)
             If Me.m_Core.SaveWithFileHeader Then m_StreamWriters(iElement - 1).WriteLine(Me.m_Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-            m_StreamWriters(iElement - 1).Write(m_ResultsArray.Dim_Name & "Name, ModelID, StrategyName, ResultType")
+            m_StreamWriters(iElement - 1).Write(m_ResultsArray.Dim_Name & "Name,ModelID,StrategyName,ResultType")
             For iTime As Integer = 1 To m_ResultsArray.NumberOfTimeRecords
                 m_StreamWriters(iElement - 1).Write("," & cStringUtils.FormatNumber(iTime))
             Next
