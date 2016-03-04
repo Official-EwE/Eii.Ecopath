@@ -510,12 +510,14 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Is this timeseries type use for the AIC Calculations
+    ''' Returns whether a <see cref="eTimeSeriesType">timeseries type</see>
+    ''' contributes to AIC calculations.
     ''' </summary>
     ''' <param name="TimeSeriesType"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if a timeseries type contributes to AIC Calculations</returns>
+    ''' -----------------------------------------------------------------------
     Friend Function UseForAIC(TimeSeriesType As eTimeSeriesType) As Boolean
         Return (TimeSeriesType = eTimeSeriesType.BiomassAbs) Or
                (TimeSeriesType = eTimeSeriesType.BiomassRel) Or
