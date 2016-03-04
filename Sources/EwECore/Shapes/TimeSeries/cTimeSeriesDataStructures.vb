@@ -487,7 +487,7 @@ Public Class cTimeSeriesDataStructures
                     Me.LoadEnabledTS(iTS, iTSEnable)
 
                     'count up the number of time series use for the AIC
-                    If Me.useForAIC(Me.DatType(iTSEnable)) Then
+                    If Me.UseForAIC(Me.DatType(iTSEnable)) Then
                         nAICTimeSeries += 1
                     End If
 
@@ -516,7 +516,7 @@ Public Class cTimeSeriesDataStructures
     ''' <param name="TimeSeriesType"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function useForAIC(TimeSeriesType As eTimeSeriesType) As Boolean
+    Friend Function UseForAIC(TimeSeriesType As eTimeSeriesType) As Boolean
         If TimeSeriesType = eTimeSeriesType.BiomassAbs Or TimeSeriesType = eTimeSeriesType.BiomassRel _
             Or TimeSeriesType = eTimeSeriesType.Catches Or TimeSeriesType = eTimeSeriesType.CatchesForcing _
             Or TimeSeriesType = eTimeSeriesType.TotalMortality Then

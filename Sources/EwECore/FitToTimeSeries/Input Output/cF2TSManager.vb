@@ -286,8 +286,16 @@ Public Class cF2TSManager
 
         Dim f2tsDS As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
         Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+        Dim count As Integer = 0
 
-        f2tsDS.nAICData = tsDS.nAICTimeSeries * tsDS.nDatPoints
+        For iTS As Integer = 1 To tsDS.NdatType
+            If (tsDS.UseForAIC(tsDS.DatType(iTS))) Then
+                For iPt As Integer = 0 To tsDS.nDatPoints
+                    If tsDS.DatVal(iPt, iTS) > 0 Then count += 1
+                Next
+            End If
+        Next
+        f2tsDS.nAICData = count
 
     End Sub
 
