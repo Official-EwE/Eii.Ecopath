@@ -517,12 +517,11 @@ Public Class cTimeSeriesDataStructures
     ''' <returns></returns>
     ''' <remarks></remarks>
     Friend Function UseForAIC(TimeSeriesType As eTimeSeriesType) As Boolean
-        If TimeSeriesType = eTimeSeriesType.BiomassAbs Or TimeSeriesType = eTimeSeriesType.BiomassRel _
-            Or TimeSeriesType = eTimeSeriesType.Catches Or TimeSeriesType = eTimeSeriesType.CatchesForcing _
-            Or TimeSeriesType = eTimeSeriesType.TotalMortality Then
-            Return True
-        End If
-        Return False
+        Return (TimeSeriesType = eTimeSeriesType.BiomassAbs) Or
+               (TimeSeriesType = eTimeSeriesType.BiomassRel) Or
+               (TimeSeriesType = eTimeSeriesType.Catches) Or
+               (TimeSeriesType = eTimeSeriesType.CatchesForcing) Or
+               (TimeSeriesType = eTimeSeriesType.TotalMortality)
     End Function
 
     Friend Sub Update()
