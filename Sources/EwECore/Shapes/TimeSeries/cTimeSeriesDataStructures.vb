@@ -218,7 +218,7 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
-    <Obsolete("Please use nTimeSeries instead")> _
+    <Obsolete("Please use nTimeSeries instead")>
     Public Property nNumTimeSeries As Integer
         Get
             Return Me.nTimeSeries
@@ -346,7 +346,7 @@ Public Class cTimeSeriesDataStructures
     ''' <param name="iYear">Model year 1 - n years</param>
     ''' <returns>True if there is reference data for this model timestep</returns>
     ''' <remarks></remarks>
-    Public Function setRefDataIndex(ByRef iIndexToSet As Integer, ByVal iCumTimeStep As Integer, _
+    Public Function setRefDataIndex(ByRef iIndexToSet As Integer, ByVal iCumTimeStep As Integer,
                                     ByVal iMonth As Integer, ByVal iYear As Integer) As Boolean
         Dim breturn As Boolean = False
         iIndexToSet = cCore.NULL_VALUE
@@ -718,8 +718,8 @@ Public Class cTimeSeriesDataStructures
             ' If ReadingCsvFile Or j = 0 Then
             If iDType = 0 Then
                 For iDatPt = 1 To NdatType
-                    If WtType(iDatPt) = 0 And (DatType(iDatPt) = 0 Or DatType(iDatPt) = 1 Or DatType(iDatPt) = 5 _
-                    Or Math.Abs(DatType(iDatPt)) = 6 Or DatType(iDatPt) = 7) Then WtType(iDatPt) = 1
+                    If WtType(iDatPt) = 0 And (DatType(iDatPt) = 0 Or DatType(iDatPt) = 1 Or DatType(iDatPt) = 5 Or
+                                               Math.Abs(DatType(iDatPt)) = 6 Or DatType(iDatPt) = 7) Then WtType(iDatPt) = 1
                 Next
             End If
 

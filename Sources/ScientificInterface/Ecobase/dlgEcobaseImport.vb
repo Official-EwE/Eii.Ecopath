@@ -302,11 +302,15 @@ Public Class dlgEcobaseImport
         Try
             Me.m_model = Nothing
             If (Me.m_lbxModels.SelectedIndex > -1) Then
+
                 Me.m_model = DirectCast(Me.m_lbxModels.SelectedItem, cModelData)
+                Me.m_img = Nothing
+
                 If (Me.m_wrkGetImage.IsBusy) Then
                     Me.m_wrkGetImage.CancelAsync()
                 End If
                 Me.m_wrkGetImage.RunWorkerAsync(Nothing)
+
             End If
 
         Catch ex As Exception
