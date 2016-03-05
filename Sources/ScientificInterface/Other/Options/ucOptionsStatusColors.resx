@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblItemForeColor.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="m_cmbItemForeground.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -301,7 +301,7 @@
     <value>0</value>
   </data>
   <data name="m_hdrCaption.Text" xml:space="preserve">
-    <value>Status colors</value>
+    <value>Colors</value>
   </data>
   <data name="m_hdrCaption.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -310,43 +310,13 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12334.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="m_lblColorItem.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblColorItem.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblColorItem.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_lblColorItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
-  </data>
-  <data name="m_lblColorItem.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_lblColorItem.Text" xml:space="preserve">
-    <value>Status items:</value>
-  </data>
-  <data name="&gt;&gt;m_lblColorItem.Name" xml:space="preserve">
-    <value>m_lblColorItem</value>
-  </data>
-  <data name="&gt;&gt;m_lblColorItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblColorItem.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblColorItem.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="Label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -408,14 +378,23 @@
   <data name="m_lvItems.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_colItem.Text" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="m_colDesc.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="m_colDesc.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
   <data name="m_lvItems.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_lvItems.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 43</value>
+    <value>0, 25</value>
   </data>
   <data name="m_lvItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 264</value>
+    <value>231, 282</value>
   </data>
   <data name="m_lvItems.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -431,15 +410,6 @@
   </data>
   <data name="&gt;&gt;m_lvItems.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_colItem.Text" xml:space="preserve">
-    <value>Item</value>
-  </data>
-  <data name="m_colDesc.Text" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="m_colDesc.Width" type="System.Int32, mscorlib">
-    <value>100</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
