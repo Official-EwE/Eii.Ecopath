@@ -48,7 +48,6 @@ Namespace Other
             Me.m_cmbItemBackground = New System.Windows.Forms.ComboBox()
             Me.m_btnCustomBackColor = New System.Windows.Forms.Button()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lblColorItem = New System.Windows.Forms.Label()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_plPreview = New System.Windows.Forms.Panel()
             Me.m_lvItems = New System.Windows.Forms.ListView()
@@ -103,11 +102,6 @@ Namespace Other
             Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
-            'm_lblColorItem
-            '
-            resources.ApplyResources(Me.m_lblColorItem, "m_lblColorItem")
-            Me.m_lblColorItem.Name = "m_lblColorItem"
-            '
             'Label1
             '
             resources.ApplyResources(Me.Label1, "Label1")
@@ -153,7 +147,6 @@ Namespace Other
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_lblItemBackColor)
             Me.Controls.Add(Me.m_cmbItemForeground)
-            Me.Controls.Add(Me.m_lblColorItem)
             Me.Controls.Add(Me.m_lblItemForeColor)
             Me.Name = "ucOptionsStatusColors"
             Me.ResumeLayout(False)
@@ -167,7 +160,6 @@ Namespace Other
         Private WithEvents m_cmbItemBackground As System.Windows.Forms.ComboBox
         Private WithEvents m_btnCustomBackColor As System.Windows.Forms.Button
         Private m_hdrCaption As cEwEHeaderLabel
-        Private WithEvents m_lblColorItem As System.Windows.Forms.Label
         Private WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_plPreview As System.Windows.Forms.Panel
         Private WithEvents m_lvItems As System.Windows.Forms.ListView

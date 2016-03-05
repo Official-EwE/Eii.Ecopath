@@ -41,17 +41,20 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsPresentation))
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblEntering = New System.Windows.Forms.Label
-            Me.m_cbHideModelBar = New System.Windows.Forms.CheckBox
-            Me.m_cbHideStatusBar = New System.Windows.Forms.CheckBox
-            Me.m_cbHideMainMenu = New System.Windows.Forms.CheckBox
-            Me.m_cbCollapseNavPanel = New System.Windows.Forms.CheckBox
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblEntering = New System.Windows.Forms.Label()
+            Me.m_cbHideModelBar = New System.Windows.Forms.CheckBox()
+            Me.m_cbHideStatusBar = New System.Windows.Forms.CheckBox()
+            Me.m_cbHideMainMenu = New System.Windows.Forms.CheckBox()
+            Me.m_cbCollapseNavPanel = New System.Windows.Forms.CheckBox()
             Me.SuspendLayout()
             '
             'm_hdrCaption
             '
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'm_lblEntering
