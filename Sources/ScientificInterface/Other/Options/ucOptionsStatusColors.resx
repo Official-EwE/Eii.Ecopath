@@ -160,7 +160,7 @@
     <value>17</value>
   </data>
   <data name="m_cmbItemForeground.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 21</value>
+    <value>140, 21</value>
   </data>
   <data name="m_cmbItemForeground.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -211,16 +211,16 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnCustomForeColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>361, 43</value>
+    <value>383, 42</value>
   </data>
   <data name="m_btnCustomForeColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 21</value>
+    <value>50, 21</value>
   </data>
   <data name="m_btnCustomForeColor.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="m_btnCustomForeColor.Text" xml:space="preserve">
-    <value>&amp;Custom...</value>
+    <value>&amp;Pick...</value>
   </data>
   <data name="&gt;&gt;m_btnCustomForeColor.Name" xml:space="preserve">
     <value>m_btnCustomForeColor</value>
@@ -244,7 +244,7 @@
     <value>17</value>
   </data>
   <data name="m_cmbItemBackground.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 21</value>
+    <value>140, 21</value>
   </data>
   <data name="m_cmbItemBackground.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -265,16 +265,16 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnCustomBackColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>361, 87</value>
+    <value>383, 87</value>
   </data>
   <data name="m_btnCustomBackColor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 21</value>
+    <value>50, 21</value>
   </data>
   <data name="m_btnCustomBackColor.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_btnCustomBackColor.Text" xml:space="preserve">
-    <value>C&amp;ustom...</value>
+    <value>P&amp;ick...</value>
   </data>
   <data name="&gt;&gt;m_btnCustomBackColor.Name" xml:space="preserve">
     <value>m_btnCustomBackColor</value>
@@ -358,7 +358,7 @@
     <value>237, 133</value>
   </data>
   <data name="m_plPreview.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 32</value>
+    <value>196, 32</value>
   </data>
   <data name="m_plPreview.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -377,15 +377,6 @@
   </data>
   <data name="m_lvItems.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_colItem.Text" xml:space="preserve">
-    <value>Item</value>
-  </data>
-  <data name="m_colDesc.Text" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="m_colDesc.Width" type="System.Int32, mscorlib">
-    <value>100</value>
   </data>
   <data name="m_lvItems.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -410,6 +401,15 @@
   </data>
   <data name="&gt;&gt;m_lvItems.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_colItem.Text" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="m_colDesc.Text" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="m_colDesc.Width" type="System.Int32, mscorlib">
+    <value>100</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

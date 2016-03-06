@@ -110,6 +110,8 @@ Namespace Controls
 
         Private m_strTextFilter As String = ""
         Private m_bTextFilterCaseSensitive As Boolean = False
+        ''' <summary>Flag to prevent update / response loops.</summary>
+        Protected m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
 
@@ -338,23 +340,32 @@ Namespace Controls
                 Return Me.m_ashapeSelected
             End Get
             Set(ByVal value As cShapeData())
-                Me.m_ashapeSelected = value
 
-                ' Single selection
-                Dim shapeSelected As cShapeData = Nothing
-                If (value IsNot Nothing) Then
-                    If (value.Length = 1) Then shapeSelected = value(0)
-                End If
+                If (Me.m_bInUpdate) Then Return
+                Me.m_bInUpdate = True
 
-                If (Me.SketchPad IsNot Nothing) Then
-                    Me.SketchPad.Shape = shapeSelected
-                    Me.SketchPad.Enabled = Me.CanEditPoints(shapeSelected)
-                End If
-                If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.Selection = value
+                Try
 
-                If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Refresh()
-                If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Refresh()
+                    Me.m_ashapeSelected = value
 
+                    ' Single selection
+                    Dim shapeSelected As cShapeData = Nothing
+                    If (value IsNot Nothing) Then
+                        If (value.Length = 1) Then shapeSelected = value(0)
+                    End If
+
+                    If (Me.SketchPad IsNot Nothing) Then
+                        Me.SketchPad.Shape = shapeSelected
+                        Me.SketchPad.Enabled = Me.CanEditPoints(shapeSelected)
+                    End If
+                    If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.Selection = value
+
+                    If (Me.SketchPadToolbar IsNot Nothing) Then Me.SketchPadToolbar.Refresh()
+                    If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Refresh()
+                Catch ex As Exception
+                    ' Boink
+                End Try
+                Me.m_bInUpdate = False
             End Set
         End Property
 
@@ -366,6 +377,7 @@ Namespace Controls
                 Return Nothing
             End Get
             Set(ByVal value As cShapeData)
+
                 If value Is Nothing Then
                     Me.SelectedShapes = Nothing
                 Else

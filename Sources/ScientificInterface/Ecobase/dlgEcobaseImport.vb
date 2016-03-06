@@ -224,22 +224,22 @@ Public Class dlgEcobaseImport
             End If
 
             If (Me.m_img Is Nothing) Then
-                Me.m_pbImage.BackgroundImageLayout = ImageLayout.Center
-                Me.m_pbImage.BackgroundImage = SharedResources.ani_loader
+                Me.m_pbImage.Image = SharedResources.ani_loader
+                Me.m_pbImage.SizeMode = PictureBoxSizeMode.CenterImage
+                Me.m_pbImage.BackColor = Color.Transparent
+                'Me.m_pbImage.BackgroundImageLayout = ImageLayout.Center
             Else
-                Me.m_pbImage.BackgroundImage = Me.m_img
-                Me.m_pbImage.BackgroundImageLayout = ImageLayout.Zoom
+                Me.m_pbImage.Image = Me.m_img
+                Me.m_pbImage.SizeMode = PictureBoxSizeMode.Zoom
+                Me.m_pbImage.BackColor = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
+                'Me.m_pbImage.BackgroundImageLayout = ImageLayout.Zoom
             End If
             Me.m_lblLonVal.Text = Me.LonLabel()
             Me.m_lblLatVal.Text = Me.LatLabel()
-            Me.m_lblDepthRangeVal.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
-                                                               cStringUtils.FormatNumber(Me.m_model.DepthMin), _
-                                                               cStringUtils.FormatNumber(Me.m_model.DepthMax))
-            Me.m_lblDepthMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.DepthMean)
-            Me.m_lblTempRangeVal.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT, _
-                                                              cStringUtils.FormatNumber(Me.m_model.TempMin), _
-                                                              cStringUtils.FormatNumber(Me.m_model.TempMax))
-            Me.m_lblTempMeanVal.Text = cStringUtils.FormatNumber(Me.m_model.TempMean)
+            Me.m_lblDepthRangeVal.Text = Me.RangeLabel(Me.m_model.DepthMin, Me.m_model.DepthMax)
+            Me.m_lblDepthMeanVal.Text = Me.MeanLabel(Me.m_model.DepthMin, Me.m_model.DepthMax, Me.m_model.DepthMean)
+            Me.m_lblTempRangeVal.Text = Me.RangeLabel(Me.m_model.TempMin, Me.m_model.TempMax)
+            Me.m_lblTempMeanVal.Text = Me.MeanLabel(Me.m_model.TempMin, Me.m_model.TempMax, Me.m_model.TempMean)
 
             bCanDissiminate = Me.m_model.AllowDissemination
         Else
@@ -699,6 +699,18 @@ Public Class dlgEcobaseImport
                                      cStringUtils.Localize("{0}W", sg.FormatNumber(Me.m_model.West)), _
                                      cStringUtils.Localize("{0}E", sg.FormatNumber(Me.m_model.East)))
 
+    End Function
+
+    Private Function RangeLabel(v1 As Single, v2 As Single) As String
+        If (v1 = 0 And v2 = 0) Then Return "(not specified)"
+        Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_SPLIT,
+                                     cStringUtils.FormatNumber(v1),
+                                     cStringUtils.FormatNumber(v2))
+    End Function
+
+    Private Function MeanLabel(v1 As Single, v2 As Single, vMean As Single) As String
+        If (v1 = v2 And vMean = v1) Then Return "(not specified)"
+        Return cStringUtils.FormatNumber(vMean)
     End Function
 
 #End Region ' Internals

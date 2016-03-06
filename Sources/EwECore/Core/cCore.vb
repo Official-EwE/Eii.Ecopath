@@ -7797,6 +7797,9 @@ Public Class cCore
             'changed the run length for ecospace reset the summary periods to defaults
             Me.m_EcoSpaceData.setDefaultSummaryPeriod()
 
+            If Me.m_FitToTimeSeriesData.LastYear = 1 Then Me.m_FitToTimeSeriesData.LastYear = Integer.MaxValue
+            Me.m_FitToTimeSeriesData.LastYear = Math.Max(1, Math.Min(Me.m_FitToTimeSeriesData.LastYear, m_EcoSimData.NumYears))
+
             'Now Update the interface objects
 
             'tell the affected shape managers that there data has changed
