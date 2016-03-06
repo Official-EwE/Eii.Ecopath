@@ -40,9 +40,7 @@ Namespace Controls
     Public Class cForcingShapeGUIHandler
         : Inherits cShapeGUIHandler
 
-        ''' <summary>Flag to prevent update / response loops.</summary>
-        Private m_bInUpdate As Boolean = False
-        ''' <summary>The FF to distribute.</summary>
+          ''' <summary>The FF to distribute.</summary>
         Private m_lShapes As New List(Of cShapeData)
         ''' <summary>Shape changed core message handler.</summary>
         Private m_mhShapes As cMessageHandler = Nothing
@@ -77,6 +75,9 @@ Namespace Controls
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
             Me.DisplayFullXAxis = Me.m_bShowAll
+
+            Dim shapes As List(Of cShapeData) = Me.GetShapeList()
+            If shapes.Count > 0 And Me.SelectedShape Is Nothing Then Me.SelectedShape = shapes(0)
 
         End Sub
 

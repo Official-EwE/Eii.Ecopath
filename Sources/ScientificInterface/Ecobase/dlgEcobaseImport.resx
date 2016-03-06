@@ -151,7 +151,7 @@
     <value>m_hdrModels</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel1</value>
@@ -181,7 +181,7 @@
     <value>m_lbxModels</value>
   </data>
   <data name="&gt;&gt;m_lbxModels.Type" xml:space="preserve">
-    <value>ScientificInterface.cEcoBaseModelListBox, EwE6, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEcoBaseModelListBox, EwE6, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_lbxModels.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel1</value>
@@ -232,7 +232,7 @@
     <value>m_hdrDetails</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1018,7 +1018,7 @@
     <value>m_hdrRefs</value>
   </data>
   <data name="&gt;&gt;m_hdrRefs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRefs.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1033,13 +1033,13 @@
     <value>Fill</value>
   </data>
   <data name="m_pbImage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>3, 3</value>
   </data>
   <data name="m_pbImage.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>3, 3, 0, 0</value>
   </data>
   <data name="m_pbImage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 199</value>
+    <value>241, 196</value>
   </data>
   <data name="m_pbImage.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1612,7 +1612,7 @@
     <value>m_hdrSpatial</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatial.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatial.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -2026,7 +2026,7 @@
     <value>m_tsFilter</value>
   </data>
   <data name="&gt;&gt;m_tsFilter.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsFilter.Parent" xml:space="preserve">
     <value>m_tpImport</value>
@@ -2359,6 +2359,6 @@
     <value>dlgEcobaseImport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13228.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

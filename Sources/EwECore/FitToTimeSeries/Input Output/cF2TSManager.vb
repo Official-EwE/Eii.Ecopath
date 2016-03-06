@@ -158,7 +158,8 @@ Public Class cF2TSManager
     End Sub
 
     Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
-
+        Me.m_core.m_FitToTimeSeriesData.FirstYear = 1
+        Me.m_core.m_FitToTimeSeriesData.LastYear = 1
     End Function
 
     ''' -----------------------------------------------------------------------
