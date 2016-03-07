@@ -73,21 +73,19 @@ Public Class cPrebalZedGraphHelper
     ''' -----------------------------------------------------------------------
     Public Shadows Sub Attach(uic As cUIContext, zgc As ZedGraph.ZedGraphControl, model As cPrebalModel, strTitle As String)
 
-        ' ToDo: globalize this
-
         MyBase.Attach(uic, zgc, 4)
 
         ' Store ref
         Me.m_model = model
 
-        Dim strTL As String = "Group index (high to low Trophic Level)"
+        Dim vnf As New cVarnameTypeFormatter()
 
         ' Set the panels
         Me.Configure(strTitle)
-        Me.ConfigurePane(SharedResources.HEADER_BIOMASS, strTL, SharedResources.HEADER_BIOMASS, False, iPane:=1)
-        Me.ConfigurePane(SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, strTL, SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, False, iPane:=2)
-        Me.ConfigurePane(SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, strTL, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, False, iPane:=3)
-        Me.ConfigurePane(SharedResources.HEADER_PRODCONS, strTL, SharedResources.HEADER_PRODCONS, False, iPane:=4)
+        Me.ConfigurePane(SharedResources.HEADER_BIOMASS, My.Resources.LABEL_XAXIS, SharedResources.HEADER_BIOMASS, False, iPane:=1)
+        Me.ConfigurePane(SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, My.Resources.LABEL_XAXIS, SharedResources.HEADER_PRODUCTION_OVER_BIOMASS, False, iPane:=2)
+        Me.ConfigurePane(SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, My.Resources.LABEL_XAXIS, SharedResources.HEADER_CONSUMPTION_OVER_BIOMASS, False, iPane:=3)
+        Me.ConfigurePane(SharedResources.HEADER_PRODCONS, My.Resources.LABEL_XAXIS, SharedResources.HEADER_PRODCONS, False, iPane:=4)
 
         ' Data change callback
         AddHandler Me.m_model.OnUpdated, AddressOf OnUpdated
@@ -99,9 +97,9 @@ Public Class cPrebalZedGraphHelper
 
         Me.ShowHoverMenu = True
 
-        Me.m_itemShowHideTL = Me.HoverMenu.AddItem("TL", "Show group Trophic Levels", Nothing, AddressOf OnShowHideTrophicLevels)
-        Me.m_itemShowHideName = Me.HoverMenu.AddItem("Name", "Show group names", Nothing, AddressOf OnShowHideNames)
-        Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, "Show regression formula", Nothing, AddressOf OnShowHideFormula)
+        Me.m_itemShowHideTL = Me.HoverMenu.AddItem(vnf.GetDescriptor(eVarNameFlags.TL, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWTL, Nothing, AddressOf OnShowHideTrophicLevels)
+        Me.m_itemShowHideName = Me.HoverMenu.AddItem(vnf.GetDescriptor(eVarNameFlags.Name, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWNAME, Nothing, AddressOf OnShowHideNames)
+        Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, My.Resources.OPTION_SHOWREGFORMULA, Nothing, AddressOf OnShowHideFormula)
 
     End Sub
 
