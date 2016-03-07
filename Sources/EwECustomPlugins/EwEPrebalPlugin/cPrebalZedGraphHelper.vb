@@ -73,12 +73,14 @@ Public Class cPrebalZedGraphHelper
     ''' -----------------------------------------------------------------------
     Public Shadows Sub Attach(uic As cUIContext, zgc As ZedGraph.ZedGraphControl, model As cPrebalModel, strTitle As String)
 
+        ' ToDo: globalize this
+
         MyBase.Attach(uic, zgc, 4)
 
         ' Store ref
         Me.m_model = model
 
-        Dim strTL As String = New cVarnameTypeFormatter().GetDescriptor(eVarNameFlags.TL)
+        Dim strTL As String = "Group index (high to low Trophic Level)"
 
         ' Set the panels
         Me.Configure(strTitle)
@@ -97,7 +99,6 @@ Public Class cPrebalZedGraphHelper
 
         Me.ShowHoverMenu = True
 
-        ' ToDo: globalize this
         Me.m_itemShowHideTL = Me.HoverMenu.AddItem("TL", "Show group Trophic Levels", Nothing, AddressOf OnShowHideTrophicLevels)
         Me.m_itemShowHideName = Me.HoverMenu.AddItem("Name", "Show group names", Nothing, AddressOf OnShowHideNames)
         Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, "Show regression formula", Nothing, AddressOf OnShowHideFormula)
