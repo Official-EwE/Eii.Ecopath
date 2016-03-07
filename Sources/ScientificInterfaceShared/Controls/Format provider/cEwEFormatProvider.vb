@@ -473,7 +473,8 @@ Namespace Controls
                     ' Store ref to control
                     Me.m_ud = DirectCast(ctrl, NumericUpDown)
                     AddHandler Me.m_ud.KeyDown, AddressOf OnKeyDown
-                    AddHandler Me.m_ud.LostFocus, AddressOf OnLostFocus
+                    AddHandler Me.m_ud.LostFocus, AddressOf OnValidate
+                    AddHandler Me.m_ud.ValueChanged, AddressOf OnValidate
 
                     Me.m_sg = Me.UIContext.StyleGuide
                     AddHandler Me.m_sg.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -504,7 +505,8 @@ Namespace Controls
 
                 If (Me.m_ud IsNot Nothing) Then
                     RemoveHandler Me.m_ud.KeyDown, AddressOf OnKeyDown
-                    RemoveHandler Me.m_ud.LostFocus, AddressOf OnLostFocus
+                    RemoveHandler Me.m_ud.LostFocus, AddressOf OnValidate
+                    RemoveHandler Me.m_ud.ValueChanged, AddressOf OnValidate
                     Me.m_ud = Nothing
                 End If
 
@@ -599,11 +601,11 @@ Namespace Controls
             ''' This will pass the control value back into the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnLostFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnValidate(ByVal sender As Object, ByVal e As System.EventArgs)
                 Try
                     Me.Validate()
                 Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "NumericUpDownWrapper:OnKeyDown")
+                    cLog.Write(ex, eVerboseLevel.Detailed, "NumericUpDownWrapper:OnValidate")
                 End Try
             End Sub
 
