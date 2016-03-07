@@ -92,33 +92,36 @@ Namespace Ecopath.Output
                 ' Get corresponding Ecopath output group 
                 group = Me.Core.EcoPathGroupOutputs(groups(i).Index)
 
-                If Not group.isMultiStanza Then
+                If (group.IsLiving) Then
 
-                    iRow = Me.AddRow
-                    FillInRows(iRow, group)
+                    If Not group.isMultiStanza Then
 
-                Else
-                    ' Group is stanza
-                    sg = Core.StanzaGroups(group.iStanza)
-                    If group.iStanza <> iStanzaPrev Then
-
-                        ' Complete row with dummy cells
-                        iRow = Me.AddRow()
-                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
-
-                        hgcStanza = New EwEHierarchyGridCell()
-                        Me(iRow, eColumnTypes.Index) = hgcStanza
-                        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-
-                        iStanzaPrev = group.iStanza
                         iRow = Me.AddRow
-                    Else
-                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
-                    End If
+                        FillInRows(iRow, group)
 
-                    'Display group info
-                    hgcStanza.AddChildRow(iRow)
-                    FillInRows(iRow, group, True)
+                    Else
+                        ' Group is stanza
+                        sg = Core.StanzaGroups(group.iStanza)
+                        If group.iStanza <> iStanzaPrev Then
+
+                            ' Complete row with dummy cells
+                            iRow = Me.AddRow()
+                            For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+
+                            hgcStanza = New EwEHierarchyGridCell()
+                            Me(iRow, eColumnTypes.Index) = hgcStanza
+                            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+
+                            iStanzaPrev = group.iStanza
+                            iRow = Me.AddRow
+                        Else
+                            iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
+                        End If
+
+                        'Display group info
+                        hgcStanza.AddChildRow(iRow)
+                        FillInRows(iRow, group, True)
+                    End If
                 End If
             Next i
 
