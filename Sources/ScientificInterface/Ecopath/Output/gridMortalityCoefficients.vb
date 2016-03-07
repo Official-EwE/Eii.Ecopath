@@ -42,7 +42,7 @@ Namespace Ecopath.Output
             BioAccum
             NetMig
             OtherMort
-            Spacer
+            'Spacer
             MortTot
             MortNat
         End Enum
@@ -65,7 +65,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCURATE_UNIT, eUnitType.Time)
             Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATE_UNIT, eUnitType.Time)
             Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(SharedResources.HEADER_OTHERMORTRATE_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.Spacer) = New EwEColumnHeaderCell("")
+            'Me(0, eColumnTypes.Spacer) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.MortTot) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHMORT_OVER_TOTMORT)
             Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(SharedResources.HEADER_PROP_NAT_MORT)
 
@@ -127,8 +127,8 @@ Namespace Ecopath.Output
         Private Sub FillInRows(ByVal iRow As Integer, ByVal source As cEcoPathGroupOutput, Optional ByVal isIndented As Boolean = False)
 
             Dim cell As PropertyCell = Nothing
-            Dim bMortAlert As Boolean = (source.MortCoOtherMort < 0)
-            Dim bCatchAlert As Boolean = (source.MortCoFishRate > source.PBOutput)
+            Dim bMortAlert As Boolean = (source.MortCoOtherMort < 0) And (Not source.IsDetritus)
+            Dim bCatchAlert As Boolean = (source.MortCoFishRate > source.PBOutput) And (Not source.IsDetritus)
 
             Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             If isIndented Then
@@ -142,7 +142,7 @@ Namespace Ecopath.Output
             Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRatePerYear)
             Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoNetMig)
             Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MortCoOtherMort)
-            Me(iRow, eColumnTypes.Spacer) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            'Me(iRow, eColumnTypes.Spacer) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.MortTot) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FishMortTotMort)
             Me(iRow, eColumnTypes.MortNat) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NatMortPerTotMort)
 
@@ -157,10 +157,10 @@ Namespace Ecopath.Output
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            With Me.Columns(eColumnTypes.Spacer)
-                .AutoSizeMode = SourceGrid2.AutoSizeMode.None
-                .Width = 3
-            End With
+            'With Me.Columns(eColumnTypes.Spacer)
+            '    .AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            '    .Width = 3
+            'End With
         End Sub
 
         Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
