@@ -532,7 +532,7 @@ Namespace Style
             Dim iMinPrecision As Integer = 0
             Dim iMaxPrecision As Integer = Math.Min(iNumDigits * 2, 10)
 
-            If (style And eStyleFlags.Null) > 0 Then
+            If ((style And eStyleFlags.Null) > 0) Or (dValue = cCore.NULL_VALUE) Then
                 Return ""
             End If
 
