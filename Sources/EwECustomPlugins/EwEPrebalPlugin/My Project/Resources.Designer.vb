@@ -104,5 +104,41 @@ Namespace My.Resources
                 Return ResourceManager.GetString("LABEL_REGRESSION_FORMULA", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Group (high to low Trophic Level).
+        '''</summary>
+        Friend ReadOnly Property LABEL_XAXIS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_XAXIS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show group names.
+        '''</summary>
+        Friend ReadOnly Property OPTION_SHOWNAME() As String
+            Get
+                Return ResourceManager.GetString("OPTION_SHOWNAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show regression formula.
+        '''</summary>
+        Friend ReadOnly Property OPTION_SHOWREGFORMULA() As String
+            Get
+                Return ResourceManager.GetString("OPTION_SHOWREGFORMULA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show trophic levels.
+        '''</summary>
+        Friend ReadOnly Property OPTION_SHOWTL() As String
+            Get
+                Return ResourceManager.GetString("OPTION_SHOWTL", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

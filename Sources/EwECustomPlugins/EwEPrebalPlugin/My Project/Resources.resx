@@ -133,4 +133,16 @@
     <value>Regression f(x)={0}x{1}{2}</value>
     <comment>{0}=slope, {1}=sign of intercept, {2}=absolute value of intercept</comment>
   </data>
+  <data name="LABEL_XAXIS" xml:space="preserve">
+    <value>Group (high to low Trophic Level)</value>
+  </data>
+  <data name="OPTION_SHOWNAME" xml:space="preserve">
+    <value>Show group names</value>
+  </data>
+  <data name="OPTION_SHOWREGFORMULA" xml:space="preserve">
+    <value>Show regression formula</value>
+  </data>
+  <data name="OPTION_SHOWTL" xml:space="preserve">
+    <value>Show trophic levels</value>
+  </data>
 </root>
