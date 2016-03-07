@@ -13516,7 +13516,7 @@ Public Class cCore
                         ' Need to recalc stanza when this group is part of a multi-stanza configuration
                         bRecalcStanza = (grp.iStanza > 0)
 
-                    Case eVarNameFlags.BioAccumOutput, eVarNameFlags.BioAccumRate
+                    Case eVarNameFlags.BioAccumInput, eVarNameFlags.BioAccumRate
                         Me.Set_PB_QB_GE_BA_Flags(grp)
                         Me.LoadEcopathInput(grp)
 
