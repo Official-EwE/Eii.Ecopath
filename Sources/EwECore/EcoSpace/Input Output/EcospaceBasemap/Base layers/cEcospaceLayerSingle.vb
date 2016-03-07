@@ -100,7 +100,7 @@ Public Class cEcospaceLayerSingle
                 If Me.ValidateCellPosition(iRow, iCol) Then
                     d(iRow, iCol) = s
                     If (Me.m_bInvalidateStats = False) Then
-                        Me.m_bInvalidateStats = (Math.Abs(s) > Me.m_sMaxValue)
+                        Me.m_bInvalidateStats = (s < Me.m_sMinValue) Or (s > Me.m_sMaxValue)
                     End If
                 End If
             End If
