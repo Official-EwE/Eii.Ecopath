@@ -2901,6 +2901,11 @@ Namespace Ecosim
 
             For isp = 1 To m_stanza.Nsplit
 
+                m_stanza.EggProdIsSeasonal(isp) = False
+                If m_Data.isSeasonal(m_stanza.EggProdShapeSplit(isp)) Then
+                    m_stanza.EggProdIsSeasonal(isp) = True
+                End If
+
                 Be = 0
                 For ia = m_stanza.Age1(isp, 1) To m_stanza.Age2(isp, m_stanza.Nstanza(isp))
                     m_stanza.NageS(isp, ia) = m_stanza.SplitNo(isp, ia)
