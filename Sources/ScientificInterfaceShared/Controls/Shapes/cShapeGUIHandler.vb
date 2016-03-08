@@ -341,8 +341,8 @@ Namespace Controls
             End Get
             Set(ByVal value As cShapeData())
 
-                If (Me.m_bInUpdate) Then Return
-                Me.m_bInUpdate = True
+                'If (Me.m_bInUpdate) Then Return
+                'Me.m_bInUpdate = True
 
                 Try
 
@@ -365,7 +365,7 @@ Namespace Controls
                 Catch ex As Exception
                     ' Boink
                 End Try
-                Me.m_bInUpdate = False
+                'Me.m_bInUpdate = False
             End Set
         End Property
 
