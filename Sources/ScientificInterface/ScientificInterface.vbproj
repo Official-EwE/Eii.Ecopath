@@ -2036,10 +2036,6 @@
       <Project>{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin %28EwE plugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcologicalIndicators\EwEEcologicalIndicatorsPlugin.vbproj">
-      <Project>{ADA9F604-2A16-4816-9FE5-31487778902D}</Project>
-      <Name>EwEEcologicalIndicatorsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
       <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
       <Name>EwEEcotroph</Name>
