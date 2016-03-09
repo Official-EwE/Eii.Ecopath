@@ -118,7 +118,8 @@ Public Class cEcopathMergeGroups
                 If (iGroup <= ecopathds.NumLiving) Then
                     Dim sPP As Single = ecopathds.PP(iGroup)
                     For i As Integer = 1 To ecopathds.NumGroups
-                        If (ecopathds.PP(i) = sPP) And (Not ecopathds.StanzaGroup(i)) Then groups.Add(i)
+                        ' Math.Ceiling bit added to match Producer PP fractions
+                        If (Math.Ceiling(ecopathds.PP(i)) = Math.Ceiling(sPP)) And (Not ecopathds.StanzaGroup(i)) Then groups.Add(i)
                     Next
                 Else
                     For i As Integer = 1 To ecopathds.NumDetrit
@@ -234,7 +235,7 @@ Public Class cEcopathMergeGroups
 
         Dim c1 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg1))
         Dim c2 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg2))
-        Dim cAgg As Color = Color.FromArgb(255, CByte((c1.R + c2.R) / 2), CByte((c1.G + c2.G) / 2), CByte((c1.B + c2.B) / 2))
+        Dim cAgg As Color = Color.FromArgb(255, CInt(c1.R + c2.R) \ 2, CInt(c1.G + c2.G) \ 2, CInt(c1.B + c2.B) \ 2)
         ecopathds.GroupColor(agg1) = cColorUtils.ColorToInt(cAgg)
 
         If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
@@ -285,7 +286,7 @@ Public Class cEcopathMergeGroups
         Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
         Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
 
-        If Me.m_core.SaveChanges() Then
+        If Me.m_core.SaveChanges(True, cCore.eBatchChangeLevelFlags.Ecopath) Then
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
             Return Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, Me.m_core.RemoveGroup(agg2))
         End If
