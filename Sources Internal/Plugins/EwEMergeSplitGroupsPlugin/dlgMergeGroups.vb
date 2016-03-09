@@ -82,6 +82,10 @@ Public Class dlgMergeGroups
             Me.m_cmbGroup2.Items.Add(Me.m_uic.Core.EcoPathGroupInputs(grps(i)))
         Next
 
+        If (Me.m_cmbGroup2.Items.Count > 0) Then
+            Me.m_cmbGroup2.SelectedIndex = 0
+        End If
+
         Me.UpdateControls()
 
     End Sub
