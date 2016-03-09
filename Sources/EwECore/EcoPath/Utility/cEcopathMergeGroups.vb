@@ -26,6 +26,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -54,22 +55,27 @@ Public Class cEcopathMergeGroups
 
 #Region " Public access "
 
-    Public Function CanMergeGroups(bSendMessage As Boolean) As Boolean
+    Public Function CanMergeGroups(agg1 As Integer, agg2 As Integer, strName As String, _
+                                   Optional bSendMessage As Boolean = False) As Boolean
+
         Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
 
-        If Not sm.HasEcopathLoaded() Then
-            Return False
-        End If
-
+        If Not sm.HasEcopathLoaded() Then Return False
         If Me.m_core.nEcosimScenarios > 0 Then
             If bSendMessage Then Me.SendMessage("Cannot merge groups for models with Ecosim scenarios", False)
             Return False
         End If
 
-        Return True
+        If String.IsNullOrWhiteSpace(strName) Then
+            If bSendMessage Then Me.SendMessage("Cannot merge groups because a target name is not specified", False)
+            Return False
+        End If
+
+        Return (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) > -1)
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns an array of <see cref="cCoreGroupBase.Index">indexes</see> of
     ''' groups that can be merged with the provided <paramref name="iGroup">group index</paramref>.
@@ -82,6 +88,7 @@ Public Class cEcopathMergeGroups
     ''' <para>Detritus with detritus</para>
     ''' <para>Within a stanza, only life stages can be merged</para>
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Function CompatibleGroups(iGroup As Integer) As Integer()
 
         Dim groups As New List(Of Integer)
@@ -111,7 +118,7 @@ Public Class cEcopathMergeGroups
                 If (iGroup <= ecopathds.NumLiving) Then
                     Dim sPP As Single = ecopathds.PP(iGroup)
                     For i As Integer = 1 To ecopathds.NumGroups
-                        If (ecopathds.PP(i) = sPP) Then groups.Add(i)
+                        If (ecopathds.PP(i) = sPP) And (Not ecopathds.StanzaGroup(i)) Then groups.Add(i)
                     Next
                 Else
                     For i As Integer = 1 To ecopathds.NumDetrit
@@ -126,17 +133,33 @@ Public Class cEcopathMergeGroups
         Return groups.ToArray()
     End Function
 
-    Public Function Merge(agg1 As Integer, agg2 As Integer) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a suggested aggregated name for two groups.
+    ''' </summary>
+    ''' <param name="agg1"></param>
+    ''' <param name="agg2"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function GroupName(agg1 As Integer, agg2 As Integer) As String
 
-        ' Sanity check
-        If (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) = -1) Then
-            Return False
-        End If
+        If (agg1 < 1) Or (agg2 < 1) Then Return ""
+
+        Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Return Me.MergeNames(ecopathds.GroupName(agg1), ecopathds.GroupName(agg2))
+
+    End Function
+
+    Public Function Merge(agg1 As Integer, agg2 As Integer, strName As String) As Boolean
+
+        ' Sanity checks
+        If (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) = -1) Then Return False
+        If (String.IsNullOrWhiteSpace(strName)) Then Return False
 
         Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
         ' Merge generic fields
-        ecopathds.GroupName(agg1) = Me.MergeNames(ecopathds.GroupName(agg1), ecopathds.GroupName(agg2))
+        ecopathds.GroupName(agg1) = strName
         ecopathds.PBinput(agg1) = (ecopathds.PB(agg1) * ecopathds.B(agg1) + ecopathds.PB(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
         ' VALIDATE_JS: BaBi allowed to be NULL?
         ecopathds.BaBi(agg1) = (ecopathds.BaBi(agg1) * ecopathds.B(agg1) + ecopathds.BaBi(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
@@ -209,6 +232,11 @@ Public Class cEcopathMergeGroups
         ecopathds.Binput(agg2) = 0
         ecopathds.BHinput(agg2) = 0
 
+        Dim c1 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg1))
+        Dim c2 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg2))
+        Dim cAgg As Color = Color.FromArgb(255, CByte((c1.R + c2.R) / 2), CByte((c1.G + c2.G) / 2), CByte((c1.B + c2.B) / 2))
+        ecopathds.GroupColor(agg1) = cColorUtils.ColorToInt(cAgg)
+
         If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
 
             ' Perform stanza merge
@@ -258,7 +286,8 @@ Public Class cEcopathMergeGroups
         Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
 
         If Me.m_core.SaveChanges() Then
-            Return Me.m_core.RemoveGroup(agg2)
+            Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            Return Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, Me.m_core.RemoveGroup(agg2))
         End If
 
         Return False
