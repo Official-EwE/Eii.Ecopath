@@ -942,7 +942,7 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="eStatusFlags">status</see> of the 
-    ''' <see cref="BioAccum">BioAccum value</see> this group.
+    ''' <see cref="BioAccumInput">BioAccum value</see> this group.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property BioAccumStatus() As EwECore.eStatusFlags
