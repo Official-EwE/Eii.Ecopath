@@ -235,7 +235,7 @@ Public Class cEcopathMergeGroups
 
         Dim c1 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg1))
         Dim c2 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg2))
-        Dim cAgg As Color = Color.FromArgb(255, CInt(c1.R + c2.R) \ 2, CInt(c1.G + c2.G) \ 2, CInt(c1.B + c2.B) \ 2)
+        Dim cAgg As Color = Color.FromArgb(255, (CInt(c1.R) + CInt(c2.R)) \ 2, (CInt(c1.G) + CInt(c2.G)) \ 2, (CInt(c1.B) + CInt(c2.B)) \ 2)
         ecopathds.GroupColor(agg1) = cColorUtils.ColorToInt(cAgg)
 
         If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
