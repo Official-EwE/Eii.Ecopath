@@ -73,11 +73,9 @@ Public Class cMergeGroupsPluginPoint
         If (Me.m_uic Is Nothing) Then Return
 
         Dim core As cCore = Me.m_uic.Core
-        If (core.nEcosimScenarios > 0) Then
-            Dim msg As New cMessage("Cannot automatically merge groups when Ecosim or Ecospace scenarios are present", EwEUtils.Core.eMessageType.DataImport, EwEUtils.Core.eCoreComponentType.Core, EwEUtils.Core.eMessageImportance.Critical)
-            core.Messages.SendMessage(msg)
-            Return
-        End If
+        Dim engine As New cEcopathMergeGroups(core)
+
+        If Not engine.CanMergeGroups(True) Then Return
 
         Dim dlg As New dlgMergeGroups(Me.m_uic)
         dlg.ShowDialog()

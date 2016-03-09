@@ -20,9 +20,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Windows.Forms
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
-Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -133,6 +133,7 @@ Public Class dlgMergeGroups
     Private Function SelectedGroup(cmd As ComboBox) As Integer
 
         Dim item As Object = cmd.SelectedItem
+
         If (item Is Nothing) Then Return cCore.NULL_VALUE
         If (Not TypeOf (item) Is cCoreGroupBase) Then Return cCore.NULL_VALUE
         Return DirectCast(item, cCoreGroupBase).Index
@@ -144,7 +145,7 @@ Public Class dlgMergeGroups
         Dim i1 As Integer = Me.SelectedGroup(Me.m_cmbGroup1)
         Dim i2 As Integer = Me.SelectedGroup(Me.m_cmbGroup2)
         Dim strName As String = Me.m_tbxNewName.Text
-        Dim bCanMerge As Boolean = Me.m_engine.CanMergeGroups(i1, i2, strName, False)
+        Dim bCanMerge As Boolean = Me.m_engine.CanMergeGroups(i1, i2, strName)
 
         Me.m_cmbGroup2.Enabled = (Me.m_cmbGroup2.Items.Count > 0)
         Me.m_btnOK.Enabled = bCanMerge

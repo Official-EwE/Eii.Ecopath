@@ -97,9 +97,9 @@ Partial Class dlgMergeGroups
         Me.m_lblNew.AutoSize = True
         Me.m_lblNew.Location = New System.Drawing.Point(12, 69)
         Me.m_lblNew.Name = "m_lblNew"
-        Me.m_lblNew.Size = New System.Drawing.Size(62, 13)
+        Me.m_lblNew.Size = New System.Drawing.Size(61, 13)
         Me.m_lblNew.TabIndex = 0
-        Me.m_lblNew.Text = "&New group:"
+        Me.m_lblNew.Text = "&New name:"
         '
         'm_tbxNewName
         '
@@ -113,7 +113,7 @@ Partial Class dlgMergeGroups
         'm_btnOK
         '
         Me.m_btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnOK.Location = New System.Drawing.Point(185, 92)
+        Me.m_btnOK.Location = New System.Drawing.Point(185, 94)
         Me.m_btnOK.Name = "m_btnOK"
         Me.m_btnOK.Size = New System.Drawing.Size(75, 23)
         Me.m_btnOK.TabIndex = 3
@@ -124,7 +124,7 @@ Partial Class dlgMergeGroups
         '
         Me.m_btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Location = New System.Drawing.Point(266, 92)
+        Me.m_btnCancel.Location = New System.Drawing.Point(266, 94)
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.m_btnCancel.TabIndex = 4
@@ -136,7 +136,7 @@ Partial Class dlgMergeGroups
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.ClientSize = New System.Drawing.Size(353, 124)
+        Me.ClientSize = New System.Drawing.Size(353, 126)
         Me.ControlBox = False
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
