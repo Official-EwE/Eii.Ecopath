@@ -925,7 +925,7 @@ Public Class gridDefineGroups
         pos = New Position(iRow, eColumnTypes.GroupPPConsumer)
         Me(iRow, eColumnTypes.GroupPPConsumer).SetValue(pos, CBool(gi.PP = 0.0))
         pos = New Position(iRow, eColumnTypes.GroupPPProducer)
-        Me(iRow, eColumnTypes.GroupPPProducer).SetValue(pos, CBool(gi.PP = 1.0))
+        Me(iRow, eColumnTypes.GroupPPProducer).SetValue(pos, CBool(gi.PP > 0 And gi.PP <= 1.0))
         pos = New Position(iRow, eColumnTypes.GroupPPDetritus)
         Me(iRow, eColumnTypes.GroupPPDetritus).SetValue(pos, CBool(gi.PP = 2.0))
         pos = New Position(iRow, eColumnTypes.GroupPP)
