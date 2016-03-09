@@ -75,12 +75,12 @@ Public Class cEcopathMergeGroups
         Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
 
         If Not sm.HasEcopathLoaded() Then
-            If bSendMessage Then Me.SendMessage("Please load a model before attempting to merge groups", False)
+            If bSendMessage Then Me.SendMessage(My.Resources.CoreMessages.MERGEGROUPS_ERROR_NOMODEL, False)
             Return False
         End If
 
         If Me.m_core.nEcosimScenarios > 0 Then
-            If bSendMessage Then Me.SendMessage("Cannot merge groups for models with Ecosim scenarios", False)
+            If bSendMessage Then Me.SendMessage(My.Resources.CoreMessages.MERGEGROUPS_ERROR_HASECOSIM, False)
             Return False
         End If
 

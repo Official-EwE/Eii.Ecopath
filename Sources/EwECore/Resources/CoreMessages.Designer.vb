@@ -1922,6 +1922,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Cannot merge groups for models with Ecosim scenarios.
+        '''</summary>
+        Friend Shared ReadOnly Property MERGEGROUPS_ERROR_HASECOSIM() As String
+            Get
+                Return ResourceManager.GetString("MERGEGROUPS_ERROR_HASECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please load a model before attempting to merge groups.
+        '''</summary>
+        Friend Shared ReadOnly Property MERGEGROUPS_ERROR_NOMODEL() As String
+            Get
+                Return ResourceManager.GetString("MERGEGROUPS_ERROR_NOMODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The model &apos;{0}&apos; was opened in read-only mode and cannot be saved..
         '''</summary>
         Friend Shared ReadOnly Property MODEL_READONLY() As String
