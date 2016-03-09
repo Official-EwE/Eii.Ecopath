@@ -30,9 +30,11 @@ Imports System.Drawing
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Class to export an Ecosim time step to a new Ecopath model.
+''' Class to merge two groups in Ecopath.
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEcopathMergeGroups
 
 #Region " Private variables "
@@ -47,6 +49,12 @@ Public Class cEcopathMergeGroups
 
 #Region " Construction "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Constructor.
+    ''' </summary>
+    ''' <param name="core">The <see cref="cCore"/> to operate on.</param>
+    ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As cCore)
         Me.m_core = core
     End Sub
@@ -55,23 +63,46 @@ Public Class cEcopathMergeGroups
 
 #Region " Public access "
 
-    Public Function CanMergeGroups(agg1 As Integer, agg2 As Integer, strName As String, _
-                                   Optional bSendMessage As Boolean = False) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the current Ecopath model is ready to merge groups.
+    ''' </summary>
+    ''' <param name="bSendMessage"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function CanMergeGroups(Optional bSendMessage As Boolean = False) As Boolean
 
         Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
 
-        If Not sm.HasEcopathLoaded() Then Return False
+        If Not sm.HasEcopathLoaded() Then
+            If bSendMessage Then Me.SendMessage("Please load a model before attempting to merge groups", False)
+            Return False
+        End If
+
         If Me.m_core.nEcosimScenarios > 0 Then
             If bSendMessage Then Me.SendMessage("Cannot merge groups for models with Ecosim scenarios", False)
             Return False
         End If
 
-        If String.IsNullOrWhiteSpace(strName) Then
-            If bSendMessage Then Me.SendMessage("Cannot merge groups because a target name is not specified", False)
-            Return False
-        End If
+        Return True
 
-        Return (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) > -1)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the current Ecopath model is ready to merge two specific
+    ''' groups and a candidate name.
+    ''' </summary>
+    ''' <param name="agg1">The one-based index of the first group.</param>
+    ''' <param name="agg2">The one-based index of the second group.</param>
+    ''' <param name="strName">A suggested name for the aggregation of two groups.</param>
+    ''' <returns>True if the proposed merge can be executed.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function CanMergeGroups(agg1 As Integer, agg2 As Integer, strName As String) As Boolean
+
+        Return (Me.CanMergeGroups(False) = True) And _
+               (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) > -1) And _
+               (Not String.IsNullOrWhiteSpace(strName))
 
     End Function
 
@@ -83,10 +114,11 @@ Public Class cEcopathMergeGroups
     ''' <param name="iGroup">The group index to find compatible groups for.</param>
     ''' <returns></returns>
     ''' <remarks>
-    ''' <para>Producers can be merged with producers</para>
-    ''' <para>Consumers with consumers</para>
-    ''' <para>Detritus with detritus</para>
-    ''' <para>Within a stanza, only life stages can be merged</para>
+    ''' <para>Producers can be merged with producers;</para>
+    ''' <para>Consumers with consumers;</para>
+    ''' <para>Detritus with detritus.</para>
+    ''' <para>For stanza groups, only life stages within the same stanza group 
+    ''' can be merged</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Function CompatibleGroups(iGroup As Integer) As Integer()
@@ -136,22 +168,46 @@ Public Class cEcopathMergeGroups
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns a suggested aggregated name for two groups.
+    ''' Returns a suggested name for the aggregation of two groups.
     ''' </summary>
-    ''' <param name="agg1"></param>
-    ''' <param name="agg2"></param>
-    ''' <returns></returns>
+    ''' <param name="agg1">The one-based index of the first group.</param>
+    ''' <param name="agg2">The one-based index of the second group.</param>
+    ''' <returns>A suggested name for the aggregation of two groups.</returns>
     ''' -----------------------------------------------------------------------
     Public Function GroupName(agg1 As Integer, agg2 As Integer) As String
 
-        If (agg1 < 1) Or (agg2 < 1) Then Return ""
-
         Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Return Me.MergeNames(ecopathds.GroupName(agg1), ecopathds.GroupName(agg2))
+
+        If (agg1 < 1) Or (agg2 < 1) Then Return ""
+        If (agg1 > ecopathds.NumGroups) Or (agg2 > ecopathds.NumGroups) Then Return ""
+
+        Dim s1 As String = ecopathds.GroupName(agg1)
+        Dim s2 As String = ecopathds.GroupName(agg2)
+
+        If (s1.Length + s2.Length) > 47 Then
+            If (s1.Length > 20) Then s1 = s1.Substring(0, 20)
+            If (s2.Length > 20) Then s2 = s2.Substring(0, 20)
+        End If
+
+        Return s1 & " / " & s2
 
     End Function
 
-    Public Function Merge(agg1 As Integer, agg2 As Integer, strName As String) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Merge two groups. This will update parameters of the <paramref name="agg1">
+    ''' first group</paramref>, and will delete the <paramref name=" agg2">second
+    ''' group</paramref> if the merge is successful.
+    ''' </summary>
+    ''' <param name="agg1">The one-based index of the first group to merge.</param>
+    ''' <param name="agg2">The one-based index of the second group to merge.</param>
+    ''' <param name="strName">The name to assign to the merged group.</param>
+    ''' <param name="bMergeColors">Flag, stating if the colour of the resulting 
+    ''' group must be an average of both group colours.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function Merge(agg1 As Integer, agg2 As Integer, strName As String, _
+                          Optional bMergeColors As Boolean = False) As Boolean
 
         ' Sanity checks
         If (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) = -1) Then Return False
@@ -298,16 +354,6 @@ Public Class cEcopathMergeGroups
 #End Region ' Public access
 
 #Region " Internals "
-
-    Private Function MergeNames(s1 As String, s2 As String) As String
-
-        If (s1.Length + s2.Length) > 47 Then
-            If (s1.Length > 20) Then s1 = s1.Substring(0, 20)
-            If (s2.Length > 20) Then s2 = s2.Substring(0, 20)
-        End If
-        Return s1 & " / " & s2
-
-    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
