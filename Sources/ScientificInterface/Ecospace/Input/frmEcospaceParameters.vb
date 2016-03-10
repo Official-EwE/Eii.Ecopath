@@ -117,19 +117,13 @@ Namespace Ecospace
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
             Me.m_clbAutosave.Items.Clear()
 
-            ' -- Autosave. This is potentially confusing --
-
-            Dim bWriting As Boolean = False
             Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
-
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
                 writer.Enabled = (strFmt.IndexOf(writer.DataName) > 0)
                 Me.m_clbAutosave.Items.Add(writer, writer.Enabled)
-                bWriting = bWriting Or writer.Enabled
             Next
-            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = bWriting
-            ' ------------------------------------------
+            Me.m_cbAutosave.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceResults)
 
             Me.UpdateControls()
 
@@ -245,6 +239,7 @@ Namespace Ecospace
             Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())
             Dim bUseNewStanza As Boolean = CBool(Me.m_bpUseNewStanza.GetValue())
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            Dim bAutosaving As Boolean = Me.Core.Autosave(eAutosaveTypes.EcospaceResults)
 
             If bUseIBM Then threadingModel = eThreadingModelType.UseIBM
             If bUseNewStanza Then threadingModel = eThreadingModelType.UseNewStanza
@@ -263,10 +258,14 @@ Namespace Ecospace
 
             Me.m_cbContaminantTracing.Checked = CBool(Me.m_bpConTracing.GetValue())
 
+            Me.m_cbAutosave.Checked = bAutosaving
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
                 Me.m_clbAutosave.SetItemChecked(i, wr.Enabled And Me.Core.Autosave(eAutosaveTypes.EcospaceResults))
             Next
+            Me.m_clbAutosave.Enabled = bAutosaving
+            Me.m_cbAnnualOutput.Enabled = bAutosaving
+            Me.m_nudFirstTimeStep.Enabled = bAutosaving
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
@@ -366,6 +365,14 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnToggleAutosave(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbAutosave.CheckedChanged
+
+            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = Me.m_cbAutosave.Checked
+            Me.UpdateControls()
+
+        End Sub
+
         Private Sub m_clbAutosave_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_clbAutosave.Format
             Try
@@ -389,7 +396,6 @@ Namespace Ecospace
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
             Dim strFmt As String = ""
-            Dim bSaving As Boolean = False
 
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
@@ -399,10 +405,8 @@ Namespace Ecospace
                 wr.Enabled = Me.m_clbAutosave.GetItemChecked(i)
                 If (wr.Enabled) Then
                     strFmt = strFmt & ";" & wr.DataName
-                    bSaving = True
                 End If
             Next
-            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = bSaving
             Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strFmt
 
             Me.m_bInUpdate = False

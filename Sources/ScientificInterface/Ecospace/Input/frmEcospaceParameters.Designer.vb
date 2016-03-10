@@ -77,7 +77,6 @@ Namespace Ecospace
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_lblAutosaveResultMaps = New System.Windows.Forms.Label()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
@@ -114,6 +113,7 @@ Namespace Ecospace
             Me.m_lblEast = New System.Windows.Forms.Label()
             Me.m_lblSouth = New System.Windows.Forms.Label()
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -323,11 +323,11 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
+            Me.m_gbRunTime.Controls.Add(Me.m_cbAutosave)
             Me.m_gbRunTime.Controls.Add(Me.m_cbAnnualOutput)
             Me.m_gbRunTime.Controls.Add(Me.m_clbAutosave)
             Me.m_gbRunTime.Controls.Add(Me.Label2)
             Me.m_gbRunTime.Controls.Add(Me.m_nudFirstTimeStep)
-            Me.m_gbRunTime.Controls.Add(Me.m_lblAutosaveResultMaps)
             Me.m_gbRunTime.Controls.Add(Me.m_lbNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_nudNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_tbSOR)
@@ -373,11 +373,6 @@ Namespace Ecospace
             Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
             Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
-            'm_lblAutosaveResultMaps
-            '
-            resources.ApplyResources(Me.m_lblAutosaveResultMaps, "m_lblAutosaveResultMaps")
-            Me.m_lblAutosaveResultMaps.Name = "m_lblAutosaveResultMaps"
             '
             'm_cbContaminantTracing
             '
@@ -626,6 +621,12 @@ Namespace Ecospace
             Me.m_hdrSpatial.IsCollapsed = False
             Me.m_hdrSpatial.Name = "m_hdrSpatial"
             '
+            'm_cbAutosave
+            '
+            resources.ApplyResources(Me.m_cbAutosave, "m_cbAutosave")
+            Me.m_cbAutosave.Name = "m_cbAutosave"
+            Me.m_cbAutosave.UseVisualStyleBackColor = True
+            '
             'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -705,7 +706,6 @@ Namespace Ecospace
         Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_rbEcopathEffort As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPredictEffort As System.Windows.Forms.RadioButton
-        Private WithEvents m_lblAutosaveResultMaps As System.Windows.Forms.Label
         Private WithEvents m_plScenario As System.Windows.Forms.Panel
         Private WithEvents m_plModel As System.Windows.Forms.Panel
         Private WithEvents m_plSpatial As System.Windows.Forms.Panel
@@ -734,6 +734,7 @@ Namespace Ecospace
         Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Friend WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
         Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbAutosave As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace
