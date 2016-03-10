@@ -448,8 +448,15 @@ Public Class cMessageHistory
         ' Early bail-out for messages hidden from UI
         If Not TypeOf (msg) Is cFeedbackMessage Then
             Select Case msg.Importance
-                Case eMessageImportance.Progress, eMessageImportance.Maintenance
+                Case eMessageImportance.Progress
+                    ' Ignore progress messages
                     Return
+                Case eMessageImportance.Maintenance
+                    ' Validation messages may be shown
+                    If (msg.Type <> eMessageType.DataValidation) Or (My.Settings.ShowVariableValidations = False) Then
+                        Return
+                    End If
+
             End Select
         End If
 
