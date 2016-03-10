@@ -1066,6 +1066,18 @@ Partial Friend NotInheritable Class Settings
             Me("UseExternalBrowser") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+    Public Property ShowVariableValidations() As Boolean
+        Get
+            Return CType(Me("ShowVariableValidations"),Boolean)
+        End Get
+        Set
+            Me("ShowVariableValidations") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

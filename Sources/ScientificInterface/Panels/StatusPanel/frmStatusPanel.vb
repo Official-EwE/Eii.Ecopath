@@ -244,10 +244,12 @@ Public Class frmStatusPanel
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Event handler; traps the mouse down event to initiate property highlighting for a given index
+    ''' Event handler; traps the mouse down event to initiate property highlighting 
+    ''' for a clicked item.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnStatusMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseDown
+    Private Sub OnStatusMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles m_tvStatus.MouseDown
         ' Get node that the user clicked on, if any
         Dim tn As TreeNode = Me.m_tvStatus.GetNodeAt(e.Location)
         ' Extract list op properties and highlight these
@@ -256,10 +258,11 @@ Public Class frmStatusPanel
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Event handler; traps the mouse up event to end property highlighting for a given index
+    ''' Event handler; traps the mouse up event to end property highlighting.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub OnStatusMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseUp
+    Private Sub OnStatusMouseUp(ByVal sender As Object, ByVal e As EventArgs) _
+        Handles m_tvStatus.MouseUp, m_tvStatus.MouseLeave
         ' Clear any highlights
         SetHighlights(Nothing)
     End Sub
@@ -307,8 +310,6 @@ Public Class frmStatusPanel
 
         ' Sanity checks
         If (item Is Nothing) Then Return
-        If (item.Importance = eMessageImportance.Progress) Then Return
-        If (item.Importance = eMessageImportance.Maintenance) Then Return
 
         Me.m_tvStatus.ShowTime = My.Settings.StatusShowTime
 

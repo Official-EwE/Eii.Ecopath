@@ -49,6 +49,7 @@ Namespace Other
             Me.m_nudMRU = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnViewLogFileDir = New System.Windows.Forms.Button()
+            Me.m_cbShowVariableValidations = New System.Windows.Forms.CheckBox()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -115,6 +116,7 @@ Namespace Other
             '
             'm_nudMaxNumMessages
             '
+            Me.m_nudMaxNumMessages.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
             Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
             Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
@@ -138,6 +140,7 @@ Namespace Other
             '
             'm_nudMRU
             '
+            Me.m_nudMRU.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudMRU, "m_nudMRU")
             Me.m_nudMRU.Maximum = New Decimal(New Integer() {42, 0, 0, 0})
             Me.m_nudMRU.Name = "m_nudMRU"
@@ -157,6 +160,12 @@ Namespace Other
             Me.m_btnViewLogFileDir.Name = "m_btnViewLogFileDir"
             Me.m_btnViewLogFileDir.UseVisualStyleBackColor = True
             '
+            'm_cbShowVariableValidations
+            '
+            resources.ApplyResources(Me.m_cbShowVariableValidations, "m_cbShowVariableValidations")
+            Me.m_cbShowVariableValidations.Name = "m_cbShowVariableValidations"
+            Me.m_cbShowVariableValidations.UseVisualStyleBackColor = True
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
@@ -165,6 +174,7 @@ Namespace Other
             Me.Controls.Add(Me.m_tbxAuthor)
             Me.Controls.Add(Me.m_cmbLogLevel)
             Me.Controls.Add(Me.m_nudMaxNumMessages)
+            Me.Controls.Add(Me.m_cbShowVariableValidations)
             Me.Controls.Add(Me.m_cbShowTime)
             Me.Controls.Add(Me.m_lblMaxNumMessages)
             Me.Controls.Add(Me.m_hdrAuthor)
@@ -202,6 +212,7 @@ Namespace Other
         Private WithEvents m_tbxContact As System.Windows.Forms.TextBox
         Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
         Private WithEvents m_btnViewLogFileDir As System.Windows.Forms.Button
+        Private WithEvents m_cbShowVariableValidations As System.Windows.Forms.CheckBox
 
     End Class
 
