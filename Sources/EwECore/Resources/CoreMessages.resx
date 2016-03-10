@@ -1281,7 +1281,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=shape type</comment>
   </data>
   <data name="MERGEGROUPS_ERROR_HASECOSIM" xml:space="preserve">
-    <value>Cannot merge groups for models with Ecosim scenarios</value>
+    <value>Cannot automatically merge groups for models with Ecosim scenarios</value>
   </data>
   <data name="MERGEGROUPS_ERROR_NOMODEL" xml:space="preserve">
     <value>Please load a model before attempting to merge groups</value>
