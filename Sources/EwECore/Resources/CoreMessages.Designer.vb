@@ -1922,7 +1922,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cannot merge groups for models with Ecosim scenarios.
+        '''  Looks up a localized string similar to Cannot automatically merge groups for models with Ecosim scenarios.
         '''</summary>
         Friend Shared ReadOnly Property MERGEGROUPS_ERROR_HASECOSIM() As String
             Get
