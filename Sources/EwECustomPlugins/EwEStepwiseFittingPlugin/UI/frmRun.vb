@@ -142,7 +142,7 @@ Public Class frmRun
         MyBase.OnFormClosing(e)
     End Sub
 
-    Protected Overrides Sub UpdateControls()
+    Public Overloads Sub UpdateControls()
         MyBase.UpdateControls()
 
         Dim bHasTimeSeries As Boolean = (Me.m_engine.TSIndex >= 1)
