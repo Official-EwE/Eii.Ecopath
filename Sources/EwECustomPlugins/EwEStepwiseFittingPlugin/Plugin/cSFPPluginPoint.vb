@@ -209,10 +209,17 @@ Public Class cSFPPluginPoint
         End Get
         Set(value As Boolean)
             If (Me.m_engine Is Nothing) Then Return
-            If (My.Settings.AutoSaveMode = 0) Then
-                My.Settings.AutoSaveMode = cSFPParameters.eAutosaveMode.Aggregated
-                My.Settings.Save()
+            If (value) Then
+                If (My.Settings.AutoSaveMode = 0) Then
+                    My.Settings.AutoSaveMode = cSFPParameters.eAutosaveMode.Aggregated
+                End If
+            Else
+                My.Settings.AutoSaveMode = cSFPParameters.eAutosaveMode.None
             End If
+
+            If Me.HasUI Then Me.m_frm.UpdateControls()
+
+            My.Settings.Save()
         End Set
     End Property
 
