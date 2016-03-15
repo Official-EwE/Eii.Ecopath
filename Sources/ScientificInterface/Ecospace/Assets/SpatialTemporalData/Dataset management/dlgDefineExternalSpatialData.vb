@@ -293,6 +293,10 @@ Namespace Ecospace.Controls
             dsNew = CType(Activator.CreateInstance(dsTemplate.GetType()), ISpatialDataSet)
             If (dsNew Is Nothing) Then Return
 
+            If (TypeOf dsNew Is IPlugin) Then
+                DirectCast(dsNew, IPlugin).Initialize(Me.m_uic.Core)
+            End If
+
             Try
                 dsNew.VarName = Me.Varname
                 If Me.ConfigDS(dsNew) Then
