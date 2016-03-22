@@ -981,7 +981,7 @@ Public Class cMSE
         Dim writer As StreamWriter = Nothing
 
         'If Not File.Exists(strPath) Then
-        writer = cMSEUtils.GetWriter(strPath)
+        writer = cMSEUtils.GetWriter(strPath, bAppend:=True)
         If (writer Is Nothing) Then Return False
 
         For igrp As Integer = 1 To Me.Core.nLivingGroups
@@ -1173,15 +1173,17 @@ Public Class cMSE
         If (writer IsNot Nothing) Then
             Try
                 For igrp As Integer = 1 To m_core.nLivingGroups
+                    'If igrp = m_core.nLivingGroups Then Stop
                     If (igrp > 1) Then writer.Write(",")
-                    writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
+                    If GroupNames(igrp - 1) <> Nothing Then writer.Write(cStringUtils.ToCSVField(GroupNames(igrp - 1)))
                 Next
                 writer.WriteLine()
 
                 For iIteration = 1 To nModels
                     For iGroup = 1 To m_core.nLivingGroups
+                        'If iGroup = m_core.nLivingGroups Then Stop
                         If (iGroup > 1) Then writer.Write(",")
-                        writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
+                        If GroupNames(iGroup - 1) <> Nothing Then writer.Write(cStringUtils.ToCSVField(SampledParameters(iIteration - 1, iGroup - 1)))
                     Next
                     writer.WriteLine()
                 Next
