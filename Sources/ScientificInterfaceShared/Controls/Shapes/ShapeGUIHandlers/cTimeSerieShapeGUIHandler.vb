@@ -40,8 +40,6 @@ Namespace Controls
     Public Class cTimeSeriesShapeGUIHandler
         Inherits cShapeGUIHandler
 
-        ''' <summary>Flag to prevent update / response loops.</summary>
-        Private m_bInUpdate As Boolean = False
         ''' <summary>The Time Series to distribute.</summary>
         Private m_lShapes As New List(Of cShapeData)
         ''' <summary>Time series type filter</summary>
