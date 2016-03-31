@@ -5108,12 +5108,9 @@ Namespace DataSources
 
                 readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
-                shapeParms.YZero = CSng(readerShape("Yzero"))
-                shapeParms.YBase = CSng(readerShape("Ybase"))
-                shapeParms.YEnd = CSng(readerShape("Yend"))
-                shapeParms.Steep = CSng(readerShape("Steep"))
-                ' sp.ZScale = CInt(readerShape("ZScale"))
-                shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
+
+                shapeParms.ShapeFunctionType = DirectCast(readerShape("FunctionType"), eShapeFunctionType)
+                shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.m_db.ReadSafe(readerShape, "FunctionParams", "")))
 
                 ' Read z-scale
                 astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
@@ -5156,12 +5153,8 @@ Namespace DataSources
                 readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeTime WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
-                ' Read shape parameters
-                shapeParms.YZero = CSng(readerShape("Yzero"))
-                shapeParms.YBase = CSng(readerShape("Ybase"))
-                shapeParms.YEnd = CSng(readerShape("Yend"))
-                shapeParms.Steep = CSng(readerShape("Steep"))
                 shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
+                shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.m_db.ReadSafe(readerShape, "FunctionParams", "")))
 
                 ' Read z-scale
                 Dim sLast As Single = 1.0!
@@ -5208,13 +5201,8 @@ Namespace DataSources
                 readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
-                ' Init shapeParms
-                shapeParms.YZero = CSng(readerShape("Yzero"))
-                shapeParms.YBase = CSng(readerShape("Ybase"))
-                shapeParms.YEnd = CSng(readerShape("Yend"))
-                shapeParms.Steep = CSng(readerShape("Steep"))
-                ' shapeParms.ZScale = CInt(readerShape("ZScale"))
                 shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
+                shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.m_db.ReadSafe(readerShape, "FunctionParams", "")))
 
                 ' Read z-scale
                 astrZScale = Me.SplitNumberString(CStr(readerShape("Zscale")))
@@ -5297,7 +5285,7 @@ Namespace DataSources
                                     appl = eForcingFunctionApplication.Import
                                 End If
                             End If
-                            ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
+                            ecosimDS.BioMedData.ApplicationType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                         Else
                             Me.LogMessage(String.format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                         End If
@@ -5756,11 +5744,9 @@ Namespace DataSources
                 End If
 
                 drow("Title") = ecosimDS.ForcingTitles(iShape)
-                drow("YZero") = shapeParms.YZero
-                drow("YBase") = shapeParms.YBase
-                drow("YEnd") = shapeParms.YEnd
-                drow("Steep") = shapeParms.Steep
                 drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
+
                 ' Assemble Zscale
                 For ipt As Integer = 1 To ecosimDS.ForcePoints
                     If (ipt > 1) Then sbZScale.Append(" ")
@@ -5812,11 +5798,8 @@ Namespace DataSources
                 End If
 
                 drow("Title") = ecosimDS.ForcingTitles(iShape)
-                drow("YZero") = shapeParms.YZero
-                drow("YBase") = shapeParms.YBase
-                drow("YEnd") = shapeParms.YEnd
-                drow("Steep") = shapeParms.Steep
                 drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
                 drow("ApplicationType") = ecosimDS.ForcingApplicationType(iShape)
 
                 Dim iTrackBack As Integer = ecosimDS.ForcePoints
@@ -5876,12 +5859,9 @@ Namespace DataSources
                 End If
 
                 drow("Title") = medData.MediationTitles(iShape)
-                drow("YZero") = shapeParms.YZero
-                drow("YBase") = shapeParms.YBase
-                drow("YEnd") = shapeParms.YEnd
-                drow("Steep") = shapeParms.Steep
                 drow("IMedBase") = medData.IMedBase(iShape)
                 drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
                 drow("XAxisMin") = medData.XAxisMin(iShape)
                 drow("XAxisMax") = medData.XAxisMax(iShape)
 
@@ -5943,7 +5923,7 @@ Namespace DataSources
                                     Else
                                         drow("ShapeID") = ecosimDS.ForcingDBIDs(iShape)
                                     End If
-                                    drow("FunctionType") = ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iShapeNo)
+                                    drow("FunctionType") = ecosimDS.BioMedData.ApplicationType(iPrey, iPredator, iShapeNo)
                                     writer.AddRow(drow)
                                 End If
                             Catch ex As Exception
@@ -6375,11 +6355,8 @@ Namespace DataSources
                 ' Specific bits
                 If (shapeType <> eDataTypes.FishMort) And (shapeType <> eDataTypes.FishingEffort) Then
 
-                    drow("YZero") = sYZero
-                    drow("YBase") = sYBase
-                    drow("YEnd") = sYend
-                    drow("Steep") = sSteep
                     drow("FunctionType") = CInt(functionType)
+                    drow("FunctionParams") = cStringUtils.ParamArrayToString(New Single() {sYZero, sYBase, sYend, sSteep})
 
                     If (shapeType = eDataTypes.Mediation) Or _
                        (shapeType = eDataTypes.PriceMediation) Or _
@@ -6555,11 +6532,8 @@ Namespace DataSources
                     drow.BeginEdit()
                 End If
 
-                drow("YZero") = 0
-                drow("YBase") = 0
-                drow("YEnd") = 0
-                drow("Steep") = 0
                 drow("FunctionType") = eShapeFunctionType.NotSet
+                drow("FunctionParams") = ""
 
                 ' Assemble Zscale. 
                 ' JS 04april09: Time Series are most likely ANNUAL, FFs are MONTHLY
@@ -6768,7 +6742,7 @@ Namespace DataSources
             If (iDataset > 0) Then
 
                 Try
-                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(String.format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
+                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
                 Catch ex As Exception
                     tsDS.nTimeSeries = 0
                 End Try
@@ -6780,7 +6754,7 @@ Namespace DataSources
 
             If tsDS.nTimeSeries = 0 Then Return bSucces
 
-            strSQL = String.format("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.iDatasetDBID(iDataset))
+            strSQL = String.Format("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.iDatasetDBID(iDataset))
             reader = Me.m_db.GetReader(strSQL)
             Try
                 While reader.Read()
@@ -6794,7 +6768,7 @@ Namespace DataSources
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
                         Case eTimeSeriesCategoryType.Group
-                            readerSub = Me.m_db.GetReader(String.format("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
+                            readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(readerSub("GroupID")))
@@ -6805,7 +6779,7 @@ Namespace DataSources
                             readerSub = Nothing
 
                         Case eTimeSeriesCategoryType.Fleet
-                            readerSub = Me.m_db.GetReader(String.format("SELECT * FROM EcosimTimeSeriesFleet WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
+                            readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesFleet WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(readerSub("FleetID")))
@@ -6816,11 +6790,11 @@ Namespace DataSources
                             readerSub = Nothing
 
                         Case eTimeSeriesCategoryType.Forcing
-                            Debug.Assert(False, String.format("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
+                            Debug.Assert(False, String.Format("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
                             bSucces = False
 
                         Case eTimeSeriesCategoryType.NotSet
-                            Debug.Assert(False, String.format("Time series {0} is of an unknown type", reader("TimeSeriesID")))
+                            Debug.Assert(False, String.Format("Time series {0} is of an unknown type", reader("TimeSeriesID")))
                             bSucces = False
 
                     End Select
@@ -6884,7 +6858,7 @@ Namespace DataSources
                 For iTS As Integer = 1 To tsDS.nTimeSeries
 
                     drow = dt.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
-                    Debug.Assert(drow IsNot Nothing, String.format("Cannot find time series {0}", tsDS.iTimeSeriesDBID(iTS)))
+                    Debug.Assert(drow IsNot Nothing, String.Format("Cannot find time series {0}", tsDS.iTimeSeriesDBID(iTS)))
 
                     drow.BeginEdit()
                     drow("DatName") = tsDS.strName(iTS)
@@ -7042,7 +7016,7 @@ Namespace DataSources
                 End Select
 
             Catch ex As Exception
-                Me.LogMessage(String.format("Error {0} occurred while appending time series {1}", ex.Message, strName))
+                Me.LogMessage(String.Format("Error {0} occurred while appending time series {1}", ex.Message, strName))
                 bSucces = False
             End Try
 
@@ -7062,7 +7036,7 @@ Namespace DataSources
 
             Dim bSucces As Boolean = True
             Try
-                Me.m_db.Execute(String.format("DELETE FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeries WHERE (TimeSeriesID = {0})", iTimeSeriesID))
             Catch ex As Exception
                 bSucces = False
             End Try

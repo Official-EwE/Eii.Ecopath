@@ -380,6 +380,28 @@ Public Class cEcosimDatastructures
 
         'jb added to keep track of the type of function used to create a shape e.g. Sigmoid.........
         Dim ShapeFunctionType As Long
+
+        Friend Property ShapeFunctionParams As Single()
+            Get
+                Return New Single() {YZero, YBase, YEnd, Steep, ZScale}
+            End Get
+            Set(value As Single())
+                Dim n As Integer = 0
+                Dim v As Single = 0
+                If (value IsNot Nothing) Then n = value.Length
+                For i As Integer = 0 To 4
+                    If i < n Then v = value(i) Else v = 0
+                    Select Case i
+                        Case 0 : YZero = v
+                        Case 1 : YBase = v
+                        Case 2 : YEnd = v
+                        Case 3 : Steep = v
+                        Case 4 : ZScale = v
+                    End Select
+                Next
+            End Set
+        End Property
+
     End Structure
 
     'there is one ShapeParameters array for each type of shape that has parameters Mediation and Forcing

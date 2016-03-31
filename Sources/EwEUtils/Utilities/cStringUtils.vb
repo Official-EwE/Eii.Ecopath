@@ -1725,7 +1725,36 @@ Namespace Utilities
             Return True
 
         End Function
+
 #End Region ' Map array conversions
+
+#Region " ParamArray conversions "
+
+        Public Shared Function ParamArrayToString(asValues As Single(), Optional nParams As Integer = Integer.MaxValue) As String
+
+            If (asValues Is Nothing) Then Return ""
+
+            Dim sb As New StringBuilder()
+            For i As Integer = 0 To Math.Min(asValues.Length, nParams) - 1
+                If (i > 0) Then sb.Append(" ")
+                sb.Append(cStringUtils.FormatSingle(asValues(i)))
+            Next
+            Return sb.ToString()
+
+        End Function
+
+        Public Shared Function StringToParamArray(strValues As String) As Single()
+
+            Dim bits As String() = strValues.Split(" "c)
+            Dim lVals As New List(Of Single)
+            For i As Integer = 0 To bits.Length - 1
+                lVals.Add(cStringUtils.ConvertToSingle(bits(i)))
+            Next
+            Return lVals.ToArray()
+
+        End Function
+
+#End Region ' ParamArray conversions
 
 #Region " Shape data conversions "
 
@@ -2363,7 +2392,8 @@ Namespace Utilities
 
         End Class
 
-#End Region
+#End Region ' Private classes
+
     End Class
 
 End Namespace ' Utilities

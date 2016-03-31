@@ -4265,7 +4265,7 @@ Namespace Ecosim
                     End If
                 End If
 
-                Select Case m_Data.BioMedData.FunctionType(i, j, K)
+                Select Case m_Data.BioMedData.ApplicationType(i, j, K)
                     Case eForcingFunctionApplication.SearchRate, _
                          eForcingFunctionApplication.ProductionRate
                         A = A * Mult

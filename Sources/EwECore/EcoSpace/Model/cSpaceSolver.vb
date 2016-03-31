@@ -977,7 +977,7 @@ Public Class cSpaceSolver
                 'If UseTime = True Then Mult = m_ESData.tval(m_ESData.FunctionNumber(i, j, K)) Else Mult = 1
             End If
 
-            Select Case m_SimData.BioMedData.FunctionType(i, j, K)
+            Select Case m_SimData.BioMedData.ApplicationType(i, j, K)
                 'SearchRate, Production and ImportedDetritus are all applied to the A multiplier
                 Case eForcingFunctionApplication.SearchRate, _
                      eForcingFunctionApplication.ProductionRate

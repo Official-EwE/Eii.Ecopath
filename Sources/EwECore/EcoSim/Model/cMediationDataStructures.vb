@@ -68,7 +68,7 @@ Public Class cMediationDataStructures
 
     Public FunctionNumber(,,) As Integer
     Public IsMedFunction(,,) As Boolean
-    Public FunctionType(,,) As eForcingFunctionApplication
+    Public ApplicationType(,,) As eForcingFunctionApplication
 
     Protected m_nGroups As Integer
     Protected m_nFleets As Integer
@@ -110,7 +110,7 @@ Public Class cMediationDataStructures
 
         ReDim FunctionNumber(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
         ReDim IsMedFunction(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
-        ReDim FunctionType(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
+        ReDim ApplicationType(nGroups, nGroups, cMediationDataStructures.MAXFUNCTIONS)
 
         For i = 0 To MediationShapes
             IMedBase(i) = NMedPoints \ 3
