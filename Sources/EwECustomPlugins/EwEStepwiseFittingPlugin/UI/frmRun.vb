@@ -100,13 +100,17 @@ Public Class frmRun
 
             Case eRunMode.StandAlone
                 Me.PopulateModelControls()
-                Me.PopulateDropdowns()
+                Me.PopulateModelDropdowns()
                 If Me.Core.ActiveEcosimScenarioIndex > 0 Then Me.SelectedEcosimScenario = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex)
                 If Me.Core.ActiveTimeSeriesDatasetIndex > 0 Then Me.SelectedTimeSeries = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
                 'Hide the time series and apply button in standalone mode
                 Me.m_btnTS.Hide()
                 Me.m_btnApply.Hide()
+
             Case eRunMode.Plugin
+
+                Me.PopulateAnomalyDropdown()
+
                 ' Connect to ApplyTS command to time series button
                 Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")
                 If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.m_btnTS)
@@ -149,16 +153,21 @@ Public Class frmRun
         Dim bHasEnabledIterations As Boolean = False
         Dim bHasEnabledIterationSelected As Boolean = False
         Dim bHasCompletedIterationSelected As Boolean = False
+        Dim bNeedsAnomalyShape As Boolean = False
+        Dim bHasAnomalyShape As Boolean = (Me.SelectedShape IsNot Nothing)
         Dim bIsRunning As Boolean = (Me.m_engine.IsRunning)
 
-        Dim iteration As ISFPIterations = Me.SelectedIteration
-        If (iteration IsNot Nothing) Then
-            bHasCompletedIterationSelected = (iteration.RunState = ISFPIterations.eRunState.Completed)
-            bHasEnabledIterationSelected = iteration.Enabled
+        Dim it As ISFPIterations = Me.SelectedIteration
+        If (it IsNot Nothing) Then
+            bHasCompletedIterationSelected = (it.RunState = ISFPIterations.eRunState.Completed)
+            bHasEnabledIterationSelected = it.Enabled
+            bNeedsAnomalyShape = bNeedsAnomalyShape Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch))
         End If
 
-        For Each iteration In Me.m_engine.Iterations
-            bHasEnabledIterations = bHasEnabledIterations Or iteration.Enabled
+        Dim bAnomalyOk As Boolean = Not bNeedsAnomalyShape Or bHasAnomalyShape
+
+        For Each it In Me.m_engine.Iterations
+            bHasEnabledIterations = bHasEnabledIterations Or it.Enabled
         Next
 
         ' -- Entire UI --
@@ -180,11 +189,12 @@ Public Class frmRun
         ' Update output path entirely to resolve path placeholders
         Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
 
-        'Run button enabled when at least one iteration is enabled and time series are loaded
-        Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries
+        'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
+        Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk
 
         'Enable Absolute Biomass time series check box when time series are loaded
         Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
+
     End Sub
 
 #End Region ' Overrides
@@ -227,7 +237,7 @@ Public Class frmRun
         End Try
 
         Me.PopulateModelControls()
-        Me.PopulateDropdowns()
+        Me.PopulateModelDropdowns()
 
         Me.UpdateControls()
 
@@ -294,6 +304,29 @@ Public Class frmRun
 
     End Sub
 
+    Private Sub OnFormatShape(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbAnomalyShape.Format
+
+        Try
+            Dim fmt As New ScientificInterfaceShared.Style.cShapeDataFormatter()
+            e.Value = fmt.GetDescriptor(e.ListItem)
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub OnShapeSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbAnomalyShape.SelectedIndexChanged
+
+        Try
+            Me.m_engine.Parameters.AppliedShape = Me.SelectedShape
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Private Sub OnSplinePointStepSizeChanged(sender As Object, e As System.EventArgs) _
         Handles m_nudStepSize.ValueChanged
 
@@ -312,11 +345,6 @@ Public Class frmRun
 
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
     Private Sub OnSearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_rbPredator.CheckedChanged, _
                 m_rbPredPrey.CheckedChanged
@@ -341,7 +369,6 @@ Public Class frmRun
 
     End Sub
 
-
     Private Sub OnSelectNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnSelectNone.Click, m_btnClearAll.Click
 
@@ -357,7 +384,8 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub m_btnSelectV_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSelectV.Click
+    Private Sub OnSelectVuls(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSelectV.Click
         Try
             ' Enable all Vulnerability iterations for running
             For Each it As ISFPIterations In Me.m_engine.Iterations
@@ -373,7 +401,8 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub m_btnSelectA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSelectA.Click
+    Private Sub OnSelectAnomaly(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSelectA.Click
         Try
             ' Enable all Anomaly iterations for running
             For Each it As ISFPIterations In Me.m_engine.Iterations
@@ -389,7 +418,8 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub m_btnSelectVandA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSelectVandA.Click
+    Private Sub OnSelectVandA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSelectVandA.Click
         Try
             ' Enable all V and A iterations for running
             For Each it As ISFPIterations In Me.m_engine.Iterations
@@ -405,7 +435,8 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub m_btnSelectBaseline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSelectBaseline.Click
+    Private Sub OnSelectBaseline(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSelectBaseline.Click
         Try
             ' Enable Baseline iterations for running
             For Each it As ISFPIterations In Me.m_engine.Iterations
@@ -419,7 +450,8 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub m_btnSelectFishing_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnSelectFishing.Click
+    Private Sub OnSelectFishin(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnSelectFishing.Click
         Try
             ' Enable Fishing iterations for running
             For Each it As ISFPIterations In Me.m_engine.Iterations
@@ -572,7 +604,7 @@ Public Class frmRun
 
     End Function
 
-    Private Sub PopulateDropdowns()
+    Private Sub PopulateModelDropdowns()
 
         ' Scenarios
         Me.m_cmbScenario.Items.Clear()
@@ -588,6 +620,20 @@ Public Class frmRun
 
     End Sub
 
+    Private Sub PopulateAnomalyDropdown()
+
+        ' Anomaly shapes
+        Me.m_cmbAnomalyShape.Items.Clear()
+        For Each shape As cShapeData In Me.m_engine.GetAvailableAnomalyShapes()
+            Me.m_cmbAnomalyShape.Items.Add(shape)
+        Next
+
+        If (Me.m_cmbAnomalyShape.Items.Count > 0) Then
+            Me.m_cmbAnomalyShape.SelectedIndex = 0
+        End If
+
+    End Sub
+
     Private Sub PopulateModelControls()
 
         Me.m_tbxModel.Text = ""
@@ -600,7 +646,7 @@ Public Class frmRun
 
     Private Property SelectedEcosimScenario As cEcoSimScenario
         Get
-            Return CType(Me.m_cmbScenario.SelectedItem, cEcoSimScenario)
+            Return DirectCast(Me.m_cmbScenario.SelectedItem, cEcoSimScenario)
         End Get
         Set(ByVal scenario As cEcoSimScenario)
             Me.m_cmbScenario.SelectedItem = scenario
@@ -609,10 +655,19 @@ Public Class frmRun
 
     Private Property SelectedTimeSeries As cTimeSeriesDataset
         Get
-            Return CType(Me.m_cmbTimeSeries.SelectedItem, cTimeSeriesDataset)
+            Return DirectCast(Me.m_cmbTimeSeries.SelectedItem, cTimeSeriesDataset)
         End Get
         Set(ByVal dataset As cTimeSeriesDataset)
             Me.m_cmbTimeSeries.SelectedItem = dataset
+        End Set
+    End Property
+
+    Private Property SelectedShape As cShapeData
+        Get
+            Return DirectCast(Me.m_cmbAnomalyShape.SelectedItem, cShapeData)
+        End Get
+        Set(ByVal dataset As cShapeData)
+            Me.m_cmbAnomalyShape.SelectedItem = dataset
         End Set
     End Property
 

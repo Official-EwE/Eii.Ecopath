@@ -27,6 +27,7 @@
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -42,24 +43,26 @@ Public Class cSFPParameters
         All
     End Enum
 
-    Private TimeSeries As cTimeSeriesDataset
+#Region " Private vars "
+
+    Private m_ts As cTimeSeriesDataset = Nothing
     Private m_core As cCore
 
-    Private MaxK As Integer
-    'MinK set to 1
-    Private MinK As Integer
-    Private MaxSplinePoints As Integer
+    Private m_iMaxK As Integer
+    Private m_iMinK As Integer
+    Private m_iMaxSplinePoints As Integer
+
     'MinSplinePoints set to 2 as 0 causes overestimates and need more spline points than 1
-    Private MinSplinePoints As Integer = 2
-    Private NumberOfObservations As Integer
+    Private m_iMinSplinePoints As Integer = 2
+    Private m_iObservations As Integer
 
-    Private AppliedShape As cForcingFunction = Nothing
+    Private m_bAbsoluteBiomassEnabled As Boolean = False
 
-    Private AbsoluteBiomassEnabled As Boolean = False
+#End Region ' Private vars
 
     Public Sub New(ByVal c As EwECore.cCore)
         Me.m_core = c
-        Console.WriteLine("New SFPParameters instance created")
+        'Console.WriteLine("New SFPParameters instance created")
     End Sub
 
     ''' <summary>
@@ -68,17 +71,16 @@ Public Class cSFPParameters
     Public Function CalculateParameters() As Boolean
 
         If (Me.m_core.ActiveTimeSeriesDatasetIndex < 1) Then
-            Me.TimeSeries = Nothing
+            Me.m_ts = Nothing
             Console.WriteLine("SFPParameters no longer has a reference to SFPManager time series")
         Else
-            Me.TimeSeries = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
+            Me.m_ts = Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex)
             Console.WriteLine("SFPParameters now has reference to SFPManager time series")
         End If
 
         CalculateMaxKandMinK()
         CalculateMaxSplinePoints()
         CalculateNumberOfObservations()
-        FFAppliedToPP()
 
         Console.WriteLine("SFPParameters calculated estimated parameters")
 
@@ -91,19 +93,19 @@ Public Class cSFPParameters
     ''' </summary>
     Private Sub CalculateMaxKandMinK()
 
-        MaxK = 0
-        MinK = 1
+        m_iMaxK = 0
+        m_iMinK = 1
 
         ' Make fail-safe
-        If (Me.TimeSeries Is Nothing) Then Return
+        If (Me.m_ts Is Nothing) Then Return
 
         Dim ts As cTimeSeries
         Dim tsType As eTimeSeriesType
         ' Dim tsname As String
         Dim count As Integer = 0
 
-        For i As Integer = 1 To TimeSeries.nTimeSeries
-            ts = TimeSeries.TimeSeries(i)
+        For i As Integer = 1 To m_ts.nTimeSeries
+            ts = m_ts.TimeSeries(i)
             tsType = ts.TimeSeriesType
 
             Select Case tsType
@@ -114,17 +116,17 @@ Public Class cSFPParameters
                     count += 1
 
                 Case eTimeSeriesType.BiomassAbs
-                    If AbsoluteBiomassEnabled Then
+                    If m_bAbsoluteBiomassEnabled Then
                         count += 1
                     End If
 
             End Select
         Next
 
-        MaxK = count - 1
-        MinK = count - (count - 1)
-        Console.WriteLine("Number of max k Parameters to estimate: " & MaxK.ToString)
-        Console.WriteLine("Number of min k Parameters to estimate: " & MinK.ToString)
+        m_iMaxK = count - 1
+        m_iMinK = count - (count - 1)
+        Console.WriteLine("Number of max k Parameters to estimate: " & m_iMaxK.ToString)
+        Console.WriteLine("Number of min k Parameters to estimate: " & m_iMinK.ToString)
     End Sub
 
 
@@ -133,21 +135,21 @@ Public Class cSFPParameters
     ''' </summary>
     Private Sub CalculateMaxSplinePoints()
 
-        MaxSplinePoints = 0
+        m_iMaxSplinePoints = 0
 
         ' Make fail-safe
-        If (Me.TimeSeries Is Nothing) Then Return
+        If (Me.m_ts Is Nothing) Then Return
 
         Dim years As Integer
-        years = TimeSeries.NumPoints - 1
+        years = m_ts.NumPoints - 1
         Console.WriteLine("Number of years in time series: " & years.ToString)
-        If MaxK > years Then
-            MaxSplinePoints = years
+        If m_iMaxK > years Then
+            m_iMaxSplinePoints = years
         Else
-            MaxSplinePoints = MaxK
+            m_iMaxSplinePoints = m_iMaxK
         End If
-        Console.WriteLine("Number of Max spline points: " & MaxSplinePoints.ToString)
-        Console.WriteLine("Number of Min spline points: " & MinSplinePoints.ToString)
+        Console.WriteLine("Number of Max spline points: " & m_iMaxSplinePoints.ToString)
+        Console.WriteLine("Number of Min spline points: " & m_iMinSplinePoints.ToString)
     End Sub
 
     ''' <summary>
@@ -155,18 +157,18 @@ Public Class cSFPParameters
     ''' </summary>
     Private Sub CalculateNumberOfObservations()
 
-        Me.NumberOfObservations = 0
+        Me.m_iObservations = 0
         ' Dim Num As Integer = 0
 
         ' Make fail-safe
-        If (Me.TimeSeries Is Nothing) Then Return
+        If (Me.m_ts Is Nothing) Then Return
 
         Dim ts As cTimeSeries
         Dim tsType As eTimeSeriesType
         'Go through each time series of the time series dataset
-        For i As Integer = 1 To TimeSeries.nTimeSeries
+        For i As Integer = 1 To m_ts.nTimeSeries
             'Get a time series
-            ts = TimeSeries.TimeSeries(i)
+            ts = m_ts.TimeSeries(i)
             'Get the time series type
             tsType = ts.TimeSeriesType
             'If the time series type is 0,1,5,6 or 7 add its datapoints to the total number of observations
@@ -181,7 +183,7 @@ Public Class cSFPParameters
                         'Num += TimeSeries.NumPoints
                     End If
                 Case eTimeSeriesType.BiomassAbs
-                    If AbsoluteBiomassEnabled And ts.WtType > 0 Then
+                    If m_bAbsoluteBiomassEnabled And ts.WtType > 0 Then
                         AddToObservations(ts)
                         'Num += TimeSeries.NumPoints
                     End If
@@ -189,7 +191,7 @@ Public Class cSFPParameters
 
         Next
         'Console.WriteLine("Num: " & Num.ToString)
-        Console.WriteLine("Total Number of Observations: " & NumberOfObservations.ToString)
+        Console.WriteLine("Total Number of Observations: " & m_iObservations.ToString)
     End Sub
 
     ''' <summary>
@@ -208,69 +210,53 @@ Public Class cSFPParameters
             End If
         Next
         'Add number of data points from this time seires to the total number of observations
-        NumberOfObservations += count
+        m_iObservations += count
         Console.WriteLine("Number of Observations from : " & ts.Name & " = " & count.ToString)
-    End Sub
-
-    ''' <summary>
-    ''' Find current FF applied to PP and store in AppliedShape
-    ''' </summary>
-    Private Sub FFAppliedToPP()
-
-        Dim interactions As cMediatedInteractionManager = m_core.MediatedInteractionManager
-        For Each shape As cForcingFunction In m_core.ForcingShapeManager
-            If interactions.IsApplied(shape) Then
-                AppliedShape = shape
-                Console.WriteLine("Applied PP Anomaly Name : " & shape.Name)
-                Exit For
-            End If
-        Next
-
     End Sub
 
     Public ReadOnly Property MaxKValue As Integer
         Get
-            Return Me.MaxK
+            Return Me.m_iMaxK
         End Get
     End Property
 
     Public ReadOnly Property MinKValue As Integer
         Get
-            Return Me.MinK
+            Return Me.m_iMinK
         End Get
     End Property
 
     Public ReadOnly Property MaxSplinePointsValue As Integer
         Get
-            Return Me.MaxSplinePoints
+            Return Me.m_iMaxSplinePoints
         End Get
     End Property
 
     Public ReadOnly Property MinSplinePointsValue As Integer
         Get
-            Return Me.MinSplinePoints
+            Return Me.m_iMinSplinePoints
         End Get
     End Property
 
     Public ReadOnly Property NumberOfObservationsValue As Integer
         Get
-            Return Me.NumberOfObservations
+            Return Me.m_iObservations
         End Get
     End Property
 
-    Public Function GetAppliedShape() As cForcingFunction
-        Return AppliedShape
-    End Function
+    ''' <summary>
+    ''' Get/set the selected anomaly shape
+    ''' </summary>
+    Public Property AppliedShape() As cShapeData
 
     Public Property EnableAbsoluteBiomass As Boolean
         Get
-            Return AbsoluteBiomassEnabled
+            Return m_bAbsoluteBiomassEnabled
         End Get
         Set(ByVal value As Boolean)
-            AbsoluteBiomassEnabled = value
+            m_bAbsoluteBiomassEnabled = value
         End Set
     End Property
-
 
 #Region " Persistent configuration "
 
