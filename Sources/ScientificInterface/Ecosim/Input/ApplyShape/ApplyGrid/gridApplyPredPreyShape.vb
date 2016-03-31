@@ -151,7 +151,7 @@ Namespace Ecosim
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
-            Dim columnIndex As Integer = 2
+            Dim iCol As Integer = 2
 
             For i As Integer = 1 To Core.nGroups
                 source = Core.EcoPathGroupInputs(i)
@@ -166,8 +166,8 @@ Namespace Ecosim
                 If ((Me.m_groupfilter = eGroupFilter.Consumer) And (source.IsConsumer)) Or _
                    ((Me.m_groupfilter = eGroupFilter.Producer) And (source.IsProducer)) Or _
                    ((Me.m_groupfilter = eGroupFilter.Detritus) And (source.IsDetritus)) Then
-                    Me.InsertColumn(source, columnIndex)
-                    columnIndex = columnIndex + 1
+                    Me.AddColumn(iCol, source)
+                    iCol += 1
                 End If
             Next
 
@@ -182,18 +182,18 @@ Namespace Ecosim
             If (Me.m_InteractionManager Is Nothing) Then Return
             If (Me.m_applyShapeMode = eShapeCategoryTypes.NotSet) Then Return
 
-            Dim iCol As Integer = 2
-            ' For each column  (groupIndex - Predator)
-            For groupIndex As Integer = 1 To Me.Columns.Count - 2
-                ' For each row (rowIndex - Prey)
-                For rowIndex As Integer = 1 To Core.nGroups
+            ' For each predator column
+            For iCol As Integer = 2 To Me.Columns.Count - 1
+                Dim iPred As Integer = CInt(Me.Columns(iCol).Tag)
 
-                    Dim iGroup As Integer = CInt(Me(0, groupIndex + 1).Value)
+                ' For each prey row 
+                For iRow As Integer = 1 To Me.Rows.Count - 1
+                    Dim iPrey As Integer = iRow
 
                     ' Can assign FF at this spot in the matrix?
-                    If m_InteractionManager.isPredPrey(iGroup, rowIndex) Then
+                    If m_InteractionManager.isPredPrey(iPred, iPrey) Then
 
-                        PPI = m_InteractionManager.PredPreyInteraction(iGroup, rowIndex)
+                        PPI = m_InteractionManager.PredPreyInteraction(iPred, iPrey)
                         Dim shape As cForcingFunction = Nothing
                         Dim aplType As eForcingFunctionApplication
                         Dim sb As New StringBuilder()
@@ -220,9 +220,9 @@ Namespace Ecosim
                             sb.Append("X")
                         End If
 
-                        Me(rowIndex, iCol) = New Cells.Real.Cell(sb.ToString)
-                        Me(rowIndex, iCol).DataModel = m_editor
-                        Me(rowIndex, iCol).Behaviors.Add(m_bmCell)
+                        Me(iRow, iCol) = New Cells.Real.Cell(sb.ToString)
+                        Me(iRow, iCol).DataModel = m_editor
+                        Me(iRow, iCol).Behaviors.Add(m_bmCell)
 
                     Else
                         ' #No: cannot assign FF to this pred/prey combo
@@ -230,14 +230,12 @@ Namespace Ecosim
                         '  Setup default cell
                         cellDefault.Style = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                         ' Apply cell to the grid
-                        Me(rowIndex, iCol) = cellDefault
+                        Me(iRow, iCol) = cellDefault
                     End If
 
-                Next rowIndex
+                Next iRow
 
-                iCol += 1
-
-            Next groupIndex
+            Next iCol
 
         End Sub
 
@@ -299,11 +297,11 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Sub InsertColumn(ByRef source As cCoreGroupBase, ByVal columnIndex As Integer)
-            Me.Columns.Insert(columnIndex)
-            ' # Group name column header cells
-            Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-            Me(0, columnIndex).Behaviors.Add(m_bmRowCol)
+        Protected Sub AddColumn(ByVal iCol As Integer, ByVal source As cCoreGroupBase)
+            Me.Columns.Insert(iCol)
+            Me(0, iCol) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(0, iCol).Behaviors.Add(m_bmRowCol)
+            Me.Columns(iCol).Tag = source.Index
         End Sub
 
 #End Region ' Internals
