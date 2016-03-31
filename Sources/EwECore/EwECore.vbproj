@@ -142,6 +142,7 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_21.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_22.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_23.vb" />
+    <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_24.vb" />
     <Compile Include="EcoBase\cEcobaseImporter.vb" />
     <Compile Include="Database\Import\cModelImporter.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />

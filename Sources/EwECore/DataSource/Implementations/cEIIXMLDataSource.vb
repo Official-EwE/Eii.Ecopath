@@ -1485,12 +1485,9 @@ Public Class cEIIXMLDataSource
         dt.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
         Try
             drow = dt.DefaultView.ToTable.Rows(0)
-            shapeParms.YZero = CSng(drow("Yzero"))
-            shapeParms.YBase = CSng(drow("Ybase"))
-            shapeParms.YEnd = CSng(drow("Yend"))
-            shapeParms.Steep = CSng(drow("Steep"))
-            ' sp.ZScale = CInt(drowShape("ZScale"))
+
             shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
             astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
@@ -1531,12 +1528,9 @@ Public Class cEIIXMLDataSource
         dtTime.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
         drow = dtTime.DefaultView.ToTable.Rows(0)
         Try
-            ' Read shape parameters
-            shapeParms.YZero = CSng(drow("Yzero"))
-            shapeParms.YBase = CSng(drow("Ybase"))
-            shapeParms.YEnd = CSng(drow("Yend"))
-            shapeParms.Steep = CSng(drow("Steep"))
+ 
             shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
             Dim sLast As Single = 1.0!
@@ -1582,13 +1576,8 @@ Public Class cEIIXMLDataSource
         Try
             Dim drow As DataRow = dtMed.DefaultView.ToTable.Rows(0)
 
-            ' Init shapeParms
-            shapeParms.YZero = CSng(drow("Yzero"))
-            shapeParms.YBase = CSng(drow("Ybase"))
-            shapeParms.YEnd = CSng(drow("Yend"))
-            shapeParms.Steep = CSng(drow("Steep"))
-            ' shapeParms.ZScale = CInt(drowShape("ZScale"))
             shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+            shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
             astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
@@ -1709,7 +1698,7 @@ Public Class cEIIXMLDataSource
                                 appl = eForcingFunctionApplication.Import
                             End If
                         End If
-                        ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
+                        ecosimDS.BioMedData.ApplicationType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                     Else
                         Me.LogMessage(cStringUtils.Localize("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                     End If
