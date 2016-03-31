@@ -45,7 +45,7 @@ Public Class cSFPVandASearch
 
     Public Overrides Function Load() As Boolean
 
-        Dim BSuccess As Boolean = False
+        Dim bSuccess As Boolean = False
 
         'Enable specific time series for Baseline or Fishing
         If MyBase.EnableTimeSeries() Then
@@ -53,12 +53,12 @@ Public Class cSFPVandASearch
             If MyBase.ResetVs() And MyBase.ResetFF() Then
                 'Run a sensitivity of SS to V search for baseline
                 If MyBase.RunSensitivityOfSSToV() Then
-                    BSuccess = True
+                    bSuccess = True
                 End If
             End If
         End If
 
-        Return BSuccess
+        Return bSuccess
 
     End Function
 

@@ -121,8 +121,8 @@ Public MustInherit Class cSFPGenericIterations
             Next
         Next
 
-        ' Store Anomaly Shape
-        Dim shape As cForcingFunction = Parameters.GetAppliedShape()
+        ' Store first anomaly shape
+        Dim shape As cShapeData = Parameters.AppliedShape
         If (shape IsNot Nothing) Then
             Me.core.ForcingShapeManager.Load()
             Me.m_anomalyshape = shape.ShapeData
@@ -159,12 +159,11 @@ Public MustInherit Class cSFPGenericIterations
             Next
 
             'Restore anomaly shape
-            Dim shp As cShapeData = Me.Parameters.GetAppliedShape()
-            If (shp IsNot Nothing) Then
-                shp.ShapeData = Me.m_anomalyshape
-                shp.Update()
+            Dim shape As cShapeData = Me.Parameters.AppliedShape
+            If (shape IsNot Nothing) Then
+                shape.ShapeData = Me.m_anomalyshape
+                shape.Update()
             End If
-
 
         Catch ex As Exception
             ' Whoah!
@@ -253,7 +252,8 @@ Public MustInherit Class cSFPGenericIterations
     ''' <returns>True if Ecosim has all default vulnerabilties.</returns>
     ''' -----------------------------------------------------------------------
     Protected Function ResetVs() As Boolean
-        Return core.CheckResetDefaultVulnerabilities()
+        ' Suppress prompt, just reset the vulnerabilities without asking
+        Return core.CheckResetDefaultVulnerabilities(True)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -340,11 +340,10 @@ Public MustInherit Class cSFPGenericIterations
     ''' -----------------------------------------------------------------------
     Protected Function ResetFF() As Boolean
 
-        'The value to set
         Dim sDefaultValue As Single = 1.0
-        Dim shape As cForcingFunction = Parameters.GetAppliedShape()
+        Dim shape As cShapeData = Parameters.AppliedShape
 
-        'If there is an applied shape reset it 
+        'Reset all applied shapes 
         If (shape IsNot Nothing) Then
             For i As Integer = 0 To shape.nPoints
                 shape.ShapeData(i) = sDefaultValue
@@ -352,17 +351,18 @@ Public MustInherit Class cSFPGenericIterations
             shape.Update()
         End If
 
-        'More than one shape can be applied so reset the other shapes 
-        Dim interactions As cMediatedInteractionManager = core.MediatedInteractionManager
-        For Each shape In core.ForcingShapeManager
-            If interactions.IsApplied(shape) Then
-                For i As Integer = 0 To shape.nPoints
-                    shape.ShapeData(i) = sDefaultValue
-                Next i
-                shape.Update()
-            End If
-        Next
+        ' #1421: do not affect other shapes
 
+        ''More than one shape can be applied so reset the other shapes 
+        'Dim interactions As cMediatedInteractionManager = core.MediatedInteractionManager
+        'For Each shape In core.ForcingShapeManager
+        '    If interactions.IsApplied(shape) Then
+        '        For i As Integer = 0 To shape.nPoints
+        '            shape.ShapeData(i) = sDefaultValue
+        '        Next i
+        '        shape.Update()
+        '    End If
+        'Next
 
         Return True
     End Function
@@ -375,7 +375,7 @@ Public MustInherit Class cSFPGenericIterations
     ''' -----------------------------------------------------------------------
     Protected Function RunAnomalySearch() As Boolean
 
-        Dim shape As cForcingFunction = Parameters.GetAppliedShape()
+        Dim shape As cShapeData = Parameters.AppliedShape
         Dim bSuccess As Boolean = False
 
         'If there is no applied shape do not run search (This is already checked by the cSFPManager but just to make sure)
@@ -410,11 +410,11 @@ Public MustInherit Class cSFPGenericIterations
     ''' -----------------------------------------------------------------------
     Protected Function RunVandASearch() As Boolean
 
-        Dim shape As cForcingFunction = Parameters.GetAppliedShape()
+        Dim shape As cShapeData = Parameters.AppliedShape
         Dim bSuccess As Boolean = False
 
         'If there is an applied shape and a sensitivity search has been ran : run the search
-        If shape IsNot Nothing And F2TSManager.HasRunSens Then
+        If (shape IsNot Nothing) And F2TSManager.HasRunSens Then
 
             'Setup manager to do a Vulnerability and Anomaly search
             F2TSManager.AnomalySearch = True
