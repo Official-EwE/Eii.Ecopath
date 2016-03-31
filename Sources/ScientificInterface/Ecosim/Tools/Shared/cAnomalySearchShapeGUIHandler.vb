@@ -17,12 +17,24 @@
 '
 
 Imports EwECore
+Imports EwEUtils.Core
 
 Public Class cAnomalySearchShapeGUIHandler
     Inherits cForcingShapeGUIHandler
 
+    Private m_lProducers As List(Of Integer)
+
     Public Sub New(uic As cUIContext)
         MyBase.New(uic)
+
+        ' Make snapshot of PP group indexes
+        Me.m_lProducers = New List(Of Integer)
+        For iGroup As Integer = 1 To Core.nGroups
+            Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(iGroup)
+            If (grp.IsProducer) Then
+                Me.m_lProducers.Add(iGroup)
+            End If
+        Next
     End Sub
 
     ''' ---------------------------------------------------------------
@@ -45,10 +57,31 @@ Public Class cAnomalySearchShapeGUIHandler
     ''' <returns></returns>
     ''' ---------------------------------------------------------------
     Protected Overrides Function IncludeShape(ByVal shape As EwECore.cShapeData) As Boolean
-        Dim manager As cMediatedInteractionManager = Me.Core.MediatedInteractionManager
+
+        If (Me.UIContext Is Nothing) Then Return False
         If Not (TypeOf shape Is cForcingFunction) Then Return False
-        If (manager Is Nothing) Then Return False
-        Return manager.IsApplied(DirectCast(shape, cForcingFunction))
+
+        ' Fixed 
+        Dim interactions As cMediatedInteractionManager = Core.MediatedInteractionManager
+        Dim shapes As New List(Of cShapeData)
+        Dim shpTest As cForcingFunction = Nothing
+        Dim interact As cPredPreyInteraction = Nothing
+        Dim ft As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
+
+        For Each iGroup As Integer In Me.m_lProducers
+            interact = interactions.PredPreyInteraction(iGroup, iGroup)
+            If (interact IsNot Nothing) Then
+                For i As Integer = 1 To interact.nAppliedShapes
+                    If (interact.getShape(i, shpTest, ft)) Then
+                        If Object.ReferenceEquals(shape, shpTest) Then
+                            Return True
+                        End If
+                    End If
+                Next
+            End If
+        Next
+        Return False
+
     End Function
 
     Public Overrides Function NumDataYears() As Integer

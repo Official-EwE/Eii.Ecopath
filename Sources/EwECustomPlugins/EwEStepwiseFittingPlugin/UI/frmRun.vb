@@ -28,6 +28,7 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
@@ -128,6 +129,8 @@ Public Class frmRun
 
         Me.UpdateControls()
 
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MediatedInteractionManager}
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -146,6 +149,16 @@ Public Class frmRun
 
     Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
         MyBase.OnFormClosing(e)
+    End Sub
+
+    Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
+        MyBase.OnCoreMessage(msg)
+
+        Select Case msg.Source
+            Case eCoreComponentType.MediatedInteractionManager
+                Me.PopulateAnomalyDropdown()
+        End Select
+
     End Sub
 
     Public Overloads Sub UpdateControls()

@@ -202,21 +202,20 @@ Public Class cSFPManager
             End If
         Next
 
-        For Each iPred As Integer In lPP
-            For Each iPrey As Integer In lPP
-                Dim interact As cPredPreyInteraction = interactions.PredPreyInteraction(iPred, iPrey)
-                If (interact IsNot Nothing) Then
-                    Dim shape As cForcingFunction = Nothing
-                    Dim ft As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
-                    For i As Integer = 1 To interact.nAppliedShapes
-                        If (interact.getShape(i, shape, ft)) Then
-                            shapes.Add(shape)
-                        End If
-                    Next
-                End If
-            Next
-        Next
+        For Each iGroup As Integer In lPP
+            Dim interact As cPredPreyInteraction = interactions.PredPreyInteraction(iGroup, iGroup)
+            If (interact IsNot Nothing) Then
+                Dim shape As cForcingFunction = Nothing
+                Dim ft As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
+                For i As Integer = 1 To interact.nAppliedShapes
+                    If (interact.getShape(i, shape, ft)) Then
+                        shapes.Add(shape)
+                    End If
+                Next i
+            End If
+        Next iGroup
         Return shapes.ToArray()
+
     End Function
 
     ''' <summary>

@@ -66,6 +66,8 @@ Namespace Ecosim
         Private m_shapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
         Private m_groupfilter As eGroupFilter = eGroupFilter.Consumer
 
+        Private m_iMaxShapes As Integer = 0
+
 #End Region ' Private vars
 
 #Region " Constructors "
@@ -164,6 +166,10 @@ Namespace Ecosim
 
             Dim fmt As New cCoreInterfaceFormatter()
 
+            For Each it As cMediatedInteraction In Me.m_lInteractions
+                Me.m_iMaxShapes = Math.Max(Me.m_iMaxShapes, it.MaxNumShapes)
+            Next
+
             Me.LoadAvailableShapes()
             Me.ConfigureApplicationControls()
             Me.LoadAppliedShapes()
@@ -247,7 +253,7 @@ Namespace Ecosim
                     Next
 
                     ' Clear remainging interactions
-                    While iApplication <= Me.m_InteractionManager.MaxNShapes
+                    While iApplication <= Me.m_iMaxShapes
                         ppi.setShape(iApplication, Nothing)
                         iApplication += 1
                     End While
@@ -464,7 +470,7 @@ Namespace Ecosim
 
                 ' Not found, and still room for more?
                 If (Not bFound) And _
-                   (iNumApplied < Me.m_InteractionManager.MaxNShapes) Then
+                   (iNumApplied < Me.m_iMaxShapes) Then
                     ' #Yes: add
                     itemSrc = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
                     itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
@@ -520,7 +526,7 @@ Namespace Ecosim
                 End If
             Next
 
-            Me.m_btnAdd.Enabled = (iAvailableSelected > 0) And (iApplied < Me.m_InteractionManager.MaxNShapes)
+            Me.m_btnAdd.Enabled = (iAvailableSelected > 0) And (iApplied < Me.m_iMaxShapes)
             Me.m_btnRemove.Enabled = (iAppliedSelected > 0)
 
         End Sub

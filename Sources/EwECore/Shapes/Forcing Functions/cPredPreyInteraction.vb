@@ -128,6 +128,15 @@ Public Class cPredPreyInteraction
         End Get
     End Property
 
+    Public Overrides ReadOnly Property MaxNumShapes As Integer
+        Get
+            ' Can only apply one PP shape
+            If Me.m_bIsProd Then Return 1
+
+            Return Me.m_manager.MaxNShapes
+        End Get
+    End Property
+
 #End Region
 
 #Region "Editing and Updating"

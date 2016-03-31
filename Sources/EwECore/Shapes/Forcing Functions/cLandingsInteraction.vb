@@ -82,7 +82,7 @@ Public Class cLandingsInteraction
 
 #End Region
 
-#Region "Public Properties"
+#Region " Public Properties "
 
     ''' <summary>
     ''' Get the <see cref="cCoreGroupBase.Index">index</see> of the fleet
@@ -101,6 +101,12 @@ Public Class cLandingsInteraction
     Public ReadOnly Property GroupIndex() As Integer
         Get
             Return Me.m_iGroup
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property MaxNumShapes As Integer
+        Get
+            Return Me.m_manager.MaxNShapes
         End Get
     End Property
 

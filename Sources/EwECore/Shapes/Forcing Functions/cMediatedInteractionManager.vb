@@ -194,31 +194,6 @@ Public Class cMediatedInteractionManager
         End Get
     End Property
 
-    ''' <summary>
-    ''' Get whether a given forcing function has been applied at least once.
-    ''' </summary>
-    ''' <param name="ffTest">Forcing Function to test.</param>
-    ''' <returns>True if the given Forcing Function is applied at least once.</returns>
-    Public Function IsApplied(ByVal ffTest As cForcingFunction) As Boolean
-
-        Dim bIsApplied As Boolean = False
-        Dim ffApplied As cForcingFunction = Nothing
-        Dim eft As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
-
-        ' JS 02nov07: this method can be optimized; the PPImanager can cache
-        '             ff applications in an array aiFF() = iApplyCount. This will
-        '             save this method from having to iterate over its internal 
-        '             datastructures.
-        For Each interaction As cMediatedInteraction In Me.m_interactionsPredPrey.Values
-            For iShape As Integer = 1 To interaction.nAppliedShapes
-                interaction.getShape(iShape, ffApplied, eft)
-                If Object.ReferenceEquals(ffApplied, ffTest) Then Return True
-            Next
-        Next
-        Return False
-
-    End Function
-
 #End Region
 
 #Region "Friend functions "
