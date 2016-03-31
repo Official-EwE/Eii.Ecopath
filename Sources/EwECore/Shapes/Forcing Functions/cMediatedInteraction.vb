@@ -74,11 +74,7 @@ Public MustInherit Class cMediatedInteraction
     ''' Get the maximum number of shapes that can be assigned to a 
     ''' pred/prey interaction.
     ''' </summary>
-    Public ReadOnly Property MaxNumShapes() As Integer
-        Get
-            Return m_manager.MaxNShapes
-        End Get
-    End Property
+    Public MustOverride ReadOnly Property MaxNumShapes() As Integer
 
     ''' <summary>
     ''' Get the number of shapes that are used by this predator/prey interaction.
@@ -113,7 +109,7 @@ Public MustInherit Class cMediatedInteraction
     ''' Get a shape modifier, consisting of a <see cref="cForcingFunction">forcing funtion</see> and 
     ''' a <see cref="eForcingFunctionApplication">Type of variable</see>, defined at a given index.
     ''' </summary>
-    ''' <param name="ItemIndex">One-based index of the <see cref="cForcingFunction">shape</see> and 
+    ''' <param name="iItem">One-based index of the <see cref="cForcingFunction">shape</see> and 
     ''' <see cref="eForcingFunctionApplication">FunctionType</see> to retreive. There can 
     ''' be up to <see cref="MaxNumShapes">MaxNumShapes</see> for a pred prey interaction.</param>
     ''' <param name="Shape">A reference to the shape that is used for this pred/prey 
@@ -121,31 +117,31 @@ Public MustInherit Class cMediatedInteraction
     ''' <param name="FunctionType"><see cref="eForcingFunctionApplication">Type of variable</see>
     ''' that this modifier applies to.</param>
     ''' <returns>True if there is a shape modifier defined at this index.</returns>
-    Public Function getShape(ByVal ItemIndex As Integer, _
-                             ByRef Shape As cForcingFunction, _
-                             ByRef FunctionType As eForcingFunctionApplication) As Boolean
+    Public Function getShape(ByVal iItem As Integer, _
+                             ByRef shape As cForcingFunction, _
+                             ByRef functiontype As eForcingFunctionApplication) As Boolean
 
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
 
         Try
 
             ' Sanity checks
-            Debug.Assert(ItemIndex > 0 And ItemIndex <= cMediationDataStructures.MAXFUNCTIONS, Me.ToString & ".getShape() ItemIndex out of bounds.")
+            Debug.Assert(iItem > 0 And iItem <= cMediationDataStructures.MAXFUNCTIONS, Me.ToString & ".getShape() ItemIndex out of bounds.")
 
-            If ItemIndex > cMediationDataStructures.MAXFUNCTIONS Or ItemIndex < 1 Then
-                Shape = Nothing
+            If iItem > cMediationDataStructures.MAXFUNCTIONS Or iItem < 1 Then
+                shape = Nothing
                 Return False
             End If
 
             'm_SFPairs list is zero based
             'indexes in the interface are one based
-            Dim iList As Integer = ItemIndex - 1
+            Dim iList As Integer = iItem - 1
 
             Dim pair As cShapeFunctionTypePair = m_SFPairs.Item(iList)
-            Shape = pair.Shape
-            FunctionType = pair.FunctionType
+            shape = pair.Shape
+            functiontype = pair.FunctionType
 
-            If Shape IsNot Nothing Then
+            If shape IsNot Nothing Then
                 Return True
             Else
                 'no shape defined for this index
@@ -154,7 +150,7 @@ Public MustInherit Class cMediatedInteraction
 
         Catch ex As Exception
             Debug.Assert(False, "Error: " & Me.ToString & ".getShape() " & ex.Message)
-            Shape = Nothing
+            shape = Nothing
             Return False
         End Try
 
