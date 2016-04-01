@@ -230,6 +230,7 @@ Public Class cEcoNetwork
 
     Public KeystoneIndex1() As Double
     Public KeystoneIndex2() As Double
+    Public KeystoneIndex3() As Double
     Public RelTotalImpact() As Double
 
 #End Region ' Keystoneness
@@ -2525,6 +2526,7 @@ NextPivot:
 
         ReDim Me.KeystoneIndex1(m_epdata.NumLiving)
         ReDim Me.KeystoneIndex2(m_epdata.NumLiving)
+        ReDim Me.KeystoneIndex3(m_epdata.NumLiving)
         ReDim Me.RelTotalImpact(m_epdata.NumLiving)
 
         ' Calc max sSumB
@@ -2564,6 +2566,8 @@ NextPivot:
                 Me.KeystoneIndex2(i) = Math.Log10(TotalImpact(i) / RelBi(i))
                 Me.RelTotalImpact(i) = TotalImpact(i) / dMaxImpact
             Next
+
+            cKeystone3.Calculate(Me.m_epdata, Me)
 
         Catch ex As Exception
             Debug.Assert(False, "Exception in Keystoneness: " & ex.Message)

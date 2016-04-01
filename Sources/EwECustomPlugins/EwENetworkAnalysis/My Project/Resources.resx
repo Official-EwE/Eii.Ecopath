@@ -3039,8 +3039,8 @@ AIABAACAAQAAAAEAAAAAAAAAAAAAAAEAAIABAACAAQAAwAMAAMAHAADwDwAA/D8AAAs=</value>
   <data name="STATUS_UPDATING_UI" xml:space="preserve">
     <value>Updating UI...</value>
   </data>
-  <data name="COL_HDR_KEYSTONEINDEX" xml:space="preserve">
-    <value>Keystone index</value>
+  <data name="COL_HDR_KEYSTONEINDEX1" xml:space="preserve">
+    <value>Keystone index #1</value>
   </data>
   <data name="COL_HDR_RELTOTALIMPACT" xml:space="preserve">
     <value>Relative total impact</value>
@@ -3058,7 +3058,7 @@ AIABAACAAQAAAAEAAAAAAAAAAAAAAAEAAIABAACAAQAAwAMAAMAHAADwDwAA/D8AAAs=</value>
     <value>Graph c&amp;ontent</value>
     <comment>Beware of shortcut conflict with pre-defined toolstip accelerators in dialog template</comment>
   </data>
-  <data name="MNU_CONTENT_KEYSTONE" xml:space="preserve">
+  <data name="MNU_CONTENT_KEYSTONE1" xml:space="preserve">
     <value>Keystone index #&amp;1</value>
   </data>
   <data name="MNU_CONTENT_KEYSTONE2" xml:space="preserve">
@@ -3391,5 +3391,14 @@ AIABAACAAQAAAAEAAAAAAAAAAAAAAAEAAIABAACAAQAAwAMAAMAHAADwDwAA/D8AAAs=</value>
   </data>
   <data name="COL_HDR_PP_TE_W" xml:space="preserve">
     <value>PP TE (weighted)</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX3" xml:space="preserve">
+    <value>Keystone index #3</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE3" xml:space="preserve">
+    <value>Keystone index #&amp;3</value>
+  </data>
+  <data name="LBL_KEYSTONE3" xml:space="preserve">
+    <value>Keystone index #3 (Valls 2015) </value>
   </data>
 </root>

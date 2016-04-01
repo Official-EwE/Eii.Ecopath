@@ -66,18 +66,20 @@ Public Class cKeystonenessTable
         ReDim astrRowContent(Grid.Columns.Count)
         astrRowContent(0) = ""
         astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
-        astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX
+        astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX1
         astrRowContent(3) = My.Resources.COL_HDR_KEYSTONEINDEX2
-        astrRowContent(4) = My.Resources.COL_HDR_RELTOTALIMPACT
+        astrRowContent(4) = My.Resources.COL_HDR_KEYSTONEINDEX3
+        astrRowContent(5) = My.Resources.COL_HDR_RELTOTALIMPACT
         Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To Me.NetworkManager.nLivingGroups
             astrRowContent(0) = CStr(i)
             astrRowContent(1) = Me.NetworkManager.GroupName(i)
-            astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex(i))
-            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.TotalImpactOverBiomass(i))
-            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.RelativeTotalImpact(i))
+            astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex1(i))
+            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex2(i))
+            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex3(i))
+            astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.RelativeTotalImpact(i))
             Me.Grid.Rows(i).SetValues(astrRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
@@ -90,7 +92,7 @@ Public Class cKeystonenessTable
         Me.Graph.Visible = False
         Me.Grid.ReadOnly = True
         Me.Grid.Visible = True
-        Me.Grid.ColumnCount = 5
+        Me.Grid.ColumnCount = 6
 
         SetGridColumnPropertyDefault(Me.Grid)
 

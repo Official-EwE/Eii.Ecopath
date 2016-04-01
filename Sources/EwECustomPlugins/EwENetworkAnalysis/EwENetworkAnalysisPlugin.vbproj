@@ -184,6 +184,7 @@
     </Compile>
     <Compile Include="My Project\Settings.vb" />
     <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
+    <Compile Include="NetworkAnalysis\cKeystone3.vb" />
     <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
     <Compile Include="NetworkAnalysis\cResultWriter.vb" />
     <Compile Include="Plugin\cEwENetworkAnalysisData.vb" />

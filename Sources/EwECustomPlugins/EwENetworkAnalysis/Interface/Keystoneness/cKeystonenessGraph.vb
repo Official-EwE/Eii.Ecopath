@@ -60,6 +60,8 @@ Public Class cKeystonenessGraph
         KeystoneIndex1
         ''' <summary>Keystone index 2 is described in Power et al (1996)</summary>
         KeystoneIndex2
+        ''' <summary>Keystone index 3 is described in Valls (2015)</summary>
+        KeystoneIndex3
         ''' <summary>Our home-grown concoction</summary>
         TotalEffectOverB
     End Enum
@@ -98,20 +100,14 @@ Public Class cKeystonenessGraph
 
     ''' <summary>Custom toolstrip item</summary>
     Private m_tsStyle As ToolStripDropDownButton = Nothing
-    ''' <summary>Custom toolstrip item</summary>
     Private m_tsmiCircles As ToolStripMenuItem = Nothing
-    ''' <summary>Custom toolstrip item</summary>
     Private m_tsmiCirclesScaled As ToolStripMenuItem = Nothing
-    ''' <summary>Custom toolstrip item</summary>
     Private m_tsmiNumbers As ToolStripMenuItem = Nothing
-    ''' <summary>Custom toolstrip item</summary>
     Private m_tsContent As ToolStripDropDownButton = Nothing
-    ''' <summary>Custom toolstrip item</summary>
-    Private m_tsmiKeyst As ToolStripMenuItem = Nothing
-    ''' <summary>Custom toolstrip item</summary>
     Private m_tsmiTotImpactOverB As ToolStripMenuItem = Nothing
-    ''' <summary>Custom toolstrip item</summary>
+    Private m_tsmiKeyst1 As ToolStripMenuItem = Nothing
     Private m_tsmiKeyst2 As ToolStripMenuItem = Nothing
+    Private m_tsmiKeyst3 As ToolStripMenuItem = Nothing
 
 #End Region ' Private vars
 
@@ -171,8 +167,8 @@ Public Class cKeystonenessGraph
 
         ' UpdateControls will take care of axis labels
         pane = Me.m_zgh.ConfigurePane("", "", "", False)
-        ' All X-axis values are relative to 1
-        pane.XAxis.Scale.Max = 1.0
+        pane.XAxis.Scale.Min = 0
+        pane.XAxis.Scale.MinAuto = False
 
         ' Clear curves
         pane.CurveList.Clear()
@@ -198,13 +194,16 @@ Public Class cKeystonenessGraph
                 Select Case Me.Content
 
                     Case eContentType.KeystoneIndex1
-                        ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex(iGroup))
+                        ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex1(iGroup))
+
+                    Case eContentType.KeystoneIndex2
+                        ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex2(iGroup))
+
+                    Case eContentType.KeystoneIndex3
+                        ppl.Add(Me.NetworkManager.TrophicLevel(iGroup), Me.NetworkManager.KeystoneIndex3(iGroup))
 
                     Case eContentType.TotalEffectOverB
                         ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.RelativeTotalImpact(iGroup))
-
-                    Case eContentType.KeystoneIndex2
-                        ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.TotalImpactOverBiomass(iGroup))
 
                 End Select
 
@@ -309,18 +308,22 @@ Public Class cKeystonenessGraph
         Me.m_tsStyle.DropDownItems.Add(Me.m_tsmiNumbers)
         Me.Toolstrip.Items.Add(Me.m_tsStyle)
 
-        Me.m_tsmiKeyst = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE)
-        AddHandler Me.m_tsmiKeyst.Click, AddressOf OnContentKeystoneIndex1
+        Me.m_tsmiKeyst1 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE1)
+        AddHandler Me.m_tsmiKeyst1.Click, AddressOf OnContentKeystoneIndex1
 
         Me.m_tsmiKeyst2 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE2)
         AddHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentKeystoneIndex2
+
+        Me.m_tsmiKeyst3 = New ToolStripMenuItem(My.Resources.MNU_CONTENT_KEYSTONE3)
+        AddHandler Me.m_tsmiKeyst3.Click, AddressOf OnContentKeystoneIndex3
 
         Me.m_tsmiTotImpactOverB = New ToolStripMenuItem(My.Resources.MNU_CONTENT_TOTIMPACT_OVER_B)
         AddHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
 
         Me.m_tsContent = New ToolStripDropDownButton(My.Resources.MNU_CONTENT)
-        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst)
+        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst1)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst2)
+        Me.m_tsContent.DropDownItems.Add(Me.m_tsmiKeyst3)
         Me.m_tsContent.DropDownItems.Add(Me.m_tsmiTotImpactOverB)
         Me.Toolstrip.Items.Add(Me.m_tsContent)
 
@@ -342,8 +345,8 @@ Public Class cKeystonenessGraph
         Me.Toolstrip.Items.Remove(Me.m_tsContent)
 
         Me.m_tsContent.DropDownItems.Clear()
-        RemoveHandler Me.m_tsmiKeyst.Click, AddressOf OnContentKeystoneIndex1
-        Me.m_tsmiKeyst = Nothing
+        RemoveHandler Me.m_tsmiKeyst1.Click, AddressOf OnContentKeystoneIndex1
+        Me.m_tsmiKeyst1 = Nothing
         RemoveHandler Me.m_tsmiTotImpactOverB.Click, AddressOf OnContentTI
         Me.m_tsmiTotImpactOverB = Nothing
         RemoveHandler Me.m_tsmiKeyst2.Click, AddressOf OnContentKeystoneIndex2
@@ -376,26 +379,44 @@ Public Class cKeystonenessGraph
         Me.Content = eContentType.KeystoneIndex2
     End Sub
 
+    Private Sub OnContentKeystoneIndex3(ByVal sender As Object, ByVal arg As EventArgs)
+        Me.Content = eContentType.KeystoneIndex3
+    End Sub
+
     Private Sub UpdateControls()
 
         Me.m_tsmiCircles.Checked = (Me.Representation = eRepresentationType.Circle)
         Me.m_tsmiCirclesScaled.Checked = (Me.Representation = eRepresentationType.CircleScaled)
         Me.m_tsmiNumbers.Checked = (Me.Representation = eRepresentationType.Number)
 
-        Me.m_tsmiKeyst.Checked = (Me.Content = eContentType.KeystoneIndex1)
+        Me.m_tsmiKeyst1.Checked = (Me.Content = eContentType.KeystoneIndex1)
         Me.m_tsmiTotImpactOverB.Checked = (Me.Content = eContentType.TotalEffectOverB)
         Me.m_tsmiKeyst2.Checked = (Me.Content = eContentType.KeystoneIndex2)
+
+        Dim pane As GraphPane = Nothing
 
         Select Case Me.Content
 
             Case eContentType.KeystoneIndex1
-                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONE1, False)
+                pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONE1, False)
+                pane.XAxis.Scale.MaxAuto = False
+                pane.XAxis.Scale.Max = 1
 
             Case eContentType.TotalEffectOverB
-                Me.m_zgh.ConfigurePane("", "Relative biomass", My.Resources.LBL_RELTOTALIMPACT, False)
+
+                ' ToDo: globalize this
+                pane = Me.m_zgh.ConfigurePane("", "Relative biomass", My.Resources.LBL_RELTOTALIMPACT, False)
+                pane.XAxis.Scale.MaxAuto = False
+                pane.XAxis.Scale.Max = 1
 
             Case eContentType.KeystoneIndex2
-                Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONE2, False)
+                pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_RELTOTALIMPACT, My.Resources.LBL_KEYSTONE2, False)
+                pane.XAxis.Scale.MaxAuto = False
+                pane.XAxis.Scale.Max = 1
+
+            Case eContentType.KeystoneIndex3
+                pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_TL, My.Resources.LBL_KEYSTONE3, False)
+                pane.XAxis.Scale.MaxAuto = True
 
         End Select
 
