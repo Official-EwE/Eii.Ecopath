@@ -2211,17 +2211,33 @@ Public Class cNetworkManager
 
 #Region " Keystoneness "
 
-    Public ReadOnly Property KeystoneIndex(ByVal iGroup As Integer) As Double
+    ''' <summary>
+    ''' Libralato et al
+    ''' </summary>
+    Public ReadOnly Property KeystoneIndex1(ByVal iGroup As Integer) As Double
         Get
             If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
             Return Me.m_econetwork.KeystoneIndex1(iGroup)
         End Get
     End Property
 
-    Public ReadOnly Property TotalImpactOverBiomass(ByVal iGroup As Integer) As Double
+    ''' <summary>
+    ''' Power et al
+    ''' </summary>
+    Public ReadOnly Property KeystoneIndex2(ByVal iGroup As Integer) As Double
         Get
             If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
             Return Me.m_econetwork.KeystoneIndex2(iGroup)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Valls
+    ''' </summary>
+    Public ReadOnly Property KeystoneIndex3(ByVal iGroup As Integer) As Double
+        Get
+            If (iGroup > Me.Core.nLivingGroups) Then Return cCore.NULL_VALUE
+            Return Me.m_econetwork.KeystoneIndex3(iGroup)
         End Get
     End Property
 

@@ -376,11 +376,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystone index.
+        '''  Looks up a localized string similar to Keystone index #1.
         '''</summary>
-        Friend ReadOnly Property COL_HDR_KEYSTONEINDEX() As String
+        Friend ReadOnly Property COL_HDR_KEYSTONEINDEX1() As String
             Get
-                Return ResourceManager.GetString("COL_HDR_KEYSTONEINDEX", resourceCulture)
+                Return ResourceManager.GetString("COL_HDR_KEYSTONEINDEX1", resourceCulture)
             End Get
         End Property
         
@@ -390,6 +390,15 @@ Namespace My.Resources
         Friend ReadOnly Property COL_HDR_KEYSTONEINDEX2() As String
             Get
                 Return ResourceManager.GetString("COL_HDR_KEYSTONEINDEX2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Keystone index #3.
+        '''</summary>
+        Friend ReadOnly Property COL_HDR_KEYSTONEINDEX3() As String
+            Get
+                Return ResourceManager.GetString("COL_HDR_KEYSTONEINDEX3", resourceCulture)
             End Get
         End Property
         
@@ -1088,6 +1097,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Keystone index #3 (Valls 2015) .
+        '''</summary>
+        Friend ReadOnly Property LBL_KEYSTONE3() As String
+            Get
+                Return ResourceManager.GetString("LBL_KEYSTONE3", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Loss of production (relative).
         '''</summary>
         Friend ReadOnly Property LBL_LINDEX_REL() As String
@@ -1261,9 +1279,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Keystone index #&amp;1.
         '''</summary>
-        Friend ReadOnly Property MNU_CONTENT_KEYSTONE() As String
+        Friend ReadOnly Property MNU_CONTENT_KEYSTONE1() As String
             Get
-                Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE", resourceCulture)
+                Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE1", resourceCulture)
             End Get
         End Property
         
@@ -1273,6 +1291,15 @@ Namespace My.Resources
         Friend ReadOnly Property MNU_CONTENT_KEYSTONE2() As String
             Get
                 Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE2", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Keystone index #&amp;3.
+        '''</summary>
+        Friend ReadOnly Property MNU_CONTENT_KEYSTONE3() As String
+            Get
+                Return ResourceManager.GetString("MNU_CONTENT_KEYSTONE3", resourceCulture)
             End Get
         End Property
         
