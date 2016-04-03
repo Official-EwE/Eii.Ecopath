@@ -377,10 +377,24 @@ Public Class cEcosimDatastructures
     ''' </remarks>
     Public Structure ShapeParameters
 
+        ''' <summary>
+        ''' The <seealso cref="eShapeFunctionType">primite function</seealso> 
+        ''' that defined the content of a forcing or time shape.
+        ''' </summary>
+        ''' <remarks>
+        ''' A 0 is supplied here if there is no underlying primitive function. 
+        ''' Note that plug-ins can add their own ShapeFunctionType, values will
+        ''' not be restricted to those given in <see cref="eShapeFunctionType"/>.
+        ''' </remarks>
         Public ShapeFunctionType As Long
 
+        ''' <summary>
+        ''' The parameters for <see cref="ShapeFunctionType"/>.
+        ''' </summary>
+        ''' <remarks></remarks>
         Public ShapeFunctionParams As Single()
 
+        ''' The number of parameters for <see cref="ShapeFunctionType"/>.
         Public ReadOnly Property nShapeFunctionParams As Integer
             Get
                 If (Me.ShapeFunctionParams Is Nothing) Then Return 0
