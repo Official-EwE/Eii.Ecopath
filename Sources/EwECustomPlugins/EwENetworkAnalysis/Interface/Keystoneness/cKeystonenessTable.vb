@@ -46,7 +46,7 @@ Public Class cKeystonenessTable
     End Sub
 
     Public Overrides Function PageTitle() As String
-        Return "Keystoneness"
+        Return My.Resources.PAGE_KEYSTONENESS
     End Function
 
     Public Overrides Function Attach(ByVal manager As cNetworkManager, _
