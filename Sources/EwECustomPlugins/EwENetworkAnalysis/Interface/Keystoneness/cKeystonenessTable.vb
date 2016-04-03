@@ -24,12 +24,22 @@ Option Explicit On
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
 <CLSCompliant(False)> _
 Public Class cKeystonenessTable
     Inherits cContentManager
+
+    Private Enum eColumnTypes As Integer
+        Index = 0
+        Name
+        KS1
+        KS2
+        RelTotImpact
+        KS3
+    End Enum
 
     Public Sub New()
         ' Just needs main network to run
@@ -64,22 +74,22 @@ Public Class cKeystonenessTable
         Me.Grid.Rows(0).Height = FIRST_ROW_HEIGHT
 
         ReDim astrRowContent(Grid.Columns.Count)
-        astrRowContent(0) = ""
-        astrRowContent(1) = My.Resources.COL_HDR_GRP_NAME
-        astrRowContent(2) = My.Resources.COL_HDR_KEYSTONEINDEX1
-        astrRowContent(3) = My.Resources.COL_HDR_KEYSTONEINDEX2
-        astrRowContent(4) = My.Resources.COL_HDR_KEYSTONEINDEX3
-        astrRowContent(5) = My.Resources.COL_HDR_RELTOTALIMPACT
+        astrRowContent(eColumnTypes.Index) = ""
+        astrRowContent(eColumnTypes.Name) = My.Resources.COL_HDR_GRP_NAME
+        astrRowContent(eColumnTypes.KS1) = My.Resources.COL_HDR_KEYSTONEINDEX1
+        astrRowContent(eColumnTypes.KS2) = My.Resources.COL_HDR_KEYSTONEINDEX2
+        astrRowContent(eColumnTypes.KS3) = My.Resources.COL_HDR_KEYSTONEINDEX3
+        astrRowContent(eColumnTypes.RelTotImpact) = My.Resources.COL_HDR_RELTOTALIMPACT
         Me.Grid.Rows(0).SetValues(astrRowContent)
         Me.Grid.Rows(0).Visible = True
 
         For i As Integer = 1 To Me.NetworkManager.nLivingGroups
-            astrRowContent(0) = CStr(i)
-            astrRowContent(1) = Me.NetworkManager.GroupName(i)
-            astrRowContent(2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex1(i))
-            astrRowContent(3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex2(i))
-            astrRowContent(4) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex3(i))
-            astrRowContent(5) = Me.StyleGuide.FormatNumber(Me.NetworkManager.RelativeTotalImpact(i))
+            astrRowContent(eColumnTypes.Index) = CStr(i)
+            astrRowContent(eColumnTypes.Name) = Me.NetworkManager.GroupName(i)
+            astrRowContent(eColumnTypes.KS1) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex1(i))
+            astrRowContent(eColumnTypes.KS2) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex2(i))
+            astrRowContent(eColumnTypes.KS3) = Me.StyleGuide.FormatNumber(Me.NetworkManager.KeystoneIndex3(i))
+            astrRowContent(eColumnTypes.RelTotImpact) = Me.StyleGuide.FormatNumber(Me.NetworkManager.RelativeTotalImpact(i))
             Me.Grid.Rows(i).SetValues(astrRowContent)
             Me.Grid.Rows(i).Visible = True
         Next
@@ -92,18 +102,18 @@ Public Class cKeystonenessTable
         Me.Graph.Visible = False
         Me.Grid.ReadOnly = True
         Me.Grid.Visible = True
-        Me.Grid.ColumnCount = 6
+        Me.Grid.ColumnCount = [Enum].GetValues(GetType(eColumnTypes)).Length
 
         SetGridColumnPropertyDefault(Me.Grid)
 
-        Me.Grid.Columns(0).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Me.Grid.Columns(0).Frozen = True
-        Me.Grid.Columns(0).Width = ID_COL_WIDTH
+        Me.Grid.Columns(eColumnTypes.Index).DefaultCellStyle.BackColor = Me.StyleGuide.ApplicationColor(eApplicationColorType.NAMES_BACKGROUND)
+        Me.Grid.Columns(eColumnTypes.Index).Frozen = True
+        Me.Grid.Columns(eColumnTypes.Index).Width = ID_COL_WIDTH
 
-        Grid.Columns(1).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        Grid.Columns(1).DefaultCellStyle.BackColor = Drawing.SystemColors.Control
-        Grid.Columns(1).Frozen = True
-        Grid.Columns(1).Width = GRP_NAME_COL_WIDTH
+        Me.Grid.Columns(eColumnTypes.Name).DefaultCellStyle.BackColor = Me.StyleGuide.ApplicationColor(eApplicationColorType.NAMES_BACKGROUND)
+        Me.Grid.Columns(eColumnTypes.Name).Frozen = True
+        Me.Grid.Columns(eColumnTypes.Name).Width = GRP_NAME_COL_WIDTH
+        Me.Grid.Columns(eColumnTypes.Name).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
 
     End Sub
 
