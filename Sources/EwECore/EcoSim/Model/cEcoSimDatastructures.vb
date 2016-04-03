@@ -369,37 +369,23 @@ Public Class cEcosimDatastructures
     ''' </summary>
     Public GroupDetritus() As Single
 
-    'jb April-07-2006 replaced Shapes() with ShapeParameters
-    'Public Shapes() As Single
+    ''' <summary>
+    ''' Structure to contain all settings that wrap the primitive defining the contents of a forcing or time shape
+    ''' </summary>
+    ''' <remarks>
+    ''' jb April-07-2006 replaced Shapes() with ShapeParameters
+    ''' </remarks>
     Public Structure ShapeParameters
-        Dim YZero As Single
-        Dim YBase As Single
-        Dim YEnd As Single
-        Dim Steep As Single
-        Dim ZScale As Single
 
-        'jb added to keep track of the type of function used to create a shape e.g. Sigmoid.........
-        Dim ShapeFunctionType As Long
+        Public ShapeFunctionType As Long
 
-        Friend Property ShapeFunctionParams As Single()
+        Public ShapeFunctionParams As Single()
+
+        Public ReadOnly Property nShapeFunctionParams As Integer
             Get
-                Return New Single() {YZero, YBase, YEnd, Steep, ZScale}
+                If (Me.ShapeFunctionParams Is Nothing) Then Return 0
+                Return Me.ShapeFunctionParams.Length
             End Get
-            Set(value As Single())
-                Dim n As Integer = 0
-                Dim v As Single = 0
-                If (value IsNot Nothing) Then n = value.Length
-                For i As Integer = 0 To 4
-                    If i < n Then v = value(i) Else v = 0
-                    Select Case i
-                        Case 0 : YZero = v
-                        Case 1 : YBase = v
-                        Case 2 : YEnd = v
-                        Case 3 : Steep = v
-                        Case 4 : ZScale = v
-                    End Select
-                Next
-            End Set
         End Property
 
     End Structure
@@ -413,9 +399,12 @@ Public Class cEcosimDatastructures
     'is this shape a seasonal forcing shape
     Public isSeasonal() As Boolean
 
-    Public inlinks As Integer 'total number of links/flow between groups
-    Public ilink() As Integer 'iPrey for inlinks 
-    Public jlink() As Integer 'iPred for inlinks 
+    ''' <summary>Total number of links/flow between groups</summary>
+    Public inlinks As Integer
+    ''' <summary>iPrey for inlinks</summary>
+    Public ilink() As Integer '
+    ''' <summary>iPred for inlinks</summary>
+    Public jlink() As Integer
 
     'Forcing
     Public ForcingShapes As Integer
