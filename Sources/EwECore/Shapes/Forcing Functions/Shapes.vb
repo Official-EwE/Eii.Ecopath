@@ -225,11 +225,11 @@ Public Class cForcingFunction
 
         'shape parameters
         m_ShapeFunctionType = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_YZero = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(0)
-        m_YBase = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(1)
-        m_YEnd = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(2)
-        m_Steep = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(3)
-        m_ZScale = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(4)
+        m_YZero = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
+        m_YBase = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
+        m_YEnd = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
+        m_Steep = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
+        m_ZScale = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4)
 
         Me.isSeasonal = m_data.isSeasonal(m_iEcoSimIndex)
 
@@ -298,11 +298,11 @@ Public Class cForcingFunction
 
             'shape parameters
             m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(0) = m_YZero
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(1) = m_YBase
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(2) = m_YEnd
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(3) = m_Steep
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams(4) = m_ZScale
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_YZero
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_YBase
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_YEnd
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_Steep
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4) = m_ZScale
 
             m_data.isSeasonal(m_iEcoSimIndex) = Me.IsSeasonal()
 
@@ -524,11 +524,11 @@ Public MustInherit Class cMediationBaseFunction
 
         'shape parameters
         m_ShapeFunctionType = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_Steep = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(0)
-        m_YBase = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(1)
-        m_YEnd = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(2)
-        m_YZero = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(3)
-        m_ZScale = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(4)
+        m_Steep = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
+        m_YBase = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
+        m_YEnd = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
+        m_YZero = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
+        m_ZScale = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4)
 
         Me.UnlockUpdates()
         m_bInInit = False
@@ -650,11 +650,11 @@ Public MustInherit Class cMediationBaseFunction
 
         'shape parameters
         m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(0) = m_YZero
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(1) = m_YBase
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(2) = m_YEnd
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(3) = m_Steep
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams(4) = m_ZScale
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_YZero
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_YBase
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_YEnd
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_Steep
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4) = m_ZScale
 
         Return True
 

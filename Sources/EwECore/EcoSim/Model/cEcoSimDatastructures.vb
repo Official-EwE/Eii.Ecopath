@@ -382,24 +382,40 @@ Public Class cEcosimDatastructures
         ''' that defined the content of a forcing or time shape.
         ''' </summary>
         ''' <remarks>
-        ''' A 0 is supplied here if there is no underlying primitive function. 
+        ''' 0 must be supplied if there is no underlying primitive function. 
         ''' Note that plug-ins can add their own ShapeFunctionType, values will
-        ''' not be restricted to those given in <see cref="eShapeFunctionType"/>.
+        ''' not be restricted to <see cref="eShapeFunctionType"/>.
         ''' </remarks>
         Public ShapeFunctionType As Long
 
         ''' <summary>
         ''' The parameters for <see cref="ShapeFunctionType"/>.
         ''' </summary>
-        ''' <remarks></remarks>
         Public ShapeFunctionParams As Single()
 
+        ''' <summary>
         ''' The number of parameters for <see cref="ShapeFunctionType"/>.
+        ''' </summary>
         Public ReadOnly Property nShapeFunctionParams As Integer
             Get
                 If (Me.ShapeFunctionParams Is Nothing) Then Return 0
                 Return Me.ShapeFunctionParams.Length
             End Get
+        End Property
+
+        ''' <summary>
+        ''' Get/set the value of a <see cref="ShapeFunctionParams"/>.
+        ''' </summary>
+        ''' <param name="iParam">Zero-based param index</param>
+        Public Property ShapeFunctionParam(iParam As Integer) As Single
+            Get
+                If (iParam < 0 Or iParam >= Me.nShapeFunctionParams) Then Return 0
+                Return Me.ShapeFunctionParams(iParam)
+            End Get
+            Set(value As Single)
+                If (iParam < 0 Or iParam >= Me.nShapeFunctionParams) Then Return
+                Me.ShapeFunctionParams(iParam) = value
+            End Set
         End Property
 
     End Structure
@@ -408,8 +424,13 @@ Public Class cEcosimDatastructures
     'Public MediationShapeParams() As ShapeParameters 'parameters that where used to create a curve from the Database Table and Fields i.e. EcoSimShapes.YZero
     Public ForcingShapeParams() As ShapeParameters 'Time and EggProd
 
-    ''jb May-09-2006 Database ID's Unique ID from the Database for each object
-    Public ForcingDBIDs() As Integer 'because Time(Forcing) and EggProd shapes are stored in the same arrays and this is for both shape types
+    ''' <summary>
+    ''' Unique database IDs for forcing shapes.
+    ''' </summary>
+    ''' <remarks>
+    ''' Because Time(Forcing) and EggProd shapes are stored in the same arrays and this is for both shape types
+    ''' </remarks>
+    Public ForcingDBIDs() As Integer
     'is this shape a seasonal forcing shape
     Public isSeasonal() As Boolean
 
