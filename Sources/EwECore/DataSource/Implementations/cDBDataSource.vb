@@ -5109,7 +5109,7 @@ Namespace DataSources
                 readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
-                shapeParms.ShapeFunctionType = DirectCast(readerShape("FunctionType"), eShapeFunctionType)
+                shapeParms.ShapeFunctionType = CLng(Me.m_db.ReadSafe(readerShape, "FunctionType", 0))
                 shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.m_db.ReadSafe(readerShape, "FunctionParams", "")))
 
                 ' Read z-scale
@@ -5153,7 +5153,7 @@ Namespace DataSources
                 readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeTime WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
-                shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
+                shapeParms.ShapeFunctionType = CLng(Me.m_db.ReadSafe(readerShape, "FunctionType", 0))
                 shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.m_db.ReadSafe(readerShape, "FunctionParams", "")))
 
                 ' Read z-scale
@@ -5201,7 +5201,7 @@ Namespace DataSources
                 readerShape = Me.m_db.GetReader(String.format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
                 readerShape.Read()
 
-                shapeParms.ShapeFunctionType = CType(readerShape("FunctionType"), eShapeFunctionType)
+                shapeParms.ShapeFunctionType = CLng(Me.m_db.ReadSafe(readerShape, "FunctionType", 0))
                 shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.m_db.ReadSafe(readerShape, "FunctionParams", "")))
 
                 ' Read z-scale
@@ -5744,7 +5744,7 @@ Namespace DataSources
                 End If
 
                 drow("Title") = ecosimDS.ForcingTitles(iShape)
-                drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("FunctionType") = shapeParms.ShapeFunctionType
                 drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
 
                 ' Assemble Zscale
@@ -5798,7 +5798,7 @@ Namespace DataSources
                 End If
 
                 drow("Title") = ecosimDS.ForcingTitles(iShape)
-                drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("FunctionType") = shapeParms.ShapeFunctionType
                 drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
                 drow("ApplicationType") = ecosimDS.ForcingApplicationType(iShape)
 
@@ -5860,7 +5860,7 @@ Namespace DataSources
 
                 drow("Title") = medData.MediationTitles(iShape)
                 drow("IMedBase") = medData.IMedBase(iShape)
-                drow("FunctionType") = CInt(shapeParms.ShapeFunctionType)
+                drow("FunctionType") = shapeParms.ShapeFunctionType
                 drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
                 drow("XAxisMin") = medData.XAxisMin(iShape)
                 drow("XAxisMax") = medData.XAxisMax(iShape)
