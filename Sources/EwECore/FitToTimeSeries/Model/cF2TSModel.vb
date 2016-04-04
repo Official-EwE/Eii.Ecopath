@@ -745,6 +745,8 @@ Namespace FitToTimeSeries
         ''' </summary>
         Public Sub setAIC(ByVal nPars As Single, ByVal nData As Single, ByVal SS As Single)
 
+            If (Me.m_data Is Nothing) Then Return
+
             'Up to 20140328 this was:
             Me.m_data.AIC = 2.0F * nPars + nData * CSng(Math.Log(SS))
             'but VC changed this to a more standard derivation of AIC (see Peru Ecosim paper)
