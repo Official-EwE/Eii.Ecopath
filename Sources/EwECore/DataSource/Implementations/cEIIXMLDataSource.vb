@@ -1486,7 +1486,7 @@ Public Class cEIIXMLDataSource
         Try
             drow = dt.DefaultView.ToTable.Rows(0)
 
-            shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+            shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
             shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
@@ -1529,7 +1529,7 @@ Public Class cEIIXMLDataSource
         drow = dtTime.DefaultView.ToTable.Rows(0)
         Try
  
-            shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+            shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
             shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
@@ -1576,7 +1576,7 @@ Public Class cEIIXMLDataSource
         Try
             Dim drow As DataRow = dtMed.DefaultView.ToTable.Rows(0)
 
-            shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+            shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
             shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
