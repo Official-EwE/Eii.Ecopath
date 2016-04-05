@@ -980,19 +980,19 @@ Public Class cMSE
         Dim strPath As String = cMSEUtils.MSEFile(Me.DataPath, cMSEUtils.eMSEPaths.ParamsOut, strFile)
         Dim writer As StreamWriter = Nothing
 
-        'If Not File.Exists(strPath) Then
-        writer = cMSEUtils.GetWriter(strPath, bAppend:=True)
-        If (writer Is Nothing) Then Return False
+        If Not File.Exists(strPath) Then
+            writer = cMSEUtils.GetWriter(strPath)
+            If (writer Is Nothing) Then Return False
 
-        For igrp As Integer = 1 To Me.Core.nLivingGroups
-            If (igrp > 1) Then writer.Write(",")
-            writer.Write(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name))
-        Next
+            For igrp As Integer = 1 To Me.Core.nLivingGroups
+                If (igrp > 1) Then writer.Write(",")
+                writer.Write(cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(igrp).Name))
+            Next
 
-        'Else
-        '    writer = cMSEUtils.GetWriter(strPath, True)
-        '    If (writer Is Nothing) Then Return False
-        'End If
+        Else
+            writer = cMSEUtils.GetWriter(strPath, True)
+            If (writer Is Nothing) Then Return False
+        End If
 
         writer.WriteLine()
         For igrp As Integer = 1 To Me.Core.nLivingGroups
