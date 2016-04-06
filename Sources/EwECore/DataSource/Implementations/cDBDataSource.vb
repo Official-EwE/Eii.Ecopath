@@ -9590,7 +9590,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioDriverLayer SET Sequence={1} WHERE (LayerID={0})", iDBID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving ecospce driver layer {1}", ex.Message, iDBID))
+                Me.LogMessage(String.Format("Error {0} occurred while moving ecospace driver layer {1}", ex.Message, iDBID))
                 bSucces = False
             End Try
             Return bSucces

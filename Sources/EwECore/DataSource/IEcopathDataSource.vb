@@ -173,7 +173,7 @@ Namespace DataSources
         ''' <returns>True if succesful.</returns>
         ''' <remarks>The EwE core cannot handle a situation where a stanza configuration
         ''' is defined without having any groups. To avoid this situation, this method
-        ''' requires a valid <paramref name="iGroupID">group ID</paramref>.</remarks>
+        ''' requires valid <paramref name="aiGroupID">group IDs</paramref>.</remarks>
         ''' -------------------------------------------------------------------
         Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal iGroupAges() As Integer, _
                 ByRef iDBID As Integer) As Boolean

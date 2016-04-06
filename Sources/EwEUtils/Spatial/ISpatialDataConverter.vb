@@ -80,9 +80,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Convert data at time step <paramref name="iTime"/> with a given
-        ''' <paramref name="extent"/> and <paramref name="sCellSize">cell size</paramref>
-        ''' into a <see cref="ISpatialRaster">raster</see>.
+        ''' Convert data with a given extent and cell size into a <see cref="ISpatialRaster">raster</see>.
         ''' </summary>
         ''' <param name="data">Data to convert.</param>
         ''' <param name="ptfNE">North-east corner of the area to load data for. 
