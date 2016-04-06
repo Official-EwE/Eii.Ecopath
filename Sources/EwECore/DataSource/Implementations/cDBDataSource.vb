@@ -9383,11 +9383,11 @@ Namespace DataSources
                 readerLayer = Nothing
             End Try
 
-            Return bSucces And Me.LoadCapacityDrivers(iScenarioID)
+            Return bSucces And Me.LoadEcospaceCapacityDrivers(iScenarioID)
 
         End Function
 
-        Private Function LoadCapacityDrivers(ByVal iScenarioID As Integer) As Boolean
+        Private Function LoadEcospaceCapacityDrivers(ByVal iScenarioID As Integer) As Boolean
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
