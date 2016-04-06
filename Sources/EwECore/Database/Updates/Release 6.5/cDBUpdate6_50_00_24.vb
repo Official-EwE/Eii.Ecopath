@@ -24,7 +24,7 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.50.0.23:</para>
+''' <para>Database update 6.50.0.24:</para>
 ''' <para>
 ''' <list type="bullet">
 ''' <item><description>Added Ecopath sample tables</description></item>
