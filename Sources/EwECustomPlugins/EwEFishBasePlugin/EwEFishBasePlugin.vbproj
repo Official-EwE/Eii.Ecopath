@@ -169,7 +169,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Deployment\License\EwE.licenseheader">
+    <None Include="..\..\..\Sources Internal\Deployment\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
