@@ -28,6 +28,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports EwECore
 Imports System.IO
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -155,6 +156,7 @@ Namespace Controls.Map
         Private m_uic As cUIContext = Nothing
         Private m_strTitle As String = ""
         Private m_lLayers As New List(Of cLegendEntry)
+        Private m_fmt As New StringFormat(StringFormat.GenericTypographic)
 
 #End Region ' Private vars
 
@@ -180,6 +182,7 @@ Namespace Controls.Map
                     r = l.Renderer
                     If (r IsNot Nothing) Then
                         If r.IsVisible Then
+                            ' Only add layers with a value range
                             Me.m_lLayers.Add(New cLayerEntry(l))
                         End If
                     End If
@@ -287,6 +290,53 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Calculate the size of the legend, when rendered with the current
+        ''' <see cref="cStyleGuide.Font">styleguide font settings</see> and
+        ''' content. 
+        ''' </summary>
+        ''' <param name="g">The graphics to calculate for.</param>
+        ''' <returns>A size.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Measure(g As Graphics) As Size
+
+            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+
+            ' Measure size of legend
+            Dim iWidth As Integer = 0
+            Dim iHeight As Integer = 0
+            Dim szfItem As SizeF = Nothing
+
+            Try
+                If Me.ShowTitle Then
+                    szfItem = Me.RenderTitleSize(g, ftTitle)
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
+                End If
+
+                For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                    szfItem = Me.MeasureLayer(g, ftLayer, Me.m_lLayers(iLayer))
+
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height))
+                    If iLayer > 0 Then iHeight += 2 * Me.LayerBoxVSpacing
+                Next iLayer
+            Catch ex As Exception
+
+            End Try
+
+            iHeight += 1
+            iWidth += 1
+
+            ftTitle.Dispose()
+            ftLayer.Dispose()
+
+            Return New Size(iWidth, iHeight)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Draw the legend on a graphics device.
         ''' </summary>
         ''' <param name="g"></param>
@@ -298,24 +348,27 @@ Namespace Controls.Map
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
             Dim szfItem As SizeF = Nothing
-            Dim iWidth As Integer
             Dim iHeight As Integer
             Dim bSuccess As Boolean = True
+
+            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+            g.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAlias
+
+            'ptOrigin.X += Me.LayerBoxHSpacing
+            'ptOrigin.Y += Me.LayerBoxHSpacing
 
             Try
 
                 If Me.ShowTitle Then
                     szfItem = Me.RenderTitleSize(g, ftTitle)
-                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                    Me.RenderTitle(g, ftTitle, New Point(ptOrigin.X, ptOrigin.Y + iHeight))
+                    Me.DrawTitle(g, ftTitle, New Point(ptOrigin.X, ptOrigin.Y + iHeight))
                     iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
                 End If
 
                 For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                    szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                    If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
-                    Me.RenderLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(ptOrigin.X, ptOrigin.Y + iHeight))
-                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    szfItem = Me.MeasureLayer(g, ftLayer, Me.m_lLayers(iLayer))
+                    If iLayer > 0 Then iHeight += 2 * Me.LayerBoxVSpacing
+                    Me.DrawLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(ptOrigin.X, ptOrigin.Y + iHeight))
                     iHeight += CInt(Math.Ceiling(szfItem.Height))
                 Next iLayer
 
@@ -347,7 +400,7 @@ Namespace Controls.Map
 
             Using bmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
                 Using g As Graphics = Graphics.FromImage(bmp)
-                    szLegend = Me.Size(g)
+                    szLegend = Me.Measure(g)
                 End Using ' g
             End Using ' bmp
 
@@ -366,109 +419,99 @@ Namespace Controls.Map
 
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Calculate the size of the legend, when rendered with the current
-        ''' <see cref="cStyleGuide.Font">styleguide font settings</see> and
-        ''' content. 
-        ''' </summary>
-        ''' <param name="g">The graphics to calculate for.</param>
-        ''' <returns>A size.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function Size(g As Graphics) As Size
-
-            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
-            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-
-            ' Measure size of legend
-            Dim iWidth As Integer = 0
-            Dim iHeight As Integer = 0
-            Dim szfItem As SizeF = Nothing
-
-            Try
-                If Me.ShowTitle Then
-                    szfItem = Me.RenderTitleSize(g, ftTitle)
-                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                    iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
-                End If
-
-                For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                    szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                    If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
-                    iHeight += CInt(Math.Ceiling(szfItem.Height))
-                Next iLayer
-            Catch ex As Exception
-
-            End Try
-
-            iHeight += 1
-            iWidth += 1
-
-            ftTitle.Dispose()
-            ftLayer.Dispose()
-
-            Return New Size(iWidth, iHeight)
-
-        End Function
-
 #End Region ' Public interfaces
 
 #Region " Internals "
 
         Private Function RenderTitleSize(ByVal g As Graphics, ByVal ft As Font) As SizeF
-            Return g.MeasureString(Me.m_strTitle, ft)
+            Return g.MeasureString(Me.m_strTitle, ft, 10000, Me.m_fmt)
         End Function
 
-        Private Sub RenderTitle(ByVal g As Graphics, ByVal ft As Font, ByVal ptLocation As Point)
-            g.DrawString(Me.m_strTitle, ft, Brushes.Black, ptLocation)
+        Private Sub DrawTitle(ByVal g As Graphics, ByVal ft As Font, ByVal pt As Point)
+            g.DrawString(Me.m_strTitle, ft, Brushes.Black, pt)
         End Sub
 
-        Private Function RenderLayerSize(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry) As SizeF
+        Private Function MeasureLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry) As SizeF
 
-            Dim strText As String = l.Name
-            If String.IsNullOrWhiteSpace(strText) Then strText = "X"
+            Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
+            Dim szBox As New SizeF(0, 0)
+            Dim strText As String = ""
 
-            Dim sLayerBox As SizeF = g.MeasureString(strText, ft)
-            Select Case Me.GetRenderStyle(l)
-                Case eLayerRenderStyle.Element, eLayerRenderStyle.Symbol
-                    ' NOP
-                Case eLayerRenderStyle.Gradient
-                    sLayerBox.Height *= 3
-            End Select
-            sLayerBox.Width += (Me.LayerBoxWidth + Me.LayerBoxHSpacing * 3)
-            sLayerBox.Height = Math.Max(Me.LayerBoxHeight, sLayerBox.Height)
+            For i As Integer = 0 To l.Renderer.nExtraSymbols
 
-            Return sLayerBox
+                If (i = 0) Then
+                    strText = l.Name
+                Else
+                    strText = l.Renderer.SymbolName(i)
+                    style = eLayerRenderStyle.Element
+                    szBox.Height += Me.LayerBoxVSpacing
+                End If
+
+                Dim szItem As SizeF = g.MeasureString(cSystemUtils.IIF(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
+                Debug.Print(szItem.Width & " = " & strText)
+
+                Select Case style
+                    Case eLayerRenderStyle.Element, eLayerRenderStyle.Symbol
+                        szItem.Height = Math.Max(Me.LayerBoxHeight, szItem.Height)
+                    Case eLayerRenderStyle.Gradient
+                        szItem.Height = Math.Max(Me.LayerBoxHeight, szItem.Height * 3)
+                End Select
+                szItem.Width += (Me.LayerBoxWidth + Me.LayerBoxHSpacing)
+
+                szBox.Width = Math.Max(szBox.Width, szItem.Width)
+                szBox.Height += szItem.Height
+
+            Next
+
+            Return szBox
 
         End Function
 
-        Private Sub RenderLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry, ByVal ptLocation As Point)
+        Private Sub DrawLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry, ByVal pt As Point)
 
-            Dim szfBox As SizeF = Me.RenderLayerSize(g, ft, l)
-            Dim rcPreview As Rectangle = New Rectangle(ptLocation.X, ptLocation.Y, 20, CInt(szfBox.Height))
+            Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
 
-            Select Case Me.GetRenderStyle(l)
+            For i As Integer = 0 To l.Renderer.nExtraSymbols
 
-                Case eLayerRenderStyle.Element
-                    l.Renderer.RenderPreview(g, rcPreview)
-                    g.DrawRectangle(Pens.Black, rcPreview)
-                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
+                Dim strText As String = l.Name
+                If (i > 0) Then
+                    strText = l.Renderer.SymbolName(i)
+                    style = eLayerRenderStyle.Element
+                End If
 
-                Case eLayerRenderStyle.Symbol
-                    l.Renderer.RenderPreview(g, rcPreview)
-                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
+                Dim szBox As SizeF = g.MeasureString(cSystemUtils.IIF(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
+                Dim rcPreview As Rectangle = New Rectangle(pt.X, pt.Y, Me.LayerBoxWidth, CInt(Math.Max(Me.LayerBoxHeight, szBox.Height)))
 
-                Case eLayerRenderStyle.Gradient
-                    l.Renderer.RenderPreview(g, rcPreview)
-                    g.DrawRectangle(Pens.Black, rcPreview)
-                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max), _
-                                 ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
-                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min), _
-                                 ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
-                    g.DrawString(l.Name, _
-                                 ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height / 3))
-            End Select
+                Select Case style
+
+                    Case eLayerRenderStyle.Element
+                        l.Renderer.RenderPreview(g, rcPreview, i)
+                        g.DrawRectangle(Pens.Black, rcPreview)
+                        g.DrawString(strText, ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
+
+                    Case eLayerRenderStyle.Symbol
+                        l.Renderer.RenderPreview(g, rcPreview, i)
+                        g.DrawString(strText, ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
+
+                    Case eLayerRenderStyle.Gradient
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max), _
+                                     ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
+                        g.DrawString(l.Name, _
+                                     ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height)
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min), _
+                                     ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height * 2)
+
+                        rcPreview.Height *= 3
+
+                        l.Renderer.RenderPreview(g, rcPreview)
+                        g.DrawRectangle(Pens.Black, rcPreview)
+
+                End Select
+
+                pt.Y += Me.LayerBoxHSpacing + rcPreview.Height
+
+            Next
+
         End Sub
 
         Private Function GetRenderStyle(ByVal l As cLegendEntry) As eLayerRenderStyle

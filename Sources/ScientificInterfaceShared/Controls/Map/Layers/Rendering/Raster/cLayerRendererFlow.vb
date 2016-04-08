@@ -43,8 +43,9 @@ Namespace Controls.Map.Layers
             MyBase.New(vs)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                           ByVal rc As Rectangle,
+                                           Optional iSymbol As Integer = 0)
             If Me.IsStyleValid Then
                 Me.RenderCell(g, rc, Nothing, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
             Else
@@ -121,6 +122,12 @@ Namespace Controls.Map.Layers
             Return ""
 
         End Function
+
+        Public Overrides ReadOnly Property nExtraSymbols As Integer
+            Get
+                Return 0
+            End Get
+        End Property
 
     End Class
 

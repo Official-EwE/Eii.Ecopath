@@ -59,21 +59,34 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property DrawAlways() As Boolean
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                           ByVal rc As Rectangle,
+                                           Optional ByVal iSymbol As Integer = 0)
 
-            If Me.ForeBrush Is Nothing Then Me.Update()
+            If (Me.ForeBrush Is Nothing) Then Me.Update()
+            If (Not Me.IsStyleValid) Then iSymbol = 3
 
-            If Me.IsStyleValid Then
-                cColorRampIndicator.DrawColorRamp(g, Me.ColorRamp, rc, False)
-            Else
-                Me.RenderError(g, rc)
-            End If
+            Select Case iSymbol
+                Case 0
+                    cColorRampIndicator.DrawColorRamp(g, Me.ColorRamp, rc, False)
+                Case 1
+                    Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Percent25, Color.Gray, Color.Transparent)
+                        g.FillRectangle(br, rc)
+                    End Using
+                Case 2
+                    Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Percent25, Color.Red, Color.Transparent)
+                        g.FillRectangle(br, rc)
+                    End Using
+                Case 3
+                    Me.RenderError(g, rc)
+                Case Else
+                    Debug.Assert(False, "Unsupported symbol requested")
+            End Select
 
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
-                                        ByVal rc As System.Drawing.Rectangle, _
+        Public Overrides Sub RenderCell(ByVal g As Graphics, _
+                                        ByVal rc As Rectangle, _
                                         ByVal layer As cEcospaceLayer, _
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
@@ -86,7 +99,7 @@ Namespace Controls.Map.Layers
             End If
 
             If (Not cNumberUtils.IsFinite(sValue)) Or (sValue = cCore.NULL_VALUE) Or (sValue = 0 And Me.SuppressZero) Then
-                Me.RenderError(g, rc)
+                Me.RenderPreview(g, rc, 1)
                 Return
             End If
 
@@ -103,11 +116,8 @@ Namespace Controls.Map.Layers
 
                 ' Draw background
                 If (value IsNot Nothing) And (Me.Font IsNot Nothing) Then
-
                     If bOutOfRange Then
-                        Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.LargeCheckerBoard, Color.Gray, Color.LightGray)
-                            g.FillRectangle(br, rc)
-                        End Using
+                        RenderPreview(g, rc, 2)
                     Else
                         ' Render value on top for highlighted layers
                         Dim sValRange As Single = (sValMax - sValMin)
@@ -123,12 +133,11 @@ Namespace Controls.Map.Layers
                             g.FillRectangle(Brushes.White, rc)
                         End If
                     End If
-                    '' Draw value
-                    'g.DrawString(String.Format("{0}", value), Me.Font, Me.ForeBrush, rc)
                 End If
             Catch ex As Exception
                 ' Boom
             End Try
+
         End Sub
 
         Public Overrides Sub Update()
@@ -173,6 +182,22 @@ Namespace Controls.Map.Layers
             If (CSng(value) = cCore.NULL_VALUE) Then Return ""
             Return cStringUtils.FormatNumber(value)
         End Function
+
+        Public Overrides ReadOnly Property nExtraSymbols As Integer
+            Get
+                Return 2
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property SymbolName(iSymbol As Integer) As String
+            Get
+                Select Case iSymbol
+                    Case 1 : Return My.Resources.GENERIC_VALUE_NO_DATA
+                    Case 2 : Return My.Resources.GENERIC_VALUE_INVALID
+                End Select
+                Return ""
+            End Get
+        End Property
 
     End Class
 

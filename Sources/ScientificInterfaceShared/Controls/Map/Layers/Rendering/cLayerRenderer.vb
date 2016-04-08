@@ -121,11 +121,16 @@ Namespace Controls.Map.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Provide brush for rendering sample panes.
+        ''' Render a cell
         ''' </summary>
+        ''' <param name="g">The graphics to render onto.</param>
+        ''' <param name="rc">The area to render into.</param>
+        ''' <param name="iSymbol">The <see cref="nSymbols">symbol</see> to render.
+        ''' If left at 0 the default cell value should be drawn.</param>
         ''' -----------------------------------------------------------------------
         Public MustOverride Sub RenderPreview(ByVal g As Graphics, _
-                                              ByVal rc As Rectangle)
+                                              ByVal rc As Rectangle, _
+                                              Optional iSymbol As Integer = 0)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -218,6 +223,31 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property RenderMode As eLayerRenderType = eLayerRenderType.Selected
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of extra symbols, beyond the regular cell value, that 
+        ''' this renderer uses and will need displaying in legends.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable ReadOnly Property nExtraSymbols As Integer
+            Get
+                Return 0
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the name of all <see cref="nExtraSymbols">extra symbols</see> that need 
+        ''' displaying in legends.
+        ''' </summary>
+        ''' <param name="iSymbol">The one-based symbol index.</param>
+        ''' -----------------------------------------------------------------------
+        Public Overridable ReadOnly Property SymbolName(iSymbol As Integer) As String
+            Get
+                Return ""
+            End Get
+        End Property
 
     End Class
 

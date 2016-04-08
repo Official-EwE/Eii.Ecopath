@@ -47,8 +47,9 @@ Namespace Controls.Map.Layers
                     cVisualStyle.eVisualStyleTypes.Gradient)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                           ByVal rc As Rectangle,
+                                           Optional iSymbol As Integer = 0)
 
             If Me.m_brFore Is Nothing Then Me.Update()
 

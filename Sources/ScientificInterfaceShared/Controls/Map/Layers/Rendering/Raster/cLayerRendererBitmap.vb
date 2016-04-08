@@ -44,8 +44,9 @@ Namespace Controls.Map.Layers
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.Image)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                            ByVal rc As Rectangle,
+                                            Optional iSymbol As Integer = 0)
             If (Me.IsStyleValid) Then
                 Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, 1.0!)
             Else

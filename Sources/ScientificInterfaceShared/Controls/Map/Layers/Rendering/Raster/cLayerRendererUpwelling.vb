@@ -103,8 +103,9 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                           ByVal rc As Rectangle,
+                                           Optional ByVal iSymbol As Integer = 0)
 
             If Me.IsStyleValid Then
                 Me.RenderCell(g, rc, Nothing, 1.0!, cStyleGuide.eStyleFlags.OK)

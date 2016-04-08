@@ -43,8 +43,9 @@ Namespace Controls.Map.Layers
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                            ByVal rc As Rectangle,
+                                            Optional iSymbol As Integer = 0)
 
             Me.RenderSymbol(g, rc, Me.VisualStyle.ForeColour)
 
