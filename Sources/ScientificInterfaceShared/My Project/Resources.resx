@@ -532,8 +532,8 @@
     <value>(none)</value>
     <comment>Generic values representing 'no value'</comment>
   </data>
-  <data name="GENERIC_VALUE_NO_DATA_AVAILABLE" xml:space="preserve">
-    <value>No data available</value>
+  <data name="GENERIC_VALUE_NO_DATA" xml:space="preserve">
+    <value>No data</value>
   </data>
   <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
     <value>New Ecosim scenario</value>
@@ -3380,5 +3380,11 @@
   <data name="PROMPT_MAPLOAD_MISSING" xml:space="preserve">
     <value>Data is missing for {0} cell(s)</value>
     <comment>{0}: cell count</comment>
+  </data>
+  <data name="GENERIC_VALUE_ERROR" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="GENERIC_VALUE_INVALID" xml:space="preserve">
+    <value>Invalid</value>
   </data>
 </root>

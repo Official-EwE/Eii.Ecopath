@@ -44,7 +44,8 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle)
+                                           ByVal rc As Rectangle,
+                                           Optional ByVal iSymbol As Integer = 0)
             If Me.IsStyleValid Then
                 Using br As New HatchBrush(Me.VisualStyle.HatchStyle, Me.VisualStyle.ForeColour, Me.VisualStyle.BackColour)
                     g.FillRectangle(br, rc)

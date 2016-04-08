@@ -88,13 +88,27 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderPreview(g As System.Drawing.Graphics, rc As System.Drawing.Rectangle)
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                           ByVal rc As Rectangle,
+                                           Optional iSymbol As Integer = 0)
             g.DrawImage(My.Resources.map, rc)
         End Sub
 
         Public Overrides Function GetDisplayText(value As Object) As String
             Return ""
         End Function
+
+        Public Overrides ReadOnly Property nExtraSymbols As Integer
+            Get
+                Return 0
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property SymbolName(iSymbol As Integer) As String
+            Get
+                Return ""
+            End Get
+        End Property
 
     End Class
 
