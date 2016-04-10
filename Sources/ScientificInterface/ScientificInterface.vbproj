@@ -2028,6 +2028,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEDepletionRecoveryPlugin\EwEDepletionRecoveryPlugin.vbproj">
+      <Project>{23D9FC89-5F0E-4C98-A569-77C2F211BAC8}</Project>
+      <Name>EwEDepletionRecoveryPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
