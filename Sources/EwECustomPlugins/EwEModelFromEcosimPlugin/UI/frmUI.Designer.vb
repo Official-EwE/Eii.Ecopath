@@ -46,7 +46,7 @@ Partial Class frmUI
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUI))
         Me.m_cbEnable = New System.Windows.Forms.CheckBox()
-        Me.m_grid = New EwEModelFromEcosim.gridUI()
+        Me.m_grid = New EwEModelFromEcosimPlugin.gridUI()
         Me.m_lblPath = New System.Windows.Forms.Label()
         Me.m_tbxOutputPath = New System.Windows.Forms.TextBox()
         Me.m_btnChoose = New System.Windows.Forms.Button()

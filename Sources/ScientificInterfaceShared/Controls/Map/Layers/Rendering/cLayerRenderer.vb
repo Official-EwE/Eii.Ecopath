@@ -125,7 +125,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="g">The graphics to render onto.</param>
         ''' <param name="rc">The area to render into.</param>
-        ''' <param name="iSymbol">The <see cref="nSymbols">symbol</see> to render.
+        ''' <param name="iSymbol">The <see cref="nExtraSymbols">symbol</see> to render.
         ''' If left at 0 the default cell value should be drawn.</param>
         ''' -----------------------------------------------------------------------
         Public MustOverride Sub RenderPreview(ByVal g As Graphics, _
