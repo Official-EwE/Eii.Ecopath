@@ -12,9 +12,12 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+
 Imports ScientificInterfaceShared
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -45,7 +48,7 @@ Partial Class frmEcospaceSpinup
         Me.m_chkUseBaseBio = New System.Windows.Forms.CheckBox()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.m_gridSpinUpDif = New EcospaceSpinupPlugin.gridSpinupDiff(Me.components)
+        Me.m_gridSpinUpDif = New EwEEcospaceSpinupPlugin.gridSpinupDiff(Me.components)
         Me.m_plControls = New System.Windows.Forms.Panel()
         Me.Panel1.SuspendLayout()
         Me.m_plControls.SuspendLayout()
@@ -184,6 +187,6 @@ Partial Class frmEcospaceSpinup
     Friend WithEvents m_chkUseBaseBio As System.Windows.Forms.CheckBox
     Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents m_gridSpinUpDif As EcospaceSpinupPlugin.gridSpinupDiff
+    Friend WithEvents m_gridSpinUpDif As EwEEcospaceSpinupPlugin.gridSpinupDiff
     Friend WithEvents m_plControls As System.Windows.Forms.Panel
 End Class

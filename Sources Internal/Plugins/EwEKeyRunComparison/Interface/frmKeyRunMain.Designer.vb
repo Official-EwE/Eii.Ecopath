@@ -12,7 +12,9 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
 
@@ -44,7 +46,7 @@ Partial Class frmKeyRunMain
         Me.m_cbShowErrorsOnly = New System.Windows.Forms.CheckBox()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_btnCompare = New System.Windows.Forms.Button()
-        Me.m_grid = New EwEKeyRunComparison.gridKeyRunComparison()
+        Me.m_grid = New EwEKeyRunComparisonPlugin.gridKeyRunComparison()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()

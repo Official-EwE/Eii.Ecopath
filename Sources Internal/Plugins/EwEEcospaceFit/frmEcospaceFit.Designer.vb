@@ -1,4 +1,24 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEcospaceFit
     Inherits ScientificInterfaceShared.Forms.frmEwE
 
@@ -26,7 +46,7 @@ Partial Class frmEcospaceFit
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.m_btClear = New System.Windows.Forms.Button()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_grdFit = New EwEEcospaceFit.gridFit(Me.components)
+        Me.m_grdFit = New EwEEcospaceFitPlugin.gridFit(Me.components)
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -114,7 +134,7 @@ Partial Class frmEcospaceFit
 
     End Sub
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents m_grdFit As EwEEcospaceFit.gridFit
+    Friend WithEvents m_grdFit As EwEEcospaceFitPlugin.gridFit
     Friend WithEvents m_btClear As System.Windows.Forms.Button
     Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class
