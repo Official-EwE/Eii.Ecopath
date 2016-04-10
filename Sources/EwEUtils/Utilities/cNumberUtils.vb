@@ -103,6 +103,45 @@ Namespace Utilities
             Return (Math.Abs(sVal1 - sVal2) <= sThreshold)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the number of relevant decimals in a value.
+        ''' </summary>
+        ''' <param name="dValue">The value to check.</param>
+        ''' <param name="iNumDigits">The preferred number of digits to display.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function NumRelevantDecimals(dValue As Double, iNumDigits As Integer) As Integer
+
+            Dim dTest As Double = CDbl(Math.Abs(dValue))
+            Dim iMinPrecision As Integer = 0
+            Dim iMaxPrecision As Integer = Math.Min(iNumDigits * 2, 10)
+
+            ' Need to try to figure out num of decimal digits?
+            If (dTest <> 0.0) Then
+                ' #Yes: find min number of relevant decimal digits
+                While Math.Floor(dTest) = 0
+                    dTest *= 10.0#
+                    iMinPrecision += 1
+                End While
+                ' First relevant decimal digit found: show iNumDigits decimals including this first value
+                iMinPrecision += (iNumDigits - 1)
+
+                ' Has decimals?
+                If (Math.Abs(dValue) > 1) Then
+                    ' #Yes: Find max number of decimal digits
+                    dTest = 1.0#
+                    For iTest As Integer = iNumDigits To 0 Step -1
+                        dTest *= 10.0#
+                        iMaxPrecision = iTest
+                        If (dValue <= dTest) Then Exit For
+                    Next
+                End If
+            End If
+            Return Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision)
+
+        End Function
+
     End Class
 
 End Namespace
