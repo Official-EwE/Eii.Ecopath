@@ -12,9 +12,12 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+
 Imports EwECore
 Imports System.Windows.Forms
 
@@ -34,8 +37,9 @@ Module PerturbPathRunSimMainModule
         Dim iAttempt As Integer
         Dim FoundBalancedModel As Boolean
         'Original Ecopath B and PB
-        Dim orgB() As Single
-        Dim orgPB() As Single
+
+        Dim orgB As Single() = New Single(Core.nGroups) {}
+        Dim orgPB As Single() = New Single(Core.nGroups) {}
         Dim bestSS As Single = Single.MaxValue
 
         'Init the objects needed Core and .NET Random
@@ -54,7 +58,7 @@ Module PerturbPathRunSimMainModule
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Get baseline values
             'Makes a copy of the original parameters used to restore the model during the trials 
-            setBaselineParameters(orgB, orgPB)
+            SetBaselineParameters(orgB, orgPB)
             'You may want to run EcoPath/Ecosim and save the results
             'So you have a baseline state to compare against
             'For Example
@@ -135,10 +139,8 @@ Module PerturbPathRunSimMainModule
     End Function
 
 
-    Private Sub setBaselineParameters(ByRef orgB() As Single, ByRef orgPB() As Single)
+    Private Sub SetBaselineParameters(ByVal orgB() As Single, ByVal orgPB() As Single)
 
-        orgB = New Single(Core.nGroups) {}
-        orgPB = New Single(Core.nGroups) {}
         For igrp As Integer = 1 To Core.nGroups
             orgB(igrp) = Core.EcoPathGroupInputs(igrp).BiomassAreaInput
             orgPB(igrp) = Core.EcoPathGroupInputs(igrp).PBInput
