@@ -40,7 +40,7 @@ Public Class cStringConverters
         Dim pts As Single() = shapeData.ShapeData ' Note that ShapeData returns a copy!
         For i As Integer = 0 To shapeData.nPoints - 1
             If (sb.Length > 0) Then sb.Append(",")
-            sb.Append(cStringUtils.FormatNumber(pts(i)))
+            sb.Append(cStringUtils.FormatNumber(pts(i), iNumDigits:=3, bFindRelevantDecimals:=True))
         Next
 
         ' Do not add the individual points; the string will become unusable in length for any practical purpose. 
@@ -127,9 +127,10 @@ Public Class cStringConverters
 
                 If (TypeOf layer Is cEcospaceLayerVector) Then
                     Dim vector As Single() = DirectCast(value, Single())
-                    sb.Append(cStringUtils.FormatNumber(vector(0)) & cStringUtils.FormatNumber(vector(1)))
+                    sb.Append(cStringUtils.FormatNumber(vector(0), iNumDigits:=3, bFindRelevantDecimals:=True))
+                    sb.Append(cStringUtils.FormatNumber(vector(1), iNumDigits:=3, bFindRelevantDecimals:=True))
                 Else
-                    sb.Append(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
+                    sb.Append(cStringUtils.FormatNumber(layer.Cell(iRow, iCol), iNumDigits:=3, bFindRelevantDecimals:=True))
                 End If
             Next
         Next
@@ -149,7 +150,7 @@ Public Class cStringConverters
         sb.Append(",")
         sb.Append("c=" & cStringConverters.ConverterToString(conn.Converter))
         sb.Append(",")
-        sb.Append("s=" & cStringUtils.FormatNumber(conn.Scale))
+        sb.Append("s=" & cStringUtils.FormatNumber(conn.Scale, iNumDigits:=3, bFindRelevantDecimals:=True))
         sb.Append(",")
         sb.Append("t=" & cStringUtils.FormatNumber(conn.ScaleType))
         Return sb.ToString()

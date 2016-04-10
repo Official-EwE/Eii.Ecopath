@@ -54,9 +54,6 @@ Public Class cEcosimPriceElasticitySummarizer
         Dim lstHashValues As New List(Of cHashValues)
         For i As Integer = 0 To shapes.Count - 1
             shape = shapes.Item(i)
-
-            If (sbSummary.Length > 0) Then sbSummary.Append("|")
-
             ' Iterate over all interactions, and write details
             For iflt As Integer = 1 To Me.m_core.nFleets
                 For iGrp As Integer = 1 To Me.m_core.nGroups
@@ -67,9 +64,8 @@ Public Class cEcosimPriceElasticitySummarizer
                             Dim appl As eForcingFunctionApplication
                             If fgi.getShape(l, shapeTest, appl) Then
                                 If Object.ReferenceEquals(shape, shapeTest) Then
-
+                                    If (sbSummary.Length > 0) Then sbSummary.Append("|")
                                     sbSummary.Append(cStringConverters.AppliedToString(fgi, DirectCast(shape, cLandingsMediationFunction), appl))
-
                                 End If
                             End If 'If fgi.getShape(l, shapeTest, appl) Then
                         Next l
