@@ -299,7 +299,7 @@ Public Class cEwEStatusBar
             .Text = strText
             .ToolTipText = strTooltipText
             ' Hide item if item has no text
-            .Visible = (Not String.IsNullOrEmpty(strText))
+            .Visible = (Not String.IsNullOrWhiteSpace(strText))
         End With
     End Sub
 
