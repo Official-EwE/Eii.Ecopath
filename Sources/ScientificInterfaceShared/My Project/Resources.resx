@@ -1380,8 +1380,8 @@
     <value>Direct absorption rate (t/t/t/{0})</value>
     <comment>{0}: time unit</comment>
   </data>
-  <data name="HEADER_C_ASSIMILATION_RATE" xml:space="preserve">
-    <value>Proportion of contaminant assimilated [0-1]</value>
+  <data name="HEADER_EXCRETION_RATE" xml:space="preserve">
+    <value>Prop. of contaminant excreted [0-1]</value>
   </data>
   <data name="HEADER_FMAX" xml:space="preserve">
     <value>FMax</value>

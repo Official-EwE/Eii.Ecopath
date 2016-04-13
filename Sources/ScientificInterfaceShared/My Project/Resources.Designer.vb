@@ -3709,15 +3709,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Proportion of contaminant assimilated [0-1].
-        '''</summary>
-        Public ReadOnly Property HEADER_C_ASSIMILATION_RATE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_C_ASSIMILATION_RATE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Cache size (MB).
         '''</summary>
         Public ReadOnly Property HEADER_CACHESIZE() As String
@@ -4524,6 +4515,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_ENVIRONMENT() As String
             Get
                 Return ResourceManager.GetString("HEADER_ENVIRONMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prop. of contaminant excreted [0-1].
+        '''</summary>
+        Public ReadOnly Property HEADER_EXCRETION_RATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EXCRETION_RATE", resourceCulture)
             End Get
         End Property
         
