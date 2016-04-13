@@ -53,6 +53,7 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_nudNumBlocks = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_hdrTransfer = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
         Me.m_ucVulBlocks = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks()
         CType(Me.m_nudNumBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -109,6 +110,7 @@ Partial Class dlgSensitivityOfSStoV
         '
         'm_nudNumBlocks
         '
+        Me.m_nudNumBlocks.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudNumBlocks, "m_nudNumBlocks")
         Me.m_nudNumBlocks.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudNumBlocks.Name = "m_nudNumBlocks"
@@ -130,6 +132,18 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_hdrSearch.IsCollapsed = False
         Me.m_hdrSearch.Name = "m_hdrSearch"
         '
+        'm_legend
+        '
+        resources.ApplyResources(Me.m_legend, "m_legend")
+        Me.m_legend.BarWidthPercentage = 60
+        Me.m_legend.ColorHigh = System.Drawing.SystemColors.ControlText
+        Me.m_legend.ColorLow = System.Drawing.SystemColors.ControlText
+        Me.m_legend.Colors = CType(resources.GetObject("m_legend.Colors"), System.Collections.Generic.List(Of System.Drawing.Color))
+        Me.m_legend.LabelHigh = "Most"
+        Me.m_legend.LabelLow = "Least"
+        Me.m_legend.Name = "m_legend"
+        Me.m_legend.UIContext = Nothing
+        '
         'm_ucVulBlocks
         '
         resources.ApplyResources(Me.m_ucVulBlocks, "m_ucVulBlocks")
@@ -144,6 +158,7 @@ Partial Class dlgSensitivityOfSStoV
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_legend)
         Me.Controls.Add(Me.m_btnSaveToCSV)
         Me.Controls.Add(Me.m_nudNumBlocks)
         Me.Controls.Add(Me.m_lblNumCategories)
@@ -178,4 +193,5 @@ Partial Class dlgSensitivityOfSStoV
     Private WithEvents m_lblNumCategories As System.Windows.Forms.Label
     Friend WithEvents m_nudNumBlocks As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_btnSaveToCSV As System.Windows.Forms.Button
+    Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
 End Class
