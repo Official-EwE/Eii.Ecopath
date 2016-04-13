@@ -4358,7 +4358,7 @@ Public Class frmEwE6
     ''' Command handler; closes the current Ecotracer scenario
     ''' </summary>
     Private Sub OnCloseEcotracerScenario(ByVal cmd As cCommand) _
-        Handles m_cmdLoadEcotracerScenario.OnInvoke
+        Handles m_cmdCloseEcotracerScenario.OnInvoke
         Me.Core.CloseEcotracerScenario()
     End Sub
 
