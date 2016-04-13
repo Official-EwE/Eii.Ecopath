@@ -31,7 +31,7 @@ Public Class cF2TSDataStructures
     Public PPVariance As Single = 0.1!
     Public iCatchAnomalySearchShapeNumber As Integer = 0
     Public nNumSplinePoints As Integer = 0
-    Public bRunSilent As Boolean = False
+    Public RunSilent As Boolean = False
 
     ''' <summary>
     ''' Number of AIC parameters

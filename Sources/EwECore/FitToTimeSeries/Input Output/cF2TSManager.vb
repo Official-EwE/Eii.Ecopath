@@ -278,6 +278,7 @@ Public Class cF2TSManager
         f2tsDS.nAICData = Me.NAICDataPoints
 
         f2tsDS.UseDefaultV = Me.UseDefaultV
+        Return True
 
     End Function
 
@@ -617,13 +618,15 @@ Public Class cF2TSManager
     ''' <summary>
     ''' 
     ''' </summary>
+    ''' <param name="bRunSilent">Optional parameter to run without sending any messages or requesting any feedback</param>
     ''' <param name="RunThreaded">Optional flag to state if the search runs multi-threaded. If <see cref="TriState.[False]"/>,
     ''' the search never runs theaded. If <see cref="TriState.[True]"/>the search always runs threaded. If <see cref="TriState.UseDefault"/>,
     ''' the search only runs threaded if a <see cref="System.ComponentModel.ISynchronizeInvoke">sync object</see> has been
     ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunSensitivitySS2VByPredPrey(Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
+    Public Function RunSensitivitySS2VByPredPrey(Optional ByVal bRunSilent As Boolean = False,
+                                                 Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
         If Not CanRun() Then Return False
@@ -635,6 +638,11 @@ Public Class cF2TSManager
 
             ' Make sure model can access manager variables from the shared data structures
             Me.Update(Me.m_dataType)
+
+            ' Take a nasty shortcut to set the run silent flag. We cannot get m_model.Data, 
+            ' because this is only initialized within RunSensitivitySS2VByPredPrey call, next.
+            Dim data As cF2TSDataStructures = Me.m_core.m_FitToTimeSeriesData
+            data.RunSilent = bRunSilent
 
             ' Launch requested analysis model 
             If (Me.m_SyncObject IsNot Nothing) And (RunThreaded <> TriState.False) Then
@@ -665,20 +673,22 @@ Public Class cF2TSManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Run the sensitivity to vulnerabilities search by predator.
     ''' </summary>
+    ''' <param name="bRunSilent">Optional parameter to run without sending any messages or requesting any feedback</param>
     ''' <param name="RunThreaded">Optional flag to state if the search runs multi-threaded. If <see cref="TriState.[False]"/>,
     ''' the search never runs theaded. If <see cref="TriState.[True]"/>the search always runs threaded. If <see cref="TriState.UseDefault"/>,
     ''' the search only runs threaded if a <see cref="System.ComponentModel.ISynchronizeInvoke">sync object</see> has been
     ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunSensitivitySS2VByPredator(Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
+    Public Function RunSensitivitySS2VByPredator(Optional ByVal bRunSilent As Boolean = False,
+                                                 Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         ' Safety check
         If Not CanRun() Then Return False
 
-        Me.m_core.CheckResetDefaultVulnerabilities()
+        Me.m_core.CheckResetDefaultVulnerabilities(bRunSilent)
 
         Try
 
@@ -726,7 +736,7 @@ Public Class cF2TSManager
     ''' provided when <see cref="Connect">connecting</see>.</param>
     ''' <returns></returns>
     Public Function RunSearch(Optional ByVal bRunSilent As Boolean = False, _
-                              Optional RunThreaded As TriState = TriState.UseDefault) As Boolean
+                              Optional ByVal RunThreaded As TriState = TriState.UseDefault) As Boolean
 
         Dim iPPYear1 As Integer = 0
         Dim iPPYear2 As Integer = 0
@@ -735,7 +745,7 @@ Public Class cF2TSManager
         ' Safety check
         If Not CanRun() Then Return False
 
-        Me.m_core.m_FitToTimeSeriesData.bRunSilent = bRunSilent
+        Me.m_core.m_FitToTimeSeriesData.RunSilent = bRunSilent
 
         Try
 
@@ -755,11 +765,9 @@ Public Class cF2TSManager
 
         Catch ex As Exception
             bSucces = False
-            Me.m_core.m_FitToTimeSeriesData.bRunSilent = False
-
-            ' ToDo: globalize this
-            Me.SendMessageCallback(New cMessage("Fit to timeseries Error: " & ex.Message, eMessageType.ErrorEncountered, _
-                         eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
+            Me.m_core.m_FitToTimeSeriesData.RunSilent = False
+            Me.SendMessageCallback(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
+                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
             cLog.Write(ex)
 
             Me.ReleaseWait()
@@ -964,7 +972,7 @@ Public Class cF2TSManager
 
             Me.ReleaseWait()
 
-            Me.m_core.m_FitToTimeSeriesData.bRunSilent = False
+            Me.m_core.m_FitToTimeSeriesData.RunSilent = False
             Me.m_thrdRun = Nothing
 
         Catch ex As Exception
@@ -984,7 +992,7 @@ Public Class cF2TSManager
             m_core.LoadEcosimStats()
             Me.m_thrdRun = Nothing
 
-            If Not Me.m_core.m_FitToTimeSeriesData.bRunSilent Then
+            If Not Me.m_core.m_FitToTimeSeriesData.RunSilent Then
 
                 'send any messages created by the fit to time series
                 For Each msg As cMessage In m_lstMessages
@@ -1007,8 +1015,8 @@ Public Class cF2TSManager
 
         Catch ex As Exception
             cLog.Write(ex)
-            ' ToDo: globalize this
-            m_core.Messages.SendMessage(New cMessage("Fit to Time Series error: " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.F2TS_ERROR, ex.Message),
+                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
         End Try
 
     End Sub
@@ -1042,12 +1050,8 @@ Public Class cF2TSManager
     ''' <param name="msg"></param>
     Private Sub AddMessageCallback(ByVal msg As cMessage)
         Try
-            If Me.m_core.m_FitToTimeSeriesData.bRunSilent  Then
-                    System.Console.WriteLine(Me.ToString & " Tried to send message while running in Silent Mode.")
-                    Return
-                End If
-                'add the message to the list of messages
-                m_lstMessages.Add(msg)
+            ' Add the message to the list of messages
+            Me.m_lstMessages.Add(msg)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -1062,7 +1066,7 @@ Public Class cF2TSManager
         Try
             Dim objs(0) As Object
 
-            If Me.m_core.m_FitToTimeSeriesData.bRunSilent Then
+            If Me.m_core.m_FitToTimeSeriesData.RunSilent Then
                 System.Console.WriteLine(Me.ToString & " Tried to send message while running in Silent Mode.")
                 Exit Sub
             End If

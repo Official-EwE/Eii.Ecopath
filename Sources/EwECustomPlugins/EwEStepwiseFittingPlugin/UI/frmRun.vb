@@ -170,13 +170,24 @@ Public Class frmRun
         Dim bHasCompletedIterationSelected As Boolean = False
         Dim bNeedsAnomalyShape As Boolean = False
         Dim bHasAnomalyShape As Boolean = (Me.SelectedShape IsNot Nothing)
+        Dim bContainsAnomaly As Boolean = False
+        Dim bContainsVul As Boolean = False
         Dim bIsRunning As Boolean = (Me.m_engine.IsRunning)
 
-        Dim it As ISFPIterations = Me.SelectedIteration
+        Dim it As ISFPIterations = Nothing
+        For Each it In Me.m_engine.Iterations
+            bContainsAnomaly = bContainsAnomaly Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
+                                           (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
+            bContainsVul = bContainsVul Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVulnerabilitySearch)) Or
+                                           (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
+        Next
+
+        it = Me.SelectedIteration
         If (it IsNot Nothing) Then
             bHasCompletedIterationSelected = (it.RunState = ISFPIterations.eRunState.Completed)
             bHasEnabledIterationSelected = it.Enabled
-            bNeedsAnomalyShape = bNeedsAnomalyShape Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch))
+            bNeedsAnomalyShape = bNeedsAnomalyShape Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
+                                           (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
         End If
 
         Dim bAnomalyOk As Boolean = Not bNeedsAnomalyShape Or bHasAnomalyShape
@@ -195,6 +206,9 @@ Public Class frmRun
         Me.m_cmbTimeSeries.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
 
         ' -- Parameters panel --
+        Me.m_btnSelectA.Enabled = bContainsAnomaly
+        Me.m_btnSelectV.Enabled = bContainsVul
+        Me.m_btnSelectVandA.Enabled = bContainsVul Or bContainsAnomaly
         Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected
 
         ' -- Run panel --

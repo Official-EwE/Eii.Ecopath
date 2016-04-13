@@ -167,12 +167,8 @@ Public Class cMessagePublisher
         Try
 
             ' Wrapped sanity checks
-            If (Message Is Nothing) Then
-                Debug.Assert(False, "Cannot send a Null message.")
-            End If
-            If (Message.Source = eCoreComponentType.NotSet) Then
-                Debug.Assert(False, "Message source must be set.")
-            End If
+            Debug.Assert(Message IsNot Nothing, "Cannot send a Null message.")
+            Debug.Assert(Message.Source <> eCoreComponentType.NotSet, "Message source must be set.")
 
             ' JS 27sep07: log only messages of certain importance
             ' JS 24nov14: also log questions
@@ -184,8 +180,7 @@ Public Class cMessagePublisher
                     If (Me.PluginManager IsNot Nothing) Then
                         Dim bSuppress As Boolean = False
                         Me.PluginManager.PreProcessMessage(Message, bSuppress)
-                        ' ToDo: how to best handle this? Die without a word?
-                        If bSuppress = True Then Return True
+                        If (bSuppress = True) Then Return True
                     End If
 
                     cLog.Write(Message)
