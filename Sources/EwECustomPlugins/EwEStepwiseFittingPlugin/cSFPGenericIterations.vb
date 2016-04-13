@@ -253,7 +253,7 @@ Public MustInherit Class cSFPGenericIterations
 
         'If PredOrPredPreySSToV = true then run SS2VBy Predator
         If m_bPredOrPredPreySSToV Then
-            If m_F2TSManager.RunSensitivitySS2VByPredator(TriState.False) Then
+            If m_F2TSManager.RunSensitivitySS2VByPredator(True, TriState.False) Then
                 Debug.Assert(Not m_F2TSManager.IsRunning)
                 'Set vulnerabiltiy blocks
                 m_F2TSManager.setNBlocksFromSensitivity(Parameters.MaxKValue)
@@ -261,7 +261,7 @@ Public MustInherit Class cSFPGenericIterations
             End If
             'Else run SS2VBy Pred/Prey
         Else
-            If m_F2TSManager.RunSensitivitySS2VByPredPrey(TriState.False) Then
+            If m_F2TSManager.RunSensitivitySS2VByPredPrey(True, TriState.False) Then
                 Debug.Assert(Not m_F2TSManager.IsRunning)
                 'Set vulnerabiltiy blocks
                 m_F2TSManager.setNBlocksFromSensitivity(Parameters.MaxKValue)

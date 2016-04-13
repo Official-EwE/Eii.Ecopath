@@ -846,7 +846,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Fit to Time Series aborted.</value>
   </data>
   <data name="F2TS_ERROR" xml:space="preserve">
-    <value>Fit to Time Series error '{0}'</value>
+    <value>An error occurred in Fit to Time Series. {0}</value>
     <comment>{0} = error message</comment>
   </data>
   <data name="F2TS_ERROR_ESTIMATION" xml:space="preserve">

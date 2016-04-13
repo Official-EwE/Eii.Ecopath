@@ -351,9 +351,6 @@ Namespace FitToTimeSeries
             m_lstSSResults.Clear()
 
             Try
-
-
-
                 'init 
                 Me.RunState = eRunType.SensitivitySS2VByPredator
                 InitForRun(Me.RunState)
@@ -519,8 +516,6 @@ Namespace FitToTimeSeries
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
         Public Sub RunSearch()
 
             Dim results As cF2TSResults = Nothing
@@ -912,7 +907,7 @@ Namespace FitToTimeSeries
                                                  eMessageReplyStyle.YES_NO)
                     fbmsg.Reply = eMessageReply.NO
 
-                    If (Not Me.m_data.bRunSilent) Then
+                    If (Not Me.m_data.RunSilent) Then
                         SendMessage(fbmsg)
                     End If
                     If fbmsg.Reply = eMessageReply.NO Then GoTo 250
@@ -957,7 +952,7 @@ Namespace FitToTimeSeries
                                                  eMessageReplyStyle.YES_NO)
                 fbmsg.Reply = eMessageReply.NO
 
-                If (Not Me.m_data.bRunSilent) Then
+                If (Not Me.m_data.RunSilent) Then
                     SendMessage(fbmsg)
                 End If
 

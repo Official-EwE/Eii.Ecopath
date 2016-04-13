@@ -369,12 +369,12 @@ Public Class dlgSensitivityOfSStoV
 
         Me.m_F2TSManager.Connect(Me, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, Nothing)
         If (Me.m_rbSearchPredPrey.Checked) Then
-            If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(TriState.False) = False) Then
+            If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(False, TriState.False) = False) Then
                 Return False
             End If
             Me.m_runType = eRunType.SensitivitySS2VByPredPrey
         Else
-            If (Me.m_F2TSManager.RunSensitivitySS2VByPredator(TriState.False) = False) Then
+            If (Me.m_F2TSManager.RunSensitivitySS2VByPredator(False, TriState.False) = False) Then
                 Return False
             End If
             Me.m_runType = eRunType.SensitivitySS2VByPredator
