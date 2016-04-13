@@ -335,6 +335,9 @@ Public Class dlgSensitivityOfSStoV
         Dim lColors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
         lColors.Insert(0, Color.Black)
 
+        ' Set colors
+        Me.m_legend.Colors = lColors
+
         Me.m_ucVulBlocks.RefreshContent()
         Me.m_ucVulBlocks.BlockColors = lColors.ToArray
 
