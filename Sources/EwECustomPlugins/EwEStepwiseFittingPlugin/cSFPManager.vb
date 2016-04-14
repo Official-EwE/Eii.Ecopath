@@ -209,7 +209,9 @@ Public Class cSFPManager
                 Dim ft As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
                 For i As Integer = 1 To interact.nAppliedShapes
                     If (interact.getShape(i, shape, ft)) Then
-                        shapes.Add(shape)
+                        If (Not shapes.Contains(shape)) Then
+                            shapes.Add(shape)
+                        End If
                     End If
                 Next i
             End If
