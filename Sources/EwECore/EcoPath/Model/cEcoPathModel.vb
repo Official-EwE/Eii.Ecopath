@@ -1117,7 +1117,7 @@ Namespace Ecopath
                     If m_Data.EE(i) < 0 Then
                         msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                         If m_Data.BA(i) < 0 Then
-                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccumInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                         End If
                     End If
                 Next
