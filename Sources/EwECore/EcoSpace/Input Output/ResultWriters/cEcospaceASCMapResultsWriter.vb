@@ -226,9 +226,9 @@ Public Class cEcospaceASCMapResultsWriter
 
         writer.WriteLine("ncols         " & Me.EcospaceData.InCol)
         writer.WriteLine("nrows         " & Me.EcospaceData.InRow)
-        writer.WriteLine("xllcorner     " & Me.EcospaceData.Lon1)
-        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow) * bm.CellSize())
-        writer.WriteLine("cellsize      " & bm.CellSize())
+        writer.WriteLine("xllcorner     " & cStringUtils.FormatNumber(Me.EcospaceData.Lon1))
+        writer.WriteLine("yllcorner     " & cStringUtils.FormatNumber(Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow) * bm.CellSize()))
+        writer.WriteLine("cellsize      " & cStringUtils.FormatNumber(bm.CellSize()))
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
 
     End Sub
