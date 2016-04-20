@@ -3269,7 +3269,7 @@ Namespace Ecosim
             ' We're only doing it from Ecosim now, that's what the optional SSgroup is doing
             ' 
 
-            'if SSgrup is called:
+            'Set a flag to populte SSGroup 
             Dim bSSgrp As Boolean = (SSgroup IsNot Nothing)
 
             'ToDo_jb PlotDataInfo AverageBodyWeight
@@ -3284,28 +3284,23 @@ Namespace Ecosim
             For iDType = 1 To m_RefData.NdatType
                 If DatNobs(iDType) > 0 Then
 
-                    If m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Then
-                        m_RefData.DatSS(iDType) = DatSumZ2(iDType)
-                        m_RefData.DatQ(iDType) = 0
-                    End If
-
+                    'Calculate DatQ() for data types that are relative.
+                    'These data may not have been entered in the same units as the internal ecosim mean weight
+                    'DatQ() is used to normalize/scale the time series data to model units
                     If m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or _
-                       m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
-                       m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or _
-                       m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or _
-                        m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Then 'added mean body weight here
-                        'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
-                        'replicated by ecosim.
+                        m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
+                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Then
 
                         m_RefData.DatSS(iDType) = CSng(DatSumZ2(iDType) - DatSumZ(iDType) ^ 2 / DatNobs(iDType))
                         m_RefData.DatQ(iDType) = DatSumZ(iDType) / DatNobs(iDType)
                         m_RefData.eDatQ(iDType) = CSng(Math.Exp(m_RefData.DatQ(iDType)))
 
-                        'If m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then
-                        '    Start_Wt = mean_BdyWt(m_RefData.DatPool(j), 6)
-                        'End If
-
+                    Else
+                        'all other data types are used as is
+                        m_RefData.DatSS(iDType) = DatSumZ2(iDType)
+                        m_RefData.DatQ(iDType) = 0
                     End If
+
                 End If
             Next
 
@@ -3319,7 +3314,6 @@ Namespace Ecosim
             For iDatPt = 1 To m_RefData.nDatPoints
                 iYear = m_RefData.DatYear(iDatPt) - m_RefData.DatYear(1)
                 For iDType = 1 To m_RefData.NdatType
-                    ' If m_RefData.DatVal(iYr, iDType) > 0 And iYear < m_Data.NumYears + 1 And _
                     If m_RefData.DatVal(iDatPt, iDType) > 0 And iYear < m_Data.NumYears + 1 And _
                        (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or _
                         m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or _
