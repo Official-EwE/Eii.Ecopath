@@ -65,6 +65,9 @@ Partial Class dlgEditBasemap
         Me.m_lblUnitLon = New System.Windows.Forms.Label()
         Me.m_lblUnitCellLen = New System.Windows.Forms.Label()
         Me.m_lblUnitCellSize = New System.Windows.Forms.Label()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnImport = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.m_tsmiImportFromASCII = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tlpButtons.SuspendLayout()
         CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -73,6 +76,7 @@ Partial Class dlgEditBasemap
         CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudLonTL, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudLatTL, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_tlpButtons
@@ -106,6 +110,7 @@ Partial Class dlgEditBasemap
         'm_nudRowCount
         '
         resources.ApplyResources(Me.m_nudRowCount, "m_nudRowCount")
+        Me.m_nudRowCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudRowCount.Name = "m_nudRowCount"
         Me.m_nudRowCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -113,6 +118,7 @@ Partial Class dlgEditBasemap
         'm_nudColCount
         '
         resources.ApplyResources(Me.m_nudColCount, "m_nudColCount")
+        Me.m_nudColCount.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudColCount.Name = "m_nudColCount"
         Me.m_nudColCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -136,6 +142,7 @@ Partial Class dlgEditBasemap
         'm_nudCellSize
         '
         resources.ApplyResources(Me.m_nudCellSize, "m_nudCellSize")
+        Me.m_nudCellSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 196608})
         Me.m_nudCellSize.Name = "m_nudCellSize"
         Me.m_nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -143,6 +150,7 @@ Partial Class dlgEditBasemap
         'm_nudCellLength
         '
         resources.ApplyResources(Me.m_nudCellLength, "m_nudCellLength")
+        Me.m_nudCellLength.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudCellLength.Name = "m_nudCellLength"
         Me.m_nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -150,6 +158,7 @@ Partial Class dlgEditBasemap
         'm_nudLonTL
         '
         resources.ApplyResources(Me.m_nudLonTL, "m_nudLonTL")
+        Me.m_nudLonTL.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudLonTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudLonTL.Name = "m_nudLonTL"
         Me.m_nudLonTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -157,6 +166,7 @@ Partial Class dlgEditBasemap
         'm_nudLatTL
         '
         resources.ApplyResources(Me.m_nudLatTL, "m_nudLatTL")
+        Me.m_nudLatTL.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudLatTL.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudLatTL.Name = "m_nudLatTL"
         Me.m_nudLatTL.Value = New Decimal(New Integer() {1, 0, 0, 0})
@@ -213,11 +223,32 @@ Partial Class dlgEditBasemap
         resources.ApplyResources(Me.m_lblUnitCellSize, "m_lblUnitCellSize")
         Me.m_lblUnitCellSize.Name = "m_lblUnitCellSize"
         '
+        'm_ts
+        '
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnImport})
+        resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'm_tsbnImport
+        '
+        Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tsbnImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiImportFromASCII})
+        resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
+        Me.m_tsbnImport.Name = "m_tsbnImport"
+        '
+        'm_tsmiImportFromASCII
+        '
+        Me.m_tsmiImportFromASCII.Name = "m_tsmiImportFromASCII"
+        resources.ApplyResources(Me.m_tsmiImportFromASCII, "m_tsmiImportFromASCII")
+        '
         'dlgEditBasemap
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_lblUnitCellSize)
         Me.Controls.Add(Me.m_lblUnitCellLen)
         Me.Controls.Add(Me.m_lblUnitLon)
@@ -252,6 +283,8 @@ Partial Class dlgEditBasemap
         CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudLonTL, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudLatTL, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_ts.ResumeLayout(False)
+        Me.m_ts.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -279,5 +312,8 @@ Partial Class dlgEditBasemap
     Private WithEvents m_lblUnitLon As System.Windows.Forms.Label
     Private WithEvents m_lblUnitCellLen As System.Windows.Forms.Label
     Private WithEvents m_lblUnitCellSize As System.Windows.Forms.Label
+    Private WithEvents m_ts As ScientificInterfaceShared.Controls.cEwEToolstrip
+    Private WithEvents m_tsbnImport As System.Windows.Forms.ToolStripDropDownButton
+    Private WithEvents m_tsmiImportFromASCII As System.Windows.Forms.ToolStripMenuItem
 
 End Class

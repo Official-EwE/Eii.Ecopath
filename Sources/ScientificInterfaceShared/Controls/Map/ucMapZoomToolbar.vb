@@ -408,89 +408,9 @@ Namespace Controls.Map
             Me.m_tsmiViewStretch1.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch)
             Me.m_tsmiViewStretch2.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch)
 
-            ' ToDo: update import/export buttons viz + enabled states
-            Dim bHasSelectedLayers As Boolean = False
-            Dim bHasEditableLayers As Boolean = False
-            Dim bHasLayers As Boolean = False
-
-            For Each l As cDisplayLayer In Me.m_lLayers
-                bHasSelectedLayers = bHasSelectedLayers Or l.IsSelected
-                bHasLayers = True
-                If (TypeOf l Is cDisplayRasterLayer) Then
-                    bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And DirectCast(l, cDisplayRasterLayer).Editor.IsEditable)
-                End If
-            Next
-
-            Me.m_tsbnImport.Enabled = bHasEditableLayers
-            Me.m_tsbnExport.Enabled = bHasLayers
-
         End Sub
 
 #End Region ' Internal bits
-
-        Private Sub OnImportLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnImport.Click
-
-            Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-            Dim lLayers As New List(Of cEcospaceLayer)
-            Dim layer As cEcospaceLayer = Nothing
-
-            ' For all raster layers
-            For Each l As cDisplayLayer In Me.m_lLayers
-                If (TypeOf l Is cDisplayRasterLayer) Then
-                    ' Show all bundled rasters
-                    If (TypeOf l Is cDisplayRasterLayerBundle) Then
-                        Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
-                        If rlb.Editor.IsEditable Then
-                            For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
-                                layer = rlb.Data(i)
-                                If (layer IsNot Nothing) Then
-                                    lLayers.Add(layer)
-                                End If
-                            Next
-                        End If
-                    Else
-                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
-                        If (rl.Editor.IsEditable) Then
-                            lLayers.Add(rl.Data)
-                        End If
-                    End If
-                End If
-            Next
-
-            If (lLayers.Count > 0) Then cmd.Invoke(lLayers.ToArray)
-
-        End Sub
-
-        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExport.Click
-
-            Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-            Dim lLayers As New List(Of cEcospaceLayer)
-            Dim layer As cEcospaceLayer = Nothing
-
-            For Each l As cDisplayLayer In Me.m_lLayers
-                If (TypeOf l Is cDisplayRasterLayer) Then
-                    If (TypeOf l Is cDisplayRasterLayer) Then
-                        If TypeOf l Is cDisplayRasterLayerBundle Then
-                            Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
-                            For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
-                                layer = rlb.Data(i)
-                                If (layer IsNot Nothing) Then
-                                    lLayers.Add(layer)
-                                End If
-                            Next
-                        Else
-                            Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
-                            lLayers.Add(rl.Data)
-                        End If
-                    End If
-                End If
-            Next
-
-            If (lLayers.Count > 0) Then cmd.Invoke(lLayers.ToArray)
-
-        End Sub
 
     End Class
 

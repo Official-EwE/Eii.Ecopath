@@ -1180,6 +1180,7 @@ Namespace Controls.EwEGrid
 
             Dim dobj As New DataObject()
             dobj.SetData(DataFormats.Text, sbClipText.ToString())
+            Clipboard.Clear()
             Clipboard.SetDataObject(dobj, True)
 
         End Sub

@@ -23,6 +23,7 @@
 Option Strict On
 
 Imports EwEUtils.SpatialData
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -55,6 +56,13 @@ Namespace Core
         ''' <returns>A raster.</returns>
         ''' -------------------------------------------------------------------
         Function ToRaster(Optional ByVal strField As String = "") As ISpatialRaster
+
+        ReadOnly Property CellSize As Double
+        ReadOnly Property InCol As Integer
+        ReadOnly Property InRow As Integer
+        ReadOnly Property NoDataValue As Double
+        ReadOnly Property PosTopLeft As PointF
+        ReadOnly Property ProjectionString As String
 
     End Interface
 

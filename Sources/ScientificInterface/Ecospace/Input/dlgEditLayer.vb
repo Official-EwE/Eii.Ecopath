@@ -27,9 +27,9 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -211,11 +211,6 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Import "
 
-        ' Oooh, this is nasty! Three different import methods, handled by three different classes!
-        ' ToDo: revamp this into a set of base classes that import and export one file format from or to an IRaster
-        '       This code can be used by the spatial assets plug-in to provide access to obscure data formats, wrapped as datasets
-        '       This code can be used by the core, using Joe's xD wrappers to provide access to IRaster data, to export data too
-
         Private Sub OnImportCSV(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiImportCSV.Click
             Try
@@ -229,8 +224,9 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsmiImportXYZ.Click
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, cImportLayerCommand.eImportFormatTypes.XYZ)
+                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.XYZ)
                 Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
+                Me.m_grid.RefreshContent()
             Catch ex As Exception
 
             End Try
@@ -240,16 +236,10 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsmiAsc.Click
 
             Try
-                Dim ofd As New OpenFileDialog()
-                ofd.Title = SharedResources.CAPTION_SELECT_FILE
-                ofd.Filter = SharedResources.FILEFILTER_ASCFILE
-
-                If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                    If Me.ReadASCFile(ofd.FileName) Then
-                        Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
-                        Me.m_grid.RefreshContent()
-                    End If
-                End If
+                Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
+                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.ASCII)
+                Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
+                Me.m_grid.RefreshContent()
             Catch ex As Exception
 
             End Try
@@ -272,24 +262,18 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsmiExportAsc.Click
 
             Try
-                Dim sfd As New SaveFileDialog()
-
-                sfd.CheckPathExists = True
-                sfd.Title = SharedResources.CAPTION_SELECT_FILE
-                sfd.Filter = SharedResources.FILEFILTER_ASCFILE
-
-                If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
-                    Me.WriteASCFile(sfd.FileName)
-                End If
+                Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
+                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.ASCII)
+                Me.UpdateControls()
             Catch ex As Exception
 
             End Try
         End Sub
 
-        Private Sub OnExportLayer(sender As System.Object, e As System.EventArgs) Handles m_tsmiExportXYZ.Click
+        Private Sub OnExportXYZ(sender As System.Object, e As System.EventArgs) Handles m_tsmiExportXYZ.Click
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-                cmd.Invoke(New cDisplayRasterLayer() {Me.m_layerWork})
+                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.XYZ)
                 Me.UpdateControls()
             Catch ex As Exception
 
@@ -442,223 +426,6 @@ Namespace Ecospace.Basemap.Layers
         End Function
 
 #End Region ' Internal implementation
-
-#Region " This should really live somewhere else... "
-
-        ' ToDo_JS: merge with core ASCII map logic, and build provisions to use spatial temporal framework
-        Protected Function ReadASCFile(ByVal strFilename As String) As Boolean
-
-            Dim bLoaded As Boolean
-            Dim strm As New StreamReader(strFilename)
-            Dim iNullCells As Integer
-            Dim msg As cMessage = Nothing
-
-            bLoaded = Me.ReadASCIIHeader(strm) And Me.ReadASCIIBody(strm, iNullCells)
-
-            strm.Close()
-
-            If Not bLoaded Then
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, strFilename), _
-                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
-            Else
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, strFilename), _
-                     eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
-                msg.Hyperlink = Path.GetDirectoryName(strFilename)
-
-                If (iNullCells > 0) Then
-                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                  String.Format(SharedResources.PROMPT_MAPLOAD_MISSING, iNullCells), _
-                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
-                    msg.AddVariable(vs)
-                End If
-            End If
-
-            Me.m_uic.Core.Messages.SendMessage(msg)
-            Return bLoaded
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Too hack to be true
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Function ReadASCIIHeader(ByVal reader As StreamReader) As Boolean
-            Dim bsuccess As Boolean = True
-            Dim strLine As String = ""
-            Dim bFoundData As Boolean = False
-            Try
-
-                'jb 19-Aug-2015 changed to be more robust
-                'at least it reports if the file fails to read
-                While Not reader.EndOfStream
-                    'jb Trim the line just in case. We have had files that contain a leading space in the headers. Really...
-                    strLine = reader.ReadLine.Trim
-                    If Not String.IsNullOrWhiteSpace(strLine) Then
-                        If cStringUtils.BeginsWith(strLine, "NODATA_value", True) Then
-                            bFoundData = True
-                            Exit While
-                        End If
-                    End If
-                End While
-
-                'While (String.IsNullOrWhiteSpace(strLine) Or (Not cStringUtils.BeginsWith(strLine, "NODATA_value", True))) And _
-                '(Not reader.EndOfStream)
-                '    strLine = reader.ReadLine
-                'End While
-
-            Catch ex As Exception
-                bsuccess = False
-            End Try
-
-            Return bsuccess And bFoundData
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Too hack to be true
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Function ReadASCIIBody(ByVal reader As StreamReader, ByRef nNullCells As Integer) As Boolean
-
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim exclusion As cEcospaceLayerExclusion = bm.LayerExclusion
-            Dim value As Single = 0
-            Dim strValue As String = ""
-            Dim bSuccess As Boolean = True
-            Dim isDepthLayer As Boolean = (Me.m_layerWork.VarName = eVarNameFlags.LayerDepth)
-
-            Try
-
-                For ir As Integer = 1 To bm.InRow
-                    'ASC files written by GDAL contain a space at the start of the line so strip it off
-                    'this should not affect other ASC file reading
-                    Dim strLine As String = reader.ReadLine.Trim
-                    Dim astrBits() As String = strLine.Split(" "c)
-                    For ic As Integer = 1 To Math.Min(bm.InCol, astrBits.Length)
-                        If depth.IsWaterCell(ir, ic) Or isDepthLayer Then
-                            bSuccess = bSuccess And Single.TryParse(astrBits(ic - 1), value)
-                        Else
-                            value = cCore.NULL_VALUE
-                        End If
-
-                        'jb 19-Aug-2015 when loading a new basemap 
-                        'I think it's better to load all the data 'as is'
-                        'this way you don't get fragments from any previously loaded data
-                        Me.m_layerWork.Value(ir, ic) = value
-
-                        'Count the number of null values in water cells
-                        If depth.IsWaterCell(ir, ic) And (Not exclusion.IsExcludedCell(ir, ic)) And (value = CSng(cCore.NULL_VALUE)) And Not isDepthLayer Then
-                            nNullCells += 1
-                        End If
-
-                        'Could also test to see if it actually set the value in the map
-                        'Passed all the validation rules
-                        'if  (Me.m_layerWork.Value(ir, ic) = value).....
-
-                    Next
-                Next
-            Catch ex As Exception
-                bSuccess = False
-            End Try
-            Return bSuccess
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Write an entire ASCII file for a group, time step and variable.
-        ''' </summary>
-        ''' <param name="strFileName"></param>
-        ''' -----------------------------------------------------------------------
-        Protected Sub WriteASCFile(ByVal strFileName As String)
-
-            Dim msg As cMessage = Nothing
-
-            Try
-                Using wr As New StreamWriter(strFileName)
-                    Me.WriteASCIIHeader(wr)
-                    Me.WriteASCIIBody(wr)
-                    wr.Close()
-                End Using
-
-                Using wr As New StreamWriter(Path.ChangeExtension(strFileName, ".prj"))
-                    wr.WriteLine(Me.m_uic.Core.EcospaceBasemap.ProjectionString)
-                    wr.Close()
-                End Using
-
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, strFileName), _
-                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                msg.Hyperlink = Path.GetDirectoryName(strFileName)
-
-            Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, strFileName, ex.Message), _
-                  eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
-            End Try
-
-            ' Log!
-            Me.m_uic.Core.Messages.SendMessage(msg)
-
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Write ESRI ASCII header block.
-        ''' </summary>
-        ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
-        ''' -----------------------------------------------------------------------
-        Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
-
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            writer.WriteLine("ncols         " & bm.InCol)
-            writer.WriteLine("nrows         " & bm.InRow)
-            writer.WriteLine("xllcorner     " & bm.PosTopLeft.X)
-            writer.WriteLine("yllcorner     " & bm.PosBottomRight.Y)
-            writer.WriteLine("cellsize      " & bm.CellSize)
-            writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
-
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Write ESRI ASCII body block.
-        ''' </summary>
-        ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
-        ''' -----------------------------------------------------------------------
-        Protected Sub WriteASCIIBody(ByVal writer As StreamWriter)
-
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim value As Double = 0
-            Dim strValue As String = ""
-
-            For ir As Integer = 1 To bm.InRow
-                For ic As Integer = 1 To bm.InCol
-                    If ic > 1 Then writer.Write(" ")
-                    If depth.IsWaterCell(ir, ic) Or Me.m_layerWork.VarName = eVarNameFlags.LayerDepth Then
-                        value = CSng(Me.m_layerWork.Value(ir, ic))
-                    Else
-                        value = cCore.NULL_VALUE
-                    End If
-
-                    ' Fix #1321 - always make sure the first cell value is written as floating point
-                    strValue = cStringUtils.FormatNumber(value)
-                    If (ir = 1 And ic = 1) Then
-                        If (strValue.IndexOf("."c) = -1) Then
-                            strValue = strValue + ".0"
-                        End If
-                    End If
-
-                    writer.Write(strValue)
-                Next
-                writer.WriteLine("")
-            Next
-
-        End Sub
-
-#End Region ' This should really live somewhere else...
 
     End Class
 
