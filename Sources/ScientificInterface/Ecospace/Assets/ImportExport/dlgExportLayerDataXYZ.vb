@@ -166,8 +166,6 @@ Namespace Ecospace.Basemap
 
         Private Function SaveMappedLayers() As Boolean
 
-            ' ToDo: localize this method
-
             Dim dtMappings As Dictionary(Of cEcospaceLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim lstrFields As New List(Of String)

@@ -435,9 +435,51 @@ Public Class cEcospaceImportExportXYData
     ''' -------------------------------------------------------------------
     Public Function ToRaster(Optional ByVal strField As String = "") As ISpatialRaster _
         Implements IEcospaceImportExport.ToRaster
-        Return New cEcospaceImportExportRaster(Me, Me.m_bm, strField)
+        Return New cEcospaceImportExportRaster(Me, strField)
     End Function
 
 #End Region ' Properties
+
+    Public ReadOnly Property CellSize As Double _
+        Implements EwEUtils.Core.IEcospaceImportExport.CellSize
+        Get
+            Return Me.m_bm.CellSize
+        End Get
+    End Property
+
+    Public ReadOnly Property InCol As Integer _
+        Implements EwEUtils.Core.IEcospaceImportExport.InCol
+        Get
+            Return Me.m_bm.InCol
+        End Get
+    End Property
+
+    Public ReadOnly Property InRow As Integer _
+        Implements EwEUtils.Core.IEcospaceImportExport.InRow
+        Get
+            Return Me.m_bm.InRow
+        End Get
+    End Property
+
+    Public ReadOnly Property NoDataValue As Double _
+        Implements EwEUtils.Core.IEcospaceImportExport.NoDataValue
+        Get
+            Return cCore.NULL_VALUE
+        End Get
+    End Property
+
+    Public ReadOnly Property ProjectionString As String _
+        Implements EwEUtils.Core.IEcospaceImportExport.ProjectionString
+        Get
+            Return Me.m_bm.ProjectionString
+        End Get
+    End Property
+
+    Public ReadOnly Property TopLeft As System.Drawing.PointF _
+        Implements EwEUtils.Core.IEcospaceImportExport.PosTopLeft
+        Get
+            Return Me.m_bm.PosTopLeft
+        End Get
+    End Property
 
 End Class

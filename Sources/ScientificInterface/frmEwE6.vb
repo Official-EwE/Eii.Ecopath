@@ -4218,13 +4218,28 @@ Public Class frmEwE6
         Handles m_cmdImportLayerData.OnInvoke
         Try
             Select Case Me.m_cmdImportLayerData.Format
-                Case cImportLayerCommand.eImportFormatTypes.Default, _
-                     cImportLayerCommand.eImportFormatTypes.XYZ
+                Case eNativeLayerFileFormatTypes.Default, _
+                     eNativeLayerFileFormatTypes.XYZ
                     Dim dlg As New dlgImportLayerDataXYZ(Me.UIContext)
                     dlg.Layers = Me.m_cmdImportLayerData.Layers
                     dlg.ShowDialog(Me)
-                Case cImportLayerCommand.eImportFormatTypes.ASCII
-                    ' NOP
+                Case eNativeLayerFileFormatTypes.ASCII
+                    Dim ofd As New OpenFileDialog()
+                    ofd.Title = SharedResources.CAPTION_SELECT_FILE
+                    ofd.Filter = SharedResources.FILEFILTER_ASCFILE
+                    If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                        Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
+                        If imp.Read(ofd.FileName) Then
+                            Dim rs As EwEUtils.SpatialData.ISpatialRaster = imp.ToRaster
+                            Dim l As cEcospaceLayer = Me.m_cmdImportLayerData.Layers(0)
+                            For ir As Integer = 1 To rs.NumRows
+                                For ic As Integer = 1 To rs.NumCols
+                                    l.Cell(ir, ic) = rs.Cell(ir, ic)
+                                Next
+                            Next
+                            l.Invalidate()
+                        End If
+                    End If
             End Select
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6:OnImportLayerData")
@@ -4246,9 +4261,24 @@ Public Class frmEwE6
     Private Sub OnExportLayerData(ByVal cmd As cCommand) _
         Handles m_cmdExportLayerData.OnInvoke
         Try
-            Dim dlg As New dlgExportLayerDataXYZ(Me.UIContext)
-            dlg.Layers = Me.m_cmdExportLayerData.Layers
-            dlg.ShowDialog(Me)
+            Select Case Me.m_cmdExportLayerData.Format
+                Case eNativeLayerFileFormatTypes.Default,
+                     eNativeLayerFileFormatTypes.XYZ
+                    Dim dlg As New dlgExportLayerDataXYZ(Me.UIContext)
+                    dlg.Layers = Me.m_cmdExportLayerData.Layers
+                    dlg.ShowDialog(Me)
+                Case eNativeLayerFileFormatTypes.ASCII
+                    Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(SharedResources.CAPTION_SELECT_FILE, "", SharedResources.FILEFILTER_ASCFILE)
+                    If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                        Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
+                        If imp.Read(Me.m_cmdExportLayerData.Layers(0)) Then
+                            If Not imp.Save(sfd.FileName) Then
+                                ' ToDo: throw message
+                            End If
+                        End If
+                    End If
+
+            End Select
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6:OnExportLayerData")
         End Try

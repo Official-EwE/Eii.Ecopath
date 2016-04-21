@@ -25,6 +25,8 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SpatialData
+Imports ProjNet.CoordinateSystems
 
 #End Region ' Imports
 
@@ -50,6 +52,9 @@ Public Class dlgEditBasemap
 
     Private m_bInitialized As Boolean = False
     Private m_bInUpdate As Boolean = False
+
+    ''' <summary>Imported raster, if any</summary>
+    Private m_rs As ISpatialRaster = Nothing
 
 #End Region ' Private variables
 
@@ -109,6 +114,34 @@ Public Class dlgEditBasemap
 
     End Sub
 
+    Private Sub OnImportASCIIMap(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsmiImportFromASCII.Click
+
+        Dim cmd As cFileOpenCommand = CType(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+        cmd.Invoke(SharedResources.FILEFILTER_ASCFILE)
+        If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+            Dim imp As New cEcospaceImportExportASCIIData()
+            If imp.Read(cmd.FileName) Then
+
+                Me.m_rs = imp.ToRaster()
+                Me.m_fpInCol.Value = Me.m_rs.NumCols
+                Me.m_fpInCol.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpInRow.Value = Me.m_rs.NumRows
+                Me.m_fpInRow.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpCellSize.Value = Me.m_rs.CellSize
+                Me.m_fpCellSize.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpCellLength.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpLon.Value = Me.m_rs.TopLeft.X
+                Me.m_fpLon.Style = cStyleGuide.eStyleFlags.NotEditable
+                Me.m_fpLat.Value = Me.m_rs.TopLeft.Y
+                Me.m_fpLat.Style = cStyleGuide.eStyleFlags.NotEditable
+
+            End If
+
+        End If
+
+    End Sub
+
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
         Me.Apply()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -122,23 +155,17 @@ Public Class dlgEditBasemap
 
     Private Sub OnCellLengthChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_nudCellLength.ValueChanged
-
         Me.CalcCellSize()
-
     End Sub
 
     Private Sub OnCellSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_nudCellSize.ValueChanged
-
         Me.CalcCellLength()
-
     End Sub
 
-    Private Sub OnAssumeSquareCellsChanged(sender As System.Object, e As System.EventArgs) 
-
+    Private Sub OnAssumeSquareCellsChanged(sender As System.Object, e As System.EventArgs)
         Me.CalcCellSize()
         Me.UpdateControls()
-
     End Sub
 
 #End Region ' Events 
@@ -219,8 +246,18 @@ Public Class dlgEditBasemap
         If bResizeMap Then
             cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP)
             Try
-                ' Whooohooo! if THIS is not going to cause a Tsunami...
                 Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
+
+                If (Me.m_rs IsNot Nothing) Then
+                    ' Use adapter here?
+                    Dim l As cEcospaceLayerDepth = Me.m_uic.Core.EcospaceBasemap.LayerDepth
+                    For ir As Integer = 1 To Me.m_rs.NumRows
+                        For ic As Integer = 1 To Me.m_rs.NumCols
+                            l.Cell(ir, ic) = Me.m_rs.Cell(ir, ic)
+                        Next
+                    Next
+                    l.Invalidate()
+                End If
             Catch ex As Exception
 
             End Try

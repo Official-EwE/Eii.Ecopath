@@ -28,6 +28,13 @@ Imports ScientificInterfaceShared.Commands
 
 Namespace Commands
 
+
+    Public Enum eNativeLayerFileFormatTypes As Byte
+        [Default] = 0
+        XYZ
+        ASCII
+    End Enum
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Command to invoke the 'Import Ecospace Layer Data' interface
@@ -37,16 +44,10 @@ Namespace Commands
         Inherits cCommand
 
         Private m_alayers() As cEcospaceLayer = Nothing
-        Private m_format As eImportFormatTypes = eImportFormatTypes.Default
+        Private m_format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~importLayer"
-
-        Public Enum eImportFormatTypes As Byte
-            [Default] = 0
-            XYZ
-            ASCII
-        End Enum
 
         Public Sub New(ByVal cmdh As cCommandHandler)
             MyBase.new(cmdh, cImportLayerCommand.cCOMMAND_NAME)
@@ -55,7 +56,7 @@ Namespace Commands
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(Optional format As cImportLayerCommand.eImportFormatTypes = eImportFormatTypes.Default)
+        Public Overloads Sub Invoke(Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
             Me.Invoke(Nothing, format)
         End Sub
 
@@ -64,12 +65,12 @@ Namespace Commands
         ''' <param name="alayers">The layers to import data into.</param>
         ''' ---------------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, _
-                                    Optional format As cImportLayerCommand.eImportFormatTypes = eImportFormatTypes.Default)
+                                    Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
             Me.m_alayers = alayers
             Me.m_format = format
             MyBase.Invoke()
             Me.m_alayers = Nothing
-            Me.m_format = eImportFormatTypes.Default
+            Me.m_format = eNativeLayerFileFormatTypes.Default
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -85,11 +86,11 @@ Namespace Commands
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="eImportFormatTypes">format types</see> the command was 
+        ''' Get the <see cref="eNativeLayerFileFormatTypes">format types</see> the command was 
         ''' invoked for.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property Format As eImportFormatTypes
+        Public ReadOnly Property Format As eNativeLayerFileFormatTypes
             Get
                 Return Me.m_format
             End Get

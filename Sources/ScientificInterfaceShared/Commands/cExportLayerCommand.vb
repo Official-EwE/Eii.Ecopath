@@ -40,6 +40,7 @@ Namespace Commands
         Inherits cCommand
 
         Private m_alayers() As cEcospaceLayer = Nothing
+        Private m_format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~exportLayer"
@@ -59,39 +60,13 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="alayers">The layers to export data from.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer)
+        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, _
+                                    Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
             Me.m_alayers = alayers
+            Me.m_format = format
             MyBase.Invoke()
-        End Sub
-
-        ''' ---------------------------------------------------------------------------
-        ''' <inheritdocs cref="cCommand.Invoke"/>
-        ''' <param name="arl">Array of raster layers to export data from.</param>
-        ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal arl() As cDisplayRasterLayer)
-
-            Dim layers As New List(Of cEcospaceLayer)
-            Dim layer As cEcospaceLayer = Nothing
-
-            If (arl IsNot Nothing) Then
-                For Each l As cDisplayLayer In arl
-                    If TypeOf l Is cDisplayRasterLayerBundle Then
-                        Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
-                        For i As Integer = 0 To rlb.nLayers
-                            layer = rlb.Data(i)
-                            If (layer IsNot Nothing) Then
-                                layers.Add(layer)
-                            End If
-                        Next
-                    ElseIf TypeOf l Is cDisplayRasterLayer Then
-                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
-                        layers.Add(rl.Data)
-                    End If
-                Next
-            End If
-
-            Me.Invoke(layers.ToArray)
-
+            Me.m_alayers = Nothing
+            Me.m_format = eNativeLayerFileFormatTypes.Default
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -102,6 +77,18 @@ Namespace Commands
         Public ReadOnly Property Layers() As cEcospaceLayer()
             Get
                 Return Me.m_alayers
+            End Get
+        End Property
+
+        ''' ---------------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eNativeLayerFileFormatTypes">format types</see> the command was 
+        ''' invoked for.
+        ''' </summary>
+        ''' ---------------------------------------------------------------------------
+        Public ReadOnly Property Format As eNativeLayerFileFormatTypes
+            Get
+                Return Me.m_format
             End Get
         End Property
 

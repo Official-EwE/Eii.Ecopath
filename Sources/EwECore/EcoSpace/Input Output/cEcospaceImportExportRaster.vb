@@ -39,7 +39,6 @@ Friend Class cEcospaceImportExportRaster
 #Region " Private vars "
 
     Private m_parent As IEcospaceImportExport = Nothing
-    Private m_bm As cEcospaceBasemap = Nothing
     Private m_strField As String = ""
 
     ' -- statistics --
@@ -51,14 +50,11 @@ Friend Class cEcospaceImportExportRaster
     Private m_dMean As Double = 0
     Private m_dStdDev As Double = 0
 
-
 #End Region ' Private vars
 
     Public Sub New(ByVal parent As IEcospaceImportExport, _
-                   ByVal bm As cEcospaceBasemap, _
                    Optional ByVal strField As String = "")
         Me.m_parent = parent
-        Me.m_bm = bm
         Me.m_strField = strField
     End Sub
 
@@ -77,7 +73,7 @@ Friend Class cEcospaceImportExportRaster
     ''' -----------------------------------------------------------------------
     Public Function CellSize() As Double _
          Implements EwEUtils.SpatialData.ISpatialRaster.CellSize
-        Return Me.m_bm.CellSize
+        Return Me.m_parent.CellSize
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -120,7 +116,7 @@ Friend Class cEcospaceImportExportRaster
     ''' -----------------------------------------------------------------------
     Public Function NumCols() As Integer _
         Implements EwEUtils.SpatialData.ISpatialRaster.NumCols
-        Return Me.m_bm.InCol
+        Return Me.m_parent.InCol
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -128,7 +124,7 @@ Friend Class cEcospaceImportExportRaster
     ''' -----------------------------------------------------------------------
     Public Function NumRows() As Integer _
         Implements EwEUtils.SpatialData.ISpatialRaster.NumRows
-        Return Me.m_bm.InRow
+        Return Me.m_parent.InRow
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -162,7 +158,7 @@ Friend Class cEcospaceImportExportRaster
     ''' -----------------------------------------------------------------------
     Public Function TopLeft() As System.Drawing.PointF _
         Implements EwEUtils.SpatialData.ISpatialRaster.TopLeft
-        Return Me.m_bm.PosTopLeft
+        Return Me.m_parent.PosTopLeft
     End Function
 
     ''' -----------------------------------------------------------------------
