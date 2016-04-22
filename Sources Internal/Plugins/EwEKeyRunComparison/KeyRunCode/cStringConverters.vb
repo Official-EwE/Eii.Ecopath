@@ -32,6 +32,16 @@ Imports EwEUtils.Utilities
 
 Public Class cStringConverters
 
+    Public Shared Function FormatNumber(val As Object, Optional iRelevantDecimals As Integer = 3) As String
+        If (TypeOf val Is Integer) Then Return cStringUtils.FormatInteger(CInt(val))
+        Dim d As Decimal = Decimal.Round(CDec(val), cNumberUtils.NumRelevantDecimals(val, iRelevantDecimals))
+        Return cStringUtils.FormatDouble(d)
+    End Function
+
+    Public Shared Function FormatNumber(i As Integer) As String
+        Return cStringUtils.FormatDouble(i)
+    End Function
+
     Public Shared Function ShapeToString(shapeData As cShapeData) As String
 
         If (shapeData Is Nothing) Then Return String.Empty
@@ -40,7 +50,7 @@ Public Class cStringConverters
         Dim pts As Single() = shapeData.ShapeData ' Note that ShapeData returns a copy!
         For i As Integer = 0 To shapeData.nPoints - 1
             If (sb.Length > 0) Then sb.Append(",")
-            sb.Append(cStringUtils.FormatNumber(pts(i), iNumDigits:=3, bFindRelevantDecimals:=True))
+            sb.Append(FormatNumber(pts(i)))
         Next
 
         ' Do not add the individual points; the string will become unusable in length for any practical purpose. 
@@ -54,7 +64,6 @@ Public Class cStringConverters
         sb.Append(cStringConverters.InteractionToString(interaction.PreyIndex, "i", interaction.PreyIndex, "j", appl))
         sb.Append(cStringConverters.ForcingFunctionToString(ForcingFunction))
         Return sb.ToString
-
     End Function
 
 
@@ -63,7 +72,6 @@ Public Class cStringConverters
         sb.Append(cStringConverters.InteractionToString(interaction.PredIndex, "i", interaction.PreyIndex, "j", appl))
         sb.Append(cStringConverters.ForcingFunctionToString(ForcingFunction))
         Return sb.ToString
-
     End Function
 
 
@@ -76,9 +84,9 @@ Public Class cStringConverters
     End Function
 
     Private Shared Function InteractionToString(iA As Integer, Astr As String, iB As Integer, Bstr As String, appl As eForcingFunctionApplication) As String
-        Return Astr & "=" & cStringUtils.FormatNumber(iA) & _
-                 "," & Bstr & "=" & cStringUtils.FormatNumber(iB) & _
-                  ",a=" & cStringUtils.FormatNumber(CInt(appl))
+        Return Astr & "=" & FormatNumber(iA) & _
+                 "," & Bstr & "=" & FormatNumber(iB) & _
+                  ",a=" & FormatNumber(CInt(appl))
     End Function
 
     Private Shared Function ForcingFunctionToString(MedFunc As cMediationFunction) As String
@@ -127,10 +135,10 @@ Public Class cStringConverters
 
                 If (TypeOf layer Is cEcospaceLayerVector) Then
                     Dim vector As Single() = DirectCast(value, Single())
-                    sb.Append(cStringUtils.FormatNumber(vector(0), iNumDigits:=3, bFindRelevantDecimals:=True))
-                    sb.Append(cStringUtils.FormatNumber(vector(1), iNumDigits:=3, bFindRelevantDecimals:=True))
+                    sb.Append(FormatNumber(vector(0)))
+                    sb.Append(FormatNumber(vector(1)))
                 Else
-                    sb.Append(cStringUtils.FormatNumber(layer.Cell(iRow, iCol), iNumDigits:=3, bFindRelevantDecimals:=True))
+                    sb.Append(FormatNumber(layer.Cell(iRow, iCol)))
                 End If
             Next
         Next
@@ -150,9 +158,9 @@ Public Class cStringConverters
         sb.Append(",")
         sb.Append("c=" & cStringConverters.ConverterToString(conn.Converter))
         sb.Append(",")
-        sb.Append("s=" & cStringUtils.FormatNumber(conn.Scale, iNumDigits:=3, bFindRelevantDecimals:=True))
+        sb.Append("s=" & FormatNumber(conn.Scale))
         sb.Append(",")
-        sb.Append("t=" & cStringUtils.FormatNumber(conn.ScaleType))
+        sb.Append("t=" & FormatNumber(conn.ScaleType))
         Return sb.ToString()
 
     End Function

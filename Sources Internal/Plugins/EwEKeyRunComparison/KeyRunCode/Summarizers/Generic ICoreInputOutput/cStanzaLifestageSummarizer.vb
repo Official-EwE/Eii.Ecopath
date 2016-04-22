@@ -70,7 +70,7 @@ Public Class cStanzaLifestageSummarizer
                     Try
                         Dim value As Object = sg.GetVariable(var, k)
                         If (j > 0) Then sb.Append("|")
-                        sb.Append(cStringUtils.ToCSVField(value, iNumDigits:=3, bFindRelevantDecimals:=True))
+                        sb.Append(cStringConverters.FormatNumber(value))
                     Catch ex As Exception
                         Debug.Assert(False, Me.ToString() & ".HashString() Failed to find variable for Core object " & sg.ToString() & " variable " & var.ToString())
                     End Try

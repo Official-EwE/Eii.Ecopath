@@ -134,7 +134,7 @@ Public Class cHashValues
     End Sub
 
     Public Function ToRecordString() As String
-        Return FILE_RECORD_TAG & "," & cStringUtils.ToCSVField(Me.SortOrder) & "," & cStringUtils.ToCSVField(Me.Component) & "," & cStringUtils.ToCSVField(Me.VariableID) & "," & cStringUtils.ToCSVField(Me.Hash)
+        Return FILE_RECORD_TAG & "," & cStringConverters.FormatNumber(Me.SortOrder) & "," & cStringUtils.ToCSVField(Me.Component) & "," & cStringUtils.ToCSVField(Me.VariableID) & "," & cStringUtils.ToCSVField(Me.Hash)
     End Function
 
     Public Function FromRecordString(Record As String) As Boolean

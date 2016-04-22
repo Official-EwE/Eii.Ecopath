@@ -97,7 +97,7 @@ Public MustInherit Class cCoreIOSummarizerBase
                 Try
                     Dim value As Object = obj.GetVariable(var)
                     If (j > 0) Then sb.Append("|")
-                    sb.Append(cStringUtils.ToCSVField(value, iNumDigits:=3, bFindRelevantDecimals:=True))
+                    sb.Append(cStringConverters.FormatNumber(value))
                 Catch ex As Exception
                     Debug.Assert(False, Me.ToString() & ".HashString() Failed to find variable for Core object " & obj.ToString() & " variable " & var.ToString())
                 End Try
@@ -129,7 +129,7 @@ Public MustInherit Class cCoreIOSummarizerBase
                     For k As Integer = 1 To n
                         Dim value As Object = obj.GetVariable(var, k)
                         If (k > 1) Then sb.Append(",")
-                        sb.Append(cStringUtils.ToCSVField(value, iNumDigits:=3, bFindRelevantDecimals:=True))
+                        sb.Append(cStringConverters.FormatNumber(value))
                     Next
                 Catch ex As Exception
                     Debug.Assert(False, Me.ToString() & ".HashString() Failed to find variable for Core object " & obj.ToString() & " variable " & var.ToString())

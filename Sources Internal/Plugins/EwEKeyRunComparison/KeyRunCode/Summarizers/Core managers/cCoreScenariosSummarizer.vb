@@ -48,8 +48,8 @@ Public Class cCoreScenariosSummarizer
         Dim sbSummary As New Text.StringBuilder()
         Dim lstHashValues As New List(Of cHashValues)
 
-        sbSummary.Append("EcosimScenario," & cStringUtils.ToCSVField(Me.m_core.ActiveEcosimScenarioIndex))
-        sbSummary.Append("EcospaceScenario," & cStringUtils.ToCSVField(Me.m_core.ActiveEcospaceScenarioIndex))
+        sbSummary.Append("EcosimScenario," & cStringConverters.FormatNumber(Me.m_core.ActiveEcosimScenarioIndex))
+        sbSummary.Append("EcospaceScenario," & cStringConverters.FormatNumber(Me.m_core.ActiveEcospaceScenarioIndex))
 
         lstHashValues.Add(New cHashValues(Me.Name, "Scenarios", sbSummary.ToString))
         Return lstHashValues.ToArray

@@ -60,10 +60,10 @@ Public Class cTimeSeriesSummarizer
             If (ts.Enabled) Then
                 If (sbSummary.Length > 0) Then sbSummary.Append("|")
 
-                sbSummary.Append("p=" & cStringUtils.FormatNumber(CInt(ts.DatPool)))
-                sbSummary.Append(",t=" & cStringUtils.FormatNumber(CInt(ts.DataType)))
-                sbSummary.Append(",w=" & cStringUtils.FormatNumber(ts.WtType))
-                sbSummary.Append(",c=" & cStringUtils.FormatNumber(ts.CV))
+                sbSummary.Append("p=" & cStringConverters.FormatNumber(CInt(ts.DatPool)))
+                sbSummary.Append(",t=" & cStringConverters.FormatNumber(CInt(ts.DataType)))
+                sbSummary.Append(",w=" & cStringConverters.FormatNumber(ts.WtType))
+                sbSummary.Append(",c=" & cStringConverters.FormatNumber(ts.CV))
                 sbSummary.Append(",data=" & cStringConverters.ShapeToString(ts))
             End If
         Next i
