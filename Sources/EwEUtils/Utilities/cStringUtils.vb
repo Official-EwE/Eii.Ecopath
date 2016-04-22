@@ -542,8 +542,9 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Generic conversion helper, converts a number into a string using
-        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' Generic conversion helper, converts a decimal value into a string with
+        ''' a given number of releveant decimal digits, and custom decimal and
+        ''' thousand separators.
         ''' </summary>
         ''' <param name="value"></param>
         ''' <returns></returns>
@@ -551,15 +552,14 @@ Namespace Utilities
         Public Shared Function FormatNumber(ByVal value As Object,
                                             Optional ByVal strDecimalSeparator As String = ".",
                                             Optional ByVal strThousandsSeparator As String = "",
-                                            Optional ByVal iNumDigits As Integer = -9999, _
-                                            Optional ByVal bFindRelevantDecimals As Boolean = False) As String
+                                            Optional ByVal iNumDigits As Integer = -9999) As String
 
             If (Convert.IsDBNull(value)) Then Return ""
 
             If TypeOf value Is Single Then
-                Return FormatSingle(CSng(value), strDecimalSeparator, strThousandsSeparator, iNumDigits, bFindRelevantDecimals)
+                Return FormatSingle(CSng(value), strDecimalSeparator, strThousandsSeparator, iNumDigits)
             ElseIf TypeOf value Is Double Then
-                Return FormatDouble(CDbl(value), strDecimalSeparator, strThousandsSeparator, iNumDigits, bFindRelevantDecimals)
+                Return FormatDouble(CDbl(value), strDecimalSeparator, strThousandsSeparator, iNumDigits)
             End If
             Return FormatInteger(CInt(value), strDecimalSeparator, strThousandsSeparator)
 
@@ -594,9 +594,10 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Generic conversion helper, converts a single value into a string using
-        ''' the fixed EwE number format of decimal points, using custom decimal and
-        ''' thousands separators.
+        ''' Generic conversion helper, converts a decimal value into a string with
+        ''' a given number of releveant decimal digits, and custom decimal and
+        ''' thousand separators.
+        ''' <seealso cref="FormatSingle"/>
         ''' <seealso cref="FormatDouble"/>
         ''' <seealso cref="FormatNumber"/>
         ''' </summary>
@@ -607,17 +608,13 @@ Namespace Utilities
         ''' this separator is not used.</param>
         ''' <param name="iNumDigits">Number of decimal digits to use, or zero if
         ''' formatting should show as many digits as needed.</param>
-        ''' <param name="bFindRelevantDecimals">Flag, stating if formatting should
-        ''' show no more than <paramref name="iNumDigits">relevant decimals</paramref>.
-        ''' <seealso cref="cNumberUtils.NumRelevantDecimals"/>
         ''' </param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FormatSingle(ByVal sValue As Single,
-                                            Optional ByVal strDecimalSeparator As String = ".",
-                                            Optional ByVal strThousandsSeparator As String = "",
-                                            Optional ByVal iNumDigits As Integer = -9999, _
-                                            Optional ByVal bFindRelevantDecimals As Boolean = False) As String
+        Public Shared Function FormatDecimal(ByVal decValue As Decimal,
+                                             Optional ByVal strDecimalSeparator As String = ".",
+                                             Optional ByVal strThousandsSeparator As String = "",
+                                             Optional ByVal iNumDigits As Integer = -9999) As String
 
             Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
@@ -625,18 +622,60 @@ Namespace Utilities
             ni.NumberDecimalSeparator = strDecimalSeparator
             ni.NumberGroupSeparator = strThousandsSeparator
 
-            If (bFindRelevantDecimals) Then iNumDigits = cNumberUtils.NumRelevantDecimals(sValue, iNumDigits)
             If (iNumDigits > 0) Then ni.NumberDecimalDigits = iNumDigits
 
-            Return sValue.ToString("N", ni)
+            ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
+            ' to determine the number of relevant digits (which is what we want) while Decimal.Format 
+            ' rounds to ni.NumberDecimalDigits (which is what we DON NOT want)
+            Return Convert.ToString(decValue, ni)
 
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Generic conversion helper, converts a double value into a string using
-        ''' the fixed EwE number format of decimal points, using custom decimal and
-        ''' thousands separators.
+        ''' Generic conversion helper, converts a decimal value into a string with
+        ''' a given number of releveant decimal digits, and custom decimal and
+        ''' thousand separators.
+        ''' <seealso cref="FormatDecimal"/>
+        ''' <seealso cref="FormatDouble"/>
+        ''' <seealso cref="FormatNumber"/>
+        ''' </summary>
+        ''' <param name="sValue">The value to format into a string.</param>
+        ''' <param name="strDecimalSeparator">Decimal separator to use. Default is 
+        ''' a point.</param>
+        ''' <param name="strThousandsSeparator">Thousands separator to use. By default
+        ''' this separator is not used.</param>
+        ''' <param name="iNumDigits">Number of decimal digits to use, or zero if
+        ''' formatting should show as many digits as needed.</param>
+        ''' </param>
+        ''' <returns>A formatted value.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatSingle(ByVal sValue As Single,
+                                            Optional ByVal strDecimalSeparator As String = ".",
+                                            Optional ByVal strThousandsSeparator As String = "",
+                                            Optional ByVal iNumDigits As Integer = -9999) As String
+
+            Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
+            Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+
+            ni.NumberDecimalSeparator = strDecimalSeparator
+            ni.NumberGroupSeparator = strThousandsSeparator
+
+            If (iNumDigits > 0) Then ni.NumberDecimalDigits = iNumDigits
+
+            ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
+            ' to determine the number of relevant digits (which is what we want) while Single.Format 
+            ' rounds to ni.NumberDecimalDigits (which is what we DON NOT want)
+            Return Convert.ToString(sValue, ni)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generic conversion helper, converts a double value into a string with
+        ''' a given number of releveant decimal digits, and custom decimal and
+        ''' thousand separators.
+        ''' <seealso cref="FormatDecimal"/>
         ''' <seealso cref="FormatSingle"/>
         ''' <seealso cref="FormatNumber"/>
         ''' </summary>
@@ -647,8 +686,6 @@ Namespace Utilities
         ''' this separator is not used.</param>
         ''' <param name="iNumDigits">Number of decimal digits to use, or zero if
         ''' formatting should show as many digits as needed.</param>
-        ''' <param name="bFindRelevantDecimals">Flag, stating if formatting should
-        ''' show no more than <paramref name="iNumDigits">relevant decimals</paramref>.
         ''' <seealso cref="cNumberUtils.NumRelevantDecimals"/>
         ''' </param>
         ''' <returns>A formatted value.</returns>
@@ -656,8 +693,7 @@ Namespace Utilities
         Public Shared Function FormatDouble(ByVal dValue As Double,
                                             Optional ByVal strDecimalSeparator As String = ".",
                                             Optional ByVal strThousandsSeparator As String = "",
-                                            Optional ByVal iNumDigits As Integer = -9999, _
-                                            Optional ByVal bFindRelevantDecimals As Boolean = False) As String
+                                            Optional ByVal iNumDigits As Integer = -9999) As String
 
             Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
             Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
@@ -665,10 +701,12 @@ Namespace Utilities
             ni.NumberDecimalSeparator = strDecimalSeparator
             ni.NumberGroupSeparator = strThousandsSeparator
 
-            If (bFindRelevantDecimals) Then iNumDigits = cNumberUtils.NumRelevantDecimals(dValue, iNumDigits)
-            If (iNumDigits > 0) Then ni.NumberDecimalDigits = iNumDigits
+            If (iNumDigits >= 0) Then ni.NumberDecimalDigits = iNumDigits
 
-            Return dValue.ToString("N", ni)
+            ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
+            ' to determine the number of relevant digits (which is what we want) while Double.Format 
+            ' rounds to ni.NumberDecimalDigits (which is what we DON NOT want)
+            Return Convert.ToString(dValue, ni)
 
         End Function
 
@@ -847,8 +885,6 @@ Namespace Utilities
         ''' <param name="objValue">The value to format.</param>
         ''' <param name="cQuote">Optional quote character to use for wrapping the value.</param>
         ''' <param name="iNumDigits">Optional number of decimal digits to limit formatting to.</param>
-        ''' <param name="bFindRelevantDecimals">Flag, stating if the relevant number of <paramref name="iNumDigits"/> 
-        ''' needs to be detected automatically.</param>
         ''' <returns>A field fit for display in a CSV file.</returns>
         ''' <remarks>
         ''' <para>Numbers will be en-US formatted.</para>
@@ -858,8 +894,7 @@ Namespace Utilities
         ''' -----------------------------------------------------------------------
         Public Shared Function ToCSVField(ByVal objValue As Object,
                                           Optional ByVal cQuote As Char = """"c,
-                                          Optional iNumDigits As Integer = -9999,
-                                          Optional bFindRelevantDecimals As Boolean = False) As String
+                                          Optional iNumDigits As Integer = -9999) As String
 
             Dim strValue As String = ""
 
@@ -882,7 +917,6 @@ Namespace Utilities
             ElseIf (TypeOf (objValue) Is DateTime) Then
                 strValue = cStringUtils.FormatDate(DirectCast(objValue, DateTime))
             Else
-                If bFindRelevantDecimals Then iNumDigits = cNumberUtils.NumRelevantDecimals(CDbl(objValue), iNumDigits)
                 strValue = cStringUtils.FormatNumber(objValue, iNumDigits:=iNumDigits)
             End If
 
