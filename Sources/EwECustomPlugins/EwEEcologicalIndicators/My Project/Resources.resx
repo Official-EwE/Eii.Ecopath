@@ -373,15 +373,15 @@
     <value>Select location for storing CSV output </value>
   </data>
   <data name="STATUS_INVALID_FOLDER" xml:space="preserve">
-    <value>Biodiversity indicators plugin cannot write to folder '{0}'</value>
+    <value>Ecological indicators plugin cannot write to folder '{0}'</value>
     <comment>{0}: folder name</comment>
   </data>
   <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
-    <value>{0} biodiversity indicators saved to '{1}'</value>
+    <value>{0} ecological indicators saved to '{1}'</value>
     <comment>{0}: component name; {1}: file name</comment>
   </data>
   <data name="STATUS_SAVE_FAILED" xml:space="preserve">
-    <value>Failed to save {0} biodiversity indicators. {1}</value>
+    <value>Failed to save {0} ecological indicators. {1}</value>
     <comment>{0}: component name; {1}: exception message</comment>
   </data>
   <data name="IND_KEMPTONQ_DESC" xml:space="preserve">
@@ -394,10 +394,10 @@
     <value>Trial</value>
   </data>
   <data name="CAPTION" xml:space="preserve">
-    <value>Biodiversity indicators</value>
+    <value>Ecological indicators</value>
   </data>
   <data name="CAPTION_INFO" xml:space="preserve">
-    <value>Computes biodiversity indicators for Ecopath, Ecosim, Ecospace and Monte Carlo</value>
+    <value>Computes ecological indicators for Ecopath, Ecosim, Ecospace and Monte Carlo</value>
   </data>
   <data name="HEADER_TRIAL_N" xml:space="preserve">
     <value>Trial {0}: {1}</value>
