@@ -189,8 +189,8 @@ Public Class dlgEcobaseImport
 
         Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
         Me.m_tstbSearch.Enabled = (Me.m_filter <> eFilterTypes.None)
-
-        Me.m_rtfAgreement.Text = Me.m_strUserAgreement
+        'Jerome Passage du USer Agreement en RTF 25/04/2011
+        Me.m_rtfAgreement.Rtf = Me.m_strUserAgreement
         Me.m_cbEcoBaseAgreement.Enabled = Not String.IsNullOrWhiteSpace(Me.m_strUserAgreement)
 
         ' Populate model controls
@@ -718,4 +718,7 @@ Public Class dlgEcobaseImport
 
 #End Region ' Internals
 
+    Private Sub dlgEcobaseImport_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class
