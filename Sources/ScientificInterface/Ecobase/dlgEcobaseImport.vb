@@ -189,7 +189,7 @@ Public Class dlgEcobaseImport
 
         Me.m_tsddValue.Text = Me.FilterItemText(Me.m_filter)
         Me.m_tstbSearch.Enabled = (Me.m_filter <> eFilterTypes.None)
-        'Jerome Passage du USer Agreement en RTF 25/04/2011
+        '--Change text to rtf to enable some text formatting user agreemnt Jerome 25/04/2016
         Me.m_rtfAgreement.Rtf = Me.m_strUserAgreement
         Me.m_cbEcoBaseAgreement.Enabled = Not String.IsNullOrWhiteSpace(Me.m_strUserAgreement)
 
@@ -719,6 +719,10 @@ Public Class dlgEcobaseImport
 #End Region ' Internals
 
     Private Sub dlgEcobaseImport_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub m_rtfAgreement_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_rtfAgreement.TextChanged
 
     End Sub
 End Class
