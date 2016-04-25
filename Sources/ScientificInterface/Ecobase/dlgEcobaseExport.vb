@@ -270,7 +270,10 @@ Public Class dlgEcobaseExport
         ' -- Ecobase page --
         Dim bAgreementOK As Boolean = Me.m_cbAuthorAgreement.Checked
 
-        Me.m_rtfAuthorAgreement.Text = Me.m_strAuthorAgreement
+        '--CHangement pour prise en compte de la mise en forme user agreemnt
+        Me.m_rtfAuthorAgreement.Rtf = Me.m_strAuthorAgreement
+
+
         Me.m_pbModelName.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
         Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
 
@@ -730,4 +733,11 @@ Public Class dlgEcobaseExport
 
 #End Region
 
+    Private Sub dlgEcobaseExport_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub m_rtfAuthorAgreement_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_rtfAuthorAgreement.TextChanged
+
+    End Sub
 End Class
