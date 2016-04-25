@@ -270,7 +270,7 @@ Public Class dlgEcobaseExport
         ' -- Ecobase page --
         Dim bAgreementOK As Boolean = Me.m_cbAuthorAgreement.Checked
 
-        '--CHangement pour prise en compte de la mise en forme user agreemnt
+        '--Change text to rtf to enable some text formatting user agreemnt Jerome 25/04/2016
         Me.m_rtfAuthorAgreement.Rtf = Me.m_strAuthorAgreement
 
 
