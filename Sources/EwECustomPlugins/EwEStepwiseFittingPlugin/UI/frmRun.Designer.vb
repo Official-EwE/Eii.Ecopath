@@ -50,25 +50,30 @@ Partial Class frmRun
         Me.m_plModel = New System.Windows.Forms.Panel()
         Me.m_hdrEwE = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_plConfig = New System.Windows.Forms.Panel()
-        Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
-        Me.m_lblAnomalyShape = New System.Windows.Forms.Label()
         Me.m_btnSelectFishing = New System.Windows.Forms.Button()
         Me.m_btnSelectBaseline = New System.Windows.Forms.Button()
-        Me.m_cbEnableAbsBioforBaseline = New System.Windows.Forms.CheckBox()
         Me.m_btnSelectVandA = New System.Windows.Forms.Button()
         Me.m_btnSelectA = New System.Windows.Forms.Button()
         Me.m_btnSelectV = New System.Windows.Forms.Button()
-        Me.m_btnTS = New System.Windows.Forms.Button()
         Me.m_grid = New EwEStepwiseFittingPlugin.gridRun()
         Me.m_plRun = New System.Windows.Forms.Panel()
         Me.m_cmbAutoSave = New System.Windows.Forms.ComboBox()
         Me.m_lblAutoSave = New System.Windows.Forms.Label()
+        Me.m_plSettings = New System.Windows.Forms.Panel()
+        Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
+        Me.m_lblAnomalyShape = New System.Windows.Forms.Label()
+        Me.m_cbEnableAbsBioforBaseline = New System.Windows.Forms.CheckBox()
+        Me.m_btnTS = New System.Windows.Forms.Button()
+        Me.m_nudK = New System.Windows.Forms.NumericUpDown()
+        Me.m_lblNumVars = New System.Windows.Forms.Label()
         Me.m_btnClearAll = New System.Windows.Forms.Button()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
         Me.m_plConfig.SuspendLayout()
         Me.m_plRun.SuspendLayout()
+        Me.m_plSettings.SuspendLayout()
+        CType(Me.m_nudK, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModel
@@ -114,9 +119,9 @@ Partial Class frmRun
         '
         'm_hdrIterations
         '
-        resources.ApplyResources(Me.m_hdrIterations, "m_hdrIterations")
         Me.m_hdrIterations.CanCollapseParent = False
         Me.m_hdrIterations.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrIterations, "m_hdrIterations")
         Me.m_hdrIterations.IsCollapsed = False
         Me.m_hdrIterations.Name = "m_hdrIterations"
         '
@@ -178,9 +183,9 @@ Partial Class frmRun
         '
         'm_hdrParameters
         '
-        resources.ApplyResources(Me.m_hdrParameters, "m_hdrParameters")
         Me.m_hdrParameters.CanCollapseParent = False
         Me.m_hdrParameters.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrParameters, "m_hdrParameters")
         Me.m_hdrParameters.IsCollapsed = False
         Me.m_hdrParameters.Name = "m_hdrParameters"
         '
@@ -213,8 +218,9 @@ Partial Class frmRun
         '
         resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
         Me.m_tlpContent.Controls.Add(Me.m_plModel, 0, 0)
-        Me.m_tlpContent.Controls.Add(Me.m_plConfig, 0, 1)
-        Me.m_tlpContent.Controls.Add(Me.m_plRun, 0, 2)
+        Me.m_tlpContent.Controls.Add(Me.m_plConfig, 0, 2)
+        Me.m_tlpContent.Controls.Add(Me.m_plRun, 0, 3)
+        Me.m_tlpContent.Controls.Add(Me.m_plSettings, 0, 1)
         Me.m_tlpContent.Name = "m_tlpContent"
         '
         'm_plModel
@@ -241,39 +247,17 @@ Partial Class frmRun
         'm_plConfig
         '
         resources.ApplyResources(Me.m_plConfig, "m_plConfig")
-        Me.m_plConfig.Controls.Add(Me.m_cmbAnomalyShape)
-        Me.m_plConfig.Controls.Add(Me.m_lblAnomalyShape)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectFishing)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectBaseline)
-        Me.m_plConfig.Controls.Add(Me.m_cbEnableAbsBioforBaseline)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectVandA)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectA)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectV)
-        Me.m_plConfig.Controls.Add(Me.m_btnTS)
-        Me.m_plConfig.Controls.Add(Me.m_hdrParameters)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectNone)
-        Me.m_plConfig.Controls.Add(Me.m_lblStepSize)
         Me.m_plConfig.Controls.Add(Me.m_btnSelectAll)
-        Me.m_plConfig.Controls.Add(Me.m_lblSearchBy)
         Me.m_plConfig.Controls.Add(Me.m_grid)
-        Me.m_plConfig.Controls.Add(Me.m_nudStepSize)
         Me.m_plConfig.Controls.Add(Me.m_btnApply)
-        Me.m_plConfig.Controls.Add(Me.m_rbPredPrey)
-        Me.m_plConfig.Controls.Add(Me.m_rbPredator)
         Me.m_plConfig.Controls.Add(Me.m_hdrIterations)
         Me.m_plConfig.Name = "m_plConfig"
-        '
-        'm_cmbAnomalyShape
-        '
-        Me.m_cmbAnomalyShape.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbAnomalyShape.FormattingEnabled = True
-        resources.ApplyResources(Me.m_cmbAnomalyShape, "m_cmbAnomalyShape")
-        Me.m_cmbAnomalyShape.Name = "m_cmbAnomalyShape"
-        '
-        'm_lblAnomalyShape
-        '
-        resources.ApplyResources(Me.m_lblAnomalyShape, "m_lblAnomalyShape")
-        Me.m_lblAnomalyShape.Name = "m_lblAnomalyShape"
         '
         'm_btnSelectFishing
         '
@@ -286,12 +270,6 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_btnSelectBaseline, "m_btnSelectBaseline")
         Me.m_btnSelectBaseline.Name = "m_btnSelectBaseline"
         Me.m_btnSelectBaseline.UseVisualStyleBackColor = True
-        '
-        'm_cbEnableAbsBioforBaseline
-        '
-        resources.ApplyResources(Me.m_cbEnableAbsBioforBaseline, "m_cbEnableAbsBioforBaseline")
-        Me.m_cbEnableAbsBioforBaseline.Name = "m_cbEnableAbsBioforBaseline"
-        Me.m_cbEnableAbsBioforBaseline.UseVisualStyleBackColor = True
         '
         'm_btnSelectVandA
         '
@@ -310,12 +288,6 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_btnSelectV, "m_btnSelectV")
         Me.m_btnSelectV.Name = "m_btnSelectV"
         Me.m_btnSelectV.UseVisualStyleBackColor = True
-        '
-        'm_btnTS
-        '
-        resources.ApplyResources(Me.m_btnTS, "m_btnTS")
-        Me.m_btnTS.Name = "m_btnTS"
-        Me.m_btnTS.UseVisualStyleBackColor = True
         '
         'm_grid
         '
@@ -373,6 +345,60 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_lblAutoSave, "m_lblAutoSave")
         Me.m_lblAutoSave.Name = "m_lblAutoSave"
         '
+        'm_plSettings
+        '
+        Me.m_plSettings.Controls.Add(Me.m_cmbAnomalyShape)
+        Me.m_plSettings.Controls.Add(Me.m_lblAnomalyShape)
+        Me.m_plSettings.Controls.Add(Me.m_cbEnableAbsBioforBaseline)
+        Me.m_plSettings.Controls.Add(Me.m_hdrParameters)
+        Me.m_plSettings.Controls.Add(Me.m_btnTS)
+        Me.m_plSettings.Controls.Add(Me.m_rbPredPrey)
+        Me.m_plSettings.Controls.Add(Me.m_rbPredator)
+        Me.m_plSettings.Controls.Add(Me.m_lblSearchBy)
+        Me.m_plSettings.Controls.Add(Me.m_nudK)
+        Me.m_plSettings.Controls.Add(Me.m_lblNumVars)
+        Me.m_plSettings.Controls.Add(Me.m_nudStepSize)
+        Me.m_plSettings.Controls.Add(Me.m_lblStepSize)
+        resources.ApplyResources(Me.m_plSettings, "m_plSettings")
+        Me.m_plSettings.Name = "m_plSettings"
+        '
+        'm_cmbAnomalyShape
+        '
+        Me.m_cmbAnomalyShape.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbAnomalyShape.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cmbAnomalyShape, "m_cmbAnomalyShape")
+        Me.m_cmbAnomalyShape.Name = "m_cmbAnomalyShape"
+        '
+        'm_lblAnomalyShape
+        '
+        resources.ApplyResources(Me.m_lblAnomalyShape, "m_lblAnomalyShape")
+        Me.m_lblAnomalyShape.Name = "m_lblAnomalyShape"
+        '
+        'm_cbEnableAbsBioforBaseline
+        '
+        resources.ApplyResources(Me.m_cbEnableAbsBioforBaseline, "m_cbEnableAbsBioforBaseline")
+        Me.m_cbEnableAbsBioforBaseline.Name = "m_cbEnableAbsBioforBaseline"
+        Me.m_cbEnableAbsBioforBaseline.UseVisualStyleBackColor = True
+        '
+        'm_btnTS
+        '
+        resources.ApplyResources(Me.m_btnTS, "m_btnTS")
+        Me.m_btnTS.Name = "m_btnTS"
+        Me.m_btnTS.UseVisualStyleBackColor = True
+        '
+        'm_nudK
+        '
+        resources.ApplyResources(Me.m_nudK, "m_nudK")
+        Me.m_nudK.Maximum = New Decimal(New Integer() {25, 0, 0, 0})
+        Me.m_nudK.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudK.Name = "m_nudK"
+        Me.m_nudK.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_lblNumVars
+        '
+        resources.ApplyResources(Me.m_lblNumVars, "m_lblNumVars")
+        Me.m_lblNumVars.Name = "m_lblNumVars"
+        '
         'm_btnClearAll
         '
         resources.ApplyResources(Me.m_btnClearAll, "m_btnClearAll")
@@ -393,9 +419,11 @@ Partial Class frmRun
         Me.m_plModel.ResumeLayout(False)
         Me.m_plModel.PerformLayout()
         Me.m_plConfig.ResumeLayout(False)
-        Me.m_plConfig.PerformLayout()
         Me.m_plRun.ResumeLayout(False)
         Me.m_plRun.PerformLayout()
+        Me.m_plSettings.ResumeLayout(False)
+        Me.m_plSettings.PerformLayout()
+        CType(Me.m_nudK, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -439,4 +467,7 @@ Partial Class frmRun
     Private WithEvents m_btnSelectFishing As System.Windows.Forms.Button
     Private WithEvents m_cmbAnomalyShape As System.Windows.Forms.ComboBox
     Friend WithEvents m_lblAnomalyShape As System.Windows.Forms.Label
+    Private WithEvents m_plSettings As System.Windows.Forms.Panel
+    Private WithEvents m_nudK As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_lblNumVars As System.Windows.Forms.Label
 End Class

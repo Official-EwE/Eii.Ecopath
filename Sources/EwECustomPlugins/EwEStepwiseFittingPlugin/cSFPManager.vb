@@ -223,21 +223,13 @@ Public Class cSFPManager
     ''' <summary>
     ''' Set the value of PredOrPredPreySSToV from selected String
     ''' </summary>
-    Public Sub SetPredOrPredPreySSToV(ByVal SSToVChoice As String)
+    Public Sub SetPredOrPredPreySSToV(mode As FitToTimeSeries.eRunType)
 
-        ' ToDo: how about using an enum here? ;)
-
-        Dim choice As String = SSToVChoice
-        Select Case choice
-
-            Case "Predator"
-                Me.Parameters.PredOrPredPreySSToV = True
-                Console.WriteLine("Sensitivity of SS to V set by : " & choice)
-
-            Case "Predator/Prey"
-                Me.Parameters.PredOrPredPreySSToV = False
-                Console.WriteLine("Sensitivity of SS to V set by : " & choice)
-
+        Select Case mode
+            Case FitToTimeSeries.eRunType.SensitivitySS2VByPredPrey
+                Me.Parameters.SStoVSearchMode = FitToTimeSeries.eRunType.SensitivitySS2VByPredPrey
+            Case Else
+                Me.Parameters.SStoVSearchMode = FitToTimeSeries.eRunType.SensitivitySS2VByPredator
         End Select
 
     End Sub
@@ -254,6 +246,34 @@ Public Class cSFPManager
         End Set
     End Property
 
+    Public Property EnableAbsoluteBiomass As Boolean
+        Get
+            Return Me.Parameters.EnableAbsoluteBiomass
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.Parameters.EnableAbsoluteBiomass) Then
+                Me.Parameters.EnableAbsoluteBiomass = value
+                Me.Parameters.CalculateParameters()
+                Me.LoadSFPIterationsList()
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the current K to use
+    ''' </summary>
+    Public Property K As Integer
+        Get
+            Return Me.Parameters.K
+        End Get
+        Set(value As Integer)
+            value = Math.Max(Me.Parameters.MinK, value)
+            If (value <> Me.Parameters.K) Then
+                Me.Parameters.K = value
+                Me.LoadSFPIterationsList()
+            End If
+        End Set
+    End Property
 #End Region ' Load user inputs
 
 #Region " Load to EwE state "
@@ -312,7 +332,7 @@ Public Class cSFPManager
         msg.Hyperlink = Me.OutputFolder
         Dim bSuccess As Boolean
 
-        Debug.WriteLine("Number of Observations = " & Parameters.NumberOfObservationsValue)
+        Debug.WriteLine("Number of Observations = " & Parameters.NumberOfObservations)
 
         ' Set a core batch lock to keep the state monitor busy. This keeps the stop option enabled
         ' Note: the busy flag depends either on the core search mode or a core batch lock.
@@ -349,7 +369,7 @@ Public Class cSFPManager
 
                     'Changed Runstate to running instead of error as it confuses the users
                     Iteration.RunState = ISFPIterations.eRunState.Running
-                    Iteration.Init(m_core, m_iTimeSeries, Me.Parameters.PredOrPredPreySSToV, Parameters, m_frmMain)
+                    Iteration.Init(m_core, m_iTimeSeries, Me.Parameters.SStoVSearchMode, Parameters, m_frmMain)
                     Iteration.Load()
                     If Iteration.Run() Then
                         If (Not m_bStopRun) Then
@@ -475,7 +495,7 @@ Public Class cSFPManager
             m_iterations.Add(New cSFPEcosimRun(m_bIsFishing))
 
             'Load Fishing Vunerability Search iterations
-            For i = Parameters.MinKValue To Parameters.MaxKValue
+            For i = Parameters.MinK To Parameters.K
                 m_iterations.Add(New cSFPVulnerabilitySearch(m_bIsFishing, i))
             Next
 
@@ -483,15 +503,15 @@ Public Class cSFPManager
             If (Parameters.AppliedShape IsNot Nothing) Then
 
                 'Load Fishing Anomaly Search iterations
-                For i = Parameters.MinSplinePointsValue To Parameters.MaxSplinePointsValue Step Parameters.AnomalySearchSplineStepSize
+                For i = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
                     m_iterations.Add(New cSFPAnomalySearch(m_bIsFishing, i))
                 Next
 
                 'Load Fishing V and A Search iterations
-                For i = Parameters.MinKValue To Parameters.MaxKValue
-                    For j = Parameters.MinSplinePointsValue To Parameters.MaxSplinePointsValue Step Parameters.AnomalySearchSplineStepSize
+                For i = Parameters.MinK To Parameters.K
+                    For j = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
                         Dim estParams As Integer = i + j
-                        If estParams <= Parameters.MaxKValue Then
+                        If estParams <= Parameters.K Then
                             m_iterations.Add(New cSFPVandASearch(m_bIsFishing, i, j))
                         End If
                     Next
@@ -503,7 +523,7 @@ Public Class cSFPManager
             m_iterations.Add(New cSFPEcosimRun(m_bIsBaseline))
 
             'Load Baseline Vunerability Search iterations
-            For i = Parameters.MinKValue To Parameters.MaxKValue
+            For i = Parameters.MinK To Parameters.K
                 m_iterations.Add(New cSFPVulnerabilitySearch(m_bIsBaseline, i))
             Next
 
@@ -511,15 +531,15 @@ Public Class cSFPManager
             If (Parameters.AppliedShape IsNot Nothing) Then
 
                 'Load Baseline Anomaly Search iterations
-                For i = Parameters.MinSplinePointsValue To Parameters.MaxSplinePointsValue Step Parameters.AnomalySearchSplineStepSize
+                For i = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
                     m_iterations.Add(New cSFPAnomalySearch(m_bIsBaseline, i))
                 Next
 
                 'Load Baseline V and A Search iterations
-                For i = Parameters.MinKValue To Parameters.MaxKValue
-                    For j = Parameters.MinSplinePointsValue To Parameters.MaxSplinePointsValue Step Parameters.AnomalySearchSplineStepSize
+                For i = Parameters.MinK To Parameters.K
+                    For j = Parameters.MinSplinePoints To Parameters.MaxSplinePoints Step Parameters.AnomalySearchSplineStepSize
                         Dim estParams As Integer = i + j
-                        If estParams <= Parameters.MaxKValue Then
+                        If estParams <= Parameters.K Then
                             m_iterations.Add(New cSFPVandASearch(m_bIsBaseline, i, j))
                         End If
                     Next
@@ -645,7 +665,7 @@ Public Class cSFPManager
                 ' Include default header if needed
                 If Me.m_core.SaveWithFileHeader Then
                     writer.WriteLine(m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Parameters.NumberOfObservationsValue))
+                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Parameters.NumberOfObservations))
                 End If
 
                 ' -- Write header --
@@ -1189,7 +1209,7 @@ Public Class cSFPManager
                 ' Include default header if needed
                 If Me.m_core.SaveWithFileHeader Then
                     writer.WriteLine(m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Parameters.NumberOfObservationsValue))
+                    writer.WriteLine(cStringUtils.ToCSVField("Number of Observations") & "," & cStringUtils.ToCSVField(Parameters.NumberOfObservations))
                 End If
 
                 ' -- Write header --
