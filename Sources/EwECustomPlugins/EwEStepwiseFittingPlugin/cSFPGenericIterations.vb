@@ -40,7 +40,7 @@ Public MustInherit Class cSFPGenericIterations
     Protected m_core As cCore
     Protected m_iTimeSeries As Integer
     Protected m_F2TSManager As cF2TSManager
-    Protected m_bPredOrPredPreySSToV As Boolean
+    Protected m_bSearchPred As Boolean
     Public Property Parameters As cSFPParameters Implements ISFPIterations.Parameters
 
     Public Property k As Integer = 0 Implements ISFPIterations.K
@@ -72,13 +72,15 @@ Public MustInherit Class cSFPGenericIterations
     ''' <param name="SSToVChoice"></param>
     ''' <param name="Params"></param>
     ''' -----------------------------------------------------------------------
-    Protected Sub Initiate(ByVal c As EwECore.cCore, ByVal tsi As Integer, ByVal SSToVChoice As Boolean, ByVal Params As cSFPParameters, ByVal frmUI As Form) _
+    Protected Sub Initiate(ByVal c As EwECore.cCore, ByVal tsi As Integer,
+                           ByVal SSToVChoice As EwECore.FitToTimeSeries.eRunType,
+                           ByVal Params As cSFPParameters, ByVal frmUI As Form) _
         Implements ISFPIterations.Init
 
         'Get variables needed for SFP iteration
         m_core = c
         m_iTimeSeries = tsi
-        m_bPredOrPredPreySSToV = SSToVChoice
+        m_bSearchPred = (SSToVChoice = eRunType.SensitivitySS2VByPredator)
         Parameters = Params
         m_F2TSManager = m_core.EcosimFitToTimeSeries
         m_F2TSManager.Connect(frmUI, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
@@ -249,14 +251,14 @@ Public MustInherit Class cSFPGenericIterations
         Dim BSuccess As Boolean = False
 
         'Set the number of blocks selected to Max K
-        m_F2TSManager.nBlockCodes = Parameters.MaxKValue
+        m_F2TSManager.nBlockCodes = Parameters.K
 
         'If PredOrPredPreySSToV = true then run SS2VBy Predator
-        If m_bPredOrPredPreySSToV Then
+        If m_bSearchPred Then
             If m_F2TSManager.RunSensitivitySS2VByPredator(True, TriState.False) Then
                 Debug.Assert(Not m_F2TSManager.IsRunning)
                 'Set vulnerabiltiy blocks
-                m_F2TSManager.setNBlocksFromSensitivity(Parameters.MaxKValue)
+                m_F2TSManager.setNBlocksFromSensitivity(Parameters.K)
                 BSuccess = True
             End If
             'Else run SS2VBy Pred/Prey
@@ -264,7 +266,7 @@ Public MustInherit Class cSFPGenericIterations
             If m_F2TSManager.RunSensitivitySS2VByPredPrey(True, TriState.False) Then
                 Debug.Assert(Not m_F2TSManager.IsRunning)
                 'Set vulnerabiltiy blocks
-                m_F2TSManager.setNBlocksFromSensitivity(Parameters.MaxKValue)
+                m_F2TSManager.setNBlocksFromSensitivity(Parameters.K)
                 BSuccess = True
             End If
         End If
@@ -656,7 +658,7 @@ Public MustInherit Class cSFPGenericIterations
         Debug.Assert(Me.m_core IsNot Nothing)
         Debug.Assert(Me.Parameters IsNot Nothing)
 
-        Dim nData As Integer = Parameters.NumberOfObservationsValue
+        Dim nData As Integer = Parameters.NumberOfObservations
 
         'If simple run
         If (EstimatedV = 0 And SplinePoints = 0) Then
@@ -684,7 +686,7 @@ Public MustInherit Class cSFPGenericIterations
         Debug.Assert(Me.m_core IsNot Nothing)
         Debug.Assert(Me.Parameters IsNot Nothing)
 
-        Dim nData As Integer = Parameters.NumberOfObservationsValue
+        Dim nData As Integer = Parameters.NumberOfObservations
         Dim answer As Single = 0
 
         'If simple run
