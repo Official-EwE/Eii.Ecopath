@@ -601,14 +601,13 @@ Namespace Utilities
         ''' <seealso cref="FormatDouble"/>
         ''' <seealso cref="FormatNumber"/>
         ''' </summary>
-        ''' <param name="sValue">The value to format into a string.</param>
+        ''' <param name="decValue">The value to format into a string.</param>
         ''' <param name="strDecimalSeparator">Decimal separator to use. Default is 
         ''' a point.</param>
         ''' <param name="strThousandsSeparator">Thousands separator to use. By default
         ''' this separator is not used.</param>
         ''' <param name="iNumDigits">Number of decimal digits to use, or zero if
         ''' formatting should show as many digits as needed.</param>
-        ''' </param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatDecimal(ByVal decValue As Decimal,
@@ -647,7 +646,6 @@ Namespace Utilities
         ''' this separator is not used.</param>
         ''' <param name="iNumDigits">Number of decimal digits to use, or zero if
         ''' formatting should show as many digits as needed.</param>
-        ''' </param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatSingle(ByVal sValue As Single,
@@ -687,7 +685,6 @@ Namespace Utilities
         ''' <param name="iNumDigits">Number of decimal digits to use, or zero if
         ''' formatting should show as many digits as needed.</param>
         ''' <seealso cref="cNumberUtils.NumRelevantDecimals"/>
-        ''' </param>
         ''' <returns>A formatted value.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FormatDouble(ByVal dValue As Double,
