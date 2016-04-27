@@ -472,13 +472,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblStepSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>349, 26</value>
+    <value>349, 53</value>
   </data>
   <data name="m_lblStepSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>109, 13</value>
   </data>
   <data name="m_lblStepSize.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_lblStepSize.Text" xml:space="preserve">
     <value>&amp;Spline point step size:</value>
@@ -496,13 +496,13 @@
     <value>11</value>
   </data>
   <data name="m_nudStepSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 24</value>
+    <value>464, 50</value>
   </data>
   <data name="m_nudStepSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 20</value>
   </data>
   <data name="m_nudStepSize.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_nudStepSize.Name" xml:space="preserve">
     <value>m_nudStepSize</value>
@@ -997,7 +997,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.5.13643.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
+    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.5.13626.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -1234,13 +1234,13 @@
     <value>4</value>
   </data>
   <data name="m_nudK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 50</value>
+    <value>464, 24</value>
   </data>
   <data name="m_nudK.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 20</value>
   </data>
   <data name="m_nudK.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_nudK.Name" xml:space="preserve">
     <value>m_nudK</value>
@@ -1261,13 +1261,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNumVars.Location" type="System.Drawing.Point, System.Drawing">
-    <value>349, 52</value>
+    <value>349, 26</value>
   </data>
   <data name="m_lblNumVars.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 13</value>
   </data>
   <data name="m_lblNumVars.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="m_lblNumVars.Text" xml:space="preserve">
     <value>&amp;No. vars to estimate:</value>

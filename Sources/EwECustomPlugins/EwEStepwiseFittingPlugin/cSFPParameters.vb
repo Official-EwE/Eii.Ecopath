@@ -49,20 +49,20 @@ Public Class cSFPParameters
     Private m_ts As cTimeSeriesDataset = Nothing
     Private m_core As cCore
 
-    Private m_iCurrentK As Integer
+    Private m_iK As Integer
     Private m_iMinK As Integer
     Private m_iMaxK As Integer
 
-    Private m_iMaxSplinePoints As Integer
-
     'MinSplinePoints set to 2 as 0 causes overestimates and need more spline points than 1
     Private m_iMinSplinePoints As Integer = 2
-    Private m_iObservations As Integer
+    Private m_iMaxSplinePoints As Integer = 0
+    Private m_iObservations As Integer = 0
 
 #End Region ' Private vars
 
     Public Sub New(ByVal c As EwECore.cCore)
         Me.m_core = c
+        'Console.WriteLine("New SFPParameters instance created")
     End Sub
 
     ''' <summary>
@@ -78,9 +78,10 @@ Public Class cSFPParameters
             'Console.WriteLine("SFPParameters now has reference to SFPManager time series")
         End If
 
-        CalculateRangeOfK()
+        CalculateOptimalK()
         CalculateMaxSplinePoints()
         CalculateNumberOfObservations()
+        CalculateMaxK()
 
         'Console.WriteLine("SFPParameters calculated estimated parameters")
 
@@ -89,12 +90,12 @@ Public Class cSFPParameters
     End Function
 
     ''' <summary>
-    ''' Calculate the values of Max and Min K from time series dataset of time series of type 0,1,5,6 and 7 
+    ''' Calculate the values of Min K and K from time series dataset of time series of type 0,1,5,6 and 7 
     ''' </summary>
-    Private Sub CalculateRangeOfK()
+    Private Sub CalculateOptimalK()
 
-        m_iMinK = 1
-        m_iCurrentK = 0
+        Me.m_iK = 0
+        Me.m_iMinK = 1
 
         ' Make fail-safe
         If (Me.m_ts Is Nothing) Then Return
@@ -123,10 +124,11 @@ Public Class cSFPParameters
             End Select
         Next
 
+        Me.m_iK = count - 1
         Me.m_iMinK = count - (count - 1)
-        Me.m_iCurrentK = Math.Max(Me.m_iMinK, count - 1)
-        ' ToDo: #vars - 1
-        Me.m_iMaxK = Me.m_iCurrentK * 10
+
+        'Console.WriteLine("Number of max k Parameters to estimate: " & m_iMaxK.ToString)
+        'Console.WriteLine("Number of min k Parameters to estimate: " & m_iMinK.ToString)
 
     End Sub
 
@@ -136,21 +138,18 @@ Public Class cSFPParameters
     ''' </summary>
     Private Sub CalculateMaxSplinePoints()
 
-        m_iMaxSplinePoints = 0
+        Me.m_iMaxSplinePoints = 0
 
         ' Make fail-safe
         If (Me.m_ts Is Nothing) Then Return
 
-        Dim years As Integer
-        years = m_ts.NumPoints - 1
-        Console.WriteLine("Number of years in time series: " & years.ToString)
-        If m_iCurrentK > years Then
-            m_iMaxSplinePoints = years
-        Else
-            m_iMaxSplinePoints = m_iCurrentK
-        End If
+        Dim years As Integer = m_ts.NumPoints - 1
+        'Console.WriteLine("Number of years in time series: " & years.ToString)
+        Me.m_iMaxSplinePoints = Math.Min(Me.m_iK, years)
+
         'Console.WriteLine("Number of Max spline points: " & m_iMaxSplinePoints.ToString)
         'Console.WriteLine("Number of Min spline points: " & m_iMinSplinePoints.ToString)
+
     End Sub
 
     ''' <summary>
@@ -191,16 +190,27 @@ Public Class cSFPParameters
             End Select
 
         Next
+
         'Console.WriteLine("Num: " & Num.ToString)
         'Console.WriteLine("Total Number of Observations: " & m_iObservations.ToString)
+
+    End Sub
+
+    ''' <summary>
+    ''' Calculate the value of Max K from the number of observations
+    ''' </summary>
+    Private Sub CalculateMaxK()
+        Me.m_iMaxK = Me.m_iObservations - 1
     End Sub
 
     ''' <summary>
     ''' Calculate the number of observations/data points within a time series
     ''' </summary>
     Private Sub AddToObservations(ByVal ts As cTimeSeries)
+
         Dim tsdatapoints As Single()
         Dim count As Integer
+
         'Go through each data point of the time series
         For j As Integer = 1 To ts.nPoints
             'Get copy of datapoints
@@ -212,15 +222,17 @@ Public Class cSFPParameters
         Next
         'Add number of data points from this time seires to the total number of observations
         m_iObservations += count
+
         'Console.WriteLine("Number of Observations from : " & ts.Name & " = " & count.ToString)
+
     End Sub
 
     Public Property K As Integer
         Get
-            Return Me.m_iCurrentK
+            Return Math.Min(Math.Max(Me.MinK, Me.m_iK), Me.MaxK)
         End Get
         Set(value As Integer)
-            Me.m_iCurrentK = value
+            Me.m_iK = value
         End Set
     End Property
 
@@ -259,16 +271,16 @@ Public Class cSFPParameters
     ''' </summary>
     Public Property AppliedShape() As cShapeData
 
-    Public Property EnableAbsoluteBiomass As Boolean = False
+    Public Property EnableAbsoluteBiomass As Boolean
 
 #Region " Persistent configuration "
 
-    Public Property SStoVSearchMode As EwECore.FitToTimeSeries.eRunType
+    Public Property PredOrPredPreySSToV As Boolean
         Get
-            Return CType(My.Settings.SearchSStoVMode, FitToTimeSeries.eRunType)
+            Return My.Settings.PredOrPredPreySSToV
         End Get
-        Set(ByVal value As EwECore.FitToTimeSeries.eRunType)
-            My.Settings.SearchSStoVMode = value
+        Set(ByVal value As Boolean)
+            My.Settings.PredOrPredPreySSToV = value
         End Set
     End Property
 

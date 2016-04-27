@@ -64,9 +64,7 @@ Public Interface ISFPIterations
     ''' <param name="SSToVChoice"></param>
     ''' <param name="Params"></param>
     ''' -----------------------------------------------------------------------
-    Sub Init(ByVal c As cCore, ByVal tsi As Integer,
-             ByVal SSToVChoice As EwECore.FitToTimeSeries.eRunType,
-             ByVal Params As cSFPParameters, ByVal mFrm As Form)
+    Sub Init(ByVal c As cCore, ByVal tsi As Integer, ByVal SSToVChoice As Boolean, ByVal Params As cSFPParameters, ByVal mFrm As Form)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
