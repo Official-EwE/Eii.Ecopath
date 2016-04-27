@@ -67,7 +67,9 @@ Friend Class cKeystone3
 
             dSum = 0
             For j As Integer = 1 To data.NumLiving
-                dSum += network.MTI(i, j) ^ 2
+                If (i <> j) Then
+                    dSum += (network.MTI(i, j) * network.MTI(i, j))
+                End If
             Next
             g.Epsilon = CSng(Math.Sqrt(dSum))
 
@@ -76,9 +78,9 @@ Friend Class cKeystone3
 
         lGroups.Sort(New cGroupComparer())
 
-        For i As Integer = 1 To data.NumLiving
-            g = lGroups(i - 1)
-            g.BC = i
+        For i As Integer = 0 To data.NumLiving - 1
+            g = lGroups(i)
+            g.BC = data.NumLiving - i
             g.K3 = g.Epsilon * g.BC
             network.KeystoneIndex3(g.Index) = g.K3
         Next
