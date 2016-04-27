@@ -82,7 +82,7 @@ Friend Class cKeystone3
             g = lGroups(i)
             g.BC = data.NumLiving - i
             g.K3 = g.Epsilon * g.BC
-            network.KeystoneIndex3(g.Index) = g.K3
+            network.KeystoneIndex3(g.Index) = Math.Log10(g.K3)
         Next
 
     End Sub

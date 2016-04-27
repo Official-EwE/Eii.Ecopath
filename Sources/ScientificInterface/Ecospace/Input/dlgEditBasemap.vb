@@ -26,7 +26,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.SpatialData
-Imports ProjNet.CoordinateSystems
 
 #End Region ' Imports
 
