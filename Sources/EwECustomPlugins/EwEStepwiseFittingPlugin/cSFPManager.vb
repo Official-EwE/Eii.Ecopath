@@ -97,16 +97,9 @@ Public Class cSFPManager
     ''' Load the model in the selected file and keep a reference of the file path
     ''' </summary>
     ''' <returns>True if load successful</returns>
-    Public Function LoadModel(ByVal MFileName As String) As Boolean
-        m_strModelFileName = MFileName
-        'Try to load the model in the selected file
-        If m_core.LoadModel(m_strModelFileName) Then
-            Console.WriteLine("Model: " & m_core.EwEModel.Name & " Loaded successfully")
-            Return True
-        Else
-            Console.WriteLine("Model did not load")
-            Return False
-        End If
+    Public Function LoadModel(ByVal strFileName As String) As Boolean
+        Me.m_strModelFileName = strFileName
+        Return Me.m_core.LoadModel(m_strModelFileName)
     End Function
 
     ''' <summary>
@@ -120,15 +113,11 @@ Public Class cSFPManager
         If m_core.LoadEcosimScenario(iScenario) Then
             'Store a reference to scenario in SFPManager
             m_scenario = m_core.EcosimScenarios(iScenario)
-            Console.WriteLine("Ecosim Scenario : " & m_scenario.Name & " Loaded successfully")
             Return True
-        Else
-            Console.WriteLine("Ecosim Scenario could not Load")
-            Return False
         End If
+        Return False
 
     End Function
-
 
     ''' <summary>
     ''' Gets a list of names of all the Ecosim Scenarios from the core
@@ -167,7 +156,7 @@ Public Class cSFPManager
             bSuccess = False
         End If
 
-        Me.Refresh()
+        Me.Refresh(0)
         Return bSuccess
 
     End Function
@@ -230,15 +219,27 @@ Public Class cSFPManager
 
             Case "Predator"
                 Me.Parameters.PredOrPredPreySSToV = True
-                Console.WriteLine("Sensitivity of SS to V set by : " & choice)
+                'Console.WriteLine("Sensitivity of SS to V set by : " & choice)
 
             Case "Predator/Prey"
                 Me.Parameters.PredOrPredPreySSToV = False
-                Console.WriteLine("Sensitivity of SS to V set by : " & choice)
+                'Console.WriteLine("Sensitivity of SS to V set by : " & choice)
 
         End Select
 
     End Sub
+
+    Public Property K As Integer
+        Get
+            Return Me.Parameters.K
+        End Get
+        Set(value As Integer)
+            If (value <> Me.Parameters.K) Then
+                Me.Parameters.K = value
+                Me.Refresh(Me.K)
+            End If
+        End Set
+    End Property
 
     Public Property AnomalySearchSplineStepSize As Integer
         Get
@@ -247,14 +248,14 @@ Public Class cSFPManager
         Set(ByVal value As Integer)
             If (value <> Me.Parameters.AnomalySearchSplineStepSize) Then
                 Me.Parameters.AnomalySearchSplineStepSize = value
-                Me.LoadSFPIterationsList()
+                Me.Refresh(Me.K)
             End If
         End Set
     End Property
 
-    Public Sub Refresh()
+    Public Sub Refresh(ByVal iPrefK As Integer)
         ' Always do this
-        Me.Parameters.CalculateParameters()
+        Me.Parameters.CalculateParameters(iPrefK)
         ' Create list of ISFPIterations
         Me.LoadSFPIterationsList()
     End Sub
@@ -270,7 +271,7 @@ Public Class cSFPManager
         If (Me.m_core.StateMonitor.HasEcosimLoaded) Then
             Me.m_scenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
             Me.m_iTimeSeries = Me.m_core.ActiveTimeSeriesDatasetIndex
-            Me.Refresh()
+            Me.Refresh(0)
         Else
             Me.m_scenario = Nothing
             Me.m_iTimeSeries = -1
@@ -306,7 +307,7 @@ Public Class cSFPManager
         msg.Hyperlink = Me.OutputFolder
         Dim bSuccess As Boolean
 
-        Debug.WriteLine("Number of Observations = " & Parameters.NumberOfObservations)
+        'Debug.WriteLine("Number of Observations = " & Parameters.NumberOfObservations)
 
         ' Set a core batch lock to keep the state monitor busy. This keeps the stop option enabled
         ' Note: the busy flag depends either on the core search mode or a core batch lock.

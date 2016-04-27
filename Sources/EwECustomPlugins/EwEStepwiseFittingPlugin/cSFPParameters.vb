@@ -68,7 +68,7 @@ Public Class cSFPParameters
     ''' <summary>
     ''' Calculate the values of estimated parameters from time series dataset and find applied shape
     ''' </summary>
-    Public Function CalculateParameters() As Boolean
+    Public Function CalculateParameters(ByVal iPrefK As Integer) As Boolean
 
         If (Me.m_core.ActiveTimeSeriesDatasetIndex < 1) Then
             Me.m_ts = Nothing
@@ -78,7 +78,7 @@ Public Class cSFPParameters
             'Console.WriteLine("SFPParameters now has reference to SFPManager time series")
         End If
 
-        CalculateOptimalK()
+        CalculateOptimalK(iPrefK)
         CalculateMaxSplinePoints()
         CalculateNumberOfObservations()
         CalculateMaxK()
@@ -92,7 +92,7 @@ Public Class cSFPParameters
     ''' <summary>
     ''' Calculate the values of Min K and K from time series dataset of time series of type 0,1,5,6 and 7 
     ''' </summary>
-    Private Sub CalculateOptimalK()
+    Private Sub CalculateOptimalK(ByVal iPrefK As Integer)
 
         Me.m_iK = 0
         Me.m_iMinK = 1
@@ -124,7 +124,11 @@ Public Class cSFPParameters
             End Select
         Next
 
-        Me.m_iK = count - 1
+        If (iPrefK <= 0) Then
+            Me.m_iK = count - 1
+        Else
+            Me.m_iK = iPrefK
+        End If
         Me.m_iMinK = count - (count - 1)
 
         'Console.WriteLine("Number of max k Parameters to estimate: " & m_iMaxK.ToString)

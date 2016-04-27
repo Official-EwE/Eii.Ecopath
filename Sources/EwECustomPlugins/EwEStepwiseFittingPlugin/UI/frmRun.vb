@@ -48,6 +48,7 @@ Public Class frmRun
     Private m_engine As cSFPManager = Nothing
     Private m_plugin As cSFPPluginPoint = Nothing
     Private m_runmode As eRunMode = eRunMode.NotSet
+    Private m_bInUpdate As Boolean = False
 
     Private WithEvents m_cmdLoadTS As cCommand = Nothing
 
@@ -164,6 +165,9 @@ Public Class frmRun
     Public Overloads Sub UpdateControls()
         MyBase.UpdateControls()
 
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
+
         Dim bHasTimeSeries As Boolean = (Me.m_engine.TSIndex >= 1)
         Dim bHasEnabledIterations As Boolean = False
         Dim bHasEnabledIterationSelected As Boolean = False
@@ -173,6 +177,7 @@ Public Class frmRun
         Dim bContainsAnomaly As Boolean = False
         Dim bContainsVul As Boolean = False
         Dim bIsRunning As Boolean = (Me.m_engine.IsRunning)
+        Dim parms As cSFPParameters = Me.m_engine.Parameters
 
         Dim it As ISFPIterations = Nothing
         For Each it In Me.m_engine.Iterations
@@ -195,6 +200,15 @@ Public Class frmRun
         For Each it In Me.m_engine.Iterations
             bHasEnabledIterations = bHasEnabledIterations Or it.Enabled
         Next
+
+        Try
+            Me.m_nudK.Enabled = (parms.MaxK > parms.MinK)
+            Me.m_nudK.Minimum = parms.MinK
+            Me.m_nudK.Maximum = parms.MaxK
+            Me.m_nudK.Value = parms.K
+        Catch ex As Exception
+
+        End Try
 
         ' -- Entire UI --
         Me.m_tlpContent.Enabled = Not bIsRunning
@@ -223,6 +237,8 @@ Public Class frmRun
 
         'Enable Absolute Biomass time series check box when time series are loaded
         Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
+
+        Me.m_bInUpdate = False
 
     End Sub
 
@@ -361,11 +377,10 @@ Public Class frmRun
 
         ' Safety catch: Numeric updown controls throw events on creation. Aargh.
         If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
 
         Try
-            Dim iNumSteps As Integer = CInt(Me.m_nudStepSize.Value)
-            'Console.WriteLine("Step size changed to " & iNumSteps)
-            Me.m_engine.AnomalySearchSplineStepSize = iNumSteps
+            Me.m_engine.AnomalySearchSplineStepSize = CInt(Me.m_nudStepSize.Value)
             Me.m_grid.RefreshContent()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -374,15 +389,16 @@ Public Class frmRun
 
     End Sub
 
-    Private Sub OnKChanged(sender As System.Object, e As System.EventArgs) Handles m_nudK.ValueChanged
+    Private Sub OnKChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_nudK.ValueChanged
 
         ' Safety catch: Numeric updown controls throw events on creation. Aargh.
         If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_bInUpdate) Then Return
+
 
         Try
-            Dim iNumSteps As Integer = CInt(Me.m_nudStepSize.Value)
-            'Console.WriteLine("Step size changed to " & iNumSteps)
-            Me.m_engine.AnomalySearchSplineStepSize = iNumSteps
+            Me.m_engine.K = CInt(Me.m_nudK.Value)
             Me.m_grid.RefreshContent()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -586,7 +602,7 @@ Public Class frmRun
 
         Try
             Me.m_engine.Parameters.EnableAbsoluteBiomass = Me.m_cbEnableAbsBioforBaseline.Checked
-            Me.m_engine.Refresh()
+            Me.m_engine.Refresh(Me.m_engine.K)
             Me.m_grid.RefreshContent()
             Me.UpdateControls()
         Catch ex As Exception
