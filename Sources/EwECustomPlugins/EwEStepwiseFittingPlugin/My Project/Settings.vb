@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,11 +21,17 @@
 '
 ' Erin Scott was funded by the Scottish Informatics and Computer Science
 ' Alliance (SICSA) Postgraduate Industry Internship Programme.
+'
+' Stepwise Fitting Procedure by Sheila Heymans, Erin Scott, Jeroen Steenbeek
+' Copyright 2015- Scottish Association for Marine Science, Oban, Scotland
+'
+' Erin Scott was funded by the Scottish Informatics and Computer Science
+' Alliance (SICSA) Postgraduate Industry Internship Programme.
 ' ===============================================================================
 '
 Imports System.IO
-Imports EwEUtils
 Imports System.Reflection
+Imports EwEUtils
 
 Namespace My
 

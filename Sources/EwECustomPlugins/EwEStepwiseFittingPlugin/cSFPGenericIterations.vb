@@ -40,7 +40,7 @@ Public MustInherit Class cSFPGenericIterations
     Protected m_core As cCore
     Protected m_iTimeSeries As Integer
     Protected m_F2TSManager As cF2TSManager
-    Protected m_bSearchPred As Boolean
+    Protected m_bPredOrPredPreySSToV As Boolean
     Public Property Parameters As cSFPParameters Implements ISFPIterations.Parameters
 
     Public Property k As Integer = 0 Implements ISFPIterations.K
@@ -72,15 +72,13 @@ Public MustInherit Class cSFPGenericIterations
     ''' <param name="SSToVChoice"></param>
     ''' <param name="Params"></param>
     ''' -----------------------------------------------------------------------
-    Protected Sub Initiate(ByVal c As EwECore.cCore, ByVal tsi As Integer,
-                           ByVal SSToVChoice As EwECore.FitToTimeSeries.eRunType,
-                           ByVal Params As cSFPParameters, ByVal frmUI As Form) _
+    Protected Sub Initiate(ByVal c As EwECore.cCore, ByVal tsi As Integer, ByVal SSToVChoice As Boolean, ByVal Params As cSFPParameters, ByVal frmUI As Form) _
         Implements ISFPIterations.Init
 
         'Get variables needed for SFP iteration
         m_core = c
         m_iTimeSeries = tsi
-        m_bSearchPred = (SSToVChoice = eRunType.SensitivitySS2VByPredator)
+        m_bPredOrPredPreySSToV = SSToVChoice
         Parameters = Params
         m_F2TSManager = m_core.EcosimFitToTimeSeries
         m_F2TSManager.Connect(frmUI, AddressOf OnRunStarted, AddressOf OnRunStep, AddressOf OnRunStopped, AddressOf OnModelRun)
@@ -254,7 +252,7 @@ Public MustInherit Class cSFPGenericIterations
         m_F2TSManager.nBlockCodes = Parameters.K
 
         'If PredOrPredPreySSToV = true then run SS2VBy Predator
-        If m_bSearchPred Then
+        If m_bPredOrPredPreySSToV Then
             If m_F2TSManager.RunSensitivitySS2VByPredator(True, TriState.False) Then
                 Debug.Assert(Not m_F2TSManager.IsRunning)
                 'Set vulnerabiltiy blocks

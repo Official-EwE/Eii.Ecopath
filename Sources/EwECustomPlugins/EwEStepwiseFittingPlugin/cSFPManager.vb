@@ -26,19 +26,17 @@
 #Region " Imports "
 
 Option Strict On
+Option Explicit On
 
-Imports EwECore
-Imports System.Xml
-Imports System.Xml.Serialization
 Imports System.IO
-Imports EwEUtils.Utilities
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports System.Windows.Forms
-Imports EwEUtils.SystemUtilities
-Imports EwECore.Ecosim
-Imports EwECore.Ecosim.cEcosimResultWriter
 Imports System.Text
+Imports System.Windows.Forms
+Imports EwECore
+Imports EwECore.Ecosim
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -169,7 +167,7 @@ Public Class cSFPManager
             bSuccess = False
         End If
 
-        Me.UpdateParameters()
+        Me.Refresh()
         Return bSuccess
 
     End Function
@@ -223,13 +221,21 @@ Public Class cSFPManager
     ''' <summary>
     ''' Set the value of PredOrPredPreySSToV from selected String
     ''' </summary>
-    Public Sub SetPredOrPredPreySSToV(mode As FitToTimeSeries.eRunType)
+    Public Sub SetPredOrPredPreySSToV(ByVal SSToVChoice As String)
 
-        Select Case mode
-            Case FitToTimeSeries.eRunType.SensitivitySS2VByPredPrey
-                Me.Parameters.SStoVSearchMode = FitToTimeSeries.eRunType.SensitivitySS2VByPredPrey
-            Case Else
-                Me.Parameters.SStoVSearchMode = FitToTimeSeries.eRunType.SensitivitySS2VByPredator
+        ' ToDo: how about using an enum here? ;)
+
+        Dim choice As String = SSToVChoice
+        Select Case choice
+
+            Case "Predator"
+                Me.Parameters.PredOrPredPreySSToV = True
+                Console.WriteLine("Sensitivity of SS to V set by : " & choice)
+
+            Case "Predator/Prey"
+                Me.Parameters.PredOrPredPreySSToV = False
+                Console.WriteLine("Sensitivity of SS to V set by : " & choice)
+
         End Select
 
     End Sub
@@ -246,34 +252,13 @@ Public Class cSFPManager
         End Set
     End Property
 
-    Public Property EnableAbsoluteBiomass As Boolean
-        Get
-            Return Me.Parameters.EnableAbsoluteBiomass
-        End Get
-        Set(value As Boolean)
-            If (value <> Me.Parameters.EnableAbsoluteBiomass) Then
-                Me.Parameters.EnableAbsoluteBiomass = value
-                Me.Parameters.CalculateParameters()
-                Me.LoadSFPIterationsList()
-            End If
-        End Set
-    End Property
+    Public Sub Refresh()
+        ' Always do this
+        Me.Parameters.CalculateParameters()
+        ' Create list of ISFPIterations
+        Me.LoadSFPIterationsList()
+    End Sub
 
-    ''' <summary>
-    ''' Get/set the current K to use
-    ''' </summary>
-    Public Property K As Integer
-        Get
-            Return Me.Parameters.K
-        End Get
-        Set(value As Integer)
-            value = Math.Max(Me.Parameters.MinK, value)
-            If (value <> Me.Parameters.K) Then
-                Me.Parameters.K = value
-                Me.LoadSFPIterationsList()
-            End If
-        End Set
-    End Property
 #End Region ' Load user inputs
 
 #Region " Load to EwE state "
@@ -285,7 +270,7 @@ Public Class cSFPManager
         If (Me.m_core.StateMonitor.HasEcosimLoaded) Then
             Me.m_scenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
             Me.m_iTimeSeries = Me.m_core.ActiveTimeSeriesDatasetIndex
-            Me.UpdateParameters()
+            Me.Refresh()
         Else
             Me.m_scenario = Nothing
             Me.m_iTimeSeries = -1
@@ -295,17 +280,6 @@ Public Class cSFPManager
     End Sub
 
 #End Region ' Load to EwE state
-
-#Region " Internals "
-
-    Private Sub UpdateParameters()
-        ' Always do this
-        Me.Parameters.CalculateParameters()
-        ' Create list of ISFPIterations
-        Me.LoadSFPIterationsList()
-    End Sub
-
-#End Region ' Internals
 
 #Region " Run Iterations "
 
@@ -369,7 +343,7 @@ Public Class cSFPManager
 
                     'Changed Runstate to running instead of error as it confuses the users
                     Iteration.RunState = ISFPIterations.eRunState.Running
-                    Iteration.Init(m_core, m_iTimeSeries, Me.Parameters.SStoVSearchMode, Parameters, m_frmMain)
+                    Iteration.Init(m_core, m_iTimeSeries, Me.Parameters.PredOrPredPreySSToV, Parameters, m_frmMain)
                     Iteration.Load()
                     If Iteration.Run() Then
                         If (Not m_bStopRun) Then
@@ -798,11 +772,11 @@ Public Class cSFPManager
                                            ByVal tsMonthly As Boolean, _
                                            ByVal msg As cMessage) As Boolean
 
-        For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
+        For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
             Select Case outputtype
-                Case eResultTypes.Biomass, _
-                     eResultTypes.Mortality, _
-                     eResultTypes.Catch
+                Case cEcosimResultWriter.eResultTypes.Biomass, _
+                     cEcosimResultWriter.eResultTypes.Mortality, _
+                     cEcosimResultWriter.eResultTypes.Catch
                     SaveAggregatedTypeResult(outputtype, iteration, tsMonthly, msg)
             End Select
         Next
@@ -820,7 +794,7 @@ Public Class cSFPManager
     ''' <param name="msg">The message to append status information to.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedTypeResult(ByVal ResultType As eResultTypes, _
+    Private Function SaveAggregatedTypeResult(ByVal ResultType As cEcosimResultWriter.eResultTypes, _
                                               ByVal iteration As ISFPIterations, _
                                               ByVal tsMonthly As Boolean, _
                                               ByVal msg As cMessage) As Boolean
@@ -878,11 +852,11 @@ Public Class cSFPManager
                             grpOutput = m_core.EcoSimGroupOutputs(i)
                             For j As Integer = 1 To m_core.nEcosimTimeSteps
                                 Select Case ResultType
-                                    Case eResultTypes.Biomass
+                                    Case cEcosimResultWriter.eResultTypes.Biomass
                                         data(i, j) = grpOutput.Biomass(j)
-                                    Case eResultTypes.Mortality
+                                    Case cEcosimResultWriter.eResultTypes.Mortality
                                         data(i, j) = grpOutput.TotalMort(j)
-                                    Case eResultTypes.Catch
+                                    Case cEcosimResultWriter.eResultTypes.Catch
                                         data(i, j) = grpOutput.Catch(j)
                                 End Select
                             Next
