@@ -154,6 +154,24 @@ Public Class cKeystonenessGraph
 
     End Sub
 
+    Private Class cKS3Rank
+        Public iGroup As Integer
+        Public KS3 As Double
+        Public Sub New(i As Integer, KS3 As Double)
+            Me.iGroup = i : Me.KS3 = KS3
+        End Sub
+    End Class
+
+    Private Class cKS3RankComparer
+        Implements IComparer(Of cKS3Rank)
+
+        Public Function Compare(x As cKS3Rank, y As cKS3Rank) As Integer Implements System.Collections.Generic.IComparer(Of cKS3Rank).Compare
+            If x.KS3 < y.KS3 Then Return -1
+            If x.KS3 = y.KS3 Then Return 0
+            Return 1
+        End Function
+    End Class
+
     Public Overrides Sub DisplayData()
 
         If (Me.UIContext Is Nothing) Then Return
@@ -166,6 +184,7 @@ Public Class cKeystonenessGraph
         Dim group As cCoreInputOutputBase = Nothing
         Dim sMaxB As Single = 0.0
         Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+        Dim KS3Ranking(Me.UIContext.Core.nLivingGroups) As Integer
 
         ' UpdateControls will take care of axis labels
         pane = Me.m_zgh.ConfigurePane("", "", "", False)
@@ -186,6 +205,17 @@ Public Class cKeystonenessGraph
         ' Avoid division by zero
         If sMaxB = 0 Then sMaxB = 1.0
 
+        If (Me.Content = eContentType.KeystoneIndex3) Then
+            Dim l As New List(Of cKS3Rank)
+            For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
+                l.Add(New cKS3Rank(iGroup, Me.NetworkManager.KeystoneIndex3(iGroup)))
+            Next
+            l.Sort(New cKS3RankComparer())
+            For i As Integer = 0 To l.Count - 1
+                KS3Ranking(l(i).iGroup) = i
+            Next
+        End If
+
         ' Create a unique line item for each group
         For iGroup As Integer = 1 To Me.NetworkManager.nLivingGroups
 
@@ -202,7 +232,7 @@ Public Class cKeystonenessGraph
                         ppl.Add(Me.NetworkManager.RelativeTotalImpact(iGroup), Me.NetworkManager.KeystoneIndex2(iGroup))
 
                     Case eContentType.KeystoneIndex3
-                        ppl.Add(Me.NetworkManager.TrophicLevel(iGroup), Me.NetworkManager.KeystoneIndex3(iGroup))
+                        ppl.Add(Me.NetworkManager.TrophicLevel(iGroup), KS3Ranking(iGroup))
 
                     Case eContentType.TotalEffectOverB
                         ppl.Add(Me.NetworkManager.BiomassByGroup(iGroup) / sMaxB, Me.NetworkManager.RelativeTotalImpact(iGroup))

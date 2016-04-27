@@ -27,8 +27,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 #End Region ' Imports
 
 ''' <summary>
-''' Enumerated type, indicating the different search and optimization mode states that the 
-''' if the EwE core.
+''' Enumerated type, indicating the different search and optimization modes.
 ''' </summary>
 Public Enum eSearchModes
     ''' <summary>Not in any kind of a search mode</summary>
