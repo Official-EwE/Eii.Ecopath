@@ -6405,8 +6405,9 @@ Namespace DataSources
                 Me.m_db.Execute(String.format("UPDATE EcoSimStanzaShape Set HatchCodeShapeID=NULL WHERE (HatchCodeShapeID={0})", iShapeID))
                 Me.m_db.Execute("DELETE FROM EcoSimStanzaShape WHERE ((HatchCodeShapeID=NULL) AND (EggProdShapeID=NULL))")
 
-                Me.m_db.Execute(String.format("UPDATE EcoSimScenario Set SalinityForcingShapeID=NULL WHERE (SalinityForcingShapeID={0})", iShapeID))
-                Me.m_db.Execute(String.format("UPDATE EcoSimScenario Set NutForcingShapeID=NULL WHERE (NutForcingShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("UPDATE EcosimScenario Set SalinityForcingShapeID=0 WHERE (SalinityForcingShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("UPDATE EcosimScenario Set TemperatureForcingShapeID=0 WHERE (TemperatureForcingShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("UPDATE EcosimScenario Set NutForcingShapeID=0 WHERE (NutForcingShapeID={0})", iShapeID))
 
                 ' Delete mediation weights
                 Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ShapeID={0})", iShapeID))
