@@ -27,7 +27,7 @@ Imports EwEUtils.Utilities
 ''' <para>Database update 6.50.0.24:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added Ecopath sample tables</description></item>
+''' <item><description>Shapes can have any number of function parameters</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
