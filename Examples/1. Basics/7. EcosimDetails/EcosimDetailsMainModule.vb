@@ -241,7 +241,7 @@ Module EcosimDetailsMainModule
                         Dim Fleet As cFleetInput = core.FleetInputs(iFleet)
                         Dim Group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
                         Dim Application As eForcingFunctionApplication
-                        Dim ShapeTest As cForcingFunction
+                        Dim ShapeTest As cForcingFunction = Nothing
 
                         For iApplication As Integer = 1 To interaction.nAppliedShapes
                             If interaction.getShape(iApplication, ShapeTest, Application) Then

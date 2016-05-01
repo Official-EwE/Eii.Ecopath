@@ -249,6 +249,7 @@ Namespace Controls
                 If (value IsNot Nothing) Then
 
                     ' ToDo: Make max no params a flexible number
+                    ' ToDo: Allow reordering of parameters by honouring IShapeFunction.ParamOrder(#)
                     For i As Integer = 1 To cMAX_PARAM
 
                         Dim lblName As Control = Nothing
@@ -276,6 +277,7 @@ Namespace Controls
                             fp = New cEwEFormatProvider(Me.m_uic, tbxValue, GetType(Single))
                             fp.Tag = i
                             fp.Value = value.ParamValue(i)
+                            fp.Style = DirectCast(value.ParamStatus(i), cStyleGuide.eStyleFlags)
                             AddHandler fp.OnValueChanged, AddressOf OnValueChanged
 
                             Me.m_fps.Add(fp)

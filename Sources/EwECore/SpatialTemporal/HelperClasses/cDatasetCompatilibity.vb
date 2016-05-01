@@ -21,10 +21,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.SpatialData
-Imports System.Text
 Imports System.Drawing
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 

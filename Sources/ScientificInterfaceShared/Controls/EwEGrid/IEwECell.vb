@@ -52,7 +52,7 @@ Namespace Controls.EwEGrid
         ReadOnly Property StyleGuide As cStyleGuide
 
         ''' <summary>
-        ''' Get the <see cref="eStatusFlags"/> cell style.
+        ''' Get the <see cref="cStyleGuide.eStyleFlags"/> cell style.
         ''' </summary>
         Property Style() As cStyleGuide.eStyleFlags
 

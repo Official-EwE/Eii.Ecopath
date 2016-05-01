@@ -24,6 +24,7 @@ Option Strict On
 Imports System.Drawing
 Imports DotSpatial.Data
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 
@@ -131,7 +132,7 @@ Namespace SpatialData
         End Function
 
         Public Overrides Function IsConfigured() As Boolean
-            Return MyBase.IsConfigured() 
+            Return MyBase.IsConfigured()
         End Function
 
 #End Region ' Overrides

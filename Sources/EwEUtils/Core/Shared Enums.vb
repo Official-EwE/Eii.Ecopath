@@ -2601,6 +2601,88 @@ Namespace Core
 
 #End Region ' Core counters
 
+#Region " Status flags "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Public enumerator stating the status of a variable used by cVariableStatus class to state the status of the parameter.
+    ''' Used by the data wrapper classes to state the status of a variable see cEcoPathGroupInputs.EEStatus
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>Can be used in combination with eVarNameFlags to tell the status of a parameter</para>
+    ''' <para>Mulitple eStatusFlags can be joined together using the bitwise OR operator to signify 
+    ''' multiple statuses for a variable.</para>
+    ''' </remarks>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eStatusFlags
+
+        ''' <summary>
+        ''' All is well.
+        ''' </summary>
+        OK = 1
+
+        ''' <summary>
+        ''' Failed data validation.
+        ''' </summary>
+        FailedValidation = 2
+
+        ''' <summary>
+        ''' Value is computed from other values.
+        ''' </summary>
+        ValueComputed = 4
+
+        ''' <summary>
+        ''' Model computed an invalid result.
+        ''' </summary>
+        InvalidModelResult = 8
+
+        ''' <summary>
+        ''' Value is not editable because other related variables imply their value.
+        ''' </summary>
+        ''' <remarks>
+        ''' This flag is also known as ReadOnly (Windows) or BlockedForInput (EwE5).
+        ''' </remarks>
+        NotEditable = 16
+
+        ''' <summary>
+        ''' Unknown error encountered.
+        ''' </summary>
+        ''' 
+        ErrorEncountered = 32
+
+        ''' <summary>
+        ''' Value should have been provided at the start of a model run.
+        ''' </summary>
+        ''' <remarks>
+        ''' This flag resembles <see cref="eStatusFlags.FailedValidation">FailedValidation</see>
+        ''' but the reason for the failure is specific to the flag.
+        ''' </remarks>
+        MissingParameter = 64
+
+        ''' <summary>
+        ''' Value should be highlighted as decreed by the core for whatever reason.
+        ''' </summary>
+        ''' <remarks>
+        ''' This can occur when the core determines that particular values have relevant
+        ''' links to other values. The core can only know this and can request any GUI
+        ''' to hightlight such values.
+        ''' </remarks>
+        CoreHighlight = 128
+
+        ''' <summary>
+        ''' Variable is null, its value has not been set.
+        ''' </summary>
+        Null = 256
+
+        ''' <summary>
+        ''' Variable is being stored in the EwE database system.
+        ''' </summary>
+        Stored = 512
+
+    End Enum
+
+#End Region ' Status flags
+
 #Region " System units "
 
     ''' -------------------------------------------------------------------

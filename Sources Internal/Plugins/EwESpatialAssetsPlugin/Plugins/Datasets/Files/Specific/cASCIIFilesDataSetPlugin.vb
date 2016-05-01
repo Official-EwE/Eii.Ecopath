@@ -26,6 +26,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports DotSpatial.Data
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 
