@@ -23,6 +23,7 @@
 Option Strict On
 Imports EwECore
 Imports EwEPlugin
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -99,6 +100,13 @@ Public Class cEwENoseShapeFunctionPlugin
     ''' </summary>
     Private Property Band As Single = 0.1
 
+    Public ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
+    Implements IShapeFunction.ParamStatus
+        Get
+            Return eStatusFlags.OK
+        End Get
+    End Property
+
 #End Region ' Shape parameters
 
 #Region " Shape function "
@@ -120,7 +128,7 @@ Public Class cEwENoseShapeFunctionPlugin
 
     End Sub
 
-    Public Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
+    Public Function IsCompatible(datatype As eDataTypes) As Boolean _
         Implements IEcosimShapeFunctionPlugin.IsCompatible
 
         ' This shape function only applies to any type of function

@@ -49,6 +49,16 @@ Public Class cNormalShapeFunction
     End Property
 
     ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamStatus"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags
+        Get
+            If (iParam = 3) Then Return eStatusFlags.NotEditable
+            Return MyBase.ParamStatus(iParam)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>
     ''' Returns the points for an normal distributed shape.

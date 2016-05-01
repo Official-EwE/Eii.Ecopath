@@ -31,7 +31,7 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class cShapeFunction
-    Implements EwEUtils.Core.IShapeFunction
+    Implements IShapeFunction
 
 #Region " Private vars "
 
@@ -56,7 +56,7 @@ Public MustInherit Class cShapeFunction
     End Sub
 
     Public Overridable Sub Init(obj As Object) _
-        Implements EwEUtils.Core.IShapeFunction.Init
+        Implements IShapeFunction.Init
 
         If (Not TypeOf obj Is cForcingFunction) Then Return
 
@@ -88,25 +88,25 @@ Public MustInherit Class cShapeFunction
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property ShapeFunctionType As Long _
-        Implements EwEUtils.Core.IShapeFunction.ShapeFunctionType
+        Implements IShapeFunction.ShapeFunctionType
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.Defaults"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride Sub Defaults() _
-        Implements EwEUtils.Core.IShapeFunction.Defaults
+        Implements IShapeFunction.Defaults
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.IsCompatible"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function IsCompatible(datatype As EwEUtils.Core.eDataTypes) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.IsCompatible
+    Public MustOverride Function IsCompatible(datatype As eDataTypes) As Boolean _
+        Implements IShapeFunction.IsCompatible
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.nParameters"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property nParameters As Integer _
-        Implements EwEUtils.Core.IShapeFunction.nParameters
+        Implements IShapeFunction.nParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -117,7 +117,7 @@ Public MustInherit Class cShapeFunction
     ''' to obtain the name for.</param>
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property ParamName(iParam As Integer) As String _
-        Implements EwEUtils.Core.IShapeFunction.ParamName
+        Implements IShapeFunction.ParamName
         Get
             Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
             Select Case iParam
@@ -130,10 +130,23 @@ Public MustInherit Class cShapeFunction
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.IsCompatible"/>
+    ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property ParamUnit(iParam As Integer) As String _
-        Implements IShapeFunction.ParamUnit
+         Implements IShapeFunction.ParamUnit
         Get
             Return ""
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.ParamStatus"/>
+    ''' -----------------------------------------------------------------------
+    Public Overridable ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
+         Implements IShapeFunction.ParamStatus
+        Get
+            Return eStatusFlags.OK
         End Get
     End Property
 
@@ -150,7 +163,7 @@ Public MustInherit Class cShapeFunction
     ''' <inheritdocs cref="IShapeFunction.ParamValue"/>
     ''' -----------------------------------------------------------------------
     Public Overridable Property ParamValue(iParam As Integer) As Single _
-        Implements EwEUtils.Core.IShapeFunction.ParamValue
+        Implements IShapeFunction.ParamValue
         Get
             Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
             Return Me.m_parameters(iParam)
@@ -171,7 +184,7 @@ Public MustInherit Class cShapeFunction
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Overridable Function Shape(ByVal nPoints As Integer) As Single() _
-        Implements EwEUtils.Core.IShapeFunction.Shape
+        Implements IShapeFunction.Shape
 
         If (Me.ParamsChanged) Then
             ' Iterpolate to the end
@@ -188,7 +201,7 @@ Public MustInherit Class cShapeFunction
     ''' <inheritdocs cref="IShapeFunction.Apply"/>
     ''' -----------------------------------------------------------------------
     Public Overridable Function Apply(obj As Object) As Boolean _
-        Implements EwEUtils.Core.IShapeFunction.Apply
+        Implements IShapeFunction.Apply
 
         If (Not TypeOf (obj) Is cForcingFunction) Then Return False
 
@@ -239,7 +252,4 @@ Public MustInherit Class cShapeFunction
                (datatype = eDataTypes.FishMort)
     End Function
 
-    Public Function ShapeFunctionType1() As Long
-
-    End Function
 End Class

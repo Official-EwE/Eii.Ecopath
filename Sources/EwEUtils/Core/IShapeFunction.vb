@@ -82,6 +82,16 @@ Namespace Core
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get the order a parameter needs to appear in the UI. Any UI should honour
+        ''' this flag sorting parameters from low to high order.
+        ''' </summary>
+        ''' <param name="iParam">The index of the parameters [1,<see cref="nParameters"/>]
+        ''' to obtain order for.</param>
+        ''' -----------------------------------------------------------------------
+        ReadOnly Property ParamStatus(ByVal iParam As Integer) As eStatusFlags
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the actual function data points, as computed from the <see cref="ParamValue">parameters values</see>.
         ''' </summary>
         ''' <param name="nPoints">The number of points to calculate the shape for.</param>
