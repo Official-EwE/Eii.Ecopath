@@ -56,6 +56,7 @@ Public Class frmMain
     Private m_fleetcat As eFleetCategoryTypes = eFleetCategoryTypes.All
 
     Private m_prog As frmProgress = Nothing
+    Private m_naManager As EwENetworkAnalysis.cNetworkManager = Nothing
 
 #End Region ' Private vars
 
@@ -105,6 +106,11 @@ Public Class frmMain
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Dim nap As EwENetworkAnalysis.cEwENetworkAnalysisPlugin = EwENetworkAnalysis.cEwENetworkAnalysisPlugin.thePlugin
+        If (nap IsNot Nothing) Then
+            Me.m_naManager = nap.Manager
+        End If
+
         Dim lvi As ListViewItem = Nothing
 
         Me.m_bInUpdate = True
@@ -149,6 +155,7 @@ Public Class frmMain
 #End Region ' Overrides
 
 #Region " Events "
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -236,13 +243,38 @@ Public Class frmMain
     ''' Remove a model from the current session.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_bntRemoveModel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnRemoveModel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_bntRemoveModel.Click
 
         If (Me.m_session Is Nothing) Then Return
         If (Me.m_bInUpdate = True) Then Return
 
-        Me.RemoveModel(DirectCast(Me.m_lbModels.SelectedItem, cModelSettings))
+        Me.RemoveModel(DirectCast(Me.m_clbModels.SelectedItem, cModelSettings))
+
+    End Sub
+
+    Private Sub OnDragFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
+        Handles m_clbModels.DragEnter
+
+        If (Me.m_session Is Nothing) Then Return
+        If (Me.m_bInUpdate = True) Then Return
+
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        End If
+
+    End Sub
+
+    Private Sub OnDropFiles(sender As Object, e As System.Windows.Forms.DragEventArgs) _
+        Handles m_clbModels.DragDrop
+
+        If (Me.m_session Is Nothing) Then Return
+        If (Me.m_bInUpdate = True) Then Return
+
+        Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+        For Each file As String In files
+            Me.AddModel(file)
+        Next
 
     End Sub
 
@@ -251,13 +283,63 @@ Public Class frmMain
     ''' Process model selection change.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_lbModels_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_lbModels.SelectedIndexChanged
+    Private Sub OnModelSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_clbModels.SelectedIndexChanged
 
         If (Me.m_session Is Nothing) Then Return
         If (Me.m_bInUpdate = True) Then Return
 
-        Me.SelectedModel = DirectCast(Me.m_lbModels.SelectedItem, cModelSettings)
+        Me.SelectedModel = DirectCast(Me.m_clbModels.SelectedItem, cModelSettings)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Process model check change.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnModelChecked(ByVal sender As System.Object, ByVal e As ItemCheckEventArgs) _
+        Handles m_clbModels.ItemCheck
+
+        If (Me.m_session Is Nothing) Then Return
+        If (Me.m_bInUpdate = True) Then Return
+
+        Dim ms As cModelSettings = DirectCast(Me.m_clbModels.Items(e.Index), cModelSettings)
+        ms.Enabled = (e.NewValue <> CheckState.Unchecked)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Select all groups into the current group category.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnSelectAllModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnAllModels.Click
+
+        If (Me.m_session Is Nothing) Then Return
+        If (Me.m_bInUpdate = True) Then Return
+
+        For i As Integer = 0 To Me.m_clbModels.Items.Count - 1
+            Me.m_clbModels.SetItemChecked(i, True)
+        Next
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Select all groups into the current group category.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnSelectNoModels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnNoModels.Click
+
+        If (Me.m_session Is Nothing) Then Return
+        If (Me.m_bInUpdate = True) Then Return
+
+        For i As Integer = 0 To Me.m_clbModels.Items.Count - 1
+            Me.m_clbModels.SetItemChecked(i, False)
+        Next
 
     End Sub
 
@@ -316,7 +398,7 @@ Public Class frmMain
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub m_btnNoneGroups_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnNoneGroups.Click
+        Handles m_btnNoneGroups.Click, m_btnNoModels.Click
 
         If (Me.m_session Is Nothing) Then Return
         If (Me.m_bInUpdate = True) Then Return
@@ -600,10 +682,10 @@ Public Class frmMain
         Me.m_nudNumberOfYears.Value = Me.m_session.NumberOfYears
         Me.m_cbxAnnualAverages.Checked = Me.m_session.AnnualAverages
 
-        Me.m_lbModels.Items.Clear()
+        Me.m_clbModels.Items.Clear()
         For Each ms As cModelSettings In Me.m_session.Models
             If msFirst Is Nothing Then msFirst = ms
-            Me.m_lbModels.Items.Add(ms)
+            Me.m_clbModels.Items.Add(ms)
         Next
         Me.m_bInUpdate = False
 
@@ -631,7 +713,8 @@ Public Class frmMain
         If (ms Is Nothing) Then
             ms = New cModelSettings(strFileName)
             If Me.m_session.AddModel(ms) Then
-                Me.m_lbModels.Items.Add(ms)
+                Dim i As Integer = Me.m_clbModels.Items.Add(ms)
+                Me.m_clbModels.SetItemChecked(i, ms.Enabled)
             Else
                 Return
             End If
@@ -659,13 +742,13 @@ Public Class frmMain
         Debug.Assert(Me.m_session IsNot Nothing)
         Debug.Assert(ms IsNot Nothing)
 
-        Dim iIndex As Integer = Me.m_lbModels.Items.IndexOf(ms)
+        Dim iIndex As Integer = Me.m_clbModels.Items.IndexOf(ms)
 
-        Me.m_lbModels.Items.Remove(ms)
+        Me.m_clbModels.Items.Remove(ms)
         If (Me.m_session.RemoveModel(ms)) Then
 
-            If Me.m_lbModels.Items.Count > 0 Then
-                Me.SelectedModel = DirectCast(Me.m_lbModels.Items(Math.Min(Me.m_lbModels.Items.Count - 1, Math.Max(0, iIndex - 1))), cModelSettings)
+            If Me.m_clbModels.Items.Count > 0 Then
+                Me.SelectedModel = DirectCast(Me.m_clbModels.Items(Math.Min(Me.m_clbModels.Items.Count - 1, Math.Max(0, iIndex - 1))), cModelSettings)
             Else
                 Me.SelectedModel = Nothing
             End If
@@ -703,7 +786,7 @@ Public Class frmMain
             End If
 
             Me.m_ms = ms
-            Me.m_lbModels.SelectedItem = ms
+            Me.m_clbModels.SelectedItem = ms
 
             If (Me.m_ms IsNot Nothing) Then
                 If Me.LoadModel(ms) Then
@@ -991,7 +1074,7 @@ Public Class frmMain
         Me.m_tssbLoad.Enabled = Not bIsRunning
         Me.m_tsbSave.Enabled = Not bIsRunning
 
-        Me.m_lbModels.Enabled = Not bIsRunning
+        Me.m_clbModels.Enabled = Not bIsRunning
         Me.m_btnAddModel.Enabled = Not bIsRunning
         Me.m_bntRemoveModel.Enabled = Not bIsRunning
 
@@ -1152,7 +1235,6 @@ Public Class frmMain
         Dim parms As cEcoSimModelParameters = Nothing
         Dim tsds As cTimeSeriesDataset = Nothing
         Dim ts As cTimeSeries = Nothing
-        Dim cmdX As cExecuteCommand = DirectCast(Me.CommandHandler.GetCommand(cExecuteCommand.COMMAND_NAME), cExecuteCommand)
         Dim iTotalSteps As Integer = Me.m_session.NumSteps
         Dim iStep As Integer = 0
 
@@ -1248,12 +1330,12 @@ Public Class frmMain
                                                 Return
                                             End Try
 
-                                            ' Tell Network Analysis to write data
-                                            cmdX.Parameter("path") = strDirectory
-                                            cmdX.Parameter("annual") = Convert.ToString(Me.m_session.AnnualAverages)
-                                            cmdX.Parameter("ppr") = Convert.ToString(False)
                                             Try
-                                                cmdX.Invoke("na_save_indices")
+                                                ' Tell Network Analysis to write data
+                                                If (Me.m_naManager IsNot Nothing) Then
+                                                    Dim writerNA As New EwENetworkAnalysis.cResultWriter(Me.m_naManager)
+                                                    writerNA.WriteCurrentResults(strDirectory)
+                                                End If
                                             Catch ex As Exception
                                                 Me.ReportError(String.Format("Network Analysis error: {0}", ex.Message))
                                                 Return
@@ -1334,12 +1416,13 @@ Public Class frmMain
                                                 Return
                                             End Try
 
-                                            ' Tell Network Analysis to write data
-                                            cmdX.Parameter("path") = strDirectory
-                                            cmdX.Parameter("annual") = Convert.ToString(Me.m_session.AnnualAverages)
-                                            cmdX.Parameter("ppr") = Convert.ToString(False)
+
                                             Try
-                                                cmdX.Invoke("na_save_indices")
+                                                ' Tell Network Analysis to write data
+                                                If (Me.m_naManager IsNot Nothing) Then
+                                                    Dim writerNA As New EwENetworkAnalysis.cResultWriter(Me.m_naManager)
+                                                    writerNA.WriteCurrentResults(strDirectory)
+                                                End If
                                             Catch ex As Exception
                                                 Me.ReportError(String.Format("Network Analysis error: {0}", ex.Message))
                                                 Return

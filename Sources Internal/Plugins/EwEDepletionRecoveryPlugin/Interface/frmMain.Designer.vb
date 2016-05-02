@@ -71,7 +71,7 @@ Partial Class frmMain
         Me.m_lvCategoriesGroup = New System.Windows.Forms.ListView()
         Me.m_chGroupCat = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_chGroupCount = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.m_lbModels = New System.Windows.Forms.ListBox()
+        Me.m_clbModels = New System.Windows.Forms.CheckedListBox()
         Me.m_lblNumberOfYears = New System.Windows.Forms.Label()
         Me.m_nudNumberOfYears = New System.Windows.Forms.NumericUpDown()
         Me.m_tbxMask = New System.Windows.Forms.TextBox()
@@ -94,6 +94,8 @@ Partial Class frmMain
         Me.m_btnAllResults = New System.Windows.Forms.Button()
         Me.m_btnNoneResults = New System.Windows.Forms.Button()
         Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_btnNoModels = New System.Windows.Forms.Button()
+        Me.m_btnAllModels = New System.Windows.Forms.Button()
         Me.m_tsMain.SuspendLayout()
         Me.m_tlpGroupCategories.SuspendLayout()
         CType(Me.m_nudNumberOfYears, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -203,8 +205,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_glbGroups, "m_glbGroups")
         Me.m_glbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_glbGroups.FormattingEnabled = True
-        Me.m_glbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
-        Me.m_glbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
         Me.m_glbGroups.IsAllGroupsItemSelected = False
         Me.m_glbGroups.Name = "m_glbGroups"
         Me.m_glbGroups.SelectedGroup = Nothing
@@ -235,11 +235,14 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_chGroupCount, "m_chGroupCount")
         '
-        'm_lbModels
+        'm_clbModels
         '
-        resources.ApplyResources(Me.m_lbModels, "m_lbModels")
-        Me.m_lbModels.FormattingEnabled = True
-        Me.m_lbModels.Name = "m_lbModels"
+        Me.m_clbModels.AllowDrop = True
+        resources.ApplyResources(Me.m_clbModels, "m_clbModels")
+        Me.m_clbModels.CheckOnClick = True
+        Me.m_clbModels.FormattingEnabled = True
+        Me.m_clbModels.Name = "m_clbModels"
+        Me.m_clbModels.Sorted = True
         '
         'm_lblNumberOfYears
         '
@@ -294,6 +297,7 @@ Partial Class frmMain
         Me.m_clbScenarios.CheckOnClick = True
         Me.m_clbScenarios.FormattingEnabled = True
         Me.m_clbScenarios.Name = "m_clbScenarios"
+        Me.m_clbScenarios.Sorted = True
         '
         'm_tpGroups
         '
@@ -345,7 +349,6 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_flbFleets, "m_flbFleets")
         Me.m_flbFleets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-        Me.m_flbFleets.FleetListTracking = ScientificInterfaceShared.Controls.cFleetListBox.eFleetTrackingType.AllFleets
         Me.m_flbFleets.FormattingEnabled = True
         Me.m_flbFleets.Name = "m_flbFleets"
         Me.m_flbFleets.SelectedFleet = Nothing
@@ -353,7 +356,6 @@ Partial Class frmMain
         Me.m_flbFleets.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.m_flbFleets.ShowAllFleetsItem = False
         Me.m_flbFleets.SortThreshold = -9999.0!
-        Me.m_flbFleets.SortType = ScientificInterfaceShared.Controls.cFleetListBox.eSortType.FleetIndexAsc
         '
         'm_btnAllFleets
         '
@@ -404,15 +406,29 @@ Partial Class frmMain
         Me.m_hdrModels.IsCollapsed = False
         Me.m_hdrModels.Name = "m_hdrModels"
         '
+        'm_btnNoModels
+        '
+        resources.ApplyResources(Me.m_btnNoModels, "m_btnNoModels")
+        Me.m_btnNoModels.Name = "m_btnNoModels"
+        Me.m_btnNoModels.UseVisualStyleBackColor = True
+        '
+        'm_btnAllModels
+        '
+        resources.ApplyResources(Me.m_btnAllModels, "m_btnAllModels")
+        Me.m_btnAllModels.Name = "m_btnAllModels"
+        Me.m_btnAllModels.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_tcModelProperties)
+        Me.Controls.Add(Me.m_btnAllModels)
+        Me.Controls.Add(Me.m_btnNoModels)
         Me.Controls.Add(Me.m_cbxAnnualAverages)
         Me.Controls.Add(Me.m_nudNumberOfYears)
         Me.Controls.Add(Me.m_lblNumberOfYears)
-        Me.Controls.Add(Me.m_lbModels)
+        Me.Controls.Add(Me.m_clbModels)
         Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_btnRun)
         Me.Controls.Add(Me.m_lblMask)
@@ -428,6 +444,7 @@ Partial Class frmMain
         Me.Icon = Global.EwEDepletionRecoveryPlugin.My.Resources.Resources.DepletionRecovery
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.m_tlpGroupCategories.ResumeLayout(False)
@@ -460,7 +477,7 @@ Partial Class frmMain
     Private WithEvents m_lvCategoriesGroup As System.Windows.Forms.ListView
     Private WithEvents m_chGroupCat As System.Windows.Forms.ColumnHeader
     Private WithEvents m_chGroupCount As System.Windows.Forms.ColumnHeader
-    Private WithEvents m_lbModels As System.Windows.Forms.ListBox
+    Private WithEvents m_clbModels As System.Windows.Forms.CheckedListBox
     Private WithEvents m_lblNumberOfYears As System.Windows.Forms.Label
     Private WithEvents m_nudNumberOfYears As System.Windows.Forms.NumericUpDown
     Private WithEvents m_tbxMask As System.Windows.Forms.TextBox
@@ -484,4 +501,6 @@ Partial Class frmMain
     Private WithEvents m_btnAllResults As System.Windows.Forms.Button
     Private WithEvents m_btnNoneResults As System.Windows.Forms.Button
     Private WithEvents m_clbEcosimResults As System.Windows.Forms.CheckedListBox
+    Private WithEvents m_btnNoModels As System.Windows.Forms.Button
+    Private WithEvents m_btnAllModels As System.Windows.Forms.Button
 End Class

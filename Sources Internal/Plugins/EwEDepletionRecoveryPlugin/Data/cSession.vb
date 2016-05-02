@@ -248,6 +248,11 @@ Public Class cSession
         xa.Value = ms.FileName
         xn.Attributes.Append(xa)
 
+        ' Append enabled attribute
+        xa = doc.CreateAttribute("Enabled")
+        xa.Value = Convert.ToString(ms.Enabled)
+        xn.Attributes.Append(xa)
+
         ' Append group categories
         For Each cat As eGroupCategoryTypes In [Enum].GetValues(GetType(eGroupCategoryTypes))
             If ms.Groups(cat).Count > 0 Then
@@ -280,6 +285,14 @@ Public Class cSession
         xa = xn.Attributes("File")
         If (xa Is Nothing) Then Return False
         ms = New cModelSettings(xa.Value)
+
+        Try
+            xa = xn.Attributes("Enabled")
+            If (xa Is Nothing) Then Return False
+            ms.Enabled = Convert.ToBoolean(xa.InnerText)
+        Catch ex As Exception
+            ms.Enabled = True
+        End Try
 
         ' Read group categories
         For Each xnChild As XmlNode In xn.ChildNodes

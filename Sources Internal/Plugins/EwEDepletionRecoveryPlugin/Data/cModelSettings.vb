@@ -59,6 +59,8 @@ Public Class cModelSettings
 
 #Region " Variable access "
 
+    Public Property Enabled As Boolean = True
+
     Public Property Groups(ByVal category As eGroupCategoryTypes) As List(Of Integer)
         Get
             Return Me.m_lgroupcategories(category)
