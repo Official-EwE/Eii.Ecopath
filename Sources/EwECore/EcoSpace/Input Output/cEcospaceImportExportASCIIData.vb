@@ -73,7 +73,7 @@ Public Class cEcospaceImportExportASCIIData
         Me.m_dNoData = cCore.NULL_VALUE
         Me.m_strProjectionString = Me.m_bm.ProjectionString
         Me.m_dXLLpos = Me.m_bm.PosTopLeft.X
-        Me.m_dXLLpos = Me.m_bm.PosBottomRight.Y
+        Me.m_dYLLpos = Me.m_bm.PosBottomRight.Y
     End Sub
 
     Public Sub New()
