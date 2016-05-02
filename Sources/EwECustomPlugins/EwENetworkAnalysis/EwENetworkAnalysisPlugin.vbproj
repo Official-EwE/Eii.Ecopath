@@ -251,7 +251,6 @@
     <Compile Include="Plugin\NavTree plugins\cNavTree86Sim_wo_PPR.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree88Sim_with_PPR.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree80Lindex.vb" />
-    <Compile Include="Remote control\cNetworkAnalysisRemote.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\ucPlot.resx">

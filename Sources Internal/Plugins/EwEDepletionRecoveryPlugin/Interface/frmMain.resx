@@ -184,7 +184,7 @@
     <value>557, 18</value>
   </data>
   <data name="m_hdrModelProperties.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_hdrModelProperties.Text" xml:space="preserve">
     <value>2) For each model, select which components to use</value>
@@ -268,7 +268,7 @@
     <value>557, 18</value>
   </data>
   <data name="m_hdrOutput.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_hdrOutput.Text" xml:space="preserve">
     <value>3) Select output properties</value>
@@ -295,13 +295,13 @@
     <value>True</value>
   </data>
   <data name="m_lblOutputDirectory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 476</value>
+    <value>12, 474</value>
   </data>
   <data name="m_lblOutputDirectory.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 13</value>
   </data>
   <data name="m_lblOutputDirectory.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_lblOutputDirectory.Text" xml:space="preserve">
     <value>&amp;Output directory:</value>
@@ -322,13 +322,13 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_tbxOutputDirectory.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 476</value>
+    <value>118, 471</value>
   </data>
   <data name="m_tbxOutputDirectory.Size" type="System.Drawing.Size, System.Drawing">
     <value>346, 20</value>
   </data>
   <data name="m_tbxOutputDirectory.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;m_tbxOutputDirectory.Name" xml:space="preserve">
     <value>m_tbxOutputDirectory</value>
@@ -346,13 +346,13 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>470, 475</value>
+    <value>470, 470</value>
   </data>
   <data name="m_btnBrowse.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
   </data>
   <data name="m_btnBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_btnBrowse.Text" xml:space="preserve">
     <value>Choose...</value>
@@ -379,7 +379,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>18</value>
   </data>
   <data name="m_btnRun.Text" xml:space="preserve">
     <value>&amp;Run</value>
@@ -498,6 +498,24 @@
   <data name="m_tlpGroupCategories.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="m_glbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_glbGroups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_glbGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>222, 0</value>
+  </data>
+  <data name="m_glbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_glbGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 243</value>
+  </data>
+  <data name="m_glbGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
   <data name="&gt;&gt;m_glbGroups.Name" xml:space="preserve">
     <value>m_glbGroups</value>
   </data>
@@ -509,6 +527,33 @@
   </data>
   <data name="&gt;&gt;m_glbGroups.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_chGroupCat.Text" xml:space="preserve">
+    <value>category</value>
+  </data>
+  <data name="m_chGroupCat.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_chGroupCount.Text" xml:space="preserve">
+    <value># groups</value>
+  </data>
+  <data name="m_chGroupCount.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 243</value>
+  </data>
+  <data name="m_lvCategoriesGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_lvCategoriesGroup.Name" xml:space="preserve">
     <value>m_lvCategoriesGroup</value>
@@ -529,7 +574,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpGroupCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 247</value>
+    <value>445, 243</value>
   </data>
   <data name="m_tlpGroupCategories.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -548,75 +593,6 @@
   </data>
   <data name="m_tlpGroupCategories.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_glbGroups" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lvCategoriesGroup" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,247" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_glbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_glbGroups.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_glbGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>222, 0</value>
-  </data>
-  <data name="m_glbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_glbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 247</value>
-  </data>
-  <data name="m_glbGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_glbGroups.Name" xml:space="preserve">
-    <value>m_glbGroups</value>
-  </data>
-  <data name="&gt;&gt;m_glbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.13691.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_glbGroups.Parent" xml:space="preserve">
-    <value>m_tlpGroupCategories</value>
-  </data>
-  <data name="&gt;&gt;m_glbGroups.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 247</value>
-  </data>
-  <data name="m_lvCategoriesGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesGroup.Name" xml:space="preserve">
-    <value>m_lvCategoriesGroup</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesGroup.Parent" xml:space="preserve">
-    <value>m_tlpGroupCategories</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesGroup.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_chGroupCat.Text" xml:space="preserve">
-    <value>category</value>
-  </data>
-  <data name="m_chGroupCat.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="m_chGroupCount.Text" xml:space="preserve">
-    <value># groups</value>
-  </data>
-  <data name="m_chGroupCount.Width" type="System.Int32, mscorlib">
-    <value>100</value>
   </data>
   <data name="m_clbModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -652,13 +628,13 @@
     <value>True</value>
   </data>
   <data name="m_lblNumberOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 527</value>
+    <value>12, 525</value>
   </data>
   <data name="m_lblNumberOfYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 13</value>
   </data>
   <data name="m_lblNumberOfYears.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="m_lblNumberOfYears.Text" xml:space="preserve">
     <value>&amp;Number of years:</value>
@@ -679,13 +655,13 @@
     <value>Bottom, Left</value>
   </data>
   <data name="m_nudNumberOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 525</value>
+    <value>118, 523</value>
   </data>
   <data name="m_nudNumberOfYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 20</value>
   </data>
   <data name="m_nudNumberOfYears.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="&gt;&gt;m_nudNumberOfYears.Name" xml:space="preserve">
     <value>m_nudNumberOfYears</value>
@@ -703,13 +679,13 @@
     <value>Bottom, Left</value>
   </data>
   <data name="m_tbxMask.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 499</value>
+    <value>118, 497</value>
   </data>
   <data name="m_tbxMask.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 20</value>
   </data>
   <data name="m_tbxMask.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;m_tbxMask.Name" xml:space="preserve">
     <value>m_tbxMask</value>
@@ -730,13 +706,13 @@
     <value>True</value>
   </data>
   <data name="m_lblMask.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 502</value>
+    <value>12, 500</value>
   </data>
   <data name="m_lblMask.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
   </data>
   <data name="m_lblMask.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_lblMask.Text" xml:space="preserve">
     <value>&amp;Sub directory mask:</value>
@@ -760,13 +736,13 @@
     <value>True</value>
   </data>
   <data name="m_cbxAnnualAverages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 551</value>
+    <value>118, 549</value>
   </data>
   <data name="m_cbxAnnualAverages.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 17</value>
   </data>
   <data name="m_cbxAnnualAverages.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>17</value>
   </data>
   <data name="m_cbxAnnualAverages.Text" xml:space="preserve">
     <value>&amp;Annual averages</value>
@@ -789,21 +765,6 @@
   <data name="m_tcModelProperties.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
     <value>FlatButtons</value>
   </data>
-  <data name="m_clbScenarios.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_clbScenarios.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_clbScenarios.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_clbScenarios.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 256</value>
-  </data>
-  <data name="m_clbScenarios.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;m_clbScenarios.Name" xml:space="preserve">
     <value>m_clbScenarios</value>
   </data>
@@ -820,7 +781,7 @@
     <value>4, 25</value>
   </data>
   <data name="m_tpEcosimScenarios.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 247</value>
+    <value>526, 243</value>
   </data>
   <data name="m_tpEcosimScenarios.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -847,7 +808,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 247</value>
+    <value>526, 243</value>
   </data>
   <data name="m_tpGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -867,158 +828,38 @@
   <data name="&gt;&gt;m_tpGroups.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_tlpFleets.Name" xml:space="preserve">
-    <value>m_tlpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFleets.Parent" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_tlpFleets.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpFleets.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lvCategoriesFleet" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_flbFleets" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,257" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Name" xml:space="preserve">
-    <value>m_btnAllFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Parent" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Name" xml:space="preserve">
-    <value>m_btnNoneFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Parent" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tpFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="m_tpFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 247</value>
-  </data>
-  <data name="m_tpFleets.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tpFleets.Text" xml:space="preserve">
-    <value>Fleets</value>
-  </data>
-  <data name="&gt;&gt;m_tpFleets.Name" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_tpFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpFleets.Parent" xml:space="preserve">
-    <value>m_tcModelProperties</value>
-  </data>
-  <data name="&gt;&gt;m_tpFleets.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_clbEcosimResults.Name" xml:space="preserve">
-    <value>m_clbEcosimResults</value>
-  </data>
-  <data name="&gt;&gt;m_clbEcosimResults.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_clbEcosimResults.Parent" xml:space="preserve">
-    <value>m_tpEcosim</value>
-  </data>
-  <data name="&gt;&gt;m_clbEcosimResults.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllResults.Name" xml:space="preserve">
-    <value>m_btnAllResults</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllResults.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllResults.Parent" xml:space="preserve">
-    <value>m_tpEcosim</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllResults.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneResults.Name" xml:space="preserve">
-    <value>m_btnNoneResults</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneResults.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneResults.Parent" xml:space="preserve">
-    <value>m_tpEcosim</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneResults.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tpEcosim.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="m_tpEcosim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 247</value>
-  </data>
-  <data name="m_tpEcosim.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_tpEcosim.Text" xml:space="preserve">
-    <value>Ecosim results</value>
-  </data>
-  <data name="&gt;&gt;m_tpEcosim.Name" xml:space="preserve">
-    <value>m_tpEcosim</value>
-  </data>
-  <data name="&gt;&gt;m_tpEcosim.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpEcosim.Parent" xml:space="preserve">
-    <value>m_tcModelProperties</value>
-  </data>
-  <data name="&gt;&gt;m_tpEcosim.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_tcModelProperties.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 168</value>
-  </data>
-  <data name="m_tcModelProperties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tcModelProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>534, 276</value>
-  </data>
-  <data name="m_tcModelProperties.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tcModelProperties.Name" xml:space="preserve">
-    <value>m_tcModelProperties</value>
-  </data>
-  <data name="&gt;&gt;m_tcModelProperties.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tcModelProperties.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tcModelProperties.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tlpFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_tlpFleets.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="m_chFleetCat.Text" xml:space="preserve">
+    <value>category</value>
+  </data>
+  <data name="m_chFleetCat.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_chFleetCount.Text" xml:space="preserve">
+    <value># fleets</value>
+  </data>
+  <data name="m_chFleetCount.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_lvCategoriesFleet.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lvCategoriesFleet.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lvCategoriesFleet.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_lvCategoriesFleet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>219, 253</value>
+  </data>
+  <data name="m_lvCategoriesFleet.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_lvCategoriesFleet.Name" xml:space="preserve">
     <value>m_lvCategoriesFleet</value>
@@ -1031,6 +872,24 @@
   </data>
   <data name="&gt;&gt;m_lvCategoriesFleet.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_flbFleets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_flbFleets.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_flbFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>222, 0</value>
+  </data>
+  <data name="m_flbFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_flbFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 253</value>
+  </data>
+  <data name="m_flbFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_flbFleets.Name" xml:space="preserve">
     <value>m_flbFleets</value>
@@ -1054,7 +913,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 257</value>
+    <value>445, 253</value>
   </data>
   <data name="m_tlpFleets.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1073,75 +932,6 @@
   </data>
   <data name="m_tlpFleets.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lvCategoriesFleet" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_flbFleets" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,257" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_lvCategoriesFleet.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lvCategoriesFleet.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_lvCategoriesFleet.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
-  </data>
-  <data name="m_lvCategoriesFleet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 257</value>
-  </data>
-  <data name="m_lvCategoriesFleet.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesFleet.Name" xml:space="preserve">
-    <value>m_lvCategoriesFleet</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesFleet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesFleet.Parent" xml:space="preserve">
-    <value>m_tlpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_lvCategoriesFleet.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_chFleetCat.Text" xml:space="preserve">
-    <value>category</value>
-  </data>
-  <data name="m_chFleetCat.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="m_chFleetCount.Text" xml:space="preserve">
-    <value># fleets</value>
-  </data>
-  <data name="m_chFleetCount.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="m_flbFleets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_flbFleets.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_flbFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>222, 0</value>
-  </data>
-  <data name="m_flbFleets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_flbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 257</value>
-  </data>
-  <data name="m_flbFleets.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_flbFleets.Name" xml:space="preserve">
-    <value>m_flbFleets</value>
-  </data>
-  <data name="&gt;&gt;m_flbFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFleetListBox, ScientificInterfaceShared, Version=6.5.13691.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_flbFleets.Parent" xml:space="preserve">
-    <value>m_tlpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_flbFleets.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_btnAllFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1203,6 +993,30 @@
   <data name="&gt;&gt;m_btnNoneFleets.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_tpFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tpFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>526, 243</value>
+  </data>
+  <data name="m_tpFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tpFleets.Text" xml:space="preserve">
+    <value>Fleets</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.Name" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.Parent" xml:space="preserve">
+    <value>m_tcModelProperties</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_clbEcosimResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -1216,7 +1030,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_clbEcosimResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 257</value>
+    <value>445, 253</value>
   </data>
   <data name="m_clbEcosimResults.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1293,6 +1107,81 @@
   <data name="&gt;&gt;m_btnNoneResults.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_tpEcosim.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="m_tpEcosim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>526, 243</value>
+  </data>
+  <data name="m_tpEcosim.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tpEcosim.Text" xml:space="preserve">
+    <value>Ecosim results</value>
+  </data>
+  <data name="&gt;&gt;m_tpEcosim.Name" xml:space="preserve">
+    <value>m_tpEcosim</value>
+  </data>
+  <data name="&gt;&gt;m_tpEcosim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpEcosim.Parent" xml:space="preserve">
+    <value>m_tcModelProperties</value>
+  </data>
+  <data name="&gt;&gt;m_tpEcosim.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tcModelProperties.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 172</value>
+  </data>
+  <data name="m_tcModelProperties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tcModelProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>534, 272</value>
+  </data>
+  <data name="m_tcModelProperties.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_tcModelProperties.Name" xml:space="preserve">
+    <value>m_tcModelProperties</value>
+  </data>
+  <data name="&gt;&gt;m_tcModelProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tcModelProperties.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tcModelProperties.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_clbScenarios.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_clbScenarios.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_clbScenarios.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_clbScenarios.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 252</value>
+  </data>
+  <data name="m_clbScenarios.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.Name" xml:space="preserve">
+    <value>m_clbScenarios</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.Parent" xml:space="preserve">
+    <value>m_tpEcosimScenarios</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_hdrModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1336,7 +1225,7 @@
     <value>75, 21</value>
   </data>
   <data name="m_btnNoModels.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="m_btnNoModels.Text" xml:space="preserve">
     <value>&amp;None</value>
@@ -1366,7 +1255,7 @@
     <value>75, 21</value>
   </data>
   <data name="m_btnAllModels.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="m_btnAllModels.Text" xml:space="preserve">
     <value>&amp;All</value>

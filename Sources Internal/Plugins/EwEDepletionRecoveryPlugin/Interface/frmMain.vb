@@ -34,6 +34,9 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
+' ToDo: localize this class
+' ToDo: use typeformatters for categories
+
 ''' ===========================================================================
 ''' <summary>
 ''' Main form (and basically everything else except for plug-in point and data)
@@ -1269,14 +1272,13 @@ Public Class frmMain
 
                                     iStep += 1
 
-                                    Me.m_prog.SetStatus(String.Format("Processing model {0}, scenario {1}, groups category {2}, time series {3}", _
-                                                                  Path.GetFileNameWithoutExtension(ms.FileName), _
-                                                                  scenario.Name, _
-                                                                  cat.ToString(), _
-                                                                  tsds.Name), CSng(iStep / iTotalSteps))
-
                                     ' Are groups assigned to this category?
                                     If (ms.Groups(cat).Count > 0) Then
+
+                                        Me.m_prog.SetStatus(String.Format("Processing model {0}, scenario {1}, groups category {2}, time series {3}",
+                                                                          Path.GetFileNameWithoutExtension(ms.FileName),
+                                                                          scenario.Name, cat.ToString(), tsds.Name), CSng(iStep / iTotalSteps))
+
                                         ' Apply TS to each category
                                         ' ..first disable all TS
                                         For iTS As Integer = 1 To Me.Core.nTimeSeries
@@ -1354,14 +1356,13 @@ Public Class frmMain
 
                                     iStep += 1
 
-                                    Me.m_prog.SetStatus(String.Format("Processing model {0}, scenario {1}, fleet category {2}, time series {3}", _
-                                                                  Path.GetFileNameWithoutExtension(ms.FileName), _
-                                                                  scenario.Name, _
-                                                                  cat.ToString(), _
-                                                                  tsds.Name), CSng(iStep / iTotalSteps))
-
                                     ' Are groups assigned to this category?
                                     If (ms.Fleets(cat).Count > 0) Then
+
+                                        Me.m_prog.SetStatus(String.Format("Processing model {0}, scenario {1}, fleet category {2}, time series {3}",
+                                                                          Path.GetFileNameWithoutExtension(ms.FileName),
+                                                                          scenario.Name, cat.ToString(), tsds.Name), CSng(iStep / iTotalSteps))
+
                                         ' Apply TS to each category
                                         ' ..first disable all TS
                                         For iTS As Integer = 1 To Me.Core.nTimeSeries

@@ -60,8 +60,6 @@ Public Class cEwENetworkAnalysisPlugin
 
     ''' <summary>Interface form.</summary>
     Private m_frmNA As frmNetworkAnalysis = Nothing
-    ''' <summary>NA remote control.</summary>
-    Private m_remote As cNetworkAnalysisRemote = Nothing
     ''' <summary>Ooooh, that was long ago...</summary>
     Private m_ddx As cEwENetworkAnalysisData = Nothing
 
@@ -137,6 +135,14 @@ Public Class cEwENetworkAnalysisPlugin
 
 #End Region ' Generic
 
+#Region " UIContext "
+
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uic, cUIContext)
+    End Sub
+
+#End Region ' UIContext
+
 #Region " Core "
 
     ''' <summary>
@@ -177,10 +183,6 @@ Public Class cEwENetworkAnalysisPlugin
         If Me.HasUI() Then
             Me.m_frmNA.Close()
             Me.m_frmNA = Nothing
-        End If
-
-        If (Me.m_remote IsNot Nothing) Then
-            Me.m_remote.Detach()
         End If
 
         Me.m_manager = Nothing
@@ -249,26 +251,6 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
 #End Region ' Ecopath
-
-#Region " GUI "
-
-    Public Sub UIContext(ByVal uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
-        ' Cleanup
-        If Me.m_uic IsNot Nothing Then
-            Me.m_remote.Detach()
-            Me.m_remote = Nothing
-        End If
-        ' Update
-        Me.m_uic = DirectCast(uic, cUIContext)
-        ' Apply
-        If Me.m_uic IsNot Nothing Then
-            Me.m_remote = New cNetworkAnalysisRemote()
-            Me.m_remote.Attach(Me.m_uic, Me.m_manager)
-        End If
-    End Sub
-
-#End Region ' GUI
 
 #Region " Ecosim "
 

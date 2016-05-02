@@ -136,12 +136,6 @@
     <Compile Include="Data\cModelSettings.vb" />
     <Compile Include="Data\cSession.vb" />
     <Compile Include="Plugin points\cDepletionRecoveryPlugin.vb" />
-    <Compile Include="Interface\frmHelp.Designer.vb">
-      <DependentUpon>frmHelp.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Interface\frmHelp.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Interface\frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -165,10 +159,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Interface\frmHelp.resx">
-      <DependentUpon>frmHelp.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Interface\frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
