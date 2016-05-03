@@ -52,6 +52,7 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim sep1 As System.Windows.Forms.ToolStripSeparator
         Me.m_btnAddModel = New System.Windows.Forms.Button()
         Me.m_bntRemoveModel = New System.Windows.Forms.Button()
         Me.m_hdrModelProperties = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -62,7 +63,7 @@ Partial Class frmMain
         Me.m_tbxOutputDirectory = New System.Windows.Forms.TextBox()
         Me.m_btnBrowse = New System.Windows.Forms.Button()
         Me.m_btnRun = New System.Windows.Forms.Button()
-        Me.m_tsMain = New System.Windows.Forms.ToolStrip()
+        Me.m_tsMain = New cEwEToolstrip()
         Me.m_tsbReset = New System.Windows.Forms.ToolStripButton()
         Me.m_tssbLoad = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
@@ -95,8 +96,9 @@ Partial Class frmMain
         Me.m_btnNoModels = New System.Windows.Forms.Button()
         Me.m_btnAllModels = New System.Windows.Forms.Button()
         Me.m_tcOutput = New System.Windows.Forms.TabControl()
-        Me.m_tpFiles = New System.Windows.Forms.TabPage()
         Me.m_tpEcosimResults = New System.Windows.Forms.TabPage()
+        Me.m_tpFiles = New System.Windows.Forms.TabPage()
+        sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsMain.SuspendLayout()
         Me.m_tlpGroupCategories.SuspendLayout()
         CType(Me.m_nudNumberOfYears, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -106,8 +108,8 @@ Partial Class frmMain
         Me.m_tpFleets.SuspendLayout()
         Me.m_tlpFleets.SuspendLayout()
         Me.m_tcOutput.SuspendLayout()
-        Me.m_tpFiles.SuspendLayout()
         Me.m_tpEcosimResults.SuspendLayout()
+        Me.m_tpFiles.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnAddModel
@@ -175,7 +177,7 @@ Partial Class frmMain
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbReset, Me.m_tssbLoad, Me.m_tsbSave})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbReset, sep1, Me.m_tssbLoad, Me.m_tsbSave})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         '
@@ -414,19 +416,6 @@ Partial Class frmMain
         Me.m_tcOutput.Name = "m_tcOutput"
         Me.m_tcOutput.SelectedIndex = 0
         '
-        'm_tpFiles
-        '
-        Me.m_tpFiles.BackColor = System.Drawing.SystemColors.Control
-        Me.m_tpFiles.Controls.Add(Me.m_lblOutputDirectory)
-        Me.m_tpFiles.Controls.Add(Me.m_tbxOutputDirectory)
-        Me.m_tpFiles.Controls.Add(Me.m_btnBrowse)
-        Me.m_tpFiles.Controls.Add(Me.m_lblNumberOfYears)
-        Me.m_tpFiles.Controls.Add(Me.m_nudNumberOfYears)
-        Me.m_tpFiles.Controls.Add(Me.m_tbxMask)
-        Me.m_tpFiles.Controls.Add(Me.m_lblMask)
-        resources.ApplyResources(Me.m_tpFiles, "m_tpFiles")
-        Me.m_tpFiles.Name = "m_tpFiles"
-        '
         'm_tpEcosimResults
         '
         Me.m_tpEcosimResults.BackColor = System.Drawing.SystemColors.Control
@@ -436,6 +425,22 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tpEcosimResults, "m_tpEcosimResults")
         Me.m_tpEcosimResults.Name = "m_tpEcosimResults"
         '
+        'm_tpFiles
+        '
+        Me.m_tpFiles.BackColor = System.Drawing.SystemColors.Control
+        Me.m_tpFiles.Controls.Add(Me.m_lblOutputDirectory)
+        Me.m_tpFiles.Controls.Add(Me.m_tbxOutputDirectory)
+        Me.m_tpFiles.Controls.Add(Me.m_btnBrowse)
+        Me.m_tpFiles.Controls.Add(Me.m_tbxMask)
+        Me.m_tpFiles.Controls.Add(Me.m_lblMask)
+        resources.ApplyResources(Me.m_tpFiles, "m_tpFiles")
+        Me.m_tpFiles.Name = "m_tpFiles"
+        '
+        'sep1
+        '
+        sep1.Name = "sep1"
+        resources.ApplyResources(sep1, "sep1")
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -443,7 +448,9 @@ Partial Class frmMain
         Me.Controls.Add(Me.m_tcModelProperties)
         Me.Controls.Add(Me.m_btnNoModels)
         Me.Controls.Add(Me.m_clbModels)
+        Me.Controls.Add(Me.m_lblNumberOfYears)
         Me.Controls.Add(Me.m_btnAllModels)
+        Me.Controls.Add(Me.m_nudNumberOfYears)
         Me.Controls.Add(Me.m_hdrModelProperties)
         Me.Controls.Add(Me.m_btnAddModel)
         Me.Controls.Add(Me.m_bntRemoveModel)
@@ -466,9 +473,9 @@ Partial Class frmMain
         Me.m_tpFleets.ResumeLayout(False)
         Me.m_tlpFleets.ResumeLayout(False)
         Me.m_tcOutput.ResumeLayout(False)
+        Me.m_tpEcosimResults.ResumeLayout(False)
         Me.m_tpFiles.ResumeLayout(False)
         Me.m_tpFiles.PerformLayout()
-        Me.m_tpEcosimResults.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -484,7 +491,7 @@ Partial Class frmMain
     Private WithEvents m_tbxOutputDirectory As System.Windows.Forms.TextBox
     Private WithEvents m_btnBrowse As System.Windows.Forms.Button
     Private WithEvents m_btnRun As System.Windows.Forms.Button
-    Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+    Private WithEvents m_tsMain As cEwEToolstrip
     Private WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbReset As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlpGroupCategories As System.Windows.Forms.TableLayoutPanel
