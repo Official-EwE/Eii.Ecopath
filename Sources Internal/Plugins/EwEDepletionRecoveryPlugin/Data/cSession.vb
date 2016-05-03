@@ -24,6 +24,7 @@ Option Strict On
 Imports System.Xml
 Imports System.IO
 Imports EwECore
+Imports EwECore.Ecosim
 
 #End Region ' Imports
 
@@ -31,10 +32,6 @@ Public Class cSession
 
     Private m_lModelSettings As New List(Of cModelSettings)
     Private m_strFileName As String = ""
-    Private m_strOutputPath As String = ""
-    Private m_strDirectoryMask As String = ""
-    Private m_iNumYears As Integer = 0
-    Private m_bAnnualAverages As Boolean = True
 
     Public Sub New()
         Me.Reset()
@@ -44,10 +41,11 @@ Public Class cSession
 
     Public Sub Reset()
         Me.m_lModelSettings.Clear()
-        Me.m_iNumYears = 100
-        Me.m_bAnnualAverages = True
-        Me.m_strDirectoryMask = "[model:6]-[scenario:6]-[category]-[timeseries]"
-        Me.m_strOutputPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        Me.NumberOfYears = 100
+        Me.AnnualAverages = True
+        Me.DirectoryMask = "[model:6]-[scenario:6]-[category]-[timeseries]"
+        Me.OutputPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+        Me.EcosimResults = CType([Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes)), cEcosimResultWriter.eResultTypes())
     End Sub
 
     Public Function Model(ByVal strModelPath As String) As cModelSettings
@@ -96,40 +94,14 @@ Public Class cSession
     End Property
 
     Public Property OutputPath() As String
-        Get
-            Return Me.m_strOutputPath
-        End Get
-        Set(ByVal value As String)
-            Me.m_strOutputPath = value
-        End Set
-    End Property
 
     Public Property DirectoryMask() As String
-        Get
-            Return Me.m_strDirectoryMask
-        End Get
-        Set(ByVal value As String)
-            Me.m_strDirectoryMask = value
-        End Set
-    End Property
 
     Public Property NumberOfYears() As Integer
-        Get
-            Return Me.m_iNumYears
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iNumYears = value
-        End Set
-    End Property
 
     Public Property AnnualAverages() As Boolean
-        Get
-            Return Me.m_bAnnualAverages
-        End Get
-        Set(ByVal bAnnualAverages As Boolean)
-            Me.m_bAnnualAverages = bAnnualAverages
-        End Set
-    End Property
+
+    Public Property EcosimResults As cEcosimResultWriter.eResultTypes()
 
 #End Region ' Public Properties
 
@@ -139,6 +111,8 @@ Public Class cSession
 
         Dim doc As XmlDocument = Me.CreateXMLDocument()
         Dim xn As XmlNode = Nothing
+        Dim xn2 As XmlNode = Nothing
+        Dim xn3 As XmlNode = Nothing
         Dim xa As XmlAttribute = Nothing
         Dim modelsettings As cModelSettings = Nothing
 
@@ -167,6 +141,15 @@ Public Class cSession
         xa.Value = Convert.ToString(Me.NumberOfYears)
         xn.Attributes.Append(xa)
 
+        ' Add Ecosim results
+        xn2 = doc.CreateElement("EcosimResults")
+        For Each res As cEcosimResultWriter.eResultTypes In Me.EcosimResults
+            xn3 = doc.CreateElement("Result")
+            xn3.InnerText = res.ToString()
+            xn2.AppendChild(xn3)
+        Next
+        xn.AppendChild(xn2)
+
         ' Done
         doc.AppendChild(xn)
 
@@ -194,8 +177,8 @@ Public Class cSession
                     For Each xa As XmlAttribute In xn.Attributes
                         Try
                             Select Case xa.Name.ToLower()
-                                Case "outputpath" : Me.m_strOutputPath = xa.Value
-                                Case "directorymask" : Me.m_strDirectoryMask = xa.Value
+                                Case "outputpath" : Me.OutputPath = xa.Value
+                                Case "directorymask" : Me.DirectoryMask = xa.Value
                                 Case "annualavg" : Me.AnnualAverages = Convert.ToBoolean(xa.Value)
                                 Case "numyears" : Me.NumberOfYears = Convert.ToInt16(xa.Value)
                             End Select
@@ -205,9 +188,20 @@ Public Class cSession
                     Next xa
 
                     For Each xnChild As XmlNode In xn.ChildNodes
+                        If (String.Compare(xnChild.Name, "EcosimResult", True) = 0) Then
+                            Dim lRes As New List(Of cEcosimResultWriter.eResultTypes)
+                            For Each xnRes As XmlNode In xnChild.ChildNodes
+                                If (String.Compare(xnRes.Name, "Result", True) = 0) Then
+                                    lRes.Add(DirectCast([Enum].Parse(GetType(cEcosimResultWriter.eResultTypes), xnRes.InnerText), cEcosimResultWriter.eResultTypes))
+                                End If
+                            Next
+                            Me.EcosimResults = lRes.ToArray()
+                        End If
+
                         If (String.Compare(xnChild.Name, "Model", True) = 0) Then
                             bSucces = bSucces And Me.ReadModelSettingsNode(xnChild)
                         End If
+
                     Next xnChild
 
                     Exit For

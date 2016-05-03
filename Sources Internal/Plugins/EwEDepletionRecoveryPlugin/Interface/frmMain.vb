@@ -133,9 +133,10 @@ Public Class frmMain
         Next
 
         ' Prepare Ecosim results checked listbox
-        For Each plot As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
-            Me.m_clbEcosimResults.Items.Add(plot)
+        For Each result As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
+            Me.m_clbEcosimResults.Items.Add(result)
         Next
+
         ' Phah
         Me.m_btnAllResults_Click(Nothing, Nothing)
 
@@ -492,6 +493,7 @@ Public Class frmMain
 
     End Sub
 
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Select all Ecosim results to be written to CSV file.
@@ -523,6 +525,24 @@ Public Class frmMain
         For i As Integer = 0 To Me.m_clbEcosimResults.Items.Count - 1
             Me.m_clbEcosimResults.SetItemChecked(i, False)
         Next
+
+    End Sub
+
+    Private Sub OnEcosimResultsCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+        Handles m_clbEcosimResults.ItemCheck
+
+        If (Me.m_session Is Nothing) Then Return
+        If (Me.m_bInUpdate = True) Then Return
+
+        Try
+            Dim lResults As New List(Of cEcosimResultWriter.eResultTypes)
+            For Each item As Object In Me.m_clbEcosimResults.CheckedItems
+                lResults.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
+            Next
+            Me.m_session.EcosimResults = lResults.ToArray()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -678,6 +698,7 @@ Public Class frmMain
     Private Sub UpdateSessionControls()
 
         Dim msFirst As cModelSettings = Nothing
+        Dim result As cEcosimResultWriter.eResultTypes
 
         Me.m_bInUpdate = True
         Me.m_tbxOutputDirectory.Text = Me.m_session.OutputPath
@@ -689,6 +710,11 @@ Public Class frmMain
         For Each ms As cModelSettings In Me.m_session.Models
             If msFirst Is Nothing Then msFirst = ms
             Me.m_clbModels.Items.Add(ms)
+        Next
+
+        For i As Integer = 0 To Me.m_clbEcosimResults.Items.Count - 1
+            result = DirectCast(Me.m_clbEcosimResults.Items(i), cEcosimResultWriter.eResultTypes)
+            Me.m_clbEcosimResults.SetItemChecked(i, Array.IndexOf(Me.m_session.EcosimResults, result) > -1)
         Next
         Me.m_bInUpdate = False
 
@@ -1044,20 +1070,6 @@ Public Class frmMain
 
 #End Region ' Fleets
 
-#Region " Ecosim results "
-
-    Private ReadOnly Property SelectedEcosimResults() As cEcosimResultWriter.eResultTypes()
-        Get
-            Dim lResult As New List(Of cEcosimResultWriter.eResultTypes)
-            For Each item As Object In Me.m_clbEcosimResults.CheckedItems
-                lResult.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
-            Next
-            Return lResult.ToArray
-        End Get
-    End Property
-
-#End Region ' Ecosim results
-
 #Region " Generic "
 
     ''' -----------------------------------------------------------------------
@@ -1326,7 +1338,7 @@ Public Class frmMain
                                             Dim writer As New cEcosimResultWriter(Me.Core)
                                             Try
                                                 ' Write selected results only
-                                                writer.WriteResults(strDirectory, Me.SelectedEcosimResults)
+                                                writer.WriteResults(strDirectory, Me.m_session.EcosimResults)
                                             Catch ex As Exception
                                                 Me.ReportError(String.Format("Ecosim failed to save data, please check for write access or disk space on '{0}", strDirectory))
                                                 Return
@@ -1411,7 +1423,7 @@ Public Class frmMain
                                             Dim writer As New cEcosimResultWriter(Me.Core)
                                             Try
                                                 ' Write selected results only
-                                                writer.WriteResults(strDirectory, Me.SelectedEcosimResults)
+                                                writer.WriteResults(strDirectory, Me.m_session.EcosimResults)
                                             Catch ex As Exception
                                                 Me.ReportError(String.Format("Ecosim failed to save data, please check for write access or disk space on '{0}", strDirectory))
                                                 Return

@@ -89,13 +89,16 @@ Partial Class frmMain
         Me.m_flbFleets = New ScientificInterfaceShared.Controls.cFleetListBox()
         Me.m_btnAllFleets = New System.Windows.Forms.Button()
         Me.m_btnNoneFleets = New System.Windows.Forms.Button()
-        Me.m_tpEcosim = New System.Windows.Forms.TabPage()
         Me.m_clbEcosimResults = New System.Windows.Forms.CheckedListBox()
         Me.m_btnAllResults = New System.Windows.Forms.Button()
         Me.m_btnNoneResults = New System.Windows.Forms.Button()
         Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnNoModels = New System.Windows.Forms.Button()
         Me.m_btnAllModels = New System.Windows.Forms.Button()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_tcOutput = New System.Windows.Forms.TabControl()
+        Me.m_tpFiles = New System.Windows.Forms.TabPage()
+        Me.m_tpEcosimResults = New System.Windows.Forms.TabPage()
         Me.m_tsMain.SuspendLayout()
         Me.m_tlpGroupCategories.SuspendLayout()
         CType(Me.m_nudNumberOfYears, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,7 +107,13 @@ Partial Class frmMain
         Me.m_tpGroups.SuspendLayout()
         Me.m_tpFleets.SuspendLayout()
         Me.m_tlpFleets.SuspendLayout()
-        Me.m_tpEcosim.SuspendLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
+        Me.m_tcOutput.SuspendLayout()
+        Me.m_tpFiles.SuspendLayout()
+        Me.m_tpEcosimResults.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnAddModel
@@ -121,9 +130,9 @@ Partial Class frmMain
         '
         'm_hdrModelProperties
         '
-        resources.ApplyResources(Me.m_hdrModelProperties, "m_hdrModelProperties")
         Me.m_hdrModelProperties.CanCollapseParent = False
         Me.m_hdrModelProperties.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrModelProperties, "m_hdrModelProperties")
         Me.m_hdrModelProperties.IsCollapsed = False
         Me.m_hdrModelProperties.Name = "m_hdrModelProperties"
         '
@@ -279,17 +288,16 @@ Partial Class frmMain
         Me.m_tcModelProperties.Controls.Add(Me.m_tpEcosimScenarios)
         Me.m_tcModelProperties.Controls.Add(Me.m_tpGroups)
         Me.m_tcModelProperties.Controls.Add(Me.m_tpFleets)
-        Me.m_tcModelProperties.Controls.Add(Me.m_tpEcosim)
         Me.m_tcModelProperties.Multiline = True
         Me.m_tcModelProperties.Name = "m_tcModelProperties"
         Me.m_tcModelProperties.SelectedIndex = 0
         '
         'm_tpEcosimScenarios
         '
+        Me.m_tpEcosimScenarios.BackColor = System.Drawing.SystemColors.Control
         Me.m_tpEcosimScenarios.Controls.Add(Me.m_clbScenarios)
         resources.ApplyResources(Me.m_tpEcosimScenarios, "m_tpEcosimScenarios")
         Me.m_tpEcosimScenarios.Name = "m_tpEcosimScenarios"
-        Me.m_tpEcosimScenarios.UseVisualStyleBackColor = True
         '
         'm_clbScenarios
         '
@@ -301,21 +309,21 @@ Partial Class frmMain
         '
         'm_tpGroups
         '
+        Me.m_tpGroups.BackColor = System.Drawing.SystemColors.Control
         Me.m_tpGroups.Controls.Add(Me.m_tlpGroupCategories)
         Me.m_tpGroups.Controls.Add(Me.m_btnAllGroups)
         Me.m_tpGroups.Controls.Add(Me.m_btnNoneGroups)
         resources.ApplyResources(Me.m_tpGroups, "m_tpGroups")
         Me.m_tpGroups.Name = "m_tpGroups"
-        Me.m_tpGroups.UseVisualStyleBackColor = True
         '
         'm_tpFleets
         '
+        Me.m_tpFleets.BackColor = System.Drawing.SystemColors.Control
         Me.m_tpFleets.Controls.Add(Me.m_tlpFleets)
         Me.m_tpFleets.Controls.Add(Me.m_btnAllFleets)
         Me.m_tpFleets.Controls.Add(Me.m_btnNoneFleets)
         resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
         Me.m_tpFleets.Name = "m_tpFleets"
-        Me.m_tpFleets.UseVisualStyleBackColor = True
         '
         'm_tlpFleets
         '
@@ -369,20 +377,12 @@ Partial Class frmMain
         Me.m_btnNoneFleets.Name = "m_btnNoneFleets"
         Me.m_btnNoneFleets.UseVisualStyleBackColor = True
         '
-        'm_tpEcosim
-        '
-        Me.m_tpEcosim.Controls.Add(Me.m_clbEcosimResults)
-        Me.m_tpEcosim.Controls.Add(Me.m_btnAllResults)
-        Me.m_tpEcosim.Controls.Add(Me.m_btnNoneResults)
-        resources.ApplyResources(Me.m_tpEcosim, "m_tpEcosim")
-        Me.m_tpEcosim.Name = "m_tpEcosim"
-        Me.m_tpEcosim.UseVisualStyleBackColor = True
-        '
         'm_clbEcosimResults
         '
         resources.ApplyResources(Me.m_clbEcosimResults, "m_clbEcosimResults")
         Me.m_clbEcosimResults.CheckOnClick = True
         Me.m_clbEcosimResults.FormattingEnabled = True
+        Me.m_clbEcosimResults.MultiColumn = True
         Me.m_clbEcosimResults.Name = "m_clbEcosimResults"
         Me.m_clbEcosimResults.ThreeDCheckBoxes = True
         '
@@ -400,9 +400,9 @@ Partial Class frmMain
         '
         'm_hdrModels
         '
-        resources.ApplyResources(Me.m_hdrModels, "m_hdrModels")
         Me.m_hdrModels.CanCollapseParent = False
         Me.m_hdrModels.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrModels, "m_hdrModels")
         Me.m_hdrModels.IsCollapsed = False
         Me.m_hdrModels.Name = "m_hdrModels"
         '
@@ -418,29 +418,65 @@ Partial Class frmMain
         Me.m_btnAllModels.Name = "m_btnAllModels"
         Me.m_btnAllModels.UseVisualStyleBackColor = True
         '
+        'm_scMain
+        '
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.Name = "m_scMain"
+        '
+        'm_scMain.Panel1
+        '
+        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrModels)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_clbModels)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnNoModels)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAllModels)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAddModel)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_bntRemoveModel)
+        '
+        'm_scMain.Panel2
+        '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_hdrModelProperties)
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tcModelProperties)
+        '
+        'm_tcOutput
+        '
+        resources.ApplyResources(Me.m_tcOutput, "m_tcOutput")
+        Me.m_tcOutput.Controls.Add(Me.m_tpFiles)
+        Me.m_tcOutput.Controls.Add(Me.m_tpEcosimResults)
+        Me.m_tcOutput.Name = "m_tcOutput"
+        Me.m_tcOutput.SelectedIndex = 0
+        '
+        'm_tpFiles
+        '
+        Me.m_tpFiles.BackColor = System.Drawing.SystemColors.Control
+        Me.m_tpFiles.Controls.Add(Me.m_lblOutputDirectory)
+        Me.m_tpFiles.Controls.Add(Me.m_tbxOutputDirectory)
+        Me.m_tpFiles.Controls.Add(Me.m_cbxAnnualAverages)
+        Me.m_tpFiles.Controls.Add(Me.m_btnBrowse)
+        Me.m_tpFiles.Controls.Add(Me.m_lblNumberOfYears)
+        Me.m_tpFiles.Controls.Add(Me.m_nudNumberOfYears)
+        Me.m_tpFiles.Controls.Add(Me.m_tbxMask)
+        Me.m_tpFiles.Controls.Add(Me.m_lblMask)
+        resources.ApplyResources(Me.m_tpFiles, "m_tpFiles")
+        Me.m_tpFiles.Name = "m_tpFiles"
+        '
+        'm_tpEcosimResults
+        '
+        Me.m_tpEcosimResults.BackColor = System.Drawing.SystemColors.Control
+        Me.m_tpEcosimResults.Controls.Add(Me.m_btnAllResults)
+        Me.m_tpEcosimResults.Controls.Add(Me.m_clbEcosimResults)
+        Me.m_tpEcosimResults.Controls.Add(Me.m_btnNoneResults)
+        resources.ApplyResources(Me.m_tpEcosimResults, "m_tpEcosimResults")
+        Me.m_tpEcosimResults.Name = "m_tpEcosimResults"
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_tcModelProperties)
-        Me.Controls.Add(Me.m_btnAllModels)
-        Me.Controls.Add(Me.m_btnNoModels)
-        Me.Controls.Add(Me.m_cbxAnnualAverages)
-        Me.Controls.Add(Me.m_nudNumberOfYears)
-        Me.Controls.Add(Me.m_lblNumberOfYears)
-        Me.Controls.Add(Me.m_clbModels)
+        Me.Controls.Add(Me.m_tcOutput)
+        Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_btnRun)
-        Me.Controls.Add(Me.m_lblMask)
-        Me.Controls.Add(Me.m_tbxMask)
-        Me.Controls.Add(Me.m_lblOutputDirectory)
-        Me.Controls.Add(Me.m_tbxOutputDirectory)
         Me.Controls.Add(Me.m_hdrOutput)
-        Me.Controls.Add(Me.m_hdrModels)
-        Me.Controls.Add(Me.m_hdrModelProperties)
-        Me.Controls.Add(Me.m_btnBrowse)
-        Me.Controls.Add(Me.m_bntRemoveModel)
-        Me.Controls.Add(Me.m_btnAddModel)
         Me.Icon = Global.EwEDepletionRecoveryPlugin.My.Resources.Resources.DepletionRecovery
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
@@ -454,7 +490,14 @@ Partial Class frmMain
         Me.m_tpGroups.ResumeLayout(False)
         Me.m_tpFleets.ResumeLayout(False)
         Me.m_tlpFleets.ResumeLayout(False)
-        Me.m_tpEcosim.ResumeLayout(False)
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scMain.ResumeLayout(False)
+        Me.m_tcOutput.ResumeLayout(False)
+        Me.m_tpFiles.ResumeLayout(False)
+        Me.m_tpFiles.PerformLayout()
+        Me.m_tpEcosimResults.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -497,10 +540,13 @@ Partial Class frmMain
     Private WithEvents m_btnNoneFleets As System.Windows.Forms.Button
     Private WithEvents m_flbFleets As cFleetListBox
     Private WithEvents m_hdrModels As cEwEHeaderLabel
-    Private WithEvents m_tpEcosim As System.Windows.Forms.TabPage
     Private WithEvents m_btnAllResults As System.Windows.Forms.Button
     Private WithEvents m_btnNoneResults As System.Windows.Forms.Button
     Private WithEvents m_clbEcosimResults As System.Windows.Forms.CheckedListBox
     Private WithEvents m_btnNoModels As System.Windows.Forms.Button
     Private WithEvents m_btnAllModels As System.Windows.Forms.Button
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
+    Private WithEvents m_tpFiles As System.Windows.Forms.TabPage
+    Private WithEvents m_tpEcosimResults As System.Windows.Forms.TabPage
 End Class
