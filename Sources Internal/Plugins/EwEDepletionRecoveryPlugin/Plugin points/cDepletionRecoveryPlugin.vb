@@ -33,6 +33,7 @@ Public Class cDepletionRecoveryPlugin
     Implements IDockStatePlugin
     Implements IUIContextPlugin
     Implements IMenuItemPlugin
+    Implements IHelpPlugin
 
 #Region " Private vars "
 
@@ -149,6 +150,30 @@ Public Class cDepletionRecoveryPlugin
     End Function
 
 #End Region ' IDockStatePlugin implementation
+
+#Region " Ajouto "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpTopic"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String _
+        Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return ".\UserGuide\EwEDepletionRecoveryPlugin.pdf"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpURL"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String _
+        Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return Me.HelpTopic
+        End Get
+    End Property
+
+#End Region ' Ajouto
 
 #Region " Internals "
 

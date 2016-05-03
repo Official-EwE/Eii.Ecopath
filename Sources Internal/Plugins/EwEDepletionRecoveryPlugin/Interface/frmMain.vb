@@ -156,10 +156,13 @@ Public Class frmMain
         MyBase.OnFormClosed(e)
     End Sub
 
+    Protected Overrides Sub OnHelpRequested(hevent As System.Windows.Forms.HelpEventArgs)
+        MyBase.OnHelpRequested(hevent)
+    End Sub
+
 #End Region ' Overrides
 
 #Region " Events "
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
