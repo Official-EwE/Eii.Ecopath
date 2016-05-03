@@ -697,7 +697,6 @@ Public Class frmMain
     ''' -----------------------------------------------------------------------
     Private Sub UpdateSessionControls()
 
-        Dim msFirst As cModelSettings = Nothing
         Dim result As cEcosimResultWriter.eResultTypes
 
         Me.m_bInUpdate = True
@@ -708,8 +707,8 @@ Public Class frmMain
 
         Me.m_clbModels.Items.Clear()
         For Each ms As cModelSettings In Me.m_session.Models
-            If msFirst Is Nothing Then msFirst = ms
-            Me.m_clbModels.Items.Add(ms)
+            Dim i As Integer = Me.m_clbModels.Items.Add(ms)
+            Me.m_clbModels.SetItemChecked(i, ms.Enabled)
         Next
 
         For i As Integer = 0 To Me.m_clbEcosimResults.Items.Count - 1
@@ -719,7 +718,11 @@ Public Class frmMain
         Me.m_bInUpdate = False
 
         ' Select first model
-        Me.SelectedModel = msFirst
+        If (Me.m_clbModels.Items.Count = 0) Then
+            Me.SelectedModel = Nothing
+        Else
+            Me.SelectedModel = DirectCast(Me.m_clbModels.Items(0), cModelSettings)
+        End If
 
     End Sub
 

@@ -95,7 +95,6 @@ Partial Class frmMain
         Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnNoModels = New System.Windows.Forms.Button()
         Me.m_btnAllModels = New System.Windows.Forms.Button()
-        Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_tcOutput = New System.Windows.Forms.TabControl()
         Me.m_tpFiles = New System.Windows.Forms.TabPage()
         Me.m_tpEcosimResults = New System.Windows.Forms.TabPage()
@@ -107,10 +106,6 @@ Partial Class frmMain
         Me.m_tpGroups.SuspendLayout()
         Me.m_tpFleets.SuspendLayout()
         Me.m_tlpFleets.SuspendLayout()
-        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.m_scMain.Panel1.SuspendLayout()
-        Me.m_scMain.Panel2.SuspendLayout()
-        Me.m_scMain.SuspendLayout()
         Me.m_tcOutput.SuspendLayout()
         Me.m_tpFiles.SuspendLayout()
         Me.m_tpEcosimResults.SuspendLayout()
@@ -130,9 +125,9 @@ Partial Class frmMain
         '
         'm_hdrModelProperties
         '
+        resources.ApplyResources(Me.m_hdrModelProperties, "m_hdrModelProperties")
         Me.m_hdrModelProperties.CanCollapseParent = False
         Me.m_hdrModelProperties.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrModelProperties, "m_hdrModelProperties")
         Me.m_hdrModelProperties.IsCollapsed = False
         Me.m_hdrModelProperties.Name = "m_hdrModelProperties"
         '
@@ -400,9 +395,9 @@ Partial Class frmMain
         '
         'm_hdrModels
         '
+        resources.ApplyResources(Me.m_hdrModels, "m_hdrModels")
         Me.m_hdrModels.CanCollapseParent = False
         Me.m_hdrModels.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrModels, "m_hdrModels")
         Me.m_hdrModels.IsCollapsed = False
         Me.m_hdrModels.Name = "m_hdrModels"
         '
@@ -417,25 +412,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_btnAllModels, "m_btnAllModels")
         Me.m_btnAllModels.Name = "m_btnAllModels"
         Me.m_btnAllModels.UseVisualStyleBackColor = True
-        '
-        'm_scMain
-        '
-        resources.ApplyResources(Me.m_scMain, "m_scMain")
-        Me.m_scMain.Name = "m_scMain"
-        '
-        'm_scMain.Panel1
-        '
-        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrModels)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_clbModels)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_btnNoModels)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAllModels)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_btnAddModel)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_bntRemoveModel)
-        '
-        'm_scMain.Panel2
-        '
-        Me.m_scMain.Panel2.Controls.Add(Me.m_hdrModelProperties)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_tcModelProperties)
         '
         'm_tcOutput
         '
@@ -472,8 +448,15 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_tcModelProperties)
+        Me.Controls.Add(Me.m_btnNoModels)
+        Me.Controls.Add(Me.m_clbModels)
+        Me.Controls.Add(Me.m_btnAllModels)
+        Me.Controls.Add(Me.m_hdrModelProperties)
+        Me.Controls.Add(Me.m_btnAddModel)
+        Me.Controls.Add(Me.m_bntRemoveModel)
+        Me.Controls.Add(Me.m_hdrModels)
         Me.Controls.Add(Me.m_tcOutput)
-        Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_btnRun)
         Me.Controls.Add(Me.m_hdrOutput)
@@ -490,10 +473,6 @@ Partial Class frmMain
         Me.m_tpGroups.ResumeLayout(False)
         Me.m_tpFleets.ResumeLayout(False)
         Me.m_tlpFleets.ResumeLayout(False)
-        Me.m_scMain.Panel1.ResumeLayout(False)
-        Me.m_scMain.Panel2.ResumeLayout(False)
-        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.m_scMain.ResumeLayout(False)
         Me.m_tcOutput.ResumeLayout(False)
         Me.m_tpFiles.ResumeLayout(False)
         Me.m_tpFiles.PerformLayout()
@@ -545,7 +524,6 @@ Partial Class frmMain
     Private WithEvents m_clbEcosimResults As System.Windows.Forms.CheckedListBox
     Private WithEvents m_btnNoModels As System.Windows.Forms.Button
     Private WithEvents m_btnAllModels As System.Windows.Forms.Button
-    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_tcOutput As System.Windows.Forms.TabControl
     Private WithEvents m_tpFiles As System.Windows.Forms.TabPage
     Private WithEvents m_tpEcosimResults As System.Windows.Forms.TabPage

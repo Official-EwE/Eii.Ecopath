@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAddModel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>455, 21</value>
+    <value>470, 46</value>
   </data>
   <data name="m_btnAddModel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
@@ -142,16 +142,16 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnAddModel.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAddModel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_bntRemoveModel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_bntRemoveModel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>455, 48</value>
+    <value>470, 73</value>
   </data>
   <data name="m_bntRemoveModel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
@@ -169,19 +169,19 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_bntRemoveModel.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_bntRemoveModel.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
-  <data name="m_hdrModelProperties.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="m_hdrModelProperties.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_hdrModelProperties.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>12, 154</value>
   </data>
   <data name="m_hdrModelProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>530, 18</value>
+    <value>533, 18</value>
   </data>
   <data name="m_hdrModelProperties.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -199,16 +199,16 @@
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13691.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrModelProperties.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrModelProperties.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="m_btnAllGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnAllGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>451, 3</value>
+    <value>451, 0</value>
   </data>
   <data name="m_btnAllGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 21</value>
@@ -262,7 +262,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_hdrOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 398</value>
+    <value>16, 420</value>
   </data>
   <data name="m_hdrOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>530, 18</value>
@@ -286,7 +286,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>11</value>
   </data>
   <data name="m_lblOutputDirectory.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -391,11 +391,32 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>10</value>
   </data>
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="m_tsbReset.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -468,50 +489,11 @@
   <data name="m_tsbSave.Text" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 25</value>
-  </data>
-  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_tlpGroupCategories.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_tlpGroupCategories.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="m_glbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_glbGroups.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_glbGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>222, 0</value>
-  </data>
-  <data name="m_glbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_glbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 81</value>
-  </data>
-  <data name="m_glbGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
   </data>
   <data name="&gt;&gt;m_glbGroups.Name" xml:space="preserve">
     <value>m_glbGroups</value>
@@ -524,33 +506,6 @@
   </data>
   <data name="&gt;&gt;m_glbGroups.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_chGroupCat.Text" xml:space="preserve">
-    <value>category</value>
-  </data>
-  <data name="m_chGroupCat.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="m_chGroupCount.Text" xml:space="preserve">
-    <value># groups</value>
-  </data>
-  <data name="m_chGroupCount.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
-  </data>
-  <data name="m_lvCategoriesGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 81</value>
-  </data>
-  <data name="m_lvCategoriesGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
   </data>
   <data name="&gt;&gt;m_lvCategoriesGroup.Name" xml:space="preserve">
     <value>m_lvCategoriesGroup</value>
@@ -571,7 +526,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpGroupCategories.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 81</value>
+    <value>441, 188</value>
   </data>
   <data name="m_tlpGroupCategories.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -591,20 +546,89 @@
   <data name="m_tlpGroupCategories.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_glbGroups" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lvCategoriesGroup" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,81" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_clbModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_glbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_glbGroups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_glbGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>220, 0</value>
+  </data>
+  <data name="m_glbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_glbGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 188</value>
+  </data>
+  <data name="m_glbGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_glbGroups.Name" xml:space="preserve">
+    <value>m_glbGroups</value>
+  </data>
+  <data name="&gt;&gt;m_glbGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.13691.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_glbGroups.Parent" xml:space="preserve">
+    <value>m_tlpGroupCategories</value>
+  </data>
+  <data name="&gt;&gt;m_glbGroups.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="m_lvCategoriesGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>217, 188</value>
+  </data>
+  <data name="m_lvCategoriesGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_lvCategoriesGroup.Name" xml:space="preserve">
+    <value>m_lvCategoriesGroup</value>
+  </data>
+  <data name="&gt;&gt;m_lvCategoriesGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvCategoriesGroup.Parent" xml:space="preserve">
+    <value>m_tlpGroupCategories</value>
+  </data>
+  <data name="&gt;&gt;m_lvCategoriesGroup.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_chGroupCat.Text" xml:space="preserve">
+    <value>category</value>
+  </data>
+  <data name="m_chGroupCat.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_chGroupCount.Text" xml:space="preserve">
+    <value># groups</value>
+  </data>
+  <data name="m_chGroupCount.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_clbModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_clbModels.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
   <data name="m_clbModels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 21</value>
+    <value>15, 46</value>
   </data>
   <data name="m_clbModels.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 3, 0</value>
   </data>
   <data name="m_clbModels.Size" type="System.Drawing.Size, System.Drawing">
-    <value>449, 101</value>
+    <value>445, 101</value>
   </data>
   <data name="m_clbModels.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -616,10 +640,10 @@
     <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_clbModels.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_clbModels.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblNumberOfYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -652,7 +676,7 @@
     <value>109, 56</value>
   </data>
   <data name="m_nudNumberOfYears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 20</value>
+    <value>87, 20</value>
   </data>
   <data name="m_nudNumberOfYears.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -724,7 +748,7 @@
     <value>True</value>
   </data>
   <data name="m_cbxAnnualAverages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>109, 82</value>
+    <value>212, 57</value>
   </data>
   <data name="m_cbxAnnualAverages.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 17</value>
@@ -750,21 +774,6 @@
   <data name="m_tcModelProperties.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_clbScenarios.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_clbScenarios.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_clbScenarios.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_clbScenarios.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 197</value>
-  </data>
-  <data name="m_clbScenarios.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;m_clbScenarios.Name" xml:space="preserve">
     <value>m_clbScenarios</value>
   </data>
@@ -781,7 +790,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpEcosimScenarios.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 197</value>
+    <value>522, 188</value>
   </data>
   <data name="m_tpEcosimScenarios.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -805,7 +814,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 81</value>
+    <value>522, 188</value>
   </data>
   <data name="m_tpGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -853,7 +862,7 @@
     <value>0, 0, 3, 0</value>
   </data>
   <data name="m_lvCategoriesFleet.Size" type="System.Drawing.Size, System.Drawing">
-    <value>219, 81</value>
+    <value>219, 218</value>
   </data>
   <data name="m_lvCategoriesFleet.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -883,7 +892,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_flbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 81</value>
+    <value>223, 218</value>
   </data>
   <data name="m_flbFleets.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -910,7 +919,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 81</value>
+    <value>445, 218</value>
   </data>
   <data name="m_tlpFleets.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -994,7 +1003,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 81</value>
+    <value>522, 218</value>
   </data>
   <data name="m_tpFleets.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1015,7 +1024,7 @@
     <value>2</value>
   </data>
   <data name="m_tcModelProperties.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
+    <value>15, 172</value>
   </data>
   <data name="m_tcModelProperties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1024,7 +1033,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tcModelProperties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>530, 223</value>
+    <value>530, 244</value>
   </data>
   <data name="m_tcModelProperties.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1036,10 +1045,37 @@
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tcModelProperties.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tcModelProperties.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
+  </data>
+  <data name="m_clbScenarios.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_clbScenarios.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_clbScenarios.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_clbScenarios.Size" type="System.Drawing.Size, System.Drawing">
+    <value>441, 188</value>
+  </data>
+  <data name="m_clbScenarios.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.Name" xml:space="preserve">
+    <value>m_clbScenarios</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.Parent" xml:space="preserve">
+    <value>m_tpEcosimScenarios</value>
+  </data>
+  <data name="&gt;&gt;m_clbScenarios.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_clbEcosimResults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1054,7 +1090,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_clbEcosimResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 118</value>
+    <value>445, 78</value>
   </data>
   <data name="m_clbEcosimResults.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1131,11 +1167,11 @@
   <data name="&gt;&gt;m_btnNoneResults.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_hdrModels.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="m_hdrModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_hdrModels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>15, 28</value>
   </data>
   <data name="m_hdrModels.Size" type="System.Drawing.Size, System.Drawing">
     <value>530, 18</value>
@@ -1156,10 +1192,10 @@
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13691.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>7</value>
   </data>
   <data name="m_btnNoModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1168,7 +1204,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnNoModels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>455, 102</value>
+    <value>470, 127</value>
   </data>
   <data name="m_btnNoModels.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
@@ -1186,10 +1222,10 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnNoModels.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnNoModels.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_btnAllModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1198,7 +1234,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAllModels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>455, 75</value>
+    <value>470, 100</value>
   </data>
   <data name="m_btnAllModels.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 21</value>
@@ -1216,70 +1252,10 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnAllModels.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAllModels.ZOrder" xml:space="preserve">
     <value>3</value>
-  </data>
-  <data name="m_scMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 28</value>
-  </data>
-  <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
-    <value>Horizontal</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_scMain.Panel1MinSize" type="System.Int32, mscorlib">
-    <value>122</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_scMain.Panel2MinSize" type="System.Int32, mscorlib">
-    <value>122</value>
-  </data>
-  <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>530, 367</value>
-  </data>
-  <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>122</value>
-  </data>
-  <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Name" xml:space="preserve">
-    <value>m_scMain</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tcOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -1291,7 +1267,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpFiles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 100</value>
+    <value>526, 78</value>
   </data>
   <data name="m_tpFiles.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1318,7 +1294,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpEcosimResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>526, 118</value>
+    <value>526, 78</value>
   </data>
   <data name="m_tpEcosimResults.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1339,7 +1315,7 @@
     <value>1</value>
   </data>
   <data name="m_tcOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 416</value>
+    <value>15, 438</value>
   </data>
   <data name="m_tcOutput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1348,7 +1324,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tcOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>534, 126</value>
+    <value>534, 104</value>
   </data>
   <data name="m_tcOutput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1363,7 +1339,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tcOutput.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>8</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
