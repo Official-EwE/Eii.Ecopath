@@ -178,6 +178,7 @@
     <None Include="..\..\Deployment\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
+    <None Include="Documentation\depletion recovery user manual.pdf" />
     <None Include="EwEDepletionRecoveryPlugin.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -231,9 +232,7 @@
   <ItemGroup>
     <None Include="Resources\DepletionRecovery.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Documentation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
