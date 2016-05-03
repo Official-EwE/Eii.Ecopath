@@ -31,10 +31,6 @@ Imports System.Windows.Forms
 ''' <summary>
 ''' Light-weight implementation of F1-driven application-wide help support.
 ''' </summary>
-''' <remarks>
-''' Note that this implementation does not support the use of multiple
-''' help documents, which in case of EwE plugins might be desirable.
-''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cHelp
     Implements IMessageFilter
@@ -121,8 +117,8 @@ Public Class cHelp
             ' Safety check
             If (ctl Is Nothing) Then Return
             ' Clear
-            If Me.m_dtHelpTopics.ContainsKey(ctl) Then Me.m_dtHelpTopics.Remove(ctl)
-            If Object.ReferenceEquals(ctl, Me.ActiveHelpControl) Then Me.ActiveHelpControl = Nothing
+            'If Me.m_dtHelpTopics.ContainsKey(ctl) Then Me.m_dtHelpTopics.Remove(ctl)
+            'If Object.ReferenceEquals(ctl, Me.ActiveHelpControl) Then Me.ActiveHelpControl = Nothing
             If Not String.IsNullOrEmpty(strURL) Then Me.m_dtHelpTopics.Add(ctl, New cHelpTopic(strURL, strAltURL))
         End Set
     End Property
@@ -138,6 +134,7 @@ Public Class cHelp
         End Get
         Set(ByVal ctl As Control)
             Me.m_ctlContext = ctl
+            Me.RemoveDeadWood()
         End Set
     End Property
 
@@ -202,7 +199,7 @@ Public Class cHelp
     ''' <param name="message"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Protected Function PreFilterMessage(ByRef message As Message) As Boolean _
+    Private Function PreFilterMessage(ByRef message As Message) As Boolean _
         Implements IMessageFilter.PreFilterMessage
 
         Select Case CInt(message.Msg)
@@ -215,5 +212,15 @@ Public Class cHelp
         End Select
 
     End Function
+
+    Private Sub RemoveDeadWood()
+        Dim lDeadWood As New List(Of Control)
+        For Each ctrl As Control In Me.m_dtHelpTopics.Keys()
+            If (ctrl.IsDisposed) Then lDeadWood.Add(ctrl)
+        Next
+        For Each ctrl As Control In lDeadWood
+            Me.m_dtHelpTopics.Remove(ctrl)
+        Next
+    End Sub
 
 End Class
