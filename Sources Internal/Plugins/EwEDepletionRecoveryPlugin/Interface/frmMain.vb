@@ -602,11 +602,10 @@ Public Class frmMain
     ''' Process a change in the way values need to be aggregated.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_cbxAnnualAverages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cbxAnnualAverages.CheckedChanged
+    Private Sub m_cbxAnnualAverages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
 
         If (Me.m_session Is Nothing) Then Return
-        Me.m_session.AnnualAverages = Me.m_cbxAnnualAverages.Checked
         Me.UpdateControls()
 
     End Sub
@@ -703,7 +702,6 @@ Public Class frmMain
         Me.m_tbxOutputDirectory.Text = Me.m_session.OutputPath
         Me.m_tbxMask.Text = Me.m_session.DirectoryMask
         Me.m_nudNumberOfYears.Value = Me.m_session.NumberOfYears
-        Me.m_cbxAnnualAverages.Checked = Me.m_session.AnnualAverages
 
         Me.m_clbModels.Items.Clear()
         For Each ms As cModelSettings In Me.m_session.Models
@@ -1114,7 +1112,6 @@ Public Class frmMain
         Me.m_tbxMask.Enabled = (bIsRunning = False)
         Me.m_btnBrowse.Enabled = (bIsRunning = False)
         Me.m_nudNumberOfYears.Enabled = (bIsRunning = False)
-        Me.m_cbxAnnualAverages.Enabled = (bIsRunning = False)
 
         Me.m_btnRun.Enabled = (bIsRunning = False) And _
                               (bHasModel = True) And _

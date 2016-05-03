@@ -76,7 +76,6 @@ Partial Class frmMain
         Me.m_nudNumberOfYears = New System.Windows.Forms.NumericUpDown()
         Me.m_tbxMask = New System.Windows.Forms.TextBox()
         Me.m_lblMask = New System.Windows.Forms.Label()
-        Me.m_cbxAnnualAverages = New System.Windows.Forms.CheckBox()
         Me.m_tcModelProperties = New System.Windows.Forms.TabControl()
         Me.m_tpEcosimScenarios = New System.Windows.Forms.TabPage()
         Me.m_clbScenarios = New System.Windows.Forms.CheckedListBox()
@@ -271,12 +270,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_lblMask, "m_lblMask")
         Me.m_lblMask.Name = "m_lblMask"
         '
-        'm_cbxAnnualAverages
-        '
-        resources.ApplyResources(Me.m_cbxAnnualAverages, "m_cbxAnnualAverages")
-        Me.m_cbxAnnualAverages.Name = "m_cbxAnnualAverages"
-        Me.m_cbxAnnualAverages.UseVisualStyleBackColor = True
-        '
         'm_tcModelProperties
         '
         resources.ApplyResources(Me.m_tcModelProperties, "m_tcModelProperties")
@@ -416,8 +409,8 @@ Partial Class frmMain
         'm_tcOutput
         '
         resources.ApplyResources(Me.m_tcOutput, "m_tcOutput")
-        Me.m_tcOutput.Controls.Add(Me.m_tpFiles)
         Me.m_tcOutput.Controls.Add(Me.m_tpEcosimResults)
+        Me.m_tcOutput.Controls.Add(Me.m_tpFiles)
         Me.m_tcOutput.Name = "m_tcOutput"
         Me.m_tcOutput.SelectedIndex = 0
         '
@@ -426,7 +419,6 @@ Partial Class frmMain
         Me.m_tpFiles.BackColor = System.Drawing.SystemColors.Control
         Me.m_tpFiles.Controls.Add(Me.m_lblOutputDirectory)
         Me.m_tpFiles.Controls.Add(Me.m_tbxOutputDirectory)
-        Me.m_tpFiles.Controls.Add(Me.m_cbxAnnualAverages)
         Me.m_tpFiles.Controls.Add(Me.m_btnBrowse)
         Me.m_tpFiles.Controls.Add(Me.m_lblNumberOfYears)
         Me.m_tpFiles.Controls.Add(Me.m_nudNumberOfYears)
@@ -504,7 +496,6 @@ Partial Class frmMain
     Private WithEvents m_nudNumberOfYears As System.Windows.Forms.NumericUpDown
     Private WithEvents m_tbxMask As System.Windows.Forms.TextBox
     Private WithEvents m_lblMask As System.Windows.Forms.Label
-    Private WithEvents m_cbxAnnualAverages As System.Windows.Forms.CheckBox
     Private WithEvents m_tssbLoad As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tcModelProperties As System.Windows.Forms.TabControl
     Private WithEvents m_tpGroups As System.Windows.Forms.TabPage

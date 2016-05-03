@@ -42,7 +42,6 @@ Public Class cSession
     Public Sub Reset()
         Me.m_lModelSettings.Clear()
         Me.NumberOfYears = 100
-        Me.AnnualAverages = True
         Me.DirectoryMask = "[model:6]-[scenario:6]-[category]-[timeseries]"
         Me.OutputPath = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
         Me.EcosimResults = CType([Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes)), cEcosimResultWriter.eResultTypes())
@@ -99,8 +98,6 @@ Public Class cSession
 
     Public Property NumberOfYears() As Integer
 
-    Public Property AnnualAverages() As Boolean
-
     Public Property EcosimResults As cEcosimResultWriter.eResultTypes()
 
 #End Region ' Public Properties
@@ -129,11 +126,6 @@ Public Class cSession
         ' Add dir mask
         xa = doc.CreateAttribute("DirectoryMask")
         xa.Value = Me.DirectoryMask
-        xn.Attributes.Append(xa)
-
-        ' Add annual averages
-        xa = doc.CreateAttribute("AnnualAvg")
-        xa.Value = Convert.ToString(Me.AnnualAverages)
         xn.Attributes.Append(xa)
 
         ' Add numyears
@@ -179,7 +171,6 @@ Public Class cSession
                             Select Case xa.Name.ToLower()
                                 Case "outputpath" : Me.OutputPath = xa.Value
                                 Case "directorymask" : Me.DirectoryMask = xa.Value
-                                Case "annualavg" : Me.AnnualAverages = Convert.ToBoolean(xa.Value)
                                 Case "numyears" : Me.NumberOfYears = Convert.ToInt16(xa.Value)
                             End Select
                         Catch ex As Exception
