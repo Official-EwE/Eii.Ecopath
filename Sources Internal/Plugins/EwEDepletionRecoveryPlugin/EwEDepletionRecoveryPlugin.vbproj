@@ -178,7 +178,9 @@
     <None Include="..\..\Deployment\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
-    <None Include="Documentation\depletion recovery user manual.pdf" />
+    <None Include="UserGuide\depletion recovery user manual.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="EwEDepletionRecoveryPlugin.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
