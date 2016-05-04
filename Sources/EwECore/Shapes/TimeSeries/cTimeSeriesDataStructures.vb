@@ -189,11 +189,13 @@ Public Class cTimeSeriesDataStructures
             its = iModelTimeStep
         End If
 
-        'Constrain the time step index 
-        'to the last reference data time step
-        If its > Me.nDatPoints Then
-            its = nDatPoints
-        End If
+        'jb let the forcing index exceed the originaly loaded forcing data
+        'If the run length was extened then the data in the forcing arrays will be zero
+        ''Constrain the time step index 
+        ''to the last reference data time step
+        'If its > Me.nDatPoints Then
+        '    its = nDatPoints
+        'End If
 
         Return its
 
