@@ -89,6 +89,8 @@ Namespace Ecospace.Controls
 
             Me.InitializeComponent()
 
+            Debug.Assert(adt IsNot Nothing)
+
             Me.m_adt = adt
             Me.m_iLayer = layer.Index
             Me.m_bIsScaling = (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase)
@@ -97,9 +99,11 @@ Namespace Ecospace.Controls
 
             Me.UIContext = uic
 
-            For Each conn2 As cSpatialDataConnection In Me.m_adt.Connections(Me.m_iLayer)
-                Me.m_gridConnections.AddConnection(conn2, Object.ReferenceEquals(conn2, conn))
-            Next
+            If (Me.m_adt IsNot Nothing) Then
+                For Each conn2 As cSpatialDataConnection In Me.m_adt.Connections(Me.m_iLayer)
+                    Me.m_gridConnections.AddConnection(conn2, Object.ReferenceEquals(conn2, conn))
+                Next
+            End If
 
         End Sub
 
@@ -557,7 +561,7 @@ Namespace Ecospace.Controls
 
         Private Sub FillSourceDatasetBox()
 
-            If (Me.m_tsbnShowAllAvailable.Checked) Then
+            If (Me.m_tsbnShowAllAvailable.Checked) Or (Me.m_adt Is Nothing) Then
                 Me.m_lbSourceDatasets.Filter = eVarNameFlags.NotSet
             Else
                 Me.m_lbSourceDatasets.Filter = Me.m_adt.VarName

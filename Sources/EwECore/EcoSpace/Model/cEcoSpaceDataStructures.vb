@@ -1813,14 +1813,14 @@ Public Class cEcospaceDataStructures
             Me.allocate(CatchMap, InRow, InCol, NGroups)
             Me.allocate(DiscardsMap, InRow, InCol, NGroups)
 
-
-            'For Nereus EcoOcean there are more fleets then groups
+            'For Nereus EcoOcean there are more fleets than groups
             'so dimension the fleets first
             Me.allocate(Port, nFleets, InRow, InCol)
             Me.allocate(PAreaFished, nFleets, InRow, InCol)
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
 
             Me.allocate(Me.HabCapInput, NGroups, InRow + 1, InCol + 1)
+            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To NGroups : HabCapInput(k)(i, j) = 1 : Next : Next : Next
             Me.allocate(Me.HabCap, NGroups, InRow + 1, InCol + 1)
 
             Me.allocate(PHabType, NoHabitats, InRow, InCol)

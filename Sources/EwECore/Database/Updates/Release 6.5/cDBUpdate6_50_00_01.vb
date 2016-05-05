@@ -58,7 +58,7 @@ Friend Class cDBUpdate6_50_00_01
             ' The earlier on-board databases did not contain this table. Just add it again.
             db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN ExclusionMap MEMO")
         Catch ex As Exception
-
+            ' Some debugging databases already have this. Do not fail, just move on
         End Try
         Me.LogProgress("UpdateEcospaceTables", True)
         Return True
