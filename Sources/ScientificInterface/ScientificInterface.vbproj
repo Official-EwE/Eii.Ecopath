@@ -2044,10 +2044,6 @@
       <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
       <Name>EwEEcotroph</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEFishBasePlugin\EwEFishBasePlugin.vbproj">
-      <Project>{C79DDF56-00B7-4C13-A262-DFB4B7D56E53}</Project>
-      <Name>EwEFishBasePlugin %28EwE plugins\Taxonomic searches\EwEFishBasePlugin\EwEFishBasePlugin%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
       <Name>EwEFlowDiagramPlugin %28EwE plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
