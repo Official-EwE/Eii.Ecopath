@@ -1492,12 +1492,14 @@ Public Class cEIIXMLDataSource
             shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
+            Dim sLast As Single = 1
             astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
             For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, astrZScale.Length)
-                ecosimDS.zscale(ipt, iForcingShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                sLast = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 1)
+                ecosimDS.zscale(ipt, iForcingShape) = sLast
             Next ipt
             For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
-                ecosimDS.zscale(ipt, iForcingShape) = 1.0
+                ecosimDS.zscale(ipt, iForcingShape) = sLast
             Next
 
             ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms

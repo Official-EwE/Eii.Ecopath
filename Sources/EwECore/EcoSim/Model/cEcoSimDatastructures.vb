@@ -1043,7 +1043,7 @@ Public Class cEcosimDatastructures
             'so we need to copy the values back into the new zscale()
             Dim orgZscale(,) As Single
             ReDim orgZscale(orgPts, ForcingShapes)
-            Array.Copy(zscale, orgZscale, zscale.Length)
+            Array.Copy(zscale, orgZscale, orgZscale.Length)
 
             ReDim zscale(ForcePoints, ForcingShapes)
             ReDim tval(ForcingShapes)
@@ -1052,14 +1052,21 @@ Public Class cEcosimDatastructures
                 tval(0) = 1      'For forcing functions
                 ZmaxScale = 2
                 'copy the values from the original zscale() into the new zscale()
+                Dim sLast As Single = 1.0
                 For ipt = 0 To orgPts
-                    zscale(ipt, ishape) = orgZscale(ipt, ishape)
+                    sLast = orgZscale(ipt, ishape)
+                    zscale(ipt, ishape) = sLast
                 Next
-
-                'set the new values to Default 
-                For ipt = orgPts + 1 To ForcePoints
-                    zscale(ipt, ishape) = 1
-                Next
+                ' populate extra time (fixed #1427)
+                If isSeasonal(ishape) Then
+                    For ipt = orgPts + 1 To ForcePoints
+                        zscale(ipt, ishape) = orgZscale(ipt Mod cCore.N_MONTHS, ishape)
+                    Next
+                Else
+                    For ipt = orgPts + 1 To ForcePoints
+                        zscale(ipt, ishape) = sLast
+                    Next
+                End If
             Next
 
         End If
