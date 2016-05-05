@@ -107,7 +107,7 @@ Public Class gridHabitatCapacity
         For i As Integer = 0 To iNumShapes - 1
 
             Dim env As cEnviroResponseFunction = DirectCast(shapes(i), cEnviroResponseFunction)
-            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.OK)
+            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
             Me.Shape(i + 1) = env
             Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))
