@@ -5120,7 +5120,7 @@ Namespace DataSources
                     ecosimDS.zscale(ipt, iForcingShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
                 Next ipt
                 For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
-                    ecosimDS.zscale(ipt, iForcingShape) = 1.0
+                    ecosimDS.zscale(ipt, iForcingShape) = ecosimDS.zscale(ipt Mod cCore.N_MONTHS, iForcingShape)
                 Next
 
                 ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms
