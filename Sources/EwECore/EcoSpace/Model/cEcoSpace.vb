@@ -6919,31 +6919,24 @@ exitline:
         Dim i As Integer, j As Integer, K As Integer
 
         For K = 1 To Me.m_Data.NGroups
-            If Me.m_Data.isGroupHabCapChanged(K) And Me.m_Data.CapCalType(K) <> eEcospaceCapacityCalType.EnvResponses Then
+            If Me.m_Data.isGroupHabCapChanged(K) And (Me.m_Data.CapCalType(K) <> eEcospaceCapacityCalType.EnvResponses) Then
                 For i = 1 To Me.m_Data.InRow
                     For j = 1 To Me.m_Data.InCol
-
                         If m_Data.Depth(i, j) > 0.0 Then
-
-                            'Does this group use 'All Habitats'
-                            If Me.m_Data.PrefHab(K, 0) = 0.0 Then
-                                'No this group has habitat preferrences
+                            'Does this group use specific habitats?
+                            If (Me.m_Data.PrefHab(K, 0) = 0.0) Then
+                                ' #Yes: determine cell capacity from habitat area * habitat usage
+                                Dim cap As Single = 0
                                 For ihab As Integer = 1 To Me.m_Data.NoHabitats
-
-                                    'If Me.m_Data.CapCalType = eEcospaceCapacityCalType.Habitat Then
                                     '[capacity of cell] = sumof([habitat preference] * [percentage of habitat in cell])
-                                    Me.m_Data.HabCap(K)(i, j) += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(ihab)(i, j)
-                                    'Else
-                                    '    Me.m_Data.HabCap(i, j, K) *= Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(i, j, ihab)
-                                    'End If
-
+                                    cap += Me.m_Data.PrefHab(K, ihab) * Me.m_Data.PHabType(ihab)(i, j)
                                 Next ihab
-
+                                ' JS 05May16: Multiply base capacity by local cell capacity
+                                Me.m_Data.HabCap(K)(i, j) *= cap
                             Else
-
-                                'Group uses All Habitats at 100% (PrefHab(K, 0) = 1.0)
-                                Me.m_Data.HabCap(K)(i, j) = 1.0
-
+                                ' JS 05May16: No nothing; leave base capacity intact
+                                ' 'Group uses All Habitats at 100% (PrefHab(K, 0) = 1.0)
+                                ' Me.m_Data.HabCap(K)(i, j) = 1.0
                             End If 'Me.m_Data.PrefHab(K, 0) = 0.0
                         End If 'm_Data.Depth(i, j) > 0.0
 
@@ -6983,7 +6976,7 @@ exitline:
         Me.setHabCapFromHabitat()
 
         'Capacity from Enviromental input maps
-        Me.SetHabCapFromMaps()
+        Me.setHabCapFromMaps()
 
         'now normalize the capacity map
         Me.normalizeCapacityMap()
@@ -7235,36 +7228,28 @@ exitline:
     ''' <summary>
     ''' Set Habitat Capacity map from the user input HabCap map
     ''' </summary>
-    ''' <remarks></remarks>
     Private Function setHabCapFromCapInputMap() As Boolean
 
-        Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
-
-        bReturn = True
-        For igrp = 1 To Me.m_Data.NGroups
+        For igrp As Integer = 1 To Me.m_Data.NGroups
             'Have the Habitat Capacity input maps changed
-            If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) <> eEcospaceCapacityCalType.Habitat Then
+            If Me.m_Data.isGroupHabCapChanged(igrp) Then
                 'Yes the map has changed
-                'Debug.Assert(igrp <> 45)
-                For irow = 1 To Me.m_Data.InRow
-                    For icol = 1 To Me.m_Data.InCol
+                For irow As Integer = 1 To Me.m_Data.InRow
+                    For icol As Integer = 1 To Me.m_Data.InCol
 
-                        'Get the base line values from the user input capacity map 
+                        'Get the baseline capacity values from the user input capacity map 
                         'This is done first so the values are just copied in
-                        'All others capacity inputs act as a multiplier on this base line 
+                        'All others capacity inputs act as a multiplier on this baseline 
                         If Me.m_Data.Depth(irow, icol) > 0 Then
                             Me.m_Data.HabCap(igrp)(irow, icol) = Me.m_Data.HabCapInput(igrp)(irow, icol)
                         End If
-
-                        'get max for rescaling to 0-1 range
-                        ' m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
 
                     Next icol
                 Next irow
             End If
         Next igrp
 
-        Return bReturn
+        Return True
 
     End Function
 
@@ -7473,7 +7458,7 @@ exitline:
     ''' Enviromental response functions are multiplied onto the existing capacity. 
     ''' This allows the response function to reduce the capacity.
     ''' </remarks>
-    Private Function SetHabCapFromMaps() As Boolean
+    Private Function setHabCapFromMaps() As Boolean
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
         'Dim orgCap As Single
         If (Me.m_Data.CapMaps Is Nothing) Then Return False

@@ -939,9 +939,13 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the name of a primary key of a table.
+        ''' Returns the name of a foreign key between a given column in a table to 
+        ''' another table.
         ''' </summary>
-        ''' <returns>A name, or an empty string when no primary key was found.</returns>
+        ''' <param name="strTableFrom">The table where the foreign key is defined.</param>
+        ''' <param name="strColumn">The column in the <paramref name="strTableFrom">source table</paramref>.</param>
+        ''' <param name="strTableTo">The table where the foreign key links to.</param>
+        ''' <returns>A name, or an empty string when no foreign key was found.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function GetFkKeyName(ByVal strTableFrom As String, _
                                                  ByVal strTableTo As String, _
@@ -980,6 +984,49 @@ Namespace Database
             End If
 
             Return strFKKey
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the name of an index for a given column in a table.
+        ''' </summary>
+        ''' <param name="strTable"></param>
+        ''' <param name="strColumn">The column to remove the index from, if any.</param>
+        ''' <returns>A name, or an empty string when no idnex was found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function GetIndexName(ByVal strTable As String, _
+                                                 ByVal strColumn As String) As String
+
+            Dim conn As IDbConnection = Me.GetConnection()
+            Dim dtIndexes As DataTable = Nothing
+            Dim strIndex As String = ""
+
+            ' Execute oledb variant
+            If (TypeOf conn Is OleDbConnection) Then
+
+                Try
+                    Dim cdb As OleDbConnection = DirectCast(conn, OleDbConnection)
+                    ' Get PK keys schema information for entire DB
+                    dtIndexes = cdb.GetSchema("Indexes")
+                    ' Sanity checks, pk may not be defined
+                    If (dtIndexes.Rows.Count = 0) Then Return strIndex
+                    For Each drow As DataRow In dtIndexes.Rows
+                        If (String.Compare(CStr(drow("TABLE_NAME")), strTable) = 0) And _
+                           (String.Compare(CStr(drow("COLUMN_NAME")), strColumn) = 0) Then
+                            strIndex = CStr(drow("INDEX_NAME"))
+                        End If
+                    Next
+                Catch ex As Exception
+                End Try
+            End If
+
+            If (TypeOf conn Is SqlConnection) Then
+                ' Not implemented yet
+                Throw New NotImplementedException("cEwEDatabase.GetIndexName() not implemented for SqlConnections")
+            End If
+
+            Return strIndex
 
         End Function
 
@@ -1055,6 +1102,26 @@ Namespace Database
             Return objResult
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Safely drop a column by first removing any indexes on that column.
+        ''' </summary>
+        ''' <param name="strTable">The table to remove the column from.</param>
+        ''' <param name="strColumn">The name of the column to remove.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function DropColumn(strTable As String, strColumn As String) As Boolean
+
+            Dim bSuccess As Boolean = True
+
+            Dim strIndex As String = Me.GetIndexName(strTable, strColumn)
+            If (Not String.IsNullOrWhiteSpace(strIndex)) Then
+                bSuccess = bSuccess And Me.Execute("DROP Index " & strIndex & " ON " & strTable)
+            End If
+            Return bSuccess And Me.Execute("ALTER TABLE " & strTable & " DROP COLUMN " & strColumn)
+
+        End Function
+
 #End Region ' DB helper methods
 
 #Region " Internals "
@@ -1128,9 +1195,30 @@ Namespace Database
         End Function
 
         Protected Function HasColumn(reader As IDataReader, strColumnName As String) As Boolean
-            If reader Is Nothing Then Return False
+            If (reader Is Nothing) Then Return False
             reader.GetSchemaTable().DefaultView.RowFilter = "ColumnName= '" + strColumnName + "'"
             Return (reader.GetSchemaTable().DefaultView.Count > 0)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether a given table exists in the open connection.
+        ''' </summary>
+        ''' <param name="strTableName">The table to check.</param>
+        ''' <returns>True if the table exists in the open connection.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Function HasTable(strTableName As String) As Boolean
+
+            If (Me.GetConnection() Is Nothing) Then Return False
+
+            If (TypeOf Me.GetConnection() Is OleDbConnection) Then
+                Dim dtSchema As DataTable = DirectCast(Me.GetConnection(), OleDbConnection).GetOleDbSchemaTable(OleDb.OleDbSchemaGuid.Tables, New Object() {Nothing, Nothing, strTableName, "TABLE"})
+                Return dtSchema.Rows.Count > 0
+            Else
+                Throw New NotImplementedException("HasTable not implemented for SQL databases")
+            End If
+            Return False
+
         End Function
 
 #End Region ' Internals
@@ -1733,10 +1821,12 @@ Namespace Database
         Public Function ReadObjects(ByVal t As Type, _
                                     Optional ByVal bIncludeInherited As Boolean = True) As cOOPStorable()
 
-            If Not Me.m_bOOPEnabled Then Return Nothing
+            Dim lObjs As New List(Of cOOPStorable)
+
+            If (Not Me.m_bOOPEnabled) Then Return lObjs.ToArray()
+            If (Not Me.HasTable(OOPGetTableName(GetType(cOOPStorable)))) Then Return lObjs.ToArray()
 
             Dim aKeys As cOOPKey() = Me.ReadObjectKeys(t, bIncludeInherited)
-            Dim lObjs As New List(Of cOOPStorable)
             Dim obj As cOOPStorable = Nothing
             Dim piKey As PropertyInfo = Me.OOPGetKeyProperty(t)
 
@@ -2022,7 +2112,10 @@ Namespace Database
                 ' Must turn OOP capabilities on?
                 If bEnable Then
                     ' #Yes: determine next unique ID
-                    Me.m_iNextDBID = CInt(Me.GetValue(String.Format("SELECT MAX(DBID) FROM {0}", Me.OOPGetTableName(GetType(cOOPStorable))), 0)) + 1
+                    Dim strTable As String = Me.OOPGetTableName(GetType(cOOPStorable))
+
+                    Me.m_iNextDBID = 1
+                    If Me.HasTable(strTable) Then Me.m_iNextDBID = CInt(Me.GetValue(String.Format("SELECT MAX(DBID) FROM {0}", strTable), 0)) + 1
 
                     ' Create schema verification cache
                     Me.m_OOPObjectSchemaVerified = New List(Of Type)
@@ -2034,8 +2127,8 @@ Namespace Database
                     Me.m_OOPObjectSchemaVerified = Nothing
                     Me.m_OOPObjectCache = Nothing
                 End If
-                ' Yo!
-                Me.m_bOOPEnabled = bEnable
+                    ' Yo!
+                    Me.m_bOOPEnabled = bEnable
             End Set
         End Property
 

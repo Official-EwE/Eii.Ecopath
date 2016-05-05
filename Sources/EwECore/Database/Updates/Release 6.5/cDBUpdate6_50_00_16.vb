@@ -79,15 +79,16 @@ Friend Class cDBUpdate6_50_00_16
 
         ' Remove obsolete fields from EcopathGroupTaxon
         For Each strColumn As String In deadCols
-            db.Execute("ALTER TABLE EcopathGroupTaxon DROP COLUMN " & strColumn)
+            bSucces = bSucces And db.DropColumn("EcopathGroupTaxon", strColumn)
         Next
+
         If Not bHasPropCatch Then
-            db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
+            bSucces = bSucces And db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
         End If
 
         ' Remove obsolete fields from EcopathStanzaTaxon
-        db.Execute("ALTER TABLE EcopathStanzaTaxon DROP COLUMN Proportion")
-        db.Execute("ALTER TABLE EcopathStanzaTaxon DROP COLUMN PropCatch")
+        bSucces = bSucces And db.DropColumn("EcopathStanzaTaxon", "Proportion")
+        bSucces = bSucces And db.DropColumn("EcopathStanzaTaxon", "PropCatch")
 
         Return True
 
