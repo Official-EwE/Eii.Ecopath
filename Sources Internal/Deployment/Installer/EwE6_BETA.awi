@@ -115,9 +115,6 @@ End If
 !14.3.dest:${MyDocumentsPath}\EwE sample databases\Ocean ECOST.ewemdb
 !14.3.path6C:\BuildBot\slave\Ecopath6\Database\Ocean ECOST.ewemdb
 !14.3.type0!14.chk0!14.desc7Add an economic value chain model to Ecopath and Ecosim!14.erm0!14.exu0!14.nmPlug-in: Value Chain	!14.pdescInstalling value chain plug-in	!14.vareq0!14.vis1!15.0.CallInst0!15.0.RegAsm0!15.0.RegCom0!15.0.RegGAC0!15.0.RegTLB0
-!15.0.dest,${ProductPath}\plugins\EwEFishBasePlugin.dll
-!15.0.path#C:\Temp\Build\EwEFishBasePlugin.dll
-!15.0.type0!15.1.CallInst0!15.1.RegAsm0!15.1.RegCom0!15.1.RegGAC0!15.1.RegTLB0
-!15.1.dest)${ProductPath}\plugins\EwEWoRMSPlugin.dll
-!15.1.path C:\Temp\Build\EwEWoRMSPlugin.dll
-!15.1.type0!15.chk0!15.descLAdd the capability to search remote repositories for searching taxonomy data!15.erm0!15.exu0!15.nmPlug-ins: taxonomy searches	!15.pdesc#Installing taxonomic search engines	!15.vareq0!15.vis1#crc#ab435d5d
+!15.0.dest)${ProductPath}\plugins\EwEWoRMSPlugin.dll
+!15.0.path C:\Temp\Build\EwEWoRMSPlugin.dll
+!15.0.type0!15.chk0!15.desc]Add the capability to search the World Register of Marine Species for searching taxonomy data!15.erm0!15.exu0!15.nmPlug-in: WoRS taxonomy search	!15.pdescInstalling WoRMS search engine	!15.vareq0!15.vis1#crc#7e22ca38

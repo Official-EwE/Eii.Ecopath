@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="sep1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="sep1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnAddModel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnAddModel.Location" type="System.Drawing.Point, System.Drawing">
     <value>470, 46</value>
   </data>
@@ -322,7 +328,7 @@
     <value>109, 4</value>
   </data>
   <data name="m_tbxOutputDirectory.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 20</value>
+    <value>332, 20</value>
   </data>
   <data name="m_tbxOutputDirectory.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -417,12 +423,6 @@
   <data name="m_tsbReset.Text" xml:space="preserve">
     <value>Reset</value>
   </data>
-  <metadata name="sep1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <data name="sep1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
   <data name="m_tssbLoad.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -487,7 +487,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13691.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -595,7 +595,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpGroupCategories.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_glbGroups" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lvCategoriesGroup" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,188" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_glbGroups" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lvCategoriesGroup" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,100,Absolute,218" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_clbModels.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -634,7 +634,7 @@
     <value>True</value>
   </data>
   <data name="m_lblNumberOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 550</value>
+    <value>280, 550</value>
   </data>
   <data name="m_lblNumberOfYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 13</value>
@@ -661,7 +661,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_nudNumberOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 548</value>
+    <value>373, 548</value>
   </data>
   <data name="m_nudNumberOfYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>87, 20</value>
@@ -688,7 +688,7 @@
     <value>109, 30</value>
   </data>
   <data name="m_tbxMask.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 20</value>
+    <value>332, 20</value>
   </data>
   <data name="m_tbxMask.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1308,6 +1308,12 @@
   <data name="$this.Text" xml:space="preserve">
     <value>frmMain</value>
   </data>
+  <data name="&gt;&gt;sep1.Name" xml:space="preserve">
+    <value>sep1</value>
+  </data>
+  <data name="&gt;&gt;sep1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbReset.Name" xml:space="preserve">
     <value>m_tsbReset</value>
   </data>
@@ -1349,12 +1355,6 @@
   </data>
   <data name="&gt;&gt;m_chFleetCount.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;sep1.Name" xml:space="preserve">
-    <value>sep1</value>
-  </data>
-  <data name="&gt;&gt;sep1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMain</value>

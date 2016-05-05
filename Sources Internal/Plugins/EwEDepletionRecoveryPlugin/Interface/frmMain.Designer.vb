@@ -51,8 +51,8 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Dim sep1 As System.Windows.Forms.ToolStripSeparator
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.m_btnAddModel = New System.Windows.Forms.Button()
         Me.m_bntRemoveModel = New System.Windows.Forms.Button()
         Me.m_hdrModelProperties = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -63,7 +63,7 @@ Partial Class frmMain
         Me.m_tbxOutputDirectory = New System.Windows.Forms.TextBox()
         Me.m_btnBrowse = New System.Windows.Forms.Button()
         Me.m_btnRun = New System.Windows.Forms.Button()
-        Me.m_tsMain = New cEwEToolstrip()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbReset = New System.Windows.Forms.ToolStripButton()
         Me.m_tssbLoad = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
@@ -111,6 +111,11 @@ Partial Class frmMain
         Me.m_tpEcosimResults.SuspendLayout()
         Me.m_tpFiles.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'sep1
+        '
+        sep1.Name = "sep1"
+        resources.ApplyResources(sep1, "sep1")
         '
         'm_btnAddModel
         '
@@ -180,6 +185,7 @@ Partial Class frmMain
         Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbReset, sep1, Me.m_tssbLoad, Me.m_tsbSave})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tsbReset
         '
@@ -435,11 +441,6 @@ Partial Class frmMain
         Me.m_tpFiles.Controls.Add(Me.m_lblMask)
         resources.ApplyResources(Me.m_tpFiles, "m_tpFiles")
         Me.m_tpFiles.Name = "m_tpFiles"
-        '
-        'sep1
-        '
-        sep1.Name = "sep1"
-        resources.ApplyResources(sep1, "sep1")
         '
         'frmMain
         '
