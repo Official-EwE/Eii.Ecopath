@@ -57,6 +57,9 @@ Namespace Ecosim
             KemptonsQ
             FIB
             TotalCatch
+            CatchFleetGroup
+            MortFleetGroup
+            ValueFleetGroup
         End Enum
 
 #End Region ' Private vars
@@ -85,9 +88,9 @@ Namespace Ecosim
         ''' <param name="bQuiet">Flag stating if messages must be suppressed.</param>
         ''' <returns>True if saved successfully.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function WriteResults(Optional ByVal strPath As String = "", _
-                                     Optional ByVal results As eResultTypes() = Nothing, _
-                                     Optional ByVal tsMonthly As TriState = TriState.UseDefault, _
+        Public Function WriteResults(Optional ByVal strPath As String = "",
+                                     Optional ByVal results As eResultTypes() = Nothing,
+                                     Optional ByVal tsMonthly As TriState = TriState.UseDefault,
                                      Optional ByVal bQuiet As Boolean = False) As Boolean
 
             Dim msg As cMessage = Nothing
@@ -101,7 +104,7 @@ Namespace Ecosim
 
             ' Try to make sure that the output path is there
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING),
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 If (Not bQuiet) Then
                     Me.m_core.Messages.SendMessage(msg)
@@ -118,7 +121,7 @@ Namespace Ecosim
                         If (tsMonthly <> TriState.True) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, False)
 
                         If Not bSucces Then
-                            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
+                            msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString),
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
                             If (Not bQuiet) Then
                                 Me.m_core.Messages.SendMessage(msg)
@@ -135,7 +138,7 @@ Namespace Ecosim
             Next
 
             If bSucces Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath),
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 ' Provide hyperlink to the directory with the files
                 msg.Hyperlink = strPath
@@ -161,8 +164,8 @@ Namespace Ecosim
 
         End Function
 
-        Private Function WriteResults(ByVal strPath As String, _
-                                      ByVal resulttype As eResultTypes, _
+        Private Function WriteResults(ByVal strPath As String,
+                                      ByVal resulttype As eResultTypes,
                                       ByVal bSaveAnnual As Boolean) As Boolean
 
             Dim strModelDetails As String = Me.GetModelDetails()
@@ -173,13 +176,13 @@ Namespace Ecosim
 
             Select Case resulttype
 
-                Case eResultTypes.Biomass, _
-                     eResultTypes.Mortality, _
-                     eResultTypes.Catch, _
-                     eResultTypes.ConsumptionBiomass, _
-                     eResultTypes.FeedingTime, _
-                     eResultTypes.AvgWeightOrProdCons, _
-                     eResultTypes.TL, _
+                Case eResultTypes.Biomass,
+                     eResultTypes.Mortality,
+                     eResultTypes.Catch,
+                     eResultTypes.ConsumptionBiomass,
+                     eResultTypes.FeedingTime,
+                     eResultTypes.AvgWeightOrProdCons,
+                     eResultTypes.TL,
                      eResultTypes.Value
 
                     Dim data(m_core.nGroups, m_core.nEcosimTimeSteps) As Single
@@ -213,8 +216,8 @@ Namespace Ecosim
 
                     Next
                     strDataDetails = "Data," & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype), _
-                                                 bSaveAnnual, data, _
+                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                                                 bSaveAnnual, data,
                                                  strModelDetails, strDataDetails, astrGroupNames)
 
                 Case eResultTypes.PredationMortality
@@ -249,8 +252,8 @@ Namespace Ecosim
                             Next
                             strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
 
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
-                                                                      bSaveAnnual, predData, _
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name),
+                                                                      bSaveAnnual, predData,
                                                                       strModelDetails, strDataDetails, predNames.ToString)
                         End If
                     Next
@@ -288,15 +291,15 @@ Namespace Ecosim
                             Next
 
                             strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
-                                                  bSaveAnnual, preyData, _
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name),
+                                                  bSaveAnnual, preyData,
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
                     Next
 
-                Case eResultTypes.KemptonsQ, _
-                    eResultTypes.TLC, _
-                    eResultTypes.FIB, _
+                Case eResultTypes.KemptonsQ,
+                    eResultTypes.TLC,
+                    eResultTypes.FIB,
                     eResultTypes.TotalCatch
 
                     Dim data(m_core.nEcosimTimeSteps) As Single
@@ -313,19 +316,39 @@ Namespace Ecosim
                         End Select
                     Next i
 
-                    strDataDetails = "Data, " & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype), _
-                                                 bSaveAnnual, data, _
+                    strDataDetails = "Data," & resulttype.ToString
+                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                                                 bSaveAnnual, data,
                                                  strModelDetails, strDataDetails)
+
+                Case eResultTypes.CatchFleetGroup,
+                     eResultTypes.MortFleetGroup,
+                     eResultTypes.ValueFleetGroup
+
+                    Dim data(,,) As Single = Nothing
+
+                    Select Case resulttype
+                        Case eResultTypes.CatchFleetGroup
+                            data = Me.m_core.m_EcoSimData.ResultsSumCatchByGroupGear
+                        Case eResultTypes.MortFleetGroup
+                            data = Me.m_core.m_EcoSimData.ResultsSumFMortByGroupGear
+                        Case eResultTypes.ValueFleetGroup
+                            data = Me.m_core.m_EcoSimData.ResultsSumValueByGroupGear
+                    End Select
+                    strDataDetails = "Data," & resulttype.ToString
+                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
+                                                 bSaveAnnual, data,
+                                                 strModelDetails, strDataDetails)
+
             End Select
 
             Return bSuccess
 
         End Function
 
-        Private Function GetOutputFileName(ByVal strPath As String, _
-                                           ByVal bSaveAnnual As Boolean, _
-                                           ByVal outputtype As eResultTypes, _
+        Private Function GetOutputFileName(ByVal strPath As String,
+                                           ByVal bSaveAnnual As Boolean,
+                                           ByVal outputtype As eResultTypes,
                                            Optional ByVal strGroupName As String = "") As String
 
             Dim strFileName As String = ""
@@ -361,6 +384,12 @@ Namespace Ecosim
                         strFileName = "TLC_annual"
                     Case eResultTypes.TotalCatch
                         strFileName = "TotalCatch_annual"
+                    Case eResultTypes.CatchFleetGroup
+                        strFileName = "FleetGroupCatch_annual"
+                    Case eResultTypes.MortFleetGroup
+                        strFileName = "FleetGroupMort_annual"
+                    Case eResultTypes.ValueFleetGroup
+                        strFileName = "FleetGroupValue_annual"
                 End Select
             Else
                 Select Case outputtype
@@ -392,6 +421,12 @@ Namespace Ecosim
                         strFileName = "TLC"
                     Case eResultTypes.TotalCatch
                         strFileName = "TotalCatch"
+                    Case eResultTypes.CatchFleetGroup
+                        strFileName = "FleetGroupCatch"
+                    Case eResultTypes.MortFleetGroup
+                        strFileName = "FleetGroupMort"
+                    Case eResultTypes.ValueFleetGroup
+                        strFileName = "FleetGroupValue"
                 End Select
             End If
 
@@ -401,16 +436,16 @@ Namespace Ecosim
 
         End Function
 
-        Private Function SaveDataToFile(ByVal strFileName As String, _
-                                        ByVal bSaveYearly As Boolean, _
-                                        ByVal data As Single(,), _
-                                        ByVal strModelDetails As String, _
-                                        ByVal strDataDetails As String, _
+        Private Function SaveDataToFile(ByVal strFileName As String,
+                                        ByVal bAnnual As Boolean,
+                                        ByVal data As Single(,),
+                                        ByVal strModelDetails As String,
+                                        ByVal strDataDetails As String,
                                         ByVal strGroupNames As String) As Boolean
 
             If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
             Try
-                'Overwritten the file
+                ' Overwrite the file
                 Using sw As StreamWriter = New StreamWriter(strFileName, False)
 
                     If Me.m_core.SaveWithFileHeader Then
@@ -419,7 +454,7 @@ Namespace Ecosim
                         sw.WriteLine()
                     End If
 
-                    If bSaveYearly Then
+                    If bAnnual Then
                         Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
                         Dim nGroups As Integer = data.GetLength(0) - 1
                         Dim sum(nGroups) As Single
@@ -431,7 +466,7 @@ Namespace Ecosim
                                     If (k = 1) Then sum(i) = 0
                                     sum(i) += data(i, (j - 1) * cCore.N_MONTHS + k)
                                 Next
-                                sw.Write(", ")
+                                sw.Write(",")
                                 sw.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
                             Next
                             sw.WriteLine()
@@ -443,7 +478,7 @@ Namespace Ecosim
                             sw.Write(j)
                             'For every group
                             For i As Integer = 1 To data.GetLength(0) - 1
-                                sw.Write(", ")
+                                sw.Write(",")
                                 sw.Write(cStringUtils.FormatSingle(data(i, j)))
                             Next
                             sw.WriteLine()
@@ -460,19 +495,25 @@ Namespace Ecosim
 
         End Function
 
-        Private Function SaveDataToFile(ByVal strFileName As String, _
-                                 ByVal bSaveYearly As Boolean, _
-                                 ByVal data As Single(), _
-                                 ByVal strModelDetails As String, _
+        Private Function SaveDataToFile(ByVal strFileName As String,
+                                 ByVal bAnnual As Boolean,
+                                 ByVal data As Single(),
+                                 ByVal strModelDetails As String,
                                  ByVal strDataDetails As String) As Boolean
 
             Try
-                'Overwritten the file
+                ' Overwrite the file
                 Using sw As StreamWriter = New StreamWriter(strFileName, False)
-                    sw.WriteLine(strModelDetails)
-                    sw.WriteLine(strDataDetails)
-                    sw.WriteLine()
-                    If bSaveYearly Then
+
+                    If Me.m_core.SaveWithFileHeader Then
+                        sw.WriteLine(strModelDetails)
+                        sw.WriteLine(strDataDetails)
+                        sw.WriteLine()
+                    End If
+
+                    If bAnnual Then
+                        sw.WriteLine("Year,Value")
+
                         Dim simYears As Integer = CInt((data.Length - 1) / cCore.N_MONTHS)
                         Dim sum As Single
                         For j As Integer = 1 To simYears
@@ -480,12 +521,81 @@ Namespace Ecosim
                             For k As Integer = 1 To cCore.N_MONTHS
                                 sum += data((j - 1) * cCore.N_MONTHS + k)
                             Next
-                            sw.WriteLine(cStringUtils.FormatSingle(sum / cCore.N_MONTHS))
+                            sw.WriteLine(Me.m_core.EcosimFirstYear - 1 + j & "," & cStringUtils.FormatSingle(sum / cCore.N_MONTHS))
                         Next
                     Else
+                        sw.WriteLine("TimeStep,Value")
                         'Each time steps
                         For j As Integer = 1 To data.Length - 1
-                            sw.WriteLine(cStringUtils.FormatSingle(data(j)))
+                            sw.WriteLine(j & "," & cStringUtils.FormatSingle(data(j)))
+                        Next
+                    End If
+                    sw.Close()
+
+                End Using
+
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+        ''' <summary>
+        ''' Save data by timestep, fleet, group 
+        ''' </summary>
+        ''' <param name="strFileName"></param>
+        ''' <param name="bAnnual"></param>
+        ''' <param name="data"></param>
+        ''' <param name="strModelDetails"></param>
+        ''' <param name="strDataDetails"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function SaveDataToFile(ByVal strFileName As String,
+                                 ByVal bAnnual As Boolean,
+                                 ByVal data As Single(,,),
+                                 ByVal strModelDetails As String,
+                                 ByVal strDataDetails As String) As Boolean
+
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
+            Try
+                ' Overwrite the file
+                Using sw As StreamWriter = New StreamWriter(strFileName, False)
+
+                    If Me.m_core.SaveWithFileHeader Then
+                        sw.WriteLine(strModelDetails)
+                        sw.WriteLine(strDataDetails)
+                        sw.WriteLine()
+                    End If
+
+                    If bAnnual Then
+
+                        Dim simYears As Integer = Me.m_core.nEcosimYears
+                        sw.WriteLine("Year,Fleet,Group,Value")
+                        For y As Integer = 1 To simYears
+                            For i As Integer = 1 To Me.m_core.nFleets
+                                For j As Integer = 1 To Me.m_core.nGroups
+                                    Dim sum As Single = 0
+                                    For k As Integer = 1 To cCore.N_MONTHS
+                                        sum += data(j, i, (k - 1) * cCore.N_MONTHS + k)
+                                    Next k
+                                    If (sum > 0) Then
+                                        sw.WriteLine("{0},{1},{2},{3}", Me.m_core.EcosimFirstYear - 1 + y, i, j, cStringUtils.ToCSVField(sum / cCore.N_MONTHS))
+                                    End If
+                                Next
+                            Next
+                        Next
+                    Else
+                        sw.WriteLine("TimeStep,Fleet,Group,Value")
+                        'Each time steps
+                        For t As Integer = 1 To Me.m_core.nEcosimTimeSteps
+                            For i As Integer = 1 To Me.m_core.nFleets
+                                For j As Integer = 1 To Me.m_core.nGroups
+                                    If (data(j, i, t) > 0) Then
+                                        sw.WriteLine("{0},{1},{2},{3}", t, i, j, cStringUtils.ToCSVField(data(j, i, t) / cCore.N_MONTHS))
+                                    End If
+                                Next
+                            Next
                         Next
                     End If
                     sw.Close()
