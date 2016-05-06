@@ -15,7 +15,7 @@
 ' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
 ' Aquaculture Science (Cefas). 
 '
-' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' EwE copyright: 1991- UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
 ' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 

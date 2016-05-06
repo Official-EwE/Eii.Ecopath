@@ -12,7 +12,7 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' EwE Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
+' EwE Copyright 1991- UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
 ' GOTMLink plug-in Copyright 2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '

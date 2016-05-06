@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -32,7 +32,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("EwEShapeGridPlugin")> 
 <Assembly: AssemblyDescription("Plug-in for the Ecopath with Ecosim 6 Scientific Interface. Creates displays of shapes (forcing functions, mediation functions and time series) in a gridded format")> 
-<Assembly: AssemblyCompany("UBC Fisheries Centre")> 
+<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
 <Assembly: AssemblyProduct("EwEShapeGridPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © 2011")> 
 <Assembly: AssemblyTrademark("")> 

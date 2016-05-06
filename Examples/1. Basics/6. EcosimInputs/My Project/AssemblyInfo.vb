@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -30,9 +30,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("EcopathOutputs")> 
 <Assembly: AssemblyDescription("Sample application to extract results from Ecopath")> 
-<Assembly: AssemblyCompany("UBC Fisheries Centre")> 
+<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
 <Assembly: AssemblyProduct("BareBasics")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2013")> 
+<Assembly: AssemblyCopyright("Copyright © UBC Institute for the Oceans and Fisheries 2013")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

@@ -12,7 +12,7 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
@@ -126,7 +126,7 @@ Public Class cOBISPluginPoint
     Friend ReadOnly Property Author() As String _
         Implements IPlugin.Author
         Get
-            Return "UBC Fisheries Centre"
+            Return "UBC Institute for the Oceans and Fisheries"
         End Get
     End Property
 

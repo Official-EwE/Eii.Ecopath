@@ -18,7 +18,7 @@ Public Class MSEBatchPlugin
 
     Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "UBC Fisheries Centre, Institute for Ocean Conservation Science, School of Marine and Atmospheric Sciences, Stony Brook University"
+            Return "UBC Institute for the Oceans and Fisheries, Institute for Ocean Conservation Science, School of Marine and Atmospheric Sciences, Stony Brook University"
         End Get
     End Property
 
