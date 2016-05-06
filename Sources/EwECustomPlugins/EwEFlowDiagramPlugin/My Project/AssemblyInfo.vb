@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -32,7 +32,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("EwEFlowDiagramPlugin")> 
 <Assembly: AssemblyDescription("Flow diagram plug-in for Ecopath with Ecosim version 6")> 
-<Assembly: AssemblyCompany("UBC Fisheries Centre")> 
+<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
 <Assembly: AssemblyProduct("EwEFlowDiagramPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © 2008")> 
 <Assembly: AssemblyTrademark("")> 

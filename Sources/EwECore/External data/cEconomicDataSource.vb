@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -172,7 +172,7 @@ Namespace ExternalData
         Public ReadOnly Property Author() As String _
             Implements EwEPlugin.IPlugin.Author
             Get
-                Return "UBC Fisheries Centre"
+                Return "UBC Institute for the Oceans and Fisheries"
             End Get
         End Property
 

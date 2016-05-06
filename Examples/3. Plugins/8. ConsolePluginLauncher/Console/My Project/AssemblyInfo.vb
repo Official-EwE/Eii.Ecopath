@@ -12,7 +12,7 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
 ' ===============================================================================
 '
 Imports System
@@ -27,9 +27,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("ConsolePluginApp")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("UBC Fisheries Centre")> 
+<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
 <Assembly: AssemblyProduct("ConsolePluginApp")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2013")> 
+<Assembly: AssemblyCopyright("Copyright © UBC Institute for the Oceans and Fisheries 2013")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
