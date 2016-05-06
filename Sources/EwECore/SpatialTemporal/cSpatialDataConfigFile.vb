@@ -215,19 +215,19 @@ Namespace SpatialData
                                 Else '(t IsNot Nothing)
                                     cLog.Write("Unable to instantiate data set " & strTypeName)
 
-                                    If (msgWarning Is Nothing) Then
-                                        msgWarning = New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_GENERIC, _
-                                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
-                                                                  eMessageImportance.Warning)
-#If DEBUG Then
-                                        ' When debugging turn this message to a mere info message ;)
-                                        msgWarning.Importance = eMessageImportance.Information
-#End If
-                                    End If
-                                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                                  cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
-                                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
-                                    msgWarning.AddVariable(vs)
+                                    '                                    If (msgWarning Is Nothing) Then
+                                    '                                        msgWarning = New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_GENERIC, _
+                                    '                                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+                                    '                                                                  eMessageImportance.Warning)
+                                    '#If DEBUG Then
+                                    '                                        ' When debugging turn this message to a mere info message ;)
+                                    '                                        msgWarning.Importance = eMessageImportance.Information
+                                    '#End If
+                                    '                                    End If
+                                    '                                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
+                                    '                                                                  cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
+                                    '                                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
+                                    '                                    msgWarning.AddVariable(vs)
                                 End If
 
                             Catch ex As Exception
