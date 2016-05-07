@@ -88,8 +88,6 @@ Namespace Controls.Map.Layers
             Set(ByVal editor As cLayerEditorMigration)
                 ' Sanity check
                 Debug.Assert(TypeOf editor Is cLayerEditorMigration, "ucLayerEditorMigration connected to wrong editor class")
-                ' Configure editor
-                editor.CellValue = 1
                 ' Set
                 MyBase.Editor = editor
             End Set
@@ -102,14 +100,19 @@ Namespace Controls.Map.Layers
             Try
                 Me.Editor.Month = Me.m_cmbMonth.SelectedIndex + 1
             Catch ex As Exception
+                cLog.Write(ex, "ucLayerMigration.OnMonthChanged()")
             End Try
         End Sub
 
         Private Sub OnNextMonth(sender As System.Object, e As System.EventArgs) _
             Handles m_btnNext.Click
-            Me.Editor.Next()
-            Me.UpdateContent(Me.Editor)
-        End Sub
+            Try
+                Me.Editor.Next()
+                Me.UpdateContent(Me.Editor)
+            Catch ex As Exception
+                cLog.Write(ex, "ucLayerMigration.OnNextMonth()")
+            End Try
+         End Sub
 
 #End Region ' Event handlers
 

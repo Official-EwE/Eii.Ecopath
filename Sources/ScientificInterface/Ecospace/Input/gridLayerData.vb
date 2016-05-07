@@ -43,6 +43,7 @@ Public Class gridLayerData
     Public Sub New()
         MyBase.New()
         Me.TrackPropertySelection = False
+        Me.IsOutputGrid = False
     End Sub
 
     Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext

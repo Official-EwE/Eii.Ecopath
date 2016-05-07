@@ -81,7 +81,6 @@ Namespace Other
             Me.m_lblNetVersion.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, cSysConfig.OSVersion(), cSysConfig.NETVersion())
 
             Me.m_qehTech = New cQuickEditHandler()
-            Me.m_qehTech.IsOutputGrid = True
             Me.m_qehTech.Attach(Me.m_gridTechnical, Me.m_uic, Me.m_tsTechnical)
 
             Me.m_tsbnShowEwEAssembliesOnly.Image = SharedResources.FilterHS

@@ -437,7 +437,7 @@ Namespace Controls.EwEGrid
                 '   - Use cell editor properties to allow entry or selections (e.g. text box or combo box) via cTypeFormatterFactory.GetTypeFormatter
                 '   - Use cell editor properties to limit the combo box to discreet values
                 If ((objValue IsNot Nothing) And (bIsMixedValue = False)) Then
-                Select Me.m_controlType
+                    Select Case Me.m_controlType
                         Case eControlType.TextBox
                             If TypeOf objValue Is String Then
                                 Me.m_ctrlValue.Text = CStr(objValue)

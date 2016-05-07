@@ -72,6 +72,7 @@ Namespace Forms
 
             ' Store grid
             Me.Grid = grid
+
             ' Grid added via constructor - perform special make-up
             ' .. fill
             Me.Grid.Dock = DockStyle.Fill
@@ -112,6 +113,7 @@ Namespace Forms
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Me.UIContext
+                    Me.m_grid.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState)
                 End If
 
             End Set
@@ -252,7 +254,6 @@ Namespace Forms
 
                     Me.m_qeHandler = New cQuickEditHandler()
                     Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts)
-                    Me.m_qeHandler.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState)
 
                 End If
             Else

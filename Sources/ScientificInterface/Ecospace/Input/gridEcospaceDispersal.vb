@@ -52,6 +52,7 @@ Namespace Ecospace
             Advected
             Migrating
             BarrierAvoidance
+            InMigMovement
         End Enum
 
 #Region " Construction / destruction "
@@ -77,6 +78,8 @@ Namespace Ecospace
             Me(0, eColumnTypes.Advected) = New EwEColumnHeaderCell(eVarNameFlags.IsAdvected)
             Me(0, eColumnTypes.Migrating) = New EwEColumnHeaderCell(eVarNameFlags.IsMigratory)
             Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
+            Me(0, eColumnTypes.InMigMovement) = New EwEColumnHeaderCell(eVarNameFlags.InMigAreaMoveWeight)
+
 
         End Sub
 
@@ -108,6 +111,7 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.Migrating) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsMigratory)
                 'Barrier avoidance weight
                 Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
+                Me(iGroup, eColumnTypes.InMigMovement) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.InMigAreaMoveWeight)
 
             Next
 

@@ -64,6 +64,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tsmiExportCSV = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiExportXYZ = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiExportAsc = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tscmbVectorData = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tpAppearance = New System.Windows.Forms.TabPage()
             Me.m_scAppearance = New System.Windows.Forms.SplitContainer()
             Me.m_zoommap = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
@@ -75,8 +77,6 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tscmbVectorData = New System.Windows.Forms.ToolStripComboBox()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -185,6 +185,7 @@ Namespace Ecospace.Basemap.Layers
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
+            Me.m_grid.VectorFieldIndex = 0
             '
             'm_tsGrid
             '
@@ -237,6 +238,18 @@ Namespace Ecospace.Basemap.Layers
             '
             Me.m_tsmiExportAsc.Name = "m_tsmiExportAsc"
             resources.ApplyResources(Me.m_tsmiExportAsc, "m_tsmiExportAsc")
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tscmbVectorData
+            '
+            Me.m_tscmbVectorData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbVectorData.Items.AddRange(New Object() {resources.GetString("m_tscmbVectorData.Items"), resources.GetString("m_tscmbVectorData.Items1")})
+            Me.m_tscmbVectorData.Name = "m_tscmbVectorData"
+            resources.ApplyResources(Me.m_tscmbVectorData, "m_tscmbVectorData")
             '
             'm_tpAppearance
             '
@@ -324,18 +337,6 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_hdrAppearance, "m_hdrAppearance")
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
-            '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
-            'm_tscmbVectorData
-            '
-            Me.m_tscmbVectorData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmbVectorData.Items.AddRange(New Object() {resources.GetString("m_tscmbVectorData.Items"), resources.GetString("m_tscmbVectorData.Items1")})
-            Me.m_tscmbVectorData.Name = "m_tscmbVectorData"
-            resources.ApplyResources(Me.m_tscmbVectorData, "m_tscmbVectorData")
             '
             'dlgEditLayer
             '

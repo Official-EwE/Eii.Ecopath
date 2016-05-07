@@ -1545,6 +1545,8 @@ Namespace Ecosim
                 ieco = m_stanza.EcopathCode(isp, m_stanza.Nstanza(isp))
                 If ResetPred(ieco) = False Then
 
+                    'Debug.Assert((m_Data.tval(m_stanza.EggProdShapeSplit(isp)) <= 1))
+
                     Be = 0
                     For ist = 1 To m_stanza.Nstanza(isp)
                         ieco = m_stanza.EcopathCode(isp, ist)

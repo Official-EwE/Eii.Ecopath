@@ -1191,6 +1191,11 @@ Namespace Ecospace
                 End If
             End If
 
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb HACK auto pause every time step for debugging
+            'AutoPause()
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         End Sub
 
 #End Region ' Ecospace Delegates
@@ -1537,6 +1542,11 @@ Namespace Ecospace
                 Array.Clear(Me.m_FoverB, 0, size)
             End If
 
+        End Sub
+
+        Private Sub AutoPause()
+            Me.Core.EcospacePaused = True
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Internal implementation

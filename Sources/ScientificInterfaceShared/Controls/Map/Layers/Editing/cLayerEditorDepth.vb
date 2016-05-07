@@ -62,7 +62,7 @@ Namespace Controls.Map.Layers
         ''' Fill the layer with the current <see cref="CellValue"/>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Fill()
+        Public Overrides Sub Reset()
 
             If (Not Me.IsEditable) Then Return
 

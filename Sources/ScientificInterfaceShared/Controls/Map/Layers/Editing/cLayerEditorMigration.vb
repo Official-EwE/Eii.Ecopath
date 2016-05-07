@@ -42,7 +42,7 @@ Namespace Controls.Map.Layers
 
         Public Sub New()
             MyBase.New(GetType(ucLayerEditorMigration))
-        End Sub
+         End Sub
 
 #End Region ' Construction
 
