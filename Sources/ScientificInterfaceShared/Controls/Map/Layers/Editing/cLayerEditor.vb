@@ -22,6 +22,8 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports 
 
@@ -393,7 +395,7 @@ Namespace Controls.Map.Layers
                     For ii As Integer = i - 1 To i + 1
                         For jj As Integer = j - 1 To j + 1
                             If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And _
-                                (layerDepth.IsWaterCell(ii, jj) Or Layer.VarName = EwEUtils.Core.eVarNameFlags.LayerDepth) Then
+                                (layerDepth.IsWaterCell(ii, jj) Or Layer.VarName = eVarNameFlags.LayerDepth) Then
                                 t += CSng(Me.Layer.Value(ii, jj))
                                 n += 1
                             End If
@@ -419,9 +421,19 @@ Namespace Controls.Map.Layers
         ''' Fill the layer with the current <see cref="CellValue"/>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Fill()
+        Public Overridable Sub Reset()
 
             If (Not Me.IsEditable) Then Return
+
+            ' ToDo: globalize this
+            Dim msg As New cFeedbackMessage(cStringUtils.Localize("Are you sure you want to set all cells in this map to {0}?", Me.CellValue), _
+                                            eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question)
+            msg.ReplyStyle = eMessageReplyStyle.YES_NO
+            msg.Reply = eMessageReply.YES
+
+            Me.UIContext.Core.Messages.SendMessage(msg)
+
+            If (msg.Reply <> eMessageReply.YES) Then Return
 
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth

@@ -2432,7 +2432,7 @@ Public Class cEIIXMLDataSource
         Dim strMap As String = ""
         Dim bSucces As Boolean = True
 
-        ecospaceDS.allocateMigrationMaps()
+        ecospaceDS.RedimMigrationMaps(bClearExisting:=False)
 
         dtGH.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dtGH.DefaultView.ToTable.Rows()

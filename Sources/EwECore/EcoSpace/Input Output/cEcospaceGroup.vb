@@ -95,6 +95,12 @@ Public Class cEcospaceGroup
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            'inMigAreaMoveWeight
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.InMigAreaMoveWeight, eStatusFlags.Null, eValueTypes.Sng, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
@@ -121,6 +127,7 @@ Public Class cEcospaceGroup
         MyBase.ResetStatusFlags(bForceReset)
         Me.m_core.Set_BadHab_Flags(Me)
         Me.m_core.Set_HabPref_Flags(Me)
+        Me.m_core.Set_Migratory_Flags(Me)
     End Function
 
 #End Region ' Overrides
@@ -232,6 +239,17 @@ Public Class cEcospaceGroup
         End Set
     End Property
 
+
+    Public Property InMigrationAreaMovement() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.InMigAreaMoveWeight))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.InMigAreaMoveWeight, value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Status by dot (.) operator"
@@ -303,6 +321,16 @@ Public Class cEcospaceGroup
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.PreferredHabitat, value, iHabitat)
+        End Set
+    End Property
+
+    Public Property InMigrationAreaMovementStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.InMigAreaMoveWeight)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.InMigAreaMoveWeight, value)
         End Set
     End Property
 

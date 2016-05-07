@@ -229,6 +229,11 @@ Public Class cIBMSolver
                     Dmove = m_Stanza.IBMdistmove(isp, ia)
                     dAllow = Dmove + 0.0001
                     i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
+                    If m_Data.IsMigratory(ieco) Then
+                        If m_Data.MigMaps(ieco, m_Data.MonthNow)(i, j) > cEcoSpace.MIN_MIG_PROB Then
+                            Mrat = m_Data.Mvel(ieco) / (3.14159 * m_Data.CellLength)
+                        End If
+                    End If
 
                     If m_Data.HabCap(ieco)(i, j) > 0.1 And m_Data.Depth(i, j) > 0 Then
                         Nmoves = m_Stanza.IBMMovesPerMonth(ieco)
@@ -280,9 +285,6 @@ Public Class cIBMSolver
         Dim randMove As Single = Me.m_rand.NextDouble * dd
         'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
         If randMove < aa Then 'move south
-            'If ieco = 2 And (m_Stanza.iPacket(isp, ia, ip) > 2.0 And m_Stanza.iPacket(isp, ia, ip) < 3.0) Then
-            '    Debug.Assert(False)
-            'End If
             m_Stanza.iPacket(isp, ia, ip) = m_Stanza.iPacket(isp, ia, ip) + Dmove
         ElseIf randMove < bb Then 'move north
             m_Stanza.iPacket(isp, ia, ip) = m_Stanza.iPacket(isp, ia, ip) - Dmove

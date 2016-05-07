@@ -163,7 +163,7 @@
     <value>m_nudValue</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Parent" xml:space="preserve">
     <value>$this</value>
@@ -228,28 +228,28 @@
   <data name="&gt;&gt;m_btnSmooth.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btnFill.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnReset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnFill.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnReset.Location" type="System.Drawing.Point, System.Drawing">
     <value>170, 152</value>
   </data>
-  <data name="m_btnFill.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnReset.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 23</value>
   </data>
-  <data name="m_btnFill.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnReset.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_btnFill.Name" xml:space="preserve">
-    <value>m_btnFill</value>
+  <data name="&gt;&gt;m_btnReset.Name" xml:space="preserve">
+    <value>m_btnReset</value>
   </data>
-  <data name="&gt;&gt;m_btnFill.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnReset.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnFill.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnReset.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_btnFill.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnReset.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -265,6 +265,6 @@
     <value>ucLayerEditorRange</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.10311.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

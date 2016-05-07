@@ -120,7 +120,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_grid.DataName = Me.m_layerOriginal.Name
 
             Me.m_qehGrid = New cQuickEditHandler()
-            Me.m_qehGrid.ShowImportExport = False
+            'Me.m_qehGrid.ShowImportExport = False
             Me.m_qehGrid.Attach(Me.m_grid, Me.m_uic, Me.m_tsGrid)
             Me.m_qehGrid.IsOutputGrid = Me.m_layerWork.Editor.IsReadOnly
 

@@ -91,8 +91,6 @@ Public Class frmRemarkUI
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Me.QuickEditHandler.IsOutputGrid = True
-
         ' Populate sort box
         Me.AddSortOption(My.Resources.HEADER_SOURCE, ePropertySortOrderTypes.Source)
         Me.AddSortOption(My.Resources.HEADER_SOURCE_SEC, ePropertySortOrderTypes.SourceSec)

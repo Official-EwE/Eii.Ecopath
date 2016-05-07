@@ -128,7 +128,7 @@ Namespace Controls.Map.Layers
 
             Dim bEditable As Boolean = editor.IsEditable
             Me.m_nudValue.Enabled = bEditable
-            Me.m_btnFill.Enabled = bEditable
+            Me.m_btnReset.Enabled = bEditable
             Me.m_btnSmooth.Enabled = bEditable
             Me.m_lbValue.Enabled = bEditable
 
@@ -161,7 +161,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) 
+        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
             Me.Editor.CellValue = Me.m_fpValue.Value
         End Sub
 
@@ -176,9 +176,9 @@ Namespace Controls.Map.Layers
             Me.Editor.Smooth()
         End Sub
 
-        Private Sub OnFillLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnFill.Click
-            Me.Editor.Fill()
+        Private Sub OnResetLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnReset.Click
+            Me.Editor.Reset()
         End Sub
 
         Private Sub OnClickPreview(sender As System.Object, e As System.EventArgs) _

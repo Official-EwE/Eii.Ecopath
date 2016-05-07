@@ -157,7 +157,7 @@ Namespace Controls.Map.Layers
 
         Private Sub OnFillLayer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnFill.Click
-            Me.Editor.Fill()
+            Me.Editor.Reset()
         End Sub
 
 #End Region ' Events

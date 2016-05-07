@@ -8181,7 +8181,7 @@ Namespace DataSources
             Dim iMonth As Integer = 0
             Dim bSucces As Boolean = True
 
-            ecospaceDS.allocateMigrationMaps()
+            ecospaceDS.RedimMigrationMaps(bClearExisting:=True)
 
             Try
                 reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioGroupMigration WHERE (ScenarioID={0})", iScenarioID))

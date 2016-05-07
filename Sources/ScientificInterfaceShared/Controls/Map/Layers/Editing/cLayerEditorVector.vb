@@ -146,7 +146,7 @@ Namespace Controls.Map.Layers
 
 #End Region ' Internal overrides
 
-        Public Overrides Sub Fill()
+        Public Overrides Sub Reset()
 
             If (Not Me.IsEditable) Then Return
 

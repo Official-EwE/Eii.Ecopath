@@ -8696,6 +8696,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Barrier avoidance wt.||Barrier avoidance weight.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_BARRIERAVOIDANCEWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BARRIERAVOIDANCEWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to BA||Biomass accumulation.
         '''</summary>
         Public ReadOnly Property VARIABLE_BIOACCUMINPUT() As String
@@ -9007,6 +9016,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_INDEX() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_INDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mig. in area movement|||Movement weight for species within migratory area.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_INMIGAREAMOVEWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_INMIGAREAMOVEWEIGHT", resourceCulture)
             End Get
         End Property
         
@@ -9583,15 +9601,6 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_Z() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_Z", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Barrier avoidance wt.||Barrier avoidance weight.
-        '''</summary>
-        Public ReadOnly Property VARIALBE_BARRIERAVOIDANCEWEIGHT() As String
-            Get
-                Return ResourceManager.GetString("VARIALBE_BARRIERAVOIDANCEWEIGHT", resourceCulture)
             End Get
         End Property
         

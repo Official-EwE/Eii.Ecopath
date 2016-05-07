@@ -993,6 +993,12 @@ Namespace Core
         ''' <summary>To document</summary>
         BarrierAvoidanceWeight
 
+        ''' <summary>
+        ''' Migration in area movement weight.
+        ''' </summary>
+        ''' <remarks>Movement weight for preferred direction within a migartion area. </remarks>
+        InMigAreaMoveWeight
+
         ' Fishing Policy Search varaibles
         ''' <summary>To document</summary>
         SearchBlock 'codeblock in EwE5

@@ -36,7 +36,7 @@ Namespace Controls.Map.Layers
             Me.m_nudValue = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_pbPreview = New System.Windows.Forms.PictureBox()
             Me.m_btnSmooth = New System.Windows.Forms.Button()
-            Me.m_btnFill = New System.Windows.Forms.Button()
+            Me.m_btnReset = New System.Windows.Forms.Button()
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -49,6 +49,7 @@ Namespace Controls.Map.Layers
             'm_nudValue
             '
             resources.ApplyResources(Me.m_nudValue, "m_nudValue")
+            Me.m_nudValue.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudValue.Name = "m_nudValue"
             '
             'm_pbPreview
@@ -64,18 +65,18 @@ Namespace Controls.Map.Layers
             Me.m_btnSmooth.Name = "m_btnSmooth"
             Me.m_btnSmooth.UseVisualStyleBackColor = True
             '
-            'm_btnFill
+            'm_btnReset
             '
-            resources.ApplyResources(Me.m_btnFill, "m_btnFill")
-            Me.m_btnFill.Image = Global.ScientificInterfaceShared.My.Resources.Resources.Fill
-            Me.m_btnFill.Name = "m_btnFill"
-            Me.m_btnFill.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnReset, "m_btnReset")
+            Me.m_btnReset.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ResetHS
+            Me.m_btnReset.Name = "m_btnReset"
+            Me.m_btnReset.UseVisualStyleBackColor = True
             '
             'ucLayerEditorRange
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_btnFill)
+            Me.Controls.Add(Me.m_btnReset)
             Me.Controls.Add(Me.m_btnSmooth)
             Me.Controls.Add(Me.m_pbPreview)
             Me.Controls.Add(Me.m_nudValue)
@@ -85,7 +86,7 @@ Namespace Controls.Map.Layers
             Me.Controls.SetChildIndex(Me.m_nudValue, 0)
             Me.Controls.SetChildIndex(Me.m_pbPreview, 0)
             Me.Controls.SetChildIndex(Me.m_btnSmooth, 0)
-            Me.Controls.SetChildIndex(Me.m_btnFill, 0)
+            Me.Controls.SetChildIndex(Me.m_btnReset, 0)
             CType(Me.m_nudValue, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -95,7 +96,7 @@ Namespace Controls.Map.Layers
         Private WithEvents m_lbValue As System.Windows.Forms.Label
         Private WithEvents m_btnSmooth As System.Windows.Forms.Button
         Private WithEvents m_nudValue As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Private WithEvents m_btnFill As System.Windows.Forms.Button
+        Private WithEvents m_btnReset As System.Windows.Forms.Button
         Private WithEvents m_pbPreview As System.Windows.Forms.PictureBox
 
     End Class

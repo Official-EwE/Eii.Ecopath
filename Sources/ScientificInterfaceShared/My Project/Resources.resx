@@ -3254,7 +3254,7 @@
   <data name="VARIABLE_SEMULT" xml:space="preserve">
     <value>Tot.Eff.Mult.||Total effort multiplier</value>
   </data>
-  <data name="VARIALBE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
+  <data name="VARIABLE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
     <value>Barrier avoidance wt.||Barrier avoidance weight</value>
   </data>
   <data name="LABEL_PAUSE" xml:space="preserve">
@@ -3380,6 +3380,9 @@
   <data name="PROMPT_MAPLOAD_MISSING" xml:space="preserve">
     <value>Data is missing for {0} cell(s)</value>
     <comment>{0}: cell count</comment>
+  </data>
+  <data name="VARIABLE_INMIGAREAMOVEWEIGHT" xml:space="preserve">
+    <value>Mig. in area movement|||Movement weight for species within migratory area</value>
   </data>
   <data name="GENERIC_VALUE_ERROR" xml:space="preserve">
     <value>Error</value>

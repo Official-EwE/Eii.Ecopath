@@ -215,6 +215,10 @@ Public Class cEcospaceDataStructures
     Public RelVulBad() As Single
     Public IsAdvected() As Boolean
 
+    ''' <summary> Weighting for directed movement within a migratory area (groups)</summary>
+    ''' <remarks></remarks>
+    Public InMigAreaMovement() As Single
+
     ''' <summary>Biomass by cell (row, col, group)</summary>
     Public Bcell(,,) As Single
     ''' <summary>Catch by cell (row, col, group)</summary>
@@ -769,6 +773,7 @@ Public Class cEcospaceDataStructures
     ''' Monthly Migration maps stored in a ragged array 
     ''' Dimensioned by (group,month)(row,col)
     ''' </summary>
+    ''' <remarks></remarks>
     Public MigMaps(,)(,) As Single
 
 #End Region
@@ -960,6 +965,8 @@ Public Class cEcospaceDataStructures
             PHabType = Nothing
             FleetSailCells = Nothing
 
+            MigMaps = Nothing
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
         End Try
@@ -1025,6 +1032,7 @@ Public Class cEcospaceDataStructures
 
             For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = 1.0! ' True
+                InMigAreaMovement(i) = 0.1F
             Next 'set preferred habitat to 1 (pelagic) by default
 
             ReDimFleets()
@@ -1248,6 +1256,8 @@ Public Class cEcospaceDataStructures
             ReDim Me.TotHabCap(NGroups)
             ReDim Me.MaxHabCap(NGroups)
 
+            ReDim InMigAreaMovement(NGroups)
+
             ' Allocate room for Depth map
             ReDim Me.CapMapFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
 
@@ -1327,17 +1337,28 @@ Public Class cEcospaceDataStructures
     ''' Make sure there are migration maps for all migrating groups.
     ''' </summary>
     ''' <remarks>
-    ''' This code 
+    ''' On the first load new maps should be allocated for all the groups. 
+    ''' Once a model has loaded all the existing maps should be preserved and only new maps should get new blank maps.
+    ''' This should preserve the users configuration if the turn a migrating group on or off. 
     ''' </remarks>
-    Friend Sub allocateMigrationMaps()
+    Friend Sub RedimMigrationMaps(bClearExisting As Boolean)
+
+        If bClearExisting Then
+            Me.MigMaps = Nothing
+        End If
+
         If (Me.MigMaps Is Nothing) Then
             Me.MigMaps = New Single(NGroups, 12)(,) {}
         End If
+
+        '  Me.MigMaps = New Single(NGroups, 12)(,) {}
         For iGrp As Integer = 1 To Me.NGroups
-            If (Me.MigMaps(iGrp, 1) Is Nothing) And IsMigratory(iGrp) Then
-                For iMonth As Integer = 1 To 12
-                    Me.MigMaps(iGrp, iMonth) = New Single(InRow + 1, InCol + 1) {}
-                Next
+            If IsMigratory(iGrp) Then
+                If (MigMaps(iGrp, 1) Is Nothing) Then
+                    For iMonth As Integer = 1 To 12
+                        Me.MigMaps(iGrp, iMonth) = New Single(InRow + 1, InCol + 1) {}
+                    Next
+                End If
             End If
         Next
     End Sub
@@ -1429,7 +1450,8 @@ Public Class cEcospaceDataStructures
 
                     For irow As Integer = 1 To InRow
                         For icol As Integer = 1 To InCol
-                            If Me.MigMaps(igrp, imon)(irow, icol) > 0 Then
+
+                            If (Me.MigMaps(igrp, imon)(irow, icol) > cEcoSpace.MIN_MIG_PROB) Then
                                 minRow = Math.Min(irow, minRow)
                                 minCol = Math.Min(icol, minCol)
                                 maxRow = Math.Max(irow, maxRow)
