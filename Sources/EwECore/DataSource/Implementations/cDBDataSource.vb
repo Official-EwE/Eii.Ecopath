@@ -7573,6 +7573,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioGroupHabitat WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDriverLayer WHERE (ScenarioID={0})", iScenarioID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMigration WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE (ScenarioID={0})", iScenarioID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioMonth WHERE (ScenarioID={0})", iScenarioID))
                 ' Delete scenario
