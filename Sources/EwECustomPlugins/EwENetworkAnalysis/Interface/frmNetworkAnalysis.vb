@@ -52,7 +52,7 @@ Public Class frmNetworkAnalysis
         ForConsumptionOfAllGroups
         ImpactData
         GraphOfMixedTrophicImpact
-        GraphOfMixedTrophicImpactEwE5
+        'GraphOfMixedTrophicImpactEwE5
         KeystonenessTable
         KeystonenessGraph
         Total
@@ -438,8 +438,8 @@ Public Class frmNetworkAnalysis
                 Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpact
                     Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
 
-                Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpactEwE5
-                    Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
+                    'Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpactEwE5
+                    '    Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
 
                 Case eNetworkAnalysisPageTypes.KeystonenessTable
                     Me.m_contentmanager = New cKeystonenessTable()
