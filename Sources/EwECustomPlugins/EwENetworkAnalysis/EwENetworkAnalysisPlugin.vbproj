@@ -151,7 +151,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Interface\MixedTrophicImpact\cImpactData.vb" />
-    <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cGraphOfMixedTrophicImpact.vb" />
     <Compile Include="Interface\MixedTrophicImpact\SummaryImpactData\cPlotOfMixedTrophicImpact.vb" />
     <Compile Include="Controls\ucPlot.Designer.vb">
       <DependentUpon>ucPlot.vb</DependentUpon>
@@ -218,7 +217,6 @@
     <Compile Include="Plugin\NavTree plugins\cNavTree36MTI.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree38MTI_Impact.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree40MTI_ImpactPlot.vb" />
-    <Compile Include="Plugin\NavTree plugins\cNavTree42MTI_ImpactPlotEwE5.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree44Key.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree45Key_Graph.vb" />
     <Compile Include="Plugin\NavTree plugins\cNavTree46Key_Table.vb" />
@@ -312,12 +310,6 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EwENetworkAnalysis\IMPACTS.EXE">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="EwENetworkAnalysis\PYRAMID.EXE">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\EwENetworkAnalysis.ico" />
     <None Include="Resources\N_Asponsors.png" />
   </ItemGroup>
