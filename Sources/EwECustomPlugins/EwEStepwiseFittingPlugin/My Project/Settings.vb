@@ -13,14 +13,8 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Centre for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
-'
-' Stepwise Fitting Procedure by Sheila Heymans, Erin Scott, Jeroen Steenbeek
-' Copyright 2015- Scottish Association for Marine Science, Oban, Scotland
-'
-' Erin Scott was funded by the Scottish Informatics and Computer Science
-' Alliance (SICSA) Postgraduate Industry Internship Programme.
 '
 ' Stepwise Fitting Procedure by Sheila Heymans, Erin Scott, Jeroen Steenbeek
 ' Copyright 2015- Scottish Association for Marine Science, Oban, Scotland

@@ -40,11 +40,11 @@ Public Class frmNetworkAnalysis
         RelativeFlows
         AbsoluteFlows
         TransferEfficiency
-        FlowPyramid
+        'FlowPyramid
         BiomassByTrophicLevel
-        BiomassPyramid
+        'BiomassPyramid
         CatchByTrophicLevel
-        CatchPyramid
+        'CatchPyramid
         FromPrimaryProducers
         FromDetritus
         FromAllCombined
@@ -402,20 +402,20 @@ Public Class frmNetworkAnalysis
                 Case eNetworkAnalysisPageTypes.TransferEfficiency
                     Me.m_contentmanager = New cTransferEfficiency()
 
-                Case eNetworkAnalysisPageTypes.FlowPyramid
-                    Me.m_contentmanager = New cFlowPyramid()
+                    'Case eNetworkAnalysisPageTypes.FlowPyramid
+                    '    Me.m_contentmanager = New cFlowPyramid()
 
                 Case eNetworkAnalysisPageTypes.BiomassByTrophicLevel
                     Me.m_contentmanager = New cBiomassByTrophicLevel()
 
-                Case eNetworkAnalysisPageTypes.BiomassPyramid
-                    Me.m_contentmanager = New cBiomassPyramid()
+                    'Case eNetworkAnalysisPageTypes.BiomassPyramid
+                    '    Me.m_contentmanager = New cBiomassPyramid()
 
                 Case eNetworkAnalysisPageTypes.CatchByTrophicLevel
                     Me.m_contentmanager = New cCatchByTrophicLevel()
 
-                Case eNetworkAnalysisPageTypes.CatchPyramid
-                    Me.m_contentmanager = New cCatchPyramid()
+                    'Case eNetworkAnalysisPageTypes.CatchPyramid
+                    '    Me.m_contentmanager = New cCatchPyramid()
 
                 Case eNetworkAnalysisPageTypes.FromPrimaryProducers
                     Me.m_contentmanager = New cFromPrimaryProd()

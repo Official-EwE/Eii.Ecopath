@@ -167,15 +167,11 @@
     <Compile Include="Interface\PrimaryProdRequired\cForHarvestOfAllGp.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cAbsoluteFlows.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cBiomassByTrophicLevel.vb" />
-    <Compile Include="Interface\TrophicLevelDecomp\Pyramids\cBiomassPyramid.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cCatchByTrophicLevel.vb" />
-    <Compile Include="Interface\TrophicLevelDecomp\Pyramids\cCatchPyramid.vb" />
-    <Compile Include="Interface\TrophicLevelDecomp\Pyramids\cFlowPyramid.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cLindemanSpine.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cLindemanSpineDiagram.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cRelativeFlows.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cTransferEfficiency.vb" />
-    <Compile Include="Interface\TrophicLevelDecomp\Pyramids\cPyramid.vb" />
     <Compile Include="Interface\ucOptions.Designer.vb">
       <DependentUpon>ucOptions.vb</DependentUpon>
     </Compile>
