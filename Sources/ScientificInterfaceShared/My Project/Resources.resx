@@ -3390,4 +3390,7 @@
   <data name="GENERIC_VALUE_INVALID" xml:space="preserve">
     <value>Invalid</value>
   </data>
+  <data name="HabitatFunctionHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HabitatFunctionHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

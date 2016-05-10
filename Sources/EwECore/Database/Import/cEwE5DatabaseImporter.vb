@@ -3153,9 +3153,6 @@ Namespace Database
                 '    Next
                 'End If
 
-                ' JS 22Sep11: set default capacity calculation type
-                drow("CapacityCalType") = eEcospaceCapacityCalType.Habitat
-
                 ReDim depthmap(CInt(drow("InRow")), CInt(drow("InCol")))
                 Me.m_dicDepthMaps(nScenarioID) = depthmap
 
@@ -3373,6 +3370,8 @@ Namespace Database
                         drow("MigConcCol") = Me.FixValue(reader, "MigConcCol")
                         drow("PrefRow") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "PrefRow", "0")), CChar(" "), 5)
                         drow("PrefCol") = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "PrefCol", "0")), CChar(" "), 5)
+                        ' Set default capacity calculation type
+                        drow("CapacityCalType") = eEcospaceCapacityCalType.Habitat
                     Else
                         ' #No: the new group will get all default values
                         Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEGROUP, _

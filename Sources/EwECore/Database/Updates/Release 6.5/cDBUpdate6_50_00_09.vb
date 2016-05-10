@@ -59,38 +59,58 @@ Friend Class cDBUpdate6_50_00_09
             Return False
         End If
 
-        Dim reader As IDataReader = db.GetReader("SELECT * FROM EcospaceScenario")
         Dim ct As eEcospaceCapacityCalType = eEcospaceCapacityCalType.Habitat
+        Dim nScenarios As Integer = CInt(db.GetValue("SELECT COUNT(*) FROM EcospaceScenario"))
+        Dim hasDrivers(nScenarios) As Boolean
+        Dim capmode(nScenarios) As eEcospaceCapacityCalType
+        Dim iScenarioDBID(nScenarios) As Integer
+        Dim iScenario As Integer = 1
         Dim bSuccess As Boolean = True
-        Dim iScenarioID As Integer = 0
-        Dim bHasHabitats As Boolean = False
 
+        Dim reader As IDataReader = db.GetReader("SELECT * FROM EcospaceScenario ORDER BY ScenarioID ASC")
         If (reader IsNot Nothing) Then
-            While reader.Read
-
-                iScenarioID = CInt(reader("ScenarioID"))
-                bHasHabitats = (CInt(db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID), 0)) > 0)
-
-                ' Assume that new model uses env responses
-                ct = eEcospaceCapacityCalType.Habitat
-
-                ' Unless capacity calculation is set to habitats AND there are habitats defined for this scenario
-                If (CInt(db.ReadSafe(reader, "CapacityCalType", 0)) = 1) Then
-                    If bHasHabitats Then
-                        ct = eEcospaceCapacityCalType.Both
-                    Else
-                        ct = eEcospaceCapacityCalType.EnvResponses
-                    End If
-                End If
-
-                bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenarioGroup SET CapacityCalType={0} WHERE ScenarioID={1}", CInt(ct), iScenarioID))
+            While reader.Read()
+                iScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
+                hasDrivers(iScenario) = (CInt(db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioCapacityDrivers WHERE ScenarioID={0}", iScenarioDBID(iScenario)))) > 0)
+                capmode(iScenario) = DirectCast(CInt(db.ReadSafe(reader, "CapacityCalType", 0)), eEcospaceCapacityCalType)
+                iScenario += 1
             End While
-            db.ReleaseReader(reader)
         End If
+        db.ReleaseReader(reader)
+
+        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenarioGroup")
+        Dim dt As DataTable = writer.GetDataTable()
+        For Each drow As DataRow In dt.Rows
+            iScenario = Array.IndexOf(iScenarioDBID, CInt(drow("ScenarioID")))
+            If (iScenario > -1) Then
+                Dim bHasCapAssignments As Boolean = (CInt(db.GetValue("SELECT COUNT (*) FROM EcospaceScenarioCapacityDrivers WHERE (GroupID=" & CStr(drow("GroupID")) & ")")) > 0)
+                Select Case capmode(iScenario)
+
+                    Case eEcospaceCapacityCalType.Both, eEcospaceCapacityCalType.EnvResponses
+                        If Not bHasCapAssignments Or Not hasDrivers(iScenario) Then
+                            ct = eEcospaceCapacityCalType.Habitat
+                        End If
+
+                    Case eEcospaceCapacityCalType.Habitat
+                        If bHasCapAssignments And hasDrivers(iScenario) Then
+                            ct = eEcospaceCapacityCalType.Both
+                        End If
+
+                End Select
+            End If
+
+            drow.BeginEdit()
+            drow("CapacityCalType") = ct
+            drow.EndEdit()
+
+            bSuccess = bSuccess And writer.Commit()
+        Next
+        db.ReleaseWriter(writer)
 
         If bSuccess Then
-            bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario DROP COLUMN CapacityCalType")
+            bSuccess = bSuccess And db.DropColumn("EcospaceScenario", "CapacityCalType")
         End If
+
         Return bSuccess
 
     End Function
