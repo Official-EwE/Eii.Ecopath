@@ -7515,7 +7515,6 @@ Namespace DataSources
                 drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap, InRow, InCol)
                 drow("RegionMap") = "" ' Region map empty for new scenario
                 drow("ExclusionMap") = "" ' Exclusion map empty for new scenario
-                ' drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
                 drow("PredictEffort") = True
                 writer.AddRow(drow)
 
@@ -8089,24 +8088,6 @@ Namespace DataSources
                     ecospaceDS.IsAdvected(iGroup) = (CInt(reader("IsAdvected")) <> 0)
                     ecospaceDS.IsMigratory(iGroup) = (CInt(reader("IsMigratory")) <> 0)
 
-                    '' ---------------------------
-                    '' MIGRATION_UPD: BEGIN REMOVE
-                    'ecospaceDS.MigConcRow(iGroup) = CSng(reader("MigConcRow"))
-                    'ecospaceDS.MigConcCol(iGroup) = CSng(reader("MigConcCol"))
-
-                    '' Monthly PrefRow
-                    'astrSplit = CStr(reader("PrefRow")).Split(CChar(" "))
-                    'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    '    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                    'Next
-                    '' Monthly PrefCol
-                    'astrSplit = CStr(reader("PrefCol")).Split(CChar(" "))
-                    'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                    '    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                    'Next
-                    '' MIGRATION_UPD: END REMOVE
-                    '' ---------------------------
-
                     ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
                     ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
 
@@ -8277,26 +8258,6 @@ Namespace DataSources
 
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
-
-                    '' ---------------------------
-                    '' MIGRATION_UPD: BEGIN REMOVE
-                    'drow("MigConcRow") = ecospaceDS.MigConcRow(iGroup)
-                    'drow("MigConcCol") = ecospaceDS.MigConcCol(iGroup)
-                    'sbTemp.Length = 0
-                    'For iMonth As Integer = 1 To cCore.N_MONTHS
-                    '    If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                    '    sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.PrefRow(iGroup, iMonth)))
-                    'Next
-                    'drow("PrefRow") = sbTemp.ToString()
-
-                    'sbTemp.Length = 0
-                    'For iMonth As Integer = 1 To cCore.N_MONTHS
-                    '    If iMonth > 1 Then sbTemp.Append(CChar(" "))
-                    '    sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
-                    'Next
-                    'drow("PrefCol") = sbTemp.ToString()
-                    '' MIGRATION_UPD: END REMOVE
-                    '' ---------------------------
 
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, _
                                                                      ecospaceDS.DepthInput, True)

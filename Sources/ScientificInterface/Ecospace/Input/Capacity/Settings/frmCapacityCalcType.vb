@@ -61,11 +61,7 @@ Namespace Ecospace
 
             Me.m_tsbnHabitats.Image = SharedResources.Habitat
             Me.m_tsbnEnvResponses.Image = SharedResources.FunctionHS
-#If DEBUG Then
-            Me.m_tsbnBoth.Image = SharedResources.OK
-#Else
-            Me.m_tsbnBoth.Visible = False
-#End If
+            Me.m_tsbnBoth.Image = SharedResources.HabitatFunctionHS
 
             For i As Integer = 1 To Me.Core.nGroups
                 Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(i)
