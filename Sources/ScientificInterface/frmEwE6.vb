@@ -4272,12 +4272,21 @@ Public Class frmEwE6
                     If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(Me.m_cmdExportLayerData.Layers(0)) Then
-                            If Not imp.Save(sfd.FileName) Then
-                                ' ToDo: throw message
+                            Dim bSuccess As Boolean = imp.Save(sfd.FileName)
+                            Dim msg As cMessage = Nothing
+                            If (bSuccess) Then
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, sfd.FileName), _
+                                                   eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                msg.Hyperlink = Path.GetDirectoryName(sfd.FileName)
+                            Else
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, sfd.FileName), _
+                                                   eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
                             End If
+
+                            Me.Core.Messages.SendMessage(msg)
+                            ' ToDo: throw message
                         End If
                     End If
-
             End Select
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6:OnExportLayerData")
