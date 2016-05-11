@@ -48,10 +48,12 @@ Namespace Controls
         Private m_uic As cUIContext = Nothing
         Private m_handler As cShapeGUIHandler = Nothing
         Private m_lShapes As New List(Of cShapeData)
-        Private m_clr As Color
-        Private m_sMinYScale As Single = cCore.NULL_VALUE
         Private m_iMaxXScale As Integer = cCore.NULL_VALUE
         Private m_sketchDrawMode As eSketchDrawModeTypes = eSketchDrawModeTypes.Fill
+        Private m_selectionDelayed As cShapeData() = Nothing
+
+        ''' <summary>Helper flag to prevent selection loops.</summary>
+        Private m_bInUpdate As Boolean = False
 
 #End Region ' Variables
 
@@ -119,13 +121,6 @@ Namespace Controls
         ''' </summary>
         ''' ------------------------------------------------------------------
         Public Property Color() As Color
-            Get
-                Return Me.m_clr
-            End Get
-            Set(ByVal value As Color)
-                Me.m_clr = value
-            End Set
-        End Property
 
         ''' ------------------------------------------------------------------
         ''' <summary>
@@ -133,13 +128,6 @@ Namespace Controls
         ''' </summary>
         ''' ------------------------------------------------------------------
         Public Property YAxisMinValue() As Single
-            Get
-                Return Me.m_sMinYScale
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sMinYScale = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -197,7 +185,6 @@ Namespace Controls
         ''' <param name="shape">The shape to update the image for.</param>
         ''' ------------------------------------------------------------------
         Public Sub UpdateThumbnail(ByVal shape As cShapeData)
-
             If Me.m_bInUpdate Then Return
             Me.UpdateThumbnails(New cShapeData() {shape})
         End Sub
@@ -236,11 +223,6 @@ Namespace Controls
         ''' ------------------------------------------------------------------
         Public Event OnSelectionChanged(ByVal ashapes As cShapeData())
 
-        ''' <summary>Helper flag to prevent selection loops.</summary>
-        Private m_bInUpdate As Boolean = False
-
-        Private m_selectionDelayed As cShapeData()
-
         ''' ------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the list of selected shapes in the tool box.
@@ -264,7 +246,6 @@ Namespace Controls
                 Me.m_lvShapes.SuspendLayout()
 
                 Try
-
                     If (ashapes Is Nothing) Then
                         ' Clear all selections
                         For Each item As ListViewItem In Me.m_lvShapes.Items
@@ -293,9 +274,8 @@ Namespace Controls
                             End If
                         Next
                     End If
-
                 Catch ex As Exception
-
+                    Debug.Assert(False, ex.Message)
                 End Try
 
                 Me.m_lvShapes.ResumeLayout()
@@ -351,7 +331,7 @@ Namespace Controls
                 bShowWarning = Not (ts.ValidationStatus = eStatusFlags.OK)
             End If
 
-            Return cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, Me.SketchDrawMode, Me.XAxisMaxValue, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning)
+            Return cShapeImage.IconImage(Me.m_uic, shape, Me.Color, Me.SketchDrawMode, Me.XAxisMaxValue, Math.Max(Me.YAxisMinValue, shape.YMax), bShowWarning)
 
         End Function
 
@@ -379,6 +359,9 @@ Namespace Controls
 
             Me.RenameToolStripMenuItem.Visible = False
             Me.RenameToolStripMenuItem.Enabled = False
+
+            Me.ResetToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Reset)
+            Me.ResetToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Reset)
 
         End Sub
 
@@ -595,6 +578,11 @@ Namespace Controls
         Private Sub AddShape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles AddToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
+        End Sub
+
+        Private Sub ResetToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+            Handles ResetToolStripMenuItem.Click
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
         End Sub
 
         ''' <summary>

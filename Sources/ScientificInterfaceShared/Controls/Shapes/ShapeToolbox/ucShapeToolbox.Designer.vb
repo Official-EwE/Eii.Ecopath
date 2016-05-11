@@ -43,15 +43,16 @@ Namespace Controls
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
             Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.RenameToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ResetToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_lvShapes = New ScientificInterfaceShared.Controls.cSmoothListView()
             Me.m_lvContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_lvContextMenuStrip
             '
-            Me.m_lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator2, Me.RemoveToolStripMenuItem, Me.RenameToolStripMenuItem})
+            Me.m_lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator2, Me.RemoveToolStripMenuItem, Me.RenameToolStripMenuItem, Me.ResetToolStripMenuItem})
             Me.m_lvContextMenuStrip.Name = "lvContextMenuStrip"
-            Me.m_lvContextMenuStrip.Size = New System.Drawing.Size(125, 170)
+            Me.m_lvContextMenuStrip.Size = New System.Drawing.Size(125, 192)
             '
             'AddToolStripMenuItem
             '
@@ -105,6 +106,12 @@ Namespace Controls
             Me.RenameToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
             Me.RenameToolStripMenuItem.Text = "Re&name"
             '
+            'ResetToolStripMenuItem
+            '
+            Me.ResetToolStripMenuItem.Name = "ResetToolStripMenuItem"
+            Me.ResetToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.ResetToolStripMenuItem.Text = "Re&set"
+            '
             'm_lvShapes
             '
             Me.m_lvShapes.BackColor = System.Drawing.SystemColors.Window
@@ -113,7 +120,7 @@ Namespace Controls
             Me.m_lvShapes.HideSelection = False
             Me.m_lvShapes.Location = New System.Drawing.Point(0, 0)
             Me.m_lvShapes.Name = "m_lvShapes"
-            Me.m_lvShapes.Size = New System.Drawing.Size(10, 10)
+            Me.m_lvShapes.Size = New System.Drawing.Size(10, 24)
             Me.m_lvShapes.TabIndex = 0
             Me.m_lvShapes.UseCompatibleStateImageBehavior = False
             '
@@ -128,7 +135,7 @@ Namespace Controls
             Me.Margin = New System.Windows.Forms.Padding(0)
             Me.MinimumSize = New System.Drawing.Size(10, 10)
             Me.Name = "ucShapeToolbox"
-            Me.Size = New System.Drawing.Size(10, 10)
+            Me.Size = New System.Drawing.Size(10, 24)
             Me.m_lvContextMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
 
@@ -144,6 +151,7 @@ Namespace Controls
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents ExportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+        Friend WithEvents ResetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
     End Class
 
