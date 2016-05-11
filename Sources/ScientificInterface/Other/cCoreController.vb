@@ -89,6 +89,9 @@ Public Class cCoreController
             Return bSucces
         End If
 
+        ' Fixed #1433
+        If (Me.m_monitor.IsBusy) Then Return False
+
         Select Case iState
 
             Case eCoreExecutionState.EcopathLoaded, _
