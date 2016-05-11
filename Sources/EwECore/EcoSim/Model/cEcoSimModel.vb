@@ -3269,9 +3269,8 @@ Namespace Ecosim
 
             ' VC+JB June20 2008: we're adding a calculation of SS by group to the SS calculations,
             ' We're only doing it from Ecosim now, that's what the optional SSgroup is doing
-            ' 
 
-            'Set a flag to populte SSGroup 
+            ' Set a flag to populte SSGroup 
             Dim bSSgrp As Boolean = (SSgroup IsNot Nothing)
 
             'ToDo_jb PlotDataInfo AverageBodyWeight
@@ -3280,11 +3279,20 @@ Namespace Ecosim
             ReDim m_RefData.DatSS(m_RefData.NdatType)
             ReDim m_RefData.DatQ(m_RefData.NdatType)
             ReDim m_RefData.eDatQ(m_RefData.NdatType)
-            '28-Aug-2011 Added SS prediction error by time series data type(set)
             ReDim m_RefData.SSPredErr(m_RefData.NdatType)
 
             For iDType = 1 To m_RefData.NdatType
                 If DatNobs(iDType) > 0 Then
+
+                    ' CW April 2016: It is incorrect to be overriding the first ss calculation with the second one 
+                    ' (corrected for mean Zstat) for catches and forced catches; it is necessary to estimate q for 
+                    ' mean weight data, since the ecosim internal mean weight is not in the same units as users are 
+                    ' likely to enter for mean weight data. So the OR condition needs to be removed for etimeseriestype 
+                    ' Catch and Catch forcing.
+
+                    ' JB April 2016: DataQ() is now only calculated for relative biomass, total mortality and average weight. 
+                    ' For all other data types it is set to zero so it will not have any scaling effect. I checked this 
+                    ' with a few different catch time series and it does appear to be working correctly. 
 
                     'Calculate DatQ() for data types that are relative.
                     'These data may not have been entered in the same units as the internal ecosim mean weight
