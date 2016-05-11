@@ -345,7 +345,6 @@ Namespace Controls
 
                 'If (Me.m_bInUpdate) Then Return
                 'Me.m_bInUpdate = True
-
                 Try
 
                     Me.m_ashapeSelected = value
@@ -387,6 +386,30 @@ Namespace Controls
                 End If
             End Set
         End Property
+
+        Protected MustOverride Function ShapeManager() As cBaseShapeManager
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Extract a list of shapes from the manager, calling 
+        ''' <see cref="IncludeShape">IncludeShape</see> to determine if a shape
+        ''' should be included in the list.
+        ''' </summary>
+        ''' <returns>A list of shapes to use.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function Shapes() As cShapeData()
+            Dim lShapes As New List(Of cShapeData)
+
+            If (Me.ShapeManager IsNot Nothing) Then
+                For i As Integer = 0 To Me.ShapeManager.Count - 1
+                    Dim shape As cShapeData = Me.ShapeManager.Item(i)
+                    If Me.IncludeShape(shape) Then
+                        lShapes.Add(shape)
+                    End If
+                Next
+            End If
+            Return lShapes.ToArray()
+        End Function
 
 #End Region ' Obligatory overrides
 
