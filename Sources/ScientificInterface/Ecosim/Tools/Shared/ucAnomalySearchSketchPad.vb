@@ -117,6 +117,7 @@ Namespace Ecosim
             Dim iYear1 As Integer = 0
             Dim iYear2 As Integer = 0
             Dim iSpline As Integer = 0
+            Dim iWidth As Integer = rcImage.Width
 
             ' Designer mode test
             If (Me.Shape Is Nothing) Then Return
@@ -124,8 +125,8 @@ Namespace Ecosim
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
             If Me.m_dragMode = eDragModeTypes.None Then
-                iYear1 = Me.YearToX(Me.m_iYearFirst, rcImage.Width)
-                iYear2 = Me.YearToX(Me.m_iYearLast, rcImage.Width)
+                iYear1 = Me.YearToX(Me.m_iYearFirst, iWidth)
+                iYear2 = Me.YearToX(Me.m_iYearLast, iWidth)
             Else
                 iYear1 = Me.m_iYearFirstDragPos
                 iYear2 = Me.m_iYearLastDragPos
@@ -134,10 +135,13 @@ Namespace Ecosim
             Me.DrawYearLine(g, iYear1)
             Me.DrawYearLine(g, iYear2)
 
+            Dim n As Integer = Me.m_iNumSplinePoints
+            If (n < 2) Then n = Me.XToYear(iYear2, iWidth) - Me.XToYear(iYear1, iWidth)
+
             ' Draw spline points
-            If (iYear2 = 0) Then iYear2 = rcImage.Width
-            For i As Integer = 1 To Me.m_iNumSplinePoints - 2
-                iSpline = CInt(iYear1 + Math.Round(i * (iYear2 - iYear1) / (Me.m_iNumSplinePoints - 1)))
+            If (iYear2 = 0) Then iYear2 = iWidth
+            For i As Integer = 1 To n - 2
+                iSpline = CInt(iYear1 + Math.Round(i * (iYear2 - iYear1) / (n - 1)))
                 Me.DrawSplineLine(g, iSpline)
             Next
 
@@ -180,17 +184,21 @@ Namespace Ecosim
 
         Protected Overrides Sub OnMouseMove(ByVal e As System.Windows.Forms.MouseEventArgs)
 
-            Dim w As Integer = Me.ClientRectangle.Width
-
             If Me.Shape Is Nothing Then Return
+
+            Dim width As Integer = Me.ClientRectangle.Width
+            Dim maxdrag As Integer = width
+
+            ' Do not drag past NumDataPoints
+            maxdrag = Math.Min(maxdrag, Me.YearToX(Me.NumDataPoints, maxdrag))
 
             If Me.Capture Then
 
                 Select Case Me.m_dragMode
                     Case eDragModeTypes.FirstYear
-                        Me.m_iYearFirstDragPos = Math.Max(0, Math.Min(w, e.X))
+                        Me.m_iYearFirstDragPos = Math.Max(0, Math.Min(maxdrag, e.X))
                     Case eDragModeTypes.EndYear
-                        Me.m_iYearLastDragPos = Math.Max(0, Math.Min(w, e.X))
+                        Me.m_iYearLastDragPos = Math.Max(0, Math.Min(maxdrag, e.X))
                 End Select
 
                 ' switch drag mode if first passed last
@@ -203,8 +211,8 @@ Namespace Ecosim
                 Me.Invalidate()
 
             Else
-                If (Math.Abs(e.X - Me.YearToX(Me.m_iYearFirst, w)) <= cMOUSE_TOLERANCE) Or _
-                   (Math.Abs(e.X - Me.YearToX(Me.m_iYearLast, w)) <= cMOUSE_TOLERANCE) Then
+                If (Math.Abs(e.X - Me.YearToX(Me.m_iYearFirst, width)) <= cMOUSE_TOLERANCE) Or _
+                   (Math.Abs(e.X - Me.YearToX(Me.m_iYearLast, width)) <= cMOUSE_TOLERANCE) Then
                     Me.Cursor = Cursors.SizeWE
                 Else
                     Me.Cursor = Cursors.Default
