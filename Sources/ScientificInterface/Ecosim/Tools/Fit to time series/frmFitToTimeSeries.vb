@@ -399,23 +399,20 @@ Namespace Ecosim
             ' Reset year range when new shape selected
             If (Not Object.ReferenceEquals(m_shapeSelected, shape)) Then
 
-                Me.m_bInUpdate = True
-
+                'Me.m_bInUpdate = True
                 ' Remember newly selected shape
                 Me.m_shapeSelected = shape
 
-                If shape IsNot Nothing Then iMax = CInt(shape.nPoints / cCore.N_MONTHS)
+                'If shape IsNot Nothing Then iMax = CInt(shape.nPoints / cCore.N_MONTHS)
+                'Me.m_nudLastYear.Maximum = iMax
+                'Me.m_nudFirstYear.Value = 0
+                'Me.m_nudLastYear.Value = Me.m_nudLastYear.Maximum
+                '' Update sketchpad
+                'Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
+                'Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
+                'Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
 
-                Me.m_nudLastYear.Maximum = iMax
-                Me.m_nudFirstYear.Value = 0
-                Me.m_nudLastYear.Value = Me.m_nudLastYear.Maximum
-
-                ' Update sketchpad
-                Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
-                Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
-                Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
-
-                Me.m_bInUpdate = False
+                'Me.m_bInUpdate = False
 
             End If
 
