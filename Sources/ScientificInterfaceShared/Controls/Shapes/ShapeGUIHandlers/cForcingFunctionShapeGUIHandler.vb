@@ -78,8 +78,8 @@ Namespace Controls
 
             Me.DisplayFullXAxis = Me.m_bShowAll
 
-            Dim shapes As List(Of cShapeData) = Me.GetShapeList()
-            If shapes.Count > 0 And Me.SelectedShape Is Nothing Then Me.SelectedShape = shapes(0)
+            Dim shapes As cShapeData() = Me.Shapes()
+            If (shapes.Length > 0) And Me.SelectedShape Is Nothing Then Me.SelectedShape = shapes(0)
 
         End Sub
 
@@ -102,7 +102,7 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function ShapeManager() As cBaseShapeManager
+        Protected Overrides Function ShapeManager() As cBaseShapeManager
             Return Me.Core.ForcingShapeManager()
         End Function
 
@@ -756,7 +756,8 @@ Namespace Controls
             Dim bHasSelection As Boolean = False
             Dim bHasShapes As Boolean = False
 
-            Me.m_lShapes = Me.GetShapeList()
+            Me.m_lShapes.Clear()
+            Me.m_lShapes.AddRange(Me.Shapes())
 
             If ashapeSelect IsNot Nothing Then
                 bHasSelection = (ashapeSelect.Length > 0)
@@ -773,28 +774,6 @@ Namespace Controls
                 Me.SelectedShapes = ashapeSelect
             End If
         End Sub
-
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Extract a list of shapes from the manager, calling 
-        ''' <see cref="IncludeShape">IncludeShape</see> to determine if a shape
-        ''' should be included in the list.
-        ''' </summary>
-        ''' <returns>A list of shapes to use.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function GetShapeList() As List(Of cShapeData)
-            Dim lShapes As New List(Of cShapeData)
-            Dim shape As cShapeData = Nothing
-
-            For i As Integer = 0 To Me.ShapeManager.Count - 1
-                shape = Me.ShapeManager.Item(i)
-                If Me.IncludeShape(shape) Then
-                    lShapes.Add(shape)
-                End If
-            Next
-            Return lShapes
-        End Function
 
 #End Region ' Helper methods
 

@@ -707,6 +707,10 @@ Namespace Controls
 
 #End Region ' Helper methods
 
+        Protected Overrides Function ShapeManager() As EwECore.cBaseShapeManager
+            Return Nothing
+        End Function
+
         Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries}
         End Function

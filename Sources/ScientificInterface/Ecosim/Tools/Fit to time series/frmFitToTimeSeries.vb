@@ -84,16 +84,9 @@ Namespace Ecosim
                 Me.m_grid.UIContext = Me.UIContext
                 Me.m_gridOutput.UIContext = Me.UIContext
 
-                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler(Me.UIContext)
-                Me.m_shapeHandler.Attach(Me.m_shapeToolBox, Me.m_sketchPad)
-
                 Me.m_cmdTSWeights = Me.UIContext.CommandHandler.GetCommand("WeightTimeSeries")
                 If (Me.m_cmdTSWeights IsNot Nothing) Then
                     AddHandler Me.m_cmdTSWeights.OnPostInvoke, AddressOf OnPostInvokeTSCommand
-                End If
-
-                If Me.m_F2TSManager.LastYear > Me.m_F2TSManager.FirstYear Then
-                    Me.ReloadControls()
                 End If
 
                 Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
@@ -117,11 +110,16 @@ Namespace Ecosim
 
                 Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
                 Me.UpdateMaxSplinePoints()
-                Me.UpdateControls()
+                Me.ReloadControls()
+
+                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler(Me.UIContext)
+                Me.m_shapeHandler.Attach(Me.m_shapeToolBox, Me.m_sketchPad)
 
             Catch ex As Exception
 
             End Try
+
+            ' Set initial selection
 
         End Sub
 
@@ -399,20 +397,8 @@ Namespace Ecosim
             ' Reset year range when new shape selected
             If (Not Object.ReferenceEquals(m_shapeSelected, shape)) Then
 
-                'Me.m_bInUpdate = True
                 ' Remember newly selected shape
                 Me.m_shapeSelected = shape
-
-                'If shape IsNot Nothing Then iMax = CInt(shape.nPoints / cCore.N_MONTHS)
-                'Me.m_nudLastYear.Maximum = iMax
-                'Me.m_nudFirstYear.Value = 0
-                'Me.m_nudLastYear.Value = Me.m_nudLastYear.Maximum
-                '' Update sketchpad
-                'Me.m_sketchPad.FirstYear = CInt(Me.m_nudFirstYear.Value)
-                'Me.m_sketchPad.LastYear = CInt(Me.m_nudLastYear.Value)
-                'Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
-
-                'Me.m_bInUpdate = False
 
             End If
 
