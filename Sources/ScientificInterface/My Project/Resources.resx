@@ -13022,7 +13022,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Input map</value>
   </data>
   <data name="VALUE_NOTEMPLATES" xml:space="preserve">
-    <value>(No templates available, are you missing a plug-in?)</value>
+    <value>(No templates available)</value>
   </data>
   <data name="PROMPT_SHELL_FAILURE" xml:space="preserve">
     <value>Failed to launch command. {0}</value>
