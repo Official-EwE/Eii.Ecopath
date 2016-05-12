@@ -65,9 +65,9 @@ Public Class gridShapeFunctionParameters
         End Set
     End Property
 
-    Protected Overrides Sub InitLayout()
+    Protected Overrides Sub InitStyle()
 
-        MyBase.InitLayout()
+        MyBase.InitStyle()
 
         Me.Redim(1, 3)
 
