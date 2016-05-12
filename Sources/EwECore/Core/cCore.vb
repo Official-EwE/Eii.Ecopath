@@ -8901,53 +8901,53 @@ Public Class cCore
                 InitEcotracerOutputs()
 
                 If CheckHabitats() Then
+                    If CheckMigrationMapsSet() Then
+                        If CheckExternalSpatialTemporalData() Then
 
-                    If CheckExternalSpatialTemporalData() Then
+                            ' Write detailed info
+                            cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, eVerboseLevel.Detailed)
 
-                        ' Write detailed info
-                        cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, eVerboseLevel.Detailed)
+                            'Setup delegates for Ecospace to call 
+                            Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
+                            m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
+                            Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
 
-                        'Setup delegates for Ecospace to call 
-                        Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
-                        m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
-                        Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
+                            'Tell the StateMonitor a run has started
+                            Me.m_StateMonitor.SetEcospaceRun()
+                            Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
-                        'Tell the StateMonitor a run has started
-                        Me.m_StateMonitor.SetEcospaceRun()
-                        Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
+                            'Output writing
+                            For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
+                                Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
+                                If (writer.Enabled) Then
+                                    writer.Init(Me)
+                                    writer.StartWrite()
+                                End If
+                            Next
 
-                        'Output writing
-                        For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
-                            Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
-                            If (writer.Enabled) Then
-                                writer.Init(Me)
-                                writer.StartWrite()
+                            'make sure Ecospace is not paused
+                            Me.m_Ecospace.isPaused = False
+
+                            Me.m_spatialOperationLog.BeginRun()
+
+                            Me.m_stpwSpaceTimer = Stopwatch.StartNew
+                            Me.m_spaceSaveTime = 0
+
+                            If RunOnThread Then
+                                'Run Ecospace
+                                breturn = Me.m_Ecospace.RunThreaded()
+                            Else
+                                breturn = Me.m_Ecospace.Run()
+                                'jb 30-May-2014 onEcoSpaceRunCompleted() was called by Ecospace.Run()
+                                'Don't call it again
+                                'If EcospaceTimeStepHandler Is Nothing Then
+                                '    'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
+                                '    Me.onEcoSpaceRunCompleted(breturn)
+                                'End If
+
                             End If
-                        Next
-
-                        'make sure Ecospace is not paused
-                        Me.m_Ecospace.isPaused = False
-
-                        Me.m_spatialOperationLog.BeginRun()
-
-                        Me.m_stpwSpaceTimer = Stopwatch.StartNew
-                        Me.m_spaceSaveTime = 0
-
-                        If RunOnThread Then
-                            'Run Ecospace
-                            breturn = Me.m_Ecospace.RunThreaded()
-                        Else
-                            breturn = Me.m_Ecospace.Run()
-                            'jb 30-May-2014 onEcoSpaceRunCompleted() was called by Ecospace.Run()
-                            'Don't call it again
-                            'If EcospaceTimeStepHandler Is Nothing Then
-                            '    'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
-                            '    Me.onEcoSpaceRunCompleted(breturn)
-                            'End If
-
-                        End If
-                    End If ' If CheckSpatialDataTimeSteps() Then
-
+                        End If ' If CheckSpatialDataTimeSteps() Then
+                    End If
                 End If 'If checkHabitats() Then
 
             Else 'If Me.m_StateMonitor.HasEcospaceLoaded Then
@@ -9067,6 +9067,43 @@ Public Class cCore
                                              eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
                     msg.AddVariable(vs)
+                Next
+
+                Me.m_publisher.SendMessage(msg)
+
+                If msg.Reply = eMessageReply.NO Then
+                    Return False
+                End If
+
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
+
+        Return True
+
+    End Function
+
+    Public Function CheckMigrationMapsSet() As Boolean
+        Dim msg As cFeedbackMessage = Nothing
+        Dim vs As cVariableStatus = Nothing
+        Dim MigMapsSet() As Boolean
+        Try
+
+            If Me.m_Ecospace.getMigrationMapsSet(MigMapsSet) > 0 Then
+                Dim strMsg As String = "Migration maps need setting for groups" ' My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
+                msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning,
+                                                                    eMessageReplyStyle.YES_NO, , eMessageReply.YES)
+                For igrp As Integer = 1 To Me.nGroups
+                    If Not MigMapsSet(igrp) Then
+                        strMsg = "Migration map not set for group " + igrp.ToString
+                        vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg,
+                                                 eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
+
+                        msg.AddVariable(vs)
+                    End If
                 Next
 
                 Me.m_publisher.SendMessage(msg)

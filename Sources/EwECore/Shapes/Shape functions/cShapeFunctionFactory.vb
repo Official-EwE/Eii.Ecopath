@@ -48,6 +48,8 @@ Public Class cShapeFunctionFactory
     Public Shared Function GetShapeFunction(ByVal shape As cForcingFunction,
                                             Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction
 
+        If shape Is Nothing Then Return Nothing
+
         For Each sf As IShapeFunction In GetShapeFunctions(pm)
             If (shape.ShapeFunctionType = sf.ShapeFunctionType) Then
                 sf.Init(shape)

@@ -173,12 +173,14 @@ Public Class dlgDefineMapResponseAssignments
 
     Protected Sub InitToShapeType()
 
+        Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(Me.m_shape)
+
         If (Me.ShowMinMax) Then
             RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
             RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
         End If
 
-        If (Me.CanEditMeanSD) Then
+        If (Me.CanEditMean) Then
             RemoveHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
         End If
 
@@ -189,7 +191,7 @@ Public Class dlgDefineMapResponseAssignments
             AddHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
         End If
 
-        If (Me.CanEditMeanSD) Then
+        If (Me.CanEditMean) Then
 
             Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
             Me.m_fpMean.Value = normdist.Mean
@@ -316,7 +318,7 @@ Public Class dlgDefineMapResponseAssignments
         Try
             If Me.m_bInUpdate Then Return
 
-            Debug.Assert(Me.CanEditMeanSD(), "Oppss BUG! should not be setting the Mean for this type of shape.")
+            Debug.Assert(Me.CanEditMean(), "Oppss BUG! should not be setting the Mean for this type of shape.")
             'Mean is stored in the Steep variable
 
             Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
@@ -379,7 +381,7 @@ Public Class dlgDefineMapResponseAssignments
         Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
         Dim bCanRemoveGroup As Boolean = (Me.m_tvDrivers.SelectedNode IsNot Nothing)
         Dim bCanSetMinMax As Boolean = Me.ShowMinMax() Or True
-        Dim bCanSetMeanSD As Boolean = Me.CanEditMeanSD()
+        Dim bCanSetMeanSD As Boolean = Me.CanEditMean()
 
         Dim strXMin As String = My.Resources.HEADER_X_MIN
         Dim strXMax As String = My.Resources.HEADER_X_MAX
@@ -431,11 +433,10 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.m_shape Is Nothing) Then Return False
 
-        ' ToDo: the shape itself should somehow be able to report this
-        If ((Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal) Or _
-            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder) Or _
-            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder) Or _
-            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid)) Then
+        If ((Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal) Or _
+            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.LeftShoulder) Or _
+            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.RightShoulder) Or _
+            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Trapezoid)) Then
             Return False
         End If
 
@@ -443,7 +444,7 @@ Public Class dlgDefineMapResponseAssignments
 
     End Function
 
-    Private Function CanEditMeanSD() As Boolean
+    Private Function CanEditMean() As Boolean
 
         If (Me.m_shape Is Nothing) Then Return False
         If (Me.m_shapefunction Is Nothing) Then Return False
@@ -483,14 +484,11 @@ Public Class dlgDefineMapResponseAssignments
         Select Case Me.m_shape.ShapeFunctionType
 
             Case eShapeFunctionType.Normal
-                'Normal distribution shape min and max are set from the Mean SD
+                'Normal distribution shape min and max are set from the Mean and SD values
 
                 'Use the Min Max on the interface to set the plot window size
                 sPlotMin = CSng(Me.m_fpMin.Value)
                 sPlotMax = CSng(Me.m_fpMax.Value)
-
-                'Get the Min and Max of the data from Mean, SD and SDWidth
-                ' Me.CalcXFromMeanAndSD(sShapeMin, sShapeMax)
 
             Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
                 'Shoulder shape min and max can not be set here
@@ -503,7 +501,6 @@ Public Class dlgDefineMapResponseAssignments
                 'The min and max of the data cannot be changed here
                 sShapeMin = Me.m_shape.ResponseLeftLimit
                 sShapeMax = Me.m_shape.ResponseRightLimit
-
 
             Case Else
                 'For all other shape the Min Max get set for the Min and Max textbox on this form
