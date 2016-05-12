@@ -1290,4 +1290,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Applying model update {0}</value>
     <comment>{0}=version</comment>
   </data>
+  <data name="MIGRATION_MISSING_GROUPS" xml:space="preserve">
+    <value>Set monthly migration patterns for group {0}</value>
+    <comment>{0}=group name</comment>
+  </data>
+  <data name="MIGRATION_MISSING_MAPS" xml:space="preserve">
+    <value>WARNING: Monthly migration patterns have not been set for the following group(s). Do you want to continue?</value>
+  </data>
 </root>

@@ -7470,8 +7470,9 @@ exitline:
 
     End Sub
 
-    Friend Function getMigrationMapsSet(ByRef MigrationMapsSet() As Boolean) As Integer
-        Dim n As Integer
+    Friend Function getMissingMigrationMaps(ByRef MigrationMapsSet() As Boolean) As Integer
+        Dim nMissing As Integer
+        Dim bFoundMonth As Boolean
 
         MigrationMapsSet = New Boolean(Me.m_Data.NGroups) {}
 
@@ -7479,30 +7480,39 @@ exitline:
             MigrationMapsSet(igrp) = True
             If Me.m_Data.IsMigratory(igrp) Then
 
-                MigrationMapsSet(igrp) = False
+                MigrationMapsSet(igrp) = True
 
-                For ir As Integer = 1 To Me.m_Data.InRow
-                    For ic As Integer = 1 To Me.m_Data.InCol
-                        If Me.m_Data.Depth(ir, ic) > 0 Then
-                            For imon As Integer = 1 To 12
+                For imon As Integer = 1 To 12
+                    bFoundMonth = False
+                    For ir As Integer = 1 To Me.m_Data.InRow
+                        For ic As Integer = 1 To Me.m_Data.InCol
+                            If Me.m_Data.Depth(ir, ic) > 0 Then
+
                                 'is this cell part of the migration pattern for any month
                                 'then True for this group
                                 If Me.m_Data.MigMaps(igrp, imon)(ir, ic) > MIN_MIG_PROB Then
-                                    MigrationMapsSet(igrp) = True
-                                    n += 1
+                                    bFoundMonth = True
                                     Exit For
                                 End If
-                            Next
 
-                        End If 'Me.m_Data.Depth(ir, ic) > 0 
-                    Next ic
-                    If MigrationMapsSet(igrp) Then Exit For
-                Next ir
+                            End If 'Me.m_Data.Depth(ir, ic) > 0 
+                        Next ic
+                        If bFoundMonth Then Exit For
+                    Next ir
+
+                    MigrationMapsSet(igrp) = MigrationMapsSet(igrp) And bFoundMonth
+                    If Not MigrationMapsSet(igrp) Then nMissing += 1
+                    'This group is already missing a map for this month
+                    'No need to do the other months 
+                    If Not MigrationMapsSet(igrp) Then Exit For
+
+                Next imon
+
             End If 'If Me.m_Data.IsMigratory(igrp) Then
 
-        Next
+        Next igrp
 
-        Return n
+        Return nMissing
 
     End Function
 
