@@ -242,21 +242,27 @@ Public Class dlgEditBasemap
         Me.m_basemap.Latitude = CSng(Me.m_fpLat.Value)
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
 
-        If bResizeMap Then
+        If (bResizeMap = True) Then
             cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP)
             Try
                 Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
+            Catch ex As Exception
 
-                If (Me.m_rs IsNot Nothing) Then
-                    ' Use adapter here?
-                    Dim l As cEcospaceLayerDepth = Me.m_uic.Core.EcospaceBasemap.LayerDepth
-                    For ir As Integer = 1 To Me.m_rs.NumRows
-                        For ic As Integer = 1 To Me.m_rs.NumCols
-                            l.Cell(ir, ic) = Me.m_rs.Cell(ir, ic)
-                        Next
+            End Try
+            cApplicationStatusNotifier.EndProgress(core)
+        End If
+
+        If (Me.m_rs IsNot Nothing) Then
+            cApplicationStatusNotifier.StartProgress(core)
+            Try
+                ' Use adapter here?
+                Dim l As cEcospaceLayerDepth = Me.m_uic.Core.EcospaceBasemap.LayerDepth
+                For ir As Integer = 1 To Me.m_rs.NumRows
+                    For ic As Integer = 1 To Me.m_rs.NumCols
+                        l.Cell(ir, ic) = Me.m_rs.Cell(ir, ic)
                     Next
-                    l.Invalidate()
-                End If
+                Next
+                l.Invalidate()
             Catch ex As Exception
 
             End Try
