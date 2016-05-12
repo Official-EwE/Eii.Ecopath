@@ -17,8 +17,11 @@ extensions: .cs
 // The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
 // Aquaculture Science (Cefas). 
 //
-// EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
-// Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+// EwE copyright 1991- :
+//   UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+//   Ecopath International Initiative, Barcelona, Spain
+// Cefas MSE plug-in copyright: 
+//   2013- Cefas, Lowestoft, UK.
 // ===============================================================================
 
 extensions: .vb
@@ -39,8 +42,11 @@ extensions: .vb
 ' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
 ' Aquaculture Science (Cefas). 
 '
-' EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
-' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' EwE copyright 1991- :
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' Cefas MSE plug-in copyright: 
+'    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
 
@@ -63,7 +69,10 @@ If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
 The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
 Aquaculture Science (Cefas). 
 
-EwE copyright: 1991- UBC Fisheries Centre, Vancouver BC, Canada.
-Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+EwE copyright 1991- :
+   UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+   Ecopath International Initiative, Barcelona, Spain
+Cefas MSE plug-in copyright: 
+   2013- Cefas, Lowestoft, UK.
 ===============================================================================
 -->

@@ -15,10 +15,14 @@
 ' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
 ' Aquaculture Science (Cefas). 
 '
-' EwE copyright: 1991- UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
-' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
+' EwE copyright 1991- :
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' Cefas MSE plug-in copyright: 
+'    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _

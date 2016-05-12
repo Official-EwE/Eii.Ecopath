@@ -12,7 +12,14 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
+' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
+' Aquaculture Science (Cefas). 
+'
+' EwE copyright 1991- :
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' Cefas MSE plug-in copyright: 
+'    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
 
