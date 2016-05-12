@@ -600,7 +600,9 @@
     <Compile Include="Controls\Slider\ucSlider.designer.vb">
       <DependentUpon>ucSlider.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Slider\ucSlider.vb" />
+    <Compile Include="Controls\Slider\ucSlider.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.Designer.vb">
       <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
     </Compile>
