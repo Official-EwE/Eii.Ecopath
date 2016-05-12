@@ -7470,6 +7470,43 @@ exitline:
 
     End Sub
 
+    Friend Function getMigrationMapsSet(ByRef MigrationMapsSet() As Boolean) As Integer
+        Dim n As Integer
+
+        MigrationMapsSet = New Boolean(Me.m_Data.NGroups) {}
+
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+            MigrationMapsSet(igrp) = True
+            If Me.m_Data.IsMigratory(igrp) Then
+
+                MigrationMapsSet(igrp) = False
+
+                For ir As Integer = 1 To Me.m_Data.InRow
+                    For ic As Integer = 1 To Me.m_Data.InCol
+                        If Me.m_Data.Depth(ir, ic) > 0 Then
+                            For imon As Integer = 1 To 12
+                                'is this cell part of the migration pattern for any month
+                                'then True for this group
+                                If Me.m_Data.MigMaps(igrp, imon)(ir, ic) > MIN_MIG_PROB Then
+                                    MigrationMapsSet(igrp) = True
+                                    n += 1
+                                    Exit For
+                                End If
+                            Next
+
+                        End If 'Me.m_Data.Depth(ir, ic) > 0 
+                    Next ic
+                    If MigrationMapsSet(igrp) Then Exit For
+                Next ir
+            End If 'If Me.m_Data.IsMigratory(igrp) Then
+
+        Next
+
+        Return n
+
+    End Function
+
+
     ''' <summary>
     ''' Set Capacity based on enviromental response functions
     ''' </summary>
