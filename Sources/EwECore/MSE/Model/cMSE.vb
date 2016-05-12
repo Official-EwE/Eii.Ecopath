@@ -2451,7 +2451,7 @@ Namespace MSE
 
         Private Function SetFishingEffort(ByVal Fleet As Integer, ByVal Val As Single) As Boolean
 
-            Dim Manager As cFishingEffortManger = Me.m_core.FishingEffortShapeManager
+            Dim Manager As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
             Dim Shape As cShapeData = Nothing
 
             Dim StartStep As Integer
@@ -2864,7 +2864,7 @@ Namespace MSE
 
 
                 For iFlt As Integer = 1 To nFleets
-                    Dim Manager As cFishingEffortManger = Me.m_core.FishingEffortShapeManager
+                    Dim Manager As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
                     Dim Shape As cShapeData = Nothing
 
                     Shape = Manager.Item(iFlt - 1)
@@ -2923,7 +2923,7 @@ Namespace MSE
 
                     'Finally reset the effort to the original effort
                     'SetEffortToBaseValue(True)
-                    Dim Manager2 As cFishingEffortManger = Me.m_core.FishingEffortShapeManager
+                    Dim Manager2 As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
                     Dim Shape2 As cShapeData = Nothing
                     Shape2 = Manager2.Item(iFlt - 1)
                     'Reset the fishing values

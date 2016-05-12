@@ -92,18 +92,13 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Perform a database update
+        ''' Perform a database update.
         ''' </summary>
         ''' <param name="db">The <see cref="cEwEDatabase">database</see> to update</param>
         ''' <returns>True if succesful</returns>
-        ''' <remarks>
-        ''' More elaborate status info may be required to populate a tracking GUI.
-        ''' This could be implemented either via a public accessible status object 
-        ''' that gets populated during every update step, or via delegates.
-        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Function UpdateDatabase(ByVal db As cEwEDatabase) As Boolean
-            Return Me.UpdateDatabase(db, Me.m_sBaselineVersion)
+            Return Me.RunAllUpdates(db)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -113,7 +108,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Shared Function MaxSupportedVersion() As Single
             Dim sVersion As Single = 6.0! ' Should obtain this from cEwEDatabase, but ok
-            Dim upd As cDBUpdate() = cDatabaseUpdater.GetUpdates()
+            Dim upd As cDBUpdate() = cDatabaseUpdater.GetUpdates(sVersion)
             ' Has updates?
             If upd.Length > 0 Then
                 ' #Yes: return version of last update (updates are sorted by version ASC)
@@ -132,7 +127,7 @@ Namespace Database
         ''' </summary>
         ''' <returns>An array of available updates.</returns>
         ''' -------------------------------------------------------------------
-        Private Shared Function GetUpdates() As cDBUpdate()
+        Private Shared Function GetUpdates(ByVal sVersion As Single) As cDBUpdate()
 
             Dim lUpdates As New List(Of cDBUpdate)
             Dim clsType As Type = Nothing
@@ -150,8 +145,11 @@ Namespace Database
                         If Not Type.Equals(clsType, GetType(cDBUpdate)) Then
                             ' #Yes: Create update instance
                             upd = DirectCast(Activator.CreateInstance(clsType, New Object() {}), cDBUpdate)
-                            ' Add to the list of updates
-                            lUpdates.Add(upd)
+                            ' Is a valid update?
+                            If (upd.UpdateVersion > sVersion) Then
+                                ' #Yes: add to the list of updates
+                                lUpdates.Add(upd)
+                            End If
                         End If
                     End If
                 Next
@@ -178,18 +176,13 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         Public Function HasDatabaseUpdates(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
 
-            Dim sDBVersion As Single = db.GetVersion()
-
             ' Sanity checks
-            If db Is Nothing Then Return False
-            If sDBVersion < sBaselineVersion Then Return False
+            If (db Is Nothing) Then Return False
 
-            For Each update As cDBUpdate In cDatabaseUpdater.GetUpdates()
-                If (update.UpdateVersion > sDBVersion) Then
-                    Return True
-                End If
-            Next
-            Return False
+            Dim sDBVersion As Single = db.GetVersion()
+            If (sDBVersion < sBaselineVersion) Then Return False
+
+            Return (cDatabaseUpdater.GetUpdates(sDBVersion).Length > 0)
 
         End Function
 
@@ -198,17 +191,16 @@ Namespace Database
         ''' Run available database update plug-ins.
         ''' </summary>
         ''' <param name="db">The database to update.</param>
-        ''' <param name="sBaselineVersion">Database version to start updating from.</param>
         ''' <remarks>
         ''' This method does not attempt to cross thread boundaries.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Function UpdateDatabase(ByVal db As cEwEDatabase, ByVal sBaselineVersion As Single) As Boolean
+        Private Function RunAllUpdates(ByVal db As cEwEDatabase) As Boolean
 
             Dim sDBVersion As Single = 0.0!
             Dim iUpdate As Integer = 0
             Dim update As cDBUpdate = Nothing
-            Dim aUpdates As cDBUpdate() = cDatabaseUpdater.GetUpdates()
+            Dim aUpdates As cDBUpdate() = Nothing
             Dim bSucces As Boolean = True
 
             ' Sanity checks
@@ -218,58 +210,63 @@ Namespace Database
             ' Get DB version
             sDBVersion = db.GetVersion()
 
+            Me.ReportUpdateProgress(eProgressState.Start, "", 0)
+
             ' For all updates
+            aUpdates = cDatabaseUpdater.GetUpdates(sDBVersion)
             While (iUpdate < aUpdates.Length) And (bSucces = True)
 
                 ' Get update
                 update = aUpdates(iUpdate)
 
-                ' Version ok?
-                If (update.UpdateVersion > sDBVersion) Then
-                    ' #Yes: able to start transaction?
-                    If db.BeginTransaction() Then
-                        ' Do not publicly report updates that always run
-                        Me.ReportUpdateStatus(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
-                                              eMessageImportance.Maintenance)
+                Me.ReportUpdateProgress(eProgressState.Running,
+                                        cStringUtils.Localize(My.Resources.CoreMessages.UPDATE_RUNNING, update.UpdateVersion),
+                                        CSng(iUpdate / aUpdates.Length))
 
-                        Try
-                            ' #Yes: run the update
-                            bSucces = update.ApplyUpdate(db)
-                            ' Update ran successful?
-                            If bSucces Then
-                                ' #Yes: Update database version
-                                db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
-                            Else
-                                ' #No: report a generic error
-                                Me.ReportUpdateStatus(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
-                            End If
+                ' Able to start transaction?
+                If db.BeginTransaction() Then
+                    ' Do not publicly report updates that always run
+                    Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
+                                          eMessageImportance.Maintenance)
 
-                        Catch ex As Exception
-                            ' Woops!
-                            Me.ReportUpdateStatus(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
-                            bSucces = False
-                        End Try
-
-                        ' Update ran succesfully?
+                    Try
+                        ' #Yes: run the update
+                        bSucces = update.ApplyUpdate(db)
+                        ' Update ran successful?
                         If bSucces Then
-                            ' #Yes: commit changes
-                            bSucces = db.CommitTransaction(True)
+                            ' #Yes: Update database version
+                            db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                         Else
-                            ' #No: rollback changes
-                            db.RollbackTransaction()
+                            ' #No: report a generic error
+                            Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
                         End If
 
-                    Else
-                        ' #No: failed to start transaction - an update did not clean up well
-                        Debug.Assert(False, "Database version " & sDBVersion & " update sequence failed for update " & update.UpdateVersion)
+                    Catch ex As Exception
+                        ' Woops!
+                        Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED_DETAIL, update.UpdateVersion, ex.Message))
                         bSucces = False
+                    End Try
+
+                    ' Update ran succesfully?
+                    If bSucces Then
+                        ' #Yes: commit changes
+                        bSucces = db.CommitTransaction(True)
+                    Else
+                        ' #No: rollback changes
+                        db.RollbackTransaction()
                     End If
 
+                Else
+                    ' #No: failed to start transaction - an update did not clean up well
+                    Debug.Assert(False, "Database version " & sDBVersion & " update sequence failed for update " & update.UpdateVersion)
+                    bSucces = False
                 End If
 
                 ' Next
                 iUpdate += 1
             End While
+
+            Me.ReportUpdateProgress(eProgressState.Finished, "", 100)
 
             Return bSucces
 
@@ -302,24 +299,42 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Send an error message to the core.
+        ''' Report an update error to the core.
         ''' </summary>
-        ''' <param name="strStatus">Status message.</param>
+        ''' <param name="strStatus">Message text.</param>
         ''' <param name="importance">Message importance.</param>
+        ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Private Sub ReportUpdateStatus(ByVal strStatus As String, _
-                                       Optional ByVal importance As eMessageImportance = eMessageImportance.Critical)
+        Private Sub ReportUpdateError(ByVal strStatus As String,
+                                      Optional ByVal importance As eMessageImportance = eMessageImportance.Critical)
 
-            Dim msg As cMessage = New cMessage(strStatus, _
-                                               eMessageType.DataImport, _
-                                               eCoreComponentType.DataSource, _
-                                               importance)
-
+            Dim msg As cMessage = New cMessage(strStatus, eMessageType.DataImport, eCoreComponentType.DataSource, importance)
             Try
                 Me.m_core.Messages.SendMessage(msg)
                 cLog.Write("Database update failure: " & strStatus)
             Catch ex As Exception
+                cLog.Write(ex, "cDatabaseUpdate.ReportUpdateError(" & strStatus & ")")
+            End Try
 
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Report update status to the core.
+        ''' </summary>
+        ''' <param name="strStatus">Status message.</param>
+        ''' <param name="sProgress">Progress indicator.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub ReportUpdateProgress(ByVal status As eProgressState,
+                                         ByVal strStatus As String,
+                                         ByVal sProgress As Single)
+
+            Dim msg As cMessage = New cProgressMessage(status, 1, sProgress, strStatus, eMessageType.Progress)
+
+            Try
+                Me.m_core.Messages.SendMessage(msg)
+            Catch ex As Exception
+                cLog.Write(ex, "cDatabaseUpdate.ReportUpdateProgress")
             End Try
 
         End Sub

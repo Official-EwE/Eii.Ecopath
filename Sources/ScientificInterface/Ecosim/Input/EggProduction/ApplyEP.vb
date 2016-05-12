@@ -36,7 +36,7 @@ Namespace Ecosim
 
 #Region "Constructor"
 
-        Private m_EPManager As cEggProductionManager
+        Private m_EPManager As cEggProductionShapeManager
         Private m_bInUpdate As Boolean = False
 
         Public Sub New()

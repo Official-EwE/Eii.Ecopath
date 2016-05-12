@@ -91,8 +91,6 @@ Namespace Ecosim
             Me.UpdateControls()
 
             Me.m_cmbNutForcing.SelectedIndex = Math.Max(0, parms.NutForceFunctionNumber)
-            Me.m_cmbSalinityForcing.SelectedIndex = Math.Max(0, parms.SalinityForceFunctionNumber)
-            Me.m_cmbTempLoading.SelectedIndex = Math.Max(0, parms.TemperatureForceFunctionNumber)
 
             Me.m_bInUpdate = False
 
@@ -160,7 +158,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnFormatFF(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_cmbNutForcing.Format, m_cmbSalinityForcing.Format, m_cmbTempLoading.Format
+            Handles m_cmbNutForcing.Format
             Try
                 Dim fmt As New cShapeDataFormatter()
                 e.Value = fmt.GetDescriptor(e.ListItem)
@@ -170,15 +168,13 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnFFSelectionChanged(sender As Object, e As System.EventArgs) _
-            Handles m_cmbNutForcing.SelectedIndexChanged, m_cmbSalinityForcing.SelectedIndexChanged, m_cmbTempLoading.SelectedIndexChanged
+            Handles m_cmbNutForcing.SelectedIndexChanged
 
             If Me.m_bInUpdate Then Return
 
             Try
                 Dim parms As cEcoSimModelParameters = Core.EcoSimModelParameters()
                 parms.NutForceFunctionNumber = Me.m_cmbNutForcing.SelectedIndex
-                parms.SalinityForceFunctionNumber = Me.m_cmbSalinityForcing.SelectedIndex
-                parms.TemperatureForceFunctionNumber = Me.m_cmbTempLoading.SelectedIndex
             Catch ex As Exception
 
             End Try
@@ -225,7 +221,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub UpdateEnvForcingControls()
-            Dim ffm As cForcingFunctionManager = Me.Core.ForcingShapeManager()
+            Dim ffm As cForcingFunctionShapeManager = Me.Core.ForcingShapeManager()
             Dim aItems(ffm.Count) As Object
 
             aItems(0) = ""
@@ -234,8 +230,6 @@ Namespace Ecosim
             Next
 
             Me.m_cmbNutForcing.Items.AddRange(aItems)
-            Me.m_cmbSalinityForcing.Items.AddRange(aItems)
-            Me.m_cmbTempLoading.Items.AddRange(aItems)
         End Sub
 
         Protected Overrides Sub UpdateControls()

@@ -25,7 +25,7 @@ Namespace My.Resources
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
-    Friend Class CoreMessages
+    Public Class CoreMessages
         
         Private Shared resourceMan As Global.System.Resources.ResourceManager
         
@@ -40,7 +40,7 @@ Namespace My.Resources
         '''  Returns the cached ResourceManager instance used by this class.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("EwECore.CoreMessages", GetType(CoreMessages).Assembly)
@@ -55,7 +55,7 @@ Namespace My.Resources
         '''  resource lookups using this strongly typed resource class.
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Shared Property Culture() As Global.System.Globalization.CultureInfo
+        Public Shared Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
@@ -67,7 +67,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Average biomass.
         '''</summary>
-        Friend Shared ReadOnly Property ADAPTER_BIOMASSFORCING_SCALAR_TEXT() As String
+        Public Shared ReadOnly Property ADAPTER_BIOMASSFORCING_SCALAR_TEXT() As String
             Get
                 Return ResourceManager.GetString("ADAPTER_BIOMASSFORCING_SCALAR_TEXT", resourceCulture)
             End Get
@@ -76,7 +76,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Relative scalar.
         '''</summary>
-        Friend Shared ReadOnly Property ADAPTER_RELATIVE_SCALAR_TEXT() As String
+        Public Shared ReadOnly Property ADAPTER_RELATIVE_SCALAR_TEXT() As String
             Get
                 Return ResourceManager.GetString("ADAPTER_RELATIVE_SCALAR_TEXT", resourceCulture)
             End Get
@@ -85,7 +85,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred running the advection computations: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property ADVECTION_ERROR() As String
+        Public Shared ReadOnly Property ADVECTION_ERROR() As String
             Get
                 Return ResourceManager.GetString("ADVECTION_ERROR", resourceCulture)
             End Get
@@ -94,7 +94,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Area must be greater then zero and less than or equal to one ( &gt; 0 and &lt;= 1)..
         '''</summary>
-        Friend Shared ReadOnly Property AREA_RANGE() As String
+        Public Shared ReadOnly Property AREA_RANGE() As String
             Get
                 Return ResourceManager.GetString("AREA_RANGE", resourceCulture)
             End Get
@@ -103,7 +103,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to B missing for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property B_MISSING_GROUP() As String
+        Public Shared ReadOnly Property B_MISSING_GROUP() As String
             Get
                 Return ResourceManager.GetString("B_MISSING_GROUP", resourceCulture)
             End Get
@@ -112,7 +112,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to BioAccum must be greater than or equal to zero..
         '''</summary>
-        Friend Shared ReadOnly Property BIOACCUM_RANGE() As String
+        Public Shared ReadOnly Property BIOACCUM_RANGE() As String
             Get
                 Return ResourceManager.GetString("BIOACCUM_RANGE", resourceCulture)
             End Get
@@ -121,7 +121,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biomass must be greater than or equal to zero..
         '''</summary>
-        Friend Shared ReadOnly Property BIOMASS_RANGE() As String
+        Public Shared ReadOnly Property BIOMASS_RANGE() As String
             Get
                 Return ResourceManager.GetString("BIOMASS_RANGE", resourceCulture)
             End Get
@@ -130,7 +130,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to BiomassArea must be greater then zero..
         '''</summary>
-        Friend Shared ReadOnly Property BIOMASSAREA_RANGE() As String
+        Public Shared ReadOnly Property BIOMASSAREA_RANGE() As String
             Get
                 Return ResourceManager.GetString("BIOMASSAREA_RANGE", resourceCulture)
             End Get
@@ -139,7 +139,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Only one computation can run at a time..
         '''</summary>
-        Friend Shared ReadOnly Property COMPUTATION_ALREADY_RUNNING() As String
+        Public Shared ReadOnly Property COMPUTATION_ALREADY_RUNNING() As String
             Get
                 Return ResourceManager.GetString("COMPUTATION_ALREADY_RUNNING", resourceCulture)
             End Get
@@ -148,7 +148,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The EWE6 Core could not be initialized. The following critical error occurred: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property CORE_INIT_CRITICAL_GENERIC() As String
+        Public Shared ReadOnly Property CORE_INIT_CRITICAL_GENERIC() As String
             Get
                 Return ResourceManager.GetString("CORE_INIT_CRITICAL_GENERIC", resourceCulture)
             End Get
@@ -157,7 +157,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The EWE6 Core could not be initialized. The following critical error occurred while creating validators: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property CORE_INIT_CRITICAL_VALIDATORS() As String
+        Public Shared ReadOnly Property CORE_INIT_CRITICAL_VALIDATORS() As String
             Get
                 Return ResourceManager.GetString("CORE_INIT_CRITICAL_VALIDATORS", resourceCulture)
             End Get
@@ -166,7 +166,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Data validation for &apos;{0}&apos; was unsuccessful..
         '''</summary>
-        Friend Shared ReadOnly Property DATA_INVALID() As String
+        Public Shared ReadOnly Property DATA_INVALID() As String
             Get
                 Return ResourceManager.GetString("DATA_INVALID", resourceCulture)
             End Get
@@ -175,7 +175,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Data validation for &apos;{0}&apos; was successful..
         '''</summary>
-        Friend Shared ReadOnly Property DATA_VALID() As String
+        Public Shared ReadOnly Property DATA_VALID() As String
             Get
                 Return ResourceManager.GetString("DATA_VALID", resourceCulture)
             End Get
@@ -184,7 +184,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Data validation for &apos;{0}&apos;..
         '''</summary>
-        Friend Shared ReadOnly Property DATA_VALIDATION() As String
+        Public Shared ReadOnly Property DATA_VALIDATION() As String
             Get
                 Return ResourceManager.GetString("DATA_VALIDATION", resourceCulture)
             End Get
@@ -193,7 +193,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to make a backup copy of your database to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property DATABASE_BACKUP_FAILED() As String
+        Public Shared ReadOnly Property DATABASE_BACKUP_FAILED() As String
             Get
                 Return ResourceManager.GetString("DATABASE_BACKUP_FAILED", resourceCulture)
             End Get
@@ -202,7 +202,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The database &apos;{0}&apos; was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
         '''</summary>
-        Friend Shared ReadOnly Property DATABASE_BACKUP_PROMPT() As String
+        Public Shared ReadOnly Property DATABASE_BACKUP_PROMPT() As String
             Get
                 Return ResourceManager.GetString("DATABASE_BACKUP_PROMPT", resourceCulture)
             End Get
@@ -211,7 +211,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to A backup copy of your database was made to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property DATABASE_BACKUP_SUCCESS() As String
+        Public Shared ReadOnly Property DATABASE_BACKUP_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("DATABASE_BACKUP_SUCCESS", resourceCulture)
             End Get
@@ -220,7 +220,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Database update {0} failed.
         '''</summary>
-        Friend Shared ReadOnly Property DATABASE_UPDATE_FAILED() As String
+        Public Shared ReadOnly Property DATABASE_UPDATE_FAILED() As String
             Get
                 Return ResourceManager.GetString("DATABASE_UPDATE_FAILED", resourceCulture)
             End Get
@@ -229,7 +229,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Database update {0} failed: {1}.
         '''</summary>
-        Friend Shared ReadOnly Property DATABASE_UPDATE_FAILED_DETAIL() As String
+        Public Shared ReadOnly Property DATABASE_UPDATE_FAILED_DETAIL() As String
             Get
                 Return ResourceManager.GetString("DATABASE_UPDATE_FAILED_DETAIL", resourceCulture)
             End Get
@@ -238,7 +238,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Imported Detritus must be greater than or equal to zero..
         '''</summary>
-        Friend Shared ReadOnly Property DETIMP_RANGE() As String
+        Public Shared ReadOnly Property DETIMP_RANGE() As String
             Get
                 Return ResourceManager.GetString("DETIMP_RANGE", resourceCulture)
             End Get
@@ -247,7 +247,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diets for group {0} have not been entered.
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_MISSING() As String
+        Public Shared ReadOnly Property DIETCOMP_MISSING() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_MISSING", resourceCulture)
             End Get
@@ -256,7 +256,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diet Comp does not sum to one..
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_NOT_SUM_ONE() As String
+        Public Shared ReadOnly Property DIETCOMP_NOT_SUM_ONE() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_NOT_SUM_ONE", resourceCulture)
             End Get
@@ -265,7 +265,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; gets {1}% of it&apos;s diet from higher TL groups. Do you want to reduce it to 15%? (Doing so will not change your input data).
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_PROMPT_CORRECTTO15PERC() As String
+        Public Shared ReadOnly Property DIETCOMP_PROMPT_CORRECTTO15PERC() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_PROMPT_CORRECTTO15PERC", resourceCulture)
             End Get
@@ -274,7 +274,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diets for one or more groups have not been entered.
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_PROMPT_MISSING() As String
+        Public Shared ReadOnly Property DIETCOMP_PROMPT_MISSING() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_PROMPT_MISSING", resourceCulture)
             End Get
@@ -283,7 +283,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diet for one or more groups does not sum to 1. Do you want to normalize diets to 1 for ALL predator groups?.
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_PROMPT_SUMTOONE() As String
+        Public Shared ReadOnly Property DIETCOMP_PROMPT_SUMTOONE() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_PROMPT_SUMTOONE", resourceCulture)
             End Get
@@ -292,7 +292,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diet Comp must be greater than or equal to zero..
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_RANGE() As String
+        Public Shared ReadOnly Property DIETCOMP_RANGE() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_RANGE", resourceCulture)
             End Get
@@ -301,7 +301,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diet for predator &apos;{0}&apos; does not sum to 1.
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_SUMTOONE_PRED() As String
+        Public Shared ReadOnly Property DIETCOMP_SUMTOONE_PRED() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_SUMTOONE_PRED", resourceCulture)
             End Get
@@ -310,7 +310,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Error during validation of &apos;DietComp&apos;. &apos;DietComp&apos; will not be valid..
         '''</summary>
-        Friend Shared ReadOnly Property DIETCOMP_VALIDATION_ERROR() As String
+        Public Shared ReadOnly Property DIETCOMP_VALIDATION_ERROR() As String
             Get
                 Return ResourceManager.GetString("DIETCOMP_VALIDATION_ERROR", resourceCulture)
             End Get
@@ -319,7 +319,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The file &apos;{0}&apos; could not be found..
         '''</summary>
-        Friend Shared ReadOnly Property DLLFACTORY_FILENOTFOUND() As String
+        Public Shared ReadOnly Property DLLFACTORY_FILENOTFOUND() As String
             Get
                 Return ResourceManager.GetString("DLLFACTORY_FILENOTFOUND", resourceCulture)
             End Get
@@ -328,7 +328,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Error loading &apos;{0}&apos; from file &apos;{1}&apos;. Error: {2}.
         '''</summary>
-        Friend Shared ReadOnly Property DLLFACTORY_LOAD_ERROR() As String
+        Public Shared ReadOnly Property DLLFACTORY_LOAD_ERROR() As String
             Get
                 Return ResourceManager.GetString("DLLFACTORY_LOAD_ERROR", resourceCulture)
             End Get
@@ -337,7 +337,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Component &apos;{0}&apos; could not be found in &apos;{1}&apos;..
         '''</summary>
-        Friend Shared ReadOnly Property DLLFACTORY_TYPE_NOT_FOUND() As String
+        Public Shared ReadOnly Property DLLFACTORY_TYPE_NOT_FOUND() As String
             Get
                 Return ResourceManager.GetString("DLLFACTORY_TYPE_NOT_FOUND", resourceCulture)
             End Get
@@ -346,7 +346,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to DC does not sum to one for group {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_DIETCOMP_NOTSUMTOONE() As String
+        Public Shared ReadOnly Property ECOPATH_DIETCOMP_NOTSUMTOONE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_DIETCOMP_NOTSUMTOONE", resourceCulture)
             End Get
@@ -355,7 +355,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Diet composition (DC) does not sum to one for one or more groups..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC() As String
+        Public Shared ReadOnly Property ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC", resourceCulture)
             End Get
@@ -364,7 +364,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to run EcoPath, a model has not yet been initialized..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_ERROR_NOMODEL() As String
+        Public Shared ReadOnly Property ECOPATH_ERROR_NOMODEL() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ERROR_NOMODEL", resourceCulture)
             End Get
@@ -373,7 +373,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The following variables were estimated:.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_ESTIMATED() As String
+        Public Shared ReadOnly Property ECOPATH_ESTIMATED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED", resourceCulture)
             End Get
@@ -382,7 +382,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biomass Accumulation for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_BA() As String
+        Public Shared ReadOnly Property ECOPATH_ESTIMATED_BA() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_BA", resourceCulture)
             End Get
@@ -391,7 +391,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to EE for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_EE() As String
+        Public Shared ReadOnly Property ECOPATH_ESTIMATED_EE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_EE", resourceCulture)
             End Get
@@ -400,7 +400,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Emigration for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_EMIGRATION() As String
+        Public Shared ReadOnly Property ECOPATH_ESTIMATED_EMIGRATION() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_EMIGRATION", resourceCulture)
             End Get
@@ -409,7 +409,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Immigration for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_ESTIMATED_IMMIGRATION() As String
+        Public Shared ReadOnly Property ECOPATH_ESTIMATED_IMMIGRATION() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ESTIMATED_IMMIGRATION", resourceCulture)
             End Get
@@ -418,7 +418,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_GS_WARNING() As String
+        Public Shared ReadOnly Property ECOPATH_GS_WARNING() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_GS_WARNING", resourceCulture)
             End Get
@@ -427,7 +427,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your model has {0} group(s) for which the Detritus fate (DF) sum to more than 1.You should go back to your input data, and make sure the DF&apos;s sum to max 1 only..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_DFLARGERTHANONE() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_DFLARGERTHANONE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DFLARGERTHANONE", resourceCulture)
             End Get
@@ -436,7 +436,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; has Detritus Fate larger than one..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP", resourceCulture)
             End Get
@@ -445,7 +445,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your model has {0} group(s) that have a diet with imports only. Such groups are not well defined, will have trophic levels of 1, and will not show any flow on trophic level decomposition interfaces..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_DIETIMPORTONLY() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_DIETIMPORTONLY() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DIETIMPORTONLY", resourceCulture)
             End Get
@@ -454,7 +454,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; has an import-only diet.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP", resourceCulture)
             End Get
@@ -463,7 +463,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Computed EE value {1} invalid for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_EE() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_EE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_EE", resourceCulture)
             End Get
@@ -473,7 +473,7 @@ Namespace My.Resources
         '''  Looks up a localized string similar to Your model is NOT mass-balanced!
         '''Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s)..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_EE_GENERIC() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_EE_GENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_EE_GENERIC", resourceCulture)
             End Get
@@ -482,7 +482,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Insufficient data, please edit your model..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_INSUFFICIENTDATA() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_INSUFFICIENTDATA() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_INSUFFICIENTDATA", resourceCulture)
             End Get
@@ -491,7 +491,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Aborting, missing B and QB for group &apos;{0}&apos;. Please edit your data..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSING_B_QB() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSING_B_QB() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_MISSING_B_QB", resourceCulture)
             End Get
@@ -500,7 +500,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your model has {0} gear(s) for which the Discard fate is not specified. You should go back to your input data and make sure to specify what happens to the discards. Discards must be directed to a detritus group, if this  is not the case in your case, you should perhaps treat  the discards from the given fleet as landings with zero value..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE", resourceCulture)
             End Get
@@ -509,7 +509,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fleet &apos;{0}&apos; is missing Discard fate.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET", resourceCulture)
             End Get
@@ -518,7 +518,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Estimated PB = 0 for group &apos;{0}&apos;..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_PB0() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_PB0() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_PB0", resourceCulture)
             End Get
@@ -529,7 +529,7 @@ Namespace My.Resources
         '''
         '''Note that for unexploited top-predators it may not be possible to estimate P/B (no mortality, no production needed)..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_PB0_GENERIC() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_PB0_GENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_PB0_GENERIC", resourceCulture)
             End Get
@@ -538,7 +538,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Estimated QB = 0 for group &apos;{0}&apos;..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_QB0", resourceCulture)
             End Get
@@ -547,7 +547,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The program has estimated the consumption / biomass (Q/B) ratio for one or more groups to be 0. Please edit your data..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0_GENERIC() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_QB0_GENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_QB0_GENERIC", resourceCulture)
             End Get
@@ -556,7 +556,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Respiration exceeds input to detritus for one or more group(s)..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP", resourceCulture)
             End Get
@@ -565,7 +565,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; has a respiration value exceeding input to detritus..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP() As String
+        Public Shared ReadOnly Property ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP", resourceCulture)
             End Get
@@ -574,7 +574,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath model &apos;{0}&apos; failed to load. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_LOAD_FAILED() As String
+        Public Shared ReadOnly Property ECOPATH_LOAD_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_LOAD_FAILED", resourceCulture)
             End Get
@@ -583,7 +583,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath model &apos;{0}&apos; loaded..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_LOAD_SUCCESS() As String
+        Public Shared ReadOnly Property ECOPATH_LOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_LOAD_SUCCESS", resourceCulture)
             End Get
@@ -592,7 +592,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Loaded model &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_LOADED() As String
+        Public Shared ReadOnly Property ECOPATH_LOADED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_LOADED", resourceCulture)
             End Get
@@ -601,7 +601,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Catch information (Landing + Discard) is missing for one of more fleets..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_MISSINGPARAM_CATCH_GENERIC() As String
+        Public Shared ReadOnly Property ECOPATH_MISSINGPARAM_CATCH_GENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MISSINGPARAM_CATCH_GENERIC", resourceCulture)
             End Get
@@ -610,7 +610,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Discard information is missing for fleet {0}, group {1}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_MISSINGPARAM_DISCARD() As String
+        Public Shared ReadOnly Property ECOPATH_MISSINGPARAM_DISCARD() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MISSINGPARAM_DISCARD", resourceCulture)
             End Get
@@ -619,7 +619,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Landing information is missing for fleet {0}, group {1}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_MISSINGPARAM_LANDING() As String
+        Public Shared ReadOnly Property ECOPATH_MISSINGPARAM_LANDING() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MISSINGPARAM_LANDING", resourceCulture)
             End Get
@@ -628,7 +628,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Model failed to update to EwE version {0}!.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_FAILED() As String
+        Public Shared ReadOnly Property ECOPATH_MODEL_UPDATE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_FAILED", resourceCulture)
             End Get
@@ -637,7 +637,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Model was updated to EwE version {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_SUCCESS() As String
+        Public Shared ReadOnly Property ECOPATH_MODEL_UPDATE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_SUCCESS", resourceCulture)
             End Get
@@ -646,7 +646,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to WARNING : Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_NEGATIVE_RESPIR_WARNING() As String
+        Public Shared ReadOnly Property ECOPATH_NEGATIVE_RESPIR_WARNING() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_NEGATIVE_RESPIR_WARNING", resourceCulture)
             End Get
@@ -655,7 +655,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biomass could not be estimated for group {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_B() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_B() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_B", resourceCulture)
             End Get
@@ -664,7 +664,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath has estimated the biomass for group {0} ({1}) to be ({2}). This is because the fishery + migration + biomass accumulation is estimated to sum to a negative value. Please edit your data, allowing e.g. for biomass accumulation for this group..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY", resourceCulture)
             End Get
@@ -673,7 +673,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath has estimated the biomass for group {0} ({1}) to be 0. This is because the fishery + migration + biomass accumulation is estimated to sum to 0. Please edit your data, allowing e.g. for biomass accumulation for this group..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY", resourceCulture)
             End Get
@@ -682,7 +682,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotrophic Efficiencies (EE) could not be estimated for group {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_EE() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_EE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_EE", resourceCulture)
             End Get
@@ -691,7 +691,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Estimated Biomass Accumulation (BA) is negative for group {0}, which may be related to the failure to estimate EE..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_EE_BA() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_EE_BA() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_EE_BA", resourceCulture)
             End Get
@@ -700,7 +700,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The parameter estimation routine can work only with one of B, P/B, and EE unknown per group. Here, more than one of these are unknown for group &apos;{0}&apos;.{1}{1}In addition, the Q/B may be unknown for a given predator, i.e., IF: B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on these two groups have known B and QB.{1}{1}Please re-edit the input parameters..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING", resourceCulture)
             End Get
@@ -709,7 +709,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath failed to estimate one or more parameters..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC", resourceCulture)
             End Get
@@ -718,7 +718,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The generalized inverse routine is trying to estimate {0} unknown from {1} equations. The solution will not be unique. Check the estimated values carefully..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE", resourceCulture)
             End Get
@@ -727,7 +727,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Production / biomass ratio (PB) could not be estimated for group {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_PB() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_PB() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_PB", resourceCulture)
             End Get
@@ -736,7 +736,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath has estimated the production * EE for group {0} ({1}), to be {2}. This is less than the estimated &apos;cannibalism&apos; for this group..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_PRODxEE() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_PRODxEE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_PRODxEE", resourceCulture)
             End Get
@@ -745,7 +745,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Consumption / biomass ratio (QB) could not be estimated for group {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_QB() As String
+        Public Shared ReadOnly Property ECOPATH_PARAMESTIMATION_FAILED_QB() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PARAMESTIMATION_FAILED_QB", resourceCulture)
             End Get
@@ -754,7 +754,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your data are not consistent. In algorithm 4 your estimate of: P/Bi * EEi - Q/Bi * DCii is negative for group &apos;{0}&apos;, i.e. &apos;cannibalism&apos; exceeds the predation mortality. Do you want to have cannibalism reduced (to 20 of used production) for all groups where this problem occurs? Note: your input data will not be changed..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PREDMORT_CANN() As String
+        Public Shared ReadOnly Property ECOPATH_PREDMORT_CANN() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PREDMORT_CANN", resourceCulture)
             End Get
@@ -763,7 +763,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Enter Biomass for all detritus groups before proceeding to Ecosim..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING() As String
+        Public Shared ReadOnly Property ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING", resourceCulture)
             End Get
@@ -772,7 +772,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biomass, PB and EE for &apos;{0}&apos; are entered. Do you want to estimate biomass accumulation?.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE() As String
+        Public Shared ReadOnly Property ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE", resourceCulture)
             End Get
@@ -781,7 +781,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Biomass, PB, QB and EE for &apos;{0}&apos; are entered. Do you want to estimate biomass accumulation?.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE() As String
+        Public Shared ReadOnly Property ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE", resourceCulture)
             End Get
@@ -790,7 +790,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Do you want to estimate net migration for &apos;{0}&apos;?.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_PROMPT_ESTIMATE_NETMIGRATION() As String
+        Public Shared ReadOnly Property ECOPATH_PROMPT_ESTIMATE_NETMIGRATION() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_PROMPT_ESTIMATE_NETMIGRATION", resourceCulture)
             End Get
@@ -799,7 +799,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath estimates failed to save to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_RESULTS_SAVED_FAILED() As String
+        Public Shared ReadOnly Property ECOPATH_RESULTS_SAVED_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_RESULTS_SAVED_FAILED", resourceCulture)
             End Get
@@ -808,7 +808,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath estimates saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_RESULTS_SAVED_SUCCESS() As String
+        Public Shared ReadOnly Property ECOPATH_RESULTS_SAVED_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_RESULTS_SAVED_SUCCESS", resourceCulture)
             End Get
@@ -817,7 +817,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath failed to run..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_RUN_ERROR() As String
+        Public Shared ReadOnly Property ECOPATH_RUN_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_RUN_ERROR", resourceCulture)
             End Get
@@ -826,7 +826,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath failed to run. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_RUN_ERROR_EXCEPTION() As String
+        Public Shared ReadOnly Property ECOPATH_RUN_ERROR_EXCEPTION() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_RUN_ERROR_EXCEPTION", resourceCulture)
             End Get
@@ -835,7 +835,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath run completed..
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_RUN_SUCCESS() As String
+        Public Shared ReadOnly Property ECOPATH_RUN_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_RUN_SUCCESS", resourceCulture)
             End Get
@@ -844,7 +844,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath model &apos;{0}&apos; failed to save.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_SAVE_FAILED() As String
+        Public Shared ReadOnly Property ECOPATH_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_SAVE_FAILED", resourceCulture)
             End Get
@@ -853,7 +853,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath model failed to save to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_SAVETO_FAILED() As String
+        Public Shared ReadOnly Property ECOPATH_SAVETO_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_SAVETO_FAILED", resourceCulture)
             End Get
@@ -862,7 +862,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecopath model succesfully saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOPATH_SAVETO_SUCCESS() As String
+        Public Shared ReadOnly Property ECOPATH_SAVETO_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_SAVETO_SUCCESS", resourceCulture)
             End Get
@@ -871,7 +871,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to save spatial optimization results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSEED_RESULTS_SAVE_FAILED() As String
+        Public Shared ReadOnly Property ECOSEED_RESULTS_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSEED_RESULTS_SAVE_FAILED", resourceCulture)
             End Get
@@ -880,7 +880,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Spatial optimization results saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSEED_RESULTS_SAVE_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSEED_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSEED_RESULTS_SAVE_SUCCESS", resourceCulture)
             End Get
@@ -889,7 +889,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Feeding proportions by arenas not set properly.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_ERROR_FEEDARENA() As String
+        Public Shared ReadOnly Property ECOSIM_ERROR_FEEDARENA() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_ERROR_FEEDARENA", resourceCulture)
             End Get
@@ -898,7 +898,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecosim scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_LOAD_FAILED() As String
+        Public Shared ReadOnly Property ECOSIM_LOAD_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_LOAD_FAILED", resourceCulture)
             End Get
@@ -907,7 +907,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecosim scenario &apos;{0}&apos; loaded..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_LOAD_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSIM_LOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_LOAD_SUCCESS", resourceCulture)
             End Get
@@ -916,7 +916,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to save Ecosim results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_RESULTS_SAVE_FAILED() As String
+        Public Shared ReadOnly Property ECOSIM_RESULTS_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_RESULTS_SAVE_FAILED", resourceCulture)
             End Get
@@ -925,7 +925,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecosim results saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_RESULTS_SAVE_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSIM_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_RESULTS_SAVE_SUCCESS", resourceCulture)
             End Get
@@ -934,7 +934,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Total predation on prey {0} by predator {1} not accounted for. Ecosim has stopped..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_RUN_ERROR_MISSINGPREDATION() As String
+        Public Shared ReadOnly Property ECOSIM_RUN_ERROR_MISSINGPREDATION() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_RUN_ERROR_MISSINGPREDATION", resourceCulture)
             End Get
@@ -943,7 +943,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecosim scenario &apos;{0}&apos; failed to save. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_SAVE_FAILED() As String
+        Public Shared ReadOnly Property ECOSIM_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_SAVE_FAILED", resourceCulture)
             End Get
@@ -952,7 +952,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecosim scenario &apos;{0}&apos; has been saved..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSIM_SAVE_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSIM_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_SAVE_SUCCESS", resourceCulture)
             End Get
@@ -961,7 +961,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace result .asc files have been written to {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_EXPORT_ASCII_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSPACE_EXPORT_ASCII_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_EXPORT_ASCII_SUCCESS", resourceCulture)
             End Get
@@ -970,7 +970,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace result .csv files have been written to {0}..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_EXPORT_CSV_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSPACE_EXPORT_CSV_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_EXPORT_CSV_SUCCESS", resourceCulture)
             End Get
@@ -979,7 +979,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace failed to save file {0}. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_EXPORT_FAILED() As String
+        Public Shared ReadOnly Property ECOSPACE_EXPORT_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_EXPORT_FAILED", resourceCulture)
             End Get
@@ -988,7 +988,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred in Ecospace. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_GENERIC_ERROR() As String
+        Public Shared ReadOnly Property ECOSPACE_GENERIC_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_GENERIC_ERROR", resourceCulture)
             End Get
@@ -997,7 +997,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace failed to update capacity maps. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_HABCAP_COMPUTE_ERROR() As String
+        Public Shared ReadOnly Property ECOSPACE_HABCAP_COMPUTE_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_HABCAP_COMPUTE_ERROR", resourceCulture)
             End Get
@@ -1006,7 +1006,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace will not be able to run due to an error during initialization..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_INIT_ERROR() As String
+        Public Shared ReadOnly Property ECOSPACE_INIT_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_INIT_ERROR", resourceCulture)
             End Get
@@ -1015,7 +1015,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_LOAD_FAILED() As String
+        Public Shared ReadOnly Property ECOSPACE_LOAD_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LOAD_FAILED", resourceCulture)
             End Get
@@ -1024,7 +1024,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario &apos;{0}&apos; loaded..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_LOAD_SUCCESS() As String
+        Public Shared ReadOnly Property ECOSPACE_LOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LOAD_SUCCESS", resourceCulture)
             End Get
@@ -1033,7 +1033,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to WARNING: The following group(s) have a low average habitat capacity. Do you want to continue?.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP() As String
+        Public Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LOWHABITAT_CAP", resourceCulture)
             End Get
@@ -1042,7 +1042,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; average capacity per cell {1}%.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP_GROUP() As String
+        Public Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP_GROUP() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LOWHABITAT_CAP_GROUP", resourceCulture)
             End Get
@@ -1051,7 +1051,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An Ecosim and Ecospace scenario must be loaded before Ecospace can be run..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_NO_SIM_SCENARIO() As String
+        Public Shared ReadOnly Property ECOSPACE_NO_SIM_SCENARIO() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_NO_SIM_SCENARIO", resourceCulture)
             End Get
@@ -1060,7 +1060,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An Ecospace scenario must be loaded before Ecospace can be run..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_NO_SPACE_SCENARIO() As String
+        Public Shared ReadOnly Property ECOSPACE_NO_SPACE_SCENARIO() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_NO_SPACE_SCENARIO", resourceCulture)
             End Get
@@ -1069,7 +1069,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace has run out of memory. Please try reducing the number of Regions and/or Timesteps..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_OUT_OF_MEMORY() As String
+        Public Shared ReadOnly Property ECOSPACE_OUT_OF_MEMORY() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_OUT_OF_MEMORY", resourceCulture)
             End Get
@@ -1078,7 +1078,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace has completed a model run..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_RUN_COMPLETED() As String
+        Public Shared ReadOnly Property ECOSPACE_RUN_COMPLETED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_RUN_COMPLETED", resourceCulture)
             End Get
@@ -1087,7 +1087,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Run Ecospace Error. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_RUN_ERROR() As String
+        Public Shared ReadOnly Property ECOSPACE_RUN_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_RUN_ERROR", resourceCulture)
             End Get
@@ -1096,7 +1096,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace is already running you must either stop the current run or wait for it to complete before starting another run..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_RUNNING() As String
+        Public Shared ReadOnly Property ECOSPACE_RUNNING() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_RUNNING", resourceCulture)
             End Get
@@ -1105,7 +1105,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario &apos;{0}&apos; failed to save. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_SAVE_FAILED() As String
+        Public Shared ReadOnly Property ECOSPACE_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_SAVE_FAILED", resourceCulture)
             End Get
@@ -1114,7 +1114,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario &apos;{0}&apos; has been saved..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_SAVE_SUCCES() As String
+        Public Shared ReadOnly Property ECOSPACE_SAVE_SUCCES() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_SAVE_SUCCES", resourceCulture)
             End Get
@@ -1123,7 +1123,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace failed to save result maps. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_SAVEMAP_FAILED() As String
+        Public Shared ReadOnly Property ECOSPACE_SAVEMAP_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_SAVEMAP_FAILED", resourceCulture)
             End Get
@@ -1132,7 +1132,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace..
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_SIM_INIT_FAILED() As String
+        Public Shared ReadOnly Property ECOSPACE_SIM_INIT_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_SIM_INIT_FAILED", resourceCulture)
             End Get
@@ -1141,7 +1141,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracer scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOTRACER_LOAD_FAILED() As String
+        Public Shared ReadOnly Property ECOTRACER_LOAD_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOTRACER_LOAD_FAILED", resourceCulture)
             End Get
@@ -1150,7 +1150,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracerscenario &apos;{0}&apos; loaded..
         '''</summary>
-        Friend Shared ReadOnly Property ECOTRACER_LOAD_SUCCESS() As String
+        Public Shared ReadOnly Property ECOTRACER_LOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOTRACER_LOAD_SUCCESS", resourceCulture)
             End Get
@@ -1159,7 +1159,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracer scenario &apos;{0}&apos; failed to save. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOTRACER_SAVE_FAILED() As String
+        Public Shared ReadOnly Property ECOTRACER_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOTRACER_SAVE_FAILED", resourceCulture)
             End Get
@@ -1168,7 +1168,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracer scenario &apos;{0}&apos; has changed since the last time you saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - revert to last saved scenario\nCancel - abort this operation..
         '''</summary>
-        Friend Shared ReadOnly Property ECOTRACER_SAVE_PROMPT() As String
+        Public Shared ReadOnly Property ECOTRACER_SAVE_PROMPT() As String
             Get
                 Return ResourceManager.GetString("ECOTRACER_SAVE_PROMPT", resourceCulture)
             End Get
@@ -1177,7 +1177,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecotracer scenario &apos;{0}&apos; has been saved..
         '''</summary>
-        Friend Shared ReadOnly Property ECOTRACER_SAVE_SUCCES() As String
+        Public Shared ReadOnly Property ECOTRACER_SAVE_SUCCES() As String
             Get
                 Return ResourceManager.GetString("ECOTRACER_SAVE_SUCCES", resourceCulture)
             End Get
@@ -1186,7 +1186,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to EE cleared..
         '''</summary>
-        Friend Shared ReadOnly Property EE_CLEARED() As String
+        Public Shared ReadOnly Property EE_CLEARED() As String
             Get
                 Return ResourceManager.GetString("EE_CLEARED", resourceCulture)
             End Get
@@ -1195,7 +1195,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to EE must be between zero and one..
         '''</summary>
-        Friend Shared ReadOnly Property EE_RANGE() As String
+        Public Shared ReadOnly Property EE_RANGE() As String
             Get
                 Return ResourceManager.GetString("EE_RANGE", resourceCulture)
             End Get
@@ -1204,7 +1204,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fit to Time Series aborted..
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_ABORTED() As String
+        Public Shared ReadOnly Property F2TS_ABORTED() As String
             Get
                 Return ResourceManager.GetString("F2TS_ABORTED", resourceCulture)
             End Get
@@ -1213,7 +1213,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred in Fit to Time Series. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_ERROR() As String
+        Public Shared ReadOnly Property F2TS_ERROR() As String
             Get
                 Return ResourceManager.GetString("F2TS_ERROR", resourceCulture)
             End Get
@@ -1222,7 +1222,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fit to Time Series estimation Error &apos;{0}&apos;, original parameter values have been restored..
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_ERROR_ESTIMATION() As String
+        Public Shared ReadOnly Property F2TS_ERROR_ESTIMATION() As String
             Get
                 Return ResourceManager.GetString("F2TS_ERROR_ESTIMATION", resourceCulture)
             End Get
@@ -1231,7 +1231,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fit to Time Series found nothing to estimate, exiting search. Sketch interactions before searching again..
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_ERROR_INTERACTIONS() As String
+        Public Shared ReadOnly Property F2TS_ERROR_INTERACTIONS() As String
             Get
                 Return ResourceManager.GetString("F2TS_ERROR_INTERACTIONS", resourceCulture)
             End Get
@@ -1240,7 +1240,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to No time series have been loaded; Fit to Time Series cannot run..
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_ERROR_NO_TS() As String
+        Public Shared ReadOnly Property F2TS_ERROR_NO_TS() As String
             Get
                 Return ResourceManager.GetString("F2TS_ERROR_NO_TS", resourceCulture)
             End Get
@@ -1249,7 +1249,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Sensitivity routine has not been run. The blocks can not be set..
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_ERROR_SENSITIVITY_SETBLOCKS() As String
+        Public Shared ReadOnly Property F2TS_ERROR_SENSITIVITY_SETBLOCKS() As String
             Get
                 Return ResourceManager.GetString("F2TS_ERROR_SENSITIVITY_SETBLOCKS", resourceCulture)
             End Get
@@ -1258,7 +1258,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fit to Time Series estimates have converged. Do you want to do more iterations?.
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_PROMPT_CONVERGED() As String
+        Public Shared ReadOnly Property F2TS_PROMPT_CONVERGED() As String
             Get
                 Return ResourceManager.GetString("F2TS_PROMPT_CONVERGED", resourceCulture)
             End Get
@@ -1267,7 +1267,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to More Fit to Time Series iterations?.
         '''</summary>
-        Friend Shared ReadOnly Property F2TS_PROMPT_ITERATIONS() As String
+        Public Shared ReadOnly Property F2TS_PROMPT_ITERATIONS() As String
             Get
                 Return ResourceManager.GetString("F2TS_PROMPT_ITERATIONS", resourceCulture)
             End Get
@@ -1276,7 +1276,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to save MSY results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property FMSY_RESULTS_SAVE_FAILED() As String
+        Public Shared ReadOnly Property FMSY_RESULTS_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("FMSY_RESULTS_SAVE_FAILED", resourceCulture)
             End Get
@@ -1285,7 +1285,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fmsy results saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property FMSY_RESULTS_SAVE_SUCCESS() As String
+        Public Shared ReadOnly Property FMSY_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("FMSY_RESULTS_SAVE_SUCCESS", resourceCulture)
             End Get
@@ -1294,7 +1294,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fmsy not found in given F range.
         '''</summary>
-        Friend Shared ReadOnly Property FMSY_STATUS_NOTFOUND() As String
+        Public Shared ReadOnly Property FMSY_STATUS_NOTFOUND() As String
             Get
                 Return ResourceManager.GetString("FMSY_STATUS_NOTFOUND", resourceCulture)
             End Get
@@ -1303,7 +1303,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Running Fmsy {0}, assessing {1}....
         '''</summary>
-        Friend Shared ReadOnly Property FMSY_STATUS_RUNNING() As String
+        Public Shared ReadOnly Property FMSY_STATUS_RUNNING() As String
             Get
                 Return ResourceManager.GetString("FMSY_STATUS_RUNNING", resourceCulture)
             End Get
@@ -1312,7 +1312,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Forcing shape data has changed..
         '''</summary>
-        Friend Shared ReadOnly Property FORCING_DATA_CHANGED() As String
+        Public Shared ReadOnly Property FORCING_DATA_CHANGED() As String
             Get
                 Return ResourceManager.GetString("FORCING_DATA_CHANGED", resourceCulture)
             End Get
@@ -1321,7 +1321,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to GE cleared..
         '''</summary>
-        Friend Shared ReadOnly Property GE_CLEARED() As String
+        Public Shared ReadOnly Property GE_CLEARED() As String
             Get
                 Return ResourceManager.GetString("GE_CLEARED", resourceCulture)
             End Get
@@ -1330,7 +1330,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to GE must be greater than zero and less than or equal to 1..
         '''</summary>
-        Friend Shared ReadOnly Property GE_RANGE() As String
+        Public Shared ReadOnly Property GE_RANGE() As String
             Get
                 Return ResourceManager.GetString("GE_RANGE", resourceCulture)
             End Get
@@ -1339,7 +1339,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Aborting, please edit your data..
         '''</summary>
-        Friend Shared ReadOnly Property GENERIC_ABORTING_EDIT_DATA() As String
+        Public Shared ReadOnly Property GENERIC_ABORTING_EDIT_DATA() As String
             Get
                 Return ResourceManager.GetString("GENERIC_ABORTING_EDIT_DATA", resourceCulture)
             End Get
@@ -1348,7 +1348,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The following variables were estimated:.
         '''</summary>
-        Friend Shared ReadOnly Property GENERIC_PROMPT_ESTIMATED() As String
+        Public Shared ReadOnly Property GENERIC_PROMPT_ESTIMATED() As String
             Get
                 Return ResourceManager.GetString("GENERIC_PROMPT_ESTIMATED", resourceCulture)
             End Get
@@ -1357,7 +1357,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Try to save your model under a new name..
         '''</summary>
-        Friend Shared ReadOnly Property GENERIC_SAVE_RESOLUTION() As String
+        Public Shared ReadOnly Property GENERIC_SAVE_RESOLUTION() As String
             Get
                 Return ResourceManager.GetString("GENERIC_SAVE_RESOLUTION", resourceCulture)
             End Get
@@ -1366,7 +1366,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Initializing....
         '''</summary>
-        Friend Shared ReadOnly Property GENERIC_STATUS_INITIALIZING() As String
+        Public Shared ReadOnly Property GENERIC_STATUS_INITIALIZING() As String
             Get
                 Return ResourceManager.GetString("GENERIC_STATUS_INITIALIZING", resourceCulture)
             End Get
@@ -1375,7 +1375,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to GS cleared..
         '''</summary>
-        Friend Shared ReadOnly Property GS_CLEARED() As String
+        Public Shared ReadOnly Property GS_CLEARED() As String
             Get
                 Return ResourceManager.GetString("GS_CLEARED", resourceCulture)
             End Get
@@ -1384,7 +1384,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unassimilated consumption must be between zero and one..
         '''</summary>
-        Friend Shared ReadOnly Property GS_RANGE() As String
+        Public Shared ReadOnly Property GS_RANGE() As String
             Get
                 Return ResourceManager.GetString("GS_RANGE", resourceCulture)
             End Get
@@ -1393,7 +1393,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Sorry, this Input or Output cannot be left empty..
         '''</summary>
-        Friend Shared ReadOnly Property ICORE_ADD_NULL() As String
+        Public Shared ReadOnly Property ICORE_ADD_NULL() As String
             Get
                 Return ResourceManager.GetString("ICORE_ADD_NULL", resourceCulture)
             End Get
@@ -1402,7 +1402,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to access newly created database at location {0}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_ERROR_CANNOTACCESS() As String
+        Public Shared ReadOnly Property IMPORT_ERROR_CANNOTACCESS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_ERROR_CANNOTACCESS", resourceCulture)
             End Get
@@ -1411,7 +1411,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to create new database at location {0}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_ERROR_CANNOTCREATE() As String
+        Public Shared ReadOnly Property IMPORT_ERROR_CANNOTCREATE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_ERROR_CANNOTCREATE", resourceCulture)
             End Get
@@ -1420,7 +1420,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to store data for &apos;{0}&apos;, the database rejected imported values. This indicates a programming error. Please notify the EwE development team.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_ERROR_COMMIT() As String
+        Public Shared ReadOnly Property IMPORT_ERROR_COMMIT() As String
             Get
                 Return ResourceManager.GetString("IMPORT_ERROR_COMMIT", resourceCulture)
             End Get
@@ -1429,7 +1429,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Database {0} has version {1}, which is incompatible with this version. Use the latest version of Ecopath 5 to update the database first..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_ERROR_INCOMPATIBLE() As String
+        Public Shared ReadOnly Property IMPORT_ERROR_INCOMPATIBLE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_ERROR_INCOMPATIBLE", resourceCulture)
             End Get
@@ -1438,7 +1438,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Creating missing group {0} ({1}) for Ecosim scenario {2} with default values, please review..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_FIX_CREATEECOSIMGROUP() As String
+        Public Shared ReadOnly Property IMPORT_FIX_CREATEECOSIMGROUP() As String
             Get
                 Return ResourceManager.GetString("IMPORT_FIX_CREATEECOSIMGROUP", resourceCulture)
             End Get
@@ -1447,7 +1447,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Creating missing fleet {0} ({1}) for Ecospace scenario {2} with default values, please review..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_FIX_CREATEECOSPACEFLEET() As String
+        Public Shared ReadOnly Property IMPORT_FIX_CREATEECOSPACEFLEET() As String
             Get
                 Return ResourceManager.GetString("IMPORT_FIX_CREATEECOSPACEFLEET", resourceCulture)
             End Get
@@ -1456,7 +1456,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Creating missing group {0} ({1}) for Ecospace scenario {2} with default values, please review..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_FIX_CREATEECOSPACEGROUP() As String
+        Public Shared ReadOnly Property IMPORT_FIX_CREATEECOSPACEGROUP() As String
             Get
                 Return ResourceManager.GetString("IMPORT_FIX_CREATEECOSPACEGROUP", resourceCulture)
             End Get
@@ -1465,7 +1465,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Creating missing fish mortality shape {0} for ecosim group {1}, ecosim scenario {2} with default values, please review..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_FIX_CREATEFISHMORTSHAPE() As String
+        Public Shared ReadOnly Property IMPORT_FIX_CREATEFISHMORTSHAPE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_FIX_CREATEFISHMORTSHAPE", resourceCulture)
             End Get
@@ -1474,7 +1474,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; area corrected to {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_FIX_GROUPAREA() As String
+        Public Shared ReadOnly Property IMPORT_FIX_GROUPAREA() As String
             Get
                 Return ResourceManager.GetString("IMPORT_FIX_GROUPAREA", resourceCulture)
             End Get
@@ -1483,7 +1483,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; is a producer, Unassim corrected to {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_FIX_GROUPUNASSIM() As String
+        Public Shared ReadOnly Property IMPORT_FIX_GROUPUNASSIM() As String
             Get
                 Return ResourceManager.GetString("IMPORT_FIX_GROUPUNASSIM", resourceCulture)
             End Get
@@ -1492,7 +1492,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to No description available..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_NO_DESCRIPTION() As String
+        Public Shared ReadOnly Property IMPORT_NO_DESCRIPTION() As String
             Get
                 Return ResourceManager.GetString("IMPORT_NO_DESCRIPTION", resourceCulture)
             End Get
@@ -1501,7 +1501,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing diets.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_POGRESS_DIETCOMP() As String
+        Public Shared ReadOnly Property IMPORT_POGRESS_DIETCOMP() As String
             Get
                 Return ResourceManager.GetString("IMPORT_POGRESS_DIETCOMP", resourceCulture)
             End Get
@@ -1510,7 +1510,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecopath catches.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_CATCH() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_CATCH() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_CATCH", resourceCulture)
             End Get
@@ -1519,7 +1519,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Import complete.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_COMPLETE() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_COMPLETE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_COMPLETE", resourceCulture)
             End Get
@@ -1528,7 +1528,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecopath groups.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOPATHGROUPS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOPATHGROUPS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOPATHGROUPS", resourceCulture)
             End Get
@@ -1537,7 +1537,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Import Ecoranger.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECORANGER() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECORANGER() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECORANGER", resourceCulture)
             End Get
@@ -1546,7 +1546,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim fleets.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMFLEETS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMFLEETS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMFLEETS", resourceCulture)
             End Get
@@ -1555,7 +1555,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim fleet {0} - {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMFLEETS_AT() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMFLEETS_AT() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMFLEETS_AT", resourceCulture)
             End Get
@@ -1564,7 +1564,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim groups.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMGROUPS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMGROUPS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMGROUPS", resourceCulture)
             End Get
@@ -1573,7 +1573,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim group {0} - {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMGROUPS_AT() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSIMGROUPS_AT() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSIMGROUPS_AT", resourceCulture)
             End Get
@@ -1582,7 +1582,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace basemap.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEBASEMAP() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEBASEMAP() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSPACEBASEMAP", resourceCulture)
             End Get
@@ -1591,7 +1591,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace fleets.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEFLEETS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEFLEETS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSPACEFLEETS", resourceCulture)
             End Get
@@ -1600,7 +1600,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace groups.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEGROUPS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEGROUPS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSPACEGROUPS", resourceCulture)
             End Get
@@ -1609,7 +1609,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace marine protected areas.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEMPAS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEMPAS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSPACEMPAS", resourceCulture)
             End Get
@@ -1618,7 +1618,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace regions.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEREGIONS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACEREGIONS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSPACEREGIONS", resourceCulture)
             End Get
@@ -1627,7 +1627,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace scenarios.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACESCENARIOS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOSPACESCENARIOS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOSPACESCENARIOS", resourceCulture)
             End Get
@@ -1636,7 +1636,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecotracer scenarios.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOTRACER() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOTRACER() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOTRACER", resourceCulture)
             End Get
@@ -1645,7 +1645,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecotracer groups.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_ECOTRACERGROUPS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_ECOTRACERGROUPS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_ECOTRACERGROUPS", resourceCulture)
             End Get
@@ -1654,7 +1654,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Import of model {0} failed at {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_FAILED() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_FAILED() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_FAILED", resourceCulture)
             End Get
@@ -1663,7 +1663,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecopath fleets.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_FLEET() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_FLEET() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_FLEET", resourceCulture)
             End Get
@@ -1672,7 +1672,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim forcing and mediation applications.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_FORCINGAPPLICATIONS() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_FORCINGAPPLICATIONS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_FORCINGAPPLICATIONS", resourceCulture)
             End Get
@@ -1681,7 +1681,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim forcing and mediation shapes.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_FORCINGMEDIATION() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_FORCINGMEDIATION() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_FORCINGMEDIATION", resourceCulture)
             End Get
@@ -1690,7 +1690,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing model {0}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_MODEL() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_MODEL() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_MODEL", resourceCulture)
             End Get
@@ -1699,7 +1699,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing pedigree.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_PEDIGREE() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_PEDIGREE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_PEDIGREE", resourceCulture)
             End Get
@@ -1708,7 +1708,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing quotes.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_QUOTES() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_QUOTES() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_QUOTES", resourceCulture)
             End Get
@@ -1717,7 +1717,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim scenarios.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_SCENARIO() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_SCENARIO() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_SCENARIO", resourceCulture)
             End Get
@@ -1726,7 +1726,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Multi-stanza configurations.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_STANZA() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_STANZA() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_STANZA", resourceCulture)
             End Get
@@ -1735,7 +1735,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Import of model {0} started at {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_STARTED() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_STARTED() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_STARTED", resourceCulture)
             End Get
@@ -1744,7 +1744,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Import of model {0} completed succesfully at {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_SUCCES() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_SUCCES() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_SUCCES", resourceCulture)
             End Get
@@ -1753,7 +1753,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing taxonomy.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_TAXONOMY() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_TAXONOMY() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_TAXONOMY", resourceCulture)
             End Get
@@ -1762,7 +1762,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecosim time series.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROGRESS_TIMESERIES() As String
+        Public Shared ReadOnly Property IMPORT_PROGRESS_TIMESERIES() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROGRESS_TIMESERIES", resourceCulture)
             End Get
@@ -1771,7 +1771,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Importing Ecospace habitats.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_PROPRESS_ECOSPACEHABITATS() As String
+        Public Shared ReadOnly Property IMPORT_PROPRESS_ECOSPACEHABITATS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_PROPRESS_ECOSPACEHABITATS", resourceCulture)
             End Get
@@ -1780,7 +1780,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecoranger is no longer supported in EwE6. Existing Ecoranger data is not imported..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_ECORANGER() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_ECORANGER() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_ECORANGER", resourceCulture)
             End Get
@@ -1789,7 +1789,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Forcing shape {0} failed to import as {1}; shape defined more than once due to an internal error..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_FORCINGDUPLICATE() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_FORCINGDUPLICATE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_FORCINGDUPLICATE", resourceCulture)
             End Get
@@ -1798,7 +1798,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Forcing data {0} used to drive both egg production and another function. Imported only as {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS", resourceCulture)
             End Get
@@ -1807,7 +1807,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Forcing data {0} failed to import as {1}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_FORCINGNOTIMPORTED() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_FORCINGNOTIMPORTED() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_FORCINGNOTIMPORTED", resourceCulture)
             End Get
@@ -1816,7 +1816,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to determine type of forcing data {0}, data not imported.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_FORCINGTYPEMISSING() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_FORCINGTYPEMISSING() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_FORCINGTYPEMISSING", resourceCulture)
             End Get
@@ -1825,7 +1825,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to determine egg production and/or hatchery stocking data across Ecosim scenarios for stanza configuration {0}. You will need to select and re-assign this data in the EwE6 interface..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_MULTISTANZASHAPE() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_MULTISTANZASHAPE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_MULTISTANZASHAPE", resourceCulture)
             End Get
@@ -1834,7 +1834,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Pair {0} not converted: {1}, {2}.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_PAIRDETAILS() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_PAIRDETAILS() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_PAIRDETAILS", resourceCulture)
             End Get
@@ -1843,7 +1843,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecosim pairs are no longer supported. You will need to translate one or more EwE5 pairs to an EwE6 multi-stanza configuration..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_PAIRSNOTSUPPORTED() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_PAIRSNOTSUPPORTED() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_PAIRSNOTSUPPORTED", resourceCulture)
             End Get
@@ -1852,7 +1852,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series {0} ({1}) not imported because fleet number {2} could not be resolved.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_TIMESERIESFLEET() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_TIMESERIESFLEET() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_TIMESERIESFLEET", resourceCulture)
             End Get
@@ -1861,7 +1861,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series {0} ({1}) is not imported because its type {2} is not supported..
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_TIMESERIESTYPE() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_TIMESERIESTYPE() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_TIMESERIESTYPE", resourceCulture)
             End Get
@@ -1870,7 +1870,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series {0} ({1}) not imported because group number {2} could not be resolved.
         '''</summary>
-        Friend Shared ReadOnly Property IMPORT_WARNING_TIMESIERIESGROUP() As String
+        Public Shared ReadOnly Property IMPORT_WARNING_TIMESIERIESGROUP() As String
             Get
                 Return ResourceManager.GetString("IMPORT_WARNING_TIMESIERIESGROUP", resourceCulture)
             End Get
@@ -1879,7 +1879,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Error &apos;{0}&apos; has occurred while loading Model.
         '''</summary>
-        Friend Shared ReadOnly Property LOAD_ERROR_MODEL() As String
+        Public Shared ReadOnly Property LOAD_ERROR_MODEL() As String
             Get
                 Return ResourceManager.GetString("LOAD_ERROR_MODEL", resourceCulture)
             End Get
@@ -1888,7 +1888,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your map does not have any primary production..
         '''</summary>
-        Friend Shared ReadOnly Property MAP_INVALID_NOPP() As String
+        Public Shared ReadOnly Property MAP_INVALID_NOPP() As String
             Get
                 Return ResourceManager.GetString("MAP_INVALID_NOPP", resourceCulture)
             End Get
@@ -1897,7 +1897,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your map does not have any water cells..
         '''</summary>
-        Friend Shared ReadOnly Property MAP_INVALID_NOWATERCELLS() As String
+        Public Shared ReadOnly Property MAP_INVALID_NOWATERCELLS() As String
             Get
                 Return ResourceManager.GetString("MAP_INVALID_NOWATERCELLS", resourceCulture)
             End Get
@@ -1906,7 +1906,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more mediation shapes cannot be used. Please edit your data..
         '''</summary>
-        Friend Shared ReadOnly Property MEDIATION_ZERO_BASE() As String
+        Public Shared ReadOnly Property MEDIATION_ZERO_BASE() As String
             Get
                 Return ResourceManager.GetString("MEDIATION_ZERO_BASE", resourceCulture)
             End Get
@@ -1915,7 +1915,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Trophic mediation function &apos;{0}&apos; has zero value at Ecopath base..
         '''</summary>
-        Friend Shared ReadOnly Property MEDIATION_ZERO_BASE_DETAIL() As String
+        Public Shared ReadOnly Property MEDIATION_ZERO_BASE_DETAIL() As String
             Get
                 Return ResourceManager.GetString("MEDIATION_ZERO_BASE_DETAIL", resourceCulture)
             End Get
@@ -1924,7 +1924,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Cannot automatically merge groups for models with Ecosim scenarios.
         '''</summary>
-        Friend Shared ReadOnly Property MERGEGROUPS_ERROR_HASECOSIM() As String
+        Public Shared ReadOnly Property MERGEGROUPS_ERROR_HASECOSIM() As String
             Get
                 Return ResourceManager.GetString("MERGEGROUPS_ERROR_HASECOSIM", resourceCulture)
             End Get
@@ -1933,7 +1933,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Please load a model before attempting to merge groups.
         '''</summary>
-        Friend Shared ReadOnly Property MERGEGROUPS_ERROR_NOMODEL() As String
+        Public Shared ReadOnly Property MERGEGROUPS_ERROR_NOMODEL() As String
             Get
                 Return ResourceManager.GetString("MERGEGROUPS_ERROR_NOMODEL", resourceCulture)
             End Get
@@ -1942,7 +1942,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The model &apos;{0}&apos; was opened in read-only mode and cannot be saved..
         '''</summary>
-        Friend Shared ReadOnly Property MODEL_READONLY() As String
+        Public Shared ReadOnly Property MODEL_READONLY() As String
             Get
                 Return ResourceManager.GetString("MODEL_READONLY", resourceCulture)
             End Get
@@ -1951,7 +1951,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Last year for averaging BA has been changed to the last Ecosim year.
         '''</summary>
-        Friend Shared ReadOnly Property MODELFRIMSIM_BA_ENDYEAR_ADJ() As String
+        Public Shared ReadOnly Property MODELFRIMSIM_BA_ENDYEAR_ADJ() As String
             Get
                 Return ResourceManager.GetString("MODELFRIMSIM_BA_ENDYEAR_ADJ", resourceCulture)
             End Get
@@ -1960,7 +1960,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Start year for averaging BA has been changed to the first Ecosim year.
         '''</summary>
-        Friend Shared ReadOnly Property MODELFRIMSIM_BA_STARTYEAR_ADJ() As String
+        Public Shared ReadOnly Property MODELFRIMSIM_BA_STARTYEAR_ADJ() As String
             Get
                 Return ResourceManager.GetString("MODELFRIMSIM_BA_STARTYEAR_ADJ", resourceCulture)
             End Get
@@ -1969,7 +1969,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Generated Ecopath models from Ecosim..
         '''</summary>
-        Friend Shared ReadOnly Property MODELFROMSIM_GENERATED() As String
+        Public Shared ReadOnly Property MODELFROMSIM_GENERATED() As String
             Get
                 Return ResourceManager.GetString("MODELFROMSIM_GENERATED", resourceCulture)
             End Get
@@ -1978,7 +1978,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Monte Carlo failed to apply best fits. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_APPLY_ERROR() As String
+        Public Shared ReadOnly Property MONTECARLO_APPLY_ERROR() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_APPLY_ERROR", resourceCulture)
             End Get
@@ -1987,7 +1987,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred in Ecopath. Monte Carlo trials could not be run..
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_ECOPATH_ERROR() As String
+        Public Shared ReadOnly Property MONTECARLO_ECOPATH_ERROR() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_ECOPATH_ERROR", resourceCulture)
             End Get
@@ -1996,7 +1996,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Monte Carlo has found too many missing parameters to run Ecopath. Check your input parameters..
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_ECOPATH_TOOMANYMISSING() As String
+        Public Shared ReadOnly Property MONTECARLO_ECOPATH_TOOMANYMISSING() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_ECOPATH_TOOMANYMISSING", resourceCulture)
             End Get
@@ -2005,7 +2005,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Please load an Ecosim scenario before running Monte Carlo..
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_ECOSIM_MISSING() As String
+        Public Shared ReadOnly Property MONTECARLO_ECOSIM_MISSING() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_ECOSIM_MISSING", resourceCulture)
             End Get
@@ -2014,7 +2014,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Warning: Monte Carlo failed to set Ecopath back to its original state. You may need to close the model without saving to restore your original data..
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_RESTORE_FAILED() As String
+        Public Shared ReadOnly Property MONTECARLO_RESTORE_FAILED() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_RESTORE_FAILED", resourceCulture)
             End Get
@@ -2023,7 +2023,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Error running the Monte Carlo trials. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_RUN_ERROR() As String
+        Public Shared ReadOnly Property MONTECARLO_RUN_ERROR() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_RUN_ERROR", resourceCulture)
             End Get
@@ -2032,7 +2032,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to save Monte Carlo data to file. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property MONTECARLO_SAVE_FAILED() As String
+        Public Shared ReadOnly Property MONTECARLO_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_SAVE_FAILED", resourceCulture)
             End Get
@@ -2041,7 +2041,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Optimization error: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property MPAOPT_ERROR() As String
+        Public Shared ReadOnly Property MPAOPT_ERROR() As String
             Get
                 Return ResourceManager.GetString("MPAOPT_ERROR", resourceCulture)
             End Get
@@ -2050,7 +2050,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to No seed cells selected nor MPAs set. Optimzation may yield unknown results. Would you like to continue?.
         '''</summary>
-        Friend Shared ReadOnly Property MPAOPT_NODATA_RESUME() As String
+        Public Shared ReadOnly Property MPAOPT_NODATA_RESUME() As String
             Get
                 Return ResourceManager.GetString("MPAOPT_NODATA_RESUME", resourceCulture)
             End Get
@@ -2059,7 +2059,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Optimization is already running. Only one evaluation can be run at a time..
         '''</summary>
-        Friend Shared ReadOnly Property MPAOPT_RUNNING() As String
+        Public Shared ReadOnly Property MPAOPT_RUNNING() As String
             Get
                 Return ResourceManager.GetString("MPAOPT_RUNNING", resourceCulture)
             End Get
@@ -2068,7 +2068,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to set the value. Fix F and Fixed escapement cannot both contain a value..
         '''</summary>
-        Friend Shared ReadOnly Property MSE_FIXF_FIXESC_FAILEDVALIDATION() As String
+        Public Shared ReadOnly Property MSE_FIXF_FIXESC_FAILEDVALIDATION() As String
             Get
                 Return ResourceManager.GetString("MSE_FIXF_FIXESC_FAILEDVALIDATION", resourceCulture)
             End Get
@@ -2077,7 +2077,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to MSE Linear Programing Solution failed to find an optimal solution for &apos;{0}&apos; time steps. Check your target fishing mortality rates to make sure you have not overly constrained your model..
         '''</summary>
-        Friend Shared ReadOnly Property MSE_LPSOLVER_NONOPTIMAL() As String
+        Public Shared ReadOnly Property MSE_LPSOLVER_NONOPTIMAL() As String
             Get
                 Return ResourceManager.GetString("MSE_LPSOLVER_NONOPTIMAL", resourceCulture)
             End Get
@@ -2086,7 +2086,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Effort for fleet(s) &apos;{0}&apos; may need to increased for the quota regulations to have an effect..
         '''</summary>
-        Friend Shared ReadOnly Property MSE_VALIDATION_EFFORT() As String
+        Public Shared ReadOnly Property MSE_VALIDATION_EFFORT() As String
             Get
                 Return ResourceManager.GetString("MSE_VALIDATION_EFFORT", resourceCulture)
             End Get
@@ -2095,7 +2095,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Fixed escapement, fixed fishing mortalities and  have all been set for group(s) &apos;{0}&apos; only the Fixed Escapement regulations will be used..
         '''</summary>
-        Friend Shared ReadOnly Property MSE_VALIDATION_FIXEDESCAPEMENT() As String
+        Public Shared ReadOnly Property MSE_VALIDATION_FIXEDESCAPEMENT() As String
             Get
                 Return ResourceManager.GetString("MSE_VALIDATION_FIXEDESCAPEMENT", resourceCulture)
             End Get
@@ -2104,7 +2104,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to No regulatory control types have been set. Do you want to cancel the run?.
         '''</summary>
-        Friend Shared ReadOnly Property MSE_VALIDATION_QUOTAS() As String
+        Public Shared ReadOnly Property MSE_VALIDATION_QUOTAS() As String
             Get
                 Return ResourceManager.GetString("MSE_VALIDATION_QUOTAS", resourceCulture)
             End Get
@@ -2113,7 +2113,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred while running MSY. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property MSY_ERROR_RUN() As String
+        Public Shared ReadOnly Property MSY_ERROR_RUN() As String
             Get
                 Return ResourceManager.GetString("MSY_ERROR_RUN", resourceCulture)
             End Get
@@ -2122,7 +2122,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred while running FMSY. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property MSY_ERROR_RUN_FMSY() As String
+        Public Shared ReadOnly Property MSY_ERROR_RUN_FMSY() As String
             Get
                 Return ResourceManager.GetString("MSY_ERROR_RUN_FMSY", resourceCulture)
             End Get
@@ -2131,7 +2131,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to save MSY results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property MSY_RESULTS_SAVE_FAILED() As String
+        Public Shared ReadOnly Property MSY_RESULTS_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("MSY_RESULTS_SAVE_FAILED", resourceCulture)
             End Get
@@ -2140,7 +2140,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to MSY results saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property MSY_RESULTS_SAVE_SUCCESS() As String
+        Public Shared ReadOnly Property MSY_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("MSY_RESULTS_SAVE_SUCCESS", resourceCulture)
             End Get
@@ -2149,7 +2149,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Running MSY {0}....
         '''</summary>
-        Friend Shared ReadOnly Property MSY_STATUS_RUNNING() As String
+        Public Shared ReadOnly Property MSY_STATUS_RUNNING() As String
             Get
                 Return ResourceManager.GetString("MSY_STATUS_RUNNING", resourceCulture)
             End Get
@@ -2158,7 +2158,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to MSY will not produce reliably results when there are time series loaded. It is advised to unload time series before running the MSY. Do you want to continue the MSY run?.
         '''</summary>
-        Friend Shared ReadOnly Property MSY_WARNING_TIMESERIES() As String
+        Public Shared ReadOnly Property MSY_WARNING_TIMESERIES() As String
             Get
                 Return ResourceManager.GetString("MSY_WARNING_TIMESERIES", resourceCulture)
             End Get
@@ -2167,7 +2167,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Output directory does not exist..
         '''</summary>
-        Friend Shared ReadOnly Property OUTPUT_DIRECTORY_MISSING() As String
+        Public Shared ReadOnly Property OUTPUT_DIRECTORY_MISSING() As String
             Get
                 Return ResourceManager.GetString("OUTPUT_DIRECTORY_MISSING", resourceCulture)
             End Get
@@ -2176,7 +2176,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Output data are not editable..
         '''</summary>
-        Friend Shared ReadOnly Property OUTPUT_NOT_EDITABLE() As String
+        Public Shared ReadOnly Property OUTPUT_NOT_EDITABLE() As String
             Get
                 Return ResourceManager.GetString("OUTPUT_NOT_EDITABLE", resourceCulture)
             End Get
@@ -2185,7 +2185,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to PB cleared.
         '''</summary>
-        Friend Shared ReadOnly Property PB_CLEARED() As String
+        Public Shared ReadOnly Property PB_CLEARED() As String
             Get
                 Return ResourceManager.GetString("PB_CLEARED", resourceCulture)
             End Get
@@ -2194,7 +2194,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to PB must be greater than zero..
         '''</summary>
-        Friend Shared ReadOnly Property PB_RANGE() As String
+        Public Shared ReadOnly Property PB_RANGE() As String
             Get
                 Return ResourceManager.GetString("PB_RANGE", resourceCulture)
             End Get
@@ -2203,7 +2203,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The following error occurred in a &apos;{0}&apos;{1}{1}Do you wish to disable this plug-in next time EwE is started?.
         '''</summary>
-        Friend Shared ReadOnly Property PLUGIN_PROMPT_DISABLE() As String
+        Public Shared ReadOnly Property PLUGIN_PROMPT_DISABLE() As String
             Get
                 Return ResourceManager.GetString("PLUGIN_PROMPT_DISABLE", resourceCulture)
             End Get
@@ -2212,7 +2212,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more plug-ins contain changes that have not been saved. If you proceed these changes may be lost.\n\nYes - save changes\nNo - possibly loose changes\nCancel - abort this operation..
         '''</summary>
-        Friend Shared ReadOnly Property PLUGIN_SAVE_PROMPT() As String
+        Public Shared ReadOnly Property PLUGIN_SAVE_PROMPT() As String
             Get
                 Return ResourceManager.GetString("PLUGIN_SAVE_PROMPT", resourceCulture)
             End Get
@@ -2221,7 +2221,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Your model has changed but the database is read-only. If you continue your changes may be lost. Do you wish to proceed?.
         '''</summary>
-        Friend Shared ReadOnly Property PROMPT_DISCARD_CHANGES() As String
+        Public Shared ReadOnly Property PROMPT_DISCARD_CHANGES() As String
             Get
                 Return ResourceManager.GetString("PROMPT_DISCARD_CHANGES", resourceCulture)
             End Get
@@ -2230,7 +2230,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Model data has changed since the last time you saved. Do you wish to save these changes?.
         '''</summary>
-        Friend Shared ReadOnly Property PROMPT_SAVE_CHANGES() As String
+        Public Shared ReadOnly Property PROMPT_SAVE_CHANGES() As String
             Get
                 Return ResourceManager.GetString("PROMPT_SAVE_CHANGES", resourceCulture)
             End Get
@@ -2239,7 +2239,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The PSD estimation routine can work only when groups fall into at least two weight classes. Please redefine the weight range by adjusting the number of weight classes and/or the lowest weight class..
         '''</summary>
-        Friend Shared ReadOnly Property PSD_ERROR_WEIGHTCLASSES() As String
+        Public Shared ReadOnly Property PSD_ERROR_WEIGHTCLASSES() As String
             Get
                 Return ResourceManager.GetString("PSD_ERROR_WEIGHTCLASSES", resourceCulture)
             End Get
@@ -2248,7 +2248,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The PSD estimation routine can work only with either &apos;L at infinity&apos; or &apos;W at infinity&apos; as unknown per group. &apos;K in VBGF&apos; must be known for each group.  Here, one or more of these are unknown:.
         '''</summary>
-        Friend Shared ReadOnly Property PSD_MISSING_INPUT() As String
+        Public Shared ReadOnly Property PSD_MISSING_INPUT() As String
             Get
                 Return ResourceManager.GetString("PSD_MISSING_INPUT", resourceCulture)
             End Get
@@ -2257,7 +2257,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Required &apos;K in VBGF&apos; missing for group {0}.
         '''</summary>
-        Friend Shared ReadOnly Property PSD_REQ_K_VBGF() As String
+        Public Shared ReadOnly Property PSD_REQ_K_VBGF() As String
             Get
                 Return ResourceManager.GetString("PSD_REQ_K_VBGF", resourceCulture)
             End Get
@@ -2266,7 +2266,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Required &apos;L at infinity&apos; or &apos;W at infinity&apos; missing for group {0}.
         '''</summary>
-        Friend Shared ReadOnly Property PSD_REQ_LW() As String
+        Public Shared ReadOnly Property PSD_REQ_LW() As String
             Get
                 Return ResourceManager.GetString("PSD_REQ_LW", resourceCulture)
             End Get
@@ -2275,7 +2275,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Particle Size Distribution failed to run..
         '''</summary>
-        Friend Shared ReadOnly Property PSD_RUN_ERROR() As String
+        Public Shared ReadOnly Property PSD_RUN_ERROR() As String
             Get
                 Return ResourceManager.GetString("PSD_RUN_ERROR", resourceCulture)
             End Get
@@ -2284,7 +2284,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Particle Size Distribution run completed..
         '''</summary>
-        Friend Shared ReadOnly Property PSD_RUN_SUCCESS() As String
+        Public Shared ReadOnly Property PSD_RUN_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("PSD_RUN_SUCCESS", resourceCulture)
             End Get
@@ -2293,7 +2293,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to QB cleared..
         '''</summary>
-        Friend Shared ReadOnly Property QB_CLEARED() As String
+        Public Shared ReadOnly Property QB_CLEARED() As String
             Get
                 Return ResourceManager.GetString("QB_CLEARED", resourceCulture)
             End Get
@@ -2302,7 +2302,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Q/B missing for group &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property QB_MISSING_GROUP() As String
+        Public Shared ReadOnly Property QB_MISSING_GROUP() As String
             Get
                 Return ResourceManager.GetString("QB_MISSING_GROUP", resourceCulture)
             End Get
@@ -2311,7 +2311,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to QB must be greater then zero..
         '''</summary>
-        Friend Shared ReadOnly Property QB_RANGE() As String
+        Public Shared ReadOnly Property QB_RANGE() As String
             Get
                 Return ResourceManager.GetString("QB_RANGE", resourceCulture)
             End Get
@@ -2320,7 +2320,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to You must re-load Ecospace for your changes to take affect..
         '''</summary>
-        Friend Shared ReadOnly Property RELOAD_ECOSPACE() As String
+        Public Shared ReadOnly Property RELOAD_ECOSPACE() As String
             Get
                 Return ResourceManager.GetString("RELOAD_ECOSPACE", resourceCulture)
             End Get
@@ -2329,7 +2329,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to You cannot delete a loaded scenario..
         '''</summary>
-        Friend Shared ReadOnly Property SCENARIO_DELETE_LOADED() As String
+        Public Shared ReadOnly Property SCENARIO_DELETE_LOADED() As String
             Get
                 Return ResourceManager.GetString("SCENARIO_DELETE_LOADED", resourceCulture)
             End Get
@@ -2338,7 +2338,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Shape {0} imported.
         '''</summary>
-        Friend Shared ReadOnly Property SHAPE_IMPORT_DETAIL() As String
+        Public Shared ReadOnly Property SHAPE_IMPORT_DETAIL() As String
             Get
                 Return ResourceManager.GetString("SHAPE_IMPORT_DETAIL", resourceCulture)
             End Get
@@ -2347,7 +2347,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to import shapes of type {0}, please check the data..
         '''</summary>
-        Friend Shared ReadOnly Property SHAPE_IMPORT_FAILED() As String
+        Public Shared ReadOnly Property SHAPE_IMPORT_FAILED() As String
             Get
                 Return ResourceManager.GetString("SHAPE_IMPORT_FAILED", resourceCulture)
             End Get
@@ -2356,7 +2356,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Shapes of type {0} imported successfully.
         '''</summary>
-        Friend Shared ReadOnly Property SHAPE_IMPORT_SUCCESS() As String
+        Public Shared ReadOnly Property SHAPE_IMPORT_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("SHAPE_IMPORT_SUCCESS", resourceCulture)
             End Get
@@ -2365,7 +2365,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to export data set(s) to {0}.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_ERROR() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_ERROR() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_ERROR", resourceCulture)
             End Get
@@ -2374,7 +2374,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An error occurred while exporting. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_EXCEPTION() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_EXCEPTION() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_EXCEPTION", resourceCulture)
             End Get
@@ -2383,7 +2383,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to {0} data set(s) successfully exported to {1}. This folder is ready to be transferred to another computer.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_SUCCESS() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_EXPORT_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_EXPORT_SUCCESS", resourceCulture)
             End Get
@@ -2392,7 +2392,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to load plug-in &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_DETAIL() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_DETAIL() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_LOAD_ERROR_DETAIL", resourceCulture)
             End Get
@@ -2401,7 +2401,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to reload one or more external spatial-temporal data connections. Are you missing a required plug-in?.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_GENERIC() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_LOAD_ERROR_GENERIC() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_LOAD_ERROR_GENERIC", resourceCulture)
             End Get
@@ -2410,7 +2410,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Some external spatial-temporal data connections will not be able to access their data. Do you want to continue?.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATA() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATA() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_MISSINGDATA", resourceCulture)
             End Get
@@ -2419,7 +2419,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Data connection {0} cannot locate its data.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATA_DETAIL() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_MISSINGDATA_DETAIL() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_MISSINGDATA_DETAIL", resourceCulture)
             End Get
@@ -2428,7 +2428,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Expected data was not read or converted correctly for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOAD() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOAD() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_POP_FAILED_LOAD", resourceCulture)
             End Get
@@ -2437,7 +2437,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Expected data could not be accessed for layer {0}, time {1}, ext({2},{3}) to ({4},{5}), cell size {6}.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOCK() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_POP_FAILED_LOCK() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_POP_FAILED_LOCK", resourceCulture)
             End Get
@@ -2446,7 +2446,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Ecospace is set to run with more than twelve time steps per year, while external data can only be delivered for the first day of a month. Your model may not be able to obtain the correct data for every time step. Do you want to continue?.
         '''</summary>
-        Friend Shared ReadOnly Property SPATIALTEMPORAL_TOOMANYTIMESTEPS() As String
+        Public Shared ReadOnly Property SPATIALTEMPORAL_TOOMANYTIMESTEPS() As String
             Get
                 Return ResourceManager.GetString("SPATIALTEMPORAL_TOOMANYTIMESTEPS", resourceCulture)
             End Get
@@ -2455,7 +2455,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to A critical data error has occurred while applying new stanza data: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_APPLY_DATAERROR() As String
+        Public Shared ReadOnly Property STANZA_APPLY_DATAERROR() As String
             Get
                 Return ResourceManager.GetString("STANZA_APPLY_DATAERROR", resourceCulture)
             End Get
@@ -2464,7 +2464,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to A critical data error has occurred while calculating stanza parameters: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_CALCULATEPARMS_DATAERROR() As String
+        Public Shared ReadOnly Property STANZA_CALCULATEPARMS_DATAERROR() As String
             Get
                 Return ResourceManager.GetString("STANZA_CALCULATEPARMS_DATAERROR", resourceCulture)
             End Get
@@ -2473,7 +2473,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Missing parameters B, CB or Mortality for stanza group {0}. Stanza calculation can not be done..
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_CALCULATEPARMS_TOOMANYMISSING() As String
+        Public Shared ReadOnly Property STANZA_CALCULATEPARMS_TOOMANYMISSING() As String
             Get
                 Return ResourceManager.GetString("STANZA_CALCULATEPARMS_TOOMANYMISSING", resourceCulture)
             End Get
@@ -2482,7 +2482,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to A critical data error has occurred while rolling back stanza data: {0}.
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_CANCEL_DATAERROR() As String
+        Public Shared ReadOnly Property STANZA_CANCEL_DATAERROR() As String
             Get
                 Return ResourceManager.GetString("STANZA_CANCEL_DATAERROR", resourceCulture)
             End Get
@@ -2491,7 +2491,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Missing K of VBGF for multi stanza group &apos;{0}&apos;..
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_KinVGBF_MISSING() As String
+        Public Shared ReadOnly Property STANZA_KinVGBF_MISSING() As String
             Get
                 Return ResourceManager.GetString("STANZA_KinVGBF_MISSING", resourceCulture)
             End Get
@@ -2500,7 +2500,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Leading B and/or CB groups have been adjusted for one or more multi-stanza groups, please validate..
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_LEADING_ADJUSTED() As String
+        Public Shared ReadOnly Property STANZA_LEADING_ADJUSTED() As String
             Get
                 Return ResourceManager.GetString("STANZA_LEADING_ADJUSTED", resourceCulture)
             End Get
@@ -2509,7 +2509,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Leading group not specified for &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_LEADING_MISSING() As String
+        Public Shared ReadOnly Property STANZA_LEADING_MISSING() As String
             Get
                 Return ResourceManager.GetString("STANZA_LEADING_MISSING", resourceCulture)
             End Get
@@ -2518,7 +2518,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Leading B adjusted for stanza {0}..
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_LEADINGB_ADJUSTED() As String
+        Public Shared ReadOnly Property STANZA_LEADINGB_ADJUSTED() As String
             Get
                 Return ResourceManager.GetString("STANZA_LEADINGB_ADJUSTED", resourceCulture)
             End Get
@@ -2527,7 +2527,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Leading CB adjusted for stanza {0}..
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_LEADINGCB_ADJUSTED() As String
+        Public Shared ReadOnly Property STANZA_LEADINGCB_ADJUSTED() As String
             Get
                 Return ResourceManager.GetString("STANZA_LEADINGCB_ADJUSTED", resourceCulture)
             End Get
@@ -2536,7 +2536,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Missing mortality (Z) for &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property STANZA_MORT_MISSING() As String
+        Public Shared ReadOnly Property STANZA_MORT_MISSING() As String
             Get
                 Return ResourceManager.GetString("STANZA_MORT_MISSING", resourceCulture)
             End Get
@@ -2545,7 +2545,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Executing database update {0}: &apos;{1}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_DATABASE_UPDATE() As String
+        Public Shared ReadOnly Property STATUS_DATABASE_UPDATE() As String
             Get
                 Return ResourceManager.GetString("STATUS_DATABASE_UPDATE", resourceCulture)
             End Get
@@ -2554,7 +2554,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to An internal error occurred. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_EXCEPTION() As String
+        Public Shared ReadOnly Property STATUS_EXCEPTION() As String
             Get
                 Return ResourceManager.GetString("STATUS_EXCEPTION", resourceCulture)
             End Get
@@ -2563,7 +2563,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Indexing external data &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_INDEXING_DATASET() As String
+        Public Shared ReadOnly Property STATUS_INDEXING_DATASET() As String
             Get
                 Return ResourceManager.GetString("STATUS_INDEXING_DATASET", resourceCulture)
             End Get
@@ -2572,7 +2572,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Plug-in {0} loaded.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_PLUGIN_LOADED() As String
+        Public Shared ReadOnly Property STATUS_PLUGIN_LOADED() As String
             Get
                 Return ResourceManager.GetString("STATUS_PLUGIN_LOADED", resourceCulture)
             End Get
@@ -2581,7 +2581,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Plug-in {0} sandboxed.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_PLUGIN_SANDBOXED() As String
+        Public Shared ReadOnly Property STATUS_PLUGIN_SANDBOXED() As String
             Get
                 Return ResourceManager.GetString("STATUS_PLUGIN_SANDBOXED", resourceCulture)
             End Get
@@ -2590,7 +2590,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Plug-in {0} unloaded.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_PLUGIN_UNLOADED() As String
+        Public Shared ReadOnly Property STATUS_PLUGIN_UNLOADED() As String
             Get
                 Return ResourceManager.GetString("STATUS_PLUGIN_UNLOADED", resourceCulture)
             End Get
@@ -2599,7 +2599,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Plug-in {0} disabled from loading via user settings.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_PLUGIN_USERDISABLED() As String
+        Public Shared ReadOnly Property STATUS_PLUGIN_USERDISABLED() As String
             Get
                 Return ResourceManager.GetString("STATUS_PLUGIN_USERDISABLED", resourceCulture)
             End Get
@@ -2608,7 +2608,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Saving changes, please wait....
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SAVING_CHANGES() As String
+        Public Shared ReadOnly Property STATUS_SAVING_CHANGES() As String
             Get
                 Return ResourceManager.GetString("STATUS_SAVING_CHANGES", resourceCulture)
             End Get
@@ -2617,7 +2617,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to update cell({0}, {1}) with value {2}. {3}.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_ADAPTERROR() As String
+        Public Shared ReadOnly Property STATUS_SPATIALTEMPORAL_ADAPTERROR() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_ADAPTERROR", resourceCulture)
             End Get
@@ -2626,7 +2626,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Applied {0}.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_APPLIED() As String
+        Public Shared ReadOnly Property STATUS_SPATIALTEMPORAL_APPLIED() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_APPLIED", resourceCulture)
             End Get
@@ -2635,7 +2635,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Accessing external data for &apos;{0}&apos; at time {1} ({2:yyyy/MM/dd}).
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
+        Public Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_LOADING", resourceCulture)
             End Get
@@ -2644,7 +2644,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Spatial operations log saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_SAVED() As String
+        Public Shared ReadOnly Property STATUS_SPATIALTEMPORAL_SAVED() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_SAVED", resourceCulture)
             End Get
@@ -2653,7 +2653,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Calculating scaling factor for &apos;{0}&apos; using data set &apos;{1}&apos;, converter &apos;{2}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTERMPORAL_CALCULATING() As String
+        Public Shared ReadOnly Property STATUS_SPATIALTERMPORAL_CALCULATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTERMPORAL_CALCULATING", resourceCulture)
             End Get
@@ -2662,7 +2662,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more cv values cannot be read.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_CVFORMAT() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_CVFORMAT() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_CVFORMAT", resourceCulture)
             End Get
@@ -2671,7 +2671,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to CV value(s) missing.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_CVVALUEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_CVVALUEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_CVVALUEMISSING", resourceCulture)
             End Get
@@ -2680,7 +2680,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; is not fished.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_GROUP_NOTFISHED() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_GROUP_NOTFISHED() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_GROUP_NOTFISHED", resourceCulture)
             End Get
@@ -2689,7 +2689,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Decimal and column separator cannot be the same..
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_IDENTICALSEPARATORS() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_IDENTICALSEPARATORS() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_IDENTICALSEPARATORS", resourceCulture)
             End Get
@@ -2698,7 +2698,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Invalid fleet number {0}.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_INVALIDFLEET() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_INVALIDFLEET() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_INVALIDFLEET", resourceCulture)
             End Get
@@ -2707,7 +2707,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Invalid group number {0}.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_INVALIDGROUP() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_INVALIDGROUP() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_INVALIDGROUP", resourceCulture)
             End Get
@@ -2716,7 +2716,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Data row expected.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_LINEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_LINEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_LINEMISSING", resourceCulture)
             End Get
@@ -2725,7 +2725,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Data row for {0} missing.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_MISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_MISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_MISSING", resourceCulture)
             End Get
@@ -2734,7 +2734,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more pool code values cannot be read.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_POOLFORMAT() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_POOLFORMAT() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_POOLFORMAT", resourceCulture)
             End Get
@@ -2743,7 +2743,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Header &apos;{0}&apos; not recognized, expected &apos;pool&apos;, &apos;group&apos; or &apos;fleet&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_POOLLINEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_POOLLINEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_POOLLINEMISSING", resourceCulture)
             End Get
@@ -2752,7 +2752,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Pool code value missing.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_POOLVALUEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_POOLVALUEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_POOLVALUEMISSING", resourceCulture)
             End Get
@@ -2761,7 +2761,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Cannot specify both CV and Weight.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_TOOMANYWEIGHTS() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_TOOMANYWEIGHTS() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_TOOMANYWEIGHTS", resourceCulture)
             End Get
@@ -2770,7 +2770,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more type code values cannot be read.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_TYPEFORMAT() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_TYPEFORMAT() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_TYPEFORMAT", resourceCulture)
             End Get
@@ -2779,7 +2779,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Header &apos;{0}&apos; not recognized, expected &apos;type&apos;, &apos;code&apos; or &apos;dat type&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_TYPELINEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_TYPELINEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_TYPELINEMISSING", resourceCulture)
             End Get
@@ -2788,7 +2788,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Type code value missing.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_TYPEVALUEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_TYPEVALUEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_TYPEVALUEMISSING", resourceCulture)
             End Get
@@ -2797,7 +2797,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more values cannot be read.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_VALUEFORMAT() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_VALUEFORMAT() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_VALUEFORMAT", resourceCulture)
             End Get
@@ -2806,7 +2806,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value(s) missing for row {0}.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_VALUEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_VALUEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_VALUEMISSING", resourceCulture)
             End Get
@@ -2815,7 +2815,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value cannot be negative.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_VALUENEGATIVE() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_VALUENEGATIVE() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_VALUENEGATIVE", resourceCulture)
             End Get
@@ -2824,7 +2824,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to One or more weight values cannot be read.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_WEIGHTFORMAT() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_WEIGHTFORMAT() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_WEIGHTFORMAT", resourceCulture)
             End Get
@@ -2833,7 +2833,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Weight value missing.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_ERROR_WEIGHTVALUEMISSING() As String
+        Public Shared ReadOnly Property TIMESERIES_ERROR_WEIGHTVALUEMISSING() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_ERROR_WEIGHTVALUEMISSING", resourceCulture)
             End Get
@@ -2842,7 +2842,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to export time series &apos;{0}&apos; to &apos;{1}&apos;: {2}.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_EXPORT_FAILED() As String
+        Public Shared ReadOnly Property TIMESERIES_EXPORT_FAILED() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_EXPORT_FAILED", resourceCulture)
             End Get
@@ -2851,7 +2851,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time series dataset &apos;{0}&apos; exported to &apos;{1}&apos;..
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_EXPORT_SUCCESS() As String
+        Public Shared ReadOnly Property TIMESERIES_EXPORT_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_EXPORT_SUCCESS", resourceCulture)
             End Get
@@ -2860,7 +2860,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series dataset &apos;{0}&apos; failed to load. {1}.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_LOAD_FAILED() As String
+        Public Shared ReadOnly Property TIMESERIES_LOAD_FAILED() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_LOAD_FAILED", resourceCulture)
             End Get
@@ -2869,7 +2869,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series dataset &apos;{0}&apos; loaded..
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_LOAD_SUCCESS() As String
+        Public Shared ReadOnly Property TIMESERIES_LOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_LOAD_SUCCESS", resourceCulture)
             End Get
@@ -2878,7 +2878,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series failed to unload. {0}.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_UNLOAD_FAILED() As String
+        Public Shared ReadOnly Property TIMESERIES_UNLOAD_FAILED() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_UNLOAD_FAILED", resourceCulture)
             End Get
@@ -2887,7 +2887,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Time Series unloaded successfully.
         '''</summary>
-        Friend Shared ReadOnly Property TIMESERIES_UNLOAD_SUCCESS() As String
+        Public Shared ReadOnly Property TIMESERIES_UNLOAD_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("TIMESERIES_UNLOAD_SUCCESS", resourceCulture)
             End Get
@@ -2896,7 +2896,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Failed to save contaminant tracer results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property TRACER_RESULTS_SAVE_FAILED() As String
+        Public Shared ReadOnly Property TRACER_RESULTS_SAVE_FAILED() As String
             Get
                 Return ResourceManager.GetString("TRACER_RESULTS_SAVE_FAILED", resourceCulture)
             End Get
@@ -2905,16 +2905,25 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Contaminant tracer results saved to &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property TRACER_RESULTS_SAVE_SUCCESS() As String
+        Public Shared ReadOnly Property TRACER_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("TRACER_RESULTS_SAVE_SUCCESS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Applying model update {0}.
+        '''</summary>
+        Public Shared ReadOnly Property UPDATE_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("UPDATE_RUNNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Unable to find variable for &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_NOT_FOUND() As String
+        Public Shared ReadOnly Property VARIABLE_NOT_FOUND() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_NOT_FOUND", resourceCulture)
             End Get
@@ -2923,7 +2932,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Unable to set variable &apos;{0}&apos;, Error: {1}.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_NOT_SET() As String
+        Public Shared ReadOnly Property VARIABLE_NOT_SET() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_NOT_SET", resourceCulture)
             End Get
@@ -2932,7 +2941,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Variable &apos;{0}&apos; has been adjusted.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_ADJUSTED() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_ADJUSTED() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_ADJUSTED", resourceCulture)
             End Get
@@ -2941,7 +2950,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Variable &apos;{0}&apos; cleared.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_CLEARED() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_CLEARED() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_CLEARED", resourceCulture)
             End Get
@@ -2950,7 +2959,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Error during validation of variable..
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_ERROR() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_ERROR() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_ERROR", resourceCulture)
             End Get
@@ -2959,7 +2968,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value &apos;{1}&apos; rejected for variable &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED", resourceCulture)
             End Get
@@ -2968,7 +2977,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be even.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_EVEN() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_EVEN() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED_EVEN", resourceCulture)
             End Get
@@ -2977,7 +2986,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be odd.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_ODD() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_ODD() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED_ODD", resourceCulture)
             End Get
@@ -2986,7 +2995,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Value &apos;{1}&apos; accepted for variable &apos;{0}&apos;.
         '''</summary>
-        Friend Shared ReadOnly Property VARIABLE_VALIDATION_PASSED() As String
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_PASSED() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_PASSED", resourceCulture)
             End Get
@@ -2995,7 +3004,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Reset vulnerabilities to a default value of {0}?.
         '''</summary>
-        Friend Shared ReadOnly Property VULNERABILITIES_PROMPT_RESET() As String
+        Public Shared ReadOnly Property VULNERABILITIES_PROMPT_RESET() As String
             Get
                 Return ResourceManager.GetString("VULNERABILITIES_PROMPT_RESET", resourceCulture)
             End Get

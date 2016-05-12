@@ -71,7 +71,23 @@ Public Class cHyperbolicShapeFunction
         Me.ParamValue(1) = 1.0
         Me.ParamValue(2) = 3.0
         Me.ParamValue(3) = 0.75
+        Me.ParamValue(4) = 1.0F 'Scalar
+
     End Sub
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
+        Get
+            Select Case iParam
+                'Only override the scalar name
+                Case 4 : Return "Y scalar"
+            End Select
+            Return MyBase.ParamName(iParam)
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
@@ -85,7 +101,7 @@ Public Class cHyperbolicShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 3
+            Return 4
         End Get
     End Property
 

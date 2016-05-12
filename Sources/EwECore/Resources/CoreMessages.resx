@@ -1286,4 +1286,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="MERGEGROUPS_ERROR_NOMODEL" xml:space="preserve">
     <value>Please load a model before attempting to merge groups</value>
   </data>
+  <data name="UPDATE_RUNNING" xml:space="preserve">
+    <value>Applying model update {0}</value>
+    <comment>{0}=version</comment>
+  </data>
 </root>

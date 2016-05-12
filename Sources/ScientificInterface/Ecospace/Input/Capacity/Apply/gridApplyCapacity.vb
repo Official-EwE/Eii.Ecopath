@@ -41,8 +41,8 @@ Namespace Ecospace
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class ucApplyMapResponseGrid
-        Inherits Ecosim.gridApplyShapeBase
+    Public Class gridApplyMapResponses
+        Inherits gridApplyShapeBase
 
 #Region " Private vars "
 
@@ -58,16 +58,16 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
-            Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
-            Dim map As IEnviroInputMap = Nothing
+            Dim mapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
+            Dim map As IEnviroInputData = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, mapManager.nMaps + 2)
+            Me.Redim(Core.nGroups + 1, mapManager.nEnviroData + 2)
 
-            For iMap As Integer = 1 To mapManager.nMaps
+            For iMap As Integer = 1 To mapManager.nEnviroData
 
-                map = mapManager.Map(iMap)
+                map = mapManager.EnviroData(iMap)
                 Me(0, 1 + iMap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
                 Me(0, 1 + iMap).Behaviors.Add(Me.m_bmRowCol)
 
@@ -92,15 +92,15 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Try
-                Dim Manager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
-                Dim ShapeManager As cCapMapResponseManager = Me.Core.CapacityShapeManager
+                Dim Manager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
+                Dim ShapeManager As cEnviroResponseShapeManager = Me.Core.EnviroResponseShapeManager
                 Dim ff As cForcingFunction
                 Dim strLabel As String
 
                 For igrp As Integer = 1 To Core.nGroups
                     Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(igrp)
-                    For imap As Integer = 1 To Manager.nMaps
-                        Dim map As IEnviroInputMap = Manager.Map(imap)
+                    For imap As Integer = 1 To Manager.nEnviroData
+                        Dim map As IEnviroInputData = Manager.EnviroData(imap)
                         strLabel = ""
                         Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
                         If ishp > 0 Then
@@ -160,7 +160,7 @@ Namespace Ecospace
 
                 If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
-                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.MapGroup, iGrp, iMap)
+                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.DriverGroup, iGrp, iMap)
 
             Catch ex As Exception
                 ' Whoah
@@ -170,8 +170,8 @@ Namespace Ecospace
 
         Private Sub ShowSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iMap As Integer)
             Try
-                Dim MapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
-                Dim ShapeManager As cBaseShapeManager = Core.CapacityShapeManager
+                Dim MapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
+                Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
 
                 Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
                 dlg.ShowDialog()
@@ -192,7 +192,7 @@ Namespace Ecospace
                 Dim igrp As Integer = e.Position.Row
                 Dim iMap As Integer = e.Position.Column - 1
                 'just assume it is the column that the user has selected!!!
-                Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Map
+                Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Driver
                 If iMap < 0 Then
                     'the user has selected a Row not the Col(as set above)
                     selectionType = dlgSelectResponse.eSelectionType.Group
@@ -214,13 +214,13 @@ Namespace Ecospace
 
             Dim iGroup As Integer = grp.Index
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-            Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
+            Dim mapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
 
             If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat) Then
                 style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
             End If
 
-            For iMap As Integer = 1 To mapManager.nMaps
+            For iMap As Integer = 1 To mapManager.nEnviroData
                 Dim cell As EwECell = CType(Me(iGroup, 1 + iMap), EwECell)
                 cell.Style = style
                 Me.InvalidateCell(cell)

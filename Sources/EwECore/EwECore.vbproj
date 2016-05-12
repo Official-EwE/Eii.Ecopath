@@ -145,6 +145,7 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_24.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_25.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_26.vb" />
+    <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_27.vb" />
     <Compile Include="EcoBase\cEcobaseImporter.vb" />
     <Compile Include="Database\Import\cModelImporter.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />
@@ -187,6 +188,7 @@
     <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
     <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
     <Compile Include="EcoPath\Utility\cEcopathMergeGroups.vb" />
+    <Compile Include="EcoSim\Input Output\cEcosimEnviroInputData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
@@ -245,6 +247,10 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceTimestep.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceScenario.vb" />
     <Compile Include="Monte Carlo\cMonteCarloThread.vb" />
+    <Compile Include="Shapes\Forcing Functions\cEcosimEnviroResponseManager.vb" />
+    <Compile Include="Shapes\Forcing Functions\cEcospaceEnviroResponseManager.vb" />
+    <Compile Include="Shapes\Forcing Functions\IEnviroInputData.vb" />
+    <Compile Include="Shapes\Forcing Functions\IEnvironmentalResponseManager.vb" />
     <Compile Include="Shapes\Shape functions\cShapeFunctionFactory.vb" />
     <Compile Include="Shapes\Shape functions\cShoulderShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cTrapezoidShapeFunction.vb" />
@@ -413,7 +419,6 @@
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEnviroInputMap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
-    <Compile Include="EcoSpace\Model\IEnviroInputMap.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
     <Compile Include="Monte Carlo\cMonteCarloResultsWriter.vb" />
     <Compile Include="Pedigree\cPedigreeLevel.vb" />
@@ -482,7 +487,6 @@
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\Input Output\cEcoPathStats.vb" />
-    <Compile Include="Shapes\Forcing Functions\cMapResponseInteractionManager.vb" />
     <Compile Include="Taxon\cTaxon.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimOutput.vb" />

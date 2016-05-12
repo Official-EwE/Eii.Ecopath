@@ -286,7 +286,7 @@
     <value>SD right</value>
   </data>
   <data name="PARAM_SD_WIDTH" xml:space="preserve">
-    <value>SD width</value>
+    <value>Data width</value>
   </data>
   <data name="PARAM_STEEPNESS" xml:space="preserve">
     <value>Steep</value>

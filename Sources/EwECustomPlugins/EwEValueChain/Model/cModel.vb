@@ -138,7 +138,7 @@ Public Class cModel
     ''' -----------------------------------------------------------------------
     Private Sub PreserveFishingEffort(ByVal data As cData)
 
-        Dim Manager As cFishingEffortManger = data.Core.FishingEffortShapeManager
+        Dim Manager As cFishingEffortShapeManger = data.Core.FishingEffortShapeManager
         Dim Shape As cShapeData = Nothing
 
         ' Clear cache of previously preserved effort shapes.
@@ -161,7 +161,7 @@ Public Class cModel
     ''' -----------------------------------------------------------------------
     Private Sub RestoreFishingEffort(ByVal data As cData)
 
-        Dim Manager As cFishingEffortManger = data.Core.FishingEffortShapeManager
+        Dim Manager As cFishingEffortShapeManger = data.Core.FishingEffortShapeManager
         Dim Shape As cShapeData = Nothing
 
         Try
@@ -196,7 +196,7 @@ Public Class cModel
     Private Function SetFishingEffort(ByVal data As cData, ByVal Fleet As Integer, ByVal Val As Single) As Boolean
 
         Try
-            Dim Manager As cFishingEffortManger = data.Core.FishingEffortShapeManager
+            Dim Manager As cFishingEffortShapeManger = data.Core.FishingEffortShapeManager
             Dim Shape As cShapeData = Nothing
 
             Dim StartStep As Integer

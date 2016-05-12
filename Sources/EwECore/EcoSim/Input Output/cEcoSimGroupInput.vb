@@ -156,39 +156,7 @@ Public Class cEcoSimGroupInput
             val = New cValue(New Single, eVarNameFlags.SwitchingPower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SwitchingPower))
             m_values.Add(val.varName, val)
 
-            'Salinity Opt
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.SalinityOpt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinityOpt))
-            m_values.Add(val.varName, val)
-
-            'Salinity Spread Left 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.SalinitySpreadLeft, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinitySpreadLeft))
-            m_values.Add(val.varName, val)
-
-            'Salinity Spread Right
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.SalinitySpreadRight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinitySpreadRight))
-            m_values.Add(val.varName, val)
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Temperature Forcing functions 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.TemperatureOpt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureOpt))
-            m_values.Add(val.varName, val)
-
-            'Temperature Spread Left 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.TemperatureSpreadLeft, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureSpreadLeft))
-            m_values.Add(val.varName, val)
-
-            'Temperature Spread Right
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.TemperatureSpreadRight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureSpreadRight))
-            m_values.Add(val.varName, val)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-            ' ''arrayed values
+            'Srrayed values
             ''VulRate
             'meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.VulRate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.VulRate))
@@ -252,7 +220,6 @@ Public Class cEcoSimGroupInput
         End Set
     End Property
 
-
     Public Property OtherMortFeedingTime() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.OtherMortFeedingTime))
@@ -290,38 +257,6 @@ Public Class cEcoSimGroupInput
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.SwitchingPower, value)
-        End Set
-    End Property
-
-
-    Public Property SalinityOpt() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.SalinityOpt))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SalinityOpt, value)
-        End Set
-    End Property
-
-    Public Property SalinitySpreadLeft() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.SalinitySpreadLeft))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SalinitySpreadLeft, value)
-        End Set
-    End Property
-
-
-    Public Property SalinitySpreadRight() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.SalinitySpreadRight))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.SalinitySpreadRight, value)
         End Set
     End Property
 
@@ -427,99 +362,6 @@ Public Class cEcoSimGroupInput
 
         Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.SwitchingPower, value)
-        End Set
-    End Property
-
-    Public Property SalinityOptStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.SalinityOpt)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.SalinityOpt, value)
-        End Set
-    End Property
-
-    Public Property SalinitySpreadLeftStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.SalinitySpreadLeft)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.SalinitySpreadLeft, value)
-        End Set
-    End Property
-
-    Public Property SalinitySpreadRightStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.SalinitySpreadRight)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.SalinitySpreadRight, value)
-        End Set
-    End Property
-
-
-    Public Property TemperatureOpt() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TemperatureOpt))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TemperatureOpt, value)
-        End Set
-    End Property
-
-    Public Property TemperatureSpreadLeft() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadLeft))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TemperatureSpreadLeft, value)
-        End Set
-    End Property
-
-
-    Public Property TemperatureSpreadRight() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.TemperatureSpreadRight))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.TemperatureSpreadRight, value)
-        End Set
-    End Property
-
-
-    Public Property TemperatureOptStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.TemperatureOpt)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TemperatureOpt, value)
-        End Set
-    End Property
-
-    Public Property TemperatureSpreadLeftStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.TemperatureSpreadLeft)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TemperatureSpreadLeft, value)
-        End Set
-    End Property
-
-    Public Property TemperatureSpreadRightStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.TemperatureSpreadRight)
-        End Get
-
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TemperatureSpreadRight, value)
         End Set
     End Property
 

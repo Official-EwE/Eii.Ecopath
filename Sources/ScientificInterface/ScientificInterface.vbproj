@@ -195,6 +195,15 @@
     <Compile Include="Ecopath\Tools\Taxonomy and traits\gridDefineTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\EnviroResponseFunction\frmEcosimEnviroResponse.Designer.vb">
+      <DependentUpon>frmEcosimEnviroResponse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\EnviroResponseFunction\frmEcosimEnviroResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\EnviroResponseFunction\gridApplyForagingResponses.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFDGroupData.vb" />
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.vb">
       <SubType>Form</SubType>
@@ -929,6 +938,9 @@
     <EmbeddedResource Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.resx">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\EnviroResponseFunction\frmEcosimEnviroResponse.resx">
+      <DependentUpon>frmEcosimEnviroResponse.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.resx">
       <DependentUpon>frmEcosimFD.vb</DependentUpon>
     </EmbeddedResource>
@@ -1244,7 +1256,7 @@
       <DependentUpon>frmApplyFFConsumer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ApplyShape\frmApplyShapeBase.resx">
+    <EmbeddedResource Include="Controls\frmApplyShapeBase.resx">
       <DependentUpon>frmApplyShapeBase.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1291,7 +1303,7 @@
       <DependentUpon>ucWind.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\dlgSelectResponse.resx">
+    <EmbeddedResource Include="Controls\dlgSelectResponse.resx">
       <DependentUpon>dlgSelectResponse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.resx">
@@ -1487,7 +1499,7 @@
     <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyPredPreyShape.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\gridApplyShape.vb">
+    <Compile Include="Controls\gridApplyShape.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyLandingShape.Designer.vb">
@@ -1508,7 +1520,7 @@
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFConsumer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\frmApplyShapeBase.vb">
+    <Compile Include="Controls\frmApplyShapeBase.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.Designer.vb">
@@ -1577,10 +1589,10 @@
     <Compile Include="Ecospace\Input\Advection\ucWind.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\dlgSelectResponse.Designer.vb">
+    <Compile Include="Controls\dlgSelectResponse.Designer.vb">
       <DependentUpon>dlgSelectResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\dlgSelectResponse.vb">
+    <Compile Include="Controls\dlgSelectResponse.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.Designer.vb">

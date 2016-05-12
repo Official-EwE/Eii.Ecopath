@@ -33,6 +33,21 @@ Public Class cBetapdfShapeFunction
     End Sub
 
     ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
+        Get
+            Select Case iParam
+                Case 1 : Return "alpha"
+                Case 2 : Return "beta"
+                Case 3 : Return "Y scalar"
+            End Select
+            Return MyBase.ParamName(iParam)
+        End Get
+    End Property
+
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>
     ''' Returns the points for an Betapdf shape.
@@ -41,13 +56,15 @@ Public Class cBetapdfShapeFunction
     Public Overrides Function Shape(nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim sYZero As Single = Me.ParamValue(1)
-            Dim sYEnd As Single = Me.ParamValue(2)
+            Dim A As Single = Me.ParamValue(1)
+            Dim B As Single = Me.ParamValue(2)
             For i As Integer = 1 To nPoints
                 Dim x As Single = CSng(i / (nPoints + 1))
-                Me.m_points(i) = CSng(Me.betaPDF(sYZero, sYEnd, x))
+                Me.m_points(i) = CSng(Me.betaPDF(A, B, x))
             Next i
         End If
+
+        Me.ScaleData(nPoints, Me.ParamValue(3))
 
         Return MyBase.Shape(nPoints)
 
@@ -59,6 +76,7 @@ Public Class cBetapdfShapeFunction
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 2.0F
         Me.ParamValue(2) = 3.0F
+        Me.ParamValue(3) = 1.0F
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -73,7 +91,7 @@ Public Class cBetapdfShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 2
+            Return 3
         End Get
     End Property
 

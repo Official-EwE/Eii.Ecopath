@@ -24,7 +24,7 @@ Imports EwEUtils.Core
 ''' Interface for defining Ecospace Environmental Input maps
 ''' </summary>
 ''' <remarks></remarks>
-Public Interface IEnviroInputMap
+Public Interface IEnviroInputData
 
     ''' <summary>
     ''' Return the value of the map as a function of the applied Response Function
@@ -33,6 +33,7 @@ Public Interface IEnviroInputMap
     ''' <param name="iRow">Row of the map</param>
     ''' <param name="iCol">Column of the map</param>
     Function ResponseFunction(ByVal iGroup As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Single
+
 
     ''' <summary>
     ''' Initialize the map with the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
@@ -60,6 +61,26 @@ Public Interface IEnviroInputMap
     ''' </code>
     ''' </remarks>
     Property ResponseIndexForGroup(ByVal iGroup As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer
+
+
+    ''' <summary>
+    ''' Response function for Ecosim
+    ''' </summary>
+    ''' <param name="iGroup"></param>
+    ''' <param name="iTimeStep"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Function ResponseFunction(ByVal iGroup As Integer, iTimeStep As Integer) As Single
+
+
+
+    ''' <summary>
+    ''' Initialize the map with the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
+    ''' </summary>
+    ''' <param name="MediationData">cMediationDataStructures that contains the Response Function (mediation functions) that can be used by this Map</param>
+    ''' <param name="EcosimData"></param>
+    Function Init(ByVal MediationData As cMediationDataStructures, ByVal EcosimData As cEcosimDatastructures) As Boolean
+
 
     ''' <summary>
     ''' Max value of the map
@@ -100,7 +121,7 @@ Public Interface IEnviroInputMap
     ''' Set the cMapResponseInteractionManager that this map uses
     ''' </summary>
     ''' <param name="theManager"></param>
-    Sub SetManager(ByVal theManager As cMapResponseInteractionManager)
+    Sub SetManager(ByVal theManager As cEcospaceEnviroResponseManager)
 
     ''' <summary>
     ''' Get the <see cref="cEcospaceLayer">layer</see> that drives this map.

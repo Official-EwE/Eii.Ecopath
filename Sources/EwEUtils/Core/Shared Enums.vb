@@ -310,22 +310,6 @@ Namespace Core
         MSELowerLPEffort
         ''' <summary>To document</summary>
         MSEUpperLPEffort
-        ''' <summary>To document</summary>
-        SalinityForceFunctionNumber
-        ''' <summary>To document</summary>
-        SalinityOpt
-        ''' <summary>To document</summary>
-        SalinitySpreadLeft
-        ''' <summary>To document</summary>
-        SalinitySpreadRight
-        ''' <summary>To document</summary>
-        TemperatureForceFunctionNumber
-        ''' <summary>To document</summary>
-        TemperatureOpt
-        ''' <summary>To document</summary>
-        TemperatureSpreadLeft
-        ''' <summary>To document</summary>
-        TemperatureSpreadRight
         ''' <summary>
         ''' Foraging time adjustment cannot drop below 0.1 as was the case
         ''' in EwE all the way up to release 6.4. In later versions of EwE
@@ -2478,6 +2462,8 @@ Namespace Core
 
         EcospaceLayerBiomassRelativeForcing = 114
 
+        EcosimEnviroResponseFunctionManager = 115
+
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
         '''</summary>
@@ -2929,7 +2915,8 @@ Namespace Core
         ''' <summary>The message originated from the MSY module of EwE</summary>
         MSY
 
-        MapResponseInteractionManager
+        EcospaceResponseInteractionManager
+        EcosimResponseInteractionManager
 
     End Enum
 

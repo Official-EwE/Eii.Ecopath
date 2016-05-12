@@ -991,7 +991,7 @@ Public Class cEcoSpace
                 'set tval() (time step forcing value) to the value for this time step for each forcing shape
                 'Time forcing function are disable in EcoSpace via ApplyAVmodifiers() "UseTime" flag
                 'If ApplyAVmodifiers() is called with the UseTime = True then the time forcing function will be used
-                For i = 0 To m_SimData.ForcingShapes
+                For i = 0 To m_SimData.NumForcingShapes
                     m_SimData.tval(i) = m_SimData.zscale(its, i)
                 Next
 
@@ -2071,12 +2071,6 @@ Public Class cEcoSpace
 
             Next
 
-            'VC Hobart Sep 2008 
-            ReDim m_Data.SpatialField(m_Data.InRow, m_Data.InCol, m_Data.nLiving)
-            ReDim m_Data.SpatialFieldOptimum(m_Data.nLiving, m_Data.nSpatialFields)
-            ReDim m_Data.SpatialFieldStdLeft(m_Data.nLiving, m_Data.nSpatialFields)
-            ReDim m_Data.SpatialFieldStdRight(m_Data.nLiving, m_Data.nSpatialFields)
-
             'jb 12-May-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
             Me.m_Ecosim.Init(True)
 
@@ -2099,7 +2093,7 @@ Public Class cEcoSpace
             Me.ScaleSailingCost()
 
             'calculate exponential weights for time step updating
-            m_Ecosim.Derivt(0, m_SimData.StartBiomass, der)
+            m_Ecosim.Derivt(0, m_SimData.StartBiomass, der, 1)
             For ip = 1 To m_Data.NGroups
                 '****Following line corrects bug where Mrate was set later in the routine
                 'CJW modified Mrate calculation next line 2/2003 for migratory species
@@ -2511,39 +2505,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
-    ''' <summary>
-    ''' Copy the salinity modifiers from the Ecosim into Ecospace spatial salinity modifiers
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub InitSalinityFromEcosim()
-        'WARNING this is for testing only and should NOT be call during a normal run
-        'Copy the salinity modifiers from Ecosim into the Ecospace spatial salinity modifiers
-        Debug.Assert(False, "WARNING Salinity modifiers from Ecosim will be copied to Ecospace. This has not been properly implemented!")
-
-        'Turn on the Spatial fields
-        m_Data.SpatialFieldsInUse = True
-
-        'In Ecosim the Salinity Modifiers are stored in the first index
-        'Ecosim also contains fields for Temperature (in the second index) and a bunch of place holders that are empty
-        m_Data.nSpatialFields = 1
-
-        'Redim SpatialFields the default size will be wrong
-        ReDim m_Data.SpatialField(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
-        ReDim m_Data.SpatialFieldOptimum(m_Data.NGroups, m_Data.nSpatialFields)
-        ReDim m_Data.SpatialFieldStdLeft(m_Data.NGroups, m_Data.nSpatialFields)
-        ReDim m_Data.SpatialFieldStdRight(m_Data.NGroups, m_Data.nSpatialFields)
-
-        'Copy salinity modifiers from the Ecosim variables into the equivalent Ecospace variables
-        For igrp As Integer = 1 To Me.m_Data.NGroups
-            'In Ecosim salintiy modifiers are stored in the first index
-            m_Data.SpatialFieldOptimum(igrp, 1) = Me.m_SimData.EnvResponseOpt(1, igrp)
-            m_Data.SpatialFieldStdLeft(igrp, 1) = Me.m_SimData.EnvResponseSdLeft(1, igrp)
-            m_Data.SpatialFieldStdRight(igrp, 1) = Me.m_SimData.EnvResponseSdRight(1, igrp)
-        Next
-
-    End Sub
-
     ''' <summary>
     ''' Redim or Clear all variables that are needed for an Ecospace run
     ''' </summary>
@@ -2697,7 +2658,7 @@ Public Class cEcoSpace
 
         m_Ecosim.SetBBtoStartBiomass(m_Data.NGroups)
 
-        m_Ecosim.Derivt(0, m_SimData.StartBiomass, der)
+        m_Ecosim.Derivt(0, m_SimData.StartBiomass, der, 1)
 
         'set up initial biomass density for fished areas
         For i = 1 To m_Data.NGroups
@@ -2875,7 +2836,7 @@ Public Class cEcoSpace
             'jb EatEff() and VulPred() ignored here because this is only used for initialization and both values are 1
             aeff(ii) = m_SimData.Alink(ii) * m_SimData.Ftime(j) * m_SimData.RelaSwitch(ii)
             Veff(ia) = m_SimData.VulArena(ia) * m_SimData.Ftime(i)
-            m_Ecosim.ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
+            m_Ecosim.ApplyAVmodifiers(its, aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
             Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_SimData.pred(j) / m_SimData.Hden(j)
         Next
 
@@ -2972,7 +2933,7 @@ Public Class cEcoSpace
 
             If i <= m_Data.nLiving Then      'Living group
                 Pmult = 1.0#
-                m_Ecosim.ApplyAVmodifiers(Pmult, Veff(1), i, i, False)
+                m_Ecosim.ApplyAVmodifiers(its, Pmult, Veff(1), i, i, False)
                 pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
                 'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                 loss(i) = m_SimData.Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * m_SimData.Ftime(i)) + m_EPdata.Emig(i) + m_SimData.FishTime(i)) * Biomass(i)
@@ -7523,12 +7484,12 @@ exitline:
         If (Me.m_Data.CapMaps Is Nothing) Then Return False
 
         'System.Console.WriteLine("Sethabcap")
-        For Each map As IEnviroInputMap In Me.m_Data.CapMaps
+        For Each map As IEnviroInputData In Me.m_Data.CapMaps
 
             'System.Console.WriteLine(map.Layer.Name + ", " + map.isLayerActive.ToString)
 
             'Is this layer active
-            If map.isLayerActive Then
+            If map.IsDriverActive Then
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
@@ -7563,7 +7524,7 @@ exitline:
 
     End Function
 
-    Private Sub dumpCapacity(map As IEnviroInputMap, igrp As Integer, row As Integer, col As Integer)
+    Private Sub dumpCapacity(map As cEnviroInputMap, igrp As Integer, row As Integer, col As Integer)
         If map.Layer.DataType = eDataTypes.EcospaceLayerDriver Then
             If igrp = 27 Then
                 If row = 34 And col = 174 Then

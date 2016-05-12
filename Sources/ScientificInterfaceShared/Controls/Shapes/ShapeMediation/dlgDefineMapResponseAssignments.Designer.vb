@@ -46,22 +46,20 @@ Partial Class dlgDefineMapResponseAssignments
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineMapResponseAssignments))
         Me.m_btnOk = New System.Windows.Forms.Button()
-        Me.m_lblMaps = New System.Windows.Forms.Label()
+        Me.m_lblDrivers = New System.Windows.Forms.Label()
         Me.m_tbxXMax = New System.Windows.Forms.TextBox()
         Me.m_lblXMax = New System.Windows.Forms.Label()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_tbxXMin = New System.Windows.Forms.TextBox()
         Me.m_lblXMin = New System.Windows.Forms.Label()
         Me.m_btnDefaultMinMax = New System.Windows.Forms.Button()
-        Me.m_tvMaps = New System.Windows.Forms.TreeView()
+        Me.m_tvDrivers = New System.Windows.Forms.TreeView()
         Me.m_lblGroups = New System.Windows.Forms.Label()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_btnAdd = New System.Windows.Forms.Button()
         Me.m_lblMean = New System.Windows.Forms.Label()
-        Me.m_lblSD = New System.Windows.Forms.Label()
         Me.m_btChangeShape = New System.Windows.Forms.Button()
         Me.m_tbxMean = New System.Windows.Forms.TextBox()
-        Me.m_tbxSD = New System.Windows.Forms.TextBox()
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -72,10 +70,10 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_btnOk, "m_btnOk")
         Me.m_btnOk.Name = "m_btnOk"
         '
-        'm_lblMaps
+        'm_lblDrivers
         '
-        resources.ApplyResources(Me.m_lblMaps, "m_lblMaps")
-        Me.m_lblMaps.Name = "m_lblMaps"
+        resources.ApplyResources(Me.m_lblDrivers, "m_lblDrivers")
+        Me.m_lblDrivers.Name = "m_lblDrivers"
         '
         'm_tbxXMax
         '
@@ -116,13 +114,13 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_btnDefaultMinMax.Name = "m_btnDefaultMinMax"
         Me.m_btnDefaultMinMax.UseVisualStyleBackColor = True
         '
-        'm_tvMaps
+        'm_tvDrivers
         '
-        resources.ApplyResources(Me.m_tvMaps, "m_tvMaps")
-        Me.m_tvMaps.FullRowSelect = True
-        Me.m_tvMaps.HideSelection = False
-        Me.m_tvMaps.Name = "m_tvMaps"
-        Me.m_tvMaps.ShowRootLines = False
+        resources.ApplyResources(Me.m_tvDrivers, "m_tvDrivers")
+        Me.m_tvDrivers.FullRowSelect = True
+        Me.m_tvDrivers.HideSelection = False
+        Me.m_tvDrivers.Name = "m_tvDrivers"
+        Me.m_tvDrivers.ShowRootLines = False
         '
         'm_lblGroups
         '
@@ -148,11 +146,6 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_lblMean, "m_lblMean")
         Me.m_lblMean.Name = "m_lblMean"
         '
-        'm_lblSD
-        '
-        resources.ApplyResources(Me.m_lblSD, "m_lblSD")
-        Me.m_lblSD.Name = "m_lblSD"
-        '
         'm_btChangeShape
         '
         resources.ApplyResources(Me.m_btChangeShape, "m_btChangeShape")
@@ -163,11 +156,6 @@ Partial Class dlgDefineMapResponseAssignments
         '
         resources.ApplyResources(Me.m_tbxMean, "m_tbxMean")
         Me.m_tbxMean.Name = "m_tbxMean"
-        '
-        'm_tbxSD
-        '
-        resources.ApplyResources(Me.m_tbxSD, "m_tbxSD")
-        Me.m_tbxSD.Name = "m_tbxSD"
         '
         'm_hdrReponse
         '
@@ -215,15 +203,13 @@ Partial Class dlgDefineMapResponseAssignments
         Me.Controls.Add(Me.m_graph)
         Me.Controls.Add(Me.m_tbxMean)
         Me.Controls.Add(Me.m_hdrConfig)
-        Me.Controls.Add(Me.m_lblSD)
         Me.Controls.Add(Me.m_btnRemove)
-        Me.Controls.Add(Me.m_tbxSD)
-        Me.Controls.Add(Me.m_lblMaps)
+        Me.Controls.Add(Me.m_lblDrivers)
         Me.Controls.Add(Me.m_btnDefaultMinMax)
         Me.Controls.Add(Me.m_btnAdd)
         Me.Controls.Add(Me.m_btChangeShape)
         Me.Controls.Add(Me.m_btnOk)
-        Me.Controls.Add(Me.m_tvMaps)
+        Me.Controls.Add(Me.m_tvDrivers)
         Me.Controls.Add(Me.m_lblGroups)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -236,11 +222,11 @@ Partial Class dlgDefineMapResponseAssignments
 
     End Sub
     Private WithEvents m_btnOk As System.Windows.Forms.Button
-    Private WithEvents m_lblMaps As System.Windows.Forms.Label
+    Private WithEvents m_lblDrivers As System.Windows.Forms.Label
     Private WithEvents m_lblGroups As System.Windows.Forms.Label
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
-    Private WithEvents m_tvMaps As System.Windows.Forms.TreeView
+    Protected WithEvents m_tvDrivers As System.Windows.Forms.TreeView
     Private WithEvents m_lbxGroups As cGroupListBox
     Private WithEvents m_btnDefaultMinMax As System.Windows.Forms.Button
     Private WithEvents m_lblXMin As System.Windows.Forms.Label
@@ -253,7 +239,5 @@ Partial Class dlgDefineMapResponseAssignments
     Private WithEvents m_lblMean As System.Windows.Forms.Label
     Private WithEvents m_btChangeShape As System.Windows.Forms.Button
     Private WithEvents m_tbxMean As System.Windows.Forms.TextBox
-    Private WithEvents m_tbxSD As System.Windows.Forms.TextBox
-    Private WithEvents m_lblSD As System.Windows.Forms.Label
 
 End Class

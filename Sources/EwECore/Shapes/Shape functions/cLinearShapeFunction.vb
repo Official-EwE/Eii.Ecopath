@@ -41,10 +41,10 @@ Public Class cLinearShapeFunction
     Public Overrides Function Shape(nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim sYZero As Single = Me.ParamValue(1)
-            Dim sYEnd As Single = Me.ParamValue(2)
+            Dim A As Single = Me.ParamValue(1)
+            Dim B As Single = Me.ParamValue(2)
             For i As Integer = 1 To nPoints
-                Me.m_points(i) = sYZero + (sYEnd - sYZero) * (i - 1) / (nPoints - 1)
+                Me.m_points(i) = A + (B - A) * (i - 1) / (nPoints - 1)
             Next i
         End If
 
@@ -59,6 +59,17 @@ Public Class cLinearShapeFunction
         Me.ParamValue(1) = 1
         Me.ParamValue(2) = 1
     End Sub
+
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
+        Get
+            ' ToDo: globalize this
+            Select Case iParam
+                Case 1 : Return "Start"
+                Case 2 : Return "End"
+            End Select
+            Return MyBase.ParamName(iParam)
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>

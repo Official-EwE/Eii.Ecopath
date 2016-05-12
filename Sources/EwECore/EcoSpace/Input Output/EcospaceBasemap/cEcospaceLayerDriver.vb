@@ -133,19 +133,19 @@ Public Class cEcospaceLayerDriver
 #Region " Internals "
 
     Private Function ActivateCapacityMap(bEnable As Boolean) As Boolean
-        Dim manager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
-        Dim map As IEnviroInputMap = manager.Map(Me)
+        Dim manager As IEnvironmentalResponseManager = Me.m_core.CapacityMapInteractionManager
+        Dim map As IEnviroInputData = manager.EnviroData(Me)
         If (map IsNot Nothing) Then
-            map.isLayerActive = bEnable
+            map.IsDriverActive = bEnable
         End If
         Return IsCapacityMapActive()
     End Function
 
     Private Function IsCapacityMapActive() As Boolean
-        Dim manager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
-        Dim map As IEnviroInputMap = manager.Map(Me)
+        Dim manager As IEnvironmentalResponseManager = Me.m_core.CapacityMapInteractionManager
+        Dim map As IEnviroInputData = manager.EnviroData(Me)
         If (map IsNot Nothing) Then
-            Return map.isLayerActive
+            Return map.IsDriverActive
         End If
         Return True
     End Function

@@ -75,7 +75,7 @@ Namespace Ecopath
 
             Dim bEcosimLoaded As Boolean = (Me.m_uic.Core.ActiveEcosimScenarioIndex > -1)
             Dim bEcospaceLoaded As Boolean = (Me.m_uic.Core.ActiveEcospaceScenarioIndex > -1)
-            Dim mgr As cForcingFunctionManager = Me.m_uic.Core.ForcingShapeManager
+            Dim mgr As cForcingFunctionShapeManager = Me.m_uic.Core.ForcingShapeManager
             Dim lItems As New List(Of Object)
 
             ' Gather stanza names

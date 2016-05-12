@@ -148,40 +148,40 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>15</value>
   </data>
-  <data name="m_lblMaps.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblDrivers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblMaps.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblDrivers.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblMaps.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblDrivers.Location" type="System.Drawing.Point, System.Drawing">
     <value>194, 38</value>
   </data>
-  <data name="m_lblMaps.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_lblDrivers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_lblMaps.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 13</value>
+  <data name="m_lblDrivers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 13</value>
   </data>
-  <data name="m_lblMaps.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblDrivers.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_lblMaps.Text" xml:space="preserve">
-    <value>&amp;Map group assignments</value>
+  <data name="m_lblDrivers.Text" xml:space="preserve">
+    <value>&amp;Group drivers</value>
   </data>
-  <data name="&gt;&gt;m_lblMaps.Name" xml:space="preserve">
-    <value>m_lblMaps</value>
+  <data name="&gt;&gt;m_lblDrivers.Name" xml:space="preserve">
+    <value>m_lblDrivers</value>
   </data>
-  <data name="&gt;&gt;m_lblMaps.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDrivers.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblMaps.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDrivers.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblMaps.ZOrder" xml:space="preserve">
-    <value>13</value>
+  <data name="&gt;&gt;m_lblDrivers.ZOrder" xml:space="preserve">
+    <value>11</value>
   </data>
   <data name="m_tbxXMax.Location" type="System.Drawing.Point, System.Drawing">
     <value>561, 32</value>
@@ -352,34 +352,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnDefaultMinMax.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>12</value>
   </data>
-  <data name="m_tvMaps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tvDrivers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
-  <data name="m_tvMaps.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tvDrivers.Location" type="System.Drawing.Point, System.Drawing">
     <value>197, 59</value>
   </data>
-  <data name="m_tvMaps.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_tvDrivers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 0</value>
   </data>
-  <data name="m_tvMaps.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tvDrivers.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 308</value>
   </data>
-  <data name="m_tvMaps.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tvDrivers.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_tvMaps.Name" xml:space="preserve">
-    <value>m_tvMaps</value>
+  <data name="&gt;&gt;m_tvDrivers.Name" xml:space="preserve">
+    <value>m_tvDrivers</value>
   </data>
-  <data name="&gt;&gt;m_tvMaps.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tvDrivers.Type" xml:space="preserve">
     <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tvMaps.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tvDrivers.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_tvMaps.ZOrder" xml:space="preserve">
-    <value>18</value>
+  <data name="&gt;&gt;m_tvDrivers.ZOrder" xml:space="preserve">
+    <value>16</value>
   </data>
   <data name="m_lblGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -412,7 +412,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>17</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -439,7 +439,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="m_btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -466,7 +466,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>13</value>
   </data>
   <data name="m_lblMean.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -504,42 +504,6 @@
   <data name="&gt;&gt;m_lblMean.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_lblSD.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblSD.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblSD.Location" type="System.Drawing.Point, System.Drawing">
-    <value>510, 64</value>
-  </data>
-  <data name="m_lblSD.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_lblSD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>25, 13</value>
-  </data>
-  <data name="m_lblSD.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="m_lblSD.Text" xml:space="preserve">
-    <value>SD:</value>
-  </data>
-  <data name="m_lblSD.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblSD.Name" xml:space="preserve">
-    <value>m_lblSD</value>
-  </data>
-  <data name="&gt;&gt;m_lblSD.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSD.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblSD.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
   <data name="m_btChangeShape.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -568,7 +532,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btChangeShape.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>14</value>
   </data>
   <data name="m_tbxMean.Location" type="System.Drawing.Point, System.Drawing">
     <value>450, 61</value>
@@ -590,27 +554,6 @@
   </data>
   <data name="&gt;&gt;m_tbxMean.ZOrder" xml:space="preserve">
     <value>8</value>
-  </data>
-  <data name="m_tbxSD.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 61</value>
-  </data>
-  <data name="m_tbxSD.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 20</value>
-  </data>
-  <data name="m_tbxSD.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSD.Name" xml:space="preserve">
-    <value>m_tbxSD</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSD.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSD.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxSD.ZOrder" xml:space="preserve">
-    <value>12</value>
   </data>
   <data name="m_hdrReponse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -637,7 +580,7 @@
     <value>m_hdrReponse</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrReponse.Parent" xml:space="preserve">
     <value>$this</value>
@@ -667,7 +610,7 @@
     <value>m_lbxGroups</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbxGroups.Parent" xml:space="preserve">
     <value>$this</value>
@@ -697,7 +640,7 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12689.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>$this</value>

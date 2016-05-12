@@ -22,12 +22,8 @@
 
 Option Strict On
 Option Explicit On
-
-
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Commands
 
 #End Region
 
@@ -39,7 +35,7 @@ Namespace Ecospace
     ''' </summary>
     ''' =======================================================================
     Public Class frmApplyCapacity
-        Inherits Ecosim.frmApplyShapeBase
+        Inherits frmApplyShapeBase
 
 #Region " Constructor "
 
@@ -53,7 +49,7 @@ Namespace Ecospace
 
             ' Hook up to core messages
             ' For this form only
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MapResponseInteractionManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcospaceResponseInteractionManager}
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditInputMaps")
             If (cmd IsNot Nothing) Then
@@ -71,7 +67,7 @@ Namespace Ecospace
         End Sub
 
         <CLSCompliant(False)> _
-        Protected Overrides ReadOnly Property Grid() As Ecosim.gridApplyShapeBase
+        Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid
             End Get
@@ -80,7 +76,7 @@ Namespace Ecospace
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
-            If (msg.Source = eCoreComponentType.MapResponseInteractionManager) Then
+            If (msg.Source = eCoreComponentType.EcospaceResponseInteractionManager) Then
                 Me.Grid.UpdateContent()
             End If
 

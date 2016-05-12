@@ -29,6 +29,8 @@ Public Class cMediationDataStructures
 
     Public Const MAXFUNCTIONS As Integer = 5
 
+    Public Const N_DEFAULT_MEDIATIONPOINTS As Integer = 1200
+
     ''' <summary>Number of functions</summary>
     Public MediationShapes As Integer
     ''' <summary>number of points per mediation function</summary>
@@ -78,10 +80,13 @@ Public Class cMediationDataStructures
     Public XAxisMin() As Single
     Public XAxisMax() As Single
 
+    Public Sub New()
+        NMedPoints = N_DEFAULT_MEDIATIONPOINTS
+    End Sub
+
     Public Overridable Sub ReDimMediation(ByVal nGroups As Integer, ByVal nFleets As Integer)
         Dim i, j As Integer
         'following is for Mediation:
-        NMedPoints = 1200
         Me.m_nGroups = nGroups
         Me.m_nFleets = nFleets
         ' JS18apr09: spawning 9 dummy mediation shapes without any valid database IDS screws up the database
@@ -288,13 +293,12 @@ Public Class cMediationDataStructures
 
         Dim dx As Double = NMedPoints / (Me.XAxisMax(iMedShapeIndex) - Me.XAxisMin(iMedShapeIndex) + 0.00001)
         ip = 1 + CInt(Math.Truncate((Xvalue - Me.XAxisMin(iMedShapeIndex)) * dx))
+        'If iMedShapeIndex = 1 Then
+        '    Debug.Print(Xvalue & ", " & Me.Medpoints(ip, iMedShapeIndex))
+        'End If
         Return Me.Medpoints(ip, iMedShapeIndex)
 
     End Function
-
-    Public Sub New()
-
-    End Sub
 
 End Class
 

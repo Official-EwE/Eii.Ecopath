@@ -66,7 +66,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cEcospaceGroup = Nothing
-            Dim map As IEnviroInputMap = Nothing
+            Dim map As IEnviroInputData = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions

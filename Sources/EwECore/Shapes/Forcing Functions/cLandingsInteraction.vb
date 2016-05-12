@@ -67,7 +67,7 @@ Public Class cLandingsInteraction
 
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData
         Dim SFPair As cShapeFunctionTypePair
-        Dim man As cLandingsMediationManager = Me.m_manager.getCore.LandingsShapeManager
+        Dim man As cLandingsMediationShapeManager = Me.m_manager.getCore.LandingsShapeManager
         Dim bSucces As Boolean = True
 
         For i As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS

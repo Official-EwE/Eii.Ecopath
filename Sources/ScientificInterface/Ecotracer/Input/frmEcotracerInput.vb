@@ -104,7 +104,7 @@ Namespace Ecotracer
 
         Private Sub UpdateFFFormatProviders()
             ' Assemble list of FFs
-            Dim ffm As cForcingFunctionManager = Me.UIContext.Core.ForcingShapeManager()
+            Dim ffm As cForcingFunctionShapeManager = Me.UIContext.Core.ForcingShapeManager()
             Dim aItems(ffm.Count) As Object
 
             aItems(0) = SHaredResources.GENERIC_VALUE_NONE

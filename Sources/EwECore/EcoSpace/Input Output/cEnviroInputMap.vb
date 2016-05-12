@@ -33,7 +33,7 @@ Imports EwECore.ValueWrapper
 ''' Set the Map to the input map then tell it which response functions to use for which groups setShapeForGroup(igroup) = iResponseFunction
 ''' </remarks>
 Public Class cEnviroInputMap
-    Implements IEnviroInputMap
+    Implements IEnviroInputData
 
 #Region " Private vars "
 
@@ -45,19 +45,19 @@ Public Class cEnviroInputMap
     Private m_max As Single
     Private m_mean As Single
     Private m_binWidth As Single
-    Private m_manager As cMapResponseInteractionManager
+    Private m_manager As IEnvironmentalResponseManager
     Private m_iLayerIndex As Integer
 
 #End Region ' Private vars
 
 #Region "Construction Initialization"
 
-    Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer)
+    Friend Sub New(ByVal theManager As IEnvironmentalResponseManager, ByVal source As cEcospaceLayer)
         Me.new(theManager, source, cCore.NULL_VALUE)
     End Sub
 
 
-    Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer, ByVal iLayerIndex As Integer)
+    Friend Sub New(ByVal theManager As IEnvironmentalResponseManager, ByVal source As cEcospaceLayer, ByVal iLayerIndex As Integer)
 
         Me.m_source = source
         Me.m_iLayerIndex = iLayerIndex
@@ -69,9 +69,9 @@ Public Class cEnviroInputMap
 
     End Sub
 
-    ''' <inheritdocs cref="IEnviroInputMap.Init"/>
+    ''' <inheritdocs cref="IEnviroInputData.Init"/>
     Friend Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean _
-        Implements IEnviroInputMap.Init
+        Implements IEnviroInputData.Init
 
         Me.m_MedData = EnviroMediationData
         Me.m_spaceData = SpaceData
@@ -86,8 +86,8 @@ Public Class cEnviroInputMap
 
 #Region "Public functions"
 
-    ''' <inheritdocs cref="IEnviroInputMap.Update"/>
-    Public Function Update() As Boolean Implements IEnviroInputMap.Update
+    ''' <inheritdocs cref="IEnviroInputData.Update"/>
+    Public Function Update() As Boolean Implements IEnviroInputData.Update
         Dim bReturn As Boolean = False
         Try
             Me.computeMinMax()
@@ -99,14 +99,14 @@ Public Class cEnviroInputMap
 
     End Function
 
-    ''' <inheritdocs cref="IEnviroInputMap.setManager"/>
-    Friend Sub setManager(ByVal theManager As cMapResponseInteractionManager) _
-        Implements IEnviroInputMap.SetManager
+    ''' <inheritdocs cref="IEnviroInputData.setManager"/>
+    Friend Sub setManager(ByVal theManager As IEnvironmentalResponseManager) _
+        Implements IEnviroInputData.SetManager
         Me.m_manager = theManager
     End Sub
 
-    ''' <inheritdocs cref="IEnviroInputMap.Histogram"/>
-    Public Function Histogram() As Drawing.PointF() Implements IEnviroInputMap.Histogram
+    ''' <inheritdocs cref="IEnviroInputData.Histogram"/>
+    Public Function Histogram() As Drawing.PointF() Implements IEnviroInputData.Histogram
 
         Dim ipt As Integer ', maxPts As Integer
         Dim nBins As Integer = 100
@@ -176,25 +176,25 @@ Public Class cEnviroInputMap
         End Get
     End Property
 
-    ''' <inheritdocs cref="IEnviroInputMap.Max"/>
+    ''' <inheritdocs cref="IEnviroInputData.Max"/>
     Public ReadOnly Property Max() As Single _
-        Implements IEnviroInputMap.Max
+        Implements IEnviroInputData.Max
         Get
             Return Me.m_max
         End Get
     End Property
 
     ''' ---------------------------------------
-    ''' <inheritdocs cref="IEnviroInputMap.Mean"/>
+    ''' <inheritdocs cref="IEnviroInputData.Mean"/>
     Public ReadOnly Property Mean() As Single _
-        Implements IEnviroInputMap.Mean
+        Implements IEnviroInputData.Mean
         Get
             Return Me.m_mean
         End Get
     End Property
 
-    ''' <inheritdocs cref="IEnviroInputMap.Min"/>
-    Public ReadOnly Property Min() As Single Implements IEnviroInputMap.Min
+    ''' <inheritdocs cref="IEnviroInputData.Min"/>
+    Public ReadOnly Property Min() As Single Implements IEnviroInputData.Min
         Get
             Return Me.m_min
         End Get
@@ -203,20 +203,17 @@ Public Class cEnviroInputMap
     ''' <summary>
     ''' The basemap layer that provides the data that this map operates onto.
     ''' </summary>
-    Public ReadOnly Property Layer As cEcospaceLayer _
-        Implements IEnviroInputMap.Layer
+    Public ReadOnly Property Layer As cEcospaceLayer
         Get
             Return Me.m_source
         End Get
     End Property
 
-    Public ReadOnly Property HistogramBinWidth As Single Implements IEnviroInputMap.HistogramBinWidth
+    Public ReadOnly Property HistogramBinWidth As Single Implements IEnviroInputData.HistogramBinWidth
         Get
             Return Me.m_binWidth
         End Get
     End Property
-
-
 
     ''' <summary>
     ''' Return a value for a cell in the input map base on the the response function for a group.
@@ -226,7 +223,7 @@ Public Class cEnviroInputMap
     ''' <param name="iMapCol">Col of the input map</param>
     ''' <returns>Y = F(x)</returns>
     Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single _
-        Implements IEnviroInputMap.ResponseFunction
+        Implements IEnviroInputData.ResponseFunction
 
         Dim iShp As Integer = 0
 
@@ -266,7 +263,7 @@ Public Class cEnviroInputMap
     ''' <returns></returns>
     ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
     Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer _
-        Implements IEnviroInputMap.ResponseIndexForGroup
+        Implements IEnviroInputData.ResponseIndexForGroup
         Get
             Return Me.m_GrpToShape(GrpIndex)
         End Get
@@ -317,9 +314,30 @@ Public Class cEnviroInputMap
 
     End Sub
 
+
+    Public ReadOnly Property Name As String Implements IEnviroInputData.Name
+        Get
+            Return Me.m_source.Name
+        End Get
+    End Property
+
 #End Region
 
-    Public Property isLayerActive As Boolean = True _
-        Implements IEnviroInputMap.isLayerActive
+    Public Property IsDriverActive As Boolean = True _
+        Implements IEnviroInputData.IsDriverActive
+
+#Region "Overloaded Ecosim methods"
+
+
+    Public Function EcosimInit(MediationData As cMediationDataStructures, EcosimData As cEcosimDatastructures) As Boolean Implements IEnviroInputData.Init
+        Debug.Assert(False, Me.ToString + ".EcosimInit() not implemented for this implementation.")
+    End Function
+
+    Public Function EcosimResponseFunction(iGroup As Integer, iTimeStep As Integer) As Single Implements IEnviroInputData.ResponseFunction
+        Debug.Assert(False, Me.ToString + ".EcosimResponseFunction() not implemented for this implementation.")
+    End Function
+
+#End Region
 
 End Class
+

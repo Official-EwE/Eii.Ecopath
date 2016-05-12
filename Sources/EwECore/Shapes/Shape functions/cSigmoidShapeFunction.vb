@@ -60,6 +60,8 @@ Public Class cSigmoidShapeFunction
             Next i
         End If
 
+        Me.ScaleData(nPoints, 1.0)
+
         Return MyBase.Shape(nPoints)
 
     End Function

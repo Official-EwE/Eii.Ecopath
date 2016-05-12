@@ -44,16 +44,9 @@ Namespace Ecosim
             FeedingTimeAdjustRate
             OtherMortFeedingTime
             PredatorFeedingTime
-            'FLimit
             DenDepCatchability
             QBMaxQBO
             SwitchPower
-            SalinityOpt
-            SalinitySpreadLeft
-            SalinitySpreadRight
-            TempOpt
-            TempSpreadLeft
-            TempSpreadRight
         End Enum
 
         Public Sub New()
@@ -74,17 +67,8 @@ Namespace Ecosim
             Me(0, eColumnTypes.OtherMortFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME)
             Me(0, eColumnTypes.PredatorFeedingTime) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_PREDATORFEEDINGTIME)
             Me(0, eColumnTypes.DenDepCatchability) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_DENDEPCATCHABILITY)
-            'Me(0, eColumnTypes.FLimit) = New EwEColumnHeaderCell(My.Resources.GENERIC_LABEL_MAXFISHINGMORTAILITY)
             Me(0, eColumnTypes.QBMaxQBO) = New EwEColumnHeaderCell(My.Resources.ECOSIM_GROUPINFO_QBMAXQBO)
             Me(0, eColumnTypes.SwitchPower) = New EwEColumnHeaderCell(SharedResources.HEADER_SWITCHINGPOWER_VALRANGE)
-
-            Me(0, eColumnTypes.SalinityOpt) = New EwEColumnHeaderCell(eVarNameFlags.SalinityOpt)
-            Me(0, eColumnTypes.SalinitySpreadLeft) = New EwEColumnHeaderCell(eVarNameFlags.SalinitySpreadLeft)
-            Me(0, eColumnTypes.SalinitySpreadRight) = New EwEColumnHeaderCell(eVarNameFlags.SalinitySpreadRight)
-
-            Me(0, eColumnTypes.TempOpt) = New EwEColumnHeaderCell(eVarNameFlags.TemperatureOpt)
-            Me(0, eColumnTypes.TempSpreadLeft) = New EwEColumnHeaderCell(eVarNameFlags.TemperatureSpreadLeft)
-            Me(0, eColumnTypes.TempSpreadRight) = New EwEColumnHeaderCell(eVarNameFlags.TemperatureSpreadRight)
 
             Me.FixedColumns = 2
 
@@ -137,18 +121,10 @@ Namespace Ecosim
                         Me(iRow, eColumnTypes.FeedingTimeAdjustRate) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.MaxRelFeedingTime) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.MaxRelPB) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.SalinityOpt) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.OtherMortFeedingTime) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.PredatorFeedingTime) = New EwERowHeaderCell()
-                        'Me(iRow, eColumnTypes.FLimit) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.QBMaxQBO) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.SalinitySpreadLeft) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.SalinitySpreadRight) = New EwERowHeaderCell()
                         Me(iRow, eColumnTypes.SwitchPower) = New EwERowHeaderCell()
-
-                        Me(iRow, eColumnTypes.TempOpt) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.TempSpreadLeft) = New EwERowHeaderCell()
-                        Me(iRow, eColumnTypes.TempSpreadRight) = New EwERowHeaderCell()
 
                         iStanzaGroupIndexPrev = iStanzaGroup(source.Index)
                         iRow = Me.AddRow
@@ -181,16 +157,8 @@ Namespace Ecosim
             Me(iRow, eColumnTypes.OtherMortFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortFeedingTime)
             Me(iRow, eColumnTypes.PredatorFeedingTime) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PredEffectFeedingTime)
             Me(iRow, eColumnTypes.DenDepCatchability) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DenDepCatchability)
-            'Me(iRow, eColumnTypes.FLimit) = New PropertyCell(me.PropertyManager, source, eVarNameFlags.EcosimGroupMaxMort)
             Me(iRow, eColumnTypes.QBMaxQBO) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBMaxQBio)
             Me(iRow, eColumnTypes.SwitchPower) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SwitchingPower)
-            Me(iRow, eColumnTypes.SalinityOpt) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SalinityOpt)
-            Me(iRow, eColumnTypes.SalinitySpreadLeft) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SalinitySpreadLeft)
-            Me(iRow, eColumnTypes.SalinitySpreadRight) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SalinitySpreadRight)
-
-            Me(iRow, eColumnTypes.TempOpt) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TemperatureOpt)
-            Me(iRow, eColumnTypes.TempSpreadLeft) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TemperatureSpreadLeft)
-            Me(iRow, eColumnTypes.TempSpreadRight) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TemperatureSpreadRight)
 
         End Sub
 
@@ -213,16 +181,8 @@ Namespace Ecosim
             Me.Columns(eColumnTypes.OtherMortFeedingTime).Width = 78
             Me.Columns(eColumnTypes.PredatorFeedingTime).Width = 78
             Me.Columns(eColumnTypes.DenDepCatchability).Width = 78
-            'Me.Columns(eColumnTypes.FLimit).Width = 78
             Me.Columns(eColumnTypes.QBMaxQBO).Width = 78
             Me.Columns(eColumnTypes.SwitchPower).Width = 78
-            Me.Columns(eColumnTypes.SalinityOpt).Width = 78
-            Me.Columns(eColumnTypes.SalinitySpreadLeft).Width = 78
-            Me.Columns(eColumnTypes.SalinitySpreadRight).Width = 78
-
-            Me.Columns(eColumnTypes.TempOpt).Width = 78
-            Me.Columns(eColumnTypes.TempSpreadLeft).Width = 78
-            Me.Columns(eColumnTypes.TempSpreadRight).Width = 78
 
             For i As Integer = 2 To Me.ColumnsCount - 1
                 Me(0, i).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
