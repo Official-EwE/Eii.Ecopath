@@ -46,11 +46,9 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimParameters))
             Me.m_nudNutBaseFreeProp = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudNumberYears = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox()
             Me.m_cmbNutForcing = New System.Windows.Forms.ComboBox()
             Me.m_chkPredictEffort = New System.Windows.Forms.CheckBox()
             Me.m_chkConTracing = New System.Windows.Forms.CheckBox()
-            Me.m_lblSalinityForcing = New System.Windows.Forms.Label()
             Me.m_lblNutForcing = New System.Windows.Forms.Label()
             Me.m_lblNutBaseFreeProp = New System.Windows.Forms.Label()
             Me.m_lblNumberYears = New System.Windows.Forms.Label()
@@ -65,8 +63,6 @@ Namespace Ecosim
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_chkUseVarPQ = New System.Windows.Forms.CheckBox()
-            Me.m_cmbTempLoading = New System.Windows.Forms.ComboBox()
-            Me.m_lblTempLoading = New System.Windows.Forms.Label()
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plDescription = New System.Windows.Forms.Panel()
             Me.m_plInit = New System.Windows.Forms.Panel()
@@ -95,13 +91,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_nudNumberYears, "m_nudNumberYears")
             Me.m_nudNumberYears.Name = "m_nudNumberYears"
             '
-            'm_cmbSalinityForcing
-            '
-            Me.m_cmbSalinityForcing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbSalinityForcing.FormattingEnabled = True
-            resources.ApplyResources(Me.m_cmbSalinityForcing, "m_cmbSalinityForcing")
-            Me.m_cmbSalinityForcing.Name = "m_cmbSalinityForcing"
-            '
             'm_cmbNutForcing
             '
             Me.m_cmbNutForcing.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -120,11 +109,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_chkConTracing, "m_chkConTracing")
             Me.m_chkConTracing.Name = "m_chkConTracing"
             Me.m_chkConTracing.UseVisualStyleBackColor = True
-            '
-            'm_lblSalinityForcing
-            '
-            resources.ApplyResources(Me.m_lblSalinityForcing, "m_lblSalinityForcing")
-            Me.m_lblSalinityForcing.Name = "m_lblSalinityForcing"
             '
             'm_lblNutForcing
             '
@@ -203,18 +187,6 @@ Namespace Ecosim
             Me.m_chkUseVarPQ.Name = "m_chkUseVarPQ"
             Me.m_chkUseVarPQ.UseVisualStyleBackColor = True
             '
-            'm_cmbTempLoading
-            '
-            Me.m_cmbTempLoading.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbTempLoading.FormattingEnabled = True
-            resources.ApplyResources(Me.m_cmbTempLoading, "m_cmbTempLoading")
-            Me.m_cmbTempLoading.Name = "m_cmbTempLoading"
-            '
-            'm_lblTempLoading
-            '
-            resources.ApplyResources(Me.m_lblTempLoading, "m_lblTempLoading")
-            Me.m_lblTempLoading.Name = "m_lblTempLoading"
-            '
             'TableLayoutPanel1
             '
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
@@ -240,16 +212,12 @@ Namespace Ecosim
             '
             Me.m_plInit.Controls.Add(Me.m_tbxMinFeedingRateAdjustment)
             Me.m_plInit.Controls.Add(Me.m_hdrInitialization)
-            Me.m_plInit.Controls.Add(Me.m_lblTempLoading)
             Me.m_plInit.Controls.Add(Me.Label1)
             Me.m_plInit.Controls.Add(Me.m_lblNumberYears)
-            Me.m_plInit.Controls.Add(Me.m_cmbTempLoading)
             Me.m_plInit.Controls.Add(Me.m_lblNutBaseFreeProp)
             Me.m_plInit.Controls.Add(Me.m_nudNutBaseFreeProp)
             Me.m_plInit.Controls.Add(Me.m_lblNutForcing)
             Me.m_plInit.Controls.Add(Me.m_nudNumberYears)
-            Me.m_plInit.Controls.Add(Me.m_lblSalinityForcing)
-            Me.m_plInit.Controls.Add(Me.m_cmbSalinityForcing)
             Me.m_plInit.Controls.Add(Me.m_chkConTracing)
             Me.m_plInit.Controls.Add(Me.m_cmbNutForcing)
             Me.m_plInit.Controls.Add(Me.m_chkUseVarPQ)
@@ -297,10 +265,6 @@ Namespace Ecosim
         Private WithEvents m_lblNutBaseFreeProp As System.Windows.Forms.Label
         Private WithEvents m_cmbNutForcing As System.Windows.Forms.ComboBox
         Private WithEvents m_lblNutForcing As System.Windows.Forms.Label
-        Private WithEvents m_cmbSalinityForcing As System.Windows.Forms.ComboBox
-        Private WithEvents m_lblSalinityForcing As System.Windows.Forms.Label
-        Private WithEvents m_cmbTempLoading As System.Windows.Forms.ComboBox
-        Private WithEvents m_lblTempLoading As System.Windows.Forms.Label
         Private WithEvents m_chkPredictEffort As System.Windows.Forms.CheckBox
         Private WithEvents m_chkConTracing As System.Windows.Forms.CheckBox
         Private WithEvents m_hdrScenario As cEwEHeaderLabel

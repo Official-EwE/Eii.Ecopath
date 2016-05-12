@@ -68,8 +68,8 @@ Public MustInherit Class cShapeFunction
         For i As Integer = 1 To Me.nParameters
             Select Case i
                 Case 1 : Me.ParamValue(i) = shp.YZero
-                Case 2 : Me.ParamValue(i) = shp.YEnd
-                Case 3 : Me.ParamValue(i) = shp.YBase
+                Case 2 : Me.ParamValue(i) = shp.YBase
+                Case 3 : Me.ParamValue(i) = shp.YEnd
                 Case 4 : Me.ParamValue(i) = shp.Steep
             End Select
         Next
@@ -122,8 +122,8 @@ Public MustInherit Class cShapeFunction
             Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
             Select Case iParam
                 Case 1 : Return My.Resources.CoreDefaults.PARAM_YZERO
-                Case 2 : Return My.Resources.CoreDefaults.PARAM_YEND
-                Case 3 : Return My.Resources.CoreDefaults.PARAM_YBASE
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_YBASE
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_YEND
                 Case 4 : Return My.Resources.CoreDefaults.PARAM_STEEPNESS
             End Select
             Return "?"
@@ -215,8 +215,8 @@ Public MustInherit Class cShapeFunction
         For i As Integer = 1 To Me.nParameters
             Select Case i
                 Case 1 : shp.YZero = Me.ParamValue(i)
-                Case 2 : shp.YEnd = Me.ParamValue(i)
-                Case 3 : shp.YBase = Me.ParamValue(i)
+                Case 2 : shp.YBase = Me.ParamValue(i)
+                Case 3 : shp.YEnd = Me.ParamValue(i)
                 Case 4 : shp.Steep = Me.ParamValue(i)
             End Select
         Next
@@ -224,6 +224,14 @@ Public MustInherit Class cShapeFunction
         Return True
 
     End Function
+
+    Public Overridable Sub ScaleData(nPoints As Integer, scaler As Single)
+        Dim dataMax As Single = Me.Max
+        If dataMax = 0 Then dataMax = 1
+        For ipt As Integer = 1 To nPoints
+            Me.m_points(ipt) = (Me.m_points(ipt) / dataMax) * scaler
+        Next
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

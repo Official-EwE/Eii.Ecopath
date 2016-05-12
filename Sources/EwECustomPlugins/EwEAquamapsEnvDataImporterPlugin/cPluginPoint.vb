@@ -62,7 +62,7 @@ Public Class cPluginPoint
     Public ReadOnly Property EnabledState As eCoreExecutionState _
         Implements IGUIPlugin.EnabledState
         Get
-            Return eCoreExecutionState.EcospaceLoaded
+            Return eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 

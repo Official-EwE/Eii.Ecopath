@@ -38,7 +38,7 @@ Public MustInherit Class cBaseShapeManager
 #Region "Protected Variables"
 
     ''' <summary>underlying <see cref="cEcosimDatastructures">EcoSim data</see></summary>
-    Protected m_Data As cEcosimDatastructures
+    Protected m_SimData As cEcosimDatastructures
     ''' <summary>List of shapes owned by this manager.</summary>
     Protected m_shapes As New List(Of cForcingFunction)
     ''' <summary>Reference to the <see cref="cCore">core</see>.</summary>
@@ -82,7 +82,7 @@ Public MustInherit Class cBaseShapeManager
     ''' <param name="EcoSimData">EcoSim data used to populate the Shapes</param>
     ''' <remarks>New ShapeMangers can only be created by the Core so this is Declares as a Friend. Derived class should override the Init() function to initialize the Shapes. </remarks>
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
-        m_Data = EcoSimData
+        m_SimData = EcoSimData
         m_core = theCore
         m_DataType = DataType
     End Sub
@@ -92,7 +92,7 @@ Public MustInherit Class cBaseShapeManager
         Implements IDisposable.Dispose
         Me.Clear()
         Me.m_core = Nothing
-        Me.m_Data = Nothing
+        Me.m_SimData = Nothing
         GC.SuppressFinalize(Me)
     End Sub
 
@@ -101,7 +101,7 @@ Public MustInherit Class cBaseShapeManager
 #Region " Interface for List of shapes "
 
     ''' <summary>
-    ''' Add a cForcingFunction object to the list
+    ''' Add a <see cref="cForcingFunction">shape</see> to the manager
     ''' </summary>
     ''' <param name="ForcingFunction">cForcingFunction or derived object to add to the ShapeManager and the underlying EcoSim data.</param>
     ''' <returns>True if Successfull</returns>
@@ -119,6 +119,10 @@ Public MustInherit Class cBaseShapeManager
 
     End Function
 
+    ''' <summary>
+    ''' Get a <see cref="cForcingFunction">shape</see> from the manager.
+    ''' </summary>
+    ''' <param name="ItemIndex">The zero-based index of the shape to obtain.</param>
     Default Public Overridable ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
         Get
             Try
@@ -417,7 +421,7 @@ End Class
 ''' Extents the base class to manage the Forcing Shapes
 ''' </summary>
 ''' <remarks>cBaseShapeManager contains the code to manage the list. This will load the Forcing data only</remarks>
-Public Class cForcingFunctionManager
+Public Class cForcingFunctionShapeManager
     Inherits cBaseShapeManager
 
     ''' <summary>
@@ -442,7 +446,7 @@ Public Class cForcingFunctionManager
     ''' <remarks>This is provided for convenience. So the number of points can be retrieved without getting a shape.</remarks>
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
-            Return m_Data.ForcePoints
+            Return m_SimData.ForcePoints
         End Get
     End Property
 
@@ -467,10 +471,10 @@ Public Class cForcingFunctionManager
         If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
 
             'get the index from the dbid for the new shape
-            iEcoSimIndex = Array.IndexOf(m_Data.ForcingDBIDs, dbID)
+            iEcoSimIndex = Array.IndexOf(m_SimData.ForcingDBIDs, dbID)
 
             'create a new shape that contains a database ID to the underlying ecosim data
-            shape = New cForcingFunction(m_Data, Me, dbID, m_DataType)
+            shape = New cForcingFunction(m_SimData, Me, dbID, m_DataType)
 
             shape.ID = m_shapes.Count
 
@@ -498,11 +502,11 @@ Public Class cForcingFunctionManager
 
         'clear out any existing data
         m_shapes.Clear()
-        For isp As Integer = 1 To m_Data.ForcingShapes
+        For isp As Integer = 1 To m_SimData.NumForcingShapes
 
-            If m_Data.ForcingShapeType(isp) = m_DataType Then
+            If m_SimData.ForcingShapeType(isp) = m_DataType Then
 
-                forcing = New cForcingFunction(m_Data, Me, m_Data.ForcingDBIDs(isp), m_DataType)
+                forcing = New cForcingFunction(m_SimData, Me, m_SimData.ForcingDBIDs(isp), m_DataType)
                 'keep the index of this forcing function in the list in the function itself
                 'it will be used later to return the list item for a given EcoSim array index
                 forcing.ID = m_shapes.Count
@@ -534,7 +538,7 @@ End Class
 ''' </summary>
 ''' <remarks>
 ''' </remarks>
-Public Class cMediationManager
+Public Class cMediationShapeManager
     Inherits cBaseShapeManager
 
     Private m_medData As cMediationDataStructures
@@ -570,7 +574,7 @@ Public Class cMediationManager
         If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
 
             'create a new shape that is hooked up to the underlying ecosim data
-            medFunct = New cMediationFunction(m_Data, Me, Me.m_medData, dbID, m_DataType)
+            medFunct = New cMediationFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
 
@@ -590,7 +594,7 @@ Public Class cMediationManager
     Friend Overrides Function Init() As Boolean
         Dim medFunct As cMediationFunction
 
-        m_medData = Me.m_Data.BioMedData
+        m_medData = Me.m_SimData.BioMedData
 
         'clear out any existing data
         m_shapes.Clear()
@@ -599,7 +603,7 @@ Public Class cMediationManager
             'All mediation shapes from the core will have an object 
             'A mediation function may have a shape but not have any Mediating Groups or weights (MedIsUsed(iMed) = False) 
             'Mediation function objects load there own group and weight data from the ecosim data via the Load() method
-            medFunct = New cMediationFunction(m_Data, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
+            medFunct = New cMediationFunction(m_SimData, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
             m_shapes.Add(medFunct)
@@ -620,7 +624,7 @@ End Class
 ''' </summary>
 ''' <remarks>
 ''' </remarks>
-Public Class cLandingsMediationManager
+Public Class cLandingsMediationShapeManager
     Inherits cBaseShapeManager
 
     Private m_medData As cMediationDataStructures
@@ -656,7 +660,7 @@ Public Class cLandingsMediationManager
         If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
 
             'create a new shape that is hooked up to the underlying ecosim data
-            medFunct = New cLandingsMediationFunction(m_Data, Me, Me.m_medData, dbID, m_DataType)
+            medFunct = New cLandingsMediationFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
 
@@ -676,7 +680,7 @@ Public Class cLandingsMediationManager
     Friend Overrides Function Init() As Boolean
         Dim medFunct As cLandingsMediationFunction
 
-        Me.m_medData = Me.m_Data.PriceMedData
+        Me.m_medData = Me.m_SimData.PriceMedData
 
         'clear out any existing data
         m_shapes.Clear()
@@ -685,7 +689,7 @@ Public Class cLandingsMediationManager
             'All mediation shapes from the core will have an object 
             'A mediation function may have a shape but not have any Mediating Groups or weights (MedIsUsed(iMed) = False) 
             'Mediation function objects load there own group and weight data from the ecosim data via the Load() method
-            medFunct = New cLandingsMediationFunction(m_Data, Me, Me.m_medData, Me.m_medData.MediationDBIDs(imed), Me.m_DataType)
+            medFunct = New cLandingsMediationFunction(m_SimData, Me, Me.m_medData, Me.m_medData.MediationDBIDs(imed), Me.m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
             m_shapes.Add(medFunct)
@@ -704,7 +708,7 @@ End Class
 ''' <summary>
 ''' Implemenation of the Base class for capacity shapes
 ''' </summary>
-Public Class cCapMapResponseManager
+Public Class cEnviroResponseShapeManager
     Inherits cBaseShapeManager
 
     Private m_medData As cMediationDataStructures
@@ -741,7 +745,7 @@ Public Class cCapMapResponseManager
             Dim medFunct As cEnviroResponseFunction
 
             'create a new shape that is hooked up to the underlying ecosim data
-            medFunct = New cEnviroResponseFunction(m_Data, Me, Me.m_medData, dbID, m_DataType)
+            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
 
@@ -764,14 +768,14 @@ Public Class cCapMapResponseManager
         Dim medFunct As cEnviroResponseFunction
 
         'get the Enviromental response function for Capacity 
-        m_medData = Me.m_Data.CapEnvResData
+        m_medData = Me.m_SimData.CapEnvResData
 
         'clear out any existing data
         m_shapes.Clear()
 
         For imed As Integer = 1 To m_medData.MediationShapes
             'All mediation shapes from the core will have an object 
-            medFunct = New cEnviroResponseFunction(m_Data, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
+            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
             medFunct.ID = m_shapes.Count
             medFunct.Load()
             m_shapes.Add(medFunct)
@@ -793,8 +797,8 @@ End Class
 ''' <remarks> Egg production and Forcing shapes are stored in the same data structures in EcoSim so most of their functionality is in cForcingFunctionManager. 
 ''' The only real difference is in how the data is applied to groups. Egg Production can only be applied to a Stanza Group.
 '''  So the manager contains a list of all the Stanza Groups that have an associated Egg Production shape.</remarks>
-Public Class cEggProductionManager
-    Inherits cForcingFunctionManager
+Public Class cEggProductionShapeManager
+    Inherits cForcingFunctionShapeManager
 
     Private m_grplist As cGroupShapeList
 
@@ -823,7 +827,7 @@ Public Class cEggProductionManager
     Private Function LoadGroupShapeList() As Boolean
         Try
             Dim shape As cForcingFunction
-            m_grplist = New cGroupShapeList(m_Data, MyBase.m_core.m_Stanza, Me)
+            m_grplist = New cGroupShapeList(m_SimData, MyBase.m_core.m_Stanza, Me)
 
             'EggProdShape data is only for Stanza groups data 
             'EggProdShapeSplit(iStanza) holds the forcing function shape index for this stanza group
@@ -866,7 +870,7 @@ Public Class cEggProductionManager
 
         Try
             'neither of these should ever happen 
-            Debug.Assert(GroupShapePair.iShape <= m_core.m_EcoSimData.ForcingShapes, Me.ToString & ".OnChanged() shape index out of bounds.")
+            Debug.Assert(GroupShapePair.iShape <= m_core.m_EcoSimData.NumForcingShapes, Me.ToString & ".OnChanged() shape index out of bounds.")
             Debug.Assert(GroupShapePair.iCoreStanzaIndex <= m_core.m_Stanza.Nsplit, Me.ToString & ".OnChanged() stanza index out of bounds.")
 
             'update the cores data
@@ -898,7 +902,7 @@ Public Class cGroupShapePair
     ''' <summary>Index of a shape in the cEggProductionManager.Item() list</summary>
     Private m_iManager As Integer
     Private m_shape As cForcingFunction
-    Private m_manager As cEggProductionManager
+    Private m_manager As cEggProductionShapeManager
 
 
     Public Function Clear() As Boolean
@@ -978,7 +982,7 @@ Public Class cGroupShapePair
 
 
 
-    Sub New(ByRef theManager As cEggProductionManager, ByRef Shape As cForcingFunction, ByVal StanzaIndex As Integer)
+    Sub New(ByRef theManager As cEggProductionShapeManager, ByRef Shape As cForcingFunction, ByVal StanzaIndex As Integer)
         m_manager = theManager
 
         'Zero based public stanza index for stanza list 
@@ -1030,9 +1034,9 @@ Public Class cGroupShapeList
     Private m_list As New List(Of cGroupShapePair)
     Private m_data As cEcosimDatastructures
     Private m_stanza As cStanzaDatastructures
-    Private m_manager As cEggProductionManager
+    Private m_manager As cEggProductionShapeManager
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef StanzaData As cStanzaDatastructures, ByRef EggProdManager As cEggProductionManager)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef StanzaData As cStanzaDatastructures, ByRef EggProdManager As cEggProductionShapeManager)
         m_data = EcoSimData
         m_manager = EggProdManager
         m_stanza = StanzaData
@@ -1093,7 +1097,7 @@ Public MustInherit Class cFishingBaseShapeManager
 
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
-            Return m_Data.NTimes
+            Return m_SimData.NTimes
         End Get
     End Property
 
@@ -1107,7 +1111,7 @@ End Class
 
 #Region " Fishing Rate Shape Manager "
 
-Public Class cFishingEffortManger
+Public Class cFishingEffortShapeManger
     : Inherits cFishingBaseShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
@@ -1128,9 +1132,9 @@ Public Class cFishingEffortManger
 
         'clear out any existing data
         m_shapes.Clear()
-        For iFleet = 1 To m_Data.nGear ' number of fishing fleets
+        For iFleet = 1 To m_SimData.nGear ' number of fishing fleets
 
-            shape = New cFishingRateShape(m_Data, Me, m_Data.FishRateGearDBID(iFleet), m_core.m_EcoPathData.FleetName(iFleet))
+            shape = New cFishingRateShape(m_SimData, Me, m_SimData.FishRateGearDBID(iFleet), m_core.m_EcoPathData.FleetName(iFleet))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
             shape.ID = m_shapes.Count
@@ -1140,14 +1144,14 @@ Public Class cFishingEffortManger
 
         Next iFleet
 
-        If m_Data.nGear > 0 Then
+        If m_SimData.nGear > 0 Then
             'Add the Combined Gear types shape to the end of the list
             'Its iFleet index is m_Data.nGear + 1 
             'this is critical as that is how the shape itself decides that it the Combined Fleets shape
             'the Combined Fleets shape updates all the other fleets as well as the FishMort shapes
-            shape = New cFishingRateShape(m_Data, Me, cCore.NULL_VALUE, My.Resources.CoreDefaults.CORE_ALL_FLEETS)
+            shape = New cFishingRateShape(m_SimData, Me, cCore.NULL_VALUE, My.Resources.CoreDefaults.CORE_ALL_FLEETS)
             shape.ID = m_shapes.Count
-            shape.Index = m_Data.nGear + 1
+            shape.Index = m_SimData.nGear + 1
             shape.Load()
             m_shapes.Add(shape)
         End If
@@ -1157,7 +1161,7 @@ Public Class cFishingEffortManger
     End Function
 
     Public Overrides Sub ResetToDefaults()
-        Me.m_Data.DefaultFishingRates()
+        Me.m_SimData.DefaultFishingRates()
         Me.Load()
         Me.ShapeChanged()
     End Sub
@@ -1172,7 +1176,7 @@ End Class
 
 #Region " Fish Mortality shape manager "
 
-Public Class cFishingMortalityManger
+Public Class cFishingMortalityShapeManger
     : Inherits cFishingBaseShapeManager
 
     Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
@@ -1192,11 +1196,11 @@ Public Class cFishingMortalityManger
 
         'clear out any existing data
         m_shapes.Clear()
-        For iGroup As Integer = 1 To m_Data.nGroups ' one shape for each group 
+        For iGroup As Integer = 1 To m_SimData.nGroups ' one shape for each group 
             ' Fishing rate shapes are no longer loaded from the DB
-            m_Data.FishRateNoDBID(iGroup) = Me.m_core.m_EcoSimData.GroupDBID(iGroup)
+            m_SimData.FishRateNoDBID(iGroup) = Me.m_core.m_EcoSimData.GroupDBID(iGroup)
 
-            shape = New cFishingMortShape(m_Data, Me, m_Data.FishRateNoDBID(iGroup), m_core.m_EcoPathData.GroupName(iGroup))
+            shape = New cFishingMortShape(m_SimData, Me, m_SimData.FishRateNoDBID(iGroup), m_core.m_EcoPathData.GroupName(iGroup))
             'keep the index of this forcing function in the list in the function itself
             'it will be used later to return the list item for a given EcoSim array index
             shape.ID = m_shapes.Count
@@ -1210,7 +1214,7 @@ Public Class cFishingMortalityManger
     End Function
 
     Public Overrides Sub ResetToDefaults()
-        Me.m_Data.DefaultFishMortalityRates()
+        Me.m_SimData.DefaultFishMortalityRates()
         Me.Load()
         Me.ShapeChanged()
     End Sub
@@ -1224,3 +1228,82 @@ End Class
 #End Region ' Fish Mortality shape manager
 
 #End Region ' Effort shape managers
+
+' ''' <summary>
+' ''' Implemenation of the Base class for capacity shapes
+' ''' </summary>
+'Public Class cEcosimResponseShapeManager
+'    Inherits cBaseShapeManager
+
+'    Private m_medData As cMediationDataStructures
+
+'    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+'        MyBase.New(EcoSimData, theCore, DataType)
+
+'        Me.Init()
+
+'    End Sub
+
+
+'    Public Overrides ReadOnly Property NPoints() As Integer
+'        Get
+'            Return m_medData.NMedPoints
+'        End Get
+'    End Property
+
+'    ''' <summary>
+'    ''' Create a new Mediation shape
+'    ''' </summary>
+'    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
+'            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
+'            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
+'            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+
+'        Dim dbID As Integer
+
+'        If m_core.AddShape(strName, eDataTypes.CapacityMediation, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
+
+'            Dim medFunct As cEnviroResponseFunction
+
+'            'create a new shape that is hooked up to the underlying ecosim data
+'            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
+'            medFunct.ID = m_shapes.Count
+'            medFunct.Load()
+
+'            medFunct.ShapeFunctionType = shapeType
+
+'            'Add the new shape to the list 
+'            MyBase.Add(medFunct)
+
+'            m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+
+'            Return medFunct
+
+'        End If
+
+'        Return Nothing
+
+'    End Function
+
+'    Friend Overrides Function Init() As Boolean
+'        Dim medFunct As cEnviroResponseFunction
+
+'        'get the Enviromental response function for Capacity 
+'        m_medData = Me.m_SimData.CapEnvResData
+
+'        'clear out any existing data
+'        m_shapes.Clear()
+
+'        For imed As Integer = 1 To m_medData.MediationShapes
+'            'All mediation shapes from the core will have an object 
+'            medFunct = New cEnviroResponseFunction(m_SimData, Me, Me.m_medData, m_medData.MediationDBIDs(imed), Me.m_DataType)
+'            medFunct.ID = m_shapes.Count
+'            medFunct.Load()
+'            m_shapes.Add(medFunct)
+
+'        Next imed
+'        Me.Load()
+
+'    End Function
+
+'End Class

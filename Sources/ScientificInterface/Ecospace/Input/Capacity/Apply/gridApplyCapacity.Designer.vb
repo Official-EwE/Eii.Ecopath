@@ -20,8 +20,8 @@
 
 Namespace Ecospace
 
-    Partial Class ucApplyMapResponseGrid
-        Inherits Ecosim.gridApplyShapeBase
+    Partial Class gridApplyMapResponses
+        Inherits gridApplyShapeBase
 
         <System.Diagnostics.DebuggerNonUserCode()> _
         Public Sub New(ByVal container As System.ComponentModel.IContainer)

@@ -23,7 +23,7 @@ Imports ScientificInterfaceShared.Forms
 Namespace Ecospace
 
     Partial Class frmApplyCapacity
-        Inherits Ecosim.frmApplyShapeBase
+        Inherits frmApplyShapeBase
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -49,7 +49,7 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyCapacity))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnDefineInputMaps = New System.Windows.Forms.ToolStripButton()
-            Me.m_grid = New ScientificInterface.Ecospace.ucApplyMapResponseGrid(Me.components)
+            Me.m_grid = New ScientificInterface.Ecospace.gridApplyMapResponses(Me.components)
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -112,7 +112,7 @@ Namespace Ecospace
 
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsbnDefineInputMaps As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_grid As ScientificInterface.Ecospace.ucApplyMapResponseGrid
+        Private WithEvents m_grid As ScientificInterface.Ecospace.gridApplyMapResponses
 
     End Class
 

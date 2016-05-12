@@ -33,6 +33,20 @@ Public Class cExponentialShapeFunction
     End Sub
 
     ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
+        Get
+            Select Case iParam
+                'Only override the scalar name
+                Case 4 : Return "Y scalar"
+            End Select
+            Return MyBase.ParamName(iParam)
+        End Get
+    End Property
+
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>
     ''' Returns the points for an exponential shape.
@@ -62,6 +76,8 @@ Public Class cExponentialShapeFunction
             Next i
         End If
 
+        Me.ScaleData(nPoints, ParamValue(4))
+
         Return MyBase.Shape(nPoints)
 
     End Function
@@ -70,9 +86,10 @@ Public Class cExponentialShapeFunction
     ''' <inheritdocs cref="cShapeFunction.Defaults"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
-        Me.ParamValue(1) = 1.0
-        Me.ParamValue(2) = 5.0
-        Me.ParamValue(3) = 0.2
+        Me.ParamValue(1) = 1.0F
+        Me.ParamValue(2) = 5.0F
+        Me.ParamValue(3) = 0.2F
+        Me.ParamValue(4) = 1.0F
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -87,7 +104,7 @@ Public Class cExponentialShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 3
+            Return 4
         End Get
     End Property
 

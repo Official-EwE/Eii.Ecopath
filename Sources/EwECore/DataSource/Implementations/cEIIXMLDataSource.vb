@@ -1143,13 +1143,6 @@ Public Class cEIIXMLDataSource
                 ecosimDS.CmCo(iGroup) = CSng(drow("CmCo"))
                 ecosimDS.SwitchPower(iGroup) = CSng(drow("SwitchPower"))
                 ecosimDS.GroupFishRateNoDBID(iGroup) = CInt(drow("FishMortShapeID"))
-                ' ToDo: make number of response functions flexible
-                ecosimDS.EnvResponseOpt(1, iGroup) = CSng(Me.ReadSafe(drow, "SalOpt", 35.0!))
-                ecosimDS.EnvResponseSdLeft(1, iGroup) = CSng(Me.ReadSafe(drow, "SdSalLeft", 1000.0!))
-                ecosimDS.EnvResponseSdRight(1, iGroup) = CSng(Me.ReadSafe(drow, "SdSalRight", 1000.0!))
-                ecosimDS.EnvResponseOpt(2, iGroup) = CSng(Me.ReadSafe(drow, "TempOpt", 10.0!))
-                ecosimDS.EnvResponseSdLeft(2, iGroup) = CSng(Me.ReadSafe(drow, "TempLeft", 1000.0!))
-                ecosimDS.EnvResponseSdRight(2, iGroup) = CSng(Me.ReadSafe(drow, "TempRight", 1000.0!))
 
                 mseDS.Blim(iGroup) = CSng(Me.ReadSafe(drow, "Blim", mseDS.Blim(iGroup), cCore.NULL_VALUE))
                 mseDS.Bbase(iGroup) = CSng(Me.ReadSafe(drow, "Bbase", mseDS.Bbase(iGroup), cCore.NULL_VALUE))
@@ -1372,14 +1365,14 @@ Public Class cEIIXMLDataSource
         Dim iFishRateShape As Integer = 0
         Dim bSucces As Boolean = True
 
-        ecosimDS.ForcingShapes = 0
+        ecosimDS.NumForcingShapes = 0
         PredPreyMedDS.MediationShapes = 0
         LandingsMedDS.MediationShapes = 0
         CapEnvResMedDS.MediationShapes = 0
 
         For Each drow As DataRow In dt.Rows
             Select Case DirectCast(CInt(drow("ShapeType")), eDataTypes)
-                Case eDataTypes.EggProd, eDataTypes.Forcing : ecosimDS.ForcingShapes += 1
+                Case eDataTypes.EggProd, eDataTypes.Forcing : ecosimDS.NumForcingShapes += 1
                 Case eDataTypes.Mediation : PredPreyMedDS.MediationShapes += 1
                 Case eDataTypes.PriceMediation : LandingsMedDS.MediationShapes += 1
                 Case eDataTypes.CapacityMediation : CapEnvResMedDS.MediationShapes += 1
@@ -1450,11 +1443,6 @@ Public Class cEIIXMLDataSource
             ' Read and assign scenario forcing shape number(s)
             iForcingShape = CInt(Me.ReadSafe(drow, "NutForcingShapeID", 0))
             ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
-            ' ToDo: make this flexible
-            iForcingShape = CInt(Me.ReadSafe(drow, "SalinityForcingShapeID", 0))
-            ecosimDS.EnvResponseForceNo(1) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
-            iForcingShape = CInt(Me.ReadSafe(drow, "TemperatureForcingShapeID", 0))
-            ecosimDS.EnvResponseForceNo(2) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
         Catch ex As Exception
             bSucces = False
         End Try
@@ -1465,6 +1453,7 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadLandingInteractions()
         bSucces = bSucces And Me.LoadMediationWeights()
         bSucces = bSucces And Me.LoadStanzaShapeAssignments()
+        bSucces = bSucces And Me.LoadEcosimCapacityDrivers()
 
         Return bSucces
 
@@ -1532,7 +1521,7 @@ Public Class cEIIXMLDataSource
         dtTime.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
         drow = dtTime.DefaultView.ToTable.Rows(0)
         Try
- 
+
             shapeParms.ShapeFunctionType = CLng(Me.ReadSafe(drow, "FunctionType", 0))
             shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
@@ -2047,6 +2036,40 @@ Public Class cEIIXMLDataSource
         Return bSucces
     End Function
 
+    Private Function LoadEcosimCapacityDrivers() As Boolean
+
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioCapacityDrivers")
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        Dim rows As DataRowCollection = dt.DefaultView.ToTable.Rows()
+
+        Try
+            For iRow As Integer = 0 To rows.Count - 1
+                Dim drow As DataRow = rows(iRow)
+
+                Dim iGroup As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("GroupID")))
+                Dim iShapeDriver As Integer = Array.IndexOf(ecosimDS.ForcingDBIDs, CInt(drow("DriverID")))
+                Dim iShapeResponse As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(drow("ResponseID")))
+
+                If (iGroup > 0) And (iShapeDriver > 0) And (iShapeResponse > 0) Then
+                    ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) = iShapeResponse
+                End If
+            Next iRow
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        dt.Dispose()
+
+        Return bSucces
+
+    End Function
 #End Region ' Ecosim
 
 #Region " Ecospace "
@@ -3223,13 +3246,13 @@ Public Class cEIIXMLDataSource
         If shapeType = eDataTypes.Mediation Then
             Return False
         Else
-            Dim tmpNumberOfShapes As Integer = ecosimDS.ForcingShapes + 1
+            Dim tmpNumberOfShapes As Integer = ecosimDS.NumForcingShapes + 1
 
             'add the shape to the underlying EcoSim data
             b_return = ecosimDS.ResizeForcingShapes(tmpNumberOfShapes, tmpNumberOfShapes)
 
             'fake DB id's
-            For i As Integer = 1 To ecosimDS.ForcingShapes
+            For i As Integer = 1 To ecosimDS.NumForcingShapes
                 ecosimDS.ForcingDBIDs(i) = i
             Next
 
@@ -3255,12 +3278,12 @@ Public Class cEIIXMLDataSource
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
-        Debug.Assert(ecosimDS.ForcingShapes - 1 > 0, "No more shapes to remove")
+        Debug.Assert(ecosimDS.NumForcingShapes - 1 > 0, "No more shapes to remove")
         'jb this is just for testing 
-        ecosimDS.ResizeForcingShapes(ecosimDS.ForcingShapes - 1)
+        ecosimDS.ResizeForcingShapes(ecosimDS.NumForcingShapes - 1)
 
         'hack to fake database IDs
-        For i As Integer = 1 To ecosimDS.ForcingShapes
+        For i As Integer = 1 To ecosimDS.NumForcingShapes
             ecosimDS.ForcingDBIDs(i) = i
         Next
 

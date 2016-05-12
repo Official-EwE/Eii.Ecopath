@@ -39,6 +39,27 @@ Public Class cShapeFunctionFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get an initialized <see cref="IShapeFunction"/> for a given <see cref="cForcingFunction"/>
+    ''' </summary>
+    ''' <param name="shape"></param>
+    ''' <param name="pm"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetShapeFunction(ByVal shape As cForcingFunction,
+                                            Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction
+
+        For Each sf As IShapeFunction In GetShapeFunctions(pm)
+            If (shape.ShapeFunctionType = sf.ShapeFunctionType) Then
+                sf.Init(shape)
+                Return sf
+            End If
+        Next
+        Return Nothing
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns all <see cref="IShapeFunction">shape functions</see>, optionally
     ''' filtered for compatibility with - and initialized to - a given 
     ''' <see cref="cForcingFunction"/>.
@@ -50,7 +71,7 @@ Public Class cShapeFunctionFactory
     ''' An array of compatible <see cref="IShapeFunction">shape function</see> instances.
     ''' </returns> 
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetShapeFunctions(ByVal shape As cForcingFunction, _
+    Public Shared Function GetShapeFunctions(ByVal shape As cForcingFunction,
                                              Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction()
 
         Dim lfs As New List(Of IShapeFunction)

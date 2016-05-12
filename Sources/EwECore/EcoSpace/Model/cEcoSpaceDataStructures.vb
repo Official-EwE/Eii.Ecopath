@@ -536,25 +536,6 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public barrierAvoidanceWeight() As Single
 
-
-    'VC Hobart Sep 2008: We need a data structure for handling salinity, temperature, etc.
-    'JS Nov 2011: consider how this logic interoperates with the new Driver layers.
-    'it should eventually (perhaps) be dimensioned with time steps as well. 
-    Public SpatialField(,,) As Single               'row, col, index
-    Public SpatialFieldOptimum(,) As Single   ' group, index
-    Public SpatialFieldStdLeft(,) As Single   ' group, index   = left side of normal distribution
-    Public SpatialFieldStdRight(,) As Single  ' group, index   = right side of normal dist
-    Public nSpatialFields As Integer      'this is to be read from the init file when connecting to other
-    'models, or when we have interface for this it will be read from Ecosim info
-    Public SpatialFieldsInUse As Boolean   'Use this to turn on the processing of spatial fields in SpaceSolver
-
-
-    'VC Hobart Sep 2008: we need a way to handle species distribution envelopes. 
-    'we now assign groups/species to habitats, but to address climate change issues, it would make more sense
-    'to use a distribution envelope, so that we can limit the species to their actual occurrence area, rather
-    'than everywhere on a basemap where the right habitat is available
-    'Public DistributionEnvelope(,,) As Boolean 'format: row, col, group
-
     ''' <summary>Predation rate by Row, Col, Prey/Pred link</summary>
     ''' <remarks>Added for Model coupling</remarks>
     Public MPred(,,) As Single
@@ -599,7 +580,7 @@ Public Class cEcospaceDataStructures
     Public CapMapFunctions(,) As Integer
 
     ' Generate for each driver layer + 0 which is depth
-    Public CapMaps As IEnviroInputMap()
+    Public CapMaps As IEnviroInputData()
 
     ''' <summary>
     ''' Capacity calculation type per group

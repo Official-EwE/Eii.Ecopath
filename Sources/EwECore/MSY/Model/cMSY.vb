@@ -920,7 +920,7 @@ Namespace MSY
                 Me.m_Ecosim.clearMonthlyStanzaVars()
 
                 'Run the rk4 this is the main engine of Ecosim
-                Me.m_Ecosim.rk4(bb, Me.m_msyData.nGroups, t, DeltaT, True)
+                Me.m_Ecosim.rk4(bb, t, DeltaT, imon, True)
                 t += DeltaT
 
                 'Reset the biomass back to the start biomass if the group is forced

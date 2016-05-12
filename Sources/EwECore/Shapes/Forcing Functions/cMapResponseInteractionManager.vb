@@ -26,7 +26,7 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cMapResponseInteractionManager
+Public Class cEcospaceEnviroResponseManager
     Inherits cCoreInputOutputBase
 
 #Region "Private data"

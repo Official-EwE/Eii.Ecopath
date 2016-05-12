@@ -38,25 +38,25 @@ Public MustInherit Class cShoulderShapeFunction
 
         If (Me.ParamsChanged) Then
 
-            Dim sYZero As Single = Me.ParamValue(1)
-            Dim sYEnd As Single = Me.ParamValue(2)
-            Dim sYBase As Single = Me.ParamValue(3)
+            Dim LeftPt As Single = Me.ParamValue(1)
+            Dim RightPt As Single = Me.ParamValue(2)
+            Dim WidthX As Single = Me.ParamValue(3)
             Dim xpt As Single
             Dim width As Single = Me.ParamValue(3)
             'x0 is the value of the first x point
             'if the user set the first point to < zero 
             'then shift x0 over by one point to get a bit of room for the shoulder 
             Dim x0 As Single = 0
-            If sYZero < 0 Then
-                x0 = sYZero - 1.0F
-                width = sYBase - x0
+            If LeftPt < 0 Then
+                x0 = LeftPt - 1.0F
+                width = WidthX - x0
             End If
 
             Dim dx As Single = width / nPoints
 
-            If sYBase = 0 Then sYBase = 1
-            If sYZero > sYEnd Then sYEnd = sYZero
-            If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
+            If WidthX = 0 Then WidthX = 1
+            If LeftPt > RightPt Then RightPt = LeftPt
+            If WidthX < LeftPt Or WidthX < RightPt Then WidthX = RightPt + 1
 
             Dim yVal() As Single
             If (Me.ShapeFunctionType = eShapeFunctionType.LeftShoulder) Then
@@ -65,10 +65,10 @@ Public MustInherit Class cShoulderShapeFunction
                 yVal = New Single() {0, 0, 1, 1}
             End If
 
-            Dim xVal() As Single = New Single() {x0, sYZero, sYEnd, sYBase}
+            Dim xVal() As Single = New Single() {x0, LeftPt, RightPt, WidthX}
             'Break the line up into segments based on the xpoints the user entered
             'The location of the shoulder in the response function is determined by it's index position in the points array
-            Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sYBase, nPoints), Me.getIndex(sYEnd, x0, sYBase, nPoints), nPoints}
+            Dim iSegment() As Integer = New Integer() {0, Me.getIndex(LeftPt, x0, WidthX, nPoints), Me.getIndex(RightPt, x0, WidthX, nPoints), nPoints}
 
             ' JS 160914: This is not right; the original shape cannot be modified until the user clicks 'OK'
             '            This has to move to some kind of 'Apply' function

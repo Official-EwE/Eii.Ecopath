@@ -41,7 +41,7 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_EPManager As cEggProductionManager = Nothing
+        Private m_EPManager As cEggProductionShapeManager = Nothing
         Private m_astrShapes() As String = Nothing
         Private m_ceCellClick As New BehaviorModels.CustomEvents
 

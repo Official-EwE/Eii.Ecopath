@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -36,7 +36,7 @@ Imports EwEUtils.SystemUtilities
 ''' Grid for showing mediation shapes that interact on habitat capacity.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class gridHabitatCapacity
+Public Class gridFunctionalResponses
     Inherits gridMediation
 
     Private m_handler As cCapacityShapeGUIHandler = Nothing
@@ -67,7 +67,7 @@ Public Class gridHabitatCapacity
 
     Public Overrides ReadOnly Property Manager() As System.Collections.IEnumerable
         Get
-            Return Me.Core.CapacityShapeManager
+            Return Me.Core.EnviroResponseShapeManager
         End Get
     End Property
 
@@ -107,7 +107,7 @@ Public Class gridHabitatCapacity
         For i As Integer = 0 To iNumShapes - 1
 
             Dim env As cEnviroResponseFunction = DirectCast(shapes(i), cEnviroResponseFunction)
-            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
+            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.OK)
 
             Me.Shape(i + 1) = env
             Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))

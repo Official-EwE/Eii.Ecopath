@@ -95,12 +95,12 @@ Namespace Ecosim
                 For iPrey As Integer = 1 To Core.nGroups
 
                     ' Can assign FF at this spot in the matrix?
-                    If m_InteractionManager.isPredPrey(iPred, iPrey) Then
+                    If m_interactionManager.isPredPrey(iPred, iPrey) Then
 
-                        interaction = m_InteractionManager.PredPreyInteraction(iPred, iPrey)
+                        interaction = m_interactionManager.PredPreyInteraction(iPred, iPrey)
                         interaction.LockUpdates = True
 
-                        For i As Integer = 1 To Me.m_InteractionManager.MaxNShapes
+                        For i As Integer = 1 To Me.m_interactionManager.MaxNShapes
                             interaction.getShape(i, ff, application)
 
                             ' Only delete pairs of current type
@@ -181,7 +181,7 @@ Namespace Ecosim
             Dim ff As cForcingFunction = Nothing
             Dim PPI As cMediatedInteraction = Nothing
 
-            If (Me.m_InteractionManager Is Nothing) Then Return
+            If (Me.m_interactionManager Is Nothing) Then Return
             If (Me.m_applyShapeMode = eShapeCategoryTypes.NotSet) Then Return
 
             ' For each predator column
@@ -193,9 +193,9 @@ Namespace Ecosim
                     Dim iPrey As Integer = iRow
 
                     ' Can assign FF at this spot in the matrix?
-                    If m_InteractionManager.isPredPrey(iPred, iPrey) Then
+                    If m_interactionManager.isPredPrey(iPred, iPrey) Then
 
-                        PPI = m_InteractionManager.PredPreyInteraction(iPred, iPrey)
+                        PPI = m_interactionManager.PredPreyInteraction(iPred, iPrey)
                         Dim shape As cForcingFunction = Nothing
                         Dim aplType As eForcingFunctionApplication
                         Dim sb As New StringBuilder()

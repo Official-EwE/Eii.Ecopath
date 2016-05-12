@@ -48,13 +48,12 @@ Public Class cForcingFunction
 
     ' Parameters use to build a Curve
     'these are the variables is cEcoSimDatastructures.ShapeParameters
-    Protected m_YZero As Single
-    Protected m_YBase As Single
-    Protected m_YEnd As Single
-    Protected m_Steep As Single
-    Protected m_ZScale As Single
-
+    Protected m_p0 As Single
+    Protected m_p1 As Single
+    Protected m_p2 As Single
+    Protected m_p3 As Single
     Protected m_ShapeFunctionType As Long
+
     Protected m_ForcingApplicationType As eForcingApplicationTypes
 
     'this flag is used to stop updating during initialization
@@ -70,10 +69,10 @@ Public Class cForcingFunction
 
     Public Property YZero() As Single
         Get
-            Return Me.m_YZero
+            Return Me.m_p0
         End Get
         Set(ByVal value As Single)
-            Me.m_YZero = value
+            Me.m_p0 = value
             Me.Update()
         End Set
     End Property
@@ -81,30 +80,30 @@ Public Class cForcingFunction
 
     Public Property YBase() As Single
         Get
-            Return Me.m_YBase
+            Return Me.m_p1
         End Get
         Set(ByVal value As Single)
-            Me.m_YBase = value
+            Me.m_p1 = value
             Me.Update()
         End Set
     End Property
 
     Public Property YEnd() As Single
         Get
-            Return Me.m_YEnd
+            Return Me.m_p2
         End Get
         Set(ByVal value As Single)
-            Me.m_YEnd = value
+            Me.m_p2 = value
             Me.Update()
         End Set
     End Property
 
     Public Property Steep() As Single
         Get
-            Return Me.m_Steep
+            Return Me.m_p3
         End Get
         Set(ByVal value As Single)
-            Me.m_Steep = value
+            Me.m_p3 = value
             Me.Update()
         End Set
     End Property
@@ -128,12 +127,6 @@ Public Class cForcingFunction
             Me.Update()
         End Set
     End Property
-
-    'Public ReadOnly Property ZScale() As Single
-    '    Get
-    '        Return Me.m_ZScale
-    '    End Get
-    'End Property
 
     ''' <summary>
     ''' Index of the shape in the list managers list of shape
@@ -227,13 +220,12 @@ Public Class cForcingFunction
 
         'shape parameters
         m_ShapeFunctionType = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_YZero = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
-        m_YBase = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
-        m_YEnd = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
-        m_Steep = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
-        m_ZScale = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4)
+        m_p0 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
+        m_p1 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
+        m_p2 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
+        m_p3 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
 
-        Me.isSeasonal = m_data.isSeasonal(m_iEcoSimIndex)
+        Me.IsSeasonal = m_data.isSeasonal(m_iEcoSimIndex)
 
         Me.UnlockUpdates()
         m_bInInit = False
@@ -279,7 +271,7 @@ Public Class cForcingFunction
             'turn the Database ID into an Array index using the Ecosim Data structures database ID this value should be good
             m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_iDBID)
             Debug.Assert(m_iEcoSimIndex >= 0, Me.ToString & ".Update() Failed to find index for Database ID " & m_iDBID)
-            If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_data.ForcingShapes) Then
+            If (m_iEcoSimIndex = cCore.NULL_VALUE) Or (m_iEcoSimIndex > m_data.NumForcingShapes) Then
                 cLog.Write(Me.ToString & ".Update() index out of bounds. Data not updated.")
                 Return False
             End If
@@ -300,11 +292,10 @@ Public Class cForcingFunction
 
             'shape parameters
             m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_YZero
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_YBase
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_YEnd
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_Steep
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4) = m_ZScale
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_p0
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_p1
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_p2
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_p3
 
             m_data.isSeasonal(m_iEcoSimIndex) = Me.IsSeasonal()
 
@@ -331,6 +322,12 @@ Public Class cForcingFunction
     End Sub
 
 #End Region ' Updating
+
+    Public Overridable Function ToCSVString() As String
+
+        Return Me.Name + ", mean " + Me.m_p3.ToString + ", YZero " + Me.m_p0.ToString + ", YEnd " + Me.m_p2.ToString
+
+    End Function
 
 End Class ' cForcingFunction
 
@@ -526,11 +523,10 @@ Public MustInherit Class cMediationBaseFunction
 
         'shape parameters
         m_ShapeFunctionType = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_Steep = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
-        m_YBase = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
-        m_YEnd = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
-        m_YZero = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
-        m_ZScale = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4)
+        m_p0 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
+        m_p1 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
+        m_p2 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
+        m_p3 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
 
         Me.UnlockUpdates()
         m_bInInit = False
@@ -652,11 +648,10 @@ Public MustInherit Class cMediationBaseFunction
 
         'shape parameters
         m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_YZero
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_YBase
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_YEnd
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_Steep
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(4) = m_ZScale
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_p0
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_p1
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_p2
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_p3
 
         Return True
 
@@ -1419,8 +1414,8 @@ Public Class cEnviroResponseFunction
 
     End Sub
 
-    Public Overrides Function Update() As Boolean
 
+    Public Overrides Function Update() As Boolean
         MyBase.Update()
 
         'do not update during initialization
@@ -1433,6 +1428,7 @@ Public Class cEnviroResponseFunction
         Return True
 
     End Function
+
 
 #Region " Response function "
 

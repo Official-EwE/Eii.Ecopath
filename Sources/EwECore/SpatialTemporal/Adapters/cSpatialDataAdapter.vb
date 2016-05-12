@@ -181,8 +181,8 @@ Namespace SpatialData
             Get
                 ' This is hack!
                 If (Me.m_varName = eVarNameFlags.LayerDriver) Then
-                    Dim manager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
-                    Dim map As IEnviroInputMap = Nothing
+                    Dim manager As IEnvironmentalResponseManager = Me.m_core.CapacityMapInteractionManager
+                    Dim map As IEnviroInputData = Nothing
 
                 End If
                 Return eStatusFlags.OK

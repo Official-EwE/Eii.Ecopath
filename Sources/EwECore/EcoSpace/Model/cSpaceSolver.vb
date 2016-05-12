@@ -955,18 +955,6 @@ Public Class cSpaceSolver
     '''</remarks>
     Sub ApplyAVmodifiers(ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim K As Integer, Mult As Single
-        'VC Hobart Sep 2008. Added row and col numbers to the call to this routine, as they are needed for spatial fields
-
-        'VC Hobart Sep 2008. Adding temperature and salinity fields to Ecospace,
-        'for now it's just readable in code, we'll need interface and database handling as well
-        If m_Data.SpatialFieldsInUse Then
-            For iSF As Integer = 1 To m_Data.nSpatialFields
-                m_Ecosim.ApplySalinityModifier(A, m_Data.SpatialField(iRow, iCol, j), _
-                                               m_Data.SpatialFieldOptimum(j, iSF), _
-                                               m_Data.SpatialFieldStdLeft(j, iSF), _
-                                               m_Data.SpatialFieldStdRight(j, iSF))
-            Next
-        End If
 
         For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 

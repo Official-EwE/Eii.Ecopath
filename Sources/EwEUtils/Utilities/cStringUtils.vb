@@ -303,6 +303,10 @@ Namespace Utilities
             Return strOut
         End Function
 
+        Public Shared Function MaxLength(ByVal strIn As String, iMaxLength As Integer) As String
+            Return strIn.Substring(0, Math.Min(strIn.Length, iMaxLength))
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Converts an arabic value into a roman representation.

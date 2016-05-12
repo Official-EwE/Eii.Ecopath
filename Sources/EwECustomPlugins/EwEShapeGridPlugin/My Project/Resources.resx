@@ -150,11 +150,11 @@
   <data name="GRID_FISHMORT" xml:space="preserve">
     <value>Fishing mortality functions grid</value>
   </data>
+  <data name="GRID_FNRESPONSES" xml:space="preserve">
+    <value>Functional responses grid</value>
+  </data>
   <data name="GRID_FORCING" xml:space="preserve">
     <value>Forcing functions grid</value>
-  </data>
-  <data name="GRID_HABCAP" xml:space="preserve">
-    <value>Functional response functions grid</value>
   </data>
   <data name="GRID_MED_LANDINGS" xml:space="preserve">
     <value>Price elasticity functions grid</value>

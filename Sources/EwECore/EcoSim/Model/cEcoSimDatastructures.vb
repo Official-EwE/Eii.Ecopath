@@ -138,16 +138,26 @@ Public Class cEcosimDatastructures
     ''' <summary>Base proportion of free nutrients.</summary>
     Public NutBaseFreeProp As Single
 
-    ' Allocate room for 6 env functions max. Should this number be flexible?
-    Public NumEnvResponseFunctions As Integer = 6
-    Public EnvResponseForceName() As String
-    Public EnvResponseForceNo() As Integer
-    ''' <summary>Environmental response optimum (function x group)</summary>
-    Public EnvResponseOpt(,) As Single
-    ''' <summary>Environmental response left (function x group)</summary>
-    Public EnvResponseSdLeft(,) As Single
-    ''' <summary>Environmental response right (function x group)</summary>
-    Public EnvResponseSdRight(,) As Single
+    Public ReadOnly Property NumEnvResponseFunctions As Integer
+        Get
+            Return Me.NumForcingShapes
+        End Get
+    End Property
+
+    'Public EnvResponseForceName() As String
+    'Public EnvResponseForceNo() As Integer
+    ' ''' <summary>Environmental response optimum (function x group)</summary>
+    'Public EnvResponseOpt(,) As Single
+    ' ''' <summary>Environmental response left (function x group)</summary>
+    'Public EnvResponseSdLeft(,) As Single
+    ' ''' <summary>Environmental response right (function x group)</summary>
+    'Public EnvResponseSdRight(,) As Single
+
+    ''' <summary>
+    ''' Index of the Response function that has been applied to this EnviromentalDrive and Group (driver,group)
+    ''' </summary>
+    ''' <remarks>EnvRespFuncIndex(1,2) = 10 means that the tenth response function has been applied to the first environmental driver and second group</remarks>
+    Public EnvRespFuncIndex(,) As Integer
 
     'dimensions for nutrient calculation
     Public NutMin As Single
@@ -444,7 +454,7 @@ Public Class cEcosimDatastructures
     Public jlink() As Integer
 
     'Forcing
-    Public ForcingShapes As Integer
+    Public NumForcingShapes As Integer
     Public ForcingTitles() As String
 
     Public ForcePoints As Integer = DEFAULT_N_FORCINGPOINTS 'number of points per forcing function
@@ -597,6 +607,10 @@ Public Class cEcosimDatastructures
     Public EffortConversionFactor() As Single
 
 
+    Public lstEnviroInputData As List(Of IEnviroInputData)
+
+    Public EcosimEnvResFunctions As New cMediationDataStructures
+
     Public Sub RedimVars()
 
         'jb I don't know why these where split up there may be some kind of a reason
@@ -627,19 +641,6 @@ Public Class cEcosimDatastructures
         Dim i, j As Integer
 
         ReDim GroupDBID(nGroups)
-
-        ReDim EnvResponseForceNo(NumEnvResponseFunctions)
-        ReDim EnvResponseForceName(NumEnvResponseFunctions)
-        ReDim EnvResponseOpt(NumEnvResponseFunctions, nGroups)
-        ReDim EnvResponseSdLeft(NumEnvResponseFunctions, nGroups)
-        ReDim EnvResponseSdRight(NumEnvResponseFunctions, nGroups)
-
-        'ReDim SalOpt(nGroups)
-        'ReDim SdSalLeft(nGroups)
-        'ReDim SdSalRight(nGroups)
-        'ReDim TempOpt(nGroups)
-        'ReDim TempLeft(nGroups)
-        'ReDim TempRight(nGroups)
 
         'ReDim BaseTimeSwitch(nGroups)
         ReDim SwitchPower(nGroups)
@@ -719,6 +720,9 @@ Public Class cEcosimDatastructures
 
         ReDim EffortConversionFactor(nGear)
 
+        ' JS 3May16: make sure there is no overhang from past scenarios
+        Me.lstEnviroInputData.Clear()
+
     End Sub
 
     Public Sub RedimOutputsByTime(ByVal nTimesteps As Integer)
@@ -750,40 +754,12 @@ Public Class cEcosimDatastructures
         Me.FishRateNo = Nothing ' (nGroups, nTimeSteps))  'was 1200
         Me.FishRateGear = Nothing '  (nGear + 1, nTimeSteps))  'was 1200
 
-        'Me.Medpoints = Nothing ' (NMedPoints, MediationShapes)
-        'Me.MedWeights = Nothing ' (nGroups + nGear, MediationShapes)
-        'Me.NMedXused = Nothing ' (MediationShapes)
-        'Me.IMedUsed = Nothing ' (nGroups + nGear, MediationShapes)
-        'Me.MedXbase = Nothing ' (MediationShapes)
-        'Me.MedYbase = Nothing ' (MediationShapes)
-        'Me.MedIsUsed = Nothing ' (MediationShapes)
-        'Me.MedVal = Nothing ' (MediationShapes)
-        'Me.IMedBase = Nothing ' (MediationShapes)
-
-        ''jb added
-        'Me.MediationTitles = Nothing ' (MediationShapes)
-        'Me.MediationShapeParams = Nothing ' (MediationShapes)
-        'Me.MediationDBIDs = Nothing ' (MediationShapes)
-
         Me.FIB = Nothing ' (nTimesteps)
         Me.TLC = Nothing ' (nTimesteps)     'TL of catch in Ecosim
         Me.Kemptons = Nothing ' (nTimesteps)
         Me.CatchSim = Nothing ' (nTimesteps)
 
         Me.GroupDBID = Nothing ' (nGroups)
-
-        Me.EnvResponseForceName = Nothing
-        Me.EnvResponseOpt = Nothing
-        Me.EnvResponseSdLeft = Nothing
-        Me.EnvResponseSdRight = Nothing
-        'Me.SalOpt = Nothing ' (nGroups)
-        'Me.SdSalLeft = Nothing ' (nGroups)
-        'Me.SdSalRight = Nothing ' (nGroups)
-
-        ''VC Hobart Sep 2008: Adding temperature optimum
-        'Me.TempOpt = Nothing ' (nGroups)
-        'Me.TempLeft = Nothing ' (nGroups)
-        'Me.TempRight = Nothing ' (nGroups)
 
         'me.BaseTimeSwitch = nothing ' (nGroups)
         Me.SwitchPower = Nothing ' (nGroups)
@@ -866,6 +842,8 @@ Public Class cEcosimDatastructures
         Me.zscale = Nothing
         Me.PeatArena = Nothing
 
+        Me.lstEnviroInputData.Clear()
+
     End Sub
 
     ''' <summary>
@@ -886,7 +864,7 @@ Public Class cEcosimDatastructures
 
             'this will over write any values already in the shape arrays
             'so after this they must be repopulated
-            For i = 0 To ForcingShapes
+            For i = 0 To NumForcingShapes
 
                 tval(i) = 1      'For forcing functions
                 ForcingDBIDs(i) = cCore.NULL_VALUE 'default un-initialized database ID
@@ -978,18 +956,19 @@ Public Class cEcosimDatastructures
 
         Try
             Debug.Assert(NumYears > 0, Me.ToString & ".redimForcingShapes() TotalTime must be set to redim Forcing Shapes.")
+            ReDim EnvRespFuncIndex(NumEnvResponseFunctions, nGroups)
 
-            ReDim zscale(ForcePoints, ForcingShapes)
-            ReDim tval(ForcingShapes)
-            ReDim ForcingTitles(ForcingShapes)
+            ReDim zscale(ForcePoints, NumForcingShapes)
+            ReDim tval(NumForcingShapes)
+            ReDim ForcingTitles(NumForcingShapes)
 
             'variable added for EwE6
-            ReDim ForcingShapeType(ForcingShapes) 'Time or Egg Prod
-            ReDim ForcingShapeParams(ForcingShapes)
-            ReDim ForcingApplicationType(ForcingShapes)
-            ReDim ForcingDBIDs(ForcingShapes)
+            ReDim ForcingShapeType(NumForcingShapes) 'Time or Egg Prod
+            ReDim ForcingShapeParams(NumForcingShapes)
+            ReDim ForcingApplicationType(NumForcingShapes)
+            ReDim ForcingDBIDs(NumForcingShapes)
 
-            ReDim isSeasonal(ForcingShapes)
+            ReDim isSeasonal(NumForcingShapes)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimForcingShapes() Error: " & ex.Message)
@@ -1042,13 +1021,13 @@ Public Class cEcosimDatastructures
             'Can't Redim Preserve the first dimension
             'so we need to copy the values back into the new zscale()
             Dim orgZscale(,) As Single
-            ReDim orgZscale(orgPts, ForcingShapes)
+            ReDim orgZscale(orgPts, NumForcingShapes)
             Array.Copy(zscale, orgZscale, orgZscale.Length)
 
-            ReDim zscale(ForcePoints, ForcingShapes)
-            ReDim tval(ForcingShapes)
+            ReDim zscale(ForcePoints, NumForcingShapes)
+            ReDim tval(NumForcingShapes)
 
-            For ishape = 0 To ForcingShapes
+            For ishape = 0 To NumForcingShapes
                 tval(0) = 1      'For forcing functions
                 ZmaxScale = 2
                 'copy the values from the original zscale() into the new zscale()
@@ -1209,17 +1188,6 @@ Public Class cEcosimDatastructures
             MoPred(i) = MoPred(0)
             RiskTime(i) = 0
 
-            For iFN As Integer = 1 To NumEnvResponseFunctions
-                If (iFN = 1) Then
-                    'set defalt values for every group for Salopt=35
-                    EnvResponseOpt(iFN, i) = 35
-                Else
-                    ' Temperature or other
-                    EnvResponseOpt(iFN, i) = 10
-                End If
-                EnvResponseSdLeft(iFN, i) = 1000
-                EnvResponseSdRight(iFN, i) = 1000
-            Next
         Next
 
         For iflt As Integer = 1 To Me.nGear
@@ -1233,6 +1201,7 @@ Public Class cEcosimDatastructures
 
 
     End Sub
+
 
     ''' <summary>
     ''' Set the summary time periods to using the Ecoism run length (NTime)
@@ -1548,7 +1517,7 @@ Public Class cEcosimDatastructures
             d.jlink = jlink.Clone
 
             'Forcing
-            d.ForcingShapes = ForcingShapes
+            d.NumForcingShapes = NumForcingShapes
             d.ForcingTitles = ForcingTitles.Clone
             d.ForcePoints = ForcePoints
             d.ZmaxScale = ZmaxScale
@@ -1754,7 +1723,6 @@ Public Class cEcosimDatastructures
     ''' <param name="JobMultiplier">Jobs multiplier from the Search data</param>
     ''' <remarks>Computes ProfitByFleet(nFleets), JobsByFleet(nfleets), Prey Pred consumption</remarks>
     Public Sub SummarizeResults(ByVal EcopathCost(,) As Single, ByVal JobMultiplier() As Single)
-
 
         For iPrey As Integer = 1 To Me.nGroups
             For iPred As Integer = 1 To Me.nGroups

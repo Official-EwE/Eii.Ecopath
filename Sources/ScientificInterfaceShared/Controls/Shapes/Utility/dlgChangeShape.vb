@@ -36,7 +36,7 @@ Namespace Controls
     ''' Interface to set the contour of a given shape to a 'common' primitive
     ''' </summary>
     ''' <remarks>
-    ''' This code is loosely based on frmShaper.vb in EwE5.
+    ''' This code is decreasingly based on frmShaper.vb in EwE5.
     ''' </remarks>
     Public Class dlgChangeShape
 
@@ -48,11 +48,7 @@ Namespace Controls
         Private m_shape As cForcingFunction = Nothing
         ''' <summary></summary>
         Private m_handler As cShapeGUIHandler = Nothing
-        ''' <summary>Format providers to handle user input.</summary>
-        Private m_fps As New List(Of cEwEFormatProvider)
-
-        Private Const cMAX_PARAM As Integer = 5
-
+ 
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -71,6 +67,9 @@ Namespace Controls
             Me.m_uic = uic
             Me.m_shape = shape
             Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, uic)
+            Me.m_grid.UIContext = uic
+
+            Debug.Print("Change Shape " + Me.m_shape.ToCSVString())
 
         End Sub
 
@@ -98,6 +97,8 @@ Namespace Controls
             ' Initialize shape function
             Me.m_lbShapeFunctionTypes.SelectedIndex = Me.GetShapeTypeIndex(Me.m_shape.ShapeFunctionType)
 
+            AddHandler Me.m_grid.OnShapeFunctionChanged, AddressOf OnShapeParametersChanged
+
             Me.UpdatePreview()
             Me.UpdateControls()
             Me.CenterToScreen()
@@ -106,7 +107,9 @@ Namespace Controls
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+            RemoveHandler Me.m_grid.OnShapeFunctionChanged, AddressOf OnShapeParametersChanged
             Me.SelectedShapeFunction = Nothing
+
             MyBase.OnFormClosed(e)
 
         End Sub
@@ -118,9 +121,7 @@ Namespace Controls
             If (fs Is Nothing) Then Return
 
             fs.Defaults()
-            For i As Integer = 0 To Math.Min(cMAX_PARAM, fs.nParameters) - 1
-                Me.m_fps(i).Value = fs.ParamValue(i + 1)
-            Next
+            Me.m_grid.RefreshContent()
 
             Me.UpdatePreview()
 
@@ -158,15 +159,10 @@ Namespace Controls
             Me.SelectedShapeFunction = DirectCast(Me.m_lbShapeFunctionTypes.SelectedItem, IShapeFunction)
         End Sub
 
-        Private Sub OnValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+        Private Sub OnShapeParametersChanged()
 
-            Dim fs As IShapeFunction = Me.SelectedShapeFunction()
-            If (fs Is Nothing) Then Return
-
-            For i As Integer = 0 To Me.m_fps.Count - 1
-                fs.ParamValue(i + 1) = CSng(Me.m_fps(i).Value)
-            Next
             Me.UpdatePreview()
+            Debug.Print("OnShapeParametersChanged " + Me.m_shape.ToCSVString())
 
         End Sub
 
@@ -214,6 +210,8 @@ Namespace Controls
 
             End Try
 
+
+
         End Sub
 
         Private Sub OnRefreshShape(sender As System.Object, e As System.EventArgs) _
@@ -236,62 +234,10 @@ Namespace Controls
             Get
                 Return DirectCast(Me.m_lbShapeFunctionTypes.SelectedItem, IShapeFunction)
             End Get
-            Set(value As IShapeFunction)
-                'If (Object.ReferenceEquals(Me.SelectedShapeFunction, value)) Then Return
-
-                For Each fp As cEwEFormatProvider In Me.m_fps
-                    RemoveHandler fp.OnValueChanged, AddressOf OnValueChanged
-                    fp.Release()
-                Next
-
-                Me.m_fps.Clear()
-
-                If (value IsNot Nothing) Then
-
-                    ' ToDo: Make max no params a flexible number
-                    ' ToDo: Allow reordering of parameters by honouring IShapeFunction.ParamOrder(#)
-                    For i As Integer = 1 To cMAX_PARAM
-
-                        Dim lblName As Control = Nothing
-                        Dim lblUnit As Control = Nothing
-                        Dim tbxValue As Control = Nothing
-                        Dim fp As cEwEFormatProvider = Nothing
-
-                        Select Case i
-                            Case 1 : lblName = Me.m_lblA : tbxValue = Me.m_tbxA : lblUnit = Me.m_lblAUnit
-                            Case 2 : lblName = Me.m_lblB : tbxValue = Me.m_tbxB : lblUnit = Me.m_lblBUnit
-                            Case 3 : lblName = Me.m_lblC : tbxValue = Me.m_tbxC : lblUnit = Me.m_lblCUnit
-                            Case 4 : lblName = Me.m_lblD : tbxValue = Me.m_tbxD : lblUnit = Me.m_lblDUnit
-                            Case 5 : lblName = Me.m_lblE : tbxValue = Me.m_tbxE : lblUnit = Me.m_lblEUnit
-                        End Select
-
-                        If (i <= value.nParameters) Then
-                            ' Configure labels
-                            lblName.Visible = True
-                            lblName.Text = cStyleGuide.ToControlLabel(value.ParamName(i))
-                            lblUnit.Visible = True
-                            lblUnit.Text = value.ParamUnit(i)
-                            ' Configure textbox and format provider
-                            tbxValue.Visible = True
-
-                            fp = New cEwEFormatProvider(Me.m_uic, tbxValue, GetType(Single))
-                            fp.Tag = i
-                            fp.Value = value.ParamValue(i)
-                            fp.Style = DirectCast(value.ParamStatus(i), cStyleGuide.eStyleFlags)
-                            AddHandler fp.OnValueChanged, AddressOf OnValueChanged
-
-                            Me.m_fps.Add(fp)
-                        Else
-                            lblName.Visible = False
-                            lblUnit.Visible = False
-                            tbxValue.Visible = False
-                        End If
-                    Next
-
-                End If
-
+            Set(template As IShapeFunction)
+                Me.m_lbShapeFunctionTypes.SelectedItem = template
+                Me.m_grid.ShapeFunction = template
                 Me.UpdatePreview()
-
             End Set
         End Property
 
@@ -301,7 +247,8 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdatePreview()
-            Me.m_plPreview.Invalidate()
+            ' Me.m_plPreview.Invalidate()
+            Me.m_plPreview.Refresh()
         End Sub
 
         Private Function nDisplayPoints() As Integer

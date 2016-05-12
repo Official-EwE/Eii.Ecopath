@@ -123,16 +123,6 @@ Public Class cEcoSimModelParameters
             val = New cValue(New Integer, eVarNameFlags.NutForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NutForceFunctionNumber))
             m_values.Add(val.varName, val)
 
-            'SalinityForceFunctionNumber
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.SalinityForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.SalinityForceFunctionNumber))
-            m_values.Add(val.varName, val)
-
-            'TempForceFunctionNumber
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.TemperatureForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.TemperatureForceFunctionNumber))
-            m_values.Add(val.varName, val)
-
             'EcoSimNYears max 1000 year?!
             meta = New cVariableMetaData(0, cCore.MAX_RUN_LENGTH, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.EcoSimNYears, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.EcoSimNYears))
@@ -369,30 +359,6 @@ Public Class cEcoSimModelParameters
 
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.NutForceFunctionNumber, value)
-        End Set
-
-    End Property
-
-    Public Property SalinityForceFunctionNumber() As Integer
-
-        Get
-            Return CInt(GetVariable(eVarNameFlags.SalinityForceFunctionNumber))
-        End Get
-
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.SalinityForceFunctionNumber, value)
-        End Set
-
-    End Property
-
-    Public Property TemperatureForceFunctionNumber() As Integer
-
-        Get
-            Return CInt(GetVariable(eVarNameFlags.TemperatureForceFunctionNumber))
-        End Get
-
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.TemperatureForceFunctionNumber, value)
         End Set
 
     End Property
@@ -688,35 +654,10 @@ Public Class cEcoSimModelParameters
 
     End Property
 
-
-    Public Property SalinityForceFunctionNumberStatus() As eStatusFlags
-
-        Get
-            Return GetStatus(eVarNameFlags.SalinityForceFunctionNumber)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.SalinityForceFunctionNumber, value)
-        End Set
-
-    End Property
-
-    Public Property TemperatureForceFunctionNumberStatus() As eStatusFlags
-
-        Get
-            Return GetStatus(eVarNameFlags.TemperatureForceFunctionNumber)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.TemperatureForceFunctionNumber, value)
-        End Set
-
-    End Property
-
     Public Property NutPBMaxStatus() As eStatusFlags
 
         Get
-            Return getStatus(eVarNameFlags.NutPBMax)
+            Return GetStatus(eVarNameFlags.NutPBMax)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)

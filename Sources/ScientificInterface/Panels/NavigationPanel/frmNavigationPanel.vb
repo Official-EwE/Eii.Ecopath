@@ -23,7 +23,6 @@
 Option Explicit On
 Option Strict On
 
-
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -189,7 +188,10 @@ Public Class frmNavigationPanel
             .Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimFleetSizeDynamics), "Fleet size dynamics.htm")
             .Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
             .Add("ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity)) ' ToDo: connect to help
-            .Add("ndApplyPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmApplyPriceElasticy)) ' ToDo: connect to help
+
+            .Add("ndEnviroResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimEnviroResponse)) ' ToDo: connect to help
+            .Add("ndEnviroResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimForagingResponses)) ' ToDo: connect to help
+
 
             ' Ecosim Output
             .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmRunEcosim), "Run Ecosim.htm")

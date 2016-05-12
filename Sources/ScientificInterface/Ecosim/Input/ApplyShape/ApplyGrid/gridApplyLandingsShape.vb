@@ -62,11 +62,11 @@ Namespace Ecosim
                 For iGroup As Integer = 1 To Core.nGroups
 
                     ' Can assign FF at this spot in the matrix?
-                    If Me.m_InteractionManager.isLandings(iFleet, iGroup) Then
+                    If Me.m_interactionManager.isLandings(iFleet, iGroup) Then
 
-                        interaction = Me.m_InteractionManager.LandingInteraction(iFleet, iGroup)
+                        interaction = Me.m_interactionManager.LandingInteraction(iFleet, iGroup)
                         interaction.LockUpdates = True
-                        For i As Integer = 1 To Me.m_InteractionManager.MaxNShapes
+                        For i As Integer = 1 To Me.m_interactionManager.MaxNShapes
                             interaction.setShape(i, Nothing)
                         Next
                         interaction.LockUpdates = False
@@ -131,14 +131,14 @@ Namespace Ecosim
             Dim ri As New RegionInfo(CultureInfo.CurrentUICulture.LCID)
             Dim strSymbol As String = fmt.GetDescriptor(ri, eDescriptorTypes.Symbol)
 
-            If (Me.m_InteractionManager Is Nothing) Then Return
+            If (Me.m_interactionManager Is Nothing) Then Return
 
             For iFleet As Integer = 1 To Me.Core.nFleets
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
 
-                    If Me.m_InteractionManager.isLandings(iFleet, iGroup) Then
+                    If Me.m_interactionManager.isLandings(iFleet, iGroup) Then
 
-                        interaction = Me.m_InteractionManager.LandingInteraction(iFleet, iGroup)
+                        interaction = Me.m_interactionManager.LandingInteraction(iFleet, iGroup)
                         Dim shape As cForcingFunction = Nothing
                         Dim aplType As eForcingFunctionApplication
                         Dim sb As New StringBuilder()

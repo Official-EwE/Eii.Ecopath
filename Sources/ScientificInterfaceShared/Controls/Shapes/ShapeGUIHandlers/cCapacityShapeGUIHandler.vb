@@ -51,7 +51,7 @@ Namespace Controls
         ''' <returns>The shapes manager that delivers the data for this handler.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ShapeManager() As cBaseShapeManager
-            Return Me.Core.CapacityShapeManager
+            Return Me.Core.EnviroResponseShapeManager
         End Function
 
         ''' -----------------------------------------------------------------------

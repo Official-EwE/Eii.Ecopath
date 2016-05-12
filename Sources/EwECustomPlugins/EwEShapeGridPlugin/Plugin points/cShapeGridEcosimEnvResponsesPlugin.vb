@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -25,12 +25,12 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
-Public Class cPluginPointHabitatCapacity
+Public Class cShapeGridEcosimEnvResponsesPlugin
     Inherits cShapeGridPlugin
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return My.Resources.GRID_HABCAP
+            Return My.Resources.GRID_FNRESPONSES
         End Get
     End Property
 
@@ -49,23 +49,23 @@ Public Class cPluginPointHabitatCapacity
     Public Overrides ReadOnly Property Name() As String
         Get
             ' Sort at the end of it all
-            Return "ndXForagingResponseGrid"
+            Return "ndXForagingResponseGridSim"
         End Get
     End Property
 
     Public Overrides ReadOnly Property NavigationTreeItemLocation() As String
         Get
-            Return "ndSpatialDynamic\ndEcospaceInput\ndHabCap"
+            Return "ndTimeDynamic\ndEcosimInput\ndEnviroResponse"
         End Get
     End Property
 
     Friend Overrides Function GridType() As Type
-        Return GetType(gridHabitatCapacity)
+        Return GetType(gridFunctionalResponses)
     End Function
 
     Public Overrides ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
+            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
         End Get
     End Property
 

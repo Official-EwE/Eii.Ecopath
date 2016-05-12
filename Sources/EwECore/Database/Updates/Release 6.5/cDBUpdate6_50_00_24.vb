@@ -21,13 +21,15 @@
 Option Strict On
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.50.0.24:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Shapes can have any number of function parameters</description></item>
+''' <item><description>Updated shape functions</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
@@ -49,7 +51,7 @@ Friend Class cDBUpdate6_50_00_24
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Shapes can have any number of function parameters"
+            Return "Updated shape functions"
         End Get
     End Property
 
@@ -62,7 +64,7 @@ Friend Class cDBUpdate6_50_00_24
 
         For Each strTable As String In s_tables
             Try
-                bSuccess = bSuccess And Me.UpdateTable(db, strTable)
+                bSuccess = bSuccess And Me.UpdateShapeFunctions(db, strTable)
             Catch ex As Exception
                 bSuccess = False
             End Try
@@ -72,20 +74,117 @@ Friend Class cDBUpdate6_50_00_24
 
     End Function
 
-    Private Function UpdateTable(db As cEwEDatabase, strTableName As String) As Boolean
+    Private Function UpdateShapeFunctions(db As cEwEDatabase, strTableName As String) As Boolean
 
         Dim bSuccess As Boolean = db.Execute("ALTER TABLE " & strTableName & " ADD COLUMN FunctionParams MEMO")
         Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter(strTableName)
         Dim dt As DataTable = writer.GetDataTable()
-        Dim parms(3) As Single
+        Dim bIsChanged As Boolean = False
 
         For Each drow As DataRow In dt.Rows
-            For i As Integer = 0 To 3
-                parms(i) = CSng(drow(s_fields(i)))
-            Next
-            drow.BeginEdit()
-            drow("FunctionParams") = cStringUtils.ParamArrayToString(parms)
-            drow.EndEdit()
+
+            Dim functiontype As Long = 0
+            Dim parms(3) As Single
+            Dim XMin As Single = 0
+            Dim XMax As Single = 0
+            Dim strZScale As String = CStr(drow("zScale"))
+            Dim bIsMediation As Boolean = dt.Columns.Contains("XAxisMin")
+
+            bIsChanged = False
+
+            If (Not Convert.IsDBNull(drow("FunctionType"))) Then
+
+                functiontype = CLng(drow("FunctionType"))
+
+                Dim Y0 As Single = CSng(drow("YZero"))
+                Dim YB As Single = CSng(drow("YBase"))
+                Dim YE As Single = CSng(drow("YEnd"))
+                Dim St As Single = CSng(drow("Steep"))
+
+                If (bIsMediation) Then
+                    XMin = CSng(cSystemUtils.IIF(Convert.IsDBNull(drow("XAxisMin")), 0, drow("XAxisMin")))
+                    XMax = CSng(cSystemUtils.IIF(Convert.IsDBNull(drow("XAxisMax")), 0, drow("XAxisMax")))
+                End If
+
+                Select Case functiontype
+                    Case eShapeFunctionType.Betapdf
+
+                        Dim pts As String() = strZScale.Split(" "c)
+                        Dim max As Single = 0
+                        For Each pt As String In pts
+                            max = Math.Max(max, cStringUtils.ConvertToSingle(pt))
+                        Next
+
+                        parms(0) = Y0 ' A
+                        parms(1) = YE ' B
+                        parms(2) = max ' Scalar
+                        bIsChanged = True
+
+                    Case eShapeFunctionType.Exponential,
+                         eShapeFunctionType.Hyperbolic,
+                         eShapeFunctionType.Sigmoid
+                        ' These three functions need reworking, the type and its parameters are not usable anymore.
+                        ' For backwards compatibility just keep the point data and forget the original primitive.
+                        functiontype = 0
+                        bIsChanged = True
+
+                    Case eShapeFunctionType.Linear
+                        parms(0) = Y0 ' Start
+                        parms(1) = YE ' End
+                        bIsChanged = True
+
+                    Case eShapeFunctionType.Normal
+                        'Update the Normal distribution parameters 
+                        'by adding the a value for the Mean and Datawidth fields 
+                        'Update 6_50_00_27 will update to the new format where the Xmin, XMax and datawidth are calculated from the mean and sd
+                        Dim normaldist As cNormalShapeFunction = New cNormalShapeFunction()
+                        If Me.ConvertNormalDistribution(normaldist, St, Y0, YE, YB, XMin, XMax) Then
+
+                            ReDim parms(normaldist.nParameters - 1)
+                            For ipr As Integer = 1 To normaldist.nParameters
+                                parms(ipr - 1) = normaldist.ParamValue(ipr)
+                            Next
+
+                            Dim PointsArray() As Single = normaldist.Shape(cMediationDataStructures.N_DEFAULT_MEDIATIONPOINTS)
+                            Dim sbZScale As New Text.StringBuilder()
+                            For ipt As Integer = 1 To cMediationDataStructures.N_DEFAULT_MEDIATIONPOINTS
+                                If (ipt > 1) Then sbZScale.Append(" ")
+                                sbZScale.Append(cStringUtils.FormatSingle(PointsArray(ipt)))
+                            Next
+                            strZScale = sbZScale.ToString()
+                            sbZScale.Clear()
+                            bIsChanged = True
+                        End If
+
+                    Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder
+                        parms(0) = Y0 ' Left point
+                        parms(1) = YE ' Right point
+                        parms(2) = YB ' Width
+                        bIsChanged = True
+
+                    Case eShapeFunctionType.Trapezoid
+                        parms(0) = Y0 ' Left bottom
+                        parms(1) = YE ' Left top
+                        parms(2) = YB ' Right top
+                        parms(3) = St ' Right bottom
+                        bIsChanged = True
+
+                End Select
+
+            End If
+
+            If (bIsChanged) Then
+                drow.BeginEdit()
+                drow("FunctionType") = functiontype
+                drow("FunctionParams") = cStringUtils.ParamArrayToString(parms)
+                drow("zScale") = strZScale
+                If (bIsMediation) Then
+                    drow("XAxisMin") = XMin
+                    drow("XAxisMax") = XMax
+                End If
+                drow.EndEdit()
+            End If
+
         Next
 
         db.ReleaseWriter(writer, True)
@@ -95,6 +194,23 @@ Friend Class cDBUpdate6_50_00_24
         Next
 
         Return bSuccess
+
+    End Function
+
+    Private Function ConvertNormalDistribution(ByVal normaldist As cNormalShapeFunction,
+                                               ByVal Mean As Single, ByVal SDLeft As Single, ByVal SDRight As Single, ByVal DataWidth As Single, _
+                                               ByRef Xmin As Single, ByRef XMax As Single) As Boolean
+
+        Mean = Xmin + (XMax - Xmin) / 2
+        DataWidth = SDLeft * 5 + SDRight * 5
+
+        normaldist.Mean = Mean
+        normaldist.DataWidth = DataWidth
+        normaldist.SDLeft = SDLeft
+        normaldist.SDRight = SDRight
+        normaldist.NormalMax = 1
+
+        Return True
 
     End Function
 

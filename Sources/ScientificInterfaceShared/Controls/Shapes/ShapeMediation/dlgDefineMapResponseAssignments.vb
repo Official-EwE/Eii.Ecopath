@@ -42,16 +42,17 @@ Public Class dlgDefineMapResponseAssignments
 
 #Region " Private variables "
 
-    Private m_shape As EwECore.cEnviroResponseFunction = Nothing
-    Private m_manager As cMapResponseInteractionManager = Nothing
-    Private m_zgh As cZedGraphMediationHelper = Nothing
-    Private m_uic As cUIContext = Nothing
-    Private m_map As cEnviroInputMap = Nothing
+    Protected m_uic As cUIContext = Nothing
+    Protected m_shape As EwECore.cEnviroResponseFunction = Nothing
+    Protected m_shapefunction As IShapeFunction = Nothing
+    Protected m_manager As IEnvironmentalResponseManager = Nothing
 
+    Private m_zgh As cZedGraphMediationHelper = Nothing
+    Private m_map As IEnviroInputData = Nothing
     Private m_fpMin As cEwEFormatProvider = Nothing
     Private m_fpMax As cEwEFormatProvider = Nothing
     Private m_fpMean As cEwEFormatProvider = Nothing
-    Private m_fpSD As cEwEFormatProvider = Nothing
+    ' Private m_fpSD As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = False
 
@@ -68,10 +69,11 @@ Public Class dlgDefineMapResponseAssignments
     ''' <remarks></remarks>
     Public Sub New(ByVal uic As cUIContext, _
                    ByVal shape As EwECore.cEnviroResponseFunction, _
-                   ByVal manager As EwECore.cMapResponseInteractionManager)
+                   ByVal manager As EwECore.IEnvironmentalResponseManager)
         Me.InitializeComponent()
 
         Me.m_shape = shape
+        Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(shape)
         Me.m_manager = manager
 
         Me.m_uic = uic
@@ -79,6 +81,8 @@ Public Class dlgDefineMapResponseAssignments
         Me.m_zgh = New cZedGraphMediationHelper()
         Me.m_zgh.Attach(Me.m_uic, Me.m_graph)
         Me.m_zgh.ShowPointValue = True
+
+        Debug.Print("Load dialogue " + Me.m_shape.ToCSVString())
 
         Try
             Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().GetDescriptor(Me.m_shape))
@@ -99,9 +103,11 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
             'Yaxis (left) grid lines
-            'the cool thing to do here would be to only show the 1.0 grid line
-            'not all the grid line....
             Me.m_zgh.GetPane(1).YAxis.MajorGrid.IsVisible = True
+
+            ' JB: the cool thing to do here would be to only show the 1.0 grid line;not all the grid line....
+            ' JS: This should help
+            Me.m_zgh.GetPane(1).YAxis.MajorTic.IsAllTics = False
 
             Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
 
@@ -116,20 +122,12 @@ Public Class dlgDefineMapResponseAssignments
             'somehow set the Y2Axis label font size
             Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
 
-            Dim liGroups As New List(Of Integer)
-            For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
-                Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(iGrp)
-                If (grp.CapacityCalculationType <> eEcospaceCapacityCalType.Habitat) Then
-                    liGroups.Add(iGrp)
-                End If
-            Next
             Me.m_lbxGroups.Attach(Me.m_uic)
-            Me.m_lbxGroups.Populate(liGroups.ToArray())
+            Me.m_lbxGroups.Populate(Me.GetGroupList())
 
             Me.m_fpMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
             Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
             Me.m_fpMean = New cEwEFormatProvider(Me.m_uic, Me.m_tbxMean, GetType(Single))
-            Me.m_fpSD = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSD, GetType(Single))
 
             ' Set min and max
             Me.m_fpMin.Value = Me.m_shape.ResponseLeftLimit
@@ -144,6 +142,17 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
+    Protected Overridable Function GetGroupList() As Integer()
+        Dim lstGroups As New List(Of Integer)
+        For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
+            Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(iGrp)
+            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
+                lstGroups.Add(iGrp)
+            End If
+        Next
+        Return lstGroups.ToArray()
+    End Function
+
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.m_uic Is Nothing) Then Return
@@ -157,13 +166,12 @@ Public Class dlgDefineMapResponseAssignments
         Me.m_fpMin.Release()
         Me.m_fpMax.Release()
         Me.m_fpMean.Release()
-        Me.m_fpSD.Release()
 
         MyBase.OnFormClosed(e)
 
     End Sub
 
-    Private Sub InitToShapeType()
+    Protected Sub InitToShapeType()
 
         If (Me.ShowMinMax) Then
             RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
@@ -172,7 +180,6 @@ Public Class dlgDefineMapResponseAssignments
 
         If (Me.CanEditMeanSD) Then
             RemoveHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
-            RemoveHandler Me.m_fpSD.OnValueChanged, AddressOf OnSDValueChanged
         End If
 
         If (Me.m_shape Is Nothing) Then Return
@@ -183,14 +190,14 @@ Public Class dlgDefineMapResponseAssignments
         End If
 
         If (Me.CanEditMeanSD) Then
-            Me.m_fpMean.Value = Me.m_shape.Steep
-            Me.m_fpSD.Value = Me.CalcSDFromXAxis()
+
+            Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
+            Me.m_fpMean.Value = normdist.Mean
 
             AddHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
-            AddHandler Me.m_fpSD.OnValueChanged, AddressOf OnSDValueChanged
         End If
 
-        Me.LoadMaps()
+        Me.LoadDrivers()
         Me.UpdatePlots()
         Me.UpdateControls()
 
@@ -224,7 +231,7 @@ Public Class dlgDefineMapResponseAssignments
             Next
 
             'bluntly reload the map tree
-            Me.LoadMaps()
+            Me.LoadDrivers()
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -239,7 +246,7 @@ Public Class dlgDefineMapResponseAssignments
             If (Me.m_map Is Nothing) Then Return
 
             Dim node As TreeNode
-            node = Me.m_tvMaps.SelectedNode
+            node = Me.m_tvDrivers.SelectedNode
             If (node IsNot Nothing) Then
                 ' Is group node?
                 If (TypeOf (node.Tag) Is cCoreGroupBase) Then
@@ -260,7 +267,6 @@ Public Class dlgDefineMapResponseAssignments
                 End If
             End If
 
-            ' Me.loadMaps()
         Catch ex As Exception
 
         End Try
@@ -276,7 +282,7 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
     Private Sub OnMapTreeExpanded(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
-        Handles m_tvMaps.AfterExpand
+        Handles m_tvDrivers.AfterExpand
 
         Try
             Me.m_map = Me.GetSelectedMap(e.Node)
@@ -287,7 +293,7 @@ Public Class dlgDefineMapResponseAssignments
     End Sub
 
     Private Sub OnMapTreeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
-        Handles m_tvMaps.AfterSelect
+        Handles m_tvDrivers.AfterSelect
         Try
             Me.m_map = GetSelectedMap(e.Node)
             Me.UpdateControls()
@@ -309,26 +315,31 @@ Public Class dlgDefineMapResponseAssignments
     Private Sub OnMeanValueChanged(sender As System.Object, e As System.EventArgs)
         Try
             If Me.m_bInUpdate Then Return
+
             Debug.Assert(Me.CanEditMeanSD(), "Oppss BUG! should not be setting the Mean for this type of shape.")
             'Mean is stored in the Steep variable
-            Me.m_shape.Steep = CSng(Me.m_fpMean.Value)
-            Me.CalcXFromMeanAndSD(Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
+
+            Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
+            normdist.Mean = CSng(Me.m_fpMean.Value)
+            normdist.Apply(Me.m_shape)
+
             Me.UpdatePlots()
         Catch ex As Exception
 
         End Try
+
     End Sub
 
-    Private Sub OnSDValueChanged(sender As System.Object, e As System.EventArgs)
-        Try
-            If Me.m_bInUpdate Then Return
-            Debug.Assert(Me.CanEditMeanSD(), "Oppss BUG! should not be setting the SD for this type of shape.")
-            Me.CalcXFromMeanAndSD(Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
-            Me.UpdatePlots()
-        Catch ex As Exception
+    'Private Sub OnSDValueChanged(sender As System.Object, e As System.EventArgs)
+    '    Try
+    '        If Me.m_bInUpdate Then Return
+    '        Debug.Assert(Me.CanEditMeanSD(), "Oppss BUG! should not be setting the SD for this type of shape.")
+    '        Me.CalcXFromMeanAndSD(Me.m_shape.ResponseLeftLimit, Me.m_shape.ResponseRightLimit)
+    '        Me.UpdatePlots()
+    '    Catch ex As Exception
 
-        End Try
-    End Sub
+    '    End Try
+    'End Sub
 
     Private Sub OnChangeShape(sender As System.Object, e As System.EventArgs) _
         Handles m_btChangeShape.Click
@@ -366,7 +377,7 @@ Public Class dlgDefineMapResponseAssignments
         ' ToDo JS: this must be connected to IShapeFunction behaviour
 
         Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
-        Dim bCanRemoveGroup As Boolean = (Me.m_tvMaps.SelectedNode IsNot Nothing)
+        Dim bCanRemoveGroup As Boolean = (Me.m_tvDrivers.SelectedNode IsNot Nothing)
         Dim bCanSetMinMax As Boolean = Me.ShowMinMax() Or True
         Dim bCanSetMeanSD As Boolean = Me.CanEditMeanSD()
 
@@ -403,41 +414,12 @@ Public Class dlgDefineMapResponseAssignments
         Me.m_fpMax.Enabled = bCanSetMinMax
 
         Me.m_lblMean.Text = cStyleGuide.ToControlLabel(strMean)
-        Me.m_lblSD.Text = cStyleGuide.ToControlLabel(strSD)
+        '    Me.m_lblSD.Text = cStyleGuide.ToControlLabel(strSD)
         Me.m_fpMean.Enabled = bCanSetMeanSD
-        Me.m_fpSD.Enabled = bCanSetMeanSD
+        '  Me.m_fpSD.Enabled = bCanSetMeanSD
 
     End Sub
 
-    Private Sub CalcXFromMeanAndSD(ByRef XMin As Single, ByRef XMax As Single)
-
-        Dim mean As Single = Me.m_shape.Steep
-        Dim widthSD As Single = Me.m_shape.YBase
-        Dim sd As Single = CSng(Me.m_fpSD.Value)
-
-        'Compute half the width in the same units as SD (x axis units)
-        Dim halfwidth As Single = sd * widthSD / 2.0F
-        XMin = mean - halfwidth
-        XMax = mean + halfwidth
-
-    End Sub
-
-    Private Function CalcSDFromXAxis() As Single
-
-        Debug.Assert(Not (Me.m_shape.ResponseLeftLimit = 0 And Me.m_shape.ResponseRightLimit = 0), "Opps X Axis has not been set!")
-
-        ' ToDo: better connect to shapes. cShapeData should gain some attributes to report a mean, SW, range, etc.
-        '       In other words, cShapeData may have to gain explicit distribution parameters
-        Dim mean As Single = Me.m_shape.Steep
-        Dim widthSD As Single = Me.m_shape.YBase
-        Dim range As Single = mean - Me.m_shape.ResponseLeftLimit
-        Dim SD As Single = range / (widthSD / 2)
-        'If this is a new response function then 
-        'SD will be calculated as 0 give it a default of 1
-        If SD = 0 Then SD = 1
-        Return SD
-
-    End Function
 
     Private Function ShowMinMax() As Boolean
 
@@ -445,31 +427,28 @@ Public Class dlgDefineMapResponseAssignments
 
     End Function
 
-    'Private Function CanEditMinMax() As Boolean
-
-    '    If (Me.m_shape Is Nothing) Then Return False
-
-    '    ' ToDo: the shape itself should somehow be able to report this
-    '    If ((Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal) Or _
-    '        (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder) Or _
-    '        (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder) Or _
-    '        (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid)) Then
-    '        Return False
-    '    End If
-
-    '    Return True
-
-    'End Function
-
-    Private Function CanEditMeanSD() As Boolean
+    Private Function CanEditMinMax() As Boolean
 
         If (Me.m_shape Is Nothing) Then Return False
 
         ' ToDo: the shape itself should somehow be able to report this
-        Select Case Me.m_shape.ShapeFunctionType
-            Case eShapeFunctionType.Normal : Return True
-        End Select
-        Return False
+        If ((Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Normal) Or _
+            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.LeftShoulder) Or _
+            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.RightShoulder) Or _
+            (Me.m_shape.ShapeFunctionType <> eShapeFunctionType.Trapezoid)) Then
+            Return False
+        End If
+
+        Return True
+
+    End Function
+
+    Private Function CanEditMeanSD() As Boolean
+
+        If (Me.m_shape Is Nothing) Then Return False
+        If (Me.m_shapefunction Is Nothing) Then Return False
+
+        Return (TypeOf Me.m_shapefunction Is cNormalShapeFunction)
 
     End Function
 
@@ -511,7 +490,7 @@ Public Class dlgDefineMapResponseAssignments
                 sPlotMax = CSng(Me.m_fpMax.Value)
 
                 'Get the Min and Max of the data from Mean, SD and SDWidth
-                Me.CalcXFromMeanAndSD(sShapeMin, sShapeMax)
+                ' Me.CalcXFromMeanAndSD(sShapeMin, sShapeMax)
 
             Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
                 'Shoulder shape min and max can not be set here
@@ -542,15 +521,15 @@ Public Class dlgDefineMapResponseAssignments
         Try
             ' Obtain Min and Max from the response function
             ' this is what the core will use to find the x value
-            Dim Xmin As Single = Me.m_shape.ResponseLeftLimit
-            Dim Xmax As Single = Me.m_shape.ResponseRightLimit
+            Dim XDataMin As Single = Me.m_shape.ResponseLeftLimit
+            Dim XDataMax As Single = Me.m_shape.ResponseRightLimit
 
-            Dim XmaxWin As Single
-            Dim XminWin As Single
+            Dim XWinMax As Single
+            Dim XWinMin As Single
 
-            Me.GetPlotMinMax(Xmin, Xmax, XminWin, XmaxWin)
+            Me.GetPlotMinMax(XDataMin, XDataMax, XWinMin, XWinMax)
 
-            Dim Xrange As Single = Xmax - Xmin
+            Dim Xrange As Single = XDataMax - XDataMin
             Dim fmt As New cCoreInterfaceFormatter()
 
             Dim dx As Single = Xrange / Me.m_shape.nPoints
@@ -560,20 +539,20 @@ Public Class dlgDefineMapResponseAssignments
 
             Dim x As Double
             For ipt As Integer = 1 To Me.m_shape.nPoints
-                x = Xmin + dx * (ipt - 1)
+                x = XDataMin + dx * (ipt - 1)
                 lstPts.Add(x, Me.m_shape.ShapeData(ipt) * YScale)
             Next
 
             'add the last point out at the end of the graph
-            lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.nPoints) * YScale)
+            lstPts.Add(XDataMax, Me.m_shape.ShapeData(Me.m_shape.nPoints) * YScale)
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
                                                          lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
             Me.m_zgh.GetPane(1).CurveList.Add(il)
 
             'X axis for plotting
-            Me.m_zgh.XScaleMin = XminWin
-            Me.m_zgh.XScaleMax = XmaxWin
+            Me.m_zgh.XScaleMin = XWinMin
+            Me.m_zgh.XScaleMax = XWinMax
             Me.m_zgh.YScaleMax = Me.m_shape.YMax + Me.m_shape.YMax * 0.1
             Me.m_zgh.YScaleMin = 0
 
@@ -583,18 +562,18 @@ Public Class dlgDefineMapResponseAssignments
 
     End Sub
 
-    Private Sub LoadMaps()
+    Protected Overridable Sub LoadDrivers()
 
-        Dim map As IEnviroInputMap = Nothing
+        Dim map As IEnviroInputData = Nothing
         Dim fmt As New cCoreInterfaceFormatter()
 
         Try
-            Me.m_tvMaps.Nodes.Clear()
+            Me.m_tvDrivers.Nodes.Clear()
 
-            For imap As Integer = 1 To Me.m_manager.nMaps
+            For imap As Integer = 1 To Me.m_manager.nEnviroData
 
-                map = Me.m_manager.Map(imap)
-                Dim ndApply As TreeNode = Me.m_tvMaps.Nodes.Add(fmt.GetDescriptor(DirectCast(map, cEnviroInputMap).Layer))
+                map = Me.m_manager.EnviroData(imap)
+                Dim ndApply As TreeNode = Me.m_tvDrivers.Nodes.Add(map.Name)
                 ndApply.Tag = map
 
                 For igrp As Integer = 1 To Me.m_uic.Core.nGroups
@@ -619,7 +598,7 @@ Public Class dlgDefineMapResponseAssignments
 
         Catch ex As Exception
             cLog.Write(ex)
-            Debug.Assert(False, Me.ToString & ".loadMaps() Exception: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".LoadDrivers() Exception: " & ex.Message)
         End Try
 
     End Sub
@@ -644,22 +623,22 @@ Public Class dlgDefineMapResponseAssignments
         Debug.Assert(Me.ShowMinMax())
 
         'Not all shapes use the Min and Mix data range
-        ' If Me.CanEditMinMax() Then
-        Try
-            Me.m_shape.LockUpdates()
-            Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
-            Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
-            Me.m_shape.UnlockUpdates(True)
-        Catch ex As Exception
+        If Me.CanEditMinMax() Then
+            Try
+                Me.m_shape.LockUpdates()
+                Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
+                Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
+                Me.m_shape.UnlockUpdates(True)
+            Catch ex As Exception
 
-        End Try
-        '  End If ' If Me.CanEditMinMax() Then
+            End Try
+        End If ' If Me.CanEditMinMax() Then
 
         Me.UpdatePlots()
 
     End Sub
 
-    Private Function GetSelectedMap(ByVal node As TreeNode) As cEnviroInputMap
+    Private Function GetSelectedMap(ByVal node As TreeNode) As IEnviroInputData
         Try
 
             Dim ob As Object = Nothing
@@ -673,8 +652,8 @@ Public Class dlgDefineMapResponseAssignments
             ob = node.Tag
 
             If ob IsNot Nothing Then
-                If TypeOf ob Is cEnviroInputMap Then
-                    Return DirectCast(ob, cEnviroInputMap)
+                If TypeOf ob Is IEnviroInputData Then
+                    Return DirectCast(ob, IEnviroInputData)
                 End If
             End If
 
@@ -702,7 +681,7 @@ Public Class dlgDefineMapResponseAssignments
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
             Next
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, fmt.GetDescriptor(Me.m_map.Layer)), _
+            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_map.Name), _
                                                          lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
 
             il.IsY2Axis = True
@@ -722,8 +701,53 @@ Public Class dlgDefineMapResponseAssignments
 
 #End Region ' Private Methods
 
+#Region "Dead Code (From adding Ecosim Environmental Response)"
+
+    'Private Sub CalcXFromMeanAndSD_org(ByRef XMin As Single, ByRef XMax As Single)
+
+    '    Dim mean As Single = Me.m_shape.Steep
+    '    Dim widthSD As Single = Me.m_shape.YBase
+    '    Dim sd As Single = CSng(Me.m_fpSD.Value)
+
+    '    'Compute half the width in the same units as SD (x axis units)
+    '    Dim halfwidth As Single = sd * widthSD / 2.0F
+    '    XMin = mean - halfwidth
+    '    XMax = mean + halfwidth
+
+    'End Sub
+
+
+    'Private Function CalcSDFromXAxis() As Single
+
+    '    'ok This is the spot 
+    '    'calculate sd and alter the parameters????
+
+    '    Debug.Assert(Not (Me.m_shape.ResponseLeftLimit = 0 And Me.m_shape.ResponseRightLimit = 0), "Opps X Axis has not been set!")
+
+    '    Return 1
+    '    ' ToDo: better connect to shapes. cShapeData should gain some attributes to report a mean, SW, range, etc.
+    '    '       In other words, cShapeData may have to gain explicit distribution parameters
+    '    Dim mean As Single = Me.m_shape.Steep
+    '    Dim widthSD As Single = Me.m_shape.YBase
+    '    Dim range As Single = mean - Me.m_shape.ResponseLeftLimit
+    '    Dim SD As Single = range / (widthSD / 2)
+    '    'If this is a new response function then 
+    '    'SD will be calculated as 0 give it a default of 1
+    '    If SD = 0 Then SD = 1
+    '    Return SD
+
+    'End Function
+
+    'Private Sub CalcXFromMeanAndSD(ByRef XMin As Single, ByRef XMax As Single)
+
+    '    Dim mean As Single = Me.m_shape.Steep
+    '    Dim widthSD As Single = Me.m_shape.YBase
+
+    '    XMin = mean - widthSD / 2
+    '    XMax = mean + widthSD / 2
+
+    'End Sub
+
+#End Region
+
 End Class
-
-
-
-

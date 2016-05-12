@@ -276,7 +276,7 @@ Public Class cCore
                 Case eCoreCounterTypes.nPedigreeVariables
                     Return Me.nPedigreeVariables
                 Case eCoreCounterTypes.nCapacityMaps
-                    Return Me.CapacityMapInteractionManager.nMaps
+                    Return Me.CapacityMapInteractionManager.nEnviroData
                 Case eCoreCounterTypes.nEcospaceResultWriters
                     If (Me.m_EcospaceModelParams IsNot Nothing) Then
                         Return Me.m_EcospaceModelParams.nResultWriters
@@ -612,7 +612,7 @@ Public Class cCore
     ''' </summary>
     Public ReadOnly Property nCapacityMaps() As Integer
         Get
-            Return Me.CapacityMapInteractionManager.nMaps
+            Return Me.CapacityMapInteractionManager.nEnviroData
         End Get
     End Property
 
@@ -6645,30 +6645,34 @@ Public Class cCore
             Me.m_ShapeManagers.Clear()
             Dim manager As cBaseShapeManager
 
-            manager = New cForcingFunctionManager(m_EcoSimData, Me, eDataTypes.Forcing)
+            manager = New cForcingFunctionShapeManager(m_EcoSimData, Me, eDataTypes.Forcing)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cMediationManager(m_EcoSimData, Me, eDataTypes.Mediation)
+            manager = New cMediationShapeManager(m_EcoSimData, Me, eDataTypes.Mediation)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cEggProductionManager(m_EcoSimData, Me, eDataTypes.EggProd)
+            manager = New cEggProductionShapeManager(m_EcoSimData, Me, eDataTypes.EggProd)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cFishingEffortManger(m_EcoSimData, Me, eDataTypes.FishingEffort)
+            manager = New cFishingEffortShapeManger(m_EcoSimData, Me, eDataTypes.FishingEffort)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cFishingMortalityManger(m_EcoSimData, Me, eDataTypes.FishMort)
+            manager = New cFishingMortalityShapeManger(m_EcoSimData, Me, eDataTypes.FishMort)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cLandingsMediationManager(m_EcoSimData, Me, eDataTypes.PriceMediation)
+            manager = New cLandingsMediationShapeManager(m_EcoSimData, Me, eDataTypes.PriceMediation)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
-            manager = New cCapMapResponseManager(m_EcoSimData, Me.m_EcoSpaceData, Me, eDataTypes.CapacityMediation)
+            manager = New cEnviroResponseShapeManager(m_EcoSimData, Me.m_EcoSpaceData, Me, eDataTypes.CapacityMediation)
             Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             Me.m_MediatedInteractionManager = New cMediatedInteractionManager(m_EcoPathData, m_EcoSimData, Me)
             Me.m_FitToTimeSeriesData = New cF2TSDataStructures()
             ' me.m_FitToTimeSeries = New cF2TSManager(Me)
+
+
+            'manager = New cEcosimResponseShapeManager(m_EcoSimData, Me, eDataTypes.EcosimEnviroResponseFunctionManager)
+            'Me.m_ShapeManagers.Add(manager.DataType, manager)
 
             Me.m_bEcoSimIsInit = True
 
@@ -6856,6 +6860,8 @@ Public Class cCore
 
             Me.m_SearchData.RedimToSimScenario(Me.nEcosimYears)
 
+            '  Me.m_EcoSimData.Debug_InitEcosimResponse()
+
             'set the default summary time periods
             m_EcoSimData.DefaultSummaryPeriods()
 
@@ -6864,6 +6870,8 @@ Public Class cCore
             InitEcosimGroups()
             InitEcosimFleetInput()
             initEcoSimModelParameters()
+
+
 
             'rebuild all the shapes in the shape managers
             For Each manager As cBaseShapeManager In m_ShapeManagers.Values
@@ -6893,6 +6901,8 @@ Public Class cCore
                 search.Init(Me) 'init will rebuild all the interface objects
                 search.Load() 'populate the interface objects
             Next
+
+            Me.m_EcosimEnviroResponseManager.Load(Me.ForcingShapeManager)
 
             ' Me.m_EcoSim.InitAssessment()
 
@@ -7216,13 +7226,6 @@ Public Class cCore
             group.DenDepCatchability = m_EcoSimData.QmQo(iGroup)
             group.QBMaxQBio = m_EcoSimData.CmCo(iGroup)
             group.SwitchingPower = m_EcoSimData.SwitchPower(iGroup)
-            ' ToDo: make number of response functions flexible
-            group.SalinityOpt = m_EcoSimData.EnvResponseOpt(1, iGroup)
-            group.SalinitySpreadLeft = m_EcoSimData.EnvResponseSdLeft(1, iGroup)
-            group.SalinitySpreadRight = m_EcoSimData.EnvResponseSdRight(1, iGroup)
-            group.TemperatureOpt = m_EcoSimData.EnvResponseOpt(2, iGroup)
-            group.TemperatureSpreadLeft = m_EcoSimData.EnvResponseSdLeft(2, iGroup)
-            group.TemperatureSpreadRight = m_EcoSimData.EnvResponseSdRight(2, iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
             Try
@@ -7524,11 +7527,11 @@ Public Class cCore
     End Property
 
 
-    Public ReadOnly Property ForcingShapeManager() As cForcingFunctionManager
+    Public ReadOnly Property ForcingShapeManager() As cForcingFunctionShapeManager
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.Forcing), cForcingFunctionManager)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.Forcing), cForcingFunctionShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find Shape Manager")
                 cLog.Write(Me.ToString & ".ForcingShapeManager() Error: " & ex.Message)
@@ -7539,11 +7542,11 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property EggProdShapeManager() As cEggProductionManager
+    Public ReadOnly Property EggProdShapeManager() As cEggProductionShapeManager
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.EggProd), cEggProductionManager)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.EggProd), cEggProductionShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find Shape Manager")
                 cLog.Write(Me.ToString & ".EggProdShapeManager() Error: " & ex.Message)
@@ -7554,11 +7557,11 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property MediationShapeManager() As cMediationManager
+    Public ReadOnly Property MediationShapeManager() As cMediationShapeManager
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.Mediation), cMediationManager)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.Mediation), cMediationShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find Shape Manager")
                 cLog.Write(Me.ToString & ".MediationShapeManager() Error: " & ex.Message)
@@ -7569,11 +7572,11 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property FishingEffortShapeManager() As cFishingEffortManger
+    Public ReadOnly Property FishingEffortShapeManager() As cFishingEffortShapeManger
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingEffort), cFishingEffortManger)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishingEffort), cFishingEffortShapeManger)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find effort shape manager")
                 cLog.Write(Me.ToString & ".FishingEffortShapeManager() Error: " & ex.Message)
@@ -7584,11 +7587,11 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property FishMortShapeManager() As cFishingMortalityManger
+    Public ReadOnly Property FishMortShapeManager() As cFishingMortalityShapeManger
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishMort), cFishingMortalityManger)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.FishMort), cFishingMortalityShapeManger)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find mortality shape manager")
                 cLog.Write(Me.ToString & ".FishMortShapeManager() Error: " & ex.Message)
@@ -7599,11 +7602,11 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property LandingsShapeManager() As cLandingsMediationManager
+    Public ReadOnly Property LandingsShapeManager() As cLandingsMediationShapeManager
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.PriceMediation), cLandingsMediationManager)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.PriceMediation), cLandingsMediationShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find price elasticity shape manager")
                 cLog.Write(Me.ToString & ".PriceElasticityShapeManager() Error: " & ex.Message)
@@ -7615,18 +7618,25 @@ Public Class cCore
     End Property
 
 
-    Public ReadOnly Property CapacityMapInteractionManager() As cMapResponseInteractionManager
+    Public ReadOnly Property CapacityMapInteractionManager() As cEcospaceEnviroResponseManager
         Get
             Return Me.m_mapInteractionManager
         End Get
     End Property
 
 
-    Public ReadOnly Property CapacityShapeManager() As cCapMapResponseManager
+    Public ReadOnly Property EcosimEnviroResponseManager() As cEcosimEnviroResponseManager
+        Get
+            Return Me.m_EcosimEnviroResponseManager
+        End Get
+    End Property
+
+
+    Public ReadOnly Property EnviroResponseShapeManager() As cEnviroResponseShapeManager
 
         Get
             Try
-                Return DirectCast(m_ShapeManagers.Item(eDataTypes.CapacityMediation), cCapMapResponseManager)
+                Return DirectCast(m_ShapeManagers.Item(eDataTypes.CapacityMediation), cEnviroResponseShapeManager)
             Catch ex As Exception
                 Debug.Assert(False, "Failed to find price elasticity shape manager")
                 cLog.Write(Me.ToString & ".PriceElasticityShapeManager() Error: " & ex.Message)
@@ -7636,6 +7646,22 @@ Public Class cCore
         End Get
 
     End Property
+
+
+    'Public ReadOnly Property EcosimEnviroResponseShapeManager() As cEcosimResponseShapeManager
+
+    '    Get
+    '        Try
+    '            Return DirectCast(m_ShapeManagers.Item(eDataTypes.EcosimEnviroResponseFunctionManager), cEcosimResponseShapeManager)
+    '        Catch ex As Exception
+    '            Debug.Assert(False, "Failed to find Ecosim Environmental Response shape manager")
+    '            cLog.Write(Me.ToString & ".EcosimEnviroResponseShapeManager() Error: " & ex.Message)
+    '            Return Nothing
+    '        End Try
+
+    '    End Get
+
+    'End Property
 
 
 
@@ -7684,14 +7710,7 @@ Public Class cCore
             m_EcoSimData.RiskTime(iGroup) = group.PredEffectFeedingTime
             m_EcoSimData.CmCo(iGroup) = group.QBMaxQBio
             m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
-            ' ToDo: make number of response functions flexible
-            m_EcoSimData.EnvResponseSdLeft(1, iGroup) = group.SalinitySpreadLeft
-            m_EcoSimData.EnvResponseSdRight(1, iGroup) = group.SalinitySpreadRight
-            m_EcoSimData.EnvResponseOpt(1, iGroup) = group.SalinityOpt
-            m_EcoSimData.EnvResponseOpt(2, iGroup) = group.TemperatureOpt
-            m_EcoSimData.EnvResponseSdLeft(2, iGroup) = group.TemperatureSpreadLeft
-            m_EcoSimData.EnvResponseSdRight(2, iGroup) = group.TemperatureSpreadRight
-
+  
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
                 m_EcoSimData.VulMult(iGroup, iPred) = group.VulMult(iPred)
@@ -8290,9 +8309,6 @@ Public Class cCore
             m_EcoSimRun.UseVarPQ = m_EcoSim.m_Data.UseVarPQ
             m_EcoSimRun.ForagingTimeLowerLimit = m_EcoSim.m_Data.ForagingTimeLowerLimit
 
-            m_EcoSimRun.SalinityForceFunctionNumber = m_EcoSim.m_Data.EnvResponseForceNo(1)
-            m_EcoSimRun.TemperatureForceFunctionNumber = m_EcoSim.m_Data.EnvResponseForceNo(2)
-
             m_EcoSimRun.ContaminantTracing = Me.m_tracerData.EcoSimConSimOn
             m_EcoSimRun.PredictEffort = m_EcoSim.m_Data.PredictSimEffort
             m_EcoSimRun.NumberSummaryTimeSteps = m_EcoSim.m_Data.NumStep
@@ -8330,10 +8346,7 @@ Public Class cCore
             m_EcoSim.m_Data.UseVarPQ = m_EcoSimRun.UseVarPQ
             m_EcoSim.m_Data.ForagingTimeLowerLimit = m_EcoSimRun.ForagingTimeLowerLimit
 
-            Me.m_tracerData.EcoSimConSimOn = m_EcoSimRun.ContaminantTracing
-
-            m_EcoSim.m_Data.EnvResponseForceNo(1) = m_EcoSimRun.SalinityForceFunctionNumber
-            m_EcoSim.m_Data.EnvResponseForceNo(2) = m_EcoSimRun.TemperatureForceFunctionNumber
+            m_tracerData.EcoSimConSimOn = m_EcoSimRun.ContaminantTracing
 
             m_EcoSim.m_Data.PredictSimEffort = m_EcoSimRun.PredictEffort
 
@@ -8614,7 +8627,9 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
-    Friend m_mapInteractionManager As cMapResponseInteractionManager
+    Friend m_mapInteractionManager As cEcospaceEnviroResponseManager
+
+    Friend m_EcosimEnviroResponseManager As cEcosimEnviroResponseManager
 
     Private m_stpwSpaceTimer As Stopwatch
     Private m_spaceSaveTime As Double
@@ -8681,8 +8696,15 @@ Public Class cCore
         'this will initialize local Ecospace variables to default values as well as some dimensioning
         m_Ecospace.InitToDefaults()
 
-        m_mapInteractionManager = New cMapResponseInteractionManager(Me)
+        m_mapInteractionManager = New cEcospaceEnviroResponseManager(Me)
         m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
+
+        m_EcosimEnviroResponseManager = New cEcosimEnviroResponseManager(Me)
+        'jb Use the Ecospace Environmental Response functions for now
+        'this means Ecosim will use the same response functions as Ecospace
+        'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.EcosimEnvResFunctions)
+        m_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
+
 
         Return True
 
@@ -9710,7 +9732,10 @@ Public Class cCore
 
             'hardwire some capacity maps for debugging
             Me.m_EcoSpaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
-            Me.m_ShapeManagers.Item(eDataTypes.CapacityMediation).Init()
+            Debug.Print("Ecospace Shapemanager Init")
+            Dim EnvRespManager As cEnviroResponseShapeManager = DirectCast(Me.m_ShapeManagers.Item(eDataTypes.CapacityMediation), cEnviroResponseShapeManager)
+            EnvRespManager.Init()
+            ' EnvRespManager.UpdateNormalDistributions()
 
             'sets the summary peroids to first and last year
             'at this time this data is not saved in the database
@@ -13974,10 +13999,10 @@ Public Class cCore
                                        eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Maintenance))
 
                 Case eDataTypes.EcospaceMapResponse
-                    If obj.CoreComponent = eCoreComponentType.MapResponseInteractionManager Then
+                    If obj.CoreComponent = eCoreComponentType.EcospaceResponseInteractionManager Then
 
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange,
-                                      eCoreComponentType.MapResponseInteractionManager, eMessageImportance.Maintenance))
+                                      eCoreComponentType.EcospaceResponseInteractionManager, eMessageImportance.Maintenance))
                     End If
 
                 Case eDataTypes.EcospaceSpatialDataConnection

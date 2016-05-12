@@ -828,7 +828,8 @@ Namespace Ecosim
                 For ipct = 1 To 12
 
                     itime = itime + 1
-                    'set QMult() (density dependent catchability) multiplier to the current biomass for this timestep
+
+                    'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
                     Me.setDenDepCatchMult(BB)
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
@@ -896,7 +897,7 @@ Namespace Ecosim
 
                         'update stanza groups on the last iteration
                         Dim UpdateStanza As Boolean = (irk4 = Me.m_Data.StepsPerMonth)
-                        rk4(BB, nvar, t, DeltaT, UpdateStanza)
+                        rk4(BB, t, DeltaT, itt, UpdateStanza)
                         t += DeltaT
                         Me.setBiomassForcing(itt, iyr)
 
@@ -1336,7 +1337,7 @@ Namespace Ecosim
 
 
 
-        Friend Sub rk4(ByRef B() As Single, ByRef nvar As Integer, ByRef t As Single, ByRef DeltaT As Single, ByVal UpdateStanzaGroups As Boolean)
+        Friend Sub rk4(ByRef B() As Single, ByRef t As Single, ByRef DeltaT As Single, iTimeStepIndex As Integer, ByVal UpdateStanzaGroups As Boolean)
             'this version taken from CJW's simII 290597 vc
             'runge-kutta integration from Press et al 1992 ed p 707
             'jb the runge-kutta integration method looks like it came directly from Numerical Recipies in C
@@ -1374,7 +1375,7 @@ Namespace Ecosim
             d6 = CSng(DeltaT / 6.0)
             th = t + dh
 
-            Derivt(t, B, dydx)
+            Derivt(t, B, dydx, iTimeStepIndex)
 
             '  cLog.WriteArrayToFile("dydx EwE6.csv", dydx, t.ToString)
 
@@ -1400,7 +1401,7 @@ Namespace Ecosim
                 End If
             Next
             'yt is new biomass
-            Derivt(th, yt, dyt)
+            Derivt(th, yt, dyt, iTimeStepIndex)
 
             For i = 1 To nvar
                 If m_Data.NoIntegrate(i) <> 0 Then
@@ -1410,7 +1411,7 @@ Namespace Ecosim
                 End If
             Next
 
-            Derivt(th, yt, dym)
+            Derivt(th, yt, dym, iTimeStepIndex)
 
             For i = 1 To nvar
                 If m_Data.NoIntegrate(i) <> 0 Then
@@ -1428,7 +1429,7 @@ Namespace Ecosim
                 End If
             Next
 
-            Derivt(t + DeltaT, yt, dyt)
+            Derivt(t + DeltaT, yt, dyt, iTimeStepIndex)
 
             For i = 1 To nGroups 'N
                 'jb set loss to the loss after the first call the Derivt()
@@ -1447,7 +1448,7 @@ Namespace Ecosim
             'Are we running with more than 12 timesteps per year
             If Me.m_Data.StepsPerMonth > 1 Then
                 'Yes call Derivt() to recompute mPred() with biomass at end of timestep
-                Me.Derivt(t + DeltaT, B, dydx)
+                Me.Derivt(t + DeltaT, B, dydx, iTimeStepIndex)
                 'reset loss to start value for SplitUpdate() after Derivt()
                 For i = 1 To nGroups : m_Data.loss(i) = LossSt(i) : Next
             End If
@@ -2346,7 +2347,7 @@ Namespace Ecosim
                 m_Data.Hden(i) = m_Data.CmCo(i) / (m_Data.CmCo(i) + 1)
             Next
 
-            Derivt(0, m_Data.StartBiomass, dydx)
+            Derivt(0, m_Data.StartBiomass, dydx, 1)
 
             'turn off numeric intergration for groups where rate of change is to big
             For i = 1 To nGroups
@@ -2374,7 +2375,7 @@ Namespace Ecosim
 
         End Sub
 
-        Public Sub Derivt(ByVal t As Single, ByVal Biomass() As Single, ByRef deriv() As Single)
+        Public Sub Derivt(ByVal t As Single, ByVal Biomass() As Single, ByRef deriv() As Single, ByVal iTimeStepIndex As Integer)
 
             'calculates volterra  derivatives for each ecopath biomass pool
             'pool loss rate for pool i is stored in m_data.loss(i) for step size checking
@@ -2451,7 +2452,7 @@ Namespace Ecosim
                     i = m_Data.ilink(ii) : j = m_Data.jlink(ii) : ia = m_Data.ArenaLink(ii)
                     aeff(ii) = m_Data.Alink(ii) * m_Data.Ftime(j) * m_Data.RelaSwitch(ii)
                     Veff(ia) = m_Data.VulArena(ia) * m_Data.Ftime(i)
-                    ApplyAVmodifiers(aeff(ii), Veff(ia), i, m_Data.Jarena(ia), True)  '?not sure this will work right with multiple preds in arenas
+                    ApplyAVmodifiers(iTimeStepIndex, aeff(ii), Veff(ia), i, m_Data.Jarena(ia), True)  '?not sure this will work right with multiple preds in arenas
                     Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_Data.pred(j) / m_Data.Hden(j)
                 Next
 
@@ -2570,7 +2571,7 @@ Namespace Ecosim
                         'ToDetritus = ToDetritus + m_data.mo(i) * biomass(i)
                         'pbm is 0 for consumers
                         Pmult = 1.0
-                        ApplyAVmodifiers(Pmult, Veff(1), i, i, True)
+                        ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), i, i, True)
                         'pbm(i) = 0 for all non PP groups
                         'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                         pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
@@ -2599,7 +2600,7 @@ Namespace Ecosim
                         'Flow to detritus from imports and immigration
                         'jb 3-Oct-2013 added immig
                         DtImpMult = 1
-                        ApplyAVmodifiers(DtImpMult, 0, i, i, True)
+                        ApplyAVmodifiers(iTimeStepIndex, DtImpMult, 0, i, i, True)
                         DetInFlow = m_EPData.DtImp(i) * DtImpMult + m_EPData.Immig(i)
 
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.Emig(i) + m_Data.DetritusOut(i)) * Biomass(i)
@@ -4242,20 +4243,17 @@ Namespace Ecosim
         ''' <param name="i">i Index</param>
         ''' <param name="j">j Index</param>
         ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
-        Public Sub ApplyAVmodifiers(ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
+        Public Sub ApplyAVmodifiers(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
             Dim K As Integer, Mult As Single
-            'following lines are old ecosim lines to modify a by time forcing only and v by mediation only
-            'A = A * tval(SeasonType(i, j))
-            'If i = j And PP(i) = 1 Then A = MedVal(MF(i, i)) * tval(SeasonType(i, i))
-            'V = V * MedVal(MF(i, j))
-            'Exit Sub  'MUST REMOVE THIS LINE TO INVOKE NEW MULTIFUNCTION APPROACH
 
-            ' JS Dec12: Apply looped environmental response handing
-            For fn As Integer = 1 To m_Data.NumEnvResponseFunctions
-                If m_Data.EnvResponseForceNo(fn) > 0 And UseTime Then
-                    ApplySalinityModifier(A, m_Data.tval(m_Data.EnvResponseForceNo(fn)), m_Data.EnvResponseOpt(fn, j), m_Data.EnvResponseSdLeft(fn, j), m_Data.EnvResponseSdRight(fn, j))
-                End If
-            Next
+            '' JS Dec12: Apply looped environmental response handing
+            'For fn As Integer = 1 To m_Data.NumEnvResponseFunctions
+            '    If m_Data.EnvResponseForceNo(fn) > 0 And UseTime Then
+            '        ApplySalinityModifier(A, m_Data.tval(m_Data.EnvResponseForceNo(fn)), m_Data.EnvResponseOpt(fn, j), m_Data.EnvResponseSdLeft(fn, j), m_Data.EnvResponseSdRight(fn, j))
+            '    End If
+            'Next
+
+            Me.ApplyEnvironmentalResponse(A, j, iTime)
 
             For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 
@@ -4287,6 +4285,21 @@ Namespace Ecosim
                 End Select
 
             Next
+
+        End Sub
+
+        Private Sub ApplyEnvironmentalResponse(ByRef A As Single, iPredIndex As Integer, ByVal iTimeStep As Integer)
+
+            For Each ResponseFunction As IEnviroInputData In Me.m_Data.lstEnviroInputData
+                If ResponseFunction.IsDriverActive Then
+
+                    If ResponseFunction.ResponseIndexForGroup(iPredIndex) > 0 Then
+                        A *= ResponseFunction.ResponseFunction(iPredIndex, iTimeStep)
+                    End If ' map.ResponseIndexForGroup(igrp) > 0
+
+                End If
+
+            Next ResponseFunction
 
         End Sub
 
@@ -4396,7 +4409,7 @@ Namespace Ecosim
         Friend Sub settval(ByVal iTime As Integer)
             'Set current values for time shape functions
             Try
-                For iShp As Integer = 1 To m_Data.ForcingShapes
+                For iShp As Integer = 1 To m_Data.NumForcingShapes
                     'jb changed all forcing function data are stored by time 
                     ' m_Data.tval(i) = IIf(i <= 6 / 2, m_Data.zscale(its, i), m_Data.zscale(itt, i))
                     m_Data.tval(iShp) = m_Data.zscale(iTime, iShp)
@@ -5241,6 +5254,8 @@ Namespace Ecosim
 #End If
 
 #End Region
+
+
 
     End Class
 

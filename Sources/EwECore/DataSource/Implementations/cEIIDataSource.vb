@@ -822,7 +822,7 @@ Public Class cEIIDataSource
 
         Dim i As Integer
         'jb Temp Hack to build DBID for each shape 
-        For i = 1 To ecosimDS.ForcingShapes
+        For i = 1 To ecosimDS.NumForcingShapes
             ecosimDS.ForcingDBIDs(i) = i
         Next
         'jb Temp Hack to build DBID for each shape 
@@ -931,13 +931,13 @@ Public Class cEIIDataSource
         If shapeType = eDataTypes.Mediation Then
             Return False
         Else
-            Dim tmpNumberOfShapes As Integer = ecosimDS.ForcingShapes + 1
+            Dim tmpNumberOfShapes As Integer = ecosimDS.NumForcingShapes + 1
 
             'add the shape to the underlying EcoSim data
             b_return = ecosimDS.ResizeForcingShapes(tmpNumberOfShapes, tmpNumberOfShapes)
 
             'fake DB id's
-            For i As Integer = 1 To ecosimDS.ForcingShapes
+            For i As Integer = 1 To ecosimDS.NumForcingShapes
                 ecosimDS.ForcingDBIDs(i) = i
             Next
 
@@ -963,12 +963,12 @@ Public Class cEIIDataSource
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
-        Debug.Assert(ecosimDS.ForcingShapes - 1 > 0, "No more shapes to remove")
+        Debug.Assert(ecosimDS.NumForcingShapes - 1 > 0, "No more shapes to remove")
         'jb this is just for testing 
-        ecosimDS.ResizeForcingShapes(ecosimDS.ForcingShapes - 1)
+        ecosimDS.ResizeForcingShapes(ecosimDS.NumForcingShapes - 1)
 
         'hack to fake database IDs
-        For i As Integer = 1 To ecosimDS.ForcingShapes
+        For i As Integer = 1 To ecosimDS.NumForcingShapes
             ecosimDS.ForcingDBIDs(i) = i
         Next
 

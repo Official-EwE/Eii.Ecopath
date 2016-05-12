@@ -132,13 +132,13 @@
     <value>m_nudNutBaseFreeProp</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.Parent" xml:space="preserve">
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="m_nudNumberYears.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 18</value>
@@ -153,34 +153,13 @@
     <value>m_nudNumberYears</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.Parent" xml:space="preserve">
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_cmbSalinityForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 125</value>
-  </data>
-  <data name="m_cmbSalinityForcing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 21</value>
-  </data>
-  <data name="m_cmbSalinityForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSalinityForcing.Name" xml:space="preserve">
-    <value>m_cmbSalinityForcing</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSalinityForcing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSalinityForcing.Parent" xml:space="preserve">
-    <value>m_plInit</value>
-  </data>
-  <data name="&gt;&gt;m_cmbSalinityForcing.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>7</value>
   </data>
   <data name="m_cmbNutForcing.Location" type="System.Drawing.Point, System.Drawing">
     <value>195, 98</value>
@@ -201,13 +180,13 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_cmbNutForcing.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>9</value>
   </data>
   <data name="m_chkPredictEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkPredictEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 179</value>
+    <value>3, 127</value>
   </data>
   <data name="m_chkPredictEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>125, 17</value>
@@ -228,13 +207,13 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_chkPredictEffort.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>11</value>
   </data>
   <data name="m_chkConTracing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkConTracing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 203</value>
+    <value>3, 151</value>
   </data>
   <data name="m_chkConTracing.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 17</value>
@@ -255,38 +234,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_chkConTracing.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="m_lblSalinityForcing.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_lblSalinityForcing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblSalinityForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 128</value>
-  </data>
-  <data name="m_lblSalinityForcing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 13</value>
-  </data>
-  <data name="m_lblSalinityForcing.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_lblSalinityForcing.Text" xml:space="preserve">
-    <value>&amp;Salinity loading forcing function:</value>
-  </data>
-  <data name="&gt;&gt;m_lblSalinityForcing.Name" xml:space="preserve">
-    <value>m_lblSalinityForcing</value>
-  </data>
-  <data name="&gt;&gt;m_lblSalinityForcing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblSalinityForcing.Parent" xml:space="preserve">
-    <value>m_plInit</value>
-  </data>
-  <data name="&gt;&gt;m_lblSalinityForcing.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="m_lblNutForcing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -313,7 +261,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_lblNutForcing.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="m_lblNutBaseFreeProp.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,7 +288,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_lblNutBaseFreeProp.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="m_lblNumberYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,8 +315,9 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_lblNumberYears.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdrInitialization.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -394,7 +343,7 @@
     <value>m_hdrInitialization</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
     <value>m_plInit</value>
@@ -427,7 +376,7 @@
     <value>m_hdrScenario</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Parent" xml:space="preserve">
     <value>m_plDescription</value>
@@ -671,7 +620,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_chkUseVarPQ.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 223</value>
+    <value>3, 171</value>
   </data>
   <data name="m_chkUseVarPQ.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 17</value>
@@ -692,55 +641,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_chkUseVarPQ.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_cmbTempLoading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 152</value>
-  </data>
-  <data name="m_cmbTempLoading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 21</value>
-  </data>
-  <data name="m_cmbTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_cmbTempLoading.Name" xml:space="preserve">
-    <value>m_cmbTempLoading</value>
-  </data>
-  <data name="&gt;&gt;m_cmbTempLoading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cmbTempLoading.Parent" xml:space="preserve">
-    <value>m_plInit</value>
-  </data>
-  <data name="&gt;&gt;m_cmbTempLoading.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_lblTempLoading.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblTempLoading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 155</value>
-  </data>
-  <data name="m_lblTempLoading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 13</value>
-  </data>
-  <data name="m_lblTempLoading.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_lblTempLoading.Text" xml:space="preserve">
-    <value>&amp;Temperature loading forcing function:</value>
-  </data>
-  <data name="&gt;&gt;m_lblTempLoading.Name" xml:space="preserve">
-    <value>m_lblTempLoading</value>
-  </data>
-  <data name="&gt;&gt;m_lblTempLoading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTempLoading.Parent" xml:space="preserve">
-    <value>m_plInit</value>
-  </data>
-  <data name="&gt;&gt;m_lblTempLoading.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>10</value>
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -818,7 +719,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_plInit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -827,7 +728,7 @@
     <value>3, 164</value>
   </data>
   <data name="m_plInit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 243</value>
+    <value>543, 190</value>
   </data>
   <data name="m_plInit.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -896,6 +797,6 @@
     <value>frmEcosimParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12893.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13497.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

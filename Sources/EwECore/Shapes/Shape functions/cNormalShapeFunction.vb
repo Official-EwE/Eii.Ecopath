@@ -28,6 +28,14 @@ Imports EwEUtils.Core
 Public Class cNormalShapeFunction
     Inherits cShapeFunction
 
+    Private Enum eParNames
+        SDLeft = 1
+        DataWidth = 2
+        SDRight = 3
+        Mean = 4
+        Max = 5
+    End Enum
+
     Public Sub New()
         MyBase.New()
     End Sub
@@ -39,8 +47,8 @@ Public Class cNormalShapeFunction
         Get
             Select Case iParam
                 Case 1 : Return My.Resources.CoreDefaults.PARAM_SD_LEFT
-                Case 2 : Return My.Resources.CoreDefaults.PARAM_SD_RIGHT
-                Case 3 : Return My.Resources.CoreDefaults.PARAM_SD_WIDTH
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_SD_WIDTH
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_SD_RIGHT
                 Case 4 : Return My.Resources.CoreDefaults.PARAM_MEAN
                 Case 5 : Return My.Resources.CoreDefaults.PARAM_MAX
             End Select
@@ -53,7 +61,7 @@ Public Class cNormalShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags
         Get
-            If (iParam = 3) Then Return eStatusFlags.NotEditable
+            If (iParam = 2) Then Return eStatusFlags.NotEditable ' width
             Return MyBase.ParamStatus(iParam)
         End Get
     End Property
@@ -67,7 +75,7 @@ Public Class cNormalShapeFunction
     Public Overrides Function Shape(nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim sYEnd As Single = Me.ParamValue(2)
+            Dim sdRight As Single = Me.ParamValue(eParNames.SDRight)
             'normal distribution with a mean of Zero
             'User defines 
             '   Standard deviation on the left and right
@@ -80,71 +88,34 @@ Public Class cNormalShapeFunction
             'how the shape affects the data is defined by the user by where they place the baseline
             'If these are to be used as Forcing Function then we will need a way to 'scale' the data
             'as there is no way to in the Forcing Function interface to select where the baseline is.
+            'Dim nPtHalf As Integer = CInt(nPoints * (ParamValue(eParNames.SDLeft) / ParamValue(eParNames.SDRight)))
             Dim nPtHalf As Integer = nPoints \ 2
             'SD left
-            Dim sd As Single = Me.ParamValue(1) + 0.0000001F
+            Dim sd As Single = Me.ParamValue(eParNames.SDLeft) + 0.0000001F
             'width in SD
-            Dim Wsd As Single = Me.ParamValue(3)
+            Me.ParamValue(eParNames.DataWidth) = ParamValue(eParNames.SDLeft) * 5 + ParamValue(eParNames.SDRight) * 5
+            'Dim Wsd As Single = Me.ParamValue(3)
+            Dim Wsd As Single = Me.ParamValue(eParNames.DataWidth)
 
             'Delta X 
             Dim dx As Single = Wsd / (nPoints - 1)
             'Start X
             Dim x0 As Single = -Wsd * 0.5F
-            Dim max As Single = Me.ParamValue(5)
+            'Dim x0 As Single = Me.ParamValue(eParNames.Mean) - ParamValue(eParNames.SDLeft) * 5
+            Dim max As Single = Me.ParamValue(eParNames.Max)
             Dim x As Single
             For i As Integer = 1 To nPoints
                 If i > nPtHalf Then
-                    sd = sYEnd + 0.0000001F
+                    'swap the sd at the half way point
+                    sd = sdRight + 0.0000001F
                 End If
                 x = x0 + dx * (i - 1)
                 Me.m_points(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2)) * max
             Next
 
-            'xxxxxxALTERNATIVE WAY TO USE THE PARAMETERS NOT IMPLEMENTED HERE xxxxxxxxxxxx
-            'Case eShapeFunctionType.Normal
-
-            '    'normal distribution with a mean of Zero
-            '    'User defines 
-            '    '   Standard deviation on the left and right
-            '    '   Width of the data in standard deviations 
-            '    '   Width is important because values outside the bounds 
-            '    '       are just the first or last value in the shape
-
-            '    'Normal and Beta shapes are not used for Forcing functions
-            '    'so it is only the shape we are interested in not that actual data
-            '    'how the shape affects the data is defined by the user by where they place the baseline
-            '    'If these are to be used as Forcing Function then we will need a way to 'scale' the data
-            '    'as there is no way to in the Forcing Function interface to select where the baseline is.
-            '    Dim nPtHalf As Integer = nPoints \ 2
-            '    'SD left
-            '    Dim SDLeft As Single = sYZero '+ 0.0000001F
-            '    Dim SDRight As Single = sYEnd ' + 0.0000001F
-            '    If SDLeft = 0 Then SDLeft = 0.0000001F
-            '    If SDRight = 0 Then SDLeft = 0.0000001F
-
-            '    Dim Mean As Single = sSteep
-            '    'width in SD
-            '    Dim Wsd As Single = sYBase
-
-            '    'width in user defined units
-            '    Dim Wvals As Single = Math.Max(SDLeft, SDRight) * Wsd
-            '    'Delta X 
-            '    Dim dx As Single = Wvals / (nPoints - 1)
-            '    'Start X
-            '    Dim x0 As Single = (-Wvals * 0.5F)
-            '    Dim x As Single
-            '    Dim sd As Single = SDLeft
-            '    For i As Integer = 1 To nPoints
-            '        If i > nPtHalf Then
-            '            sd = SDRight ' + 0.0000001F
-            '        End If
-            '        x = x0 + dx * (i - 1)
-            '        Me.m_asDataWork(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2))
-            '    Next
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         End If
 
-        Return MyBase.Shape(nPoints)
+        Return Me.m_points
 
     End Function
 
@@ -152,10 +123,10 @@ Public Class cNormalShapeFunction
     ''' <inheritdocs cref="cShapeFunction.Defaults"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
-        Me.ParamValue(1) = 1
-        Me.ParamValue(2) = 1
-        Me.ParamValue(3) = 10
-        Me.ParamValue(4) = 0
+        Me.ParamValue(1) = 1  'sd left
+        Me.ParamValue(2) = 10 'width
+        Me.ParamValue(3) = 1 'right
+        Me.ParamValue(4) = 0 'mean
         Me.ParamValue(5) = 1
     End Sub
 
@@ -198,5 +169,72 @@ Public Class cNormalShapeFunction
         Me.ParamValue(5) = max
 
     End Sub
+
+
+    Public Overrides Function Apply(obj As Object) As Boolean
+        If Not MyBase.Apply(obj) Then
+            Return False
+        End If
+        Try
+            If (TypeOf obj Is cEnviroResponseFunction) Then
+                Dim shp As cEnviroResponseFunction = DirectCast(obj, cEnviroResponseFunction)
+                Debug.Assert(shp.ShapeFunctionType = eShapeFunctionType.Normal)
+                'ResponseLeftLimit  = mean - [half the data width]
+                shp.ResponseLeftLimit = shp.Steep - shp.YBase / 2
+                'ResponseRightLimit  = mean + [half the data width]
+                shp.ResponseRightLimit = shp.Steep + shp.YBase / 2
+            End If
+        Catch ex As Exception
+
+        End Try
+
+        Return True
+
+    End Function
+
+    Public Property SDLeft As Single
+        Get
+            Return Me.ParamValue(eParNames.SDLeft)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(eParNames.SDLeft) = value
+        End Set
+    End Property
+
+    Public Property SDRight As Single
+        Get
+            Return Me.ParamValue(eParNames.SDRight)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(eParNames.SDRight) = value
+        End Set
+    End Property
+
+    Public Property DataWidth As Single
+        Get
+            Return Me.ParamValue(eParNames.DataWidth)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(eParNames.DataWidth) = value
+        End Set
+    End Property
+
+    Public Property Mean As Single
+        Get
+            Return Me.ParamValue(eParNames.Mean)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(eParNames.Mean) = value
+        End Set
+    End Property
+
+    Public Property NormalMax As Single
+        Get
+            Return Me.ParamValue(eParNames.Max)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(eParNames.Max) = value
+        End Set
+    End Property
 
 End Class

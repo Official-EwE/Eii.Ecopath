@@ -34,6 +34,7 @@ Public Class cTrapezoidShapeFunction
         MyBase.New()
     End Sub
 
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>
@@ -43,38 +44,33 @@ Public Class cTrapezoidShapeFunction
     Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim sYZero As Single = Me.ParamValue(1)
-            Dim sYEnd As Single = Me.ParamValue(2)
-            Dim sYBase As Single = Me.ParamValue(3)
-            Dim sSteep As Single = Me.ParamValue(4)
+            Dim LeftBott As Single = Me.ParamValue(1)
+            Dim LeftTop As Single = Me.ParamValue(2)
+            Dim RightBot As Single = Me.ParamValue(3)
+            Dim RightTop As Single = Me.ParamValue(4)
+
+            ' JS: IT MAY BE THAT PARAMETERS ARE REVERSED IN THIS METHOD!!!! TO TEST!!
+
             Dim xpt As Single
-            Dim width As Single = sSteep
+            Dim width As Single = RightTop
             Dim x0 As Single = 0
-            If sYZero < 0 Then
-                x0 = sYZero
-                width = sSteep - sYZero
+            If LeftBott < 0 Then
+                x0 = LeftBott
+                width = RightTop - LeftBott
             End If
 
             Dim dx As Single = width / nPoints
 
-            If sYBase = 0 Then sYBase = 1
-            If sYZero > sYEnd Then sYEnd = sYZero
-            If sYBase < sYZero Or sYBase < sYEnd Then sYBase = sYEnd + 1
+            If RightBot = 0 Then RightBot = 1
+            If LeftBott > LeftTop Then LeftTop = LeftBott
+            If RightBot < LeftBott Or RightBot < LeftTop Then RightBot = LeftTop + 1
 
             Dim yVal() As Single = New Single() {0, 0, 1, 1, 0, 0}
-            Dim xVal() As Single = New Single() {x0, sYZero, sYEnd, sYBase, sSteep, width}
+            Dim xVal() As Single = New Single() {x0, LeftBott, LeftTop, RightBot, RightTop, width}
 
             'Break the line up into segments based on the xpoints the user entered
             'The location of the shoulder in the response function is determined by it's index position in the points array
-            Dim iSegment() As Integer = New Integer() {0, Me.getIndex(sYZero, x0, sSteep, nPoints), Me.getIndex(sYEnd, x0, sSteep, nPoints), Me.getIndex(sYBase, x0, sSteep, nPoints), Me.getIndex(sSteep, x0, sSteep, nPoints), nPoints}
-
-            '' JS 160914: This is not right; the original shape cannot be modified until the user clicks 'OK'
-            'Dim shape As cEnviroResponseFunction = TryCast(Me.m_shape, cEnviroResponseFunction)
-            'If Shape IsNot Nothing Then
-            '    'set the extent of the data in the shape
-            '    Shape.ResponseLeftLimit = x0
-            '    Shape.ResponseRightLimit = sSteep
-            'End If
+            Dim iSegment() As Integer = New Integer() {0, Me.getIndex(LeftBott, x0, RightTop, nPoints), Me.getIndex(LeftTop, x0, RightTop, nPoints), Me.getIndex(RightBot, x0, RightTop, nPoints), Me.getIndex(RightTop, x0, RightTop, nPoints), nPoints}
 
             'loop over the segments and interpolate the points on the line
             For i As Integer = 0 To 4
@@ -109,54 +105,6 @@ Public Class cTrapezoidShapeFunction
         Return Me.IsMediation(datatype)
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cShapeFunction.ParamValue"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Property ParamValue(ByVal iParam As Integer) As Single
-        Get
-            Return MyBase.ParamValue(iParam)
-        End Get
-        Set(value As Single)
-
-            'Dim a0 As Single = Me.ParamValue(1)
-            'Dim b0 As Single = Me.ParamValue(2)
-            'Dim c0 As Single = Me.ParamValue(3)
-            'Dim d0 As Single = Me.ParamValue(4)
-            'Dim shift As Single
-
-            MyBase.ParamValue(iParam) = value
-
-            'Dim a1 As Single = Me.ParamValue(1)
-            'Dim b1 As Single = Me.ParamValue(2)
-            'Dim c1 As Single = Me.ParamValue(3)
-            'Dim d1 As Single = Me.ParamValue(4)
-
-            ' JS ported from JoeB's logic in dlgChangeShape
-            'jb somehow this messes up in the port...
-            'disable it for now
-
-            ''This only sort of works
-            ''The idea is to translate the object
-            ''if one of the points is to far to the right.
-            ''Because we don't know the point positions before the edit 
-            ''we can't figure out the shift for the translate
-            ''So just fake it...
-            'If (a1 > b1) Then
-            '    shift = a1 - a0
-            '    MyBase.ParamValue(2) += shift
-            '    MyBase.ParamValue(3) += shift
-            '    MyBase.ParamValue(4) += shift
-            'ElseIf (b1 > c1) Then
-            '    shift = b1 - b0
-            '    MyBase.ParamValue(3) += shift
-            '    MyBase.ParamValue(4) += shift
-            'ElseIf (c1 > d1) Then
-            '    shift = c1 - c0
-            '    MyBase.ParamValue(4) += shift
-            'End If
-
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.ParamName"/>

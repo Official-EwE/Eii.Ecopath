@@ -57,9 +57,12 @@ Namespace DataSources
         ''' <summary>Core components stored with Ecopath.</summary>
         Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath}
         ''' <summary>Core components stored with Ecosim.</summary>
-        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.MediatedInteractionManager, eCoreComponentType.FishingPolicySearch, eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
+        Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries,
+                                                                     eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo,
+                                                                     eCoreComponentType.MediatedInteractionManager, eCoreComponentType.FishingPolicySearch,
+                                                                     eCoreComponentType.MSE, eCoreComponentType.SearchObjective, eCoreComponentType.EcosimResponseInteractionManager}
         ''' <summary>Core components stored with Ecospace.</summary>
-        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization, eCoreComponentType.MapResponseInteractionManager}
+        Private Shared s_EcospaceComponents() As eCoreComponentType = {eCoreComponentType.EcoSpace, eCoreComponentType.MPAOptimization, eCoreComponentType.EcospaceResponseInteractionManager}
         ''' <summary>Core components stored with Ecotracer.</summary>
         Private Shared s_EcotracerComponents() As eCoreComponentType = {eCoreComponentType.Ecotracer}
 
@@ -3760,9 +3763,6 @@ Namespace DataSources
 
                 drow("NutBaseFreeProp") = ecosimDS.NutBaseFreeProp
                 drow("NutForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.NutForceNumber)
-                ' ToDo: make number of response functions flexible
-                drow("SalinityForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.EnvResponseForceNo(1))
-                drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.EnvResponseForceNo(2))
                 drow("NutPBmax") = ecosimDS.NutPBmax
                 'drow("UseVarPQ") = ecosimDS.UseVarPQ
                 ' ------------------------------------------
@@ -3798,6 +3798,8 @@ Namespace DataSources
             If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.MSE}) Then
                 bSucces = bSucces And Me.SaveEcosimMSE(idm)
             End If
+
+            bSucces = bSucces And Me.SaveEcosimCapacityDrivers(idm)
 
             If bSucces Then
                 ' Commit save
@@ -4192,7 +4194,7 @@ Namespace DataSources
         ''' </para>
         ''' <para>
         ''' Due to the limited capabilities of Microzork Access SQL, database 
-        ''' update-generated foreign keys to fleets and groups cannot cacading 
+        ''' update-generated foreign keys to fleets and groups cannot cascading 
         ''' delete. Hence, we need to eradicate linked groups and fleets via code.
         ''' </para> 
         ''' </summary>
@@ -4207,6 +4209,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
 
                 ' ToDo: cascadingly delete all time series for this group
 
@@ -4214,6 +4217,7 @@ Namespace DataSources
                 bSucces = False
             End Try
             Return bSucces
+
         End Function
 
 #End Region ' Modify
@@ -4255,14 +4259,7 @@ Namespace DataSources
                     ecosimDS.CmCo(iEcopathGroup) = CSng(reader("CmCo"))
                     ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
                     ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
-                    ' ToDo: make number of response functions flexible. Requires DB restructuring
-                    ecosimDS.EnvResponseOpt(1, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SalOpt", 35.0!))
-                    ecosimDS.EnvResponseSdLeft(1, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalLeft", 1000.0!))
-                    ecosimDS.EnvResponseSdRight(1, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalRight", 1000.0!))
-                    ecosimDS.EnvResponseOpt(2, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempOpt", 10.0!))
-                    ecosimDS.EnvResponseSdLeft(2, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempLeft", 1000.0!))
-                    ecosimDS.EnvResponseSdRight(2, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempRight", 1000.0!))
-
+  
                     mseDS.Blim(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Bbase(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Fopt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Fopt", mseDS.Fopt(iEcopathGroup), cCore.NULL_VALUE))
@@ -4635,14 +4632,6 @@ Namespace DataSources
                     End If
                     drow("FishMortShapeID") = idm.GetID(eDataTypes.FishMort, ecosimDS.GroupFishRateNoDBID(i))
 
-                    ' ToDo: make number of response functions flexible. Requires database restructuring
-                    drow("SalOpt") = ecosimDS.EnvResponseOpt(1, i)
-                    drow("SdSalLeft") = ecosimDS.EnvResponseSdLeft(1, i)
-                    drow("SdSalRight") = ecosimDS.EnvResponseSdRight(1, i)
-                    drow("TempOpt") = ecosimDS.EnvResponseOpt(2, i)
-                    drow("TempLeft") = ecosimDS.EnvResponseSdLeft(2, i)
-                    drow("TempRight") = ecosimDS.EnvResponseSdRight(2, i)
-
                     drow("Blim") = mseDS.Blim(i)
                     drow("Bbase") = mseDS.Bbase(i)
                     drow("Fopt") = mseDS.Fopt(i)
@@ -4996,7 +4985,7 @@ Namespace DataSources
             Dim strQuery As String = ""
 
             strQuery = String.format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0} OR ShapeType={1})", CInt(eDataTypes.EggProd), CInt(eDataTypes.Forcing))
-            ecosimDS.ForcingShapes = CInt(Me.m_db.GetValue(strQuery, 0))
+            ecosimDS.NumForcingShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
             strQuery = String.format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.Mediation))
             PredPreyMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
@@ -5071,15 +5060,10 @@ Namespace DataSources
 
             Try
                 ' Read and assign scenario forcing shape number(s)
-                ' ToDo: make number of response functions flexible
-                reader = Me.m_db.GetReader(String.format("SELECT NutForcingShapeID, SalinityForcingShapeID, TemperatureForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
+                reader = Me.m_db.GetReader(String.Format("SELECT NutForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
                 reader.Read()
                 iForcingShape = CInt(Me.m_db.ReadSafe(reader, "NutForcingShapeID", 0))
                 ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
-                iForcingShape = CInt(Me.m_db.ReadSafe(reader, "SalinityForcingShapeID", 0))
-                ecosimDS.EnvResponseForceNo(1) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
-                iForcingShape = CInt(Me.m_db.ReadSafe(reader, "TemperatureForcingShapeID", 0))
-                ecosimDS.EnvResponseForceNo(2) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
             Catch ex As Exception
@@ -5090,6 +5074,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadLandingInteractions()
             bSucces = bSucces And Me.LoadMediationWeights()
             bSucces = bSucces And Me.LoadStanzaShapeAssignments()
+            bSucces = bSucces And Me.LoadEcosimCapacityDrivers()
 
             Return bSucces
 
@@ -5585,7 +5570,7 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcoSimShape")
                 dt = writer.GetDataTable()
 
-                For iShape = 1 To ecosimDS.ForcingShapes
+                For iShape = 1 To ecosimDS.NumForcingShapes
                     ' JS 10aug07: this should be an assert
                     If (ecosimDS.ForcingDBIDs(iShape) > 0) Then
                         drow = dt.Rows.Find(ecosimDS.ForcingDBIDs(iShape))
@@ -6401,22 +6386,27 @@ Namespace DataSources
             Try
 
                 ' Manually set 'soft' shape links to 0
-                Me.m_db.Execute(String.format("UPDATE EcoSimStanzaShape Set EggProdShapeID=NULL WHERE (EggProdShapeID={0})", iShapeID))
-                Me.m_db.Execute(String.format("UPDATE EcoSimStanzaShape Set HatchCodeShapeID=NULL WHERE (HatchCodeShapeID={0})", iShapeID))
-                Me.m_db.Execute("DELETE FROM EcoSimStanzaShape WHERE ((HatchCodeShapeID=NULL) AND (EggProdShapeID=NULL))")
+                Me.m_db.Execute(String.Format("UPDATE EcoSimStanzaShape Set EggProdShapeID=0 WHERE (EggProdShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("UPDATE EcoSimStanzaShape Set HatchCodeShapeID=0 WHERE (HatchCodeShapeID={0})", iShapeID))
+                Me.m_db.Execute("DELETE FROM EcoSimStanzaShape WHERE ((HatchCodeShapeID=0) AND (EggProdShapeID=0))")
 
-                Me.m_db.Execute(String.Format("UPDATE EcosimScenario Set SalinityForcingShapeID=0 WHERE (SalinityForcingShapeID={0})", iShapeID))
-                Me.m_db.Execute(String.Format("UPDATE EcosimScenario Set TemperatureForcingShapeID=0 WHERE (TemperatureForcingShapeID={0})", iShapeID))
-                Me.m_db.Execute(String.Format("UPDATE EcosimScenario Set NutForcingShapeID=0 WHERE (NutForcingShapeID={0})", iShapeID))
+                ' Fix Ecosim environmental nutrient forcing
+                Me.m_db.Execute(String.Format("UPDATE EcoSimScenario Set NutForcingShapeID=0 WHERE (NutForcingShapeID={0})", iShapeID))
 
-                ' Delete mediation weights
+                ' Delete Ecosim environmental responses and drivers
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE (ResponseID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE (DriverID={0})", iShapeID))
+
+                ' Delete Ecospace environmental responses
+                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ShapeID={0})", iShapeID))
+
+                ' Delete Ecosim mediation
                 Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsGroup WHERE (ShapeID={0})", iShapeID))
                 Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioShapeMedWeightsFleet WHERE (ShapeID={0})", iShapeID))
                 Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioshapeMedWeightsLandings WHERE (ShapeID={0})", iShapeID))
 
-                ' Delete pred/prey interactions
+                ' Delete Ecosim pred/prey interactions
                 Me.m_db.Execute(String.format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
-                Me.m_db.Execute(String.format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ShapeID={0})", iShapeID))
 
                 ' Destroy the given shape
                 Me.m_db.Execute(String.format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
@@ -7051,6 +7041,77 @@ Namespace DataSources
 
 #End Region ' Time series
 
+#Region " Environmental drivers "
+
+        Private Function LoadEcosimCapacityDrivers() As Boolean
+
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+            Dim reader As IDataReader = Nothing
+            Dim bSucces As Boolean = True
+
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+            Try
+
+                While reader.Read()
+                    Dim iGroup As Integer = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("GroupID")))
+                    Dim iShapeDriver As Integer = Array.IndexOf(ecosimDS.ForcingDBIDs, CInt(reader("DriverID")))
+                    Dim iShapeResponse As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ResponseID")))
+
+                    If (iGroup > 0) And (iShapeDriver > 0) And (iShapeResponse > 0) Then
+                        ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) = iShapeResponse
+                    End If
+                End While
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.m_db.ReleaseReader(reader)
+
+            Return bSucces
+
+        End Function
+
+        Private Function SaveEcosimCapacityDrivers(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim medDS As cMediationDataStructures = Me.m_core.CapacityMapInteractionManager.MediationData
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            ' Clear
+            Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+            writer = Me.m_db.GetWriter("EcosimScenarioCapacityDrivers")
+
+            Try
+                For iShapeDriver As Integer = 1 To ecosimDS.NumForcingShapes
+                    For iGroup As Integer = 1 To ecopathDS.NumGroups
+                        If (ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) > 0) Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
+                            drow("ResponseID") = medDS.MediationDBIDs(ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup))
+                            drow("DriverID") = ecosimDS.ForcingDBIDs(iShapeDriver)
+                            writer.AddRow(drow)
+                        End If
+                    Next iGroup
+                Next iShapeDriver
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+
+            Return bSucces
+
+        End Function
+
+#End Region ' Environmental drivers
+
 #Region " MSE "
 
 #Region " Load "
@@ -7059,7 +7120,7 @@ Namespace DataSources
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
-            Dim reader As IDataReader = Me.m_db.GetReader(String.format("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
             Dim bSucces As Boolean = True
 
             If (reader IsNot Nothing) Then
@@ -7071,7 +7132,7 @@ Namespace DataSources
                         mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
                         mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cMSEDataStructures.MSE_DEFAULT_MAXEFFORT))
                     Catch ex As Exception
-                        Me.LogMessage(String.format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
                         bSucces = False
                     End Try
                 End If
@@ -7101,7 +7162,7 @@ Namespace DataSources
             ' Obtain mapped scenario ID
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
-            strSQL = String.format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID)
+            strSQL = String.Format("DELETE FROM EcosimScenarioMSE WHERE (ScenarioID={0})", iScenarioID)
             bSucces = Me.m_db.Execute(strSQL)
 
             Try
@@ -7118,7 +7179,7 @@ Namespace DataSources
                 writer.AddRow(drow)
 
             Catch ex As Exception
-                Me.LogMessage(String.format("Error {0} occurred while saving MSE", ex.Message))
+                Me.LogMessage(String.Format("Error {0} occurred while saving MSE", ex.Message))
                 bSucces = False
             End Try
 
@@ -7238,7 +7299,7 @@ Namespace DataSources
             End Try
             Me.m_db.ReleaseReader(reader)
 
-            ' JS 08Jl14: redimForRun is called too many times
+            ' JS 08Jul14: redimForRun is called (too) many times?
 
             'set the size of the variables that hold the map data to InRow and InCol
             'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory
@@ -9449,11 +9510,11 @@ Namespace DataSources
             bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
             writer = Nothing
 
-            Return bSucces And SaveCapacityDrivers(idm)
+            Return bSucces And SaveEcospaceCapacityDrivers(idm)
 
         End Function
 
-        Private Function SaveCapacityDrivers(ByVal idm As cIDMappings) As Boolean
+        Private Function SaveEcospaceCapacityDrivers(ByVal idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData

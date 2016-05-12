@@ -131,7 +131,7 @@ Public Class cImporter
 
     Private Function CreateShape(strName As String, env As cImportData.cEnvelopeData) As Boolean
 
-        Dim man As cCapMapResponseManager = Me.m_core.CapacityShapeManager
+        Dim man As cEnviroResponseShapeManager = Me.m_core.EnviroResponseShapeManager
         Dim shp As cForcingFunction = Nothing
         Dim data(NMedPoints) As Single
         Dim p0 As Integer = 0
@@ -175,7 +175,7 @@ Public Class cImporter
 
     Private Function UpdateShapes() As Boolean
 
-        Dim man As cCapMapResponseManager = Me.m_core.CapacityShapeManager
+        Dim man As cEnviroResponseShapeManager = Me.m_core.EnviroResponseShapeManager
         For i As Integer = 0 To man.Count - 1
             Dim shp As cEnviroResponseFunction = CType(man.Item(i), cEnviroResponseFunction)
             Dim env As cImportData.cEnvelopeData = Nothing
