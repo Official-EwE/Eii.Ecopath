@@ -10209,6 +10209,8 @@ Public Class cCore
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
+        If Not Me.SaveChanges(False) Then Return False
+
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
