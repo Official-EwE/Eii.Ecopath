@@ -9092,13 +9092,13 @@ Public Class cCore
         Dim MigMapsSet() As Boolean
         Try
 
-            If Me.m_Ecospace.getMigrationMapsSet(MigMapsSet) > 0 Then
-                Dim strMsg As String = "Migration maps need setting for groups" ' My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
+            If Me.m_Ecospace.getMissingMigrationMaps(MigMapsSet) > 0 Then
+                Dim strMsg As String = My.Resources.CoreMessages.MIGRATION_MISSING_MAPS
                 msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning,
                                                                     eMessageReplyStyle.YES_NO, , eMessageReply.YES)
                 For igrp As Integer = 1 To Me.nGroups
                     If Not MigMapsSet(igrp) Then
-                        strMsg = "Migration map not set for group " + igrp.ToString
+                        strMsg = cStringUtils.Localize(My.Resources.CoreMessages.MIGRATION_MISSING_GROUPS, Me.m_EcoPathData.GroupName(igrp))
                         vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg,
                                                  eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
@@ -9117,7 +9117,6 @@ Public Class cCore
         Catch ex As Exception
 
         End Try
-
 
         Return True
 
