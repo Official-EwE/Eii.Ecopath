@@ -117,11 +117,11 @@ Namespace Controls
         Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btDefaults.Click
 
-            Dim fs As IShapeFunction = Me.SelectedShapeFunction()
-            If (fs Is Nothing) Then Return
+            Dim template As IShapeFunction = Me.SelectedShapeFunction()
+            If (template Is Nothing) Then Return
 
-            fs.Defaults()
-            Me.m_grid.RefreshContent()
+            template.Defaults()
+            Me.m_grid.ShapeFunction = template
 
             Me.UpdatePreview()
 
