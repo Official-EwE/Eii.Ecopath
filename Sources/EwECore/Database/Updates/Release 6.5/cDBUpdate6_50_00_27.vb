@@ -110,7 +110,7 @@ Friend Class cDBUpdate6_50_00_27
                 Dim sSL As Single = CSng(db.ReadSafe(reader, "SdSalLeft", 1000.0!))
                 Dim sSR As Single = CSng(db.ReadSafe(reader, "SdSalRight", 1000.0!))
 
-                If (sSR <> 1000) And (sSL <> 1000) Then
+                If (sSR <> 1000) Or (sSL <> 1000) Then
 
                     Dim iDriverIDSal As Integer = CInt(db.GetValue("SELECT MAX(SalinityForcingShapeID) FROM EcosimScenario WHERE (ScenarioID=" & iScenarioID & ")"))
                     Dim iResponseID As Integer = 0
@@ -141,7 +141,7 @@ Friend Class cDBUpdate6_50_00_27
                 Dim sTL As Single = CSng(db.ReadSafe(reader, "TempLeft", 1000.0!))
                 Dim sTR As Single = CSng(db.ReadSafe(reader, "TempRight", 1000.0!))
 
-                If (sTR <> 1000) And (sTL <> 1000) Then
+                If (sTR <> 1000) Or (sTL <> 1000) Then
 
                     Dim iDriverTemID As Integer = CInt(db.GetValue("SELECT MAX(TemperatureForcingShapeID) FROM EcosimScenario WHERE (ScenarioID=" & iScenarioID & ")"))
                     Dim iResponseID As Integer = 0
