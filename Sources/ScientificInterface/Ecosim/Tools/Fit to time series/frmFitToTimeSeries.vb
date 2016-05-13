@@ -203,7 +203,7 @@ Namespace Ecosim
 
                 Case eCoreComponentType.ShapesManager
                     ' Refresh the Anomaly search content
-                    If ((msg.DataType = eDataTypes.Forcing) Or (msg.DataType = eDataTypes.EggProd) Or (msg.DataType = eDataTypes.Mediation)) Then
+                    If (msg.DataType = eDataTypes.Forcing) Then
                         Me.m_shapeHandler.Refresh()
                         Me.ReloadControls()
                     End If

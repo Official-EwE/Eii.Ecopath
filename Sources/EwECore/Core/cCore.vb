@@ -13863,6 +13863,8 @@ Public Class cCore
 
                             manager = m_ShapeManagers.Item(eDataTypes.Forcing)
                             manager.Load()
+
+                            Me.m_EcosimEnviroResponseManager.Load(Me.ForcingShapeManager)
                         End If
                     End If
 
