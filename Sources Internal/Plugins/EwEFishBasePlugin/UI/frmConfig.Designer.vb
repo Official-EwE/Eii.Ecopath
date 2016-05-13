@@ -1,0 +1,316 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class frmConfig
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmConfig))
+        Me.m_lblWebUser = New System.Windows.Forms.Label()
+        Me.m_lblWebPwd = New System.Windows.Forms.Label()
+        Me.m_tbxWebAccount = New System.Windows.Forms.TextBox()
+        Me.m_btnConnect = New System.Windows.Forms.Button()
+        Me.m_btnDisconnect = New System.Windows.Forms.Button()
+        Me.m_tbxWebPwd = New System.Windows.Forms.TextBox()
+        Me.m_tlpLogo = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_plBits = New System.Windows.Forms.Panel()
+        Me.m_cmbMaxResults = New System.Windows.Forms.ComboBox()
+        Me.m_lblNumResults = New System.Windows.Forms.Label()
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrConnection = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tbxODBCpwd = New System.Windows.Forms.TextBox()
+        Me.m_tbxWebPort = New System.Windows.Forms.TextBox()
+        Me.m_tbxWebServer = New System.Windows.Forms.TextBox()
+        Me.m_lblWebPort = New System.Windows.Forms.Label()
+        Me.m_tbxAccess = New System.Windows.Forms.TextBox()
+        Me.m_tbxODBCconn = New System.Windows.Forms.TextBox()
+        Me.m_lblWebServer = New System.Windows.Forms.Label()
+        Me.m_tbxODBCuser = New System.Windows.Forms.TextBox()
+        Me.m_lblAccess = New System.Windows.Forms.Label()
+        Me.m_lblODBCconn = New System.Windows.Forms.Label()
+        Me.m_lblODBCpwd = New System.Windows.Forms.Label()
+        Me.m_lblODBCuser = New System.Windows.Forms.Label()
+        Me.m_rbWebService = New System.Windows.Forms.RadioButton()
+        Me.m_rbAccess = New System.Windows.Forms.RadioButton()
+        Me.m_rbODBC = New System.Windows.Forms.RadioButton()
+        Me.m_btnPickAccess = New System.Windows.Forms.Button()
+        Me.m_bpLogo = New System.Windows.Forms.PictureBox()
+        Me.m_tlpLogo.SuspendLayout()
+        Me.m_plBits.SuspendLayout()
+        CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'm_lblWebUser
+        '
+        resources.ApplyResources(Me.m_lblWebUser, "m_lblWebUser")
+        Me.m_lblWebUser.Name = "m_lblWebUser"
+        '
+        'm_lblWebPwd
+        '
+        resources.ApplyResources(Me.m_lblWebPwd, "m_lblWebPwd")
+        Me.m_lblWebPwd.Name = "m_lblWebPwd"
+        '
+        'm_tbxWebAccount
+        '
+        resources.ApplyResources(Me.m_tbxWebAccount, "m_tbxWebAccount")
+        Me.m_tbxWebAccount.Name = "m_tbxWebAccount"
+        '
+        'm_btnConnect
+        '
+        resources.ApplyResources(Me.m_btnConnect, "m_btnConnect")
+        Me.m_btnConnect.Name = "m_btnConnect"
+        '
+        'm_btnDisconnect
+        '
+        resources.ApplyResources(Me.m_btnDisconnect, "m_btnDisconnect")
+        Me.m_btnDisconnect.Name = "m_btnDisconnect"
+        '
+        'm_tbxWebPwd
+        '
+        resources.ApplyResources(Me.m_tbxWebPwd, "m_tbxWebPwd")
+        Me.m_tbxWebPwd.Name = "m_tbxWebPwd"
+        '
+        'm_tlpLogo
+        '
+        Me.m_tlpLogo.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
+        Me.m_tlpLogo.Controls.Add(Me.m_plBits, 0, 0)
+        Me.m_tlpLogo.Controls.Add(Me.m_bpLogo, 0, 1)
+        Me.m_tlpLogo.Name = "m_tlpLogo"
+        '
+        'm_plBits
+        '
+        Me.m_plBits.BackColor = System.Drawing.SystemColors.Control
+        Me.m_plBits.Controls.Add(Me.m_cmbMaxResults)
+        Me.m_plBits.Controls.Add(Me.m_lblNumResults)
+        Me.m_plBits.Controls.Add(Me.m_hdrSearch)
+        Me.m_plBits.Controls.Add(Me.m_hdrConnection)
+        Me.m_plBits.Controls.Add(Me.m_tbxODBCpwd)
+        Me.m_plBits.Controls.Add(Me.m_tbxWebPort)
+        Me.m_plBits.Controls.Add(Me.m_tbxWebServer)
+        Me.m_plBits.Controls.Add(Me.m_lblWebPort)
+        Me.m_plBits.Controls.Add(Me.m_tbxAccess)
+        Me.m_plBits.Controls.Add(Me.m_tbxODBCconn)
+        Me.m_plBits.Controls.Add(Me.m_lblWebServer)
+        Me.m_plBits.Controls.Add(Me.m_tbxODBCuser)
+        Me.m_plBits.Controls.Add(Me.m_lblAccess)
+        Me.m_plBits.Controls.Add(Me.m_lblODBCconn)
+        Me.m_plBits.Controls.Add(Me.m_lblODBCpwd)
+        Me.m_plBits.Controls.Add(Me.m_lblODBCuser)
+        Me.m_plBits.Controls.Add(Me.m_rbWebService)
+        Me.m_plBits.Controls.Add(Me.m_rbAccess)
+        Me.m_plBits.Controls.Add(Me.m_rbODBC)
+        Me.m_plBits.Controls.Add(Me.m_btnPickAccess)
+        Me.m_plBits.Controls.Add(Me.m_btnDisconnect)
+        Me.m_plBits.Controls.Add(Me.m_btnConnect)
+        Me.m_plBits.Controls.Add(Me.m_lblWebUser)
+        Me.m_plBits.Controls.Add(Me.m_tbxWebAccount)
+        Me.m_plBits.Controls.Add(Me.m_tbxWebPwd)
+        Me.m_plBits.Controls.Add(Me.m_lblWebPwd)
+        resources.ApplyResources(Me.m_plBits, "m_plBits")
+        Me.m_plBits.Name = "m_plBits"
+        '
+        'm_cmbMaxResults
+        '
+        Me.m_cmbMaxResults.FormattingEnabled = True
+        Me.m_cmbMaxResults.Items.AddRange(New Object() {resources.GetString("m_cmbMaxResults.Items"), resources.GetString("m_cmbMaxResults.Items1"), resources.GetString("m_cmbMaxResults.Items2"), resources.GetString("m_cmbMaxResults.Items3"), resources.GetString("m_cmbMaxResults.Items4"), resources.GetString("m_cmbMaxResults.Items5")})
+        resources.ApplyResources(Me.m_cmbMaxResults, "m_cmbMaxResults")
+        Me.m_cmbMaxResults.Name = "m_cmbMaxResults"
+        '
+        'm_lblNumResults
+        '
+        resources.ApplyResources(Me.m_lblNumResults, "m_lblNumResults")
+        Me.m_lblNumResults.Name = "m_lblNumResults"
+        '
+        'm_hdrSearch
+        '
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.CanCollapseParent = False
+        Me.m_hdrSearch.CollapsedParentHeight = 0
+        Me.m_hdrSearch.IsCollapsed = False
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
+        'm_hdrConnection
+        '
+        resources.ApplyResources(Me.m_hdrConnection, "m_hdrConnection")
+        Me.m_hdrConnection.CanCollapseParent = False
+        Me.m_hdrConnection.CollapsedParentHeight = 0
+        Me.m_hdrConnection.IsCollapsed = False
+        Me.m_hdrConnection.Name = "m_hdrConnection"
+        '
+        'm_tbxODBCpwd
+        '
+        resources.ApplyResources(Me.m_tbxODBCpwd, "m_tbxODBCpwd")
+        Me.m_tbxODBCpwd.Name = "m_tbxODBCpwd"
+        '
+        'm_tbxWebPort
+        '
+        resources.ApplyResources(Me.m_tbxWebPort, "m_tbxWebPort")
+        Me.m_tbxWebPort.Name = "m_tbxWebPort"
+        '
+        'm_tbxWebServer
+        '
+        resources.ApplyResources(Me.m_tbxWebServer, "m_tbxWebServer")
+        Me.m_tbxWebServer.Name = "m_tbxWebServer"
+        '
+        'm_lblWebPort
+        '
+        resources.ApplyResources(Me.m_lblWebPort, "m_lblWebPort")
+        Me.m_lblWebPort.Name = "m_lblWebPort"
+        '
+        'm_tbxAccess
+        '
+        resources.ApplyResources(Me.m_tbxAccess, "m_tbxAccess")
+        Me.m_tbxAccess.Name = "m_tbxAccess"
+        '
+        'm_tbxODBCconn
+        '
+        resources.ApplyResources(Me.m_tbxODBCconn, "m_tbxODBCconn")
+        Me.m_tbxODBCconn.Name = "m_tbxODBCconn"
+        '
+        'm_lblWebServer
+        '
+        resources.ApplyResources(Me.m_lblWebServer, "m_lblWebServer")
+        Me.m_lblWebServer.Name = "m_lblWebServer"
+        '
+        'm_tbxODBCuser
+        '
+        resources.ApplyResources(Me.m_tbxODBCuser, "m_tbxODBCuser")
+        Me.m_tbxODBCuser.Name = "m_tbxODBCuser"
+        '
+        'm_lblAccess
+        '
+        resources.ApplyResources(Me.m_lblAccess, "m_lblAccess")
+        Me.m_lblAccess.Name = "m_lblAccess"
+        '
+        'm_lblODBCconn
+        '
+        resources.ApplyResources(Me.m_lblODBCconn, "m_lblODBCconn")
+        Me.m_lblODBCconn.Name = "m_lblODBCconn"
+        '
+        'm_lblODBCpwd
+        '
+        resources.ApplyResources(Me.m_lblODBCpwd, "m_lblODBCpwd")
+        Me.m_lblODBCpwd.Name = "m_lblODBCpwd"
+        '
+        'm_lblODBCuser
+        '
+        resources.ApplyResources(Me.m_lblODBCuser, "m_lblODBCuser")
+        Me.m_lblODBCuser.Name = "m_lblODBCuser"
+        '
+        'm_rbWebService
+        '
+        resources.ApplyResources(Me.m_rbWebService, "m_rbWebService")
+        Me.m_rbWebService.Name = "m_rbWebService"
+        Me.m_rbWebService.TabStop = True
+        Me.m_rbWebService.UseVisualStyleBackColor = True
+        '
+        'm_rbAccess
+        '
+        resources.ApplyResources(Me.m_rbAccess, "m_rbAccess")
+        Me.m_rbAccess.Name = "m_rbAccess"
+        Me.m_rbAccess.TabStop = True
+        Me.m_rbAccess.UseVisualStyleBackColor = True
+        '
+        'm_rbODBC
+        '
+        resources.ApplyResources(Me.m_rbODBC, "m_rbODBC")
+        Me.m_rbODBC.Name = "m_rbODBC"
+        Me.m_rbODBC.TabStop = True
+        Me.m_rbODBC.UseVisualStyleBackColor = True
+        '
+        'm_btnPickAccess
+        '
+        resources.ApplyResources(Me.m_btnPickAccess, "m_btnPickAccess")
+        Me.m_btnPickAccess.Name = "m_btnPickAccess"
+        '
+        'm_bpLogo
+        '
+        resources.ApplyResources(Me.m_bpLogo, "m_bpLogo")
+        Me.m_bpLogo.BackColor = System.Drawing.Color.White
+        Me.m_bpLogo.Image = Global.EwEFishBasePlugin.My.Resources.Resources.fblogo_new
+        Me.m_bpLogo.Name = "m_bpLogo"
+        Me.m_bpLogo.TabStop = False
+        '
+        'frmConfig
+        '
+        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_tlpLogo)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
+        Me.Name = "frmConfig"
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
+        Me.m_tlpLogo.ResumeLayout(False)
+        Me.m_plBits.ResumeLayout(False)
+        Me.m_plBits.PerformLayout()
+        CType(Me.m_bpLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+
+    End Sub
+    Private WithEvents m_lblWebUser As System.Windows.Forms.Label
+    Private WithEvents m_tbxWebAccount As System.Windows.Forms.TextBox
+    Private WithEvents m_lblWebPwd As System.Windows.Forms.Label
+    Private WithEvents m_btnConnect As System.Windows.Forms.Button
+    Private WithEvents m_btnDisconnect As System.Windows.Forms.Button
+    Private WithEvents m_tbxWebPwd As System.Windows.Forms.TextBox
+    Private WithEvents m_tlpLogo As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_bpLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_tbxODBCpwd As System.Windows.Forms.TextBox
+    Friend WithEvents m_tbxODBCuser As System.Windows.Forms.TextBox
+    Private WithEvents m_lblODBCpwd As System.Windows.Forms.Label
+    Private WithEvents m_lblODBCuser As System.Windows.Forms.Label
+    Private WithEvents m_rbWebService As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbODBC As System.Windows.Forms.RadioButton
+    Private WithEvents m_tbxWebPort As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxWebServer As System.Windows.Forms.TextBox
+    Private WithEvents m_lblWebPort As System.Windows.Forms.Label
+    Private WithEvents m_tbxODBCconn As System.Windows.Forms.TextBox
+    Private WithEvents m_lblWebServer As System.Windows.Forms.Label
+    Private WithEvents m_lblODBCconn As System.Windows.Forms.Label
+    Private WithEvents m_cmbMaxResults As System.Windows.Forms.ComboBox
+    Private WithEvents m_lblNumResults As System.Windows.Forms.Label
+    Private WithEvents m_hdrSearch As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrConnection As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_plBits As System.Windows.Forms.Panel
+    Private WithEvents m_tbxAccess As System.Windows.Forms.TextBox
+    Private WithEvents m_lblAccess As System.Windows.Forms.Label
+    Private WithEvents m_rbAccess As System.Windows.Forms.RadioButton
+    Private WithEvents m_btnPickAccess As System.Windows.Forms.Button
+End Class

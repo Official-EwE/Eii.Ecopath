@@ -1,0 +1,241 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+Imports System.Windows.Forms
+Imports ScientificInterfaceShared.Controls
+
+#End Region ' Imports
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Interface for configuring the SAUP taxon table connection.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Class frmConfig
+
+    Private m_ppt As cFishBasePlugin = Nothing
+
+    ''' <summary>Fishbase connection to manage.</summary>
+    Private m_ddx As cFishBaseConnection = Nothing
+    Private m_bLogOnRequested As Boolean
+    Private m_bWaiting As Boolean
+
+    Public Sub New(pluginpoint As cFishBasePlugin)
+        MyBase.New()
+        ' Store refs
+        Me.m_ppt = pluginpoint
+        ' Init controls
+        Me.InitializeComponent()
+    End Sub
+
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        Me.UpdateControls()
+
+        Me.Connection = Me.m_ppt.Connection
+        Me.m_cmbMaxResults.Text = Me.m_ppt.MaxResults.ToString
+
+        Me.UpdateControls()
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        ' Configure ppt
+        Me.m_ppt.Connection = Me.Connection
+        Me.m_ppt = Nothing
+        ' Clean up
+        Me.Connection = Nothing
+        ' Bye
+        MyBase.OnFormClosed(e)
+    End Sub
+
+    Private Property Connection As cFishBaseConnection
+        Get
+            Return Me.m_ddx
+        End Get
+        Set(value As cFishBaseConnection)
+            If (Me.m_ddx IsNot Nothing) Then
+                RemoveHandler Me.m_ddx.OnConnected, AddressOf OnConnected
+            End If
+            Me.m_ddx = value
+            If (Me.m_ddx IsNot Nothing) Then
+                AddHandler Me.m_ddx.OnConnected, AddressOf OnConnected
+            End If
+        End Set
+    End Property
+
+    Private Delegate Sub CompleteLogOnDelegate(ByVal bLogOn As Boolean)
+
+    Private Sub CompleteLogOn(ByVal bLogOn As Boolean)
+
+        ' Update
+        Me.m_bWaiting = False
+        Me.UpdateControls()
+
+    End Sub
+
+    Private Sub UpdateControls()
+
+        Dim bConnected As Boolean = False
+        Dim bUseAccess As Boolean = Me.m_rbAccess.Checked
+        Dim bUseODBC As Boolean = Me.m_rbODBC.Checked
+        Dim bUseWebServices As Boolean = Me.m_rbWebService.Checked
+        Dim bInputsComplete As Boolean = False
+
+        If (Me.Connection IsNot Nothing) Then
+            bConnected = Me.Connection.IsConnected
+        End If
+
+        If bUseAccess Then
+            bInputsComplete = Not String.IsNullOrWhiteSpace(Me.m_tbxAccess.Text)
+        End If
+
+        If bUseODBC Then
+            bInputsComplete = (Not String.IsNullOrWhiteSpace(Me.m_tbxODBCconn.Text)) And _
+                              (Not String.IsNullOrWhiteSpace(Me.m_tbxODBCuser.Text)) And _
+                              (Not String.IsNullOrWhiteSpace(Me.m_tbxODBCpwd.Text))
+        End If
+
+        If bUseODBC Then
+            bInputsComplete = (Not String.IsNullOrWhiteSpace(Me.m_tbxWebServer.Text)) And _
+                  (Not String.IsNullOrWhiteSpace(Me.m_tbxWebPort.Text)) And _
+                  (Not String.IsNullOrWhiteSpace(Me.m_tbxWebAccount.Text)) And _
+                  (Not String.IsNullOrWhiteSpace(Me.m_tbxWebPwd.Text))
+
+        End If
+
+        Me.m_rbAccess.Enabled = Not bConnected
+        Me.m_rbODBC.Enabled = Not bConnected
+        Me.m_rbWebService.Enabled = False And Not bConnected
+
+        Me.m_tbxAccess.Enabled = bUseAccess And Not bConnected
+        Me.m_btnPickAccess.Enabled = bUseAccess And Not bConnected
+
+        Me.m_tbxODBCconn.Enabled = bUseODBC And Not bConnected
+        Me.m_tbxODBCuser.Enabled = bUseODBC And Not bConnected
+        Me.m_tbxODBCpwd.Enabled = bUseODBC And Not bConnected
+
+        Me.m_tbxWebServer.Enabled = bUseWebServices And Not bConnected
+        Me.m_tbxWebPort.Enabled = bUseWebServices And Not bConnected
+        Me.m_tbxWebAccount.Enabled = bUseWebServices And Not bConnected
+        Me.m_tbxWebPwd.Enabled = bUseWebServices And Not bConnected
+
+        Me.m_btnConnect.Enabled = (Not bConnected) And bInputsComplete
+        Me.m_btnDisconnect.Enabled = bConnected
+
+    End Sub
+
+#Region " Generic controls "
+
+    Private Sub OnSourceSelectionChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_rbODBC.CheckedChanged, m_rbWebService.CheckedChanged, m_rbAccess.CheckedChanged
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnConnect(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnConnect.Click
+        If (Me.Connection Is Nothing) Then
+            ' Connecting
+            If (Me.m_rbAccess.Checked) Then
+                Dim fbc As New cFishBaseAccessConnnection(Me.m_ppt)
+                If (fbc.Connect(Me.m_tbxAccess.Text)) Then
+                    Me.Connection = fbc
+                End If
+            ElseIf (Me.m_rbODBC.Checked) Then
+                Dim fbc As New cFishBaseOdbcConnection(Me.m_ppt)
+                If (fbc.Connect(Me.m_tbxODBCconn.Text, Me.m_tbxODBCuser.Text, Me.m_tbxODBCpwd.Text)) Then
+                    Me.Connection = fbc
+                End If
+            ElseIf (Me.m_rbWebService.Checked) Then
+                Dim fbw As New cFishBaseWebserviceConn(Me.m_ppt)
+                If (fbw.Connect(Me.m_tbxWebServer.Text, Convert.ToInt16(Me.m_tbxWebPort.Text), Me.m_tbxWebAccount.Text, Me.m_tbxWebPwd.Text)) Then
+                    Me.Connection = fbw
+                End If
+            End If
+        End If
+            Me.UpdateControls()
+    End Sub
+
+    Private Sub OnDisconnect(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnDisconnect.Click
+        If Me.Connection.Disconnect() Then
+            Me.Connection = Nothing
+        End If
+        Me.UpdateControls()
+    End Sub
+
+    Private Sub OnConnected(ByVal ddx As cFishBaseConnection, ByVal bConnected As Boolean)
+        Me.UpdateControls()
+    End Sub
+
+    Private Sub OnAuthenticated(ByVal ddx As cFishBaseConnection, _
+                                ByVal bLoggedOn As Boolean, _
+                                ByVal bError As Boolean, _
+                                ByVal strMessage As String)
+
+        ' Leave message display to the message dispatch in the plug-in point
+
+        Try
+            If Me.InvokeRequired Then
+                Me.Invoke(New CompleteLogOnDelegate(AddressOf Me.CompleteLogOn), New Object() {bLoggedOn})
+            Else
+                Me.CompleteLogOn(bLoggedOn)
+            End If
+        Catch ex As Exception
+        End Try
+
+    End Sub
+
+    Private Sub OnPickAccess(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnPickAccess.Click
+
+        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Pick fbapp Access database", Me.m_tbxAccess.Text, "Fishbase database|Fbapp*.mdb")
+        If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            Me.m_tbxAccess.Text = ofd.FileName
+        End If
+
+    End Sub
+
+    Private Sub OnMaxResultsChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbMaxResults.SelectedIndexChanged, m_cmbMaxResults.TextChanged
+
+        Me.m_ppt.MaxResults = Math.Min(1000, Math.Max(10, Integer.Parse(Me.m_cmbMaxResults.Text)))
+        Me.UpdateControls()
+
+    End Sub
+
+    Private Sub OnAnyTextFieldChanged(sender As Object, e As System.EventArgs) _
+        Handles m_tbxODBCconn.TextChanged, m_tbxODBCpwd.TextChanged, m_tbxODBCuser.TextChanged, _
+                m_tbxWebServer.TextChanged, m_tbxWebPort.TextChanged, m_tbxWebAccount.TextChanged, m_tbxWebPwd.TextChanged, m_tbxAccess.TextChanged
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+#End Region ' Generic controls
+
+End Class
