@@ -21,14 +21,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEPlugin
-Imports EwERemarksPlugin
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Drawing
-Imports WeifenLuo.WinFormsUI.Docking
+Imports EwECore
+Imports EwEPlugin
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -92,6 +89,7 @@ Public Class cRemarksPlugin
     Public ReadOnly Property ControlTooltipText() As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
+            ' ToDo: globalize this
             Return "Show all remarks in the model"
         End Get
     End Property
@@ -152,13 +150,14 @@ Public Class cRemarksPlugin
     Public ReadOnly Property Contact() As String _
         Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "mailto:drmbongo@gmail.com"
+            Return "mailto:jeroensteenbeek@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
         Implements EwEPlugin.IPlugin.Description
         Get
+            ' ToDo: globalize this
             Return "Plug-in for EwE6 that shows all active remarks"
         End Get
     End Property

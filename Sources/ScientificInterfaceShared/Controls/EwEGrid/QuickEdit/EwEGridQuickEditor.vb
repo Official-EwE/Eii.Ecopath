@@ -93,7 +93,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub Attach(ByVal grid As EwEGrid, _
                           ByVal uic As cUIContext, _
-                          ByVal ts As ToolStrip)
+                          ByVal ts As ToolStrip, _
+                          Optional ByVal bIsOutputGrid As Boolean = True)
 
             ' Sanity checks
             Debug.Assert(grid IsNot Nothing)
@@ -127,7 +128,7 @@ Namespace Controls.EwEGrid
             AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
 
             ' Create import button (input grids only)
-            If Not Me.IsOutputGrid Then
+            If Not Me.m_bIsOutputGrid Then
                 Me.m_btnImport = New ToolStripButton(My.Resources.ImportXMLHS)
                 Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
                 AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
@@ -169,6 +170,7 @@ Namespace Controls.EwEGrid
             Me.m_bAttached = True
 
             ' Set initial state
+            Me.IsOutputGrid = bIsOutputGrid
             Me.UpdateControls()
 
         End Sub

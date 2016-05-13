@@ -180,7 +180,6 @@ Public Class Strategies
     Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
 
         Dim strRegulationDir As String = cMSEUtils.MSEFolder(m_MSE.DataPath, cMSEUtils.eMSEPaths.Regulations)
-        Dim csvStrategyFile As StreamWriter = Nothing
         Dim strFile As String = ""
         Dim strPath As String = ""
         Dim msg As cMessage = Nothing

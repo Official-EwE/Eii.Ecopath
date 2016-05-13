@@ -28,6 +28,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -74,13 +75,12 @@ Namespace Ecosim
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.Redim(Me.Core.nLivingGroups + 1, 6)
-            Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_LOWERLIMIT)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_UPPERLIMIT)
+            Dim headers As String() = Me.DataColumnsHeaders()
+
+            Me.Redim(Me.NumDataRows + 1, headers.Length)
+            For i As Integer = 0 To Me.ColumnsCount - 1
+                Me(0, i) = New EwEColumnHeaderCell(headers(i))
+            Next
 
             Me.FixedColumnWidths = False
         End Sub
@@ -89,38 +89,106 @@ Namespace Ecosim
 
             Select Case m_value
                 Case eMCRunDisplayInputValueTypes.B
-                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcBcv, eVarNameFlags.mcBLower, eVarNameFlags.mcB, eVarNameFlags.mcBUpper})
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcBcv, eVarNameFlags.mcBLower, eVarNameFlags.mcB, eVarNameFlags.mcBUpper})
                 Case eMCRunDisplayInputValueTypes.PB
-                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcPBcv, eVarNameFlags.mcPBLower, eVarNameFlags.mcPB, eVarNameFlags.mcPBUpper})
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcPBcv, eVarNameFlags.mcPBLower, eVarNameFlags.mcPB, eVarNameFlags.mcPBUpper})
                 Case eMCRunDisplayInputValueTypes.EE
-                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcEEcv, eVarNameFlags.mcEELower, eVarNameFlags.mcEE, eVarNameFlags.mcEEUpper})
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcEEcv, eVarNameFlags.mcEELower, eVarNameFlags.mcEE, eVarNameFlags.mcEEUpper})
                 Case eMCRunDisplayInputValueTypes.BA
-                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcBAcv, eVarNameFlags.mcBALower, eVarNameFlags.mcBA, eVarNameFlags.mcBAUpper})
-                Case eMCRunDisplayInputValueTypes.VU
-                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcVUcv, eVarNameFlags.mcVULower, eVarNameFlags.mcVU, eVarNameFlags.mcVUUpper})
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcBAcv, eVarNameFlags.mcBALower, eVarNameFlags.mcBA, eVarNameFlags.mcBAUpper})
                 Case eMCRunDisplayInputValueTypes.QB
-                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcQBcv, eVarNameFlags.mcQBLower, eVarNameFlags.mcQB, eVarNameFlags.mcQBUpper})
-
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcQBcv, eVarNameFlags.mcQBLower, eVarNameFlags.mcQB, eVarNameFlags.mcQBUpper})
+                Case eMCRunDisplayInputValueTypes.VU
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcVUcv, eVarNameFlags.mcVULower, eVarNameFlags.mcVU, eVarNameFlags.mcVUUpper})
+                Case eMCRunDisplayInputValueTypes.Landings, eMCRunDisplayInputValueTypes.Discards
+                    Me.FillLandingsDiscardsValues()
+                Case eMCRunDisplayInputValueTypes.Diets
+                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcDietMult})
             End Select
 
         End Sub
 
-        Private Sub FillValue(ByVal flags() As eVarNameFlags)
+        Private Sub FillValues(ByVal flags() As eVarNameFlags)
 
-            'Dim mcGrp As cCoreGroupBase = Nothing
             Dim mcGrp As cMonteCarloGroup = Nothing
 
-            For i As Integer = 1 To Me.Core.nLivingGroups
+            For i As Integer = 1 To Me.RowsCount - 1
                 mcGrp = Me.m_mcmanager.Groups(i)
                 Me(i, 0) = New EwERowHeaderCell(CStr(mcGrp.Index))
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mcGrp, flags(0))
-                Me(i, 3) = New PropertyCell(Me.PropertyManager, mcGrp, flags(1))
-                Me(i, 4) = New PropertyCell(Me.PropertyManager, mcGrp, flags(2))
-                Me(i, 5) = New PropertyCell(Me.PropertyManager, mcGrp, flags(3))
+
+                For j As Integer = 0 To flags.Length - 1
+                    Me(i, 2 + j) = New PropertyCell(Me.PropertyManager, mcGrp, flags(j))
+                Next
             Next
 
         End Sub
+
+        Private Sub FillLandingsDiscardsValues()
+
+            Dim mcGrp As cMonteCarloGroup = Nothing
+            Dim i As Integer = 1
+
+            For igrp As Integer = 1 To Me.Core.nGroups
+                mcGrp = Me.m_mcmanager.Groups(igrp)
+                For iflt As Integer = 1 To Core.nFleets
+                    Dim var As eVarNameFlags = cSystemUtils.IIF(Me.m_value = eMCRunDisplayInputValueTypes.Landings, eVarNameFlags.Landings, eVarNameFlags.Discards)
+                    Dim vars() As eVarNameFlags = cSystemUtils.IIF(Me.m_value = eMCRunDisplayInputValueTypes.Landings, _
+                                                                   New eVarNameFlags() {eVarNameFlags.mcLandingscv, eVarNameFlags.mcLandingsLower, eVarNameFlags.mcLandings, eVarNameFlags.mcLandingsUpper},
+                                                                   New eVarNameFlags() {eVarNameFlags.mcDiscardscv, eVarNameFlags.mcDiscardsLower, eVarNameFlags.mcDiscards, eVarNameFlags.mcDiscardsUpper})
+                    Dim flt As cFleetInput = Me.Core.FleetInputs(iflt)
+                    Dim val As Single = CSng(flt.GetVariable(var, igrp))
+
+                    If (val > 0) Then
+                        Me(i, 0) = New EwERowHeaderCell(CStr(mcGrp.Index))
+                        Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mcGrp, eVarNameFlags.Name)
+                        Me(i, 2) = New PropertyRowHeaderCell(Me.PropertyManager, flt, eVarNameFlags.Name)
+                        For j As Integer = 0 To vars.Length - 1
+                            Me(i, 3 + j) = New PropertyCell(Me.PropertyManager, mcGrp, vars(j), flt)
+                        Next
+                        i += 1
+                    End If
+                Next
+            Next
+
+        End Sub
+
+        Private Function NumDataRows() As Integer
+            Select Case Me.m_value
+                Case eMCRunDisplayInputValueTypes.Landings
+                    Dim n As Integer = 0
+                    For j As Integer = 1 To Me.Core.nFleets
+                        Dim flt As cFleetInput = Me.Core.FleetInputs(j)
+                        For i As Integer = 1 To Me.Core.nGroups
+                            If (flt.Landings(i) > 0) Then n += 1
+                        Next i
+                    Next j
+                    Return n
+                Case eMCRunDisplayInputValueTypes.Discards
+                    Dim n As Integer = 0
+                    For j As Integer = 1 To Me.Core.nFleets
+                        Dim flt As cFleetInput = Me.Core.FleetInputs(j)
+                        For i As Integer = 1 To Me.Core.nGroups
+                            If (flt.Discards(i) > 0) Then n += 1
+                        Next i
+                    Next j
+                    Return n
+            End Select
+            Return Me.Core.nLivingGroups
+        End Function
+
+        Private Function DataColumnsHeaders() As String()
+
+            Select Case Me.m_value
+                Case eMCRunDisplayInputValueTypes.Diets
+                    Return New String() {"", SharedResources.HEADER_GROUPNAME, "Diet multiplier"}
+                Case eMCRunDisplayInputValueTypes.Landings, eMCRunDisplayInputValueTypes.Discards
+                    Return New String() {"", SharedResources.HEADER_GROUPNAME, SharedResources.HEADER_FLEETNAME, SharedResources.HEADER_CV, SharedResources.HEADER_LOWERLIMIT, SharedResources.HEADER_MEAN, SharedResources.HEADER_UPPERLIMIT}
+                Case Else
+                    Return New String() {"", SharedResources.HEADER_GROUPNAME, SharedResources.HEADER_CV, SharedResources.HEADER_LOWERLIMIT, SharedResources.HEADER_MEAN, SharedResources.HEADER_UPPERLIMIT}
+            End Select
+            Debug.Assert(False)
+        End Function
 
     End Class
 

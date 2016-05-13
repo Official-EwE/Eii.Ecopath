@@ -49,7 +49,7 @@ Friend Class cDBUpdate6_50_00_23
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecopath sample tables"
+            Return "Addes Ecopath sample tables"
         End Get
     End Property
 

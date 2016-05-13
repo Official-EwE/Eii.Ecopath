@@ -52,7 +52,7 @@ Public Class cDiets
 
 #End Region
 
-#Region " Construction initialiaztion"
+#Region " Construction initialisation"
 
     Public Sub New(MSE As cMSE, core As EwECore.cCore)
         Me.m_core = core
@@ -164,8 +164,8 @@ Public Class cDiets
                 cMSEUtils.LogError(msg, "DietComposition multipliers cannot load from " & strFilename & ". " & ex.Message)
             End Try
             csv.Dispose()
-            cMSEUtils.ReleaseReader(reader)
         End If
+        cMSEUtils.ReleaseReader(reader)
 
         Return bSuccess
 

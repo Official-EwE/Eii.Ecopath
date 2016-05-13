@@ -146,8 +146,8 @@ Public Class cRegulations
                                           cStringUtils.ToCSVField(flt.Index) & "," &
                                           cStringUtils.ToCSVField(Me.m_methods(i)))
             Next
-            cMSEUtils.ReleaseWriter(strm)
         End If
+        cMSEUtils.ReleaseWriter(strm)
         Return True
 
     End Function

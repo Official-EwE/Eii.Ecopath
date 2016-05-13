@@ -375,8 +375,8 @@ Public Class cSurvivability
                     Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
                     bSuccess = False
                 End Try
-                cMSEUtils.ReleaseReader(reader)
             End If
+            cMSEUtils.ReleaseReader(reader)
         Else
             Return bSuccess = False
         End If
@@ -577,8 +577,8 @@ Public Class cSurvivability
                     'Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
                     bSuccess = False
                 End Try
-                cMSEUtils.ReleaseReader(reader)
             End If
+            cMSEUtils.ReleaseReader(reader)
         End If
 
         ' Add defaults for all missing catches

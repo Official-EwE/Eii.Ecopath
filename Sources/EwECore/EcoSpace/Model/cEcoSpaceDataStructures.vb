@@ -2441,7 +2441,7 @@ Public Class cEcospaceDataStructures
     ''' <param name="varname"></param>
     ''' <remarks>
     ''' This method is robust to any type of abuse; non-registered <paramref name="varname">variables</paramref>
-    ''' and <paramref name="iIndex">indexes</paramref> are dealt with properly.
+    ''' are dealt with properly.
     ''' </remarks>
     ''' -------------------------------------------------------------------
     Public ReadOnly Property getLayerIDs(varname As eVarNameFlags) As Integer()

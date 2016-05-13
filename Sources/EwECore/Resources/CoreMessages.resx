@@ -1286,6 +1286,37 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="MERGEGROUPS_ERROR_NOMODEL" xml:space="preserve">
     <value>Please load a model before attempting to merge groups</value>
   </data>
+  <data name="MONTECARLO_RESULTS_SAVED_ERROR" xml:space="preserve">
+    <value>Failed to save Monte Carlo results to {0}. {1}</value>
+    <comment>{0}=file path, {1}=error text</comment>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Monte Carlo results saved to {0}</value>
+    <comment>{0}=file path</comment>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>Model '{0}' is incompatible, and cannot be used to import samples from</value>
+    <comment>{0}=model database name</comment>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_NOSAMPLES" xml:space="preserve">
+    <value>Model '{0}' does not contain any samples</value>
+    <comment>{0}=model database name</comment>
+  </data>
+  <data name="SAMPLES_IMPORT_SUCCESS" xml:space="preserve">
+    <value>{0} sample(s) imported</value>
+    <comment>{0}=sample import count</comment>
+  </data>
+  <data name="ECOSAMPLER_RUNNING" xml:space="preserve">
+    <value>Ecosampler runnng sample {0}</value>
+    <comment>{0}=sample number</comment>
+  </data>
+  <data name="ECOSAMPLER_RUNNING_BASELINE" xml:space="preserve">
+    <value>Ecosampler running baseline</value>
+  </data>
+  <data name="UPDATE_RUNNING" xml:space="preserve">
+    <value>Applying model update {0}</value>
+    <comment>{0}=version</comment>
+  </data>
   <data name="UPDATE_RUNNING" xml:space="preserve">
     <value>Applying model update {0}</value>
     <comment>{0}=version</comment>

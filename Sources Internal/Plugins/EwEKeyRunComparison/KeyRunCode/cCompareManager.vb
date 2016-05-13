@@ -72,21 +72,21 @@ Public Class cCompareManager
 
 #Region " Private variables "
 
-    Private m_core As EwECore.cCore
-    Private m_EcopathData As EwECore.cEcopathDataStructures
-    Private m_EcosimData As EwECore.cEcosimDatastructures
-    Private m_EcospaceData As EwECore.cEcospaceDataStructures
+    Private m_core As EwECore.cCore = Nothing
+    Private m_EcopathData As EwECore.cEcopathDataStructures = Nothing
+    Private m_EcosimData As EwECore.cEcosimDatastructures = Nothing
+    Private m_EcospaceData As EwECore.cEcospaceDataStructures = Nothing
 
-    Private m_dctKeyRunValues As Dictionary(Of String, cHashValues)
-    Private m_dctCurValues As Dictionary(Of String, cHashValues)
+    Private m_dctKeyRunValues As Dictionary(Of String, cHashValues) = Nothing
+    Private m_dctCurValues As Dictionary(Of String, cHashValues) = Nothing
 
-    Private m_lSummarizers As List(Of IHashSummarizer)
+    Private m_lSummarizers As List(Of IHashSummarizer) = Nothing
     Private m_strKeyRunFile As String = ""
 
-    Private m_Results As cHashResults
+    Private m_Results As cHashResults = Nothing
 
     ''' <summary>List of errors that occurred during an operation.</summary>
-    Private m_lErrors As List(Of String)
+    Private m_lErrors As List(Of String) = Nothing
 
 #End Region ' Private variables
 
@@ -216,6 +216,8 @@ Public Class cCompareManager
     Public Function RunLoadedKeyRun() As Boolean
         Dim bSuccess As Boolean = False
 
+        ' ToDo: globalize this
+
         Me.ResetErrors()
 
         If File.Exists(Me.m_strKeyRunFile) Then
@@ -300,15 +302,6 @@ Public Class cCompareManager
         Return bSuccess
 
     End Function
-
-    'Private Function RunStateOk() As Boolean
-    '    Dim bStateOk As Boolean = Me.Core.StateMonitor.HasEcospaceLoaded
-    '    If Not bStateOk Then
-    '        Me.AddError("")
-    '        Me.SendMessage("Sorry unable to run. You must reload an Ecospace scenario.")
-    '    End If
-    '    Return bStateOk
-    'End Function
 
     Private Function ReadKeyRunFile(strFileName As String) As Boolean
 

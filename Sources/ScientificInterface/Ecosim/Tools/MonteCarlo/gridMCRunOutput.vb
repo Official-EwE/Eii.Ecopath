@@ -70,6 +70,8 @@ Namespace Ecosim
             Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CB)
             Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.EEInput, eDescriptorTypes.Abbreviation)
             Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_ABBR)
+            'Me(0, 7) = New EwEColumnHeaderCell("Landings")
+            'Me(0, 8) = New EwEColumnHeaderCell("Discards")
 
             Me.FixedColumnWidths = False
 
@@ -88,6 +90,8 @@ Namespace Ecosim
                 Me(i, 4) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcQBbf)
                 Me(i, 5) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcEEbf)
                 Me(i, 6) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcBAbf)
+                'Me(i, 7) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcLandingsbf)
+                'Me(i, 8) = New PropertyCell(Me.PropertyManager, mcGrp, eVarNameFlags.mcDiscardsbf)
             Next
 
         End Sub

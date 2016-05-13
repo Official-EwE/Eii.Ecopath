@@ -241,6 +241,7 @@ Public Class cQuotaShares
         For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
             If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGroup Then Return m_lstQuotaShares(iRow)
         Next
+        Return Nothing
 
     End Function
 
@@ -261,6 +262,7 @@ Public Class cQuotaShares
         For iRow As Integer = 0 To m_lstQuotaShares.Count - 1
             If m_lstQuotaShares(iRow).mFleetNo = iFleet And m_lstQuotaShares(iRow).mGroupNo = iGrp Then Return True
         Next
+        Return False
 
     End Function
 
@@ -329,8 +331,8 @@ Public Class cQuotaShares
                     cMSEUtils.LogError(msg, "Quota shared cannot load from " & strFilename & ". " & ex.Message)
                     bSuccess = False
                 End Try
-                cMSEUtils.ReleaseReader(reader)
             End If
+            cMSEUtils.ReleaseReader(reader)
         Else
             bSuccess = False
         End If

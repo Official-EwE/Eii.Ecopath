@@ -30,6 +30,7 @@ Imports ScientificInterface.Controls
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -38,7 +39,7 @@ Namespace Ecosim
     ''' <summary>
     ''' Form class that implements the Ecosim Monte Carlo interface.
     ''' </summary>
-    Public Class MCRun
+    Public Class frmMCRun
 
 #Region " Private vars "
 
@@ -81,6 +82,9 @@ Namespace Ecosim
         Private m_qeQB As New cQuickEditHandler()
         Private m_qeEE As New cQuickEditHandler()
         Private m_qeBA As New cQuickEditHandler()
+        Private m_qeDC As New cQuickEditHandler()
+        Private m_qeLandings As New cQuickEditHandler()
+        Private m_qeDiscards As New cQuickEditHandler()
 
         Private m_bShowBetterSS As Boolean = False
 
@@ -99,7 +103,10 @@ Namespace Ecosim
 #Region " Form overrides "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
             MyBase.OnLoad(e)
+
+            Me.m_bInUpdate = True
 
             ' Fix for disappearing toolstrips
             ' http://stackoverflow.com/questions/57208/toolstrips-in-tabpages-frequently-disappear-from-windows-forms-designer
@@ -118,6 +125,10 @@ Namespace Ecosim
             Me.m_mcmanager = Me.Core.EcosimMonteCarlo
             Me.m_mcmanager.Load()
 
+            For Each par As eMCParams In Me.m_mcmanager.SupportedVariables
+                Me.m_clbEnabledVariables.Items.Add(par)
+            Next
+
             'set the call back delegates for the monte carlo trials and ecopath iteration
             Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
             Me.m_mcmanager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
@@ -128,19 +139,19 @@ Namespace Ecosim
             Me.m_fpNumTrials = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumTrials, GetType(Integer))
             Me.m_fpNumTrials.Value = m_mcmanager.nTrials
 
-            Me.m_fpTrial = New cEwEFormatProvider(Me.UIContext, Me.lblValueTrial, GetType(Integer))
+            Me.m_fpTrial = New cEwEFormatProvider(Me.UIContext, Me.m_lblTrialValue, GetType(Integer))
             Me.m_fpTrial.Value = 0
 
-            Me.m_fpERun = New cEwEFormatProvider(Me.UIContext, Me.lblValueERun, GetType(Integer))
+            Me.m_fpERun = New cEwEFormatProvider(Me.UIContext, Me.m_lblERunValue, GetType(Integer))
             Me.m_fpERun.Value = 0
 
-            Me.m_fpSSorg = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSOrg, GetType(Single))
+            Me.m_fpSSorg = New cEwEFormatProvider(Me.UIContext, Me.m_lblSSorgValue, GetType(Single))
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
 
-            Me.m_fpSS = New cEwEFormatProvider(Me.UIContext, Me.lblValueSS, GetType(Single))
+            Me.m_fpSS = New cEwEFormatProvider(Me.UIContext, Me.m_lblSScurrValue, GetType(Single))
             Me.m_fpSS.Value = 0.0!
 
-            Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSBest, GetType(Single))
+            Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.m_lblSSbestValue, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
             Me.m_fpEETol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxEETol, GetType(Single))
@@ -180,6 +191,15 @@ Namespace Ecosim
             Me.m_gridQB.UIContext = Me.UIContext
             Me.m_gridQB.DataName = "MC_QB"
 
+            Me.m_gridDiets.UIContext = Me.UIContext
+            Me.m_gridDiets.DataName = "MC_DC"
+
+            Me.m_gridLandings.UIContext = Me.UIContext
+            Me.m_gridLandings.DataName = "MC_Landings"
+
+            Me.m_gridDiscards.UIContext = Me.UIContext
+            Me.m_gridDiscards.DataName = "MC_Discards"
+
             Me.m_gridBestFit.UIContext = Me.UIContext
             Me.m_gridBestFit.DataName = "MC_BestFit"
 
@@ -205,13 +225,29 @@ Namespace Ecosim
 
             Me.m_tsbnShowGroups.Checked = Not Me.m_spPlot.Panel2Collapsed
 
-            Me.m_qeB.Attach(Me.m_gridB, Me.UIContext, Me.m_tsB)
-            Me.m_qePB.Attach(Me.m_gridPB, Me.UIContext, Me.m_tsPB)
-            Me.m_qeQB.Attach(Me.m_gridQB, Me.UIContext, Me.m_tsQB)
-            Me.m_qeEE.Attach(Me.m_gridEE, Me.UIContext, Me.m_tsEE)
-            Me.m_qeBA.Attach(Me.m_gridBA, Me.UIContext, Me.m_tsBA)
+            Me.m_qeB.Attach(Me.m_gridB, Me.UIContext, Me.m_tsB, False)
+            Me.m_qePB.Attach(Me.m_gridPB, Me.UIContext, Me.m_tsPB, False)
+            Me.m_qeQB.Attach(Me.m_gridQB, Me.UIContext, Me.m_tsQB, False)
+            Me.m_qeEE.Attach(Me.m_gridEE, Me.UIContext, Me.m_tsEE, False)
+            Me.m_qeBA.Attach(Me.m_gridBA, Me.UIContext, Me.m_tsBA, False)
+            Me.m_qeDC.Attach(Me.m_gridDiets, Me.UIContext, Me.m_tsDiets, False)
+            Me.m_qeLandings.Attach(Me.m_gridLandings, Me.UIContext, Me.m_tsLandings, False)
+            Me.m_qeDiscards.Attach(Me.m_gridDiscards, Me.UIContext, Me.m_tsDiscards, False)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
+
+            For Each var As eMCParams In Me.m_mcmanager.SupportedVariables
+                Dim bIsEnabled As Boolean = Me.m_mcmanager.Enable(var)
+                Dim i As Integer = Me.m_clbEnabledVariables.Items.IndexOf(var)
+                If (i >= 0) Then
+                    Me.m_clbEnabledVariables.SetItemChecked(i, bIsEnabled)
+                End If
+                Me.UpdateUI(var)
+            Next
+
+            Me.m_bInUpdate = False
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -227,6 +263,8 @@ Namespace Ecosim
                 Me.m_qeQB.Detach()
                 Me.m_qeEE.Detach()
                 Me.m_qeBA.Detach()
+                Me.m_qeLandings.Detach()
+                Me.m_qeDiscards.Detach()
 
                 Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
                 Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
@@ -236,6 +274,9 @@ Namespace Ecosim
                 Me.m_gridEE.UIContext = Nothing
                 Me.m_gridPB.UIContext = Nothing
                 Me.m_gridQB.UIContext = Nothing
+                Me.m_gridDiets.UIContext = Nothing
+                Me.m_gridLandings.UIContext = Nothing
+                Me.m_gridDiscards.UIContext = Nothing
                 Me.m_gridBestFit.UIContext = Nothing
 
                 Me.m_lbGroups.Detach()
@@ -279,7 +320,11 @@ Namespace Ecosim
 
         Private Sub OnStop(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_btnStop.Click
-            Me.StopRun()
+            Try
+                Me.StopRun()
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -293,7 +338,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnShowBioTrajToggled(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowBioTraj.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
                 Try
@@ -311,7 +356,7 @@ Namespace Ecosim
         '    End If
         'End Sub
 
-        Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnToggleRetainEstimates(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbRetainEstimates.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
                 Try
@@ -321,7 +366,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub nudNumTrials_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnNumTrialsChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_nudNumTrials.ValueChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -331,7 +376,7 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub m_cbSave_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Private Sub OnAutosaveToggled(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cbSave.CheckedChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
@@ -366,6 +411,36 @@ Namespace Ecosim
             If Me.m_mcmanager IsNot Nothing Then
                 Try
                     Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.QBInput)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnLoadDietsFromPedigree(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnLoadPedDC.Click
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.DietComp)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnLoadLandingsFromPedigree(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnLoadPedLandings.Click
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.TCatchInput)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnLoadDiscardsFromPedigree(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnLoadPedDiscards.Click
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.TCatchInput)
                 Catch ex As Exception
                 End Try
             End If
@@ -425,6 +500,39 @@ Namespace Ecosim
             Handles m_tsbnShowGroups.CheckedChanged
             If (Me.m_bInUpdate) Then Return
             Me.UpdateControls()
+        End Sub
+
+        Private Sub OnFormatVariable(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_clbEnabledVariables.Format
+
+            Dim fmt As New cVarnameTypeFormatter()
+            Dim var As eVarNameFlags = eVarNameFlags.NotSet
+
+            Select Case DirectCast(e.ListItem, eMCParams)
+                Case eMCParams.BA : var = eVarNameFlags.BioAccumOutput
+                Case eMCParams.Biomass : var = eVarNameFlags.Biomass
+                Case eMCParams.Diets : var = eVarNameFlags.DietComp
+                Case eMCParams.Discards : var = eVarNameFlags.Discards
+                Case eMCParams.Landings : var = eVarNameFlags.Landings
+                Case eMCParams.EE : var = eVarNameFlags.EEInput
+                Case eMCParams.PB : var = eVarNameFlags.PBInput
+                Case eMCParams.QB : var = eVarNameFlags.QBInput
+                Case Else
+                    Debug.Assert(False, "variable not supported")
+            End Select
+            e.Value = fmt.GetDescriptor(var)
+
+        End Sub
+
+        Private Sub OnItemCheckChanged(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbEnabledVariables.ItemCheck
+
+            If (Me.m_bInUpdate) Then Return
+
+            Dim par As eMCParams = DirectCast(Me.m_clbEnabledVariables.Items(e.Index), eMCParams)
+            Me.m_mcmanager.Enable(par) = (e.NewValue = CheckState.Checked)
+            Me.UpdateUI(par)
+
         End Sub
 
 #End Region ' Events
@@ -693,6 +801,40 @@ Namespace Ecosim
             End If
         End Sub
 
+        ''' <summary>
+        ''' Update the UI to reflect that the <see cref="cMonteCarloManager.Enable">enabled state</see>
+        ''' of a given <see cref="eMCParams">parameter</see> has changed.
+        ''' </summary>
+        ''' <param name="par"></param>
+        Private Sub UpdateUI(par As eMCParams)
+
+            Dim bEnabled As Boolean = Me.m_mcmanager.Enable(par)
+            Select Case par
+                Case eMCParams.BA
+                    Me.m_tcMain.IsVisible(Me.m_tbpBA) = bEnabled
+                Case (eMCParams.Biomass)
+                    Me.m_tcMain.IsVisible(Me.m_tbpB) = bEnabled
+                Case eMCParams.Diets
+                    ' ToDo: consider adding a DietsBestFit tab, and show/hiding it here
+                    Me.m_tcMain.IsVisible(Me.m_tbpDiets) = bEnabled
+                Case eMCParams.Discards
+                    ' ToDo: consider adding a FisheriesBestFit tab, and show/hiding it here
+                    Me.m_tcMain.IsVisible(Me.m_tbpDiscards) = bEnabled
+                Case eMCParams.Landings
+                    ' ToDo: consider adding a FisheriesBestFit tab, and show/hiding it here
+                    Me.m_tcMain.IsVisible(Me.m_tbpLandings) = bEnabled
+                Case eMCParams.EE
+                    Me.m_tcMain.IsVisible(Me.m_tbpEE) = bEnabled
+                Case eMCParams.PB
+                    Me.m_tcMain.IsVisible(Me.m_tbpPB) = bEnabled
+                Case eMCParams.QB
+                    Me.m_tcMain.IsVisible(Me.m_tbpQB) = bEnabled
+                Case Else
+                    Debug.Assert(False, "variable not supported")
+
+            End Select
+        End Sub
+
         Private Sub NewIteration()
 
             Dim lLines As New List(Of LineItem)
@@ -711,8 +853,8 @@ Namespace Ecosim
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     Dim strGroupName As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name)
-                    Dim strTrialLabel As String = cStringUtils.Localize(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
-                    line = Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strTrialLabel)
+                    'Dim strTrialLabel As String = cStringUtils.Localize(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
+                    line = Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strGroupName)
                     Me.m_plothelper.Metadata(line, "SS") = Me.m_mcmanager.SS
 
                     line.IsVisible = Not m_bShowBetterSS Or (Me.m_mcmanager.SS < Me.m_mcmanager.SSorg)
@@ -742,11 +884,12 @@ Namespace Ecosim
             MyBase.UpdateControls()
 
             If (Me.UIContext Is Nothing) Then Return
-
-            Dim bIsBusy As Boolean = Me.Core.StateMonitor.IsBusy
+            If (Me.m_bInUpdate) Then Return
 
             Me.m_bInUpdate = True
 
+            Dim bIsBusy As Boolean = Me.Core.StateMonitor.IsBusy
+ 
             Me.m_spPlot.Panel2Collapsed = Not Me.m_tsbnShowGroups.Checked
             Me.m_btnApply.Enabled = Not bIsBusy And (Me.m_mcmanager.SSBestFit < Me.m_mcmanager.SSorg)
             Me.m_cbRetainEstimates.Enabled = Not bIsBusy
@@ -756,11 +899,7 @@ Namespace Ecosim
             Me.m_cbSave.Enabled = Not bIsBusy
             Me.m_cbSRA.Enabled = Not bIsBusy
 
-            If Me.m_mcmanager.IncludeFpenalty Then
-                Me.m_fpFMratio.Style = cStyleGuide.eStyleFlags.OK
-            Else
-                Me.m_fpFMratio.Style = cStyleGuide.eStyleFlags.NotEditable
-            End If
+            Me.m_fpFMratio.Style = cSystemUtils.IIF(Me.m_mcmanager.IncludeFpenalty, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
             Me.m_bInUpdate = False
 

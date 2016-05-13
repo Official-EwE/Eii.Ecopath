@@ -51,11 +51,12 @@ Namespace DataSources
         Implements IEcospaceDatasource
         Implements IEcotracerDatasource
         Implements IEwEDatasourceMetadata
+        Implements IEcopathSampleDataSource
 
 #Region " Internal definitions "
 
         ''' <summary>Core components stored with Ecopath.</summary>
-        Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath}
+        Private Shared s_EcopathComponents() As eCoreComponentType = {eCoreComponentType.Core, eCoreComponentType.DataSource, eCoreComponentType.EcoPath, eCoreComponentType.EcopathSample}
         ''' <summary>Core components stored with Ecosim.</summary>
         Private Shared s_EcosimComponents() As eCoreComponentType = {eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.TimeSeries,
                                                                      eCoreComponentType.EcoSimFitToTimeSeries, eCoreComponentType.EcoSimMonteCarlo,
@@ -634,7 +635,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadParticleSizeDistribution()
             bSucces = bSucces And Me.LoadPedigreeLevels()
             bSucces = bSucces And Me.LoadPedigreeAssignments()
-
+            bSucces = bSucces And Me.LoadEcopathSamples()
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             ecopathDS.bInitialized = bSucces
@@ -675,6 +676,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SavePedigreeLevels()
             bSucces = bSucces And Me.SavePedigreeAssignments()
             bSucces = bSucces And Me.SaveAuxillaryData()
+            bSucces = bSucces And Me.SaveSamples()
 
             If bSucces Then
                 bSucces = Me.m_db.CommitTransaction()
@@ -2250,9 +2252,16 @@ Namespace DataSources
                 Me.m_db.ReleaseReader(reader)
 
                 ' Now Ecosim and Ecospace are clean, delete the group from Ecopath
-                ' Delete taxa
-                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iEcopathGroupID))
-                bSucces = bSucces And Me.m_db.Execute(String.format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iEcopathGroupID))
+                ' Need manual deletion from all tables that were added through database updates
+
+                ' Taxa
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iEcopathGroupID))
+                ' Samples
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupCatchSample WHERE (GroupID={0})", iEcopathGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathDietCompSample WHERE (PredID={0} OR PreyID={0})", iEcopathGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupSample WHERE (GroupID={0})", iEcopathGroupID))
+                ' Ecopath itself
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroup WHERE (GroupID={0})", iEcopathGroupID))
 
             Catch ex As Exception
                 Me.LogMessage(String.format("Error {0} occurred while removing group {1}", ex.Message, iEcopathGroupID))
@@ -10447,6 +10456,297 @@ Namespace DataSources
         End Function
 
 #End Region ' Meta data
+
+#Region " Ecopath samples "
+
+#Region " Load "
+
+        Private Function LoadEcopathSamples() As Boolean _
+            Implements IEcopathSampleDataSource.LoadSamples
+
+            Dim ds As Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathSample")
+            Dim iSeq As Integer = 0
+            Dim bSucces As Boolean = True
+
+            ds.m_samples.Clear()
+
+            While reader.Read()
+                iSeq += 1
+                Try
+                    Dim s As New Samples.cEcopathSample(Me.m_core, CInt(reader("SampleID")), iSeq)
+                    s.AllowValidation = False
+                    s.Hash = CStr(reader("Hash"))
+                    s.Source = CStr(reader("Source"))
+                    s.Rating = CInt(reader("Rating"))
+                    s.Generated = cDateUtils.JulianToDate(CDbl(reader("Generated")))
+                    s.AllowValidation = True
+
+                    ds.m_samples.Add(s)
+                Catch ex As Exception
+                    bSucces = False
+                End Try
+            End While
+
+            bSucces = bSucces And Me.LoadGroupSamples() And _
+                                  Me.LoadDietSamples() And _
+                                  Me.LoadGroupCatchSamples()
+
+            If Not bSucces Then ds.m_samples.Clear()
+
+
+            Return bSucces
+
+        End Function
+
+        Private Function LoadGroupSamples() As Boolean
+
+            Dim ds As Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
+            Dim dt As New Dictionary(Of Long, Samples.cEcopathSample)
+            For Each s As Samples.cEcopathSample In ds.m_samples
+                dt(s.DBID) = s
+            Next
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupSample")
+            Dim bSucces As Boolean = True
+
+            While reader.Read()
+                Try
+                    Dim DBID As Integer = CInt(reader("SampleID"))
+                    Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+
+                    If dt.ContainsKey(DBID) And iGroup > 0 Then
+                        Dim s As Samples.cEcopathSample = dt(DBID)
+                        s.B(iGroup) = CSng(reader("Biomass"))
+                        s.PB(iGroup) = CSng(reader("ProdBiom"))
+                        s.QB(iGroup) = CSng(reader("ConsBiom"))
+                        s.EE(iGroup) = CSng(reader("EcoEfficiency"))
+                        s.BA(iGroup) = CSng(reader("BiomAcc"))
+                        s.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
+                    End If
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathGroupSample", ex.Message))
+                    bSucces = False
+                End Try
+            End While
+            Return bSucces
+
+        End Function
+
+        Private Function LoadDietSamples() As Boolean
+
+            Dim ds As Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
+            Dim dt As New Dictionary(Of Integer, Samples.cEcopathSample)
+            For Each s As Samples.cEcopathSample In ds.m_samples
+                dt(s.DBID) = s
+            Next
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathDietCompSample")
+            Dim bSucces As Boolean = True
+
+            While reader.Read()
+                Try
+                    Dim DBID As Integer = CInt(reader("SampleID"))
+                    Dim iPred As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PredID")))
+                    Dim iPrey As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
+
+                    If dt.ContainsKey(DBID) And (iPred >= 0) And (iPrey >= 0) Then
+                        Dim s As Samples.cEcopathSample = dt(DBID)
+                        Dim sDiet As Single = CSng(reader("Diet"))
+                        If (sDiet > 0) Then
+                            s.DC(iPred, iPrey) = sDiet
+                        End If
+                    End If
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietCompSample", ex.Message))
+                    bSucces = False
+                End Try
+            End While
+            Return bSucces
+
+        End Function
+
+        Private Function LoadGroupCatchSamples() As Boolean
+
+            Dim ds As Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
+            Dim dt As New Dictionary(Of Integer, Samples.cEcopathSample)
+            For Each s As Samples.cEcopathSample In ds.m_samples
+                dt(s.DBID) = s
+            Next
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupCatchSample")
+            Dim bSucces As Boolean = True
+
+            While reader.Read()
+                Try
+                    Dim DBID As Integer = CInt(reader("SampleID"))
+                    Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+                    Dim iFleet As Integer = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
+
+                    If dt.ContainsKey(DBID) And iGroup > 0 And iFleet > 0 Then
+                        Dim s As Samples.cEcopathSample = dt(DBID)
+                        s.Landing(iFleet, iGroup) = CSng(reader("Landing"))
+                        s.Discard(iFleet, iGroup) = CSng(reader("Discards"))
+                    End If
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathGroupCatchSample", ex.Message))
+                    bSucces = False
+                End Try
+            End While
+            Return bSucces
+
+        End Function
+
+#End Region ' Load
+
+#Region " Save "
+
+        Private Function SaveSamples() As Boolean _
+            Implements IEcopathSampleDataSource.SaveSamples
+
+            ' Only save rating, the other data is fixed when the sample is added
+
+            Dim ds As EwECore.Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Try
+                writer = Me.m_db.GetWriter("EcopathSample")
+                dt = writer.GetDataTable()
+
+                For Each s As Samples.cEcopathSample In ds.m_samples
+
+                    drow = dt.Rows.Find(s.DBID)
+                    Debug.Assert(drow IsNot Nothing)
+                    drow.BeginEdit()
+                    drow("Rating") = s.Rating
+                    drow.EndEdit()
+                Next
+
+                writer.Commit()
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            Return Me.m_db.ReleaseWriter(writer, bSucces) And bSucces
+
+        End Function
+
+#End Region ' Save
+
+#Region " Modify "
+
+        Public Function AddSample(sample As Samples.cEcopathSample) As Boolean _
+            Implements IEcopathSampleDataSource.AddSample
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iScenario As Integer = 0
+            Dim bSucces As Boolean = True
+
+            sample.DBID = CInt(Me.m_db.GetValue("SELECT MAX(SampleID) FROM EcopathSample", 0)) + 1
+            writer = Me.m_db.GetWriter("EcopathSample")
+            Try
+                drow = writer.NewRow()
+                drow("SampleID") = sample.DBID
+                drow("Hash") = sample.Hash
+                drow("Source") = sample.Source
+                drow("Rating") = sample.Rating
+                drow("Generated") = cDateUtils.DateToJulian(sample.Generated)
+                writer.AddRow(drow)
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+
+            writer = Me.m_db.GetWriter("EcopathGroupSample")
+            Try
+                For iGroup As Integer = 1 To ecopathDS.NumGroups
+                    drow = writer.NewRow()
+                    drow("SampleID") = sample.DBID
+                    drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                    drow("Biomass") = sample.B(iGroup)
+                    drow("ProdBiom") = sample.PB(iGroup)
+                    drow("ConsBiom") = sample.QB(iGroup)
+                    drow("EcoEfficiency") = sample.EE(iGroup)
+                    drow("BiomAcc") = sample.BA(iGroup)
+                    drow("ImpVar") = sample.DC(iGroup, 0)
+                    writer.AddRow(drow)
+                Next
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+
+            writer = Me.m_db.GetWriter("EcopathDietCompSample")
+            Try
+                For iPred As Integer = 1 To ecopathDS.NumLiving
+                    For iPrey As Integer = 1 To ecopathDS.NumGroups
+                        If (sample.DC(iPred, iPrey) > 0) Then
+                            drow = writer.NewRow()
+                            drow("SampleID") = sample.DBID
+                            drow("PredID") = ecopathDS.GroupDBID(iPred)
+                            drow("PreyID") = ecopathDS.GroupDBID(iPrey)
+                            drow("Diet") = sample.DC(iPred, iPrey)
+                            writer.AddRow(drow)
+                        End If
+                    Next iPrey
+                Next iPred
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+
+            writer = Me.m_db.GetWriter("EcopathGroupCatchSample")
+            Try
+                For iFleet As Integer = 1 To ecopathDS.NumFleet
+                    For iGroup As Integer = 1 To ecopathDS.NumGroups
+                        If ((sample.Landing(iFleet, iGroup) + sample.Discard(iFleet, iGroup)) > 0) Then
+                            drow = writer.NewRow()
+                            drow("SampleID") = sample.DBID
+                            drow("FleetID") = ecopathDS.FleetDBID(iFleet)
+                            drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                            drow("Landing") = sample.Landing(iFleet, iGroup)
+                            drow("Discards") = sample.Discard(iFleet, iGroup)
+                            writer.AddRow(drow)
+                        End If
+                    Next iGroup
+                Next iFleet
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+
+            Return bSucces
+
+        End Function
+
+        Public Function RemoveSample(sample As Samples.cEcopathSample) As Boolean _
+            Implements IEcopathSampleDataSource.RemoveSample
+
+            If (sample Is Nothing) Then Return False
+            Return Me.m_db.Execute("DELETE * FROM EcopathGroupCatchSample WHERE SampleID=" & sample.DBID) And
+                   Me.m_db.Execute("DELETE * FROM EcopathDietCompSample WHERE SampleID=" & sample.DBID) And
+                   Me.m_db.Execute("DELETE * FROM EcopathGroupSample WHERE SampleID=" & sample.DBID) And
+                   Me.m_db.Execute("DELETE * FROM EcopathSample WHERE SampleID=" & sample.DBID)
+
+        End Function
+
+#End Region ' Modify
+
+        Public Overloads Function CopyTo(ds As IEcopathSampleDataSource) As Boolean _
+            Implements IEcopathSampleDataSource.CopyTo
+            Return False
+        End Function
+
+#End Region ' Ecopath samples
 
     End Class
 

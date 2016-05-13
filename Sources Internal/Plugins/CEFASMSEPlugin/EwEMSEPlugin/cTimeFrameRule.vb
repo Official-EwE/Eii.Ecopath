@@ -62,8 +62,7 @@ Public Class cTimeFrameRule
             Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_F_Steps.csv", False)
             strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
             strmWriter.WriteLine(m_MSE.CurrentModelID & "," & m_MSE.currentStrategy.Name & "," & Me.m_HCR.GroupF.Name & "," & MeanPrevYearF)
-            strmWriter.Close()
-            strmWriter.Dispose()
+            cMSEUtils.ReleaseWriter(strmWriter)
         End If
 #End If
 

@@ -218,7 +218,7 @@ Namespace Controls.EwEGrid
         ''' contain a '{0}' field to place the property value, and placeholder
         ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
         ''' etc. Units will be placed in the placeholder fields in the order that
-        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
+        ''' they are defined in <paramref name="unitType"/>.</param>
         ''' <param name="unitType">Definition of the unit to place in the cell
         ''' display text.</param>
         ''' -------------------------------------------------------------------

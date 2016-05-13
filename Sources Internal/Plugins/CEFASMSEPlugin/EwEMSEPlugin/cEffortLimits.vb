@@ -134,20 +134,18 @@ Public Class cEffortLimits
             strFilename = Me.DefaultFileName()
         End If
 
-        Dim csv_out As New StreamWriter(strFilename, False)
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(strFilename)
+        If (writer Is Nothing) Then Return False
 
-        ' JS 19Oct13: Avoid spaces in CSV headers, this may confuse readers
-        ' ToDo: panic if file cannot be written to
-        csv_out.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
+        writer.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
         For iFleet = 1 To Me.m_core.nFleets
-            csv_out.WriteLine("{0},{1},{2}", _
+            writer.WriteLine("{0},{1},{2}", _
                               cStringUtils.FormatNumber(iFleet), _
                               cStringUtils.ToCSVField(Me.m_core.FleetInputs(iFleet).Name), _
                               cStringUtils.FormatNumber(Me.Value(iFleet)))
         Next
-        csv_out.Flush()
-        csv_out.Close()
-        csv_out.Dispose()
+
+        cMSEUtils.ReleaseWriter(writer)
         Return True
 
     End Function

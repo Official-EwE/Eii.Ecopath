@@ -114,6 +114,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugin templates\Core\ISaveFilterPlugin.vb" />
     <Compile Include="Plugin templates\Core\ICorePlugin.vb" />
     <Compile Include="Plugin templates\Core\IMessageFilterPlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\cEcopathRunType.vb" />

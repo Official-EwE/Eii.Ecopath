@@ -283,7 +283,7 @@ Public Class cEcopathDistributionParams
         Dim TCV As Double
         Dim TLowerBound As Double
         Dim TUpperBound As Double
-        Dim reader As StreamReader = cMSEUtils.GetReader(strPath)
+        Dim reader As StreamReader = Nothing
         Dim params(Me.Core.nLivingGroups) As cEcopathDistributionParamsData
         Dim param As cEcopathDistributionParamsData = Nothing
         Dim nGroups As Integer = 0
@@ -319,7 +319,6 @@ Public Class cEcopathDistributionParams
                     Debug.Assert(False, Me.ToString & ".LoadEcopathParameters() Exception: " & ex.Message)
                     bSuccess = False
                 End Try
-                cMSEUtils.ReleaseReader(reader)
 
                 If bSuccess And (nGroups <> Core.nLivingGroups) Then
                     If nGroups < Me.Core.nLivingGroups Then
@@ -331,6 +330,7 @@ Public Class cEcopathDistributionParams
                 End If
             End If
         End If
+        cMSEUtils.ReleaseReader(reader)
 
         ' Complement list with defaults for missing groups
         For igrp = 1 To Me.Core.nLivingGroups
@@ -639,7 +639,6 @@ Public Class cEcosimDistributionParams
         Next
 
         If File.Exists(strPath) Then
-
             reader = cMSEUtils.GetReader(strPath)
             If (reader IsNot Nothing) Then
                 Try
@@ -681,7 +680,6 @@ Public Class cEcosimDistributionParams
                     Debug.Assert(False, Me.ToString & ".LoadEcosimParameters() Exception: " & ex.Message)
                     bSuccess = False
                 End Try
-                cMSEUtils.ReleaseReader(reader)
 
                 If bSuccess And (nGroups <> Core.nLivingGroups - nPrimaryProducers) Then
                     If nGroups < Me.Core.nLivingGroups - nPrimaryProducers Then
@@ -693,6 +691,7 @@ Public Class cEcosimDistributionParams
                 End If
             End If
         End If
+        cMSEUtils.ReleaseReader(reader)
 
         ' Complement list with defaults for missing groups
         For iGrp = 1 To Me.Core.nLivingGroups

@@ -946,6 +946,18 @@ Public Class cPluginManager
         bCancelMessage = DirectCast(args(1), Boolean)
     End Sub
 
+    Public Sub SaveChanges(ByRef bCancel As Boolean)
+        Dim args() As Object = New Object() {bCancel}
+        Me.TryInvokeMethod(GetType(ISaveFilterPlugin), "SaveChanges", args)
+        bCancel = CBool(args(0))
+    End Sub
+
+    Public Sub DiscardChanges(ByRef bCancel As Boolean)
+        Dim args() As Object = New Object() {bCancel}
+        Me.TryInvokeMethod(GetType(ISaveFilterPlugin), "DiscardChanges", args)
+        bCancel = CBool(args(0))
+    End Sub
+
 #End Region ' Core
 
 #Region " Ecopath "

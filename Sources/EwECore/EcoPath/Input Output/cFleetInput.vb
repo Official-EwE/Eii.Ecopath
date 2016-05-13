@@ -67,6 +67,7 @@ Public Class cFleetInput
         'PoolColor
         meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
         'arrayed values

@@ -176,16 +176,16 @@ Public Class cMediationDataStructures
     ''' <returns>Value(Y) on the mediation shape for the input(X)</returns>
     ''' <remarks></remarks>
     Public Function getMedValue(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
-        Dim ip As Integer
+        Dim ip As Long 'MDP changed to long int because in rare circumstances the division produced a number so big that an int could not hold it
         '060328 CJW found that without the +0.01 below it could be unstable when slope
         'was large around Ecopath base point in mediation function, causing instability.
         'This solves it. VC.
-        ip = CInt(Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01))
+        ip = CLng(Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01))
 
         'if the index is out of bounds use the fist or last value
         If ip < 1 Then ip = 1
         If ip > Me.NMedPoints Then ip = Me.NMedPoints
-        Return Me.Medpoints(ip, iMedShapeIndex) / Me.MedYbase(iMedShapeIndex)
+        Return Me.Medpoints(CInt(ip), iMedShapeIndex) / Me.MedYbase(iMedShapeIndex)
 
     End Function
 

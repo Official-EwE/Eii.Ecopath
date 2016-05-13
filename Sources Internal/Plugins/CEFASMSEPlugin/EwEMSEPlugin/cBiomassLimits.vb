@@ -141,9 +141,8 @@ Public Class cBiomassLimits
                     buff = reader.ReadLine()
                 Loop
 
-                cMSEUtils.ReleaseReader(reader)
-
             End If 'reader IsNot Nothing
+            cMSEUtils.ReleaseReader(reader)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
@@ -165,7 +164,6 @@ Public Class cBiomassLimits
     End Function
 
     Public Function SaveLimitsToCSV() As Boolean
-        Dim csvStrategyFile As StreamWriter = Nothing
         Dim strFile As String = ""
         Dim strPath As String = ""
         Dim msg As cMessage = Nothing
@@ -205,8 +203,8 @@ Public Class cBiomassLimits
                                           cStringUtils.ToCSVField(iBiomassLimit.mLowerLimit) & "," & _
                                           cStringUtils.ToCSVField(iBiomassLimit.mUpperLimit))
             Next
-            cMSEUtils.ReleaseWriter(strm)
         End If
+        cMSEUtils.ReleaseWriter(strm)
 
         Return True
     End Function

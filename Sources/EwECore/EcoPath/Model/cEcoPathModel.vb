@@ -82,6 +82,7 @@ Namespace Ecopath
         Private SumCycDC() As Single
         Private Cons() As Single
         Friend missing(,) As Boolean
+        Friend missingDiets(,) As Boolean
         ' Private CheckedMissing As Boolean
         Private EstimateWhat() As eEstimateTypes
 
@@ -279,6 +280,7 @@ Namespace Ecopath
             'jb clear out missing array and recompute it in FindMissing() this does not really need to happen every run
             'only if something changes
             ReDim missing(m_Data.NumGroups, 4)
+            'ReDim missingDiets(m_Data.NumGroups, m_Data.NumGroups)
             Me.FindMissing()
 
             Try
@@ -1150,6 +1152,9 @@ Namespace Ecopath
                 'End If
 
                 missing(i, 4) = (m_Data.EE(i) < 0)
+                'For j As Integer = 1 To m_Data.NumLiving
+                '    missingDiets(i, j) = m_Data.DC(i, j) < 0
+                'Next j
             Next i
         End Function
 
@@ -1420,6 +1425,32 @@ Namespace Ecopath
             End If
 
         End Sub
+
+        Public Function IsFished(igrp As Integer) As Boolean
+            Return IsLanded(igrp) Or IsDiscarded(igrp)
+        End Function
+
+        Public Function IsLanded(igrp As Integer) As Boolean
+            ' Unfortunately the 0 item test is only valid if Ecopath has ran
+            ' Return (Me.m_Data.Landing(0, igrp) > 0)
+            For iFleet As Integer = 1 To Me.m_Data.NumFleet
+                If (Me.m_Data.Landing(iFleet, igrp) > 0) Then
+                    Return True
+                End If
+            Next
+            Return False
+        End Function
+
+        Public Function IsDiscarded(igrp As Integer) As Boolean
+            ' Unfortunately the 0 item test is only valid if Ecopath has ran
+            ' Return (Me.m_Data.Discard(0, igrp) > 0)
+            For iFleet As Integer = 1 To Me.m_Data.NumFleet
+                If (Me.m_Data.Discard(iFleet, igrp) > 0) Then
+                    Return True
+                End If
+            Next
+            Return False
+        End Function
 
         Public Sub CheckDiscardFateZero()
             Dim nFound As Integer

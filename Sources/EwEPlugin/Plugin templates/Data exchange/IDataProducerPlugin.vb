@@ -48,8 +48,6 @@ Namespace Data
         ''' from where any <see cref="IDataConsumerPlugin">IDataConsumerPlugin</see>
         ''' -derived class gets a chance to consume the data by implementing
         ''' <see cref="IDataConsumerPlugin.ReceiveData">ReceiveData</see>.
-        ''' <param name="runType">Run type that the data is requested for, or
-        ''' Null if the run type is irrelevant.</param>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Sub Broadcaster(ByVal broadcaster As IDataBroadcaster)

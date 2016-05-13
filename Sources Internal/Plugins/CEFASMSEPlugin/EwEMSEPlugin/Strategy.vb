@@ -285,8 +285,8 @@ Public Class Strategy
                                           cStringUtils.ToCSVField(iHCR.TypeOfHCR) & "," & _
                                           cStringUtils.ToCSVField(iHCR.TimeFrameRule.NYears))
             Next
-            cMSEUtils.ReleaseWriter(strm)
         End If
+        cMSEUtils.ReleaseWriter(strm)
 
         Return True
     End Function

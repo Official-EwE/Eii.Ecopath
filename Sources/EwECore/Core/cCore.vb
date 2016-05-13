@@ -41,6 +41,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.SpatialData
 Imports System.Xml
+Imports EwECore.Samples
 
 #End Region ' Imports
 
@@ -181,6 +182,8 @@ Public Class cCore
 
     ''' <summary>Data for the Ecosim MSY search.</summary>
     Friend m_MSYData As MSY.cMSYDataStructures
+
+    Private m_SampleManager As Samples.cEcopathSampleManager = Nothing
 
 #End Region ' Generic variables
 
@@ -646,6 +649,7 @@ Public Class cCore
         Me.m_MPAOptData = New cMPAOptDataStructures
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
         Me.m_TaxonData = New cTaxonDataStructures(Me.m_EcoPathData, Me.m_Stanza)
+        Me.m_SampleData = New cEcopathSampleDatastructures(Me.m_EcoPathData)
 
         Me.m_MSYData = New MSY.cMSYDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
 
@@ -1243,6 +1247,7 @@ Public Class cCore
         bsuccess = bsuccess And InitEcoSpace()
         bsuccess = bsuccess And Me.InitPSD()
 
+        m_SampleManager = New cEcopathSampleManager(Me)
         m_MonteCarlo = New cMonteCarloManager
         m_ConTracer = New cContaminantTracer
         m_gameManager = New cGameServerInterface(Me)
@@ -2375,12 +2380,19 @@ Public Class cCore
         If (fm.Reply = eMessageReply.CANCEL) Then Return False
         If (fm.Reply = eMessageReply.NO) Then Me.DiscardChanges() : Return True
 
+        ' Check if save must be aborted
+        If (Me.PluginManager IsNot Nothing) Then
+            Dim bCancel As Boolean = False
+            Me.PluginManager.SaveChanges(bCancel)
+            If (bCancel) Then Return False
+        End If
+
         ' Send progress message
         msg = New cProgressMessage(eProgressState.Start, 0, 0, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
         Me.Messages.SendMessage(msg, True)
 
         ' Plug-ins
-        If bSuccess And Me.m_StateMonitor.IsPluginModified Then
+        If (Me.PluginManager IsNot Nothing) And (bSuccess = True) And (Me.m_StateMonitor.IsPluginModified) Then
             If Not Me.PluginManager.SaveModel(Me.DataSource) Then
                 bSuccess = False
             Else
@@ -2454,6 +2466,12 @@ Public Class cCore
 
         ' Hang on, can we do this at all?
         If (Me.DataSource Is Nothing) Then Return False
+
+        Dim bCancel As Boolean = False
+        If (Me.PluginManager IsNot Nothing) Then
+            Me.PluginManager.DiscardChanges(bCancel)
+        End If
+        If (bCancel) Then Return False
 
         Me.DataSource.ClearChanged()
         Me.m_StateMonitor.UpdateDataState(Me.DataSource)
@@ -2695,6 +2713,7 @@ Public Class cCore
     ''' <see cref="eAutosaveTypes">auto-save type</see>, representing loaded
     ''' aspects of ecopath, ecosim, ecospace and ecotracer, where applicable.
     ''' This header block can be integrated in CSV files.
+    ''' <seealso cref="DefaultFileHeader"/>
     ''' </summary>
     ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save type</see>
     ''' to obtain the generic file header for.</param>
@@ -2758,6 +2777,7 @@ Public Class cCore
     ''' <see cref="eAutosaveTypes">auto-save type</see>, representing loaded
     ''' aspects of ecopath, ecosim, ecospace and ecotracer, where applicable.
     ''' This header block can be integrated in XML files.
+    ''' <seealso cref="DefaultFileHeader"/>
     ''' </summary>
     ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save type</see>
     ''' to obtain the generic file header for.</param>
@@ -3328,6 +3348,7 @@ Public Class cCore
     Private m_PSDParameters As cPSDParameters
     Private m_psdModel As cPSDModel
     Friend m_TaxonData As cTaxonDataStructures = Nothing
+    Friend m_SampleData As cEcopathSampleDatastructures = Nothing
 
 #End Region ' Variables
 
@@ -3469,6 +3490,7 @@ Public Class cCore
                 bsuccess = bsuccess And InitAndLoadEcosimTimeSeriesDatasets()
 
                 bsuccess = bsuccess And InitPSDParameters()
+                bsuccess = bsuccess And InitEcopathSamples()
 
                 bsuccess = bsuccess And LoadPedigreeManagers()
 
@@ -3493,6 +3515,7 @@ Public Class cCore
                 Me.m_StateMonitor.SetEcopathLoaded(False)
                 ' Let go
                 DataSource = Nothing
+                m_publisher.sendAllMessages()
                 Return False
             End If
 
@@ -3638,7 +3661,6 @@ Public Class cCore
             End If
         Next
 
-
         If Not Me.SaveChanges() Then Return False
 #If PROFILE Then
         System.Console.WriteLine("CloseModel() memory before  " & GC.GetTotalMemory(True))
@@ -3685,6 +3707,7 @@ Public Class cCore
 
             ' Clear core data structures
             Me.m_EcoPathData.Clear()
+            Me.m_SampleManager.Clear()
             Me.m_Stanza.Clear()
             Me.m_TaxonData.Clear()
             Me.m_EcoSimData.Clear()
@@ -4595,7 +4618,7 @@ Public Class cCore
                 'm_FleetsOutput.Add(New cFleetOutput(Me, m_EcoPathData.FleetDBID(iFleet)))
             Next iFleet
 
-            LoadFleetInput()
+            LoadEcopathFleetInputs()
             Me.Update_IsFished(False)
 
             Return True
@@ -4641,7 +4664,7 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadFleetInput() As Boolean
+    Friend Function LoadEcopathFleetInputs() As Boolean
         Dim iFleet As Integer
         Dim iGroup As Integer
 
@@ -11684,7 +11707,7 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' <remarks>The EwE core cannot handle a situation where a stanza configuration
     ''' is defined without having any groups. To avoid this situation, this method
-    ''' requires a valid <paramref name="iGroupID">group ID</paramref>.</remarks>
+    ''' requires a valid group ID.</remarks>
     ''' -----------------------------------------------------------------------
     Public Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean
 
@@ -12783,22 +12806,12 @@ Public Class cCore
 
                 Case eDataTypes.EcoPathGroupInput
                     If bValidatedOk Then Me.UpdateEcopathInput(idAffected)
-                    ' Special cases: name and colour changes will not affect the Ecopath execution state!
-                    ' Reroute these changes to the model itself
-                    If vs.VarName = eVarNameFlags.Name Or vs.VarName = eVarNameFlags.PoolColor Then
-                        msAffected = eCoreComponentType.DataSource
-                    End If
 
                 Case eDataTypes.Taxon
                     If bValidatedOk Then Me.UpdateEcopathGroupTaxon(idAffected)
 
                 Case eDataTypes.FleetInput
                     If bValidatedOk Then Me.UpdateFleetInput(idAffected)
-                    ' Special cases: name and colour changes will not affect the Ecopath execution state!
-                    ' Reroute these changes to the model itself
-                    If vs.VarName = eVarNameFlags.Name Or vs.VarName = eVarNameFlags.PoolColor Then
-                        msAffected = eCoreComponentType.DataSource
-                    End If
 
                 Case eDataTypes.Stanza
                     If bValidatedOk Then Me.UpdateStanza(idAffected)
@@ -14031,10 +14044,18 @@ Public Class cCore
 
                 Case eDataTypes.MonteCarlo
                     Me.LoadEcopathInputs()
+                    Me.LoadEcopathFleetInputs()
                     Me.LoadEcosimGroups()
 
                     Me.m_publisher.AddMessage(New cMessage("Monte carlo data has changed.", eMessageType.DataModified,
                                        eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Maintenance))
+
+                Case eDataTypes.EcopathSample
+                    Me.LoadEcopathInputs()
+                    Me.LoadEcopathFleetInputs()
+
+                    Me.m_publisher.AddMessage(New cMessage("Sample data is loaded.", eMessageType.DataModified, _
+                                       eCoreComponentType.EcoPath, eMessageImportance.Maintenance))
 
                 Case eDataTypes.EcospaceMapResponse
                     If obj.CoreComponent = eCoreComponentType.EcospaceResponseInteractionManager Then
@@ -14553,6 +14574,27 @@ Public Class cCore
     End Function
 
 #End Region ' Pedigree
+
+#Region " Samples "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the only instance of the <see cref="cEcopathSampleManager"/>.
+    ''' </summary>
+    ''' <returns>
+    ''' The only instance of the <see cref="cEcopathSampleManager"/>.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Function SampleManager() As Samples.cEcopathSampleManager
+        Return Me.m_SampleManager
+    End Function
+
+    Private Function InitEcopathSamples() As Boolean
+        Me.SampleManager.Init()
+        Return True
+    End Function
+
+#End Region ' Samples
 
 #Region "Game manager/interface"
 

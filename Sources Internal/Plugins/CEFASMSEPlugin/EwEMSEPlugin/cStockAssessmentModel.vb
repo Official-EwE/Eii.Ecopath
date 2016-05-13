@@ -740,13 +740,14 @@ Public Class cStockAssessmentModel
         Dim strm As StreamWriter = Nothing
         Dim breturn As Boolean
 
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
+
+        strm = cMSEUtils.GetWriter(strFilename, False)
+
         Try
 
-            If (String.IsNullOrWhiteSpace(strFilename)) Then
-                strFilename = Me.DefaultFileName
-            End If
-
-            strm = cMSEUtils.GetWriter(strFilename, False)
 
             If (strm IsNot Nothing) Then
 
@@ -763,13 +764,14 @@ Public Class cStockAssessmentModel
                 strm.WriteLine(MODEL_HEADER)
                 strm.WriteLine("UseStockAssessmentModel," + Me.UseAssessment.ToString)
 
-                cMSEUtils.ReleaseWriter(strm)
                 breturn = True
             End If
 
         Catch ex As Exception
             breturn = False
         End Try
+
+        cMSEUtils.ReleaseWriter(strm)
 
         If breturn Then
             Me.m_isChanged = False
