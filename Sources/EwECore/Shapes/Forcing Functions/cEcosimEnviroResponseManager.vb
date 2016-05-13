@@ -78,11 +78,20 @@ Public Class cEcosimEnviroResponseManager
 
     End Sub
 
-
     Public Function OnChanged() As Boolean Implements IEnvironmentalResponseManager.onChanged
 
         Debug.Print(Me.ToString + ".OnChanged() not implemented in Core yet!")
-        'still not implemented in the core
+
+        Try
+            For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
+                For iGroup As Integer = 1 To Me.m_simData.nGroups
+                    Me.m_simData.EnvRespFuncIndex(env.Index, iGroup) = env.ResponseIndexForGroup(iGroup)
+                Next iGroup
+            Next env
+        Catch ex As Exception
+            Debug.Assert(False, "Update Error: " & ex.Message)
+            ' bSuccess = False
+        End Try
 
         Try
             Me.m_core.onChanged(Me)
@@ -94,7 +103,6 @@ Public Class cEcosimEnviroResponseManager
         Return False
 
     End Function
-
 
     Public ReadOnly Property nInputData() As Integer Implements IEnvironmentalResponseManager.nEnviroData
         Get
@@ -113,14 +121,12 @@ Public Class cEcosimEnviroResponseManager
 
     End Property
 
-
     Public ReadOnly Property EnviroData(layer As cEcospaceLayer) As IEnviroInputData Implements IEnvironmentalResponseManager.EnviroData
         Get
             Debug.Assert(False, "Oppss Map(layer As cEcospaceLayer) should not be called for this implementation!")
             Return Nothing
         End Get
     End Property
-
 
     Public Sub Update()
         Debug.Print(Me.ToString + ".Update() not implemented yet!")

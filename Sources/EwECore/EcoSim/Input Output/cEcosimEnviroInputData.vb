@@ -134,6 +134,12 @@ Public Class cEcosimEnviroInputData
 
 #Region " Properties "
 
+    Public ReadOnly Property Index As Integer
+        Get
+            Return Me.m_iTSIndex
+        End Get
+    End Property
+
     Public ReadOnly Property nGroups() As Integer
         Get
             ' ToDo: remove, obtain from core
