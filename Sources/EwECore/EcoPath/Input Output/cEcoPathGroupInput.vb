@@ -69,9 +69,6 @@ Public Class cEcoPathGroupInput
         Me.m_coreComponent = eCoreComponentType.EcoPath
         Me.Index = iIndex
 
-        'create and set the status object to this source and OK
-        Me.m_ValidationStatus = New cVariableStatus
-        Me.m_ValidationStatus.CoreDataObject = Me
         Me.AllowValidation = False
 
         Me.DBID = DBID
@@ -180,10 +177,11 @@ Public Class cEcoPathGroupInput
         'PoolColor
         meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
         'NonMarketValue
-        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Single, eVarNameFlags.NonMarketValue, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
@@ -944,7 +942,7 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="eStatusFlags">status</see> of the 
-    ''' <see cref="BioAccumInput">BioAccum value</see> this group.
+    ''' <see cref="BioAccumInput">BioAccum input value</see> this group.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property BioAccumStatus() As eStatusFlags

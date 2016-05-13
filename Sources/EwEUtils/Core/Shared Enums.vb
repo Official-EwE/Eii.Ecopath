@@ -918,6 +918,10 @@ Namespace Core
         mcEE
         ''' <summary>To document</summary>
         mcVU
+        mcDietComp
+        mcDietMult
+        mcDiscards
+        mcLandings
 
         ''' <summary>To document</summary>
         mcBbf
@@ -931,6 +935,9 @@ Namespace Core
         mcEEbf
         ''' <summary>To document</summary>
         mcVUbf
+        mcDietsbf
+        mcDiscardsbf
+        mcLandingsbf
 
         ''' <summary>To document</summary>
         mcBLower
@@ -944,6 +951,8 @@ Namespace Core
         mcEELower
         ''' <summary>To document</summary>
         mcVULower
+        mcDiscardsLower
+        mcLandingsLower
 
         ''' <summary>To document</summary>
         mcBUpper
@@ -957,6 +966,8 @@ Namespace Core
         mcEEUpper
         ''' <summary>To document</summary>
         mcVUUpper
+        mcDiscardsUpper
+        mcLandingsUpper
 
         ''' <summary>To document</summary>
         mcBcv
@@ -970,6 +981,8 @@ Namespace Core
         mcEEcv
         ''' <summary>To document</summary>
         mcVUcv
+        mcDiscardscv
+        mcLandingscv
 
         'end monte carlo variables
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1911,6 +1924,8 @@ Namespace Core
         ''' <summary>Formatted reference to the publication for this model.</summary>
         PublicationReference
 
+        SampleRating
+
         Z
     End Enum
 
@@ -2463,6 +2478,7 @@ Namespace Core
         EcospaceLayerBiomassRelativeForcing = 114
 
         EcosimEnviroResponseFunctionManager = 115
+        EcopathSample = 116
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
@@ -2917,6 +2933,7 @@ Namespace Core
 
         EcospaceResponseInteractionManager
         EcosimResponseInteractionManager
+        EcopathSample
 
     End Enum
 

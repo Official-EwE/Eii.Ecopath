@@ -47,6 +47,9 @@ Namespace Definitions
         EE
         BA
         VU
+        Landings
+        Discards
+        Diets
     End Enum
 
     ''' -----------------------------------------------------------------------

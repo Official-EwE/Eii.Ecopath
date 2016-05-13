@@ -411,8 +411,10 @@ Namespace Forms
 
             If (Me.UIContext IsNot Nothing) And (Me.DesignMode = False) Then
                 If (Me.UIContext.FormSettings IsNot Nothing) Then
-                    ' Store form position BEFORE form is closed
-                    Me.UIContext.FormSettings.Store(Me)
+                    If (Me.UIContext.FormSettings IsNot Nothing) Then
+                        ' Store form position BEFORE form is closed
+                        Me.UIContext.FormSettings.Store(Me)
+                    End If
                 End If
             End If
 

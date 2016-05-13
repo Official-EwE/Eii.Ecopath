@@ -267,7 +267,8 @@ Public MustInherit Class cCoreInputOutputBase
 
         m_core = TheCore
 
-        m_ValidationStatus = New cVariableStatus()
+        Me.m_ValidationStatus = New cVariableStatus()
+        Me.m_ValidationStatus.CoreDataObject = Me
 
         'all variable use the default validator
         validator = m_core.m_validators.getValidator(eVarNameFlags.NotSet)
@@ -279,10 +280,12 @@ Public MustInherit Class cCoreInputOutputBase
 
         meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.Index, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
 #If DEBUG Then

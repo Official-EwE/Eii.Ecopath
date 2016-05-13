@@ -869,6 +869,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecosampler runnng sample {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_RUNNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosampler running baseline.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_RUNNING_BASELINE() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_RUNNING_BASELINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Failed to save spatial optimization results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property ECOSEED_RESULTS_SAVE_FAILED() As String
@@ -2039,6 +2057,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to save Monte Carlo results to {0}. {1}.
+        '''</summary>
+        Public Shared ReadOnly Property MONTECARLO_RESULTS_SAVED_ERROR() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_RESULTS_SAVED_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo results saved to {0}.
+        '''</summary>
+        Public Shared ReadOnly Property MONTECARLO_RESULTS_SAVED_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_RESULTS_SAVED_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Error running the Monte Carlo trials. {0}.
         '''</summary>
         Public Shared ReadOnly Property MONTECARLO_RUN_ERROR() As String
@@ -2341,6 +2377,33 @@ Namespace My.Resources
         Public Shared ReadOnly Property RELOAD_ECOSPACE() As String
             Get
                 Return ResourceManager.GetString("RELOAD_ECOSPACE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; is incompatible, and cannot be used to import samples from.
+        '''</summary>
+        Public Shared ReadOnly Property SAMPLES_IMPORT_ERROR_INCOMPATIBLE() As String
+            Get
+                Return ResourceManager.GetString("SAMPLES_IMPORT_ERROR_INCOMPATIBLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; does not contain any samples.
+        '''</summary>
+        Public Shared ReadOnly Property SAMPLES_IMPORT_ERROR_NOSAMPLES() As String
+            Get
+                Return ResourceManager.GetString("SAMPLES_IMPORT_ERROR_NOSAMPLES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} sample(s) imported.
+        '''</summary>
+        Public Shared ReadOnly Property SAMPLES_IMPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("SAMPLES_IMPORT_SUCCESS", resourceCulture)
             End Get
         End Property
         

@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -12,42 +12,36 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
+Option Strict On
+Imports EwEUtils.Core
+
+''' ===========================================================================
 ''' <summary>
-''' Data for the <see cref="cMessageClientServerBase.MessageReceived">MessageReceived</see> event.
+''' Interface for implementing plug-ins that may prevent the core from saving or
+''' discarding data.
 ''' </summary>
-Public Class cMessageReceivedEventArgs
-    Inherits cConnectionEventArgs
-
-    ''' <summary>The message that was received.</summary>
-    Private ReadOnly m_strMessage As String
+''' ===========================================================================
+Public Interface ISaveFilterPlugin
+    Inherits ICorePlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Creates a new instance of the <see cref="cMessageReceivedEventArgs" /> class.
+    ''' Plug-in point called when the core is about to save changes.
     ''' </summary>
-    ''' <param name="host">The remote host.</param>
-    ''' <param name="strMessage">The message that was received.</param>
+    ''' <param name="bCancel">Setting this to False will abort the save attempt.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal host As sHostInfo, ByVal strMessage As String)
-        MyBase.New(host)
-        Me.m_strMessage = strMessage
-    End Sub
+    Function SaveChanges(ByRef bCancel As Boolean) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the message that was received.
+    ''' Plug-in point called when the core is about to save changes.
     ''' </summary>
+    ''' <param name="bCancel">Setting this to False will abort the save attempt.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Message() As String
-        Get
-            Return Me.m_strMessage
-        End Get
-    End Property
+    Function DiscardChanges(ByRef bCancel As Boolean) As Boolean
 
-End Class
+End Interface

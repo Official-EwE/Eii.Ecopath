@@ -57,7 +57,7 @@ Namespace Properties
         ''' variable.</param>
         ''' <param name="iSecIndexOffset">
         ''' <para>An optional offset that defines the diffence between the index provided by
-        ''' <paramref name="srcSec">srcSec</paramref> and the actual storage position in the underlying arrays.
+        ''' <paramref name="SourceSec">srcSec</paramref> and the actual storage position in the underlying arrays.
         ''' </para>
         ''' <para>For a detailed description of this variable refer to the constructor description of
         ''' <see cref="cProperty">cProperty</see>

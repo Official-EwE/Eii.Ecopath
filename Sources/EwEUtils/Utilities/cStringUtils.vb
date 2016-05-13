@@ -575,7 +575,7 @@ Namespace Utilities
         ''' the fixed EwE number format of decimal points, using custom decimal and
         ''' thousands separators.
         ''' </summary>
-        ''' <param name="iValue">The value to format into a string.</param>
+        ''' <param name="iValue">The integer to format into a string.</param>
         ''' <param name="strDecimalSeparator">Decimal separator to use. Default is 
         ''' a point.</param>
         ''' <param name="strThousandsSeparator">Thousands separator to use. By default
@@ -605,7 +605,7 @@ Namespace Utilities
         ''' <seealso cref="FormatDouble"/>
         ''' <seealso cref="FormatNumber"/>
         ''' </summary>
-        ''' <param name="decValue">The value to format into a string.</param>
+        ''' <param name="decValue">The decimal to format into a string.</param>
         ''' <param name="strDecimalSeparator">Decimal separator to use. Default is 
         ''' a point.</param>
         ''' <param name="strThousandsSeparator">Thousands separator to use. By default
@@ -643,7 +643,7 @@ Namespace Utilities
         ''' <seealso cref="FormatDouble"/>
         ''' <seealso cref="FormatNumber"/>
         ''' </summary>
-        ''' <param name="sValue">The value to format into a string.</param>
+        ''' <param name="sValue">The single to format into a string.</param>
         ''' <param name="strDecimalSeparator">Decimal separator to use. Default is 
         ''' a point.</param>
         ''' <param name="strThousandsSeparator">Thousands separator to use. By default
@@ -681,7 +681,7 @@ Namespace Utilities
         ''' <seealso cref="FormatSingle"/>
         ''' <seealso cref="FormatNumber"/>
         ''' </summary>
-        ''' <param name="dValue">The value to format into a string.</param>
+        ''' <param name="dValue">The double to format into a string.</param>
         ''' <param name="strDecimalSeparator">Decimal separator to use. Default is 
         ''' a point.</param>
         ''' <param name="strThousandsSeparator">Thousands separator to use. By default

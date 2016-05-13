@@ -203,7 +203,7 @@ Public Class frmNavigationPanel
             .Add("ndFDSliderPlugin", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimFD))
 
             ' Ecosim Tools
-            .Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
+            .Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
             .Add("ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFishingPolicySearch), "Fishing policy search.htm")
             .Add("ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFitToTimeSeries), "Fit to time series.htm")
             .Add("ndMSY", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMSY), "") ' ToDo: connect to help

@@ -70,19 +70,6 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
-            Get
-                Return New eCoreComponentType() {eCoreComponentType.ShapesManager}
-            End Get
-        End Property
-
-        Public Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
-            ' Refresh the list of drivers
-            If (msg.DataType = eDataTypes.Forcing And msg.Type = eMessageType.DataAddedOrRemoved) Then
-                Me.RefreshContent()
-            End If
-        End Sub
-
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 

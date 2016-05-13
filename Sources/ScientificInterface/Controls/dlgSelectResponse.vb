@@ -76,7 +76,7 @@ Public Class dlgSelectResponse
     ''' <param name="uic">UI context to use.</param>
     ''' <param name="responseManager">Manager providing available environmental response functions.</param>
     ''' <param name="driverManager">Manager providing available environmental response drivers.</param>
-    ''' <param name="iDriver">Index of selected driver in the <paramref name="Manager">manager</paramref>.</param>
+    ''' <param name="iDriver">Index of selected driver in the <paramref name="driverManager">driver manager</paramref>.</param>
     ''' <param name="iSelGroup"></param>
     ''' <param name="selection">Flag indicating <see cref="eSelectionType">how the dialog was invoked</see>.</param>
     Public Sub New(ByVal uic As cUIContext, _

@@ -43,7 +43,9 @@ Namespace Controls
             End Get
             Set(value As Boolean)
                 MyBase.Enabled = value
-                Me.Parent.Invalidate()
+                If (Me.Parent IsNot Nothing) Then
+                    Me.Parent.Invalidate()
+                End If
             End Set
         End Property
 
@@ -60,11 +62,12 @@ Namespace Controls
 
         ''' <summary>Text orientation.</summary>
         Private m_orientation As Orientation = Orientation.Horizontal
+        Private m_admin As New Dictionary(Of TabPage, Boolean)
+        Private m_bInUpdate As Boolean = False
 
         Public Sub New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-            Me.DrawMode = TabDrawMode.OwnerDrawFixed
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -97,7 +100,34 @@ Namespace Controls
             End Set
         End Property
 
+        Public Property IsVisible(tab As TabPage) As Boolean
+            Get
+                If (Me.m_admin.ContainsKey(tab)) Then Return Me.m_admin(tab)
+                Return True
+            End Get
+            Set(value As Boolean)
+                Me.m_admin(tab) = value
+                Me.UpdateTabVisibility()
+            End Set
+        End Property
+
 #Region " Internals "
+
+        Protected Overrides Sub OnControlAdded(e As System.Windows.Forms.ControlEventArgs)
+            MyBase.OnControlAdded(e)
+            If (TypeOf e.Control Is TabPage And Not Me.m_bInUpdate) Then
+                Dim tab As TabPage = DirectCast(e.Control, TabPage)
+                If (Not Me.m_admin.ContainsKey(tab)) Then Me.m_admin(tab) = True
+            End If
+        End Sub
+
+        Protected Overrides Sub OnControlRemoved(e As System.Windows.Forms.ControlEventArgs)
+            If (TypeOf e.Control Is TabPage And Not Me.m_bInUpdate) Then
+                Dim tab As TabPage = DirectCast(e.Control, TabPage)
+                If (Me.m_admin.ContainsKey(tab)) Then Me.m_admin.Remove(tab)
+            End If
+            MyBase.OnControlRemoved(e)
+        End Sub
 
         Protected Overrides Sub OnDrawItem(e As System.Windows.Forms.DrawItemEventArgs)
 
@@ -154,6 +184,11 @@ Namespace Controls
                 If disposing AndAlso m_components IsNot Nothing Then
                     m_components.Dispose()
                 End If
+                ' Manually dispose of all orphaned (e.g., invisible) tab pages
+                For Each key As TabPage In Me.m_admin.Keys
+                    If (Not Me.m_admin(key)) Then key.Dispose()
+                Next
+                Me.m_admin.Clear()
             Finally
                 MyBase.Dispose(disposing)
             End Try
@@ -165,9 +200,29 @@ Namespace Controls
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.m_components = New System.ComponentModel.Container()
+        End Sub
+
+        Private Sub UpdateTabVisibility()
+
+            Dim tabSel As TabPage = Me.SelectedTab
+            Dim bSelOK As Boolean = False
+            Me.SuspendLayout()
+            Me.m_bInUpdate = True
+            Me.TabPages.Clear()
+            For Each tab As TabPage In Me.m_admin.Keys
+                If (Me.m_admin(tab)) Then
+                    Me.TabPages.Add(tab)
+                    bSelOK = bSelOK Or (Object.ReferenceEquals(tab, tabSel))
+                End If
+            Next
+            Me.m_bInUpdate = False
+            If bSelOK Then
+                Me.SelectedTab = tabSel
+            End If
+            Me.ResumeLayout()
+
         End Sub
 
 #End Region ' Internals

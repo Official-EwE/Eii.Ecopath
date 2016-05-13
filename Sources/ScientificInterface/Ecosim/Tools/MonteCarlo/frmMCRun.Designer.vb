@@ -23,7 +23,7 @@ Imports ZedGraph
 
 Namespace Ecosim
 
-    Partial Class MCRun
+    Partial Class frmMCRun
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -44,12 +44,14 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MCRun))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMCRun))
             Me.m_lblNumTrials = New System.Windows.Forms.Label()
             Me.m_btnRunTrials = New System.Windows.Forms.Button()
             Me.m_btnStop = New System.Windows.Forms.Button()
-            Me.m_tcMain = New System.Windows.Forms.TabControl()
+            Me.m_tcMain = New ScientificInterfaceShared.Controls.ucTabControlEx()
             Me.m_tbpSettings = New System.Windows.Forms.TabPage()
+            Me.m_lblEnabledVariables = New System.Windows.Forms.Label()
+            Me.m_clbEnabledVariables = New cFlickerFreeCheckedListBox()
             Me.m_cbRetainEstimates = New System.Windows.Forms.CheckBox()
             Me.m_btDefaultTol = New System.Windows.Forms.Button()
             Me.m_cbSRA = New System.Windows.Forms.CheckBox()
@@ -63,7 +65,7 @@ Namespace Ecosim
             Me.m_gridB = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnLoadPedB = New System.Windows.Forms.ToolStripButton()
-            Me.m_tbpBP = New System.Windows.Forms.TabPage()
+            Me.m_tbpPB = New System.Windows.Forms.TabPage()
             Me.m_gridPB = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsPB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnLoadPedPB = New System.Windows.Forms.ToolStripButton()
@@ -77,6 +79,18 @@ Namespace Ecosim
             Me.m_tbpBA = New System.Windows.Forms.TabPage()
             Me.m_gridBA = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsBA = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tbpDiets = New System.Windows.Forms.TabPage()
+            Me.m_gridDiets = New ScientificInterface.Ecosim.gridMCRunInput()
+            Me.m_tsDiets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnLoadPedDC = New System.Windows.Forms.ToolStripButton()
+            Me.m_tbpLandings = New System.Windows.Forms.TabPage()
+            Me.m_gridLandings = New ScientificInterface.Ecosim.gridMCRunInput()
+            Me.m_tsLandings = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnLoadPedLandings = New System.Windows.Forms.ToolStripButton()
+            Me.m_tbpDiscards = New System.Windows.Forms.TabPage()
+            Me.m_gridDiscards = New ScientificInterface.Ecosim.gridMCRunInput()
+            Me.m_tsDiscards = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnLoadPedDiscards = New System.Windows.Forms.ToolStripButton()
             Me.m_tbpBPlot = New System.Windows.Forms.TabPage()
             Me.m_spPlot = New System.Windows.Forms.SplitContainer()
             Me.m_graph = New ZedGraph.ZedGraphControl()
@@ -88,19 +102,19 @@ Namespace Ecosim
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage()
             Me.m_gridBestFit = New ScientificInterface.Ecosim.gridMCRunOutput()
             Me.m_cbSave = New System.Windows.Forms.CheckBox()
-            Me.lblTrial = New System.Windows.Forms.Label()
-            Me.lblERun = New System.Windows.Forms.Label()
-            Me.lblSS = New System.Windows.Forms.Label()
-            Me.lblBestSS = New System.Windows.Forms.Label()
+            Me.m_lblTrial = New System.Windows.Forms.Label()
+            Me.m_lblERun = New System.Windows.Forms.Label()
+            Me.m_lblSScurr = New System.Windows.Forms.Label()
+            Me.m_lblSSbest = New System.Windows.Forms.Label()
             Me.m_btnApply = New System.Windows.Forms.Button()
             Me.m_nudNumTrials = New System.Windows.Forms.NumericUpDown()
             Me.m_btnTS = New System.Windows.Forms.Button()
-            Me.lblValueERun = New System.Windows.Forms.Label()
-            Me.lblValueSSBest = New System.Windows.Forms.Label()
-            Me.lblValueSS = New System.Windows.Forms.Label()
-            Me.lblValueSSOrg = New System.Windows.Forms.Label()
-            Me.lblValueTrial = New System.Windows.Forms.Label()
-            Me.lbSSOrg = New System.Windows.Forms.Label()
+            Me.m_lblERunValue = New System.Windows.Forms.Label()
+            Me.m_lblSSbestValue = New System.Windows.Forms.Label()
+            Me.m_lblSScurrValue = New System.Windows.Forms.Label()
+            Me.m_lblSSorgValue = New System.Windows.Forms.Label()
+            Me.m_lblTrialValue = New System.Windows.Forms.Label()
+            Me.m_lbSSOrg = New System.Windows.Forms.Label()
             Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
@@ -108,12 +122,18 @@ Namespace Ecosim
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
             Me.m_tsB.SuspendLayout()
-            Me.m_tbpBP.SuspendLayout()
+            Me.m_tbpPB.SuspendLayout()
             Me.m_tsPB.SuspendLayout()
             Me.m_tbpQB.SuspendLayout()
             Me.m_tsQB.SuspendLayout()
             Me.m_tbpEE.SuspendLayout()
             Me.m_tbpBA.SuspendLayout()
+            Me.m_tbpDiets.SuspendLayout()
+            Me.m_tsDiets.SuspendLayout()
+            Me.m_tbpLandings.SuspendLayout()
+            Me.m_tsLandings.SuspendLayout()
+            Me.m_tbpDiscards.SuspendLayout()
+            Me.m_tsDiscards.SuspendLayout()
             Me.m_tbpBPlot.SuspendLayout()
             CType(Me.m_spPlot, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_spPlot.Panel1.SuspendLayout()
@@ -148,17 +168,24 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tcMain, "m_tcMain")
             Me.m_tcMain.Controls.Add(Me.m_tbpSettings)
             Me.m_tcMain.Controls.Add(Me.m_tbpB)
-            Me.m_tcMain.Controls.Add(Me.m_tbpBP)
+            Me.m_tcMain.Controls.Add(Me.m_tbpPB)
             Me.m_tcMain.Controls.Add(Me.m_tbpQB)
             Me.m_tcMain.Controls.Add(Me.m_tbpEE)
             Me.m_tcMain.Controls.Add(Me.m_tbpBA)
+            Me.m_tcMain.Controls.Add(Me.m_tbpDiets)
+            Me.m_tcMain.Controls.Add(Me.m_tbpLandings)
+            Me.m_tcMain.Controls.Add(Me.m_tbpDiscards)
             Me.m_tcMain.Controls.Add(Me.m_tbpBPlot)
             Me.m_tcMain.Controls.Add(Me.m_tbpBestTrial)
             Me.m_tcMain.Name = "m_tcMain"
             Me.m_tcMain.SelectedIndex = 0
+            Me.m_tcMain.TextOrientation = System.Windows.Forms.Orientation.Horizontal
             '
             'm_tbpSettings
             '
+            resources.ApplyResources(Me.m_tbpSettings, "m_tbpSettings")
+            Me.m_tbpSettings.Controls.Add(Me.m_lblEnabledVariables)
+            Me.m_tbpSettings.Controls.Add(Me.m_clbEnabledVariables)
             Me.m_tbpSettings.Controls.Add(Me.m_cbRetainEstimates)
             Me.m_tbpSettings.Controls.Add(Me.m_btDefaultTol)
             Me.m_tbpSettings.Controls.Add(Me.m_cbSRA)
@@ -168,9 +195,21 @@ Namespace Ecosim
             Me.m_tbpSettings.Controls.Add(Me.m_cbShowBioTraj)
             Me.m_tbpSettings.Controls.Add(Me.m_tbxFMratio)
             Me.m_tbpSettings.Controls.Add(Me.m_tbxEETol)
-            resources.ApplyResources(Me.m_tbpSettings, "m_tbpSettings")
             Me.m_tbpSettings.Name = "m_tbpSettings"
             Me.m_tbpSettings.UseVisualStyleBackColor = True
+            '
+            'm_lblEnabledVariables
+            '
+            resources.ApplyResources(Me.m_lblEnabledVariables, "m_lblEnabledVariables")
+            Me.m_lblEnabledVariables.Name = "m_lblEnabledVariables"
+            '
+            'm_clbEnabledVariables
+            '
+            resources.ApplyResources(Me.m_clbEnabledVariables, "m_clbEnabledVariables")
+            Me.m_clbEnabledVariables.CheckOnClick = True
+            Me.m_clbEnabledVariables.FormattingEnabled = True
+            Me.m_clbEnabledVariables.Name = "m_clbEnabledVariables"
+            Me.m_clbEnabledVariables.Sorted = True
             '
             'm_cbRetainEstimates
             '
@@ -245,11 +284,13 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridB.CustomSort = False
+            Me.m_gridB.DataName = "grid content"
             Me.m_gridB.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.B
             resources.ApplyResources(Me.m_gridB, "m_gridB")
             Me.m_gridB.FixedColumnWidths = False
             Me.m_gridB.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridB.GridToolTipActive = True
+            Me.m_gridB.IsLayoutSuspended = False
             Me.m_gridB.Name = "m_gridB"
             Me.m_gridB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -275,13 +316,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsbnLoadPedB, "m_tsbnLoadPedB")
             Me.m_tsbnLoadPedB.Name = "m_tsbnLoadPedB"
             '
-            'm_tbpBP
+            'm_tbpPB
             '
-            Me.m_tbpBP.Controls.Add(Me.m_gridPB)
-            Me.m_tbpBP.Controls.Add(Me.m_tsPB)
-            resources.ApplyResources(Me.m_tbpBP, "m_tbpBP")
-            Me.m_tbpBP.Name = "m_tbpBP"
-            Me.m_tbpBP.UseVisualStyleBackColor = True
+            Me.m_tbpPB.Controls.Add(Me.m_gridPB)
+            Me.m_tbpPB.Controls.Add(Me.m_tsPB)
+            resources.ApplyResources(Me.m_tbpPB, "m_tbpPB")
+            Me.m_tbpPB.Name = "m_tbpPB"
+            Me.m_tbpPB.UseVisualStyleBackColor = True
             '
             'm_gridPB
             '
@@ -296,11 +337,13 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridPB.CustomSort = False
+            Me.m_gridPB.DataName = "grid content"
             Me.m_gridPB.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.PB
             resources.ApplyResources(Me.m_gridPB, "m_gridPB")
             Me.m_gridPB.FixedColumnWidths = False
             Me.m_gridPB.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridPB.GridToolTipActive = True
+            Me.m_gridPB.IsLayoutSuspended = False
             Me.m_gridPB.Name = "m_gridPB"
             Me.m_gridPB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -347,11 +390,13 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridQB.CustomSort = False
+            Me.m_gridQB.DataName = "grid content"
             Me.m_gridQB.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.QB
             resources.ApplyResources(Me.m_gridQB, "m_gridQB")
             Me.m_gridQB.FixedColumnWidths = False
             Me.m_gridQB.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridQB.GridToolTipActive = True
+            Me.m_gridQB.IsLayoutSuspended = False
             Me.m_gridQB.Name = "m_gridQB"
             Me.m_gridQB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -398,11 +443,13 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridEE.CustomSort = False
+            Me.m_gridEE.DataName = "grid content"
             Me.m_gridEE.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.EE
             resources.ApplyResources(Me.m_gridEE, "m_gridEE")
             Me.m_gridEE.FixedColumnWidths = False
             Me.m_gridEE.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridEE.GridToolTipActive = True
+            Me.m_gridEE.IsLayoutSuspended = False
             Me.m_gridEE.Name = "m_gridEE"
             Me.m_gridEE.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -443,11 +490,13 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridBA.CustomSort = False
+            Me.m_gridBA.DataName = "grid content"
             Me.m_gridBA.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.BA
             resources.ApplyResources(Me.m_gridBA, "m_gridBA")
             Me.m_gridBA.FixedColumnWidths = False
             Me.m_gridBA.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridBA.GridToolTipActive = True
+            Me.m_gridBA.IsLayoutSuspended = False
             Me.m_gridBA.Name = "m_gridBA"
             Me.m_gridBA.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -466,6 +515,165 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsBA, "m_tsBA")
             Me.m_tsBA.Name = "m_tsBA"
             Me.m_tsBA.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tbpDiets
+            '
+            Me.m_tbpDiets.Controls.Add(Me.m_gridDiets)
+            Me.m_tbpDiets.Controls.Add(Me.m_tsDiets)
+            resources.ApplyResources(Me.m_tbpDiets, "m_tbpDiets")
+            Me.m_tbpDiets.Name = "m_tbpDiets"
+            Me.m_tbpDiets.UseVisualStyleBackColor = True
+            '
+            'm_gridDiets
+            '
+            Me.m_gridDiets.AllowBlockSelect = True
+            Me.m_gridDiets.AutoSizeMinHeight = 10
+            Me.m_gridDiets.AutoSizeMinWidth = 10
+            Me.m_gridDiets.AutoStretchColumnsToFitWidth = False
+            Me.m_gridDiets.AutoStretchRowsToFitHeight = False
+            Me.m_gridDiets.BackColor = System.Drawing.Color.White
+            Me.m_gridDiets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridDiets.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridDiets.CustomSort = False
+            Me.m_gridDiets.DataName = "grid content"
+            Me.m_gridDiets.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.Diets
+            resources.ApplyResources(Me.m_gridDiets, "m_gridDiets")
+            Me.m_gridDiets.FixedColumnWidths = False
+            Me.m_gridDiets.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridDiets.GridToolTipActive = True
+            Me.m_gridDiets.IsLayoutSuspended = False
+            Me.m_gridDiets.Name = "m_gridDiets"
+            Me.m_gridDiets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridDiets.UIContext = Nothing
+            '
+            'm_tsDiets
+            '
+            Me.m_tsDiets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsDiets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnLoadPedDC})
+            resources.ApplyResources(Me.m_tsDiets, "m_tsDiets")
+            Me.m_tsDiets.Name = "m_tsDiets"
+            Me.m_tsDiets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnLoadPedDC
+            '
+            resources.ApplyResources(Me.m_tsbnLoadPedDC, "m_tsbnLoadPedDC")
+            Me.m_tsbnLoadPedDC.Name = "m_tsbnLoadPedDC"
+            '
+            'm_tbpLandings
+            '
+            Me.m_tbpLandings.Controls.Add(Me.m_gridLandings)
+            Me.m_tbpLandings.Controls.Add(Me.m_tsLandings)
+            resources.ApplyResources(Me.m_tbpLandings, "m_tbpLandings")
+            Me.m_tbpLandings.Name = "m_tbpLandings"
+            Me.m_tbpLandings.UseVisualStyleBackColor = True
+            '
+            'm_gridLandings
+            '
+            Me.m_gridLandings.AllowBlockSelect = True
+            Me.m_gridLandings.AutoSizeMinHeight = 10
+            Me.m_gridLandings.AutoSizeMinWidth = 10
+            Me.m_gridLandings.AutoStretchColumnsToFitWidth = False
+            Me.m_gridLandings.AutoStretchRowsToFitHeight = False
+            Me.m_gridLandings.BackColor = System.Drawing.Color.White
+            Me.m_gridLandings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridLandings.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridLandings.CustomSort = False
+            Me.m_gridLandings.DataName = "grid content"
+            Me.m_gridLandings.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.Landings
+            resources.ApplyResources(Me.m_gridLandings, "m_gridLandings")
+            Me.m_gridLandings.FixedColumnWidths = False
+            Me.m_gridLandings.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridLandings.GridToolTipActive = True
+            Me.m_gridLandings.IsLayoutSuspended = False
+            Me.m_gridLandings.Name = "m_gridLandings"
+            Me.m_gridLandings.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridLandings.UIContext = Nothing
+            '
+            'm_tsLandings
+            '
+            Me.m_tsLandings.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsLandings.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnLoadPedLandings})
+            resources.ApplyResources(Me.m_tsLandings, "m_tsLandings")
+            Me.m_tsLandings.Name = "m_tsLandings"
+            Me.m_tsLandings.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnLoadPedLandings
+            '
+            resources.ApplyResources(Me.m_tsbnLoadPedLandings, "m_tsbnLoadPedLandings")
+            Me.m_tsbnLoadPedLandings.Name = "m_tsbnLoadPedLandings"
+            '
+            'm_tbpDiscards
+            '
+            Me.m_tbpDiscards.Controls.Add(Me.m_gridDiscards)
+            Me.m_tbpDiscards.Controls.Add(Me.m_tsDiscards)
+            resources.ApplyResources(Me.m_tbpDiscards, "m_tbpDiscards")
+            Me.m_tbpDiscards.Name = "m_tbpDiscards"
+            Me.m_tbpDiscards.UseVisualStyleBackColor = True
+            '
+            'm_gridDiscards
+            '
+            Me.m_gridDiscards.AllowBlockSelect = True
+            Me.m_gridDiscards.AutoSizeMinHeight = 10
+            Me.m_gridDiscards.AutoSizeMinWidth = 10
+            Me.m_gridDiscards.AutoStretchColumnsToFitWidth = False
+            Me.m_gridDiscards.AutoStretchRowsToFitHeight = False
+            Me.m_gridDiscards.BackColor = System.Drawing.Color.White
+            Me.m_gridDiscards.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridDiscards.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridDiscards.CustomSort = False
+            Me.m_gridDiscards.DataName = "grid content"
+            Me.m_gridDiscards.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.Discards
+            resources.ApplyResources(Me.m_gridDiscards, "m_gridDiscards")
+            Me.m_gridDiscards.FixedColumnWidths = False
+            Me.m_gridDiscards.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridDiscards.GridToolTipActive = True
+            Me.m_gridDiscards.IsLayoutSuspended = False
+            Me.m_gridDiscards.Name = "m_gridDiscards"
+            Me.m_gridDiscards.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridDiscards.UIContext = Nothing
+            '
+            'm_tsDiscards
+            '
+            Me.m_tsDiscards.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsDiscards.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnLoadPedDiscards})
+            resources.ApplyResources(Me.m_tsDiscards, "m_tsDiscards")
+            Me.m_tsDiscards.Name = "m_tsDiscards"
+            Me.m_tsDiscards.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnLoadPedDiscards
+            '
+            resources.ApplyResources(Me.m_tsbnLoadPedDiscards, "m_tsbnLoadPedDiscards")
+            Me.m_tsbnLoadPedDiscards.Name = "m_tsbnLoadPedDiscards"
             '
             'm_tbpBPlot
             '
@@ -515,6 +723,7 @@ Namespace Ecosim
             'm_tsbnShowBestOnly
             '
             Me.m_tsbnShowBestOnly.CheckOnClick = True
+            Me.m_tsbnShowBestOnly.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnShowBestOnly, "m_tsbnShowBestOnly")
             Me.m_tsbnShowBestOnly.Name = "m_tsbnShowBestOnly"
             '
@@ -568,10 +777,12 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridBestFit.CustomSort = False
+            Me.m_gridBestFit.DataName = "grid content"
             resources.ApplyResources(Me.m_gridBestFit, "m_gridBestFit")
             Me.m_gridBestFit.FixedColumnWidths = True
             Me.m_gridBestFit.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridBestFit.GridToolTipActive = True
+            Me.m_gridBestFit.IsLayoutSuspended = False
             Me.m_gridBestFit.Name = "m_gridBestFit"
             Me.m_gridBestFit.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -590,25 +801,25 @@ Namespace Ecosim
             Me.m_cbSave.Name = "m_cbSave"
             Me.m_cbSave.UseVisualStyleBackColor = True
             '
-            'lblTrial
+            'm_lblTrial
             '
-            resources.ApplyResources(Me.lblTrial, "lblTrial")
-            Me.lblTrial.Name = "lblTrial"
+            resources.ApplyResources(Me.m_lblTrial, "m_lblTrial")
+            Me.m_lblTrial.Name = "m_lblTrial"
             '
-            'lblERun
+            'm_lblERun
             '
-            resources.ApplyResources(Me.lblERun, "lblERun")
-            Me.lblERun.Name = "lblERun"
+            resources.ApplyResources(Me.m_lblERun, "m_lblERun")
+            Me.m_lblERun.Name = "m_lblERun"
             '
-            'lblSS
+            'm_lblSScurr
             '
-            resources.ApplyResources(Me.lblSS, "lblSS")
-            Me.lblSS.Name = "lblSS"
+            resources.ApplyResources(Me.m_lblSScurr, "m_lblSScurr")
+            Me.m_lblSScurr.Name = "m_lblSScurr"
             '
-            'lblBestSS
+            'm_lblSSbest
             '
-            resources.ApplyResources(Me.lblBestSS, "lblBestSS")
-            Me.lblBestSS.Name = "lblBestSS"
+            resources.ApplyResources(Me.m_lblSSbest, "m_lblSSbest")
+            Me.m_lblSSbest.Name = "m_lblSSbest"
             '
             'm_btnApply
             '
@@ -628,41 +839,41 @@ Namespace Ecosim
             Me.m_btnTS.Name = "m_btnTS"
             Me.m_btnTS.UseVisualStyleBackColor = True
             '
-            'lblValueERun
+            'm_lblERunValue
             '
-            resources.ApplyResources(Me.lblValueERun, "lblValueERun")
-            Me.lblValueERun.Name = "lblValueERun"
+            resources.ApplyResources(Me.m_lblERunValue, "m_lblERunValue")
+            Me.m_lblERunValue.Name = "m_lblERunValue"
             '
-            'lblValueSSBest
+            'm_lblSSbestValue
             '
-            resources.ApplyResources(Me.lblValueSSBest, "lblValueSSBest")
-            Me.lblValueSSBest.Name = "lblValueSSBest"
+            resources.ApplyResources(Me.m_lblSSbestValue, "m_lblSSbestValue")
+            Me.m_lblSSbestValue.Name = "m_lblSSbestValue"
             '
-            'lblValueSS
+            'm_lblSScurrValue
             '
-            resources.ApplyResources(Me.lblValueSS, "lblValueSS")
-            Me.lblValueSS.Name = "lblValueSS"
+            resources.ApplyResources(Me.m_lblSScurrValue, "m_lblSScurrValue")
+            Me.m_lblSScurrValue.Name = "m_lblSScurrValue"
             '
-            'lblValueSSOrg
+            'm_lblSSorgValue
             '
-            resources.ApplyResources(Me.lblValueSSOrg, "lblValueSSOrg")
-            Me.lblValueSSOrg.Name = "lblValueSSOrg"
+            resources.ApplyResources(Me.m_lblSSorgValue, "m_lblSSorgValue")
+            Me.m_lblSSorgValue.Name = "m_lblSSorgValue"
             '
-            'lblValueTrial
+            'm_lblTrialValue
             '
-            resources.ApplyResources(Me.lblValueTrial, "lblValueTrial")
-            Me.lblValueTrial.Name = "lblValueTrial"
+            resources.ApplyResources(Me.m_lblTrialValue, "m_lblTrialValue")
+            Me.m_lblTrialValue.Name = "m_lblTrialValue"
             '
-            'lbSSOrg
+            'm_lbSSOrg
             '
-            resources.ApplyResources(Me.lbSSOrg, "lbSSOrg")
-            Me.lbSSOrg.Name = "lbSSOrg"
+            resources.ApplyResources(Me.m_lbSSOrg, "m_lbSSOrg")
+            Me.m_lbSSOrg.Name = "m_lbSSOrg"
             '
             'm_hdrInputOpt
             '
-            resources.ApplyResources(Me.m_hdrInputOpt, "m_hdrInputOpt")
             Me.m_hdrInputOpt.CanCollapseParent = False
             Me.m_hdrInputOpt.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrInputOpt, "m_hdrInputOpt")
             Me.m_hdrInputOpt.IsCollapsed = False
             Me.m_hdrInputOpt.Name = "m_hdrInputOpt"
             '
@@ -677,19 +888,19 @@ Namespace Ecosim
             'm_tlpOutputs
             '
             resources.ApplyResources(Me.m_tlpOutputs, "m_tlpOutputs")
-            Me.m_tlpOutputs.Controls.Add(Me.lblTrial, 0, 0)
-            Me.m_tlpOutputs.Controls.Add(Me.lblERun, 0, 1)
-            Me.m_tlpOutputs.Controls.Add(Me.lblValueTrial, 1, 0)
-            Me.m_tlpOutputs.Controls.Add(Me.lblValueERun, 1, 1)
-            Me.m_tlpOutputs.Controls.Add(Me.lblValueSSBest, 4, 2)
-            Me.m_tlpOutputs.Controls.Add(Me.lbSSOrg, 3, 0)
-            Me.m_tlpOutputs.Controls.Add(Me.lblValueSS, 4, 1)
-            Me.m_tlpOutputs.Controls.Add(Me.lblSS, 3, 1)
-            Me.m_tlpOutputs.Controls.Add(Me.lblBestSS, 3, 2)
-            Me.m_tlpOutputs.Controls.Add(Me.lblValueSSOrg, 4, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblTrial, 0, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblERun, 0, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblTrialValue, 1, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblERunValue, 1, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lbSSOrg, 3, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSScurrValue, 4, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSScurr, 3, 1)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSorgValue, 4, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbest, 6, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbestValue, 7, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
             '
-            'MCRun
+            'frmMCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -706,7 +917,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_btnRunTrials)
             Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
-            Me.Name = "MCRun"
+            Me.Name = "frmMCRun"
             Me.TabText = "Monte Carlo simulations"
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tbpSettings.ResumeLayout(False)
@@ -715,8 +926,8 @@ Namespace Ecosim
             Me.m_tbpB.PerformLayout()
             Me.m_tsB.ResumeLayout(False)
             Me.m_tsB.PerformLayout()
-            Me.m_tbpBP.ResumeLayout(False)
-            Me.m_tbpBP.PerformLayout()
+            Me.m_tbpPB.ResumeLayout(False)
+            Me.m_tbpPB.PerformLayout()
             Me.m_tsPB.ResumeLayout(False)
             Me.m_tsPB.PerformLayout()
             Me.m_tbpQB.ResumeLayout(False)
@@ -727,6 +938,18 @@ Namespace Ecosim
             Me.m_tbpEE.PerformLayout()
             Me.m_tbpBA.ResumeLayout(False)
             Me.m_tbpBA.PerformLayout()
+            Me.m_tbpDiets.ResumeLayout(False)
+            Me.m_tbpDiets.PerformLayout()
+            Me.m_tsDiets.ResumeLayout(False)
+            Me.m_tsDiets.PerformLayout()
+            Me.m_tbpLandings.ResumeLayout(False)
+            Me.m_tbpLandings.PerformLayout()
+            Me.m_tsLandings.ResumeLayout(False)
+            Me.m_tsLandings.PerformLayout()
+            Me.m_tbpDiscards.ResumeLayout(False)
+            Me.m_tbpDiscards.PerformLayout()
+            Me.m_tsDiscards.ResumeLayout(False)
+            Me.m_tsDiscards.PerformLayout()
             Me.m_tbpBPlot.ResumeLayout(False)
             Me.m_spPlot.Panel1.ResumeLayout(False)
             Me.m_spPlot.Panel1.PerformLayout()
@@ -751,24 +974,24 @@ Namespace Ecosim
         Private WithEvents m_nudNumTrials As System.Windows.Forms.NumericUpDown
         Private WithEvents m_hdrInputOpt As cEwEHeaderLabel
         Private WithEvents m_hdrOutputParam As cEwEHeaderLabel
-        Private WithEvents m_tcMain As System.Windows.Forms.TabControl
-        Private WithEvents lblValueERun As System.Windows.Forms.Label
-        Private WithEvents lblValueSSBest As System.Windows.Forms.Label
-        Private WithEvents lblValueSS As System.Windows.Forms.Label
-        Private WithEvents lblValueSSOrg As System.Windows.Forms.Label
-        Private WithEvents lblValueTrial As System.Windows.Forms.Label
-        Private WithEvents lblTrial As System.Windows.Forms.Label
-        Private WithEvents lblERun As System.Windows.Forms.Label
-        Private WithEvents lblSS As System.Windows.Forms.Label
-        Private WithEvents lblBestSS As System.Windows.Forms.Label
-        Private WithEvents lbSSOrg As System.Windows.Forms.Label
+        Private WithEvents m_tcMain As ucTabControlEx
+        Private WithEvents m_lblERunValue As System.Windows.Forms.Label
+        Private WithEvents m_lblSSbestValue As System.Windows.Forms.Label
+        Private WithEvents m_lblSScurrValue As System.Windows.Forms.Label
+        Private WithEvents m_lblSSorgValue As System.Windows.Forms.Label
+        Private WithEvents m_lblTrialValue As System.Windows.Forms.Label
+        Private WithEvents m_lblTrial As System.Windows.Forms.Label
+        Private WithEvents m_lblERun As System.Windows.Forms.Label
+        Private WithEvents m_lblSScurr As System.Windows.Forms.Label
+        Private WithEvents m_lblSSbest As System.Windows.Forms.Label
+        Private WithEvents m_lbSSOrg As System.Windows.Forms.Label
         Private WithEvents m_tlpOutputs As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_gridBestFit As ScientificInterface.Ecosim.gridMCRunOutput
         Private WithEvents m_tbpBPlot As System.Windows.Forms.TabPage
         Private WithEvents m_tbpBestTrial As System.Windows.Forms.TabPage
         Private WithEvents m_tbpBA As System.Windows.Forms.TabPage
         Private WithEvents m_tbpEE As System.Windows.Forms.TabPage
-        Private WithEvents m_tbpBP As System.Windows.Forms.TabPage
+        Private WithEvents m_tbpPB As System.Windows.Forms.TabPage
         Private WithEvents m_tbpB As System.Windows.Forms.TabPage
         Private WithEvents m_spPlot As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
@@ -802,6 +1025,20 @@ Namespace Ecosim
         Private WithEvents m_tsbnShowBestOnly As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnShowGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
+        Private WithEvents m_tbpLandings As System.Windows.Forms.TabPage
+        Private WithEvents m_tsLandings As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_tsbnLoadPedLandings As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tbpDiscards As System.Windows.Forms.TabPage
+        Private WithEvents m_tsDiscards As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_tsbnLoadPedDiscards As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_gridLandings As ScientificInterface.Ecosim.gridMCRunInput
+        Private WithEvents m_gridDiscards As ScientificInterface.Ecosim.gridMCRunInput
+        Private WithEvents m_tbpDiets As System.Windows.Forms.TabPage
+        Private WithEvents m_tsDiets As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_tsbnLoadPedDC As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_gridDiets As ScientificInterface.Ecosim.gridMCRunInput
+        Private WithEvents m_clbEnabledVariables As cFlickerFreeCheckedListBox
+        Private WithEvents m_lblEnabledVariables As System.Windows.Forms.Label
     End Class
 
 End Namespace

@@ -528,22 +528,14 @@ Namespace Style
                                      Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
 
             ' Use styleguide numdigits setting if value not provided
-            If iNumDigits < 0 Then iNumDigits = Me.m_iNumDigits
-
-            Dim dTest As Double = CDbl(Math.Abs(dValue))
-            Dim iMinPrecision As Integer = 0
-            Dim iMaxPrecision As Integer = Math.Min(iNumDigits * 2, 10)
+            If (iNumDigits < 0) Then iNumDigits = Math.Max(0, Me.m_iNumDigits)
 
             If ((style And eStyleFlags.Null) > 0) Or (dValue = cCore.NULL_VALUE) Then
                 Return ""
             End If
 
             If (tsGroupDigits = TriState.UseDefault) Then
-                If Me.m_bGroupDigits Then
-                    tsGroupDigits = TriState.True
-                Else
-                    tsGroupDigits = TriState.False
-                End If
+                tsGroupDigits = cSystemUtils.IIF(Me.m_bGroupDigits, TriState.True, TriState.False)
             End If
 
             ' Calculated values must be formatted with a hard number of digits
@@ -551,30 +543,8 @@ Namespace Style
                 Return FormatNumber(dValue, iNumDigits, tsGroupDigits)
             End If
 
-            ' Need to try to figure out num of decimal digits?
-            If (dTest <> 0.0) Then
-                ' #Yes: find min number of relevant decimal digits
-                While Math.Floor(dTest) = 0
-                    dTest *= 10.0#
-                    iMinPrecision += 1
-                End While
-                ' First relevant decimal digit found: show iNumDigits decimals including this first value
-                iMinPrecision += (iNumDigits - 1)
-
-                ' Has decimals?
-                If (Math.Abs(dValue) > 1) Then
-                    ' #Yes: Find max number of decimal digits
-                    dTest = 1.0#
-                    For iTest As Integer = iNumDigits To 0 Step -1
-                        dTest *= 10.0#
-                        iMaxPrecision = iTest
-                        If (dValue <= dTest) Then Exit For
-                    Next
-                End If
-            End If
-
             ' Format the value with selected number of decimal digits
-            Return FormatNumber(dValue, Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision), tsGroupDigits)
+            Return FormatNumber(dValue, cNumberUtils.NumRelevantDecimals(CDbl(Math.Abs(dValue)), iNumDigits), tsGroupDigits)
 
         End Function
 
@@ -1162,7 +1132,7 @@ Namespace Style
         ''' </summary>
         ''' <param name="iFleet">The fleet index to obtain the default colour for.</param>
         ''' <param name="nFleets">Number of fleets to scale colour by, or -1 to
-        ''' use the max number of fleets as dictated by the <paramref name="core">core</paramref>.</param>
+        ''' use the max number of fleets as dictated by the core.</param>
         ''' <returns>
         ''' Default fleet colours are picked from a colour ramp that runs from
         ''' green to blue.

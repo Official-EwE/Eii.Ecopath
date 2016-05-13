@@ -78,7 +78,7 @@ Namespace Integration
         ''' <param name="menu"><see cref="MenuStrip">Menu strip</see> that contains the menu
         ''' that must be modified.</param>
         ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
-        ''' that holds the plugins to place in the main menu of <paramref name="f">Form frm</paramref></param>
+        ''' that holds the plugins to place in the main menu.</param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal menu As MenuStrip, _
                        ByVal pm As cPluginManager, _
