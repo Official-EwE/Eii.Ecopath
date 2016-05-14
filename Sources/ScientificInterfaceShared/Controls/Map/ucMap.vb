@@ -597,6 +597,10 @@ Namespace Controls.Map
                         displayDepth = rl
                     End If
 
+                    If (rl.VarName = eVarNameFlags.LayerAdvection) Then
+                        'Stop
+                    End If
+
                     Select Case rl.RenderMode
                         Case Definitions.eLayerRenderType.Always
                             ' NOP

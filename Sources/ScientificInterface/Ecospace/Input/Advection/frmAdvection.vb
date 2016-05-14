@@ -283,8 +283,6 @@ Namespace Ecospace.Advection
         Private Sub OnCalcProgress(ByVal iIter As Integer)
 
             If (iIter Mod 100 = 0) Then
-                ' Update app status
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ADVECTION_ITERATION, iIter), -1)
             End If
 
             ' Update data layer
@@ -391,7 +389,6 @@ Namespace Ecospace.Advection
             Me.m_bSearching = Me.m_manager.IsRunning
 
             If m_bSearching Then
-                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ADVECTION_STARTED, -1)
                 Me.UpdateControls()
             End If
 
@@ -402,7 +399,6 @@ Namespace Ecospace.Advection
             If Not Me.m_bSearching Then Return
 
             Me.m_bSearching = False
-            cApplicationStatusNotifier.EndProgress(Me.Core)
             Me.m_manager.StopRun()
             Me.UpdateControls()
 

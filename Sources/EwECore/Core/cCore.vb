@@ -13983,19 +13983,8 @@ Public Class cCore
 
                     Me.m_publisher.AddMessage(New cMessage("Ecospace layer changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
 
-                Case eDataTypes.EcospaceLayerWind,
-                     eDataTypes.EcospaceLayerMLD
-
-                    ' ToDo_JS: fix this
-
-                    '' Update advection fields
-                    'Me.m_Ecospace.CalcAdvection(DirectCast(obj, ICoreMonthFilter).Month)
-                    ' Trigger layer to be recalculated
-                    Me.EcospaceBasemap.LayerUpwelling.Invalidate()
-                    ' Update visuals
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection data changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerUpwelling))
-
                 Case eDataTypes.EcospaceHabitat
+                    ' NOP
 
                 Case eDataTypes.Stanza
                     'A user has called Apply() on a stanza group. Update the underlying data Stanza and Ecopath
@@ -14081,6 +14070,14 @@ Public Class cCore
                 Case eDataTypes.EcospaceSpatialDataSource
                     Me.m_publisher.AddMessage(New cMessage("External data configuration changed.", eMessageType.DataModified,
                                       eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, obj.DataType))
+
+                Case eDataTypes.EcospaceLayerUpwelling
+                    Me.EcospaceBasemap.LayerUpwelling.Invalidate()
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace upwelling map changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerUpwelling))
+
+                Case eDataTypes.EcospaceLayerAdvection
+                    Me.EcospaceBasemap.LayerAdvection.Invalidate()
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection map changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerAdvection))
 
             End Select
 
