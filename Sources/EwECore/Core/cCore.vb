@@ -13925,6 +13925,9 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Fish rate shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishingEffort))
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
+                Case eDataTypes.EcosimEnviroResponseFunctionManager
+                    Debug.Print("cCore.OnChanged(eDataTypes.EcosimEnviroResponseFunctionManager) not implemented yet!")
+
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
                     Me.m_Ecospace.UpdateDepthMap()
