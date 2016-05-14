@@ -277,7 +277,7 @@ Public Class cEcospaceDataStructures
     ''' Base value for relative PP (relative PP at t=0). Set after PP has been read from the database.
     ''' </summary>
     ''' <remarks>RelPP can be changed by external data this is use to restore RelPP to its original value</remarks>
-    Public relPP0(,) As Single
+    Public RelPP0(,) As Single
 
     ''' <summary>
     ''' Sailing cost (fleet x row x col)
@@ -1850,7 +1850,9 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
 
-            Me.allocate(relPP0, InRow + 1, InCol + 1)
+            ' JS 14May16: Only allocate this temporary array when a relPP backup is made
+            'Me.allocate(relPP0, InRow + 1, InCol + 1)
+            Me.RelPP0 = Nothing
 
             Me.allocate(TL, InRow, InCol, NGroups)
             Me.allocate(TLc, InRow, InCol)
@@ -2356,14 +2358,21 @@ Public Class cEcospaceDataStructures
     ''' Preserve RelPP map in the <see cref="relPP0"/> temporary array.
     ''' </summary>
     Public Sub setBaseRelPP()
-        Array.Copy(Me.RelPP, Me.relPP0, Me.RelPP.Length)
+        Me.allocate(Me.RelPP0, InRow + 1, InCol + 1)
+        Array.Copy(Me.RelPP, Me.RelPP0, Me.RelPP.Length)
     End Sub
 
     ''' <summary>
     ''' Restore RelPP map from the <see cref="relPP0"/> temporary array.
     ''' </summary>
+    ''' <remarks>
+    ''' This will clear the relPP0 temporary array.
+    ''' </remarks>
     Public Sub restoreBaseRelPP()
-        Array.Copy(Me.relPP0, Me.RelPP, Me.RelPP.Length)
+        If (RelPP0 IsNot Nothing) Then
+            Array.Copy(Me.RelPP0, Me.RelPP, Me.RelPP.Length)
+            Me.RelPP0 = Nothing
+        End If
     End Sub
 
     ''' <summary>
