@@ -374,22 +374,25 @@ Namespace Ecospace.Advection
             Dim i As Integer
             Dim j As Integer
 
-            For i = 0 To Me.m_data.InRow
-                For j = 0 To Me.m_data.InCol
+            For i = 1 To Me.m_data.InRow
+                For j = 1 To Me.m_data.InCol
 
-                    Me.m_data.Xvel(i, j) = 0
-                    Me.m_data.Yvel(i, j) = 0
                     If (Me.m_data.Depth(i, j) > 0) Then
-
                         If Me.m_data.Depth(i, j + 1) > 0 Then
                             Me.m_data.Xvel(i, j) = (1 - SorWv) * Me.m_data.Xvel(i, j) + SorWv * Me.m_data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1)))
+                        Else
+                            Me.m_data.Xvel(i, j) = 0
                         End If
                         If (Me.m_data.Depth(i + 1, j) > 0) Then
                             Me.m_data.Yvel(i, j) = (1 - SorWv) * Me.m_data.Yvel(i, j) + SorWv * Me.m_data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j)))
+                        Else
+                            Me.m_data.Yvel(i, j) = 0
                         End If
 
                         Me.m_data.UpVel(i, j) = -UpWell * Me.m_data.DepthA(i, j) * vel(i, j)
-
+                    Else
+                        Me.m_data.Xvel(i, j) = 0
+                        Me.m_data.Yvel(i, j) = 0
                     End If
                 Next
             Next

@@ -2937,7 +2937,7 @@ Public Class frmEwE6
     ''' Update save model command state
     ''' </summary>
     Private Sub OnUpdateSave(ByVal cmd As cCommand) Handles m_cmdSave.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.IsModified
+        cmd.Enabled = Me.Core.StateMonitor.IsModified And Not Me.Core.StateMonitor.IsBusy
     End Sub
 
     ''' <summary>
