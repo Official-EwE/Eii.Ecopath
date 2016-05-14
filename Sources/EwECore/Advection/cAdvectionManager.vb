@@ -156,7 +156,6 @@ Namespace Ecospace.Advection
 
                 Me.m_core = theCore
 
-                'init the Fihsing Policy Search model
                 m_comp = New cAdvection()
                 m_comp.Init(theCore, theEcospace)
                 'm_comp.AddMessageCallback = AddressOf OnAddMessageHandler
@@ -284,6 +283,9 @@ Namespace Ecospace.Advection
         ''' -------------------------------------------------------------------
         Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
+            ' Sanity check
+            If (Me.m_core.StateMonitor.IsBusy) Then Return False
+
             Dim thrd As Thread = Nothing
             Dim bSuccess As Boolean = True
 
@@ -302,7 +304,7 @@ Namespace Ecospace.Advection
             Try
                 Me.Update()
 
-                thrd = New Thread(AddressOf Me.m_comp.Run)
+                thrd = New Thread(AddressOf Me.RunThreaded)
                 thrd.Start()
 
             Catch ex As Exception
@@ -326,6 +328,22 @@ Namespace Ecospace.Advection
             Return bSuccess
 
         End Function
+
+        Private Sub RunThreaded()
+
+            Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
+            Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
+
+            Try
+                Me.m_comp.Run()
+            Catch ex As Exception
+                cLog.Write(ex, "cAdvectionManager.RunThreaded")
+            End Try
+
+            Me.m_core.SetStopRunDelegate(Nothing)
+            Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
+
+        End Sub
 
         Public Function Revert() As Boolean
 

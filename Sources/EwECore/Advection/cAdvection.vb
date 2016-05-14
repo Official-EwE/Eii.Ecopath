@@ -45,13 +45,6 @@ Namespace Ecospace.Advection
         ''' <summary>Ecospace data structures to operate on.</summary>
         Private m_data As cEcospaceDataStructures = Nothing
 
-         ''' <summary>Delegate to notify that calculations have started.</summary>
-        Private m_RunStartedDelegate As ComputationStartedDelegate
-        ''' <summary>Delegate to notify that calculations have progressed through another iteration.</summary>
-        Private m_RunProgressDelegate As ComputationProgressDelegate
-        ''' <summary>Delegate to notify that calculations have ended.</summary>
-        Private m_RunCompletedDelegate As ComputationCompletedDelegate
-
         ''' <summary>Iteration counter.</summary>
         Private m_iter As Integer = 0
         ''' <summary>Iteration interrupt flag.</summary>
@@ -120,42 +113,21 @@ Namespace Ecospace.Advection
         ''' Get/set the delegate to call when a computations have started.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property RunStartedCallBack() As ComputationStartedDelegate
-            Get
-                Return Me.m_RunStartedDelegate
-            End Get
-            Set(ByVal value As ComputationStartedDelegate)
-                Me.m_RunStartedDelegate = value
-            End Set
-        End Property
+        Friend Property RunStartedCallBack() As ComputationStartedDelegate
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the delegate to call when a new iteration has been calculated.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ProgressCallback() As ComputationProgressDelegate
-            Get
-                Return Me.m_RunProgressDelegate
-            End Get
-            Set(ByVal value As ComputationProgressDelegate)
-                Me.m_RunProgressDelegate = value
-            End Set
-        End Property
+        Friend Property ProgressCallback() As ComputationProgressDelegate
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the delegate to call when a computations have completed.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property RunCompletedCallback() As ComputationCompletedDelegate
-            Get
-                Return Me.m_RunCompletedDelegate
-            End Get
-            Set(ByVal value As ComputationCompletedDelegate)
-                Me.m_RunCompletedDelegate = value
-            End Set
-        End Property
+        Friend Property RunCompletedCallback() As ComputationCompletedDelegate
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -179,18 +151,23 @@ Namespace Ecospace.Advection
             Dim XvelBase As Single, YvelBase As Single
             Dim xMax As Single = 0
 
+            ' ToDo: consider 'Assume square cells' here
             Dim Grav As Single = CSng(9.8 * 60 * 60 * 24 * 365 / (1000 * Me.m_data.CellLength))
             Dim Upwell As Single = CSng(36.5 * Me.m_data.CellLength / 3) 'value of 6000*celllength
             Dim Hstress As Single = Math.Min(0.2!, 1 / Me.m_data.CellLength)
             Dim bDone As Boolean = False
+            Dim bError As Boolean = False
 
             Try
-                Me.m_RunStartedDelegate.Invoke()
+                If (Me.RunStartedCallBack IsNot Nothing) Then
+                    Me.RunStartedCallBack.Invoke()
+                End If
             Catch ex As Exception
-
+                bError = True
             End Try
 
             'set boundary flow depths and intial velocity field
+            Me.m_data.CurrentForce = True
             Me.m_ecospace.initSpatialEquilibrium()
 
             XvelBase = Me.m_data.XVelocity
@@ -200,7 +177,7 @@ Namespace Ecospace.Advection
             If xMax = 0 Then xMax = 1
             For i = 0 To Me.m_data.InRow + 1
                 For j = 0 To Me.m_data.InCol + 1
-                    Vel(i, j) = 0 '1 - i * yvel - j * Xvel
+                    Vel(i, j) = 1 ' 0 '1 - i * yvel - j * Xvel
                     '      XvLoc(i, j) = Me.m_data.XVelocity
                     '      YvLoc(i, j) = Me.m_data.YVelocity
                 Next
@@ -211,9 +188,9 @@ Namespace Ecospace.Advection
             m_bBadFlow = False
             m_bInterrupted = False
 
-            While (m_iter < 10000) And (m_bInterrupted = False) And (Not bDone)
+            While (m_iter < 10000) And (m_bInterrupted = False) And (Not bDone) And (Not bError)
 
-                m_iter = m_iter + 1
+                m_iter += 1
                 Differ = 0
 
                 Try
@@ -281,16 +258,22 @@ Namespace Ecospace.Advection
 
                 Catch ex As Exception
                     ' Computation error
-                    Return False
+                    bError = True
                 End Try
 
                 Try
-                    Me.m_RunProgressDelegate.Invoke(m_iter)
+                    If (Me.ProgressCallback IsNot Nothing) Then
+                        Me.ProgressCallback.Invoke(m_iter)
+                    End If
                 Catch ex As Exception
-                    Return False
+                    bError = True
                 End Try
 
                 bDone = (Differ < 0.0000001 * xMax / Grav / Me.m_data.CellLength)
+
+                Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+                Me.m_core.onChanged(bm.LayerUpwelling)
+                Me.m_core.onChanged(bm.LayerAdvection)
 
             End While
 
@@ -308,12 +291,15 @@ Namespace Ecospace.Advection
             Next
 
             Try
-                Me.m_RunCompletedDelegate.Invoke(Me.m_iter, Me.m_bInterrupted, Me.m_bBadFlow)
+                If (Me.RunCompletedCallback IsNot Nothing) Then
+                    Me.RunCompletedCallback.Invoke(Me.m_iter, Me.m_bInterrupted, Me.m_bBadFlow)
+                End If
             Catch ex As Exception
-                Return False
+                bError = True
             End Try
 
-            Return True
+            Me.m_data.CurrentForce = False
+            Return Not bError
 
             'If m_bBadAdvection = True Then MsgBox("Inflows and outflows do not balance at cells shown in red; recommend not using this velocity field for simulations if ecospace shows strange behavior for these cells")
         End Function
@@ -387,18 +373,27 @@ Namespace Ecospace.Advection
                                   ByVal XvToT(,) As Single, ByVal YvTot(,) As Single)
             Dim i As Integer
             Dim j As Integer
+
             For i = 0 To Me.m_data.InRow
                 For j = 0 To Me.m_data.InCol
-                    If Me.m_data.Depth(i, j) > 0 Then
-                        If Me.m_data.Depth(i, j + 1) > 0 Then Me.m_data.Xvel(i, j) = (1 - SorWv) * Me.m_data.Xvel(i, j) + SorWv * Me.m_data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1))) Else Me.m_data.Xvel(i, j) = 0
-                        If Me.m_data.Depth(i + 1, j) > 0 Then Me.m_data.Yvel(i, j) = (1 - SorWv) * Me.m_data.Yvel(i, j) + SorWv * Me.m_data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j))) Else Me.m_data.Yvel(i, j) = 0
+
+                    Me.m_data.Xvel(i, j) = 0
+                    Me.m_data.Yvel(i, j) = 0
+                    If (Me.m_data.Depth(i, j) > 0) Then
+
+                        If Me.m_data.Depth(i, j + 1) > 0 Then
+                            Me.m_data.Xvel(i, j) = (1 - SorWv) * Me.m_data.Xvel(i, j) + SorWv * Me.m_data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1)))
+                        End If
+                        If (Me.m_data.Depth(i + 1, j) > 0) Then
+                            Me.m_data.Yvel(i, j) = (1 - SorWv) * Me.m_data.Yvel(i, j) + SorWv * Me.m_data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j)))
+                        End If
+
                         Me.m_data.UpVel(i, j) = -UpWell * Me.m_data.DepthA(i, j) * vel(i, j)
-                    Else
-                        Me.m_data.Xvel(i, j) = 0
-                        Me.m_data.Yvel(i, j) = 0
+
                     End If
                 Next
             Next
+
         End Sub
 
 #End Region ' Internals

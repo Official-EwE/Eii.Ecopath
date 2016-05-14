@@ -479,37 +479,37 @@
     <Compile Include="Panels\RemarkPanel\frmRemarkPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\gridMSEBatchFixedFIter.vb">
+    <Compile Include="MSE\MSEBatch\gridMSEBatchFixedFIter.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSEBatchFixedF.Designer.vb">
+    <Compile Include="MSE\MSEBatch\frmMSEBatchFixedF.Designer.vb">
       <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSEBatchFixedF.vb">
+    <Compile Include="MSE\MSEBatch\frmMSEBatchFixedF.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\gridMSEBatchFixedF.vb">
+    <Compile Include="MSE\MSEBatch\gridMSEBatchFixedF.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\gridMSEBatchTFMIter.vb">
+    <Compile Include="MSE\MSEBatch\gridMSEBatchTFMIter.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSEBatchParameters.Designer.vb">
+    <Compile Include="MSE\MSEBatch\frmMSEBatchParameters.Designer.vb">
       <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSEBatchParameters.vb">
+    <Compile Include="MSE\MSEBatch\frmMSEBatchParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSEBatchTFM.Designer.vb">
+    <Compile Include="MSE\MSEBatch\frmMSEBatchTFM.Designer.vb">
       <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSEBatchTFM.vb">
+    <Compile Include="MSE\MSEBatch\frmMSEBatchTFM.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\gridMSEBatchTFM.vb">
+    <Compile Include="MSE\MSEBatch\gridMSEBatchTFM.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridFleetLPEffortBounds.vb">
+    <Compile Include="MSE\MSE\gridFleetLPEffortBounds.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineImportanceMaps.Designer.vb">
@@ -1026,6 +1026,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="Resources\Ecopath3_easter.ico" />
+    <None Include="Tools\code_for_plotting_dirichlets.R">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="_Designs_\EwE6 application layout.cd" />
   </ItemGroup>
   <ItemGroup>
@@ -1325,31 +1328,31 @@
     </EmbeddedResource>
     <None Include="Resources\ecopath_logo.ico" />
     <None Include="Resources\Ecopath2_beta.ico" />
-    <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchFixedF.resx">
+    <EmbeddedResource Include="MSE\MSEBatch\frmMSEBatchFixedF.resx">
       <DependentUpon>frmMSEBatchFixedF.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchParameters.resx">
+    <EmbeddedResource Include="MSE\MSEBatch\frmMSEBatchParameters.resx">
       <DependentUpon>frmMSEBatchParameters.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSEBatch\frmMSEBatchTFM.resx">
+    <EmbeddedResource Include="MSE\MSEBatch\frmMSEBatchTFM.resx">
       <DependentUpon>frmMSEBatchTFM.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSEBatch\frmMSERunBatch.resx">
+    <EmbeddedResource Include="MSE\MSEBatch\frmMSERunBatch.resx">
       <DependentUpon>frmMSERunBatch.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSERecruitment.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSERecruitment.resx">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmGroupRefLevels.resx">
+    <EmbeddedResource Include="MSE\MSE\frmGroupRefLevels.resx">
       <DependentUpon>frmGroupRefLevels.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmQuotaShare.resx">
+    <EmbeddedResource Include="MSE\MSE\frmQuotaShare.resx">
       <DependentUpon>frmQuotaShare.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmTFMpolicy.resx">
+    <EmbeddedResource Include="MSE\MSE\frmTFMpolicy.resx">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1629,48 +1632,48 @@
     <Compile Include="Other\Options\ucOptionsPresentation.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSERunBatch.Designer.vb">
+    <Compile Include="MSE\MSEBatch\frmMSERunBatch.Designer.vb">
       <DependentUpon>frmMSERunBatch.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSEBatch\frmMSERunBatch.vb">
+    <Compile Include="MSE\MSEBatch\frmMSERunBatch.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\cMSEFishingColorBlockDataSource.vb" />
-    <Compile Include="Tools\MSE\cMSEGroupColorBlockDataSource.vb" />
-    <Compile Include="Tools\MSE\frmMSERecruitment.Designer.vb">
+    <Compile Include="MSE\MSE\cMSEFishingColorBlockDataSource.vb" />
+    <Compile Include="MSE\MSE\cMSEGroupColorBlockDataSource.vb" />
+    <Compile Include="MSE\MSE\frmMSERecruitment.Designer.vb">
       <DependentUpon>frmMSERecruitment.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSERecruitment.vb">
+    <Compile Include="MSE\MSE\frmMSERecruitment.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmGroupRefLevels.Designer.vb">
+    <Compile Include="MSE\MSE\frmGroupRefLevels.Designer.vb">
       <DependentUpon>frmGroupRefLevels.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmGroupRefLevels.vb">
+    <Compile Include="MSE\MSE\frmGroupRefLevels.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmQuotaShare.Designer.vb">
+    <Compile Include="MSE\MSE\frmQuotaShare.Designer.vb">
       <DependentUpon>frmQuotaShare.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmQuotaShare.vb">
+    <Compile Include="MSE\MSE\frmQuotaShare.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmTFMpolicy.Designer.vb">
+    <Compile Include="MSE\MSE\frmTFMpolicy.Designer.vb">
       <DependentUpon>frmTFMpolicy.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmTFMpolicy.vb">
+    <Compile Include="MSE\MSE\frmTFMpolicy.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridQuotaShare.vb">
+    <Compile Include="MSE\MSE\gridQuotaShare.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridMSERecruitment.vb">
+    <Compile Include="MSE\MSE\gridMSERecruitment.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridRegulatoryOptions.vb">
+    <Compile Include="MSE\MSE\gridRegulatoryOptions.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridTFMpolicy.vb">
+    <Compile Include="MSE\MSE\gridTFMpolicy.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\TimeSeries\dlgManageTimeSeries.Designer.vb">
@@ -1780,81 +1783,81 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\cMessageStateHandler.vb" />
-    <Compile Include="Tools\MSE\cMSEEventSource.vb" />
-    <Compile Include="Tools\MSE\frmMSEAssessFleets.Designer.vb">
+    <Compile Include="MSE\MSE\cMSEEventSource.vb" />
+    <Compile Include="MSE\MSE\frmMSEAssessFleets.Designer.vb">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEAssessFleets.vb">
+    <Compile Include="MSE\MSE\frmMSEAssessFleets.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSE.Designer.vb">
+    <Compile Include="MSE\MSE\frmMSE.Designer.vb">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSE.vb">
+    <Compile Include="MSE\MSE\frmMSE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEAssessGroups.Designer.vb">
+    <Compile Include="MSE\MSE\frmMSEAssessGroups.Designer.vb">
       <DependentUpon>frmMSEAssessGroups.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEAssessGroups.vb">
+    <Compile Include="MSE\MSE\frmMSEAssessGroups.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEPlots.Designer.vb">
+    <Compile Include="MSE\MSE\frmMSEPlots.Designer.vb">
       <DependentUpon>frmMSEPlots.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEPlots.vb">
+    <Compile Include="MSE\MSE\frmMSEPlots.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEResults.Designer.vb">
+    <Compile Include="MSE\MSE\frmMSEResults.Designer.vb">
       <DependentUpon>frmMSEResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEResults.vb">
+    <Compile Include="MSE\MSE\frmMSEResults.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSY.Designer.vb">
+    <Compile Include="MSE\MSE\frmMSY.Designer.vb">
       <DependentUpon>frmMSY.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSY.vb">
+    <Compile Include="MSE\MSE\frmMSY.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEOptions.Designer.vb">
+    <Compile Include="MSE\MSE\frmMSEOptions.Designer.vb">
       <DependentUpon>frmMSEOptions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\frmMSEOptions.vb">
+    <Compile Include="MSE\MSE\frmMSEOptions.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridFleetRefLevels.vb">
+    <Compile Include="MSE\MSE\gridFleetRefLevels.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridGroupRefLevels.vb">
+    <Compile Include="MSE\MSE\gridGroupRefLevels.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridFishingCV.vb">
+    <Compile Include="MSE\MSE\gridFishingCV.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridFixedEscapement.vb">
+    <Compile Include="MSE\MSE\gridFixedEscapement.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridRiskResults.vb">
+    <Compile Include="MSE\MSE\gridRiskResults.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridBioCV.vb">
+    <Compile Include="MSE\MSE\gridBioCV.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridFishingWeights.vb">
+    <Compile Include="MSE\MSE\gridFishingWeights.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridRiskBounds.vb">
+    <Compile Include="MSE\MSE\gridRiskBounds.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\gridSelectColorBlock.vb">
+    <Compile Include="MSE\MSE\gridSelectColorBlock.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\MSE\MSEPlotting.vb" />
-    <Compile Include="Tools\MSE\ucCVBlockSelector.Designer.vb">
+    <Compile Include="MSE\MSE\MSEPlotting.vb" />
+    <Compile Include="MSE\MSE\ucCVBlockSelector.Designer.vb">
       <DependentUpon>ucCVBlockSelector.vb</DependentUpon>
     </Compile>
-    <Compile Include="Tools\MSE\ucCVBlockSelector.vb">
+    <Compile Include="MSE\MSE\ucCVBlockSelector.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <None Include="Resources\team.rtf" />
@@ -2005,35 +2008,35 @@
     <EmbeddedResource Include="Resources\EwELogo.gif" />
     <EmbeddedResource Include="Resources\EwELogo_caption.jpg" />
     <EmbeddedResource Include="Resources\PublishPlanHS.png" />
-    <EmbeddedResource Include="Tools\MSE\frmMSEAssessFleets.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSEAssessFleets.resx">
       <DependentUpon>frmMSEAssessFleets.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSE.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSE.resx">
       <DependentUpon>frmMSE.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSEAssessGroups.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSEAssessGroups.resx">
       <DependentUpon>frmMSEAssessGroups.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSEPlots.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSEPlots.resx">
       <DependentUpon>frmMSEPlots.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSEResults.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSEResults.resx">
       <DependentUpon>frmMSEResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSY.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSY.resx">
       <DependentUpon>frmMSY.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\frmMSEOptions.resx">
+    <EmbeddedResource Include="MSE\MSE\frmMSEOptions.resx">
       <DependentUpon>frmMSEOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tools\MSE\ucCVBlockSelector.resx">
+    <EmbeddedResource Include="MSE\MSE\ucCVBlockSelector.resx">
       <DependentUpon>ucCVBlockSelector.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
