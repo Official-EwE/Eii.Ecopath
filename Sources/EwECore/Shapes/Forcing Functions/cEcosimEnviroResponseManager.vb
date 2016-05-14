@@ -24,7 +24,6 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-
 ''' <summary>
 ''' Manager class to handle Ecosim Environmental Response functions
 ''' </summary>
@@ -38,7 +37,7 @@ Public Class cEcosimEnviroResponseManager
     Public Sub New(ByVal core As cCore)
         MyBase.New(core)
         Me.m_coreComponent = eCoreComponentType.EcosimResponseInteractionManager
-        Me.m_dataType = eDataTypes.EcospaceMapResponse
+        Me.m_dataType = eDataTypes.EcosimEnviroResponseFunctionManager
     End Sub
 
     Friend Sub Init(ByVal EocsimData As cEcosimDatastructures, ByVal MediationData As cMediationDataStructures)
@@ -80,7 +79,7 @@ Public Class cEcosimEnviroResponseManager
 
     Public Function OnChanged() As Boolean Implements IEnvironmentalResponseManager.onChanged
 
-        Debug.Print(Me.ToString + ".OnChanged() not implemented in Core yet!")
+        Dim bSuccess As Boolean = True
 
         Try
             For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
@@ -88,19 +87,13 @@ Public Class cEcosimEnviroResponseManager
                     Me.m_simData.EnvRespFuncIndex(env.Index, iGroup) = env.ResponseIndexForGroup(iGroup)
                 Next iGroup
             Next env
-        Catch ex As Exception
-            Debug.Assert(False, "Update Error: " & ex.Message)
-            ' bSuccess = False
-        End Try
-
-        Try
             Me.m_core.onChanged(Me)
-            Return True
         Catch ex As Exception
             Debug.Assert(False, Me.ToString + ".OnChanged() Exception: " + ex.Message)
+            bSuccess = False
         End Try
 
-        Return False
+        Return bSuccess
 
     End Function
 
