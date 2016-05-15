@@ -54,8 +54,7 @@ Public Class frmStartPanel
         MyBase.New()
         Me.InitializeComponent()
         Me.UIContext = uic
-        Me.Text = SharedResources.GENERIC_LABEL_HOME
-        Me.TabText = SharedResources.GENERIC_LABEL_HOME
+        Me.TabText = Me.Text
     End Sub
 
 #End Region ' Constructor

@@ -144,6 +144,8 @@ Partial Class frmStartPanel
         Me.Controls.Add(Me.m_tlp)
         Me.HideOnClose = True
         Me.Name = "frmStartPanel"
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.TabText = ""
         Me.m_tlp.ResumeLayout(False)
         Me.m_tlp.PerformLayout()
