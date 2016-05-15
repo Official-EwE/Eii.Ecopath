@@ -500,10 +500,6 @@
     <value>{0} ({1})</value>
     <comment>{0}: value, {1}: additional details that apply to {0}</comment>
   </data>
-  <data name="GENERIC_LABEL_HOME" xml:space="preserve">
-    <value>Home</value>
-    <comment>owner start page.</comment>
-  </data>
   <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
     <value>Remove</value>
   </data>

@@ -97,33 +97,38 @@ Public Class cFLEMPluginPoint
     ''' <remarks></remarks>
     Private Sub InitSalinityFromEcosim()
 
-        If ForcePPSalinity = False Then
-            'Turn OFF the Spatial fields
-            SpaceData.SpatialFieldsInUse = False
-            SpaceData.nSpatialFields = 0
-            Return
-        End If
+        ' ***************************************************************
+        ' THIS NEEDS REWORKING WITH DATABASE UPDATES 6.5.0024 to 6.5.0027
 
-        'Turn on the Spatial fields
-        SpaceData.SpatialFieldsInUse = True
+        'If ForcePPSalinity = False Then
+        '    'Turn OFF the Spatial fields
+        '    SpaceData.SpatialFieldsInUse = False
+        '    SpaceData.nSpatialFields = 0
+        '    Return
+        'End If
 
-        'In Ecosim the Salinity Modifiers are stored in the first index
-        'Ecosim also contains fields for Temperature (in the second index) and a bunch of place holders that are empty
-        SpaceData.nSpatialFields = 1
+        ''Turn on the Spatial fields
+        'SpaceData.SpatialFieldsInUse = True
 
-        'Redim SpatialFields the default size will be wrong
-        ReDim SpaceData.SpatialField(SpaceData.InRow, SpaceData.InCol, SpaceData.NGroups)
-        ReDim SpaceData.SpatialFieldOptimum(SpaceData.NGroups, SpaceData.nSpatialFields)
-        ReDim SpaceData.SpatialFieldStdLeft(SpaceData.NGroups, SpaceData.nSpatialFields)
-        ReDim SpaceData.SpatialFieldStdRight(SpaceData.NGroups, SpaceData.nSpatialFields)
+        ''In Ecosim the Salinity Modifiers are stored in the first index
+        ''Ecosim also contains fields for Temperature (in the second index) and a bunch of place holders that are empty
+        'SpaceData.nSpatialFields = 1
 
-        'Copy salinity modifiers from the Ecosim variables into the equivalent Ecospace variables
-        For igrp As Integer = 1 To Me.SpaceData.NGroups
-            'In Ecosim salintiy modifiers are stored in the first index
-            SpaceData.SpatialFieldOptimum(igrp, 1) = Me.SimData.EnvResponseOpt(1, igrp)
-            SpaceData.SpatialFieldStdLeft(igrp, 1) = Me.SimData.EnvResponseSdLeft(1, igrp)
-            SpaceData.SpatialFieldStdRight(igrp, 1) = Me.SimData.EnvResponseSdRight(1, igrp)
-        Next
+        ''Redim SpatialFields the default size will be wrong
+        'ReDim SpaceData.SpatialField(SpaceData.InRow, SpaceData.InCol, SpaceData.NGroups)
+        'ReDim SpaceData.SpatialFieldOptimum(SpaceData.NGroups, SpaceData.nSpatialFields)
+        'ReDim SpaceData.SpatialFieldStdLeft(SpaceData.NGroups, SpaceData.nSpatialFields)
+        'ReDim SpaceData.SpatialFieldStdRight(SpaceData.NGroups, SpaceData.nSpatialFields)
+
+        ''Copy salinity modifiers from the Ecosim variables into the equivalent Ecospace variables
+        'For igrp As Integer = 1 To Me.SpaceData.NGroups
+        '    'In Ecosim salintiy modifiers are stored in the first index
+        '    SpaceData.SpatialFieldOptimum(igrp, 1) = Me.SimData.EnvResponseOpt(1, igrp)
+        '    SpaceData.SpatialFieldStdLeft(igrp, 1) = Me.SimData.EnvResponseSdLeft(1, igrp)
+        '    SpaceData.SpatialFieldStdRight(igrp, 1) = Me.SimData.EnvResponseSdRight(1, igrp)
+        'Next
+
+        ' ***************************************************************
 
     End Sub
 
@@ -192,11 +197,17 @@ Public Class cFLEMPluginPoint
                         If iForce > NrowForce Then iForce = NrowForce
                         If jForce < 1 Then jForce = 1
                         If jForce > NcolForce Then jForce = NcolForce
-                        'Load salinity forcing into all the groups
-                        'Apply a modifier to a group by changing its Salinity Tolerance Modifier in the Ecosim>Group info dialogue
-                        For igrp As Integer = 1 To m_core.nGroups
-                            SpaceData.SpatialField(i, j, igrp) = ForceData(iForce, jForce, 2)
-                        Next
+
+                        ' ***************************************************************
+                        ' THIS NEEDS REWORKING WITH DATABASE UPDATES 6.5.0024 to 6.5.0027
+
+                        ''Load salinity forcing into all the groups
+                        ''Apply a modifier to a group by changing its Salinity Tolerance Modifier in the Ecosim>Group info dialogue
+                        'For igrp As Integer = 1 To m_core.nGroups
+                        '    SpaceData.SpatialField(i, j, igrp) = ForceData(iForce, jForce, 2)
+                        'Next
+
+                        ' ***************************************************************
 
                         If Me.UsePPModifier Then
                             'reduce the strong Flem nutrient effect here by using lower mean, power

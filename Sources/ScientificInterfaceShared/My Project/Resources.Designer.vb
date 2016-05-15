@@ -2058,15 +2058,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Home.
-        '''</summary>
-        Public ReadOnly Property GENERIC_LABEL_HOME() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_LABEL_HOME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to {0}: {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_INDEXED() As String

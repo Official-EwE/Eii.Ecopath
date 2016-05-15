@@ -1066,6 +1066,7 @@
     <None Include="Resources\PlayHS.png" />
     <None Include="Resources\PlayStepHS.png" />
     <Content Include="Resources\ResetHS.png" />
+    <None Include="Resources\site_logo.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />
     <Content Include="Resources\Refresh.png" />
