@@ -79,14 +79,6 @@ Public Class cFishBaseSearchResults
         End Get
     End Property
 
-    ''' <inheritdoc cref="IDataSearchResults.AssemblyName"/>
-    Public ReadOnly Property AssemblyName() As String _
-        Implements EwEPlugin.Data.IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
-        End Get
-    End Property
-
     ''' <inheritdoc cref="IDataSearchResults.PluginName"/>
     Public ReadOnly Property PluginName() As String _
         Implements EwEPlugin.Data.IPluginData.PluginName

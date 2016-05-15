@@ -46,7 +46,6 @@ Public Class cFishBaseTaxonData
     ' -- Plugin connection --
     Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""
-    Private m_searchfields As eTaxonLevelType
 
     ' -- Data --
     Private m_strCommon As String = ""
@@ -87,14 +86,6 @@ Public Class cFishBaseTaxonData
 #End Region ' Constructor
 
 #Region " Properties "
-
-    ''' <inheritdocs cref="IPluginData.AssemblyName"/>
-    Public ReadOnly Property AssemblyName() As String _
-        Implements EwEPlugin.Data.IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
-        End Get
-    End Property
 
     ''' <inheritdocs cref="IPluginData.PluginName"/>
     Public ReadOnly Property PluginName() As String _
