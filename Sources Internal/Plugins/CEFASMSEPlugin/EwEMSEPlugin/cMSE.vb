@@ -2189,7 +2189,8 @@ Public Class cMSE
                 strm.WriteLine()
             Next
             strm.WriteLine("-----------------Start Fishing Effort Matrix------------------------")
-            strm.Close()
+            'strm.Close()
+            cMSEUtils.ReleaseWriter(strm)
         Catch ex As Exception
             ' Aargh
         End Try
@@ -2217,7 +2218,7 @@ Public Class cMSE
                 strm.WriteLine()
             Next
             strm.WriteLine("-----------------End Diet Matrix------------------------")
-            strm.Close()
+            cMSEUtils.ReleaseWriter(strm)
         Catch ex As Exception
             ' Aargh
         End Try
@@ -3414,6 +3415,42 @@ Public Class cMSE
 
 #Region " Distributions and sampling code "
 
+    Public Function SampleGamma(ByVal Alpha As Single, ByVal Theta As Single, UniformRandomGenerator As Random) As Double
+        Dim n As Double = Math.Truncate(Alpha)
+        Dim delta As Double = Alpha - n
+        Dim xi As Double = 0
+        Dim eta As Double
+        Dim part1 As Double = 0
+        Dim U As Double
+        Dim V As Double
+        Dim W As Double
+
+        If (n > 0) Then
+            For k As Integer = 1 To CInt(n)
+                part1 = part1 + Math.Log(UniformRandomGenerator.NextDouble)
+            Next
+        End If
+
+        If (delta > 0) Then
+            Do
+                U = UniformRandomGenerator.NextDouble
+                V = UniformRandomGenerator.NextDouble
+                W = UniformRandomGenerator.NextDouble
+
+                If (U <= (Math.E / (Math.E + delta))) Then
+                    xi = V ^ (1 / delta)
+                    eta = W * xi ^ (delta - 1)
+                Else
+                    xi = 1 - Math.Log(V)
+                    eta = W * Math.Exp(-xi)
+                End If
+            Loop Until eta <= (xi ^ (delta - 1) * Math.Exp(-xi))
+        End If
+
+        Return ((xi - part1) * Theta)
+
+    End Function
+
     Public Function DirichletSample2(ByVal nDimensions As Integer, ByVal alpha() As Single, ByRef DietMultiplier As Double) As Single()
         Dim gamma(nDimensions - 1) As Single
         Dim dirichlet(nDimensions - 1) As Single
@@ -3427,6 +3464,7 @@ Public Class cMSE
 
         For i As Integer = 0 To nDimensions - 1
             GammaGenerator.Alpha = alpha(i)
+            GammaGenerator.Theta = 1
             gamma(i) = CSng(GammaGenerator.NextDouble())
         Next
 
@@ -4010,8 +4048,6 @@ Public Class cMSE
 
             For Each iFleet In FleetsThatFishHCRGrp
 
-                'If m_core.FleetInputs(iFleet).Name = "Demersal trawl + dem seine" And CurrentModelID = 2 And currentStrategy.Name = "CFP_TargetF_Weakest stock" Then Stop
-
                 Select Case Me.currentStrategy.Regulations.Method(iFleet)
 
                     Case cRegulations.eRegMethod.HighestValue, cRegulations.eRegMethod.SelectiveFishing
@@ -4090,7 +4126,7 @@ Public Class cMSE
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    '_simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
                 Else
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None
