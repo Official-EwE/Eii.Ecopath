@@ -106,8 +106,6 @@ Namespace Ecopath
                 For iIndex As Integer = 0 To mgr.Count - 1
                     lItems.Add(mgr(iIndex))
                 Next
-            Else
-                lItems.Add(My.Resources.PROMPT_ECOSIM_REQUIRED)
             End If
             Me.m_fpFFHatchStocking = New cEwEFormatProvider(Me.m_uic, Me.m_cmbFF, GetType(Integer), lItems.ToArray)
             If bEcosimLoaded Then
