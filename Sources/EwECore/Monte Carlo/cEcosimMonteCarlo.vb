@@ -216,6 +216,42 @@ Public Class cEcosimMonteCarlo
         m_rand = New Random(seed)
     End Sub
 
+    Public Function SampleGamma(ByVal Alpha As Single, ByVal Theta As Single) As Double
+        Dim n As Double = Math.Truncate(Alpha)
+        Dim delta As Double = Alpha - n
+        Dim xi As Double = 0
+        Dim eta As Double
+        Dim part1 As Double = 0
+        Dim U As Double
+        Dim V As Double
+        Dim W As Double
+
+        If (n > 0) Then
+            For k As Integer = 1 To CInt(n)
+                part1 = part1 + Math.Log(m_rand.NextDouble)
+            Next
+        End If
+
+        If (delta > 0) Then
+            Do
+                U = m_rand.NextDouble
+                V = m_rand.NextDouble
+                W = m_rand.NextDouble
+
+                If (U <= (Math.E / (Math.E + delta))) Then
+                    xi = V ^ (1 / delta)
+                    eta = W * xi ^ (delta - 1)
+                Else
+                    xi = 1 - Math.Log(V)
+                    eta = W * Math.Exp(-xi)
+                End If
+            Loop Until eta <= (xi ^ (delta - 1) * Math.Exp(-xi))
+        End If
+
+        Return ((xi - part1) * Theta)
+
+    End Function
+
     Public Function Init() As Boolean
 
         Try
@@ -1479,8 +1515,9 @@ Public Class cEcosimMonteCarlo
         Next
 
         For i As Integer = 1 To nDimensions
-            m_gamma.Alpha = alpha(i)
-            gamma(i) = CSng(m_gamma.NextDouble())
+            'm_gamma.Alpha = alpha(i)
+            'gamma(i) = CSng(m_gamma.NextDouble())
+            gamma(i) = CSng(SampleGamma(alpha(i), 1))
         Next
 
         sumofgamma = gamma.Sum()

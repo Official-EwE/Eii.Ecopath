@@ -121,7 +121,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-    <Reference Include="Troschuetz.Random, Version=1.4.0.0, Culture=neutral, PublicKeyToken=b86afc9e3df7ca6d, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="EwECore" />
@@ -601,7 +600,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Includes\ProjNet.dll" />
-    <Content Include="Includes\Troschuetz.Random.dll" />
     <Content Include="Resources\gpl-2.0.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
