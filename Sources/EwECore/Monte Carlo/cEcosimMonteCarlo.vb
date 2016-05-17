@@ -28,7 +28,6 @@ Imports EwEUtils.Core
 Imports EwEPlugin
 Imports System.Threading
 Imports EwEUtils.SystemUtilities
-Imports Troschuetz.Random
 
 #End Region ' Imports
 
@@ -176,7 +175,6 @@ Public Class cEcosimMonteCarlo
 
     Private m_ouputWriter As cMonteCarloResultsWriter
 
-    Private m_gamma As GammaDistribution
     Private m_rand As Random
 
     ''' <summary>
@@ -206,7 +204,6 @@ Public Class cEcosimMonteCarlo
         EcopathEETol = 0.0005 '0.05%
 
         m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
-        m_gamma = New GammaDistribution()
 
         Me.m_ouputWriter = New cMonteCarloResultsWriter(Me, Me.m_core)
 
