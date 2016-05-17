@@ -113,6 +113,8 @@ Public Class frmStartPanel
         AddHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         AddHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
 
+        Me.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.HomeHS.GetHicon)
+
         ' Navigate to current URL
         Me.URL = Me.URL
         Me.UpdateControls()
@@ -120,6 +122,8 @@ Public Class frmStartPanel
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        Me.Icon.Dispose()
 
         RemoveHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         RemoveHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
