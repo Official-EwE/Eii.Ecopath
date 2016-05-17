@@ -421,6 +421,8 @@ Public Class cMSE
         Me.m_monitor = Monitor
         Me.m_plugin = pluginPoint
 
+        m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
+
         Me.m_SyncObj = System.Threading.SynchronizationContext.Current
         'if there is no current context then create a new one on this thread. 
         'this happens if no interface has been created yet(I think...)
@@ -3415,7 +3417,7 @@ Public Class cMSE
 
 #Region " Distributions and sampling code "
 
-    Public Function SampleGamma(ByVal Alpha As Single, ByVal Theta As Single, UniformRandomGenerator As Random) As Double
+    Public Function SampleGamma(ByVal Alpha As Single, ByVal Theta As Single) As Double
         Dim n As Double = Math.Truncate(Alpha)
         Dim delta As Double = Alpha - n
         Dim xi As Double = 0
@@ -3427,15 +3429,15 @@ Public Class cMSE
 
         If (n > 0) Then
             For k As Integer = 1 To CInt(n)
-                part1 = part1 + Math.Log(UniformRandomGenerator.NextDouble)
+                part1 = part1 + Math.Log(m_rand.NextDouble)
             Next
         End If
 
         If (delta > 0) Then
             Do
-                U = UniformRandomGenerator.NextDouble
-                V = UniformRandomGenerator.NextDouble
-                W = UniformRandomGenerator.NextDouble
+                U = m_rand.NextDouble
+                V = m_rand.NextDouble
+                W = m_rand.NextDouble
 
                 If (U <= (Math.E / (Math.E + delta))) Then
                     xi = V ^ (1 / delta)
@@ -3463,9 +3465,10 @@ Public Class cMSE
         Next
 
         For i As Integer = 0 To nDimensions - 1
-            GammaGenerator.Alpha = alpha(i)
-            GammaGenerator.Theta = 1
-            gamma(i) = CSng(GammaGenerator.NextDouble())
+            'GammaGenerator.Alpha = alpha(i)
+            'GammaGenerator.Theta = 1
+            'gamma(i) = CSng(GammaGenerator.NextDouble())
+            gamma(i) = CSng(SampleGamma(alpha(i), 1))
         Next
 
         sumofgamma = gamma.Sum()
