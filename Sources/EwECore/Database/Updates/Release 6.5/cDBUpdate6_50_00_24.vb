@@ -187,6 +187,7 @@ Friend Class cDBUpdate6_50_00_24
 
         Next
 
+        writer.Commit()
         db.ReleaseWriter(writer, True)
 
         For i As Integer = 0 To 3
