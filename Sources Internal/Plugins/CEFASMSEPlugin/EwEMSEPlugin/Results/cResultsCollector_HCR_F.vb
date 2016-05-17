@@ -40,7 +40,7 @@ Public MustInherit Class cResultsCollector_HCR_F
 
     Public Overrides ReadOnly Property Dim_Name As String
         Get
-            Return "Groups"
+            Return "Group"
         End Get
     End Property
 
