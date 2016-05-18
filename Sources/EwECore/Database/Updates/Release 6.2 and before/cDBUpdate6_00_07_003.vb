@@ -19,11 +19,7 @@
 '
 
 Option Strict On
-Imports EwEPlugin
 Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports System.Data
-Imports System.Data.OleDb
 Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
@@ -103,20 +99,9 @@ Friend Class cDBUpdate6_00_07_003
                     strValueID = strValueID.Replace("(", ":")
                     strValueID = strValueID.Replace(")", "")
 
-                    strRemark = ""
-                    strVisualStyle = ""
-
-                    If Not Convert.IsDBNull(reader("Remark")) Then
-                        strRemark = CStr(reader("Remark")).Replace("""", """""")
-                    End If
-                    If Not Convert.IsDBNull(reader("VisualStyle")) Then
-                        strVisualStyle = CStr(reader("VisualStyle"))
-                    End If
-                    If Not Convert.IsDBNull(reader("Pedigree")) Then
-                        iPedigree = cStringUtils.ConvertToInteger(CStr(reader("Pedigree")))
-                    Else
-                        iPedigree = cCore.NULL_VALUE
-                    End If
+                    strRemark = CStr(db.ReadSafe(reader, "Remark", "")).Replace("""", """""")
+                    strVisualStyle = CStr(db.ReadSafe(reader, "VisualStyle", ""))
+                    iPedigree = CInt(db.ReadSafe(reader, "Pedigree", cCore.NULL_VALUE))
 
                     ' Need to transfer?
                     If (Not String.IsNullOrEmpty(strRemark)) Or _
@@ -150,7 +135,6 @@ Friend Class cDBUpdate6_00_07_003
     ''' </summary>
     ''' <param name="db"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function FixEcospaceFleetMapPK(ByVal db As cEwEDatabase) As Boolean
 
         Dim strPK As String = ""
@@ -164,7 +148,7 @@ Friend Class cDBUpdate6_00_07_003
         End If
 
         strSQL = "ALTER TABLE EcospaceScenarioFleetMap ADD PRIMARY KEY (ScenarioID, FleetID, InRow, InCol)"
-        db.Execute(strSQL) ' We can do without the PK
+        db.Execute(strSQL)
 
         Return bSucces
 

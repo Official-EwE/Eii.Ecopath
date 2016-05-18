@@ -296,6 +296,7 @@ Friend Class cDBUpdate6_50_00_27
     ''' <param name="db"></param>
     ''' <remarks></remarks>
     Private Sub updateResponseFunctions(ByVal db As cEwEDatabase)
+
         Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimShapeMediation")
         Dim dt As DataTable = writer.GetDataTable()
         Dim Mean As Single, SDLeft As Single, SDRight As Single, DataWidth As Single

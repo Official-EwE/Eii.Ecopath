@@ -57,6 +57,7 @@ Namespace Database
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cEwEDbWriter
+            Implements IDisposable
 
             ''' <summary>Database to write to</summary>
             Private m_db As cEwEDatabase = Nothing
@@ -70,6 +71,12 @@ Namespace Database
             Private m_apt As IDataAdapter = Nothing
 
             Private m_dtSchema As DataTable = Nothing
+            Private m_bDisposed As Boolean = False
+
+#If DEBUG Then
+            Private m_ID As Integer = 0
+            Private Shared s_IDnext As Integer = 1
+#End If
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -84,7 +91,28 @@ Namespace Database
             ''' </remarks>
             ''' ---------------------------------------------------------------
             Public Sub New(ByRef db As cEwEDatabase, ByVal strTable As String)
+#If DEBUG Then
+                Me.m_ID = s_IDnext
+                s_IDnext += 1
+                Debug.WriteLine("DB writer " & Me.m_ID & " created(" & strTable & ")")
+#End If
                 Me.Connect(db, strTable)
+            End Sub
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Trash me!
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public Sub Dispose() Implements IDisposable.Dispose
+                If (Me.m_bDisposed = False) Then
+                    Me.m_bDisposed = True
+#If DEBUG Then
+                    Debug.WriteLine("DB writer " & Me.m_ID & " disposed")
+#End If
+                    If Me.IsConnected Then Me.Disconnect(True)
+                End If
+                GC.SuppressFinalize(Me)
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -189,6 +217,9 @@ Namespace Database
                 Me.m_db = Nothing
                 Me.m_strTable = ""
 
+#If DEBUG Then
+                Debug.WriteLine("DB writer " & Me.m_ID & " disconnected")
+#End If
                 Return bSucces
             End Function
 
@@ -273,7 +304,19 @@ Namespace Database
             ''' </summary>
             ''' ---------------------------------------------------------------
             Protected Overrides Sub Finalize()
-                If Me.IsConnected Then Me.Disconnect(True)
+#If DEBUG Then
+                Debug.WriteLine("DB writer " & Me.m_ID & " finalized")
+#End If
+                ' JS 18May16: Disconnecting upoin disposal is very likely to fail,
+                ' because the underlying transaction has probably already perished.
+                ' Instead, users should explicitly Disconnect
+                Debug.Assert(Not Me.IsConnected(), "Database adapter for " & Me.m_strTable & " not explicitly released!")
+
+                ' Changes may get lost here, which is the consequence of not properly releaseing
+                If Me.IsConnected Then
+                    Me.Disconnect(Me.m_db.Transaction IsNot Nothing)
+                End If
+
                 MyBase.Finalize()
             End Sub
 
@@ -801,7 +844,9 @@ Namespace Database
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseWriter(ByRef writer As cEwEDbWriter, Optional ByVal bSaveChanges As Boolean = True) As Boolean
-            Return writer.Disconnect(bSaveChanges)
+            Dim bSuccess As Boolean = writer.Disconnect(bSaveChanges)
+            writer.Dispose()
+            Return bSuccess
         End Function
 
         ''' -------------------------------------------------------------------

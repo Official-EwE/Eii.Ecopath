@@ -54,8 +54,7 @@ Friend Class cDBUpdate6_50_00_26
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        db.Execute("ALTER TABLE EcopathGroupSample ADD COLUMN ImpVar SINGLE")
-        Return True
+        Return db.Execute("ALTER TABLE EcopathGroupSample ADD COLUMN ImpVar SINGLE")
     End Function
 
 End Class
