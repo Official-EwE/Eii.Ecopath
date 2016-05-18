@@ -92,6 +92,9 @@ Namespace Ecosim
                 Me.m_fpNoAICPts = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxAICDataPts, Me.m_F2TSManager, eVarNameFlags.F2TSNAICData)
                 Me.m_fpUseDefaultVs = New cPropertyFormatProvider(Me.UIContext, Me.m_cbResetVs, Me.m_F2TSManager, eVarNameFlags.F2TSUseDefaultV)
 
+                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler(Me.UIContext)
+                Me.m_shapeHandler.Attach(Me.m_shapeToolBox, Me.m_sketchPad)
+
                 Me.m_cbAnomalySearch.Checked = Me.m_F2TSManager.AnomalySearch
                 Me.m_cbVulnerabilitySearch.Checked = Me.m_F2TSManager.VulnerabilitySearch
 
@@ -111,9 +114,6 @@ Namespace Ecosim
                 Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries, eCoreComponentType.EcoPath, eCoreComponentType.ShapesManager, eCoreComponentType.MediatedInteractionManager}
                 Me.UpdateMaxSplinePoints()
                 Me.ReloadControls()
-
-                Me.m_shapeHandler = New cAnomalySearchShapeGUIHandler(Me.UIContext)
-                Me.m_shapeHandler.Attach(Me.m_shapeToolBox, Me.m_sketchPad)
 
             Catch ex As Exception
 
