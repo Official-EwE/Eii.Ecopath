@@ -59,6 +59,8 @@ Friend Class cDBUpdate6_00_03_08
         bSucces = bSucces And db.Execute("CREATE TABLE Quotes (ID COUNTER CONSTRAINT PrimaryKey PRIMARY KEY, Quote MEMO, Source TEXT(255))")
 
         ' - Fix Ecospace defaults
+        db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN Tolerance SINGLE") ' Just in case
+
         bSucces = bSucces And db.Execute("UPDATE EcospaceScenario SET Tolerance=0.01 WHERE Tolerance=0.0001")
         bSucces = bSucces And db.Execute("UPDATE EcospaceScenarioGroup SET EatEffBad=0.5 WHERE EatEffBad=0.001")
 

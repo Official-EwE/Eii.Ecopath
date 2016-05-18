@@ -156,6 +156,7 @@ Friend Class cDBUpdate6_00_04_00042
 
             End While
             db.ReleaseReader(readerPedigree)
+            db.ReleaseWriter(writerRemark)
             readerPedigree = Nothing
 
         Catch ex As Exception
