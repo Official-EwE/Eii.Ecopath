@@ -1444,7 +1444,8 @@ Public Class frmEwE6
                 strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName)
             Case eDatasourceAccessType.Failed_OSUnsupported
                 strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName)
-                strHyperlink = "http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255"
+                Dim link As New cWebLinks(Me.Core)
+                strHyperlink = link.GetURL(cWebLinks.eLinkType.Access2010)
             Case eDatasourceAccessType.Failed_FileNotFound
                 strMessage = cStringUtils.Localize(My.Resources.STATUS_MODEL_ACCESS_404, strFileName)
             Case eDatasourceAccessType.Failed_CannotSave
