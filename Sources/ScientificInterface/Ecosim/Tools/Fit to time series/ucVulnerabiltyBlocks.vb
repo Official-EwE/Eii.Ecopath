@@ -470,6 +470,8 @@ Namespace Ecosim
             Dim strPred As String = ""
             Dim strPrey As String = ""
 
+            If (Me.m_uic Is Nothing) Then Return
+
             ' Get hover info, if any
             If (ptHover <> Nothing) Then
                 ptPredPrey = Me.PointToPredPrey(ptHover)
@@ -519,6 +521,7 @@ Namespace Ecosim
         End Function
 
         Private Function CellSize() As SizeF
+            If (Me.m_uic Is Nothing) Then Return New SizeF(1, 1)
             Return New SizeF(CSng(Me.ClientRectangle.Width / (Me.m_uic.Core.nLivingGroups + 1)), CSng(Me.ClientRectangle.Height / (Me.m_uic.Core.nGroups + 1)))
         End Function
 
