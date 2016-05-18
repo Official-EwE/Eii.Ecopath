@@ -63,6 +63,7 @@ Friend Class cDBUpdate6_50_00_11
             row("ForagingTimeLowerLimit") = 0.1!
             row.EndEdit()
         Next
+        db.ReleaseWriter(writer, True)
         Me.LogProgress("Update EcosimScenario foragingtimelowerlimit", bSuccess)
         Return bSuccess
 
