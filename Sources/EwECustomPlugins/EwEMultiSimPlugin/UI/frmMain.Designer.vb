@@ -251,7 +251,9 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_clbValues, "m_clbValues")
         Me.m_clbValues.CheckOnClick = True
         Me.m_clbValues.FormattingEnabled = True
+        Me.m_clbValues.MultiColumn = True
         Me.m_clbValues.Name = "m_clbValues"
+        Me.m_clbValues.Sorted = True
         '
         'm_lblDest
         '
@@ -294,6 +296,7 @@ Partial Class frmMain
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel1.PerformLayout()
         Me.m_scMain.Panel2.ResumeLayout(False)

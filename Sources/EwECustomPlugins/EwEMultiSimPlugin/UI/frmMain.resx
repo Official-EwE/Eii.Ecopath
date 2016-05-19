@@ -142,7 +142,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbEggProduction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 264</value>
+    <value>234, 242</value>
   </data>
   <data name="m_cbEggProduction.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 17</value>
@@ -175,7 +175,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbMort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 243</value>
+    <value>234, 221</value>
   </data>
   <data name="m_cbMort.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 17</value>
@@ -205,7 +205,7 @@
     <value>True</value>
   </data>
   <data name="m_cbEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 264</value>
+    <value>84, 242</value>
   </data>
   <data name="m_cbEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 17</value>
@@ -238,7 +238,7 @@
     <value>False</value>
   </data>
   <data name="m_cbFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 243</value>
+    <value>84, 221</value>
   </data>
   <data name="m_cbFF.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 17</value>
@@ -301,7 +301,7 @@
     <value>84, 49</value>
   </data>
   <data name="m_clbFilesSrc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 165</value>
+    <value>346, 143</value>
   </data>
   <data name="m_clbFilesSrc.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -343,7 +343,7 @@
     <value>m_hdrIn</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11343.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13832.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -382,13 +382,13 @@
     <value>7</value>
   </data>
   <data name="m_btnGenerateSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="m_btnGenerateSample.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnGenerateSample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 77</value>
+    <value>436, 169</value>
   </data>
   <data name="m_btnGenerateSample.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -418,7 +418,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnValidate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>437, 260</value>
+    <value>437, 238</value>
   </data>
   <data name="m_btnValidate.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -481,7 +481,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbAnnual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>152, 220</value>
+    <value>152, 198</value>
   </data>
   <data name="m_rbAnnual.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 17</value>
@@ -538,7 +538,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbMonthly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 220</value>
+    <value>84, 198</value>
   </data>
   <data name="m_rbMonthly.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 17</value>
@@ -601,7 +601,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 244</value>
+    <value>6, 222</value>
   </data>
   <data name="m_lblApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
@@ -634,7 +634,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblReadAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 222</value>
+    <value>6, 200</value>
   </data>
   <data name="m_lblReadAs.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 13</value>
@@ -679,7 +679,7 @@
     <value>True</value>
   </data>
   <data name="m_cbCreateRunFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 125</value>
+    <value>84, 147</value>
   </data>
   <data name="m_cbCreateRunFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 17</value>
@@ -727,7 +727,7 @@
     <value>m_hrdOut</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11343.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13832.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -766,7 +766,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 121</value>
+    <value>436, 143</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -792,6 +792,9 @@
   <data name="m_clbValues.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_clbValues.ColumnWidth" type="System.Int32, mscorlib">
+    <value>200</value>
+  </data>
   <data name="m_clbValues.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -799,7 +802,7 @@
     <value>84, 50</value>
   </data>
   <data name="m_clbValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 69</value>
+    <value>346, 91</value>
   </data>
   <data name="m_clbValues.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -955,7 +958,7 @@
     <value>515, 431</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>283</value>
+    <value>261</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1027,6 +1030,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11343.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13832.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

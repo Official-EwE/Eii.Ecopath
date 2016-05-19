@@ -210,7 +210,7 @@ Public Class cPrebalZedGraphHelper
                 Case cPrebalModel.eResultTypes.B, _
                      cPrebalModel.eResultTypes.PB, _
                      cPrebalModel.eResultTypes.QB
-                    p.YAxis.Type = AxisType.Log
+                    p.YAxis.Type = AxisType.Linear
                     bShowRegression = True
                 Case cPrebalModel.eResultTypes.PQ
                     p.YAxis.Type = AxisType.Linear

@@ -3386,4 +3386,13 @@
   <data name="HabitatFunctionHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HabitatFunctionHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HEADER_CATCH_BREAKDOWN" xml:space="preserve">
+    <value>Catch (group x fleet)</value>
+  </data>
+  <data name="HEADER_FMORT_BREAKDOWN" xml:space="preserve">
+    <value>Fishing mortaility (group x fleet)</value>
+  </data>
+  <data name="HEADER_VALUE_BREAKDOWN" xml:space="preserve">
+    <value>Value (group x fleet)</value>
+  </data>
 </root>
