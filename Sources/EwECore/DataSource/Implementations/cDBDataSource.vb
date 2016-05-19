@@ -10285,9 +10285,9 @@ Namespace DataSources
 
             iDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary", 0)) + 1
 
+            Me.m_db.Execute("DELETE * FROM Auxillary")
+            writer = Me.m_db.GetWriter("Auxillary")
             Try
-                Me.m_db.Execute("DELETE * FROM Auxillary")
-                writer = Me.m_db.GetWriter("Auxillary")
 
                 For Each strValueID As String In Me.m_core.m_dtAuxiliaryData.Keys
 
@@ -10325,6 +10325,9 @@ Namespace DataSources
                                                 ByVal dt As eDataTypes, _
                                                 ByVal iDBID As Integer) As Boolean
 
+            ' Do not bother if no such mappings exist
+            If idm.GetID(dt, iDBID) = iDBID Then Return True
+
             ' Blunt way first
             Dim writer As cEwEDatabase.cEwEDbWriter = Me.m_db.GetWriter("Auxillary")
             Dim drow As DataRow = Nothing
@@ -10334,9 +10337,6 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             iAdDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary", 0)) + 1
-
-            ' Do not save if no such mappings exist
-            If idm.GetID(dt, iDBID) = iDBID Then Return True
 
             For Each ad In Me.m_core.m_dtAuxiliaryData.Values
 
