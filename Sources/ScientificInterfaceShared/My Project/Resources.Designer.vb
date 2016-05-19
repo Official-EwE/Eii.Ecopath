@@ -3727,6 +3727,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Catch (group x fleet).
+        '''</summary>
+        Public ReadOnly Property HEADER_CATCH_BREAKDOWN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATCH_BREAKDOWN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cumulative catch.
         '''</summary>
         Public ReadOnly Property HEADER_CATCH_CUMULATIVE() As String
@@ -4722,6 +4731,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_FMAX() As String
             Get
                 Return ResourceManager.GetString("HEADER_FMAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mortaility (group x fleet).
+        '''</summary>
+        Public ReadOnly Property HEADER_FMORT_BREAKDOWN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FMORT_BREAKDOWN", resourceCulture)
             End Get
         End Property
         
@@ -6819,6 +6837,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_VALUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value (group x fleet).
+        '''</summary>
+        Public ReadOnly Property HEADER_VALUE_BREAKDOWN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VALUE_BREAKDOWN", resourceCulture)
             End Get
         End Property
         

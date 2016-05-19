@@ -59,9 +59,9 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.KemptonsQ : Return My.Resources.HEADER_KEMPTONSQ
                 Case cEcosimResultWriter.eResultTypes.TLC : Return My.Resources.HEADER_TLC
                 Case cEcosimResultWriter.eResultTypes.TotalCatch : Return My.Resources.HEADER_TOTALCATCH
-                Case cEcosimResultWriter.eResultTypes.CatchFleetGroup : Return My.Resources.HEADER_CATCH
-                Case cEcosimResultWriter.eResultTypes.MortFleetGroup : Return My.Resources.HEADER_FISHINGMORTALITY
-                Case cEcosimResultWriter.eResultTypes.ValueFleetGroup : Return My.Resources.HEADER_VALUE
+                Case cEcosimResultWriter.eResultTypes.CatchFleetGroup : Return My.Resources.HEADER_CATCH_BREAKDOWN
+                Case cEcosimResultWriter.eResultTypes.MortFleetGroup : Return My.Resources.HEADER_FMORT_BREAKDOWN
+                Case cEcosimResultWriter.eResultTypes.ValueFleetGroup : Return My.Resources.HEADER_VALUE_BREAKDOWN
             End Select
 
             Return ""
