@@ -61,7 +61,7 @@ Public Class cEcosimEnviroResponseManager
                 EnviroData.Init(Me.m_simData.CapEnvResData, Me.m_simData)
                 EnviroData.IsDriverActive = True
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
-                    EnviroData.ResponseIndexForGroup(iGroup) = Me.m_simData.EnvRespFuncIndex(iEnv, iGroup)
+                    EnviroData.ResponseIndexForGroup(iGroup, False) = Me.m_simData.EnvRespFuncIndex(iEnv, iGroup)
                 Next
                 Me.m_simData.lstEnviroInputData.Add(EnviroData)
 
