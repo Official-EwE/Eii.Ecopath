@@ -52,17 +52,18 @@ Friend Class cEngine
 
         Private m_ff As cForcingFunction = Nothing
         Private m_asData As Single() = Nothing
-        Private m_bChanged As Boolean = False
+        Private m_bIsLast As Boolean = False
 
-        Public Sub New(ff As cForcingFunction)
+        Public Sub New(ff As cForcingFunction, bIsLast As Boolean)
             Me.m_ff = ff
             Me.m_asData = ff.ShapeData
+            Me.m_bIsLast = bIsLast
         End Sub
 
         Public Sub Restore()
             Me.m_ff.LockUpdates()
             Me.m_ff.ShapeData = Me.m_asData
-            Me.m_ff.UnlockUpdates(False)
+            Me.m_ff.UnlockUpdates(Me.m_bIsLast)
         End Sub
 
         ''' <summary>
@@ -73,19 +74,15 @@ Friend Class cEngine
             For i As Integer = 0 To Me.m_ff.ShapeData.Length - 1
                 Me.m_ff.ShapeData(i) = Me.m_asData(i)
             Next
-            Me.m_bChanged = False
         End Sub
 
         Public Sub EndEdit()
-            Me.m_ff.UnlockUpdates(Me.m_bChanged)
+            Me.m_ff.UnlockUpdates(Me.m_bIsLast)
         End Sub
 
         Public Sub SetData(i As Integer, s As Single)
             If (i < Me.m_ff.ShapeData.Length) Then
-                If (Me.m_ff.ShapeData(i) <> s) Then
-                    Me.m_ff.ShapeData(i) = s
-                    Me.m_bChanged = True
-                End If
+                Me.m_ff.ShapeData(i) = s
             End If
         End Sub
 
@@ -367,10 +364,13 @@ Friend Class cEngine
             Me.m_lManagers.Add(Me.m_core.EggProdShapeManager)
         End If
 
-        ' Explore all functions
-        For Each man As cBaseShapeManager In Me.m_lManagers
-            For Each ff As cForcingFunction In man
+        ' Explore all maangers
+        For i As Integer = 0 To Me.m_lManagers.Count - 1
+            Dim man As cBaseShapeManager = Me.m_lManagers(i)
 
+            ' Explore all functions
+            For j As Integer = 0 To man.Count - 1
+                Dim ff As cForcingFunction = man(j)
                 strKey = ff.Name.ToLower
 
                 If (bCheckDuplicates And Me.m_FFCache.ContainsKey(strKey)) Then
@@ -385,7 +385,7 @@ Friend Class cEngine
                 End If
 
                 ' Add function
-                Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
+                Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff, (j = man.Count - 1))
 
             Next
         Next
