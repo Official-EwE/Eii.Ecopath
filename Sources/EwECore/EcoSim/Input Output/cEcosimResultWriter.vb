@@ -577,7 +577,7 @@ Namespace Ecosim
                                 For j As Integer = 1 To Me.m_core.nGroups
                                     Dim sum As Single = 0
                                     For k As Integer = 1 To cCore.N_MONTHS
-                                        sum += data(j, i, (k - 1) * cCore.N_MONTHS + k)
+                                        sum += data(j, i, (y - 1) * cCore.N_MONTHS + k)
                                     Next k
                                     If (sum > 0) Then
                                         sw.WriteLine("{0},{1},{2},{3}", Me.m_core.EcosimFirstYear - 1 + y, i, j, cStringUtils.ToCSVField(sum / cCore.N_MONTHS))
