@@ -260,6 +260,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
     Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
     Private WithEvents m_cmdShowOptions As cShowOptionsCommand = Nothing
+    Private WithEvents m_cmdShowTools As cCommand = Nothing
     Private WithEvents m_cmdEditReferenceMap As cCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
@@ -581,6 +582,10 @@ Public Class frmEwE6
         'Create and configure 'show options' command
         Me.m_cmdShowOptions = New cShowOptionsCommand(cmdh)
         Me.m_cmdShowOptions.AddControl(Me.m_tsmiOptions)
+
+        'Create and configure 'show tools' command
+        Me.m_cmdShowTools = New cCommand(cmdh, "ShowTools")
+        Me.m_cmdShowTools.AddControl(Me.m_tsmiExternalTools)
 
         'Create and configure 'edit reference map' command
         Me.m_cmdEditReferenceMap = New cCommand(cmdh, "EditRefMap")
@@ -3336,6 +3341,15 @@ Public Class frmEwE6
             Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Option)
             cmd.UserHandled = (dlgOptions.ShowDialog(Me) = Windows.Forms.DialogResult.OK)
             Me.SaveSettings()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnShowTools(ByVal cmd As cCommand) Handles m_cmdShowTools.OnInvoke
+        Try
+            Dim strPath As String = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Tools")
+            Me.m_cmdBrowseURI.Invoke(strPath)
         Catch ex As Exception
 
         End Try

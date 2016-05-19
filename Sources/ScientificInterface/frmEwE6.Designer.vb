@@ -141,6 +141,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiTimeSeriesLoad = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuTools = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiExternalTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuEcotracer = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcotracerNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcotracerLoad = New System.Windows.Forms.ToolStripMenuItem()
@@ -689,9 +690,14 @@ Partial Public Class frmEwE6
         '
         'MenuTools
         '
-        Me.MenuTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, m_tssTools1, Me.MenuEcotracer})
+        Me.MenuTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.m_tsmiExternalTools, m_tssTools1, Me.MenuEcotracer})
         Me.MenuTools.Name = "MenuTools"
         resources.ApplyResources(Me.MenuTools, "MenuTools")
+        '
+        'm_tsmiExternalTools
+        '
+        Me.m_tsmiExternalTools.Name = "m_tsmiExternalTools"
+        resources.ApplyResources(Me.m_tsmiExternalTools, "m_tsmiExternalTools")
         '
         'MenuEcotracer
         '
@@ -919,6 +925,7 @@ Partial Public Class frmEwE6
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents ExportModel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcobaseExport As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiExternalTools As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 
