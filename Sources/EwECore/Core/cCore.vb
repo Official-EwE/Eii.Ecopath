@@ -2611,12 +2611,15 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Property OutputPath() As String
         Get
-            If String.IsNullOrWhiteSpace(Me.m_settings.OutputPath) Then
+            Dim strPath As String = Me.m_settings.OutputPath
+
+            If String.IsNullOrWhiteSpace(strPath) Then
                 If Me.DataSource IsNot Nothing Then
                     Return Path.Combine(Me.DataSource.Directory, "EwE output")
                 End If
+                strPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
             End If
-            Return Me.m_settings.OutputPath
+            Return strPath
         End Get
         Set(ByVal value As String)
             Try
