@@ -601,6 +601,12 @@ Public Class cSFPManager
         End Get
     End Property
 
+    Public ReadOnly Property Core As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
 #End Region ' Public access
 
 #Region " File IO "
