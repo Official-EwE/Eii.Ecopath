@@ -35,7 +35,7 @@ Imports System.Windows.Forms
 
 Module modStart
 
-    '<STAThread()> _
+    <STAThread()> _
     Sub Main()
 
         Application.EnableVisualStyles()
