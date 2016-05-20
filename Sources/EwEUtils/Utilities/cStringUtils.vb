@@ -71,6 +71,9 @@ Namespace Utilities
                                               ByVal strDelimiter As String,
                                               Optional ByVal strQualifier As String = """") As String()
 
+            ' Sanity check
+            If String.IsNullOrEmpty(strExpression) Then Return New String() {String.Empty}
+
             ' Ensure defaults. A whitespace delimiter is allowed!
             If String.IsNullOrEmpty(strDelimiter) Then strDelimiter = ","
             If String.IsNullOrWhiteSpace(strQualifier) Then strQualifier = """"

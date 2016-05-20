@@ -52,38 +52,65 @@ Friend Class cEngine
 
         Private m_ff As cForcingFunction = Nothing
         Private m_asData As Single() = Nothing
-        Private m_bIsLast As Boolean = False
+        Private m_bIsChanged As Boolean = False
 
-        Public Sub New(ff As cForcingFunction, bIsLast As Boolean)
+        Public Sub New(ff As cForcingFunction)
             Me.m_ff = ff
             Me.m_asData = ff.ShapeData
-            Me.m_bIsLast = bIsLast
         End Sub
 
         Public Sub Restore()
+
+            If Not Me.m_bIsChanged Then Return
+
             Me.m_ff.LockUpdates()
-            Me.m_ff.ShapeData = Me.m_asData
-            Me.m_ff.UnlockUpdates(Me.m_bIsLast)
+            For i As Integer = 0 To Me.m_ff.ShapeData.Length - 1
+                Me.m_ff.ShapeData(i) = Me.m_asData(i)
+            Next
+            Me.m_ff.UnlockUpdates(False)
+
         End Sub
 
         ''' <summary>
         ''' Restore shape data to its original state.
         ''' </summary>
         Public Sub StartEdit()
+
             Me.m_ff.LockUpdates()
             For i As Integer = 0 To Me.m_ff.ShapeData.Length - 1
                 Me.m_ff.ShapeData(i) = Me.m_asData(i)
             Next
+            Me.m_bIsChanged = False
+
         End Sub
 
         Public Sub EndEdit()
-            Me.m_ff.UnlockUpdates(Me.m_bIsLast)
+
+            Me.m_ff.UnlockUpdates(False)
+
         End Sub
 
         Public Sub SetData(i As Integer, s As Single)
+
             If (i < Me.m_ff.ShapeData.Length) Then
-                Me.m_ff.ShapeData(i) = s
+                If (s <> Me.m_ff.ShapeData(i)) Then
+                    Me.m_ff.ShapeData(i) = s
+                    Me.m_bIsChanged = True
+                End If
             End If
+
+        End Sub
+
+        Public Function BelongsTo(man As cBaseShapeManager) As Boolean
+            Return man.Contains(Me.m_ff)
+        End Function
+
+        Public Function IsChanged() As Boolean
+            Return Me.m_bIsChanged
+        End Function
+
+        Public Sub Update()
+            Me.m_ff.Update()
         End Sub
 
     End Class
@@ -277,7 +304,7 @@ Friend Class cEngine
     ''' <param name="types">The FF types to include in the sample.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function GenerateSample(ByVal types As eFunctionTypes, ByRef strFileSample As String) As Boolean
+    Public Function GenerateSample(ByVal types As eFunctionTypes, bMonthly As Boolean, ByRef strFileSample As String) As Boolean
 
         Dim strOutFolder As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
         Dim lShapes As New List(Of cForcingFunction)
@@ -306,14 +333,25 @@ Friend Class cEngine
             sw.WriteLine()
 
             i = 1
-            While i < Me.m_core.nEcosimYears
-                For j As Integer = 0 To lShapes.Count - 1
-                    If (j > 0) Then sw.Write(",")
-                    sw.Write(cStringUtils.ToCSVField(lShapes(j).ShapeData(j)))
-                Next
-                sw.WriteLine()
-                i += 1
-            End While
+            If (bMonthly) Then
+                While i <= Me.m_core.nEcosimTimeSteps
+                    For j As Integer = 0 To lShapes.Count - 1
+                        If (j > 0) Then sw.Write(",")
+                        sw.Write(cStringUtils.ToCSVField(lShapes(j).ShapeData(i)))
+                    Next
+                    sw.WriteLine()
+                    i += 1
+                End While
+            Else
+                While i < Me.m_core.nEcosimYears
+                    For j As Integer = 0 To lShapes.Count - 1
+                        If (j > 0) Then sw.Write(",")
+                        sw.Write(cStringUtils.ToCSVField(lShapes(j).ShapeData(i * cCore.N_MONTHS)))
+                    Next
+                    sw.WriteLine()
+                    i += 1
+                End While
+            End If
 
             sw.Close()
 
@@ -352,16 +390,19 @@ Friend Class cEngine
         Me.m_FFCache.Clear()
         Me.m_lManagers.Clear()
 
-        ' Build manager list
+        ' Build manager list. The order is important here for applications!
+        ' First forcing and eggs. Then Fmortality, and effort last
+        ' Using effort and Fmortality together is not recommended, as Fmort is derived from effort.
+
         Me.m_lManagers.Add(Me.m_core.ForcingShapeManager)
-        If ((Me.m_types And eFunctionTypes.Effort) = eFunctionTypes.Effort) Then
-            Me.m_lManagers.Add(Me.m_core.FishingEffortShapeManager)
+        If ((Me.m_types And eFunctionTypes.Eggsies) = eFunctionTypes.Eggsies) Then
+            Me.m_lManagers.Add(Me.m_core.EggProdShapeManager)
         End If
         If ((Me.m_types And eFunctionTypes.Mortality) = eFunctionTypes.Mortality) Then
             Me.m_lManagers.Add(Me.m_core.FishMortShapeManager)
         End If
-        If ((Me.m_types And eFunctionTypes.Eggsies) = eFunctionTypes.Eggsies) Then
-            Me.m_lManagers.Add(Me.m_core.EggProdShapeManager)
+        If ((Me.m_types And eFunctionTypes.Effort) = eFunctionTypes.Effort) Then
+            Me.m_lManagers.Add(Me.m_core.FishingEffortShapeManager)
         End If
 
         ' Explore all maangers
@@ -385,7 +426,7 @@ Friend Class cEngine
                 End If
 
                 ' Add function
-                Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff, (j = man.Count - 1))
+                Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
 
             Next
         Next
@@ -459,6 +500,7 @@ Friend Class cEngine
                                 ' Try to convert this value and set it into the FF
                                 If Not Single.TryParse(values(i), value) Then
                                     Debug.Assert(False, "Value '" & values(i) & "' unreadable, a number was expected")
+                                    ' ToDo: log error 
                                 End If
                             End If
 
@@ -475,9 +517,8 @@ Friend Class cEngine
                 ffc.EndEdit()
             Next
 
-            'For Each man As cBaseShapeManager In Me.m_lManagers
-            '    man.Update()
-            'Next
+            ' Commit shape changes to the core in a logical order that ensures that fishing mortality is correctly derived from effort
+            Me.CommitShapes()
 
         End If
 
@@ -556,9 +597,8 @@ Friend Class cEngine
             ffc.Restore()
         Next
 
-        'For Each man As cBaseShapeManager In Me.m_lManagers
-        '    man.Update()
-        'Next man
+        ' Commit shape changes to the core in a logical order that ensures that fishing mortality is correctly derived from effort
+        Me.CommitShapes()
 
         Me.m_core.DiscardChanges()
         GC.Collect()
@@ -764,6 +804,47 @@ Friend Class cEngine
         Catch ex As Exception
 
         End Try
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Commit shape changes to the core in a logical order that ensures that 
+    ''' fishing mortality is correctly derived from effort.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub CommitShapes()
+
+        ' I'm sure this can be done much more elegantly, but this will do for a start.
+        ' Make sure that every manager gets a shot at committing content to the core.
+        ' This commit ensures that fishing mortality is correctly derived from effort, etc
+
+        ' For this, the order that the commits take place is crucial, and also that every shape
+        ' type commits only once IF multi-sim has varied any shape of that shape type. 
+
+        ' The code kinda inverts this logic. 
+
+        ' First, step over the managers in the proper commit order (which ensures that Fmort 
+        ' is committed before any possibly overriding effort)
+        For i As Integer = 0 To Me.m_lManagers.Count - 1
+
+            Dim man As cBaseShapeManager = Me.m_lManagers(i)
+            Dim bUpdated As Boolean = False
+
+            ' Check all cached shapes
+            For Each ff As cFFCache In Me.m_FFCache.Values
+                ' Is this shape changed, and is the manager not updated yet?
+                If (ff.IsChanged() And bUpdated = False) Then
+                    ' Does the manager owns this shape?
+                    If (ff.BelongsTo(man)) Then
+                        ' Ok, give'r
+                        ff.Update()
+                        ' Do not update again for this type of manager
+                        bUpdated = True
+                    End If
+                End If
+            Next
+        Next
 
     End Sub
 

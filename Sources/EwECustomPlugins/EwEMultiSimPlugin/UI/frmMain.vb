@@ -208,7 +208,7 @@ Public Class frmMain
             Dim strFile As String = ""
             Dim cmd As cBrowserCommand = Nothing
 
-            If (Me.m_engine.GenerateSample(Me.SelectedApplications, strFile)) Then
+            If (Me.m_engine.GenerateSample(Me.SelectedApplications, Me.m_rbMonthly.Checked, strFile)) Then
                 cmd = DirectCast(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                 cmd.Invoke(strFile)
             End If
