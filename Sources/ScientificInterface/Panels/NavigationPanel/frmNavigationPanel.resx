@@ -125,7 +125,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAC+
-        DwAAAk1TRnQBSQFMAgEBCQEAAeQBAQHkAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        DwAAAk1TRnQBSQFMAgEBCQEAAewBAQHsAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -573,20 +573,20 @@
         /////wkEAAAA/////wkEAAAAAAAAAAVPAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCQAA
         AARUZXh0C1Rvb2xUaXBUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0
         ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAQAAAQABAAEICAgCAAAABqsA
-        AAAYQXBwbHkgZm9yYWdpbmcgcmVzcG9uc2VzCQQAAAAGrQAAABVuZEVudmlyb1Jlc3BvbnNlQXBwbHkA
-        /////wkEAAAA/////wkEAAAAAAAAAAVUAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCQAA
-        AARUZXh0C1Rvb2xUaXBUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0
-        ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAQAAAQABAAEICAgCAAAABq8A
-        AAAUQXBwbHkgZWdnIHByb2R1Y3Rpb24JBAAAAAaxAAAACW5kQXBwbHlFUAD/////CQQAAAD/////CQQA
-        AAAAAAAABWEAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5vZGUJAAAABFRleHQLVG9vbFRpcFRl
-        eHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2Vs
-        ZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEBAAABAAEAAQgICAIAAAAGswAAABZBcHBseSBwcmljZSBl
-        bGFzdGljaXR5CQQAAAAGtQAAABZuZEFwcGx5UHJpY2VFbGFzdGljaXR5AP////8JBAAAAP////8JBAAA
-        AAAAAAAFggAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQkAAAAEVGV4dAtUb29sVGlwVGV4
-        dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxl
-        Y3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQEAAAEAAQABCAgIAgAAAAa3AAAAE0Vjb3NpbSBGbG93IGRp
-        YWdyYW0JBAAAAAa5AAAAEG5kRkRTbGlkZXJQbHVnaW4A/////wa6AAAAE2FwcGxpY2F0aW9uX3B1dC5w
-        bmf/////CboAAAAAAAAACw==
+        AAAdQXBwbHkgZW52aXJvbm1lbnRhbCByZXNwb25zZXMJBAAAAAatAAAAFW5kRW52aXJvUmVzcG9uc2VB
+        cHBseQD/////CQQAAAD/////CQQAAAAAAAAABVQAAAAdU3lzdGVtLldpbmRvd3MuRm9ybXMuVHJlZU5v
+        ZGUJAAAABFRleHQLVG9vbFRpcFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFnZUtleRJT
+        ZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEBAAABAAEAAQgICAIA
+        AAAGrwAAABRBcHBseSBlZ2cgcHJvZHVjdGlvbgkEAAAABrEAAAAJbmRBcHBseUVQAP////8JBAAAAP//
+        //8JBAAAAAAAAAAFYQAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQkAAAAEVGV4dAtUb29s
+        VGlwVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRl
+        eBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQEAAAEAAQABCAgIAgAAAAazAAAAFkFwcGx5IHBy
+        aWNlIGVsYXN0aWNpdHkJBAAAAAa1AAAAFm5kQXBwbHlQcmljZUVsYXN0aWNpdHkA/////wkEAAAA////
+        /wkEAAAAAAAAAAWCAAAAHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCQAAAARUZXh0C1Rvb2xU
+        aXBUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4
+        EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAQAAAQABAAEICAgCAAAABrcAAAATRWNvc2ltIEZs
+        b3cgZGlhZ3JhbQkEAAAABrkAAAAQbmRGRFNsaWRlclBsdWdpbgD/////BroAAAATYXBwbGljYXRpb25f
+        cHV0LnBuZ/////8JugAAAAAAAAAL
 </value>
   </data>
   <data name="m_tvNavigation.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64">
@@ -806,7 +806,7 @@
     <value>m_tvNavigation</value>
   </data>
   <data name="&gt;&gt;m_tvNavigation.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.5.13772.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.5.13832.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvNavigation.Parent" xml:space="preserve">
     <value>$this</value>
@@ -842,6 +842,6 @@
     <value>frmNavigationPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.5.13772.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.5.13832.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

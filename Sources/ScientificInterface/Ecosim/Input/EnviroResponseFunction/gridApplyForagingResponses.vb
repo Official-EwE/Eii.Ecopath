@@ -70,6 +70,22 @@ Namespace Ecosim
             End Set
         End Property
 
+        Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
+            Get
+                Return New eCoreComponentType() {eCoreComponentType.EcosimResponseInteractionManager, eCoreComponentType.ShapesManager}
+            End Get
+        End Property
+
+        Public Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
+            If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                Me.RefreshContent()
+            ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimResponseInteractionManager) Then
+                For igrp As Integer = 1 To Me.Core.nGroups
+                    Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
+                Next
+            End If
+        End Sub
+
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
@@ -109,20 +125,9 @@ Namespace Ecosim
         Protected Overrides Sub FillData()
 
             Try
-                Dim ff As cForcingFunction
-                Dim strLabel As String
-
                 For igrp As Integer = 1 To Core.nGroups
                     For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
-                        Dim driver As IEnviroInputData = Me.m_driverManager.EnviroData(iDriver)
-                        strLabel = ""
-                        Dim ishp As Integer = driver.ResponseIndexForGroup(igrp)
-                        If ishp > 0 Then
-                            ff = Me.m_shapeManager.Item(ishp - 1)
-                            strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name)
-                        End If
-
-                        Me(igrp, iDriver + 1) = New EwECell(strLabel, GetType(String))
+                        Me(igrp, iDriver + 1) = New EwECell("", GetType(String))
                         Me(igrp, iDriver + 1).DataModel = Me.m_editor
                         Me(igrp, iDriver + 1).Behaviors.Add(Me.m_bmCell)
                     Next
@@ -216,14 +221,31 @@ Namespace Ecosim
 
         Private Sub UpdateRow(grp As cCoreGroupBase)
 
-            Dim iGroup As Integer = grp.Index
-            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+            Try
 
-            For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
-                Dim cell As EwECell = CType(Me(iGroup, 1 + iDriver), EwECell)
-                cell.Style = style
-                Me.InvalidateCell(cell)
-            Next
+                Dim igrp As Integer = grp.Index
+                Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+                Dim fmt As New cShapeDataFormatter()
+
+                For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
+                    Dim strLabel As String = ""
+                    Dim ff As cForcingFunction = Nothing
+                    Dim driver As IEnviroInputData = Me.m_driverManager.EnviroData(iDriver)
+                    Dim cell As EwECell = CType(Me(igrp, 1 + iDriver), EwECell)
+
+                    Dim ishp As Integer = driver.ResponseIndexForGroup(igrp)
+                    If ishp > 0 Then
+                        ff = Me.m_shapeManager.Item(ishp - 1)
+                        strLabel = fmt.GetDescriptor(ff)
+                    End If
+
+                    cell.Style = style
+                    cell.Value = strLabel
+                    Me.InvalidateCell(cell)
+                Next
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 

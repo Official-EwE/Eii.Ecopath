@@ -534,8 +534,8 @@ Friend Class cEngine
 
         Me.m_bStopRun = False
 
-        Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
-        Me.m_core.SetStopRunDelegate(AddressOf StopRun)
+        'Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
+        'Me.m_core.SetStopRunDelegate(AddressOf StopRun)
         cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_INITIALIZING, -1)
 
         Me.m_log.Open()
@@ -603,8 +603,8 @@ Friend Class cEngine
         Me.m_core.DiscardChanges()
         GC.Collect()
 
-        Me.m_core.SetStopRunDelegate(Nothing)
-        Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+        'Me.m_core.SetStopRunDelegate(Nothing)
+        'Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
         cApplicationStatusNotifier.EndProgress(Me.m_core)
         Me.m_log.Close()
 

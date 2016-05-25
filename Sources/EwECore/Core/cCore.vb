@@ -13929,7 +13929,7 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
                 Case eDataTypes.EcosimEnviroResponseFunctionManager
-                    Debug.Print("cCore.OnChanged(eDataTypes.EcosimEnviroResponseFunctionManager) not implemented yet!")
+                    Me.m_publisher.AddMessage(New cMessage("Ecosim environmental responses modified", eMessageType.DataModified, obj.CoreComponent, eMessageImportance.Maintenance, eDataTypes.EcosimEnviroResponseFunctionManager))
 
                 Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerHabitat
 
