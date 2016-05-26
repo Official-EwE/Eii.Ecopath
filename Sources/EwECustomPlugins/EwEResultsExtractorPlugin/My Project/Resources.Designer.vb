@@ -124,7 +124,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass in habitat area(t/km^2).
+        '''  Looks up a localized string similar to Biomass in habitat area ({0}/{1}).
         '''</summary>
         Friend ReadOnly Property BIOMASS_AREA_UNITS() As String
             Get
