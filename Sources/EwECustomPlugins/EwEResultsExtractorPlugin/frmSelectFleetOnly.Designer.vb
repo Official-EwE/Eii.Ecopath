@@ -44,6 +44,6 @@ Partial Class frmSelectFleetOnly
     Private Sub InitializeComponent()
         components = New System.ComponentModel.Container
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Text = "Fleet Selection"
+        Me.Text = My.Resources.FLEET_SELECTION
     End Sub
 End Class

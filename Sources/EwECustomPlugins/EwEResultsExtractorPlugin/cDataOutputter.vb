@@ -250,7 +250,7 @@ Public Class cDataOutputer
 
 
         If mFunctionalGroupData.Count > 0 Then
-            fileName = "FunctGroup" & CurrentTime
+            fileName = My.Resources.FUNC_GROUP & CurrentTime
             FunctionalWB = ex.Workbooks.Add()
             For Each i In mFunctionalGroupData
                 sheet = CType(FunctionalWB.Worksheets.Add(), Excel.Worksheet)
@@ -267,7 +267,7 @@ Public Class cDataOutputer
         End If
 
         If mFisheriesData.Count > 0 Then
-            fileName = "Fisheries" & CurrentTime
+            fileName = My.Resources.FISHERIES & CurrentTime
             FisheriesWB = ex.Workbooks.Add()
             For Each i In mFisheriesData
                 sheet = CType(FisheriesWB.Worksheets.Add(), Excel.Worksheet)
@@ -284,7 +284,7 @@ Public Class cDataOutputer
         End If
 
         If mIndicators.Count > 0 Then
-            fileName = "Indicators" & CurrentTime
+            fileName = My.Resources.INDICATORS & CurrentTime
             IndicatorsWB = ex.Workbooks.Add()
             For Each i In mIndicators
                 sheet = CType(IndicatorsWB.Worksheets.Add(), Excel.Worksheet)
@@ -301,7 +301,7 @@ Public Class cDataOutputer
         End If
 
         If mDiagnostics.Count > 0 Then
-            fileName = "Diagnostics" & CurrentTime
+            fileName = My.Resources.DIAGNOSTICS & CurrentTime
             DiagnosticsWB = ex.Workbooks.Add()
             For Each i In mDiagnostics
                 sheet = CType(DiagnosticsWB.Worksheets.Add(), Excel.Worksheet)

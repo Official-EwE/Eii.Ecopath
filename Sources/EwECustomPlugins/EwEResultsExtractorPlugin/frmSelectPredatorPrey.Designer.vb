@@ -44,6 +44,6 @@ Partial Class frmSelectPredatorPrey
     Private Sub InitializeComponent()
         components = New System.ComponentModel.Container
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Text = "Predator to Prey Selection"
+        Me.Text = My.Resources.PRED2PREY_SELECTION
     End Sub
 End Class

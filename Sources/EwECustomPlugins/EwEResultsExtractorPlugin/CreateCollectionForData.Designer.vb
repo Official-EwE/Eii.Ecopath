@@ -43,16 +43,16 @@ Partial Class CreateCollectionForData
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lstUnSelected = New System.Windows.Forms.ListBox
-        Me.lstSelected = New System.Windows.Forms.ListBox
-        Me.chklstAttached = New System.Windows.Forms.CheckedListBox
-        Me.btnRemoveAll = New System.Windows.Forms.Button
-        Me.btnRemoveSelected = New System.Windows.Forms.Button
-        Me.btnAddSelected = New System.Windows.Forms.Button
-        Me.btnAddAll = New System.Windows.Forms.Button
-        Me.btnAttachAll = New System.Windows.Forms.Button
-        Me.btnAttachNone = New System.Windows.Forms.Button
-        Me.btnOk = New System.Windows.Forms.Button
+        Me.lstUnSelected = New System.Windows.Forms.ListBox()
+        Me.lstSelected = New System.Windows.Forms.ListBox()
+        Me.chklstAttached = New System.Windows.Forms.CheckedListBox()
+        Me.btnRemoveAll = New System.Windows.Forms.Button()
+        Me.btnRemoveSelected = New System.Windows.Forms.Button()
+        Me.btnAddSelected = New System.Windows.Forms.Button()
+        Me.btnAddAll = New System.Windows.Forms.Button()
+        Me.btnAttachAll = New System.Windows.Forms.Button()
+        Me.btnAttachNone = New System.Windows.Forms.Button()
+        Me.btnOk = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'lstUnSelected
@@ -123,9 +123,9 @@ Partial Class CreateCollectionForData
         '
         Me.btnAttachAll.Location = New System.Drawing.Point(545, 12)
         Me.btnAttachAll.Name = "btnAttachAll"
-        Me.btnAttachAll.Size = New System.Drawing.Size(76, 31)
+        Me.btnAttachAll.Size = New System.Drawing.Size(75, 31)
         Me.btnAttachAll.TabIndex = 7
-        Me.btnAttachAll.Text = "Attach All"
+        Me.btnAttachAll.Text = Global.EwEResultsExtractor.My.Resources.Resources.ATTACH_ALL
         Me.btnAttachAll.UseVisualStyleBackColor = True
         '
         'btnAttachNone
@@ -134,7 +134,7 @@ Partial Class CreateCollectionForData
         Me.btnAttachNone.Name = "btnAttachNone"
         Me.btnAttachNone.Size = New System.Drawing.Size(76, 31)
         Me.btnAttachNone.TabIndex = 8
-        Me.btnAttachNone.Text = "Detach All"
+        Me.btnAttachNone.Text = Global.EwEResultsExtractor.My.Resources.Resources.DETACH_ALL
         Me.btnAttachNone.UseVisualStyleBackColor = True
         '
         'btnOk
@@ -143,7 +143,7 @@ Partial Class CreateCollectionForData
         Me.btnOk.Name = "btnOk"
         Me.btnOk.Size = New System.Drawing.Size(75, 31)
         Me.btnOk.TabIndex = 9
-        Me.btnOk.Text = "OK"
+        Me.btnOk.Text = My.Resources.OK
         Me.btnOk.UseVisualStyleBackColor = True
         '
         'CreateCollectionForData
@@ -169,7 +169,7 @@ Partial Class CreateCollectionForData
         Me.MinimizeBox = False
         Me.Name = "CreateCollectionForData"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "frmCreateCollectionForData"
+        Me.Text = My.Resources.FORMNAME_SELECTGROUPS
         Me.TopMost = True
         Me.ResumeLayout(False)
 
