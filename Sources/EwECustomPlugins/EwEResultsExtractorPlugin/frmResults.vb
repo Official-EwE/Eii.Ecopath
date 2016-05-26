@@ -80,10 +80,10 @@ Public Class frmResults
     'Private FisheriesWB As Excel.Workbook
     'Private IndicatorsWB As Excel.Workbook
     Private nDataRows As Integer
-    Private Const FuncGroupsFileName As String = "FunctionalGroups"
-    Private Const FishFleetsFileName As String = "FisheriesGroups"
-    Private Const IndicatorsFileName As String = "Indicators"
-    Private Const DiagnosticsName As String = "Diagnostics"
+    'Private Const FuncGroupsFileName As String = My.Resources.FUNCTIONALGROUPS
+    'Private Const FishFleetsFileName As String = My.Resources.FISHERIESGROUPS
+    'Private Const IndicatorsFileName As String = "Indicators"
+    'Private Const DiagnosticsName As String = "Diagnostics"
     Private DataOutputter As cDataOutputer
     Private mLogDiff(,) As Single
     Private mTimeSeries As cTimeSeriesDataStructures
@@ -145,11 +145,11 @@ Public Class frmResults
             str(i - 1) = Me.Core.EcoSimGroupOutputs(i).Name
         Next
         'Create PredPreySelection object
-        PredatorPreySelection = New cSelectionData("Predator to many prey", str)
+        PredatorPreySelection = New cSelectionData(My.Resources.PRED2_MANYPREY, str)
         'Create PreyPredSelection object
-        PreyPredatorSelection = New cSelectionData("Prey to many predators", str)
+        PreyPredatorSelection = New cSelectionData(My.Resources.PREY2_MANYPRED, str)
         'Create Parent object
-        ParentOnlySelection = New cSelectionData("Parent only", str)
+        ParentOnlySelection = New cSelectionData(My.Resources.PARENT_ONLY, str)
 
         'Get all groups names for fleet to create FleetPreySelection
         'Remember that EcosimFleetOutput is referenced from 0!!!
@@ -158,9 +158,9 @@ Public Class frmResults
             str2(i) = Me.Core.EcosimFleetOutput(i).Name
         Next
         ' Create FleetPreySelection
-        FleetPreySelection = New cSelectionData("Fleet to many prey", str2)
+        FleetPreySelection = New cSelectionData(My.Resources.FLEET2_MANYPREY, str2)
         ' Create FleetOnlySelection
-        FleetOnlySelection = New cSelectionData("Fleet only", str2)
+        FleetOnlySelection = New cSelectionData(My.Resources.FLEET_ONLY, str2)
 
         ' Try to set interop to Excel
         DataOutputter.POutputType = cDataOutputer.eOutputTypes.Excel
@@ -834,7 +834,7 @@ Public Class frmResults
 
         Next
 
-        Biomass.Name = "Biomass"
+        Biomass.Name = My.Resources.BIOMASS
         Biomass.Data = ABiomass
 
         DataOutputter.AddFunctionalGroup(Biomass)
@@ -891,7 +891,7 @@ Public Class frmResults
         '                FileName:=FuncGroupsFileName, sheet:=sheet, wb:=FunctGroupWB)
 
         'Setup object for datasheet and send to dataoutputer
-        BiomassInteg.Name = "BiomassInteg"
+        BiomassInteg.Name = My.Resources.BIOMASSINTEG
         BiomassInteg.Data = ABiomassInteg
         DataOutputter.AddFunctionalGroup(BiomassInteg)
 
@@ -962,7 +962,7 @@ Public Class frmResults
             Next
 
             'Setup object for datasheet and send to dataoutputer
-            ConsPerPrey.Name = "Consumpt_" & Mid(CurrentPredator.ParentName, 1, 22)
+            ConsPerPrey.Name = My.Resources.CONSUMPT & "_" & Mid(CurrentPredator.ParentName, 1, 22)
             ConsPerPrey.Data = AConsPerPrey
             DataOutputter.AddFunctionalGroup(ConsPerPrey)
 
@@ -1018,7 +1018,7 @@ Public Class frmResults
         Next
 
         'Setup object for datasheet and send to dataoutputer
-        FishingMortality.Name = "FishMortAllFleet"
+        FishingMortality.Name = My.Resources.FISHMORT_ALLFLEET
         FishingMortality.Data = AFishingMortality
         DataOutputter.AddFunctionalGroup(FishingMortality)
 
@@ -1075,7 +1075,7 @@ Public Class frmResults
         End If
 
         'Setup dataobject and add to outputter
-        PredationMortality.Name = "PredMort"
+        PredationMortality.Name = My.Resources.PREDMORT
         PredationMortality.Data = APredationMortality
         DataOutputter.AddFunctionalGroup(PredationMortality)
 
@@ -1155,7 +1155,7 @@ Public Class frmResults
         Next
 
         'Setup object and add to data outputter
-        PredationMortality.Name = "PredMortEachPred"
+        PredationMortality.Name = My.Resources.PREDMORT_EACH_PRED
         PredationMortality.Data = APredationMortality
         DataOutputter.AddFunctionalGroup(PredationMortality)
 
@@ -1234,7 +1234,7 @@ Public Class frmResults
         Next
 
         'Setup data sheet and send to data outputter
-        FishingMortality.Name = "FishMortPerFleet"
+        FishingMortality.Name = My.Resources.FISHMORT_PER_FLEET
         FishingMortality.Data = AFishingMortality
         DataOutputter.AddFisheries(FishingMortality)
 
@@ -1319,7 +1319,7 @@ Public Class frmResults
         Next
 
         'setup data sheet and send to outputter
-        Effort.Name = "FishingEffort"
+        Effort.Name = My.Resources.FISHING_EFFORT
         Effort.Data = AEffort
         DataOutputter.AddFisheries(Effort)
 
@@ -1368,7 +1368,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to outputter
-        SheetCatch.Name = "Catch"
+        SheetCatch.Name = My.Resources.CATCH_
         SheetCatch.Data = ACatch
         DataOutputter.AddFunctionalGroup(SheetCatch)
 
@@ -1434,7 +1434,7 @@ Public Class frmResults
         Next
 
         'Setup data sheet and send to dataoutputer
-        CatchByFleet.Name = "CatchPerFleetPerPrey"
+        CatchByFleet.Name = My.Resources.CATCH_PER_FLEETGROUP
         CatchByFleet.Data = ACatchByFleet
         DataOutputter.AddFisheries(CatchByFleet)
 
@@ -1518,7 +1518,6 @@ Public Class frmResults
         Next
 
         'setup sheet and send to dataoutputter
-        SheetLandings.Name = "LandingsPerFleetPerPrey"
         SheetLandings.Data = ALandingsByFleet
         DataOutputter.AddFisheries(SheetLandings)
 
@@ -1605,7 +1604,7 @@ Public Class frmResults
         Next
 
         'setupsheet and send to outputter
-        SheetDiscards.Name = "DiscardsPerFleetPerPrey"
+        SheetDiscards.Name = My.Resources.DISCARDS_PER_FLEETPREY
         SheetDiscards.Data = ADiscardsByFleet
         DataOutputter.AddFisheries(SheetDiscards)
 
@@ -1666,7 +1665,7 @@ Public Class frmResults
             Next
 
             'setup datasheet and send to dataoutputter
-            DietOfPredator.Name = "DietOf" & Mid(CurrentPredator.ParentName, 1, 24)
+            DietOfPredator.Name = My.Resources.DIETOF & Mid(CurrentPredator.ParentName, 1, 24)
             DietOfPredator.Data = ADietOfPredator
             DataOutputter.AddFunctionalGroup(DietOfPredator)
 
@@ -1722,7 +1721,7 @@ Public Class frmResults
         Next
 
         'setup datasheet and send to dataoutputter
-        Value.Name = "Values"
+        Value.Name = My.Resources.VALUES
         Value.Data = AValue
         DataOutputter.AddFisheries(Value)
 
@@ -1737,16 +1736,16 @@ Public Class frmResults
         Dim BasicEstimates As New cDataSheet
 
         'Setup titles
-        ABasicEstimates(0, 0) = "Index"
-        ABasicEstimates(1, 0) = "Group Name"
-        ABasicEstimates(2, 0) = "Trophic Level"
-        ABasicEstimates(3, 0) = "Habitat area(fraction)"
-        ABasicEstimates(4, 0) = "Biomass in habitat area(t/km^2)"
-        ABasicEstimates(5, 0) = "Biomass(t/km^2)"
-        ABasicEstimates(6, 0) = "Production/biomass(/year)"
-        ABasicEstimates(7, 0) = "Consumption/biomass(/year)"
-        ABasicEstimates(8, 0) = "Ecotrophic efficiency"
-        ABasicEstimates(9, 0) = "Production/Consumption"
+        ABasicEstimates(0, 0) = My.Resources.INDEX
+        ABasicEstimates(1, 0) = My.Resources.GROUP_NAME
+        ABasicEstimates(2, 0) = My.Resources.TROPHIC_LEVEL
+        ABasicEstimates(3, 0) = My.Resources.HABITAT_AREA_UNITS
+        ABasicEstimates(4, 0) = My.Resources.BIOMASS_AREA_UNITS
+        ABasicEstimates(5, 0) = My.Resources.BIOMASS_AREA_UNITS
+        ABasicEstimates(6, 0) = My.Resources.PRODUCTION_BIOMASS_UNITS
+        ABasicEstimates(7, 0) = My.Resources.CONSUMPTION_BIOMASS_UNITS
+        ABasicEstimates(8, 0) = My.Resources.ECOTROPHIC_EFFICIENCY
+        ABasicEstimates(9, 0) = My.Resources.PRODUCTION_CONSUMPTION
 
         'Fill out core data
         For Row = 1 To Core.nGroups
@@ -1763,7 +1762,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to dataoutputter
-        BasicEstimates.Name = "BasicEstimates"
+        BasicEstimates.Name = My.Resources.BASIC_ESTIMATES
         BasicEstimates.Data = ABasicEstimates
         DataOutputter.AddIndicators(BasicEstimates)
 
@@ -1774,14 +1773,14 @@ Public Class frmResults
         Dim KeyIndices As New cDataSheet
 
         'Setup titles
-        AKeyIndices(0, 0) = "Index"
-        AKeyIndices(1, 0) = "Group Name"
-        AKeyIndices(2, 0) = "Biom. Accumul"
-        AKeyIndices(3, 0) = "Biom. Acc. Rate"
-        AKeyIndices(4, 0) = "Net Migration"
-        AKeyIndices(5, 0) = "Flow to det."
-        AKeyIndices(6, 0) = "Net Efficiency"
-        AKeyIndices(7, 0) = "Omnivory Index"
+        AKeyIndices(0, 0) = My.Resources.INDEX
+        AKeyIndices(1, 0) = My.Resources.GROUP_NAME
+        AKeyIndices(2, 0) = My.Resources.BIOMASS_ACCUM
+        AKeyIndices(3, 0) = My.Resources.BIOMASS_ACCUM_RATE
+        AKeyIndices(4, 0) = My.Resources.NET_MIGRATION
+        AKeyIndices(5, 0) = My.Resources.FLOW_DETRITUS
+        AKeyIndices(6, 0) = My.Resources.NET_EFFICIENCY
+        AKeyIndices(7, 0) = My.Resources.OMNIVORY_INDEX
 
         'Fill out main data
         For Row = 1 To Core.nGroups
@@ -1796,7 +1795,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to dataoutputer
-        KeyIndices.Name = "KeyIndices"
+        KeyIndices.Name = My.Resources.KEY_INDICES
         KeyIndices.Data = AKeyIndices
         DataOutputter.AddIndicators(KeyIndices)
 
@@ -1807,16 +1806,16 @@ Public Class frmResults
         Dim InitMortCoef As New cDataSheet
 
         'Setup titles
-        AInitMortCoef(0, 0) = "Index"
-        AInitMortCoef(1, 0) = "Group Name"
-        AInitMortCoef(2, 0) = "Prod/Biom or Z"
-        AInitMortCoef(3, 0) = "Fishing mort. rate"
-        AInitMortCoef(4, 0) = "Predat. mort. rate"
-        AInitMortCoef(5, 0) = "Biom. accum. rate"
-        AInitMortCoef(6, 0) = "Net Migration Rate"
-        AInitMortCoef(7, 0) = "Other mort. rate"
-        AInitMortCoef(8, 0) = "Fishing mort./Total mort"
-        AInitMortCoef(9, 0) = "Proportion nat. mort."
+        AInitMortCoef(0, 0) = My.Resources.INDEX
+        AInitMortCoef(1, 0) = My.Resources.GROUP_NAME
+        AInitMortCoef(2, 0) = My.Resources.PROD_BIOMASS_Z
+        AInitMortCoef(3, 0) = My.Resources.FISH_MORT_RATE
+        AInitMortCoef(4, 0) = My.Resources.PRED_MORT_RATE
+        AInitMortCoef(5, 0) = My.Resources.BIOMASS_ACCUM_RATE
+        AInitMortCoef(6, 0) = My.Resources.NET_MIGRATION_RATE
+        AInitMortCoef(7, 0) = My.Resources.OTHER_MORT_RATE
+        AInitMortCoef(8, 0) = My.Resources.FISH_MORT_TOTAL_MORT
+        AInitMortCoef(9, 0) = My.Resources.PROP_NAT_MORT
 
         For Row = 1 To Core.nLivingGroups
             AInitMortCoef(0, Row) = Core.EcoPathGroupOutputs(Row).Index
@@ -1832,7 +1831,7 @@ Public Class frmResults
         Next
 
         'setup datasheet and send to data outputter
-        InitMortCoef.Name = "InitMortCoeffs"
+        InitMortCoef.Name = My.Resources.INIT_MORT_COEFFS
         InitMortCoef.Data = AInitMortCoef
         DataOutputter.AddIndicators(InitMortCoef)
 
@@ -1847,7 +1846,7 @@ Public Class frmResults
         Dim InitPredMort As New cDataSheet
 
         'Write column headings
-        AInitPredMort(1, 0) = "Prey\Predator"
+        AInitPredMort(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         ColPoint = 3
         For x = 1 To Core.nGroups
             Pred = Core.EcoSimGroupOutputs(x)
@@ -1872,7 +1871,7 @@ Public Class frmResults
         Next
 
         'setup datasheet and send to data outputter
-        InitPredMort.Name = "InitPredMort"
+        InitPredMort.Name = My.Resources.INITPREDMORT
         InitPredMort.Data = AInitPredMort
         DataOutputter.AddIndicators(InitPredMort)
 
@@ -1886,7 +1885,7 @@ Public Class frmResults
         Dim InitFishingMort As New cDataSheet
 
         'Fill column titles row
-        AInitFishingMort(1, 0) = "Group\Fleet"
+        AInitFishingMort(1, 0) = My.Resources.GROUP & "\" & My.Resources.FLEET
         For x = 1 To Core.nFleets
             AInitFishingMort(1 + x, 0) = Core.FleetInputs(x).Name
         Next
@@ -1908,7 +1907,7 @@ Public Class frmResults
         Next
 
         'setup datasheet and send to dataouputter
-        InitFishingMort.Name = "InitFishingMortality"
+        InitFishingMort.Name = My.Resources.INITFISHMORT
         InitFishingMort.Data = AInitFishingMort
         DataOutputter.AddIndicators(InitFishingMort)
 
@@ -1924,7 +1923,7 @@ Public Class frmResults
         Dim InitCons As New cDataSheet
 
         'Write column headings
-        AInitCons(1, 0) = "Prey\Predator"
+        AInitCons(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         ColPoint = 3
         For x = 1 To Core.nGroups
             Pred = Core.EcoSimGroupOutputs(x)
@@ -1942,10 +1941,10 @@ Public Class frmResults
         Next
         'Add Import row
         AInitCons(0, Core.nGroups + 1) = Core.nGroups + 1
-        AInitCons(1, Core.nGroups + 1) = "Import"
+        AInitCons(1, Core.nGroups + 1) = My.Resources.IMPORT
         'Add Sum row
         AInitCons(0, Core.nGroups + 2) = Core.nGroups + 2
-        AInitCons(1, Core.nGroups + 2) = "Sum"
+        AInitCons(1, Core.nGroups + 2) = My.Resources.SUM
 
         'Fill out consumption values
         For x = 3 To ColPoint - 1
@@ -1960,7 +1959,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to dataoutputter
-        InitCons.Name = "InitConsumption"
+        InitCons.Name = My.Resources.INITCONSUMPTION
         InitCons.Data = AInitCons
         DataOutputter.AddIndicators(InitCons)
 
@@ -1971,12 +1970,12 @@ Public Class frmResults
         Dim Respiration As New cDataSheet
 
         'Set up titles
-        ARespiration(1, 0) = "Group Name"
-        ARespiration(2, 0) = "Respiration(t/km^2/year)"
-        ARespiration(3, 0) = "Assimilation(t/hm^2/year)"
-        ARespiration(4, 0) = "Respiration/assimilation"
-        ARespiration(5, 0) = "Production/respiration"
-        ARespiration(6, 0) = "Respiration/biomass(/year)"
+        ARespiration(1, 0) = My.Resources.GROUP_NAME
+        ARespiration(2, 0) = My.Resources.RESPIRATION_UNITS
+        ARespiration(3, 0) = My.Resources.ASSIMILATION_UNITS
+        ARespiration(4, 0) = My.Resources.RESPIRATION_ASSIMILATION
+        ARespiration(5, 0) = My.Resources.PRODUCTION_RESPIRATION
+        ARespiration(6, 0) = My.Resources.RESPIRATION_BIOMASS_UNITS
 
         For Row = 1 To Core.nGroups
             ARespiration(0, Row) = Core.EcoPathGroupOutputs(Row).Index
@@ -1989,7 +1988,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to data outputter
-        Respiration.Name = "Respiration"
+        Respiration.Name = My.Resources.RESPIRATION
         Respiration.Data = ARespiration
         DataOutputter.AddIndicators(Respiration)
 
@@ -1999,7 +1998,7 @@ Public Class frmResults
         Dim AOverlapPrey(Core.nLivingGroups + 1, Core.nLivingGroups) As Object
         Dim OverlapPrey As New cDataSheet
 
-        AOverlapPrey(1, 0) = "Group Name"
+        AOverlapPrey(1, 0) = My.Resources.GROUP_NAME
         For x = 1 To Core.nLivingGroups
             AOverlapPrey(1 + x, 0) = x
         Next
@@ -2014,7 +2013,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to data outputter
-        OverlapPrey.Name = "OverlapPrey"
+        OverlapPrey.Name = My.Resources.OVERLAPPREY
         OverlapPrey.Data = AOverlapPrey
         DataOutputter.AddIndicators(OverlapPrey)
 
@@ -2026,7 +2025,7 @@ Public Class frmResults
         Dim OverlapPred As New cDataSheet
 
         'Write column headings
-        AOverlapPred(1, 0) = "Group Name"
+        AOverlapPred(1, 0) = My.Resources.GROUP_NAME
         For x = 1 To Core.nLivingGroups
             AOverlapPred(1 + x, 0) = CStr(x)
         Next
@@ -2041,7 +2040,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to data outputter
-        OverlapPred.Name = "OverlapPred"
+        OverlapPred.Name = My.Resources.OVERLAPPRED
         OverlapPred.Data = AOverlapPred
         DataOutputter.AddIndicators(OverlapPred)
 
@@ -2053,7 +2052,7 @@ Public Class frmResults
         Dim ColPoint As Integer
 
         'Write column headings
-        AElectivity(1, 0) = "Prey\Predator"
+        AElectivity(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         ColPoint = 1
         For x = 1 To Core.nGroups
             If Core.EcoPathGroupOutputs(x).PP < 1 Then
@@ -2075,7 +2074,7 @@ Public Class frmResults
         Next
 
         'Setup datasheet and send to data outputter
-        Electivity.Name = "Electivity"
+        Electivity.Name = My.Resources.ELECTIVITY
         Electivity.Data = AElectivity
         DataOutputter.AddIndicators(Electivity)
 
@@ -2106,11 +2105,11 @@ Public Class frmResults
         Dim InitFishQuant As New cDataSheet
 
         'Write column headings
-        AInitFishQuant(1, 0) = "Group Name"
+        AInitFishQuant(1, 0) = My.Resources.GROUP_NAME
         For x = 1 To Core.nFleets
             AInitFishQuant(1 + x, 0) = Core.FleetInputs(x).Name
         Next
-        AInitFishQuant(2 + Core.nFleets, 0) = "Total catch"
+        AInitFishQuant(2 + Core.nFleets, 0) = My.Resources.TOTAL_CATCH
 
         'Write body of data
         For xGroup = 1 To Core.nGroups
@@ -2133,7 +2132,7 @@ Public Class frmResults
         Next
 
         'Write the total line on the bottom
-        AInitFishQuant(1, RowPoint) = "Total catch"
+        AInitFishQuant(1, RowPoint) = My.Resources.TOTAL_CATCH
         For Col = 0 To Core.nFleets - 1
             AInitFishQuant(2 + Col, RowPoint) = TotalCatchFleet(Col)
             TTCatch += TotalCatchFleet(Col)
@@ -2142,7 +2141,7 @@ Public Class frmResults
         RowPoint += 1
 
         'Write the trophic level line at bottom
-        AInitFishQuant(1, RowPoint) = "Trophic Level"
+        AInitFishQuant(1, RowPoint) = My.Resources.TROPHIC_LEVEL
 
         For fleetIndex As Integer = 1 To Core.nFleets
 
@@ -2179,7 +2178,7 @@ Public Class frmResults
         AInitFishQuant(2 + Core.nFleets, RowPoint) = AllQuantitiesTTLX / AllQuantities
 
         'Setup data sheet and send to data outputter
-        InitFishQuant.Name = "InitFishingQuantities"
+        InitFishQuant.Name = My.Resources.INITFISHQUANTS
         InitFishQuant.Data = AInitFishQuant
         DataOutputter.AddIndicators(InitFishQuant)
 
@@ -2203,14 +2202,14 @@ Public Class frmResults
         Dim TotalProfitFleet As Single
 
         'Write column headings for fleets
-        AInitFishVals(1, y) = "Group Names"
+        AInitFishVals(1, y) = My.Resources.GROUP_NAME
         For x = 1 To Core.nFleets
             AInitFishVals(1 + x, y) = Core.FleetInputs(x).Name
         Next
 
-        AInitFishVals(2 + Core.nFleets, y) = "Catch Value"
-        AInitFishVals(3 + Core.nFleets, y) = "Non-market value(" & Core.EwEModel.UnitMonetary.ToString & ")"
-        AInitFishVals(4 + Core.nFleets, y) = "Total Value(" & Core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(2 + Core.nFleets, y) = My.Resources.CATCH_VALUE
+        AInitFishVals(3 + Core.nFleets, y) = My.Resources.NONMARKET_VALUE & "(" & Core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(4 + Core.nFleets, y) = My.Resources.TOTAL_VALUE & "(" & Core.EwEModel.UnitMonetary.ToString & ")"
 
         'Write body of data
         For Row = 1 To Core.nGroups
@@ -2248,7 +2247,7 @@ Public Class frmResults
         y += 1
 
         'Output total value for each fleet
-        AInitFishVals(1, y) = "Total Value(" & Core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(1, y) = My.Resources.TOTAL_VALUE & "(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
         For col = 1 To Core.nFleets
             AInitFishVals(1 + col, y) = TotalValueFleet(col)
@@ -2259,7 +2258,7 @@ Public Class frmResults
         y += 1
 
         'Output total cost for each fleet
-        AInitFishVals(1, y) = "Total Cost(" & Core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(1, y) = My.Resources.TOTAL_COST & "(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
         For Col = 1 To Core.nFleets
             SumFixedCPUESailCost = Core.FleetInputs(Col).FixedCost + _
@@ -2275,7 +2274,7 @@ Public Class frmResults
         y += 1
 
         'Output profit row
-        AInitFishVals(1, y) = "Total Profit(" & Core.EwEModel.UnitMonetary.ToString & ")"
+        AInitFishVals(1, y) = My.Resources.TOTAL_PROFIT & "(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
         For Col = 1 To Core.nFleets
             TotalProfitFleet = TotalValueFleet(Col) - TotalCostFleet(Col)
@@ -2285,7 +2284,7 @@ Public Class frmResults
         AInitFishVals(2 + Core.nFleets, y) = MarketValueSum
 
         'Setup datasheet and send to data outputter
-        InitFishVals.Name = "InitFishingValues"
+        InitFishVals.Name = My.Resources.INITFISHVALUES
         InitFishVals.Data = AInitFishVals
         DataOutputter.AddIndicators(InitFishVals)
 
@@ -2297,7 +2296,7 @@ Public Class frmResults
         Dim ColPointer As Integer = 1
 
         'Write column headings
-        ASearchRates(1, 0) = "Prey \ predator"
+        ASearchRates(1, 0) = My.Resources.PREY & "\" & My.Resources.PREDATOR
         For x = 1 To Core.nGroups
             If Core.EcoPathGroupOutputs(x).PP < 1 Then
                 ASearchRates(ColPointer + 1, 0) = Core.EcoPathGroupOutputs(x).Index
@@ -2319,7 +2318,7 @@ Public Class frmResults
         Next
 
         'Setup data sheet and send to data outputter
-        SearchRates.Name = "SearchRates"
+        SearchRates.Name = My.Resources.SEARCHRATES
         SearchRates.Data = ASearchRates
         DataOutputter.AddIndicators(SearchRates)
 
@@ -2338,9 +2337,9 @@ Public Class frmResults
 
         'Setup headings for each row
         For y = 1 To YDim
-            AResiduals(0, y) = mTimeSeries.strName(y) & "(Type " & mTimeSeries.DatType(y) & ")"
+            AResiduals(0, y) = mTimeSeries.strName(y) & "(" & My.Resources.TYPE & mTimeSeries.DatType(y) & ")"
         Next
-        AResiduals(XDim, 0) = "SS"
+        AResiduals(XDim, 0) = My.Resources.SS
 
         'Create array for output with all fitting stats in
         For x = 1 To XDim
@@ -2351,7 +2350,7 @@ Public Class frmResults
         Next
 
         'Setup data sheet and send to data outputter
-        Residuals.Name = "Residuals"
+        Residuals.Name = My.Resources.RESIDUALS
         Residuals.Data = AResiduals
         DataOutputter.AddDiagnostics(Residuals)
 
@@ -2363,7 +2362,7 @@ Public Class frmResults
         Dim ASS(1, mTimeSeries.NdatType + 1) As Object
         Dim rowindex As Integer = 0
 
-        ASS(0, 0) = "TotalSS"
+        ASS(0, 0) = My.Resources.TOTALSS
         ASS(1, 0) = mDataStructure.SS
 
         For idat = 1 To mTimeSeries.nTimeSeries
@@ -2376,7 +2375,7 @@ Public Class frmResults
         Next
 
         'Setup data sheet and send to data outputter
-        SS.Name = "SS"
+        SS.Name = My.Resources.SS
         SS.Data = ASS
         DataOutputter.AddDiagnostics(SS)
 
@@ -2549,9 +2548,7 @@ Public Class frmResults
 
         'Check if previous selection performed correctly...
         If ParentOnlySelection.CountSelected = 0 Then
-            If MsgBoxResult.Cancel = MsgBox("Your entry on the previous form was invalid. " & vbCrLf & _
-                   "Would you like to retry your entry or cancel the " & vbCrLf & _
-                    "process?", MsgBoxStyle.RetryCancel, "Invalid Selection") Then
+            If MsgBoxResult.Cancel = MsgBox(My.Resources.MSG_PREV_FORM_INVALID, MsgBoxStyle.RetryCancel, My.Resources.INVALID_SELECTION) Then
                 FireChecked = True
                 Exit Sub
             End If
@@ -2578,9 +2575,7 @@ Public Class frmResults
 
         'Check if previous selection performed correctly...
         If PredatorPreySelection.CountSelectedChild = 0 Then
-            If MsgBoxResult.Cancel = MsgBox("Your entry on the previous form was invalid. " & vbCrLf & _
-       "Would you like to retry your entry or cancel the " & vbCrLf & _
-        "process?", MsgBoxStyle.RetryCancel, "Invalid Selection") Then
+            If MsgBoxResult.Cancel = MsgBox(My.Resources.MSG_PREV_FORM_INVALID, MsgBoxStyle.RetryCancel, My.Resources.INVALID_SELECTION) Then
                 FireChecked = True
                 Exit Sub
             End If
@@ -2605,9 +2600,7 @@ Public Class frmResults
 
         'Check if previous selection performed correctly...
         If PreyPredatorSelection.CountSelectedChild = 0 Then
-            If MsgBoxResult.Cancel = MsgBox("Your entry on the previous form was invalid. " & vbCrLf & _
-       "Would you like to retry your entry or cancel the " & vbCrLf & _
-        "process?", MsgBoxStyle.RetryCancel, "Invalid Selection") Then
+            If MsgBoxResult.Cancel = MsgBox(My.Resources.MSG_PREV_FORM_INVALID, MsgBoxStyle.RetryCancel, My.Resources.INVALID_SELECTION) Then
                 FireChecked = True
                 Exit Sub
             End If
@@ -2631,9 +2624,7 @@ Public Class frmResults
 
         'Check if previous selection performed correctly...
         If FleetPreySelection.CountSelectedChild = 0 Then
-            If MsgBoxResult.Cancel = MsgBox("Your entry on the previous form was invalid. " & vbCrLf & _
-       "Would you like to retry your entry or cancel the " & vbCrLf & _
-        "process?", MsgBoxStyle.RetryCancel, "Invalid Selection") Then
+            If MsgBoxResult.Cancel = MsgBox(My.Resources.MSG_PREV_FORM_INVALID, MsgBoxStyle.RetryCancel, My.Resources.INVALID_SELECTION) Then
                 FireChecked = True
                 Exit Sub
             End If
@@ -2657,9 +2648,7 @@ Public Class frmResults
 
         'Check if previous selection performed correctly...
         If FleetOnlySelection.CountSelected = 0 Then
-            If MsgBoxResult.Cancel = MsgBox("Your entry on the previous form was invalid. " & vbCrLf & _
-       "Would you like to retry your entry or cancel the " & vbCrLf & _
-        "process?", MsgBoxStyle.RetryCancel, "Invalid Selection") Then
+            If MsgBoxResult.Cancel = MsgBox(My.Resources.MSG_PREV_FORM_INVALID, MsgBoxStyle.RetryCancel, My.Resources.INVALID_SELECTION) Then
                 FireChecked = True
                 Exit Sub
             End If

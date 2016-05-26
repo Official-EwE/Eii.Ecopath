@@ -57,7 +57,7 @@ Public Class cResultsHolder
 
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Results Extractor"
+            Return My.Resources.PLUGIN_NAME
         End Get
     End Property
 
@@ -115,7 +115,7 @@ Public Class cResultsHolder
 
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Plug-in to aid in extracting results, parameter values and data from EwE"
+            Return My.Resources.PLUGIN_DESCRIPTION
         End Get
     End Property
 

@@ -44,6 +44,6 @@ Partial Class frmSelectParentOnly
     Private Sub InitializeComponent()
         components = New System.ComponentModel.Container
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Text = "Functional Group Selection"
+        Me.Text = My.Resources.FUNCT_GROUP_SELECTION
     End Sub
 End Class
