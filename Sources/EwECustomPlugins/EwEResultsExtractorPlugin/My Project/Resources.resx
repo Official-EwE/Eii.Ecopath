@@ -145,7 +145,7 @@
     <value>Biom. Acc. Rate</value>
   </data>
   <data name="BIOMASS_AREA_UNITS" xml:space="preserve">
-    <value>Biomass in habitat area(t/km^2)</value>
+    <value>Biomass in habitat area ({0}/{1})</value>
   </data>
   <data name="BIOMASS_UNITS" xml:space="preserve">
     <value>Biomass(t/km^2)</value>

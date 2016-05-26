@@ -33,6 +33,8 @@ Imports Microsoft.Office.Interop
 Imports EwECore.MSE
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -1735,12 +1737,16 @@ Public Class frmResults
         Dim ABasicEstimates(10, Core.nGroups) As Object
         Dim BasicEstimates As New cDataSheet
 
+        Dim parms As EwECore.cEwEModel = Me.Core.EwEModel
+        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+
         'Setup titles
         ABasicEstimates(0, 0) = My.Resources.INDEX
         ABasicEstimates(1, 0) = My.Resources.GROUP_NAME
         ABasicEstimates(2, 0) = My.Resources.TROPHIC_LEVEL
         ABasicEstimates(3, 0) = My.Resources.HABITAT_AREA_UNITS
-        ABasicEstimates(4, 0) = My.Resources.BIOMASS_AREA_UNITS
+        ' I changed the resource string to holed the placeholders for receiving the units ({0}/{1}), where {0} reveives 'biomass', and {1} receives 'time'
+        ABasicEstimates(4, 0) = sg.FormatUnitString(My.Resources.BIOMASS_AREA_UNITS, New eUnitType() {eUnitType.Biomass, eUnitType.Area}) '  My.Resources.BIOMASS_AREA_UNITS
         ABasicEstimates(5, 0) = My.Resources.BIOMASS_AREA_UNITS
         ABasicEstimates(6, 0) = My.Resources.PRODUCTION_BIOMASS_UNITS
         ABasicEstimates(7, 0) = My.Resources.CONSUMPTION_BIOMASS_UNITS
