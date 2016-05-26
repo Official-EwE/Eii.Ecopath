@@ -1745,7 +1745,7 @@ Public Class frmResults
         ABasicEstimates(1, 0) = My.Resources.GROUP_NAME
         ABasicEstimates(2, 0) = My.Resources.TROPHIC_LEVEL
         ABasicEstimates(3, 0) = My.Resources.HABITAT_AREA_UNITS
-        ' I changed the resource string to holed the placeholders for receiving the units ({0}/{1}), where {0} reveives 'biomass', and {1} receives 'time'
+        ' I changed the resource string to hold the placeholders for receiving the units ({0}/{1}), where {0} reveives 'biomass', and {1} receives 'time'
         ABasicEstimates(4, 0) = sg.FormatUnitString(My.Resources.BIOMASS_AREA_UNITS, New eUnitType() {eUnitType.Biomass, eUnitType.Area}) '  My.Resources.BIOMASS_AREA_UNITS
         ABasicEstimates(5, 0) = My.Resources.BIOMASS_AREA_UNITS
         ABasicEstimates(6, 0) = My.Resources.PRODUCTION_BIOMASS_UNITS
