@@ -26,8 +26,10 @@ Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -85,6 +87,11 @@ Public Class frmMain
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
+
+        Dim il As New ImageList()
+        il.Images.Add(SharedResources.Warning)
+        il.Images.Add(SharedResources.OK)
+        Me.m_tcOutput.ImageList = il
 
         Dim ndSel As TreeNode = Nothing
         Me.m_bInUpdate = True
@@ -297,6 +304,12 @@ Public Class frmMain
         Me.m_btnChooseFolder.Enabled = Not bIsRunning
         Me.m_rbCustom.Enabled = Not bIsRunning
         Me.m_rbDefault.Enabled = Not bIsRunning
+
+        Me.m_tpEcopath.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithEcopath, 1, 0)
+        Me.m_tpEcosim.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithEcosim, 1, 0)
+        Me.m_tpEcospace.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithEcospace, 1, 0)
+        Me.m_tpMCpath.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithMC, 1, 0)
+        Me.m_tpMCsim.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithMC, 1, 0)
 
     End Sub
 
