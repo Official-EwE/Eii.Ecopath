@@ -345,7 +345,6 @@ Namespace Database
                 Dim bHasDefault As Boolean = False
                 Dim columnDataType As Data.OleDb.OleDbType = OleDbType.IUnknown
                 Dim strColumnName As String = ""
-                Dim strColumnDefault As String = ""
 
                 For Each drowSchema As DataRow In Me.m_dtSchema.Rows
                     strColumnName = CStr(drowSchema("COLUMN_NAME"))
@@ -355,63 +354,85 @@ Namespace Database
                     bHasDefault = CBool(drowSchema("COLUMN_HASDEFAULT"))
 
                     If bIsValueNull And Not bIsNullable Then
-                        If bHasDefault Then
 
-                            ' Set default using common datatype conversions to bypass language-specific
-                            ' problems caused by misinterpreted decimal separators, etc
+                        ' Set default using common datatype conversions to bypass language-specific
+                        ' problems caused by misinterpreted decimal separators, etc
 
-                            ' Get column data type
-                            columnDataType = CType(drowSchema("DATA_TYPE"), Data.OleDb.OleDbType)
-                            ' Get default value for this column (it's a string, regardless of column datatype. Brilliant)
-                            strColumnDefault = CStr(drowSchema("COLUMN_DEFAULT"))
+                        ' Get column data type
+                        columnDataType = CType(drowSchema("DATA_TYPE"), Data.OleDb.OleDbType)
 
-                            ' Convert defaults for common data types. Add others when needed.
-                            Select Case columnDataType
+                        ' Convert defaults for common data types. Add others when needed.
+                        Select Case columnDataType
 
-                                Case OleDbType.WChar
+                            Case OleDbType.WChar
+                                If (bHasDefault) Then
+                                    ' Get default value for this column (it's a string, regardless of column datatype. Brilliant)
                                     ' Access weirdness: fix double quotes problems
-                                    drow(strColumnName) = strColumnDefault.Replace("""", "")
+                                    drow(strColumnName) = CStr(drowSchema("COLUMN_DEFAULT")).Replace("""", "")
+                                Else
+                                    drow(strColumnName) = String.Empty
+                                End If
 
-                                Case OleDbType.Boolean
-                                    drow(strColumnName) = Boolean.Parse(strColumnDefault)
+                            Case OleDbType.Boolean
+                                If (bHasDefault) Then
+                                    ' Get default value for this column (it's a string, regardless of column datatype. Brilliant)
+                                    drow(strColumnName) = Boolean.Parse(CStr(drowSchema("COLUMN_DEFAULT")))
+                                Else
+                                    drow(strColumnName) = False
+                                End If
 
-                                Case OleDbType.SmallInt
-                                    drow(strColumnName) = CType(strColumnDefault, Int16)
+                            Case OleDbType.SmallInt
+                                If (bHasDefault) Then
+                                    drow(strColumnName) = CType(CStr(drowSchema("COLUMN_DEFAULT")), Int16)
+                                Else
+                                    drow(strColumnName) = 0
+                                End If
 
-                                Case OleDbType.Integer
-                                    drow(strColumnName) = CInt(strColumnDefault)
+                            Case OleDbType.Integer
+                                If (bHasDefault) Then
+                                    drow(strColumnName) = CInt(CStr(drowSchema("COLUMN_DEFAULT")))
+                                Else
+                                    drow(strColumnName) = 0
+                                End If
 
-                                Case OleDbType.Single
-                                    Try
-                                        drow(strColumnName) = cStringUtils.ConvertToSingle(strColumnDefault, 0.0!)
-                                    Catch ex As Exception
-                                        Debug.Assert(False)
+                            Case OleDbType.Single
+                                Try
+                                    If bHasDefault Then
+                                        drow(strColumnName) = cStringUtils.ConvertToSingle(CStr(drowSchema("COLUMN_DEFAULT")), 0.0!)
+                                    Else
                                         drow(strColumnName) = 0.0!
-                                    End Try
+                                    End If
+                                Catch ex As Exception
+                                    drow(strColumnName) = 0.0!
+                                End Try
 
-                                Case OleDbType.Double
-                                    Try
-                                        drow(strColumnName) = cStringUtils.ConvertToDouble(strColumnDefault, 0.0#)
-                                    Catch ex As Exception
-                                        Debug.Assert(False)
-                                        drow(strColumnName) = 0.0
-                                    End Try
+                            Case OleDbType.Double
+                                Try
+                                    If bHasDefault Then
+                                        drow(strColumnName) = cStringUtils.ConvertToDouble(CStr(drowSchema("COLUMN_DEFAULT")), 0.0#)
+                                    Else
+                                        drow(strColumnName) = 0.0#
+                                    End If
+                                Catch ex As Exception
+                                    Debug.Assert(False)
+                                    drow(strColumnName) = 0.0#
+                                End Try
 
-                                Case OleDbType.Currency
-                                    ' ToDo_JS: Consider what to do here; test possible issues across locales
-                                    Debug.Assert(False, "Currency defaults not properly supported in the EwE database logic")
-                                    drow(strColumnName) = strColumnDefault
+                            Case OleDbType.Currency
+                                ' ToDo_JS: Consider what to do here; test possible issues across locales
+                                Debug.Assert(False, "Currency defaults not properly supported in the EwE database logic")
 
-                                Case Else
-                                    ' Unexpected datatype encountered
+                            Case Else
+                                ' Unexpected datatype encountered
 #If VERBOSE_LEVEL >= 2 Then
                                     Console.WriteLine("   - Default {0} for column {1}: unexpected datatype {2}", drow(strColumnName), strColumnName, columnDataType.ToString())
 #End If
-                                    ' Set the default and hope for the best
-                                    drow(strColumnName) = strColumnDefault
+                                ' Set the default and hope for the best
+                                If (bHasDefault) Then
+                                    drow(strColumnName) = CStr(drowSchema("COLUMN_DEFAULT"))
+                                End If
 
-                            End Select
-                        End If
+                        End Select
                     End If
                 Next
             End Sub
