@@ -3457,6 +3457,7 @@ Namespace DataSources
                 drow("LastUpdated") = cDateUtils.DateToJulian()
 
                 writer.AddRow(drow)
+                writer.Commit()
                 bSucces = Me.m_db.ReleaseWriter(writer, bSucces)
             Catch ex As Exception
                 bSucces = False
@@ -3480,6 +3481,7 @@ Namespace DataSources
                     drow("TaxonID") = iDBID
                     drow("StanzaID") = iTargetDBID
                     writer.AddRow(drow)
+                    writer.Commit()
                     bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
                 End If
             Catch ex As Exception
