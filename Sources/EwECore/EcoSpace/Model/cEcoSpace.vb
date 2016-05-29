@@ -7229,26 +7229,29 @@ exitline:
             'Have the Habitat Capacity input maps changed
             If Me.m_Data.isGroupHabCapChanged(igrp) Then
 
-                Dim bAllNull As Boolean = True
-                For irow As Integer = 1 To Me.m_Data.InRow
-                    For icol As Integer = 1 To Me.m_Data.InCol
+                Dim bUseHapCapInput As Boolean = False
 
-                        'Get the baseline capacity values from the user input capacity map 
-                        'This is done first so the values are just copied in
-                        'All others capacity inputs act as a multiplier on this baseline 
-                        If Me.m_Data.Depth(irow, icol) > 0 Then
-                            If (Me.m_Data.HabCapInput(igrp)(irow, icol) > 0) Then
-                                bAllNull = False
+                If (Me.m_Data.CapCalType(igrp) <> eEcospaceCapacityCalType.Habitat) Then
+                    For irow As Integer = 1 To Me.m_Data.InRow
+                        For icol As Integer = 1 To Me.m_Data.InCol
+
+                            'Get the baseline capacity values from the user input capacity map 
+                            'This is done first so the values are just copied in
+                            'All others capacity inputs act as a multiplier on this baseline 
+                            If Me.m_Data.Depth(irow, icol) > 0 Then
+                                If (Me.m_Data.HabCapInput(igrp)(irow, icol) > 0) Then
+                                    bUseHapCapInput = True
+                                End If
                             End If
-                        End If
-                    Next icol
-                Next irow
+                        Next icol
+                    Next irow
+                End If
 
                 'Yes the map has changed
                 For irow As Integer = 1 To Me.m_Data.InRow
                     For icol As Integer = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(irow, icol) > 0 Then
-                            If bAllNull Then
+                            If Not bUseHapCapInput Then
                                 Me.m_Data.HabCap(igrp)(irow, icol) = 1
                             Else
                                 'Get the baseline capacity values from the user input capacity map 
