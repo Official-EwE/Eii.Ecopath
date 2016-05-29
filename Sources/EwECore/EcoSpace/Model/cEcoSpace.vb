@@ -2182,28 +2182,28 @@ Public Class cEcoSpace
                                 End If
                                 If i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1 Then m_Data.Bcell(i, j, ip) = 0
                             End If
-                            Else
-                                'Depth(i,j) <= 0
-                                AMm(i, j, ip) = -1.0 'E+30
-                            End If ' If m_Data.Depth(i, j) > 0 Then
+                        Else
+                            'Depth(i,j) <= 0
+                            AMm(i, j, ip) = -1.0 'E+30
+                        End If ' If m_Data.Depth(i, j) > 0 Then
 
-                            If ip = 0 Then m_Data.Bcell(i, j, ip) = 1
+                        If ip = 0 Then m_Data.Bcell(i, j, ip) = 1
 
-                            m_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
-                            If i > 0 And j > 0 And i <= m_Data.InRow And j <= m_Data.InCol Then Btime(ip) = Btime(ip) + m_Data.Bcell(i, j, ip)
+                        m_Data.Blast(i, j, ip) = m_Data.Bcell(i, j, ip)
+                        If i > 0 And j > 0 And i <= m_Data.InRow And j <= m_Data.InCol Then Btime(ip) = Btime(ip) + m_Data.Bcell(i, j, ip)
 
-                            If m_tracerData.EcoSpaceConSimOn And ip <= m_Data.NGroups Then
-                                'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
-                                'jb in EwE5 Ccell() is initialized using ConcTr()
-                                'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
-                                m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
-                                m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
-                            End If
+                        If m_tracerData.EcoSpaceConSimOn And ip <= m_Data.NGroups Then
+                            'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
+                            'jb in EwE5 Ccell() is initialized using ConcTr()
+                            'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
+                            m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
+                            m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
+                        End If
 
-                            Cper(i, j, ip) = m_SimData.Cbase(ip)
-                            FtimeCell(i, j, ip) = 1
-                            HdenCell(i, j, ip) = m_SimData.Hden(ip)
-                            btot(ip) += m_Data.Bcell(i, j, ip)
+                        Cper(i, j, ip) = m_SimData.Cbase(ip)
+                        FtimeCell(i, j, ip) = 1
+                        HdenCell(i, j, ip) = m_SimData.Hden(ip)
+                        btot(ip) += m_Data.Bcell(i, j, ip)
                     Next j
                 Next i
                 Btime(ip) = Btime(ip) / m_Data.nWaterCells
@@ -2252,7 +2252,7 @@ Public Class cEcoSpace
                                 'Land
                                 m_Data.Bcell(i, j, nvar2 + isc) = 1.0E-20
                             End If 'm_Data.Depth(i, j) > 0
-                                m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
+                            m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
                         Next j
                     Next i
                 Next ist
@@ -3248,8 +3248,8 @@ Public Class cEcoSpace
                                     d(i, j, ip) = 0
                                 End If
                             End If
-                                Enomig(i, j + 1, ip) = e(i, j + 1, ip)
-                                dNomig(i, j, ip) = d(i, j, ip)
+                            Enomig(i, j + 1, ip) = e(i, j + 1, ip)
+                            dNomig(i, j, ip) = d(i, j, ip)
                         Next ip
 
                         'EwE5
@@ -3306,8 +3306,8 @@ Public Class cEcoSpace
                                     Bcw(i + 1, j, ip) = 0
                                 End If
                             End If
-                                CNomig(i, j, ip) = C(i, j, ip)
-                                BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
+                            CNomig(i, j, ip) = C(i, j, ip)
+                            BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
                         Next
 
                         'EwE5
@@ -4680,7 +4680,7 @@ exitline:
 
 
 
-   
+
 
     'Sub VaryMigMovementParameters_HighMRate(ByVal imonth As Integer)
     '    '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
@@ -7228,7 +7228,8 @@ exitline:
         For igrp As Integer = 1 To Me.m_Data.NGroups
             'Have the Habitat Capacity input maps changed
             If Me.m_Data.isGroupHabCapChanged(igrp) Then
-                'Yes the map has changed
+
+                Dim bAllNull As Boolean = True
                 For irow As Integer = 1 To Me.m_Data.InRow
                     For icol As Integer = 1 To Me.m_Data.InCol
 
@@ -7236,9 +7237,26 @@ exitline:
                         'This is done first so the values are just copied in
                         'All others capacity inputs act as a multiplier on this baseline 
                         If Me.m_Data.Depth(irow, icol) > 0 Then
-                            Me.m_Data.HabCap(igrp)(irow, icol) = Me.m_Data.HabCapInput(igrp)(irow, icol)
+                            If (Me.m_Data.HabCapInput(igrp)(irow, icol) > 0) Then
+                                bAllNull = False
+                            End If
                         End If
+                    Next icol
+                Next irow
 
+                'Yes the map has changed
+                For irow As Integer = 1 To Me.m_Data.InRow
+                    For icol As Integer = 1 To Me.m_Data.InCol
+                        If Me.m_Data.Depth(irow, icol) > 0 Then
+                            If bAllNull Then
+                                Me.m_Data.HabCap(igrp)(irow, icol) = 1
+                            Else
+                                'Get the baseline capacity values from the user input capacity map 
+                                'This is done first so the values are just copied in
+                                'All others capacity inputs act as a multiplier on this baseline 
+                                Me.m_Data.HabCap(igrp)(irow, icol) = Me.m_Data.HabCapInput(igrp)(irow, icol)
+                            End If
+                        End If
                     Next icol
                 Next irow
             End If
