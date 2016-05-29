@@ -1289,37 +1289,41 @@ Namespace Controls.EwEGrid
                                 cell = Me(iRow, iCol)
 
                                 ' Prevent from crashing on irregular grids
-                                If cell IsNot Nothing Then
-                                    ' Is cell enabled for editing?
-                                    If (cell.DataModel.EnableEdit) Then
-                                        ' #Yes: attempt to set value
-                                        strValue = astrCols(iColData).Trim
-                                        ' Is empty value?
-                                        If (String.IsNullOrWhiteSpace(strValue)) And _
-                                            ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double)) Or (cell.DataModel.ValueType Is GetType(Integer))) Then
-                                            ' #Yes: Convert to cell default value
-                                            strValue = Convert.ToString(cell.DataModel.DefaultValue)
-                                        End If
-
-                                        ' Try to convert
-                                        Dim objValue As Object = strValue
-                                        Try
-                                            If (cell.DataModel.ValueType Is GetType(Single)) Then
-                                                objValue = Single.Parse(strValue)
-                                            ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
-                                                objValue = Double.Parse(strValue)
-                                            ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                                                objValue = Integer.Parse(strValue)
+                                ' Is there a cell?
+                                If (cell IsNot Nothing) Then
+                                    ' #Yes: does it have a datamodel?
+                                    If (cell.DataModel IsNot Nothing) Then
+                                        ' #Yes: is the cell enabled for editing?
+                                        If (cell.DataModel.EnableEdit) Then
+                                            ' #Yes: attempt to set value
+                                            strValue = astrCols(iColData).Trim
+                                            ' Is empty value?
+                                            If (String.IsNullOrWhiteSpace(strValue)) And _
+                                                ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double)) Or (cell.DataModel.ValueType Is GetType(Integer))) Then
+                                                ' #Yes: Convert to cell default value
+                                                strValue = Convert.ToString(cell.DataModel.DefaultValue)
                                             End If
-                                        Catch ex As Exception
-                                            ' Whoah
-                                            cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString, _
-                                                       eVerboseLevel.Detailed)
-                                        End Try
-                                        If cell.DataModel.IsValidValue(objValue) Then
-                                            cell.SetValue(pos, objValue)
-                                        End If
 
+                                            ' Try to convert
+                                            Dim objValue As Object = strValue
+                                            Try
+                                                If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                                    objValue = Single.Parse(strValue)
+                                                ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                                    objValue = Double.Parse(strValue)
+                                                ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                                    objValue = Integer.Parse(strValue)
+                                                End If
+                                            Catch ex As Exception
+                                                ' Whoah
+                                                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString, _
+                                                           eVerboseLevel.Detailed)
+                                            End Try
+                                            If cell.DataModel.IsValidValue(objValue) Then
+                                                cell.SetValue(pos, objValue)
+                                            End If
+
+                                        End If
                                     End If
                                 End If
 
