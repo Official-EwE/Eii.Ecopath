@@ -735,12 +735,14 @@ Public Class cEcosimMonteCarlo
 
                         End If 'bRetainBiomass
                     End If ' m_esdata.SS < SSBestFit
+
+                    ' Only save when an alternative balanced model was found
+                    Me.m_ouputWriter.Save(False)
+
                 End If 'iter < maxEcopathTries 
 
                 TrialProgress(m_iTrial, iter)
                 EcopathIterationsProgress(iter)
-
-                Me.m_ouputWriter.Save(False)
 
                 ' Fire plug-in point
                 If Me.m_pluginmanager IsNot Nothing Then
