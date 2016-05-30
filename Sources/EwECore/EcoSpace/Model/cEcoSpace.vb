@@ -150,7 +150,7 @@ Public Class cEcoSpace
     ' Private NcellsHab() As Integer
 
     'the analog of habgrad, but for migration, and has a monthly component
-    Private MigGrad(,,,) As Single
+    Private MigGrad(,)(,) As Single
 
     Private RelMoveFit(,) As Single 'populated in SetKmove()
     Private PzoTOmove() As Single 'populated in SetKmove()
@@ -4531,7 +4531,7 @@ exitline:
                     migIndex(nMig) = i
                 End If
             Next
-            ReDim MigGrad(m_Data.InRow + 1, m_Data.InCol + 1, nMig, 12)
+            ReDim MigGrad(nMig, 12) ' m_Data.InRow + 1, m_Data.InCol + 1, nMig, 12)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Initialize the MigGrad(row,col,group,month) migration gradient matrix with
@@ -4542,21 +4542,23 @@ exitline:
                 For imonth = 1 To 12
 
                     ' Debug.Assert(imonth <> 6)
+                    Dim grad(m_Data.InRow, m_Data.InCol) As Single
 
                     For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
-                            MigGrad(i, j, iMigGrp, imonth) = 1000
+                            grad(i, j) = 1000
 
                             If m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) > MIN_MIG_PROB Then
-                                MigGrad(i, j, iMigGrp, imonth) = 0
+                                grad(i, j) = 0
                             End If
 
                             If m_Data.Depth(i, j) = 0 Or m_Data.HabCap(migIndex(iMigGrp))(i, j) < minHabCap Then
-                                MigGrad(i, j, iMigGrp, imonth) = 2000
+                                grad(i, j) = 2000
                             End If
 
                         Next j
                     Next i
+                    MigGrad(iMigGrp, imonth) = grad
                 Next imonth
             Next iMigGrp
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -4571,7 +4573,7 @@ exitline:
                         For i = 0 To m_Data.InRow + 1
                             For j = 0 To m_Data.InCol + 1
 
-                                If MigGrad(i, j, iMigGrp, imonth) > 0 Then
+                                If MigGrad(iMigGrp, imonth)(i, j) > 0 Then
                                     smallestDist = 2000
                                     diagAdjust = 0
                                     'smallesti = -1
@@ -4588,8 +4590,8 @@ exitline:
                                                 diagAdjust = 0.4142 'sqrt(2)-1
                                             End If
 
-                                            If MigGrad(ii, jj, iMigGrp, imonth) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(migIndex(iMigGrp))(i, j) > minHabCap) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
-                                                smallestDist = MigGrad(ii, jj, iMigGrp, imonth) + diagAdjust
+                                            If MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust < smallestDist And ((m_Data.Depth(i, j) > 0 And m_Data.HabCap(migIndex(iMigGrp))(i, j) > minHabCap) Or i = 0 Or i = m_Data.InRow + 1 Or j = 0 Or j = m_Data.InCol + 1) Then
+                                                smallestDist = MigGrad(iMigGrp, imonth)(ii, jj) + diagAdjust
                                                 ' Debug.Assert(Not (ii = 3 And jj > 1 And imonth = 6))
                                                 pathFound = True
                                             End If
@@ -4597,7 +4599,7 @@ exitline:
                                     Next
 
                                     If pathFound Then
-                                        MigGrad(i, j, iMigGrp, imonth) = smallestDist + 1
+                                        MigGrad(iMigGrp, imonth)(i, j) = smallestDist + 1
                                         'Debug.Assert(Not ((MigGrad(i, j, iMigGrp, imonth) > 0) And (m_Data.MigMaps(migIndex(iMigGrp), imonth)(i, j) > MIN_MIG_PROB)))
                                     End If
 
@@ -4610,7 +4612,7 @@ exitline:
             Next iMigGrp 'iMigGrp = 1 To nMig
 
             ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx()
-            ''DUBUGGING()
+            ''DEBUGGING()
             ''Dump the migration maps to the debug/immediate window
             'Dim tempstr As String
             'For iMigGrp = 1 To nMig 'm_Data.NGroups
@@ -4847,14 +4849,14 @@ exitline:
                             If m_Data.FitRespType < 2 Then
                                 'e() is the movement to the left 
                                 'set the movement from the cell to the left into this cell
-                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
                                 'Movement from this cell into the cell to the right
-                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             Else
                                 FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             End If
 
@@ -4874,13 +4876,13 @@ exitline:
                         'then check depths on bottom face of this cell
                         If m_Data.Depth(i + 1, j) > 0 Then
                             If m_Data.FitRespType < 2 Then
-                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             Else
                                 FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
-                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
-                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad, m_Data.MoveScale, imig, imonth, ip)
+                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             End If
 
@@ -5011,7 +5013,7 @@ exitline:
 
 
 
-    Function RelMigMove(ByVal iRowFrom As Integer, ByVal iColFrom As Integer, ByVal iRowTo As Integer, ByVal iColTo As Integer, ByVal G(,,,) As Single, ByVal gk As Single, ByVal iMigGrp As Integer, ByVal imonth As Integer, ByVal ip As Integer) As Single
+    Function RelMigMove(ByVal iRowFrom As Integer, ByVal iColFrom As Integer, ByVal iRowTo As Integer, ByVal iColTo As Integer, ByVal G(,) As Single, ByVal gk As Single, ByVal iMigGrp As Integer, ByVal imonth As Integer, ByVal ip As Integer) As Single
         'sets relative movement rate using slope of g() function between origin (i1,j1) and destination (i2,j2) cells
         'function is 1 when slope ss is zero
 
@@ -5050,10 +5052,10 @@ exitline:
             multDir = 1
             If iRowFrom > 0 And iColFrom > 0 And iRowFrom <= m_Data.InRow And iColFrom <= m_Data.InCol Then
                 'Calculate the number of cells to migrated into
-                If (G(iRowFrom + 1, iColFrom, iMigGrp, imonth) - G(iRowFrom, iColFrom, iMigGrp, imonth)) < 0 Then numDir += 1.0
-                If (G(iRowFrom - 1, iColFrom, iMigGrp, imonth) - G(iRowFrom, iColFrom, iMigGrp, imonth)) < 0 Then numDir += 1.0
-                If (G(iRowFrom, iColFrom - 1, iMigGrp, imonth) - G(iRowFrom, iColFrom, iMigGrp, imonth)) < 0 Then numDir += 1.0
-                If (G(iRowFrom, iColFrom + 1, iMigGrp, imonth) - G(iRowFrom, iColFrom, iMigGrp, imonth)) < 0 Then numDir += 1.0
+                If (G(iRowFrom + 1, iColFrom) - G(iRowFrom, iColFrom)) < 0 Then numDir += 1.0
+                If (G(iRowFrom - 1, iColFrom) - G(iRowFrom, iColFrom)) < 0 Then numDir += 1.0
+                If (G(iRowFrom, iColFrom - 1) - G(iRowFrom, iColFrom)) < 0 Then numDir += 1.0
+                If (G(iRowFrom, iColFrom + 1) - G(iRowFrom, iColFrom)) < 0 Then numDir += 1.0
                 'numDir will = zero if this cell is in preferred migratory area
                 If numDir <> 0.0F Then
                     'Multiple direction weighting
@@ -5068,14 +5070,14 @@ exitline:
             'HACK Warning
             'multDir = 1
 
-            Ss = G(iRowTo, iColTo, iMigGrp, imonth) - G(iRowFrom, iColFrom, iMigGrp, imonth)
+            Ss = G(iRowTo, iColTo) - G(iRowFrom, iColFrom)
             Select Case Ss
                 'Case 0
                 'RelMigMove = 1
                 Case Is < 0
-                    RelMovement = 1 + BarrierAvoid * multDir * G(iRowFrom, iColFrom, iMigGrp, imonth) / (0.5 * gk + G(iRowFrom, iColFrom, iMigGrp, imonth)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
+                    RelMovement = 1 + BarrierAvoid * multDir * G(iRowFrom, iColFrom) / (0.5 * gk + G(iRowFrom, iColFrom)) '2 / (2 - Math.Exp(-G(i1, j1, ihab, imonth)))
                 Case Is > 0
-                    RelMovement = 1 - BarrierAvoid * multDir * G(iRowFrom, iColFrom, iMigGrp, imonth) / (0.5 * gk + G(iRowFrom, iColFrom, iMigGrp, imonth))
+                    RelMovement = 1 - BarrierAvoid * multDir * G(iRowFrom, iColFrom) / (0.5 * gk + G(iRowFrom, iColFrom))
                 Case Else
                     RelMovement = 1 'Stop
             End Select
