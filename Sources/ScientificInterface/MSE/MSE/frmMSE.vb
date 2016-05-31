@@ -72,6 +72,12 @@ Public Class frmMSE
         Me.InitializeComponent()
     End Sub
 
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
