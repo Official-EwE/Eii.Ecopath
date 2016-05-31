@@ -479,7 +479,10 @@ Namespace Controls
                 While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
                     iTL -= 1
                 End While
+
                 Me.m_sAngle(iGroup) = 360.0! * (aiGroup(iTL) + 0.5!) / aiGroupCount(iTL)
+                Me.m_asLabelOffsetX(iGroup) = 0
+                Me.m_asLabelOffsetY(iGroup) = 0
 
                 aiGroup(iTL) += 1
 
