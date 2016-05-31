@@ -322,13 +322,18 @@ Namespace Controls.EwEGrid
                     Catch ex As Exception
 
                     End Try
+
+                    If Single.IsNaN(sValue) Then
+                        Return My.Resources.GENERIC_VALUE_ERROR
+                    End If
+
                     ' Must suppress true zero?
                     If (Me.SuppressZero And (sValue = CSng(Me.DataModel.DefaultValue))) Then
                         ' #Yes: return empty cell
                         Return ""
                     End If
 
-                    If (Me.StyleGuide Is Nothing) Then Return "#ERROR"
+                    If (Me.StyleGuide Is Nothing) Then Return My.Resources.GENERIC_VALUE_ERROR
 
                     Return Me.StyleGuide.FormatNumber(sValue, Me.Style, Me.m_iNumDigits, Me.m_tsGroupDigits)
                 End If
