@@ -1685,7 +1685,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Property ThumbnailSize() As Integer
             Get
-                Return Me.m_iThumbnailSize
+                If (Me.m_iThumbnailSize <= 0) Then Return 48 ' Default
+                Return Math.Max(0, Math.Min(512, Me.m_iThumbnailSize))
             End Get
             Set(ByVal value As Integer)
                 Me.m_iThumbnailSize = value
