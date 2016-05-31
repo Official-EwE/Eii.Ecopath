@@ -43,7 +43,7 @@ Namespace Other
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper class, represents a font type and it s current settings
+        ''' Helper class, represents a font type and its current settings
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Class cFontTypeItem
@@ -55,9 +55,10 @@ Namespace Other
             Private m_fontstyle As FontStyle = FontStyle.Regular
             Private m_fontsize As Single = 8.25
 
-            Public Sub New(ByVal strText As String, _
-                           ByVal ft As cStyleGuide.eApplicationFontType, _
-                           ByVal sg As cStyleGuide)
+            Public Sub New(ByVal strText As String,
+                           ByVal ft As cStyleGuide.eApplicationFontType,
+                           ByVal sg As cStyleGuide,
+                           ByVal bDefault As Boolean)
 
                 Dim astrBits As String() = strText.Split("|"c)
                 Me.m_strName = astrBits(0)
@@ -68,6 +69,11 @@ Namespace Other
                 End If
 
                 Me.m_ft = ft
+                If (bDefault) Then
+                    sg.FontFamilyName(ft) = ""
+                    sg.FontStyle(ft) = CType(cCore.NULL_VALUE, Drawing.FontStyle)
+                    sg.FontSize(ft) = cCore.NULL_VALUE
+                End If
                 Me.m_fontfamilyname = sg.FontFamilyName(ft)
                 Me.m_fontstyle = sg.FontStyle(ft)
                 Me.m_fontsize = sg.FontSize(ft)
@@ -161,7 +167,7 @@ Namespace Other
 
             ' Invisible init
             Me.FillFontFamiliesComboBox()
-            Me.FillFontTypesListBox()
+            Me.FillFontTypesListBox(False)
 
         End Sub
 
@@ -335,7 +341,7 @@ Namespace Other
         ''' ------------------------------------------------------------------- 
         Public Sub SetDefaults() _
              Implements IOptionsPage.SetDefaults
-            Me.FillFontTypesListBox()
+            Me.FillFontTypesListBox(True)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -350,19 +356,22 @@ Namespace Other
 
 #Region " Helper methods "
 
-        Private Sub FillFontTypesListBox()
+        Private Sub FillFontTypesListBox(bReset As Boolean)
 
             Me.m_lbFontTypes.Items.Clear()
 
-            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_TITLE, cStyleGuide.eApplicationFontType.Title)
-            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_LEGEND, cStyleGuide.eApplicationFontType.Legend)
-            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_AXISTITLE, cStyleGuide.eApplicationFontType.SubTitle)
-            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_AXISSCALE_AND_VALUES, cStyleGuide.eApplicationFontType.Scale)
+            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_TITLE, cStyleGuide.eApplicationFontType.Title, bReset)
+            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_LEGEND, cStyleGuide.eApplicationFontType.Legend, bReset)
+            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_AXISTITLE, cStyleGuide.eApplicationFontType.SubTitle, bReset)
+            Me.AddFontTypeItem(My.Resources.OPTIONS_FONTDLG_AXISSCALE_AND_VALUES, cStyleGuide.eApplicationFontType.Scale, bReset)
+
+            Me.UpdatePreview()
 
         End Sub
 
-        Private Sub AddFontTypeItem(ByVal strText As String, ByVal ft As cStyleGuide.eApplicationFontType)
-            Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.UIContext.StyleGuide))
+        Private Sub AddFontTypeItem(ByVal strText As String, ByVal ft As cStyleGuide.eApplicationFontType, bDefault As Boolean)
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.UIContext.StyleGuide, bDefault))
         End Sub
 
         Private Property SelectedFontType() As cFontTypeItem
