@@ -72,14 +72,12 @@ Namespace Controls
 
                 If (Me.m_uic IsNot Nothing) Then
 
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
                     cmd = Me.m_uic.CommandHandler.GetCommand("WeightTimeSeries")
                     If cmd IsNot Nothing Then
                         cmd.RemoveControl(Me.ApplyToolStripMenuItem)
                     End If
 
-                    Me.m_uic = Nothing
+                    Me.UIContext = Nothing
                 End If
 
                 If Me.m_lvShapes.LargeImageList IsNot Nothing Then
@@ -308,7 +306,13 @@ Namespace Controls
                 Return Me.m_uic
             End Get
             Set(ByVal value As cUIContext)
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
                 Me.m_uic = value
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
             End Set
         End Property
 
@@ -478,27 +482,18 @@ Namespace Controls
 
 #Region " Event handlers "
 
-        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        'Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            MyBase.OnLoad(e)
+        '    MyBase.OnLoad(e)
 
-            If (Me.m_uic Is Nothing) Then Return
+        '    If (Me.m_uic Is Nothing) Then Return
 
-            Dim cmd As cCommand = Nothing
+        '    Me.m_bInUpdate = True
+        '    Me.Selection = Nothing
+        '    Me.UpdateThumbnails(Nothing)
+        '    Me.m_bInUpdate = False
 
-            cmd = Me.m_uic.CommandHandler.GetCommand("WeightTimeSeries")
-            If cmd IsNot Nothing Then
-                cmd.AddControl(Me.ApplyToolStripMenuItem)
-            End If
-
-            AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-
-            Me.m_bInUpdate = True
-            Me.Selection = Nothing
-            Me.UpdateThumbnails(Nothing)
-            Me.m_bInUpdate = False
-
-        End Sub
+        'End Sub
 
         ''' <summary>
         ''' Modify shape data.

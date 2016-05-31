@@ -341,6 +341,7 @@ Namespace Other
         ''' ------------------------------------------------------------------- 
         Public Sub SetDefaults() _
              Implements IOptionsPage.SetDefaults
+            Me.UIContext.StyleGuide.ThumbnailSize = cCore.NULL_VALUE
             Me.FillFontTypesListBox(True)
         End Sub
 
