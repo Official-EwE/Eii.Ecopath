@@ -1629,7 +1629,11 @@ Namespace Style
                 Return Me.DefaultFontStyle(ft)
             End Get
             Set(ByVal value As FontStyle)
-                Me.m_dtFontStye(ft) = value
+                If (value < 0) Then
+                    If (Me.m_dtFontStye.ContainsKey(ft)) Then Me.m_dtFontStye.Remove(ft)
+                Else
+                    Me.m_dtFontStye(ft) = value
+                End If
                 Me.FontsChanged()
             End Set
         End Property
@@ -1652,7 +1656,11 @@ Namespace Style
                 Return Me.DefaultFontSize(ft)
             End Get
             Set(ByVal value As Single)
-                Me.m_dtFontSize(ft) = value
+                If (value < 0) Then
+                    If (Me.m_dtFontSize.ContainsKey(ft)) Then Me.m_dtFontSize.Remove(ft)
+                Else
+                    Me.m_dtFontSize(ft) = value
+                End If
                 Me.FontsChanged()
             End Set
         End Property
