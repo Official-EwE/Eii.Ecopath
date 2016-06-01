@@ -13136,7 +13136,7 @@ Public Class cCore
                         ValueObject.ValidationStatus = eStatusFlags.OK
                         ValueObject.ValidationStatus = eStatusFlags.Null
                     ElseIf value > man.NumLevels Then
-                        ValueObject.ValidationMessage = My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION
+                        ValueObject.ValidationMessage = My.Resources.CoreMessages.PEDIGREE_OUTOFRANGE
                         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                     Else
                         ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
