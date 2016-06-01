@@ -64,6 +64,12 @@ Namespace Controls
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
         End Sub
 
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
+            Me.UpdateThumbnails(m_selectionDelayed)
+
+        End Sub
+
         Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
 
             If (bDisposing) Then
@@ -401,9 +407,9 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub UpdateThumbnails(selection As cShapeData())
 
-            If Not Me.Created Then Return
             Me.m_selectionDelayed = selection
 
+            If Not Me.Created Then Return
             If Me.m_bUpdateRequested Then Return
             Me.m_bUpdateRequested = True
 

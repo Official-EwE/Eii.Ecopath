@@ -115,11 +115,11 @@ Namespace Ecosim
                 Me.UpdateMaxSplinePoints()
                 Me.ReloadControls()
 
+                Me.m_shapeToolBox.XAxisMaxValue = 0
+
             Catch ex As Exception
-
+                Debug.Assert(False, ex.Message)
             End Try
-
-            ' Set initial selection
 
         End Sub
 

@@ -247,10 +247,6 @@ Namespace Ecopath.Controls.FlowDiagram
             'This prevents a recursive loop during initialization
             If Me.m_bInUpdate Then Return
 
-            ' These options are not supported in the Ecopath FD
-            Me.m_tree.ShowBiomassLegend = False
-            Me.m_tree.ShowFlowRateLegend = False
-
             Me.m_pbFlowDiagram.Invalidate(True)
             Me.SaveSettings()
 

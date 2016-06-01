@@ -2157,7 +2157,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Show Biomass legend.
+        '''  Looks up a localized string similar to Show biomass legend.
         '''</summary>
         Public ReadOnly Property GENERIC_SHOW_BIOMASS_LEGEND() As String
             Get
@@ -2207,6 +2207,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_SHOW_NUMTL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_SHOW_NUMTL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show trophic levels.
+        '''</summary>
+        Public ReadOnly Property GENERIC_SHOW_TROPHIC_LEVELS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SHOW_TROPHIC_LEVELS", resourceCulture)
             End Get
         End Property
         

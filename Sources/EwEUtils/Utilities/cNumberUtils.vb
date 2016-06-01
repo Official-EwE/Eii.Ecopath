@@ -116,33 +116,46 @@ Namespace Utilities
             ' Some default
             If (iNumDigits < 0) Then iNumDigits = 3
 
-            Dim dValue As Decimal = CDec(value)
-            Dim dTest As Decimal = dValue
-            Dim iMinPrecision As Integer = 0
-            Dim iMaxPrecision As Integer = Math.Min(iNumDigits * 2, 10)
-
-            ' Need to try to figure out num of decimal digits?
-            If (dTest <> 0.0) Then
-                ' #Yes: find min number of relevant decimal digits
-                While Math.Floor(dTest) = 0
-                    dTest = Decimal.Multiply(dTest, 10)
-                    iMinPrecision += 1
-                End While
-                ' First relevant decimal digit found: show iNumDigits decimals including this first value
-                iMinPrecision += (iNumDigits - 1)
-
-                ' Has decimals?
-                If (Math.Abs(dValue) > 1) Then
-                    ' #Yes: Find max number of decimal digits
-                    dTest = Decimal.One
-                    For iTest As Integer = iNumDigits To 0 Step -1
-                        dTest = Decimal.Multiply(dTest, 10)
-                        iMaxPrecision = iTest
-                        If (dValue <= dTest) Then Exit For
-                    Next
-                End If
+            If (TypeOf value Is Double) Then
+                If (Double.IsNaN(CDbl(value))) Then Return 0
             End If
-            Return Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision)
+
+            If (TypeOf value Is Single) Then
+                If (Double.IsNaN(CSng(value))) Then Return 0
+            End If
+
+            Try
+                Dim dValue As Decimal = CDec(value)
+                Dim dTest As Decimal = dValue
+                Dim iMinPrecision As Integer = 0
+                Dim iMaxPrecision As Integer = Math.Min(iNumDigits * 2, 10)
+
+                ' Need to try to figure out num of decimal digits?
+                If (dTest <> 0.0) Then
+                    ' #Yes: find min number of relevant decimal digits
+                    While Math.Floor(dTest) = 0
+                        dTest = Decimal.Multiply(dTest, 10)
+                        iMinPrecision += 1
+                    End While
+                    ' First relevant decimal digit found: show iNumDigits decimals including this first value
+                    iMinPrecision += (iNumDigits - 1)
+
+                    ' Has decimals?
+                    If (Math.Abs(dValue) > 1) Then
+                        ' #Yes: Find max number of decimal digits
+                        dTest = Decimal.One
+                        For iTest As Integer = iNumDigits To 0 Step -1
+                            dTest = Decimal.Multiply(dTest, 10)
+                            iMaxPrecision = iTest
+                            If (dValue <= dTest) Then Exit For
+                        Next
+                    End If
+                End If
+                Return Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision)
+            Catch ex As Exception
+                System.Diagnostics.Debug.Assert(False, ex.Message)
+            End Try
+            Return 0
 
         End Function
 

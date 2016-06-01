@@ -2622,7 +2622,7 @@
     <value>Show legend</value>
   </data>
   <data name="GENERIC_SHOW_BIOMASS_LEGEND" xml:space="preserve">
-    <value>Show Biomass legend</value>
+    <value>Show biomass legend</value>
   </data>
   <data name="GENERIC_SHOW_FLOW_RATE_LEGEND" xml:space="preserve">
     <value>Show flow rate legend</value>
@@ -3394,5 +3394,8 @@
   </data>
   <data name="HEADER_VALUE_BREAKDOWN" xml:space="preserve">
     <value>Value (group x fleet)</value>
+  </data>
+  <data name="GENERIC_SHOW_TROPHIC_LEVELS" xml:space="preserve">
+    <value>Show trophic levels</value>
   </data>
 </root>

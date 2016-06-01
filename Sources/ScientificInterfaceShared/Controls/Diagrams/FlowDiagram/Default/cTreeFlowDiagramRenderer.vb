@@ -42,12 +42,6 @@ Namespace Controls
     Public Class cTreeFlowDiagramRenderer
         Implements IFlowDiagramRenderer
 
-#Region " Public enums "
-
-
-
-#End Region ' Public enums
-
 #Region " Helper classes "
 
         ''' -------------------------------------------------------------------
@@ -201,6 +195,7 @@ Namespace Controls
 
         Private m_colorramp As New cEwEColorRamp()
         Private m_iNumTrophicLevels As Integer = 6
+        Private m_bShowTrophicLevels As Boolean = True
         Private m_sAngle() As Single            '' To store where the angle is relative to 0
         Private m_asLabelOffsetX() As Single
         Private m_asLabelOffsetY() As Single
@@ -220,8 +215,6 @@ Namespace Controls
         Private m_colorusagetype As eFDColorUsageTypes = eFDColorUsageTypes.None
         Private m_tsShowLegend As TriState = TriState.UseDefault
         Private m_nodeshowtype As eFDShowHiddenType = eFDShowHiddenType.GrayedOut
-        Private m_tsShowBiomassLegend As Boolean = False
-        Private m_tsShowFlowRateLegend As Boolean = False
 
         Private Shared g_fmt As New StringFormat()
         ''' <summary>Minimum mouse hit area size</summary>
@@ -230,8 +223,6 @@ Namespace Controls
 #End Region ' Privates
 
         Public Event OnChanged(ByVal sender As cTreeFlowDiagramRenderer)
-        Public Event OnBiomassLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
-        Public Event OnFlowRateLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
 #Region " Constructor "
 
@@ -281,7 +272,9 @@ Namespace Controls
             Using brText As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
                 Using font As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
                     For i As Integer = 1 To m_iNumTrophicLevels - 1
-                        g.DrawString((m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
+                        If (Me.m_bShowTrophicLevels) Then
+                            g.DrawString((m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
+                        End If
                         g.DrawLine(Pens.LightGray, 20, i * iUnitHeight, rc.Width - 20, i * iUnitHeight)
                     Next i
                 End Using
@@ -528,6 +521,22 @@ Namespace Controls
         End Property
 
         <Browsable(True), _
+        Category("Appearance"), _
+        cLocalizedDisplayName("GENERIC_SHOW_TROPHIC_LEVELS"), _
+        DefaultValue(5)> _
+        Public Property SHowTrophicLevels() As Boolean
+            Get
+                Return Me.m_bShowTrophicLevels
+            End Get
+            Set(ByVal value As Boolean)
+                If (value <> Me.m_bShowTrophicLevels) Then
+                    Me.m_bShowTrophicLevels = value
+                    Me.Update()
+                End If
+            End Set
+        End Property
+
+        <Browsable(True), _
             Category("Appearance"), _
             cLocalizedDisplayName("GENERIC_SHOW_NUMTL"), _
             DefaultValue(5)> _
@@ -571,40 +580,6 @@ Namespace Controls
             Set(ByVal value As TriState)
                 If (value <> Me.m_tsShowLegend) Then
                     Me.m_tsShowLegend = value
-                    Me.Update()
-                End If
-            End Set
-        End Property
-
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_SHOW_BIOMASS_LEGEND"), _
-            DefaultValue(False)> _
-        Public Property ShowBiomassLegend As Boolean
-            Get
-                Return Me.m_tsShowBiomassLegend
-            End Get
-            Set(ByVal value As Boolean)
-                If (value <> Me.m_tsShowBiomassLegend) Then
-                    Me.m_tsShowBiomassLegend = value
-                    RaiseEvent OnBiomassLegendChanged(Me)
-                    Me.Update()
-                End If
-            End Set
-        End Property
-
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_SHOW_FLOW_RATE_LEGEND"), _
-            DefaultValue(TriState.False)> _
-        Public Property ShowFlowRateLegend As Boolean
-            Get
-                Return Me.m_tsShowFlowRateLegend
-            End Get
-            Set(ByVal value As Boolean)
-                If (value <> Me.m_tsShowFlowRateLegend) Then
-                    Me.m_tsShowFlowRateLegend = value
-                    RaiseEvent OnFlowRateLegendChanged(Me)
                     Me.Update()
                 End If
             End Set
@@ -919,7 +894,7 @@ Namespace Controls
 
 #Region " Internals "
 
-        Private Sub Update()
+        Protected Sub Update()
             Try
                 RaiseEvent OnChanged(Me)
             Catch ex As Exception
