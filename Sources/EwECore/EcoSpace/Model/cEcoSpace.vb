@@ -1181,7 +1181,7 @@ Public Class cEcoSpace
                 'System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver run time(min.) = " & stpwchSolver.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() GridSolver run time(min.) = " & stpwchGrid.Elapsed.TotalMinutes.ToString)
                 'System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution run time(min.) = " & stpwchEffort.Elapsed.TotalMinutes.ToString)
-                'System.Console.WriteLine("FindSpatialEquilibrium() Time step run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
+                'System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
 
             Next m_Data.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -4542,7 +4542,7 @@ exitline:
                 For imonth = 1 To 12
 
                     ' Debug.Assert(imonth <> 6)
-                    Dim grad(m_Data.InRow, m_Data.InCol) As Single
+                    Dim grad(m_Data.InRow + 1, m_Data.InCol + 1) As Single
 
                     For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
@@ -4849,14 +4849,14 @@ exitline:
                             If m_Data.FitRespType < 2 Then
                                 'e() is the movement to the left 
                                 'set the movement from the cell to the left into this cell
-                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
                                 'Movement from this cell into the cell to the right
-                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             Else
                                 FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             End If
 
@@ -4876,13 +4876,13 @@ exitline:
                         'then check depths on bottom face of this cell
                         If m_Data.Depth(i + 1, j) > 0 Then
                             If m_Data.FitRespType < 2 Then
-                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             Else
                                 FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
-                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(ip, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
                             End If
 
