@@ -55,7 +55,7 @@ Namespace Ecosim
         Private components As System.ComponentModel.IContainer = Nothing
         Private m_data As cEcosimFDGroupData = Nothing
         Private m_doodler As cFlowDiagramManager = Nothing
-        Private m_tree As cTreeFlowDiagramRenderer = Nothing
+        Private m_tree As cEcosimTreeFlowDiagramRenderer = Nothing
 
         Private m_bMouseDown As Boolean = False
         Private WithEvents m_pbFlowDiagram As System.Windows.Forms.PictureBox
@@ -156,7 +156,7 @@ Namespace Ecosim
             Dim cmd As cCommand = Nothing
 
             Me.m_data = New cEcosimFDGroupData(Me.UIContext)
-            Me.m_tree = New cTreeFlowDiagramRenderer(Me.m_data)
+            Me.m_tree = New cEcosimTreeFlowDiagramRenderer(Me.m_data)
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
             Me.m_pgFlowDiagram.SelectedObject = Me.m_tree

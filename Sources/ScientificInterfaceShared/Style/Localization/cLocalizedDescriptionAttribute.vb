@@ -31,7 +31,7 @@ Namespace Style
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Add a localized description to a method in a class. This localized
-    ''' discription will show up in smart controls such as <see cref="PropertyGrid"/>.
+    ''' description will show up in smart controls such as <see cref="PropertyGrid"/>.
     ''' </summary>
     ''' <example>
     ''' <para>This example shows you how to use a localized <see cref="cLocalizedDescriptionAttribute"/>, where
