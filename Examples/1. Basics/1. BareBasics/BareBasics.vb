@@ -21,7 +21,7 @@
 Imports EwECore
 
 ''' <summary>
-''' Bare basics program that loads an EwE model and checks whether Ecopath balances.
+''' Bare basics program that loads an EwE model and checks whether Ecopath can run.
 ''' </summary>
 Module BareBasics
 
