@@ -306,6 +306,16 @@ Namespace Utilities
             Return strOut
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Truncate a string to make sure that it does not exceed a given number
+        ''' of characters.
+        ''' </summary>
+        ''' <param name="strIn">The string to truncate.</param>
+        ''' <param name="iMaxLength">The maximum length of the output string.</param>
+        ''' <returns>A string of no more than <paramref name="iMaxLength"/> 
+        ''' characters in length.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function MaxLength(ByVal strIn As String, iMaxLength As Integer) As String
             Return strIn.Substring(0, Math.Min(strIn.Length, iMaxLength))
         End Function
