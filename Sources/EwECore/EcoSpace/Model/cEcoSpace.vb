@@ -2207,6 +2207,7 @@ Public Class cEcoSpace
                     Next j
                 Next i
                 Btime(ip) = Btime(ip) / m_Data.nWaterCells
+                'For Debugging
                 If ip > 0 Then
                     System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
                 End If
@@ -7385,13 +7386,14 @@ exitline:
                             'Greater than min Capacity
                             If Me.m_Data.HabCap(iGrp)(ir, ic) < MIN_HABCAP Then Me.m_Data.HabCap(iGrp)(ir, ic) = MIN_HABCAP '0.000001F
 
-                            'sum of capacity
+                            'Populate TotHabCap with sum of capacity
+                            'Used to spatially  distribute the initial state biomass in InitSpatialEquilibrium
                             If Not Me.m_Data.IsMigratory(iGrp) Then
                                 'Non migrating group
                                 Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(iGrp)(ir, ic)
                             Else
                                 'Migrating Group 
-                                'only sum capacity in preferred cells
+                                'Annual average capacity for the 12 month migration pattern
                                 For imon As Integer = 1 To 12
                                     'is this cell part of the migration pattern for any month
                                     If Me.m_Data.MigMaps(iGrp, imon)(ir, ic) > MIN_MIG_PROB Then
@@ -7399,6 +7401,17 @@ exitline:
                                         Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(iGrp)(ir, ic) / 12
                                     End If
                                 Next
+
+                                ''Alternatively
+                                ''Total Capacity for the first month only
+                                ''This makes the spatialy average biomass equal to the Ecopath biomass
+                                ''but can create even bigger biomass concentration issues 
+                                ''setting V and A
+                                'If Me.m_Data.MigMaps(iGrp, 1)(ir, ic) > MIN_MIG_PROB Then
+                                '    'Yes caculate the average monthly total capacity
+                                '    Me.m_Data.TotHabCap(iGrp) += Me.m_Data.HabCap(iGrp)(ir, ic)
+                                'End If
+
                             End If
                         End If 'Me.m_Data.Depth(ir, ic) > 0 
                     Next ic
@@ -7741,7 +7754,6 @@ exitline:
     End Sub
 
 #End Region
-
 
 #Region "Depreciated Code"
 
