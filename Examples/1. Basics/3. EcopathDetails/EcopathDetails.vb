@@ -320,7 +320,7 @@ Module EcopathDetails
             Dim modelDate As Date = cDateUtils.JulianToDate(scenario.LastSaved)
             writer.WriteLine("   " & iScenario & ": " & scenario.Name)
             writer.WriteLine("      Author     : " & scenario.Author)
-            writer.WriteLine("      Descirption: " & scenario.Description)
+            writer.WriteLine("      Description: " & scenario.Description)
             writer.WriteLine("      Last saved : " & modelDate.ToLongDateString)
 
         Next iScenario
