@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -28,12 +28,11 @@ Module BareBasics
     Sub Main()
 
         ' Create a new core
-        Dim core As cCore
-        core = New cCore()
+        Dim core As New cCore()
 
         ' Can we load a model into the core?
         If core.LoadModel("Tampa_Bay.EwEmdb") Then
-            Console.WriteLine("Model loaded")
+            Console.WriteLine("Model " & core.EwEModel.Name & " loaded")
 
             ' Able to run Ecopath?
             If core.RunEcoPath() Then
