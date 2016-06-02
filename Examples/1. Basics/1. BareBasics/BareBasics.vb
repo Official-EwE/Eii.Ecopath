@@ -32,7 +32,7 @@ Module BareBasics
 
         ' Can we load a model into the core?
         If core.LoadModel("Tampa_Bay.EwEmdb") Then
-            Console.WriteLine("Model " & core.EwEModel.Name & " loaded")
+            Console.WriteLine("Model loaded")
 
             ' Able to run Ecopath?
             If core.RunEcoPath() Then
