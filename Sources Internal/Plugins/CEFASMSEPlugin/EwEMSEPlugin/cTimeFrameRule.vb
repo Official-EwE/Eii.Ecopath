@@ -42,6 +42,7 @@ Public Class cTimeFrameRule
     Private m_HCR As HCR_Group
     'Private FGreaterThanHCRF As Boolean
     Private m_MSE As cMSE
+    Private init_F As Single 'This is the real average F in the last year of the hindcast
 
     Public Property NYears As Integer
 
@@ -54,21 +55,28 @@ Public Class cTimeFrameRule
 
     Public Function F(ByVal iCurrentTimeStep As Integer, ByVal iYearProjecting As Integer, ByVal HCR_F As Single) As Single
 
-        Dim MeanPrevYearF As Double = calcAveragePrevYearF(iCurrentTimeStep)
+        If iYearProjecting = 1 Then
+            init_F = calcAveragePrevYearF(iCurrentTimeStep)
+            If init_F < HCR_F Then init_F = HCR_F
+        End If
+
+        'Dim MeanPrevYearF As Double = calcAveragePrevYearF(iCurrentTimeStep)
 
 #If DEBUG Then
         If iYearProjecting = 1 Then
             Dim strmWriter As StreamWriter
             Dim strFile As String = cFileUtils.ToValidFileName("Diagnostics_F_Steps.csv", False)
             strmWriter = cMSEUtils.GetWriter(cMSEUtils.MSEFile(m_MSE.DataPath, cMSEUtils.eMSEPaths.Results, strFile), True)
-            strmWriter.WriteLine(m_MSE.CurrentModelID & "," & m_MSE.currentStrategy.Name & "," & Me.m_HCR.GroupF.Name & "," & MeanPrevYearF)
+            strmWriter.WriteLine(m_MSE.CurrentModelID & "," & m_MSE.currentStrategy.Name & "," & Me.m_HCR.GroupF.Name & "," & init_F)
             cMSEUtils.ReleaseWriter(strmWriter)
         End If
 #End If
 
-        Dim Distance_From_HCR_F As Single = MeanPrevYearF - HCR_F
+        'Dim Distance_From_HCR_F As Single = MeanPrevYearF - HCR_F
 
-        Return HCR_F + ((NYears + 1 - iYearProjecting) / (NYears + 1)) * Distance_From_HCR_F
+        Return init_F - (iYearProjecting / (NYears + 1)) * (init_F - HCR_F)
+
+        'Return HCR_F + ((NYears + 1 - iYearProjecting) / (NYears + 1)) * Distance_From_HCR_F
 
 
     End Function
@@ -77,7 +85,8 @@ Public Class cTimeFrameRule
         'A time frame rule is valid only if the number of years field for it is >0 and the year into projection is 1 upto that number
         'and also the F during the last year of the hindcast is greater than the Fmsy
 
-        If NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= NYears And FGreaterThanHCRF(HCR_F, CurrentTimeStep) Then
+        'If NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= NYears And FGreaterThanHCRF(HCR_F, CurrentTimeStep) Then
+        If NYears > 0 And iYearProjecting >= 1 And iYearProjecting <= NYears Then
             Return True
         Else
             Return False
