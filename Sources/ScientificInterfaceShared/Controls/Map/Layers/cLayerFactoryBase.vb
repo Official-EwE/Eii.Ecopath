@@ -91,7 +91,7 @@ Namespace Controls.Map
 
                         ' Get or create Visual Style
                         vs = ad.VisualStyle
-                        If vs Is Nothing Then
+                        If (vs Is Nothing) Then
                             vs = avs(iHabitat - 1)
                             ad.AllowValidation = False
                             ad.VisualStyle = vs
@@ -382,10 +382,13 @@ Namespace Controls.Map
 
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then
-                        vs = New cVisualStyle(ad)
+                        vs = New cVisualStyle()
                         vs.ForeColour = Color.Red
                         vs.BackColour = Color.OrangeRed
                         vs.HatchStyle = Drawing2D.HatchStyle.DiagonalCross
+                        ad.AllowValidation = False
+                        ad.VisualStyle = vs
+                        ad.AllowValidation = True
                     End If
                     renderer = New cLayerRendererExclusion(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
