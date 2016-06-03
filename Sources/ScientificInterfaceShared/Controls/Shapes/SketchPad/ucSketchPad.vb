@@ -628,6 +628,8 @@ Namespace Controls
 
         End Sub
 
+        Public Property CanEditPoints As Boolean = True
+
         ''' <summary>
         ''' Current mouse interaction mode.
         ''' </summary>
@@ -698,24 +700,19 @@ Namespace Controls
 
         Private Sub UpdateCursor()
 
-            If Me.Enabled Then
+            Select Case Me.EditMode
 
-                Select Case Me.EditMode
+                Case eMouseInteractionMode.DragXMark
+                    Me.Cursor = Cursors.SizeWE
 
-                    Case eMouseInteractionMode.DragXMark
-                        Me.Cursor = Cursors.SizeWE
+                Case eMouseInteractionMode.DragYMark
+                    Me.Cursor = Cursors.SizeNS
 
-                    Case eMouseInteractionMode.DragYMark
-                        Me.Cursor = Cursors.SizeNS
+                Case eMouseInteractionMode.DrawShape,
+                     eMouseInteractionMode.None
+                    Me.Cursor = Cursors.Default
 
-                    Case eMouseInteractionMode.DrawShape, _
-                         eMouseInteractionMode.None
-                        Me.Cursor = Cursors.Default
-
-                End Select
-            Else
-                Me.Cursor = Cursors.Default
-            End If
+            End Select
 
         End Sub
 
@@ -916,7 +913,9 @@ Namespace Controls
 
                 Select Case Me.EditMode
                     Case eMouseInteractionMode.DrawShape
-                        Me.ModifyShapePoints(Me.m_ptPosPrevious, ptPosCurrent)
+                        If (Me.CanEditPoints) Then
+                            Me.ModifyShapePoints(Me.m_ptPosPrevious, ptPosCurrent)
+                        End If
 
                     Case eMouseInteractionMode.DragXMark
                         Me.DragXMark(Me.m_ptPosPrevious, ptPosCurrent)
@@ -933,7 +932,7 @@ Namespace Controls
                 Me.m_ptPosPrevious = ptPosCurrent
                 Me.Refresh()
 
-                If Me.EditMode = eMouseInteractionMode.DrawShape Then
+                If (Me.EditMode = eMouseInteractionMode.DrawShape) And (Me.CanEditPoints) Then
                     Me.OnShapeChanged()
                 End If
             Else
@@ -964,8 +963,10 @@ Namespace Controls
                     Me.EditMode = eMouseInteractionMode.DragXMark
                     'ElseIf (Me.IsNearYMark(e.Y) And ((Me.m_editAllowed And eMouseInteractionMode.DragYMark) > 0)) Then
                     '    Me.EditMode = eMouseInteractionMode.DragYMark
-                ElseIf (Me.Editable) Then
+                ElseIf (Me.CanEditPoints) Then
                     Me.EditMode = eMouseInteractionMode.DrawShape
+                Else
+                    Me.EditMode = eMouseInteractionMode.None
                 End If
 
                 ' Update cursor to provide feedback
@@ -974,6 +975,7 @@ Namespace Controls
             End If
 
             Me.ProcessMouseInput(e)
+
 
         End Sub
 

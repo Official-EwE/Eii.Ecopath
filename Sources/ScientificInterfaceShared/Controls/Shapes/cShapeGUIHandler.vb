@@ -357,7 +357,7 @@ Namespace Controls
 
                     If (Me.SketchPad IsNot Nothing) Then
                         Me.SketchPad.Shape = shapeSelected
-                        Me.SketchPad.Enabled = Me.CanEditPoints(shapeSelected)
+                        Me.SketchPad.CanEditPoints = Me.CanEditPoints(shapeSelected)
                     End If
                     If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.Selection = value
 
