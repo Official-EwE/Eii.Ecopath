@@ -1799,9 +1799,6 @@ Public Class cMSE
 
                         Me.m_StockAssessment.TrialNumber = iModel
 
-                        'Re-load any Ecosim forcing data for the hind cast period
-                        Me.setFishForcedToBase()
-
                         'initialize the base fishing mortality rates to the new ecopath parameters loaded above
                         'Me.initBaseCatchRate()
 
@@ -1816,6 +1813,9 @@ Public Class cMSE
                         Me.m_iCurStategy = 0
                         Dim StratArray() As Strategy = Strategies.ToArray()
                         For istrat As Integer = 0 To StratArray.Count - 1
+
+                            'Re-load any Ecosim forcing data for the hind cast period
+                            Me.setFishForcedToBase()
 
                             'Set the index to the CurrentStrategy used by me.currentStrategy to retrieve the correct strategy
                             m_iCurStategy = istrat
@@ -4548,6 +4548,12 @@ Public Class cMSE
         Next
 
         Me.m_bQSet = True
+
+        'jb 3-Jun-2016
+        'Now that we have used FisForced() flag to figure out which groups are forced clear it at the start of the forecast
+        'There is no forcing data for the forecast period.
+        'FisForced will be reset at the start of each run in the main run loop via Me.setFishForcedToBase()
+        Me._simdata.clearFishForced()
 
     End Sub
 
