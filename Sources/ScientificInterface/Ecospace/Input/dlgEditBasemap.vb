@@ -243,17 +243,17 @@ Public Class dlgEditBasemap
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
 
         If (bResizeMap = True) Then
-            cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP)
+            cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP, -1)
             Try
                 Me.m_uic.Core.ResizeEcospaceBasemap(iRowCount, iColCount)
             Catch ex As Exception
-
+                cLog.Write(ex, "dlgEditBasemap.Apply:resizing")
             End Try
             cApplicationStatusNotifier.EndProgress(core)
         End If
 
         If (Me.m_rs IsNot Nothing) Then
-            cApplicationStatusNotifier.StartProgress(core)
+            cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP, -1)
             Try
                 ' Use adapter here?
                 Dim l As cEcospaceLayerDepth = Me.m_uic.Core.EcospaceBasemap.LayerDepth
@@ -263,8 +263,10 @@ Public Class dlgEditBasemap
                     Next
                 Next
                 l.Invalidate()
+                Me.m_uic.Core.onChanged(l)
             Catch ex As Exception
-
+                Debug.Assert(False)
+                cLog.Write(ex, "dlgEditBasemap.Apply:reading_depth")
             End Try
             cApplicationStatusNotifier.EndProgress(core)
         End If
