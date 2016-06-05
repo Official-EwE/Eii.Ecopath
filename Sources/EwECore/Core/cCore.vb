@@ -2686,7 +2686,7 @@ Public Class cCore
             Try
                 Return Me.m_settings.AutosaveFormat(savetype)
             Catch ex As Exception
-                cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
+                cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
             End Try
             Return ".csv"
         End Get
@@ -2717,11 +2717,20 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Property SaveWithFileHeader As Boolean
         Get
-            Return Me.m_settings.AutosaveHeaders
+            Try
+                Return Me.m_settings.AutosaveHeaders
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::SaveWithFileHeader")
+            End Try
+            Return False
         End Get
         Set(value As Boolean)
-            Me.m_settings.AutosaveHeaders = value
-            Me.OnSettingsChanged()
+            Try
+                Me.m_settings.AutosaveHeaders = value
+                Me.OnSettingsChanged()
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::SaveWithFileHeader")
+            End Try
         End Set
     End Property
 
