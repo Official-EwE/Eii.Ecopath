@@ -45,7 +45,7 @@ Public Class gridTaxonSearchResults
     ''' Please do not alter the position of the status and code columns.</remarks>
     Private Enum eColumnTypes As Integer
         Index = 0
-        Common
+        Name
         Genus
         Species
         Family
@@ -145,7 +145,7 @@ Public Class gridTaxonSearchResults
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Common) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
         Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
         Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
         Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
@@ -258,7 +258,7 @@ Public Class gridTaxonSearchResults
 
         Select Case col
             Case eColumnTypes.Index : value = iRow
-            Case eColumnTypes.Common : value = result.Common
+            Case eColumnTypes.Name : value = result.Common
             Case eColumnTypes.Species : value = result.Species : style = style Or cStyleGuide.eStyleFlags.Taxon
             Case eColumnTypes.Genus : value = result.Genus : style = style Or cStyleGuide.eStyleFlags.Taxon
             Case eColumnTypes.Family : value = result.Family
