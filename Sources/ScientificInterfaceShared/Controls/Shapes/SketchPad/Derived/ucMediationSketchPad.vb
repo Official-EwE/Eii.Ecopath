@@ -23,12 +23,13 @@
 Option Explicit On
 Option Strict On
 
-Imports EwECore
-Imports System.Drawing.Drawing2D
-Imports System.Drawing
 Imports System.ComponentModel
-Imports ScientificInterfaceShared.Style
+Imports System.Text
+Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region
 
@@ -82,9 +83,7 @@ Namespace Controls
             sfmt.LineAlignment = StringAlignment.Center
 
             ' Write mediation caption
-            strCaption = String.Format(My.Resources.GENERIC_LABEL_INDEXED, _
-                                       (DirectCast(Me.Shape, cMediationBaseFunction).ID + 1), _
-                                       Me.Shape.Name)
+            strCaption = Me.GetShapeTitle()
 
             Using br As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
@@ -178,6 +177,23 @@ Namespace Controls
             If (Me.XMarkValue < 0) Then Return
             Me.YMarkValue = Me.Shape.ShapeData(CInt(Math.Max(0, Math.Min(Me.Shape.ShapeData.Length - 1, Me.XMarkValue))))
         End Sub
+
+        Protected Overridable Function GetShapeTitle() As String
+
+            Dim sb As New StringBuilder()
+            Dim ff As cMediationBaseFunction = DirectCast(Me.Shape, cMediationBaseFunction)
+
+            sb.AppendLine(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, ff.ID + 1, Me.Shape.Name))
+
+            If (ff.ShapeFunctionType <> 0) Then
+                Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
+                Dim fmt As New cShapeFunctionFormatter()
+                sb.AppendLine(fmt.GetDescriptor(fn))
+            End If
+
+            Return sb.ToString()
+
+        End Function
 
     End Class
 

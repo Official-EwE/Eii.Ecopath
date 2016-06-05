@@ -3581,7 +3581,6 @@ Namespace Core
         Phylum = &H40
         <Obsolete("Kingdom not supported yet but added for future use")> _
         Kingdom = &H80
-        Common = &H100
     End Enum
 
 #End Region ' Taxonomy

@@ -370,9 +370,6 @@
   <data name="HEADER_CODE" xml:space="preserve">
     <value>Code</value>
   </data>
-  <data name="HEADER_COMMON_NAME" xml:space="preserve">
-    <value>Common name</value>
-  </data>
   <data name="HEADER_FAMILY" xml:space="preserve">
     <value>Family</value>
   </data>
@@ -3397,5 +3394,8 @@
   </data>
   <data name="GENERIC_SHOW_TROPHIC_LEVELS" xml:space="preserve">
     <value>Show trophic levels</value>
+  </data>
+  <data name="HEADER_LATIN_NAME" xml:space="preserve">
+    <value>Latin name</value>
   </data>
 </root>

@@ -3997,15 +3997,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Common name.
-        '''</summary>
-        Public ReadOnly Property HEADER_COMMON_NAME() As String
-            Get
-                Return ResourceManager.GetString("HEADER_COMMON_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to EwE components.
         '''</summary>
         Public ReadOnly Property HEADER_COMPONENTS_EWE() As String
@@ -5073,6 +5064,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LASTUPDATED() As String
             Get
                 Return ResourceManager.GetString("HEADER_LASTUPDATED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Latin name.
+        '''</summary>
+        Public ReadOnly Property HEADER_LATIN_NAME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LATIN_NAME", resourceCulture)
             End Get
         End Property
         

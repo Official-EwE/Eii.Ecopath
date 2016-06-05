@@ -49,8 +49,6 @@ Namespace Style
             Dim val As eTaxonClassificationType = DirectCast(value, eTaxonClassificationType)
 
             Select Case val
-                Case eTaxonClassificationType.Common
-                    Return My.Resources.HEADER_COMMON_NAME
                 Case eTaxonClassificationType.Phylum
                     Return My.Resources.HEADER_PHYLUM
                 Case eTaxonClassificationType.Order
