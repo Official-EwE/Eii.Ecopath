@@ -2657,6 +2657,14 @@ Public Class cCore
                     Me.m_settings.Autosave(savetype) = value
                     Me.OnSettingsChanged()
                 End If
+
+                ' Ensure defaults when needed
+                Select Case savetype
+                    Case eAutosaveTypes.EcospaceResults
+                        If (value = True And String.IsNullOrWhiteSpace(AutosaveFormat(savetype))) Then
+                            Me.AutosaveFormat(savetype) = cEcospaceASCMapResultsWriter.cDATA_NAME
+                        End If
+                End Select
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
@@ -2688,6 +2696,13 @@ Public Class cCore
                     Me.m_settings.AutosaveFormat(savetype) = value
                     Me.OnSettingsChanged()
                 End If
+
+                Select Case savetype
+                    Case eAutosaveTypes.EcospaceResults
+                        If (Not String.IsNullOrWhiteSpace(value) And Me.Autosave(savetype) = False) Then
+                            Me.Autosave(savetype) = True
+                        End If
+                End Select
             Catch ex As Exception
                 cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
             End Try
