@@ -29,6 +29,8 @@ Imports System.Drawing.Drawing2D
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Utilities
+Imports System.Text
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -200,7 +202,19 @@ Namespace Controls
         End Sub
 
         Protected Overridable Function GetShapeTitle() As String
-            Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name)
+
+            Dim sb As New StringBuilder()
+            Dim ff As cForcingFunction = DirectCast(Me.Shape, cForcingFunction)
+            sb.AppendLine(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name))
+
+            If (ff.ShapeFunctionType <> 0) Then
+                Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
+                Dim fmt As New cShapeFunctionFormatter()
+                sb.AppendLine(fmt.GetDescriptor(fn))
+            End If
+
+            Return sb.ToString()
+
         End Function
 
     End Class

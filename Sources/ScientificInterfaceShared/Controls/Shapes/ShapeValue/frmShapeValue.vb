@@ -355,7 +355,9 @@ Public Class frmShapeValue
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
-        m_txtName.Text = Me.m_shape.Name
+
+        Me.m_txtName.Enabled = True
+        Me.m_txtName.Text = Me.m_shape.Name
 
         ' Hide seasonal flag for mediation functions
         Me.m_lblViewAs.Visible = Not bIsMediation
