@@ -173,4 +173,12 @@
     <value>Example Aquamaps HSPEN file saved to {0}</value>
     <comment>{0}=file name</comment>
   </data>
+  <data name="PROMPT_FILE_NOCONTENT" xml:space="preserve">
+    <value>AquaMaps CSV file {0} did not contain any valid distribution envelopes</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="PROMPT_IMPORT_DETAIL_LINEERROR" xml:space="preserve">
+    <value>Cannot interpret '{0}'</value>
+    <comment>{0}=one line from the HSPEN CSV file</comment>
+  </data>
 </root>

@@ -24,8 +24,9 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -84,11 +85,11 @@ Public Class cImporter
                             Try
                                 Dim strName As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, env.Name, file.Species)
                                 cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
-                                                                          String.Format(My.Resources.STATUS_CREATING_DETAIL, strName), _
+                                                                          cStringUtils.Localize(My.Resources.STATUS_CREATING_DETAIL, strName), _
                                                                           -1)
                                 If Me.CreateShape(strName, env) Then
                                     Me.m_dictShapeEnvelopes(env.DBID) = env
-                                    vs = New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.PROMPT_IMPORT_DETAIL_SUCCESS, strName), _
+                                    vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_IMPORT_DETAIL_SUCCESS, strName), _
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                                 Else
                                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, String.Format(My.Resources.PROMPT_IMPORT_DETAIL_FAILED, strName), _
