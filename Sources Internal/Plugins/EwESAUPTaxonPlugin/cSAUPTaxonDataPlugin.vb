@@ -324,7 +324,7 @@ Public Class cSAUPTaxonDataPlugin
                 If String.IsNullOrWhiteSpace(taxon.Common) Then Return False
 
                 ' Search
-                If Not String.IsNullOrWhiteSpace(taxon.Common) And ((taxon.SearchFields And eTaxonClassificationType.Common) > 0) Then
+                If Not String.IsNullOrWhiteSpace(taxon.Common) Then
                     qb.AddClause(String.Format("CommonName LIKE '%{0}%' OR TaxonName LIKE '%{0}%'", taxon.Common))
                 Else
                     qb.AddClause(String.Format("TaxonName LIKE '%{0}%'", taxon.Common))
