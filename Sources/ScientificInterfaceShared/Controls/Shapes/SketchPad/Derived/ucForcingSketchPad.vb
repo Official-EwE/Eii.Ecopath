@@ -204,13 +204,15 @@ Namespace Controls
         Protected Overridable Function GetShapeTitle() As String
 
             Dim sb As New StringBuilder()
-            Dim ff As cForcingFunction = DirectCast(Me.Shape, cForcingFunction)
             sb.AppendLine(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, (DirectCast(Me.Shape, cShapeData).Index), Me.Shape.Name))
 
-            If (ff.ShapeFunctionType <> 0) Then
-                Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
-                Dim fmt As New cShapeFunctionFormatter()
-                sb.AppendLine(fmt.GetDescriptor(fn))
+            If (TypeOf Me.Shape Is cForcingFunction) Then
+                Dim ff As cForcingFunction = DirectCast(Me.Shape, cForcingFunction)
+                If (ff.ShapeFunctionType <> 0) Then
+                    Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
+                    Dim fmt As New cShapeFunctionFormatter()
+                    sb.AppendLine(fmt.GetDescriptor(fn))
+                End If
             End If
 
             Return sb.ToString()
