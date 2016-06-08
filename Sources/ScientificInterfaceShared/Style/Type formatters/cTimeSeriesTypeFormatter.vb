@@ -48,9 +48,9 @@ Namespace Style
                 Case eTimeSeriesType.BiomassAbs : strType = My.Resources.TS_TYPE_BIOMASSABS
                 Case eTimeSeriesType.BiomassForcing : strType = My.Resources.TS_TYPE_BIOMASSFORCING
                 Case eTimeSeriesType.BiomassRel : strType = My.Resources.TS_TYPE_BIOMASSREL
-                Case eTimeSeriesType.Catches : strType = My.Resources.TS_TYPE_CATCHES
                 Case eTimeSeriesType.CatchesForcing : strType = My.Resources.TS_TYPE_CATCHESFORCING
-                Case eTimeSeriesType.CatchesRel : strType = "jeroen to add"
+                Case eTimeSeriesType.Catches : strType = My.Resources.TS_TYPE_CATCHESABS
+                Case eTimeSeriesType.CatchesRel : strType = My.Resources.TS_TYPE_CATCHESREL
                 Case eTimeSeriesType.ConstantTotalMortality : strType = My.Resources.TS_TYPE_CONSTTOTALMORT
                 Case eTimeSeriesType.EcotracerConcAbs : strType = My.Resources.TS_TYPE_TRACER_CONCABS
                 Case eTimeSeriesType.EcotracerConcRel : strType = My.Resources.TS_TYPE_TRACER_CONCREL

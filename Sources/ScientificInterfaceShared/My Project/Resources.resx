@@ -285,7 +285,7 @@
     <value>Updating time series {0}...</value>
     <comment>{0}: time series name</comment>
   </data>
-  <data name="TS_TYPE_CATCHES" xml:space="preserve">
+  <data name="TS_TYPE_CATCHESABS" xml:space="preserve">
     <value>Catches (reference)</value>
     <comment>Time series type</comment>
   </data>
@@ -3397,5 +3397,8 @@
   </data>
   <data name="HEADER_LATIN_NAME" xml:space="preserve">
     <value>Latin name</value>
+  </data>
+  <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
+    <value>Relative catches (reference)</value>
   </data>
 </root>
