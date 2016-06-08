@@ -155,6 +155,12 @@ Public MustInherit Class cEcospaceLayerVector
         Me.m_bInvalidateStats = True
     End Sub
 
+    Public ReadOnly Property VelocityLayers() As cEcospaceLayerVelocity()
+        Get
+            Return New cEcospaceLayerVelocity() {New cEcospaceLayerVelocity(Me.m_core, Me, 0), New cEcospaceLayerVelocity(Me.m_core, Me, 1)}
+        End Get
+    End Property
+
 #End Region ' Cell interaction
 
 #Region " Internals "
