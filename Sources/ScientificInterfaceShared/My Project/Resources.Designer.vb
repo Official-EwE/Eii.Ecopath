@@ -8536,9 +8536,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Catches (reference).
         '''</summary>
-        Public ReadOnly Property TS_TYPE_CATCHES() As String
+        Public ReadOnly Property TS_TYPE_CATCHESABS() As String
             Get
-                Return ResourceManager.GetString("TS_TYPE_CATCHES", resourceCulture)
+                Return ResourceManager.GetString("TS_TYPE_CATCHESABS", resourceCulture)
             End Get
         End Property
         
@@ -8548,6 +8548,15 @@ Namespace My.Resources
         Public ReadOnly Property TS_TYPE_CATCHESFORCING() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_CATCHESFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Relative catches (reference).
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_CATCHESREL() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_CATCHESREL", resourceCulture)
             End Get
         End Property
         

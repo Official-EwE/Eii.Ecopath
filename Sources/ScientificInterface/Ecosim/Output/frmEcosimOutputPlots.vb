@@ -483,6 +483,9 @@ Namespace Ecosim
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
                 Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
             Next li
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesRel, iGroup, Color.LightBlue)
+                Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
+            Next li
 
             If groupSimOut.isMultiStanza() Then
 
@@ -595,7 +598,7 @@ Namespace Ecosim
             Dim da() As Single = gts.ShapeData()
             Dim iYear As Integer = Me.UIContext.Core.EcosimFirstYear
 
-            If (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (gts.TimeSeriesType = eTimeSeriesType.AverageWeight) Then
+            If (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (gts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (gts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
                 'VC091209: totalmortality is absolute, not relative
                 If gts.eDataQ > 0 Then dScale = 1.0F / gts.eDataQ
             End If
