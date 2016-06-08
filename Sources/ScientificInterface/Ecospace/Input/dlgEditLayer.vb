@@ -133,7 +133,12 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_zoommap.Map.AddLayer(Me.m_layerDepth)
             End If
 
-            Me.m_tcLayerView.SelectedIndex = CInt(Me.m_edittype)
+            Select Case Me.m_edittype
+                Case eLayerEditTypes.EditVisuals
+                    Me.m_tcLayerView.SelectedTab = Me.m_tpAppearance
+                Case eLayerEditTypes.EditData
+                    Me.m_tcLayerView.SelectedTab = Me.m_tpData
+            End Select
 
             ' Set up format providers
             Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
