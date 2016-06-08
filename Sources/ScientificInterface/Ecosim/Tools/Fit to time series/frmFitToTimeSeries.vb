@@ -442,6 +442,7 @@ Namespace Ecosim
                     gts = DirectCast(ts, cGroupTimeSeries)
                     If (gts.TimeSeriesType = eTimeSeriesType.BiomassAbs) Or _
                        (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
+                       (gts.TimeSeriesType = eTimeSeriesType.CatchesRel) Or _
                        (gts.TimeSeriesType = eTimeSeriesType.Catches) Then
 
                         abUseBlock(gts.GroupIndex) = True

@@ -324,6 +324,7 @@ Public Enum eTimeSeriesType As Integer
     ConstantTotalMortality = -5
     Catches = 6
     CatchesForcing = -6
+    CatchesRel = 61
     AverageWeight = 7
     EcotracerConcRel = 8
     EcotracerConcAbs = 9

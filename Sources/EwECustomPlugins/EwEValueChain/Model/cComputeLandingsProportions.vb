@@ -91,6 +91,7 @@ Public Class cComputeLandingPortions
                         Dim grpTS As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
 
                         If ts.TimeSeriesType = eTimeSeriesType.Catches Or _
+                           ts.TimeSeriesType = eTimeSeriesType.CatchesRel Or _
                            ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
                             ' The group that the TS is applied to
                             Dim iSp As Integer = grpTS.GroupIndex

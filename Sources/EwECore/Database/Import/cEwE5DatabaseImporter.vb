@@ -2937,6 +2937,8 @@ Namespace Database
                         eType = eTimeSeriesType.Catches
                     Case -6
                         eType = eTimeSeriesType.CatchesForcing
+                    Case 61
+                        eType = eTimeSeriesType.CatchesRel
                     Case 7
                         eType = eTimeSeriesType.AverageWeight
                     Case 8

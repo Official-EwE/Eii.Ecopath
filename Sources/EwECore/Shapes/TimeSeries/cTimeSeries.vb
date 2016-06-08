@@ -200,7 +200,9 @@ Public MustInherit Class cTimeSeries
                (Me.m_timeSeriesType = eTimeSeriesType.BiomassAbs) Or _
                (Me.m_timeSeriesType = eTimeSeriesType.TotalMortality) Or _
                (Me.m_timeSeriesType = eTimeSeriesType.Catches) Or _
-               (Me.m_timeSeriesType = eTimeSeriesType.CatchesForcing)
+               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel)
+        ' VC June 8, 2016: while adding CatchesRel, noticed that the above included CatchesAbs, which is not a reference 
+        ' time series. I therefore removed it.
     End Function
 
     ''' -----------------------------------------------------------------------

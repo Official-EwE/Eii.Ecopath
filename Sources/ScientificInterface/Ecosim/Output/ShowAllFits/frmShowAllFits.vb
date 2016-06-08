@@ -303,6 +303,7 @@ Namespace Ecosim
                                 Select Case gts.TimeSeriesType
 
                                     Case eTimeSeriesType.Catches, _
+                                         eTimeSeriesType.CatchesRel, _
                                          eTimeSeriesType.CatchesForcing
                                         asSimData(iTime) = grpOutput.Catch(iTime)
 
@@ -381,6 +382,7 @@ Namespace Ecosim
             If Me.m_chkShowCatch.Checked Then
                 m_lShownPlotsType.Add(eTimeSeriesType.Catches)
                 m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
+                m_lShownPlotsType.Add(eTimeSeriesType.CatchesRel)
             End If
 
             Me.m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
@@ -567,7 +569,8 @@ Namespace Ecosim
                                         sw.Write(",")
                                     End If
                                 Case 3
-                                    If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
+                                    If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
+                                        Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
                                         sw.Write(cStringUtils.ToCSVField("Predicted Catch " & ts.Name))
                                         sw.Write(",")
                                         sw.Write(cStringUtils.ToCSVField("Observed Catch " & ts.Name))
@@ -615,7 +618,8 @@ Namespace Ecosim
                                             sw.Write(",")
                                         End If
                                     Case 3
-                                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
+                                        If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
+                                            Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
                                             sw.Write(plot.SimData(k))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then

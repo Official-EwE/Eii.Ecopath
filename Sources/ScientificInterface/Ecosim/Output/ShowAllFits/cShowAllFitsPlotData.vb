@@ -83,6 +83,7 @@ Namespace Ecosim
             If (Not Object.ReferenceEquals(Me.m_ts, Nothing)) Then
                 If ((Me.m_ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or _
                     (Me.m_ts.TimeSeriesType = eTimeSeriesType.TotalMortality) Or _
+                    (Me.m_ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Or _
                     (Me.m_ts.TimeSeriesType = eTimeSeriesType.AverageWeight)) Then
                     If (Me.m_ts.DataQ <> 0) Then Me.TSDataScale = CSng(1.0! / Me.m_ts.eDataQ)
                 End If
