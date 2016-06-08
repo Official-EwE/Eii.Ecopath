@@ -227,14 +227,21 @@ Namespace Ecospace.Basemap.Layers
 
         Private Sub OnImportXYZ(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiImportXYZ.Click
+
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.XYZ)
+                Dim l As cEcospaceLayer = Me.m_layerWork.Data
+                If (TypeOf l Is cEcospaceLayerVector) Then
+                    cmd.Invoke(DirectCast(l, cEcospaceLayerVector).VelocityLayers, eNativeLayerFileFormatTypes.XYZ)
+                Else
+                    cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.XYZ)
+                End If
                 Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
                 Me.m_grid.RefreshContent()
             Catch ex As Exception
 
             End Try
+
         End Sub
 
         Private Sub OnImportAscii(sender As System.Object, e As System.EventArgs) _
@@ -242,7 +249,11 @@ Namespace Ecospace.Basemap.Layers
 
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.ASCII)
+                Dim l As cEcospaceLayer = Me.m_layerWork.Data
+                If (TypeOf l Is cEcospaceLayerVector) Then
+                    l = DirectCast(l, cEcospaceLayerVector).VelocityLayers(Me.m_tscmbVectorData.SelectedIndex)
+                End If
+                cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.ASCII)
                 Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
                 Me.m_grid.RefreshContent()
             Catch ex As Exception
@@ -268,17 +279,28 @@ Namespace Ecospace.Basemap.Layers
 
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.ASCII)
+                Dim l As cEcospaceLayer = Me.m_layerWork.Data
+                If (TypeOf l Is cEcospaceLayerVector) Then
+                    l = DirectCast(l, cEcospaceLayerVector).VelocityLayers(Me.m_tscmbVectorData.SelectedIndex)
+                End If
+                cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.ASCII)
                 Me.UpdateControls()
             Catch ex As Exception
 
             End Try
+
         End Sub
 
         Private Sub OnExportXYZ(sender As System.Object, e As System.EventArgs) Handles m_tsmiExportXYZ.Click
+
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data}, eNativeLayerFileFormatTypes.XYZ)
+                Dim l As cEcospaceLayer = Me.m_layerWork.Data
+                If (TypeOf l Is cEcospaceLayerVector) Then
+                    cmd.Invoke(DirectCast(l, cEcospaceLayerVector).VelocityLayers, eNativeLayerFileFormatTypes.XYZ)
+                Else
+                    cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.XYZ)
+                End If
                 Me.UpdateControls()
             Catch ex As Exception
 

@@ -29,7 +29,6 @@ Imports EwEUtils.Core
 ''' <summary>
 ''' Base layer providing access to Ecospace data as cells of single values.
 ''' </summary>
-
 Public Class cEcospaceLayerSingle
     Inherits cEcospaceLayer
 
@@ -61,10 +60,10 @@ Public Class cEcospaceLayerSingle
     ''' <param name="varName"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                   ByVal manager As IEcospaceLayerManager, _
-                   ByVal strName As String, _
-                   ByVal varName As eVarNameFlags, _
+    Public Sub New(ByVal core As cCore,
+                   ByVal manager As IEcospaceLayerManager,
+                   ByVal strName As String,
+                   ByVal varName As eVarNameFlags,
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
         MyBase.New(core, core.m_EcoSpaceData.getLayerID(varName, iIndex), manager, strName, varName, iIndex, GetType(Single))
     End Sub
@@ -76,10 +75,10 @@ Public Class cEcospaceLayerSingle
     ''' <param name="core"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                   ByVal data As Single(,), _
-                   ByVal strName As String, _
-                   Optional ByVal meta As cVariableMetaData = Nothing, _
+    Public Sub New(ByVal core As cCore,
+                   ByVal data As Single(,),
+                   ByVal strName As String,
+                   Optional ByVal meta As cVariableMetaData = Nothing,
                    Optional ByVal vn As eVarNameFlags = eVarNameFlags.NotSet)
 
         MyBase.New(core, CObj(data), strName, GetType(Single), meta, vn)
