@@ -354,7 +354,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub ucLayer_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseClick
+        Protected Overrides Sub OnMouseClick(e As MouseEventArgs)
 
             Dim flag As cDisplayLayer.eChangeFlags = 0
 
@@ -393,10 +393,13 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub ucLayer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DoubleClick
+        Protected Overrides Sub OnDoubleClick(e As EventArgs)
+
             Select Case Me.GetArea(Me.PointToClient(MousePosition))
-                Case eAreaTypes.None, eAreaTypes.Editable
+                Case eAreaTypes.Editable
                     Me.EditLayerConnection()
+                Case eAreaTypes.Preview
+                    Me.EditLayer(eLayerEditTypes.EditVisuals)
                 Case Else
                     Me.EditLayer(eLayerEditTypes.EditData)
             End Select
