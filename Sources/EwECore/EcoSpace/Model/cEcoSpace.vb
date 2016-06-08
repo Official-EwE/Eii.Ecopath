@@ -3186,8 +3186,6 @@ Public Class cEcoSpace
 
     End Sub
 
-
-
     Sub SetMovementParameters()
         'sets solvegrid movement arrays based on depth map
         Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
@@ -3201,6 +3199,47 @@ Public Class cEcoSpace
         Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
         AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
+
+        'set depth for the boundary cells to be equal to the depth just inside the model
+        m_Data.Width(0) = m_Data.Width(1)
+        'm_Data.Width(m_Data.InRow + 1) = m_Data.Width(m_Data.InRow)
+        For i = 1 To m_Data.InRow
+            m_Data.Depth(i, 0) = m_Data.Depth(i, 1)
+            m_Data.Depth(i, m_Data.InCol + 1) = m_Data.Depth(i, m_Data.InCol)
+            If m_Data.Depth(i, 0) > 0 Then
+                m_Data.Xvel(i, 0) = m_Data.Xvel(i, 1)
+                m_Data.Yvel(i, 0) = m_Data.Yvel(i, 1)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(i, 0) = m_Data.HabCap(ip)(i, 1)
+                Next
+            End If
+            If m_Data.Depth(i, m_Data.InCol + 1) > 0 Then
+                m_Data.Xvel(i, m_Data.InCol + 1) = m_Data.Xvel(i, m_Data.InCol)
+                m_Data.Yvel(i, m_Data.InCol + 1) = m_Data.Yvel(i, m_Data.InCol)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(i, m_Data.InCol + 1) = m_Data.HabCap(ip)(i, m_Data.InCol)
+                Next
+            End If
+        Next
+        For j = 1 To m_Data.InCol
+            m_Data.Depth(0, j) = m_Data.Depth(1, j)
+            m_Data.Depth(m_Data.InRow + 1, j) = m_Data.Depth(m_Data.InRow, j)
+            If m_Data.Depth(0, j) > 0 Then
+                m_Data.Xvel(0, j) = m_Data.Xvel(1, j)
+                m_Data.Yvel(0, j) = m_Data.Yvel(1, j)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(0, j) = m_Data.HabCap(ip)(1, j)
+                Next
+            End If
+            If m_Data.Depth(m_Data.InRow + 1, j) > 0 Then
+                m_Data.Xvel(m_Data.InRow + 1, j) = m_Data.Xvel(m_Data.InRow, j)
+                m_Data.Yvel(m_Data.InRow + 1, j) = m_Data.Yvel(m_Data.InRow, j)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(m_Data.InRow + 1, j) = m_Data.HabCap(ip)(m_Data.InRow, j)
+                Next
+            End If
+        Next
+
         For i = 0 To m_Data.InRow
             For j = 0 To m_Data.InCol
                 'check depth on right face of this cell
