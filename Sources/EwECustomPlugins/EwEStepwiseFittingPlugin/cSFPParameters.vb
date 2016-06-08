@@ -113,6 +113,7 @@ Public Class cSFPParameters
                 Case eTimeSeriesType.BiomassRel, _
                      eTimeSeriesType.TotalMortality, _
                      eTimeSeriesType.Catches, _
+                     eTimeSeriesType.CatchesRel, _
                      eTimeSeriesType.AverageWeight
                     count += 1
 
@@ -180,6 +181,7 @@ Public Class cSFPParameters
                 Case eTimeSeriesType.BiomassRel, _
                     eTimeSeriesType.TotalMortality, _
                     eTimeSeriesType.Catches, _
+                    eTimeSeriesType.CatchesRel, _
                     eTimeSeriesType.AverageWeight
                     'If the weight type is not 0 add datapoints of time series to the total number of observations
                     If ts.WtType > 0 Then

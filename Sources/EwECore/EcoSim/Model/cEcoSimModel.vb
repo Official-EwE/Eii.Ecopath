@@ -2228,6 +2228,7 @@ Namespace Ecosim
                                          m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
                                          m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or _
                                          m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or _
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or _
                                          m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing) Then
 
                             Zstat = 0
@@ -2248,7 +2249,7 @@ Namespace Ecosim
                                     Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / Zest))
                                     m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
 
-                                Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing  '6, -6 Absolute Catch Data, Martell, iDatTypean 02
+                                Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel   '6, -6, 61 Absolute Catch Data, Martell, iDatTypean 02
 
                                     If m_Data.FishTime(m_RefData.DatPool(iDType)) > 0 Then
                                         Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / (BB(m_RefData.DatPool(iDType)) * m_Data.FishTime(m_RefData.DatPool(iDType)))))
@@ -3295,12 +3296,17 @@ Namespace Ecosim
                     ' For all other data types it is set to zero so it will not have any scaling effect. I checked this 
                     ' with a few different catch time series and it does appear to be working correctly. 
 
+                    ' VC June 2016: We've run into an issue with catches: Chiara has a model where we can only trust the 
+                    ' trend in the catch data, not the actual values. This may actually be a general problem, so we've added
+                    ' a new time series type, 61 (6 for catches and 1 for relative) catches, relative (reference)
+
                     'Calculate DatQ() for data types that are relative.
                     'These data may not have been entered in the same units as the internal ecosim mean weight
                     'DatQ() is used to normalize/scale the time series data to model units
                     If m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or _
                         m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
-                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Then
+                        m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Then
 
                         m_RefData.DatSS(iDType) = CSng(DatSumZ2(iDType) - DatSumZ(iDType) ^ 2 / DatNobs(iDType))
                         m_RefData.DatQ(iDType) = DatSumZ(iDType) / DatNobs(iDType)
@@ -3330,6 +3336,7 @@ Namespace Ecosim
                         m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or _
                         m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or _
                         m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or _
+                        m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or _
                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or _
                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight) Then
 

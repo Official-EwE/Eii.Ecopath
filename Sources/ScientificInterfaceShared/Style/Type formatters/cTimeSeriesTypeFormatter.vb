@@ -50,6 +50,7 @@ Namespace Style
                 Case eTimeSeriesType.BiomassRel : strType = My.Resources.TS_TYPE_BIOMASSREL
                 Case eTimeSeriesType.Catches : strType = My.Resources.TS_TYPE_CATCHES
                 Case eTimeSeriesType.CatchesForcing : strType = My.Resources.TS_TYPE_CATCHESFORCING
+                Case eTimeSeriesType.CatchesRel : strType = "jeroen to add"
                 Case eTimeSeriesType.ConstantTotalMortality : strType = My.Resources.TS_TYPE_CONSTTOTALMORT
                 Case eTimeSeriesType.EcotracerConcAbs : strType = My.Resources.TS_TYPE_TRACER_CONCABS
                 Case eTimeSeriesType.EcotracerConcRel : strType = My.Resources.TS_TYPE_TRACER_CONCREL

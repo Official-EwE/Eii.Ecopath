@@ -159,6 +159,7 @@ Public Class cResultsHolder
                                  mTimeSeries.DatType(j) = eTimeSeriesType.TotalMortality Or _
                                  mTimeSeries.DatType(j) = eTimeSeriesType.AverageWeight Or _
                                  mTimeSeries.DatType(j) = eTimeSeriesType.Catches Or _
+                                 mTimeSeries.DatType(j) = eTimeSeriesType.CatchesRel Or _
                                  mTimeSeries.DatType(j) = eTimeSeriesType.CatchesForcing) Then
 
                     Select Case mTimeSeries.DatType(j)
@@ -171,7 +172,7 @@ Public Class cResultsHolder
                             zest = DataStructure.loss(mTimeSeries.DatPool(j)) / BiomassAtTimestep(mTimeSeries.DatPool(j))
                             ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / zest))
 
-                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing
+                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel
                             If DataStructure.FishTime(mTimeSeries.DatPool(j)) > 0 Then
                                 ZStat(j, iDyear) = CSng(Math.Log(mTimeSeries.DatVal(iDyear, j) / (BiomassAtTimestep(mTimeSeries.DatPool(j)) * DataStructure.FishTime(mTimeSeries.DatPool(j)))))
                             End If

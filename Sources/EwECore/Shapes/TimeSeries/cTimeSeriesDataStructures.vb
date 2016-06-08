@@ -527,6 +527,7 @@ Public Class cTimeSeriesDataStructures
                (TimeSeriesType = eTimeSeriesType.BiomassRel) Or
                (TimeSeriesType = eTimeSeriesType.Catches) Or
                (TimeSeriesType = eTimeSeriesType.CatchesForcing) Or
+               (TimeSeriesType = eTimeSeriesType.CatchesRel) Or
                (TimeSeriesType = eTimeSeriesType.TotalMortality)
     End Function
 
@@ -695,15 +696,15 @@ Public Class cTimeSeriesDataStructures
                                     PoolForceZ(DatPool(iDType), iDatPt) = 0
                                 End If
 
-                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'Catches, -6 is forced
-                                If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
-                                If DatType(iDType) = eTimeSeriesType.CatchesForcing Then
-                                    PoolForceCatch(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
-                                Else
-                                    PoolForceCatch(DatPool(iDType), iDatPt) = 0
-                                End If
+                        Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel  'Catches, -6 is forced
+                            If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
+                            If DatType(iDType) = eTimeSeriesType.CatchesForcing Then
+                                PoolForceCatch(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                            Else
+                                PoolForceCatch(DatPool(iDType), iDatPt) = 0
+                            End If
 
-                                'Martell playing here!
+                            'Martell playing here!
                         Case eTimeSeriesType.AverageWeight 'Mean Body Weight data for split pool groups
                                 'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
                                 If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1

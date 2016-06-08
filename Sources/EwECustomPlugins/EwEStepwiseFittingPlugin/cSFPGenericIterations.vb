@@ -202,6 +202,7 @@ Public MustInherit Class cSFPGenericIterations
                     Case eTimeSeriesType.BiomassRel, _
                          eTimeSeriesType.TotalMortality, _
                          eTimeSeriesType.Catches, _
+                         eTimeSeriesType.CatchesRel, _
                          eTimeSeriesType.AverageWeight
                         ts.Enabled = True
                     Case eTimeSeriesType.BiomassAbs
