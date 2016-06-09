@@ -173,7 +173,13 @@ Namespace Other
                 Else
                     ' #No: Only update the core setting when representing a auto-save setting
                     If (Me.m_autosavetype <> eAutosaveTypes.NotSet) Then
-                        Me.m_uic.Core.Autosave(Me.m_autosavetype) = (Me.m_cbOption.Checked = True)
+                        If (Me.m_cbOption.Checked = True) Then
+                            Me.m_uic.Core.Autosave(Me.m_autosavetype) = True
+                        Else
+                            Me.m_uic.Core.Autosave(Me.m_autosavetype) = False
+                            ' Clear autosave format
+                            Me.m_uic.Core.AutosaveFormat(Me.m_autosavetype) = ""
+                        End If
                     End If
                 End If
             Catch ex As Exception
