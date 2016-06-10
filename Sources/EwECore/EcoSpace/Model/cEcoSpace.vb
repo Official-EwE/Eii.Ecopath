@@ -1118,6 +1118,8 @@ Public Class cEcoSpace
 
                 Me.RestoreForcedBiomass()
 
+                Me.ForceBiomassWithEcosimTimeSeries()
+
                 For ip = 0 To m_Data.NGroups
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
@@ -1477,6 +1479,95 @@ Public Class cEcoSpace
 
 
     End Sub
+
+    ''' <summary>
+    ''' VC stole this from Ecosim
+    ''' </summary>
+
+    Private Sub ForceBiomassWithEcosimTimeSeries()
+
+        Try
+            'What timeseries are available for forced catches?
+            'Dim ix As Single = Me.EcoSim.TimeSeriesData.PoolForceBB(, )
+
+            For ip As Integer = 0 To m_Data.NGroups
+
+                'Now we can force the biomass:
+                'loop over the Ecosim time series and find the group with forced biomass for this time step
+                'AAAAH Group 1 is forced (as an example, so let's force the biomass of this group
+                If ip = 1 Then
+
+                    If m_Data.TimeNow > 10 Then ' And m_Data.TimeNow < 20 Then
+                        Dim WaterCells As Integer = 0
+                        'this group has forced biomass in Ecosim timeseries
+                        For i As Integer = 1 To m_Data.InRow
+                            For j As Integer = 1 To m_Data.InCol
+                                'jb 12-July-2013 Added Depth check and removed width multiplier
+                                'This fixes a bug in the Ecospace Results grid were biomass was not matching Ecopath base with large spatial models
+
+                                'VC 10-June-2016 The calculation below actually should scale based on area of cell, so cell width
+                                'we should revisit and fix the bug that Joe talkes about above
+                                '****************** SEE ABOVE  ************************
+                                If Me.m_Data.Depth(i, j) > 0 Then
+                                    Btime(ip) += m_Data.Bcell(i, j, ip)
+                                    WaterCells += 1
+                                End If
+                            Next j
+                        Next i
+
+                        'Get the forced biomass (fb)
+                        Dim fb As Single = 0
+                        fb = 0.08 * WaterCells ' * (1 - m_Data.TimeNow / m_Data.TotalTime) 
+
+                        For i As Integer = 1 To m_Data.InRow
+                            For j As Integer = 1 To m_Data.InCol
+                                If Me.m_Data.Depth(i, j) > 0 And Btime(ip) > 0 Then
+                                    m_Data.Bcell(i, j, ip) = m_Data.Bcell(i, j, ip) * fb / Btime(ip)
+
+                                End If
+                            Next j
+                        Next i
+                        'update Btime with the forced biomass (VC: I haven't checked if anything is done with Btime later in code)
+                        Btime(ip) = fb
+                    End If
+                End If
+            Next ip
+
+
+
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+
+    ''' <summary>
+    ''' VC stole this from Ecosim
+    ''' </summary>
+    Private Sub setBiomassForcing(ByVal iModelTimeStep As Integer, iYear As Integer)
+        Dim iGrp As Integer
+        'Get the correct forcing data timestep for this model time step
+        Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iModelTimeStep, iYear)
+
+        'For iGrp = 1 To m_EPData.NumGroups
+        '    ResetPred(iGrp) = False
+        'Next
+
+        If iForcing <= m_RefData.nDatPoints Then  'Force the biomass if such a dataseries exists
+            For iGrp = 1 To m_EPData.NumGroups
+                If m_RefData.PoolForceBB(iGrp, iForcing) > 0 Then
+                    'ResetPred(iGrp) = True
+                    'BB(iGrp) = m_RefData.PoolForceBB(iGrp, iForcing)
+                End If
+            Next
+        End If 'If iyr <= m_refData.NdatYear Then
+
+    End Sub
+
+
+
 
     ''' <summary>
     ''' Update the Depth(,) map used by Ecospace with the Excluded layer
