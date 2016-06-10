@@ -2688,7 +2688,7 @@ Public Class cCore
             Catch ex As Exception
                 cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
             End Try
-            Return ".csv"
+            Return ""
         End Get
         Set(value As String)
             Try
