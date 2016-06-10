@@ -85,9 +85,7 @@ Friend Class cCoreSettings
     ''' -----------------------------------------------------------------------
     Public Property AutosaveFormat(t As eAutosaveTypes) As String
         Get
-            Dim str As String = Me.m_strAutosaveFormat(t)
-            If String.IsNullOrWhiteSpace(str) Then str = ".csv"
-            Return str
+            Return Me.m_strAutosaveFormat(t)
         End Get
         Set(value As String)
             Me.m_strAutosaveFormat(t) = value
