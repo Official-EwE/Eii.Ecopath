@@ -51,26 +51,28 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
-                                        ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
+                                        ByVal rc As System.Drawing.Rectangle,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
-            Me.RenderSymbol(g, rc, Me.GetSymbolColor(value, style))
+
+            If (CBool(value)) Then Me.RenderPreview(g, rc)
+
         End Sub
 
         Public Overrides Function GetDisplayText(value As Object) As String
             Return ""
         End Function
 
-#Region " Internals "
-
         Protected Overrides Function IsStyleValid() As Boolean
             Return True
         End Function
 
-        Protected Sub RenderSymbol(ByVal g As Graphics, _
-                                   ByVal rc As Rectangle, _
+#Region " Internals "
+
+        Protected Sub RenderSymbol(ByVal g As Graphics,
+                                   ByVal rc As Rectangle,
                                    ByVal colorFill As Color)
             If Me.IsStyleValid() Then
                 rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
@@ -85,15 +87,6 @@ Namespace Controls.Map.Layers
                 Me.RenderError(g, rc)
             End If
         End Sub
-
-        ''' <summary>
-        ''' Override to change the colour of the layer symbol.
-        ''' </summary>
-        ''' <param name="value"></param>
-        ''' <param name="style"></param>
-        Protected Overridable Function GetSymbolColor(value As Object, style As cStyleGuide.eStyleFlags) As Color
-            Return Me.VisualStyle.ForeColour
-        End Function
 
 #End Region ' Internals
 

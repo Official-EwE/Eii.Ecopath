@@ -287,6 +287,7 @@
     </Compile>
     <Compile Include="Ecospace\Output\cRunEcospacePlotTypeFormatter.vb" />
     <Compile Include="Other\cEwEIcon.vb" />
+    <Compile Include="Other\cSelectionMonitorFormatter.vb" />
     <Compile Include="Other\cStyleGuideUpdater.vb" />
     <Compile Include="Controls\cEwEStatusBar.designer.vb">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>

@@ -24,10 +24,10 @@ Option Strict On
 
 Imports System.IO
 Imports EwECore
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -95,9 +95,7 @@ Namespace Ecospace.Basemap
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
                 For Each layer As cEcospaceLayer In bm.Layers(eVarNameFlags.NotSet)
-                    If Not TypeOf layer Is cEcospaceLayerVector Then
-                        Me.m_lLayers.Add(layer)
-                    End If
+                    Me.m_lLayers.Add(layer)
                 Next
             End If
 
@@ -208,7 +206,7 @@ Namespace Ecospace.Basemap
                     Next iCol
                 Next iRow
 
-                bSuccess = Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField)
+                bSuccess = Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField, False)
 
             Catch ex As Exception
 
@@ -217,11 +215,11 @@ Namespace Ecospace.Basemap
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             If (bSuccess) Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, strFile),
                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFile)
             Else
-                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strFile),
                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
             End If
 

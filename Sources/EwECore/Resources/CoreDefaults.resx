@@ -124,7 +124,8 @@
     <value>(default)</value>
   </data>
   <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
-    <value>Advection</value>
+    <value>Advection ({0})</value>
+    <comment>{0} velocity field name</comment>
   </data>
   <data name="CORE_DEFAULT_BIOMASSFORCING" xml:space="preserve">
     <value>{0}: {1}</value>
@@ -170,8 +171,8 @@
     <comment>{0} group index, {1} group name</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
-    <value>Habitat {0}</value>
-    <comment>{0} sequential number</comment>
+    <value>{0}: {1}</value>
+    <comment>{0} habitat index, {1} habitat name</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT_ALL" xml:space="preserve">
     <value>All</value>
@@ -192,7 +193,8 @@
     <value>Mixed layer depth</value>
   </data>
   <data name="CORE_DEFAULT_MPA" xml:space="preserve">
-    <value>Marine Protected Areas</value>
+    <value>{0}: {1}</value>
+    <comment>{0} MPA index, {1} MPA name</comment>
   </data>
   <data name="CORE_DEFAULT_MPASEED" xml:space="preserve">
     <value>Seed cells</value>
@@ -227,7 +229,14 @@
     <value>Upwelling</value>
   </data>
   <data name="CORE_DEFAULT_WIND" xml:space="preserve">
-    <value>Wind</value>
+    <value>Wind ({0})</value>
+    <comment>{0} velocity field name</comment>
+  </data>
+  <data name="CORE_DEFAULT_X_VELOCITY" xml:space="preserve">
+    <value>X velocity</value>
+  </data>
+  <data name="CORE_DEFAULT_Y_VELOCITY" xml:space="preserve">
+    <value>Y velocity</value>
   </data>
   <data name="CORE_NEW_FORCINGSHAPE" xml:space="preserve">
     <value>New Forcing Shape</value>

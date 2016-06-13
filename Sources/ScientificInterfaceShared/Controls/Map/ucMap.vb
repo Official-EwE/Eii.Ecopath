@@ -638,16 +638,16 @@ Namespace Controls.Map
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
 
-                                    If (CBool(layExcl.Cell(Y, X)) = False) Or _
-                                       (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Or _
+                                    If (CBool(layExcl.Cell(Y, X)) = False) Or
+                                       (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Or
                                        (layDepth.IsLandCell(Y, X)) Then
 
                                         ptCell = New Point(X, Y)
                                         Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
 
                                         Select Case rl.Data.DataType
-                                            Case eDataTypes.EcospaceLayerDepth, _
-                                                 eDataTypes.EcospaceLayerPort, _
+                                            Case eDataTypes.EcospaceLayerDepth,
+                                                 eDataTypes.EcospaceLayerPort,
                                                  eDataTypes.EcospaceLayerExclusion
                                                 bDrawCell = True
                                             Case Else

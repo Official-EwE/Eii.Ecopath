@@ -481,8 +481,6 @@ Namespace Core
         LayerMigration
         ''' <summary>Ecospace cell advection assignments</summary>
         LayerAdvection
-        ' ''' <summary>Ecospace transport rate layer</summary>
-        LayerAdvectionForcing
         ''' <summary>Ecospace MLD (mixed layer depths) layer</summary>
         LayerMLD
         ''' <summary>Ecospace wind layer</summary>
@@ -2604,6 +2602,7 @@ Namespace Core
 
         ''' <summary>Number of available Ecospace result writers <seealso cref="IEcospaceResultsWriter"></seealso></summary>
         nEcospaceResultWriters
+        nVectorFields
 
     End Enum
 

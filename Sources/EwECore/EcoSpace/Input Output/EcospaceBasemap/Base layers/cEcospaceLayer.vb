@@ -57,6 +57,10 @@ Public MustInherit Class cEcospaceLayer
     Private m_data As Object = Nothing
     ''' <summary>Type of the data.</summary>
     Private m_typeValue As Type = Nothing
+    ''' <summary>States whether cached statistics should be recalculated.</summary>
+    ''' <remarks>True at startup to make sure that stats are properly calculated
+    ''' when first queried.</remarks>
+    Protected m_bInvalidateStats As Boolean = True
 
 #End Region ' Private variables
 

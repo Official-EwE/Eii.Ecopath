@@ -27,10 +27,11 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared
 
 #End Region ' Imports
 
-<CLSCompliant(False)> _
+<CLSCompliant(False)>
 Public Class gridLayerData
     Inherits EwEGrid
 
@@ -106,7 +107,7 @@ Public Class gridLayerData
         Dim cell As Cells.ICell = Nothing
         Dim tCell As Type = Nothing
         Dim data As cEcospaceLayer = Nothing
-        Dim dataV As cEcospaceLayerVector = Nothing
+        Dim dataV As cEcospaceLayerVelocity = Nothing
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         Dim value As Object = Nothing
 
@@ -121,7 +122,7 @@ Public Class gridLayerData
         tCell = data.ValueType
 
         If (Me.DataMode > 0) Then
-            dataV = DirectCast(data, cEcospaceLayerVector)
+            dataV = DirectCast(data, cEcospaceLayerVelocity)
         End If
 
         Me.SuspendLayoutGrid()
@@ -187,7 +188,7 @@ Public Class gridLayerData
                 If (Me.m_layer IsNot Nothing) Then
 
                     ' Assess layer
-                    If (TypeOf Me.m_layer.Data Is cEcospaceLayerVector) Then
+                    If (TypeOf Me.m_layer.Data Is cEcospaceLayerVelocity) Then
                         Me.DataMode = 1
                     End If
 
@@ -234,7 +235,7 @@ Public Class gridLayerData
         Dim sNew As Single = 0.0!
         Dim sOrg As Single = 0.0!
         Dim data As cEcospaceLayer = Nothing
-        Dim dataV As cEcospaceLayerVector = Nothing
+        Dim dataV As cEcospaceLayerVelocity = Nothing
         Dim bChanged As Boolean = False
 
         If Me.m_layer.Editor IsNot Nothing Then
@@ -248,7 +249,7 @@ Public Class gridLayerData
 
         data = layTarget.Data
         If (Me.DataMode > 0) Then
-            dataV = DirectCast(data, cEcospaceLayerVector)
+            dataV = DirectCast(data, cEcospaceLayerVelocity)
         End If
 
         For iRow As Integer = 1 To Me.m_basemap.InRow
@@ -291,12 +292,6 @@ Public Class gridLayerData
         Return bChanged
 
     End Function
-
-    'Private Sub OnLayerChanged(l As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
-    '    If ((cf And cDisplayLayer.eChangeFlags.Map) > 0) Then
-    '        Me.RefreshContent()
-    '    End If
-    'End Sub
 
     Private Sub InvalidateLayer()
         Me.m_bInvalid = True

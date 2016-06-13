@@ -57,13 +57,15 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cLayerRenderer.Render"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub Render(ByVal g As System.Drawing.Graphics, _
-                                    ByVal layer As cDisplayLayer, _
-                                    ByVal rc As System.Drawing.Rectangle, _
-                                    ByVal ptfTL As System.Drawing.PointF, _
-                                    ByVal ptfBR As System.Drawing.PointF, _
+        Public Overrides Sub Render(ByVal g As System.Drawing.Graphics,
+                                    ByVal layer As cDisplayLayer,
+                                    ByVal rc As System.Drawing.Rectangle,
+                                    ByVal ptfTL As System.Drawing.PointF,
+                                    ByVal ptfBR As System.Drawing.PointF,
                                     ByVal style As Style.cStyleGuide.eStyleFlags)
-            Throw New NotImplementedException("ToDo: override this renderer")
+
+            Throw New NotImplementedException("Invalid render mode")
+
         End Sub
 
         ''' -----------------------------------------------------------------------

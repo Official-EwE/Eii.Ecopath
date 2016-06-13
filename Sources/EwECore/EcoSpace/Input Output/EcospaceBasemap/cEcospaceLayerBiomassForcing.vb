@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -66,7 +67,7 @@ Public Class cEcospaceLayerBiomassForcing
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function DefaultName() As String
-        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_BIOMASSFORCING, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_BIOMASSFORCING, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
     End Function
 
 End Class

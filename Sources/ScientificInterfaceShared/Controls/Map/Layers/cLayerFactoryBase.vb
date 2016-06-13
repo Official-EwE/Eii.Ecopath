@@ -62,6 +62,7 @@ Namespace Controls.Map
             Dim renderer As cLayerRenderer = Nothing
             Dim editor As cLayerEditor = Nothing
             Dim vs As cVisualStyle = Nothing
+            Dim fmt As New cVarnameTypeFormatter()
 
             Select Case varName
 
@@ -253,8 +254,10 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                    editor = New cLayerEditorAdvection()
-                    layer = New cDisplayRasterLayer(uic, bmd.LayerAdvection, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
+                    editor = New cLayerEditorVelocity()
+
+                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.GetDescriptor(eVarNameFlags.LayerAdvection), bmd, eVarNameFlags.LayerAdvection)
+                    layer = New cDisplayRasterLayer(uic, wrap, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
 
                     lLayers.Add(layer)
 
@@ -267,8 +270,10 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                    editor = New cLayerEditorVector(Nothing)
-                    layer = New cDisplayRasterLayer(uic, bmd.LayerWind, renderer, editor, bmd, eVarNameFlags.LayerWind)
+                    editor = New cLayerEditorVelocity()
+
+                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.GetDescriptor(eVarNameFlags.LayerWind), bmd, eVarNameFlags.LayerWind)
+                    layer = New cDisplayRasterLayer(uic, wrap, renderer, editor, bmd, eVarNameFlags.LayerWind)
 
                     lLayers.Add(layer)
 
@@ -452,8 +457,7 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerAdvection,
                      eVarNameFlags.LayerMLD,
                      eVarNameFlags.LayerWind,
-                     eVarNameFlags.LayerUpwelling,
-                     eVarNameFlags.LayerAdvectionForcing
+                     eVarNameFlags.LayerUpwelling
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_ADVECTION
 
             End Select

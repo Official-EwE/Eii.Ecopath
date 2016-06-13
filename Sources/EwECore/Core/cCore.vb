@@ -292,7 +292,8 @@ Public Class cCore
                     Return Me.MSEBatchManager.BatchData.nTAC
                 Case eCoreCounterTypes.nMSEBatchTFM
                     Return Me.MSEBatchManager.BatchData.nTFM
-
+                Case eCoreCounterTypes.nVectorFields
+                    Return 2
                 Case Else
                     'Debug.Assert(False, cStringUtils.Localize("{0}.GetCoreCounter() Invalid eCoreCounterTypes enumerator '{1}'.", Me.ToString(), counterType))
                     Return NULL_VALUE
@@ -2656,18 +2657,23 @@ Public Class cCore
                 If (value <> Me.m_settings.Autosave(savetype)) Then
                     Me.m_settings.Autosave(savetype) = value
                     Me.OnSettingsChanged()
-                End If
 
-                ' Ensure defaults when needed
-                Select Case savetype
-                    Case eAutosaveTypes.EcospaceResults
-                        If (value = True And String.IsNullOrWhiteSpace(AutosaveFormat(savetype))) Then
-                            Me.AutosaveFormat(savetype) = cEcospaceASCMapResultsWriter.cDATA_NAME
-                        End If
-                End Select
+                    If (value = True) Then
+                        ' Ensure defaults when needed
+                        Select Case savetype
+                            Case eAutosaveTypes.EcospaceResults
+                                If (String.IsNullOrWhiteSpace(AutosaveFormat(savetype))) Then
+                                    Me.AutosaveFormat(savetype) = cEcospaceASCMapResultsWriter.cDATA_NAME
+                                End If
+                        End Select
+                    Else
+                        Me.AutosaveFormat(savetype) = ""
+                    End If
+                End If
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
+
         End Set
     End Property
 

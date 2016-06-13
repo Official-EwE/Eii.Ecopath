@@ -157,6 +157,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Map\cMapSettings.vb" />
+    <Compile Include="Controls\Map\Core wrapper\cEcospaceLayerVelocity.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerBase.vb" />
     <Compile Include="Controls\Map\DirectRendering\ucLegendBar.Designer.vb">
@@ -166,6 +167,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVelocity.vb" />
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.Designer.vb">
       <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
     </Compile>
@@ -333,7 +335,6 @@
     <Compile Include="Controls\Map\Layers\Layer types\cDisplayRasterLayerBundle.vb" />
     <Compile Include="Controls\Map\Layers\Layer types\cDisplayRasterLayer.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorPort.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorGroup.vb" />
@@ -342,7 +343,6 @@
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRange.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRegion.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorTwoState.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorHabitat.vb" />
     <Compile Include="Controls\Map\Layers\Editing\UI\ILayerEditorGUI.vb" />
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.Designer.vb">
