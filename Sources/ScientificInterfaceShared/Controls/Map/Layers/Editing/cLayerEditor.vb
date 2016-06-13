@@ -394,8 +394,7 @@ Namespace Controls.Map.Layers
                     n = 0
                     For ii As Integer = i - 1 To i + 1
                         For jj As Integer = j - 1 To j + 1
-                            If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And _
-                                (layerDepth.IsWaterCell(ii, jj) Or Layer.VarName = eVarNameFlags.LayerDepth) Then
+                            If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And (layerDepth.IsWaterCell(ii, jj)) Then
                                 t += CSng(Me.Layer.Value(ii, jj))
                                 n += 1
                             End If

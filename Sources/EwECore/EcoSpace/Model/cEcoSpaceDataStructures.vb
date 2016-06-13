@@ -258,8 +258,9 @@ Public Class cEcospaceDataStructures
     Public Xvel(,) As Single, Yvel(,) As Single
     Public Xvloc(,) As Single, Yvloc(,) As Single
     Public UpVel(,) As Single
-    'SM, 3d arrays for time varying current velocities by month.
+    ''' <summary>Wind X velocity (i x j x month)</summary>
     Public Xv(,,) As Single
+    ''' <summary>Wind Y velocity (i x j x month)</summary>
     Public Yv(,,) As Single
 
     Public flow(,) As Single
@@ -2467,28 +2468,11 @@ Public Class cEcospaceDataStructures
                 Case eVarNameFlags.LayerMPA : Return Me.MPADBID
                 Case eVarNameFlags.LayerPort : Return Me.FleetDBID
                 Case eVarNameFlags.LayerSail : Return Me.FleetDBID
+                Case eVarNameFlags.LayerAdvection : Return New Integer() {0, 1, 2}
             End Select
             Return New Integer() {0, 1}
         End Get
     End Property
-
-    'Public ReadOnly Property MapCoreCounters(varname As eVarNameFlags) As eCoreCounterTypes
-    '    Get
-    '        Select Case varname
-    '            Case eVarNameFlags.LayerBiomassForcing : Return eCoreCounterTypes.nGroups
-    '            Case eVarNameFlags.LayerBiomassRelativeForcing : Return eCoreCounterTypes.nGroups
-    '            Case eVarNameFlags.LayerDriver : Return eCoreCounterTypes.nEnvironmentalDriverLayers
-    '            Case eVarNameFlags.LayerHabitat : Return eCoreCounterTypes.nHabitats
-    '            Case eVarNameFlags.LayerHabitatCapacityInput : Return eCoreCounterTypes.nGroups
-    '            Case eVarNameFlags.LayerImportance : Return eCoreCounterTypes.nImportanceLayers
-    '            Case eVarNameFlags.LayerMigration : Return eCoreCounterTypes.nGroups
-    '            Case eVarNameFlags.LayerMPA : Return eCoreCounterTypes.nMPAs
-    '            Case eVarNameFlags.LayerPort : Return eCoreCounterTypes.nFleets
-    '            Case eVarNameFlags.LayerSail : Return eCoreCounterTypes.nFleets
-    '        End Select
-    '        Return eCoreCounterTypes.NotSet
-    '    End Get
-    'End Property
 
 #End Region
 

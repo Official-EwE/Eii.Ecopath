@@ -44,11 +44,11 @@ Public Class cEcospaceLayerPort
             Dim data As Boolean()(,) = DirectCast(Me.Data, Boolean()(,))
             If (Me.Index = 0) Then
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    If data(iFleet)(iRow, iCol) Then Return 1.0!
+                    If data(iFleet)(iRow, iCol) Then Return True
                 Next
-                Return 0.0!
+                Return False
             Else
-                Return CSng(IIF(data(Me.Index)(iRow, iCol), 1.0!, 0.0!))
+                Return data(Me.Index)(iRow, iCol)
             End If
         End Get
         Set(ByVal value As Object)
@@ -56,10 +56,10 @@ Public Class cEcospaceLayerPort
             ' ToDo: only allow coastal cells to be set
             If (Me.Index = 0) Then
                 For iFleet As Integer = 1 To Me.m_core.nFleets
-                    data(iFleet)(iRow, iCol) = (CSng(value) <> 0.0!)
+                    data(iFleet)(iRow, iCol) = CBool(value)
                 Next
             Else
-                data(Me.Index)(iRow, iCol) = (CSng(value) <> 0.0!)
+                data(Me.Index)(iRow, iCol) = CBool(value)
             End If
         End Set
     End Property

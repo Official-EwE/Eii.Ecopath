@@ -22,14 +22,11 @@
 
 Option Explicit On
 Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.SpatialData
 
 #End Region ' Imports
 
@@ -78,8 +75,8 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="layer"></param>
         ''' <param name="edittype"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByRef layer As cDisplayRasterLayer, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByRef layer As cDisplayRasterLayer,
                        ByVal edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
@@ -106,7 +103,7 @@ Namespace Ecospace.Basemap.Layers
 
             ' First set default index, then make vector stuff 'live' if need be ;)
             Me.m_tscmbVectorData.SelectedIndex = 0
-            Me.m_bIsVectorData = (TypeOf Me.m_layerWork.Data Is cEcospaceLayerVector)
+            Me.m_bIsVectorData = (TypeOf Me.m_layerWork.Data Is cEcospaceLayerVelocity)
 
         End Sub
 
@@ -128,7 +125,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_zoommap.Map.AddLayer(Me.m_layerWork)
 
             ' Do not add depth layer if already showing depth layer
-            If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And _
+            If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And
                 (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
                 Me.m_zoommap.Map.AddLayer(Me.m_layerDepth)
             End If
@@ -231,8 +228,8 @@ Namespace Ecospace.Basemap.Layers
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
                 Dim l As cEcospaceLayer = Me.m_layerWork.Data
-                If (TypeOf l Is cEcospaceLayerVector) Then
-                    cmd.Invoke(DirectCast(l, cEcospaceLayerVector).VelocityLayers, eNativeLayerFileFormatTypes.XYZ)
+                If (TypeOf l Is cEcospaceLayerVelocity) Then
+                    cmd.Invoke(DirectCast(l, cEcospaceLayerVelocity).VelocityLayers, eNativeLayerFileFormatTypes.XYZ)
                 Else
                     cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.XYZ)
                 End If
@@ -250,8 +247,8 @@ Namespace Ecospace.Basemap.Layers
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
                 Dim l As cEcospaceLayer = Me.m_layerWork.Data
-                If (TypeOf l Is cEcospaceLayerVector) Then
-                    l = DirectCast(l, cEcospaceLayerVector).VelocityLayers(Me.m_tscmbVectorData.SelectedIndex)
+                If (TypeOf l Is cEcospaceLayerVelocity) Then
+                    l = DirectCast(l, cEcospaceLayerVelocity).VelocityLayers(Me.m_tscmbVectorData.SelectedIndex)
                 End If
                 cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.ASCII)
                 Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.Map)
@@ -280,8 +277,8 @@ Namespace Ecospace.Basemap.Layers
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
                 Dim l As cEcospaceLayer = Me.m_layerWork.Data
-                If (TypeOf l Is cEcospaceLayerVector) Then
-                    l = DirectCast(l, cEcospaceLayerVector).VelocityLayers(Me.m_tscmbVectorData.SelectedIndex)
+                If (TypeOf l Is cEcospaceLayerVelocity) Then
+                    l = DirectCast(l, cEcospaceLayerVelocity).VelocityLayers(Me.m_tscmbVectorData.SelectedIndex)
                 End If
                 cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.ASCII)
                 Me.UpdateControls()
@@ -296,8 +293,8 @@ Namespace Ecospace.Basemap.Layers
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
                 Dim l As cEcospaceLayer = Me.m_layerWork.Data
-                If (TypeOf l Is cEcospaceLayerVector) Then
-                    cmd.Invoke(DirectCast(l, cEcospaceLayerVector).VelocityLayers, eNativeLayerFileFormatTypes.XYZ)
+                If (TypeOf l Is cEcospaceLayerVelocity) Then
+                    cmd.Invoke(DirectCast(l, cEcospaceLayerVelocity).VelocityLayers, eNativeLayerFileFormatTypes.XYZ)
                 Else
                     cmd.Invoke(New cEcospaceLayer() {l}, eNativeLayerFileFormatTypes.XYZ)
                 End If

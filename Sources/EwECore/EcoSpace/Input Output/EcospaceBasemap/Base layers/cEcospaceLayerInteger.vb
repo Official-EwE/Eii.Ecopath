@@ -41,11 +41,6 @@ Public Class cEcospaceLayerInteger
     ''' <summary>Layer num of cells with a value.</summary>
     Protected m_iNumValueCells As Integer = 0
 
-    ''' <summary>States whether cached statistics should be recalculated.</summary>
-    ''' <remarks>True at startup to make sure that stats are properly calculated
-    ''' when first queried.</remarks>
-    Protected m_bInvalidateStats As Boolean = True
-
 #End Region ' Private variables
 
 #Region " Construction "

@@ -21,8 +21,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -30,7 +31,7 @@ Imports EwEUtils.Core
 ''' Layer providing access to Ecospace advection data.
 ''' </summary>
 Public Class cEcospaceLayerAdvection
-    Inherits cEcospaceLayerVector
+    Inherits cEcospaceLayerSingle
 
 #Region " Construction "
 
@@ -41,58 +42,22 @@ Public Class cEcospaceLayerAdvection
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
 
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, _
-                   My.Resources.CoreDefaults.CORE_DEFAULT_ADVECTION, _
-                   eVarNameFlags.LayerAdvection, 1)
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerAdvection, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerAdvection
 
     End Sub
 
 #End Region ' Construction
 
-#Region " Private bits "
+#Region " Overrides "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get X velocity data.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Property XVelocity(ByVal iRow As Integer, ByVal iCol As Integer) As Single
-        Get
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                Return DirectCast(Me.Data, Single()(,))(0)(iRow, iCol)
-            End If
-            Return cCore.NULL_VALUE
-        End Get
-        Set(ByVal value As Single)
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                DirectCast(Me.Data, Single()(,))(0)(iRow, iCol) = value
-            End If
-        End Set
-    End Property
+    Protected Overrides Function DefaultName() As String
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_ADVECTION,
+                                     cSystemUtils.IIF(Me.Index = 1, My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY, My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY))
+    End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get Y velocity data.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Property YVelocity(ByVal iRow As Integer, ByVal iCol As Integer) As Single
-        Get
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                Return DirectCast(Me.Data, Single()(,))(1)(iRow, iCol)
-            End If
-            Return cCore.NULL_VALUE
-        End Get
-        Set(ByVal value As Single)
-            If Me.ValidateCellPosition(iRow, iCol) Then
-                DirectCast(Me.Data, Single()(,))(1)(iRow, iCol) = value
-            End If
-        End Set
-
-    End Property
-
-#End Region ' Private bits
+#End Region ' Overrides
 
 End Class

@@ -27,7 +27,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -52,7 +51,7 @@ Namespace Ecospace.Advection
         Private m_dlgtProgress As cAdvectionManager.ComputationProgressDelegate = Nothing
         Private m_dlgtStopped As cAdvectionManager.ComputationCompletedDelegate = Nothing
 
-        Private m_edtWind As cLayerEditorVector = Nothing
+        Private m_edtWind As cLayerEditorVelocity = Nothing
         Private m_edtMLD As cLayerEditor = Nothing
         Private m_edtUpwell As cLayerEditor = Nothing
 
@@ -102,7 +101,7 @@ Namespace Ecospace.Advection
             Me.m_tscmMonth.SelectedIndex = 0
 
             ' Initialize editors
-            Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVector)
+            Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVelocity)
             Me.m_edtWind.GUI = Me
             Me.m_edtMLD = Me.m_ucMLD.DataLayer.Editor
             Me.m_edtMLD.GUI = Me
@@ -201,7 +200,9 @@ Namespace Ecospace.Advection
             If Me.UIContext Is Nothing Then Return
 
             Dim layer As cDisplayRasterLayer = Me.m_ucWind.DataLayer
-            DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
+                DirectCast(lvel, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            Next
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
         End Sub
@@ -297,8 +298,8 @@ Namespace Ecospace.Advection
             Me.m_ucMap.Invalidate()
 
             If bBadFlow Then
-                Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_ADVECTION_INBALANCED, _
-                                                 eCoreComponentType.EcoSpace, eMessageType.Any, _
+                Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_ADVECTION_INBALANCED,
+                                                 eCoreComponentType.EcoSpace, eMessageType.Any,
                                                  eMessageImportance.Warning, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
                 fmsg.Suppressable = True
                 Me.Core.Messages.SendMessage(fmsg)

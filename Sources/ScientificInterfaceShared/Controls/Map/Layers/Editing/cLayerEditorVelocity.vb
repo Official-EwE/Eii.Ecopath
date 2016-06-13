@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -29,10 +29,10 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports interactions with <see cref="cEcospaceLayerVector">vector layers</see>.
+    ''' Layer editor that supports interactions with <see cref="cEcospaceLayerVelocity">velocity layers</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorVector
+    Public Class cLayerEditorVelocity
         Inherits cLayerEditor
 
 #Region " Private vars "
@@ -45,11 +45,7 @@ Namespace Controls.Map.Layers
 #Region " Construction "
 
         Public Sub New()
-            Me.New(Nothing)
-        End Sub
-
-        Public Sub New(ByVal t As Type)
-            MyBase.New(t)
+            MyBase.New(GetType(ucLayerEditorRange))
         End Sub
 
 #End Region ' Construction
@@ -66,12 +62,12 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Edit"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Edit(ByVal ptFrom As Point, _
-                                  ByVal ptTo As Point, _
-                                  ByVal ptDeltaMouse As Point, _
-                                  ByVal szfCell As SizeF, _
-                                  ByVal args As MouseEventArgs, _
-                                  ByRef ptUpdateMin As Point, _
+        Public Overrides Sub Edit(ByVal ptFrom As Point,
+                                  ByVal ptTo As Point,
+                                  ByVal ptDeltaMouse As Point,
+                                  ByVal szfCell As SizeF,
+                                  ByVal args As MouseEventArgs,
+                                  ByRef ptUpdateMin As Point,
                                   ByRef ptUpdateMax As Point)
 
             Me.m_ptfDelta = New PointF(ptDeltaMouse.X, ptDeltaMouse.Y)
@@ -101,9 +97,9 @@ Namespace Controls.Map.Layers
         ''' <param name="e">Mouse event args accompanying this action.</param>
         ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub SetCellValue(ByVal ptSet As Point, _
-                                             ByVal value As Object, _
-                                             ByVal e As MouseEventArgs, _
+        Protected Overrides Sub SetCellValue(ByVal ptSet As Point,
+                                             ByVal value As Object,
+                                             ByVal e As MouseEventArgs,
                                              ByVal ptClick As Point)
 
             If (Not Me.IsEditable) Then Return
@@ -114,7 +110,7 @@ Namespace Controls.Map.Layers
             If dx <= 2 Then Return
 
             Dim sVal As Single = CSng(Me.CellValue)
-            Me.Layer.Value(ptSet.Y, ptSet.X) = New Single() {Me.m_ptfDelta.X * sVal / dx, _
+            Me.Layer.Value(ptSet.Y, ptSet.X) = New Single() {Me.m_ptfDelta.X * sVal / dx,
                                                              Me.m_ptfDelta.Y * sVal / dx}
 
         End Sub
@@ -152,7 +148,7 @@ Namespace Controls.Map.Layers
 
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim l As cEcospaceLayerVector = CType(Me.Layer.Data, cEcospaceLayerVector)
+            Dim l As cEcospaceLayerVelocity = CType(Me.Layer.Data, cEcospaceLayerVelocity)
             Dim v As Single = CSng(Me.CellValue)
 
             For i As Integer = 1 To bm.InRow
@@ -178,7 +174,7 @@ Namespace Controls.Map.Layers
 
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim layer As EwECore.cEcospaceLayerVector = CType(Me.Layer.Data, cEcospaceLayerVector)
+            Dim layer As cEcospaceLayerVelocity = CType(Me.Layer.Data, cEcospaceLayerVelocity)
             Dim cnewx(,) As Single
             Dim cnewy(,) As Single
             Dim i As Integer, j As Integer

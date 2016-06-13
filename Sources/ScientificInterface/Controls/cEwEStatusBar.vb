@@ -193,8 +193,8 @@ Public Class cEwEStatusBar
             ' ----------------------
             ' Datasource and Ecopath
             ' ----------------------
-            strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, _
-                                       eweModel.Name, _
+            strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP,
+                                       eweModel.Name,
                                        m_frmEwE6.SelectedFileName)
             Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, strTooltip)
 
@@ -207,15 +207,15 @@ Public Class cEwEStatusBar
                 If core.ActiveTimeSeriesDatasetIndex > 0 Then
                     tsds = core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex)
                     strName = tsds.Name
-                    strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
-                                               simScenario.Name, _
-                                               strName, _
+                    strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP,
+                                               simScenario.Name,
+                                               strName,
                                                Me.ToTooltipLabel(simScenario.Description))
                     strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, simScenario.Name, strName)
                 Else
-                    strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
-                                               simScenario.Name, _
-                                               Me.ToTooltipLabel(""), _
+                    strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP,
+                                               simScenario.Name,
+                                               Me.ToTooltipLabel(""),
                                                Me.ToTooltipLabel(simScenario.Description))
                     strName = simScenario.Name
                 End If
@@ -229,13 +229,13 @@ Public Class cEwEStatusBar
             ' -------
             If (core.ActiveEcospaceScenarioIndex >= 0) Then
                 spaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
-                strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, _
-                                           spaceScenario.Name, _
+                strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP,
+                                           spaceScenario.Name,
                                            Me.ToTooltipLabel(spaceScenario.Description))
                 Dim man As cSpatialDataConnectionManager = core.SpatialDataConnectionManager
                 Dim n As Integer = man.NumConnectedAdapters
                 If (n > 0) Then
-                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name, _
+                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name,
                                             cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, n))
                 Else
                     strName = spaceScenario.Name
@@ -250,9 +250,9 @@ Public Class cEwEStatusBar
             ' -------
             If (core.ActiveEcotracerScenarioIndex >= 0) Then
                 tracerScenario = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex)
-                strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, _
-                                           cStringUtils.vbNewline, _
-                                           tracerScenario.Name, _
+                strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP,
+                                           cStringUtils.vbNewline,
+                                           tracerScenario.Name,
                                            Me.ToTooltipLabel(tracerScenario.Description))
                 Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, strTooltip)
             Else
@@ -287,8 +287,8 @@ Public Class cEwEStatusBar
     ''' <param name="strTooltipText">Tooltip text to assign to the item. If this value
     ''' is an empty string no tooltip will appear.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateToolstripItem(ByVal tsi As ToolStripItem, _
-            Optional ByVal strText As String = "", _
+    Private Sub UpdateToolstripItem(ByVal tsi As ToolStripItem,
+            Optional ByVal strText As String = "",
             Optional ByVal strTooltipText As String = "")
 
         ' Abort if something went wrong
@@ -325,8 +325,8 @@ Public Class cEwEStatusBar
         ' Store original text
         Me.m_strLastStatusText = strText
 
-        '' Obtain alternate text from selection monitor
-        'If String.IsNullOrEmpty(strText) Then strText = New cSelectionMonitorFormatter().GetDescriptor(Me.m_selmon, eDescriptorTypes.Name)
+        ' Obtain alternate text from selection monitor
+        If String.IsNullOrEmpty(strText) Then strText = New cSelectionMonitorFormatter().GetDescriptor(Me.m_selmon, eDescriptorTypes.Name)
 
         ' Optimization
         If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) Then

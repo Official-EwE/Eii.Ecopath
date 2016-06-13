@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -54,7 +55,7 @@ Public Class cEcospaceLayerMPA
     End Property
 
     Protected Overrides Function DefaultName() As String
-        Return My.Resources.CoreDefaults.CORE_DEFAULT_MPA
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MPA, Me.Index, Me.m_core.EcospaceMPAs(Me.Index).Name)
     End Function
 
 End Class

@@ -62,37 +62,37 @@ Public Class cEcospaceBasemap
 
             ' InRow
             meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int, _
+            val = New cValue(0, eVarNameFlags.InRow, eStatusFlags.Null, eValueTypes.Int,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' InCol
             meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int, _
+            val = New cValue(0, eVarNameFlags.InCol, eStatusFlags.Null, eValueTypes.Int,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' CellLength
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng, _
+            val = New cValue(1, eVarNameFlags.CellLength, eStatusFlags.Null, eValueTypes.Sng,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' CellSize
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(1, eVarNameFlags.CellSize, eStatusFlags.Null, eValueTypes.Sng, _
+            val = New cValue(1, eVarNameFlags.CellSize, eStatusFlags.Null, eValueTypes.Sng,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' Latitude (top-left coord of layer)
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng, _
+            val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' Longitude (top-left coord of layer)
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng, _
+            val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -168,7 +168,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerPort
-            meta = New cVariableMetaData(CSng(False), CSng(True), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData()
             val = New cValue(0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -179,13 +179,13 @@ Public Class cEcospaceBasemap
 
             ' Advection interface
             ' LayerAdvection
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.SingleArray, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerWind
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.SingleArray, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerUpwelling
@@ -196,11 +196,6 @@ Public Class cEcospaceBasemap
             ' LayerMLD
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerMLD, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            ' Advection forcing
-            meta = New cVariableMetaData(-1000, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
-            val = New cValue(0, eVarNameFlags.LayerAdvectionForcing, eStatusFlags.Null, eValueTypes.SingleArray, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' LayerDriver
@@ -326,15 +321,16 @@ Public Class cEcospaceBasemap
             Me.m_dictLayers(eVarNameFlags.LayerSail) = llayers.ToArray()
 
             ' Advection
-            Me.m_dictLayers(eVarNameFlags.LayerAdvection) = New cEcospaceLayer() {New cEcospaceLayerAdvection(theCore, Me)}
-            ' Advection forcing
             llayers.Clear()
-            llayers.Add(New cEcospaceLayerAdvectionForcing(theCore, Me, 0))
-            llayers.Add(New cEcospaceLayerAdvectionForcing(theCore, Me, 1))
-            Me.m_dictLayers(eVarNameFlags.LayerAdvectionForcing) = llayers.ToArray()
+            llayers.Add(New cEcospaceLayerAdvection(theCore, Me, 1))
+            llayers.Add(New cEcospaceLayerAdvection(theCore, Me, 2))
+            Me.m_dictLayers(eVarNameFlags.LayerAdvection) = llayers.ToArray()
 
             ' Wind
-            Me.m_dictLayers(eVarNameFlags.LayerWind) = New cEcospaceLayer() {New cEcospaceLayerWind(theCore, Me)}
+            llayers.Clear()
+            llayers.Add(New cEcospaceLayerWind(theCore, Me, 1))
+            llayers.Add(New cEcospaceLayerWind(theCore, Me, 2))
+            Me.m_dictLayers(eVarNameFlags.LayerWind) = llayers.ToArray()
 
             ' Upwelling
             Me.m_dictLayers(eVarNameFlags.LayerUpwelling) = New cEcospaceLayer() {New cEcospaceLayerUpwelling(theCore, Me)}
@@ -358,9 +354,9 @@ Public Class cEcospaceBasemap
 
 #Region " Overrides "
 
-    Public Overrides Function GetVariable(VarName As eVarNameFlags, _
-                                          Optional iIndex As Integer = -9999, _
-                                          Optional iIndex2 As Integer = -9999, _
+    Public Overrides Function GetVariable(VarName As eVarNameFlags,
+                                          Optional iIndex As Integer = -9999,
+                                          Optional iIndex2 As Integer = -9999,
                                           Optional iIndex3 As Integer = -9999) As Object
 
         ' JS 07Jul14: cell size is now a derived value
@@ -370,8 +366,8 @@ Public Class cEcospaceBasemap
         Return MyBase.GetVariable(VarName, iIndex, iIndex2, iIndex3)
     End Function
 
-    Public Overrides Function SetVariable(VarName As eVarNameFlags, _
-                                          newValue As Object, _
+    Public Overrides Function SetVariable(VarName As eVarNameFlags,
+                                          newValue As Object,
                                           Optional iSecondaryIndex As Integer = -9999) As Boolean
 
         ' JS 07Jul14: cell size is now a derived value
@@ -518,7 +514,7 @@ Public Class cEcospaceBasemap
     Public Property PosBottomRight() As Drawing.PointF
 
         Get
-            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)) + Me.CellSize * Me.InCol, _
+            Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)) + Me.CellSize * Me.InCol,
                                       CSng(GetVariable(eVarNameFlags.Latitude)) - Me.CellSize * Me.InRow)
         End Get
 
@@ -780,9 +776,10 @@ Public Class cEcospaceBasemap
     ''' two amplitude components, XVel and YVel. See the actual layer for details.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerWind() As cEcospaceLayerWind
+    Public ReadOnly Property LayerWind() As cEcospaceLayer ' cEcospaceLayerWind
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind)(0), cEcospaceLayerWind)
+            'Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind)(0), cEcospaceLayerWind)
+            Return Nothing
         End Get
     End Property
 
@@ -863,7 +860,17 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.NotSet
                 Dim l As New List(Of cEcospaceLayer)
                 For Each vn As eVarNameFlags In Me.m_dictLayers.Keys
-                    l.AddRange(Me.m_dictLayers(vn))
+                    Select Case vn
+                        Case eVarNameFlags.LayerMigration
+                            Dim tmp As cEcospaceLayer() = Me.m_dictLayers(vn)
+                            For i As Integer = 1 To Me.m_core.nGroups
+                                If Me.m_core.EcospaceGroups(i).IsMigratory Then
+                                    l.Add(tmp(i - 1))
+                                End If
+                            Next
+                        Case Else
+                            l.AddRange(Me.m_dictLayers(vn))
+                    End Select
                 Next
                 Return l.ToArray
             Case Else
@@ -877,9 +884,12 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer _
         Implements IEcospaceLayerManager.Layer
-        If (iIndex = cCore.NULL_VALUE) Then iIndex = 0
-        If (iIndex < 0) Then iIndex = 0
-        Return Me.Layers(varName)(iIndex)
+        If (iIndex < 0) Then iIndex = 1
+
+        For Each l As cEcospaceLayer In Me.Layers(varName)
+            If l.Index = iIndex Then Return l
+        Next
+        Return Nothing
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -910,13 +920,11 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection
-                Return New Single()(,) {Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel}
-            Case eVarNameFlags.LayerAdvectionForcing
-                Return cSystemUtils.IIF(iIndex = 0, Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel)
+                Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel)
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcoSpaceData.MigMaps
             Case eVarNameFlags.LayerWind
-                Return New Single()(,,) {Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv}
+                Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv)
             Case eVarNameFlags.LayerUpwelling
                 Return Me.m_core.m_EcoSpaceData.flow
             Case eVarNameFlags.LayerMLD

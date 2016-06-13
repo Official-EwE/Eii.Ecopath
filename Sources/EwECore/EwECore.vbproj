@@ -195,9 +195,7 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerExclusion.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvectionForcing.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerVelocity.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerExclusion.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceAvgModelAreaResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
@@ -497,7 +495,6 @@
     <Compile Include="EcoSim\Input Output\cEcosimOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimResultWriter.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetInput.vb" />
-    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerVector.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerAdvection.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerImportance.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceBasemap.vb" />

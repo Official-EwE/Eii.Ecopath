@@ -1580,9 +1580,9 @@ Namespace Controls
                         ' Get curve info
                         info = Me.CurveInfo(ci)
                         bIncludeCurve = True
-                        If (info IsNot Nothing) Then
-                            bIncludeCurve = (info.LineType = eLineType.ModelData)
-                        End If
+                        'If (info IsNot Nothing) Then
+                        '    bIncludeCurve = (info.LineType = eLineType.ModelData)
+                        'End If
                         If bIncludeCurve Then
                             lLines.Add(ci)
                         End If

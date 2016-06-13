@@ -415,9 +415,10 @@ Namespace Controls.Map.Layers
             Get
                 'If Object.ReferenceEquals(Me.m_sValueSet, Nothing) Then Return False
 
-                ' Composed value types are too horrendous to test - just assuma a value is there
+                ' Composed value types are too horrendous to test - just assume a value is there
                 ' until a better idea is conconcted.
-                If TypeOf (objValue) Is Array Then Return True
+                If (TypeOf (objValue) Is Array) Then Return True
+                If (TypeOf (objValue) Is Boolean) Then Return (CBool(objValue))
 
                 Dim sCellValue As Single = CSng(objValue)
 

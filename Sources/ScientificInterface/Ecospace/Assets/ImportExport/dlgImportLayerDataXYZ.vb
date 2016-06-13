@@ -27,9 +27,8 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -92,7 +91,7 @@ Namespace Ecospace.Basemap
 
             If (Me.m_lLayers.Count = 0) Then
                 For Each layer As cEcospaceLayer In bm.Layers(eVarNameFlags.NotSet)
-                    If Not TypeOf layer Is cEcospaceLayerVector Then
+                    If Not TypeOf layer Is cEcospaceLayerVelocity Then
                         Me.m_lLayers.Add(layer)
                     End If
                 Next
@@ -191,7 +190,7 @@ Namespace Ecospace.Basemap
             Debug.Assert(Me.m_data IsNot Nothing, Me.ToString + ".ReadCSVFile() cEcospaceImportExportXYData has not been initialized correctly.")
 
             If Not Me.m_data.ReadXYFile(Me.m_tbInput.Text, Me.RowField, Me.ColField) Then
-                Dim msg As New cMessage(cStringUtils.Localize(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text), _
+                Dim msg As New cMessage(cStringUtils.Localize(SharedResources.FILE_LOAD_ERROR_READ, Me.m_tbInput.Text),
                                         eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
                 Me.m_uic.Core.Messages.SendMessage(msg)
                 bSuccess = False
@@ -336,7 +335,7 @@ Namespace Ecospace.Basemap
 #Region " DevStudio generated surprises "
 
         'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -350,7 +349,7 @@ Namespace Ecospace.Basemap
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportLayerDataXYZ))
             Me.m_lblSource = New System.Windows.Forms.Label()
