@@ -149,10 +149,10 @@ Public MustInherit Class cIndicators
     ''' <param name="stanzaDS">The <see cref="cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
     ''' <param name="taxonDS">The <see cref="cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                   ByVal ecopathDS As cEcopathDataStructures, _
-                   ByVal stanzaDS As cStanzaDatastructures, _
-                   ByVal taxonDS As cTaxonDataStructures, _
+    Public Sub New(ByVal core As cCore,
+                   ByVal ecopathDS As cEcopathDataStructures,
+                   ByVal stanzaDS As cStanzaDatastructures,
+                   ByVal taxonDS As cTaxonDataStructures,
                    ByVal lookup As cTaxonAnalysis)
 
         ' Sanity checks
@@ -396,11 +396,11 @@ Public MustInherit Class cIndicators
             sEndemicC = sEndemicC + (sC * ta.GroupCatchProportion(iGroup, eOccurrenceStatusTypes.Endemic))
             sIUCNB = sIUCNB + (sB * ta.GroupBiomassProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
             sIUCNC = sIUCNC + (sC * ta.GroupCatchProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
-            sMSRB = sMSRB + ((sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Birds)) + _
-                             (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) + _
+            sMSRB = sMSRB + ((sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Birds)) +
+                             (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) +
                              (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Reptiles)))
-            sMSRC = sMSRC + ((sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) + _
-                             (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) + _
+            sMSRC = sMSRC + ((sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) +
+                             (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) +
                              (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
             sDemB = sDemB + (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
                 (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +

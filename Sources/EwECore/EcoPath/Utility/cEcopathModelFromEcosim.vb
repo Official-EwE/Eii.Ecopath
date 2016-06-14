@@ -104,15 +104,12 @@ Public Class cEcopathModelFromEcosim
     ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveModel(ByVal strFileName As String, _
-                              ByVal strModelName As String, _
-                              ByVal iTime As Integer, _
-                              ByVal BACalculation As eBACalcTypes, _
-                              ByVal iNumYearsAverage As Integer, _
+    Public Function SaveModel(ByVal strFileName As String,
+                              ByVal strModelName As String,
+                              ByVal iTime As Integer,
+                              ByVal BACalculation As eBACalcTypes,
+                              ByVal iNumYearsAverage As Integer,
                               ByVal WeightPower As Single) As eDatasourceAccessType
-
-        ' ToDo: localize this
-        ' ToDo: support other datasource formats too, please!
 
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
 
@@ -125,7 +122,7 @@ Public Class cEcopathModelFromEcosim
             coreDest.PluginManager = Nothing
 
             If String.IsNullOrEmpty(Path.GetExtension(strFileName)) Then
-                strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.Access2007)
+                strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.Access2003)
             End If
 
             atResult = db.Create(strFileName, strModelName, True, strAuthor:=Me.m_core.DefaultAuthor)
@@ -151,18 +148,20 @@ Public Class cEcopathModelFromEcosim
         Catch ex As Exception
             atResult = eDatasourceAccessType.Failed_Unknown
             cLog.Write(ex)
-            Me.LogSuccess(cStringUtils.Localize("Error generating model '{0}': {1}", strFileName, ex.Message), False)
         End Try
-
-        If (atResult = eDatasourceAccessType.Created) Then
-            Me.LogSuccess(cStringUtils.Localize("Model successfully saved to '{0}'", strFileName), True)
-        Else
-            Me.LogSuccess(cStringUtils.Localize("Failed to save mode to '{0}'", strFileName), False)
-        End If
 
         Return atResult
 
     End Function
+
+    Public Sub LogStatus(strStatus As String, status As eStatusFlags)
+
+        Debug.Assert(Not Me.m_msgStatus Is Nothing)
+
+        Dim vs As New cVariableStatus(status, strStatus, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+        Me.m_msgStatus.AddVariable(vs)
+
+    End Sub
 
 #End Region ' Public access
 
@@ -455,28 +454,6 @@ Public Class cEcopathModelFromEcosim
         Return True
 
     End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Append a result notification to the current status message
-    ''' </summary>
-    ''' <param name="strMessage"></param>
-    ''' <param name="bSuccess"></param>
-    ''' -----------------------------------------------------------------------
-    Public Sub LogSuccess(strMessage As String, bSuccess As Boolean)
-
-        Dim vs As cVariableStatus = Nothing
-
-        If (Me.m_msgStatus IsNot Nothing) Then
-            If bSuccess Then
-                vs = New cVariableStatus(eStatusFlags.OK, strMessage, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
-            Else
-                vs = New cVariableStatus(eStatusFlags.ErrorEncountered, strMessage, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
-            End If
-            Me.m_msgStatus.AddVariable(vs)
-        End If
-
-    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

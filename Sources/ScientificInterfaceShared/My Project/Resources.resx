@@ -1857,12 +1857,6 @@
     <value>Define supply for '{0}'</value>
     <comment>{0}=function name</comment>
   </data>
-  <data name="PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
-    <value>Define mediating groups and fleets...</value>
-  </data>
-  <data name="PROMPT_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
-    <value>Define supply...</value>
-  </data>
   <data name="HEADER_PROPORTION_B" xml:space="preserve">
     <value>Proportion of biomass</value>
   </data>
@@ -2030,8 +2024,8 @@
   <data name="CAPACITY_SET_SHAPE_MINMAX" xml:space="preserve">
     <value>Set input data range for function {0}</value>
   </data>
-  <data name="HEADER_ASSIGNED_CAPACITY_SHAPE" xml:space="preserve">
-    <value>Capacity of input value for {0}</value>
+  <data name="HEADER_ASSIGNED_FORAGING_RESPONSES" xml:space="preserve">
+    <value>Foraging response to {0}</value>
   </data>
   <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
     <value>Map histogram &amp; Response function</value>
@@ -3400,5 +3394,9 @@
   </data>
   <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
     <value>Relative catches (reference)</value>
+  </data>
+  <data name="HEADER_ASSIGNED_ENV_FORCING" xml:space="preserve">
+    <value>Assigned environmental forcing to {0}</value>
+    <comment>{0}: function name</comment>
   </data>
 </root>

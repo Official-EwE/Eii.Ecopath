@@ -3340,11 +3340,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Capacity of input value for {0}.
+        '''  Looks up a localized string similar to Assigned environmental forcing to {0}.
         '''</summary>
-        Public ReadOnly Property HEADER_ASSIGNED_CAPACITY_SHAPE() As String
+        Public ReadOnly Property HEADER_ASSIGNED_ENV_FORCING() As String
             Get
-                Return ResourceManager.GetString("HEADER_ASSIGNED_CAPACITY_SHAPE", resourceCulture)
+                Return ResourceManager.GetString("HEADER_ASSIGNED_ENV_FORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Foraging response to {0}.
+        '''</summary>
+        Public ReadOnly Property HEADER_ASSIGNED_FORAGING_RESPONSES() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ASSIGNED_FORAGING_RESPONSES", resourceCulture)
             End Get
         End Property
         
@@ -7704,24 +7713,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("PrintPreviewHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Define mediating groups and fleets....
-        '''</summary>
-        Public ReadOnly Property PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Define supply....
-        '''</summary>
-        Public ReadOnly Property PROMPT_DEFINE_MEDIATING_LANDINGS() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_DEFINE_MEDIATING_LANDINGS", resourceCulture)
             End Get
         End Property
         

@@ -73,15 +73,7 @@ Namespace Controls
             MyBase.Attach(stb, stbtb, sp, sptb)
 
             Me.MediationAssignments = ma
-            If (Me.MediationAssignments IsNot Nothing) Then
-                Me.MediationAssignments.Title = ""
-                Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
-            End If
-
             Me.MediationAssignmentsToolbar = mat
-            If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
-                Me.MediationAssignmentsToolbar.DefineMediationLabel = My.Resources.PROMPT_DEFINE_MEDIATING_GROUPSANDFLEETS
-            End If
 
             ' Manually update selection
             Me.MediationAssignments.Shape = DirectCast(Me.SelectedShape, cMediationBaseFunction)
@@ -343,14 +335,7 @@ Namespace Controls
         Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
             MyBase.OnShapeSelected(shape)
             If (Me.MediationAssignments IsNot Nothing) Then
-                Dim strTitle As String = ""
-                If shape IsNot Nothing Then
-                    If shape.Length > 0 Then
-                        Dim fmt As New cCoreInterfaceFormatter()
-                        strTitle = cStringUtils.Localize(My.Resources.HEADER_ASSIGNED_LANDINGS_SHAPE, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
-                    End If
-                End If
-                Me.MediationAssignments.Title = strTitle
+                Me.MediationAssignments.Title = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
             End If
         End Sub
 

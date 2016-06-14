@@ -853,7 +853,7 @@ Public Class cEcopathDataStructures
 
         If b_resp_below_zero Then
             strMsg = My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING
-            Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, _
+            Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered,
                                                     eCoreComponentType.EcoPath, eMessageImportance.Warning))
         End If
     End Sub
@@ -903,7 +903,6 @@ Public Class cEcopathDataStructures
         'ElseIf Me.DiversityIndex = 1 Then
         '    Me.Shannon = m_Ecofunctions.ShannonDiversityIndex(NumLiving, B)
         'End If
-        '*** Jeroen **** above
 
     End Sub
 
