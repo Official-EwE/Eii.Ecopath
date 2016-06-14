@@ -115,7 +115,7 @@ Namespace Ecosim
             Me.m_params = Core.EcoSimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
 
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
@@ -189,22 +189,18 @@ Namespace Ecosim
             Select Case msg.Source
 
                 Case eCoreComponentType.EcoSim
-                    'handle ecosim messages
-                    EcosimMessageHandler(msg)
+                    HandleEcosimMessage(msg)
 
                 Case eCoreComponentType.ShapesManager
-                    ' Respond to relevant shape changes
-                    If (Me.m_shapeGUIHandler Is Nothing) Then Return
-
-                    If (((Me.SelectionMode = eSelectionModeType.Fleets) And (msg.DataType = eDataTypes.FishingEffort)) Or _
-                        ((Me.SelectionMode = eSelectionModeType.Groups) And (msg.DataType = eDataTypes.FishMort))) Then
-                        Me.m_shapeGUIHandler.Refresh()
-                    End If
+                    HandleShapeMessage(msg)
 
                 Case eCoreComponentType.Core
                     If (msg.Type = eMessageType.GlobalSettingsChanged) Then
                         Me.UpdateControls()
                     End If
+
+                Case eCoreComponentType.TimeSeries
+                    HandleTimeseriesMessage(msg)
 
             End Select
 
@@ -235,10 +231,10 @@ Namespace Ecosim
                 If Not Me.IsRunning Then
                     Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                     Me.m_graph.Refresh()
-                    Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler, True)
+                    Me.Core.RunEcoSim(AddressOf HandleEcosimTimeStep, True)
                 End If
             Catch ex As Exception
-                cLog.Write(ex, "form RunEcosim.OnRun")
+                cLog.Write(ex, "form frmRunEcosim.OnRun")
             End Try
 
         End Sub
@@ -418,15 +414,6 @@ Namespace Ecosim
 
 #Region " Core "
 
-        Private Sub TimeStepFromEcoSim_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
-
-            ' Status update only every 12 months
-            If (iTime Mod cCore.N_MONTHS) = 0 Then
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING, CSng(iTime / m_iTimeSteps))
-            End If
-
-        End Sub
-
         Private Sub OnCoreExecutionStateChanged(ByVal csm As cCoreStateMonitor)
 
             ' Could be that we're closing
@@ -466,7 +453,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub EcosimMessageHandler(ByRef msg As cMessage)
+        Private Sub HandleEcosimMessage(ByRef msg As cMessage)
 
             Try
                 Select Case msg.Type
@@ -482,27 +469,52 @@ Namespace Ecosim
                         Me.PopulateGraph()
 
                     Case eMessageType.EcosimNYearsChanged
-
-                        'set the xaxis this is the number of time steps the model will run for
-                        'm_ucBPlots.Plot.XAxis = Core.nEcosimTimeSteps
-                        'now what..... hope it draws right next time!
-                        'm_ucBPlots.Plot.GenerateOutputImage()
+                        ' NOP
 
                     Case eMessageType.DataModified
-
-                        For Each var As cVariableStatus In msg.Variables
-                            If var.VarName = eVarNameFlags.EcosimSumEnd Or var.VarName = eVarNameFlags.EcosimSumStart Then
-                                'the summary time periods has changed
-                                'redraw the lines on the graph
-                                'Me.m_ucBPlots.DrawSummaryLines(m_EcosimModelParams.StartSummaryTime, m_EcosimModelParams.EndSummaryTime)
-                                Exit For
-                            End If
-                        Next
+                        ' NOP
 
                 End Select
 
             Catch ex As Exception
-                cLog.Write(ex, "RunEcosim::EcosimMessageHandler")
+                cLog.Write(ex, "frmRunEcosim::HandleEcosimMessage")
+            End Try
+
+        End Sub
+
+        Private Sub HandleShapeMessage(msg As cMessage)
+            Try
+                If (Me.m_shapeGUIHandler Is Nothing) Then Return
+
+                If (((Me.SelectionMode = eSelectionModeType.Fleets) And (msg.DataType = eDataTypes.FishingEffort)) Or
+                    ((Me.SelectionMode = eSelectionModeType.Groups) And (msg.DataType = eDataTypes.FishMort))) Then
+                    Me.m_shapeGUIHandler.Refresh()
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "frmRunEcosim::HandleShapeMessage")
+            End Try
+        End Sub
+
+        Private Sub HandleTimeseriesMessage(msg As cMessage)
+            Try
+                Select Case msg.Type
+                    Case eMessageType.DataAddedOrRemoved
+                        Me.UpdateControls()
+                End Select
+            Catch ex As Exception
+                cLog.Write(ex, "frmRunEcosim::HandleTimeseriesMessage")
+            End Try
+        End Sub
+
+        Private Sub HandleEcosimTimeStep(ByVal iTime As Long, ByVal results As cEcoSimResults)
+
+            Try
+                ' Status update only every 12 months
+                If (iTime Mod cCore.N_MONTHS) = 0 Then
+                    cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING, CSng(iTime / m_iTimeSteps))
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "frmRunEcosim::HandleEcosimTimeStep")
             End Try
 
         End Sub
@@ -1096,6 +1108,8 @@ Namespace Ecosim
 
             Me.m_bInUpdate = True
 
+            Dim bHasTS As Boolean = (Me.Core.ActiveTimeSeriesDatasetIndex >= 1)
+
             Me.m_btnRun.Enabled = Not Me.IsRunning
             Me.m_btnStop.Enabled = Me.IsRunning
 
@@ -1142,6 +1156,10 @@ Namespace Ecosim
 
             Me.m_tsbnExplore.Enabled = (Me.Core.StateMonitor.HasEcosimRan)
             Me.m_tsbnSaveOutput.Checked = Me.Core.Autosave(eAutosaveTypes.EcosimResults)
+
+            ' Show SS controls only when time series are loaded
+            Me.m_tsblbSS.Visible = bHasTS
+            Me.m_tslblSSValue.Visible = bHasTS
 
             Me.m_bInUpdate = False
 
