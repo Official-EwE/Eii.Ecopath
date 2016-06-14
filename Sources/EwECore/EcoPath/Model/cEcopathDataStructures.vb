@@ -33,6 +33,10 @@ Public Class cEcopathDataStructures
 
     Private m_messages As cMessagePublisher
 
+    Private m_Ecofunctions As cEcoFunctions
+    Private Kempton As Single
+    Private Shannon As Single
+
 #End Region ' Private data
 
 #Region " Public Variables "
@@ -362,6 +366,9 @@ Public Class cEcopathDataStructures
 
     Public isGroupLeadingB() As Boolean
     Public isGroupLeadingCB() As Boolean
+
+    ''' <summary>DiversityIndex = 0 is Kempton's and 1 is Shannon </summary>
+    Public DiversityIndex As Integer
 
 #End Region
 
@@ -856,6 +863,8 @@ Public Class cEcopathDataStructures
     ''' SumEx: sum of export.
     ''' SumP: Sum of all production.
     ''' SysOm: System Omnivory Index.
+    ''' Shannon: ShannonDiversity  ---- either Shannon
+    ''' Kempton: KemptonsQ         ---- or Kempton will be shown
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ComputeMoreStats()
@@ -888,6 +897,13 @@ Public Class cEcopathDataStructures
             SumEx = SumEx + Ex(i)
             If PB(i) > 0 And B(i) > 0 Then SumP = SumP + PB(i) * B(i)
         Next i
+
+        'If Me.DiversityIndex = 0 Then
+        '    Me.Kempton = Me.m_Ecofunctions.KemptonsQ(NumLiving, TTLX, B, 0.25)
+        'ElseIf Me.DiversityIndex = 1 Then
+        '    Me.Shannon = m_Ecofunctions.ShannonDiversityIndex(NumLiving, B)
+        'End If
+        '*** Jeroen **** above
 
     End Sub
 

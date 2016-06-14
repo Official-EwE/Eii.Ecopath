@@ -1136,8 +1136,12 @@ Public Class cSpaceSolver
             If (Me.m_Data.TimeStep = 0) Then
 
                 SyncLock TLlockOb
-                    Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, Me.m_PathData.TTLX, m_Data.BBase, 0.25)
-                End SyncLock 'TLlockOb
+                    If Me.m_PathData.DiversityIndex = 0 Then
+                        Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, Me.m_PathData.TTLX, m_Data.BBase, 0.25)
+                    ElseIf Me.m_PathData.DiversityIndex = 1 Then
+                        m_Data.ShannonDiversity(iRow, iCol) = EcoFunctions.ShannonDiversityIndex(m_PathData.NumLiving, m_Data.BBase)
+                    End If
+                End SyncLock 'TLlockO
 
             Else
                 ' Recompose Biomass array
@@ -1148,7 +1152,11 @@ Public Class cSpaceSolver
                 Next
 
                 SyncLock TLlockOb
-                    Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, TLs, BSpace, 0.25)
+                    If Me.m_PathData.DiversityIndex = 0 Then
+                        Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, TLs, BSpace, 0.25)
+                    ElseIf Me.m_PathData.DiversityIndex = 1 Then
+                        m_Data.ShannonDiversity(iRow, iCol) = EcoFunctions.ShannonDiversityIndex(Me.m_PathData.NumLiving, BSpace)
+                    End If
                 End SyncLock 'TLlockOb
 
             End If

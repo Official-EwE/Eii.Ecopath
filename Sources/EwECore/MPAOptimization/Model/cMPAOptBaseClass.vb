@@ -90,7 +90,7 @@ Public MustInherit Class cMPAOptBaseClass
     Public StoreBtimeForEcoSeed() As Single
 
     Protected TotWeightedValueBase As Single
-    Protected EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, KemptonsBase As Single, AreaBoundBase As Single
+    Protected EmployBase As Single, TotValBase As Single, ManValueBase As Single, EcoValueBase As Single, DiversityBase As Single, AreaBoundBase As Single
     Protected TargetSumMax As Single
 
     Protected AreaBoundary As Single
@@ -303,7 +303,7 @@ Public MustInherit Class cMPAOptBaseClass
                      m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
                      m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
                      m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
-                     m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.KemptonQ / KemptonsBase
+                     m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.DiversityIndex / DiversityBase
 
 
             'Calculate boundary length/area ratio
@@ -317,7 +317,7 @@ Public MustInherit Class cMPAOptBaseClass
             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
             m_data.objFuncSocialValue = m_search.Employ / EmployBase
             m_data.objFuncEconomicValue = m_search.totval / TotValBase
-            m_data.objFuncBiodiversity = m_search.KemptonQ / KemptonsBase
+            m_data.objFuncBiodiversity = m_search.DiversityIndex / DiversityBase
             m_data.objFuncAreaBorder = AreaBoundary / AreaBoundBase
 
             If curSum > TargetSumMax Then
@@ -557,7 +557,7 @@ Public MustInherit Class cMPAOptBaseClass
         TotValBase = m_search.totval
         ManValueBase = m_search.manvalue
         EcoValueBase = m_search.ecovalue
-        KemptonsBase = m_search.KemptonQ
+        DiversityBase = m_search.DiversityIndex
         AreaBoundBase = CalculateAreaOverBondaryLength()
 
         If TotValBase = 0 Then TotValBase = 1
@@ -567,13 +567,13 @@ Public MustInherit Class cMPAOptBaseClass
         If ManValueBase = 0 Then ManValueBase = 1
         If EcoValueBase = 0 Then EcoValueBase = 1
         If AreaBoundBase = 0 Then AreaBoundBase = 1
-        If KemptonsBase = 0 Then KemptonsBase = 1
+        If DiversityBase = 0 Then DiversityBase = 1
 
         TotWeightedValueBase = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * TotValBase + _
                         m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * EmployBase + _
                         m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * ManValueBase + _
                         m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * EcoValueBase + _
-                        m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * KemptonsBase + _
+                        m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * DiversityBase + _
                         m_data.BoundaryWeight * AreaBoundBase
 
     End Sub
@@ -631,13 +631,13 @@ Public MustInherit Class cMPAOptBaseClass
                 cStringUtils.FormatNumber(Me.m_data.BoundaryWeight)))
         writer.WriteLine()
         writer.WriteLine("Base Values")
-        writer.WriteLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Boundary")
+        writer.WriteLine("Economic, Social, Mandated, Ecosystem, Biomass diversity, Area/Boundary")
         writer.WriteLine(String.Format("{0},{1},{2},{3},{4},{5}", _
                 cStringUtils.FormatNumber(TotValBase), _
                 cStringUtils.FormatNumber(EmployBase), _
                 cStringUtils.FormatNumber(ManValueBase), _
                 cStringUtils.FormatNumber(EcoValueBase), _
-                cStringUtils.FormatNumber(KemptonsBase), _
+                cStringUtils.FormatNumber(DiversityBase), _
                 cStringUtils.FormatNumber(AreaBoundBase)))
         writer.WriteLine()
         'writer.WriteLine("Data Format")

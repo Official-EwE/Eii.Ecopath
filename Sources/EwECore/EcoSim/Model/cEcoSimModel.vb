@@ -4923,13 +4923,22 @@ Namespace Ecosim
                 ' Calculate kemptons Q
                 If TimeStep = 0 Then
                     'Baseline value
-                    Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_EPData.TTLX, m_Data.StartBiomass, 0.25)
+                    If Me.m_EPData.DiversityIndex = 0 Then  'VC added Shannon June 2016
+                        Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_EPData.TTLX, m_Data.StartBiomass, 0.25)
+                    ElseIf Me.m_EPData.DiversityIndex = 1 Then
+                        Me.m_Data.ShannonDiversity(0) = Me.m_Ecofunctions.ShannonDiversityIndex(Me.m_EPData.NumLiving, m_Data.StartBiomass)
+                    End If
                 Else
                     ' JS 28Feb13: I may have found a bug here. EcoFunctions would base KemptonsQ calculations implicitly on 
                     '             Ecopath TTLX, rather than on the varying sim TL.
-                    Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_Data.TLSim, BB, 0.25)
+                    ' VC 12Jun16: TL only used for cut-off of species, so not making much sense to change the cutoff during runs
+                    ' I'll leave it as is, however, as SimTL hardly changes, especially not for low TL species.
+                    If Me.m_EPData.DiversityIndex = 0 Then
+                        Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_Data.TLSim, BB, 0.25)
+                    ElseIf Me.m_EPData.DiversityIndex = 1 Then
+                        m_Data.ShannonDiversity(TimeStep) = m_Ecofunctions.ShannonDiversityIndex(m_EPData.NumLiving, m_Data.StartBiomass)
+                    End If
                 End If
-
                 If m_Data.CatchSim(0) > 0 Then
                     ' Calculate TL of catch
                     Me.m_Data.TLC(TimeStep) = CSng(totalTL / (Me.m_Data.CatchSim(TimeStep) + 1.0E-20))

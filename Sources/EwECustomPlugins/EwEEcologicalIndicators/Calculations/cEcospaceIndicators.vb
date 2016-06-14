@@ -147,6 +147,13 @@ Public Class cEcospaceIndicators
         Return Me.m_ecospaceDS.KemptonsQ(Me.m_ptLocation.Y, Me.m_ptLocation.X)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cIndicators.ModelShannonDiversity"/>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Function ModelShannonDiversity() As Single
+        Return Me.m_ecospaceDS.ShannonDiversity(Me.m_ptLocation.Y, Me.m_ptLocation.X)
+    End Function
+
 #End Region ' Overrides Core data access and public bits
 
 End Class

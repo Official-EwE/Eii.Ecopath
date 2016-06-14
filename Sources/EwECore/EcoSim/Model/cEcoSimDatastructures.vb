@@ -202,6 +202,9 @@ Public Class cEcosimDatastructures
     Public CatchSim() As Single
     ''' <summary>Kemptons's Q</summary>
     Public Kemptons() As Single
+    ''' <summary>Shannon Diversity Index</summary>
+    Public ShannonDiversity() As Single
+
 
     ''' <summary> Max vulnerability across all prey for this predator VulnerabilityPredator(pred) = max(VulMult(prey,pred))</summary>
     Public VulnerabilityPredator() As Single
@@ -729,6 +732,7 @@ Public Class cEcosimDatastructures
         ReDim FIB(nTimesteps)
         ReDim TLC(nTimesteps)     'TL of catch in Ecosim
         ReDim Kemptons(nTimesteps)
+        ReDim ShannonDiversity(nTimesteps)
         ReDim CatchSim(nTimesteps)
     End Sub
 
@@ -757,6 +761,7 @@ Public Class cEcosimDatastructures
         Me.FIB = Nothing ' (nTimesteps)
         Me.TLC = Nothing ' (nTimesteps)     'TL of catch in Ecosim
         Me.Kemptons = Nothing ' (nTimesteps)
+        Me.ShannonDiversity = Nothing
         Me.CatchSim = Nothing ' (nTimesteps)
 
         Me.GroupDBID = Nothing ' (nGroups)

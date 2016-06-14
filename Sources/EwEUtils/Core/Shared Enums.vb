@@ -1776,8 +1776,11 @@ Namespace Core
         TL
         ''' <summary>Fishing in-balance (FIB) index</summary>
         FIB
-        ''' <summary>To document</summary>
+
+        ''' <summary>Diversity index, 0 for Kempton, 1 for Shannon</summary>
         KemptonsQ
+        ''' <summary>Shannon's diversity index</summary>
+        ShannonDiversity
         ''' <summary>To document</summary>
         TotalCatch
 

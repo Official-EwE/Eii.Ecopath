@@ -87,6 +87,18 @@ Public Class cEcosimOutput
         End Get
     End Property
 
+    Public ReadOnly Property ShannonDiversity(ByVal iTimeStep As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.ShannonDiversity, iTimeStep))
+        End Get
+    End Property
+
+    Public ReadOnly Property ShannonDiversityStatus(ByVal iTimeStep As Integer) As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.ShannonDiversity, iTimeStep)
+        End Get
+    End Property
+
     Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, _
                                           Optional ByVal iIndex As Integer = -9999, _
                                           Optional ByVal iIndex2 As Integer = -9999, _
@@ -101,6 +113,8 @@ Public Class cEcosimOutput
                     Return Me.m_core.m_EcoSimData.TLC(iIndex)
                 Case eVarNameFlags.KemptonsQ
                     Return Me.m_core.m_EcoSimData.Kemptons(iIndex)
+                Case eVarNameFlags.ShannonDiversity
+                    Return Me.m_core.m_EcoSimData.ShannonDiversity(iIndex)
                 Case eVarNameFlags.TotalCatch
                     Return Me.m_core.m_EcoSimData.CatchSim(iIndex)
 

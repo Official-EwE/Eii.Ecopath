@@ -252,6 +252,7 @@ Public Class cEcospaceDataStructures
     Public TLc(,) As Single
     ''' <summary>Kemptons Q by Row, Col.</summary>
     Public KemptonsQ(,) As Single
+    Public ShannonDiversity(,) As Single
 
     'these are all part of velmaker
     'velmaker may become its own class
@@ -1858,6 +1859,7 @@ Public Class cEcospaceDataStructures
             Me.allocate(TL, InRow, InCol, NGroups)
             Me.allocate(TLc, InRow, InCol)
             Me.allocate(KemptonsQ, InRow, InCol)
+            Me.allocate(ShannonDiversity, InRow, InCol)
 
             Me.allocate(ImportanceLayerMap, Me.nImportanceLayers, InRow + 1, InCol + 1)
             Me.allocate(EnvironmentalLayerMap, Me.nEnvironmentalDriverLayers, InRow + 1, InCol + 1)
