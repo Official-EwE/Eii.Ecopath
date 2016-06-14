@@ -104,7 +104,7 @@ Friend Class cData
     Public Property BAAverageYears As Integer
     Public Property WPower As Single = 2.0F
 
-    Public Property OutputFormat As eDataSourceTypes = eDataSourceTypes.Access2007
+    Public Property OutputFormat As eDataSourceTypes = eDataSourceTypes.Access2003
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
