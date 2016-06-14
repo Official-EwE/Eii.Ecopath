@@ -66,11 +66,6 @@ Namespace Controls.Map.Layers
         ''' <summary>Layer num of cells with a value.</summary>
         Private m_iNumValueCells As Integer = 0
 
-        ''' <summary>States whether layer max value should be recalculated.</summary>
-        ''' <remarks>True at startup to make sure that the max vector size is properly 
-        ''' calculated when first queried.</remarks>
-        Private m_bInvalidateStats As Boolean = True
-
         Private m_lXVel As cEcospaceLayerSingle = Nothing
         Private m_lYVel As cEcospaceLayerSingle = Nothing
 

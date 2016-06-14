@@ -124,28 +124,17 @@ Namespace Controls
         ''' <param name="ma"><see cref="ucMediationAssignments">Mediation assignments control</see> to handle, if any.</param>
         ''' <param name="mat"><see cref="ucMediationAssignmentsToolbar"/> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Shadows Sub Attach(ByVal stb As ucShapeToolbox, _
-                                  ByVal stbtb As ucShapeToolboxToolbar, _
-                                  ByVal sp As ucSketchPad, _
-                                  ByVal sptb As ucSketchPadToolbar, _
-                                  ByVal ma As ucMediationAssignments, _
+        Public Overridable Shadows Sub Attach(ByVal stb As ucShapeToolbox,
+                                  ByVal stbtb As ucShapeToolboxToolbar,
+                                  ByVal sp As ucSketchPad,
+                                  ByVal sptb As ucSketchPadToolbar,
+                                  ByVal ma As ucMediationAssignments,
                                   ByVal mat As ucMediationAssignmentsToolbar)
 
             MyBase.Attach(stb, stbtb, sp, sptb, ma, mat)
 
             Me.MediationAssignments = ma
-            If (Me.MediationAssignments IsNot Nothing) Then
-                Me.MediationAssignments.Title = ""
-                Me.MediationAssignments.XAxisLabel = My.Resources.CAPACITY_XLABEL
-            End If
-
             Me.MediationAssignmentsToolbar = mat
-            If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
-                Me.MediationAssignmentsToolbar.DefineMediationLabel = My.Resources.CAPACITY_PROMPT
-            End If
-
-            '' Manually update selection
-            'Me.MediationAssignments.Shape = DirectCast(Me.SelectedShape, cMediationBaseFunction)
 
         End Sub
 
@@ -179,7 +168,7 @@ Namespace Controls
                 If shape IsNot Nothing Then
                     If shape.Length > 0 Then
                         Dim fmt As New cCoreInterfaceFormatter()
-                        strTitle = cStringUtils.Localize(My.Resources.HEADER_ASSIGNED_CAPACITY_SHAPE, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
+                        strTitle = cStringUtils.Localize(My.Resources.HEADER_ASSIGNED_FORAGING_RESPONSES, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
                     End If
                 End If
                 Me.MediationAssignments.Title = strTitle

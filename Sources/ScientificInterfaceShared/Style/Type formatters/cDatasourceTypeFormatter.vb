@@ -31,7 +31,7 @@ Namespace Style
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eAutosaveTypes"/>.
+    ''' Class for providing a textual description of <see cref="eDataSourceTypes"/>.
     ''' </summary>
     ''' <remarks>
     ''' <para>This class tries to obtain a string from the ScientificShared resources.

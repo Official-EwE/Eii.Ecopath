@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls
 
-    Public Class cEcoismEnviroResponseShapeGUIHandler
+    Public Class cEnvironmentalResponseShapeGUIHandler
         Inherits cCapacityShapeGUIHandler
 
         Public Sub New(uic As cUIContext)
@@ -39,8 +39,8 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.ExecuteCommand"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes, _
-                                          Optional ByVal ashapes() As EwECore.cShapeData = Nothing, _
+        Public Overrides Sub ExecuteCommand(ByVal cmd As ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes,
+                                          Optional ByVal ashapes() As EwECore.cShapeData = Nothing,
                                           Optional ByVal data As Object = Nothing)
 
             Try
@@ -69,7 +69,22 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cShapeGUIHandler.OnShapeSelected"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub OnShapeSelected(ByVal shape() As EwECore.cShapeData)
+            MyBase.OnShapeSelected(shape)
+            If (Me.MediationAssignments IsNot Nothing) Then
+                Dim strTitle As String = ""
+                If shape IsNot Nothing Then
+                    If shape.Length > 0 Then
+                        Dim fmt As New cCoreInterfaceFormatter()
+                        strTitle = cStringUtils.Localize(My.Resources.HEADER_ASSIGNED_ENV_FORCING, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
+                    End If
+                End If
+                Me.MediationAssignments.Title = strTitle
+            End If
+        End Sub
     End Class
-
 
 End Namespace

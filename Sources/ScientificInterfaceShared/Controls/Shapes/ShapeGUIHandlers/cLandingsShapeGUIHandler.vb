@@ -45,19 +45,6 @@ Namespace Controls
             MyBase.New(uic)
         End Sub
 
-        Public Overrides Sub Attach(ByVal stb As ucShapeToolbox, ByVal stbtb As ucShapeToolboxToolbar, ByVal sp As ucSketchPad, ByVal sptb As ucSketchPadToolbar, ByVal bp As ucMediationAssignments, ByVal bpt As ucMediationAssignmentsToolbar)
-            MyBase.Attach(stb, stbtb, sp, sptb, bp, bpt)
-
-            If (Me.MediationAssignments IsNot Nothing) Then
-                Me.MediationAssignments.XAxisLabel = My.Resources.HEADER_ASSIGNED_LANDINGS
-            End If
-
-            If (Me.MediationAssignmentsToolbar IsNot Nothing) Then
-                Me.MediationAssignmentsToolbar.DefineMediationLabel = My.Resources.PROMPT_DEFINE_MEDIATING_LANDINGS
-            End If
-
-        End Sub
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Specifies the shapes manager that delivers the data for this handler.

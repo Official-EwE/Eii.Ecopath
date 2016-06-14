@@ -85,6 +85,7 @@ Partial Class frmEcosimEnviroResponse
         Me.m_sketchPad.AllowDragXMark = False
         resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
         Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+        Me.m_sketchPad.CanEditPoints = True
         Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
         Me.m_sketchPad.DisplayAxis = True
         Me.m_sketchPad.Editable = True
@@ -103,7 +104,7 @@ Partial Class frmEcosimEnviroResponse
         Me.m_sketchPad.XAxisMaxValue = -9999
         Me.m_sketchPad.XMarkValue = -9999.0!
         Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-        Me.m_sketchPad.YAxisMaxValue = 0.0!
+        Me.m_sketchPad.YAxisMaxValue = 0!
         Me.m_sketchPad.YAxisMinValue = -9999.0!
         Me.m_sketchPad.YMarkLabel = ""
         Me.m_sketchPad.YMarkValue = -9999.0!
@@ -178,14 +179,14 @@ Partial Class frmEcosimEnviroResponse
         Me.m_assignments.Title = ""
         Me.m_assignments.UIContext = Nothing
         Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
-        Me.m_assignments.XAxisLabel = "Input"
+        Me.m_assignments.XAxisLabel = "Assigned environmental forcing"
         Me.m_assignments.YAxisLabel = "Response"
         '
         'm_assignmentsToolbar
         '
         resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
         Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-        Me.m_assignmentsToolbar.DefineMediationLabel = "<prompt>"
+        Me.m_assignmentsToolbar.DefineMediationLabel = "Define environmental forcing..."
         Me.m_assignmentsToolbar.Handler = Nothing
         Me.m_assignmentsToolbar.IsMenuVisible = True
         Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"

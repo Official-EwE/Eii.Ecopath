@@ -88,6 +88,7 @@ Namespace Ecosim
             Me.m_sketchPad.AllowDragXMark = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+            Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Editable = True
@@ -106,7 +107,7 @@ Namespace Ecosim
             Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMaxValue = 0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
@@ -153,6 +154,7 @@ Namespace Ecosim
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
+            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.XAxisMaxValue = -9999
@@ -180,14 +182,14 @@ Namespace Ecosim
             Me.m_assignments.Title = ""
             Me.m_assignments.UIContext = Nothing
             Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
-            Me.m_assignments.XAxisLabel = "Mediating group"
+            Me.m_assignments.XAxisLabel = "Applied mediating groups and fleets"
             Me.m_assignments.YAxisLabel = "Relative weight"
             '
             'm_assignmentsToolbar
             '
             resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
             Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-            Me.m_assignmentsToolbar.DefineMediationLabel = "<prompt>"
+            Me.m_assignmentsToolbar.DefineMediationLabel = "Define mediating groups and fleets..."
             Me.m_assignmentsToolbar.Handler = Nothing
             Me.m_assignmentsToolbar.IsMenuVisible = True
             Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
@@ -198,6 +200,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmMediationFunction"
+            Me.TabText = ""
             Me.m_tlpSketchPad.ResumeLayout(False)
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
@@ -208,6 +211,7 @@ Namespace Ecosim
             CType(Me.m_scBottomBits, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scBottomBits.ResumeLayout(False)
             Me.m_tlpToolbox.ResumeLayout(False)
+            Me.m_tlpToolbox.PerformLayout()
             Me.m_tlpAssingments.ResumeLayout(False)
             Me.m_tlpAssingments.PerformLayout()
             Me.ResumeLayout(False)

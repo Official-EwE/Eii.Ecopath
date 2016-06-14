@@ -97,6 +97,7 @@ Namespace Ecosim
             '
             Me.m_sketchPad.AllowDragXMark = True
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+            Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
@@ -116,7 +117,7 @@ Namespace Ecosim
             Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMaxValue = 0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
@@ -181,6 +182,7 @@ Namespace Ecosim
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
+            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.XAxisMaxValue = -9999
@@ -195,14 +197,14 @@ Namespace Ecosim
             Me.m_assignments.Title = ""
             Me.m_assignments.UIContext = Nothing
             Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
-            Me.m_assignments.XAxisLabel = "Landings"
+            Me.m_assignments.XAxisLabel = "Assigned landings"
             Me.m_assignments.YAxisLabel = "Relative weight"
             '
             'm_assignmentsToolbar
             '
             resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
             Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-            Me.m_assignmentsToolbar.DefineMediationLabel = "<prompt>"
+            Me.m_assignmentsToolbar.DefineMediationLabel = "Define supply..."
             Me.m_assignmentsToolbar.Handler = Nothing
             Me.m_assignmentsToolbar.IsMenuVisible = True
             Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
@@ -213,6 +215,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "frmPriceElasticity"
+            Me.TabText = ""
             Me.plSketchPad.ResumeLayout(False)
             Me.m_tlpSketchPad.ResumeLayout(False)
             Me.SplitContainer1.Panel1.ResumeLayout(False)
