@@ -195,7 +195,7 @@ Public Class cSearchDatastructures
     ''' <remarks></remarks>
     Private m_SearchCatchSemaphor As System.Threading.Semaphore
 
-    Public KemptonQ As Single
+    Public DiversityIndex As Single
 
     Public FPSUseEconomicPlugin As Boolean
     Public MSEUseEconomicPlugin As Boolean
@@ -347,7 +347,7 @@ Public Class cSearchDatastructures
                 Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ + _
                 Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue + _
                 Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue + _
-                Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.KemptonQ
+                Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityIndex
         End Get
     End Property
 
@@ -766,7 +766,7 @@ Public Class cSearchDatastructures
         profit = 0
         Employ = 0
         manvalue = 0
-        KemptonQ = 0
+        DiversityIndex = 0
 
     End Sub
 
@@ -920,8 +920,11 @@ Public Class cSearchDatastructures
         Next i
 
         'System.Console.WriteLine(ecovalue.ToString)
-
-        KemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Me.m_ecopathData.NumLiving, Me.m_ecopathData.TTLX, Biomass, 0.25)
+        If Me.m_ecopathData.DiversityIndex = 0 Then
+            DiversityIndex = DiversityIndex + Me.m_EcoFunctions.KemptonsQ(Me.m_ecopathData.NumLiving, Me.m_ecopathData.TTLX, Biomass, 0.25)
+        ElseIf Me.m_ecopathData.DiversityIndex = 1 Then
+            DiversityIndex = DiversityIndex + Me.m_EcoFunctions.ShannonDiversityIndex(Me.m_ecopathData.NumLiving, Biomass)
+        End If
 
         EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
         Ecodistance = Ecodistance + DF * EcoDistTime
@@ -991,7 +994,7 @@ Public Class cSearchDatastructures
         Employ = 0
         profit = 0
 
-        KemptonQ = KemptonQ / ModelRunLength
+        DiversityIndex = DiversityIndex / ModelRunLength
 
         ' calculate last year incomes and costs by gear
         For iFlt = 1 To m_ecopathData.NumFleet
@@ -1083,8 +1086,8 @@ Public Class cSearchDatastructures
 
         ExistValue = ExistValue / (m_ecopathData.NumLiving * ModelRunLength)
 
-        'KemptonQ is the sum of KemptonQ across all time steps
-        KemptonQ = KemptonQ / ModelRunLength
+        'Diversity index (either KemptonQ or Shannon index) is the sum of KemptonQ across all time steps
+        DiversityIndex = DiversityIndex / ModelRunLength
 
         LTV = CalcLTV(ModelRunLengthPostBaseYear)
 

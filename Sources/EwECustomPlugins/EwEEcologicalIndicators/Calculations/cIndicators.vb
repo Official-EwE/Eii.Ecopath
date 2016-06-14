@@ -83,6 +83,10 @@ Public MustInherit Class cIndicators
     Private m_sDemPelB As Single
     ''' <summary>Kempton's Q</summary>
     Private m_sKemptonsQ As Single
+    ''' <summary>Shannon Diversity</summary>
+    Private m_sShannonDiversity As Single
+
+
 
     ' --- Catch ---
     ''' <summary>Total Catch indicator</summary>
@@ -266,6 +270,14 @@ Public MustInherit Class cIndicators
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected MustOverride Function ModelKemptionsQ() As Single
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Override to return the Shannon Diversity as computed by the 
+    ''' underlying model.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected MustOverride Function modelShannonDiversity() As Single
 
 #End Region ' Inputs 
 
@@ -479,6 +491,7 @@ Public MustInherit Class cIndicators
         Me.m_sPelB = sPelB
         Me.m_sDemPelB = CSng(cSystemUtils.IIF(sPelB = 0, 0, sDemB / sPelB))
         Me.m_sKemptonsQ = Me.ModelKemptionsQ()
+        Me.m_sShannonDiversity = Me.modelShannonDiversity()
 
         ' Catch indicators
         Me.m_sCT = sCT
@@ -550,6 +563,7 @@ Public MustInherit Class cIndicators
         Me.m_sPelB = 0
         Me.m_sDemPelB = 0
         Me.m_sKemptonsQ = 0
+        Me.m_sShannonDiversity = 0
 
         ' --- Catch ---
         Me.m_sCT = 0
@@ -764,6 +778,15 @@ Public MustInherit Class cIndicators
         Return Me.m_sKemptonsQ
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the Shannon diversity index.
+    ''' </summary>
+    ''' <returns>The Shannon Diversity Index.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ShannonDiversity() As Single
+        Return Me.m_sShannonDiversity
+    End Function
 #End Region ' Biomass indicators
 
 #Region " Catch indicators "

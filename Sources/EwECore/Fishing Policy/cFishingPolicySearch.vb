@@ -321,7 +321,7 @@ Namespace FishingPolicy
             EmployBase = m_searchData.Employ
             ManValueBase = m_searchData.manvalue
             EcoValueBase = m_searchData.ecovalue
-            BioDivBase = m_searchData.KemptonQ
+            BioDivBase = m_searchData.DiversityIndex
 
             If TotValBase = 0 Then TotValBase = 1
             If TotValBase < 0 Then TotValBase = -TotValBase
@@ -1123,13 +1123,13 @@ endline:    ' '
                 If EmployBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Employment) = CSng(m_searchData.Employ / EmployBase)
                 If ManValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.MandateReb) = CSng(m_searchData.manvalue / ManValueBase)
                 If EcoValueBase <> 0 Then CritValue(eSearchCriteriaResultTypes.Ecological) = CSng(m_searchData.ecovalue / EcoValueBase)
-                If BioDivBase <> 0 Then CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(m_searchData.KemptonQ / BioDivBase)
+                If BioDivBase <> 0 Then CritValue(eSearchCriteriaResultTypes.BioDiversity) = CSng(m_searchData.DiversityIndex / BioDivBase)
 
                 returnvalue = VlocalPenalty - m_searchData.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_searchData.totval / TotValBase - _
                         m_searchData.ValWeight(eSearchCriteriaResultTypes.Employment) * m_searchData.Employ / EmployBase - _
                         m_searchData.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_searchData.manvalue / ManValueBase - _
                         m_searchData.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_searchData.ecovalue / EcoValueBase - _
-                        m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_searchData.KemptonQ / BioDivBase
+                        m_searchData.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_searchData.DiversityIndex / BioDivBase
 
                 If m_searchData.MinimizeEffortChange Then
                     If returnvalue < 0 Then

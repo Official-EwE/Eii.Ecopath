@@ -21,6 +21,8 @@
 Option Strict On
 
 Imports EwEUtils.Core
+Imports System.Math
+
 
 ''' <summary>
 ''' Class to provide access to functions needed both internally to the core and 
@@ -51,6 +53,42 @@ Public Class cEcoFunctions
             Return m_matrix
         End Get
     End Property
+
+    Public Function ShannonDiversityIndex(iNumLiving As Integer, ByVal Bio() As Single) As Single
+
+        Try
+            Dim sumB As Single = 0
+            For i As Integer = 1 To iNumLiving
+                sumB += Bio(i)
+            Next
+
+            Dim propB(iNumLiving) As Single
+            For i As Integer = 1 To iNumLiving
+                propB(i) = Bio(i) / sumB
+            Next
+
+            Dim Shannon As Double = 0
+            For i As Integer = 1 To iNumLiving
+                If propB(i) > 0 Then
+                    Shannon += -propB(i) * Log(propB(i))
+                End If
+            Next
+
+            Return System.Convert.ToSingle(Shannon)
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".FunctionShannonDiversityIndex() Error: " & ex.Message)
+
+            If (Me.m_core IsNot Nothing) Then
+                Dim msg As New cMessage("Error in FunctionShannonDiversityIndex() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
+            Return 0.0
+
+        End Try
+    End Function
+
 
     Public Function KemptonsQ(iNumLiving As Integer, ttlx As Single(), _
                               ByVal Bio() As Single, ByVal Quan As Single) As Single

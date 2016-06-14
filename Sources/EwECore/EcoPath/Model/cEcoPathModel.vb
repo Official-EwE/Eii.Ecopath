@@ -246,6 +246,9 @@ Namespace Ecopath
             'clear out any existing error messages
             m_messages.Clear()
 
+            '*** Jeroen *** set Kempton / Shannon as user input
+            Me.EcopathData.DiversityIndex = 1
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Paraniod double checking for the release version
             'Is there a valid Ecopath data object. There is no messages for this as it should not happen in the release version. Just write to the log???????

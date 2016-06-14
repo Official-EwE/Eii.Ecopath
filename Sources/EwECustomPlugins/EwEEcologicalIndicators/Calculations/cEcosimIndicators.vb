@@ -138,6 +138,17 @@ Public Class cEcosimIndicators
         Return Me.EcosimDS.Kemptons(Me.Time)
     End Function
 
+
+    '  ***Jeroen please ***
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cIndicators.ShannonDiversity"/>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Function modelShannonDiversity() As Single
+        Return Me.EcosimDS.ShannonDiversity(Me.Time)
+
+    End Function
+
+
 #End Region ' Core data access and public bits
 
 End Class

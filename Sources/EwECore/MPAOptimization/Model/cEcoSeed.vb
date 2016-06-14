@@ -248,7 +248,7 @@ Namespace EcoSeed
                                 m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
                                 m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
                                 m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
-                                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.KemptonQ / KemptonsBase
+                                m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.DiversityIndex / DiversityBase
 
                             'Calculate boundary length/area ratio
                             AreaBordary = CalculateAreaOverBondaryLength()
@@ -258,7 +258,7 @@ Namespace EcoSeed
                             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
                             m_data.objFuncSocialValue = m_search.Employ / EmployBase
                             m_data.objFuncEconomicValue = m_search.totval / TotValBase
-                            m_data.objFuncBiodiversity = m_search.KemptonQ / KemptonsBase
+                            m_data.objFuncBiodiversity = m_search.DiversityIndex / DiversityBase
                             m_data.objFuncAreaBorder = AreaBordary / AreaBoundBase
                             m_data.objFuncTotal = (m_search.WeightedTotal + AreaBordary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
