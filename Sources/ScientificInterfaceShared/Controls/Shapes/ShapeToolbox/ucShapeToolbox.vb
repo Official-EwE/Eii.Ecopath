@@ -244,6 +244,11 @@ Namespace Controls
 
             Set(ByVal ashapes As cShapeData())
 
+                If (Not Me.Created) Then
+                    Me.m_selectionDelayed = ashapes
+                    Return
+                End If
+
                 Dim selection As New List(Of cShapeData)
                 Dim ids As New List(Of Integer)
 
