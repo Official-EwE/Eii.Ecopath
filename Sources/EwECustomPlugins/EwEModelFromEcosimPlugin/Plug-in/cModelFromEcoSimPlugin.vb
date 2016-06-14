@@ -243,6 +243,7 @@ Public Class cModelFromEcosimPluginPoint
         If Me.m_bAutosaving Then
             Me.m_generator.InitRun(Me.m_data.OutputPath)
         End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -253,9 +254,11 @@ Public Class cModelFromEcosimPluginPoint
     ''' -----------------------------------------------------------------------
     Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
         Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
+
         If Me.m_bAutosaving Then
             Me.m_generator.EndRun()
         End If
+
     End Sub
 
     Public Sub EcosimEndTimeStepPost(ByRef BiomassAtTimestep() As Single, _
@@ -283,12 +286,19 @@ Public Class cModelFromEcosimPluginPoint
 
             ' Go Jimmy
             cApplicationStatusNotifier.StartProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_GENERATING_MODEL, strModelName))
-            Try
-                DBCreated = Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime, _
-                                                     Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
-            Catch ex As Exception
 
-            End Try
+            Select Case Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime,
+                                                 Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
+                Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened, eDatasourceAccessType.Success
+                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, iYear, strModelName), eStatusFlags.OK)
+                Case eDatasourceAccessType.Failed_CannotSave
+                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NOACCESS, strModelPath), eStatusFlags.ErrorEncountered)
+                Case eDatasourceAccessType.Failed_OSUnsupported
+                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NODRIVERS, strModelPath), eStatusFlags.ErrorEncountered)
+                Case Else
+                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_SEELOG, strModelPath), eStatusFlags.ErrorEncountered)
+            End Select
+
             cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         End If

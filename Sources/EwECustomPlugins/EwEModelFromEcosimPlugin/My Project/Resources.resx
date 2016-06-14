@@ -147,4 +147,20 @@
     <value>Generated Ecopath model {0}</value>
     <comment>{0} = model name</comment>
   </data>
+  <data name="STATUS_SAVE_ERROR_NOACCESS" xml:space="preserve">
+    <value>Unable or not allowed to save {0}</value>
+    <comment>{0}=model file</comment>
+  </data>
+  <data name="STATUS_SAVE_ERROR_NODRIVERS" xml:space="preserve">
+    <value>Your system does not have the correct drivers installed to use model {0}</value>
+    <comment>{0}=model file</comment>
+  </data>
+  <data name="STATUS_SAVE_ERROR_SEELOG" xml:space="preserve">
+    <value>Failed to save model {0}. See the EwE log file for details</value>
+    <comment>{0}=model file</comment>
+  </data>
+  <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Year {0} saved to {1}</value>
+    <comment>{0}=time, {1}=model</comment>
+  </data>
 </root>
