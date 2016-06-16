@@ -101,6 +101,7 @@ Partial Class frmModelParameters
         Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
         Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
         Me.m_lblNoYears = New System.Windows.Forms.Label()
+        Me.m_lblModelBounds = New System.Windows.Forms.Label()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plExecution = New System.Windows.Forms.Panel()
@@ -121,7 +122,8 @@ Partial Class frmModelParameters
         Me.m_lblPublicationDOI = New System.Windows.Forms.Label()
         Me.m_lblPublicationURL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_lblModelBounds = New System.Windows.Forms.Label()
+        Me.m_cbmBiodivIndex = New System.Windows.Forms.ComboBox()
+        Me.m_lblBiodivIndex = New System.Windows.Forms.Label()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -514,6 +516,11 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_lblNoYears, "m_lblNoYears")
         Me.m_lblNoYears.Name = "m_lblNoYears"
         '
+        'm_lblModelBounds
+        '
+        resources.ApplyResources(Me.m_lblModelBounds, "m_lblModelBounds")
+        Me.m_lblModelBounds.Name = "m_lblModelBounds"
+        '
         'Panel2
         '
         Me.Panel2.Controls.Add(Me.m_lblOptions)
@@ -533,6 +540,8 @@ Partial Class frmModelParameters
         '
         'm_plExecution
         '
+        Me.m_plExecution.Controls.Add(Me.m_lblBiodivIndex)
+        Me.m_plExecution.Controls.Add(Me.m_cbmBiodivIndex)
         Me.m_plExecution.Controls.Add(Me.m_chkIsCoupled)
         Me.m_plExecution.Controls.Add(Me.m_hdrExecution)
         Me.m_plExecution.Controls.Add(Me.m_chkPSD)
@@ -649,10 +658,17 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
-        'm_lblModelBounds
+        'm_cbmBiodivIndex
         '
-        resources.ApplyResources(Me.m_lblModelBounds, "m_lblModelBounds")
-        Me.m_lblModelBounds.Name = "m_lblModelBounds"
+        Me.m_cbmBiodivIndex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cbmBiodivIndex.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cbmBiodivIndex, "m_cbmBiodivIndex")
+        Me.m_cbmBiodivIndex.Name = "m_cbmBiodivIndex"
+        '
+        'm_lblBiodivIndex
+        '
+        resources.ApplyResources(Me.m_lblBiodivIndex, "m_lblBiodivIndex")
+        Me.m_lblBiodivIndex.Name = "m_lblBiodivIndex"
         '
         'frmModelParameters
         '
@@ -766,5 +782,6 @@ Partial Class frmModelParameters
     Private WithEvents m_lblPublicationDOI As System.Windows.Forms.Label
     Private WithEvents m_llViewPublication As System.Windows.Forms.LinkLabel
     Private WithEvents m_lblModelBounds As System.Windows.Forms.Label
-
+    Private WithEvents m_lblBiodivIndex As Label
+    Private WithEvents m_cbmBiodivIndex As ComboBox
 End Class

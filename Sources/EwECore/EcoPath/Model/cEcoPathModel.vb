@@ -111,17 +111,14 @@ Namespace Ecopath
         Private AUL(,) As Single
         Private bDietsModified As Boolean
 
-        'Joeh
         Friend m_stanza As cStanzaDatastructures
         Friend m_psd As cPSDDatastructures
-        'End Joeh
 
         Public Sub New(ByVal EcoFunctions As cEcoFunctions)
             m_eEstimType = eEstimateParameterFor.ParameterEstimation
             m_Ecofunctions = EcoFunctions
             RunState = eEcopathRunState.NotRun
         End Sub
-
 
         Public Sub Clear()
             Me.NoBQB = Nothing '(m_Data.NumGroups)
@@ -246,9 +243,6 @@ Namespace Ecopath
             'clear out any existing error messages
             m_messages.Clear()
 
-            '*** Jeroen *** set Kempton / Shannon as user input
-            Me.EcopathData.DiversityIndex = 1
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Paraniod double checking for the release version
             'Is there a valid Ecopath data object. There is no messages for this as it should not happen in the release version. Just write to the log???????
@@ -339,7 +333,7 @@ Namespace Ecopath
                         CalcNichePiankaPrey()
                         Chesson()
 
-                        m_Data.onPostEcopathRun()
+                        m_Data.onPostEcopathRun(Me.m_Ecofunctions)
 
                         CheckIfEEsAreOK(bSendMessage:=True)
 

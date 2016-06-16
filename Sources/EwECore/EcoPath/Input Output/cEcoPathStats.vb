@@ -116,6 +116,9 @@ Public Class cEcoPathStats
             'Ecopath pedigree measure of fit
             val = New cValue(New Single, eVarNameFlags.EcopathStatsMeasureOfFit, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
+            'Ecopath diversity index
+            val = New cValue(New Single, eVarNameFlags.EcopathStatsDiversity, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
 
             'set status flags to their default values
             Me.ResetStatusFlags()
@@ -660,6 +663,8 @@ Public Class cEcoPathStats
         End Set
     End Property
 
+    ' --
+
     Public Property MeasureOfFit() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EcopathStatsMeasureOfFit))
@@ -675,6 +680,26 @@ Public Class cEcoPathStats
         End Get
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.EcopathStatsMeasureOfFit, value)
+        End Set
+    End Property
+
+    ' --
+
+    Public Property DiveristyIndex() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathStatsDiversity))
+        End Get
+        Friend Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcopathStatsDiversity, value)
+        End Set
+    End Property
+
+    Public Property DiveristyIndexStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcopathStatsDiversity)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcopathStatsDiversity, value)
         End Set
     End Property
 

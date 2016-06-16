@@ -355,10 +355,7 @@ Public Class ucParameters
 
             If (Me.m_fpBaseYear Is Nothing) Then
                 ' Create Ecosim dependent format provider(s)
-                Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_uic, _
-                                                              Me.m_nudBaseYear, _
-                                                              Me.m_uic.Core.SearchObjective.ObjectiveParameters, _
-                                                              eVarNameFlags.SearchBaseYear)
+                Me.m_fpBaseYear = New cPropertyFormatProvider(Me.m_uic, Me.m_nudBaseYear, Me.m_uic.Core.SearchObjective.ObjectiveParameters, eVarNameFlags.SearchBaseYear)
             End If
 
         Else

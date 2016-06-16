@@ -119,17 +119,17 @@ Public Class cIndicesWithPPREst
         'FIB
         AddCurve(My.Resources.LBL_FIB_INDX, Me.NetworkManager.FIB, pane, Color.Green)
         'Relative sum of catch
-        AddCurve(My.Resources.LBL_TOTAL_CATCH, Me.NetworkManager.RelativeSumOfCatchPlot, pane, Color.Red)
+        AddCurve(My.Resources.LBL_TOTAL_CATCH, Me.NetworkManager.RelativeSumOfCatch, pane, Color.Red)
         'Relative Kemptons
-        AddCurve(My.Resources.LBL_KEMPTONS_Q, Me.NetworkManager.RelativeKemptonsPlot, pane, Color.Blue)
+        AddCurve(My.Resources.LBL_KEMPTONS_Q, Me.NetworkManager.RelativeDiversity, pane, Color.Blue)
         'TL catch
-        AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatchPlot, pane, Color.Black)
+        AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatch, pane, Color.Black)
         'FCI
         AddCurve(My.Resources.LBL_FCI, Me.NetworkManager.FCIEcosim, pane, Color.Brown)
         'Catch PPR
-        AddCurve(My.Resources.LBL_CATCH_PPR, Me.NetworkManager.RelativeCatchPPRPlot, pane, Color.Violet)
+        AddCurve(My.Resources.LBL_CATCH_PPR, Me.NetworkManager.RelativeCatchPPR, pane, Color.Violet)
         'Catch detritus required
-        AddCurve(My.Resources.LBL_CATCH_DET_REQ, Me.NetworkManager.RelativeDetritusReqPlot, pane, Color.Orange)
+        AddCurve(My.Resources.LBL_CATCH_DET_REQ, Me.NetworkManager.RelativeDetritusReq, pane, Color.Orange)
         'L-index
         AddCurve(My.Resources.LBL_LINDEX_REL, Me.NetworkManager.LIndexPlot, pane, Color.DarkKhaki)
         'Psust

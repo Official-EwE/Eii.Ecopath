@@ -237,6 +237,8 @@ Namespace Core
         EcopathStatsPedigree
         ''' <summary>Measure of pedigree fit</summary>
         EcopathStatsMeasureOfFit
+        ''' <summary>Selected diversity indicator</summary>
+        EcopathStatsDiversity
         ''' <summary>To document</summary>
         MaxRelPB
         ''' <summary>To document</summary>
@@ -1776,11 +1778,15 @@ Namespace Core
         TL
         ''' <summary>Fishing in-balance (FIB) index</summary>
         FIB
-
-        ''' <summary>Diversity index, 0 for Kempton, 1 for Shannon</summary>
+        ''' <summary>Kemptons' Q</summary>
         KemptonsQ
         ''' <summary>Shannon's diversity index</summary>
         ShannonDiversity
+        ''' <summary>User selection of biodiversity indicator</summary>
+        BiodiversityIndicatorType
+        ''' <summary>Value of selected biodiversity indicator</summary>
+        BiodiversityIndicator
+
         ''' <summary>To document</summary>
         TotalCatch
 
@@ -1928,6 +1934,7 @@ Namespace Core
         SampleRating
 
         Z
+
     End Enum
 
 #End Region ' Variable names
@@ -2876,7 +2883,6 @@ Namespace Core
     '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eSearchCriteriaResultTypes As Integer
-
         TotalValue = 1
         Employment = 2
         MandateReb = 3
@@ -3581,7 +3587,7 @@ Namespace Core
         Order = &H10
         [Class] = &H20
         Phylum = &H40
-        <Obsolete("Kingdom not supported yet but added for future use")> _
+        <Obsolete("Kingdom not supported yet but added for future use")>
         Kingdom = &H80
     End Enum
 

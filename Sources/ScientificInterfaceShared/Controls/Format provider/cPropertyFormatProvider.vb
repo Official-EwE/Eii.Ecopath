@@ -55,15 +55,12 @@ Namespace Controls
         ''' <param name="varName"></param>
         ''' <param name="sourceSec"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal source As cCoreInputOutputBase, _
-                       ByVal varName As eVarNameFlags, _
-                       Optional ByVal sourceSec As cCoreInputOutputBase = Nothing, _
-                       Optional ByVal aItems As Object() = Nothing)
-
-            ' Get underlying cProperty for these values
-            Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec), aItems)
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal ctrl As Control,
+                       ByVal source As cCoreInputOutputBase,
+                       ByVal varName As eVarNameFlags,
+                       Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+            Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec))
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -81,7 +78,6 @@ Namespace Controls
                        ByVal varName As eVarNameFlags, _
                        ByVal sourceSec As cCoreInputOutputBase, _
                        ByVal formatter As ITypeFormatter)
-            ' Get underlying cProperty for these values
             Me.New(uic, ctrl, uic.PropertyManager.GetProperty(source, varName, sourceSec), formatter)
         End Sub
 
@@ -97,7 +93,7 @@ Namespace Controls
                        ByVal ctrl As Control, _
                        ByVal prop As cProperty, _
                        ByVal formatter As ITypeFormatter)
-            Me.New(uic, ctrl, prop, DirectCast(ExtractEnumValues(formatter), Object()))
+            Me.New(uic, ctrl, prop, DirectCast(ExtractEnumValues(formatter), Object()), formatter)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -107,12 +103,13 @@ Namespace Controls
         ''' <param name="ctrl"></param>
         ''' <param name="prop"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal prop As cProperty, _
-                       Optional ByVal aItems As Object() = Nothing)
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal ctrl As Control,
+                       ByVal prop As cProperty,
+                       Optional ByVal aItems As Object() = Nothing,
+                       Optional ByVal formatter As ITypeFormatter = Nothing)
 
-            MyBase.New(uic, ctrl, prop.GetValueType(), aItems, prop.GetVariableMetadata())
+            MyBase.New(uic, ctrl, prop.GetValueType(), aItems, prop.GetVariableMetadata(), formatter)
 
             ' Store relevant bits
             Me.m_prop = prop

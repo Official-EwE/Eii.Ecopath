@@ -23,14 +23,16 @@
 Option Strict On
 Option Explicit On
 
-Imports ZedGraph
-Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
 Imports System.Drawing
+Imports System.Windows.Forms
+Imports EwECore
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
+Imports ZedGraph
 
 #End Region ' Imports
 
-<CLSCompliant(False)> _
+<CLSCompliant(False)>
 Public Class cIndicesWithoutPPREst
     Inherits cContentManager
 
@@ -44,11 +46,11 @@ Public Class cIndicesWithoutPPREst
         Return "Ecosim indices without PPR estimated"
     End Function
 
-    Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                     ByVal datagrid As DataGridView, _
-                                     ByVal graph As ZedGraphControl, _
-                                     ByVal plot As ucPlot, _
-                                     ByVal toolstrip As ToolStrip, _
+    Public Overrides Function Attach(ByVal manager As cNetworkManager,
+                                     ByVal datagrid As DataGridView,
+                                     ByVal graph As ZedGraphControl,
+                                     ByVal plot As ucPlot,
+                                     ByVal toolstrip As ToolStrip,
                                      ByVal uic As cUIContext) As Boolean
 
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
@@ -97,6 +99,9 @@ Public Class cIndicesWithoutPPREst
         Dim pane As GraphPane = Nothing
         Dim g As Graphics = Nothing
 
+        Dim fmt As New cDiversityIndexTypeFormatter()
+        Dim model As cEwEModel = Me.UIContext.Core.EwEModel
+
         'Pane1
         pane = Me.m_zgh.ConfigurePane("", My.Resources.LBL_MONTHS, My.Resources.LBL_NA_INDIC, True, LegendPos.TopCenter, 1)
         'Add curves
@@ -104,11 +109,11 @@ Public Class cIndicesWithoutPPREst
         'FIB
         AddCurve(My.Resources.LBL_FIB_INDX, Me.NetworkManager.FIB, pane, Color.Green)
         'Relative sum of catch
-        AddCurve(My.Resources.LBL_TOTAL_CATCH, Me.NetworkManager.RelativeSumOfCatchPlot, pane, Color.Red)
-        'Relative Kemptons
-        AddCurve(My.Resources.LBL_KEMPTONS_Q, Me.NetworkManager.RelativeKemptonsPlot, pane, Color.Blue)
+        AddCurve(My.Resources.LBL_TOTAL_CATCH, Me.NetworkManager.RelativeSumOfCatch, pane, Color.Red)
+        'Relative diversity
+        AddCurve(fmt.GetDescriptor(model.DiversityIndexType), Me.NetworkManager.RelativeDiversity, pane, Color.Blue)
         'TL catch
-        AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatchPlot, pane, Color.Black)
+        AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatch, pane, Color.Black)
         'FCI
         AddCurve(My.Resources.LBL_FCI, Me.NetworkManager.FCIEcosim, pane, Color.Brown)
 

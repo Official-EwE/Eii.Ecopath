@@ -1118,7 +1118,9 @@ Public Class cEcoSpace
 
                 Me.RestoreForcedBiomass()
 
+#If 0 Then
                 Me.ForceBiomassWithEcosimTimeSeries()
+#End If
 
                 For ip = 0 To m_Data.NGroups
                     For i = 1 To m_Data.InRow
@@ -1483,7 +1485,6 @@ Public Class cEcoSpace
     ''' <summary>
     ''' VC stole this from Ecosim
     ''' </summary>
-
     Private Sub ForceBiomassWithEcosimTimeSeries()
 
         Try

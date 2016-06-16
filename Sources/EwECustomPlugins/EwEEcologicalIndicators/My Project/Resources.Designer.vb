@@ -570,7 +570,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Kempton&apos;s biodiversity index (Q).
+        '''  Looks up a localized string similar to Kempton&apos;s diversity index (Q).
         '''</summary>
         Friend ReadOnly Property IND_KEMPTONQ_DESC() As String
             Get
@@ -818,6 +818,24 @@ Namespace My.Resources
         Friend ReadOnly Property IND_PREDC_DESC() As String
             Get
                 Return ResourceManager.GetString("IND_PREDC_DESC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Shannon diversity.
+        '''</summary>
+        Friend ReadOnly Property IND_SHANNON() As String
+            Get
+                Return ResourceManager.GetString("IND_SHANNON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Shannon diversity index.
+        '''</summary>
+        Friend ReadOnly Property IND_SHANNON_DESC() As String
+            Get
+                Return ResourceManager.GetString("IND_SHANNON_DESC", resourceCulture)
             End Get
         End Property
         

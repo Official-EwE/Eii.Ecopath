@@ -86,8 +86,6 @@ Public MustInherit Class cIndicators
     ''' <summary>Shannon Diversity</summary>
     Private m_sShannonDiversity As Single
 
-
-
     ' --- Catch ---
     ''' <summary>Total Catch indicator</summary>
     Private m_sCT As Single
@@ -787,6 +785,7 @@ Public MustInherit Class cIndicators
     Public Function ShannonDiversity() As Single
         Return Me.m_sShannonDiversity
     End Function
+
 #End Region ' Biomass indicators
 
 #Region " Catch indicators "

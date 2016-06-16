@@ -99,9 +99,38 @@ Public Class cEcosimOutput
         End Get
     End Property
 
-    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags, _
-                                          Optional ByVal iIndex As Integer = -9999, _
-                                          Optional ByVal iIndex2 As Integer = -9999, _
+    Public ReadOnly Property DiversityIndex(ByVal iTimeStep As Integer) As Single
+        Get
+            Select Case Me.m_core.m_EcoPathData.DiversityIndexType
+                Case eDiversityIndexType.Shannon
+                    Return Me.ShannonDiversity(iTimeStep)
+                Case eDiversityIndexType.KemptonsQ
+                    Return Me.KemptonsQ(iTimeStep)
+                Case Else
+                    Debug.Assert(False, "Diversity index type not supported")
+            End Select
+            Return cCore.NULL_VALUE
+        End Get
+    End Property
+
+    Public ReadOnly Property DiversityIndexStatus(ByVal iTimeStep As Integer) As eStatusFlags
+        Get
+            Select Case Me.m_core.m_EcoPathData.DiversityIndexType
+                Case eDiversityIndexType.Shannon
+                    Return Me.ShannonDiversityStatus(iTimeStep)
+                Case eDiversityIndexType.KemptonsQ
+                    Return Me.KemptonsQStatus(iTimeStep)
+                Case Else
+                    Debug.Assert(False, "Diversity index type not supported")
+            End Select
+            Return eStatusFlags.Null
+        End Get
+    End Property
+
+
+    Public Overrides Function GetVariable(ByVal VarName As EwEUtils.Core.eVarNameFlags,
+                                          Optional ByVal iIndex As Integer = -9999,
+                                          Optional ByVal iIndex2 As Integer = -9999,
                                           Optional ByVal iIndex3 As Integer = -9999) As Object
 
         Try

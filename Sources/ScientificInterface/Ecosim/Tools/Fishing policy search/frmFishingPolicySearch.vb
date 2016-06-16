@@ -63,6 +63,12 @@ Namespace Ecosim
 
 #Region " Overrides "
 
+        Public Overrides ReadOnly Property IsRunForm As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
             MyBase.OnLoad(e)
@@ -71,7 +77,7 @@ Namespace Ecosim
 
             'Initialize Fishing Policy Manager
             Me.m_manager = Me.Core.FishingPolicyManager
-            Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler, _
+            Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler,
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
 
             Me.m_gridObjWeights.UIContext = Me.UIContext

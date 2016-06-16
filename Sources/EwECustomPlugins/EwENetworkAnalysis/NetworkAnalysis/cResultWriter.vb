@@ -65,7 +65,7 @@ Public Class cResultWriter
         AMI
         ENTROPY
         TLc
-        KEMPTONS
+        Diversity
         FIB
         DET_TE_W
         PP_TE_W
@@ -152,7 +152,7 @@ Public Class cResultWriter
         Me.m_manager.UseEcosimNetwork = False
 
         If (bSucces) Then
-            bSucces = Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, True, True), Me.GetIndicesWithPPRData(True)) Or _
+            bSucces = Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, True, True), Me.GetIndicesWithPPRData(True)) Or
                       Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, True, False), Me.GetIndicesWithPPRData(False))
         End If
         Return bSucces
@@ -174,7 +174,7 @@ Public Class cResultWriter
         Me.m_manager.UseEcosimNetwork = False
 
         If (bSucces) Then
-            bSucces = Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, False, True), Me.GetIndicesWithoutPPRData(True)) Or _
+            bSucces = Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, False, True), Me.GetIndicesWithoutPPRData(True)) Or
                       Me.WriteFile(Me.GetNAIndicatorsFileName(strPath, False, False), Me.GetIndicesWithoutPPRData(False))
         End If
         Return bSucces
@@ -182,9 +182,9 @@ Public Class cResultWriter
     End Function
 
     Private Function GetNAIndicatorsFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
-        Dim strFile As String = "NA_" & _
-                                CStr(IIf(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY)) & "_" & _
-                                CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")) & _
+        Dim strFile As String = "NA_" &
+                                CStr(IIf(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY)) & "_" &
+                                CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")) &
                                 ".csv"
         Return Path.Combine(strPath, strFile)
     End Function
@@ -228,7 +228,17 @@ Public Class cResultWriter
         ' Header line
         For j As Integer = 0 To iNumCols - 1
             If (j > 0) Then sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(fmt.GetDescriptor(cols(j))))
+
+            Dim strField As String = ""
+            Select Case cols(j)
+                Case eColTypes.Diversity
+                    Dim model As cEwEModel = Me.m_manager.Core.EwEModel
+                    Dim f As New cDiversityIndexTypeFormatter()
+                    strField = f.GetDescriptor(model.DiversityIndexType)
+                Case Else
+                    strField = fmt.GetDescriptor(cols(j))
+            End Select
+            sb.Append(cStringUtils.ToCSVField(strField))
         Next
         sb.AppendLine("")
 
@@ -274,8 +284,8 @@ Public Class cResultWriter
                     Case eColTypes.ASCEND_TOTAL : asValues(j) += Me.m_manager.AscendTotalEcosim(i)
                     Case eColTypes.AMI : asValues(j) += Me.m_manager.AMIEcosim(i)
                     Case eColTypes.ENTROPY : asValues(j) += Me.m_manager.EntropyEcosim(i)
-                    Case eColTypes.TLc : asValues(j) += Me.m_manager.TLCatchPlot(i)
-                    Case eColTypes.KEMPTONS : asValues(j) += Me.m_manager.RelativeKemptonsPlot(i)
+                    Case eColTypes.TLc : asValues(j) += Me.m_manager.TLCatch(i)
+                    Case eColTypes.Diversity : asValues(j) += Me.m_manager.RelativeDiversity(i)
                     Case eColTypes.FIB : asValues(j) += Me.m_manager.FIB(i)
                     Case eColTypes.DET_TE_W : asValues(j) += Me.m_manager.DetTransferEfficiencyWeighted(i)
                     Case eColTypes.PP_TE_W : asValues(j) += Me.m_manager.PPTransferEfficiencyWeighted(i)
@@ -381,8 +391,8 @@ Public Class cResultWriter
                     Case eColTypes.ASCEND_TOTAL : asValues(j) += Me.m_manager.AscendTotalEcosim(i)
                     Case eColTypes.AMI : asValues(j) += Me.m_manager.AMIEcosim(i)
                     Case eColTypes.ENTROPY : asValues(j) += Me.m_manager.EntropyEcosim(i)
-                    Case eColTypes.TLc : asValues(j) += Me.m_manager.TLCatchPlot(i)
-                    Case eColTypes.KEMPTONS : asValues(j) += Me.m_manager.RelativeKemptonsPlot(i)
+                    Case eColTypes.TLc : asValues(j) += Me.m_manager.TLCatch(i)
+                    Case eColTypes.Diversity : asValues(j) += Me.m_manager.RelativeDiversity(i)
                     Case eColTypes.FIB : asValues(j) += Me.m_manager.FIB(i)
                     Case eColTypes.DET_TE_W : asValues(j) += Me.m_manager.DetTransferEfficiencyWeighted(i)
                     Case eColTypes.PP_TE_W : asValues(j) += Me.m_manager.PPTransferEfficiencyWeighted(i)
