@@ -23,6 +23,7 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
+Imports System.Xml
 Imports EwECore.Auxiliary
 Imports EwECore.Database
 Imports EwECore.DataSources
@@ -31,17 +32,16 @@ Imports EwECore.Ecospace.Advection
 Imports EwECore.ExternalData
 Imports EwECore.FishingPolicy
 Imports EwECore.MSE
+Imports EwECore.Samples
 Imports EwECore.SearchObjectives
 Imports EwECore.SpatialData
 Imports EwECore.ValueWrapper
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
-Imports EwEUtils.SpatialData
-Imports System.Xml
-Imports EwECore.Samples
 
 #End Region ' Imports
 
@@ -3312,6 +3312,7 @@ Public Class cCore
         Me.m_EwEModel.EcobaseCode = Me.m_EcoPathData.ModelEcobaseCode
         Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
         Me.m_EwEModel.IsEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
+        Me.m_EwEModel.DiversityIndexType = Me.m_EcoPathData.DiversityIndexType
 
         Me.m_EwEModel.AllowValidation = True
 
@@ -3346,6 +3347,7 @@ Public Class cCore
         Me.m_EcoPathData.ModelPublicationURI = Me.m_EwEModel.PublicationURI
         Me.m_EcoPathData.ModelPublicationRef = Me.m_EwEModel.PublicationReference
         Me.m_EcoPathData.ModelEcobaseCode = Me.m_EwEModel.EcobaseCode
+        Me.m_EcoPathData.DiversityIndexType = Me.m_EwEModel.DiversityIndexType
 
         ' Do not update LastSaved; exclusively set by core
 
@@ -5005,6 +5007,8 @@ Public Class cCore
             Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab)
             Me.m_EcopathStats.Pedigree = Me.m_EcoPathData.PedigreeStatsModelIndex
             Me.m_EcopathStats.MeasureOfFit = Me.m_EcoPathData.PedigreeStatsTStar
+            Me.m_EcopathStats.DiveristyIndex = Me.m_EcoPathData.DiversityIndex
+
             Me.m_EcopathStats.ResetStatusFlags()
 
         Catch ex As Exception

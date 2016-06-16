@@ -252,6 +252,7 @@ Public Class cEcospaceDataStructures
     Public TLc(,) As Single
     ''' <summary>Kemptons Q by Row, Col.</summary>
     Public KemptonsQ(,) As Single
+    ''' <summary>ShannonDiversity by Row, Col.</summary>
     Public ShannonDiversity(,) As Single
 
     'these are all part of velmaker

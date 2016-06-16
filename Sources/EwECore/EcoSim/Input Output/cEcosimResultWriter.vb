@@ -55,6 +55,7 @@ Namespace Ecosim
             TL
             TLC
             KemptonsQ
+            ShannonDiversity
             FIB
             TotalCatch
             CatchFleetGroup
@@ -298,6 +299,7 @@ Namespace Ecosim
                     Next
 
                 Case eResultTypes.KemptonsQ,
+                     eResultTypes.ShannonDiversity,
                     eResultTypes.TLC,
                     eResultTypes.FIB,
                     eResultTypes.TotalCatch
@@ -309,6 +311,8 @@ Namespace Ecosim
                                 data(i) = Me.m_core.EcosimOutputs.TLCatch(i)
                             Case eResultTypes.KemptonsQ
                                 data(i) = Me.m_core.EcosimOutputs.KemptonsQ(i)
+                            Case eResultTypes.ShannonDiversity
+                                data(i) = Me.m_core.EcosimOutputs.ShannonDiversity(i)
                             Case eResultTypes.FIB
                                 data(i) = Me.m_core.EcosimOutputs.FIB(i)
                             Case eResultTypes.TotalCatch
@@ -380,6 +384,8 @@ Namespace Ecosim
                         strFileName = "FIB_annual"
                     Case eResultTypes.KemptonsQ
                         strFileName = "KemptonsQ_annual"
+                    Case eResultTypes.ShannonDiversity
+                        strFileName = "ShannonDiversity_annual"
                     Case eResultTypes.TLC
                         strFileName = "TLC_annual"
                     Case eResultTypes.TotalCatch
@@ -417,6 +423,8 @@ Namespace Ecosim
                         strFileName = "FIB"
                     Case eResultTypes.KemptonsQ
                         strFileName = "KemptonsQ"
+                    Case eResultTypes.ShannonDiversity
+                        strFileName = "ShannonDiversity"
                     Case eResultTypes.TLC
                         strFileName = "TLC"
                     Case eResultTypes.TotalCatch

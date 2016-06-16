@@ -55,6 +55,7 @@ Public Class frmModelParameters
     Private m_fpReference As cEwEFormatProvider = Nothing
 
     Private m_fpIsCoupled As cEwEFormatProvider = Nothing
+    Private m_fpBiodivIndex As cEwEFormatProvider = Nothing
 
     ' Unit properties
     Private m_propUnitCurrency As cIntegerProperty = Nothing
@@ -92,6 +93,7 @@ Public Class frmModelParameters
         Me.m_fpEast = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.East)
         Me.m_fpCountry = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbCountry, eweModel, eVarNameFlags.Country)
         Me.m_fpEcosystemType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoType, eweModel, eVarNameFlags.EcosystemType)
+        Me.m_fpBiodivIndex = New cPropertyFormatProvider(Me.UIContext, Me.m_cbmBiodivIndex, eweModel, eVarNameFlags.BiodiversityIndicatorType, Nothing, New cDiversityIndexTypeFormatter())
 
         Me.m_fpURI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationURL, eweModel, eVarNameFlags.PublicationURI)
         Me.m_fpDOI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationDOI, eweModel, eVarNameFlags.PublicationDOI)
@@ -162,6 +164,7 @@ Public Class frmModelParameters
         Me.m_fpIsCoupled.Release()
         Me.m_fpCountry.Release()
         Me.m_fpEcosystemType.Release()
+        Me.m_fpBiodivIndex.Release()
 
         Me.m_fpURI.Release()
         Me.m_fpDOI.Release()

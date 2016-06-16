@@ -920,11 +920,12 @@ Public Class cSearchDatastructures
         Next i
 
         'System.Console.WriteLine(ecovalue.ToString)
-        If Me.m_ecopathData.DiversityIndex = 0 Then
-            DiversityIndex = DiversityIndex + Me.m_EcoFunctions.KemptonsQ(Me.m_ecopathData.NumLiving, Me.m_ecopathData.TTLX, Biomass, 0.25)
-        ElseIf Me.m_ecopathData.DiversityIndex = 1 Then
-            DiversityIndex = DiversityIndex + Me.m_EcoFunctions.ShannonDiversityIndex(Me.m_ecopathData.NumLiving, Biomass)
-        End If
+        Select Case Me.m_ecopathData.DiversityIndexType
+            Case eDiversityIndexType.KemptonsQ
+                DiversityIndex = DiversityIndex + Me.m_EcoFunctions.KemptonsQ(Me.m_ecopathData.NumLiving, Me.m_ecopathData.TTLX, Biomass, 0.25)
+            Case eDiversityIndexType.Shannon
+                DiversityIndex = DiversityIndex + Me.m_EcoFunctions.ShannonDiversityIndex(Me.m_ecopathData.NumLiving, Biomass)
+        End Select
 
         EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
         Ecodistance = Ecodistance + DF * EcoDistTime

@@ -57,6 +57,7 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.TL : Return fmt.GetDescriptor(eVarNameFlags.TTLX, eDescriptorTypes.Name)
                 Case cEcosimResultWriter.eResultTypes.FIB : Return My.Resources.HEADER_FIB
                 Case cEcosimResultWriter.eResultTypes.KemptonsQ : Return My.Resources.HEADER_KEMPTONSQ
+                Case cEcosimResultWriter.eResultTypes.ShannonDiversity : Return My.Resources.HEADER_SHANNONDIVERSITY
                 Case cEcosimResultWriter.eResultTypes.TLC : Return My.Resources.HEADER_TLC
                 Case cEcosimResultWriter.eResultTypes.TotalCatch : Return My.Resources.HEADER_TOTALCATCH
                 Case cEcosimResultWriter.eResultTypes.CatchFleetGroup : Return My.Resources.HEADER_CATCH_BREAKDOWN

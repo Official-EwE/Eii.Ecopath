@@ -385,7 +385,7 @@
     <comment>{0}: component name; {1}: exception message</comment>
   </data>
   <data name="IND_KEMPTONQ_DESC" xml:space="preserve">
-    <value>Kempton's biodiversity index (Q)</value>
+    <value>Kempton's diversity index (Q)</value>
   </data>
   <data name="IND_KEMPTONSQ" xml:space="preserve">
     <value>Kempton's Q</value>
@@ -460,5 +460,11 @@
   </data>
   <data name="IND_VALUE_C_RATIO" xml:space="preserve">
     <value>Catch ratio</value>
+  </data>
+  <data name="IND_SHANNON" xml:space="preserve">
+    <value>Shannon diversity</value>
+  </data>
+  <data name="IND_SHANNON_DESC" xml:space="preserve">
+    <value>Shannon diversity index</value>
   </data>
 </root>

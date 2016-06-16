@@ -3399,4 +3399,13 @@
     <value>Assigned environmental forcing to {0}</value>
     <comment>{0}: function name</comment>
   </data>
+  <data name="BIODIVERSITY_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="BIODIVERSITY_SHANNON" xml:space="preserve">
+    <value>Shannon diversity index</value>
+  </data>
+  <data name="HEADER_SHANNONDIVERSITY" xml:space="preserve">
+    <value>Shannon diversity</value>
+  </data>
 </root>

@@ -950,6 +950,7 @@ Namespace Controls
                         Debug.Assert(False, "Unable to convert value type")
                     End Try
                 End If
+                Me.m_bInUpdate = False
 
             End Sub
 

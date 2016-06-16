@@ -98,6 +98,8 @@ Public Class cIndicatorSettings
         Dim grp As cIndicatorInfoGroup = Nothing
         Dim ind As cIndicatorInfo = Nothing
 
+        ' Note that the name an indicator as specified below must match the name of the public function used by
+        ' cIndicator to expose the value for that indicator. The function is lookup up at runtime via reflection.
         Dim aunitCatch() As eUnitType = New eUnitType() {eUnitType.Currency, eUnitType.Time}
 
         ' 1 biomass-based indicators
@@ -112,6 +114,7 @@ Public Class cIndicatorSettings
         grp.Add("DemPelB", My.Resources.IND_DEMPELB_RATIO, My.Resources.IND_DEMPELB_RATIO_DESC, My.Resources.IND_VALUE_B_RATIO)
         grp.Add("PredB", My.Resources.IND_PREDB, My.Resources.IND_PREDB_DESC, My.Resources.IND_VALUE_B, eUnitType.Currency)
         grp.Add("KemptonsQ", My.Resources.IND_KEMPTONSQ, My.Resources.IND_KEMPTONQ_DESC, My.Resources.IND_KEMPTONSQ)
+        grp.Add("ShannonDiversity", My.Resources.IND_SHANNON, My.Resources.IND_SHANNON_DESC, My.Resources.IND_SHANNON)
 
         ' 2 catch-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_CATCH, My.Resources.GROUP_CATCH_DESC)

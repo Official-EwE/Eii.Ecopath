@@ -310,6 +310,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Kemptons Q.
+        '''</summary>
+        Public ReadOnly Property BIODIVERSITY_KEMPTONSQ() As String
+            Get
+                Return ResourceManager.GetString("BIODIVERSITY_KEMPTONSQ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Shannon diversity index.
+        '''</summary>
+        Public ReadOnly Property BIODIVERSITY_SHANNON() As String
+            Get
+                Return ResourceManager.GetString("BIODIVERSITY_SHANNON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property BreakpointHS() As System.Drawing.Bitmap
@@ -6263,7 +6281,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("HEADER_SCENARIO", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to Shannon diversity.
+        '''</summary>
+        Public ReadOnly Property HEADER_SHANNONDIVERSITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SHANNONDIVERSITY", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to Shape.
         '''</summary>

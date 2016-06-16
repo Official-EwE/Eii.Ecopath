@@ -1987,43 +1987,43 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim plot "Total catch "
     ''' </summary>
-    Public ReadOnly Property RelativeSumOfCatchPlot() As Single()
+    Public ReadOnly Property RelativeSumOfCatch() As Single()
         Get
-            Return Me.m_econetwork.RelativeSumOfCatchPlot
+            Return Me.m_econetwork.RelativeSumOfCatch
         End Get
     End Property
 
     ''' <summary>
     ''' EwE5 Ecosim plot "Kemptons Q"
     ''' </summary>
-    Public ReadOnly Property RelativeKemptonsPlot() As Single()
+    Public ReadOnly Property RelativeDiversity() As Single()
         Get
-            Return Me.m_econetwork.RelativeKemptonsPlot
+            Return Me.m_econetwork.RelativeDiversityIndex
         End Get
     End Property
 
     ''' <summary>
     '''  EwE5 Ecosim plot "TL of catch "
     ''' </summary>
-    Public ReadOnly Property TLCatchPlot() As Single()
+    Public ReadOnly Property TLCatch() As Single()
         Get
-            Return Me.m_econetwork.TLCatchPlot
+            Return Me.m_econetwork.TLCatch
         End Get
     End Property
 
     ''' <summary>
     '''  EwE5 Ecosim plot TL (trophic level of all groups)
     ''' </summary>
-    Public ReadOnly Property TLSimPlot(ByVal iGroup As Integer, ByVal iTime As Integer) As Single
+    Public ReadOnly Property TLSim(ByVal iGroup As Integer, ByVal iTime As Integer) As Single
         Get
-            Return Me.m_econetwork.TLSimPlot(iGroup, iTime)
+            Return Me.m_econetwork.TLSim(iGroup, iTime)
         End Get
     End Property
 
     ''' <summary>
     ''' EwE5 Ecosim plot "Catch PPR "
     ''' </summary>
-    Public ReadOnly Property RelativeCatchPPRPlot() As Single()
+    Public ReadOnly Property RelativeCatchPPR() As Single()
         Get
             Return Me.m_econetwork.RelativeCatchPPR
         End Get
@@ -2032,7 +2032,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim plot "Catch detritus req."
     ''' </summary>
-    Public ReadOnly Property RelativeDetritusReqPlot() As Single()
+    Public ReadOnly Property RelativeDetritusReq() As Single()
         Get
             Return Me.m_econetwork.RelativeCatchDetReq
         End Get

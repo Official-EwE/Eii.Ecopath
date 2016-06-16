@@ -103,6 +103,10 @@ Namespace Ecopath.Output
             Me.AddRow(SharedResources.HEADER_ECOPATH_PEDIGREE, source, eVarNameFlags.EcopathStatsPedigree)
             Me.AddRow(SharedResources.HEADER_MEASUREOFFIT, source, eVarNameFlags.EcopathStatsMeasureOfFit)
 
+            Dim model As cEwEModel = Me.Core.EwEModel
+            Dim fmt As New cDiversityIndexTypeFormatter()
+            Me.AddRow(fmt.GetDescriptor(model.DiversityIndexType), source, eVarNameFlags.EcopathStatsDiversity)
+
         End Sub
 
         Protected Overrides Sub FinishStyle()

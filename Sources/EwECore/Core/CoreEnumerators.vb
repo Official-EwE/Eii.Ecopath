@@ -177,7 +177,6 @@ End Enum
 
 #End Region
 
-
 #Region "Ecopath Parameter Estimation type"
 
 ''' ---------------------------------------------------------------------------
@@ -431,3 +430,14 @@ End Enum
 
 #End Region ' PSD climate types
 
+#Region " Diversity index "
+
+''' <summary>
+''' Selected biodiversity index to display in the UI
+''' </summary>
+Public Enum eDiversityIndexType As Integer
+    Shannon = 0
+    KemptonsQ
+End Enum
+
+#End Region ' Diversity index

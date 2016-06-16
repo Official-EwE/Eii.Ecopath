@@ -96,7 +96,6 @@ Public Class cEcopathIndicators
         Return Me.Core.EcoFunction.KemptonsQ(Me.EcopathDS.NumLiving, Me.EcopathDS.TTLX, Me.EcopathDS.B, 0.25)
     End Function
 
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.ModelShannonDiversity"/>
     ''' -----------------------------------------------------------------------

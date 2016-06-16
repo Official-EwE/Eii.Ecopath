@@ -217,13 +217,17 @@ Public Class cEwEModel
             val = New cValue(New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsEcospaceModelCoupled))
             m_values.Add(val.varName, val)
 
+            ' BiodiversityIndicatorType (enum)
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.BiodiversityIndicatorType, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
 
             'set status flags to their default values
             ResetStatusFlags()
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cModel.")
-            cLog.Write(Me.ToString & ".New(nGroups) Error creating new cModel. Error: " & ex.Message)
+            cLog.Write(ex, "cEwEModel.New()")
         End Try
 
     End Sub
@@ -289,6 +293,16 @@ Public Class cEwEModel
 
         Set(ByVal bGroupDigits As Boolean)
             SetVariable(eVarNameFlags.GroupDigits, bGroupDigits)
+        End Set
+    End Property
+
+    Public Property DiversityIndexType() As eDiversityIndexType
+        Get
+            Return DirectCast(GetVariable(eVarNameFlags.BiodiversityIndicatorType), eDiversityIndexType)
+        End Get
+
+        Set(ByVal i As eDiversityIndexType)
+            SetVariable(eVarNameFlags.BiodiversityIndicatorType, CInt(i))
         End Set
     End Property
 

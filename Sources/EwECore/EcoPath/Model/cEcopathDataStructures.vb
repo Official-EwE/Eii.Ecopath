@@ -33,10 +33,6 @@ Public Class cEcopathDataStructures
 
     Private m_messages As cMessagePublisher
 
-    Private m_Ecofunctions As cEcoFunctions
-    Private Kempton As Single
-    Private Shannon As Single
-
 #End Region ' Private data
 
 #Region " Public Variables "
@@ -367,8 +363,26 @@ Public Class cEcopathDataStructures
     Public isGroupLeadingB() As Boolean
     Public isGroupLeadingCB() As Boolean
 
-    ''' <summary>DiversityIndex = 0 is Kempton's and 1 is Shannon </summary>
-    Public DiversityIndex As Integer
+    Public DiversityIndexType As eDiversityIndexType = eDiversityIndexType.Shannon
+    Public KemptonsQ As Single
+    Public Shannon As Single
+
+    ''' <summary>
+    ''' Returns the diversity index as selected in <see cref="DiversityIndexType"/>
+    ''' </summary>
+    Public ReadOnly Property DiversityIndex As Single
+        Get
+            Select Case Me.DiversityIndexType
+                Case eDiversityIndexType.KemptonsQ
+                    Return KemptonsQ
+                Case eDiversityIndexType.Shannon
+                    Return Me.Shannon
+                Case Else
+                    Debug.Assert(False, "Diversity index type not supported")
+            End Select
+            Return cCore.NULL_VALUE
+        End Get
+    End Property
 
 #End Region
 
@@ -640,8 +654,7 @@ Public Class cEcopathDataStructures
     ''' Central handler for computing anything after an Ecopath model run.
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function onPostEcopathRun() As Boolean
+    Public Function onPostEcopathRun(fn As cEcoFunctions) As Boolean
 
         Try
 
@@ -649,7 +662,7 @@ Public Class cEcopathDataStructures
             Compute_M2_Resp_and_Stats()
             ComputeFisheriesStats()
             Compute_M2_Resp_and_Stats()
-            ComputeMoreStats()
+            ComputeMoreStats(fn)
             ComputeProfit()
             ComputePedigree()
 
@@ -857,6 +870,7 @@ Public Class cEcopathDataStructures
                                                     eCoreComponentType.EcoPath, eMessageImportance.Warning))
         End If
     End Sub
+
     ''' <summary>
     ''' Compute
     ''' Conn: Connectance Index.
@@ -866,8 +880,7 @@ Public Class cEcopathDataStructures
     ''' Shannon: ShannonDiversity  ---- either Shannon
     ''' Kempton: KemptonsQ         ---- or Kempton will be shown
     ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub ComputeMoreStats()
+    Private Sub ComputeMoreStats(fn As cEcoFunctions)
         Dim i As Integer, j As Integer, SysOmDen As Single
 
         For i = 1 To NumLiving
@@ -898,11 +911,10 @@ Public Class cEcopathDataStructures
             If PB(i) > 0 And B(i) > 0 Then SumP = SumP + PB(i) * B(i)
         Next i
 
-        'If Me.DiversityIndex = 0 Then
-        '    Me.Kempton = Me.m_Ecofunctions.KemptonsQ(NumLiving, TTLX, B, 0.25)
-        'ElseIf Me.DiversityIndex = 1 Then
-        '    Me.Shannon = m_Ecofunctions.ShannonDiversityIndex(NumLiving, B)
-        'End If
+        If (fn IsNot Nothing) Then
+            Me.KemptonsQ = fn.KemptonsQ(NumLiving, TTLX, B, 0.25)
+            Me.Shannon = fn.ShannonDiversityIndex(NumLiving, B)
+        End If
 
     End Sub
 
@@ -1102,8 +1114,8 @@ Public Class cEcopathDataStructures
     ''' <returns>True if Ecopath is set to use Nutrient-based currency units.</returns>
     ''' -----------------------------------------------------------------------
     Public Function areUnitCurrencyNutrients() As Boolean
-        Return Me.ModelUnitCurrency = eUnitCurrencyType.Nitrogen Or _
-               Me.ModelUnitCurrency = eUnitCurrencyType.Phosporous Or _
+        Return Me.ModelUnitCurrency = eUnitCurrencyType.Nitrogen Or
+               Me.ModelUnitCurrency = eUnitCurrencyType.Phosporous Or
                Me.ModelUnitCurrency = eUnitCurrencyType.CustomNutrient
     End Function
 
@@ -1161,7 +1173,7 @@ Public Class cEcopathDataStructures
         Try
             If bGSWarning Then
                 Dim strmsg As String = My.Resources.CoreMessages.ECOPATH_GS_WARNING
-                Me.m_messages.AddMessage(New cMessage(strmsg, eMessageType.ErrorEncountered, _
+                Me.m_messages.AddMessage(New cMessage(strmsg, eMessageType.ErrorEncountered,
                                                 eCoreComponentType.EcoPath, eMessageImportance.Warning))
             End If
         Catch ex As Exception

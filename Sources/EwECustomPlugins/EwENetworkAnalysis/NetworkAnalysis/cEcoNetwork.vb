@@ -148,7 +148,7 @@ Public Class cEcoNetwork
     'Ecoism.BB(ngroups) is private to access it from this plugin it gets passed as an agrument at each time step (see EcosimTimestep())
     'then copied into a local BB() array
     Private BB() As Single
-    Private OrigKempton As Single
+    Private OrigDiversityIndex As Single
     Private OrigPPR(1) As Single
 
 #End Region ' Ecosim
@@ -309,17 +309,17 @@ Public Class cEcoNetwork
 
     Private ByTL(,,) As Single
 
-    Public RelativeSumOfCatchPlot() As Single
-    Public RelativeKemptonsPlot() As Single
+    Public RelativeSumOfCatch() As Single
+    Public RelativeDiversityIndex() As Single
     Public RelativeLIndex() As Single
     Public AbsoluteLIndex() As Single
     Public RelativePsust() As Single
     Public AbsolutePsust() As Single
 
     'Trophic level of catch
-    Public TLCatchPlot() As Single
+    Public TLCatch() As Single
 
-    Public TLSimPlot(,) As Single 'groups,time
+    Public TLSim(,) As Single 'groups,time
 
     Public RelativeCatchPPR() As Single
     Public RelativeCatchDetReq() As Single
@@ -366,7 +366,7 @@ Public Class cEcoNetwork
     Public Sub New(ByRef Manager As cNetworkManager) 'joeh
         m_manager = Manager
         Me.m_core = m_manager.Core
-        OrigKempton = Single.Epsilon 'for /0 error
+        OrigDiversityIndex = Single.Epsilon 'for /0 error
     End Sub
 
 #End Region ' Constructor
@@ -445,7 +445,7 @@ Public Class cEcoNetwork
             Debug.Assert(Me.m_AbortTimer IsNot Nothing, Me.ToString + " abort timer has not been set!")
 
             If Me.m_timedOut Then
-                Me.SendMessage(New cMessage("Sorry Network Analysis timed out after " + (TimeOutMilSecs / 60 / 1000).ToString + " minutes. Results will not be displayed.", _
+                Me.SendMessage(New cMessage("Sorry Network Analysis timed out after " + (TimeOutMilSecs / 60 / 1000).ToString + " minutes. Results will not be displayed.",
                                             eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning))
             End If
 
@@ -3366,10 +3366,10 @@ NextPivot:
             'ReDim CatchSim(m_esdata.NTimes)
             'ReDim Kemptons(m_esdata.NTimes)
 
-            ReDim RelativeSumOfCatchPlot(m_esdata.NTimes)
-            ReDim RelativeKemptonsPlot(m_esdata.NTimes)
-            ReDim TLSimPlot(m_epdata.NumGroups, m_esdata.NTimes)
-            ReDim TLCatchPlot(m_esdata.NTimes)
+            ReDim RelativeSumOfCatch(m_esdata.NTimes)
+            ReDim RelativeDiversityIndex(m_esdata.NTimes)
+            ReDim TLSim(m_epdata.NumGroups, m_esdata.NTimes)
+            ReDim TLCatch(m_esdata.NTimes)
             ReDim RelativeLIndex(m_esdata.NTimes)
             ReDim AbsoluteLIndex(m_esdata.NTimes)
             ReDim RelativePsust(m_esdata.NTimes)
@@ -3406,7 +3406,7 @@ NextPivot:
             Array.Copy(m_esdata.StartBiomass, BB, m_esdata.StartBiomass.Length)
             'EstimateTLofCatch(0, BB, CatchSim, OldTL, OldCatch, True)
 
-            OrigKempton = m_esdata.Kemptons(0)
+            OrigDiversityIndex = Me.DiversityIndex(0)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -3447,15 +3447,13 @@ NextPivot:
 
             'Summary data
             'see EwE5 RunModel() "If IndicesOn Then"
-            RelativeSumOfCatchPlot(iTime) = relCatch
-            RelativeKemptonsPlot(iTime) = esData.Kemptons(iTime) / OrigKempton
+            RelativeSumOfCatch(iTime) = relCatch
+            RelativeDiversityIndex(iTime) = Me.DiversityIndex(iTime) / OrigDiversityIndex
 
-            ' JS 21Mar2010: fixed issue 698
-            ' TLCatchPlot(iTime) = esData.TLC(iTime) - 2 'subtract two from TLCatch for plotting I have no idea why
-            TLCatchPlot(iTime) = esData.TLC(iTime)
+            TLCatch(iTime) = esData.TLC(iTime)
 
             For igrp As Integer = 1 To m_epdata.NumGroups
-                TLSimPlot(igrp, iTime) = esData.TLSim(igrp)
+                TLSim(igrp, iTime) = esData.TLSim(igrp)
             Next igrp
 
             If PPRon Then
@@ -3482,6 +3480,19 @@ NextPivot:
 
         Return True
 
+    End Function
+
+    Private Function DiversityIndex(t As Integer) As Single
+
+        Select Case Me.m_epdata.DiversityIndexType
+            Case eDiversityIndexType.Shannon
+                Return Me.m_esdata.ShannonDiversity(t)
+            Case eDiversityIndexType.KemptonsQ
+                Return Me.m_esdata.Kemptons(t)
+            Case Else
+                Debug.Assert(False, "Diversity index type not supported")
+        End Select
+        Return 1
     End Function
 
     Private Sub PrepareUlanowForCallFromEcosim(ByVal Round As Integer)

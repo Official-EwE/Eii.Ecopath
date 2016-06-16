@@ -68,7 +68,7 @@ Namespace Ecosim
                 Me(iTS, 1) = New EwECell(src.FIB(iTS), GetType(Single), styleVal)
                 Me(iTS, 2) = New EwECell(src.TLCatch(iTS), GetType(Single), styleVal)
                 Me(iTS, 3) = New EwECell(src.TotalCatch(iTS), GetType(Single), styleVal)
-                Me(iTS, 4) = New EwECell(src.KemptonsQ(iTS), GetType(Single), styleVal)
+                Me(iTS, 4) = New EwECell(src.DiversityIndex(iTS), GetType(Single), styleVal)
             Next
 
         End Sub
