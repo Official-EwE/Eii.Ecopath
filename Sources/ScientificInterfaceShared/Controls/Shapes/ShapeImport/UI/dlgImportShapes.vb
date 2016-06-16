@@ -237,6 +237,8 @@ Namespace Controls
             Dim strFile As String = Me.m_tbImportFileName.Text
             Me.m_data.Clear()
 
+            If (String.IsNullOrWhiteSpace(strFile)) Then Return
+
             If Not File.Exists(strFile) Then
                 Dim msg As New cMessage(cStringUtils.Localize(My.Resources.FILE_LOAD_ERROR_MISSING, strFile), _
                                         eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
