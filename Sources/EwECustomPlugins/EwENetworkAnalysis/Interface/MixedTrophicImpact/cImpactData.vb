@@ -38,6 +38,7 @@ Public Class cImpactData
     End Sub
 
     Public Overrides Function PageTitle() As String
+        ' ToDo: globalize this
         Return "Mixed tropic level impacts"
     End Function
 
