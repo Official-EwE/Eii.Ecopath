@@ -37,7 +37,7 @@ Imports ScientificInterfaceShared
 ''' <see cref="cEnviroResponseFunction">environmental response shapes</see>.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-Public Class frmEcosimEnviroResponse
+Public Class frmEcosimFunctionalResponse
 
 #Region " Private variables "
 

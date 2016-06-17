@@ -188,7 +188,10 @@
     <Compile Include="Controls\Shapes\ShapeImport\UI\gridImportShapes.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimResponseAssignments.vb">
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.Designer.vb">
+      <DependentUpon>dlgDefineEcosimFunctionalResponses.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\Utility\dlgChangeShape.Designer.vb">
@@ -514,10 +517,10 @@
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cLandingsShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cTimeSerieShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeMediation\cZedGraphMediationHelper.vb" />
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMapResponseAssignments.Designer.vb">
-      <DependentUpon>dlgDefineMapResponseAssignments.vb</DependentUpon>
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.Designer.vb">
+      <DependentUpon>dlgDefineEcospaceForagingResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMapResponseAssignments.vb">
+    <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.Designer.vb">
@@ -861,8 +864,11 @@
     <EmbeddedResource Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.resx">
       <DependentUpon>dlgImportShapes.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMapResponseAssignments.resx">
-      <DependentUpon>dlgDefineMapResponseAssignments.vb</DependentUpon>
+    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.resx">
+      <DependentUpon>dlgDefineEcosimFunctionalResponses.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineEcospaceForagingResponse.resx">
+      <DependentUpon>dlgDefineEcospaceForagingResponse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.resx">
       <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>

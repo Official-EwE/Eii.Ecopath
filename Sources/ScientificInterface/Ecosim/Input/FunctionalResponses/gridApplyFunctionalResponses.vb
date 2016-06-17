@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -33,24 +33,58 @@ Imports SourceLibrary
 
 #End Region
 
-Namespace Ecospace
+Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Grid to apply environmental response functions to capacity maps.
+    ''' Grid to apply environmental response functions to Ecosim forcing functions.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
-    Public Class gridApplyMapResponses
+    Public Class gridApplyEcosimEnvironmentalResponses
         Inherits gridApplyShapeBase
 
 #Region " Private vars "
 
         Private m_lProps As New List(Of cProperty)
+        Private m_driverManager As IEnvironmentalResponseManager = Nothing
+        Private m_shapeManager As cBaseShapeManager = Nothing
 
 #End Region ' Private vars
 
 #Region " Overrides "
+
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
+                If (value IsNot Nothing) Then
+                    Me.m_driverManager = value.Core.EcosimEnviroResponseManager
+                    Me.m_shapeManager = value.Core.EnviroResponseShapeManager
+                Else
+                    Me.m_driverManager = Nothing
+                    Me.m_shapeManager = Nothing
+                End If
+                MyBase.UIContext = value
+            End Set
+        End Property
+
+        Public Overrides ReadOnly Property CoreComponents As EwEUtils.Core.eCoreComponentType()
+            Get
+                Return New eCoreComponentType() {eCoreComponentType.EcosimResponseInteractionManager, eCoreComponentType.ShapesManager}
+            End Get
+        End Property
+
+        Public Overrides Sub OnCoreMessage(ByRef msg As EwECore.cMessage)
+            If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                Me.RefreshContent()
+            ElseIf (msg.Type = eMessageType.DataModified And msg.Source = eCoreComponentType.EcosimResponseInteractionManager) Then
+                For igrp As Integer = 1 To Me.Core.nGroups
+                    Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
+                Next
+            End If
+        End Sub
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
@@ -58,20 +92,19 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
-            Dim mapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
-            Dim map As IEnviroInputData = Nothing
+            Dim driver As IEnviroInputData = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
             ' Define grid dimensions
-            Me.Redim(Core.nGroups + 1, mapManager.nEnviroData + 2)
+            Me.Redim(Core.nGroups + 1, Me.m_driverManager.nEnviroData + 2)
 
-            For iMap As Integer = 1 To mapManager.nEnviroData
+            For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
 
-                map = mapManager.EnviroData(iMap)
-                Me(0, 1 + iMap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
-                Me(0, 1 + iMap).Behaviors.Add(Me.m_bmRowCol)
+                driver = Me.m_driverManager.EnviroData(iDriver)
+                Me(0, 1 + iDriver) = New EwEColumnHeaderCell(driver.Name)
+                Me(0, 1 + iDriver).Behaviors.Add(Me.m_bmRowCol)
 
-            Next iMap
+            Next iDriver
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
@@ -92,45 +125,20 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Try
-                Dim Manager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
-                Dim ShapeManager As cEnviroResponseShapeManager = Me.Core.EnviroResponseShapeManager
-                Dim ff As cForcingFunction
-                Dim strLabel As String
-
                 For igrp As Integer = 1 To Core.nGroups
-                    Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(igrp)
-                    For imap As Integer = 1 To Manager.nEnviroData
-                        Dim map As IEnviroInputData = Manager.EnviroData(imap)
-                        strLabel = ""
-                        Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
-                        If ishp > 0 Then
-                            ff = ShapeManager.Item(ishp - 1)
-                            strLabel = String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name)
-                        End If
-
-                        Me(igrp, imap + 1) = New EwECell(strLabel, GetType(String))
-                        Me(igrp, imap + 1).DataModel = Me.m_editor
-                        Me(igrp, imap + 1).Behaviors.Add(Me.m_bmCell)
+                    For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
+                        Me(igrp, iDriver + 1) = New EwECell("", GetType(String))
+                        Me(igrp, iDriver + 1).DataModel = Me.m_editor
+                        Me(igrp, iDriver + 1).Behaviors.Add(Me.m_bmCell)
                     Next
 
-                    Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
-                    Me.m_lProps.Add(prop)
-                    AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-
-                    Me.UpdateRow(grp)
+                    Me.UpdateRow(Me.Core.EcoSimGroupInputs(igrp))
 
                 Next
             Catch ex As Exception
 
             End Try
 
-        End Sub
-
-        Protected Overrides Sub ClearData()
-            For Each prop As cProperty In Me.m_lProps
-                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-            Next
-            MyBase.ClearData()
         End Sub
 
         Protected Overrides Sub FinishStyle()
@@ -155,12 +163,12 @@ Namespace Ecospace
             Try
 
                 Dim iGrp As Integer = e.Position.Row
-                Dim iMap As Integer = e.Position.Column - 1
+                Dim iDriver As Integer = e.Position.Column - 1
                 Dim cell As EwECell = DirectCast(Me(e.Position.Row, e.Position.Column), EwECell)
 
                 If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
-                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.DriverGroup, iGrp, iMap)
+                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.DriverGroup, iGrp, iDriver)
 
             Catch ex As Exception
                 ' Whoah
@@ -168,12 +176,9 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub ShowSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iMap As Integer)
+        Private Sub ShowSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
             Try
-                Dim MapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
-                Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
-
-                Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
+                Dim dlg As New dlgSelectResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
                 dlg.ShowDialog()
                 If dlg.DialogResult = DialogResult.OK Then
                     'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
@@ -190,15 +195,15 @@ Namespace Ecospace
             Try
 
                 Dim igrp As Integer = e.Position.Row
-                Dim iMap As Integer = e.Position.Column - 1
+                Dim iDriver As Integer = e.Position.Column - 1
                 'just assume it is the column that the user has selected!!!
                 Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Driver
-                If iMap < 0 Then
+                If iDriver < 0 Then
                     'the user has selected a Row not the Col(as set above)
                     selectionType = dlgSelectResponse.eSelectionType.Group
                 End If
 
-                Me.ShowSelectionDialog(selectionType, igrp, iMap)
+                Me.ShowSelectionDialog(selectionType, igrp, iDriver)
 
             Catch ex As Exception
 
@@ -206,25 +211,41 @@ Namespace Ecospace
 
         End Sub
 
+        Private Function CanApplyGroup(iGroup As Integer) As Boolean
+
+        End Function
+
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
             Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
         End Sub
 
-        Private Sub UpdateRow(grp As cEcospaceGroup)
+        Private Sub UpdateRow(grp As cCoreGroupBase)
 
-            Dim iGroup As Integer = grp.Index
-            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-            Dim mapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
+            Try
 
-            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat) Then
-                style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
-            End If
+                Dim igrp As Integer = grp.Index
+                Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+                Dim fmt As New cShapeDataFormatter()
 
-            For iMap As Integer = 1 To mapManager.nEnviroData
-                Dim cell As EwECell = CType(Me(iGroup, 1 + iMap), EwECell)
-                cell.Style = style
-                Me.InvalidateCell(cell)
-            Next
+                For iDriver As Integer = 1 To Me.m_driverManager.nEnviroData
+                    Dim strLabel As String = ""
+                    Dim ff As cForcingFunction = Nothing
+                    Dim driver As IEnviroInputData = Me.m_driverManager.EnviroData(iDriver)
+                    Dim cell As EwECell = CType(Me(igrp, 1 + iDriver), EwECell)
+
+                    Dim ishp As Integer = driver.ResponseIndexForGroup(igrp)
+                    If ishp > 0 Then
+                        ff = Me.m_shapeManager.Item(ishp - 1)
+                        strLabel = fmt.GetDescriptor(ff)
+                    End If
+
+                    cell.Style = style
+                    cell.Value = strLabel
+                    Me.InvalidateCell(cell)
+                Next
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 

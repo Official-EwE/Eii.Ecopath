@@ -195,13 +195,13 @@
     <Compile Include="Ecopath\Tools\Taxonomy and traits\gridDefineTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\EnviroResponseFunction\frmEcosimEnviroResponse.Designer.vb">
-      <DependentUpon>frmEcosimEnviroResponse.vb</DependentUpon>
+    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.Designer.vb">
+      <DependentUpon>frmEcosimFunctionalResponse.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\EnviroResponseFunction\frmEcosimEnviroResponse.vb">
+    <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\EnviroResponseFunction\gridApplyForagingResponses.vb">
+    <Compile Include="Ecosim\Input\FunctionalResponses\gridApplyFunctionalResponses.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFDGroupData.vb" />
@@ -939,8 +939,8 @@
     <EmbeddedResource Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.resx">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\EnviroResponseFunction\frmEcosimEnviroResponse.resx">
-      <DependentUpon>frmEcosimEnviroResponse.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.resx">
+      <DependentUpon>frmEcosimFunctionalResponse.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.resx">
       <DependentUpon>frmEcosimFD.vb</DependentUpon>
@@ -1310,8 +1310,8 @@
     <EmbeddedResource Include="Controls\dlgSelectResponse.resx">
       <DependentUpon>dlgSelectResponse.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.resx">
-      <DependentUpon>frmApplyCapacity.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.resx">
+      <DependentUpon>frmApplyForagingResponses.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.resx">
       <DependentUpon>frmForagingResponse.vb</DependentUpon>
@@ -1599,16 +1599,16 @@
     <Compile Include="Controls\dlgSelectResponse.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.Designer.vb">
-      <DependentUpon>frmApplyCapacity.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.Designer.vb">
+      <DependentUpon>frmApplyForagingResponses.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\frmApplyCapacity.vb">
+    <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\frmApplyForagingResponses.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\gridApplyCapacity.Designer.vb">
-      <DependentUpon>gridApplyCapacity.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\gridApplyForagingResponses.Designer.vb">
+      <DependentUpon>gridApplyForagingResponses.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\Capacity\Apply\gridApplyCapacity.vb">
+    <Compile Include="Ecospace\Input\Capacity\Apply Foraging Responses\gridApplyForagingResponses.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\Capacity\Shape\frmForagingResponse.Designer.vb">

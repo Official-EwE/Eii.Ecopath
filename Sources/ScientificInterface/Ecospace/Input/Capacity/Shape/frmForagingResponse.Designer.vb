@@ -188,7 +188,7 @@ Partial Class frmForagingResponse
         '
         resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
         Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-        Me.m_assignmentsToolbar.DefineMediationLabel = "Define driver maps...."
+        Me.m_assignmentsToolbar.DefineMediationLabel = "Define foraging response...."
         Me.m_assignmentsToolbar.Handler = Nothing
         Me.m_assignmentsToolbar.IsMenuVisible = True
         Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
