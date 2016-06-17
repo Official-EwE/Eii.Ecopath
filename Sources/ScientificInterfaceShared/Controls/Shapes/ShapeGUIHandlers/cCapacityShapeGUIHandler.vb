@@ -92,7 +92,7 @@ Namespace Controls
 
                     Case eShapeCommandTypes.DefineMediation
                         Debug.Assert((TypeOf Me.SelectedShape Is EwECore.cEnviroResponseFunction), "OPPSSS...")
-                        Dim dlgDefBP As New dlgDefineMapResponseAssignments(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.CapacityMapInteractionManager)
+                        Dim dlgDefBP As New dlgDefineEcospaceForagingResponse(Me.UIContext, DirectCast(Me.SelectedShape, EwECore.cEnviroResponseFunction), UIContext.Core.CapacityMapInteractionManager)
                         If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If

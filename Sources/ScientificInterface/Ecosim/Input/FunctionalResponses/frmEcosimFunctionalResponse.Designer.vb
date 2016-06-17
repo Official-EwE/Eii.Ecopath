@@ -19,7 +19,7 @@
 Imports ScientificInterfaceShared.Forms
 
 
-Partial Class frmEcosimEnviroResponse
+Partial Class frmEcosimFunctionalResponse
     Inherits frmEwE
 
     'UserControl overrides dispose to clean up the component list.
@@ -40,7 +40,7 @@ Partial Class frmEcosimEnviroResponse
     '<System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimEnviroResponse))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimFunctionalResponse))
         Me.m_tlpSketchPad = New System.Windows.Forms.TableLayoutPanel()
         Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
         Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucMediationSketchPad()
@@ -186,17 +186,17 @@ Partial Class frmEcosimEnviroResponse
         '
         resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
         Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
-        Me.m_assignmentsToolbar.DefineMediationLabel = "Define environmental forcing..."
+        Me.m_assignmentsToolbar.DefineMediationLabel = "Define functional response..."
         Me.m_assignmentsToolbar.Handler = Nothing
         Me.m_assignmentsToolbar.IsMenuVisible = True
         Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
         '
-        'frmEcosimEnviroResponse
+        'frmEcosimFunctionalResponse
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_scMain)
-        Me.Name = "frmEcosimEnviroResponse"
+        Me.Name = "frmEcosimFunctionalResponse"
         Me.TabText = ""
         Me.m_tlpSketchPad.ResumeLayout(False)
         Me.m_scMain.Panel1.ResumeLayout(False)

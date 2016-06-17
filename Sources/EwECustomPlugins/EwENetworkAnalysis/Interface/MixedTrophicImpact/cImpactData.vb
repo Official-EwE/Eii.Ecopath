@@ -51,7 +51,7 @@ Public Class cImpactData
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
         Me.Toolstrip.Visible = bSucces
         Me.Grid.Visible = bSucces
-        Me.ToolstripShowOptionCSV(True)
+        Me.ToolstripShowOptionCSV(False)
 
         Return bSucces
     End Function

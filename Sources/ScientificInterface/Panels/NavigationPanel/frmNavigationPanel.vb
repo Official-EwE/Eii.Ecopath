@@ -189,8 +189,8 @@ Public Class frmNavigationPanel
             .Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
             .Add("ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity)) ' ToDo: connect to help
 
-            .Add("ndEnviroResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimEnviroResponse)) ' ToDo: connect to help
-            .Add("ndEnviroResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimForagingResponses)) ' ToDo: connect to help
+            .Add("ndFunctionalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimFunctionalResponse)) ' ToDo: connect to help
+            .Add("ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses)) ' ToDo: connect to help
 
 
             ' Ecosim Output
@@ -261,7 +261,7 @@ Public Class frmNavigationPanel
             .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), "") ' ToDo: connect to help
             .Add("ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), "") ' ToDo: connect to help
             '.Add("ndHabCapDrivers", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityDrivers), "") ' ToDo: connect to help
-            .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyCapacity), "") ' ToDo: connect to help
+            .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyForagingResponses), "") ' ToDo: connect to help
             .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
 
         End With

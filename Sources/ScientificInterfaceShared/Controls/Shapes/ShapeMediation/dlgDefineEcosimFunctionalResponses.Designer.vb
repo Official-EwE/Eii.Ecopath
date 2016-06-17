@@ -20,11 +20,11 @@
 
 Imports ScientificInterfaceShared.Controls
 
-Partial Class dlgDefineMapResponseAssignments
+Partial Class dlgDefineEcosimFunctionalResponses
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -41,12 +41,11 @@ Partial Class dlgDefineMapResponseAssignments
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineMapResponseAssignments))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEcosimFunctionalResponses))
         Me.m_btnOk = New System.Windows.Forms.Button()
-        Me.m_lblDrivers = New System.Windows.Forms.Label()
         Me.m_tbxXMax = New System.Windows.Forms.TextBox()
         Me.m_lblXMax = New System.Windows.Forms.Label()
         Me.m_graph = New ZedGraph.ZedGraphControl()
@@ -54,7 +53,6 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_lblXMin = New System.Windows.Forms.Label()
         Me.m_btnDefaultMinMax = New System.Windows.Forms.Button()
         Me.m_tvDrivers = New System.Windows.Forms.TreeView()
-        Me.m_lblGroups = New System.Windows.Forms.Label()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_btnAdd = New System.Windows.Forms.Button()
         Me.m_lblMean = New System.Windows.Forms.Label()
@@ -63,17 +61,14 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblDrivers = New System.Windows.Forms.Label()
+        Me.m_lblGroups = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'm_btnOk
         '
         resources.ApplyResources(Me.m_btnOk, "m_btnOk")
         Me.m_btnOk.Name = "m_btnOk"
-        '
-        'm_lblDrivers
-        '
-        resources.ApplyResources(Me.m_lblDrivers, "m_lblDrivers")
-        Me.m_lblDrivers.Name = "m_lblDrivers"
         '
         'm_tbxXMax
         '
@@ -90,13 +85,13 @@ Partial Class dlgDefineMapResponseAssignments
         resources.ApplyResources(Me.m_graph, "m_graph")
         Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
+        Me.m_graph.ScrollGrace = 0R
+        Me.m_graph.ScrollMaxX = 0R
+        Me.m_graph.ScrollMaxY = 0R
+        Me.m_graph.ScrollMaxY2 = 0R
+        Me.m_graph.ScrollMinX = 0R
+        Me.m_graph.ScrollMinY = 0R
+        Me.m_graph.ScrollMinY2 = 0R
         '
         'm_tbxXMin
         '
@@ -121,11 +116,6 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_tvDrivers.HideSelection = False
         Me.m_tvDrivers.Name = "m_tvDrivers"
         Me.m_tvDrivers.ShowRootLines = False
-        '
-        'm_lblGroups
-        '
-        resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
-        Me.m_lblGroups.Name = "m_lblGroups"
         '
         'm_btnRemove
         '
@@ -189,10 +179,22 @@ Partial Class dlgDefineMapResponseAssignments
         Me.m_hdrConfig.IsCollapsed = False
         Me.m_hdrConfig.Name = "m_hdrConfig"
         '
-        'dlgDefineMapResponseAssignments
+        'm_lblDrivers
+        '
+        resources.ApplyResources(Me.m_lblDrivers, "m_lblDrivers")
+        Me.m_lblDrivers.Name = "m_lblDrivers"
+        '
+        'm_lblGroups
+        '
+        resources.ApplyResources(Me.m_lblGroups, "m_lblGroups")
+        Me.m_lblGroups.Name = "m_lblGroups"
+        '
+        'dlgDefineEcosimFunctionalResponses
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_lblDrivers)
+        Me.Controls.Add(Me.m_lblGroups)
         Me.Controls.Add(Me.m_lblXMin)
         Me.Controls.Add(Me.m_tbxXMin)
         Me.Controls.Add(Me.m_lblXMax)
@@ -204,16 +206,14 @@ Partial Class dlgDefineMapResponseAssignments
         Me.Controls.Add(Me.m_tbxMean)
         Me.Controls.Add(Me.m_hdrConfig)
         Me.Controls.Add(Me.m_btnRemove)
-        Me.Controls.Add(Me.m_lblDrivers)
         Me.Controls.Add(Me.m_btnDefaultMinMax)
         Me.Controls.Add(Me.m_btnAdd)
         Me.Controls.Add(Me.m_btChangeShape)
         Me.Controls.Add(Me.m_btnOk)
         Me.Controls.Add(Me.m_tvDrivers)
-        Me.Controls.Add(Me.m_lblGroups)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgDefineMapResponseAssignments"
+        Me.Name = "dlgDefineEcosimFunctionalResponses"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
@@ -222,8 +222,6 @@ Partial Class dlgDefineMapResponseAssignments
 
     End Sub
     Private WithEvents m_btnOk As System.Windows.Forms.Button
-    Private WithEvents m_lblDrivers As System.Windows.Forms.Label
-    Private WithEvents m_lblGroups As System.Windows.Forms.Label
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Protected WithEvents m_tvDrivers As System.Windows.Forms.TreeView
@@ -239,5 +237,6 @@ Partial Class dlgDefineMapResponseAssignments
     Private WithEvents m_lblMean As System.Windows.Forms.Label
     Private WithEvents m_btChangeShape As System.Windows.Forms.Button
     Private WithEvents m_tbxMean As System.Windows.Forms.TextBox
-
+    Private WithEvents m_lblDrivers As Label
+    Private WithEvents m_lblGroups As Label
 End Class

@@ -34,7 +34,7 @@ Namespace Ecospace
     ''' Form implementing the Ecospace 'Apply capacity map' interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class frmApplyCapacity
+    Public Class frmApplyForagingResponses
         Inherits frmApplyShapeBase
 
 #Region " Constructor "
@@ -66,7 +66,7 @@ Namespace Ecospace
             MyBase.OnFormClosed(e)
         End Sub
 
-        <CLSCompliant(False)> _
+        <CLSCompliant(False)>
         Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid
