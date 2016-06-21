@@ -53,6 +53,8 @@ Namespace Controls
 
         Private m_colorramp As cColorRamp = Nothing
 
+        Private Const c_LEGENDCELLSIZE As Single = 10
+
         Public Sub New()
             Me.m_colorramp = New cARGBColorRamp(New Color() {Color.DarkRed, Color.Red, Color.White, Color.Blue, Color.DarkBlue}, New Double() {0, 0.25, 0.25, 0.25, 0.25})
         End Sub
@@ -104,6 +106,7 @@ Namespace Controls
             Dim szLabelSideMaxSize As Size = Me.CalcLabelMaxSize(g, ftScale, astrLabelsY)
             Dim szTitleTop As Size = Me.CalcTitleMaxSize(g, ftLegend, strTitleX)
             Dim szTitleSide As Size = Me.CalcTitleMaxSize(g, ftLegend, strTitleY)
+            Dim szLegendSize As SizeF = Me.CalcLegendSize(g, ftLegend, astrLegends, c_LEGENDCELLSIZE)
 
             ' Graph layout explanation:
             '
@@ -115,8 +118,8 @@ Namespace Controls
             ' | Grid           | Horz. labels
             ' |                |
             ' +----------------+-------------
-            Dim iArea3Width As Integer = szLabelSideMaxSize.Width + szTitleSide.Height * 2
-            Dim iArea1Height As Integer = szLabelTopMaxSize.Width + szTitleTop.Height * 2
+            Dim iArea3Width As Integer = CInt(Math.Max(szLabelSideMaxSize.Width + szTitleSide.Height * 2, szLegendSize.Width))
+            Dim iArea1Height As Integer = CInt(Math.Max(szLabelTopMaxSize.Width + szTitleTop.Height * 2, szLegendSize.Height))
 
             Return New Size(CInt(astrLabelsX.Length * (szLabelTopMaxSize.Height + 2)) + iArea3Width + 1, _
                             CInt(astrLabelsY.Length * (szLabelSideMaxSize.Height + 2)) + iArea1Height + 1)
@@ -203,7 +206,7 @@ Namespace Controls
             ' Side text
             DrawLabelsSide(g, ftScale, ftSubtitle, rcArea3, szCellSize, strTitleY, astrLabelsY)
             ' Graph legends
-            DrawLegends(g, ftLegend, rcArea4, szCellSize, astrLegends, style)
+            DrawLegends(g, ftLegend, rcArea4, c_LEGENDCELLSIZE, astrLegends, style)
             ' Grid
             If bShowGrid Then DrawGridBack(g, rcArea2, szCellSize, asData, style)
             ' Graph
@@ -308,6 +311,25 @@ Namespace Controls
             Return szLegend
         End Function
 
+        Private Function CalcLegendSize(ByVal g As Graphics, ByVal ft As Font, ByVal astrLegends As String(), ByVal sCellSize As Single) As Size
+
+            Dim szLegend As New Size(0, 0)
+
+            If (astrLegends IsNot Nothing) Then
+                For i As Integer = 0 To astrLegends.GetUpperBound(0)
+                    ' Area to render a single circle into
+                    Dim rcItem As Rectangle = New Rectangle(0, CInt(1.5 * i * sCellSize), CInt(sCellSize), CInt(sCellSize))
+                    Dim szItem As SizeF = g.MeasureString(astrLegends(i), ft)
+
+                    szLegend.Width = CInt(Math.Max(szLegend.Width, rcItem.Width + szItem.Width))
+                    szLegend.Height = CInt(Math.Max(szLegend.Height, rcItem.Height))
+                Next
+            End If
+
+            Return szLegend
+
+        End Function
+
 #End Region ' Measurement calculations
 
 #Region " Rendering "
@@ -389,20 +411,20 @@ Namespace Controls
             Next
         End Sub
 
-        Private Sub DrawLegends(ByVal g As Graphics, ByVal ft As Font, ByVal rect As Rectangle, _
-                                ByVal szCellSize As SizeF, _
-                                ByVal astrLegends As String(), _
-                                ByVal style As eRenderStyle, _
+        Private Sub DrawLegends(ByVal g As Graphics, ByVal ft As Font, ByVal rect As Rectangle,
+                                ByVal sCellSize As Single,
+                                ByVal astrLegends As String(),
+                                ByVal style As eRenderStyle,
                                 Optional ByVal sAngle As Single = 0.0!)
 
             If (astrLegends Is Nothing) Then Return
 
             For i As Integer = 0 To astrLegends.GetUpperBound(0)
                 ' Area to render a single circle into
-                Dim rcItem As Rectangle = New Rectangle(rect.X, _
-                                                        CInt(rect.Height / 2 + 1.5 * i * szCellSize.Height), _
-                                                        CInt(szCellSize.Width), _
-                                                        CInt(szCellSize.Height))
+                Dim rcItem As Rectangle = New Rectangle(rect.X,
+                                                        CInt(rect.Height / 2 + 1.5 * i * sCellSize),
+                                                        CInt(sCellSize),
+                                                        CInt(sCellSize))
 
                 Select Case style
                     Case eRenderStyle.Bars
@@ -416,17 +438,17 @@ Namespace Controls
                 End Select
 
                 'Render legend
-                g.DrawString(astrLegends(i), ft, SystemBrushes.WindowText, _
-                             rect.X + CInt(2 * szCellSize.Width), _
-                             CInt(rect.Height / 2 + 1.5 * i * szCellSize.Height), _
+                g.DrawString(astrLegends(i), ft, SystemBrushes.WindowText,
+                             rect.X + CInt(2 * c_LEGENDCELLSIZE),
+                             CInt(rect.Height / 2 + 1.5 * i * c_LEGENDCELLSIZE),
                              StringFormat.GenericDefault)
             Next
 
             If (style = eRenderStyle.Colours) Then
-                Dim rcItem As Rectangle = New Rectangle(rect.X, _
-                                                        CInt(rect.Height / 2 + 1.5), _
-                                                        CInt(szCellSize.Width), _
-                                                        CInt((astrLegends.GetUpperBound(0) + 1.5) * szCellSize.Height))
+                Dim rcItem As Rectangle = New Rectangle(rect.X,
+                                                        CInt(rect.Height / 2 + 1.5),
+                                                        CInt(sCellSize),
+                                                        CInt((astrLegends.GetUpperBound(0) + 1.5) * sCellSize))
                 cColorRampIndicator.DrawColorRamp(g, Me.m_colorramp, rcItem, False)
             End If
 
