@@ -75,7 +75,6 @@ Partial Class frmModelParameters
         Me.rbCarbon = New System.Windows.Forms.RadioButton()
         Me.rbDryWeight = New System.Windows.Forms.RadioButton()
         Me.m_gbTimeUnits = New System.Windows.Forms.GroupBox()
-        Me.m_lblNote = New System.Windows.Forms.Label()
         Me.txbTimeOther = New System.Windows.Forms.TextBox()
         Me.rbTimeOther = New System.Windows.Forms.RadioButton()
         Me.rbDay = New System.Windows.Forms.RadioButton()
@@ -105,6 +104,8 @@ Partial Class frmModelParameters
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plExecution = New System.Windows.Forms.Panel()
+        Me.m_lblBiodivIndex = New System.Windows.Forms.Label()
+        Me.m_cbmBiodivIndex = New System.Windows.Forms.ComboBox()
         Me.m_chkIsCoupled = New System.Windows.Forms.CheckBox()
         Me.m_plMetadata = New System.Windows.Forms.Panel()
         Me.m_cmbEcoType = New System.Windows.Forms.ComboBox()
@@ -122,8 +123,6 @@ Partial Class frmModelParameters
         Me.m_lblPublicationDOI = New System.Windows.Forms.Label()
         Me.m_lblPublicationURL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_cbmBiodivIndex = New System.Windows.Forms.ComboBox()
-        Me.m_lblBiodivIndex = New System.Windows.Forms.Label()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -326,7 +325,6 @@ Partial Class frmModelParameters
         '
         'm_gbTimeUnits
         '
-        Me.m_gbTimeUnits.Controls.Add(Me.m_lblNote)
         Me.m_gbTimeUnits.Controls.Add(Me.txbTimeOther)
         Me.m_gbTimeUnits.Controls.Add(Me.rbTimeOther)
         Me.m_gbTimeUnits.Controls.Add(Me.rbDay)
@@ -334,11 +332,6 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_gbTimeUnits, "m_gbTimeUnits")
         Me.m_gbTimeUnits.Name = "m_gbTimeUnits"
         Me.m_gbTimeUnits.TabStop = False
-        '
-        'm_lblNote
-        '
-        resources.ApplyResources(Me.m_lblNote, "m_lblNote")
-        Me.m_lblNote.Name = "m_lblNote"
         '
         'txbTimeOther
         '
@@ -548,6 +541,18 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_plExecution, "m_plExecution")
         Me.m_plExecution.Name = "m_plExecution"
         '
+        'm_lblBiodivIndex
+        '
+        resources.ApplyResources(Me.m_lblBiodivIndex, "m_lblBiodivIndex")
+        Me.m_lblBiodivIndex.Name = "m_lblBiodivIndex"
+        '
+        'm_cbmBiodivIndex
+        '
+        Me.m_cbmBiodivIndex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cbmBiodivIndex.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cbmBiodivIndex, "m_cbmBiodivIndex")
+        Me.m_cbmBiodivIndex.Name = "m_cbmBiodivIndex"
+        '
         'm_chkIsCoupled
         '
         resources.ApplyResources(Me.m_chkIsCoupled, "m_chkIsCoupled")
@@ -658,18 +663,6 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
-        'm_cbmBiodivIndex
-        '
-        Me.m_cbmBiodivIndex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cbmBiodivIndex.FormattingEnabled = True
-        resources.ApplyResources(Me.m_cbmBiodivIndex, "m_cbmBiodivIndex")
-        Me.m_cbmBiodivIndex.Name = "m_cbmBiodivIndex"
-        '
-        'm_lblBiodivIndex
-        '
-        resources.ApplyResources(Me.m_lblBiodivIndex, "m_lblBiodivIndex")
-        Me.m_lblBiodivIndex.Name = "m_lblBiodivIndex"
-        '
         'frmModelParameters
         '
         resources.ApplyResources(Me, "$this")
@@ -749,7 +742,6 @@ Partial Class frmModelParameters
     Private WithEvents m_lblWest As System.Windows.Forms.Label
     Private WithEvents m_lblEast As System.Windows.Forms.Label
     Private WithEvents m_lblSouth As System.Windows.Forms.Label
-    Private WithEvents m_lblNote As System.Windows.Forms.Label
     Private WithEvents Panel2 As System.Windows.Forms.Panel
     Private WithEvents m_plDescr As System.Windows.Forms.Panel
     Private WithEvents m_plExecution As System.Windows.Forms.Panel
