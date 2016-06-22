@@ -125,7 +125,7 @@
   <data name="m_pbWoRMS.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAfoAAACVCAIAAAA/oq8lAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxIAAAsSAdLdfvwAAEAcSURBVHhe7Z1/jJXXeefxema2
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAAEAcSURBVHhe7Z1/jJXXeefxema2
         ZgBtE08DVWzADmHbxtiNthgp/iGo+gdBW8vItrbSqijCsgWysKpdrbBQFGQhW1arKhEysgVCsbzaqERU
         tYUtJ9pG/iVDQIkD1AY7dRWowwCxMQxgYGbw7ue+z3MPZ8553/O+9/1x58Kcjy7ovuc9v89zvuc55773
         zrTLkUgkEpkCRLmPRCKRKUGU+0gkEpkSRLmPRCKRKUGU+0gkEpkSRLmPRCKRKUGU+0gkEpkSRLmPRCKR
@@ -638,7 +638,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Stretch</value>

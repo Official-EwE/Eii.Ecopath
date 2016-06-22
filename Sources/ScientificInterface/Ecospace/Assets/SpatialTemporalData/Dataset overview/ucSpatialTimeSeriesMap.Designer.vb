@@ -37,7 +37,7 @@ Namespace Ecospace
             'ucSpatialTimeSeriesMap
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Name = "ucSpatialTimeSeriesMap"
             Me.ResumeLayout(False)
 

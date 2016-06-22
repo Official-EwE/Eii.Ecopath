@@ -104,7 +104,7 @@ Partial Class frmEcosimFunctionalResponse
         Me.m_sketchPad.XAxisMaxValue = -9999
         Me.m_sketchPad.XMarkValue = -9999.0!
         Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-        Me.m_sketchPad.YAxisMaxValue = 0!
+        Me.m_sketchPad.YAxisMaxValue = 0.0!
         Me.m_sketchPad.YAxisMinValue = -9999.0!
         Me.m_sketchPad.YMarkLabel = ""
         Me.m_sketchPad.YMarkValue = -9999.0!
@@ -194,7 +194,7 @@ Partial Class frmEcosimFunctionalResponse
         'frmEcosimFunctionalResponse
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_scMain)
         Me.Name = "frmEcosimFunctionalResponse"
         Me.TabText = ""

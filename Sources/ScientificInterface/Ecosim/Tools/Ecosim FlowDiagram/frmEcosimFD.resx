@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_pbFlowDiagram.Size" type="System.Drawing.Size, System.Drawing">
-    <value>829, 514</value>
+    <value>592, 514</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_pbFlowDiagram.TabIndex" type="System.Int32, mscorlib">
@@ -271,7 +271,7 @@
     <value>True</value>
   </data>
   <data name="m_lblTimeStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>773, 488</value>
+    <value>536, 488</value>
   </data>
   <data name="m_lblTimeStep.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 13</value>
@@ -298,7 +298,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_lblMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>725, 488</value>
+    <value>488, 488</value>
   </data>
   <data name="m_lblMonth.Size" type="System.Drawing.Size, System.Drawing">
     <value>45, 16</value>
@@ -328,7 +328,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_lblYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>677, 488</value>
+    <value>440, 488</value>
   </data>
   <data name="m_lblYear.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
@@ -361,7 +361,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_tbxMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>728, 465</value>
+    <value>491, 465</value>
   </data>
   <data name="m_tbxMonth.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 20</value>
@@ -385,7 +385,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_tbxYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>680, 465</value>
+    <value>443, 465</value>
   </data>
   <data name="m_tbxYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 20</value>
@@ -409,7 +409,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_tbxTimeStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>776, 465</value>
+    <value>539, 465</value>
   </data>
   <data name="m_tbxTimeStep.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 20</value>
@@ -436,7 +436,7 @@
     <value>211, 466</value>
   </data>
   <data name="m_slider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>463, 20</value>
+    <value>226, 20</value>
   </data>
   <data name="m_slider.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -445,7 +445,7 @@
     <value>m_slider</value>
   </data>
   <data name="&gt;&gt;m_slider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.13177.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_slider.Parent" xml:space="preserve">
     <value>m_scContent.Panel1</value>
@@ -475,7 +475,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_pgFlowDiagram.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 514</value>
+    <value>198, 514</value>
   </data>
   <data name="m_pgFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -505,10 +505,10 @@
     <value>1</value>
   </data>
   <data name="m_scContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1111, 514</value>
+    <value>794, 514</value>
   </data>
   <data name="m_scContent.SplitterDistance" type="System.Int32, mscorlib">
-    <value>829</value>
+    <value>592</value>
   </data>
   <data name="m_scContent.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -689,7 +689,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsFlowDiagram.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1111, 25</value>
+    <value>794, 25</value>
   </data>
   <data name="m_tsFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -701,7 +701,7 @@
     <value>m_tsFlowDiagram</value>
   </data>
   <data name="&gt;&gt;m_tsFlowDiagram.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13177.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsFlowDiagram.Parent" xml:space="preserve">
     <value>$this</value>
@@ -715,11 +715,14 @@
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>37</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1111, 538</value>
+    <value>794, 538</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -794,6 +797,6 @@
     <value>frmEcosimFD</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13177.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

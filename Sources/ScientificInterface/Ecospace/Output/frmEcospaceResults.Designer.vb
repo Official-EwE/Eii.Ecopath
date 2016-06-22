@@ -67,6 +67,7 @@ Namespace Ecospace
             '
             'm_nudSumLength
             '
+            Me.m_nudSumLength.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudSumLength, "m_nudSumLength")
             Me.m_nudSumLength.Name = "m_nudSumLength"
             '
@@ -149,7 +150,7 @@ Namespace Ecospace
             'frmEcospaceResults
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_lblNumSteps)
             Me.Controls.Add(Me.m_hdrShow)
             Me.Controls.Add(Me.m_hdrSummary)
@@ -165,6 +166,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_lblSumEndTime)
             Me.Controls.Add(Me.m_plResultsGrid)
             Me.Name = "frmEcospaceResults"
+            Me.TabText = ""
             CType(Me.m_nudSumLength, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()

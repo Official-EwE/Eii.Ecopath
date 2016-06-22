@@ -46,6 +46,7 @@ Namespace Controls
             'ucTimeSeriesSketchPad
             '
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Name = "ucTimeSeriesSketchPad"
             Me.ResumeLayout(False)
 

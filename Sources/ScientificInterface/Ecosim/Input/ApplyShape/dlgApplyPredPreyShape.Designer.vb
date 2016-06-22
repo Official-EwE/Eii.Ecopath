@@ -185,7 +185,7 @@ Namespace Ecosim
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.m_tlpInfo)
             Me.Controls.Add(Me.m_lblApplyTo)

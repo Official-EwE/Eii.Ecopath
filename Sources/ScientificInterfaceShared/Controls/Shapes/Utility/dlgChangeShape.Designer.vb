@@ -50,8 +50,8 @@ Namespace Controls
             Me.m_tlpInput = New System.Windows.Forms.TableLayoutPanel()
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_btnRefresh = New System.Windows.Forms.Button()
             Me.m_grid = New ScientificInterfaceShared.gridShapeFunctionParameters()
+            Me.m_btnRefresh = New System.Windows.Forms.Button()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -121,12 +121,6 @@ Namespace Controls
             Me.m_hdrParams.IsCollapsed = False
             Me.m_hdrParams.Name = "m_hdrParams"
             '
-            'm_btnRefresh
-            '
-            resources.ApplyResources(Me.m_btnRefresh, "m_btnRefresh")
-            Me.m_btnRefresh.Name = "m_btnRefresh"
-            Me.m_btnRefresh.UseVisualStyleBackColor = True
-            '
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = False
@@ -146,6 +140,7 @@ Namespace Controls
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.ShapeFunction = Nothing
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -159,6 +154,12 @@ Namespace Controls
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
+            '
+            'm_btnRefresh
+            '
+            resources.ApplyResources(Me.m_btnRefresh, "m_btnRefresh")
+            Me.m_btnRefresh.Name = "m_btnRefresh"
+            Me.m_btnRefresh.UseVisualStyleBackColor = True
             '
             'm_tbxName
             '
@@ -188,7 +189,7 @@ Namespace Controls
             'dlgChangeShape
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_scMain)

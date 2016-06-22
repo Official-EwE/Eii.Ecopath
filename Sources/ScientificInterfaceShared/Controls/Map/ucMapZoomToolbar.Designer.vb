@@ -62,7 +62,7 @@ Namespace Controls.Map
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
             Me.m_tsZoom.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_tsZoom.Size = New System.Drawing.Size(492, 25)
+            Me.m_tsZoom.Size = New System.Drawing.Size(100, 27)
             Me.m_tsZoom.TabIndex = 1
             Me.m_tsZoom.Text = "m_tzZoom"
             '
@@ -71,7 +71,7 @@ Namespace Controls.Map
             Me.m_tsbSaveImage.Image = CType(resources.GetObject("m_tsbSaveImage.Image"), System.Drawing.Image)
             Me.m_tsbSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbSaveImage.Name = "m_tsbSaveImage"
-            Me.m_tsbSaveImage.Size = New System.Drawing.Size(96, 22)
+            Me.m_tsbSaveImage.Size = New System.Drawing.Size(96, 20)
             Me.m_tsbSaveImage.Text = "Save image..."
             '
             'm_ts1
@@ -86,7 +86,7 @@ Namespace Controls.Map
             Me.m_tsddbPosition.Image = CType(resources.GetObject("m_tsddbPosition.Image"), System.Drawing.Image)
             Me.m_tsddbPosition.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsddbPosition.Name = "m_tsddbPosition"
-            Me.m_tsddbPosition.Size = New System.Drawing.Size(63, 22)
+            Me.m_tsddbPosition.Size = New System.Drawing.Size(63, 19)
             Me.m_tsddbPosition.Text = "Position"
             '
             'm_tsmiViewCenter1
@@ -112,7 +112,7 @@ Namespace Controls.Map
             Me.m_tsbZoomIn.Image = CType(resources.GetObject("m_tsbZoomIn.Image"), System.Drawing.Image)
             Me.m_tsbZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomIn.Name = "m_tsbZoomIn"
-            Me.m_tsbZoomIn.Size = New System.Drawing.Size(23, 22)
+            Me.m_tsbZoomIn.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbZoomIn.ToolTipText = "Zoom in"
             '
             'm_tsbZoomOut
@@ -121,21 +121,21 @@ Namespace Controls.Map
             Me.m_tsbZoomOut.Image = CType(resources.GetObject("m_tsbZoomOut.Image"), System.Drawing.Image)
             Me.m_tsbZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomOut.Name = "m_tsbZoomOut"
-            Me.m_tsbZoomOut.Size = New System.Drawing.Size(23, 22)
+            Me.m_tsbZoomOut.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbZoomOut.ToolTipText = "Zoom out"
             '
             'm_tscbZoomPercent
             '
             Me.m_tscbZoomPercent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_tscbZoomPercent.Name = "m_tscbZoomPercent"
-            Me.m_tscbZoomPercent.Size = New System.Drawing.Size(100, 25)
+            Me.m_tscbZoomPercent.Size = New System.Drawing.Size(100, 23)
             '
             'm_tsbZoomReset
             '
             Me.m_tsbZoomReset.Image = CType(resources.GetObject("m_tsbZoomReset.Image"), System.Drawing.Image)
             Me.m_tsbZoomReset.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbZoomReset.Name = "m_tsbZoomReset"
-            Me.m_tsbZoomReset.Size = New System.Drawing.Size(55, 22)
+            Me.m_tsbZoomReset.Size = New System.Drawing.Size(55, 20)
             Me.m_tsbZoomReset.Text = "Reset"
             '
             'm_cmsZoom
@@ -187,13 +187,14 @@ Namespace Controls.Map
             '
             'ucMapZoomToolbar
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.AutoSize = True
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_tsZoom)
             Me.MinimumSize = New System.Drawing.Size(100, 25)
             Me.Name = "ucMapZoomToolbar"
-            Me.Size = New System.Drawing.Size(492, 25)
+            Me.Size = New System.Drawing.Size(100, 27)
             Me.m_tsZoom.ResumeLayout(False)
             Me.m_tsZoom.PerformLayout()
             Me.m_cmsZoom.ResumeLayout(False)

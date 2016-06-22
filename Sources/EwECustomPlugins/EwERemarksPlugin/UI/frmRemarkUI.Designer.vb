@@ -87,7 +87,7 @@ Partial Class frmRemarkUI
         '
         'm_grid
         '
-        Me.m_grid.AllowBlockSelect = True
+        Me.m_grid.AllowBlockSelect = False
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         Me.m_grid.AutoStretchColumnsToFitWidth = True
@@ -104,6 +104,7 @@ Partial Class frmRemarkUI
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = True
         Me.m_grid.Location = New System.Drawing.Point(0, 25)
         Me.m_grid.Name = "m_grid"
         Me.m_grid.Size = New System.Drawing.Size(533, 402)
@@ -122,8 +123,9 @@ Partial Class frmRemarkUI
         '
         'frmRemarkUI
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(533, 427)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_ts)
@@ -133,6 +135,7 @@ Partial Class frmRemarkUI
         Me.Name = "frmRemarkUI"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.Text = "Ecowriter"
         Me.m_ts.ResumeLayout(False)
         Me.m_ts.PerformLayout()

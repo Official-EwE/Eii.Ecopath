@@ -42,13 +42,14 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStockRecruitmentPlot))
-            Me.m_plot = New ZedGraph.ZedGraphControl
-            Me.m_tvGroups = New System.Windows.Forms.TreeView
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.m_lblPt = New System.Windows.Forms.Label
-            Me.m_btnRun = New System.Windows.Forms.Button
+            Me.m_plot = New ZedGraph.ZedGraphControl()
+            Me.m_tvGroups = New System.Windows.Forms.TreeView()
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+            Me.m_lblPt = New System.Windows.Forms.Label()
+            Me.m_btnRun = New System.Windows.Forms.Button()
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -59,13 +60,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_plot, "m_plot")
             Me.m_plot.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plot.Name = "m_plot"
-            Me.m_plot.ScrollGrace = 0
-            Me.m_plot.ScrollMaxX = 0
-            Me.m_plot.ScrollMaxY = 0
-            Me.m_plot.ScrollMaxY2 = 0
-            Me.m_plot.ScrollMinX = 0
-            Me.m_plot.ScrollMinY = 0
-            Me.m_plot.ScrollMinY2 = 0
+            Me.m_plot.ScrollGrace = 0.0R
+            Me.m_plot.ScrollMaxX = 0.0R
+            Me.m_plot.ScrollMaxY = 0.0R
+            Me.m_plot.ScrollMaxY2 = 0.0R
+            Me.m_plot.ScrollMinX = 0.0R
+            Me.m_plot.ScrollMinY = 0.0R
+            Me.m_plot.ScrollMinY2 = 0.0R
             '
             'm_tvGroups
             '
@@ -103,12 +104,13 @@ Namespace Ecosim
             'frmStockRecruitmentPlot
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "frmStockRecruitmentPlot"
             Me.TabText = "S/R plot"
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer1.ResumeLayout(False)
             Me.ResumeLayout(False)
 

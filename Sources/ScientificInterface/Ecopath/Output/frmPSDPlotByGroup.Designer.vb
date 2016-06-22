@@ -46,12 +46,13 @@ Namespace Ecopath.Output
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(PSDPlotByGroup))
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_hdrGroups = New cEwEHeaderLabel
-            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox
+            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
             Me.SplitContainer1.SuspendLayout()
@@ -75,17 +76,20 @@ Namespace Ecopath.Output
             '
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
             '
             'm_hdrGroups
             '
             resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.CanCollapseParent = False
+            Me.m_hdrGroups.CollapsedParentHeight = 0
+            Me.m_hdrGroups.IsCollapsed = False
             Me.m_hdrGroups.Name = "m_hdrGroups"
             '
             'm_lbGroups
@@ -95,23 +99,24 @@ Namespace Ecopath.Output
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
-            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
+            Me.m_lbGroups.IsAllGroupsItemSelected = False
             Me.m_lbGroups.Name = "m_lbGroups"
             Me.m_lbGroups.SelectedGroup = Nothing
             Me.m_lbGroups.SelectedGroupIndex = -1
             Me.m_lbGroups.ShowAllGroupsItem = False
             Me.m_lbGroups.SortThreshold = -9999.0!
-            Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
             '
             'PSDPlotByGroup
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "PSDPlotByGroup"
+            Me.TabText = ""
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
+            CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer1.ResumeLayout(False)
             Me.ResumeLayout(False)
 

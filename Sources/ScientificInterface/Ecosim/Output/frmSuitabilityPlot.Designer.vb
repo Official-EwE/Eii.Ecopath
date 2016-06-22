@@ -46,7 +46,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SuitabilityPlot))
-            Me.m_plot = New ScientificInterface.ucSuitabilityPlot
+            Me.m_plot = New ScientificInterface.ucSuitabilityPlot()
             Me.SuspendLayout()
             '
             'm_plot
@@ -58,12 +58,13 @@ Namespace Ecosim
             'SuitabilityPlot
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_plot)
             Me.Name = "SuitabilityPlot"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.ResumeLayout(False)
 
         End Sub

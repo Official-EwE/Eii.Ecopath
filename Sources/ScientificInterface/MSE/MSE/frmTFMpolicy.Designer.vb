@@ -45,13 +45,14 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTargetFishingMortalityPolicy))
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.ToolStrip1 = New cEwEToolstrip
-            Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton
-            Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            Me.ToolStrip1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton()
+            Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -78,20 +79,22 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
             Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
             '
             'ToolStrip1
             '
+            Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbDefaultTFM})
             resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
             Me.ToolStrip1.Name = "ToolStrip1"
+            Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tsbDefaultTFM
             '
@@ -110,34 +113,39 @@ Namespace Ecosim
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.Group = Nothing
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'frmTargetFishingMortalityPolicy
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmTargetFishingMortalityPolicy"
+            Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.ToolStrip1.ResumeLayout(False)
             Me.ToolStrip1.PerformLayout()

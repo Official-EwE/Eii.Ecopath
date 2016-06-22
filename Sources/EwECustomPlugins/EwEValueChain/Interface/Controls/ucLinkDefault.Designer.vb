@@ -44,11 +44,12 @@ Partial Class ucLinkDefault
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
-        'ucLink
+        'ucLinkDefault
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Name = "ucLink"
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Name = "ucLinkDefault"
         Me.Size = New System.Drawing.Size(49, 46)
         Me.ResumeLayout(False)
 

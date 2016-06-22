@@ -42,11 +42,11 @@ Partial Class dlgAddUnits
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_btnSelNone = New System.Windows.Forms.Button
-        Me.m_btnAll = New System.Windows.Forms.Button
-        Me.OK_BUTTON = New System.Windows.Forms.Button
-        Me.CANCEL_BUTTON = New System.Windows.Forms.Button
-        Me.m_clbUnits = New System.Windows.Forms.CheckedListBox
+        Me.m_btnSelNone = New System.Windows.Forms.Button()
+        Me.m_btnAll = New System.Windows.Forms.Button()
+        Me.OK_BUTTON = New System.Windows.Forms.Button()
+        Me.CANCEL_BUTTON = New System.Windows.Forms.Button()
+        Me.m_clbUnits = New System.Windows.Forms.CheckedListBox()
         Me.SuspendLayout()
         '
         'm_btnSelNone
@@ -101,11 +101,12 @@ Partial Class dlgAddUnits
         Me.m_clbUnits.Size = New System.Drawing.Size(187, 220)
         Me.m_clbUnits.TabIndex = 0
         '
-        'dlgSelectUnits
+        'dlgAddUnits
         '
         Me.AcceptButton = Me.OK_BUTTON
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(292, 273)
         Me.ControlBox = False
         Me.Controls.Add(Me.m_clbUnits)
@@ -115,7 +116,7 @@ Partial Class dlgAddUnits
         Me.Controls.Add(Me.m_btnSelNone)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgSelectUnits"
+        Me.Name = "dlgAddUnits"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "Select units to add"

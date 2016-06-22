@@ -40,12 +40,12 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_pbxBlockCodes = New System.Windows.Forms.PictureBox
-            Me.m_nudNumBlockCodes = New cEwENumericUpDown
-            Me.m_nudSelectedBlockCode = New cEwENumericUpDown
-            Me.m_lblNumBlocks = New System.Windows.Forms.Label
-            Me.m_lblSelectedBlock = New System.Windows.Forms.Label
-            Me.m_slSelectedBlockCode = New ScientificInterfaceShared.Controls.ucSlider
+            Me.m_pbxBlockCodes = New System.Windows.Forms.PictureBox()
+            Me.m_nudNumBlockCodes = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudSelectedBlockCode = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblNumBlocks = New System.Windows.Forms.Label()
+            Me.m_lblSelectedBlock = New System.Windows.Forms.Label()
+            Me.m_slSelectedBlockCode = New ScientificInterfaceShared.Controls.ucSlider()
             CType(Me.m_pbxBlockCodes, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumBlockCodes, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSelectedBlockCode, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -54,7 +54,7 @@ Namespace Ecosim
             'm_pbxBlockCodes
             '
             Me.m_pbxBlockCodes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pbxBlockCodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_pbxBlockCodes.Location = New System.Drawing.Point(133, 3)
             Me.m_pbxBlockCodes.Margin = New System.Windows.Forms.Padding(0)
@@ -65,6 +65,7 @@ Namespace Ecosim
             '
             'm_nudNumBlockCodes
             '
+            Me.m_nudNumBlockCodes.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudNumBlockCodes.Location = New System.Drawing.Point(76, 3)
             Me.m_nudNumBlockCodes.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
             Me.m_nudNumBlockCodes.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -75,6 +76,7 @@ Namespace Ecosim
             '
             'm_nudSelectedBlockCode
             '
+            Me.m_nudSelectedBlockCode.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudSelectedBlockCode.Location = New System.Drawing.Point(76, 29)
             Me.m_nudSelectedBlockCode.Maximum = New Decimal(New Integer() {10, 0, 0, 0})
             Me.m_nudSelectedBlockCode.Name = "m_nudSelectedBlockCode"
@@ -105,20 +107,22 @@ Namespace Ecosim
             'm_slSelectedBlockCode
             '
             Me.m_slSelectedBlockCode.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_slSelectedBlockCode.CurrentKnob = 0
             Me.m_slSelectedBlockCode.Location = New System.Drawing.Point(136, 27)
             Me.m_slSelectedBlockCode.Margin = New System.Windows.Forms.Padding(0)
             Me.m_slSelectedBlockCode.Maximum = 100
             Me.m_slSelectedBlockCode.Minimum = 0
             Me.m_slSelectedBlockCode.Name = "m_slSelectedBlockCode"
+            Me.m_slSelectedBlockCode.NumKnobs = 1
             Me.m_slSelectedBlockCode.Size = New System.Drawing.Size(377, 23)
             Me.m_slSelectedBlockCode.TabIndex = 4
-            Me.m_slSelectedBlockCode.Value = 0
             '
             'ucParmBlockCodes
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_lblSelectedBlock)
             Me.Controls.Add(Me.m_lblNumBlocks)
             Me.Controls.Add(Me.m_nudSelectedBlockCode)
@@ -135,12 +139,12 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_nudNumBlockCodes As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblNumBlocks As System.Windows.Forms.Label
         Private WithEvents m_pbxBlockCodes As System.Windows.Forms.PictureBox
         Private WithEvents m_lblSelectedBlock As System.Windows.Forms.Label
-        Private WithEvents m_nudSelectedBlockCode As System.Windows.Forms.NumericUpDown
         Private WithEvents m_slSelectedBlockCode As ScientificInterfaceShared.Controls.ucSlider
+        Private WithEvents m_nudNumBlockCodes As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudSelectedBlockCode As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 

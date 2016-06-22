@@ -44,22 +44,22 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimResults))
-            Me.m_lblNumTimeSteps = New System.Windows.Forms.Label
-            Me.udNumTimeSteps = New cEwENumericUpDown
-            Me.m_nudSumEnd = New cEwENumericUpDown
-            Me.m_nudSumStart = New cEwENumericUpDown
-            Me.m_lblBegin = New System.Windows.Forms.Label
-            Me.m_lblEnd = New System.Windows.Forms.Label
-            Me.m_cmbFleets = New System.Windows.Forms.ComboBox
-            Me.m_rbGroup = New System.Windows.Forms.RadioButton
-            Me.m_rbIndices = New System.Windows.Forms.RadioButton
-            Me.m_rbGear = New System.Windows.Forms.RadioButton
-            Me.m_plResultsGrid = New System.Windows.Forms.Panel
-            Me.m_hdrSummary = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrShow = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel
-            Me.m_plContent = New System.Windows.Forms.Panel
-            Me.m_plSummary = New System.Windows.Forms.Panel
+            Me.m_lblNumTimeSteps = New System.Windows.Forms.Label()
+            Me.udNumTimeSteps = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudSumEnd = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudSumStart = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblBegin = New System.Windows.Forms.Label()
+            Me.m_lblEnd = New System.Windows.Forms.Label()
+            Me.m_cmbFleets = New System.Windows.Forms.ComboBox()
+            Me.m_rbGroup = New System.Windows.Forms.RadioButton()
+            Me.m_rbIndices = New System.Windows.Forms.RadioButton()
+            Me.m_rbGear = New System.Windows.Forms.RadioButton()
+            Me.m_plResultsGrid = New System.Windows.Forms.Panel()
+            Me.m_hdrSummary = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrShow = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plContent = New System.Windows.Forms.Panel()
+            Me.m_plSummary = New System.Windows.Forms.Panel()
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSumEnd, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSumStart, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -76,16 +76,19 @@ Namespace Ecosim
             'udNumTimeSteps
             '
             resources.ApplyResources(Me.udNumTimeSteps, "udNumTimeSteps")
+            Me.udNumTimeSteps.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.udNumTimeSteps.Name = "udNumTimeSteps"
             '
             'm_nudSumEnd
             '
             resources.ApplyResources(Me.m_nudSumEnd, "m_nudSumEnd")
+            Me.m_nudSumEnd.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudSumEnd.Name = "m_nudSumEnd"
             '
             'm_nudSumStart
             '
             resources.ApplyResources(Me.m_nudSumStart, "m_nudSumStart")
+            Me.m_nudSumStart.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudSumStart.Name = "m_nudSumStart"
             '
             'm_lblBegin
@@ -134,11 +137,17 @@ Namespace Ecosim
             'm_hdrSummary
             '
             resources.ApplyResources(Me.m_hdrSummary, "m_hdrSummary")
+            Me.m_hdrSummary.CanCollapseParent = False
+            Me.m_hdrSummary.CollapsedParentHeight = 0
+            Me.m_hdrSummary.IsCollapsed = False
             Me.m_hdrSummary.Name = "m_hdrSummary"
             '
             'm_hdrShow
             '
             resources.ApplyResources(Me.m_hdrShow, "m_hdrShow")
+            Me.m_hdrShow.CanCollapseParent = False
+            Me.m_hdrShow.CollapsedParentHeight = 0
+            Me.m_hdrShow.IsCollapsed = False
             Me.m_hdrShow.Name = "m_hdrShow"
             '
             'm_tlpControls
@@ -170,15 +179,16 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_plSummary, "m_plSummary")
             Me.m_plSummary.Name = "m_plSummary"
             '
-            'EcosimResults
+            'frmEcosimResults
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tlpControls)
             Me.Controls.Add(Me.m_plResultsGrid)
-            Me.Name = "EcosimResults"
+            Me.Name = "frmEcosimResults"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             CType(Me.udNumTimeSteps, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudSumEnd, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudSumStart, System.ComponentModel.ISupportInitialize).EndInit()
@@ -195,10 +205,7 @@ Namespace Ecosim
         Private WithEvents m_rbGroup As System.Windows.Forms.RadioButton
         Private WithEvents m_rbIndices As System.Windows.Forms.RadioButton
         Private WithEvents m_rbGear As System.Windows.Forms.RadioButton
-        Private WithEvents m_nudSumEnd As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudSumStart As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblNumTimeSteps As System.Windows.Forms.Label
-        Private WithEvents udNumTimeSteps As System.Windows.Forms.NumericUpDown
         Private WithEvents m_cmbFleets As System.Windows.Forms.ComboBox
         Private WithEvents m_hdrSummary As cEwEHeaderLabel
         Private WithEvents m_hdrShow As cEwEHeaderLabel
@@ -206,6 +213,9 @@ Namespace Ecosim
         Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_plSummary As System.Windows.Forms.Panel
         Private WithEvents m_plContent As System.Windows.Forms.Panel
+        Private WithEvents m_nudSumEnd As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudSumStart As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents udNumTimeSteps As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace

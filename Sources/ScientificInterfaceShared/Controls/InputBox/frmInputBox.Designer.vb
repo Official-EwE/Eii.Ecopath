@@ -77,7 +77,7 @@ Namespace Controls
             '
             Me.AcceptButton = Me.m_btnOk
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_btnCancel)

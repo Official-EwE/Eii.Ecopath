@@ -94,7 +94,7 @@ Partial Class frmUpdateComponents
         'frmUpdateComponents
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.White
         Me.ControlBox = False
         Me.Controls.Add(Me.m_cbAutoUpdatePlugins)

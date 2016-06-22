@@ -42,12 +42,13 @@ Namespace Controls.Map
         Private Sub InitializeComponent()
             Me.SuspendLayout()
             '
-            'ucBaseMap
+            'ucMap
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.BackColor = System.Drawing.Color.White
-            Me.Name = "ucBaseMap"
+            Me.Name = "ucMap"
             Me.Size = New System.Drawing.Size(571, 390)
             Me.ResumeLayout(False)
 

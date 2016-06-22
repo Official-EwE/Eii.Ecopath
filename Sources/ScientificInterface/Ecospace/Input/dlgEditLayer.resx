@@ -427,7 +427,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridLayerData, EwE6, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridLayerData, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -481,19 +481,19 @@
     <value>Import</value>
   </data>
   <data name="m_tsmiExportCSV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>149, 22</value>
   </data>
   <data name="m_tsmiExportCSV.Text" xml:space="preserve">
     <value>To CSV...</value>
   </data>
   <data name="m_tsmiExportXYZ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>149, 22</value>
   </data>
   <data name="m_tsmiExportXYZ.Text" xml:space="preserve">
     <value>To XYZ...</value>
   </data>
   <data name="m_tsmiExportAsc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
+    <value>149, 22</value>
   </data>
   <data name="m_tsmiExportAsc.Text" xml:space="preserve">
     <value>To Ascii grid...</value>
@@ -547,7 +547,7 @@
     <value>m_tsGrid</value>
   </data>
   <data name="&gt;&gt;m_tsGrid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsGrid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -607,7 +607,7 @@
     <value>m_zoommap</value>
   </data>
   <data name="&gt;&gt;m_zoommap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoommap.Parent" xml:space="preserve">
     <value>m_scAppearance.Panel1</value>
@@ -655,7 +655,7 @@
     <value>m_hdrDescription</value>
   </data>
   <data name="&gt;&gt;m_hdrDescription.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDescription.Parent" xml:space="preserve">
     <value>m_tlpBits</value>
@@ -784,7 +784,7 @@
     <value>m_nudWeight</value>
   </data>
   <data name="&gt;&gt;m_nudWeight.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWeight.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
@@ -850,7 +850,7 @@
     <value>m_hdrAppearance</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.Parent" xml:space="preserve">
     <value>m_tlpBits</value>
@@ -979,7 +979,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>866, 610</value>

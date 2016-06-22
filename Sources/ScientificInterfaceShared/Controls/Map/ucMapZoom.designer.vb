@@ -77,13 +77,14 @@ Namespace Controls.Map
             'm_map
             '
             Me.m_map.BackColor = System.Drawing.SystemColors.Window
+            Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_map.Editable = False
             Me.m_map.Location = New System.Drawing.Point(0, 0)
             Me.m_map.Margin = New System.Windows.Forms.Padding(0)
             Me.m_map.Name = "m_map"
             Me.m_map.Size = New System.Drawing.Size(200, 200)
             Me.m_map.TabIndex = 0
-            Me.m_map.Title = ""
+            Me.m_map.Title = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
             Me.m_map.UIContext = Nothing
             '
             'm_cmsZoom
@@ -161,8 +162,9 @@ Namespace Controls.Map
             '
             'ucMapZoom
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_sbVert)
             Me.Controls.Add(Me.m_sbHorz)
             Me.Controls.Add(Me.m_plZoom)

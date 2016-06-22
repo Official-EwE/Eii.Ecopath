@@ -43,21 +43,21 @@ Namespace Ecopath
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditFleets))
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_btnKeep = New System.Windows.Forms.Button
-            Me.m_btnDelete = New System.Windows.Forms.Button
-            Me.m_btnMoveDown = New System.Windows.Forms.Button
-            Me.m_btnMoveUp = New System.Windows.Forms.Button
-            Me.m_btnInsert = New System.Windows.Forms.Button
-            Me.m_btnDefaultAll = New System.Windows.Forms.Button
-            Me.m_btnDefaultCurrent = New System.Windows.Forms.Button
-            Me.m_btnCustom = New System.Windows.Forms.Button
-            Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.gridDefineFleets
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.m_btnKeep = New System.Windows.Forms.Button()
+            Me.m_btnDelete = New System.Windows.Forms.Button()
+            Me.m_btnMoveDown = New System.Windows.Forms.Button()
+            Me.m_btnMoveUp = New System.Windows.Forms.Button()
+            Me.m_btnInsert = New System.Windows.Forms.Button()
+            Me.m_btnDefaultAll = New System.Windows.Forms.Button()
+            Me.m_btnDefaultCurrent = New System.Windows.Forms.Button()
+            Me.m_btnCustom = New System.Windows.Forms.Button()
+            Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_grid = New ScientificInterface.gridDefineFleets()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -130,16 +130,25 @@ Namespace Ecopath
             'm_hdrColors
             '
             resources.ApplyResources(Me.m_hdrColors, "m_hdrColors")
+            Me.m_hdrColors.CanCollapseParent = False
+            Me.m_hdrColors.CollapsedParentHeight = 0
+            Me.m_hdrColors.IsCollapsed = False
             Me.m_hdrColors.Name = "m_hdrColors"
             '
             'm_hdrOrder
             '
             resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+            Me.m_hdrOrder.CanCollapseParent = False
+            Me.m_hdrOrder.CollapsedParentHeight = 0
+            Me.m_hdrOrder.IsCollapsed = False
             Me.m_hdrOrder.Name = "m_hdrOrder"
             '
             'm_hdrEdit
             '
             resources.ApplyResources(Me.m_hdrEdit, "m_hdrEdit")
+            Me.m_hdrEdit.CanCollapseParent = False
+            Me.m_hdrEdit.CollapsedParentHeight = 0
+            Me.m_hdrEdit.IsCollapsed = False
             Me.m_hdrEdit.Name = "m_hdrEdit"
             '
             'm_grid
@@ -154,25 +163,28 @@ Namespace Ecopath
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'EditFleets
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.ControlBox = False
             Me.Controls.Add(Me.m_hdrColors)

@@ -69,13 +69,14 @@ Namespace Ecosim
             'frmGroupRefLevels
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_ts)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "frmGroupRefLevels"
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)

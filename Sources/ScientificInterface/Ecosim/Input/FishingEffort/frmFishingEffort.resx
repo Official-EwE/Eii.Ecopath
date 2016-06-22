@@ -148,7 +148,7 @@
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -175,7 +175,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -220,7 +220,7 @@
     <value>m_shapeToolboxToolbar</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
     <value>m_tlpToolbox</value>
@@ -256,7 +256,7 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>m_tlpToolbox</value>
@@ -331,7 +331,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>703, 505</value>
@@ -343,6 +346,6 @@
     <value>frmFishingEffort</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

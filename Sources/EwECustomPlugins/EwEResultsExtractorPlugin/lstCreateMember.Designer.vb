@@ -42,12 +42,12 @@ Partial Class lstCreateMember
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.lstNonMember = New System.Windows.Forms.ListBox
-        Me.lstMember = New System.Windows.Forms.ListBox
-        Me.btnRemoveSelected = New System.Windows.Forms.Button
-        Me.btnRemoveAll = New System.Windows.Forms.Button
-        Me.btnAddSelected = New System.Windows.Forms.Button
-        Me.btnAddAll = New System.Windows.Forms.Button
+        Me.lstNonMember = New System.Windows.Forms.ListBox()
+        Me.lstMember = New System.Windows.Forms.ListBox()
+        Me.btnRemoveSelected = New System.Windows.Forms.Button()
+        Me.btnRemoveAll = New System.Windows.Forms.Button()
+        Me.btnAddSelected = New System.Windows.Forms.Button()
+        Me.btnAddAll = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'lstNonMember
@@ -104,8 +104,9 @@ Partial Class lstCreateMember
         '
         'lstCreateMember
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.btnAddAll)
         Me.Controls.Add(Me.btnAddSelected)
         Me.Controls.Add(Me.btnRemoveAll)

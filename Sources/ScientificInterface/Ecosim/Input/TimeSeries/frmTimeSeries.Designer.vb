@@ -94,6 +94,7 @@ Namespace Ecosim
             Me.m_sketchPad.AllowDragXMark = False
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+            Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
@@ -127,10 +128,11 @@ Namespace Ecosim
             'm_shapeToolbox
             '
             Me.m_shapeToolbox.AllowCheckboxes = False
-            Me.m_shapeToolbox.Color = System.Drawing.Color.Empty
             resources.ApplyResources(Me.m_shapeToolbox, "m_shapeToolbox")
+            Me.m_shapeToolbox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolbox.Handler = Nothing
             Me.m_shapeToolbox.Name = "m_shapeToolbox"
+            Me.m_shapeToolbox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolbox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolbox.UIContext = Nothing
             Me.m_shapeToolbox.XAxisMaxValue = -9999
@@ -145,15 +147,17 @@ Namespace Ecosim
             'frmTimeSeries
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_split)
             Me.Name = "frmTimeSeries"
+            Me.TabText = ""
             Me.m_split.Panel1.ResumeLayout(False)
             Me.m_split.Panel2.ResumeLayout(False)
             CType(Me.m_split, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_split.ResumeLayout(False)
             Me.m_tlpSketchpad.ResumeLayout(False)
             Me.m_tlpShapeToolbox.ResumeLayout(False)
+            Me.m_tlpShapeToolbox.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub

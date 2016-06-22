@@ -42,21 +42,22 @@ Partial Class ucDefaults
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_pgDefaults = New System.Windows.Forms.PropertyGrid
-        Me.m_scMain = New System.Windows.Forms.SplitContainer
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.m_lbProducer = New EwEValueChainPlugin.ucUnitDefault
-        Me.m_lbProcessing = New EwEValueChainPlugin.ucUnitDefault
-        Me.m_lbWholeseller = New EwEValueChainPlugin.ucUnitDefault
-        Me.m_lbRetailer = New EwEValueChainPlugin.ucUnitDefault
-        Me.m_lbConsumer = New EwEValueChainPlugin.ucUnitDefault
-        Me.m_lnkProd2Proc = New EwEValueChainPlugin.ucLinkDefault
-        Me.m_lnkProc2Dist = New EwEValueChainPlugin.ucLinkDefault
-        Me.m_lnkWhole2Ret = New EwEValueChainPlugin.ucLinkDefault
-        Me.m_lnkRet2Cons = New EwEValueChainPlugin.ucLinkDefault
-        Me.m_lbDistribution = New EwEValueChainPlugin.ucUnitDefault
-        Me.m_lnkDist2Whole = New EwEValueChainPlugin.ucLinkDefault
-        Me.m_cbDefault = New System.Windows.Forms.ComboBox
+        Me.m_pgDefaults = New System.Windows.Forms.PropertyGrid()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_lbProducer = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lbProcessing = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lbWholeseller = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lbRetailer = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lbConsumer = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lnkProd2Proc = New EwEValueChainPlugin.ucLinkDefault()
+        Me.m_lnkProc2Dist = New EwEValueChainPlugin.ucLinkDefault()
+        Me.m_lnkWhole2Ret = New EwEValueChainPlugin.ucLinkDefault()
+        Me.m_lnkRet2Cons = New EwEValueChainPlugin.ucLinkDefault()
+        Me.m_lbDistribution = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lnkDist2Whole = New EwEValueChainPlugin.ucLinkDefault()
+        Me.m_cbDefault = New System.Windows.Forms.ComboBox()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
@@ -66,8 +67,8 @@ Partial Class ucDefaults
         'm_pgDefaults
         '
         Me.m_pgDefaults.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_pgDefaults.Location = New System.Drawing.Point(3, 30)
         Me.m_pgDefaults.Name = "m_pgDefaults"
         Me.m_pgDefaults.Size = New System.Drawing.Size(257, 450)
@@ -266,7 +267,7 @@ Partial Class ucDefaults
         'm_cbDefault
         '
         Me.m_cbDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_cbDefault.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cbDefault.FormattingEnabled = True
         Me.m_cbDefault.Location = New System.Drawing.Point(3, 3)
@@ -276,13 +277,15 @@ Partial Class ucDefaults
         '
         'ucDefaults
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.m_scMain)
         Me.Name = "ucDefaults"
         Me.Size = New System.Drawing.Size(452, 487)
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel2.ResumeLayout(False)
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)

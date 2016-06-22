@@ -42,8 +42,10 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Me.m_scTopBits = New System.Windows.Forms.SplitContainer()
             Me.m_scTop = New System.Windows.Forms.SplitContainer()
+            Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plRunParams = New System.Windows.Forms.Panel()
             Me.m_lbGenDiscount = New System.Windows.Forms.Label()
             Me.m_txtGenDiscount = New System.Windows.Forms.TextBox()
@@ -71,20 +73,19 @@ Namespace Ecosim
             Me.m_tlpRunStop = New System.Windows.Forms.TableLayoutPanel()
             Me.btnStop = New System.Windows.Forms.Button()
             Me.btnSearch = New System.Windows.Forms.Button()
+            Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tabObjectives = New System.Windows.Forms.TabPage()
             Me.m_scObjectives = New System.Windows.Forms.SplitContainer()
+            Me.m_gridObjWeights = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
             Me.m_scAarghArghAaargh = New System.Windows.Forms.SplitContainer()
+            Me.m_gridObjFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
+            Me.m_gridObjGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
             Me.m_tabResultTable = New System.Windows.Forms.TabPage()
             Me.m_scIterResult = New System.Windows.Forms.SplitContainer()
             Me.m_scIterResultMultiRun = New System.Windows.Forms.SplitContainer()
             Me.m_tpPlots = New System.Windows.Forms.TabPage()
             Me.m_graphResults = New ZedGraph.ZedGraphControl()
-            Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks()
-            Me.m_gridObjWeights = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
-            Me.m_gridObjFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
-            Me.m_gridObjGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
             CType(Me.m_scTopBits, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scTopBits.Panel1.SuspendLayout()
             Me.m_scTopBits.Panel2.SuspendLayout()
@@ -93,6 +94,7 @@ Namespace Ecosim
             Me.m_scTop.Panel1.SuspendLayout()
             Me.m_scTop.Panel2.SuspendLayout()
             Me.m_scTop.SuspendLayout()
+            Me.m_tlpControls.SuspendLayout()
             Me.m_plRunParams.SuspendLayout()
             CType(Me.m_nudMaxEffChg, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudBaseYear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -116,7 +118,6 @@ Namespace Ecosim
             CType(Me.m_scIterResultMultiRun, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scIterResultMultiRun.SuspendLayout()
             Me.m_tpPlots.SuspendLayout()
-            Me.m_tlpControls.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scTopBits
@@ -159,6 +160,21 @@ Namespace Ecosim
             Me.m_scTop.Size = New System.Drawing.Size(989, 382)
             Me.m_scTop.SplitterDistance = 250
             Me.m_scTop.TabIndex = 3
+            '
+            'm_tlpControls
+            '
+            Me.m_tlpControls.ColumnCount = 1
+            Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpControls.Controls.Add(Me.m_plRunParams, 0, 0)
+            Me.m_tlpControls.Controls.Add(Me.m_tlpRunStop, 0, 1)
+            Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
+            Me.m_tlpControls.Name = "m_tlpControls"
+            Me.m_tlpControls.RowCount = 2
+            Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_tlpControls.Size = New System.Drawing.Size(250, 382)
+            Me.m_tlpControls.TabIndex = 1
             '
             'm_plRunParams
             '
@@ -267,6 +283,7 @@ Namespace Ecosim
             '
             'm_nudMaxEffChg
             '
+            Me.m_nudMaxEffChg.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMaxEffChg.Location = New System.Drawing.Point(121, 152)
             Me.m_nudMaxEffChg.Name = "m_nudMaxEffChg"
             Me.m_nudMaxEffChg.Size = New System.Drawing.Size(60, 20)
@@ -274,6 +291,7 @@ Namespace Ecosim
             '
             'm_nudBaseYear
             '
+            Me.m_nudBaseYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudBaseYear.Location = New System.Drawing.Point(121, 126)
             Me.m_nudBaseYear.Maximum = New Decimal(New Integer() {9999, 0, 0, 0})
             Me.m_nudBaseYear.Name = "m_nudBaseYear"
@@ -362,6 +380,7 @@ Namespace Ecosim
             '
             'm_nudMaxNumEval
             '
+            Me.m_nudMaxNumEval.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudMaxNumEval.Location = New System.Drawing.Point(121, 100)
             Me.m_nudMaxNumEval.Maximum = New Decimal(New Integer() {1000000, 0, 0, 0})
             Me.m_nudMaxNumEval.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -372,6 +391,7 @@ Namespace Ecosim
             '
             'm_nudNumberOfRuns
             '
+            Me.m_nudNumberOfRuns.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudNumberOfRuns.Location = New System.Drawing.Point(121, 74)
             Me.m_nudNumberOfRuns.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudNumberOfRuns.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -453,6 +473,20 @@ Namespace Ecosim
             Me.btnSearch.Text = "&Search"
             Me.btnSearch.UseVisualStyleBackColor = True
             '
+            'm_blocks
+            '
+            Me.m_blocks.ControlPanelVisible = True
+            Me.m_blocks.CurColor = System.Drawing.Color.Empty
+            Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_blocks.Location = New System.Drawing.Point(0, 0)
+            Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_blocks.Name = "m_blocks"
+            Me.m_blocks.ParmBlockCodes = Nothing
+            Me.m_blocks.ShowTooltip = True
+            Me.m_blocks.Size = New System.Drawing.Size(735, 382)
+            Me.m_blocks.TabIndex = 3
+            Me.m_blocks.UIContext = Nothing
+            '
             'm_tcMain
             '
             Me.m_tcMain.Controls.Add(Me.m_tabObjectives)
@@ -493,6 +527,44 @@ Namespace Ecosim
             Me.m_scObjectives.SplitterDistance = 319
             Me.m_scObjectives.TabIndex = 0
             '
+            'm_gridObjWeights
+            '
+            Me.m_gridObjWeights.AllowBlockSelect = True
+            Me.m_gridObjWeights.AutoSizeMinHeight = 10
+            Me.m_gridObjWeights.AutoSizeMinWidth = 10
+            Me.m_gridObjWeights.AutoStretchColumnsToFitWidth = False
+            Me.m_gridObjWeights.AutoStretchRowsToFitHeight = False
+            Me.m_gridObjWeights.BackColor = System.Drawing.Color.White
+            Me.m_gridObjWeights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridObjWeights.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridObjWeights.CustomSort = False
+            Me.m_gridObjWeights.DataName = "grid content"
+            Me.m_gridObjWeights.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_gridObjWeights.FixedColumnWidths = False
+            Me.m_gridObjWeights.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridObjWeights.GridToolTipActive = True
+            Me.m_gridObjWeights.IsLayoutSuspended = False
+            Me.m_gridObjWeights.IsOutputGrid = True
+            Me.m_gridObjWeights.Location = New System.Drawing.Point(0, 0)
+            Me.m_gridObjWeights.Manager = Nothing
+            Me.m_gridObjWeights.Name = "m_gridObjWeights"
+            Me.m_gridObjWeights.ShowMaxPortUtil = False
+            Me.m_gridObjWeights.ShowMPAOptParams = False
+            Me.m_gridObjWeights.Size = New System.Drawing.Size(319, 261)
+            Me.m_gridObjWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridObjWeights.TabIndex = 0
+            Me.m_gridObjWeights.UIContext = Nothing
+            '
             'm_scAarghArghAaargh
             '
             Me.m_scAarghArghAaargh.Dock = System.Windows.Forms.DockStyle.Fill
@@ -509,6 +581,79 @@ Namespace Ecosim
             Me.m_scAarghArghAaargh.Size = New System.Drawing.Size(652, 261)
             Me.m_scAarghArghAaargh.SplitterDistance = 212
             Me.m_scAarghArghAaargh.TabIndex = 0
+            '
+            'm_gridObjFleet
+            '
+            Me.m_gridObjFleet.AllowBlockSelect = True
+            Me.m_gridObjFleet.AutoSizeMinHeight = 10
+            Me.m_gridObjFleet.AutoSizeMinWidth = 10
+            Me.m_gridObjFleet.AutoStretchColumnsToFitWidth = False
+            Me.m_gridObjFleet.AutoStretchRowsToFitHeight = False
+            Me.m_gridObjFleet.BackColor = System.Drawing.Color.White
+            Me.m_gridObjFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridObjFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridObjFleet.CustomSort = False
+            Me.m_gridObjFleet.DataName = "grid content"
+            Me.m_gridObjFleet.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_gridObjFleet.FixedColumnWidths = False
+            Me.m_gridObjFleet.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridObjFleet.GridToolTipActive = True
+            Me.m_gridObjFleet.IsLayoutSuspended = False
+            Me.m_gridObjFleet.IsMaximizeByFleetValue = False
+            Me.m_gridObjFleet.IsOutputGrid = True
+            Me.m_gridObjFleet.Location = New System.Drawing.Point(0, 0)
+            Me.m_gridObjFleet.Manager = Nothing
+            Me.m_gridObjFleet.Name = "m_gridObjFleet"
+            Me.m_gridObjFleet.Size = New System.Drawing.Size(212, 261)
+            Me.m_gridObjFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridObjFleet.TabIndex = 0
+            Me.m_gridObjFleet.UIContext = Nothing
+            '
+            'm_gridObjGroup
+            '
+            Me.m_gridObjGroup.AllowBlockSelect = True
+            Me.m_gridObjGroup.AutoSizeMinHeight = 10
+            Me.m_gridObjGroup.AutoSizeMinWidth = 10
+            Me.m_gridObjGroup.AutoStretchColumnsToFitWidth = False
+            Me.m_gridObjGroup.AutoStretchRowsToFitHeight = False
+            Me.m_gridObjGroup.BackColor = System.Drawing.Color.White
+            Me.m_gridObjGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridObjGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridObjGroup.CustomSort = False
+            Me.m_gridObjGroup.DataName = "grid content"
+            Me.m_gridObjGroup.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_gridObjGroup.FixedColumnWidths = False
+            Me.m_gridObjGroup.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridObjGroup.GridToolTipActive = True
+            Me.m_gridObjGroup.IsLayoutSuspended = False
+            Me.m_gridObjGroup.IsOutputGrid = True
+            Me.m_gridObjGroup.Location = New System.Drawing.Point(0, 0)
+            Me.m_gridObjGroup.Manager = Nothing
+            Me.m_gridObjGroup.Name = "m_gridObjGroup"
+            Me.m_gridObjGroup.Size = New System.Drawing.Size(436, 261)
+            Me.m_gridObjGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridObjGroup.TabIndex = 0
+            Me.m_gridObjGroup.UIContext = Nothing
             '
             'm_tabResultTable
             '
@@ -571,141 +716,11 @@ Namespace Ecosim
             Me.m_graphResults.Size = New System.Drawing.Size(975, 261)
             Me.m_graphResults.TabIndex = 8
             '
-            'm_tlpControls
-            '
-            Me.m_tlpControls.ColumnCount = 1
-            Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpControls.Controls.Add(Me.m_plRunParams, 0, 0)
-            Me.m_tlpControls.Controls.Add(Me.m_tlpRunStop, 0, 1)
-            Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
-            Me.m_tlpControls.Name = "m_tlpControls"
-            Me.m_tlpControls.RowCount = 2
-            Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpControls.Size = New System.Drawing.Size(250, 382)
-            Me.m_tlpControls.TabIndex = 1
-            '
-            'm_blocks
-            '
-            Me.m_blocks.ControlPanelVisible = True
-            Me.m_blocks.CurColor = System.Drawing.Color.Empty
-            Me.m_blocks.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_blocks.Location = New System.Drawing.Point(0, 0)
-            Me.m_blocks.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_blocks.Name = "m_blocks"
-            Me.m_blocks.ParmBlockCodes = Nothing
-            Me.m_blocks.ShowTooltip = True
-            Me.m_blocks.Size = New System.Drawing.Size(735, 382)
-            Me.m_blocks.TabIndex = 3
-            Me.m_blocks.UIContext = Nothing
-            '
-            'm_gridObjWeights
-            '
-            Me.m_gridObjWeights.AllowBlockSelect = True
-            Me.m_gridObjWeights.AutoSizeMinHeight = 10
-            Me.m_gridObjWeights.AutoSizeMinWidth = 10
-            Me.m_gridObjWeights.AutoStretchColumnsToFitWidth = False
-            Me.m_gridObjWeights.AutoStretchRowsToFitHeight = False
-            Me.m_gridObjWeights.BackColor = System.Drawing.Color.White
-            Me.m_gridObjWeights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridObjWeights.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridObjWeights.CustomSort = False
-            Me.m_gridObjWeights.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_gridObjWeights.FixedColumnWidths = False
-            Me.m_gridObjWeights.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridObjWeights.GridToolTipActive = True
-            Me.m_gridObjWeights.Location = New System.Drawing.Point(0, 0)
-            Me.m_gridObjWeights.Manager = Nothing
-            Me.m_gridObjWeights.Name = "m_gridObjWeights"
-            Me.m_gridObjWeights.ShowMaxPortUtil = False
-            Me.m_gridObjWeights.ShowMPAOptParams = False
-            Me.m_gridObjWeights.Size = New System.Drawing.Size(319, 261)
-            Me.m_gridObjWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridObjWeights.TabIndex = 0
-            Me.m_gridObjWeights.UIContext = Nothing
-            '
-            'm_gridObjFleet
-            '
-            Me.m_gridObjFleet.AllowBlockSelect = True
-            Me.m_gridObjFleet.AutoSizeMinHeight = 10
-            Me.m_gridObjFleet.AutoSizeMinWidth = 10
-            Me.m_gridObjFleet.AutoStretchColumnsToFitWidth = False
-            Me.m_gridObjFleet.AutoStretchRowsToFitHeight = False
-            Me.m_gridObjFleet.BackColor = System.Drawing.Color.White
-            Me.m_gridObjFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridObjFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridObjFleet.CustomSort = False
-            Me.m_gridObjFleet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_gridObjFleet.FixedColumnWidths = False
-            Me.m_gridObjFleet.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridObjFleet.GridToolTipActive = True
-            Me.m_gridObjFleet.IsMaximizeByFleetValue = False
-            Me.m_gridObjFleet.Location = New System.Drawing.Point(0, 0)
-            Me.m_gridObjFleet.Manager = Nothing
-            Me.m_gridObjFleet.Name = "m_gridObjFleet"
-            Me.m_gridObjFleet.Size = New System.Drawing.Size(212, 261)
-            Me.m_gridObjFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridObjFleet.TabIndex = 0
-            Me.m_gridObjFleet.UIContext = Nothing
-            '
-            'm_gridObjGroup
-            '
-            Me.m_gridObjGroup.AllowBlockSelect = True
-            Me.m_gridObjGroup.AutoSizeMinHeight = 10
-            Me.m_gridObjGroup.AutoSizeMinWidth = 10
-            Me.m_gridObjGroup.AutoStretchColumnsToFitWidth = False
-            Me.m_gridObjGroup.AutoStretchRowsToFitHeight = False
-            Me.m_gridObjGroup.BackColor = System.Drawing.Color.White
-            Me.m_gridObjGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridObjGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridObjGroup.CustomSort = False
-            Me.m_gridObjGroup.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_gridObjGroup.FixedColumnWidths = False
-            Me.m_gridObjGroup.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridObjGroup.GridToolTipActive = True
-            Me.m_gridObjGroup.Location = New System.Drawing.Point(0, 0)
-            Me.m_gridObjGroup.Manager = Nothing
-            Me.m_gridObjGroup.Name = "m_gridObjGroup"
-            Me.m_gridObjGroup.Size = New System.Drawing.Size(436, 261)
-            Me.m_gridObjGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridObjGroup.TabIndex = 0
-            Me.m_gridObjGroup.UIContext = Nothing
-            '
             'frmFishingPolicySearch
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.ClientSize = New System.Drawing.Size(993, 687)
             Me.Controls.Add(Me.m_scTopBits)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -720,6 +735,7 @@ Namespace Ecosim
             Me.m_scTop.Panel2.ResumeLayout(False)
             CType(Me.m_scTop, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scTop.ResumeLayout(False)
+            Me.m_tlpControls.ResumeLayout(False)
             Me.m_plRunParams.ResumeLayout(False)
             Me.m_plRunParams.PerformLayout()
             CType(Me.m_nudMaxEffChg, System.ComponentModel.ISupportInitialize).EndInit()
@@ -744,7 +760,6 @@ Namespace Ecosim
             CType(Me.m_scIterResultMultiRun, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scIterResultMultiRun.ResumeLayout(False)
             Me.m_tpPlots.ResumeLayout(False)
-            Me.m_tlpControls.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub

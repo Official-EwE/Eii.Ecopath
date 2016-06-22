@@ -47,18 +47,20 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmQuotaShare))
-            Me.m_tss = New cEwEToolstrip
-            Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton
-            Me.m_tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
-            Me.m_grid = New ScientificInterface.Ecosim.gridQuotaShare
+            Me.m_tss = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton()
+            Me.m_grid = New ScientificInterface.Ecosim.gridQuotaShare()
             Me.m_tss.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tss
             '
+            Me.m_tss.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tss.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefaults, Me.m_tsSumtoOneBtn})
             resources.ApplyResources(Me.m_tss, "m_tss")
             Me.m_tss.Name = "m_tss"
+            Me.m_tss.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbnDefaults
             '
@@ -82,32 +84,36 @@ Namespace Ecosim
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'frmQuotaShare
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_tss)
             Me.Name = "frmQuotaShare"
+            Me.TabText = ""
             Me.m_tss.ResumeLayout(False)
             Me.m_tss.PerformLayout()
             Me.ResumeLayout(False)

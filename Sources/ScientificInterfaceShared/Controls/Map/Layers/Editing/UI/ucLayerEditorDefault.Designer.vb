@@ -110,7 +110,7 @@ Namespace Controls.Map.Layers
             'ucLayerEditorDefault
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_plLegend)
             Me.Controls.Add(Me.m_tbxMax)
             Me.Controls.Add(Me.m_tbxMin)

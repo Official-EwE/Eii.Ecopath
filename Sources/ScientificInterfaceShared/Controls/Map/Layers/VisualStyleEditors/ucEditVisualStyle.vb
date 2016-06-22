@@ -178,6 +178,18 @@ Namespace Controls
 
 #End Region ' Overridables
 
+        Private Sub InitializeComponent()
+            Me.SuspendLayout()
+            '
+            'ucEditVisualStyle
+            '
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.Name = "ucEditVisualStyle"
+            Me.ResumeLayout(False)
+
+        End Sub
     End Class
 
 End Namespace

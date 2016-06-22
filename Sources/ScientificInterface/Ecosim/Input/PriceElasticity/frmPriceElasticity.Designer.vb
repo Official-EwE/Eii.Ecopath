@@ -117,7 +117,7 @@ Namespace Ecosim
             Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0!
+            Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
@@ -212,7 +212,7 @@ Namespace Ecosim
             'frmPriceElasticity
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "frmPriceElasticity"
             Me.TabText = ""

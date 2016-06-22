@@ -43,15 +43,15 @@ Namespace Import
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_pb = New System.Windows.Forms.ProgressBar
-            Me.m_lbSummary = New System.Windows.Forms.ListBox
-            Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_pb = New System.Windows.Forms.ProgressBar()
+            Me.m_lbSummary = New System.Windows.Forms.ListBox()
+            Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_pb
             '
             Me.m_pb.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pb.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_pb.Location = New System.Drawing.Point(0, 277)
             Me.m_pb.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
@@ -63,8 +63,8 @@ Namespace Import
             'm_lbSummary
             '
             Me.m_lbSummary.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lbSummary.Enabled = False
             Me.m_lbSummary.FormattingEnabled = True
             Me.m_lbSummary.Location = New System.Drawing.Point(0, 25)
@@ -75,7 +75,7 @@ Namespace Import
             'm_hdrModels
             '
             Me.m_hdrModels.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrModels.CanCollapseParent = False
             Me.m_hdrModels.CollapsedParentHeight = 0
             Me.m_hdrModels.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -90,8 +90,9 @@ Namespace Import
             '
             'ucImportPageProgress
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_hdrModels)
             Me.Controls.Add(Me.m_lbSummary)
             Me.Controls.Add(Me.m_pb)

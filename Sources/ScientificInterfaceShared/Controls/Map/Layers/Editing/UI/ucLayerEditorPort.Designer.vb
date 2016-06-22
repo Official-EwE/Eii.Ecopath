@@ -111,8 +111,9 @@ Namespace Controls.Map.Layers
             '
             'ucLayerEditorPort
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_cmbFleet)
             Me.Controls.Add(Me.m_lblFleet)
             Me.Controls.Add(Me.m_tlpButtons)

@@ -493,7 +493,7 @@ Namespace Ecosim
             Me.tpVulnerabilitySearch.Margin = New System.Windows.Forms.Padding(0)
             Me.tpVulnerabilitySearch.Name = "tpVulnerabilitySearch"
             Me.tpVulnerabilitySearch.Padding = New System.Windows.Forms.Padding(3)
-            Me.tpVulnerabilitySearch.Size = New System.Drawing.Size(579, 387)
+            Me.tpVulnerabilitySearch.Size = New System.Drawing.Size(423, 387)
             Me.tpVulnerabilitySearch.TabIndex = 0
             Me.tpVulnerabilitySearch.Text = "Vulnerability Search"
             Me.tpVulnerabilitySearch.UseVisualStyleBackColor = True
@@ -515,7 +515,7 @@ Namespace Ecosim
             Me.m_tsVulSearchTools.Location = New System.Drawing.Point(3, 3)
             Me.m_tsVulSearchTools.Name = "m_tsVulSearchTools"
             Me.m_tsVulSearchTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_tsVulSearchTools.Size = New System.Drawing.Size(573, 25)
+            Me.m_tsVulSearchTools.Size = New System.Drawing.Size(417, 25)
             Me.m_tsVulSearchTools.TabIndex = 0
             '
             'm_tsbSensOfSS2V
@@ -679,6 +679,7 @@ Namespace Ecosim
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
             Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Dock = System.Windows.Forms.DockStyle.Fill
@@ -797,8 +798,9 @@ Namespace Ecosim
             '
             'frmFitToTimeSeries
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.ClientSize = New System.Drawing.Size(684, 439)
             Me.Controls.Add(Me.m_split1)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

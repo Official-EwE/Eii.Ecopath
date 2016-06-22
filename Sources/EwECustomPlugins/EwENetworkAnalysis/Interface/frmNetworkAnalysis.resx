@@ -171,7 +171,7 @@
   <data name="m_pbSponsors.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAM0AAACuCAYAAACV3ImdAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAGYktHRAD/AP8A/6C9p5MAAJOdSURBVHhe7X0FeFRn9j4R
+        YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAAAGYktHRAD/AP8A/6C9p5MAAJOdSURBVHhe7X0FeFRn9j4R
         3N1LS1237Va3XevuVrbeUiCuE3d3gTjBHYoXd/fgxV2DQxIIMeIe3v97bmbKMARISOjub/85z3OeSWbu
         3Hvn3vOe857zne+7TdAojdIodZJG0DRKo9RRGkHTKI1SR2kETaM0Sh2lETSN0ih1lEbQNEqj1FEaQdMo
         jVJHaQRNozRKHaURNI3SKHWURtA0SqPUURpB0yiNUkdpBE2jNEodpRE0jdIodZQnCpryqju4UVKOrZl5
@@ -916,7 +916,7 @@
     <value>m_plot</value>
   </data>
   <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
-    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.5.10538.0, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
+    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
   </data>
   <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -1207,7 +1207,7 @@
     <value>m_toolstrip</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.10538.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Parent" xml:space="preserve">
     <value>m_scNetworkAnalysis.Panel2</value>
@@ -1276,7 +1276,7 @@
     <value>m_hdrPage</value>
   </data>
   <data name="&gt;&gt;m_hdrPage.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.10538.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPage.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1291,7 +1291,10 @@
     <value>41</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>838, 551</value>

@@ -306,7 +306,7 @@
     <value>m_tsMap</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Parent" xml:space="preserve">
     <value>m_tlpMap</value>
@@ -486,7 +486,7 @@
     <value>m_nudIterations</value>
   </data>
   <data name="&gt;&gt;m_nudIterations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudIterations.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -510,7 +510,7 @@
     <value>m_nudStep</value>
   </data>
   <data name="&gt;&gt;m_nudStep.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudStep.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -534,7 +534,7 @@
     <value>m_nudEndYear</value>
   </data>
   <data name="&gt;&gt;m_nudEndYear.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudEndYear.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -594,7 +594,7 @@
     <value>m_nudStartYear</value>
   </data>
   <data name="&gt;&gt;m_nudStartYear.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudStartYear.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -645,7 +645,7 @@
     <value>m_gridProgress</value>
   </data>
   <data name="&gt;&gt;m_gridProgress.Type" xml:space="preserve">
-    <value>ScientificInterface.gridMPAOptimizations, EwE6, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridMPAOptimizations, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridProgress.Parent" xml:space="preserve">
     <value>m_tpProgress</value>
@@ -885,7 +885,7 @@
     <value>m_nudBestPercentile</value>
   </data>
   <data name="&gt;&gt;m_nudBestPercentile.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudBestPercentile.Parent" xml:space="preserve">
     <value>m_tpResults</value>
@@ -909,7 +909,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridMPAOptimizations, EwE6, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridMPAOptimizations, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_tpResults</value>
@@ -993,7 +993,7 @@
     <value>m_hdrOutput</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Parent" xml:space="preserve">
     <value>m_scContent.Panel2</value>
@@ -1128,7 +1128,7 @@
     <value>m_nudMinArea</value>
   </data>
   <data name="&gt;&gt;m_nudMinArea.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMinArea.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -1152,7 +1152,7 @@
     <value>m_nudMaxArea</value>
   </data>
   <data name="&gt;&gt;m_nudMaxArea.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxArea.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -1212,7 +1212,7 @@
     <value>m_nudBaseYear</value>
   </data>
   <data name="&gt;&gt;m_nudBaseYear.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudBaseYear.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -1344,7 +1344,7 @@
     <value>m_nudDiscRate</value>
   </data>
   <data name="&gt;&gt;m_nudDiscRate.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudDiscRate.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -1368,7 +1368,7 @@
     <value>m_nudGenDiscRate</value>
   </data>
   <data name="&gt;&gt;m_nudGenDiscRate.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudGenDiscRate.Parent" xml:space="preserve">
     <value>m_tlbParameters</value>
@@ -1494,7 +1494,7 @@
     <value>m_gridObjectives</value>
   </data>
   <data name="&gt;&gt;m_gridObjectives.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridSearchObjectivesWeight, EwE6, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridSearchObjectivesWeight, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridObjectives.Parent" xml:space="preserve">
     <value>m_tlpObjectives</value>
@@ -1521,7 +1521,7 @@
     <value>m_gridFleet</value>
   </data>
   <data name="&gt;&gt;m_gridFleet.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridSearchObjectivesFleet, EwE6, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridSearchObjectivesFleet, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridFleet.Parent" xml:space="preserve">
     <value>m_tlpObjectives</value>
@@ -1548,7 +1548,7 @@
     <value>m_gridGroup</value>
   </data>
   <data name="&gt;&gt;m_gridGroup.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridSearchObjectivesGroup, EwE6, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridSearchObjectivesGroup, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroup.Parent" xml:space="preserve">
     <value>m_tlpObjectives</value>
@@ -1650,7 +1650,7 @@
     <value>m_ucZoomBar</value>
   </data>
   <data name="&gt;&gt;m_ucZoomBar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucZoomBar.Parent" xml:space="preserve">
     <value>m_scMap.Panel1</value>
@@ -1677,7 +1677,7 @@
     <value>m_ucZoom</value>
   </data>
   <data name="&gt;&gt;m_ucZoom.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucZoom.Parent" xml:space="preserve">
     <value>m_scMap.Panel1</value>
@@ -1755,7 +1755,7 @@
     <value>m_hdrLayers</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLayers.Parent" xml:space="preserve">
     <value>m_tlbLayers</value>
@@ -2094,7 +2094,7 @@
     <value>25</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2157,6 +2157,6 @@
     <value>frmMPAOptimizations</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11928.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

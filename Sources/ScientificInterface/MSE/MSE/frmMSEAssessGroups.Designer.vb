@@ -44,24 +44,26 @@ Partial Class frmMSEAssessGroups
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEAssessGroups))
-        Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
+        Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks()
         Me.SuspendLayout()
         '
         'm_blocks
         '
+        resources.ApplyResources(Me.m_blocks, "m_blocks")
         Me.m_blocks.ControlPanelVisible = False
         Me.m_blocks.CurColor = System.Drawing.Color.Empty
-        resources.ApplyResources(Me.m_blocks, "m_blocks")
         Me.m_blocks.Name = "m_blocks"
         Me.m_blocks.ParmBlockCodes = Nothing
+        Me.m_blocks.ShowTooltip = True
         Me.m_blocks.UIContext = Nothing
         '
         'frmMSEAssessGroups
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_blocks)
         Me.Name = "frmMSEAssessGroups"
+        Me.TabText = ""
         Me.ResumeLayout(False)
 
     End Sub

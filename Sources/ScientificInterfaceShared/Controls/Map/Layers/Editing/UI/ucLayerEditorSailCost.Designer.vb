@@ -70,7 +70,7 @@ Namespace Controls.Map.Layers
             'ucLayerEditorSailCost
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_btnCalculate)
             Me.Controls.Add(Me.m_cmbFleet)
             Me.Controls.Add(Me.m_lblFleet)

@@ -44,6 +44,7 @@ Partial Class frmMSEPlots
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEPlots))
         Me.m_plPlot = New System.Windows.Forms.Panel()
         Me.m_rbTotFleetValue = New System.Windows.Forms.RadioButton()
@@ -194,11 +195,12 @@ Partial Class frmMSEPlots
         'frmMSEPlots
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.pnlGraph)
         Me.Controls.Add(Me.m_plPlotType)
         Me.Controls.Add(Me.m_plPlot)
         Me.Name = "frmMSEPlots"
+        Me.TabText = ""
         Me.m_plPlot.ResumeLayout(False)
         Me.m_plPlot.PerformLayout()
         Me.m_plPlotType.ResumeLayout(False)

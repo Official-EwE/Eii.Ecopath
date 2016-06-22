@@ -436,7 +436,7 @@
     <value>m_hdrOrder</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7488.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
     <value>$this</value>
@@ -469,7 +469,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7488.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -505,7 +505,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefinePedigree, EwE6, Version=6.3.7488.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefinePedigree, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_scYupi.Panel1</value>
@@ -524,6 +524,21 @@
   </data>
   <data name="&gt;&gt;m_scYupi.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_tbDescription.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_tbDescription.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>568, 45</value>
+  </data>
+  <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
     <value>m_tbDescription</value>
@@ -721,7 +736,7 @@
     <value>m_hdrColors</value>
   </data>
   <data name="&gt;&gt;m_hdrColors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7488.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrColors.Parent" xml:space="preserve">
     <value>$this</value>
@@ -834,38 +849,14 @@
   <data name="&gt;&gt;m_btnColorDefaultAll.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_tbDescription.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="m_tbDescription.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>568, 45</value>
-  </data>
-  <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
-    <value>m_tbDescription</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Parent" xml:space="preserve">
-    <value>m_tpRemarks</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>704, 373</value>

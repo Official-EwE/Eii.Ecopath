@@ -154,10 +154,13 @@ Partial Class frmMSEBatchTFM
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.grdGroups.CustomSort = False
+        Me.grdGroups.DataName = "grid content"
         Me.grdGroups.FixedColumnWidths = False
         Me.grdGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.grdGroups.GridToolTipActive = True
         Me.grdGroups.iCurIter = 1
+        Me.grdGroups.IsLayoutSuspended = False
+        Me.grdGroups.IsOutputGrid = True
         Me.grdGroups.Location = New System.Drawing.Point(0, 31)
         Me.grdGroups.Name = "grdGroups"
         Me.grdGroups.Size = New System.Drawing.Size(877, 398)
@@ -237,10 +240,13 @@ Partial Class frmMSEBatchTFM
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.grdIters.CustomSort = False
+        Me.grdIters.DataName = "grid content"
         Me.grdIters.FixedColumnWidths = False
         Me.grdIters.FocusStyle = SourceGrid2.FocusStyle.None
         Me.grdIters.GridToolTipActive = True
         Me.grdIters.iSelGroup = 1
+        Me.grdIters.IsLayoutSuspended = False
+        Me.grdIters.IsOutputGrid = True
         Me.grdIters.Location = New System.Drawing.Point(0, 29)
         Me.grdIters.Name = "grdIters"
         Me.grdIters.Size = New System.Drawing.Size(871, 402)
@@ -258,8 +264,9 @@ Partial Class frmMSEBatchTFM
         '
         'frmMSEBatchTFM
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(887, 534)
         Me.Controls.Add(Me.tbGrids)
         Me.Controls.Add(Me.rbCalcTypeValue)
@@ -269,6 +276,7 @@ Partial Class frmMSEBatchTFM
         Me.Controls.Add(Me.btCalcIters)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmMSEBatchTFM"
+        Me.TabText = ""
         Me.Text = "MSE batch TFM"
         Me.tbGrids.ResumeLayout(False)
         Me.pageGroups.ResumeLayout(False)

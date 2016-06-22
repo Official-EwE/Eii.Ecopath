@@ -44,8 +44,8 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucFieldPicker))
-            Me.m_tsBogus = New cEwEToolstrip
-            Me.m_tsddFields = New System.Windows.Forms.ToolStripSplitButton
+            Me.m_tsBogus = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsddFields = New System.Windows.Forms.ToolStripSplitButton()
             Me.m_tsBogus.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -56,10 +56,12 @@ Namespace Controls
             Me.m_tsBogus.CanOverflow = False
             Me.m_tsBogus.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tsBogus.GripMargin = New System.Windows.Forms.Padding(0)
+            Me.m_tsBogus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsBogus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddFields})
             Me.m_tsBogus.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table
             Me.m_tsBogus.Location = New System.Drawing.Point(0, 0)
             Me.m_tsBogus.Name = "m_tsBogus"
+            Me.m_tsBogus.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_tsBogus.Size = New System.Drawing.Size(62, 21)
             Me.m_tsBogus.TabIndex = 6
             '
@@ -75,8 +77,9 @@ Namespace Controls
             '
             'ucFieldPicker
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_tsBogus)
             Me.Name = "ucFieldPicker"
             Me.Size = New System.Drawing.Size(62, 21)

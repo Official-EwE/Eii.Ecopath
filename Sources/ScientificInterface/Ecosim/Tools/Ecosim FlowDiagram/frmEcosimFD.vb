@@ -1392,10 +1392,11 @@ Namespace Ecosim
             'frmEcosimFD
             '
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
             Me.Name = "frmEcosimFD"
-            Me.TabText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
+            Me.TabText = ""
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel1.PerformLayout()

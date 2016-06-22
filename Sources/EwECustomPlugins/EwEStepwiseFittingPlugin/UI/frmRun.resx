@@ -337,7 +337,7 @@
     <value>m_hdrIterations</value>
   </data>
   <data name="&gt;&gt;m_hdrIterations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13643.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIterations.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -637,7 +637,7 @@
     <value>m_hdrParameters</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13643.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.Parent" xml:space="preserve">
     <value>m_plSettings</value>
@@ -670,7 +670,7 @@
     <value>m_hdrOutput</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13643.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -793,7 +793,7 @@
     <value>m_hdrEwE</value>
   </data>
   <data name="&gt;&gt;m_hdrEwE.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13643.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEwE.Parent" xml:space="preserve">
     <value>m_plModel</value>
@@ -997,7 +997,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.5.13626.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
+    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -1369,7 +1369,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1390,6 +1390,6 @@
     <value>frmRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13643.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

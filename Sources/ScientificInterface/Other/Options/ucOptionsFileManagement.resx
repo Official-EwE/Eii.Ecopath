@@ -309,16 +309,16 @@
   <data name="m_btnVisitOutputFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
-        BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
-        nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
-        P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
-        S/Eg5eRews7tmI1UqIlE0ELEf4lrrRcJeI34XQbVRosFbXx714asPdlrJpP0sjhpgSnrSt6KtYl6GD0P
-        I6cZ7KriXM2uqBbyNzE77oD3bu50euh75M4/tOwV9C+hQADeRHWcObR1VgjWax2tZr6+tjD1tIFMwk1u
-        wgzDJ/KCwRro36fCieczCr0QWE6Wsb9ybYv6zO3eBr4MGbgZdzHwRDQZrRWCYzBwkNyz3cw/3q5CASGR
-        yPmBHevYUL6mXAn8TiPDPSZuxZ0wboJXh+HFXuZ7dxYCskFBIOYVQlIhF6WgrbmOdMRB9u4p+n1agT73
-        Knrsq9WJxQ2Wwkrgs17AZ9bTbDhC/dlqebMcrapkz7ZNbNmsY6OuTJyWl0iWh5Wg1N+4tC+DxWG59wuN
-        hHoCb1zptgAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAH7SURBVDhPjZDdS9NRHId/F1101VV/QSBeBLuxLuo2oaII
+        ClKj6EXIXimEQjZzbTrm3qfWyA1rr226Wa2Coi6EwpAsDXWYmJp1EVFhWmCkuKfzO7M113J94YFzDuf5
+        8DlHAVal6BSScik6haRcik53xF0pIJ8HXRbn/wYwPhzgx2xC8nMmyuJnP/Ggk2TE1Lh87d+TCLmYn4mt
+        kJc+trOYqiV2w0rYa8Z/tRFfi55rDh1XLHWiWM4TOwN25j8FsnJayIzrIHWiIH8F3Oyw8P2DLys/6rZL
+        HsZt3I9auBM2E/c3EfUZCXouc731El6XDo9dK8OUsM/Mt3dtsvZUr4FkzMXSlBGmTSt5K84m62HsAoye
+        YairgvPVe0KK39PE3IQV3ju42+mk77Ejcymnds1L/uCFNyENZw9vnxMBG5WOVgNfXxuZftZAMuogPWmA
+        kZMZeagaBqqkGO2flagBxlMlHChf3yL/oN3VwJdhLbcidgafiiZjtSLgOAweIv18LwtPdkrJK0JU1PXB
+        XRvYVLquVAZ4bDpGevTcjthgQg+vjsCL/Sz07s4KaoNsgKBMnJWpCzWgrbmORNBK6t5pBtxKlj7HGnos
+        azMBeQ1+yzLAbbqI21BDs/Yo9ecq1Z/lWEU5+3ZsYdtWDZs1JUJYbpIny4DczWqoYr4MKL8AjYR6AqYl
+        TBIAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_btnVisitOutputFolder.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -354,16 +354,16 @@
   <data name="m_btnVisitBackupFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
-        BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
-        nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
-        P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
-        S/Eg5eRews7tmI1UqIlE0ELEf4lrrRcJeI34XQbVRosFbXx714asPdlrJpP0sjhpgSnrSt6KtYl6GD0P
-        I6cZ7KriXM2uqBbyNzE77oD3bu50euh75M4/tOwV9C+hQADeRHWcObR1VgjWax2tZr6+tjD1tIFMwk1u
-        wgzDJ/KCwRro36fCieczCr0QWE6Wsb9ybYv6zO3eBr4MGbgZdzHwRDQZrRWCYzBwkNyz3cw/3q5CASGR
-        yPmBHevYUL6mXAn8TiPDPSZuxZ0wboJXh+HFXuZ7dxYCskFBIOYVQlIhF6WgrbmOdMRB9u4p+n1agT73
-        Knrsq9WJxQ2Wwkrgs17AZ9bTbDhC/dlqebMcrapkz7ZNbNmsY6OuTJyWl0iWh5Wg1N+4tC+DxWG59wuN
-        hHoCb1zptgAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAH7SURBVDhPjZDdS9NRHId/F1101VV/QSBeBLuxLuo2oaII
+        ClKj6EXIXimEQjZzbTrm3qfWyA1rr226Wa2Coi6EwpAsDXWYmJp1EVFhWmCkuKfzO7M113J94YFzDuf5
+        8DlHAVal6BSScik6haRcik53xF0pIJ8HXRbn/wYwPhzgx2xC8nMmyuJnP/Ggk2TE1Lh87d+TCLmYn4mt
+        kJc+trOYqiV2w0rYa8Z/tRFfi55rDh1XLHWiWM4TOwN25j8FsnJayIzrIHWiIH8F3Oyw8P2DLys/6rZL
+        HsZt3I9auBM2E/c3EfUZCXouc731El6XDo9dK8OUsM/Mt3dtsvZUr4FkzMXSlBGmTSt5K84m62HsAoye
+        YairgvPVe0KK39PE3IQV3ju42+mk77Ejcymnds1L/uCFNyENZw9vnxMBG5WOVgNfXxuZftZAMuogPWmA
+        kZMZeagaBqqkGO2flagBxlMlHChf3yL/oN3VwJdhLbcidgafiiZjtSLgOAweIv18LwtPdkrJK0JU1PXB
+        XRvYVLquVAZ4bDpGevTcjthgQg+vjsCL/Sz07s4KaoNsgKBMnJWpCzWgrbmORNBK6t5pBtxKlj7HGnos
+        azMBeQ1+yzLAbbqI21BDs/Yo9ecq1Z/lWEU5+3ZsYdtWDZs1JUJYbpIny4DczWqoYr4MKL8AjYR6AqYl
+        TBIAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_btnVisitBackupFolder.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -439,7 +439,7 @@
     <value>m_fieldpickBackup</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.8862.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
     <value>$this</value>
@@ -463,7 +463,7 @@
     <value>m_fieldpickOutput</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.8862.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
     <value>$this</value>
@@ -496,7 +496,7 @@
     <value>m_hdrMain</value>
   </data>
   <data name="&gt;&gt;m_hdrMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8862.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -529,7 +529,7 @@
     <value>m_hdrAutosave</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8862.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
     <value>$this</value>
@@ -541,10 +541,13 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>553, 387</value>

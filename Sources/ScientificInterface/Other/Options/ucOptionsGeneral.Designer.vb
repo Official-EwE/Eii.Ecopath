@@ -171,7 +171,7 @@ Namespace Other
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tbxContact)
             Me.Controls.Add(Me.m_tbxAuthor)
             Me.Controls.Add(Me.m_cmbLogLevel)

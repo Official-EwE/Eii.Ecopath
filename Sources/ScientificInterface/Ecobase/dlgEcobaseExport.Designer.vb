@@ -964,7 +964,7 @@ Partial Class dlgEcobaseExport
         'dlgEcobaseExport
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
         Me.Controls.Add(Me.m_tcExport)
         Me.Controls.Add(Me.m_btnSubmit)

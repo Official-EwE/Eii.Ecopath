@@ -529,13 +529,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\cellNichePropertyColour.vb" />
-    <Compile Include="Ecosim\Input\EggProduction\ApplyEP.Designer.vb">
-      <DependentUpon>ApplyEP.vb</DependentUpon>
+    <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
+      <DependentUpon>frmApplyEP.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\EggProduction\ApplyEP.vb">
+    <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\EggProduction\ApplyEPEwEGrid.vb">
+    <Compile Include="Ecosim\Input\EggProduction\gridApplyEP.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.Designer.vb">
@@ -1893,8 +1893,8 @@
       <DependentUpon>dlgDefineFleets.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\EggProduction\ApplyEP.resx">
-      <DependentUpon>ApplyEP.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
+      <DependentUpon>frmApplyEP.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmEggProduction.resx">

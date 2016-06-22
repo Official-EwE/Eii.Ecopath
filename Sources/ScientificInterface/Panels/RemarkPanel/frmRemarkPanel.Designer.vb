@@ -131,10 +131,10 @@ Partial Class frmRemarkPanel
         Me.m_btnApply.Name = "m_btnApply"
         Me.m_btnApply.UseVisualStyleBackColor = True
         '
-        'frmInformationPanel
+        'frmRemarkPanel
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CloseButtonVisible = False
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_tsRemarks)
@@ -142,7 +142,7 @@ Partial Class frmRemarkPanel
             Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) _
             Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom), WeifenLuo.WinFormsUI.Docking.DockAreas)
         Me.HideOnClose = True
-        Me.Name = "frmInformationPanel"
+        Me.Name = "frmRemarkPanel"
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide
         Me.ShowIcon = False
         Me.ShowInTaskbar = False

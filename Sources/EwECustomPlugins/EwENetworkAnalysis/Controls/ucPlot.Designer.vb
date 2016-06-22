@@ -42,7 +42,7 @@ Partial Class ucPlot
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_plContent = New ScientificInterfaceShared.Controls.ucSmoothPanel
+        Me.m_plContent = New ScientificInterfaceShared.Controls.ucSmoothPanel()
         Me.SuspendLayout()
         '
         'm_plContent
@@ -56,9 +56,10 @@ Partial Class ucPlot
         '
         'ucPlot
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.m_plContent)
         Me.Name = "ucPlot"
         Me.Size = New System.Drawing.Size(311, 231)

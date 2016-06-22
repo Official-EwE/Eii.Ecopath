@@ -289,7 +289,7 @@
     <value>m_hdrOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -373,7 +373,7 @@
     <value>m_hdrNoReg</value>
   </data>
   <data name="&gt;&gt;m_hdrNoReg.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrNoReg.Parent" xml:space="preserve">
     <value>m_panelNoReg</value>
@@ -507,6 +507,9 @@
   <data name="m_panelNoReg.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
+  <data name="m_panelNoReg.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 115</value>
+  </data>
   <data name="m_panelNoReg.Size" type="System.Drawing.Size, System.Drawing">
     <value>464, 124</value>
   </data>
@@ -553,7 +556,7 @@
     <value>m_hdrEffort</value>
   </data>
   <data name="&gt;&gt;m_hdrEffort.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEffort.Parent" xml:space="preserve">
     <value>m_panelEffortControls</value>
@@ -583,7 +586,7 @@
     <value>m_gridFleetLPEffortBounds</value>
   </data>
   <data name="&gt;&gt;m_gridFleetLPEffortBounds.Type" xml:space="preserve">
-    <value>ScientificInterface.gridFleetLPEffortBounds, EwE6, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridFleetLPEffortBounds, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridFleetLPEffortBounds.Parent" xml:space="preserve">
     <value>m_panelEffortControls</value>
@@ -593,6 +596,9 @@
   </data>
   <data name="m_panelEffortControls.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 12</value>
+  </data>
+  <data name="m_panelEffortControls.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>100, 100</value>
   </data>
   <data name="m_panelEffortControls.Size" type="System.Drawing.Size, System.Drawing">
     <value>464, 100</value>
@@ -640,7 +646,7 @@
     <value>m_hdrQuota</value>
   </data>
   <data name="&gt;&gt;m_hdrQuota.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrQuota.Parent" xml:space="preserve">
     <value>m_panelQuotaControls</value>
@@ -676,7 +682,7 @@
     <value>m_hdrEffortRegOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrEffortRegOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEffortRegOptions.Parent" xml:space="preserve">
     <value>m_panelQuotaControls</value>
@@ -814,7 +820,7 @@
     <value>m_gridRegOptions</value>
   </data>
   <data name="&gt;&gt;m_gridRegOptions.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridRegulatoryOptions, EwE6, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridRegulatoryOptions, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridRegOptions.Parent" xml:space="preserve">
     <value>m_panelQuotaControls</value>
@@ -874,19 +880,19 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>664, 614</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>MSE options</value>
@@ -895,6 +901,6 @@
     <value>frmMSEOptions</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

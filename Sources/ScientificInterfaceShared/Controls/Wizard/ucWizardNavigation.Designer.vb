@@ -64,20 +64,20 @@ Namespace Controls.Wizard
             Me.m_tlpButtons.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlpButtons.Location = New System.Drawing.Point(0, 0)
             Me.m_tlpButtons.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_tlpButtons.MaximumSize = New System.Drawing.Size(6667, 28)
-            Me.m_tlpButtons.MinimumSize = New System.Drawing.Size(133, 28)
+            Me.m_tlpButtons.MaximumSize = New System.Drawing.Size(5000, 23)
+            Me.m_tlpButtons.MinimumSize = New System.Drawing.Size(100, 23)
             Me.m_tlpButtons.Name = "m_tlpButtons"
             Me.m_tlpButtons.RowCount = 1
             Me.m_tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpButtons.Size = New System.Drawing.Size(541, 28)
+            Me.m_tlpButtons.Size = New System.Drawing.Size(406, 23)
             Me.m_tlpButtons.TabIndex = 0
             '
             'm_btnBack
             '
             Me.m_btnBack.Location = New System.Drawing.Point(0, 0)
-            Me.m_btnBack.Margin = New System.Windows.Forms.Padding(0, 0, 4, 0)
+            Me.m_btnBack.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.m_btnBack.Name = "m_btnBack"
-            Me.m_btnBack.Size = New System.Drawing.Size(100, 28)
+            Me.m_btnBack.Size = New System.Drawing.Size(75, 23)
             Me.m_btnBack.TabIndex = 0
             Me.m_btnBack.Text = "&Back"
             Me.m_btnBack.UseVisualStyleBackColor = True
@@ -85,10 +85,10 @@ Namespace Controls.Wizard
             'm_btnClose
             '
             Me.m_btnClose.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_btnClose.Location = New System.Drawing.Point(441, 0)
-            Me.m_btnClose.Margin = New System.Windows.Forms.Padding(4, 0, 0, 0)
+            Me.m_btnClose.Location = New System.Drawing.Point(331, 0)
+            Me.m_btnClose.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_btnClose.Name = "m_btnClose"
-            Me.m_btnClose.Size = New System.Drawing.Size(100, 28)
+            Me.m_btnClose.Size = New System.Drawing.Size(75, 23)
             Me.m_btnClose.TabIndex = 3
             Me.m_btnClose.Text = "&Cancel"
             Me.m_btnClose.UseVisualStyleBackColor = True
@@ -96,22 +96,22 @@ Namespace Controls.Wizard
             'm_btnNext
             '
             Me.m_btnNext.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_btnNext.Location = New System.Drawing.Point(337, 0)
-            Me.m_btnNext.Margin = New System.Windows.Forms.Padding(4, 0, 0, 0)
+            Me.m_btnNext.Location = New System.Drawing.Point(253, 0)
+            Me.m_btnNext.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_btnNext.Name = "m_btnNext"
-            Me.m_btnNext.Size = New System.Drawing.Size(100, 28)
+            Me.m_btnNext.Size = New System.Drawing.Size(75, 23)
             Me.m_btnNext.TabIndex = 1
             Me.m_btnNext.Text = "&Next"
             Me.m_btnNext.UseVisualStyleBackColor = True
             '
             'ucWizardNavigation
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_tlpButtons)
-            Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
             Me.Name = "ucWizardNavigation"
-            Me.Size = New System.Drawing.Size(541, 28)
+            Me.Size = New System.Drawing.Size(406, 23)
             Me.m_tlpButtons.ResumeLayout(False)
             Me.ResumeLayout(False)
 

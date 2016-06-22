@@ -126,10 +126,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_progress.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 438</value>
+    <value>12, 334</value>
   </data>
   <data name="m_progress.Size" type="System.Drawing.Size, System.Drawing">
-    <value>479, 23</value>
+    <value>346, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_progress.TabIndex" type="System.Int32, mscorlib">
@@ -274,7 +274,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>578, 438</value>
+    <value>445, 334</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -304,7 +304,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>497, 438</value>
+    <value>364, 334</value>
   </data>
   <data name="m_btnOk.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -327,14 +327,11 @@
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="m_btnSaveToCSV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
   <data name="m_btnSaveToCSV.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnSaveToCSV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 111</value>
+    <value>12, 106</value>
   </data>
   <data name="m_btnSaveToCSV.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 23</value>
@@ -370,7 +367,7 @@
     <value>m_nudNumBlocks</value>
   </data>
   <data name="&gt;&gt;m_nudNumBlocks.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13561.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNumBlocks.Parent" xml:space="preserve">
     <value>$this</value>
@@ -403,7 +400,7 @@
     <value>m_hdrTransfer</value>
   </data>
   <data name="&gt;&gt;m_hdrTransfer.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13561.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrTransfer.Parent" xml:space="preserve">
     <value>$this</value>
@@ -436,7 +433,7 @@
     <value>m_hdrSearch</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13561.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Parent" xml:space="preserve">
     <value>$this</value>
@@ -455,18 +452,18 @@
         ZTA4OQwDAAAAUVN5c3RlbS5EcmF3aW5nLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwg
         UHVibGljS2V5VG9rZW49YjAzZjVmN2YxMWQ1MGEzYQUBAAAAN1N5c3RlbS5Db2xsZWN0aW9ucy5HZW5l
         cmljLkxpc3RgMVtbU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAABl9pdGVtcwVfc2l6ZQhfdmVyc2lvbgQA
-        ABZTeXN0ZW0uRHJhd2luZy5Db2xvcltdAwAAAAgIAgAAAAkEAAAAAAAAAAgAAAAHBAAAAAABAAAAAAAA
+        ABZTeXN0ZW0uRHJhd2luZy5Db2xvcltdAwAAAAgIAgAAAAkEAAAAAAAAAAQAAAAHBAAAAAABAAAAAAAA
         AAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAACw==
 </value>
   </data>
   <data name="m_legend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>617, 12</value>
+    <value>484, 12</value>
   </data>
   <data name="m_legend.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_legend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 416</value>
+    <value>36, 312</value>
   </data>
   <data name="m_legend.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -475,7 +472,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.13561.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>$this</value>
@@ -496,7 +493,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_ucVulBlocks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>429, 416</value>
+    <value>296, 312</value>
   </data>
   <data name="m_ucVulBlocks.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -505,7 +502,7 @@
     <value>m_ucVulBlocks</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.ucVulnerabiltyBlocks, EwE6, Version=6.5.13561.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.ucVulnerabiltyBlocks, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ucVulBlocks.Parent" xml:space="preserve">
     <value>$this</value>
@@ -517,13 +514,13 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>662, 473</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>529, 369</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>500, 318</value>

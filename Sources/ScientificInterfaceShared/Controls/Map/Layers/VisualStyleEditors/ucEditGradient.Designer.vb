@@ -74,6 +74,7 @@ Namespace Controls
             'm_nudAlpha
             '
             Me.m_nudAlpha.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudAlpha.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudAlpha.Location = New System.Drawing.Point(282, 204)
             Me.m_nudAlpha.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudAlpha.Name = "m_nudAlpha"
@@ -83,6 +84,7 @@ Namespace Controls
             'm_nudBlue
             '
             Me.m_nudBlue.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudBlue.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudBlue.Location = New System.Drawing.Point(282, 181)
             Me.m_nudBlue.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudBlue.Name = "m_nudBlue"
@@ -92,6 +94,7 @@ Namespace Controls
             'm_nudGreen
             '
             Me.m_nudGreen.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudGreen.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudGreen.Location = New System.Drawing.Point(282, 158)
             Me.m_nudGreen.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudGreen.Name = "m_nudGreen"
@@ -101,6 +104,7 @@ Namespace Controls
             'm_nudRed
             '
             Me.m_nudRed.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_nudRed.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudRed.Location = New System.Drawing.Point(282, 134)
             Me.m_nudRed.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.m_nudRed.Name = "m_nudRed"
@@ -110,7 +114,7 @@ Namespace Controls
             'm_slAlpha
             '
             Me.m_slAlpha.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slAlpha.CurrentKnob = 0
             Me.m_slAlpha.Location = New System.Drawing.Point(105, 204)
             Me.m_slAlpha.Maximum = 255
@@ -123,7 +127,7 @@ Namespace Controls
             'm_slBlue
             '
             Me.m_slBlue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slBlue.CurrentKnob = 0
             Me.m_slBlue.Location = New System.Drawing.Point(105, 181)
             Me.m_slBlue.Maximum = 255
@@ -136,7 +140,7 @@ Namespace Controls
             'm_slGreen
             '
             Me.m_slGreen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slGreen.CurrentKnob = 0
             Me.m_slGreen.Location = New System.Drawing.Point(105, 158)
             Me.m_slGreen.Maximum = 255
@@ -149,7 +153,7 @@ Namespace Controls
             'm_slRed
             '
             Me.m_slRed.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slRed.CurrentKnob = 0
             Me.m_slRed.Location = New System.Drawing.Point(105, 134)
             Me.m_slRed.Maximum = 255
@@ -162,7 +166,7 @@ Namespace Controls
             'm_plGradient
             '
             Me.m_plGradient.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_plGradient.BackColor = System.Drawing.SystemColors.Control
             Me.m_plGradient.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plGradient.Cursor = System.Windows.Forms.Cursors.Hand
@@ -244,7 +248,7 @@ Namespace Controls
             'm_cmbGradient
             '
             Me.m_cmbGradient.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbGradient.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_cmbGradient.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbGradient.FormattingEnabled = True
@@ -276,7 +280,7 @@ Namespace Controls
             'm_slGradient
             '
             Me.m_slGradient.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_slGradient.CurrentKnob = 0
             Me.m_slGradient.Location = New System.Drawing.Point(24, 105)
             Me.m_slGradient.Maximum = 100
@@ -298,8 +302,9 @@ Namespace Controls
             '
             'ucEditGradient
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_btnFlip)
             Me.Controls.Add(Me.m_btnRemove)
             Me.Controls.Add(Me.m_btnAdd)

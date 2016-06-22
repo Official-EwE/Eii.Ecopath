@@ -76,7 +76,7 @@ Namespace Ecopath
             'frmPrebal
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_graph)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
             Me.Name = "frmPrebal"

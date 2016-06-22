@@ -44,17 +44,19 @@ Namespace Ecopath.Input
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDietComp))
-            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
-            Me.m_grid = New ScientificInterface.Ecopath.Input.gridDietComposition
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton()
+            Me.m_grid = New ScientificInterface.Ecopath.Input.gridDietComposition()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsSumtoOneBtn})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tsSumtoOneBtn
             '
@@ -71,32 +73,35 @@ Namespace Ecopath.Input
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'DietComp
+            'frmDietComp
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
-            Me.Name = "DietComp"
+            Me.Name = "frmDietComp"
             Me.TabText = "DietComp"
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()

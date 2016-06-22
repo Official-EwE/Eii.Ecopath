@@ -43,16 +43,16 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyLandingShape))
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_lblAvailableFF = New System.Windows.Forms.Label
-            Me.m_btnAdd = New System.Windows.Forms.Button
-            Me.m_lvAppliedShapes = New System.Windows.Forms.ListView
-            Me.m_colhdrShape = New System.Windows.Forms.ColumnHeader
-            Me.m_colhdrModifier = New System.Windows.Forms.ColumnHeader
-            Me.m_lvAllShapes = New System.Windows.Forms.ListView
-            Me.m_btnRemove = New System.Windows.Forms.Button
-            Me.m_lblAppliedFF = New System.Windows.Forms.Label
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.m_lblAvailableFF = New System.Windows.Forms.Label()
+            Me.m_btnAdd = New System.Windows.Forms.Button()
+            Me.m_lvAppliedShapes = New System.Windows.Forms.ListView()
+            Me.m_colhdrShape = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_colhdrModifier = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_lvAllShapes = New System.Windows.Forms.ListView()
+            Me.m_btnRemove = New System.Windows.Forms.Button()
+            Me.m_lblAppliedFF = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
             'OK_Button
@@ -120,7 +120,7 @@ Namespace Ecosim
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.OK_Button)

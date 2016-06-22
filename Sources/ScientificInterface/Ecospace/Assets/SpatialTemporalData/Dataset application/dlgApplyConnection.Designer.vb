@@ -113,6 +113,7 @@ Namespace Ecospace.Controls
             Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridConnections.GridToolTipActive = True
             Me.m_gridConnections.IsLayoutSuspended = False
+            Me.m_gridConnections.IsOutputGrid = True
             Me.m_gridConnections.Name = "m_gridConnections"
             Me.m_gridConnections.SelectedConnection = Nothing
             Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -331,7 +332,7 @@ Namespace Ecospace.Controls
             'dlgApplyConnection
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_cbEnabled)
             Me.Controls.Add(Me.m_scMain)

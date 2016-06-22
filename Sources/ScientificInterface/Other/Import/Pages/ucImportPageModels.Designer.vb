@@ -43,15 +43,16 @@ Namespace Import
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_btnBrowse = New System.Windows.Forms.Button
-            Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox
-            Me.m_lblOutputFolder = New System.Windows.Forms.Label
-            Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblFormat = New System.Windows.Forms.Label
-            Me.m_cmbDatabaseFormat = New System.Windows.Forms.ComboBox
-            Me.m_scModels = New System.Windows.Forms.SplitContainer
-            Me.m_grid = New ScientificInterface.Import.cImportGrid
-            Me.m_lblComments = New System.Windows.Forms.Label
+            Me.m_btnBrowse = New System.Windows.Forms.Button()
+            Me.m_tbxOutputFolder = New System.Windows.Forms.TextBox()
+            Me.m_lblOutputFolder = New System.Windows.Forms.Label()
+            Me.m_hdrModels = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblFormat = New System.Windows.Forms.Label()
+            Me.m_cmbDatabaseFormat = New System.Windows.Forms.ComboBox()
+            Me.m_scModels = New System.Windows.Forms.SplitContainer()
+            Me.m_grid = New ScientificInterface.Import.cImportGrid()
+            Me.m_lblComments = New System.Windows.Forms.Label()
+            CType(Me.m_scModels, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scModels.Panel1.SuspendLayout()
             Me.m_scModels.Panel2.SuspendLayout()
             Me.m_scModels.SuspendLayout()
@@ -72,7 +73,7 @@ Namespace Import
             'm_tbxOutputFolder
             '
             Me.m_tbxOutputFolder.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxOutputFolder.Location = New System.Drawing.Point(104, 253)
             Me.m_tbxOutputFolder.Name = "m_tbxOutputFolder"
             Me.m_tbxOutputFolder.Size = New System.Drawing.Size(336, 20)
@@ -93,7 +94,7 @@ Namespace Import
             'm_hdrModels
             '
             Me.m_hdrModels.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrModels.CanCollapseParent = False
             Me.m_hdrModels.CollapsedParentHeight = 0
             Me.m_hdrModels.ImeMode = System.Windows.Forms.ImeMode.NoControl
@@ -119,7 +120,7 @@ Namespace Import
             'm_cmbDatabaseFormat
             '
             Me.m_cmbDatabaseFormat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbDatabaseFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbDatabaseFormat.FormattingEnabled = True
             Me.m_cmbDatabaseFormat.Location = New System.Drawing.Point(104, 279)
@@ -130,8 +131,8 @@ Namespace Import
             'm_scModels
             '
             Me.m_scModels.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_scModels.Location = New System.Drawing.Point(0, 22)
             Me.m_scModels.Margin = New System.Windows.Forms.Padding(0)
             Me.m_scModels.Name = "m_scModels"
@@ -158,26 +159,29 @@ Namespace Import
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Location = New System.Drawing.Point(0, 0)
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
             Me.m_grid.Size = New System.Drawing.Size(510, 169)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 2
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
@@ -194,8 +198,9 @@ Namespace Import
             '
             'ucImportPageModels
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_scModels)
             Me.Controls.Add(Me.m_cmbDatabaseFormat)
             Me.Controls.Add(Me.m_lblFormat)
@@ -207,6 +212,7 @@ Namespace Import
             Me.Size = New System.Drawing.Size(510, 300)
             Me.m_scModels.Panel1.ResumeLayout(False)
             Me.m_scModels.Panel2.ResumeLayout(False)
+            CType(Me.m_scModels, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scModels.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()

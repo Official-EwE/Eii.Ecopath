@@ -40,43 +40,48 @@ Partial Class ucCVBlockSelector
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_gridSelector = New ScientificInterface.gridSelectColorBlock
+        Me.m_gridSelector = New ScientificInterface.gridSelectColorBlock()
         Me.SuspendLayout()
         '
         'm_gridSelector
         '
+        Me.m_gridSelector.AllowBlockSelect = True
         Me.m_gridSelector.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_gridSelector.AutoSizeMinHeight = 10
         Me.m_gridSelector.AutoSizeMinWidth = 10
         Me.m_gridSelector.AutoStretchColumnsToFitWidth = False
         Me.m_gridSelector.AutoStretchRowsToFitHeight = False
         Me.m_gridSelector.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
         Me.m_gridSelector.CustomSort = False
+        Me.m_gridSelector.DataName = "grid content"
         Me.m_gridSelector.FixedColumnWidths = True
         Me.m_gridSelector.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridSelector.GridToolTipActive = True
+        Me.m_gridSelector.IsLayoutSuspended = False
+        Me.m_gridSelector.IsOutputGrid = True
         Me.m_gridSelector.Location = New System.Drawing.Point(0, 0)
         Me.m_gridSelector.Name = "m_gridSelector"
+        Me.m_gridSelector.SelectedBlock = 1
         Me.m_gridSelector.Size = New System.Drawing.Size(539, 67)
         Me.m_gridSelector.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridSelector.TabIndex = 4
-        Me.m_gridSelector.TrackPropertySelection = True
         Me.m_gridSelector.UIContext = Nothing
         '
         'ucCVBlockSelector
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.Controls.Add(Me.m_gridSelector)
         Me.Name = "ucCVBlockSelector"

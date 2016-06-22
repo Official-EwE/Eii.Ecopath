@@ -45,21 +45,21 @@ Namespace Ecospace.Advection
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_zoomctrl = New ucMapZoom
-            Me.m_hdrTitle = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Me.m_zoomctrl = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
+            Me.m_hdrTitle = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_zoomctrl
             '
             Me.m_zoomctrl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_zoomctrl.BackColor = System.Drawing.Color.White
             Me.m_zoomctrl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zoomctrl.Location = New System.Drawing.Point(0, 18)
             Me.m_zoomctrl.Margin = New System.Windows.Forms.Padding(0)
             Me.m_zoomctrl.Name = "m_zoomctrl"
-            Me.m_zoomctrl.PositionMode = ucMapZoom.ePositionModeTypes.Center
+            Me.m_zoomctrl.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomctrl.Size = New System.Drawing.Size(360, 383)
             Me.m_zoomctrl.TabIndex = 0
             Me.m_zoomctrl.UIContext = Nothing
@@ -68,8 +68,11 @@ Namespace Ecospace.Advection
             'm_hdrTitle
             '
             Me.m_hdrTitle.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrTitle.CanCollapseParent = False
+            Me.m_hdrTitle.CollapsedParentHeight = 0
             Me.m_hdrTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_hdrTitle.IsCollapsed = False
             Me.m_hdrTitle.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrTitle.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrTitle.Name = "m_hdrTitle"
@@ -79,8 +82,9 @@ Namespace Ecospace.Advection
             '
             'ucAdvectionMap
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_hdrTitle)
             Me.Controls.Add(Me.m_zoomctrl)
             Me.Name = "ucAdvectionMap"

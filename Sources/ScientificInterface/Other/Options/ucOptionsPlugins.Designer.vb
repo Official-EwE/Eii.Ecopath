@@ -135,6 +135,7 @@ Namespace Other
             '
             'm_nudTimeOut
             '
+            Me.m_nudTimeOut.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudTimeOut.Location = New System.Drawing.Point(106, 45)
             Me.m_nudTimeOut.Maximum = New Decimal(New Integer() {60, 0, 0, 0})
             Me.m_nudTimeOut.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -166,8 +167,9 @@ Namespace Other
             '
             'ucOptionsPlugins
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_btnClear)
             Me.Controls.Add(Me.m_lblStopTryingPost)
             Me.Controls.Add(Me.m_lblStopTryingPre)

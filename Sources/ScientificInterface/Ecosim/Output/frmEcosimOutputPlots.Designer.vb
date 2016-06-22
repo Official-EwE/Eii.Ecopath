@@ -53,6 +53,7 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_btnChoosePlots = New System.Windows.Forms.ToolStripButton()
             Me.m_plGroups = New System.Windows.Forms.Panel()
             Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plFleets = New System.Windows.Forms.Panel()
@@ -63,7 +64,6 @@ Namespace Ecosim
             Me.m_plPrey = New System.Windows.Forms.Panel()
             Me.m_hdrPrey = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbSaveVisibleOnly = New System.Windows.Forms.CheckBox()
-            Me.m_btnChoosePlots = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -175,6 +175,13 @@ Namespace Ecosim
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
+            'm_btnChoosePlots
+            '
+            Me.m_btnChoosePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_btnChoosePlots, "m_btnChoosePlots")
+            Me.m_btnChoosePlots.Name = "m_btnChoosePlots"
+            Me.m_btnChoosePlots.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            '
             'm_plGroups
             '
             Me.m_plGroups.Controls.Add(Me.m_hdrGroup)
@@ -253,17 +260,10 @@ Namespace Ecosim
             Me.m_cbSaveVisibleOnly.Name = "m_cbSaveVisibleOnly"
             Me.m_cbSaveVisibleOnly.UseVisualStyleBackColor = True
             '
-            'm_btnChoosePlots
-            '
-            Me.m_btnChoosePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_btnChoosePlots, "m_btnChoosePlots")
-            Me.m_btnChoosePlots.Name = "m_btnChoosePlots"
-            Me.m_btnChoosePlots.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-            '
             'frmEcosimOutputPlots
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmEcosimOutputPlots"
             Me.ShowIcon = False

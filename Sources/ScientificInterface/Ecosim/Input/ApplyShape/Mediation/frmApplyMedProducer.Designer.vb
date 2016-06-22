@@ -77,10 +77,13 @@ Namespace Ecosim
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.IsPredatorGrid = ScientificInterfaceShared.Definitions.eGroupFilter.Producer
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -97,7 +100,7 @@ Namespace Ecosim
             'frmApplyMedPP
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
             Me.Name = "frmApplyMedPP"

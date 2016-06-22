@@ -164,12 +164,12 @@ Public Class dlgSelectItems
     Private WithEvents m_clbItems As System.Windows.Forms.CheckedListBox
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSelectItems))
-        Me.m_clbItems = New System.Windows.Forms.CheckedListBox
-        Me.m_btnAll = New System.Windows.Forms.Button
-        Me.m_btnNone = New System.Windows.Forms.Button
-        Me.m_btnDefaults = New System.Windows.Forms.Button
-        Me.m_btnOK = New System.Windows.Forms.Button
-        Me.m_btnCancel = New System.Windows.Forms.Button
+        Me.m_clbItems = New System.Windows.Forms.CheckedListBox()
+        Me.m_btnAll = New System.Windows.Forms.Button()
+        Me.m_btnNone = New System.Windows.Forms.Button()
+        Me.m_btnDefaults = New System.Windows.Forms.Button()
+        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'm_clbItems
@@ -213,8 +213,9 @@ Public Class dlgSelectItems
         'dlgSelectItems
         '
         Me.AcceptButton = Me.m_btnOK
-        Me.CancelButton = Me.m_btnCancel
         resources.ApplyResources(Me, "$this")
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_btnDefaults)

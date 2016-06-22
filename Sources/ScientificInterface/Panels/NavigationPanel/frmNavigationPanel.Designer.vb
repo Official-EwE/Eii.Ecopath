@@ -61,7 +61,7 @@ Partial Class frmNavigationPanel
         'frmNavigationPanel
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.CloseButtonVisible = False
         Me.ControlBox = False

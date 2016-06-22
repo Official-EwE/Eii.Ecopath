@@ -58,10 +58,11 @@ Namespace Ecosim
             '
             'm_pbFishingBlocks
             '
+            Me.m_pbFishingBlocks.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_pbFishingBlocks.Location = New System.Drawing.Point(0, 0)
             Me.m_pbFishingBlocks.Margin = New System.Windows.Forms.Padding(0)
             Me.m_pbFishingBlocks.Name = "m_pbFishingBlocks"
-            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(818, 420)
+            Me.m_pbFishingBlocks.Size = New System.Drawing.Size(866, 512)
             Me.m_pbFishingBlocks.TabIndex = 1
             Me.m_pbFishingBlocks.TabStop = False
             '
@@ -83,6 +84,7 @@ Namespace Ecosim
             '
             'm_nudSeqEndYear
             '
+            Me.m_nudSeqEndYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudSeqEndYear.Location = New System.Drawing.Point(128, 29)
             Me.m_nudSeqEndYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqEndYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -102,6 +104,7 @@ Namespace Ecosim
             '
             'm_nudSeqStartYear
             '
+            Me.m_nudSeqStartYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudSeqStartYear.Location = New System.Drawing.Point(38, 29)
             Me.m_nudSeqStartYear.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudSeqStartYear.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -121,6 +124,7 @@ Namespace Ecosim
             '
             'm_nudNumYearsPerBlock
             '
+            Me.m_nudNumYearsPerBlock.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudNumYearsPerBlock.Location = New System.Drawing.Point(38, 3)
             Me.m_nudNumYearsPerBlock.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
             Me.m_nudNumYearsPerBlock.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -241,8 +245,9 @@ Namespace Ecosim
             '
             'ucPolicyColorBlocks
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_plScroll)
             Me.Controls.Add(Me.m_tlpMain)
             Me.Name = "ucPolicyColorBlocks"

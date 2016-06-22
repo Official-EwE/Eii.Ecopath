@@ -44,18 +44,25 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceFishery))
-            Me.m_tsMain = New cEwEToolstrip()
-            Me.m_tsbnDefineMPAs = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnDefineHabitats = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnDefineMPAs = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.gridEcospaceFishery()
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
             '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineHabitats, Me.m_tsbnDefineMPAs})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnDefineHabitats
+            '
+            resources.ApplyResources(Me.m_tsbnDefineHabitats, "m_tsbnDefineHabitats")
+            Me.m_tsbnDefineHabitats.Name = "m_tsbnDefineHabitats"
             '
             'm_tsbnDefineMPAs
             '
@@ -71,7 +78,9 @@ Namespace Ecospace
             Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
@@ -79,6 +88,7 @@ Namespace Ecospace
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -91,18 +101,14 @@ Namespace Ecospace
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'm_tsbnDefineHabitats
-            '
-            resources.ApplyResources(Me.m_tsbnDefineHabitats, "m_tsbnDefineHabitats")
-            Me.m_tsbnDefineHabitats.Name = "m_tsbnDefineHabitats"
-            '
             'frmEcospaceFishery
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmEcospaceFishery"
+            Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
             Me.ResumeLayout(False)

@@ -148,7 +148,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.5.11963.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -175,7 +175,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.11963.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -247,7 +247,7 @@
     <value>m_tsEditBasemapThingies</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11963.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -277,7 +277,7 @@
     <value>m_ucLayers</value>
   </data>
   <data name="&gt;&gt;m_ucLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.5.11963.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -382,7 +382,10 @@
     <value>25</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>828, 588</value>
@@ -403,6 +406,6 @@
     <value>frmEcospaceMap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11963.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

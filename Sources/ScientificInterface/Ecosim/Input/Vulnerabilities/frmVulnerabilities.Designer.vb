@@ -43,29 +43,31 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmVulnerabilities))
-            Me.m_tsVUlnerabilities = New cEwEToolstrip
-            Me.m_tsbEstimateVs = New System.Windows.Forms.ToolStripButton
+            Me.m_tsVUlnerabilities = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbEstimateVs = New System.Windows.Forms.ToolStripButton()
             Me.m_tsVUlnerabilities.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsVUlnerabilities
             '
+            Me.m_tsVUlnerabilities.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsVUlnerabilities.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEstimateVs})
             resources.ApplyResources(Me.m_tsVUlnerabilities, "m_tsVUlnerabilities")
             Me.m_tsVUlnerabilities.Name = "m_tsVUlnerabilities"
+            Me.m_tsVUlnerabilities.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbEstimateVs
             '
             resources.ApplyResources(Me.m_tsbEstimateVs, "m_tsbEstimateVs")
-            Me.m_tsbEstimateVs.Image = ScientificInterfaceShared.My.Resources.CalculatorHS
             Me.m_tsbEstimateVs.Name = "m_tsbEstimateVs"
             '
-            'Vulnerabilities
+            'frmVulnerabilities
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tsVUlnerabilities)
-            Me.Name = "Vulnerabilities"
+            Me.Name = "frmVulnerabilities"
+            Me.TabText = ""
             Me.m_tsVUlnerabilities.ResumeLayout(False)
             Me.m_tsVUlnerabilities.PerformLayout()
             Me.ResumeLayout(False)

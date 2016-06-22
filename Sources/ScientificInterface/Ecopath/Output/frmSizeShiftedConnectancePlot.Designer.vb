@@ -47,11 +47,12 @@ Namespace Ecopath.Output
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_btnShowHideGroups = New System.Windows.Forms.Button
-            Me.m_hdrDisplay = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_graph = New ZedGraph.ZedGraphControl
+            Me.components = New System.ComponentModel.Container()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_btnShowHideGroups = New System.Windows.Forms.Button()
+            Me.m_hdrDisplay = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -78,7 +79,7 @@ Namespace Ecopath.Output
             'm_btnShowHideGroups
             '
             Me.m_btnShowHideGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnShowHideGroups.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnShowHideGroups.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.m_btnShowHideGroups.Location = New System.Drawing.Point(6, 21)
@@ -91,8 +92,11 @@ Namespace Ecopath.Output
             'm_hdrDisplay
             '
             Me.m_hdrDisplay.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrDisplay.CanCollapseParent = False
+            Me.m_hdrDisplay.CollapsedParentHeight = 0
             Me.m_hdrDisplay.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_hdrDisplay.IsCollapsed = False
             Me.m_hdrDisplay.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrDisplay.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrDisplay.Name = "m_hdrDisplay"
@@ -107,27 +111,30 @@ Namespace Ecopath.Output
             Me.m_graph.Location = New System.Drawing.Point(0, 0)
             Me.m_graph.Margin = New System.Windows.Forms.Padding(0)
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
             Me.m_graph.Size = New System.Drawing.Size(596, 506)
             Me.m_graph.TabIndex = 0
             '
-            'frmSizeShifterConnectancePlot
+            'frmSizeShiftedConnectancePlot
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.ClientSize = New System.Drawing.Size(742, 506)
             Me.Controls.Add(Me.m_scMain)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.Name = "frmSizeShifterConnectancePlot"
+            Me.Name = "frmSizeShiftedConnectancePlot"
+            Me.TabText = ""
             Me.Text = "frmSizeShifterConnectancePlot"
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.ResumeLayout(False)
 

@@ -41,10 +41,10 @@ Namespace Controls.Map
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucLayerGroup))
-            Me.m_fpItems = New System.Windows.Forms.FlowLayoutPanel
+            Me.m_fpItems = New System.Windows.Forms.FlowLayoutPanel()
             Me.SuspendLayout()
             '
-            'fpItems
+            'm_fpItems
             '
             resources.ApplyResources(Me.m_fpItems, "m_fpItems")
             Me.m_fpItems.Name = "m_fpItems"
@@ -52,7 +52,7 @@ Namespace Controls.Map
             'ucLayerGroup
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.BackColor = System.Drawing.SystemColors.Control
             Me.Controls.Add(Me.m_fpItems)
             Me.Name = "ucLayerGroup"

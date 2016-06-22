@@ -144,10 +144,11 @@ Namespace Ecospace
             Me.m_gridApply.DataName = "grid content"
             resources.ApplyResources(Me.m_gridApply, "m_gridApply")
             Me.m_gridApply.Filter = EwEUtils.Core.eVarNameFlags.NotSet
-            Me.m_gridApply.FixedColumnWidths = True
+            Me.m_gridApply.FixedColumnWidths = False
             Me.m_gridApply.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridApply.GridToolTipActive = True
             Me.m_gridApply.IsLayoutSuspended = False
+            Me.m_gridApply.IsOutputGrid = True
             Me.m_gridApply.Name = "m_gridApply"
             Me.m_gridApply.OnlyShowConnected = True
             Me.m_gridApply.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -284,10 +285,11 @@ Namespace Ecospace
             'frmSpatialTimeSeries
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmSpatialTimeSeries"
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()

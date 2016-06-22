@@ -153,6 +153,7 @@ Partial Class ucParameters
         '
         'm_nudBaseYear
         '
+        Me.m_nudBaseYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudBaseYear.Location = New System.Drawing.Point(93, 167)
         Me.m_nudBaseYear.Name = "m_nudBaseYear"
         Me.m_nudBaseYear.Size = New System.Drawing.Size(106, 20)
@@ -282,6 +283,7 @@ Partial Class ucParameters
         'm_nudEffortMin
         '
         Me.m_nudEffortMin.DecimalPlaces = 2
+        Me.m_nudEffortMin.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudEffortMin.Location = New System.Drawing.Point(93, 225)
         Me.m_nudEffortMin.Name = "m_nudEffortMin"
         Me.m_nudEffortMin.Size = New System.Drawing.Size(106, 20)
@@ -290,6 +292,7 @@ Partial Class ucParameters
         'm_nudEffortMax
         '
         Me.m_nudEffortMax.DecimalPlaces = 2
+        Me.m_nudEffortMax.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudEffortMax.Location = New System.Drawing.Point(93, 251)
         Me.m_nudEffortMax.Name = "m_nudEffortMax"
         Me.m_nudEffortMax.Size = New System.Drawing.Size(106, 20)
@@ -298,6 +301,7 @@ Partial Class ucParameters
         'm_nudEffortIncr
         '
         Me.m_nudEffortIncr.DecimalPlaces = 2
+        Me.m_nudEffortIncr.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudEffortIncr.Location = New System.Drawing.Point(93, 277)
         Me.m_nudEffortIncr.Minimum = New Decimal(New Integer() {1, 0, 0, 131072})
         Me.m_nudEffortIncr.Name = "m_nudEffortIncr"
@@ -384,8 +388,9 @@ Partial Class ucParameters
         '
         'ucParameters
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.m_rbAggGroup)
         Me.Controls.Add(Me.m_rbAggFleet)
         Me.Controls.Add(Me.m_rbAggNone)

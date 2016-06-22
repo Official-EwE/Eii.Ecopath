@@ -112,35 +112,38 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="m_tsVUlnerabilities.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_tsVUlnerabilities.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_tsbEstimateVs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="m_tsbEstimateVs.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsbEstimateVs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 22</value>
+    <value>148, 22</value>
   </data>
   <data name="m_tsbEstimateVs.Text" xml:space="preserve">
     <value>&amp;Estimate vulnerabilities</value>
@@ -151,7 +154,7 @@
   <data name="m_tsVUlnerabilities.Size" type="System.Drawing.Size, System.Drawing">
     <value>693, 25</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsVUlnerabilities.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
@@ -162,7 +165,7 @@
     <value>m_tsVUlnerabilities</value>
   </data>
   <data name="&gt;&gt;m_tsVUlnerabilities.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsVUlnerabilities.Parent" xml:space="preserve">
     <value>$this</value>
@@ -170,11 +173,15 @@
   <data name="&gt;&gt;m_tsVUlnerabilities.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>693, 410</value>
@@ -186,12 +193,12 @@
     <value>m_tsbEstimateVs</value>
   </data>
   <data name="&gt;&gt;m_tsbEstimateVs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>Vulnerabilities</value>
+    <value>frmVulnerabilities</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.1.1.1206, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

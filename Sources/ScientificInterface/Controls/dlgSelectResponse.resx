@@ -417,7 +417,7 @@
     <value>m_hdrResp</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -450,7 +450,7 @@
     <value>m_hdrApplied</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -488,15 +488,6 @@
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 22</value>
-  </data>
-  <data name="m_tslbFilter.Text" xml:space="preserve">
-    <value>&amp;Filter:</value>
-  </data>
-  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 25</value>
-  </data>
   <data name="m_tsbnCaseSensitive.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -508,6 +499,15 @@
   </data>
   <data name="m_tsbnCaseSensitive.ToolTipText" xml:space="preserve">
     <value>Search case sensitive</value>
+  </data>
+  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 25</value>
+  </data>
+  <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 22</value>
+  </data>
+  <data name="m_tslbFilter.Text" xml:space="preserve">
+    <value>&amp;Filter:</value>
   </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -525,7 +525,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -537,7 +537,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>584, 386</value>
@@ -554,11 +557,11 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Apply environmental response function</value>
   </data>
-  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
-    <value>m_tslbFilter</value>
+  <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
+    <value>m_tsbnCaseSensitive</value>
   </data>
-  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsbnCaseSensitive.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tstbFilter.Name" xml:space="preserve">
     <value>m_tstbFilter</value>
@@ -566,16 +569,16 @@
   <data name="&gt;&gt;m_tstbFilter.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
-    <value>m_tsbnCaseSensitive</value>
+  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
+    <value>m_tslbFilter</value>
   </data>
-  <data name="&gt;&gt;m_tsbnCaseSensitive.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgSelectResponse</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11661.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

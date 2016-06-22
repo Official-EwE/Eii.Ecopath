@@ -57,8 +57,8 @@ Namespace Ecospace
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnHabitats = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnEnvResponses = New System.Windows.Forms.ToolStripButton()
-            Me.m_grid = New ScientificInterface.Ecospace.gridCapacityCalcType(Me.components)
             Me.m_tsbnBoth = New System.Windows.Forms.ToolStripButton()
+            Me.m_grid = New ScientificInterface.Ecospace.gridCapacityCalcType(Me.components)
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -80,6 +80,11 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tsbnEnvResponses, "m_tsbnEnvResponses")
             Me.m_tsbnEnvResponses.Name = "m_tsbnEnvResponses"
             '
+            'm_tsbnBoth
+            '
+            resources.ApplyResources(Me.m_tsbnBoth, "m_tsbnBoth")
+            Me.m_tsbnBoth.Name = "m_tsbnBoth"
+            '
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
@@ -99,6 +104,7 @@ Namespace Ecospace
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -111,15 +117,10 @@ Namespace Ecospace
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'm_tsbnBoth
-            '
-            resources.ApplyResources(Me.m_tsbnBoth, "m_tsbnBoth")
-            Me.m_tsbnBoth.Name = "m_tsbnBoth"
-            '
             'frmCapacityCalcType
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_tsMain)
             Me.Name = "frmCapacityCalcType"

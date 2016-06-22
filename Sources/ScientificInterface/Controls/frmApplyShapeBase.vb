@@ -111,12 +111,13 @@ Public Class frmApplyShapeBase
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyShapeBase))
         Me.SuspendLayout()
-
         '
         'frmApplyShapeBase
         '
         resources.ApplyResources(Me, "$this")
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Name = "frmApplyShapeBase"
+        Me.TabText = ""
         Me.ResumeLayout(False)
 
     End Sub

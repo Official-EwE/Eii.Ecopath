@@ -45,19 +45,21 @@ Namespace Ecopath.Tools
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsbnEditPedigree = New System.Windows.Forms.ToolStripButton
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_lblDefinitions = New System.Windows.Forms.Label
-            Me.m_cmbViewAs = New System.Windows.Forms.ComboBox
-            Me.m_lblViewAs = New System.Windows.Forms.Label
-            Me.m_cmbCategory = New System.Windows.Forms.ComboBox
-            Me.m_lblCategory = New System.Windows.Forms.Label
-            Me.m_lbLevels = New System.Windows.Forms.ListBox
-            Me.m_hdrPedigree = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.Ecopath.Tools.gridPedigree
-            Me.m_hdrGrid = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmPedigree))
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnEditPedigree = New System.Windows.Forms.ToolStripButton()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_lblDefinitions = New System.Windows.Forms.Label()
+            Me.m_cmbViewAs = New System.Windows.Forms.ComboBox()
+            Me.m_lblViewAs = New System.Windows.Forms.Label()
+            Me.m_cmbCategory = New System.Windows.Forms.ComboBox()
+            Me.m_lblCategory = New System.Windows.Forms.Label()
+            Me.m_lbLevels = New System.Windows.Forms.ListBox()
+            Me.m_hdrPedigree = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_grid = New ScientificInterface.Ecopath.Tools.gridPedigree()
+            Me.m_hdrGrid = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain.SuspendLayout()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -65,15 +67,17 @@ Namespace Ecopath.Tools
             '
             'm_tsMain
             '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditPedigree})
             Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
             Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_tsMain.Size = New System.Drawing.Size(724, 25)
             Me.m_tsMain.TabIndex = 0
             '
             'm_tsbnEditPedigree
             '
-            Me.m_tsbnEditPedigree.Image = ScientificInterfaceShared.My.Resources.certificate
+            Me.m_tsbnEditPedigree.Image = CType(resources.GetObject("m_tsbnEditPedigree.Image"), System.Drawing.Image)
             Me.m_tsbnEditPedigree.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditPedigree.Name = "m_tsbnEditPedigree"
             Me.m_tsbnEditPedigree.Size = New System.Drawing.Size(119, 22)
@@ -118,7 +122,7 @@ Namespace Ecopath.Tools
             'm_cmbViewAs
             '
             Me.m_cmbViewAs.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbViewAs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbViewAs.FormattingEnabled = True
             Me.m_cmbViewAs.Items.AddRange(New Object() {"Color", "Indices", "Values", "Confidence Interval"})
@@ -139,7 +143,7 @@ Namespace Ecopath.Tools
             'm_cmbCategory
             '
             Me.m_cmbCategory.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbCategory.FormattingEnabled = True
             Me.m_cmbCategory.Location = New System.Drawing.Point(61, 21)
@@ -159,8 +163,8 @@ Namespace Ecopath.Tools
             'm_lbLevels
             '
             Me.m_lbLevels.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lbLevels.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbLevels.FormattingEnabled = True
             Me.m_lbLevels.IntegralHeight = False
@@ -173,7 +177,10 @@ Namespace Ecopath.Tools
             '
             'm_hdrPedigree
             '
+            Me.m_hdrPedigree.CanCollapseParent = False
+            Me.m_hdrPedigree.CollapsedParentHeight = 0
             Me.m_hdrPedigree.Dock = System.Windows.Forms.DockStyle.Top
+            Me.m_hdrPedigree.IsCollapsed = False
             Me.m_hdrPedigree.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrPedigree.Name = "m_hdrPedigree"
             Me.m_hdrPedigree.Size = New System.Drawing.Size(173, 18)
@@ -191,13 +198,16 @@ Namespace Ecopath.Tools
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Location = New System.Drawing.Point(0, 18)
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
@@ -205,20 +215,23 @@ Namespace Ecopath.Tools
             Me.m_grid.SelectedVariable = EwEUtils.Core.eVarNameFlags.NotSet
             Me.m_grid.Size = New System.Drawing.Size(547, 401)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
             '
             'm_hdrGrid
             '
+            Me.m_hdrGrid.CanCollapseParent = False
+            Me.m_hdrGrid.CollapsedParentHeight = 0
             Me.m_hdrGrid.Dock = System.Windows.Forms.DockStyle.Top
+            Me.m_hdrGrid.IsCollapsed = False
             Me.m_hdrGrid.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrGrid.Name = "m_hdrGrid"
             Me.m_hdrGrid.Size = New System.Drawing.Size(547, 18)
@@ -228,8 +241,9 @@ Namespace Ecopath.Tools
             '
             'frmPedigree
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.ClientSize = New System.Drawing.Size(724, 444)
             Me.ControlBox = False
             Me.Controls.Add(Me.m_scMain)
@@ -237,12 +251,14 @@ Namespace Ecopath.Tools
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmPedigree"
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.Text = "Pedigree"
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()

@@ -88,6 +88,7 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
+            Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             Me.m_sketchPad.Editable = True
@@ -107,7 +108,7 @@ Namespace Ecosim
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
             Me.m_sketchPad.YAxisMinValue = -9999.0!
-            Me.m_sketchPad.YMarkLabel = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
+            Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'm_tlpToolbox
@@ -139,9 +140,10 @@ Namespace Ecosim
             'frmFishingMortality
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.SplitContainer1)
             Me.Name = "frmFishingMortality"
+            Me.TabText = ""
             Me.SplitContainer1.Panel1.ResumeLayout(False)
             Me.SplitContainer1.Panel2.ResumeLayout(False)
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()

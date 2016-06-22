@@ -90,13 +90,13 @@ Partial Class dlgDefineEcospaceForagingResponse
         resources.ApplyResources(Me.m_graph, "m_graph")
         Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0R
-        Me.m_graph.ScrollMaxX = 0R
-        Me.m_graph.ScrollMaxY = 0R
-        Me.m_graph.ScrollMaxY2 = 0R
-        Me.m_graph.ScrollMinX = 0R
-        Me.m_graph.ScrollMinY = 0R
-        Me.m_graph.ScrollMinY2 = 0R
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
         '
         'm_tbxXMin
         '
@@ -192,7 +192,7 @@ Partial Class dlgDefineEcospaceForagingResponse
         'dlgDefineEcospaceForagingResponse
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_lblXMin)
         Me.Controls.Add(Me.m_tbxXMin)
         Me.Controls.Add(Me.m_lblXMax)

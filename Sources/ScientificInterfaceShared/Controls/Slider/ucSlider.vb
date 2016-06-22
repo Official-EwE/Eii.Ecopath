@@ -24,20 +24,6 @@ Imports EwECore
 
 Namespace Controls
 
-    Public Class SliderKnobChangedEventArgs
-        Inherits EventArgs
-
-        Private m_iKnob As Integer
-        Public Sub New(ByVal iKnob As Integer)
-            Me.m_iKnob = iKnob
-        End Sub
-        ReadOnly Property Knob As Integer
-            Get
-                Return Me.m_iKnob
-            End Get
-        End Property
-    End Class
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Custom slider class that provides one or more knobs on a track.
@@ -360,6 +346,20 @@ Namespace Controls
         End Function
 #End Region ' Internals 
 
+    End Class
+
+    Public Class SliderKnobChangedEventArgs
+        Inherits EventArgs
+
+        Private m_iKnob As Integer
+        Public Sub New(ByVal iKnob As Integer)
+            Me.m_iKnob = iKnob
+        End Sub
+        ReadOnly Property Knob As Integer
+            Get
+                Return Me.m_iKnob
+            End Get
+        End Property
     End Class
 
 End Namespace ' Controls
