@@ -290,7 +290,7 @@ Partial Class frmMain
         Me.AcceptButton = Me.m_btnRun
         Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.m_pbLogo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None

@@ -51,11 +51,12 @@ Partial Class frmStatusPanel
         Me.m_tvStatus.HideSelection = False
         Me.m_tvStatus.Name = "m_tvStatus"
         Me.m_tvStatus.ShowLines = False
+        Me.m_tvStatus.ShowTime = False
         '
         'frmStatusPanel
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CloseButtonVisible = False
         Me.Controls.Add(Me.m_tvStatus)
         Me.DockAreas = CType((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) _
@@ -67,6 +68,7 @@ Partial Class frmStatusPanel
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.TabText = ""
         Me.ResumeLayout(False)
 
     End Sub

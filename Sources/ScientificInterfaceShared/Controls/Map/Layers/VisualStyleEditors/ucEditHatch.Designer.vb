@@ -43,21 +43,21 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.nudAlpha = New cEwENumericUpDown
-            Me.nudBlue = New cEwENumericUpDown
-            Me.nudGreen = New cEwENumericUpDown
-            Me.nudRed = New cEwENumericUpDown
-            Me.tbAlpha = New ScientificInterfaceShared.Controls.ucSlider
-            Me.tbBlue = New ScientificInterfaceShared.Controls.ucSlider
-            Me.tbGreen = New ScientificInterfaceShared.Controls.ucSlider
-            Me.tbRed = New ScientificInterfaceShared.Controls.ucSlider
-            Me.pbBrush = New System.Windows.Forms.Panel
-            Me.plForeColor = New System.Windows.Forms.Panel
-            Me.lbAlpha = New System.Windows.Forms.Label
-            Me.lbBlue = New System.Windows.Forms.Label
-            Me.lbGreen = New System.Windows.Forms.Label
-            Me.lbRed = New System.Windows.Forms.Label
-            Me.plBackColor = New System.Windows.Forms.Panel
+            Me.nudAlpha = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.nudBlue = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.nudGreen = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.nudRed = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.tbAlpha = New ScientificInterfaceShared.Controls.ucSlider()
+            Me.tbBlue = New ScientificInterfaceShared.Controls.ucSlider()
+            Me.tbGreen = New ScientificInterfaceShared.Controls.ucSlider()
+            Me.tbRed = New ScientificInterfaceShared.Controls.ucSlider()
+            Me.pbBrush = New System.Windows.Forms.Panel()
+            Me.plForeColor = New System.Windows.Forms.Panel()
+            Me.lbAlpha = New System.Windows.Forms.Label()
+            Me.lbBlue = New System.Windows.Forms.Label()
+            Me.lbGreen = New System.Windows.Forms.Label()
+            Me.lbRed = New System.Windows.Forms.Label()
+            Me.plBackColor = New System.Windows.Forms.Panel()
             CType(Me.nudAlpha, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.nudBlue, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.nudGreen, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -67,6 +67,7 @@ Namespace Controls
             'nudAlpha
             '
             Me.nudAlpha.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.nudAlpha.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.nudAlpha.Location = New System.Drawing.Point(289, 70)
             Me.nudAlpha.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudAlpha.Name = "nudAlpha"
@@ -76,6 +77,7 @@ Namespace Controls
             'nudBlue
             '
             Me.nudBlue.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.nudBlue.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.nudBlue.Location = New System.Drawing.Point(289, 47)
             Me.nudBlue.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudBlue.Name = "nudBlue"
@@ -85,6 +87,7 @@ Namespace Controls
             'nudGreen
             '
             Me.nudGreen.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.nudGreen.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.nudGreen.Location = New System.Drawing.Point(289, 24)
             Me.nudGreen.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudGreen.Name = "nudGreen"
@@ -94,6 +97,7 @@ Namespace Controls
             'nudRed
             '
             Me.nudRed.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.nudRed.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.nudRed.Location = New System.Drawing.Point(289, 0)
             Me.nudRed.Maximum = New Decimal(New Integer() {255, 0, 0, 0})
             Me.nudRed.Name = "nudRed"
@@ -103,50 +107,54 @@ Namespace Controls
             'tbAlpha
             '
             Me.tbAlpha.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.tbAlpha.CurrentKnob = 0
             Me.tbAlpha.Location = New System.Drawing.Point(120, 70)
             Me.tbAlpha.Maximum = 255
             Me.tbAlpha.Minimum = 0
             Me.tbAlpha.Name = "tbAlpha"
+            Me.tbAlpha.NumKnobs = 1
             Me.tbAlpha.Size = New System.Drawing.Size(163, 20)
             Me.tbAlpha.TabIndex = 28
-            Me.tbAlpha.Value = 50
             '
             'tbBlue
             '
             Me.tbBlue.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.tbBlue.CurrentKnob = 0
             Me.tbBlue.Location = New System.Drawing.Point(120, 47)
             Me.tbBlue.Maximum = 255
             Me.tbBlue.Minimum = 0
             Me.tbBlue.Name = "tbBlue"
+            Me.tbBlue.NumKnobs = 1
             Me.tbBlue.Size = New System.Drawing.Size(163, 20)
             Me.tbBlue.TabIndex = 25
-            Me.tbBlue.Value = 50
             '
             'tbGreen
             '
             Me.tbGreen.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.tbGreen.CurrentKnob = 0
             Me.tbGreen.Location = New System.Drawing.Point(120, 24)
             Me.tbGreen.Maximum = 255
             Me.tbGreen.Minimum = 0
             Me.tbGreen.Name = "tbGreen"
+            Me.tbGreen.NumKnobs = 1
             Me.tbGreen.Size = New System.Drawing.Size(163, 20)
             Me.tbGreen.TabIndex = 22
-            Me.tbGreen.Value = 50
             '
             'tbRed
             '
             Me.tbRed.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.tbRed.CurrentKnob = 0
             Me.tbRed.Location = New System.Drawing.Point(120, 0)
             Me.tbRed.Maximum = 255
             Me.tbRed.Minimum = 0
             Me.tbRed.Name = "tbRed"
+            Me.tbRed.NumKnobs = 1
             Me.tbRed.Size = New System.Drawing.Size(163, 23)
             Me.tbRed.TabIndex = 19
-            Me.tbRed.Value = 50
             '
             'pbBrush
             '
@@ -219,8 +227,9 @@ Namespace Controls
             '
             'ucEditHatch
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.nudAlpha)
             Me.Controls.Add(Me.nudBlue)
             Me.Controls.Add(Me.nudGreen)
@@ -246,10 +255,6 @@ Namespace Controls
             Me.PerformLayout()
 
         End Sub
-        Friend WithEvents nudAlpha As System.Windows.Forms.NumericUpDown
-        Friend WithEvents nudBlue As System.Windows.Forms.NumericUpDown
-        Friend WithEvents nudGreen As System.Windows.Forms.NumericUpDown
-        Friend WithEvents nudRed As System.Windows.Forms.NumericUpDown
         Friend WithEvents tbAlpha As ucSlider
         Friend WithEvents tbBlue As ucSlider
         Friend WithEvents tbGreen As ucSlider
@@ -261,6 +266,10 @@ Namespace Controls
         Friend WithEvents lbGreen As System.Windows.Forms.Label
         Friend WithEvents lbRed As System.Windows.Forms.Label
         Friend WithEvents plBackColor As System.Windows.Forms.Panel
+        Friend WithEvents nudAlpha As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Friend WithEvents nudBlue As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Friend WithEvents nudGreen As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Friend WithEvents nudRed As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 

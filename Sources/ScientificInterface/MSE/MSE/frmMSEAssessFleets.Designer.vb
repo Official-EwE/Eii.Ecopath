@@ -44,10 +44,11 @@ Partial Class frmMSEAssessFleets
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEAssessFleets))
-        Me.m_split = New System.Windows.Forms.SplitContainer
-        Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
-        Me.m_grid = New ScientificInterface.gridFishingCV
-        Me.m_tsMain = New cEwEToolstrip
+        Me.m_split = New System.Windows.Forms.SplitContainer()
+        Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_grid = New ScientificInterface.gridFishingCV()
+        CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
         Me.m_split.Panel2.SuspendLayout()
         Me.m_split.SuspendLayout()
@@ -74,10 +75,19 @@ Partial Class frmMSEAssessFleets
         resources.ApplyResources(Me.m_blocks, "m_blocks")
         Me.m_blocks.Name = "m_blocks"
         Me.m_blocks.ParmBlockCodes = Nothing
+        Me.m_blocks.ShowTooltip = True
         Me.m_blocks.UIContext = Nothing
+        '
+        'm_tsMain
+        '
+        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+        Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_grid
         '
+        Me.m_grid.AllowBlockSelect = True
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
@@ -86,39 +96,38 @@ Partial Class frmMSEAssessFleets
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
+        Me.m_grid.DataName = "grid content"
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
+        Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = True
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TrackPropertySelection = True
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
-        '
-        'm_tsMain
-        '
-        resources.ApplyResources(Me.m_tsMain, "m_tsMain")
-        Me.m_tsMain.Name = "m_tsMain"
         '
         'frmMSEAssessFleets
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_split)
         Me.Name = "frmMSEAssessFleets"
+        Me.TabText = ""
         Me.m_split.Panel1.ResumeLayout(False)
         Me.m_split.Panel2.ResumeLayout(False)
         Me.m_split.Panel2.PerformLayout()
+        CType(Me.m_split, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_split.ResumeLayout(False)
         Me.ResumeLayout(False)
 

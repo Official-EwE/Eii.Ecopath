@@ -454,7 +454,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -487,7 +487,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -556,7 +556,7 @@
     <value>m_hdrProps</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -598,7 +598,7 @@
     <value>m_hdrSearch</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -727,7 +727,7 @@
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -828,14 +828,17 @@
   <data name="&gt;&gt;m_cbShowCodes.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="$this.Localizable" type="System.Boolean, mscorlib">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </data>
-  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>54</value>
-  </data>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>784, 411</value>

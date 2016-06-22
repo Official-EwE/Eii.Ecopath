@@ -78,4 +78,16 @@ Public Class ucDefault
         ' NOP
     End Sub
 
+    Private Sub InitializeComponent()
+        Me.SuspendLayout()
+        '
+        'ucDefault
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Name = "ucDefault"
+        Me.ResumeLayout(False)
+
+    End Sub
 End Class

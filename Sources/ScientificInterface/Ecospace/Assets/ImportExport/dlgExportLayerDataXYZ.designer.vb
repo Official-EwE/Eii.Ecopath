@@ -109,9 +109,12 @@ Namespace Ecospace.Basemap
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -145,11 +148,12 @@ Namespace Ecospace.Basemap
             resources.ApplyResources(Me.m_tbCol, "m_tbCol")
             Me.m_tbCol.Name = "m_tbCol"
             '
-            'dlgExportLayerData
+            'dlgExportLayerDataXYZ
             '
             Me.AcceptButton = Me.m_bntOK
-            Me.CancelButton = Me.m_btnCancel
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_tbCol)
             Me.Controls.Add(Me.m_tbRow)
@@ -161,7 +165,7 @@ Namespace Ecospace.Basemap
             Me.Controls.Add(Me.m_tbTarget)
             Me.Controls.Add(Me.m_btnBrowseTarget)
             Me.Controls.Add(Me.m_lblTarget)
-            Me.Name = "dlgExportLayerData"
+            Me.Name = "dlgExportLayerDataXYZ"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.m_tlpOkCancel.ResumeLayout(False)

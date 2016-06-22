@@ -60,6 +60,7 @@ Namespace Ecospace
             '
             'm_grid
             '
+            Me.m_grid.AllowBlockSelect = False
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
@@ -74,6 +75,7 @@ Namespace Ecospace
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -154,10 +156,10 @@ Namespace Ecospace
             Me.m_hdrEdit.IsCollapsed = False
             Me.m_hdrEdit.Name = "m_hdrEdit"
             '
-            'dlgDefineEnvInputMaps
+            'dlgDefineEnvDriverMaps
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.Controls.Add(Me.m_hdrEdit)
             Me.Controls.Add(Me.m_hdrOrder)
@@ -170,7 +172,7 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_grid)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgDefineEnvInputMaps"
+            Me.Name = "dlgDefineEnvDriverMaps"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             CType(Me.epNumHabitats, System.ComponentModel.ISupportInitialize).EndInit()

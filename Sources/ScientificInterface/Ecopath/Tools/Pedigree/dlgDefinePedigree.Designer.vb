@@ -56,17 +56,17 @@ Namespace Ecopath
             Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_scYupi = New System.Windows.Forms.SplitContainer()
+            Me.m_grid = New ScientificInterface.gridDefinePedigree()
+            Me.m_tcPlop = New System.Windows.Forms.TabControl()
+            Me.m_tpRemarks = New System.Windows.Forms.TabPage()
+            Me.m_tbDescription = New System.Windows.Forms.TextBox()
+            Me.m_ilPretty = New System.Windows.Forms.ImageList(Me.components)
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_btnCreateDefaultLevels = New System.Windows.Forms.Button()
             Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnColorCustom = New System.Windows.Forms.Button()
             Me.m_btnColorDefaultCurrent = New System.Windows.Forms.Button()
             Me.m_btnColorDefaultAll = New System.Windows.Forms.Button()
-            Me.m_tcPlop = New System.Windows.Forms.TabControl()
-            Me.m_tpRemarks = New System.Windows.Forms.TabPage()
-            Me.m_tbDescription = New System.Windows.Forms.TextBox()
-            Me.m_ilPretty = New System.Windows.Forms.ImageList(Me.components)
-            Me.m_grid = New ScientificInterface.gridDefinePedigree()
             Me.TableLayoutPanel1.SuspendLayout()
             CType(Me.m_scYupi, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scYupi.Panel1.SuspendLayout()
@@ -160,6 +160,65 @@ Namespace Ecopath
             Me.m_scYupi.Panel2.Controls.Add(Me.m_tcPlop)
             Me.m_scYupi.Panel2.Controls.Add(Me.m_lblDescription)
             '
+            'm_grid
+            '
+            Me.m_grid.AllowBlockSelect = False
+            resources.ApplyResources(Me.m_grid, "m_grid")
+            Me.m_grid.AutoSizeMinHeight = 10
+            Me.m_grid.AutoSizeMinWidth = 10
+            Me.m_grid.AutoStretchColumnsToFitWidth = True
+            Me.m_grid.AutoStretchRowsToFitHeight = False
+            Me.m_grid.BackColor = System.Drawing.Color.White
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
+            Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
+            Me.m_grid.FixedColumnWidths = False
+            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
+            Me.m_grid.Name = "m_grid"
+            Me.m_grid.SelectedLevelDescription = ""
+            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_grid.TrackPropertySelection = False
+            Me.m_grid.UIContext = Nothing
+            Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
+            '
+            'm_tcPlop
+            '
+            Me.m_tcPlop.Controls.Add(Me.m_tpRemarks)
+            resources.ApplyResources(Me.m_tcPlop, "m_tcPlop")
+            Me.m_tcPlop.ImageList = Me.m_ilPretty
+            Me.m_tcPlop.Name = "m_tcPlop"
+            Me.m_tcPlop.SelectedIndex = 0
+            '
+            'm_tpRemarks
+            '
+            Me.m_tpRemarks.Controls.Add(Me.m_tbDescription)
+            resources.ApplyResources(Me.m_tpRemarks, "m_tpRemarks")
+            Me.m_tpRemarks.Name = "m_tpRemarks"
+            Me.m_tpRemarks.UseVisualStyleBackColor = True
+            '
+            'm_tbDescription
+            '
+            resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
+            Me.m_tbDescription.Name = "m_tbDescription"
+            '
+            'm_ilPretty
+            '
+            Me.m_ilPretty.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            resources.ApplyResources(Me.m_ilPretty, "m_ilPretty")
+            Me.m_ilPretty.TransparentColor = System.Drawing.Color.Transparent
+            '
             'm_lblDescription
             '
             resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
@@ -197,66 +256,10 @@ Namespace Ecopath
             Me.m_btnColorDefaultAll.Name = "m_btnColorDefaultAll"
             Me.m_btnColorDefaultAll.UseVisualStyleBackColor = True
             '
-            'm_tcPlop
-            '
-            Me.m_tcPlop.Controls.Add(Me.m_tpRemarks)
-            resources.ApplyResources(Me.m_tcPlop, "m_tcPlop")
-            Me.m_tcPlop.ImageList = Me.m_ilPretty
-            Me.m_tcPlop.Name = "m_tcPlop"
-            Me.m_tcPlop.SelectedIndex = 0
-            '
-            'm_tpRemarks
-            '
-            Me.m_tpRemarks.Controls.Add(Me.m_tbDescription)
-            resources.ApplyResources(Me.m_tpRemarks, "m_tpRemarks")
-            Me.m_tpRemarks.Name = "m_tpRemarks"
-            Me.m_tpRemarks.UseVisualStyleBackColor = True
-            '
-            'm_tbDescription
-            '
-            resources.ApplyResources(Me.m_tbDescription, "m_tbDescription")
-            Me.m_tbDescription.Name = "m_tbDescription"
-            '
-            'm_ilPretty
-            '
-            Me.m_ilPretty.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-            resources.ApplyResources(Me.m_ilPretty, "m_ilPretty")
-            Me.m_ilPretty.TransparentColor = System.Drawing.Color.Transparent
-            '
-            'm_grid
-            '
-            Me.m_grid.AllowBlockSelect = False
-            resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.AutoSizeMinHeight = 10
-            Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = True
-            Me.m_grid.AutoStretchRowsToFitHeight = False
-            Me.m_grid.BackColor = System.Drawing.Color.White
-            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
-            Me.m_grid.CustomSort = False
-            Me.m_grid.FixedColumnWidths = False
-            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Name = "m_grid"
-            Me.m_grid.SelectedLevelDescription = ""
-            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.TrackPropertySelection = False
-            Me.m_grid.UIContext = Nothing
-            Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
-            '
             'dlgEditPedigree
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.ControlBox = False
             Me.Controls.Add(Me.m_hdrColors)

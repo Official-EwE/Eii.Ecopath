@@ -619,7 +619,7 @@ Partial Class dlgEcobaseImport
         'dlgEcobaseImport
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_tcContent)
         Me.Controls.Add(Me.m_btnOK)

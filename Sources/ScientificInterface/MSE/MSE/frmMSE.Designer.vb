@@ -127,11 +127,13 @@ Partial Class frmMSE
         'm_nudStartYear
         '
         resources.ApplyResources(Me.m_nudStartYear, "m_nudStartYear")
+        Me.m_nudStartYear.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudStartYear.Name = "m_nudStartYear"
         '
         'm_nudNumTrials
         '
         resources.ApplyResources(Me.m_nudNumTrials, "m_nudNumTrials")
+        Me.m_nudNumTrials.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudNumTrials.Name = "m_nudNumTrials"
         '
         'm_scMain
@@ -174,13 +176,14 @@ Partial Class frmMSE
         '
         Me.AcceptButton = Me.m_btRun
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnStop
         Me.Controls.Add(Me.m_scMain)
         Me.Name = "frmMSE"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
+        Me.TabText = ""
         CType(Me.m_nudStartYear, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.Panel1.ResumeLayout(False)

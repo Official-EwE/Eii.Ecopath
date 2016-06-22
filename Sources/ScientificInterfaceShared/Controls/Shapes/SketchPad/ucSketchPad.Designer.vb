@@ -40,25 +40,30 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPad))
+            Me.components = New System.ComponentModel.Container()
             Dim m_tss1 As System.Windows.Forms.ToolStripSeparator
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucSketchPad))
             Me.m_spContextMenuStrip = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.m_tsmiDrawMode = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiFill = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiLine = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiDots = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiShowMarks = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiAutoScaleYAxis = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiReset = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiValue = New System.Windows.Forms.ToolStripMenuItem
-            Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiOptions = New System.Windows.Forms.ToolStripMenuItem
-            m_tss1 = New System.Windows.Forms.ToolStripSeparator
+            Me.m_tsmiDrawMode = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiFill = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiLine = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiDots = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiShowMarks = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiAutoScaleYAxis = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiReset = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiValue = New System.Windows.Forms.ToolStripMenuItem()
+            Me.LoadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiOptions = New System.Windows.Forms.ToolStripMenuItem()
+            m_tss1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_spContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
+            '
+            'm_tss1
+            '
+            m_tss1.Name = "m_tss1"
+            resources.ApplyResources(m_tss1, "m_tss1")
             '
             'm_spContextMenuStrip
             '
@@ -97,11 +102,6 @@ Namespace Controls
             Me.m_tsmiAutoScaleYAxis.Name = "m_tsmiAutoScaleYAxis"
             resources.ApplyResources(Me.m_tsmiAutoScaleYAxis, "m_tsmiAutoScaleYAxis")
             '
-            'm_tss1
-            '
-            m_tss1.Name = "m_tss1"
-            resources.ApplyResources(m_tss1, "m_tss1")
-            '
             'm_tsmiReset
             '
             Me.m_tsmiReset.Name = "m_tsmiReset"
@@ -135,7 +135,7 @@ Namespace Controls
             'ucSketchPad
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.BackColor = System.Drawing.SystemColors.Window
             Me.ContextMenuStrip = Me.m_spContextMenuStrip
             Me.Cursor = System.Windows.Forms.Cursors.Cross

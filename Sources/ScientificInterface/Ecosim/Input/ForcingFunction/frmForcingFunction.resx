@@ -141,11 +141,26 @@
   <data name="m_tlpSketchpad.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_sketchPadToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_sketchPadToolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_sketchPadToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_sketchPadToolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 25</value>
+  </data>
+  <data name="m_sketchPadToolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Name" xml:space="preserve">
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>m_tlpSketchpad</value>
@@ -153,11 +168,26 @@
   <data name="&gt;&gt;m_sketchPadToolbar.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_sketchPad.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_sketchPad.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_sketchPad.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_sketchPad.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 315</value>
+  </data>
+  <data name="m_sketchPad.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;m_sketchPad.Name" xml:space="preserve">
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_tlpSketchpad</value>
@@ -219,11 +249,35 @@
   <data name="m_tlpShapeToolbox.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_shapeToolbox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_shapeToolbox.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="m_shapeToolbox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_shapeToolbox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_shapeToolbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_shapeToolbox.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>10, 10</value>
+  </data>
+  <data name="m_shapeToolbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 129</value>
+  </data>
+  <data name="m_shapeToolbox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;m_shapeToolbox.Name" xml:space="preserve">
     <value>m_shapeToolbox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolbox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolbox.Parent" xml:space="preserve">
     <value>m_tlpShapeToolbox</value>
@@ -231,11 +285,26 @@
   <data name="&gt;&gt;m_shapeToolbox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_shapeToolboxToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 25</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Name" xml:space="preserve">
     <value>m_shapeToolboxToolbar</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
     <value>m_tlpShapeToolbox</value>
@@ -309,119 +378,14 @@
   <data name="&gt;&gt;m_split.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_sketchPadToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_sketchPadToolbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_sketchPadToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_sketchPadToolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 25</value>
-  </data>
-  <data name="m_sketchPadToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.Name" xml:space="preserve">
-    <value>m_sketchPadToolbar</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
-    <value>m_tlpSketchpad</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPadToolbar.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_sketchPad.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_sketchPad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_sketchPad.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_sketchPad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 315</value>
-  </data>
-  <data name="m_sketchPad.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.Name" xml:space="preserve">
-    <value>m_sketchPad</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
-    <value>m_tlpSketchpad</value>
-  </data>
-  <data name="&gt;&gt;m_sketchPad.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_shapeToolbox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_shapeToolbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_shapeToolbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_shapeToolbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 129</value>
-  </data>
-  <data name="m_shapeToolbox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolbox.Name" xml:space="preserve">
-    <value>m_shapeToolbox</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolbox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolbox.Parent" xml:space="preserve">
-    <value>m_tlpShapeToolbox</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolbox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 25</value>
-  </data>
-  <data name="m_shapeToolboxToolbar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Name" xml:space="preserve">
-    <value>m_shapeToolboxToolbar</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
-    <value>m_tlpShapeToolbox</value>
-  </data>
-  <data name="&gt;&gt;m_shapeToolboxToolbar.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>484, 462</value>
@@ -433,6 +397,6 @@
     <value>frmForcingFunction</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.4.10054.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

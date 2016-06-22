@@ -47,6 +47,7 @@ Namespace Ecopath.Output
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNichePredPreyPlot))
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -149,6 +150,7 @@ Namespace Ecopath.Output
             '
             'm_nudCutOff
             '
+            Me.m_nudCutOff.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudCutOff, "m_nudCutOff")
             Me.m_nudCutOff.Name = "m_nudCutOff"
             '
@@ -168,9 +170,10 @@ Namespace Ecopath.Output
             'frmNichePredPreyPlot
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmNichePredPreyPlot"
+            Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)

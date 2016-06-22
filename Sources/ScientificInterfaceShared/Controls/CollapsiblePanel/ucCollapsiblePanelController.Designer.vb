@@ -47,8 +47,9 @@ Namespace Controls
             '
             'ucCollapsiblePanelController
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.BackColor = System.Drawing.SystemColors.ControlDark
             Me.Cursor = System.Windows.Forms.Cursors.Default
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

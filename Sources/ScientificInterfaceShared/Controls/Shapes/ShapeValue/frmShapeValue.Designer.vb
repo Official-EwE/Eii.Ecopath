@@ -186,6 +186,7 @@ Partial Class frmShapeValue
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = True
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -240,7 +241,7 @@ Partial Class frmShapeValue
         '
         Me.AcceptButton = Me.m_btnOK
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnCancel
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
@@ -250,6 +251,7 @@ Partial Class frmShapeValue
         Me.Name = "frmShapeValue"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.TabText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
         Me.m_tlpAll.ResumeLayout(False)
         Me.m_tlpAll.PerformLayout()
         Me.m_tlpNoOfYears.ResumeLayout(False)

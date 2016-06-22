@@ -42,6 +42,7 @@ Partial Class frmEcotracerOutput
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.m_zgc = New ZedGraph.ZedGraphControl()
         Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -57,10 +58,10 @@ Partial Class frmEcotracerOutput
         Me.m_rbCB = New System.Windows.Forms.RadioButton()
         Me.m_rbConc = New System.Windows.Forms.RadioButton()
         Me.m_plRun = New System.Windows.Forms.Panel()
+        Me.m_cbAutosaveResults = New System.Windows.Forms.CheckBox()
         Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnRunSpace = New System.Windows.Forms.Button()
         Me.m_btnRunSim = New System.Windows.Forms.Button()
-        Me.m_cbAutosaveResults = New System.Windows.Forms.CheckBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -96,7 +97,6 @@ Partial Class frmEcotracerOutput
         Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbGroups.FormattingEnabled = True
         Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayVisibleOnly
-        Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.AllGroups
         Me.m_lbGroups.IntegralHeight = False
         Me.m_lbGroups.IsAllGroupsItemSelected = False
         Me.m_lbGroups.Location = New System.Drawing.Point(0, 18)
@@ -107,7 +107,6 @@ Partial Class frmEcotracerOutput
         Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.m_lbGroups.Size = New System.Drawing.Size(270, 268)
         Me.m_lbGroups.SortThreshold = -9999.0!
-        Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
         Me.m_lbGroups.TabIndex = 1
         '
         'm_scMain
@@ -279,6 +278,16 @@ Partial Class frmEcotracerOutput
         Me.m_plRun.Size = New System.Drawing.Size(270, 98)
         Me.m_plRun.TabIndex = 1
         '
+        'm_cbAutosaveResults
+        '
+        Me.m_cbAutosaveResults.AutoSize = True
+        Me.m_cbAutosaveResults.Location = New System.Drawing.Point(6, 78)
+        Me.m_cbAutosaveResults.Name = "m_cbAutosaveResults"
+        Me.m_cbAutosaveResults.Size = New System.Drawing.Size(107, 17)
+        Me.m_cbAutosaveResults.TabIndex = 3
+        Me.m_cbAutosaveResults.Text = "&Auto-save results"
+        Me.m_cbAutosaveResults.UseVisualStyleBackColor = True
+        '
         'm_hdrRun
         '
         Me.m_hdrRun.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -315,24 +324,16 @@ Partial Class frmEcotracerOutput
         Me.m_btnRunSim.Text = "Run Ecos&im"
         Me.m_btnRunSim.UseVisualStyleBackColor = True
         '
-        'm_cbAutosaveResults
-        '
-        Me.m_cbAutosaveResults.AutoSize = True
-        Me.m_cbAutosaveResults.Location = New System.Drawing.Point(6, 78)
-        Me.m_cbAutosaveResults.Name = "m_cbAutosaveResults"
-        Me.m_cbAutosaveResults.Size = New System.Drawing.Size(107, 17)
-        Me.m_cbAutosaveResults.TabIndex = 3
-        Me.m_cbAutosaveResults.Text = "&Auto-save results"
-        Me.m_cbAutosaveResults.UseVisualStyleBackColor = True
-        '
         'frmEcotracerOutput
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(946, 558)
         Me.Controls.Add(Me.m_scMain)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEcotracerOutput"
+        Me.TabText = ""
         Me.Text = "Ecotracer output"
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel2.ResumeLayout(False)

@@ -33,7 +33,6 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             components = New System.ComponentModel.Container()
-            'Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         End Sub
 
     End Class

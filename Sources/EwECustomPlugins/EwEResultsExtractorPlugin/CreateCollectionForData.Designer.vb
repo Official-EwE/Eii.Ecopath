@@ -143,13 +143,14 @@ Partial Class CreateCollectionForData
         Me.btnOk.Name = "btnOk"
         Me.btnOk.Size = New System.Drawing.Size(75, 31)
         Me.btnOk.TabIndex = 9
-        Me.btnOk.Text = My.Resources.OK
+        Me.btnOk.Text = Global.EwEResultsExtractor.My.Resources.Resources.OK
         Me.btnOk.UseVisualStyleBackColor = True
         '
         'CreateCollectionForData
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(631, 554)
         Me.CloseButton = False
         Me.CloseButtonVisible = False
@@ -169,7 +170,7 @@ Partial Class CreateCollectionForData
         Me.MinimizeBox = False
         Me.Name = "CreateCollectionForData"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = My.Resources.FORMNAME_SELECTGROUPS
+        Me.Text = "Select which groups for which you would like to extract results"
         Me.TopMost = True
         Me.ResumeLayout(False)
 

@@ -98,7 +98,7 @@ Partial Class ucConfig
         'ucConfig
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_pbBlueBridge)
         Me.Controls.Add(Me.m_nudReplyTO)
         Me.Controls.Add(Me.m_lblSecs2)

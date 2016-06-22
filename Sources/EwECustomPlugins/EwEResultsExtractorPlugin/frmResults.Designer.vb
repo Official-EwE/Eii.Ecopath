@@ -43,63 +43,63 @@ Partial Class frmResults
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmResults))
-        Me.chkBiomass = New System.Windows.Forms.CheckBox
-        Me.chkConsumption = New System.Windows.Forms.CheckBox
-        Me.chkBiomassInteg = New System.Windows.Forms.CheckBox
-        Me.chkPredationMortality = New System.Windows.Forms.CheckBox
-        Me.chkFishingMortality = New System.Windows.Forms.CheckBox
-        Me.btnSetPredPrey = New System.Windows.Forms.Button
-        Me.btnSetPreyPred = New System.Windows.Forms.Button
-        Me.btnSaveResults = New System.Windows.Forms.Button
-        Me.btnCancel = New System.Windows.Forms.Button
-        Me.chkPredationPerPredator = New System.Windows.Forms.CheckBox
-        Me.btnSetParentOnly = New System.Windows.Forms.Button
-        Me.chkFishMortFleetToPrey = New System.Windows.Forms.CheckBox
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.chkCatch = New System.Windows.Forms.CheckBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.chkDietProportions = New System.Windows.Forms.CheckBox
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Panel3 = New System.Windows.Forms.Panel
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Panel4 = New System.Windows.Forms.Panel
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.btnSetFleetPrey = New System.Windows.Forms.Button
-        Me.chkCatchFleet = New System.Windows.Forms.CheckBox
-        Me.btnSetFleetOnly = New System.Windows.Forms.Button
-        Me.chkFleetValue = New System.Windows.Forms.CheckBox
-        Me.Panel6 = New System.Windows.Forms.Panel
-        Me.chkEffort = New System.Windows.Forms.CheckBox
-        Me.chkBasicEstimates = New System.Windows.Forms.CheckBox
-        Me.Panel7 = New System.Windows.Forms.Panel
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.chkInitFishMort = New System.Windows.Forms.CheckBox
-        Me.chkInitFishingValues = New System.Windows.Forms.CheckBox
-        Me.chkInitFishingQuantities = New System.Windows.Forms.CheckBox
-        Me.chkSearchRates = New System.Windows.Forms.CheckBox
-        Me.chkElectivity = New System.Windows.Forms.CheckBox
-        Me.chkPredOverlap = New System.Windows.Forms.CheckBox
-        Me.chkPreyOverlap = New System.Windows.Forms.CheckBox
-        Me.chkRespiration = New System.Windows.Forms.CheckBox
-        Me.chkInitConsumption = New System.Windows.Forms.CheckBox
-        Me.chkInitPredMort = New System.Windows.Forms.CheckBox
-        Me.chkMortalityCoefficients = New System.Windows.Forms.CheckBox
-        Me.chkKeyIndices = New System.Windows.Forms.CheckBox
-        Me.btnAllOptions = New System.Windows.Forms.Button
-        Me.prgSave = New System.Windows.Forms.ProgressBar
-        Me.lblPrgInfo = New System.Windows.Forms.Label
-        Me.chkYearly = New System.Windows.Forms.CheckBox
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Panel5 = New System.Windows.Forms.Panel
-        Me.optCSV = New System.Windows.Forms.RadioButton
-        Me.optExcel = New System.Windows.Forms.RadioButton
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.chkresiduals = New System.Windows.Forms.CheckBox
-        Me.Panel8 = New System.Windows.Forms.Panel
-        Me.chkSS = New System.Windows.Forms.CheckBox
+        Me.chkBiomass = New System.Windows.Forms.CheckBox()
+        Me.chkConsumption = New System.Windows.Forms.CheckBox()
+        Me.chkBiomassInteg = New System.Windows.Forms.CheckBox()
+        Me.chkPredationMortality = New System.Windows.Forms.CheckBox()
+        Me.chkFishingMortality = New System.Windows.Forms.CheckBox()
+        Me.btnSetPredPrey = New System.Windows.Forms.Button()
+        Me.btnSetPreyPred = New System.Windows.Forms.Button()
+        Me.btnSaveResults = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.chkPredationPerPredator = New System.Windows.Forms.CheckBox()
+        Me.btnSetParentOnly = New System.Windows.Forms.Button()
+        Me.chkFishMortFleetToPrey = New System.Windows.Forms.CheckBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.chkCatch = New System.Windows.Forms.CheckBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.chkDietProportions = New System.Windows.Forms.CheckBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnSetFleetPrey = New System.Windows.Forms.Button()
+        Me.chkCatchFleet = New System.Windows.Forms.CheckBox()
+        Me.btnSetFleetOnly = New System.Windows.Forms.Button()
+        Me.chkFleetValue = New System.Windows.Forms.CheckBox()
+        Me.Panel6 = New System.Windows.Forms.Panel()
+        Me.chkEffort = New System.Windows.Forms.CheckBox()
+        Me.chkBasicEstimates = New System.Windows.Forms.CheckBox()
+        Me.Panel7 = New System.Windows.Forms.Panel()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.chkInitFishMort = New System.Windows.Forms.CheckBox()
+        Me.chkInitFishingValues = New System.Windows.Forms.CheckBox()
+        Me.chkInitFishingQuantities = New System.Windows.Forms.CheckBox()
+        Me.chkSearchRates = New System.Windows.Forms.CheckBox()
+        Me.chkElectivity = New System.Windows.Forms.CheckBox()
+        Me.chkPredOverlap = New System.Windows.Forms.CheckBox()
+        Me.chkPreyOverlap = New System.Windows.Forms.CheckBox()
+        Me.chkRespiration = New System.Windows.Forms.CheckBox()
+        Me.chkInitConsumption = New System.Windows.Forms.CheckBox()
+        Me.chkInitPredMort = New System.Windows.Forms.CheckBox()
+        Me.chkMortalityCoefficients = New System.Windows.Forms.CheckBox()
+        Me.chkKeyIndices = New System.Windows.Forms.CheckBox()
+        Me.btnAllOptions = New System.Windows.Forms.Button()
+        Me.prgSave = New System.Windows.Forms.ProgressBar()
+        Me.lblPrgInfo = New System.Windows.Forms.Label()
+        Me.chkYearly = New System.Windows.Forms.CheckBox()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Panel5 = New System.Windows.Forms.Panel()
+        Me.optCSV = New System.Windows.Forms.RadioButton()
+        Me.optExcel = New System.Windows.Forms.RadioButton()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.chkresiduals = New System.Windows.Forms.CheckBox()
+        Me.Panel8 = New System.Windows.Forms.Panel()
+        Me.chkSS = New System.Windows.Forms.CheckBox()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
@@ -119,7 +119,7 @@ Partial Class frmResults
         Me.chkBiomass.Name = "chkBiomass"
         Me.chkBiomass.Size = New System.Drawing.Size(65, 17)
         Me.chkBiomass.TabIndex = 1
-        Me.chkBiomass.Text = My.Resources.BIOMASS
+        Me.chkBiomass.Text = Global.EwEResultsExtractor.My.Resources.Resources.BIOMASS
         Me.chkBiomass.UseVisualStyleBackColor = True
         '
         'chkConsumption
@@ -129,7 +129,7 @@ Partial Class frmResults
         Me.chkConsumption.Name = "chkConsumption"
         Me.chkConsumption.Size = New System.Drawing.Size(87, 17)
         Me.chkConsumption.TabIndex = 4
-        Me.chkConsumption.Text = My.Resources.CONSUMPTION
+        Me.chkConsumption.Text = Global.EwEResultsExtractor.My.Resources.Resources.CONSUMPTION
         Me.chkConsumption.UseVisualStyleBackColor = True
         '
         'chkBiomassInteg
@@ -139,7 +139,7 @@ Partial Class frmResults
         Me.chkBiomassInteg.Name = "chkBiomassInteg"
         Me.chkBiomassInteg.Size = New System.Drawing.Size(115, 17)
         Me.chkBiomassInteg.TabIndex = 8
-        Me.chkBiomassInteg.Text = My.Resources.BIOMASSINTEGRATED
+        Me.chkBiomassInteg.Text = Global.EwEResultsExtractor.My.Resources.Resources.BIOMASSINTEGRATED
         Me.chkBiomassInteg.UseVisualStyleBackColor = True
         '
         'chkPredationMortality
@@ -149,7 +149,7 @@ Partial Class frmResults
         Me.chkPredationMortality.Name = "chkPredationMortality"
         Me.chkPredationMortality.Size = New System.Drawing.Size(112, 17)
         Me.chkPredationMortality.TabIndex = 9
-        Me.chkPredationMortality.Text = My.Resources.PREDATIONMORT
+        Me.chkPredationMortality.Text = Global.EwEResultsExtractor.My.Resources.Resources.PREDATIONMORT
         Me.chkPredationMortality.UseVisualStyleBackColor = True
         '
         'chkFishingMortality
@@ -159,7 +159,7 @@ Partial Class frmResults
         Me.chkFishingMortality.Name = "chkFishingMortality"
         Me.chkFishingMortality.Size = New System.Drawing.Size(100, 17)
         Me.chkFishingMortality.TabIndex = 10
-        Me.chkFishingMortality.Text = My.Resources.FISHMORT
+        Me.chkFishingMortality.Text = Global.EwEResultsExtractor.My.Resources.Resources.FISHMORT
         Me.chkFishingMortality.UseVisualStyleBackColor = True
         '
         'btnSetPredPrey
@@ -179,7 +179,7 @@ Partial Class frmResults
         Me.btnSetPreyPred.Name = "btnSetPreyPred"
         Me.btnSetPreyPred.Size = New System.Drawing.Size(99, 27)
         Me.btnSetPreyPred.TabIndex = 36
-        Me.btnSetPreyPred.Text = My.Resources.CHANGE_SELECTION
+        Me.btnSetPreyPred.Text = Global.EwEResultsExtractor.My.Resources.Resources.CHANGE_SELECTION
         Me.btnSetPreyPred.UseVisualStyleBackColor = True
         '
         'btnSaveResults
@@ -189,7 +189,7 @@ Partial Class frmResults
         Me.btnSaveResults.Name = "btnSaveResults"
         Me.btnSaveResults.Size = New System.Drawing.Size(86, 28)
         Me.btnSaveResults.TabIndex = 4
-        Me.btnSaveResults.Text = My.Resources.SAVE_RESULTS
+        Me.btnSaveResults.Text = Global.EwEResultsExtractor.My.Resources.Resources.SAVE_RESULTS
         Me.btnSaveResults.UseVisualStyleBackColor = True
         '
         'btnCancel
@@ -198,7 +198,7 @@ Partial Class frmResults
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(86, 28)
         Me.btnCancel.TabIndex = 3
-        Me.btnCancel.Text = My.Resources.CANCEL
+        Me.btnCancel.Text = Global.EwEResultsExtractor.My.Resources.Resources.CANCEL
         Me.btnCancel.UseVisualStyleBackColor = True
         '
         'chkPredationPerPredator
@@ -206,9 +206,9 @@ Partial Class frmResults
         Me.chkPredationPerPredator.AutoSize = True
         Me.chkPredationPerPredator.Location = New System.Drawing.Point(16, 20)
         Me.chkPredationPerPredator.Name = "chkPredationPerPredator"
-        Me.chkPredationPerPredator.Size = New System.Drawing.Size(115, 30)
+        Me.chkPredationPerPredator.Size = New System.Drawing.Size(112, 30)
         Me.chkPredationPerPredator.TabIndex = 38
-        Me.chkPredationPerPredator.Text = My.Resources.PREDATION_PER_PRED
+        Me.chkPredationPerPredator.Text = Global.EwEResultsExtractor.My.Resources.Resources.PREDATION_PER_PRED
         Me.chkPredationPerPredator.UseVisualStyleBackColor = True
         '
         'btnSetParentOnly
@@ -218,7 +218,7 @@ Partial Class frmResults
         Me.btnSetParentOnly.Name = "btnSetParentOnly"
         Me.btnSetParentOnly.Size = New System.Drawing.Size(99, 27)
         Me.btnSetParentOnly.TabIndex = 39
-        Me.btnSetParentOnly.Text = My.Resources.CHANGE_SELECTION
+        Me.btnSetParentOnly.Text = Global.EwEResultsExtractor.My.Resources.Resources.CHANGE_SELECTION
         Me.btnSetParentOnly.UseVisualStyleBackColor = True
         '
         'chkFishMortFleetToPrey
@@ -228,7 +228,7 @@ Partial Class frmResults
         Me.chkFishMortFleetToPrey.Name = "chkFishMortFleetToPrey"
         Me.chkFishMortFleetToPrey.Size = New System.Drawing.Size(168, 17)
         Me.chkFishMortFleetToPrey.TabIndex = 40
-        Me.chkFishMortFleetToPrey.Text = My.Resources.FISHMORT_FLEET2PREY
+        Me.chkFishMortFleetToPrey.Text = Global.EwEResultsExtractor.My.Resources.Resources.FISHMORT_FLEET2PREY
         Me.chkFishMortFleetToPrey.UseVisualStyleBackColor = True
         '
         'Panel1
@@ -253,7 +253,7 @@ Partial Class frmResults
         Me.chkCatch.Name = "chkCatch"
         Me.chkCatch.Size = New System.Drawing.Size(54, 17)
         Me.chkCatch.TabIndex = 44
-        Me.chkCatch.Text = My.Resources.TEXT_CATCH
+        Me.chkCatch.Text = Global.EwEResultsExtractor.My.Resources.Resources.TEXT_CATCH
         Me.chkCatch.UseVisualStyleBackColor = True
         '
         'Label1
@@ -266,16 +266,16 @@ Partial Class frmResults
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(283, 18)
         Me.Label1.TabIndex = 45
-        Me.Label1.Text = My.Resources.FUNCT_GROUPS_ONLY
+        Me.Label1.Text = "Functional groups only"
         '
         'chkDietProportions
         '
         Me.chkDietProportions.AutoSize = True
         Me.chkDietProportions.Location = New System.Drawing.Point(13, 59)
         Me.chkDietProportions.Name = "chkDietProportions"
-        Me.chkDietProportions.Size = New System.Drawing.Size(100, 17)
+        Me.chkDietProportions.Size = New System.Drawing.Size(101, 17)
         Me.chkDietProportions.TabIndex = 44
-        Me.chkDietProportions.Text = My.Resources.DIET_PROPS
+        Me.chkDietProportions.Text = Global.EwEResultsExtractor.My.Resources.Resources.DIET_PROPS
         Me.chkDietProportions.UseVisualStyleBackColor = True
         '
         'Panel2
@@ -300,7 +300,7 @@ Partial Class frmResults
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(283, 18)
         Me.Label3.TabIndex = 47
-        Me.Label3.Text = My.Resources.PREDS_ATTACHED_PREY
+        Me.Label3.Text = "Predators with attached prey"
         '
         'Panel3
         '
@@ -323,7 +323,7 @@ Partial Class frmResults
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(283, 18)
         Me.Label4.TabIndex = 55
-        Me.Label4.Text = My.Resources.PREYS_ATTACHED_PRED
+        Me.Label4.Text = "Prey with attached predators"
         '
         'Panel4
         '
@@ -348,7 +348,7 @@ Partial Class frmResults
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(283, 18)
         Me.Label2.TabIndex = 46
-        Me.Label2.Text = My.Resources.FLEETS_ATTACHED_PREY
+        Me.Label2.Text = "Fleets with attached prey"
         '
         'btnSetFleetPrey
         '
@@ -357,7 +357,7 @@ Partial Class frmResults
         Me.btnSetFleetPrey.Name = "btnSetFleetPrey"
         Me.btnSetFleetPrey.Size = New System.Drawing.Size(99, 27)
         Me.btnSetFleetPrey.TabIndex = 45
-        Me.btnSetFleetPrey.Text = My.Resources.CHANGE_SELECTION
+        Me.btnSetFleetPrey.Text = Global.EwEResultsExtractor.My.Resources.Resources.CHANGE_SELECTION
         Me.btnSetFleetPrey.UseVisualStyleBackColor = True
         '
         'chkCatchFleet
@@ -367,7 +367,7 @@ Partial Class frmResults
         Me.chkCatchFleet.Name = "chkCatchFleet"
         Me.chkCatchFleet.Size = New System.Drawing.Size(95, 17)
         Me.chkCatchFleet.TabIndex = 45
-        Me.chkCatchFleet.Text = My.Resources.CATCH_PER_FLEET
+        Me.chkCatchFleet.Text = Global.EwEResultsExtractor.My.Resources.Resources.CATCH_PER_FLEET
         Me.chkCatchFleet.UseVisualStyleBackColor = True
         '
         'btnSetFleetOnly
@@ -377,7 +377,7 @@ Partial Class frmResults
         Me.btnSetFleetOnly.Name = "btnSetFleetOnly"
         Me.btnSetFleetOnly.Size = New System.Drawing.Size(99, 27)
         Me.btnSetFleetOnly.TabIndex = 45
-        Me.btnSetFleetOnly.Text = My.Resources.CHANGE_SELECTION
+        Me.btnSetFleetOnly.Text = Global.EwEResultsExtractor.My.Resources.Resources.CHANGE_SELECTION
         Me.btnSetFleetOnly.UseVisualStyleBackColor = True
         '
         'chkFleetValue
@@ -387,7 +387,7 @@ Partial Class frmResults
         Me.chkFleetValue.Name = "chkFleetValue"
         Me.chkFleetValue.Size = New System.Drawing.Size(94, 17)
         Me.chkFleetValue.TabIndex = 45
-        Me.chkFleetValue.Text = My.Resources.VALUE_PER_FLEET
+        Me.chkFleetValue.Text = Global.EwEResultsExtractor.My.Resources.Resources.VALUE_PER_FLEET
         Me.chkFleetValue.UseVisualStyleBackColor = True
         '
         'Panel6
@@ -409,7 +409,7 @@ Partial Class frmResults
         Me.chkEffort.Name = "chkEffort"
         Me.chkEffort.Size = New System.Drawing.Size(51, 17)
         Me.chkEffort.TabIndex = 45
-        Me.chkEffort.Text = My.Resources.EFFORT
+        Me.chkEffort.Text = Global.EwEResultsExtractor.My.Resources.Resources.EFFORT
         Me.chkEffort.UseVisualStyleBackColor = True
         '
         'chkBasicEstimates
@@ -419,7 +419,7 @@ Partial Class frmResults
         Me.chkBasicEstimates.Name = "chkBasicEstimates"
         Me.chkBasicEstimates.Size = New System.Drawing.Size(99, 17)
         Me.chkBasicEstimates.TabIndex = 45
-        Me.chkBasicEstimates.Text = My.Resources.BASIC_ESTIMATES
+        Me.chkBasicEstimates.Text = Global.EwEResultsExtractor.My.Resources.Resources.BASIC_ESTIMATES
         Me.chkBasicEstimates.UseVisualStyleBackColor = True
         '
         'Panel7
@@ -455,7 +455,7 @@ Partial Class frmResults
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(568, 18)
         Me.Label6.TabIndex = 55
-        Me.Label6.Text = My.Resources.INDICATORS
+        Me.Label6.Text = "Indicators"
         '
         'chkInitFishMort
         '
@@ -464,7 +464,7 @@ Partial Class frmResults
         Me.chkInitFishMort.Name = "chkInitFishMort"
         Me.chkInitFishMort.Size = New System.Drawing.Size(124, 17)
         Me.chkInitFishMort.TabIndex = 57
-        Me.chkInitFishMort.Text = My.Resources.INIT_FISH_MORT
+        Me.chkInitFishMort.Text = Global.EwEResultsExtractor.My.Resources.Resources.INIT_FISH_MORT
         Me.chkInitFishMort.UseVisualStyleBackColor = True
         '
         'chkInitFishingValues
@@ -474,7 +474,7 @@ Partial Class frmResults
         Me.chkInitFishingValues.Name = "chkInitFishingValues"
         Me.chkInitFishingValues.Size = New System.Drawing.Size(93, 17)
         Me.chkInitFishingValues.TabIndex = 56
-        Me.chkInitFishingValues.Text = My.Resources.FISHING_VALUES
+        Me.chkInitFishingValues.Text = Global.EwEResultsExtractor.My.Resources.Resources.FISHING_VALUES
         Me.chkInitFishingValues.UseVisualStyleBackColor = True
         '
         'chkInitFishingQuantities
@@ -484,7 +484,7 @@ Partial Class frmResults
         Me.chkInitFishingQuantities.Name = "chkInitFishingQuantities"
         Me.chkInitFishingQuantities.Size = New System.Drawing.Size(107, 17)
         Me.chkInitFishingQuantities.TabIndex = 55
-        Me.chkInitFishingQuantities.Text = My.Resources.FISHING_QUANT
+        Me.chkInitFishingQuantities.Text = Global.EwEResultsExtractor.My.Resources.Resources.FISHING_QUANT
         Me.chkInitFishingQuantities.UseVisualStyleBackColor = True
         '
         'chkSearchRates
@@ -494,7 +494,7 @@ Partial Class frmResults
         Me.chkSearchRates.Name = "chkSearchRates"
         Me.chkSearchRates.Size = New System.Drawing.Size(86, 17)
         Me.chkSearchRates.TabIndex = 54
-        Me.chkSearchRates.Text = My.Resources.SEARCH_RATES
+        Me.chkSearchRates.Text = Global.EwEResultsExtractor.My.Resources.Resources.SEARCH_RATES
         Me.chkSearchRates.UseVisualStyleBackColor = True
         '
         'chkElectivity
@@ -504,7 +504,7 @@ Partial Class frmResults
         Me.chkElectivity.Name = "chkElectivity"
         Me.chkElectivity.Size = New System.Drawing.Size(68, 17)
         Me.chkElectivity.TabIndex = 53
-        Me.chkElectivity.Text = My.Resources.ELECTIVITY
+        Me.chkElectivity.Text = Global.EwEResultsExtractor.My.Resources.Resources.ELECTIVITY
         Me.chkElectivity.UseVisualStyleBackColor = True
         '
         'chkPredOverlap
@@ -514,7 +514,7 @@ Partial Class frmResults
         Me.chkPredOverlap.Name = "chkPredOverlap"
         Me.chkPredOverlap.Size = New System.Drawing.Size(101, 17)
         Me.chkPredOverlap.TabIndex = 52
-        Me.chkPredOverlap.Text = My.Resources.PRED_OVERLAP
+        Me.chkPredOverlap.Text = Global.EwEResultsExtractor.My.Resources.Resources.PRED_OVERLAP
         Me.chkPredOverlap.UseVisualStyleBackColor = True
         '
         'chkPreyOverlap
@@ -524,7 +524,7 @@ Partial Class frmResults
         Me.chkPreyOverlap.Name = "chkPreyOverlap"
         Me.chkPreyOverlap.Size = New System.Drawing.Size(85, 17)
         Me.chkPreyOverlap.TabIndex = 51
-        Me.chkPreyOverlap.Text = My.Resources.PREY_OVERLAP
+        Me.chkPreyOverlap.Text = Global.EwEResultsExtractor.My.Resources.Resources.PREY_OVERLAP
         Me.chkPreyOverlap.UseVisualStyleBackColor = True
         '
         'chkRespiration
@@ -532,9 +532,9 @@ Partial Class frmResults
         Me.chkRespiration.AutoSize = True
         Me.chkRespiration.Location = New System.Drawing.Point(158, 76)
         Me.chkRespiration.Name = "chkRespiration"
-        Me.chkRespiration.Size = New System.Drawing.Size(74, 17)
+        Me.chkRespiration.Size = New System.Drawing.Size(79, 17)
         Me.chkRespiration.TabIndex = 50
-        Me.chkRespiration.Text = My.Resources.RESPIRATION
+        Me.chkRespiration.Text = Global.EwEResultsExtractor.My.Resources.Resources.RESPIRATION
         Me.chkRespiration.UseVisualStyleBackColor = True
         '
         'chkInitConsumption
@@ -544,7 +544,7 @@ Partial Class frmResults
         Me.chkInitConsumption.Name = "chkInitConsumption"
         Me.chkInitConsumption.Size = New System.Drawing.Size(113, 17)
         Me.chkInitConsumption.TabIndex = 49
-        Me.chkInitConsumption.Text = My.Resources.INIT_CONSUMPTION
+        Me.chkInitConsumption.Text = Global.EwEResultsExtractor.My.Resources.Resources.INIT_CONSUMPTION
         Me.chkInitConsumption.UseVisualStyleBackColor = True
         '
         'chkInitPredMort
@@ -554,7 +554,7 @@ Partial Class frmResults
         Me.chkInitPredMort.Name = "chkInitPredMort"
         Me.chkInitPredMort.Size = New System.Drawing.Size(138, 17)
         Me.chkInitPredMort.TabIndex = 48
-        Me.chkInitPredMort.Text = My.Resources.INIT_PRED_MORT
+        Me.chkInitPredMort.Text = Global.EwEResultsExtractor.My.Resources.Resources.INIT_PRED_MORT
         Me.chkInitPredMort.UseVisualStyleBackColor = True
         '
         'chkMortalityCoefficients
@@ -564,7 +564,7 @@ Partial Class frmResults
         Me.chkMortalityCoefficients.Name = "chkMortalityCoefficients"
         Me.chkMortalityCoefficients.Size = New System.Drawing.Size(122, 17)
         Me.chkMortalityCoefficients.TabIndex = 47
-        Me.chkMortalityCoefficients.Text = My.Resources.MORT_COEFFS
+        Me.chkMortalityCoefficients.Text = Global.EwEResultsExtractor.My.Resources.Resources.MORT_COEFFS
         Me.chkMortalityCoefficients.UseVisualStyleBackColor = True
         '
         'chkKeyIndices
@@ -574,7 +574,7 @@ Partial Class frmResults
         Me.chkKeyIndices.Name = "chkKeyIndices"
         Me.chkKeyIndices.Size = New System.Drawing.Size(80, 17)
         Me.chkKeyIndices.TabIndex = 46
-        Me.chkKeyIndices.Text = My.Resources.KEY_INDICES
+        Me.chkKeyIndices.Text = Global.EwEResultsExtractor.My.Resources.Resources.KEY_INDICES
         Me.chkKeyIndices.UseVisualStyleBackColor = True
         '
         'btnAllOptions
@@ -583,7 +583,7 @@ Partial Class frmResults
         Me.btnAllOptions.Name = "btnAllOptions"
         Me.btnAllOptions.Size = New System.Drawing.Size(86, 28)
         Me.btnAllOptions.TabIndex = 48
-        Me.btnAllOptions.Text = My.Resources.ALL_OPTIONS
+        Me.btnAllOptions.Text = Global.EwEResultsExtractor.My.Resources.Resources.ALL_OPTIONS
         Me.btnAllOptions.UseVisualStyleBackColor = True
         '
         'prgSave
@@ -601,7 +601,7 @@ Partial Class frmResults
         Me.lblPrgInfo.Name = "lblPrgInfo"
         Me.lblPrgInfo.Size = New System.Drawing.Size(133, 13)
         Me.lblPrgInfo.TabIndex = 50
-        Me.lblPrgInfo.Text = My.Resources.DATA_RETRIEVAL
+        Me.lblPrgInfo.Text = "Data retrieval in progress..."
         Me.lblPrgInfo.Visible = False
         '
         'chkYearly
@@ -611,7 +611,7 @@ Partial Class frmResults
         Me.chkYearly.Name = "chkYearly"
         Me.chkYearly.Size = New System.Drawing.Size(55, 17)
         Me.chkYearly.TabIndex = 51
-        Me.chkYearly.Text = My.Resources.YEARLY
+        Me.chkYearly.Text = Global.EwEResultsExtractor.My.Resources.Resources.YEARLY
         Me.chkYearly.UseVisualStyleBackColor = True
         '
         'PictureBox1
@@ -645,7 +645,7 @@ Partial Class frmResults
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(283, 18)
         Me.Label5.TabIndex = 55
-        Me.Label5.Text = My.Resources.FLEETS_ONLY
+        Me.Label5.Text = "Fleets only"
         '
         'Panel5
         '
@@ -664,7 +664,7 @@ Partial Class frmResults
         Me.optCSV.Size = New System.Drawing.Size(49, 17)
         Me.optCSV.TabIndex = 1
         Me.optCSV.TabStop = True
-        Me.optCSV.Text = My.Resources.DOTCSV
+        Me.optCSV.Text = Global.EwEResultsExtractor.My.Resources.Resources.DOTCSV
         Me.optCSV.UseVisualStyleBackColor = True
         '
         'optExcel
@@ -675,7 +675,7 @@ Partial Class frmResults
         Me.optExcel.Size = New System.Drawing.Size(51, 17)
         Me.optExcel.TabIndex = 0
         Me.optExcel.TabStop = True
-        Me.optExcel.Text = My.Resources.EXCEL
+        Me.optExcel.Text = Global.EwEResultsExtractor.My.Resources.Resources.EXCEL
         Me.optExcel.UseVisualStyleBackColor = True
         '
         'Label7
@@ -688,7 +688,7 @@ Partial Class frmResults
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(283, 18)
         Me.Label7.TabIndex = 55
-        Me.Label7.Text = My.Resources.FITTING_STATS
+        Me.Label7.Text = "Fitting statistics"
         '
         'chkresiduals
         '
@@ -697,7 +697,7 @@ Partial Class frmResults
         Me.chkresiduals.Name = "chkresiduals"
         Me.chkresiduals.Size = New System.Drawing.Size(72, 17)
         Me.chkresiduals.TabIndex = 38
-        Me.chkresiduals.Text = My.Resources.RESIDUALS
+        Me.chkresiduals.Text = Global.EwEResultsExtractor.My.Resources.Resources.RESIDUALS
         Me.chkresiduals.UseVisualStyleBackColor = True
         '
         'Panel8
@@ -718,13 +718,14 @@ Partial Class frmResults
         Me.chkSS.Name = "chkSS"
         Me.chkSS.Size = New System.Drawing.Size(99, 17)
         Me.chkSS.TabIndex = 39
-        Me.chkSS.Text = My.Resources.SUM_OF_SQUARES
+        Me.chkSS.Text = Global.EwEResultsExtractor.My.Resources.Resources.SUM_OF_SQUARES
         Me.chkSS.UseVisualStyleBackColor = True
         '
         'frmResults
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(881, 699)
         Me.Controls.Add(Me.Label1)
@@ -750,7 +751,7 @@ Partial Class frmResults
         Me.Controls.Add(Me.Panel3)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmResults"
-        Me.Text = My.Resources.PLUGIN_NAME
+        Me.Text = "Results Extractor"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)

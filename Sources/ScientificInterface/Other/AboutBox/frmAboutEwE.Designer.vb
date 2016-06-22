@@ -265,6 +265,7 @@ Namespace Other
             Me.m_gridTechnical.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridTechnical.GridToolTipActive = True
             Me.m_gridTechnical.IsLayoutSuspended = False
+            Me.m_gridTechnical.IsOutputGrid = True
             Me.m_gridTechnical.Name = "m_gridTechnical"
             Me.m_gridTechnical.ShowEwEComponentsOnly = True
             Me.m_gridTechnical.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -336,6 +337,7 @@ Namespace Other
             Me.m_gridDatabase.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridDatabase.GridToolTipActive = True
             Me.m_gridDatabase.IsLayoutSuspended = False
+            Me.m_gridDatabase.IsOutputGrid = True
             Me.m_gridDatabase.Name = "m_gridDatabase"
             Me.m_gridDatabase.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -352,7 +354,7 @@ Namespace Other
             '
             Me.AcceptButton = Me.m_btnOK
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnOK
             Me.ControlBox = False
             Me.Controls.Add(Me.m_tcMain)

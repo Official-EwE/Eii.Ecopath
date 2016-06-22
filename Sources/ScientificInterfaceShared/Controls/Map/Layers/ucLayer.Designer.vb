@@ -37,7 +37,7 @@ Namespace Controls.Map
             'ucLayer
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Name = "ucLayer"
             Me.ResumeLayout(False)
 

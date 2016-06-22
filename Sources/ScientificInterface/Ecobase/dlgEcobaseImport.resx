@@ -151,7 +151,7 @@
     <value>m_hdrModels</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrModels.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel1</value>
@@ -181,7 +181,7 @@
     <value>m_lbxModels</value>
   </data>
   <data name="&gt;&gt;m_lbxModels.Type" xml:space="preserve">
-    <value>ScientificInterface.cEcoBaseModelListBox, EwE6, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEcoBaseModelListBox, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_lbxModels.Parent" xml:space="preserve">
     <value>m_scEcobaseContent.Panel1</value>
@@ -232,7 +232,7 @@
     <value>m_hdrDetails</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDetails.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1018,7 +1018,7 @@
     <value>m_hdrRefs</value>
   </data>
   <data name="&gt;&gt;m_hdrRefs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRefs.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1612,7 +1612,7 @@
     <value>m_hdrSpatial</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatial.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatial.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -1858,49 +1858,49 @@
     <value>100, 25</value>
   </data>
   <data name="m_tsmiNone.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiNone.Text" xml:space="preserve">
     <value>(None)</value>
   </data>
   <data name="m_tsmiModelName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiModelName.Text" xml:space="preserve">
     <value>Model name</value>
   </data>
   <data name="m_tsmiAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiAuthor.Text" xml:space="preserve">
     <value>Author</value>
   </data>
   <data name="m_tsmiCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiCountry.Text" xml:space="preserve">
     <value>Country</value>
   </data>
   <data name="m_tsmiEcoType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiEcoType.Text" xml:space="preserve">
     <value>Ecosystem Type</value>
   </data>
   <data name="m_tsmiDepth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiDepth.Text" xml:space="preserve">
     <value>Depth</value>
   </data>
   <data name="m_tsmiTemperature.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiTemperature.Text" xml:space="preserve">
     <value>Temperature</value>
   </data>
   <data name="m_tsmiReference.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 22</value>
+    <value>159, 22</value>
   </data>
   <data name="m_tsmiReference.Text" xml:space="preserve">
     <value>Reference</value>
@@ -2026,7 +2026,7 @@
     <value>m_tsFilter</value>
   </data>
   <data name="&gt;&gt;m_tsFilter.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsFilter.Parent" xml:space="preserve">
     <value>m_tpImport</value>
@@ -2239,10 +2239,13 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>706, 534</value>
@@ -2359,6 +2362,6 @@
     <value>dlgEcobaseImport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13368.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

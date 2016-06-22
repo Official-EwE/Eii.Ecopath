@@ -586,6 +586,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'frmFlowDiagram
             '
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
             Me.Name = "frmFlowDiagram"

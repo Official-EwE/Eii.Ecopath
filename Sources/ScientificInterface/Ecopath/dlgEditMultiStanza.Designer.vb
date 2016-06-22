@@ -40,29 +40,29 @@ Namespace Ecopath
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EditMultiStanza))
-            Me.m_btnCalculate = New System.Windows.Forms.Button
-            Me.m_btnOK = New System.Windows.Forms.Button
-            Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_lblStanzaGroups = New System.Windows.Forms.Label
-            Me.m_lblK = New System.Windows.Forms.Label
-            Me.m_lblRecPwr = New System.Windows.Forms.Label
-            Me.m_lblBAB = New System.Windows.Forms.Label
-            Me.m_lblWmatWinf = New System.Windows.Forms.Label
-            Me.m_lblFF = New System.Windows.Forms.Label
-            Me.m_txtK = New System.Windows.Forms.TextBox
-            Me.m_txtRecPwr = New System.Windows.Forms.TextBox
-            Me.m_txtBAB = New System.Windows.Forms.TextBox
-            Me.m_txtWmatWinf = New System.Windows.Forms.TextBox
-            Me.m_zgc = New ZedGraph.ZedGraphControl
-            Me.m_cbFFecun = New System.Windows.Forms.CheckBox
-            Me.m_cmbStanzaGroups = New System.Windows.Forms.ComboBox
-            Me.m_cmbFF = New System.Windows.Forms.ComboBox
-            Me.m_cbEggAtSpawn = New System.Windows.Forms.CheckBox
-            Me.m_hdrEcospace = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrEcosim = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_grid = New ScientificInterface.gridEditMultiStanza
+            Me.m_btnCalculate = New System.Windows.Forms.Button()
+            Me.m_btnOK = New System.Windows.Forms.Button()
+            Me.m_btnCancel = New System.Windows.Forms.Button()
+            Me.m_lblStanzaGroups = New System.Windows.Forms.Label()
+            Me.m_lblK = New System.Windows.Forms.Label()
+            Me.m_lblRecPwr = New System.Windows.Forms.Label()
+            Me.m_lblBAB = New System.Windows.Forms.Label()
+            Me.m_lblWmatWinf = New System.Windows.Forms.Label()
+            Me.m_lblFF = New System.Windows.Forms.Label()
+            Me.m_txtK = New System.Windows.Forms.TextBox()
+            Me.m_txtRecPwr = New System.Windows.Forms.TextBox()
+            Me.m_txtBAB = New System.Windows.Forms.TextBox()
+            Me.m_txtWmatWinf = New System.Windows.Forms.TextBox()
+            Me.m_zgc = New ZedGraph.ZedGraphControl()
+            Me.m_cbFFecun = New System.Windows.Forms.CheckBox()
+            Me.m_cmbStanzaGroups = New System.Windows.Forms.ComboBox()
+            Me.m_cmbFF = New System.Windows.Forms.ComboBox()
+            Me.m_cbEggAtSpawn = New System.Windows.Forms.CheckBox()
+            Me.m_hdrEcospace = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrEcosim = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_grid = New ScientificInterface.gridEditMultiStanza()
             Me.SuspendLayout()
             '
             'm_btnCalculate
@@ -140,13 +140,13 @@ Namespace Ecopath
             resources.ApplyResources(Me.m_zgc, "m_zgc")
             Me.m_zgc.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zgc.Name = "m_zgc"
-            Me.m_zgc.ScrollGrace = 0
-            Me.m_zgc.ScrollMaxX = 0
-            Me.m_zgc.ScrollMaxY = 0
-            Me.m_zgc.ScrollMaxY2 = 0
-            Me.m_zgc.ScrollMinX = 0
-            Me.m_zgc.ScrollMinY = 0
-            Me.m_zgc.ScrollMinY2 = 0
+            Me.m_zgc.ScrollGrace = 0.0R
+            Me.m_zgc.ScrollMaxX = 0.0R
+            Me.m_zgc.ScrollMaxY = 0.0R
+            Me.m_zgc.ScrollMaxY2 = 0.0R
+            Me.m_zgc.ScrollMinX = 0.0R
+            Me.m_zgc.ScrollMinY = 0.0R
+            Me.m_zgc.ScrollMinY2 = 0.0R
             Me.m_zgc.TabStop = False
             '
             'm_cbFFecun
@@ -178,12 +178,18 @@ Namespace Ecopath
             '
             'm_hdrEcospace
             '
+            Me.m_hdrEcospace.CanCollapseParent = False
+            Me.m_hdrEcospace.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrEcospace, "m_hdrEcospace")
+            Me.m_hdrEcospace.IsCollapsed = False
             Me.m_hdrEcospace.Name = "m_hdrEcospace"
             '
             'm_hdrEcosim
             '
+            Me.m_hdrEcosim.CanCollapseParent = False
+            Me.m_hdrEcosim.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrEcosim, "m_hdrEcosim")
+            Me.m_hdrEcosim.IsCollapsed = False
             Me.m_hdrEcosim.Name = "m_hdrEcosim"
             '
             'm_grid
@@ -197,22 +203,25 @@ Namespace Ecopath
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.StanzaGroup = Nothing
             Me.m_grid.TabStop = True
             Me.m_grid.UIContext = Nothing
@@ -220,7 +229,7 @@ Namespace Ecopath
             'EditMultiStanza
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_cbEggAtSpawn)

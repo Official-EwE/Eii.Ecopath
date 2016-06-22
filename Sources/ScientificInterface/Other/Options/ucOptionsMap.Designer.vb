@@ -105,6 +105,7 @@ Namespace Other
             'm_nudEast
             '
             resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+            Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudEast.Maximum = New Decimal(New Integer() {180, 0, 0, 0})
             Me.m_nudEast.Minimum = New Decimal(New Integer() {180, 0, 0, -2147483648})
             Me.m_nudEast.Name = "m_nudEast"
@@ -113,6 +114,7 @@ Namespace Other
             'm_nudSouth
             '
             resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+            Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudSouth.Maximum = New Decimal(New Integer() {90, 0, 0, 0})
             Me.m_nudSouth.Minimum = New Decimal(New Integer() {90, 0, 0, -2147483648})
             Me.m_nudSouth.Name = "m_nudSouth"
@@ -121,6 +123,7 @@ Namespace Other
             'm_nudWest
             '
             resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+            Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudWest.Maximum = New Decimal(New Integer() {180, 0, 0, 0})
             Me.m_nudWest.Minimum = New Decimal(New Integer() {180, 0, 0, -2147483648})
             Me.m_nudWest.Name = "m_nudWest"
@@ -129,6 +132,7 @@ Namespace Other
             'm_nudNorth
             '
             resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+            Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudNorth.Maximum = New Decimal(New Integer() {90, 0, 0, 0})
             Me.m_nudNorth.Minimum = New Decimal(New Integer() {90, 0, 0, -2147483648})
             Me.m_nudNorth.Name = "m_nudNorth"
@@ -145,7 +149,7 @@ Namespace Other
             'ucOptionsMap
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_cbShowExcludedCells)
             Me.Controls.Add(Me.m_plPreview)
             Me.Controls.Add(Me.m_btnChoose)

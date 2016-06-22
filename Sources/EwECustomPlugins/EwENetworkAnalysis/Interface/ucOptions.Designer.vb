@@ -104,8 +104,9 @@ Partial Class ucOptions
         '
         'ucOptions
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.m_lblTimeOutUnit)
         Me.Controls.Add(Me.m_nudTimeOut)
         Me.Controls.Add(Me.m_lblTimeout)

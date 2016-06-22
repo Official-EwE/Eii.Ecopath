@@ -112,194 +112,198 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="m_spContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_tss1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_tss1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 6</value>
+  </data>
+  <metadata name="m_spContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_tsmiDrawMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiDrawMode.Text" xml:space="preserve">
-    <value>&amp;Display graph as</value>
-  </data>
-  <data name="m_tsmiShowMarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiShowMarks.Text" xml:space="preserve">
-    <value>Show &amp;marks</value>
-  </data>
-  <data name="m_tsmiAutoScaleYAxis.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiAutoScaleYAxis.Text" xml:space="preserve">
-    <value>Auto-s&amp;cale Y axis</value>
-  </data>
-  <metadata name="m_tss1.GenerateMember" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <data name="m_tss1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 6</value>
-  </data>
-  <data name="m_tsmiReset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiReset.Text" xml:space="preserve">
-    <value>&amp;Reset</value>
-  </data>
-  <data name="m_tsmiValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiValue.Text" xml:space="preserve">
-    <value>&amp;Value...</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="LoadToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="LoadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="LoadToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Load...</value>
-  </data>
-  <data name="m_tsmiSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiSave.Text" xml:space="preserve">
-    <value>&amp;Save...</value>
-  </data>
-  <data name="m_tss2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 6</value>
-  </data>
-  <data name="m_tsmiOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="m_tsmiOptions.Text" xml:space="preserve">
-    <value>&amp;Options...</value>
-  </data>
-  <data name="m_spContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 192</value>
-  </data>
-  <data name="&gt;&gt;m_spContextMenuStrip.Name" xml:space="preserve">
-    <value>m_spContextMenuStrip</value>
-  </data>
-  <data name="&gt;&gt;m_spContextMenuStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="m_tsmiFill.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="m_tsmiFill.Text" xml:space="preserve">
     <value>&amp;Fill</value>
   </data>
   <data name="m_tsmiLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="m_tsmiLine.Text" xml:space="preserve">
     <value>&amp;Line</value>
   </data>
   <data name="m_tsmiDots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
+    <value>98, 22</value>
   </data>
   <data name="m_tsmiDots.Text" xml:space="preserve">
     <value>&amp;Dots</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="m_tsmiDrawMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiDrawMode.Text" xml:space="preserve">
+    <value>&amp;Display graph as</value>
+  </data>
+  <data name="m_tsmiShowMarks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiShowMarks.Text" xml:space="preserve">
+    <value>Show &amp;marks</value>
+  </data>
+  <data name="m_tsmiAutoScaleYAxis.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiAutoScaleYAxis.Text" xml:space="preserve">
+    <value>Auto-s&amp;cale Y axis</value>
+  </data>
+  <data name="m_tsmiReset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiReset.Text" xml:space="preserve">
+    <value>&amp;Reset</value>
+  </data>
+  <data name="m_tsmiValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiValue.Text" xml:space="preserve">
+    <value>&amp;Value...</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="LoadToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="LoadToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="LoadToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Load...</value>
+  </data>
+  <data name="m_tsmiSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiSave.Text" xml:space="preserve">
+    <value>&amp;Save...</value>
+  </data>
+  <data name="m_tss2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>160, 6</value>
+  </data>
+  <data name="m_tsmiOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="m_tsmiOptions.Text" xml:space="preserve">
+    <value>&amp;Options...</value>
+  </data>
+  <data name="m_spContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 192</value>
+  </data>
+  <data name="&gt;&gt;m_spContextMenuStrip.Name" xml:space="preserve">
+    <value>m_spContextMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;m_spContextMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>587, 399</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiDrawMode.Name" xml:space="preserve">
-    <value>m_tsmiDrawMode</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiDrawMode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiFill.Name" xml:space="preserve">
-    <value>m_tsmiFill</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiFill.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiLine.Name" xml:space="preserve">
-    <value>m_tsmiLine</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiLine.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiDots.Name" xml:space="preserve">
-    <value>m_tsmiDots</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiDots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiShowMarks.Name" xml:space="preserve">
-    <value>m_tsmiShowMarks</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiShowMarks.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiAutoScaleYAxis.Name" xml:space="preserve">
-    <value>m_tsmiAutoScaleYAxis</value>
-  </data>
-  <data name="&gt;&gt;m_tsmiAutoScaleYAxis.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tss1.Name" xml:space="preserve">
     <value>m_tss1</value>
   </data>
   <data name="&gt;&gt;m_tss1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiDrawMode.Name" xml:space="preserve">
+    <value>m_tsmiDrawMode</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiDrawMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiFill.Name" xml:space="preserve">
+    <value>m_tsmiFill</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiFill.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiLine.Name" xml:space="preserve">
+    <value>m_tsmiLine</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiLine.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiDots.Name" xml:space="preserve">
+    <value>m_tsmiDots</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiDots.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiShowMarks.Name" xml:space="preserve">
+    <value>m_tsmiShowMarks</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiShowMarks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiAutoScaleYAxis.Name" xml:space="preserve">
+    <value>m_tsmiAutoScaleYAxis</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiAutoScaleYAxis.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiReset.Name" xml:space="preserve">
     <value>m_tsmiReset</value>
   </data>
   <data name="&gt;&gt;m_tsmiReset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiValue.Name" xml:space="preserve">
     <value>m_tsmiValue</value>
   </data>
   <data name="&gt;&gt;m_tsmiValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;LoadToolStripMenuItem.Name" xml:space="preserve">
     <value>LoadToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;LoadToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiSave.Name" xml:space="preserve">
     <value>m_tsmiSave</value>
   </data>
   <data name="&gt;&gt;m_tsmiSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tss2.Name" xml:space="preserve">
     <value>m_tss2</value>
   </data>
   <data name="&gt;&gt;m_tss2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiOptions.Name" xml:space="preserve">
     <value>m_tsmiOptions</value>
   </data>
   <data name="&gt;&gt;m_tsmiOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucSketchPad</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

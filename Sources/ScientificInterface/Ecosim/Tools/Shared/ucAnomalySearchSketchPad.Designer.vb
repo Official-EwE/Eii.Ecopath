@@ -47,10 +47,11 @@ Namespace Ecosim
             '
             'ucAnomalySearchSketchPad
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Name = "ucAnomalySearchSketchPad"
-            Me.Size = New System.Drawing.Size(1208, 1040)
+            Me.Size = New System.Drawing.Size(1329, 865)
             Me.ResumeLayout(False)
 
         End Sub

@@ -43,15 +43,15 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_glyphSelect = New ScientificInterfaceShared.Controls.ucGlyphSelect
-            Me.btnImport = New System.Windows.Forms.Button
+            Me.m_glyphSelect = New ScientificInterfaceShared.Controls.ucGlyphSelect()
+            Me.btnImport = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_glyphSelect
             '
             Me.m_glyphSelect.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_glyphSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_glyphSelect.GlyphSize = New System.Drawing.Size(40, 25)
             Me.m_glyphSelect.Location = New System.Drawing.Point(0, 0)
@@ -77,8 +77,9 @@ Namespace Controls
             '
             'ucEditImage
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_glyphSelect)
             Me.Controls.Add(Me.btnImport)
             Me.Name = "ucEditImage"

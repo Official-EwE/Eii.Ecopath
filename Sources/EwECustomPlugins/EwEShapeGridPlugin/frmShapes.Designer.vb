@@ -99,10 +99,11 @@ Partial Class frmShapes
         'frmShapes
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_plGrid)
         Me.Controls.Add(Me.m_tsMain)
         Me.Name = "frmShapes"
+        Me.TabText = ""
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)

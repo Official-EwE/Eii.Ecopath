@@ -136,6 +136,24 @@
   <data name="sep4.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 6</value>
   </data>
+  <metadata name="sep11.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="sep11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <metadata name="sep5.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="sep5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 6</value>
+  </data>
+  <metadata name="sep3.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="sep3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnRun.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -201,19 +219,13 @@
   <data name="m_tsbnGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKqSURBVDhPzZJrSJNRGMdf+hBBJH4otJuXsLyVq22Kc8k0
-        nbqb23Q23dSczmiK4C1zGXY3KtAmzQtSIWYlGNY0KtLygqYUlbQSE/NSXtJwKJjLy/vv3VxIX/oW9IOH
-        5znP+T//A+cc4p9BzpPbxAzBgiWT01RQ2bb1dxYAFzNJutNYMjJMkg4mO4YMCU8GhYtNQgDG9TC9tad6
-        62ytNbz3sWfDI1WQq05BqsxDtCIXPNEx7PHgzNskVizDwNAG25Ig2FxN1e6DGQ/p8lLTXlUtdsTfgVda
-        E7YrqiE81w163CWSzkn7aZP/ibsbp0WiyFkSqq+Dl1mHoONP4alpBD27Ga5Jd7EzuhKOnHzEZlTAlxU7
-        apmJYwfXhHn7PFo1iFCPJhbVwS+jDHRtLbzONIKpfw37rHvwKemCQ34D7JJ12CQtxAvAnqkorA5NKtAF
-        x58A4c1LHUsoKIckvwpOMYXgFBngedoAl7NPEHJ7APt13XDUPgDtvAGuqaVwiMyF6nI9YnOK4cZRUAZC
-        FlIuZEF76wqcIuhI0Z8EI00EepYMzDwlxPoCKGquQaAvQkp9LcSVFeAW68G9Wo7NiqMgGLLg5oHlb/iE
-        abROGWH42gNOXhyeLQ7ivskIhvYIbk4Y0Y4VNK38gGdONkRlN8C5qAMRKoH1DgJZvh19vZ0AaaJiEjI+
-        DZkaIRLlAdRrjWNqZhDvhz8iKlWDtuGprRtpPFJd0jCxS5y5apColBnMc+Pof9dmNUiI9geWPlPDX7C8
-        NATz8jT4chHaP/Qj4HByyxjgYceOh5s0e9XAgrOd8zTfj9eaLlM/N4/MYrJ3BDN9E+AxQ3oiA8WPo8IU
-        Hd9HF8ENUnbNzZFbLEGdsPaRfsNnHHolZQs7o/wFL0V+4T22thX2AcEbW/nfQBC/AP6XgD7Hvs+6AAAA
-        AElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFrSURBVDhPYxia4P//K2z/358X+P//PxNUiHQA0vz//30O
+        KJeBwdo1c7aqTe5Go4hJ76FCDA0NDaeRaZxAXcV+b0BU7W+flCn/PQtW/ocZgm4AskGR1o6L3bX1t4I5
+        mh4pj+LaVv43y53236hyKUEDTKLrFrokVE90jCn/z6Dtmfo0tnr6/4CK2f/lQuv+27dtAhuATTOMndi5
+        5n9Ecd9/FfsooAE+lv+TWwr/V87v+i/nYfQ/eWoV3AXo4N+/f6f9Z87479o39b9r9/T/IlFp/xmMQxz3
+        3P7z8v+t/6//H3h15f+mJyf/exk7wW1Dd4FmcdF/32lz/9u3TvzP4BLwHyTHYGtpevj6xaP///97D8Qv
+        wAbANKHTBx+8kuTW9/yXOmnzcyX/AogBcdGhm358evb/5oWDeA2Agaf//2vwWcf8VwksghgAAvJ88q+9
+        zDwP5ISm7iNkwKdP/0RBGJiYEAkJBmCahwpgYAAAU2PpE18zg7UAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_tsbnGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -233,12 +245,6 @@
   </data>
   <data name="m_tscbTarget.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 25</value>
-  </data>
-  <metadata name="sep11.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <data name="sep11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
   </data>
   <data name="m_tsbnSetTo0.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -325,7 +331,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -394,7 +400,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -630,12 +636,6 @@
   <data name="m_tsmiShowLegend.Text" xml:space="preserve">
     <value>Show &amp;legend</value>
   </data>
-  <metadata name="sep5.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <data name="sep5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 6</value>
-  </data>
   <data name="m_tsmiSort.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
   </data>
@@ -676,12 +676,6 @@
   <data name="m_tsddGraphOptions.Text" xml:space="preserve">
     <value>&amp;Options</value>
   </data>
-  <metadata name="sep3.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>False</value>
-  </metadata>
-  <data name="sep3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
   <data name="m_tsbnSaveOutput.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -719,7 +713,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -770,7 +764,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -803,7 +797,7 @@
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -866,7 +860,7 @@
     <value>m_hdrRuns</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -980,7 +974,10 @@
     <value>25</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>970, 536</value>
@@ -1006,6 +1003,24 @@
   <data name="&gt;&gt;sep4.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;sep11.Name" xml:space="preserve">
+    <value>sep11</value>
+  </data>
+  <data name="&gt;&gt;sep11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sep5.Name" xml:space="preserve">
+    <value>sep5</value>
+  </data>
+  <data name="&gt;&gt;sep5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sep3.Name" xml:space="preserve">
+    <value>sep3</value>
+  </data>
+  <data name="&gt;&gt;sep3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbnFleet.Name" xml:space="preserve">
     <value>m_tsbnFleet</value>
   </data>
@@ -1023,12 +1038,6 @@
   </data>
   <data name="&gt;&gt;m_tscbTarget.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;sep11.Name" xml:space="preserve">
-    <value>sep11</value>
-  </data>
-  <data name="&gt;&gt;sep11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsbnSetTo0.Name" xml:space="preserve">
     <value>m_tsbnSetTo0</value>
@@ -1192,12 +1201,6 @@
   <data name="&gt;&gt;m_tsmiShowLegend.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;sep5.Name" xml:space="preserve">
-    <value>sep5</value>
-  </data>
-  <data name="&gt;&gt;sep5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsmiSort.Name" xml:space="preserve">
     <value>m_tsmiSort</value>
   </data>
@@ -1216,12 +1219,6 @@
   <data name="&gt;&gt;m_tstbChangeAmount.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;sep3.Name" xml:space="preserve">
-    <value>sep3</value>
-  </data>
-  <data name="&gt;&gt;sep3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsbnSaveOutput.Name" xml:space="preserve">
     <value>m_tsbnSaveOutput</value>
   </data>
@@ -1232,6 +1229,6 @@
     <value>frmRunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9523.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

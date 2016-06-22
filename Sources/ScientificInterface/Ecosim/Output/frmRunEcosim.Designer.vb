@@ -133,6 +133,21 @@ Namespace Ecosim
             sep4.Name = "sep4"
             resources.ApplyResources(sep4, "sep4")
             '
+            'sep11
+            '
+            sep11.Name = "sep11"
+            resources.ApplyResources(sep11, "sep11")
+            '
+            'sep5
+            '
+            sep5.Name = "sep5"
+            resources.ApplyResources(sep5, "sep5")
+            '
+            'sep3
+            '
+            sep3.Name = "sep3"
+            resources.ApplyResources(sep3, "sep3")
+            '
             'm_btnRun
             '
             resources.ApplyResources(Me.m_btnRun, "m_btnRun")
@@ -162,18 +177,12 @@ Namespace Ecosim
             Me.m_tsbnGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnGroup, "m_tsbnGroup")
             Me.m_tsbnGroup.Name = "m_tsbnGroup"
-            Me.m_tsbnGroup.Image = SharedResources.fish_dead
             '
             'm_tscbTarget
             '
             Me.m_tscbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             resources.ApplyResources(Me.m_tscbTarget, "m_tscbTarget")
             Me.m_tscbTarget.Name = "m_tscbTarget"
-            '
-            'sep11
-            '
-            sep11.Name = "sep11"
-            resources.ApplyResources(sep11, "sep11")
             '
             'm_tsbnSetTo0
             '
@@ -226,6 +235,7 @@ Namespace Ecosim
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
             Me.m_sketchPad.DisplayAxis = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
@@ -399,11 +409,6 @@ Namespace Ecosim
             Me.m_tsmiShowLegend.Name = "m_tsmiShowLegend"
             resources.ApplyResources(Me.m_tsmiShowLegend, "m_tsmiShowLegend")
             '
-            'sep5
-            '
-            sep5.Name = "sep5"
-            resources.ApplyResources(sep5, "sep5")
-            '
             'm_tsmiSort
             '
             Me.m_tsmiSort.Name = "m_tsmiSort"
@@ -421,11 +426,6 @@ Namespace Ecosim
             Me.m_tstbChangeAmount.Margin = New System.Windows.Forms.Padding(110, -21, 1, 1)
             resources.ApplyResources(Me.m_tstbChangeAmount, "m_tstbChangeAmount")
             Me.m_tstbChangeAmount.Name = "m_tstbChangeAmount"
-            '
-            'sep3
-            '
-            sep3.Name = "sep3"
-            resources.ApplyResources(sep3, "sep3")
             '
             'm_tsbnSaveOutput
             '
@@ -509,11 +509,12 @@ Namespace Ecosim
             '
             Me.AcceptButton = Me.m_btnRun
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnStop
             Me.Controls.Add(Me.m_scGraph)
             Me.Controls.Add(Me.m_ts)
             Me.Name = "frmRunEcosim"
+            Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
             Me.m_spContainer.Panel1.ResumeLayout(False)

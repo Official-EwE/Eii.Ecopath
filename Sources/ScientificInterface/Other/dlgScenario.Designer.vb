@@ -42,7 +42,7 @@ Namespace Wizard
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim chCreate2 As System.Windows.Forms.ColumnHeader
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgScenario))
             Dim chCreate3 As System.Windows.Forms.ColumnHeader
@@ -52,77 +52,77 @@ Namespace Wizard
             Dim chDelete3 As System.Windows.Forms.ColumnHeader
             Dim chSaveAs2 As System.Windows.Forms.ColumnHeader
             Dim chSaveAs3 As System.Windows.Forms.ColumnHeader
-            Me.lblDescriptionCreate = New System.Windows.Forms.Label
-            Me.lblNameCreate = New System.Windows.Forms.Label
-            Me.tbNameCreate = New System.Windows.Forms.TextBox
-            Me.tbDescriptionCreate = New System.Windows.Forms.TextBox
+            Me.lblDescriptionCreate = New System.Windows.Forms.Label()
+            Me.lblNameCreate = New System.Windows.Forms.Label()
+            Me.tbNameCreate = New System.Windows.Forms.TextBox()
+            Me.tbDescriptionCreate = New System.Windows.Forms.TextBox()
             Me.m_cmsListBox = New System.Windows.Forms.ContextMenuStrip(Me.components)
-            Me.tsmCreate = New System.Windows.Forms.ToolStripMenuItem
-            Me.tsmLoad = New System.Windows.Forms.ToolStripMenuItem
-            Me.tsmSave = New System.Windows.Forms.ToolStripMenuItem
-            Me.tsmRename = New System.Windows.Forms.ToolStripMenuItem
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-            Me.tsmDelete = New System.Windows.Forms.ToolStripMenuItem
-            Me.btnCancelCreate = New System.Windows.Forms.Button
-            Me.btnDelete = New System.Windows.Forms.Button
-            Me.tabctrlModes = New System.Windows.Forms.TabControl
-            Me.tabpageCreate = New System.Windows.Forms.TabPage
-            Me.lvCreate = New System.Windows.Forms.ListView
-            Me.chCreate1 = New System.Windows.Forms.ColumnHeader
-            Me.UcFormSeparator2 = New ucFormSeparator
-            Me.lblScenariosCreate = New System.Windows.Forms.Label
-            Me.lbContactCreate = New System.Windows.Forms.Label
-            Me.lbAuthorCreate = New System.Windows.Forms.Label
-            Me.tbAuthorCreate = New System.Windows.Forms.TextBox
-            Me.tbContactCreate = New System.Windows.Forms.TextBox
-            Me.btnCreate = New System.Windows.Forms.Button
-            Me.tabpageLoad = New System.Windows.Forms.TabPage
-            Me.lvLoad = New System.Windows.Forms.ListView
-            Me.chLoad1 = New System.Windows.Forms.ColumnHeader
-            Me.btnCancelLoad = New System.Windows.Forms.Button
-            Me.btnLoad = New System.Windows.Forms.Button
-            Me.lblScenariosLoad = New System.Windows.Forms.Label
-            Me.Label1 = New System.Windows.Forms.Label
-            Me.lbAuthorLoad = New System.Windows.Forms.Label
-            Me.lblDescriptionLoad = New System.Windows.Forms.Label
-            Me.tbContactLoad = New System.Windows.Forms.TextBox
-            Me.tbAuthorLoad = New System.Windows.Forms.TextBox
-            Me.tbDescriptionLoad = New System.Windows.Forms.TextBox
-            Me.tabpageDelete = New System.Windows.Forms.TabPage
-            Me.lvDelete = New System.Windows.Forms.ListView
-            Me.chDelete1 = New System.Windows.Forms.ColumnHeader
-            Me.lbContactDelete = New System.Windows.Forms.Label
-            Me.lbAuthorDelete = New System.Windows.Forms.Label
-            Me.lbDescriptionDelete = New System.Windows.Forms.Label
-            Me.tbContactDelete = New System.Windows.Forms.TextBox
-            Me.tbAuthorDelete = New System.Windows.Forms.TextBox
-            Me.tbDescriptionDelete = New System.Windows.Forms.TextBox
-            Me.lblScenariosDelete = New System.Windows.Forms.Label
-            Me.btnCancelDelete = New System.Windows.Forms.Button
-            Me.tabpageSaveAs = New System.Windows.Forms.TabPage
-            Me.lvSaveAs = New System.Windows.Forms.ListView
-            Me.chSaveAs1 = New System.Windows.Forms.ColumnHeader
-            Me.lbContactSaveAs = New System.Windows.Forms.Label
-            Me.lbAuthorSaveAs = New System.Windows.Forms.Label
-            Me.tbAuthorSaveAs = New System.Windows.Forms.TextBox
-            Me.tbContactSaveAs = New System.Windows.Forms.TextBox
-            Me.btnCancelSave = New System.Windows.Forms.Button
-            Me.btnSave = New System.Windows.Forms.Button
-            Me.lblScenarioSaveAs = New System.Windows.Forms.Label
-            Me.lblDescriptionSaveAs = New System.Windows.Forms.Label
-            Me.tbNameSaveAs = New System.Windows.Forms.TextBox
-            Me.lblNameSaveAs = New System.Windows.Forms.Label
-            Me.tbDescriptionSaveAs = New System.Windows.Forms.TextBox
-            Me.UcFormSeparator1 = New ucFormSeparator
+            Me.tsmCreate = New System.Windows.Forms.ToolStripMenuItem()
+            Me.tsmLoad = New System.Windows.Forms.ToolStripMenuItem()
+            Me.tsmSave = New System.Windows.Forms.ToolStripMenuItem()
+            Me.tsmRename = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.tsmDelete = New System.Windows.Forms.ToolStripMenuItem()
+            Me.btnCancelCreate = New System.Windows.Forms.Button()
+            Me.btnDelete = New System.Windows.Forms.Button()
+            Me.tabctrlModes = New System.Windows.Forms.TabControl()
+            Me.tabpageCreate = New System.Windows.Forms.TabPage()
+            Me.lvCreate = New System.Windows.Forms.ListView()
+            Me.chCreate1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.UcFormSeparator2 = New ScientificInterfaceShared.Controls.ucFormSeparator()
+            Me.lblScenariosCreate = New System.Windows.Forms.Label()
+            Me.lbContactCreate = New System.Windows.Forms.Label()
+            Me.lbAuthorCreate = New System.Windows.Forms.Label()
+            Me.tbAuthorCreate = New System.Windows.Forms.TextBox()
+            Me.tbContactCreate = New System.Windows.Forms.TextBox()
+            Me.btnCreate = New System.Windows.Forms.Button()
+            Me.tabpageLoad = New System.Windows.Forms.TabPage()
+            Me.lvLoad = New System.Windows.Forms.ListView()
+            Me.chLoad1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.btnCancelLoad = New System.Windows.Forms.Button()
+            Me.btnLoad = New System.Windows.Forms.Button()
+            Me.lblScenariosLoad = New System.Windows.Forms.Label()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.lbAuthorLoad = New System.Windows.Forms.Label()
+            Me.lblDescriptionLoad = New System.Windows.Forms.Label()
+            Me.tbContactLoad = New System.Windows.Forms.TextBox()
+            Me.tbAuthorLoad = New System.Windows.Forms.TextBox()
+            Me.tbDescriptionLoad = New System.Windows.Forms.TextBox()
+            Me.tabpageDelete = New System.Windows.Forms.TabPage()
+            Me.lvDelete = New System.Windows.Forms.ListView()
+            Me.chDelete1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.lbContactDelete = New System.Windows.Forms.Label()
+            Me.lbAuthorDelete = New System.Windows.Forms.Label()
+            Me.lbDescriptionDelete = New System.Windows.Forms.Label()
+            Me.tbContactDelete = New System.Windows.Forms.TextBox()
+            Me.tbAuthorDelete = New System.Windows.Forms.TextBox()
+            Me.tbDescriptionDelete = New System.Windows.Forms.TextBox()
+            Me.lblScenariosDelete = New System.Windows.Forms.Label()
+            Me.btnCancelDelete = New System.Windows.Forms.Button()
+            Me.tabpageSaveAs = New System.Windows.Forms.TabPage()
+            Me.lvSaveAs = New System.Windows.Forms.ListView()
+            Me.chSaveAs1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.lbContactSaveAs = New System.Windows.Forms.Label()
+            Me.lbAuthorSaveAs = New System.Windows.Forms.Label()
+            Me.tbAuthorSaveAs = New System.Windows.Forms.TextBox()
+            Me.tbContactSaveAs = New System.Windows.Forms.TextBox()
+            Me.btnCancelSave = New System.Windows.Forms.Button()
+            Me.btnSave = New System.Windows.Forms.Button()
+            Me.lblScenarioSaveAs = New System.Windows.Forms.Label()
+            Me.lblDescriptionSaveAs = New System.Windows.Forms.Label()
+            Me.tbNameSaveAs = New System.Windows.Forms.TextBox()
+            Me.lblNameSaveAs = New System.Windows.Forms.Label()
+            Me.tbDescriptionSaveAs = New System.Windows.Forms.TextBox()
+            Me.UcFormSeparator1 = New ScientificInterfaceShared.Controls.ucFormSeparator()
             Me.ilPurdyPics = New System.Windows.Forms.ImageList(Me.components)
-            chCreate2 = New System.Windows.Forms.ColumnHeader
-            chCreate3 = New System.Windows.Forms.ColumnHeader
-            chLoad2 = New System.Windows.Forms.ColumnHeader
-            chLoad3 = New System.Windows.Forms.ColumnHeader
-            chDelete2 = New System.Windows.Forms.ColumnHeader
-            chDelete3 = New System.Windows.Forms.ColumnHeader
-            chSaveAs2 = New System.Windows.Forms.ColumnHeader
-            chSaveAs3 = New System.Windows.Forms.ColumnHeader
+            chCreate2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chCreate3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chLoad2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chLoad3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chDelete2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chDelete3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chSaveAs2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            chSaveAs3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_cmsListBox.SuspendLayout()
             Me.tabctrlModes.SuspendLayout()
             Me.tabpageCreate.SuspendLayout()
@@ -191,21 +191,18 @@ Namespace Wizard
             '
             'tsmCreate
             '
-            Me.tsmCreate.Image = SharedResources.NewDocumentHS
-            Me.tsmCreate.Name = "tsmCreate"
             resources.ApplyResources(Me.tsmCreate, "tsmCreate")
+            Me.tsmCreate.Name = "tsmCreate"
             '
             'tsmLoad
             '
-            Me.tsmLoad.Image = SharedResources.openHS
-            Me.tsmLoad.Name = "tsmLoad"
             resources.ApplyResources(Me.tsmLoad, "tsmLoad")
+            Me.tsmLoad.Name = "tsmLoad"
             '
             'tsmSave
             '
-            Me.tsmSave.Image = SharedResources.saveHS
-            Me.tsmSave.Name = "tsmSave"
             resources.ApplyResources(Me.tsmSave, "tsmSave")
+            Me.tsmSave.Name = "tsmSave"
             '
             'tsmRename
             '
@@ -219,9 +216,8 @@ Namespace Wizard
             '
             'tsmDelete
             '
-            Me.tsmDelete.Image = SharedResources.DeleteHS
-            Me.tsmDelete.Name = "tsmDelete"
             resources.ApplyResources(Me.tsmDelete, "tsmDelete")
+            Me.tsmDelete.Name = "tsmDelete"
             '
             'btnCancelCreate
             '
@@ -287,6 +283,7 @@ Namespace Wizard
             'UcFormSeparator2
             '
             resources.ApplyResources(Me.UcFormSeparator2, "UcFormSeparator2")
+            Me.UcFormSeparator2.Horizontal = True
             Me.UcFormSeparator2.Name = "UcFormSeparator2"
             Me.UcFormSeparator2.TabStop = False
             '
@@ -578,6 +575,7 @@ Namespace Wizard
             'UcFormSeparator1
             '
             resources.ApplyResources(Me.UcFormSeparator1, "UcFormSeparator1")
+            Me.UcFormSeparator1.Horizontal = True
             Me.UcFormSeparator1.Name = "UcFormSeparator1"
             Me.UcFormSeparator1.TabStop = False
             '
@@ -590,15 +588,15 @@ Namespace Wizard
             Me.ilPurdyPics.Images.SetKeyName(2, "")
             Me.ilPurdyPics.Images.SetKeyName(3, "DeleteHS.png")
             '
-            'EwEScenarioDlg
+            'dlgScenario
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.tabctrlModes)
             Me.DoubleBuffered = True
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "EwEScenarioDlg"
+            Me.Name = "dlgScenario"
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.m_cmsListBox.ResumeLayout(False)

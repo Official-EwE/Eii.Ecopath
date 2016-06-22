@@ -249,7 +249,7 @@ Partial Class frmNetworkAnalysis
         'frmNetworkAnalysis
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.SystemColors.Control
         Me.Controls.Add(Me.m_hdrPage)
         Me.Controls.Add(Me.m_scNetworkAnalysis)

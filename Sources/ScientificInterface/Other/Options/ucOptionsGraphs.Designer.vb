@@ -78,6 +78,7 @@ Namespace Other
             '
             'm_nudThumbnailSize
             '
+            Me.m_nudThumbnailSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudThumbnailSize, "m_nudThumbnailSize")
             Me.m_nudThumbnailSize.Maximum = New Decimal(New Integer() {240, 0, 0, 0})
             Me.m_nudThumbnailSize.Minimum = New Decimal(New Integer() {32, 0, 0, 0})
@@ -107,6 +108,7 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_nudFontSize, "m_nudFontSize")
             Me.m_nudFontSize.DecimalPlaces = 2
+            Me.m_nudFontSize.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudFontSize.Maximum = New Decimal(New Integer() {24, 0, 0, 0})
             Me.m_nudFontSize.Minimum = New Decimal(New Integer() {4, 0, 0, 0})
             Me.m_nudFontSize.Name = "m_nudFontSize"
@@ -171,7 +173,7 @@ Namespace Other
             'ucOptionsGraphs
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_lblExample)
             Me.Controls.Add(Me.m_lblThumbnailUnit)
             Me.Controls.Add(Me.m_rbLegendAlways)

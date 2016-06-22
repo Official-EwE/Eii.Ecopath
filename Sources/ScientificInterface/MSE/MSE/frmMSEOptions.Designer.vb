@@ -60,6 +60,7 @@ Partial Class frmMSEOptions
         Me.m_rbDirectExp = New System.Windows.Forms.RadioButton()
         Me.m_panelEffortControls = New System.Windows.Forms.Panel()
         Me.m_hdrEffort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_gridFleetLPEffortBounds = New ScientificInterface.gridFleetLPEffortBounds()
         Me.m_panelQuotaControls = New System.Windows.Forms.Panel()
         Me.m_hdrQuota = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -67,9 +68,8 @@ Partial Class frmMSEOptions
         Me.m_rbEffortEcosim = New System.Windows.Forms.RadioButton()
         Me.m_rbEffortNoCap = New System.Windows.Forms.RadioButton()
         Me.m_rbEffortPredicted = New System.Windows.Forms.RadioButton()
-        Me.m_plControls = New System.Windows.Forms.Panel()
-        Me.m_gridFleetLPEffortBounds = New ScientificInterface.gridFleetLPEffortBounds()
         Me.m_gridRegOptions = New ScientificInterface.Ecosim.gridRegulatoryOptions()
+        Me.m_plControls = New System.Windows.Forms.Panel()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.m_panelRegControls.SuspendLayout()
         Me.m_panelNoReg.SuspendLayout()
@@ -139,7 +139,6 @@ Partial Class frmMSEOptions
         Me.m_panelNoReg.Controls.Add(Me.m_rbExact)
         Me.m_panelNoReg.Controls.Add(Me.m_rbCatchEstBio)
         Me.m_panelNoReg.Controls.Add(Me.m_rbDirectExp)
-        Me.m_panelNoReg.MinimumSize = New System.Drawing.Size(100, 115)
         Me.m_panelNoReg.Name = "m_panelNoReg"
         '
         'm_txSBPower
@@ -186,7 +185,6 @@ Partial Class frmMSEOptions
         Me.m_panelEffortControls.Controls.Add(Me.m_hdrEffort)
         Me.m_panelEffortControls.Controls.Add(Me.m_gridFleetLPEffortBounds)
         resources.ApplyResources(Me.m_panelEffortControls, "m_panelEffortControls")
-        Me.m_panelEffortControls.MinimumSize = New System.Drawing.Size(100, 100)
         Me.m_panelEffortControls.Name = "m_panelEffortControls"
         '
         'm_hdrEffort
@@ -196,6 +194,38 @@ Partial Class frmMSEOptions
         Me.m_hdrEffort.CollapsedParentHeight = 0
         Me.m_hdrEffort.IsCollapsed = False
         Me.m_hdrEffort.Name = "m_hdrEffort"
+        '
+        'm_gridFleetLPEffortBounds
+        '
+        Me.m_gridFleetLPEffortBounds.AllowBlockSelect = True
+        resources.ApplyResources(Me.m_gridFleetLPEffortBounds, "m_gridFleetLPEffortBounds")
+        Me.m_gridFleetLPEffortBounds.AutoSizeMinHeight = 10
+        Me.m_gridFleetLPEffortBounds.AutoSizeMinWidth = 10
+        Me.m_gridFleetLPEffortBounds.AutoStretchColumnsToFitWidth = False
+        Me.m_gridFleetLPEffortBounds.AutoStretchRowsToFitHeight = False
+        Me.m_gridFleetLPEffortBounds.BackColor = System.Drawing.Color.White
+        Me.m_gridFleetLPEffortBounds.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridFleetLPEffortBounds.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.m_gridFleetLPEffortBounds.CustomSort = False
+        Me.m_gridFleetLPEffortBounds.DataName = "grid content"
+        Me.m_gridFleetLPEffortBounds.FixedColumnWidths = False
+        Me.m_gridFleetLPEffortBounds.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridFleetLPEffortBounds.GridToolTipActive = True
+        Me.m_gridFleetLPEffortBounds.IsLayoutSuspended = False
+        Me.m_gridFleetLPEffortBounds.IsOutputGrid = True
+        Me.m_gridFleetLPEffortBounds.Name = "m_gridFleetLPEffortBounds"
+        Me.m_gridFleetLPEffortBounds.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.m_gridFleetLPEffortBounds.UIContext = Nothing
         '
         'm_panelQuotaControls
         '
@@ -250,43 +280,6 @@ Partial Class frmMSEOptions
         Me.m_rbEffortPredicted.Name = "m_rbEffortPredicted"
         Me.m_rbEffortPredicted.UseVisualStyleBackColor = True
         '
-        'm_plControls
-        '
-        resources.ApplyResources(Me.m_plControls, "m_plControls")
-        Me.m_plControls.Controls.Add(Me.m_panelNoReg)
-        Me.m_plControls.Controls.Add(Me.m_panelEffortControls)
-        Me.m_plControls.Controls.Add(Me.m_panelQuotaControls)
-        Me.m_plControls.Name = "m_plControls"
-        '
-        'm_gridFleetLPEffortBounds
-        '
-        Me.m_gridFleetLPEffortBounds.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_gridFleetLPEffortBounds, "m_gridFleetLPEffortBounds")
-        Me.m_gridFleetLPEffortBounds.AutoSizeMinHeight = 10
-        Me.m_gridFleetLPEffortBounds.AutoSizeMinWidth = 10
-        Me.m_gridFleetLPEffortBounds.AutoStretchColumnsToFitWidth = False
-        Me.m_gridFleetLPEffortBounds.AutoStretchRowsToFitHeight = False
-        Me.m_gridFleetLPEffortBounds.BackColor = System.Drawing.Color.White
-        Me.m_gridFleetLPEffortBounds.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_gridFleetLPEffortBounds.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_gridFleetLPEffortBounds.CustomSort = False
-        Me.m_gridFleetLPEffortBounds.FixedColumnWidths = False
-        Me.m_gridFleetLPEffortBounds.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_gridFleetLPEffortBounds.GridToolTipActive = True
-        Me.m_gridFleetLPEffortBounds.Name = "m_gridFleetLPEffortBounds"
-        Me.m_gridFleetLPEffortBounds.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_gridFleetLPEffortBounds.UIContext = Nothing
-        '
         'm_gridRegOptions
         '
         Me.m_gridRegOptions.AllowBlockSelect = True
@@ -301,9 +294,12 @@ Partial Class frmMSEOptions
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridRegOptions.CustomSort = False
+        Me.m_gridRegOptions.DataName = "grid content"
         Me.m_gridRegOptions.FixedColumnWidths = True
         Me.m_gridRegOptions.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridRegOptions.GridToolTipActive = True
+        Me.m_gridRegOptions.IsLayoutSuspended = False
+        Me.m_gridRegOptions.IsOutputGrid = True
         Me.m_gridRegOptions.Name = "m_gridRegOptions"
         Me.m_gridRegOptions.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -316,13 +312,22 @@ Partial Class frmMSEOptions
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridRegOptions.UIContext = Nothing
         '
+        'm_plControls
+        '
+        resources.ApplyResources(Me.m_plControls, "m_plControls")
+        Me.m_plControls.Controls.Add(Me.m_panelNoReg)
+        Me.m_plControls.Controls.Add(Me.m_panelEffortControls)
+        Me.m_plControls.Controls.Add(Me.m_panelQuotaControls)
+        Me.m_plControls.Name = "m_plControls"
+        '
         'frmMSEOptions
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_plControls)
         Me.Controls.Add(Me.m_pnlRegOpt)
         Me.Name = "frmMSEOptions"
+        Me.TabText = ""
         Me.m_pnlRegOpt.ResumeLayout(False)
         Me.m_pnlRegOpt.PerformLayout()
         Me.m_panelRegControls.ResumeLayout(False)

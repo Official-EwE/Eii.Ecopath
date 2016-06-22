@@ -182,6 +182,7 @@ Partial Class dlgDefineTaxonomy
         Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridGroups.GridToolTipActive = True
         Me.m_gridGroups.IsLayoutSuspended = False
+        Me.m_gridGroups.IsOutputGrid = True
         Me.m_gridGroups.Name = "m_gridGroups"
         Me.m_gridGroups.SelectedTaxon = Nothing
         Me.m_gridGroups.ShowCodes = False
@@ -269,6 +270,7 @@ Partial Class dlgDefineTaxonomy
         Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridResults.GridToolTipActive = True
         Me.m_gridResults.IsLayoutSuspended = False
+        Me.m_gridResults.IsOutputGrid = True
         Me.m_gridResults.Name = "m_gridResults"
         Me.m_gridResults.ShowCodes = False
         Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -293,17 +295,17 @@ Partial Class dlgDefineTaxonomy
         Me.m_cbShowCodes.Name = "m_cbShowCodes"
         Me.m_cbShowCodes.UseVisualStyleBackColor = True
         '
-        'dlgDefineTraits
+        'dlgDefineTaxonomy
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.ControlBox = False
         Me.Controls.Add(Me.m_cbShowCodes)
         Me.Controls.Add(Me.m_scMain)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
-        Me.Name = "dlgDefineTraits"
+        Me.Name = "dlgDefineTaxonomy"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show

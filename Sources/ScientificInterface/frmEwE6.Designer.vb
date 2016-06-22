@@ -811,7 +811,7 @@ Partial Public Class frmEwE6
         '
         Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_ssMain)
         Me.Controls.Add(Me.m_tsModel)
         Me.Controls.Add(Me.m_menuMain)

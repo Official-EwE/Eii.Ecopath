@@ -197,7 +197,7 @@ Namespace Other
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_lblAvailable)
             Me.Controls.Add(Me.m_lvDatasets)
             Me.Controls.Add(Me.m_cbAllowIndexing)

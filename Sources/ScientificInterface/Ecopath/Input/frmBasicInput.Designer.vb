@@ -46,25 +46,28 @@ Namespace Ecopath.Input
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_ts = New cEwEToolstrip
-            Me.m_tsbnEditGroups = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbnEditMultiStanza = New System.Windows.Forms.ToolStripButton
-            Me.m_grid = New ScientificInterface.Ecopath.Input.gridBasicInput
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmBasicInput))
+            Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnEditGroups = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnEditMultiStanza = New System.Windows.Forms.ToolStripButton()
+            Me.m_grid = New ScientificInterface.Ecopath.Input.gridBasicInput()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
+            Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditGroups, Me.m_tsbnEditMultiStanza})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
+            Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             Me.m_ts.Size = New System.Drawing.Size(877, 25)
             Me.m_ts.TabIndex = 0
             Me.m_ts.Text = "ToolStrip1"
             '
             'm_tsbnEditGroups
             '
-            Me.m_tsbnEditGroups.Image = SharedResources.fish
+            Me.m_tsbnEditGroups.Image = CType(resources.GetObject("m_tsbnEditGroups.Image"), System.Drawing.Image)
             Me.m_tsbnEditGroups.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditGroups.Name = "m_tsbnEditGroups"
             Me.m_tsbnEditGroups.Size = New System.Drawing.Size(110, 22)
@@ -73,7 +76,7 @@ Namespace Ecopath.Input
             '
             'm_tsbnEditMultiStanza
             '
-            Me.m_tsbnEditMultiStanza.Image = SharedResources.multistanza
+            Me.m_tsbnEditMultiStanza.Image = CType(resources.GetObject("m_tsbnEditMultiStanza.Image"), System.Drawing.Image)
             Me.m_tsbnEditMultiStanza.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnEditMultiStanza.Name = "m_tsbnEditMultiStanza"
             Me.m_tsbnEditMultiStanza.Size = New System.Drawing.Size(125, 22)
@@ -89,38 +92,43 @@ Namespace Ecopath.Input
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
+            Me.m_grid.DataName = "grid content"
             Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Location = New System.Drawing.Point(0, 25)
             Me.m_grid.Margin = New System.Windows.Forms.Padding(0)
             Me.m_grid.Name = "m_grid"
             Me.m_grid.Size = New System.Drawing.Size(877, 424)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
             '
             'frmBasicInput
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.ClientSize = New System.Drawing.Size(877, 449)
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmBasicInput"
+            Me.TabText = ""
             Me.Text = "Basic input"
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()

@@ -524,6 +524,7 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridWeights.GridToolTipActive = True
         Me.m_gridWeights.IsLayoutSuspended = False
+        Me.m_gridWeights.IsOutputGrid = True
         Me.m_gridWeights.Location = New System.Drawing.Point(3, 3)
         Me.m_gridWeights.Name = "m_gridWeights"
         Me.m_gridWeights.Size = New System.Drawing.Size(420, 578)
@@ -649,8 +650,9 @@ Partial Class dlgManageTimeSeries
         '
         Me.AcceptButton = Me.m_btnOk
         Me.AllowDrop = True
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.m_btnCancel
         Me.ClientSize = New System.Drawing.Size(525, 650)
         Me.ControlBox = False

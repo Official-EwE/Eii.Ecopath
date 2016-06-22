@@ -315,6 +315,7 @@ Namespace Ecospace
             Me.m_gridProgress.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridProgress.GridToolTipActive = True
             Me.m_gridProgress.IsLayoutSuspended = False
+            Me.m_gridProgress.IsOutputGrid = True
             Me.m_gridProgress.Name = "m_gridProgress"
             Me.m_gridProgress.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -416,6 +417,7 @@ Namespace Ecospace
             Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridResults.GridToolTipActive = True
             Me.m_gridResults.IsLayoutSuspended = False
+            Me.m_gridResults.IsOutputGrid = True
             Me.m_gridResults.Name = "m_gridResults"
             Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -583,6 +585,7 @@ Namespace Ecospace
             Me.m_gridObjectives.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridObjectives.GridToolTipActive = True
             Me.m_gridObjectives.IsLayoutSuspended = False
+            Me.m_gridObjectives.IsOutputGrid = True
             Me.m_gridObjectives.Manager = Nothing
             Me.m_gridObjectives.Name = "m_gridObjectives"
             Me.m_gridObjectives.ShowMaxPortUtil = False
@@ -618,6 +621,7 @@ Namespace Ecospace
             Me.m_gridFleet.GridToolTipActive = True
             Me.m_gridFleet.IsLayoutSuspended = False
             Me.m_gridFleet.IsMaximizeByFleetValue = False
+            Me.m_gridFleet.IsOutputGrid = True
             Me.m_gridFleet.Manager = Nothing
             Me.m_gridFleet.Name = "m_gridFleet"
             Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -650,6 +654,7 @@ Namespace Ecospace
             Me.m_gridGroup.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridGroup.GridToolTipActive = True
             Me.m_gridGroup.IsLayoutSuspended = False
+            Me.m_gridGroup.IsOutputGrid = True
             Me.m_gridGroup.Manager = Nothing
             Me.m_gridGroup.Name = "m_gridGroup"
             Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -779,7 +784,7 @@ Namespace Ecospace
             '
             Me.AcceptButton = Me.m_btnRun
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnStop
             Me.Controls.Add(Me.m_btnRun)
             Me.Controls.Add(Me.m_btnStop)
@@ -792,6 +797,7 @@ Namespace Ecospace
             Me.Name = "frmMPAOptimizations"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_tsMap.ResumeLayout(False)
             Me.m_tsMap.PerformLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).EndInit()

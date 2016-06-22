@@ -284,8 +284,14 @@
     <Compile Include="Utils\cUnitTypeFormatter.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Interface\Controls\ucDefault.resx">
+      <DependentUpon>ucDefault.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Interface\Controls\ucGridView.resx">
       <DependentUpon>ucGridView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\Controls\ucUnitDefault.resx">
+      <DependentUpon>ucUnitDefault.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\FlowDiagram\ucFlowDiagram.resx">
       <DependentUpon>ucFlowDiagram.vb</DependentUpon>

@@ -55,9 +55,9 @@ Partial Class dlgSelectResponse
         Me.m_hdrResp = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrApplied = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
+        Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
+        Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
         Me.m_tlMain.SuspendLayout()
         Me.m_plButtons.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
@@ -143,34 +143,37 @@ Partial Class dlgSelectResponse
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbFilter, Me.m_tstbFilter, Me.m_tsbnCaseSensitive})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnCaseSensitive, Me.m_tstbFilter, Me.m_tslbFilter})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'm_tslbFilter
-        '
-        Me.m_tslbFilter.Name = "m_tslbFilter"
-        resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
-        '
-        'm_tstbFilter
-        '
-        Me.m_tstbFilter.Name = "m_tstbFilter"
-        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
-        '
         'm_tsbnCaseSensitive
         '
+        Me.m_tsbnCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tsbnCaseSensitive.AutoToolTip = False
         Me.m_tsbnCaseSensitive.CheckOnClick = True
         Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnCaseSensitive, "m_tsbnCaseSensitive")
         Me.m_tsbnCaseSensitive.Name = "m_tsbnCaseSensitive"
         '
+        'm_tstbFilter
+        '
+        Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tstbFilter.Name = "m_tstbFilter"
+        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
+        '
+        'm_tslbFilter
+        '
+        Me.m_tslbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tslbFilter.Name = "m_tslbFilter"
+        resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
+        '
         'dlgSelectResponse
         '
         Me.AcceptButton = Me.OK_Button
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_tlMain)
@@ -181,6 +184,7 @@ Partial Class dlgSelectResponse
         Me.MinimizeBox = False
         Me.Name = "dlgSelectResponse"
         Me.ShowInTaskbar = False
+        Me.TabText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
         Me.m_tlMain.ResumeLayout(False)
         Me.m_plButtons.ResumeLayout(False)
         Me.m_tsMain.ResumeLayout(False)

@@ -43,24 +43,25 @@ Namespace Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_flpGlyphs = New System.Windows.Forms.FlowLayoutPanel
+            Me.m_flpGlyphs = New System.Windows.Forms.FlowLayoutPanel()
             Me.SuspendLayout()
             '
-            'flpGlyphs
+            'm_flpGlyphs
             '
             Me.m_flpGlyphs.AutoScroll = True
             Me.m_flpGlyphs.BackColor = System.Drawing.SystemColors.Window
             Me.m_flpGlyphs.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_flpGlyphs.Location = New System.Drawing.Point(0, 0)
             Me.m_flpGlyphs.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_flpGlyphs.Name = "flpGlyphs"
+            Me.m_flpGlyphs.Name = "m_flpGlyphs"
             Me.m_flpGlyphs.Size = New System.Drawing.Size(282, 150)
             Me.m_flpGlyphs.TabIndex = 0
             '
             'ucGlyphSelect
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_flpGlyphs)
             Me.Name = "ucGlyphSelect"
             Me.Size = New System.Drawing.Size(282, 150)

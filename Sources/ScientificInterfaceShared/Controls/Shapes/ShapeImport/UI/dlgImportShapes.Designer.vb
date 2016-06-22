@@ -76,7 +76,7 @@ Namespace Controls
             Me.m_tbImportSeparator.AcceptsTab = True
             resources.ApplyResources(Me.m_tbImportSeparator, "m_tbImportSeparator")
             Me.m_tbImportSeparator.Character = Global.Microsoft.VisualBasic.ChrW(46)
-            Me.m_tbImportSeparator.CharacterMask = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
+            Me.m_tbImportSeparator.CharacterMask = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
             Me.m_tbImportSeparator.CharCode = 46
             Me.m_tbImportSeparator.MaskInclusive = False
             Me.m_tbImportSeparator.Name = "m_tbImportSeparator"
@@ -87,7 +87,7 @@ Namespace Controls
             Me.m_tbImportDelimiter.AcceptsReturn = True
             Me.m_tbImportDelimiter.AcceptsTab = True
             Me.m_tbImportDelimiter.Character = Global.Microsoft.VisualBasic.ChrW(44)
-            Me.m_tbImportDelimiter.CharacterMask = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
+            Me.m_tbImportDelimiter.CharacterMask = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
             Me.m_tbImportDelimiter.CharCode = 44
             resources.ApplyResources(Me.m_tbImportDelimiter, "m_tbImportDelimiter")
             Me.m_tbImportDelimiter.MaskInclusive = False
@@ -160,6 +160,7 @@ Namespace Controls
             Me.m_grid.Functions = Nothing
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -182,7 +183,7 @@ Namespace Controls
             '
             Me.AllowDrop = True
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_pbHelp)

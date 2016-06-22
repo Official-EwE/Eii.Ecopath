@@ -55,7 +55,7 @@ Namespace Other
             'ucOptionsPedigree
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_cbShowPedigreeIndicators)
             Me.Controls.Add(Me.m_hdrCaption)
             Me.Name = "ucOptionsPedigree"

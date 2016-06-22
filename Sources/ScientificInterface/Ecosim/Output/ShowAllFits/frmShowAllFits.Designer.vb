@@ -47,6 +47,7 @@ Namespace Ecosim
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_chkShowSS = New System.Windows.Forms.CheckBox()
             Me.m_chkShowYear = New System.Windows.Forms.CheckBox()
+            Me.m_cbShowGroupNo = New System.Windows.Forms.CheckBox()
             Me.m_chkShowWeight = New System.Windows.Forms.CheckBox()
             Me.m_chkShowCatch = New System.Windows.Forms.CheckBox()
             Me.m_chkShowZ = New System.Windows.Forms.CheckBox()
@@ -78,7 +79,6 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument()
-            Me.m_cbShowGroupNo = New System.Windows.Forms.CheckBox()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -143,6 +143,12 @@ Namespace Ecosim
             Me.m_chkShowYear.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_chkShowYear.Name = "m_chkShowYear"
             Me.m_chkShowYear.UseVisualStyleBackColor = True
+            '
+            'm_cbShowGroupNo
+            '
+            resources.ApplyResources(Me.m_cbShowGroupNo, "m_cbShowGroupNo")
+            Me.m_cbShowGroupNo.Name = "m_cbShowGroupNo"
+            Me.m_cbShowGroupNo.UseVisualStyleBackColor = True
             '
             'm_chkShowWeight
             '
@@ -344,16 +350,10 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
-            'm_cbShowGroupNo
-            '
-            resources.ApplyResources(Me.m_cbShowGroupNo, "m_cbShowGroupNo")
-            Me.m_cbShowGroupNo.Name = "m_cbShowGroupNo"
-            Me.m_cbShowGroupNo.UseVisualStyleBackColor = True
-            '
             'frmShowAllFits
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmShowAllFits"
             Me.ShowIcon = False

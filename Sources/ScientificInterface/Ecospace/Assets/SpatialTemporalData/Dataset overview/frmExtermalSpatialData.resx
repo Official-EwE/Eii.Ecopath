@@ -157,7 +157,7 @@
     <value>m_gridApply</value>
   </data>
   <data name="&gt;&gt;m_gridApply.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridExternalSpatialData, EwE6, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridExternalSpatialData, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridApply.Parent" xml:space="preserve">
     <value>m_tpConnections</value>
@@ -347,7 +347,7 @@
     <value>m_tsMap</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Parent" xml:space="preserve">
     <value>m_tpMap</value>
@@ -385,7 +385,7 @@
     <value>m_map</value>
   </data>
   <data name="&gt;&gt;m_map.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucSpatialTimeSeriesMap, EwE6, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucSpatialTimeSeriesMap, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_map.Parent" xml:space="preserve">
     <value>m_tpMap</value>
@@ -526,7 +526,7 @@
     <value>m_tsDatasets</value>
   </data>
   <data name="&gt;&gt;m_tsDatasets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsDatasets.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -595,7 +595,7 @@
     <value>m_toolbox</value>
   </data>
   <data name="&gt;&gt;m_toolbox.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_toolbox.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -643,7 +643,10 @@
     <value>52</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>940, 536</value>
@@ -730,6 +733,6 @@
     <value>frmSpatialTimeSeries</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.11688.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -45,29 +45,30 @@ Namespace Ecopath.Output
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SizeWeightPlot))
-            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl
+            Me.zgcZedGraphCntl = New ZedGraph.ZedGraphControl()
             Me.SuspendLayout()
             '
             'zgcZedGraphCntl
             '
             resources.ApplyResources(Me.zgcZedGraphCntl, "zgcZedGraphCntl")
             Me.zgcZedGraphCntl.Name = "zgcZedGraphCntl"
-            Me.zgcZedGraphCntl.ScrollGrace = 0
-            Me.zgcZedGraphCntl.ScrollMaxX = 0
-            Me.zgcZedGraphCntl.ScrollMaxY = 0
-            Me.zgcZedGraphCntl.ScrollMaxY2 = 0
-            Me.zgcZedGraphCntl.ScrollMinX = 0
-            Me.zgcZedGraphCntl.ScrollMinY = 0
-            Me.zgcZedGraphCntl.ScrollMinY2 = 0
+            Me.zgcZedGraphCntl.ScrollGrace = 0.0R
+            Me.zgcZedGraphCntl.ScrollMaxX = 0.0R
+            Me.zgcZedGraphCntl.ScrollMaxY = 0.0R
+            Me.zgcZedGraphCntl.ScrollMaxY2 = 0.0R
+            Me.zgcZedGraphCntl.ScrollMinX = 0.0R
+            Me.zgcZedGraphCntl.ScrollMinY = 0.0R
+            Me.zgcZedGraphCntl.ScrollMinY2 = 0.0R
             '
             'SizeWeightPlot
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.zgcZedGraphCntl)
             Me.Name = "SizeWeightPlot"
+            Me.TabText = ""
             Me.ResumeLayout(False)
 
         End Sub

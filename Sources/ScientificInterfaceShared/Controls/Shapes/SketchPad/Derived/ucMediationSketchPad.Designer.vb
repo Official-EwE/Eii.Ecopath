@@ -47,7 +47,7 @@ Namespace Controls
             'ucMediationSketchPad
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Name = "ucMediationSketchPad"
             Me.ResumeLayout(False)
 

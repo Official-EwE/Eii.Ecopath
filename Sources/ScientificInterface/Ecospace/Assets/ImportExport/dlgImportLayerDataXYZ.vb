@@ -429,6 +429,7 @@ Namespace Ecospace.Basemap
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
+            Me.m_grid.IsOutputGrid = True
             Me.m_grid.Layers = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -466,11 +467,12 @@ Namespace Ecospace.Basemap
             resources.ApplyResources(Me.m_lblCol, "m_lblCol")
             Me.m_lblCol.Name = "m_lblCol"
             '
-            'dlgImportLayerData
+            'dlgImportLayerDataXYZ
             '
             Me.AcceptButton = Me.m_bntOK
-            Me.CancelButton = Me.m_btnCancel
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
             Me.Controls.Add(Me.m_cmbCol)
             Me.Controls.Add(Me.m_cmbRow)
@@ -483,7 +485,7 @@ Namespace Ecospace.Basemap
             Me.Controls.Add(Me.m_btnBrowseInput)
             Me.Controls.Add(Me.m_lblSource)
             Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-            Me.Name = "dlgImportLayerData"
+            Me.Name = "dlgImportLayerDataXYZ"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.m_tlpOkCancel.ResumeLayout(False)

@@ -41,13 +41,13 @@ Partial Class ucOptionsPluginDetails
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_lblContact = New System.Windows.Forms.Label
-        Me.m_lblAuthor = New System.Windows.Forms.Label
-        Me.m_lblName = New System.Windows.Forms.Label
-        Me.m_tbName = New System.Windows.Forms.TextBox
-        Me.m_tbDescription = New System.Windows.Forms.TextBox
-        Me.m_tbAuthor = New System.Windows.Forms.TextBox
-        Me.m_llContact = New System.Windows.Forms.LinkLabel
+        Me.m_lblContact = New System.Windows.Forms.Label()
+        Me.m_lblAuthor = New System.Windows.Forms.Label()
+        Me.m_lblName = New System.Windows.Forms.Label()
+        Me.m_tbName = New System.Windows.Forms.TextBox()
+        Me.m_tbDescription = New System.Windows.Forms.TextBox()
+        Me.m_tbAuthor = New System.Windows.Forms.TextBox()
+        Me.m_llContact = New System.Windows.Forms.LinkLabel()
         Me.SuspendLayout()
         '
         'm_lblContact
@@ -80,7 +80,7 @@ Partial Class ucOptionsPluginDetails
         'm_tbName
         '
         Me.m_tbName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbName.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.m_tbName.Location = New System.Drawing.Point(66, 3)
         Me.m_tbName.Name = "m_tbName"
@@ -91,8 +91,8 @@ Partial Class ucOptionsPluginDetails
         'm_tbDescription
         '
         Me.m_tbDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbDescription.Cursor = System.Windows.Forms.Cursors.Default
         Me.m_tbDescription.Location = New System.Drawing.Point(6, 78)
         Me.m_tbDescription.Multiline = True
@@ -106,7 +106,7 @@ Partial Class ucOptionsPluginDetails
         'm_tbAuthor
         '
         Me.m_tbAuthor.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbAuthor.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.m_tbAuthor.Location = New System.Drawing.Point(66, 22)
         Me.m_tbAuthor.Name = "m_tbAuthor"
@@ -117,7 +117,7 @@ Partial Class ucOptionsPluginDetails
         'm_llContact
         '
         Me.m_llContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_llContact.Location = New System.Drawing.Point(63, 41)
         Me.m_llContact.Name = "m_llContact"
         Me.m_llContact.Size = New System.Drawing.Size(225, 34)
@@ -125,8 +125,9 @@ Partial Class ucOptionsPluginDetails
         '
         'ucOptionsPluginDetails
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.Controls.Add(Me.m_llContact)
         Me.Controls.Add(Me.m_tbAuthor)
         Me.Controls.Add(Me.m_tbName)

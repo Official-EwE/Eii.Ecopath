@@ -140,7 +140,7 @@ Partial Class ucFlowDiagram
         'ucFlowDiagram
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Controls.Add(Me.m_scFD)
         Me.Controls.Add(Me.m_tsMain)
         Me.Name = "ucFlowDiagram"

@@ -136,6 +136,7 @@ Partial Class frmEcotroph
         Me.type_smooth2 = New System.Windows.Forms.RadioButton()
         Me.datasmooth = New System.Windows.Forms.DataGridView()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.modeldescription = New System.Windows.Forms.TextBox()
@@ -157,7 +158,6 @@ Partial Class frmEcotroph
         Me.Button8 = New System.Windows.Forms.Button()
         Me.models_list = New System.Windows.Forms.ListBox()
         Me.inputdata = New System.Windows.Forms.TabControl()
-        Me.Button7 = New System.Windows.Forms.Button()
         Me.diagnosis_page.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1211,6 +1211,16 @@ Partial Class frmEcotroph
         Me.TabPage1.Text = "Input data"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(8, 66)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(168, 23)
+        Me.Button7.TabIndex = 2
+        Me.Button7.Text = "Load data from Webservices"
+        Me.Button7.UseVisualStyleBackColor = True
+        Me.Button7.Visible = False
+        '
         'Label13
         '
         Me.Label13.AutoSize = True
@@ -1403,20 +1413,11 @@ Partial Class frmEcotroph
         Me.inputdata.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
         Me.inputdata.TabIndex = 0
         '
-        'Button7
-        '
-        Me.Button7.Location = New System.Drawing.Point(8, 66)
-        Me.Button7.Name = "Button7"
-        Me.Button7.Size = New System.Drawing.Size(168, 23)
-        Me.Button7.TabIndex = 2
-        Me.Button7.Text = "Load data from Webservices"
-        Me.Button7.UseVisualStyleBackColor = True
-        Me.Button7.Visible = False
-        '
         'frmEcotroph
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(902, 767)
         Me.Controls.Add(Me.inputdata)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

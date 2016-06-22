@@ -405,6 +405,7 @@ Namespace Controls
             '
             Me.AcceptButton = Me.m_btnOne
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_chkOption)
             Me.Controls.Add(Me.m_pbIcon)

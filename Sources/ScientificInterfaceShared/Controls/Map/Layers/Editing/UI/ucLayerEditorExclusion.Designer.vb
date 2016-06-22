@@ -159,6 +159,8 @@ Namespace Controls.Map.Layers
             '
             'm_hdrUtility
             '
+            Me.m_hdrUtility.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrUtility.CanCollapseParent = False
             Me.m_hdrUtility.CollapsedParentHeight = 0
             Me.m_hdrUtility.IsCollapsed = False
@@ -168,13 +170,12 @@ Namespace Controls.Map.Layers
             Me.m_hdrUtility.TabIndex = 9
             Me.m_hdrUtility.Text = "Utilities"
             Me.m_hdrUtility.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            Me.m_hdrUtility.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             '
             'ucLayerEditorExclusion
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_hdrUtility)
             Me.Controls.Add(Me.m_lblValue)
             Me.Controls.Add(Me.m_rbExclude)

@@ -33,11 +33,12 @@ Namespace Ecospace.Controls
         Private Sub InitializeComponent()
             Me.SuspendLayout()
             '
-            'ucExternalDataConnections
+            'ucSpatialTimeSeriesToolbox
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Name = "ucExternalDataConnections"
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.Name = "ucSpatialTimeSeriesToolbox"
             Me.Size = New System.Drawing.Size(326, 150)
             Me.ResumeLayout(False)
 

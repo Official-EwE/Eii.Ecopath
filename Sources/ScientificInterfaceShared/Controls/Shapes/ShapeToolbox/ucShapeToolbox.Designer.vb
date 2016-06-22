@@ -120,14 +120,14 @@ Namespace Controls
             Me.m_lvShapes.HideSelection = False
             Me.m_lvShapes.Location = New System.Drawing.Point(0, 0)
             Me.m_lvShapes.Name = "m_lvShapes"
-            Me.m_lvShapes.Size = New System.Drawing.Size(10, 24)
+            Me.m_lvShapes.Size = New System.Drawing.Size(10, 10)
             Me.m_lvShapes.TabIndex = 0
             Me.m_lvShapes.UseCompatibleStateImageBehavior = False
             '
             'ucShapeToolbox
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.AutoSize = True
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.ContextMenuStrip = Me.m_lvContextMenuStrip
@@ -135,7 +135,7 @@ Namespace Controls
             Me.Margin = New System.Windows.Forms.Padding(0)
             Me.MinimumSize = New System.Drawing.Size(10, 10)
             Me.Name = "ucShapeToolbox"
-            Me.Size = New System.Drawing.Size(10, 24)
+            Me.Size = New System.Drawing.Size(10, 10)
             Me.m_lvContextMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
 

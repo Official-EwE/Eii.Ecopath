@@ -46,6 +46,7 @@ Namespace Controls
             'ucForcingSketchPad
             '
             resources.ApplyResources(Me, "$this")
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Name = "ucForcingSketchPad"
             Me.ResumeLayout(False)
 

@@ -502,11 +502,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Pyramid\cPyramid.vb" />
-    <Compile Include="Controls\Pyramid\ucPyramid.Designer.vb">
-      <DependentUpon>ucPyramid.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Pyramid\ucPyramid.vb">
-    </Compile>
     <Compile Include="Controls\Shapes\cShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cCapacityShapeGUIHandler.vb" />
     <Compile Include="Controls\Shapes\ShapeGUIHandlers\cEggProdutionShapeGUIHandler.vb" />
@@ -607,7 +602,9 @@
     <Compile Include="Controls\Slider\ucSlider.designer.vb">
       <DependentUpon>ucSlider.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Slider\ucSlider.vb" />
+    <Compile Include="Controls\Slider\ucSlider.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucForcingSketchPad.Designer.vb">
       <DependentUpon>ucForcingSketchPad.vb</DependentUpon>
     </Compile>
@@ -837,6 +834,9 @@
       <DependentUpon>ucEditImage.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucEditVisualStyle.resx">
+      <DependentUpon>ucEditVisualStyle.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\VisualStyleEditors\ucHatch.resx">
       <DependentUpon>ucHatch.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -860,6 +860,9 @@
     <EmbeddedResource Include="Controls\MessageBox\frmCustomMessageBox.resx">
       <DependentUpon>frmCustomMessageBox.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Separator\ucFormSeparator.resx">
+      <DependentUpon>ucFormSeparator.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\ShapeImport\UI\dlgImportShapes.resx">
       <DependentUpon>dlgImportShapes.vb</DependentUpon>

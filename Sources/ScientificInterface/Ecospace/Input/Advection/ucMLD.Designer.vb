@@ -47,10 +47,10 @@ Namespace Ecospace.Advection
             '
             'ucMLD
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Name = "ucMLD"
-            Me.Size = New System.Drawing.Size(360, 401)
             Me.ResumeLayout(False)
 
         End Sub

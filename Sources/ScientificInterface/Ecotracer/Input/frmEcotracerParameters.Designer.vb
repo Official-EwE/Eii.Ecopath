@@ -155,8 +155,8 @@ Namespace Ecotracer
             '
             'm_pbSponsor3
             '
+            Me.m_pbSponsor3.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
             resources.ApplyResources(Me.m_pbSponsor3, "m_pbSponsor3")
-            Me.m_pbSponsor3.Image = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
             Me.m_pbSponsor3.Name = "m_pbSponsor3"
             Me.m_pbSponsor3.TabStop = False
             '
@@ -200,7 +200,7 @@ Namespace Ecotracer
             'frmEcotracerParameters
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_rbSpace)
             Me.Controls.Add(Me.m_tbContact)
@@ -222,6 +222,7 @@ Namespace Ecotracer
             Me.Name = "frmEcotracerParameters"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_tlpSponsors.ResumeLayout(False)
             CType(Me.m_pbSponsor1, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbSponsor2, System.ComponentModel.ISupportInitialize).EndInit()

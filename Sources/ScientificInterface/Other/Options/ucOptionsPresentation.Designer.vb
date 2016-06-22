@@ -91,7 +91,7 @@ Namespace Other
             'ucOptionsPresentation
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_cbCollapseNavPanel)
             Me.Controls.Add(Me.m_cbHideMainMenu)
             Me.Controls.Add(Me.m_cbHideStatusBar)

@@ -41,14 +41,14 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeYScale))
-            Me.m_btnOK = New System.Windows.Forms.Button
-            Me.m_btnReset = New System.Windows.Forms.Button
-            Me.m_lbAllPlots = New System.Windows.Forms.ListBox
-            Me.m_lblSelPlotName = New System.Windows.Forms.Label
-            Me.m_txbSelPlotName = New System.Windows.Forms.TextBox
-            Me.m_lblYScale = New System.Windows.Forms.Label
-            Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_nudYScale = New cEwENumericUpDown
+            Me.m_btnOK = New System.Windows.Forms.Button()
+            Me.m_btnReset = New System.Windows.Forms.Button()
+            Me.m_lbAllPlots = New System.Windows.Forms.ListBox()
+            Me.m_lblSelPlotName = New System.Windows.Forms.Label()
+            Me.m_txbSelPlotName = New System.Windows.Forms.TextBox()
+            Me.m_lblYScale = New System.Windows.Forms.Label()
+            Me.m_btnCancel = New System.Windows.Forms.Button()
+            Me.m_nudYScale = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             CType(Me.m_nudYScale, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -93,6 +93,7 @@ Namespace Ecosim
             'm_nudYScale
             '
             Me.m_nudYScale.DecimalPlaces = 3
+            Me.m_nudYScale.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudYScale, "m_nudYScale")
             Me.m_nudYScale.Name = "m_nudYScale"
             '
@@ -100,7 +101,7 @@ Namespace Ecosim
             '
             Me.AcceptButton = Me.m_btnOK
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.Controls.Add(Me.m_nudYScale)
             Me.Controls.Add(Me.m_btnCancel)
@@ -127,7 +128,7 @@ Namespace Ecosim
         Friend WithEvents m_txbSelPlotName As System.Windows.Forms.TextBox
         Friend WithEvents m_lblYScale As System.Windows.Forms.Label
         Friend WithEvents m_btnCancel As System.Windows.Forms.Button
-        Friend WithEvents m_nudYScale As System.Windows.Forms.NumericUpDown
+        Friend WithEvents m_nudYScale As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 

@@ -44,14 +44,15 @@ Namespace Import
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImportDatabase))
-            Me.m_sep = New ScientificInterfaceShared.Controls.ucFormSeparator
-            Me.m_navigator = New ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation
-            Me.m_plWizardContent = New System.Windows.Forms.Panel
+            Me.m_sep = New ScientificInterfaceShared.Controls.ucFormSeparator()
+            Me.m_navigator = New ScientificInterfaceShared.Controls.Wizard.ucWizardNavigation()
+            Me.m_plWizardContent = New System.Windows.Forms.Panel()
             Me.SuspendLayout()
             '
             'm_sep
             '
             resources.ApplyResources(Me.m_sep, "m_sep")
+            Me.m_sep.Horizontal = True
             Me.m_sep.Name = "m_sep"
             '
             'm_navigator
@@ -67,7 +68,7 @@ Namespace Import
             'dlgImportDatabase
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_plWizardContent)
             Me.Controls.Add(Me.m_navigator)
             Me.Controls.Add(Me.m_sep)

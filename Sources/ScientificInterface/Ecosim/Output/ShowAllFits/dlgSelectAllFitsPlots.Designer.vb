@@ -41,11 +41,11 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSelectAllFitsPlots))
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.clbAllPlots = New System.Windows.Forms.CheckedListBox
-            Me.btnCheckAll = New System.Windows.Forms.Button
-            Me.btnUnCheckAll = New System.Windows.Forms.Button
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.clbAllPlots = New System.Windows.Forms.CheckedListBox()
+            Me.btnCheckAll = New System.Windows.Forms.Button()
+            Me.btnUnCheckAll = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'OK_Button
@@ -79,11 +79,11 @@ Namespace Ecosim
             Me.btnUnCheckAll.Name = "btnUnCheckAll"
             Me.btnUnCheckAll.UseVisualStyleBackColor = True
             '
-            'SelectTSPlots
+            'dlgSelectAllFitsPlots
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.clbAllPlots)
             Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.OK_Button)
@@ -91,7 +91,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.btnCheckAll)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "SelectTSPlots"
+            Me.Name = "dlgSelectAllFitsPlots"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.ResumeLayout(False)

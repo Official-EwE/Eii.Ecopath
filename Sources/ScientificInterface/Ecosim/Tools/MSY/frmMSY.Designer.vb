@@ -363,13 +363,14 @@ Namespace Ecosim
             '
             Me.AcceptButton = Me.m_btnRun
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_sc)
             Me.Controls.Add(Me.m_ts)
             Me.Name = "frmMSY"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
+            Me.TabText = ""
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.m_sc.Panel1.ResumeLayout(False)

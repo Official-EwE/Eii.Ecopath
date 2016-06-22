@@ -141,7 +141,7 @@ Partial Class frmMSY
         'frmMSY
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnStop
         Me.Controls.Add(Me.m_lblEffort)
         Me.Controls.Add(Me.m_lblIter)
@@ -158,7 +158,8 @@ Partial Class frmMSY
         Me.Controls.Add(Me.m_btnRunMSY)
         Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
         Me.Name = "frmMSY"
-        Me.ResumeLayout(false)
+        Me.TabText = ""
+        Me.ResumeLayout(False)
         Me.PerformLayout
 
 End Sub

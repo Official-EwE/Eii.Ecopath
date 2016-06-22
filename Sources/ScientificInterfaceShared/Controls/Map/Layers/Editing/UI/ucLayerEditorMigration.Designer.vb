@@ -59,7 +59,7 @@ Namespace Controls.Map.Layers
             'ucLayerEditorMigration
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_btnNext)
             Me.Controls.Add(Me.m_cmbMonth)
             Me.Controls.Add(Me.m_lbMonth)

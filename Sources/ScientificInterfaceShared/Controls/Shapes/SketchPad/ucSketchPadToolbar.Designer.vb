@@ -149,7 +149,7 @@ Namespace Controls
             'ucSketchPadToolbar
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.BackColor = System.Drawing.SystemColors.Control
             Me.Controls.Add(Me.m_tsMenus)
             Me.Name = "ucSketchPadToolbar"
