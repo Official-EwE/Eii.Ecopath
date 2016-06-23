@@ -187,6 +187,21 @@
     <Compile Include="cStockAssessmentModel.vb" />
     <Compile Include="cStockAssessmentParameters.vb" />
     <Compile Include="IMSEData.vb" />
+    <Compile Include="User interface\frmBiomassLimits.Designer.vb">
+      <DependentUpon>frmBiomassLimits.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User interface\frmBiomassLimits.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User interface\frmBiomassLimits_old.Designer.vb">
+      <DependentUpon>frmBiomassLimits_old.vb</DependentUpon>
+    </Compile>
+    <Compile Include="User interface\frmBiomassLimits_old.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User interface\gridBiomassLimits.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="User interface\gridQuotaShares.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -306,6 +321,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="User interface\frmBiomassLimits.resx">
+      <DependentUpon>frmBiomassLimits.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditAssessmentError.resx">
       <DependentUpon>frmEditAssessmentError.vb</DependentUpon>
     </EmbeddedResource>
@@ -320,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditDecreaseEffort.resx">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User interface\frmBiomassLimits_old.resx">
+      <DependentUpon>frmBiomassLimits_old.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditQuotaShares.resx">
       <DependentUpon>frmEditQuotaShares.vb</DependentUpon>

@@ -30,12 +30,15 @@ Option Explicit On
 
 Imports System.IO
 Imports EwECore
+Imports EwEMSEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
 Public Class cBiomassLimits
+    Implements IMSEData
+
     Implements IList(Of cBiomassLimit)
 
     Public lstBiomassLimits As List(Of cBiomassLimit)
@@ -44,6 +47,7 @@ Public Class cBiomassLimits
     Private mMSE As cMSE
     Private mCore As cCore
     Private mFileName As String
+    Private m_bChanged As Boolean
     Const mFileNameOnly As String = "BiomassLimits.csv"
 
 #Region "Internal Class"
@@ -67,19 +71,20 @@ Public Class cBiomassLimits
 
 #End Region
 
-    Public Sub New(Plugin As cMSEPluginPoint)
+    Public Sub New(MSE As cMSE)
 
-        mPlugin = Plugin
-        mMSE = mPlugin.MSE
+        'mPlugin = Plugin
+        mMSE = MSE
         mCore = mMSE.Core
         mFileName = cMSEUtils.MSEFile(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits, mFileNameOnly)
         lstBiomassLimits = New List(Of cBiomassLimit)
+        Me.Defaults()
 
     End Sub
 
-    Public Sub Init()
-        LoadLimitsFromCSV()
-    End Sub
+    'Public Sub Init()
+    '    LoadLimitsFromCSV()
+    'End Sub
 
     Private Function ResolveGroup(strName As String, iIndex As Integer) As cEcoPathGroupInput
         If (iIndex < 1) Or (iIndex > Me.mCore.nGroups) Then Return Nothing
@@ -97,117 +102,11 @@ Public Class cBiomassLimits
         End If
     End Sub
 
-    Public Function LoadLimitsFromCSV() As Boolean
+    'Public Function SaveLimitsToCSV() As Boolean
 
-        Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits)
-        Dim strVal As String = ""
-        Dim StratCounter As Integer = 1
-        Dim lstFailedFiles As New List(Of String)
-        Dim buff As String
-        Dim recs() As String
-        Dim breturn As Boolean = False
-
-        Me.Clear()
-
-        ' If nothing to load then run with defaults
-        If Not File.Exists(Me.mFileName) Then Return True
-
-        Try
-
-            Dim reader As StreamReader = cMSEUtils.GetReader(Me.mFileName)
-            If (reader IsNot Nothing) Then
-
-                buff = reader.ReadLine()        'Skip the row of headers
-                buff = reader.ReadLine()
-
-                breturn = True
-
-                Do Until reader.EndOfStream
-
-                    recs = buff.Split(","c)
-
-                    Dim tempBiomassLimit As cBiomassLimit
-                    'Each HCR Group needs to be a new object
-                    tempBiomassLimit = New cBiomassLimit(mCore)
-
-                    tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
-                    tempBiomassLimit.mLowerLimit = cStringUtils.ConvertToDouble(recs(1))
-                    tempBiomassLimit.mUpperLimit = cStringUtils.ConvertToDouble(recs(2))
-
-                    Dim strMsg As String = ""
-                    ' Only add valid BiomassLimits!
-                    Me.Add(tempBiomassLimit)
-
-                    buff = reader.ReadLine()
-                Loop
-
-            End If 'reader IsNot Nothing
-            cMSEUtils.ReleaseReader(reader)
-
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
-        End Try
-
-        'for debugging
-        Debug.Assert(breturn, Me.ToString + ".Read() Failed to read biomass limits from file.")
-
-        'Warn the user if anything failed
-        If breturn = False Then
-            ' ToDo_JS: globalize this. Add delete prompt?
-            Me.mCore.Messages.SendMessage(New cMessage("Cefas MSE Failed to read the biomass limits file", _
-                                                       eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
-        End If
-
-        Return True
+    'End Function
 
 
-    End Function
-
-    Public Function SaveLimitsToCSV() As Boolean
-        Dim strFile As String = ""
-        Dim strPath As String = ""
-        Dim msg As cMessage = Nothing
-        Dim breturn As Boolean = True
-        Try
-
-            If msg Is Nothing Then
-                strPath = Path.GetDirectoryName(Me.mFileName)
-                msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_BIOMASSLIMITS, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                msg.Hyperlink = strPath
-            End If
-            'Save the Strategy to file
-            'The filename was passed into the Strategy in its constructor
-            Me.Save()
-
-        Catch ex As Exception
-            breturn = False
-            'Me.Save() will throw exceptions out to here
-            Me.mCore.Messages.SendMessage(New cMessage("Exception saving Biomass Limits to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
-        End Try
-
-        If msg IsNot Nothing Then
-            Me.mCore.Messages.SendMessage(msg)
-        End If
-
-        Return breturn
-    End Function
-
-    Private Function Save() As Boolean
-        Dim strm As StreamWriter
-        'Create a new file
-        strm = cMSEUtils.GetWriter(Me.mFileName, False)
-        If (strm IsNot Nothing) Then
-            strm.WriteLine("GroupIndex,LowerLimit,UpperLimit")
-            For Each iBiomassLimit In Me.lstBiomassLimits
-                strm.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.Name) & "," & _
-                                          cStringUtils.ToCSVField(iBiomassLimit.mLowerLimit) & "," & _
-                                          cStringUtils.ToCSVField(iBiomassLimit.mUpperLimit))
-            Next
-        End If
-        cMSEUtils.ReleaseWriter(strm)
-
-        Return True
-    End Function
 
     Public Function GetUpperLimit(iGrp As Integer) As Double
         For Each iBiomassLimit In lstBiomassLimits
@@ -307,5 +206,154 @@ Public Class cBiomassLimits
         Return Nothing
     End Function
 
+    Public Function Load(Optional msg As cMessage = Nothing, Optional strFilename As String = "") As Boolean Implements IMSEData.Load
+        Dim datadir As String = cMSEUtils.MSEFolder(mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits)
+        Dim strVal As String = ""
+        Dim StratCounter As Integer = 1
+        Dim lstFailedFiles As New List(Of String)
+        Dim buff As String
+        Dim recs() As String
+        Dim breturn As Boolean = False
+
+        Me.Clear()
+
+        ' If nothing to load then run with defaults
+        If Not File.Exists(Me.mFileName) Then Return True
+
+        Try
+
+            Dim reader As StreamReader = cMSEUtils.GetReader(Me.mFileName)
+            If (reader IsNot Nothing) Then
+
+                buff = reader.ReadLine()        'Skip the row of headers
+                buff = reader.ReadLine()
+
+                breturn = True
+
+                Do Until reader.EndOfStream
+
+                    recs = buff.Split(","c)
+
+                    Dim tempBiomassLimit As cBiomassLimit
+                    'Each HCR Group needs to be a new object
+                    tempBiomassLimit = New cBiomassLimit(mCore)
+
+                    tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
+                    tempBiomassLimit.mLowerLimit = cStringUtils.ConvertToDouble(recs(1))
+                    tempBiomassLimit.mUpperLimit = cStringUtils.ConvertToDouble(recs(2))
+
+                    Dim strMsg As String = ""
+                    ' Only add valid BiomassLimits!
+                    Me.Add(tempBiomassLimit)
+
+                    buff = reader.ReadLine()
+                Loop
+
+            End If 'reader IsNot Nothing
+            cMSEUtils.ReleaseReader(reader)
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString + ".Read() Exception: " + ex.Message)
+        End Try
+
+        'for debugging
+        Debug.Assert(breturn, Me.ToString + ".Read() Failed to read biomass limits from file.")
+
+        'Warn the user if anything failed
+        If breturn = False Then
+            ' ToDo_JS: globalize this. Add delete prompt?
+            Me.mCore.Messages.SendMessage(New cMessage("Cefas MSE Failed to read the biomass limits file",
+                                                       eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
+        End If
+
+        Return True
+    End Function
+
+    Public Function Save(Optional strFilename As String = "") As Boolean Implements IMSEData.Save
+
+        'Dim strFile As String = ""
+        'Dim strPath As String = ""
+        'Dim msg As cMessage = Nothing
+        'Dim breturn As Boolean = True
+        'Try
+
+        '    If msg Is Nothing Then
+        '        strPath = Path.GetDirectoryName(Me.mFileName)
+        '        msg = New cMessage(String.Format(My.Resources.STATUS_SAVED_BIOMASSLIMITS, My.Resources.CAPTION, strPath), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+        '        msg.Hyperlink = strPath
+        '    End If
+        '    'Save the Strategy to file
+        '    'The filename was passed into the Strategy in its constructor
+        '    Me.Save()
+
+        'Catch ex As Exception
+        '    breturn = False
+        '    'Me.Save() will throw exceptions out to here
+        '    Me.mCore.Messages.SendMessage(New cMessage("Exception saving Biomass Limits to file.", eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
+        'End Try
+
+        'If msg IsNot Nothing Then
+        '    Me.mCore.Messages.SendMessage(msg)
+        'End If
+
+        'Return breturn
+
+
+        If (String.IsNullOrWhiteSpace(strFilename)) Then
+            strFilename = Me.DefaultFileName
+        End If
+
+        'Create a new file
+        Dim writer As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
+        Dim bSuccess As Boolean = False
+
+        If (writer Is Nothing) Then Return bSuccess
+
+        Try
+            writer.WriteLine("GroupNumber,GroupName,LowerLimit,UpperLimit")
+
+            For Each iBiomassLimit As cBiomassLimit In Me.lstBiomassLimits
+                writer.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.getID) & "," &
+                                 cStringUtils.ToCSVField(iBiomassLimit.mGroup.Name) & "," &
+                                 cStringUtils.ToCSVField(iBiomassLimit.mLowerLimit) & "," &
+                                 cStringUtils.ToCSVField(iBiomassLimit.mUpperLimit))
+            Next
+
+            bSuccess = True
+
+        Catch ex As Exception
+
+        End Try
+        cMSEUtils.ReleaseWriter(writer)
+        Return bSuccess
+
+        Return True
+    End Function
+
+    Public Function IsChanged() As Boolean Implements IMSEData.IsChanged
+        Return Me.m_bChanged
+    End Function
+
+    Public Sub Defaults() Implements IMSEData.Defaults
+        For i As Integer = 1 To Me.mMSE.Core.nGroups
+            'Me.Value(i) = cEffortLimits.NoHCR_F
+            Me.lstBiomassLimits.Add(New cBiomassLimit(Me.mMSE.Core))
+            Me.lstBiomassLimits(i - 1).mGroup = mMSE.Core.EcoPathGroupInputs(i)
+            Me.lstBiomassLimits(i - 1).mLowerLimit = 0
+            Me.lstBiomassLimits(i - 1).mUpperLimit = 1000000
+        Next
+        Me.m_bChanged = False
+    End Sub
+
+    Public Function FileExists(Optional strFilename As String = "") As Boolean Implements IMSEData.FileExists
+        If String.IsNullOrWhiteSpace(strFilename) Then
+            strFilename = Me.DefaultFileName()
+        End If
+        Return File.Exists(strFilename)
+    End Function
+
+    Private Function DefaultFileName() As String
+        Return cMSEUtils.MSEFile(Me.mMSE.DataPath, cMSEUtils.eMSEPaths.BiomassLimits, "BiomassLimits.csv")
+    End Function
 
 End Class

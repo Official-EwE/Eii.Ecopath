@@ -685,4 +685,22 @@ Public Class frmMSE
     Private Sub InsertValueIntoArray(ByRef LandingsArray As Double(,,,), ByRef iStrategy As Integer, ByRef iFleet As Integer, ByRef iGroup As Integer, ByRef iTimeStep As Integer, ByRef THEVALUE As Double)
         LandingsArray(iStrategy, iFleet, iGroup, iTimeStep) = 123456789
     End Sub
+
+    Private Sub btnBiomassLimits_Click(sender As Object, e As EventArgs) Handles btnBiomassLimits.Click
+
+        If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
+
+        Try
+            Dim frmBiomassLimits As New frmBiomassLimits(Me.MSE)
+            frmBiomassLimits.Init(Me.UIContext)
+            If frmBiomassLimits.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                'Me.MSE.InvalidateConfigurationState(True)
+                Me.MSE.BiomassLimits.Load()
+                Me.UpdateControls()
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnBiomassLimits")
+        End Try
+
+    End Sub
 End Class

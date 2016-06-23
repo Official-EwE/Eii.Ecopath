@@ -49,7 +49,7 @@ Public Class frmEditQuotaShares
         Me.m_grid.Init(Me.m_mse, Me.m_mse.QuotaShares)
         Me.m_quotashares = New cQuotaShares(Me.m_mse, uic.Core)
         Me.m_quotashares.Load()
-        Me.UpdateGrid(Me.m_quotashares.GetLstGrpShares, My.Resources.HEADER_SURVIVABILITIES)
+        Me.UpdateGrid(Me.m_quotashares.GetLstGrpShares, My.Resources.HEADER_QUOTASHARE)
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -145,7 +145,7 @@ Public Class frmEditQuotaShares
 
         Me.m_bIsDirty = False
 
-        Me.m_mse.InformUser(String.Format(My.Resources.STATUS_SAVED_DISTPARMS, My.Resources.CAPTION, strFolder), _
+        Me.m_mse.InformUser(String.Format(My.Resources.STATUS_SAVED_QUOTASHARES, My.Resources.CAPTION, strFolder),
                                  eMessageImportance.Information, strFolder, lstrSubMessages.ToArray())
 
         Me.DialogResult = Windows.Forms.DialogResult.OK

@@ -106,6 +106,7 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
+        Me.btnBiomassLimits = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -297,6 +298,7 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
+        Me.m_plStep3.Controls.Add(Me.btnBiomassLimits)
         Me.m_plStep3.Controls.Add(Me.m_rbWriteAlways)
         Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
@@ -500,6 +502,12 @@ Partial Class frmMSE
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
         '
+        'btnBiomassLimits
+        '
+        resources.ApplyResources(Me.btnBiomassLimits, "btnBiomassLimits")
+        Me.btnBiomassLimits.Name = "btnBiomassLimits"
+        Me.btnBiomassLimits.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -584,4 +592,5 @@ Partial Class frmMSE
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
     Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
+    Friend WithEvents btnBiomassLimits As Button
 End Class

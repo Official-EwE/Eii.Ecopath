@@ -132,6 +132,7 @@ Public Class cMSE
 
     Private FleetsThatFishHCRGrp As List(Of Integer) = New List(Of Integer)
     Public Property m_quotashares As cQuotaShares
+    Public Property m_biomasslimits As cBiomassLimits
     'Private m_Survivability As cSurvivability
 
     Private BTemp() As Double
@@ -359,6 +360,12 @@ Public Class cMSE
     Public ReadOnly Property QuotaShares As cQuotaShares
         Get
             Return Me.m_quotashares
+        End Get
+    End Property
+
+    Public ReadOnly Property BiomassLimits As cBiomassLimits
+        Get
+            Return Me.m_biomasslimits
         End Get
     End Property
 
@@ -593,8 +600,8 @@ Public Class cMSE
     End Sub
 
     Public Sub GenerateEmptyBiomassLimitsCSV()
-        Dim TBiomassLimits As cBiomassLimits = New cBiomassLimits(m_plugin)
-        TBiomassLimits.SaveLimitsToCSV()
+        Dim TBiomassLimits As cBiomassLimits = New cBiomassLimits(Me)
+        TBiomassLimits.Save()
     End Sub
 
     Public Sub GenerateEmptyEffortLimitsCSV()
@@ -1762,8 +1769,8 @@ Public Class cMSE
             Me.m_ecopath.suppressMessages = True
 
             'Initialise and load from CSV the biomass limits
-            BiomassLimits = New cBiomassLimits(m_plugin)
-            BiomassLimits.LoadLimitsFromCSV()
+            BiomassLimits = New cBiomassLimits(Me)
+            BiomassLimits.Load()
 
 #If DEBUG Then
             'output the headings of the csv for the F results to test whether F steps correctly

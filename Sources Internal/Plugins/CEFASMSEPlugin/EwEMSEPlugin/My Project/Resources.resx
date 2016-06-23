@@ -377,4 +377,22 @@
   <data name="PROMPT_QUOTAS_NOT_SUM_TO_ONE" xml:space="preserve">
     <value />
   </data>
+  <data name="HEADER_BIOMASS_LIMITS" xml:space="preserve">
+    <value>Biomass limits</value>
+  </data>
+  <data name="HEADER_GROUP_INDEX" xml:space="preserve">
+    <value>Group index</value>
+  </data>
+  <data name="HEADER_GROUP_NAME" xml:space="preserve">
+    <value>Group name</value>
+  </data>
+  <data name="HEADER_LOWER_LIMIT_VALID" xml:space="preserve">
+    <value>Lower limit</value>
+  </data>
+  <data name="HEADER_UPPER_LIMIT_VALID" xml:space="preserve">
+    <value>Upper limit</value>
+  </data>
+  <data name="STATUS_SAVED_QUOTASHARES" xml:space="preserve">
+    <value>{0} saved quotashare parameters to {1}</value>
+  </data>
 </root>
