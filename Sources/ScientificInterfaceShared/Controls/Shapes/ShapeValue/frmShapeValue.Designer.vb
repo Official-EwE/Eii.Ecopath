@@ -251,7 +251,7 @@ Partial Class frmShapeValue
         Me.Name = "frmShapeValue"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.TabText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
+        Me.TabText = ""
         Me.m_tlpAll.ResumeLayout(False)
         Me.m_tlpAll.PerformLayout()
         Me.m_tlpNoOfYears.ResumeLayout(False)
