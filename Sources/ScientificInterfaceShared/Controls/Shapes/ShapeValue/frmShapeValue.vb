@@ -289,7 +289,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged
+        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged, m_txtXBase.TextChanged
         'Lazy update
         Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
     End Sub
