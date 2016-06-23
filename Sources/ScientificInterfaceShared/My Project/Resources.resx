@@ -2028,7 +2028,7 @@
     <value>Foraging response to {0}</value>
   </data>
   <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
-    <value>Map histogram &amp; Response function</value>
+    <value>Driver histogram &amp; response function</value>
   </data>
   <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
     <value>Map values</value>
