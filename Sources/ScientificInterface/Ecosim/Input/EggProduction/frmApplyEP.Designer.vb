@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -45,7 +45,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ApplyEP))
-            Me.m_grid = New ScientificInterface.Ecosim.ApplyEPEwEGrid()
+            Me.m_grid = New ScientificInterface.Ecosim.gridApplyEP()
             Me.m_splitContent = New System.Windows.Forms.SplitContainer()
             Me.m_lvShapes = New ScientificInterfaceShared.Controls.cSmoothListView()
             Me.m_lblNoStanza = New System.Windows.Forms.Label()
@@ -177,7 +177,7 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_grid As ApplyEPEwEGrid
+        Private WithEvents m_grid As gridApplyEP
         Private WithEvents m_lvShapes As cSmoothListView
         Private WithEvents m_splitContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblNoStanza As System.Windows.Forms.Label

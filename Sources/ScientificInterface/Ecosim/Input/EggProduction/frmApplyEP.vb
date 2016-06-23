@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -215,9 +215,9 @@ Namespace Ecosim
         Private Sub UpdateSetControls()
 
             ' Hackittyhack: enable when the shape interface is visible and the non-empty grid selection includes the shapes column
-            Dim bEnabled As Boolean = (Me.m_tlpContent.Visible = True) And _
-                                      (Me.m_grid.Selection.GetRange.IsEmpty = False) And _
-                                      (Me.m_grid.Selection.GetRange.ContainsColumn(ApplyEPEwEGrid.eColumnTypes.Shape))
+            Dim bEnabled As Boolean = (Me.m_tlpContent.Visible = True) And
+                                      (Me.m_grid.Selection.GetRange.IsEmpty = False) And
+                                      (Me.m_grid.Selection.GetRange.ContainsColumn(gridApplyEP.eColumnTypes.Shape))
             Me.m_tlbSet.Enabled = bEnabled
             Me.m_tscEggProdShapes.Enabled = bEnabled
             Me.m_tsbSet.Enabled = bEnabled

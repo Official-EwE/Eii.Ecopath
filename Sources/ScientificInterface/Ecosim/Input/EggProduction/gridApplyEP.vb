@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -35,8 +35,8 @@ Namespace Ecosim
     ''' <summary>
     ''' Grid for applying egg production shapes to multi-stanza configurations.
     ''' </summary>
-    <CLSCompliant(False)> _
-    Public Class ApplyEPEwEGrid
+    <CLSCompliant(False)>
+    Public Class gridApplyEP
         Inherits EwEGrid
 
 #Region " Private vars "
