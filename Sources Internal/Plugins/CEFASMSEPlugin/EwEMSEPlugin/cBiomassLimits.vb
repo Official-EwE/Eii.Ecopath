@@ -238,7 +238,12 @@ Public Class cBiomassLimits
                     'Each HCR Group needs to be a new object
                     tempBiomassLimit = New cBiomassLimit(mCore)
 
-                    tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
+                    If (recs(0).Contains("_"c)) Then
+                        ' Work-around for values such as "EcopathGroupInput_#"
+                        tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0).Substring(recs(0).LastIndexOf("_") + 1)))
+                    Else
+                        tempBiomassLimit.mGroup = mCore.EcoPathGroupInputs(cStringUtils.ConvertToInteger(recs(0)))
+                    End If
                     tempBiomassLimit.mLowerLimit = cStringUtils.ConvertToDouble(recs(1))
                     tempBiomassLimit.mUpperLimit = cStringUtils.ConvertToDouble(recs(2))
 

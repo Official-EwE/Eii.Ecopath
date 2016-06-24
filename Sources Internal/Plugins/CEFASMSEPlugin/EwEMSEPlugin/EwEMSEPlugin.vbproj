@@ -193,12 +193,6 @@
     <Compile Include="User interface\frmBiomassLimits.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="User interface\frmBiomassLimits_old.Designer.vb">
-      <DependentUpon>frmBiomassLimits_old.vb</DependentUpon>
-    </Compile>
-    <Compile Include="User interface\frmBiomassLimits_old.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="User interface\gridBiomassLimits.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -338,9 +332,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditDecreaseEffort.resx">
       <DependentUpon>frmEditDecreaseEffort.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="User interface\frmBiomassLimits_old.resx">
-      <DependentUpon>frmBiomassLimits_old.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User interface\frmEditQuotaShares.resx">
       <DependentUpon>frmEditQuotaShares.vb</DependentUpon>

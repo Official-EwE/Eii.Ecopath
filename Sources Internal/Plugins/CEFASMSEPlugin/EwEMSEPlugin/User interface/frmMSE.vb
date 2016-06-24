@@ -686,7 +686,7 @@ Public Class frmMSE
         LandingsArray(iStrategy, iFleet, iGroup, iTimeStep) = 123456789
     End Sub
 
-    Private Sub btnBiomassLimits_Click(sender As Object, e As EventArgs) Handles btnBiomassLimits.Click
+    Private Sub OnViewBiomassLimits(sender As Object, e As EventArgs) Handles m_btnBiomassLimits.Click
 
         If Not Me.MSE.ResolveMSEPathConflicts(True) Then Return
 

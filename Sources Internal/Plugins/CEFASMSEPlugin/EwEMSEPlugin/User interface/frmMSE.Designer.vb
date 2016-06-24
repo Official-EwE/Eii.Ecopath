@@ -78,6 +78,7 @@ Partial Class frmMSE
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
+        Me.m_btnBiomassLimits = New System.Windows.Forms.Button()
         Me.m_rbWriteAlways = New System.Windows.Forms.CheckBox()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
@@ -106,7 +107,6 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
-        Me.btnBiomassLimits = New System.Windows.Forms.Button()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -298,8 +298,6 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
-        Me.m_plStep3.Controls.Add(Me.btnBiomassLimits)
-        Me.m_plStep3.Controls.Add(Me.m_rbWriteAlways)
         Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
@@ -307,6 +305,12 @@ Partial Class frmMSE
         Me.m_plStep3.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
         Me.m_plStep3.Name = "m_plStep3"
+        '
+        'm_btnBiomassLimits
+        '
+        resources.ApplyResources(Me.m_btnBiomassLimits, "m_btnBiomassLimits")
+        Me.m_btnBiomassLimits.Name = "m_btnBiomassLimits"
+        Me.m_btnBiomassLimits.UseVisualStyleBackColor = True
         '
         'm_rbWriteAlways
         '
@@ -317,6 +321,8 @@ Partial Class frmMSE
         'm_tlpFishingControls
         '
         resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
+        Me.m_tlpFishingControls.Controls.Add(Me.m_rbWriteAlways, 0, 2)
+        Me.m_tlpFishingControls.Controls.Add(Me.m_btnBiomassLimits, 6, 2)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnStockAssessment, 2, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnSAError, 4, 0)
@@ -349,7 +355,7 @@ Partial Class frmMSE
         '
         'm_hdrStep3
         '
-        Me.m_hdrStep3.CanCollapseParent = True
+        Me.m_hdrStep3.CanCollapseParent = False
         Me.m_hdrStep3.CollapsedParentHeight = 76
         resources.ApplyResources(Me.m_hdrStep3, "m_hdrStep3")
         Me.m_hdrStep3.IsCollapsed = False
@@ -502,16 +508,10 @@ Partial Class frmMSE
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
         '
-        'btnBiomassLimits
-        '
-        resources.ApplyResources(Me.btnBiomassLimits, "btnBiomassLimits")
-        Me.btnBiomassLimits.Name = "btnBiomassLimits"
-        Me.btnBiomassLimits.UseVisualStyleBackColor = True
-        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
         Me.Controls.Add(Me.m_tlpLayout)
         Me.Name = "frmMSE"
@@ -524,6 +524,7 @@ Partial Class frmMSE
         Me.m_plStep3.ResumeLayout(False)
         Me.m_plStep3.PerformLayout()
         Me.m_tlpFishingControls.ResumeLayout(False)
+        Me.m_tlpFishingControls.PerformLayout()
         CType(Me.m_pbCefas, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tlpLayout.ResumeLayout(False)
         Me.m_plStep1.ResumeLayout(False)
@@ -592,5 +593,5 @@ Partial Class frmMSE
     Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
     Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
-    Friend WithEvents btnBiomassLimits As Button
+    Private WithEvents m_btnBiomassLimits As Button
 End Class
