@@ -6281,7 +6281,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("HEADER_SCENARIO", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Shannon diversity.
         '''</summary>
@@ -6290,7 +6290,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("HEADER_SHANNONDIVERSITY", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Shape.
         '''</summary>
@@ -7959,7 +7959,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Map histogram &amp; Response function.
+        '''  Looks up a localized string similar to Driver histogram &amp; response function.
         '''</summary>
         Public ReadOnly Property RESPONSE_GRAPH_TITLE() As String
             Get
