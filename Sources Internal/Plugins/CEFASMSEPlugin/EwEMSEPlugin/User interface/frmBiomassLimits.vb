@@ -1,42 +1,19 @@
-﻿' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright 1991- :
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
-Option Strict On
+﻿Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-Public Class frmBiomassLimits_old
+Public Class frmBiomassLimits
 
     Private m_mse As cMSE = Nothing
     Private m_BiomassLimits As cBiomassLimits
     Private m_bIsDirty As Boolean
+    Private m_data As cBiomassLimits = Nothing
 
     Public Sub New(MSE As cMSE)
 
+        MyBase.New()
         Me.m_mse = MSE
         Me.InitializeComponent()
         Me.Grid = Me.m_grid
@@ -44,12 +21,27 @@ Public Class frmBiomassLimits_old
     End Sub
 
     Public Sub Init(ByVal uic As cUIContext)
+
+        'Me.m_data = New cBiomassLimits(Me.m_mse)
+        'Me.m_data.Load()
+
+        'Me.m_grid.Init(m_mse.BiomassLimits.lstBiomassLimits)
+        'Me.m_BiomassLimits = New cBiomassLimits(m_mse)
+        'Me.m_BiomassLimits.Load()
+        'Me.UpdateGrid(m_BiomassLimits.lstBiomassLimits, My.Resources.HEADER_SURVIVABILITIES)
+
         Me.UIContext = uic
         Me.m_grid.UIContext = uic
-        Me.m_grid.Init(m_mse.BiomassLimits)
-        Me.m_BiomassLimits = New cBiomassLimits(m_mse)
-        Me.m_BiomassLimits.Load()
-        Me.UpdateGrid(m_BiomassLimits, My.Resources.HEADER_BIOMASS_LIMITS)
+        Me.m_grid.Init(Me.m_mse.BiomassLimits)
+        Me.m_data = New cBiomassLimits(Me.m_mse)
+        Me.m_data.Load()
+        Me.UpdateGrid(m_data, My.Resources.HEADER_BIOMASS_LIMITS)
+
+        'Me.m_grid.Init(Me.m_mse, )
+        'Me.m_quotashares = New cQuotaShares(Me.m_mse, uic.Core)
+        'Me.m_quotashares.Load()
+        'Me.UpdateGrid(Me.m_quotashares.GetLstGrpShares, My.Resources.HEADER_QUOTASHARE)
+
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -65,6 +57,24 @@ Public Class frmBiomassLimits_old
         Me.UpdateControls()
 
     End Sub
+
+    'Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
+    '    Me.QuickEditHandler.Detach()
+    '    MyBase.OnFormClosed(e)
+
+    '    If (Me.m_bIsDirty = True) Then
+    '        ' JS 02Oct13: globalized this method
+    '        ' JS 02Oct13: replaced MsgBox with cFeedbackMessage
+    '        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_UNSAVED_CHANGES,
+    '                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+    '        fmsg.Reply = eMessageReply.YES
+    '        Me.Core.Messages.SendMessage(fmsg)
+    '        e.Cancel = (fmsg.Reply <> eMessageReply.YES)
+    '    End If
+
+    '    MyBase.OnFormClosing(e)
+
+    'End Sub
 
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
@@ -93,13 +103,17 @@ Public Class frmBiomassLimits_old
     End Sub
 
     Protected Overrides Sub UpdateControls()
+
         MyBase.UpdateControls()
         ' Me.m_btnOK.Enabled = Me.m_bIsDirty
+
     End Sub
 
     Private Sub UpdateGrid(data As cBiomassLimits, strName As String)
+
         Me.m_grid.Data = data
         Me.m_grid.DataName = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.CAPTION, strName)
+
     End Sub
 
     'Private Sub OutputMessageNotSum1(ByVal Groups_Not_Summing_to_1 As List(Of Integer))
@@ -218,4 +232,5 @@ Public Class frmBiomassLimits_old
     '    Me.UpdateGrid(Me.m_quotashares.GetLstGrpShares, My.Resources.HEADER_SURVIVABILITIES)
 
     'End Sub
+
 End Class
