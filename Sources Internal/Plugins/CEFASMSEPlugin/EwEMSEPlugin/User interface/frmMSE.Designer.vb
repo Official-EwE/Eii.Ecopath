@@ -78,9 +78,9 @@ Partial Class frmMSE
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
-        Me.m_btnBiomassLimits = New System.Windows.Forms.Button()
-        Me.m_rbWriteAlways = New System.Windows.Forms.CheckBox()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_rbWriteAlways = New System.Windows.Forms.CheckBox()
+        Me.m_btnBiomassLimits = New System.Windows.Forms.Button()
         Me.m_btnDecreaseEffort = New System.Windows.Forms.Button()
         Me.m_btnStockAssessment = New System.Windows.Forms.Button()
         Me.m_btnSAError = New System.Windows.Forms.Button()
@@ -306,18 +306,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
         Me.m_plStep3.Name = "m_plStep3"
         '
-        'm_btnBiomassLimits
-        '
-        resources.ApplyResources(Me.m_btnBiomassLimits, "m_btnBiomassLimits")
-        Me.m_btnBiomassLimits.Name = "m_btnBiomassLimits"
-        Me.m_btnBiomassLimits.UseVisualStyleBackColor = True
-        '
-        'm_rbWriteAlways
-        '
-        resources.ApplyResources(Me.m_rbWriteAlways, "m_rbWriteAlways")
-        Me.m_rbWriteAlways.Name = "m_rbWriteAlways"
-        Me.m_rbWriteAlways.UseVisualStyleBackColor = True
-        '
         'm_tlpFishingControls
         '
         resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
@@ -328,6 +316,18 @@ Partial Class frmMSE
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnSAError, 4, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnQuotaShares, 6, 0)
         Me.m_tlpFishingControls.Name = "m_tlpFishingControls"
+        '
+        'm_rbWriteAlways
+        '
+        resources.ApplyResources(Me.m_rbWriteAlways, "m_rbWriteAlways")
+        Me.m_rbWriteAlways.Name = "m_rbWriteAlways"
+        Me.m_rbWriteAlways.UseVisualStyleBackColor = True
+        '
+        'm_btnBiomassLimits
+        '
+        resources.ApplyResources(Me.m_btnBiomassLimits, "m_btnBiomassLimits")
+        Me.m_btnBiomassLimits.Name = "m_btnBiomassLimits"
+        Me.m_btnBiomassLimits.UseVisualStyleBackColor = True
         '
         'm_btnDecreaseEffort
         '
