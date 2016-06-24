@@ -185,9 +185,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Plugins\Datasets\Files\Specific\cASCIIFilesDataSetPlugin.vb" />
-    <Compile Include="Plugins\Datasets\Files\cCalendarColumn.vb">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Plugins\Datasets\Files\cCalendarColumn.vb" />
     <Compile Include="Plugins\Datasets\cFileDataSetPlugin.vb" />
     <Compile Include="Plugins\Datasets\Files\cMultiFileDataSetPlugin.vb" />
     <Compile Include="Plugins\Datasets\Files\Specific\cCSVFilesDataSetPlugin.vb" />
