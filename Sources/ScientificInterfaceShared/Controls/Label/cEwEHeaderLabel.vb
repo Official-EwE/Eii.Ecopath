@@ -242,11 +242,13 @@ Namespace Controls
          Category("Expand/collapse")> _
         Public Property IsCollapsed() As Boolean
             Get
+                If Not Me.CanCollapseParent Then Return False
                 Return Me.m_bIsCollapsed
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bIsCollapsed = value
-                If Me.m_bIsCollapsed Then
+
+                If Me.IsCollapsed Then
                     Me.m_iExpandedParentHeight = Me.Parent.Height
                     Me.Parent.Height = Math.Max(Me.Height, Me.m_iCollapsedParentHeight)
                 ElseIf (Me.m_iExpandedParentHeight > 0) Then
