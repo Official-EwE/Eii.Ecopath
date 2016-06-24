@@ -26,6 +26,7 @@ Partial Class frmBiomassLimits
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmBiomassLimits))
         Me.m_grid = New EwEMSEPlugin.gridBiomassLimits()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
@@ -35,6 +36,7 @@ Partial Class frmBiomassLimits
         'm_grid
         '
         Me.m_grid.AllowBlockSelect = False
+        resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
         Me.m_grid.AutoSizeMinWidth = 10
         Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -52,9 +54,7 @@ Partial Class frmBiomassLimits
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.IsOutputGrid = True
-        Me.m_grid.Location = New System.Drawing.Point(21, 32)
         Me.m_grid.Name = "m_grid"
-        Me.m_grid.Size = New System.Drawing.Size(452, 402)
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -64,50 +64,40 @@ Partial Class frmBiomassLimits
             Or SourceGrid2.GridSpecialKeys.Enter) _
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_grid.TabIndex = 0
         Me.m_grid.UIContext = Nothing
         '
         'm_btnCancel
         '
-        Me.m_btnCancel.Location = New System.Drawing.Point(295, 440)
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
         Me.m_btnCancel.Name = "m_btnCancel"
-        Me.m_btnCancel.Size = New System.Drawing.Size(90, 23)
-        Me.m_btnCancel.TabIndex = 1
-        Me.m_btnCancel.Text = "Cancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
         'm_btnSave
         '
-        Me.m_btnSave.Location = New System.Drawing.Point(396, 440)
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
         Me.m_btnSave.Name = "m_btnSave"
-        Me.m_btnSave.Size = New System.Drawing.Size(77, 22)
-        Me.m_btnSave.TabIndex = 2
-        Me.m_btnSave.Text = "Save"
         Me.m_btnSave.UseVisualStyleBackColor = True
         '
         'm_ts
         '
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Location = New System.Drawing.Point(0, 0)
+        resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
         Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.m_ts.Size = New System.Drawing.Size(498, 25)
-        Me.m_ts.TabIndex = 3
-        Me.m_ts.Text = "CEwEToolstrip1"
         '
         'frmBiomassLimits
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(498, 487)
+        Me.ControlBox = False
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_btnSave)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_grid)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmBiomassLimits"
+        Me.ShowIcon = False
+        Me.ShowInTaskbar = False
         Me.TabText = ""
-        Me.Text = "frmBiomassLimits"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
