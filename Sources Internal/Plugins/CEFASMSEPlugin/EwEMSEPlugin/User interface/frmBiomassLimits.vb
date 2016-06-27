@@ -7,7 +7,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class frmBiomassLimits
 
     Private m_mse As cMSE = Nothing
-    Private m_BiomassLimits As cBiomassLimits
     Private m_bIsDirty As Boolean
     Private m_data As cBiomassLimits = Nothing
 
@@ -154,7 +153,7 @@ Public Class frmBiomassLimits
 
         'Saves all the parameters to csv when user clicks to save
         'If m_quotashares.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "QuotaShares.csv"))
-        If m_BiomassLimits.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "BiomassLimits.csv"))
+        If m_data.Save() Then lstrSubMessages.Add(String.Format(My.Resources.STATUS_SAVED_DETAIL, "BiomassLimits.csv"))
 
         Me.m_bIsDirty = False
 
