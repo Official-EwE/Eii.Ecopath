@@ -195,10 +195,10 @@ Namespace Controls
                     g.FillRectangle(br, rc)
                 End Using
 
-                cShapeImage.DrawShapeDirect(Me.m_uic, _
-                                            data, Me.nDisplayPoints, Me.m_shape.IsSeasonal, _
-                                            Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color, _
-                                            Me.m_handler.SketchDrawMode, _
+                cShapeImage.DrawShapeDirect(Me.m_uic,
+                                            data, Me.nDisplayPoints, Me.m_shape.IsSeasonal,
+                                            Me.m_plPreview.ClientRectangle, e.Graphics, Me.m_handler.Color,
+                                            Me.m_handler.SketchDrawMode(Me.m_shape),
                                             sDataMax / 0.8!, cCore.NULL_VALUE, cCore.NULL_VALUE)
 
                 Using br As New HatchBrush(HatchStyle.SmallConfetti, Color.FromArgb(100, 0, 0, 0), Color.Transparent)

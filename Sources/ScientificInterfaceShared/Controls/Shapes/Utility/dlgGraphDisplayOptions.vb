@@ -98,7 +98,9 @@ Namespace Controls
             ' Set display mode
             If Me.m_rbFill.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.Fill
             If Me.m_rbLine.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.Line
-            If Me.m_rbDots.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.Dots
+            If Me.m_rbTSDriver.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesDriver
+            If Me.m_rbTSRefAbs.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefAbs
+            If Me.m_rbTSRefRel.Checked Then Me.m_sketchpad.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefRel
 
             ' The Y scale
             Me.m_sketchpad.YAxisMaxValue = CSng(Me.m_fbYMax.Value)
@@ -129,8 +131,12 @@ Namespace Controls
                     Me.m_rbFill.Checked = True
                 Case eSketchDrawModeTypes.Line
                     Me.m_rbLine.Checked = True
-                Case eSketchDrawModeTypes.Dots
-                    Me.m_rbDots.Checked = True
+                Case eSketchDrawModeTypes.TimeSeriesDriver
+                    Me.m_rbTSDriver.Checked = True
+                Case eSketchDrawModeTypes.TimeSeriesRefAbs
+                    Me.m_rbTSRefAbs.Checked = True
+                Case eSketchDrawModeTypes.TimeSeriesRefRel
+                    Me.m_rbTSRefRel.Checked = True
             End Select
 
             ' Is mediation sketch pad?

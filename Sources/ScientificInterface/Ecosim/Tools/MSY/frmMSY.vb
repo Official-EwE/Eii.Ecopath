@@ -595,7 +595,7 @@ Namespace Ecosim
                 Next r
 
                 ' Add value line to the list of lines to show
-                li = Me.m_zgh.CreateLineItem(Me.GetLabel(strDataName, strPostfix), eLineType.ModelData, Color.Blue, ppl)
+                li = Me.m_zgh.CreateLineItem(Me.GetLabel(strDataName, strPostfix), eSketchDrawModeTypes.Line, Color.Blue, ppl)
                 li.Line.Style = style
                 lli.Add(li)
 

@@ -351,8 +351,17 @@ Namespace Controls
         ''' </summary>
         ''' <returns>The default sketch mode for Time Series shapes.</returns>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function SketchDrawMode() As eSketchDrawModeTypes
-            Return eSketchDrawModeTypes.Dots
+        Public Overrides Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
+            If (shape Is Nothing) Then Return eSketchDrawModeTypes.TimeSeriesDriver
+            Debug.Assert(TypeOf shape Is cTimeSeries)
+            Dim ts As cTimeSeries = DirectCast(shape, cTimeSeries)
+            If (ts.IsDriver) Then
+                Return eSketchDrawModeTypes.TimeSeriesDriver
+            End If
+            If (ts.IsAbsolute) Then
+                Return eSketchDrawModeTypes.TimeSeriesRefAbs
+            End If
+            Return eSketchDrawModeTypes.TimeSeriesRefRel
         End Function
 
         ''' -----------------------------------------------------------------------

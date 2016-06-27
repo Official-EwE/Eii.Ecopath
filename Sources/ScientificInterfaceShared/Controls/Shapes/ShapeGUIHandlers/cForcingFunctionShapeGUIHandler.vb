@@ -445,9 +445,10 @@ Namespace Controls
         ''' <summary>
         ''' Returns the default sketch mode for forcing functions.
         ''' </summary>
+        ''' <param name="shape"></param>
         ''' <returns>The default sketch mode for forcing functions.</returns>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function SketchDrawMode() As eSketchDrawModeTypes
+        Public Overrides Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
             Return eSketchDrawModeTypes.Fill
         End Function
 

@@ -693,11 +693,6 @@
     <Compile Include="Properties\Formula expressions\cBooleanOperand.vb" />
     <Compile Include="Properties\Formula expressions\cConditionalOperation.vb" />
     <Compile Include="Properties\cPropertySelectionCommand.vb" />
-    <Compile Include="Service References\BingMapsGeoLocatorService\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Settings\cFormSettings.vb" />
     <Compile Include="Settings\cSettingsParser.vb" />
     <Compile Include="Settings\IXMLDocSettings.vb" />
@@ -957,26 +952,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Service References\BingMapsGeoLocatorService\dev.wsdl" />
-    <None Include="Service References\BingMapsGeoLocatorService\dev.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\dev1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\dev2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\schemas.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\schemas1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\ScientificInterfaceShared.BingMapsGeoLocatorService.SearchResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\SearchService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
@@ -1016,12 +991,6 @@
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
     <Content Include="Resources\Annual.png" />
-    <None Include="Service References\BingMapsGeoLocatorService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Service References\BingMapsGeoLocatorService\configuration.svcinfo" />
-    <None Include="Service References\BingMapsGeoLocatorService\configuration91.svcinfo" />
     <None Include="Resources\saveOutputHS.png" />
     <None Include="Resources\openOutputHS.png" />
     <None Include="Resources\OK.png" />
@@ -1244,9 +1213,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\BingMapsGeoLocatorService\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- Copy includes to output path for deployment

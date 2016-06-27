@@ -1587,7 +1587,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Font(ByVal ft As eApplicationFontType) As Font
             Get
-                Return New Font(Me.FontFamilyName(ft), Me.FontSize(ft), Me.FontStyle(ft), GraphicsUnit.Pixel)
+                ' ToDo: use proper DPI scaling here
+                Return New Font(Me.FontFamilyName(ft), Me.FontSize(ft), Me.FontStyle(ft), GraphicsUnit.Point)
             End Get
         End Property
 

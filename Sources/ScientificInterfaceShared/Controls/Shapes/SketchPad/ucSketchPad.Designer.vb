@@ -47,7 +47,7 @@ Namespace Controls
             Me.m_tsmiDrawMode = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiFill = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiLine = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiDots = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiTSDriver = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiShowMarks = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiAutoScaleYAxis = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiReset = New System.Windows.Forms.ToolStripMenuItem()
@@ -56,6 +56,8 @@ Namespace Controls
             Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiOptions = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiTSRefAbs = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiTSRefRel = New System.Windows.Forms.ToolStripMenuItem()
             m_tss1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_spContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
@@ -73,7 +75,7 @@ Namespace Controls
             '
             'm_tsmiDrawMode
             '
-            Me.m_tsmiDrawMode.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFill, Me.m_tsmiLine, Me.m_tsmiDots})
+            Me.m_tsmiDrawMode.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFill, Me.m_tsmiLine, Me.m_tsmiTSDriver, Me.m_tsmiTSRefAbs, Me.m_tsmiTSRefRel})
             Me.m_tsmiDrawMode.Name = "m_tsmiDrawMode"
             resources.ApplyResources(Me.m_tsmiDrawMode, "m_tsmiDrawMode")
             '
@@ -87,10 +89,10 @@ Namespace Controls
             Me.m_tsmiLine.Name = "m_tsmiLine"
             resources.ApplyResources(Me.m_tsmiLine, "m_tsmiLine")
             '
-            'm_tsmiDots
+            'm_tsmiTSDriver
             '
-            Me.m_tsmiDots.Name = "m_tsmiDots"
-            resources.ApplyResources(Me.m_tsmiDots, "m_tsmiDots")
+            Me.m_tsmiTSDriver.Name = "m_tsmiTSDriver"
+            resources.ApplyResources(Me.m_tsmiTSDriver, "m_tsmiTSDriver")
             '
             'm_tsmiShowMarks
             '
@@ -132,6 +134,16 @@ Namespace Controls
             Me.m_tsmiOptions.Name = "m_tsmiOptions"
             resources.ApplyResources(Me.m_tsmiOptions, "m_tsmiOptions")
             '
+            'm_tsmiTSRefAbs
+            '
+            Me.m_tsmiTSRefAbs.Name = "m_tsmiTSRefAbs"
+            resources.ApplyResources(Me.m_tsmiTSRefAbs, "m_tsmiTSRefAbs")
+            '
+            'm_tsmiTSRefRel
+            '
+            Me.m_tsmiTSRefRel.Name = "m_tsmiTSRefRel"
+            resources.ApplyResources(Me.m_tsmiTSRefRel, "m_tsmiTSRefRel")
+            '
             'ucSketchPad
             '
             resources.ApplyResources(Me, "$this")
@@ -149,7 +161,7 @@ Namespace Controls
         Private WithEvents m_tsmiDrawMode As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiFill As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiLine As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsmiDots As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiTSDriver As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiAutoScaleYAxis As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiReset As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiValue As System.Windows.Forms.ToolStripMenuItem
@@ -157,7 +169,8 @@ Namespace Controls
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
         Protected WithEvents m_tsmiShowMarks As System.Windows.Forms.ToolStripMenuItem
-
+        Private WithEvents m_tsmiTSRefAbs As ToolStripMenuItem
+        Private WithEvents m_tsmiTSRefRel As ToolStripMenuItem
     End Class
 
 End Namespace

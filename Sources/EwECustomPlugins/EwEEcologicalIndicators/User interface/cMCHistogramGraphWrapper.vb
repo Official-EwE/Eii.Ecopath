@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 Imports System.Text
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -160,7 +161,7 @@ Public Class cMCHistogramGraphWrapper
                     sXMax = Math.Max(sXMax, hist(ipt).X)
                 Next
 
-                Dim il As LineItem = Me.CreateLineItem(info.Name, ScientificInterfaceShared.Definitions.eLineType.NotSet, Drawing.Color.RoyalBlue, ppl)
+                Dim il As LineItem = Me.CreateLineItem(info.Name, eSketchDrawModeTypes.NotSet, Drawing.Color.RoyalBlue, ppl)
                 Me.PlotLines(New LineItem() {il}, iPane)
 
                 gp.XAxis.Scale.MinAuto = False

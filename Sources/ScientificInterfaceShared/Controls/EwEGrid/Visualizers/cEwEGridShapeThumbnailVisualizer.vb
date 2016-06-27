@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports System.Drawing
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -73,7 +74,7 @@ Public Class cEwEGridShapeThumbnailVisualizer
         Dim img As New Bitmap(rcClient.Width, rcClient.Height)
 
         Using g As Graphics = Graphics.FromImage(img)
-            cShapeImage.DrawShape(grid.UIContext, shape, rcBmp, g, Me.m_clr, ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.LineSelective)
+            cShapeImage.DrawShape(grid.UIContext, shape, rcBmp, g, Me.m_clr, eSketchDrawModeTypes.Line)
         End Using
 
         e.Graphics.DrawImage(img, rcClient.Location)

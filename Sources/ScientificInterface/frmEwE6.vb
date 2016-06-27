@@ -45,11 +45,9 @@ Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Other
 Imports ScientificInterface.Wizard
 Imports ScientificInterfaceShared
-Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Integration
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -4938,12 +4936,3 @@ Public Class frmEwE6
 #End Region  ' Big and evil event handlers
 
 End Class
-
-#Region " Deprecated "
-
-<Obsolete("Please use frmEwE6 instead")> _
-Public Class AppLauncher
-    Inherits frmEwE6
-End Class
-
-#End Region ' Deprecated

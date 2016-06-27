@@ -198,11 +198,7 @@ Namespace Ecosim
         Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
 
-            Me.AddCurves()
-            Me.m_zgh.RescaleAndRedraw()
-
-            'Display pred and prey ranks
-            Me.ShowGroup()
+            Me.UpdatePlots()
 
         End Sub
 
@@ -265,6 +261,7 @@ Namespace Ecosim
                 Next
             End If
             Me.ConfigurePlots()
+            Me.UpdatePlots()
 
         End Sub
 
@@ -334,12 +331,12 @@ Namespace Ecosim
             ' Sanity check
             Debug.Assert(Me.m_aiPlotPane(plot) > 0)
             ' Configure pane
-            Me.m_zgh.ConfigurePane(strTitle, _
-                       SharedResources.HEADER_TIME, _
-                       CDbl(Me.UIContext.Core.EcosimFirstYear), _
-                       CDbl(Me.UIContext.Core.EcosimFirstYear + (Me.UIContext.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                       strYAxisLabel, 0, dYAxisMax, _
-                       False, LegendPos.Top, Me.m_aiPlotPane(plot))
+            Me.m_zgh.ConfigurePane(strTitle,
+                       SharedResources.HEADER_TIME,
+                       CDbl(Me.UIContext.Core.EcosimFirstYear),
+                       CDbl(Me.UIContext.Core.EcosimFirstYear + (Me.UIContext.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
+                       strYAxisLabel, 0, dYAxisMax,
+                       False, LegendPos.TopCenter, Me.m_aiPlotPane(plot))
 
         End Sub
 
@@ -455,9 +452,9 @@ Namespace Ecosim
             If Me.m_bContainsAggregatedFleet Then
                 Dim strAll As String = SharedResources.GENERIC_VALUE_ALL
                 Dim clrAll As Color = Me.StyleGuide.FleetColorDefault(0, 1)
-                Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(strAll, eLineType.ModelData, clrAll, applFishMortFleet(0)))
-                Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(strAll, eLineType.ModelData, clrAll, applCatchFleet(0)), True)
-                Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(strAll, eLineType.ModelData, clrAll, applValueFleet(0)), True)
+                Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(strAll, eSketchDrawModeTypes.Line, clrAll, applFishMortFleet(0)))
+                Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(strAll, eSketchDrawModeTypes.Line, clrAll, applCatchFleet(0)), True)
+                Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(strAll, eSketchDrawModeTypes.Line, clrAll, applValueFleet(0)), True)
 
                 For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortality, iGroup, Color.Black)
                     Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
@@ -503,9 +500,9 @@ Namespace Ecosim
 
             End If
 
-            Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eLineType.ModelData, Color.Black, pplMortTotal))
-            Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eLineType.ModelData, Color.Red, pplMortPredation))
-            Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eLineType.ModelData, Color.Blue, pplMortFishing))
+            Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_TOTAL, eSketchDrawModeTypes.Line, Color.Black, pplMortTotal))
+            Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_PREDATION, eSketchDrawModeTypes.Line, Color.Red, pplMortPredation))
+            Me.AddCurveToGraphPane(ePlot.Mortality, Me.m_zgh.CreateLineItem(SharedResources.HEADER_FISHING, eSketchDrawModeTypes.Line, Color.Blue, pplMortFishing))
             For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.TotalMortality, iGroup, Color.Green)
                 Me.AddCurveToGraphPane(ePlot.Mortality, li)
             Next li
@@ -597,6 +594,7 @@ Namespace Ecosim
             Dim deltaT As Double = 1 / cCore.N_MONTHS
             Dim da() As Single = gts.ShapeData()
             Dim iYear As Integer = Me.UIContext.Core.EcosimFirstYear
+            Dim h As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 
             If (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (gts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (gts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
                 'VC091209: totalmortality is absolute, not relative
@@ -617,11 +615,21 @@ Namespace Ecosim
                     ppt.Add(xpos, da(j) * dScale)
                 End If
             Next
-            Return Me.m_zgh.CreateLineItem(gts.Name, eLineType.ReferenceData, clr, ppt)
+            Return Me.m_zgh.CreateLineItem(gts.Name, h.SketchDrawMode(gts), clr, ppt)
 
         End Function
 
 #End Region ' Time series
+
+        Private Sub UpdatePlots()
+            Try
+                Me.AddCurves()
+                Me.m_zgh.RescaleAndRedraw()
+                Me.ShowGroup()
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
         Private Sub ShowGroup()
 

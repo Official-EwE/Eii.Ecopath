@@ -196,13 +196,26 @@ Public MustInherit Class cTimeSeries
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function IsReference() As Boolean
-        Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or _
-               (Me.m_timeSeriesType = eTimeSeriesType.BiomassAbs) Or _
-               (Me.m_timeSeriesType = eTimeSeriesType.TotalMortality) Or _
-               (Me.m_timeSeriesType = eTimeSeriesType.Catches) Or _
+        Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.BiomassAbs) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.TotalMortality) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.FishingMortalityRef) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.Catches) Or
                (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel)
-        ' VC June 8, 2016: while adding CatchesRel, noticed that the above included CatchesAbs, which is not a reference 
-        ' time series. I therefore removed it.
+    End Function
+
+    Public Function IsDriver() As Boolean
+        Return Not Me.IsReference()
+    End Function
+
+    Public Function IsRelative() As Boolean
+        Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel) Or
+               (Me.TimeSeriesType = eTimeSeriesType.EcotracerConcRel)
+    End Function
+
+    Public Function IsAbsolute() As Boolean
+        Return Not Me.IsRelative()
     End Function
 
     ''' -----------------------------------------------------------------------

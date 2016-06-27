@@ -58,14 +58,17 @@ Namespace Definitions
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eSketchDrawModeTypes As Integer
+        NotSet
         ''' <summary>The area under a graph will be filled.</summary>
-        Fill = 0
+        Fill
         ''' <summary>A graph will be rendered as a line.</summary>
         Line
-        ''' <summary>A graph will be rendered as individual points.</summary>
-        Dots
-        ''' <summary>A graph will be rendered as a line, connecting non-zero points only.</summary>
-        LineSelective
+        ''' <summary>A graph will be rendered as driver time series.</summary>
+        TimeSeriesDriver
+        ''' <summary>A graph will be rendered as reference time series with relative values.</summary>
+        TimeSeriesRefAbs
+        ''' <summary>A graph will be rendered as reference time series with absolute values.</summary>
+        TimeSeriesRefRel
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -116,20 +119,6 @@ Namespace Definitions
         Mediation
         ''' <summary>Shape is a Egg production shape.</summary>
         EggProduction
-    End Enum
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Line types for plots.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Enum eLineType As Integer
-        ''' <summary>Line type is not set.</summary>
-        NotSet = 0
-        ''' <summary>Line denotes model data.</summary>
-        ModelData
-        ''' <summary>Line denotes reference data.</summary>
-        ReferenceData
     End Enum
 
     ''' -----------------------------------------------------------------------

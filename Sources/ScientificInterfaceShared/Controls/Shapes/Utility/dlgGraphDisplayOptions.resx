@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbLine.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="m_rbFill.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -171,13 +171,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbFill.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_cbRightClickAutoScale.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbRightClickAutoScale.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 215</value>
+    <value>15, 267</value>
   </data>
   <data name="m_cbRightClickAutoScale.Size" type="System.Drawing.Size, System.Drawing">
     <value>118, 17</value>
@@ -201,7 +201,7 @@
     <value>7</value>
   </data>
   <data name="m_nudMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>118, 238</value>
+    <value>118, 290</value>
   </data>
   <data name="m_nudMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 20</value>
@@ -216,7 +216,7 @@
     <value>m_nudMax</value>
   </data>
   <data name="&gt;&gt;m_nudMax.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMax.Parent" xml:space="preserve">
     <value>$this</value>
@@ -228,7 +228,7 @@
     <value>True</value>
   </data>
   <data name="m_cbAutoScale.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 192</value>
+    <value>15, 244</value>
   </data>
   <data name="m_cbAutoScale.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 17</value>
@@ -255,7 +255,7 @@
     <value>True</value>
   </data>
   <data name="m_lblYMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 240</value>
+    <value>12, 292</value>
   </data>
   <data name="m_lblYMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 13</value>
@@ -303,7 +303,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbShowScaleAndTitle.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdrShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -328,7 +328,7 @@
     <value>m_hdrShow</value>
   </data>
   <data name="&gt;&gt;m_hdrShow.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShow.Parent" xml:space="preserve">
     <value>$this</value>
@@ -343,7 +343,7 @@
     <value>NoControl</value>
   </data>
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 269</value>
+    <value>81, 354</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
@@ -373,7 +373,7 @@
     <value>NoControl</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 269</value>
+    <value>154, 354</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
@@ -421,7 +421,7 @@
     <value>m_hdrDrawAs</value>
   </data>
   <data name="&gt;&gt;m_hdrDrawAs.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDrawAs.Parent" xml:space="preserve">
     <value>$this</value>
@@ -436,7 +436,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrScaling.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 167</value>
+    <value>12, 219</value>
   </data>
   <data name="m_hdrScaling.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 18</value>
@@ -454,7 +454,7 @@
     <value>m_hdrScaling</value>
   </data>
   <data name="&gt;&gt;m_hdrScaling.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14002.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScaling.Parent" xml:space="preserve">
     <value>$this</value>
@@ -462,34 +462,94 @@
   <data name="&gt;&gt;m_hdrScaling.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_rbDots.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbTSDriver.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_rbDots.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbTSDriver.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_rbDots.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbTSDriver.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 136</value>
   </data>
-  <data name="m_rbDots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 17</value>
+  <data name="m_rbTSDriver.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 17</value>
   </data>
-  <data name="m_rbDots.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_rbTSDriver.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="m_rbDots.Text" xml:space="preserve">
-    <value>&amp;Dots</value>
+  <data name="m_rbTSDriver.Text" xml:space="preserve">
+    <value>&amp;Driver time series</value>
   </data>
-  <data name="&gt;&gt;m_rbDots.Name" xml:space="preserve">
-    <value>m_rbDots</value>
+  <data name="&gt;&gt;m_rbTSDriver.Name" xml:space="preserve">
+    <value>m_rbTSDriver</value>
   </data>
-  <data name="&gt;&gt;m_rbDots.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbTSDriver.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_rbDots.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbTSDriver.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_rbDots.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbTSDriver.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_rbTSRefAbs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbTSRefAbs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbTSRefAbs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 159</value>
+  </data>
+  <data name="m_rbTSRefAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 17</value>
+  </data>
+  <data name="m_rbTSRefAbs.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbTSRefAbs.Text" xml:space="preserve">
+    <value>&amp;Absolute reference time series</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefAbs.Name" xml:space="preserve">
+    <value>m_rbTSRefAbs</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefAbs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefAbs.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefAbs.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_rbTSRefRel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbTSRefRel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbTSRefRel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 182</value>
+  </data>
+  <data name="m_rbTSRefRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 17</value>
+  </data>
+  <data name="m_rbTSRefRel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbTSRefRel.Text" xml:space="preserve">
+    <value>&amp;Relative reference time series</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefRel.Name" xml:space="preserve">
+    <value>m_rbTSRefRel</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefRel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefRel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbTSRefRel.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -502,7 +562,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>233, 304</value>
+    <value>233, 389</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Graph display options</value>
