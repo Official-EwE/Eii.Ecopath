@@ -668,7 +668,7 @@ Friend Class cMSEPlotter
                         x += dx
                     Next
 
-                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, eLineType.ModelData, Color.Gray, ppl)
+                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, eSketchDrawModeTypes.Line, Color.Gray, ppl)
                     lstLines.Add(Line)
 
                 Next
@@ -714,9 +714,7 @@ Friend Class cMSEPlotter
                     x += dx
                 Next
 
-                Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, _
-                                                               eLineType.ModelData, _
-                                                               Color.Gray, ppl)
+                Dim Line As LineItem = Me.m_zgh.CreateLineItem(data.Name, eSketchDrawModeTypes.Line, Color.Gray, ppl)
                 lstLines.Add(Line)
 
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, True, False)
@@ -773,7 +771,7 @@ Friend Class cMSEPlotter
                         strLabel = cStringUtils.Localize("Label 2 {0}", data.Name)
                         clr = Color.Red
                     End If
-                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clr, ppl)
+                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(strLabel, eSketchDrawModeTypes.Line, clr, ppl)
                     lstLines.Add(Line)
                 Next
 
@@ -809,7 +807,7 @@ Friend Class cMSEPlotter
             ppl.Add(x, StatsData.Mean(iTime))
             x += dx
         Next
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Me.GetLineColour(StatsData), ppl)
+        li = Me.m_zgh.CreateLineItem("", eSketchDrawModeTypes.NotSet, Me.GetLineColour(StatsData), ppl)
         li.Line.Width = 2
 
         Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
@@ -818,7 +816,7 @@ Friend Class cMSEPlotter
         ppl = New PointPairList()
         ppl.Add(0, StatsData.Mean)
         ppl.Add(x, StatsData.Mean)
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        li = Me.m_zgh.CreateLineItem("", eSketchDrawModeTypes.NotSet, Color.Blue, ppl)
         Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
         'jb 26-Sept-2012 removed to upper and lower standard deviation lines for formating of graph 
@@ -879,10 +877,10 @@ Friend Class cMSEPlotter
             pplUB.Add(0, UpperBound)
             pplUB.Add(xlast, UpperBound)
 
-            Dim LBItem As LineItem = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Pink, pplLB)
+            Dim LBItem As LineItem = Me.m_zgh.CreateLineItem("", eSketchDrawModeTypes.NotSet, Color.Pink, pplLB)
             LBItem.Line.Style = Drawing2D.DashStyle.Dash
 
-            Dim UBItem As LineItem = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Pink, pplUB)
+            Dim UBItem As LineItem = Me.m_zgh.CreateLineItem("", eSketchDrawModeTypes.NotSet, Color.Pink, pplUB)
             UBItem.Line.Style = Drawing2D.DashStyle.Dash
             LBItem.Tag = LB_TAG
             UBItem.Tag = UB_TAG

@@ -158,7 +158,7 @@ Namespace Controls
 
             Select Case drawMode
 
-                Case eSketchDrawModeTypes.Line, eSketchDrawModeTypes.Fill
+                Case eSketchDrawModeTypes.Fill
 
                     Dim gp As New GraphicsPath
                     Dim pt1 As PointF = Nothing
@@ -189,8 +189,6 @@ Namespace Controls
 
                     Try
                         Select Case drawMode
-                            Case eSketchDrawModeTypes.Line
-                                g.DrawPath(pnShape, gp)
                             Case eSketchDrawModeTypes.Fill
                                 g.FillPath(brShape, gp)
                             Case Else
@@ -202,35 +200,7 @@ Namespace Controls
 
                     gp.Dispose()
 
-                Case eSketchDrawModeTypes.Dots
-
-                    Dim pt As PointF = Nothing
-
-                    If bIsSeasonal Then
-
-                        nPoints = cCore.N_MONTHS
-
-                        For i As Integer = 1 To nPoints
-                            If asData(i) > 0.0! Then
-                                pt = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
-                                g.FillEllipse(brShape, _
-                                        CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2), _
-                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
-                            End If
-                        Next
-
-                    Else
-                        For i As Integer = 1 To nPoints
-                            If asData(i) > 0.0! Then
-                                pt = cShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
-                                g.FillEllipse(brShape, _
-                                        CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2), _
-                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
-                            End If
-                        Next
-                    End If
-
-                Case eSketchDrawModeTypes.LineSelective
+                Case eSketchDrawModeTypes.Line
 
                     Dim pt1 As PointF = Nothing
                     Dim pt2 As PointF = Nothing
@@ -240,8 +210,8 @@ Namespace Controls
                         For i As Integer = 1 To 12
                             If asData(i) > 0.0! Then
                                 pt1 = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
-                                g.FillEllipse(brShape, _
-                                        CSng(pt1.X - cDOT_SIZE / 2), CSng(pt1.Y - cDOT_SIZE / 2), _
+                                g.FillEllipse(brShape,
+                                        CSng(pt1.X - cDOT_SIZE / 2), CSng(pt1.Y - cDOT_SIZE / 2),
                                         CSng(cDOT_SIZE), CSng(cDOT_SIZE))
                             End If
                         Next
@@ -264,6 +234,41 @@ Namespace Controls
                         Next
 
                     End If
+
+                Case Else
+
+                    Dim pt As PointF = Nothing
+                    Dim sOffset As Single = 1.0
+
+                    If bIsSeasonal Then
+
+                        nPoints = cCore.N_MONTHS
+                        sOffset = 0.5!
+                    End If
+
+                    For i As Integer = 1 To nPoints
+                        If asData(i) > 0.0! Then
+                            pt = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
+
+                            Select Case drawMode
+                                Case eSketchDrawModeTypes.TimeSeriesDriver
+                                    g.FillEllipse(brShape,
+                                        CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2),
+                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
+                                Case eSketchDrawModeTypes.TimeSeriesRefAbs
+                                    g.DrawRectangle(pnShape,
+                                        CSng(pt.X - cDOT_SIZE / 2), CSng(pt.Y - cDOT_SIZE / 2),
+                                        CSng(cDOT_SIZE), CSng(cDOT_SIZE))
+                                Case eSketchDrawModeTypes.TimeSeriesRefRel
+                                    Dim pts(3) As PointF
+                                    pts(0) = New PointF(pt.X, CSng(pt.Y - cDOT_SIZE / 2))
+                                    pts(1) = New PointF(CSng(pt.X + cDOT_SIZE / 2), pt.Y)
+                                    pts(2) = New PointF(pt.X, CSng(pt.Y + cDOT_SIZE / 2))
+                                    pts(3) = New PointF(CSng(pt.X - cDOT_SIZE / 2), pt.Y)
+                                    g.DrawPolygon(pnShape, pts)
+                            End Select
+                        End If
+                    Next
 
             End Select
 
@@ -356,8 +361,8 @@ Namespace Controls
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim iOverlaySize As Integer = Math.Min(16, sg.ThumbnailSize)
 
-            ' Icons with dots become selective lines
-            If dm = eSketchDrawModeTypes.Dots Then dm = eSketchDrawModeTypes.LineSelective
+            ' Icons with dots become lines
+            dm = DirectCast(Math.Min(dm, eSketchDrawModeTypes.Line), eSketchDrawModeTypes)
 
             Try
                 DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, iXMax, sYMax, cCore.NULL_VALUE)

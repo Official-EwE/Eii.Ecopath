@@ -68,7 +68,7 @@ Namespace Controls
 
             Private m_strLabel As String = ""
             Private m_colour As Color = Color.Aqua
-            Private m_lineType As eLineType = eLineType.ModelData
+            Private m_lineType As eSketchDrawModeTypes = eSketchDrawModeTypes.NotSet
             Private m_liOffset As LineItem = Nothing
 
             ' == Status flags ==
@@ -99,26 +99,27 @@ Namespace Controls
                 Me.m_strLabel = strLabel
                 Me.Data("") = tag
 
+                Dim h As New cTimeSeriesShapeGUIHandler(Me.m_uic)
+
                 If (TypeOf src Is cCoreInputOutputBase) Then
                     If (TypeOf src Is cEcoPathGroupInput) Then
                         Me.m_iGroup = src.Index
-                        Me.m_lineType = eLineType.ModelData
+                        Me.m_lineType = eSketchDrawModeTypes.Line
                     ElseIf (TypeOf src Is cFleetInput) Then
                         Me.m_iFleet = src.Index
-                        Me.m_lineType = eLineType.ModelData
+                        Me.m_lineType = eSketchDrawModeTypes.Line
                     End If
                 Else
                     If (TypeOf src Is cGroupTimeSeries) Then
                         Me.m_iGroup = DirectCast(src, cGroupTimeSeries).GroupIndex
-                        Me.m_lineType = eLineType.ReferenceData
+                        Me.m_lineType = h.SketchDrawMode(DirectCast(src, cTimeSeries))
                     ElseIf (TypeOf src Is cFleetTimeSeries) Then
                         Me.m_iFleet = DirectCast(src, cFleetTimeSeries).FleetIndex
-                        Me.m_lineType = eLineType.ReferenceData
+                        Me.m_lineType = h.SketchDrawMode(DirectCast(src, cTimeSeries))
                     End If
                 End If
 
                 ' Post-anaysis sanity checks
-                Debug.Assert(Me.m_lineType <> eLineType.NotSet)
                 Debug.Assert(Me.m_iGroup <> cCore.NULL_VALUE Or Me.m_iFleet <> cCore.NULL_VALUE)
 
             End Sub
@@ -132,9 +133,9 @@ Namespace Controls
             ''' <param name="lineType">Data type of the curve that will determine
             ''' the curve display style.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal strLabel As String, _
-                           ByVal colour As Color, _
-                           ByVal lineType As eLineType, _
+            Public Sub New(ByVal strLabel As String,
+                           ByVal colour As Color,
+                           ByVal lineType As eSketchDrawModeTypes,
                            Optional ByVal tag As Object = Nothing)
 
                 Me.m_strLabel = strLabel
@@ -146,12 +147,12 @@ Namespace Controls
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="eLineType">data type</see> of the curve.
+            ''' Get the <see cref="eSketchDrawModeTypes">line type</see> of the curve.
             ''' </summary>
             ''' <value></value>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public ReadOnly Property LineType() As eLineType
+            Public ReadOnly Property LineType() As eSketchDrawModeTypes
                 Get
                     Return Me.m_lineType
                 End Get
@@ -820,7 +821,7 @@ Namespace Controls
                 End If
 
                 Dim li As LineItem = Nothing
-                Dim linetype As eLineType = eLineType.NotSet
+                Dim linetype As eSketchDrawModeTypes = eSketchDrawModeTypes.NotSet
 
                 With Me.GetPane(iPane)
 
@@ -848,7 +849,7 @@ Namespace Controls
 #End If
                                 Select Case Me.CurveType(li)
 
-                                    Case eLineType.ModelData
+                                    Case eSketchDrawModeTypes.Line, eSketchDrawModeTypes.Fill
 
                                         If Me.IsPaneCumulative(iPane) Then
 
@@ -858,7 +859,7 @@ Namespace Controls
 
                                             ' ZedGraph renders curvelists last to first. Higher cumulative curves are
                                             ' thus stored with increasing indices in the list
-                                            Dim iLastLine As Integer = Me.FindLastCurvePos(eLineType.ModelData, iPane)
+                                            Dim iLastLine As Integer = Me.FindLastCurvePos(eSketchDrawModeTypes.Line, iPane)
 
                                             If (iLastLine > -1) Then
                                                 Me.SumLines(DirectCast(.CurveList(iLastLine), LineItem), li)
@@ -876,20 +877,21 @@ Namespace Controls
                                             Dim info As cCurveInfo = Me.CurveInfo(li)
                                             If (info IsNot Nothing) Then
                                                 ' #1172: hide duplicate legend items
-                                                li.Label.IsVisible = li.Label.IsVisible And _
-                                                                     ((Me.ContainsCurve(info) = False) Or (Me.AllowDuplicatesOnLegend = True))
+                                                li.Label.IsVisible = li.Label.IsVisible And
+                                                                     ((Me.ContainsCurve(info, iPane) = False) Or (Me.AllowDuplicatesOnLegend = True))
                                             End If
                                             ' Add curve
                                             .CurveList.Add(li)
                                         End If
 
-                                    Case eLineType.ReferenceData
+                                    Case eSketchDrawModeTypes.TimeSeriesDriver,
+                                         eSketchDrawModeTypes.TimeSeriesRefAbs,
+                                         eSketchDrawModeTypes.TimeSeriesRefRel
 
                                         ' Reference curves should be rendered on top of everything else.
-                                        ' Hence, reference curves are 
                                         .CurveList.Insert(0, li)
 
-                                    Case eLineType.NotSet
+                                    Case eSketchDrawModeTypes.NotSet
 
                                         ' Unknow data type: just append curve to end of the list
                                         .CurveList.Add(li)
@@ -1247,29 +1249,29 @@ Namespace Controls
         ''' <param name="ppl"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateLineItem(ByVal strName As String, _
-                                                   ByVal curveType As eLineType, _
-                                                   ByVal clr As Color, _
-                                                   ByVal ppl As PointPairList, _
+        Public Overridable Function CreateLineItem(ByVal strName As String,
+                                                   ByVal curveType As eSketchDrawModeTypes,
+                                                   ByVal clr As Color,
+                                                   ByVal ppl As PointPairList,
                                                    Optional ByVal tag As Object = Nothing) As LineItem
             Return Me.CreateLineItem(New cCurveInfo(strName, clr, curveType, tag), ppl)
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return the <see cref="eLineType">type</see> of a curve.
+        ''' Return the <see cref="eSketchDrawModeTypes">type</see> of a curve.
         ''' </summary>
         ''' <param name="ci">The curve to extract information for.</param>
-        ''' <returns>A <see cref="eLineType">type</see>, or NotSet if this 
+        ''' <returns>A <see cref="eSketchDrawModeTypes">type</see>, or NotSet if this 
         ''' information could not be found.</returns>
         ''' <remarks>
         ''' Note that this information only works on curves created via 
         ''' <see cref="CreateLineItem">CreateLineItem</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function CurveType(ByVal ci As CurveItem) As eLineType
+        Public Function CurveType(ByVal ci As CurveItem) As eSketchDrawModeTypes
             Dim info As cCurveInfo = Me.CurveInfo(ci)
-            If (info Is Nothing) Then Return eLineType.NotSet
+            If (info Is Nothing) Then Return eSketchDrawModeTypes.Line
             Return info.LineType
         End Function
 
@@ -1902,7 +1904,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get mean value of all <see cref="eLineType.ModelData">model data</see>
+        ''' Get mean value of all <see cref="eSketchDrawModeTypes.Line">model data</see>
         ''' in a pane.
         ''' </summary>
         ''' <param name="iPane"></param>
@@ -1917,7 +1919,7 @@ Namespace Controls
 
             For iCurve As Integer = 0 To gp.CurveList.Count - 1
                 ci = gp.CurveList(iCurve)
-                If Me.CurveType(ci) = eLineType.ModelData Then
+                If Me.CurveType(ci) = eSketchDrawModeTypes.Line Then
                     For iPT As Integer = 0 To ci.Points.Count - 1
                         dTotal += ci.Points(iPT).Y
                         iNumValues += 1
@@ -2187,13 +2189,11 @@ Namespace Controls
 
             Select Case info.LineType()
 
-                Case eLineType.ReferenceData
+                Case eSketchDrawModeTypes.TimeSeriesDriver
+
                     li = New ZedGraph.LineItem(info.Label, ppl, info.Colour, SymbolType.Circle, 1)
 
-                    li.Line.Color = Color.SlateGray
                     li.Line.IsVisible = False
-
-                    li.Line.Fill.Color = info.Colour
                     li.Line.Fill.IsVisible = False
 
                     ' ToDo_JS: obtain symbol size from style guide
@@ -2204,8 +2204,37 @@ Namespace Controls
                     li.Symbol.Fill.IsVisible = False
                     li.Symbol.IsVisible = True
 
-                Case eLineType.ModelData, _
-                     eLineType.NotSet
+                Case eSketchDrawModeTypes.TimeSeriesRefAbs
+
+                    li = New ZedGraph.LineItem(info.Label, ppl, info.Colour, SymbolType.Square, 1)
+
+                    li.Line.IsVisible = False
+                    li.Line.Fill.IsVisible = False
+
+                    ' ToDo_JS: obtain symbol size from style guide
+                    li.Symbol.Size = 4
+                    li.Symbol.Border.Color = info.Colour
+                    li.Symbol.Border.IsVisible = True
+                    li.Symbol.Fill.Color = info.Colour
+                    li.Symbol.Fill.IsVisible = False
+                    li.Symbol.IsVisible = True
+
+                Case eSketchDrawModeTypes.TimeSeriesRefRel
+
+                    li = New ZedGraph.LineItem(info.Label, ppl, info.Colour, SymbolType.Diamond, 1)
+
+                    li.Line.IsVisible = False
+                    li.Line.Fill.IsVisible = False
+
+                    ' ToDo_JS: obtain symbol size from style guide
+                    li.Symbol.Size = 4
+                    li.Symbol.Border.Color = info.Colour
+                    li.Symbol.Border.IsVisible = True
+                    li.Symbol.Fill.Color = info.Colour
+                    li.Symbol.Fill.IsVisible = False
+                    li.Symbol.IsVisible = True
+
+                Case Else
                     li = New ZedGraph.LineItem(info.Label, ppl, info.Colour, SymbolType.None, 1)
 
             End Select
@@ -2222,17 +2251,17 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Find the next curve of a given <see cref="eLineType">type</see>.
+        ''' Find the next curve of a given <see cref="eSketchDrawModeTypes">type</see>.
         ''' </summary>
-        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
+        ''' <param name="curvetype">The <see cref="eSketchDrawModeTypes">type</see> of the
         ''' curve to locate.</param>
         ''' <param name="iPane">Index of the graph pane to look into.</param>
         ''' <param name="iStart">Search start index, 0 by default.</param>
         ''' <returns>Index of the curve that matches the line type, or -1 if
         ''' no such curve could be found.</returns>
         ''' -------------------------------------------------------------------
-        Protected Function FindNextCurvePos(ByVal curvetype As eLineType, _
-                                            Optional ByVal iPane As Integer = 1, _
+        Protected Function FindNextCurvePos(ByVal curvetype As eSketchDrawModeTypes,
+                                            Optional ByVal iPane As Integer = 1,
                                             Optional ByVal iStart As Integer = 0) As Integer
 
             Dim pane As GraphPane = Me.GetPane(iPane)
@@ -2250,9 +2279,9 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Find the previous curve of a given <see cref="eLineType">type</see>.
+        ''' Find the previous curve of a given <see cref="eSketchDrawModeTypes">type</see>.
         ''' </summary>
-        ''' <param name="curvetype">The <see cref="eLineType">type</see> of the
+        ''' <param name="curvetype">The <see cref="eSketchDrawModeTypes">type</see> of the
         ''' curve to locate.</param>
         ''' <param name="iPane">Index of the graph pane to look into.</param>
         ''' <param name="iStart">Search start index, provide -1 to start searching
@@ -2260,8 +2289,8 @@ Namespace Controls
         ''' <returns>Index of the curve that matches the line type, or -1 if
         ''' no such curve could be found.</returns>
         ''' -------------------------------------------------------------------
-        Protected Function FindLastCurvePos(ByVal curvetype As eLineType, _
-                                            Optional ByVal iPane As Integer = 1, _
+        Protected Function FindLastCurvePos(ByVal curvetype As eSketchDrawModeTypes,
+                                            Optional ByVal iPane As Integer = 1,
                                             Optional ByVal iStart As Integer = -1) As Integer
 
             Dim pane As GraphPane = Me.GetPane(iPane)
@@ -2313,17 +2342,14 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return all <see cref="LineItem">line items</see> of a given 
-        ''' <see cref="eLineType">line type</see>.
+        ''' <see cref="eSketchDrawModeTypes">line type</see>.
         ''' </summary>
-        ''' <param name="curvetype">The <see cref="eLineType">line type</see> of
+        ''' <param name="curvetype">The <see cref="eSketchDrawModeTypes">line type</see> of
         ''' lines to retrieve.</param>
         ''' <param name="iPane">Index of the pane to obtain lines from.</param>
         ''' <returns>An array of <see cref="LineItem">line item</see> instances.</returns>
-        ''' <remarks>Lines that do not have <see cref="cCurveInfo">curve info</see>
-        ''' will be returned when line type <see cref="eLineType.NotSet">NotSet</see>
-        ''' is specified.</remarks>
         ''' ------------------------------------------------------------------- 
-        Protected Function GetLineItems(ByVal curvetype As eLineType, _
+        Protected Function GetLineItems(ByVal curvetype As eSketchDrawModeTypes,
                                         Optional ByVal iPane As Integer = 1) As LineItem()
 
             Dim lLines As New List(Of LineItem)
@@ -2335,7 +2361,7 @@ Namespace Controls
                     li = DirectCast(ci, LineItem)
                     info = Me.CurveInfo(ci)
                     If (info Is Nothing) Then
-                        If (curvetype = eLineType.NotSet) Then
+                        If (curvetype = eSketchDrawModeTypes.NotSet) Then
                             lLines.Add(li)
                         End If
                     Else
@@ -2397,7 +2423,7 @@ Namespace Controls
                 Me.SetCursor(iPane)
 
                 acurves = gp.CurveList.ToArray
-                iFirstDataLinePos = Me.FindNextCurvePos(eLineType.ModelData, iPane)
+                iFirstDataLinePos = Me.FindNextCurvePos(eSketchDrawModeTypes.Line, iPane)
                 iNumHighlights = 0
 
                 For iCurve As Integer = 0 To acurves.Length - 1
@@ -2417,7 +2443,7 @@ Namespace Controls
                         ' Not cumulative pane?
                         If (Not bPaneCumulative) Then
                             ' #Yes: Reorder coloured data lines
-                            If (info.LineType = eLineType.ModelData) And _
+                            If (info.LineType = eSketchDrawModeTypes.Line) And
                                (info.IsGrayedOut = False) Then
                                 gp.CurveList.Remove(ci)
                                 gp.CurveList.Insert(iFirstDataLinePos, ci)

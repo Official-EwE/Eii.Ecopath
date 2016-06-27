@@ -1068,7 +1068,9 @@ Namespace Controls
 
             Me.m_tsmiLine.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Line)
             Me.m_tsmiFill.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Fill)
-            Me.m_tsmiDots.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.Dots)
+            Me.m_tsmiTSDriver.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesDriver)
+            Me.m_tsmiTSRefAbs.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefAbs)
+            Me.m_tsmiTSRefRel.Checked = (Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefRel)
 
             If Me.Handler IsNot Nothing Then
                 Me.m_tsmiOptions.Visible = Me.Handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.DisplayOptions)
@@ -1105,14 +1107,29 @@ Namespace Controls
 
         End Sub
 
-        Private Sub DotsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiDots.Click
+        Private Sub DriverTSItemClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiTSDriver.Click
 
-            Me.SketchDrawMode = eSketchDrawModeTypes.Dots
+            Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesDriver
             Me.UpdateMenuItemStates()
 
         End Sub
 
+        Private Sub RefAbsTSItemClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiTSRefAbs.Click
+
+            Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefAbs
+            Me.UpdateMenuItemStates()
+
+        End Sub
+
+        Private Sub RefRelTSItemClick(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsmiTSDriver.Click
+
+            Me.SketchDrawMode = eSketchDrawModeTypes.TimeSeriesRefRel
+            Me.UpdateMenuItemStates()
+
+        End Sub
         Private Sub AxisToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiShowMarks.Click
 

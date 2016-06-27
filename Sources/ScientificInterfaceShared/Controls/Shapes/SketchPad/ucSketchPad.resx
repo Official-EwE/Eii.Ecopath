@@ -128,22 +128,34 @@
     <value>17, 17</value>
   </metadata>
   <data name="m_tsmiFill.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiFill.Text" xml:space="preserve">
     <value>&amp;Fill</value>
   </data>
   <data name="m_tsmiLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiLine.Text" xml:space="preserve">
     <value>&amp;Line</value>
   </data>
-  <data name="m_tsmiDots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 22</value>
+  <data name="m_tsmiTSDriver.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 22</value>
   </data>
-  <data name="m_tsmiDots.Text" xml:space="preserve">
-    <value>&amp;Dots</value>
+  <data name="m_tsmiTSDriver.Text" xml:space="preserve">
+    <value>&amp;Driver time series</value>
+  </data>
+  <data name="m_tsmiTSRefAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 22</value>
+  </data>
+  <data name="m_tsmiTSRefAbs.Text" xml:space="preserve">
+    <value>Absolute reference time series</value>
+  </data>
+  <data name="m_tsmiTSRefRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>232, 22</value>
+  </data>
+  <data name="m_tsmiTSRefRel.Text" xml:space="preserve">
+    <value>Relative reference time series</value>
   </data>
   <data name="m_tsmiDrawMode.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 22</value>
@@ -246,10 +258,10 @@
   <data name="&gt;&gt;m_tsmiLine.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsmiDots.Name" xml:space="preserve">
-    <value>m_tsmiDots</value>
+  <data name="&gt;&gt;m_tsmiTSDriver.Name" xml:space="preserve">
+    <value>m_tsmiTSDriver</value>
   </data>
-  <data name="&gt;&gt;m_tsmiDots.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsmiTSDriver.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiShowMarks.Name" xml:space="preserve">
@@ -298,6 +310,18 @@
     <value>m_tsmiOptions</value>
   </data>
   <data name="&gt;&gt;m_tsmiOptions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTSRefAbs.Name" xml:space="preserve">
+    <value>m_tsmiTSRefAbs</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTSRefAbs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTSRefRel.Name" xml:space="preserve">
+    <value>m_tsmiTSRefRel</value>
+  </data>
+  <data name="&gt;&gt;m_tsmiTSRefRel.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

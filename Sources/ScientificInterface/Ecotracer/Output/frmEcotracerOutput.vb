@@ -832,7 +832,7 @@ Public Class frmEcotracerOutput
 
             End If
 
-            Return Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clrLine, vList)
+            Return Me.m_zgh.CreateLineItem(strLabel, eSketchDrawModeTypes.Line, clrLine, vList)
 
         End Function
 
@@ -1100,7 +1100,7 @@ Public Class frmEcotracerOutput
             Next iTimeStep
 
             '  Return New LineItem(strLabel, list, clrLine, SymbolType.None, 1)
-            Return Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clrLine, list)
+            Return Me.m_zgh.CreateLineItem(strLabel, eSketchDrawModeTypes.Line, clrLine, list)
 
         End Function
 

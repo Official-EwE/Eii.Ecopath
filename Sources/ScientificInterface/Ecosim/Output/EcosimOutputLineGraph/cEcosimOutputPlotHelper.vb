@@ -185,9 +185,9 @@ Namespace Controls
             Dim crv As LineItem = Me.CreateLineItem(src, list, strLabel)
             Select Case Me.CurveType(crv)
 
-                Case eLineType.ReferenceData
+                Case eSketchDrawModeTypes.TimeSeriesDriver, eSketchDrawModeTypes.TimeSeriesRefAbs, eSketchDrawModeTypes.TimeSeriesRefRel
                     Me.m_curvelistTimeSeries.Add(crv)
-                Case eLineType.ModelData
+                Case eSketchDrawModeTypes.Line
                     Me.m_runCurrent.Lines.Add(crv)
                 Case Else
                     Debug.Assert(False)

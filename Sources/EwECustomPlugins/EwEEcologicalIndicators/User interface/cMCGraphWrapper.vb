@@ -21,11 +21,12 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Drawing
+Imports System.Text
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Definitions
 Imports ZedGraph
-Imports System.Text
-Imports System.Drawing
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -196,8 +197,8 @@ Public Class cMCGraphWrapper
                     Else
 
                         ' #Non: plot the line and configure the axis min/max range
-                        Me.PlotLines(New LineItem() {Me.CreateLineItem(String.Format(My.Resources.HEADER_TRIAL_N, (iTrial + 1), info.Name), _
-                                                                       ScientificInterfaceShared.Definitions.eLineType.ModelData, clr, ppl, info)}, _
+                        Me.PlotLines(New LineItem() {Me.CreateLineItem(String.Format(My.Resources.HEADER_TRIAL_N, (iTrial + 1), info.Name),
+                                                                       eSketchDrawModeTypes.Line, clr, ppl, info)},
                                      iPane, True, (iTrial = 0))
                         gp.XAxis.Scale.Min = sXMin
                         gp.XAxis.Scale.Max = sXMax

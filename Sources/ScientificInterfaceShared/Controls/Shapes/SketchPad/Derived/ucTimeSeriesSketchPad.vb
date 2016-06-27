@@ -48,7 +48,7 @@ Namespace Controls
         Public Sub New()
 
             Me.InitializeComponent()
-            Me.m_sketchDrawMode = eSketchDrawModeTypes.Dots
+            Me.m_sketchDrawMode = eSketchDrawModeTypes.TimeSeriesDriver
 
         End Sub
 

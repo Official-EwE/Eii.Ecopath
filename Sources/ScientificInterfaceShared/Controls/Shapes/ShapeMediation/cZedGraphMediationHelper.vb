@@ -36,7 +36,7 @@ Namespace Controls
     ''' Derived Zedgraph helper class that just overrides the ToolTip formating for the EnvironmentalResponse graphs
     ''' </summary>
     ''' <remarks></remarks>
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class cZedGraphMediationHelper
         Inherits cZedGraphHelper
 
@@ -52,7 +52,7 @@ Namespace Controls
                 Case eEnvResponseLineType.Response : clr = Color.SandyBrown
                 Case Else : Debug.Assert(False)
             End Select
-            Return MyBase.CreateLineItem(strName, Definitions.eLineType.NotSet, clr, ppl, lineType)
+            Return MyBase.CreateLineItem(strName, Definitions.eSketchDrawModeTypes.NotSet, clr, ppl, lineType)
         End Function
 
         Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String

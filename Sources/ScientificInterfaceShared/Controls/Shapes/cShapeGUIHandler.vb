@@ -301,11 +301,13 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Override this to specify the <see cref="eSketchDrawModeTypes">Sketch draw mode</see>
-        ''' that should be used to render shapes.
+        ''' that should be used to render the indicated shape.
         ''' </summary>
-        ''' <returns>Well, what do YOU think?</returns>
+        ''' <param name="shape">The shape to draw.</param>
+        ''' <returns>The <see cref="eSketchDrawModeTypes">Sketch draw mode</see>
+        ''' that should be used to render the indicated shape.</returns>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function SketchDrawMode() As eSketchDrawModeTypes
+        Public MustOverride Function SketchDrawMode(shape As cShapeData) As eSketchDrawModeTypes
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -351,13 +353,19 @@ Namespace Controls
 
                     ' Single selection
                     Dim shapeSelected As cShapeData = Nothing
+                    Dim dm As eSketchDrawModeTypes = eSketchDrawModeTypes.TimeSeriesDriver
+
                     If (value IsNot Nothing) Then
-                        If (value.Length = 1) Then shapeSelected = value(0)
+                        If (value.Length = 1) Then
+                            shapeSelected = value(0)
+                            dm = Me.SketchDrawMode(value(0))
+                        End If
                     End If
 
                     If (Me.SketchPad IsNot Nothing) Then
                         Me.SketchPad.Shape = shapeSelected
                         Me.SketchPad.CanEditPoints = Me.CanEditPoints(shapeSelected)
+                        Me.SketchPad.SketchDrawMode = dm
                     End If
                     If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.Selection = value
 
@@ -597,7 +605,7 @@ Namespace Controls
                     Me.m_sketchPad.ShapeColor = Me.Color
                     Me.m_sketchPad.YAxisMinValue = Me.MinYScale
                     Me.m_sketchPad.NumDataPoints = Me.NumDataYears
-                    Me.m_sketchPad.SketchDrawMode = Me.SketchDrawMode
+                    Me.m_sketchPad.SketchDrawMode = Me.SketchDrawMode(Nothing)
                     Me.m_sketchPad.Handler = Me
                     Me.m_sketchPad.UIContext = Me.UIContext
                 End If
@@ -628,7 +636,7 @@ Namespace Controls
                     Me.m_shapeToolBox.UIContext = Me.UIContext
                     Me.m_shapeToolBox.Color = Me.Color
                     Me.m_shapeToolBox.YAxisMinValue = Me.MinYScale
-                    Me.m_shapeToolBox.SketchDrawMode = Me.SketchDrawMode
+                    Me.m_shapeToolBox.SketchDrawMode = Me.SketchDrawMode(Nothing)
                 End If
 
             End Set

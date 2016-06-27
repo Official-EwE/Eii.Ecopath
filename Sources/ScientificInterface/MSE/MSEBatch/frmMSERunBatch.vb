@@ -112,7 +112,7 @@ Public Class frmMSERunBatch
             ppl.Add(x, StatsData.Mean(iTime))
             x += dx
         Next
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        li = Me.m_zgh.CreateLineItem("", eSketchDrawModeTypes.NotSet, Color.Blue, ppl)
         li.Line.Width = 1
 
         Me.m_zgh.GetPane(ipane).CurveList.Add(li)

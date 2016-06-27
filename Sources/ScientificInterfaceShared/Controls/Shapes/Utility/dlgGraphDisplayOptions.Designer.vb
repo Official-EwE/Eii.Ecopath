@@ -54,7 +54,9 @@ Namespace Controls
             Me.Cancel_Button = New System.Windows.Forms.Button()
             Me.m_hdrDrawAs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrScaling = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_rbDots = New System.Windows.Forms.RadioButton()
+            Me.m_rbTSDriver = New System.Windows.Forms.RadioButton()
+            Me.m_rbTSRefAbs = New System.Windows.Forms.RadioButton()
+            Me.m_rbTSRefRel = New System.Windows.Forms.RadioButton()
             CType(Me.m_nudMax, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -136,12 +138,26 @@ Namespace Controls
             Me.m_hdrScaling.IsCollapsed = False
             Me.m_hdrScaling.Name = "m_hdrScaling"
             '
-            'm_rbDots
+            'm_rbTSDriver
             '
-            resources.ApplyResources(Me.m_rbDots, "m_rbDots")
-            Me.m_rbDots.Name = "m_rbDots"
-            Me.m_rbDots.TabStop = True
-            Me.m_rbDots.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbTSDriver, "m_rbTSDriver")
+            Me.m_rbTSDriver.Name = "m_rbTSDriver"
+            Me.m_rbTSDriver.TabStop = True
+            Me.m_rbTSDriver.UseVisualStyleBackColor = True
+            '
+            'm_rbTSRefAbs
+            '
+            resources.ApplyResources(Me.m_rbTSRefAbs, "m_rbTSRefAbs")
+            Me.m_rbTSRefAbs.Name = "m_rbTSRefAbs"
+            Me.m_rbTSRefAbs.TabStop = True
+            Me.m_rbTSRefAbs.UseVisualStyleBackColor = True
+            '
+            'm_rbTSRefRel
+            '
+            resources.ApplyResources(Me.m_rbTSRefRel, "m_rbTSRefRel")
+            Me.m_rbTSRefRel.Name = "m_rbTSRefRel"
+            Me.m_rbTSRefRel.TabStop = True
+            Me.m_rbTSRefRel.UseVisualStyleBackColor = True
             '
             'dlgGraphDisplayOptions
             '
@@ -158,7 +174,9 @@ Namespace Controls
             Me.Controls.Add(Me.m_lblYMax)
             Me.Controls.Add(Me.m_cbRightClickAutoScale)
             Me.Controls.Add(Me.m_cbAutoScale)
-            Me.Controls.Add(Me.m_rbDots)
+            Me.Controls.Add(Me.m_rbTSRefRel)
+            Me.Controls.Add(Me.m_rbTSRefAbs)
+            Me.Controls.Add(Me.m_rbTSDriver)
             Me.Controls.Add(Me.m_rbLine)
             Me.Controls.Add(Me.m_rbFill)
             Me.Controls.Add(Me.m_cbShowScaleAndTitle)
@@ -177,14 +195,15 @@ Namespace Controls
         Private WithEvents m_hdrShow As cEwEHeaderLabel
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents m_rbDots As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbTSDriver As System.Windows.Forms.RadioButton
         Private WithEvents m_hdrDrawAs As cEwEHeaderLabel
         Private WithEvents m_hdrScaling As cEwEHeaderLabel
         Private WithEvents m_cbAutoScale As System.Windows.Forms.CheckBox
         Private WithEvents m_cbRightClickAutoScale As System.Windows.Forms.CheckBox
         Private WithEvents m_lblYMax As System.Windows.Forms.Label
         Private WithEvents m_nudMax As ScientificInterfaceShared.Controls.cEwENumericUpDown
-
+        Private WithEvents m_rbTSRefAbs As RadioButton
+        Private WithEvents m_rbTSRefRel As RadioButton
     End Class
 
 End Namespace

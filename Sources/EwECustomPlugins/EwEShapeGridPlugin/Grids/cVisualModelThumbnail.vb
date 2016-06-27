@@ -58,9 +58,9 @@ Public Class cVisualModelThumbnail
         Dim img As New Bitmap(rcClient.Width, rcClient.Height)
 
         Using g As Graphics = Graphics.FromImage(img)
-            cShapeImage.DrawShape(grid.UIContext, shape, _
-                                  rcBmp, g, _
-                                  Me.m_handler.Color, Me.m_handler.SketchDrawMode, Me.m_handler.XAxisMaxValue)
+            cShapeImage.DrawShape(grid.UIContext, shape,
+                                  rcBmp, g,
+                                  Me.m_handler.Color, Me.m_handler.SketchDrawMode(shape), Me.m_handler.XAxisMaxValue)
         End Using
 
         e.Graphics.DrawImage(img, rcClient.Location)

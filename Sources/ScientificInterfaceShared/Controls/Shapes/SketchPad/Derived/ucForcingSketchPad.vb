@@ -190,6 +190,7 @@ Namespace Controls
                 End If
 
                 ' Display shape ID (=index in manager list) + 1
+                sfmt.LineAlignment = StringAlignment.Near
                 g.DrawString(Me.GetShapeTitle(), tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.

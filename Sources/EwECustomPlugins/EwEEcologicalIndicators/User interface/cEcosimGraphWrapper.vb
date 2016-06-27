@@ -26,6 +26,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ZedGraph
 Imports System.Text
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -172,7 +173,7 @@ Public Class cEcosimGraphWrapper
                         gp.CurveList.Clear()
                     Else
                         ' #Non: plot the line and configure the axis min/max range
-                        Me.PlotLines(New LineItem() {Me.CreateLineItem(info.Name, ScientificInterfaceShared.Definitions.eLineType.ModelData, Drawing.Color.Blue, ppl, info)}, iPane)
+                        Me.PlotLines(New LineItem() {Me.CreateLineItem(info.Name, eSketchDrawModeTypes.Line, Drawing.Color.Blue, ppl, info)}, iPane)
                         gp.XAxis.Scale.Min = sXMin
                         gp.XAxis.Scale.Max = sXMax
                     End If

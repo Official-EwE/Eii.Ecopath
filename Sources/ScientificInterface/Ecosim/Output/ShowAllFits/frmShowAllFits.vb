@@ -111,6 +111,7 @@ Namespace Ecosim
             Dim data() As Single
             Dim ftCaption As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
             Dim ftScale As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
+            Dim handler As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 
             For i As Integer = 0 To Me.m_lPlots.Count - 1
 
@@ -162,8 +163,25 @@ Namespace Ecosim
                                 Dim dotPos As SizeF = toDeviceSize(New SizeF(dotXRelPos, dotYRelPos), iWidth, iHeight)
 
                                 If (dotYRelPos >= 0) Then
-                                    g.DrawEllipse(pen, New RectangleF(sPosX + dotPos.Width - (0.5! * m_sDotSize), _
-                                        sPosY + dotPos.Height - (0.5! * m_sDotSize), m_sDotSize, m_sDotSize))
+
+                                    Select Case handler.SketchDrawMode(plot.TimeSeries)
+                                        Case eSketchDrawModeTypes.TimeSeriesDriver
+                                            g.DrawEllipse(pen, New RectangleF(sPosX + dotPos.Width - (0.5! * m_sDotSize),
+                                                                              sPosY + dotPos.Height - (0.5! * m_sDotSize), m_sDotSize, m_sDotSize))
+                                        Case eSketchDrawModeTypes.TimeSeriesRefAbs
+                                            g.DrawRectangle(pen, New Rectangle(CInt(sPosX + dotPos.Width - (0.5! * m_sDotSize)),
+                                                                              CInt(sPosY + dotPos.Height - (0.5! * m_sDotSize)), CInt(m_sDotSize), CInt(m_sDotSize)))
+                                        Case eSketchDrawModeTypes.TimeSeriesRefRel
+                                            ' You've got to love pointless duplication!! See cShapeImage, ugh...
+                                            Dim pts(3) As PointF
+                                            pts(0) = New PointF(sPosX, CSng(sPosY - m_sDotSize / 2))
+                                            pts(1) = New PointF(CSng(sPosX + m_sDotSize / 2), sPosY)
+                                            pts(2) = New PointF(sPosX, CSng(sPosY + m_sDotSize / 2))
+                                            pts(3) = New PointF(CSng(sPosX - m_sDotSize / 2), sPosY)
+                                            g.DrawPolygon(pen, pts)
+                                        Case Else
+                                            Debug.Assert(False)
+                                    End Select
                                 End If
                             End If
                         Next
