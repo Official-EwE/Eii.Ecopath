@@ -79,8 +79,6 @@ Public Class frmBiomassLimits
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
         If (Me.m_bIsDirty = True) Then
-            ' JS 02Oct13: globalized this method
-            ' JS 02Oct13: replaced MsgBox with cFeedbackMessage
             Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_UNSAVED_CHANGES,
                                  eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             fmsg.Reply = eMessageReply.YES
@@ -105,7 +103,7 @@ Public Class frmBiomassLimits
     Protected Overrides Sub UpdateControls()
 
         MyBase.UpdateControls()
-        ' Me.m_btnOK.Enabled = Me.m_bIsDirty
+        Me.m_btnSave.Enabled = Me.m_bIsDirty
 
     End Sub
 
@@ -192,6 +190,7 @@ Public Class frmBiomassLimits
     'End Function
 
     Private Sub OnGridEdited()
+
         Me.m_bIsDirty = True
         Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
     End Sub

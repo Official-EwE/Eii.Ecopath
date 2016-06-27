@@ -324,7 +324,7 @@ Public Class frmCEFASRecruitment
                 For i As Integer = 0 To data.NumSteps - 1
                     lpts.Add(data.Biomass(i), data.Recruitment(i))
                 Next
-                lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eLineType.ModelData, Color.DarkSlateGray, lpts))
+                lLines.Add(Me.m_zgh.CreateLineItem(Me.Group.Name, eSketchDrawModeTypes.Line, Color.DarkSlateGray, lpts))
             End If
 
             ' Did any lines get manufactured?
@@ -340,38 +340,38 @@ Public Class frmCEFASRecruitment
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment 
                 lpts = New PointPairList()
                 lpts.Add(0.0!, data.MaxRecruitment) : lpts.Add(Me.m_zgh.XScaleMax, data.MaxRecruitment)
-                Dim li As LineItem = Me.m_zgh.CreateLineItem(SharedResources.HEADER_MAX_RECRUITMENT, _
-                                                             eLineType.NotSet, Color.DarkGray, lpts)
+                Dim li As LineItem = Me.m_zgh.CreateLineItem(SharedResources.HEADER_MAX_RECRUITMENT,
+                                                             eSketchDrawModeTypes.NotSet, Color.DarkGray, lpts)
                 li.Line.Style = Drawing2D.DashStyle.DashDot
                 lLines.Add(li)
 
                 '  - place a horizontal, stippled?, grey line at: maxRecruitment / 2
                 lpts = New PointPairList()
                 lpts.Add(0.0!, data.MaxRecruitment / 2) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_MAX_RECRUITMENT, _
-                                             eLineType.NotSet, Color.DarkGray, lpts)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_MAX_RECRUITMENT,
+                                             eSketchDrawModeTypes.NotSet, Color.DarkGray, lpts)
                 li.Line.Style = Drawing2D.DashStyle.Dot
                 lLines.Add(li)
 
                 '  - place a vertical,   stippled?, grey line at: HalfRecruitment biomass
                 lpts = New PointPairList()
                 lpts.Add(data.HalfRecruitmentBiomass, 0.0) : lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_RECRUITMENT_B, _
-                                             eLineType.NotSet, Color.LightSalmon, lpts)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_HALF_RECRUITMENT_B,
+                                             eSketchDrawModeTypes.NotSet, Color.LightSalmon, lpts)
                 lLines.Add(li)
 
                 '  - place a vertical,   full, red line at: EcopathBiomass
                 lpts = New PointPairList()
                 lpts.Add(data.EcopathBiomass, 0.0!) : lpts.Add(data.EcopathBiomass, Me.m_zgh.YScaleMax)
-                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_BIOMASS_ECOPATH, _
-                                             eLineType.NotSet, Color.LightSalmon, lpts)
+                li = Me.m_zgh.CreateLineItem(SharedResources.HEADER_BIOMASS_ECOPATH,
+                                             eSketchDrawModeTypes.NotSet, Color.LightSalmon, lpts)
                 li.Line.Style = Drawing2D.DashStyle.Dash
                 lLines.Add(li)
 
                 ' - place the dot
                 lpts = New PointPairList()
                 lpts.Add(data.HalfRecruitmentBiomass, data.MaxRecruitment / 2)
-                li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.LightSalmon, lpts)
+                li = Me.m_zgh.CreateLineItem("", eSketchDrawModeTypes.NotSet, Color.LightSalmon, lpts)
                 li.Symbol.Type = SymbolType.Circle
                 li.Line.IsVisible = False
                 lLines.Add(li)
