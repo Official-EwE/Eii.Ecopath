@@ -310,7 +310,7 @@ Partial Class frmMSE
         '
         resources.ApplyResources(Me.m_tlpFishingControls, "m_tlpFishingControls")
         Me.m_tlpFishingControls.Controls.Add(Me.m_rbWriteAlways, 0, 2)
-        Me.m_tlpFishingControls.Controls.Add(Me.m_btnBiomassLimits, 6, 2)
+        Me.m_tlpFishingControls.Controls.Add(Me.m_btnBiomassLimits, 8, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnDecreaseEffort, 0, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnStockAssessment, 2, 0)
         Me.m_tlpFishingControls.Controls.Add(Me.m_btnSAError, 4, 0)

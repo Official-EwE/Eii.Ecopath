@@ -94,6 +94,7 @@ Public Class gridBiomassLimits
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
         Me.AllowBlockSelect = False
+        'Me.Columns(0).Width = 200
 
     End Sub
 
@@ -123,7 +124,8 @@ Public Class gridBiomassLimits
 
         Next
 
-        Me.Columns(eColumnTypes.GroupIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.GroupIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        'Me.Columns(eColumnTypes.GroupIndex)
         Me.Columns(eColumnTypes.GroupName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
         Me.Columns(eColumnTypes.LowerLimit).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize
         Me.AutoSizeColumn(eColumnTypes.LowerLimit, 150)
@@ -176,11 +178,11 @@ Public Class gridBiomassLimits
         ' Check column
         If (p.Column = eColumnTypes.LowerLimit) Then
             ' Store value
-            Me.m_data(p.Row).mLowerLimit = Convert.ToSingle(cell.GetValue(p))
+            Me.m_data(p.Row - 1).mLowerLimit = Convert.ToSingle(cell.GetValue(p))
         End If
         If (p.Column = eColumnTypes.UpperLimit) Then
             ' Store value
-            Me.m_data(p.Row).mUpperLimit = Convert.ToSingle(cell.GetValue(p))
+            Me.m_data(p.Row - 1).mUpperLimit = Convert.ToSingle(cell.GetValue(p))
         End If
 
         ' Yippee

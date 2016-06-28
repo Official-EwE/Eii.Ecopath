@@ -27,20 +27,39 @@ Partial Class frmBiomassLimits
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmBiomassLimits))
-        Me.m_grid = New EwEMSEPlugin.gridBiomassLimits()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_grid = New EwEMSEPlugin.gridBiomassLimits()
         Me.SuspendLayout()
+        '
+        'm_btnCancel
+        '
+        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
+        Me.m_btnCancel.Name = "m_btnCancel"
+        Me.m_btnCancel.UseVisualStyleBackColor = True
+        '
+        'm_btnSave
+        '
+        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
+        Me.m_btnSave.Name = "m_btnSave"
+        Me.m_btnSave.UseVisualStyleBackColor = True
+        '
+        'm_ts
+        '
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_grid
         '
         Me.m_grid.AllowBlockSelect = False
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.AutoSizeMinHeight = 10
-        Me.m_grid.AutoSizeMinWidth = 10
-        Me.m_grid.AutoStretchColumnsToFitWidth = False
-        Me.m_grid.AutoStretchRowsToFitHeight = False
+        Me.m_grid.AutoSizeMinWidth = 15
+        Me.m_grid.AutoStretchColumnsToFitWidth = True
+        Me.m_grid.AutoStretchRowsToFitHeight = True
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
@@ -65,25 +84,6 @@ Partial Class frmBiomassLimits
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
-        '
-        'm_btnCancel
-        '
-        resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-        Me.m_btnCancel.Name = "m_btnCancel"
-        Me.m_btnCancel.UseVisualStyleBackColor = True
-        '
-        'm_btnSave
-        '
-        resources.ApplyResources(Me.m_btnSave, "m_btnSave")
-        Me.m_btnSave.Name = "m_btnSave"
-        Me.m_btnSave.UseVisualStyleBackColor = True
-        '
-        'm_ts
-        '
-        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        resources.ApplyResources(Me.m_ts, "m_ts")
-        Me.m_ts.Name = "m_ts"
-        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'frmBiomassLimits
         '

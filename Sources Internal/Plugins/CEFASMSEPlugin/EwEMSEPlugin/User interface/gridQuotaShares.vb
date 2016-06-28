@@ -109,7 +109,7 @@ Public Class gridQuotaShares
 
         Me(0, eColumnTypes.GroupNumber) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNUM)
         Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-        Me(0, eColumnTypes.FleetNumber) = New EwEColumnHeaderCell("Fleet number") 'SharedResources.HEADER_FLEET_NUMBER)
+        Me(0, eColumnTypes.FleetNumber) = New EwEColumnHeaderCell(My.Resources.HEADER_FLEETNUMBER)
         Me(0, eColumnTypes.FleetName) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
         Me(0, eColumnTypes.QuotaShare) = New EwEColumnHeaderCell(My.Resources.HEADER_QUOTASHARE)
 
