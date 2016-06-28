@@ -192,7 +192,7 @@ Module EcospaceInputs
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Next the Response Function
         'this is how a group responses to an enviromental input i.e. Salinity
-        Dim Manager As cCapMapResponseManager = core.CapacityShapeManager
+        Dim Manager As cEnviroResponseShapeManager = core.EnviroResponseShapeManager
         Dim ResponseFunction As cEnviroResponseFunction
 
         'Create a new response and give it some values
@@ -226,8 +226,8 @@ Module EcospaceInputs
 
         'loop over all the layers/maps in the manager and find the one we just added
         Dim Map As cEnviroInputMap
-        For imap As Integer = 1 To core.CapacityMapInteractionManager.nMaps
-            Map = core.CapacityMapInteractionManager.Map(imap)
+        For imap As Integer = 1 To core.CapacityMapInteractionManager.nEnviroData
+            Map = core.CapacityMapInteractionManager.EnviroData(imap)
             'Is this the layer/map we added
             If Map.Layer.DBID = DatabaseID Then
 

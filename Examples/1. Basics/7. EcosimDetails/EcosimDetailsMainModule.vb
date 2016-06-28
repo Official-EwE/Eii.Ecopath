@@ -120,7 +120,7 @@ Module EcosimDetailsMainModule
     ''' -----------------------------------------------------------------------
     Private Sub WriteForcingFunctions(core As cCore, writer As StreamWriter)
 
-        Dim manager As cForcingFunctionManager = core.ForcingShapeManager
+        Dim manager As cForcingFunctionShapeManager = core.ForcingShapeManager
         Dim parameters As cEcoSimModelParameters = core.EcoSimModelParameters
 
         writer.WriteLine("# forcing functions: " & manager.Count)
@@ -138,12 +138,7 @@ Module EcosimDetailsMainModule
             If parameters.NutForceFunctionNumber = i Then
                 writer.Write(", forces Nutrients")
             End If
-            If parameters.SalinityForceFunctionNumber = i Then
-                writer.Write(", forces Salinity")
-            End If
-            If parameters.TemperatureForceFunctionNumber = i Then
-                writer.Write(", forces Temperature")
-            End If
+
             writer.WriteLine()
         Next
         writer.WriteLine()
@@ -159,7 +154,7 @@ Module EcosimDetailsMainModule
     ''' -----------------------------------------------------------------------
     Private Sub WriteEggProdFunctions(core As cCore, writer As StreamWriter)
 
-        Dim manager As cEggProductionManager = core.EggProdShapeManager
+        Dim manager As cEggProductionShapeManager = core.EggProdShapeManager
 
         writer.WriteLine("# egg production functions: " & manager.Count)
         For i As Integer = 0 To manager.Count - 1
@@ -194,7 +189,7 @@ Module EcosimDetailsMainModule
     ''' -----------------------------------------------------------------------
     Private Sub WriteMediationFunctions(core As cCore, writer As StreamWriter)
 
-        Dim shapemanager As cMediationManager = core.MediationShapeManager
+        Dim shapemanager As cMediationShapeManager = core.MediationShapeManager
         Dim interactionmanager As cMediatedInteractionManager = core.MediatedInteractionManager
 
         writer.WriteLine("# mediation functions: " & shapemanager.Count)

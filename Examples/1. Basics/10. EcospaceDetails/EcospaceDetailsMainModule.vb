@@ -279,8 +279,8 @@ Module EcospaceDetailsMainModule
     Private Sub WriteEnvironmentalDriverLayers(core As cCore, writer As StreamWriter)
 
         Dim basemap As cEcospaceBasemap = core.EcospaceBasemap
-        Dim interactionmanager As cMapResponseInteractionManager = core.CapacityMapInteractionManager
-        Dim shapemanager As cCapMapResponseManager = core.CapacityShapeManager
+        Dim interactionmanager As cEcospaceEnviroResponseManager = core.CapacityMapInteractionManager
+        Dim shapemanager As cEnviroResponseShapeManager = core.EnviroResponseShapeManager
 
         writer.WriteLine("# environmental driver layers: " & core.nEnvironmentalDriverLayers)
         For iLayer As Integer = 1 To core.nEnvironmentalDriverLayers
@@ -290,10 +290,10 @@ Module EcospaceDetailsMainModule
             writer.WriteLine("   " & iLayer & ": " & layer.Name)
 
             ' Find all interactions for this current layer
-            For iMap As Integer = 1 To interactionmanager.nMaps
+            For iMap As Integer = 1 To interactionmanager.nEnviroData
 
-                Dim mapTest As IEnviroInputMap = interactionmanager.Map(iMap)
-                If Object.ReferenceEquals(mapTest.Layer, layer) Then
+                Dim mapTest As IEnviroInputData = interactionmanager.EnviroData(iMap)
+                If Object.ReferenceEquals(DirectCast(mapTest, cEnviroInputMap).Layer, layer) Then
 
                     ' Find all the groups that are driven by this map, and via which functions
                     For iGroup As Integer = 1 To core.nGroups

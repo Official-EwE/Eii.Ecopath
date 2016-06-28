@@ -105,7 +105,7 @@ Module EcosimInputsMainModule
 
     Private Sub VaryFishingEffort()
         Dim FleetInput As cFleetInput
-        Dim EffortManager As cFishingEffortManger = core.FishingEffortShapeManager
+        Dim EffortManager As cFishingEffortShapeManger = core.FishingEffortShapeManager
 
         'Ecosim stores Fishing Effort and Fishing Mortality input data in cShapeData objects 
         'Each type of cShapeData has its own implementation
