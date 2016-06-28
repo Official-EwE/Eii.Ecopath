@@ -7104,7 +7104,7 @@ Namespace DataSources
                         If (ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup) > 0) Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iGroup))
+                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
                             drow("ResponseID") = medDS.MediationDBIDs(ecosimDS.EnvRespFuncIndex(iShapeDriver, iGroup))
                             drow("DriverID") = ecosimDS.ForcingDBIDs(iShapeDriver)
                             writer.AddRow(drow)
