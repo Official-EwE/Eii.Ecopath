@@ -315,11 +315,10 @@ Public Class cBiomassLimits
         If (writer Is Nothing) Then Return bSuccess
 
         Try
-            writer.WriteLine("GroupNumber,GroupName,LowerLimit,UpperLimit")
+            writer.WriteLine("GroupNumber,LowerLimit,UpperLimit")
 
             For Each iBiomassLimit As cBiomassLimit In Me.lstBiomassLimits
-                writer.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.getID) & "," &
-                                 cStringUtils.ToCSVField(iBiomassLimit.mGroup.Name) & "," &
+                writer.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.DBID) & "," &
                                  cStringUtils.ToCSVField(iBiomassLimit.mLowerLimit) & "," &
                                  cStringUtils.ToCSVField(iBiomassLimit.mUpperLimit))
             Next
