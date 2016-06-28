@@ -47,7 +47,7 @@ Public Class cEcosimForcingFunctionSummarizer
     Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim interactions As cMediatedInteractionManager = Me.m_core.MediatedInteractionManager
-        Dim shapes As cForcingFunctionManager = Me.m_core.ForcingShapeManager
+        Dim shapes As cForcingFunctionShapeManager = Me.m_core.ForcingShapeManager
         Dim shape As cForcingFunction = Nothing
         Dim sbSummary As New Text.StringBuilder()
 

@@ -47,7 +47,7 @@ Public Class cEcosimPriceElasticitySummarizer
     Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim interactions As cMediatedInteractionManager = Me.m_core.MediatedInteractionManager
-        Dim shapes As cLandingsMediationManager = Me.m_core.LandingsShapeManager
+        Dim shapes As cLandingsMediationShapeManager = Me.m_core.LandingsShapeManager
         Dim shape As cForcingFunction = Nothing
         Dim sbSummary As New Text.StringBuilder()
 

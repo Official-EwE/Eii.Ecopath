@@ -132,8 +132,6 @@ Public Class cEcospaceMapsSummarizer
                         vc.Add(bm.InRow, bm.InCol, DirectCast(layer, cEcospaceLayerSingle))
                     ElseIf TypeOf layer Is cEcospaceLayerInteger Then
                         vc.Add(bm.InRow, bm.InCol, DirectCast(layer, cEcospaceLayerInteger))
-                    ElseIf TypeOf layer Is cEcospaceLayerVector Then
-                        vc.Add(bm.InRow, bm.InCol, DirectCast(layer, cEcospaceLayerVector))
                     End If
                 End If
             Next j

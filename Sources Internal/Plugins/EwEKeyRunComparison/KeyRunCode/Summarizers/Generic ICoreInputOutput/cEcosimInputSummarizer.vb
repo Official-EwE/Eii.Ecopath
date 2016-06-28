@@ -54,14 +54,7 @@ Public Class cEcosimInputSummarizer
         Me.m_variables.Add(eVarNameFlags.QBMaxQBio)
         Me.m_variables.Add(eVarNameFlags.SwitchingPower)
 
-        Me.m_variables.Add(eVarNameFlags.SalinityOpt)
-        Me.m_variables.Add(eVarNameFlags.SalinitySpreadLeft)
-
-        Me.m_variables.Add(eVarNameFlags.SalinitySpreadRight)
-
-        Me.m_variables.Add(eVarNameFlags.TemperatureOpt)
-        Me.m_variables.Add(eVarNameFlags.TemperatureSpreadLeft)
-        Me.m_variables.Add(eVarNameFlags.TemperatureSpreadRight)
+        ' ToDo: include Ecosim env forcing
 
     End Sub
 

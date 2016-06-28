@@ -73,7 +73,7 @@ Public Class cStanzaSummarizer
 
         Dim sb As New StringBuilder()
         Dim shp As cShapeData = Nothing
-        Dim man As cEggProductionManager = Me.m_core.EggProdShapeManager
+        Dim man As cEggProductionShapeManager = Me.m_core.EggProdShapeManager
         Dim stz As ICoreInputOutput = Nothing
         Dim iShp As Integer
 

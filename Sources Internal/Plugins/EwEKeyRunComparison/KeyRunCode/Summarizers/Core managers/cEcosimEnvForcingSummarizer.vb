@@ -45,15 +45,14 @@ Public Class cEcosimEnvForcingSummarizer
         Me.m_vars = New List(Of eVarNameFlags)
 
         Me.m_vars.Add(eVarNameFlags.NutForceFunctionNumber)
-        Me.m_vars.Add(eVarNameFlags.TemperatureForceFunctionNumber)
-        Me.m_vars.Add(eVarNameFlags.SalinityForceFunctionNumber)
 
+        ' ToDO: add Ecosim env responses
     End Sub
 
     Public Function HashValues() As cHashValues() _
         Implements IHashSummarizer.HashValues
 
-        Dim man As cForcingFunctionManager = Me.m_core.ForcingShapeManager
+        Dim man As cForcingFunctionShapeManager = Me.m_core.ForcingShapeManager
         Dim parms As cEcoSimModelParameters = Me.m_core.EcoSimModelParameters
         Dim iShape As Integer
         Dim shape As cForcingFunction = Nothing

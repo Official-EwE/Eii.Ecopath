@@ -162,12 +162,9 @@ Public Class cHabitatCapacityPluginPoint
         Dim FunctToAssign As cEnviroResponseFunction = Me.getEnviroResponseFunction(1)
         'Index of the function
         Dim iFunctionIndex As Integer = FunctToAssign.Index
-        'Name of the Depth layer
-        Dim LayerName(5) As String
-        LayerName(1) = d.Name
 
         'Response functions are applied to the group index(KeyGrp) of a map/layer(LayerName)
-        Me.assignResponseFunctToGroupAndLayer(iFunctionIndex, KeyGrp, LayerName(1))
+        Me.assignResponseFunctToGroupAndLayer(iFunctionIndex, KeyGrp, d)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -401,7 +398,7 @@ Public Class cHabitatCapacityPluginPoint
         Dim shape As cEnviroResponseFunction
         Try
             'Foraging response functions are in a zero base list
-            shape = DirectCast(Me.m_core.CapacityShapeManager.Item(iFunctionIndex - 1), cEnviroResponseFunction)
+            shape = DirectCast(Me.m_core.EnviroResponseShapeManager.Item(iFunctionIndex - 1), cEnviroResponseFunction)
         Catch ex As Exception
             PostMessage("WARNING: Failed to find Foraging Response Function #" + iFunctionIndex.ToString)
         End Try
@@ -428,17 +425,17 @@ Public Class cHabitatCapacityPluginPoint
 
     End Sub
 
-    Private Sub assignResponseFunctToGroupAndLayer(ByVal iFunctionIndex As Integer, ByVal iGroupIndex As Integer, LayerName As String)
-        Dim map As IEnviroInputMap
+    Private Sub assignResponseFunctToGroupAndLayer(ByVal iFunctionIndex As Integer, ByVal iGroupIndex As Integer, Layer As cEcospaceLayer)
+        Dim map As IEnviroInputData
 
-        Debug.Assert(iFunctionIndex <= Me.m_core.CapacityShapeManager.Count, "Functional Response Index out of bounds.")
+        Debug.Assert(iFunctionIndex <= Me.m_core.EnviroResponseShapeManager.Count, "Functional Response Index out of bounds.")
 
         'The environmental Maps are stored by index in the same order as they appear in the "Apply environmental response" grid
         'Get the map by Index
         'map = Me.m_core.CapacityMapInteractionManager.Map(iLayerIndex)
         'Get the map by Name
-        map = Me.m_core.CapacityMapInteractionManager.Map(LayerName)
-        Debug.Assert(map IsNot Nothing, "Failed to find a Layer with the name '" + LayerName + "'")
+        map = Me.m_core.CapacityMapInteractionManager.EnviroData(Layer)
+        Debug.Assert(map IsNot Nothing, "Failed to find a Layer with the name '" + Layer.Name + "'")
 
         'Apply the Response function to a GroupIndex on the Layer
         map.ResponseIndexForGroup(iGroupIndex) = iFunctionIndex

@@ -131,16 +131,6 @@ Public Class cValueCollector
         Return True
     End Function
 
-    Public Function Add(nRow As Integer, nCol As Integer, value As cEcospaceLayerVector) As Boolean
-        For i As Integer = 1 To nRow
-            For j As Integer = 1 To nCol
-                Me.Add(value.XVelocity(i, j))
-                Me.Add(value.YVelocity(i, j))
-            Next
-        Next
-        Return True
-    End Function
-
     Public Function Bytes() As Byte()
         Return Me.m_lData.ToArray()
     End Function

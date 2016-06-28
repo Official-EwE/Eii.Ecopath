@@ -46,7 +46,7 @@ Public Class cEcosimMortalitySummarizer
 
     Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
-        Dim MortShps As cFishingMortalityManger = Me.m_core.FishMortShapeManager
+        Dim MortShps As cFishingMortalityShapeManger = Me.m_core.FishMortShapeManager
         Dim shape As cForcingFunction = Nothing
         Dim sbSummary As New Text.StringBuilder()
 

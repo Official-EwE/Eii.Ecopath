@@ -131,15 +131,7 @@ Public Class cStringConverters
 
         For iRow As Integer = 1 To nRow
             For iCol As Integer = 1 To nCol
-                Dim value As Object = layer.Cell(iRow, iCol)
-
-                If (TypeOf layer Is cEcospaceLayerVector) Then
-                    Dim vector As Single() = DirectCast(value, Single())
-                    sb.Append(FormatNumber(vector(0)))
-                    sb.Append(FormatNumber(vector(1)))
-                Else
-                    sb.Append(FormatNumber(layer.Cell(iRow, iCol)))
-                End If
+                sb.Append(FormatNumber(layer.Cell(iRow, iCol)))
             Next
         Next
         ' Do not add the individual map data; the string will become unusable in length for any practical purpose. 

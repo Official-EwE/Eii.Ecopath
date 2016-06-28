@@ -47,7 +47,7 @@ Public Class cEcosimMediationSummarizer
     Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim interactions As cMediatedInteractionManager = Me.m_core.MediatedInteractionManager
-        Dim shapes As cMediationManager = Me.m_core.MediationShapeManager
+        Dim shapes As cMediationShapeManager = Me.m_core.MediationShapeManager
         Dim shape As cForcingFunction = Nothing
         Dim sbSummary As New Text.StringBuilder()
 

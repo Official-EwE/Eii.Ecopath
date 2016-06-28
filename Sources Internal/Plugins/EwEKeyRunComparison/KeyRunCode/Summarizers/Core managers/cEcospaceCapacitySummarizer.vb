@@ -43,8 +43,8 @@ Public Class cEcospaceCapacitySummarizer
     Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim capacity As cMapResponseInteractionManager = m_core.CapacityMapInteractionManager
-        Dim shapes As cCapMapResponseManager = Me.m_core.CapacityShapeManager
+        Dim capacity As cEcospaceEnviroResponseManager = m_core.CapacityMapInteractionManager
+        Dim shapes As cEnviroResponseShapeManager = Me.m_core.EnviroResponseShapeManager
         Dim sb As New Text.StringBuilder
 
         Dim lstHashValues As New List(Of cHashValues)
@@ -52,14 +52,13 @@ Public Class cEcospaceCapacitySummarizer
         Try
             For igrp As Integer = 1 To m_core.nGroups
                 Dim grp As cEcospaceGroup = Me.m_core.EcospaceGroups(igrp)
-                For imap As Integer = 1 To capacity.nMaps
-                    Dim map As IEnviroInputMap = capacity.Map(imap)
+                For imap As Integer = 1 To capacity.nEnviroData
+                    Dim map As IEnviroInputData = capacity.EnviroData(imap)
                     Dim ishp As Integer = map.ResponseIndexForGroup(igrp)
                     If ishp > 0 Then
                         sb.Append("grp=" & igrp)
-                        ' JS: this is the only place where driver layers are hashed
-                        sb.Append(",map=")
-                        sb.Append(cStringConverters.LayerToString(bm.InRow, bm.InCol, map.Layer))
+                        sb.Append(",driver=")
+                        sb.Append(cStringConverters.LayerToString(bm.InRow, bm.InCol, DirectCast(map, cEnviroInputMap).Layer))
                         sb.Append(",data=")
                         sb.Append(cStringConverters.ShapeToString(shapes.Item(ishp - 1)))
                         sb.Append("|")

@@ -46,7 +46,7 @@ Public Class cEcosimEffortSummarizer
 
     Public Function HashValues() As cHashValues() Implements IHashSummarizer.HashValues
 
-        Dim EffortShps As cFishingEffortManger = Me.m_core.FishingEffortShapeManager
+        Dim EffortShps As cFishingEffortShapeManger = Me.m_core.FishingEffortShapeManager
         Dim shape As cForcingFunction = Nothing
         Dim sbSummary As New Text.StringBuilder()
 
