@@ -1210,11 +1210,19 @@ Namespace Ecosim
                     isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
 
                     If isForced Then
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'WARNING: If both forced F's and forced Catches are loaded
+                        'Forced Catches will take precedents
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                         'YES Forced don't included Density Dependant Catchability on any type of forced F
                         If Me.m_Data.FisForced(iGrp) Then
                             'Forced F
                             m_Data.FishTime(iGrp) = m_Data.FishRateNo(iGrp, iTime)
-                        Else
+                        End If
+
+                        'If Forced Catches are loaded for this time step overwrite Forced F's
+                        If Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0 Then
                             'Forced Catches
                             m_Data.FishTime(iGrp) = Me.m_RefData.PoolForceCatch(iGrp, iForcing) / BB(iGrp)
                             'VC Sep 2008. Based on discussion with CJW, we'll cap the FishTime to be a logistic function 
