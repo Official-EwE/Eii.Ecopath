@@ -1025,7 +1025,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to flow to detritus.
+        '''  Looks up a localized string similar to flow from detritus.
         '''</summary>
         Friend ReadOnly Property LBL_FLOWDET() As String
             Get
