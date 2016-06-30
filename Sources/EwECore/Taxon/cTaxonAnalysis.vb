@@ -113,7 +113,7 @@ Public Class cTaxonAnalysis
         Dim comp As cOperatorBase = cOperatorManager.getOperator(op)
         Dim avals As Array = Nothing
         Dim sVal As Single = CSng(value)
-        Dim strKey As String = Me.Key(bBiomass, iGroup, sVal, op)
+        Dim strKey As String = Me.Key(bBiomass, iGroup, sVal, value.GetType(), op)
 
         If (Not Me.m_dt.ContainsKey(strKey)) Then
 
@@ -159,11 +159,12 @@ Public Class cTaxonAnalysis
 
     End Function
 
-    Private Function Key(ByVal bBiomass As Boolean, _
-                         ByVal iGroup As Integer, _
-                         ByVal sVal As Single, _
+    Private Function Key(ByVal bBiomass As Boolean,
+                         ByVal iGroup As Integer,
+                         ByVal sVal As Single,
+                         ByVal t As Type,
                          ByVal op As eOperators) As String
-        Return iGroup & "_" & sVal & "_" & op & "_" & bBiomass
+        Return iGroup & "_" & t.ToString & "(" & sVal & ")_" & op & "_" & bBiomass
     End Function
 
 #End Region ' Internals
