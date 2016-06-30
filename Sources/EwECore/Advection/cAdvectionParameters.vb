@@ -82,7 +82,12 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Public Property XVelocity() As Single
+
+#Region "Properties no longer used by the new Advection Model"
+
+
+        <Obsolete("No longer used by the Advection Model")> _
+         Public Property XVelocity() As Single
             Get
                 Return CSng(GetVariable(eVarNameFlags.XVelocity))
             End Get
@@ -92,7 +97,8 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-        Public Property YVelocity() As Single
+        <Obsolete("No longer used by the Advection Model")> _
+         Public Property YVelocity() As Single
             Get
                 Return CSng(GetVariable(eVarNameFlags.YVelocity))
             End Get
@@ -102,7 +108,8 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-        Public Property Coriolis() As Single
+        <Obsolete("No longer used by the Advection Model")> _
+         Public Property Coriolis() As Single
             Get
                 Return CSng(GetVariable(eVarNameFlags.Coriolis))
             End Get
@@ -112,6 +119,8 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
+    
+        <Obsolete("No longer used by the Advection Model")> _
         Public Property SorWv() As Single
             Get
                 Return CSng(GetVariable(eVarNameFlags.SorWv))
@@ -121,6 +130,8 @@ Namespace Ecospace.Advection
                 SetVariable(eVarNameFlags.SorWv, value)
             End Set
         End Property
+
+#End Region
 
     End Class
 
