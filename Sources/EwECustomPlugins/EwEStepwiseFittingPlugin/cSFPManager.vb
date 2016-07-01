@@ -349,6 +349,9 @@ Public Class cSFPManager
                     If Iteration.Run() Then
                         If (Not m_bStopRun) Then
                             Debug.WriteLine(Iteration.Name & " SS= " & Iteration.SS & " AIC= " & Iteration.AIC & " AICc= " & Iteration.AICc & ", " & Iteration.RunState)
+
+                            ' Make sure Iteration will save
+                            Iteration.RunState = ISFPIterations.eRunState.Completed
                             ' Save Ecosim results if requested
                             SaveIterationResults(Iteration, msg)
                             ' Save content of iteration for later reloading
@@ -361,9 +364,7 @@ Public Class cSFPManager
                     End If
 
                     ' Finalize iteration status
-                    If bSuccess Then
-                        Iteration.RunState = ISFPIterations.eRunState.Completed
-                    Else
+                    If Not bSuccess Then
                         Iteration.RunState = ISFPIterations.eRunState.Error
                     End If
 
@@ -957,7 +958,7 @@ Public Class cSFPManager
 
             'Output vulnerabilities to a csv file
             'If ecosim or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or _
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
                (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
                 writer = New StreamWriter(Path.Combine(strIterationPath, "Vulnerabilities.csv"))
                 If (iteration.Vulnerabilities IsNot Nothing) Then
@@ -983,7 +984,7 @@ Public Class cSFPManager
             End If
 
             'If aggregated or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or _
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
                (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
                 Dim strPath As String = Me.OutputFolder
                 If cFileUtils.IsDirectoryAvailable(strPath, True) Then
@@ -1023,7 +1024,7 @@ Public Class cSFPManager
 
             'Output Anomaly to a csv file
             'If ecosim or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or _
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
                (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
                 writer = New StreamWriter(Path.Combine(strIterationPath, "Anomaly.csv"))
                 If (iteration.AnomalyShape IsNot Nothing) Then
@@ -1045,7 +1046,7 @@ Public Class cSFPManager
             End If
 
             'If aggregated or all output is selected save the csv file to the named iteration folder
-            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or _
+            If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
                (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
                 Dim strPath As String = Me.OutputFolder
                 If cFileUtils.IsDirectoryAvailable(strPath, True) Then
