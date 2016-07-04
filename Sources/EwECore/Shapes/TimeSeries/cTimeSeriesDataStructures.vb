@@ -379,6 +379,9 @@ Public Class cTimeSeriesDataStructures
     ''' <param name="isEcospaceGroupForced"></param>
     Public Sub setDefaultEcospaceBioForcing(isEcospaceGroupForced() As Boolean)
 
+
+        Exit Sub
+
         Try
 
             If isEcospaceGroupForced.Length <> Me.nGroups + 1 Then
