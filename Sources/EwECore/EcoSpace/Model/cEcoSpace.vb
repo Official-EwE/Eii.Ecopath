@@ -913,6 +913,8 @@ Public Class cEcoSpace
             'This ensures that the biomass matches the Ecosim time series values at the start of the simulation
             'inside the time loop Me.ForceBiomassWithEcosimTimeSeries(its) will be called at the end of the time step
             'to set biomass to Ecosim time series values for the output and next time step
+            m_Data.TimeNow = 0
+            m_Data.YearNow = 1
             Me.ForceBiomassWithEcosimTimeSeries(1)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1491,12 +1493,13 @@ Public Class cEcoSpace
     End Sub
 
     ''' <summary>
-    ''' VC stole this from Ecosim
+    ''' VC stole this from Ecosim 
+    ''' Force Ecospace Biomass with Ecosim time series forced biomass 
     ''' </summary>
     Private Sub ForceBiomassWithEcosimTimeSeries(iTime As Integer)
 
         Exit Sub
-        Debug.Assert(False, "ForceBiomassWithEcosimTimeSeries() Oppss should be here!")
+        Debug.Assert(False, "ForceBiomassWithEcosimTimeSeries() Oppss shouldn't be here!")
         System.Console.WriteLine("WARNING: Ecospace biomass forced by Ecosim biomass forcing!")
 
         Try
@@ -1513,95 +1516,70 @@ Public Class cEcoSpace
                 'loop over the Ecosim time series and find the group with forced biomass for this time step
                 'AAAAH Group 1 is forced (as an example, so let's force the biomass of this group
                 'If ip = 1 Then
+                If Me.m_Data.IsEcosimBioForcingEnabled(ip) Then
 
-                'jb If there is valid data assume that it's forced! Really!
-                If Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex) > 0 Then
-                    SumB = 0
+                    'jb If there is valid data assume that it's forced! Really!
+                    If Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex) > 0 Then
+                        SumB = 0
 
-                    'If m_Data.TimeNow > 10 Then ' And m_Data.TimeNow < 20 Then
-                    Dim WaterCells As Integer = 0
-                    'this group has forced biomass in Ecosim timeseries
-                    For i As Integer = 1 To m_Data.InRow
-                        For j As Integer = 1 To m_Data.InCol
-                            'jb 12-July-2013 Added Depth check and removed width multiplier
-                            'This fixes a bug in the Ecospace Results grid were biomass was not matching Ecopath base with large spatial models
+                        'If m_Data.TimeNow > 10 Then ' And m_Data.TimeNow < 20 Then
+                        Dim WaterCells As Integer = 0
+                        'this group has forced biomass in Ecosim timeseries
+                        For i As Integer = 1 To m_Data.InRow
+                            For j As Integer = 1 To m_Data.InCol
+                                'jb 12-July-2013 Added Depth check and removed width multiplier
+                                'This fixes a bug in the Ecospace Results grid were biomass was not matching Ecopath base with large spatial models
 
-                            'VC 10-June-2016 The calculation below actually should scale based on area of cell, so cell width
-                            'we should revisit and fix the bug that Joe talkes about above
-                            '****************** SEE ABOVE  ************************
-                            If Me.m_Data.Depth(i, j) > 0 Then
-                                SumB += m_Data.Bcell(i, j, ip)
-                                WaterCells += 1
-                            End If
-                        Next j
-                    Next i
+                                'VC 10-June-2016 The calculation below actually should scale based on area of cell, so cell width
+                                'we should revisit and fix the bug that Joe talkes about above
+                                '****************** SEE ABOVE  ************************
+                                If Me.m_Data.Depth(i, j) > 0 Then
+                                    SumB += m_Data.Bcell(i, j, ip)
+                                    WaterCells += 1
+                                End If
+                            Next j
+                        Next i
 
-                    'Get the forced biomass (fb)
-                    Dim fb As Single = 0
-                    Dim meanForcedB As Single
-                    'fb = 0.08 * WaterCells ' * (1 - m_Data.TimeNow / m_Data.TotalTime) 
-                    'jb get the forced biomass value
-                    fb = Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
+                        'Get the forced biomass (fb)
+                        Dim fb As Single = 0
+                        Dim meanForcedB As Single
+                        'fb = 0.08 * WaterCells ' * (1 - m_Data.TimeNow / m_Data.TotalTime) 
+                        'jb get the forced biomass value
+                        fb = Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
 
-                    For i As Integer = 1 To m_Data.InRow
-                        For j As Integer = 1 To m_Data.InCol
-                            'Villy
-                            'If Me.m_Data.Depth(i, j) > 0 And SumB > 0 Then
-                            '    m_Data.Bcell(i, j, ip) = m_Data.Bcell(i, j, ip) * fb / SumB
-                            'End If
+                        For i As Integer = 1 To m_Data.InRow
+                            For j As Integer = 1 To m_Data.InCol
+                                'Villy
+                                'If Me.m_Data.Depth(i, j) > 0 And SumB > 0 Then
+                                '    m_Data.Bcell(i, j, ip) = m_Data.Bcell(i, j, ip) * fb / SumB
+                                'End If
 
-                            'jb
-                            If Me.m_Data.Depth(i, j) > 0 Then
-                                'jb version 29-June-2016
-                                m_Data.Bcell(i, j, ip) = (WaterCells / SumB) * fb * m_Data.Bcell(i, j, ip)
-                                meanForcedB += m_Data.Bcell(i, j, ip)
-                            End If
-                        Next j
-                    Next i
-                    ''update Btime with the forced biomass (VC: I haven't checked if anything is done with Btime later in code)
-                    'Btime(ip) = fb
-                    'End If
+                                'jb
+                                If Me.m_Data.Depth(i, j) > 0 Then
+                                    'jb version 29-June-2016
+                                    m_Data.Bcell(i, j, ip) = (WaterCells / SumB) * fb * m_Data.Bcell(i, j, ip)
+                                    meanForcedB += m_Data.Bcell(i, j, ip)
+                                End If
+                            Next j
+                        Next i
+                        ''update Btime with the forced biomass (VC: I haven't checked if anything is done with Btime later in code)
+                        'Btime(ip) = fb
+                        'End If
 
-                    'Debugging the mean ecospace biomass should match the forcing value
-                    System.Console.WriteLine("Ecospace Forced B grp=" + ip.ToString + " BForced/Bmean=" + (fb / (meanForcedB / WaterCells)).ToString)
-                    Debug.Assert(Math.Round(fb / (meanForcedB / WaterCells), 3) = 1.0, "ForceBiomassWithEcosimTimeSeries(...) did not set forced biomass correctly")
+                        'Debugging the mean ecospace biomass should match the forcing value
+                        System.Console.WriteLine("Ecospace Forced B grp=" + ip.ToString + " BForced/Bmean=" + (fb / (meanForcedB / WaterCells)).ToString)
+                        Debug.Assert(Math.Round(fb / (meanForcedB / WaterCells), 3) = 1.0, "ForceBiomassWithEcosimTimeSeries(...) did not set forced biomass correctly")
 
-                End If
-                'End If
+                    End If 'Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
+                End If ' Me.m_Data.IsEcosimBioForcing(ip)
             Next ip
+
 
         Catch ex As Exception
 
         End Try
 
     End Sub
-
-
-    ''' <summary>
-    ''' VC stole this from Ecosim
-    ''' </summary>
-    Private Sub setBiomassForcing(ByVal iModelTimeStep As Integer, iYear As Integer)
-        Dim iGrp As Integer
-        'Get the correct forcing data timestep for this model time step
-        Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iModelTimeStep, iYear)
-
-        'For iGrp = 1 To m_EPData.NumGroups
-        '    ResetPred(iGrp) = False
-        'Next
-
-        If iForcing <= m_RefData.nDatPoints Then  'Force the biomass if such a dataseries exists
-            For iGrp = 1 To m_EPData.NumGroups
-                If m_RefData.PoolForceBB(iGrp, iForcing) > 0 Then
-                    'ResetPred(iGrp) = True
-                    'BB(iGrp) = m_RefData.PoolForceBB(iGrp, iForcing)
-                End If
-            Next
-        End If 'If iyr <= m_refData.NdatYear Then
-
-    End Sub
-
-
-
 
     ''' <summary>
     ''' Update the Depth(,) map used by Ecospace with the Excluded layer

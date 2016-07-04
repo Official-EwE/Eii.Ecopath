@@ -372,6 +372,46 @@ Public Class cTimeSeriesDataStructures
 
     End Function
 
+    ''' <summary>
+    ''' Set <see cref="cEcospaceDataStructures.IsEcosimBioForcingEnabled">cEcospaceDataStructures.IsEcosimBioForcingEnabled()</see> 
+    ''' = True for all groups that have Ecosim Biomass Forcing time series loaded. This forces the Ecospace biomass with the Ecosim forcing time series.
+    ''' </summary>
+    ''' <param name="isEcospaceGroupForced"></param>
+    Public Sub setDefaultEcospaceBioForcing(isEcospaceGroupForced() As Boolean)
+
+        Try
+
+            If isEcospaceGroupForced.Length <> Me.nGroups + 1 Then
+                'if Ecospace has not been loaded then 
+                'isGroupForced() will not dimensioned to 1
+                Return
+            End If
+
+            Array.Clear(isEcospaceGroupForced, 0, isEcospaceGroupForced.Length)
+
+            If PoolForceBB Is Nothing Then
+                'No biomass forcing loaded
+                'the Array.Clear() above will set isGroupForced() to False
+                Return
+            End If
+
+            For igrp As Integer = 1 To Me.nGroups
+                For iDatPt As Integer = 1 To Me.nDatPoints
+                    If Me.PoolForceBB(igrp, iDatPt) > 0 Then
+                        'If biomass forcing has been set for any timestep
+                        'then this group is considered as forced
+                        isEcospaceGroupForced(igrp) = True
+                        Exit For
+                    End If
+                Next iDatPt
+            Next igrp
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".setDefaultEcospaceBioForcing() something went really wrong!")
+        End Try
+
+    End Sub
+
 
     ''' <summary>
     ''' Redim time series forcing data PoolForceBB(nGroups, nYears),PoolForceZ(nGroups, nYears) and PoolForceCatch(nGroups, nYears)

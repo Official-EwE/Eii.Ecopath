@@ -760,6 +760,12 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public MigMaps(,)(,) As Single
 
+
+    ''' <summary>
+    ''' Is the Ecosim biomass time series forcing enabled for this group
+    ''' </summary>
+    Public IsEcosimBioForcingEnabled() As Boolean
+
 #End Region
 
 #Region "Private Data"
@@ -1932,6 +1938,9 @@ Public Class cEcospaceDataStructures
             ReDim GroupDBID(m_ngroups)
             ReDim EcopathGroupDBID(m_ngroups)
             ReDim CapCalType(m_ngroups)
+
+            ReDim IsEcosimBioForcingEnabled(m_ngroups)
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimGroupDBID() Error: " & ex.Message)
         End Try

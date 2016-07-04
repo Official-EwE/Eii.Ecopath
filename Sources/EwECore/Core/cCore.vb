@@ -1923,6 +1923,10 @@ Public Class cCore
                     End If
                 End If
                 Me.UpdateTimeSeries()
+
+                'Set Default Ecospace Biomass Forcing values
+                Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
+
                 ' Invalidate Ecosim outputs
                 Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             End If
@@ -2034,6 +2038,7 @@ Public Class cCore
 
         ' Load enabled TS
         Me.m_TSData.loadEnabled()
+
         ' Ecosim needs to run again, but do not screw up the data state
         Me.StateMonitor.SetEcoSimLoaded(True, bResetDataState:=False)
 
@@ -2043,6 +2048,8 @@ Public Class cCore
         Else
             Me.setEcosimRunLength(Me.m_EcoSimData.NumYears, True)
         End If
+
+        Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
 
         'reset all efforts that were unloaded/disabled
         Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
@@ -3967,7 +3974,7 @@ Public Class cCore
 
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
                 'from original code
-                Input.Emigration = CSng(IIf(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
+                Input.Emigration = CSng(IIF(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
                                                 m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.Emigration(iGroup)))
                 Dim j As Integer
                 'Diet Comp (DO NOT INCLUDE IMPORT IN THE DC ARRAY - THIS IS SEPARATED IN ECOPATHGROUP!)
@@ -5147,7 +5154,7 @@ Public Class cCore
                 bSuccessEcopath = True
                 bSuccessPSD = False
 
-                If m_EcoPath.RunState = Ecopath.eEcopathRunState.Error Or _
+                If m_EcoPath.RunState = Ecopath.eEcopathRunState.Error Or
                     m_EcoPath.RunState = Ecopath.eEcopathRunState.InValidInitialization Then
                     'Only return false if there was an error
                     bSuccessEcopath = False
@@ -5303,7 +5310,7 @@ Public Class cCore
                 End Select
 
                 ' Did this affect any significant core component?
-                If (msAffected <> eCoreComponentType.NotSet) And _
+                If (msAffected <> eCoreComponentType.NotSet) And
                    (msg.Importance = eMessageImportance.Maintenance) Then
                     ' Has data source?
                     If (Me.DataSource IsNot Nothing) Then
@@ -5885,7 +5892,7 @@ Public Class cCore
                 ' ..For all fleets
                 For iFleet As Integer = 1 To Me.nFleets
                     ' Is this life stage being caught?
-                    If (Me.m_EcoPathData.Landing(iFleet, sg.iGroups(iLifestage)) + _
+                    If (Me.m_EcoPathData.Landing(iFleet, sg.iGroups(iLifestage)) +
                         Me.m_EcoPathData.Discard(iFleet, sg.iGroups(iLifestage))) > 0 Then
 
                         ' #Yes: remember youngest life stage index 
@@ -6358,7 +6365,7 @@ Public Class cCore
                     If msg Is Nothing Then
                         msg = New cMessage("Group fished state has changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput)
                     End If
-                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Group " & group.Name & " is " & CStr(IIf(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, group.Index)
+                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Group " & group.Name & " is " & CStr(IIF(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, group.Index)
                     msg.AddVariable(vs)
                 End If
                 group.AllowValidation = True
@@ -6384,7 +6391,7 @@ Public Class cCore
                     If msg Is Nothing Then
                         msg = New cMessage("Stanza fished state has changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Stanza)
                     End If
-                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Stanza " & stanza.Name & " is " & CStr(IIf(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.Stanza, eCoreComponentType.EcoPath, iStanza)
+                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Stanza " & stanza.Name & " is " & CStr(IIF(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.Stanza, eCoreComponentType.EcoPath, iStanza)
                     msg.AddVariable(vs)
                 End If
                 stanza.AllowValidation = True
@@ -6509,7 +6516,7 @@ Public Class cCore
     ''' <inheritdocs cref="nEcosimScenarios"/>
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <Obsolete("Please use nEcosimScenarios instead")> _
+    <Obsolete("Please use nEcosimScenarios instead")>
     Public ReadOnly Property EcosimScenarioCount() As Integer
         Get
             Try
@@ -7770,7 +7777,7 @@ Public Class cCore
             m_EcoSimData.RiskTime(iGroup) = group.PredEffectFeedingTime
             m_EcoSimData.CmCo(iGroup) = group.QBMaxQBio
             m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
-  
+
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
                 m_EcoSimData.VulMult(iGroup, iPred) = group.VulMult(iPred)
@@ -7878,7 +7885,7 @@ Public Class cCore
 
             If newNumberOfYears = 0 Then Exit Sub
             'sets NumYears and NTimes and resize the underlying data to the new number of years
-            m_EcoSimData.RedimTime(newNumberOfYears, m_TSData.nYears, bOverwriteNewData)
+            m_EcoSimData.redimTime(newNumberOfYears, m_TSData.nYears, bOverwriteNewData)
 
             'redim the cv vars to the new timesteps
             Me.m_MSEData.redimTime(orgNYears)
@@ -9400,7 +9407,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="nEcospaceScenarios"/>
     ''' -----------------------------------------------------------------------
-    <Obsolete("Use nEcospaceScenarios instead")> _
+    <Obsolete("Use nEcospaceScenarios instead")>
     Public ReadOnly Property EcospaceScenarioCount() As Integer
         Get
             Try
@@ -9811,6 +9818,9 @@ Public Class cCore
                 SendEcospaceLoadMessage("", "Failed to load scenario")
                 Return False
             End If
+
+            Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
+
 
             ' JS 12dec10: This seems wrong; Ecosim and Ecospace can run with different numbers of years.
             '             The commented-out line below caused any changed number of years to be lost.
