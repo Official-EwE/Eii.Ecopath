@@ -91,7 +91,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=0</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>None</DebugType>
