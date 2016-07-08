@@ -489,7 +489,7 @@ Public Class cSpaceSolver
 
             If RelPPupwell < 1 Then RelPPupwell = 1
 
-            Dim scaledPP As Double = (m_Data.RelPP(i, j) / PPScale)
+            Dim scaledPP As Double = (m_Data.RelPP(i, j) / PPScale * RelPPupwell)
 
             'jb compute Flowin() and FlowoutRate() for all groups for this row/col
             derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, scaledPP, i, j)

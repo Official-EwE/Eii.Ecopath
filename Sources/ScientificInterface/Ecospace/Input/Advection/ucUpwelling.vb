@@ -39,6 +39,12 @@ Namespace Ecospace.Advection
             Return eVarNameFlags.LayerUpwelling
         End Function
 
+        ''' <inheritdoc cref="IsDataInput"/>
+        Protected Overrides Function IsDataInput() As Boolean
+            Return False
+        End Function
+
+
     End Class
 
 End Namespace

@@ -39,21 +39,12 @@ Namespace Ecospace.Advection
 
         Private m_manager As cAdvectionManager = Nothing
 
-        Private m_fpVXelocity As cEwEFormatProvider = Nothing
-        Private m_fpVYelocity As cEwEFormatProvider = Nothing
-        Private m_fpCoriolis As cEwEFormatProvider = Nothing
-        Private m_fpSorWv As cEwEFormatProvider = Nothing
         Private m_fpWind As cEwEFormatProvider = Nothing
-        Private m_fpMLD As cEwEFormatProvider = Nothing
-        Private m_fpUpwell As cEwEFormatProvider = Nothing
-
         Private m_dlgtStarted As cAdvectionManager.ComputationStartedDelegate = Nothing
         Private m_dlgtProgress As cAdvectionManager.ComputationProgressDelegate = Nothing
         Private m_dlgtStopped As cAdvectionManager.ComputationCompletedDelegate = Nothing
 
         Private m_edtWind As cLayerEditorVelocity = Nothing
-        Private m_edtMLD As cLayerEditor = Nothing
-        Private m_edtUpwell As cLayerEditor = Nothing
 
         ''' <summary>Flag stating whether this form started a search.</summary>
         Private m_bSearching As Boolean = False
@@ -79,13 +70,7 @@ Namespace Ecospace.Advection
             Me.m_manager = Me.Core.AdvectionManager
 
             ' Set up format providers
-            Me.m_fpVXelocity = New cPropertyFormatProvider(Me.UIContext, Me.m_nudXVelocity, Me.Core.AdvectionParameters, eVarNameFlags.XVelocity)
-            Me.m_fpVYelocity = New cPropertyFormatProvider(Me.UIContext, Me.m_nudYVelocity, Me.Core.AdvectionParameters, eVarNameFlags.YVelocity)
-            Me.m_fpCoriolis = New cPropertyFormatProvider(Me.UIContext, Me.m_nudCoriolis, Me.Core.AdvectionParameters, eVarNameFlags.Coriolis)
-            Me.m_fpSorWv = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSorWv, Me.Core.AdvectionParameters, eVarNameFlags.SorWv)
             Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
-            Me.m_fpMLD = New cEwEFormatProvider(Me.UIContext, Me.m_nudMLD, GetType(Integer))
-            Me.m_fpUpwell = New cEwEFormatProvider(Me.UIContext, Me.m_nudUpwell, GetType(Single))
 
             ' Connect all layers to the zoom toolbar
             For Each uc As ucAdvectionMap In Me.Maps
@@ -103,10 +88,6 @@ Namespace Ecospace.Advection
             ' Initialize editors
             Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVelocity)
             Me.m_edtWind.GUI = Me
-            Me.m_edtMLD = Me.m_ucMLD.DataLayer.Editor
-            Me.m_edtMLD.GUI = Me
-            Me.m_edtUpwell = Me.m_ucUpwelling.DataLayer.Editor
-            Me.m_edtUpwell.GUI = Me
 
             Me.m_dlgtStarted = New cAdvectionManager.ComputationStartedDelegate(AddressOf OnCalcStarted)
             Me.m_dlgtProgress = New cAdvectionManager.ComputationProgressDelegate(AddressOf OnCalcProgress)
@@ -114,14 +95,14 @@ Namespace Ecospace.Advection
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
 
             ' Listen to format providers
-            AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
-            AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
+            'AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
+            'AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
 
             ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             ' Kick off
-            Me.UpdateTransportVelocity()
+            ' Me.UpdateTransportVelocity()
             'Me.UpdateLayerEditorContent()
             Me.UpdateControls()
 
@@ -137,25 +118,15 @@ Namespace Ecospace.Advection
             ' Unplug
             Me.m_edtWind.GUI = Nothing
             Me.m_edtWind = Nothing
-            Me.m_edtMLD.GUI = Nothing
-            Me.m_edtMLD = Nothing
-            Me.m_edtUpwell.GUI = Nothing
-            Me.m_edtUpwell = Nothing
 
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
             Next
 
-            RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
-            RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
+            ' RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
+            ' RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
 
-            Me.m_fpVXelocity.Release()
-            Me.m_fpVYelocity.Release()
-            Me.m_fpCoriolis.Release()
-            Me.m_fpSorWv.Release()
             Me.m_fpWind.Release()
-            Me.m_fpMLD.Release()
-            Me.m_fpUpwell.Release()
 
             MyBase.OnFormClosed(e)
 
@@ -182,6 +153,29 @@ Namespace Ecospace.Advection
 
 #Region " Control events "
 
+
+        Private Sub OnBtCopyMonthClick(sender As System.Object, e As System.EventArgs) Handles m_tsbtCopyMonth.Click
+
+            Dim iMon As Integer = 1 + Me.m_tscmMonth.SelectedIndex
+            Me.m_manager.SyncWindToMonth(iMon)
+
+        End Sub
+
+        Private Sub OnBtPhysicsModelClick(sender As System.Object, e As System.EventArgs) Handles m_btPhysicsModel.Click
+            Me.m_manager.RunPhysicsModel()
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'HACK
+            Me.m_manager.HACKUpdateAdvectionToMonth(1 + Me.m_tscmMonth.SelectedIndex)
+            Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
+            'DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            Me.UpdateControls()
+
+        End Sub
+
         Private Sub OnToggleOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiToggleOptions.Click
 
@@ -204,6 +198,14 @@ Namespace Ecospace.Advection
                 DirectCast(lvel, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
             Next
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Temp Hack until we get the advection map setup to montly values
+            Me.m_manager.HACKUpdateAdvectionToMonth(1 + Me.m_tscmMonth.SelectedIndex)
+            layer = Me.m_ucMap.DataLayer
+            'DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         End Sub
 
@@ -250,17 +252,17 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub OnEditMLDLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnEditMLD.Click
+        Private Sub OnEditMLDLayer(sender As System.Object, e As System.EventArgs)
 
-            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucMLD.DataLayer, cDisplayRasterLayer)
-            Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-            cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
+
+            'Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucMLD.DataLayer, cDisplayRasterLayer)
+            'Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+            'cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
 
         End Sub
 
-        Private Sub OnEditUpwellingLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnEditUpwelling.Click
+        Private Sub OnEditUpwellingLayer(sender As System.Object, e As System.EventArgs)
+
 
             Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucUpwelling.DataLayer, cDisplayRasterLayer)
             Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
@@ -272,9 +274,9 @@ Namespace Ecospace.Advection
 
 #Region " Event handlers "
 
-        Private Sub OnVelocityChanged(ByVal sender As Object, args As EventArgs)
-            Me.UpdateTransportVelocity()
-        End Sub
+        'Private Sub OnVelocityChanged(ByVal sender As Object, args As EventArgs)
+        '    Me.UpdateTransportVelocity()
+        'End Sub
 
         Private Sub OnCalcStarted()
             Me.m_bHasRun = False
@@ -283,8 +285,10 @@ Namespace Ecospace.Advection
 
         Private Sub OnCalcProgress(ByVal iIter As Integer)
 
-            If (iIter Mod 100 = 0) Then
-            End If
+            'In the new mdoel
+            'iIter will be the month that was just calculated
+            'Could update the output map with this month???
+            'May not be that important
 
             ' Update data layer
             Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
@@ -327,10 +331,6 @@ Namespace Ecospace.Advection
 
             If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
                 Me.m_edtWind.CellValue = CSng(Me.m_nudWind.Value)
-            ElseIf (Object.ReferenceEquals(editor, Me.m_edtUpwell)) Then
-                Me.m_edtUpwell.CellValue = CSng(Me.m_nudUpwell.Value)
-            ElseIf (Object.ReferenceEquals(editor, Me.m_edtMLD)) Then
-                Me.m_edtMLD.CellValue = CSng(Me.m_nudMLD.Value)
             End If
 
         End Sub
@@ -345,10 +345,6 @@ Namespace Ecospace.Advection
 
             If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
                 Me.m_nudWind.Value = CDec(Me.m_edtWind.CellValue)
-            ElseIf (Object.ReferenceEquals(editor, Me.m_edtUpwell)) Then
-                Me.m_nudUpwell.Value = CDec(Me.m_edtUpwell.CellValue)
-            ElseIf (Object.ReferenceEquals(editor, Me.m_edtMLD)) Then
-                Me.m_nudMLD.Value = CDec(Me.m_edtMLD.CellValue)
             End If
 
         End Sub
@@ -370,15 +366,16 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub UpdateTransportVelocity()
-            Dim sVX As Single = CSng(Me.m_fpVXelocity.Value)
-            Dim sVY As Single = CSng(Me.m_fpVYelocity.Value)
-            Dim sVel As Single = CSng(Math.Sqrt(sVX * sVX + sVY * sVY))
-            Me.m_fpWind.Value = sVel
-        End Sub
+        'Private Sub UpdateTransportVelocity()
+        '    ' Dim sVX As Single = CSng(Me.m_fpVXelocity.Value)
+        '    ' Dim sVY As Single = CSng(Me.m_fpVYelocity.Value)
+        '    'Dim sVel As Single = CSng(Math.Sqrt(sVX * sVX + sVY * sVY))
+        '    Me.m_fpWind.Value = 1.0
+        'End Sub
 
         Private Function Maps() As ucAdvectionMap()
-            Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucMLD, Me.m_ucUpwelling, Me.m_ucWind}
+            'Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucMLD, Me.m_ucUpwelling, Me.m_ucWind}
+            Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucUpwelling, Me.m_ucWind}
         End Function
 
         Private Sub StartRun()
@@ -386,7 +383,8 @@ Namespace Ecospace.Advection
             ' Already running? Abort
             If Me.m_bSearching Then Return
 
-            If Not Me.m_manager.IsRunning Then Me.m_manager.Run(Me)
+            'If Not Me.m_manager.IsRunning Then Me.m_manager.Run(Me)
+            If Not Me.m_manager.IsRunning Then Me.m_manager.RunPhyicsModel(Me)
             Me.m_bSearching = Me.m_manager.IsRunning
 
             If m_bSearching Then
