@@ -926,7 +926,9 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerWind
                 Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv)
             Case eVarNameFlags.LayerUpwelling
-                Return Me.m_core.m_EcoSpaceData.flow
+                '??? Upvel from the original adcection model
+                'Return Me.m_core.m_EcoSpaceData.flow
+                Return Me.m_core.m_EcoSpaceData.UpVel 'should Return Me.m_core.m_EcoSpaceData.MonthlyUpWell
             Case eVarNameFlags.LayerMLD
                 Return Me.m_core.m_EcoSpaceData.DepthA
             Case eVarNameFlags.LayerImportance

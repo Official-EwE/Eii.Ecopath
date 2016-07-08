@@ -116,6 +116,8 @@ Public Class cEcoSpace
     ''' </remarks>
     Private m_publisher As New cMessagePublisher
 
+    Private m_AdvectionManager As Ecospace.Advection.cAdvectionManager
+
     Private m_EPdata As cEcopathDataStructures
     Private m_SimData As cEcosimDatastructures
     Private m_Data As cEcospaceDataStructures
@@ -467,6 +469,15 @@ Public Class cEcoSpace
         End Get
         Set(ByVal value As cSpatialDataStructures)
             Me.m_SpatialData = value
+        End Set
+    End Property
+
+    Public Property AdvectionManager As Ecospace.Advection.cAdvectionManager
+        Get
+            Return Me.m_AdvectionManager
+        End Get
+        Set(ByVal value As Ecospace.Advection.cAdvectionManager)
+            Me.m_AdvectionManager = value
         End Set
     End Property
 
@@ -971,21 +982,39 @@ Public Class cEcoSpace
                     Next
                 End If
 
-                '********************Martell******************
-                'This is for monthy current vectors.
-                If m_Data.CurrentForce Then
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'jb 10-Jun-2016 Replace the original Advection Model 
+                ''********************Martell******************
+                ''This is for monthy current vectors.
+                'If m_Data.CurrentForce Then
+                '    For i = 0 To m_Data.InRow + 1
+                '        For j = 0 To m_Data.InCol + 1
+                '            m_Data.Xvel(i, j) = m_Data.Xv(i, j, m_Data.MonthNow)
+                '            m_Data.Yvel(i, j) = m_Data.Yv(i, j, m_Data.MonthNow)
+                '        Next j
+                '    Next i
+
+                '    'ToDo_jb FindSpatial....... velmaker
+                '    'Calculate Upwelling indicies
+                '    CalcAdvection(m_Data.MonthNow)
+                '    SetMovementParameters()
+                'End If
+                'xxxxxxxxxxxxxxxxxxxxxxx
+                'New Advection model
+
+                If Me.m_Data.isAdvectionActive Then
+                    'Update the monthly X and Y velocity vectors
                     For i = 0 To m_Data.InRow + 1
                         For j = 0 To m_Data.InCol + 1
-                            m_Data.Xvel(i, j) = m_Data.Xv(i, j, m_Data.MonthNow)
-                            m_Data.Yvel(i, j) = m_Data.Yv(i, j, m_Data.MonthNow)
+                            m_Data.Xvel(i, j) = m_Data.MonthlyXvel(m_Data.MonthNow)(i, j)
+                            m_Data.Yvel(i, j) = m_Data.MonthlyYvel(m_Data.MonthNow)(i, j)
+                            m_Data.UpVel(i, j) = m_Data.MonthlyUpWell(m_Data.MonthNow)(i, j)
                         Next j
                     Next i
-
-                    'ToDo_jb FindSpatial....... velmaker
-                    'Calculate Upwelling indicies
-                    CalcAdvection(m_Data.MonthNow)
+                    'set the movement patterns based on velocity vectors for this month set above
                     SetMovementParameters()
                 End If
+
 
                 'Set b(),c(),d() and e() cell movement parameters based on the migration movement gradient MigGrad()
                 VaryMigMovementParameters(m_Data.MonthNow)
@@ -2361,6 +2390,12 @@ Public Class cEcoSpace
                     Next i
                 Next ist
             Next isp
+
+            If Me.m_Data.isAdvectionActive Then
+                Me.m_AdvectionManager.RunPhysicsModel()
+            Else
+                Me.m_AdvectionManager.ClearAdvectionResults()
+            End If
 
             'set dispersal rate arrays for solvegrid
             SetMovementParameters()

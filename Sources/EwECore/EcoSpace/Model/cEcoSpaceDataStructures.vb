@@ -265,6 +265,10 @@ Public Class cEcospaceDataStructures
     ''' <summary>Wind Y velocity (i x j x month)</summary>
     Public Yv(,,) As Single
 
+    Public MonthlyXvel()(,) As Single
+    Public MonthlyYvel()(,) As Single
+    Public MonthlyUpWell()(,) As Single
+
     Public flow(,) As Single
 
     Public Region(,) As Integer
@@ -873,6 +877,21 @@ Public Class cEcospaceDataStructures
     Public ReadOnly Property nTimeStepsPerYear As Integer
         Get
             Return CInt(1 / TimeStep)
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Return True if any group is Advected
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public ReadOnly Property isAdvectionActive As Boolean
+        Get
+            For igrp As Integer = 1 To Me.m_ngroups
+                If Me.IsAdvected(igrp) Then Return True
+            Next
+            Return False
         End Get
     End Property
 
@@ -1839,7 +1858,7 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
             Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
-            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
+            '  For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             Me.allocate(DepthInput, InRow + 1, InCol + 1)
             Me.allocate(Excluded, InRow + 1, InCol + 1)
@@ -1876,6 +1895,10 @@ Public Class cEcospaceDataStructures
             ReDim IsFished(nFleets, Me.InRow, Me.InCol)
             ReDim EffZones(InRow, InCol)
             ReDim Width(InRow)
+
+            Me.allocate(MonthlyXvel, 12, InRow + 1, InCol + 1)
+            Me.allocate(MonthlyYvel, 12, InRow + 1, InCol + 1)
+            Me.allocate(MonthlyUpWell, 12, InRow + 1, InCol + 1)
 
             'jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1

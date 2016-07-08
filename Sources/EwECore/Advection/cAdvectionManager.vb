@@ -274,14 +274,54 @@ Namespace Ecospace.Advection
 
 #Region " Running "
 
-        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Run the Advection computations.
+        ''' Overloaded version to run the PhysicsModel on a single thread
         ''' </summary>
-        ''' <param name="SyncObject"></param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+        ''' <remarks></remarks>
+        Public Function RunPhysicsModel() As Boolean
+
+            Debug.Assert(Not Me.m_core.StateMonitor.IsBusy, _
+                         Me.ToString + ".RunPhysicsModel() The Statemonitor thinks the Advection model is already running! This might be a bug.")
+            If (Me.m_core.StateMonitor.IsBusy) Then Return False
+
+            'Make sure the sync object isn't pointing to something
+            Me.m_syncObject = Nothing
+
+            Dim bSuccess As Boolean
+
+            If Me.IsRunning Then
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING, _
+                                                            eMessageType.ErrorEncountered, _
+                                                            eCoreComponentType.EcoSpace, _
+                                                            eMessageImportance.Warning, _
+                                                            eDataTypes.EcospaceAdvectionManager))
+                Return False
+            End If
+
+
+            Try
+                bSuccess = Me.m_comp.RunPhysicsModel()
+            Catch ex As Exception
+                cLog.Write(ex)
+                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
+                                                         eMessageType.ErrorEncountered, _
+                                                         eCoreComponentType.EcoSpace, _
+                                                         eMessageImportance.Critical, _
+                                                         eDataTypes.EcospaceAdvectionManager))
+
+
+                bSuccess = False
+            End Try
+
+            m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            'send any messages generated from starting the search
+            Me.OnSendCoreMessages()
+
+            Return bSuccess
+        End Function
+
+
+        Public Function RunPhyicsModel(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
             ' Sanity check
             If (Me.m_core.StateMonitor.IsBusy) Then Return False
@@ -296,13 +336,13 @@ Namespace Ecospace.Advection
                                                             eMessageType.ErrorEncountered, _
                                                             eCoreComponentType.EcoSpace, _
                                                             eMessageImportance.Warning, _
-                                                            eDataTypes.MonteCarlo))
+                                                            eDataTypes.EcospaceAdvectionManager))
                 Return False
             End If
 
             Me.SetWait()
             Try
-                Me.Update()
+                '   Me.Update()
 
                 thrd = New Thread(AddressOf Me.RunThreaded)
                 thrd.Start()
@@ -313,7 +353,7 @@ Namespace Ecospace.Advection
                                                          eMessageType.ErrorEncountered, _
                                                          eCoreComponentType.EcoSpace, _
                                                          eMessageImportance.Critical, _
-                                                         eDataTypes.FishingPolicyManager))
+                                                         eDataTypes.EcospaceAdvectionManager))
 
                 ' If an error has been thrown make sure the OnAdvectionCalcsCompletedHandler delegate is called
                 ' This way an interface can respond
@@ -329,13 +369,14 @@ Namespace Ecospace.Advection
 
         End Function
 
+
         Private Sub RunThreaded()
 
             Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
             Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
 
             Try
-                Me.m_comp.Run()
+                Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
                 cLog.Write(ex, "cAdvectionManager.RunThreaded")
             End Try
@@ -344,6 +385,57 @@ Namespace Ecospace.Advection
             Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
 
         End Sub
+
+
+        Public Sub ClearAdvectionResults()
+            Try
+                For imon As Integer = 1 To 12
+                    Array.Clear(Me.m_data.MonthlyXvel(imon), 0, Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Clear(Me.m_data.MonthlyYvel(imon), 0, Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Clear(Me.m_data.MonthlyUpWell(imon), 0, Me.m_data.MonthlyXvel(imon).Length)
+                Next
+
+                Return
+
+            Catch ex As Exception
+                Debug.Assert(False, "Opps Exception in cAdvectionManager.ClearAdvectionResults(): " & ex.Message)
+            End Try
+          
+        End Sub
+
+
+        Public Sub HACKUpdateAdvectionToMonth(iMon As Integer)
+            Try
+                Array.Copy(Me.m_data.MonthlyXvel(iMon), Me.m_data.Xvel, Me.m_data.Xvel.Length)
+                Array.Copy(Me.m_data.MonthlyYvel(iMon), Me.m_data.Yvel, Me.m_data.Yvel.Length)
+                Array.Copy(Me.m_data.MonthlyUpWell(iMon), Me.m_data.UpVel, Me.m_data.UpVel.Length)
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+
+        Public Sub SyncWindToMonth(iMonthToCopy As Integer)
+
+            Try
+                For iMon As Integer = 1 To 12
+                    If iMon <> iMonthToCopy Then
+                        For ir As Integer = 0 To Me.m_data.InRow + 1
+                            For ic As Integer = 0 To Me.m_data.InCol + 1
+                                Me.m_data.Xv(ir, ic, iMon) = Me.m_data.Xv(ir, ic, iMonthToCopy)
+                                Me.m_data.Yv(ir, ic, iMon) = Me.m_data.Yv(ir, ic, iMonthToCopy)
+                            Next
+                        Next
+                    End If
+                Next iMon
+
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
+
 
         Public Function Revert() As Boolean
 
@@ -361,6 +453,11 @@ Namespace Ecospace.Advection
 
         End Function
 
+
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
+            Me.m_comp.Interrupted = True
+        End Function
+
 #End Region ' Running
 
 #Region " Events "
@@ -372,7 +469,11 @@ Namespace Ecospace.Advection
 
                 If m_RunStartedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(Me.m_RunStartedDelegate, Nothing)
+                    If m_syncObject IsNot Nothing Then
+                        m_syncObject.BeginInvoke(Me.m_RunStartedDelegate, Nothing)
+                    Else
+                        Me.m_RunStartedDelegate.Invoke()
+                    End If
                 End If
 
             Catch ex As Exception
@@ -390,7 +491,11 @@ Namespace Ecospace.Advection
                     ' Invalidate layer
                     layer.Invalidate()
                     ' Call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
+                    If m_syncObject IsNot Nothing Then
+                        m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})
+                    Else
+                        Me.m_RunProgressDelegate.Invoke(Me.m_comp.Iteration)
+                    End If
                 End If
 
             Catch ex As Exception
@@ -409,15 +514,24 @@ Namespace Ecospace.Advection
 
                 'send any messages that the model added to the managers list of messages
                 'by using the m_syncObject the messages will be sent on the Interfaces thread not the FPS thread
-                Dim ctd As CallingThreadDelegate = AddressOf Me.OnSendCoreMessages
-                m_syncObject.BeginInvoke(ctd, Nothing)
+                If m_syncObject IsNot Nothing Then
+                    Dim ctd As CallingThreadDelegate = AddressOf Me.OnSendCoreMessages
+                    m_syncObject.BeginInvoke(ctd, Nothing)
 
-                ctd = AddressOf Me.OnChanged
-                m_syncObject.BeginInvoke(ctd, Nothing)
+                    ctd = AddressOf Me.OnChanged
+                    m_syncObject.BeginInvoke(ctd, Nothing)
+                Else
+                    Me.OnSendCoreMessages()
+                    Me.OnChanged()
+                End If
 
                 If Me.m_RunCompletedDelegate IsNot Nothing Then
                     'call the delegate supplied by the interface
-                    m_syncObject.BeginInvoke(m_RunCompletedDelegate, New Object() {iIteration, bInterrupted, bBadAdvection})
+                    If m_syncObject IsNot Nothing Then
+                        m_syncObject.BeginInvoke(m_RunCompletedDelegate, New Object() {iIteration, bInterrupted, bBadAdvection})
+                    Else
+                        Me.m_RunCompletedDelegate(iIteration, bInterrupted, bBadAdvection)
+                    End If
                 End If
 
             Catch ex As Exception
@@ -455,6 +569,8 @@ Namespace Ecospace.Advection
                 cLog.Write(ex)
             End Try
         End Sub
+
+
 
 #End Region ' Events
 
@@ -530,9 +646,89 @@ Namespace Ecospace.Advection
 #End Region ' ICoreInterface implementation
 
 
-        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
-            Me.m_comp.Interrupted = True
+
+
+#Region "Code from the original advection model"
+
+#End Region
+
+#If 0 Then 'Hide the old code behind compiler directives
+
+        Private Sub RunThreaded_OldModel()
+
+            Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
+            Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
+
+            Try
+                Me.m_comp.Run()
+            Catch ex As Exception
+                cLog.Write(ex, "cAdvectionManager.RunThreaded")
+            End Try
+
+            Me.m_core.SetStopRunDelegate(Nothing)
+            Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
+
+        End Sub
+
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Run the Advection computations.
+        ''' </summary>
+        ''' <param name="SyncObject"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function Run(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+
+            ' Sanity check
+            If (Me.m_core.StateMonitor.IsBusy) Then Return False
+
+            Dim thrd As Thread = Nothing
+            Dim bSuccess As Boolean = True
+
+            Me.m_syncObject = SyncObject
+
+            If Me.IsRunning Then
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING, _
+                                                            eMessageType.ErrorEncountered, _
+                                                            eCoreComponentType.EcoSpace, _
+                                                            eMessageImportance.Warning, _
+                                                            eDataTypes.MonteCarlo))
+                Return False
+            End If
+
+            Me.SetWait()
+            Try
+                Me.Update()
+
+                thrd = New Thread(AddressOf Me.RunThreaded_OldModel)
+                thrd.Start()
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
+                                                         eMessageType.ErrorEncountered, _
+                                                         eCoreComponentType.EcoSpace, _
+                                                         eMessageImportance.Critical, _
+                                                         eDataTypes.FishingPolicyManager))
+
+                ' If an error has been thrown make sure the OnAdvectionCalcsCompletedHandler delegate is called
+                ' This way an interface can respond
+                Me.OnAdvectionCalcsCompletedHandler(Me.m_comp.Iteration, Me.m_comp.Interrupted, Me.m_comp.BadFlow)
+
+                bSuccess = False
+            End Try
+
+            'send any messages generated from starting the search
+            Me.OnSendCoreMessages()
+
+            Return bSuccess
+
         End Function
+
+#End If
+
 
     End Class
 
