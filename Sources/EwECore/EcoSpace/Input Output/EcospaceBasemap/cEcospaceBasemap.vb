@@ -920,15 +920,13 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection
-                Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.Xvel, Me.m_core.m_EcoSpaceData.Yvel)
+                Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.MonthlyXvel, Me.m_core.m_EcoSpaceData.MonthlyXvel)
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcoSpaceData.MigMaps
             Case eVarNameFlags.LayerWind
                 Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv)
             Case eVarNameFlags.LayerUpwelling
-                '??? Upvel from the original adcection model
-                'Return Me.m_core.m_EcoSpaceData.flow
-                Return Me.m_core.m_EcoSpaceData.UpVel 'should Return Me.m_core.m_EcoSpaceData.MonthlyUpWell
+                Return Me.m_core.m_EcoSpaceData.MonthlyUpWell
             Case eVarNameFlags.LayerMLD
                 Return Me.m_core.m_EcoSpaceData.DepthA
             Case eVarNameFlags.LayerImportance
