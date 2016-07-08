@@ -61,6 +61,11 @@ Namespace Ecospace.Advection
             Me.m_sliderCursor = New ScientificInterfaceShared.Controls.ucSlider()
             Me.m_hdrEditing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrCompute = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_scMaps = New System.Windows.Forms.SplitContainer()
+            Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind()
+            Me.m_scOutputMaps = New System.Windows.Forms.SplitContainer()
+            Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap()
+            Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling()
             Me.m_tsControls = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsmiToggleOptions = New System.Windows.Forms.ToolStripButton()
             Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
@@ -68,18 +73,12 @@ Namespace Ecospace.Advection
             Me.m_tscmMonth = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tsbtCopyMonth = New System.Windows.Forms.ToolStripButton()
             Me.m_ucZoomToolbar = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
-            Me.m_scMaps = New System.Windows.Forms.SplitContainer()
-            Me.m_scOutputMaps = New System.Windows.Forms.SplitContainer()
-            Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind()
-            Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap()
-            Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_tlpComputeControls.SuspendLayout()
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tsControls.SuspendLayout()
             CType(Me.m_scMaps, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMaps.Panel1.SuspendLayout()
             Me.m_scMaps.Panel2.SuspendLayout()
@@ -88,6 +87,7 @@ Namespace Ecospace.Advection
             Me.m_scOutputMaps.Panel1.SuspendLayout()
             Me.m_scOutputMaps.Panel2.SuspendLayout()
             Me.m_scOutputMaps.SuspendLayout()
+            Me.m_tsControls.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scMain
@@ -263,6 +263,74 @@ Namespace Ecospace.Advection
             Me.m_hdrCompute.Text = "Compute advection velocities"
             Me.m_hdrCompute.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
+            'm_scMaps
+            '
+            Me.m_scMaps.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scMaps.Location = New System.Drawing.Point(0, 0)
+            Me.m_scMaps.Name = "m_scMaps"
+            Me.m_scMaps.Orientation = System.Windows.Forms.Orientation.Horizontal
+            '
+            'm_scMaps.Panel1
+            '
+            Me.m_scMaps.Panel1.Controls.Add(Me.m_ucWind)
+            '
+            'm_scMaps.Panel2
+            '
+            Me.m_scMaps.Panel2.Controls.Add(Me.m_scOutputMaps)
+            Me.m_scMaps.Size = New System.Drawing.Size(819, 636)
+            Me.m_scMaps.SplitterDistance = 273
+            Me.m_scMaps.TabIndex = 0
+            '
+            'm_ucWind
+            '
+            Me.m_ucWind.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.m_ucWind.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucWind.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucWind.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
+            Me.m_ucWind.Name = "m_ucWind"
+            Me.m_ucWind.Size = New System.Drawing.Size(819, 273)
+            Me.m_ucWind.TabIndex = 1
+            Me.m_ucWind.UIContext = Nothing
+            '
+            'm_scOutputMaps
+            '
+            Me.m_scOutputMaps.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_scOutputMaps.Location = New System.Drawing.Point(0, 0)
+            Me.m_scOutputMaps.Name = "m_scOutputMaps"
+            '
+            'm_scOutputMaps.Panel1
+            '
+            Me.m_scOutputMaps.Panel1.Controls.Add(Me.m_ucMap)
+            '
+            'm_scOutputMaps.Panel2
+            '
+            Me.m_scOutputMaps.Panel2.Controls.Add(Me.m_ucUpwelling)
+            Me.m_scOutputMaps.Size = New System.Drawing.Size(819, 359)
+            Me.m_scOutputMaps.SplitterDistance = 401
+            Me.m_scOutputMaps.TabIndex = 0
+            '
+            'm_ucMap
+            '
+            Me.m_ucMap.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.m_ucMap.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucMap.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucMap.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
+            Me.m_ucMap.Name = "m_ucMap"
+            Me.m_ucMap.Size = New System.Drawing.Size(401, 359)
+            Me.m_ucMap.TabIndex = 0
+            Me.m_ucMap.UIContext = Nothing
+            '
+            'm_ucUpwelling
+            '
+            Me.m_ucUpwelling.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.m_ucUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucUpwelling.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
+            Me.m_ucUpwelling.Name = "m_ucUpwelling"
+            Me.m_ucUpwelling.Size = New System.Drawing.Size(414, 359)
+            Me.m_ucUpwelling.TabIndex = 3
+            Me.m_ucUpwelling.UIContext = Nothing
+            '
             'm_tsControls
             '
             Me.m_tsControls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -328,74 +396,6 @@ Namespace Ecospace.Advection
             Me.m_ucZoomToolbar.TabIndex = 1
             Me.m_ucZoomToolbar.UIContext = Nothing
             '
-            'm_scMaps
-            '
-            Me.m_scMaps.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_scMaps.Location = New System.Drawing.Point(0, 0)
-            Me.m_scMaps.Name = "m_scMaps"
-            Me.m_scMaps.Orientation = System.Windows.Forms.Orientation.Horizontal
-            '
-            'm_scMaps.Panel1
-            '
-            Me.m_scMaps.Panel1.Controls.Add(Me.m_ucWind)
-            '
-            'm_scMaps.Panel2
-            '
-            Me.m_scMaps.Panel2.Controls.Add(Me.m_scOutputMaps)
-            Me.m_scMaps.Size = New System.Drawing.Size(819, 636)
-            Me.m_scMaps.SplitterDistance = 273
-            Me.m_scMaps.TabIndex = 0
-            '
-            'm_scOutputMaps
-            '
-            Me.m_scOutputMaps.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_scOutputMaps.Location = New System.Drawing.Point(0, 0)
-            Me.m_scOutputMaps.Name = "m_scOutputMaps"
-            '
-            'm_scOutputMaps.Panel1
-            '
-            Me.m_scOutputMaps.Panel1.Controls.Add(Me.m_ucMap)
-            '
-            'm_scOutputMaps.Panel2
-            '
-            Me.m_scOutputMaps.Panel2.Controls.Add(Me.m_ucUpwelling)
-            Me.m_scOutputMaps.Size = New System.Drawing.Size(819, 359)
-            Me.m_scOutputMaps.SplitterDistance = 402
-            Me.m_scOutputMaps.TabIndex = 0
-            '
-            'm_ucWind
-            '
-            Me.m_ucWind.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.m_ucWind.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucWind.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucWind.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
-            Me.m_ucWind.Name = "m_ucWind"
-            Me.m_ucWind.Size = New System.Drawing.Size(819, 273)
-            Me.m_ucWind.TabIndex = 1
-            Me.m_ucWind.UIContext = Nothing
-            '
-            'm_ucMap
-            '
-            Me.m_ucMap.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.m_ucMap.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucMap.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucMap.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
-            Me.m_ucMap.Name = "m_ucMap"
-            Me.m_ucMap.Size = New System.Drawing.Size(402, 359)
-            Me.m_ucMap.TabIndex = 0
-            Me.m_ucMap.UIContext = Nothing
-            '
-            'm_ucUpwelling
-            '
-            Me.m_ucUpwelling.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.m_ucUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucUpwelling.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
-            Me.m_ucUpwelling.Name = "m_ucUpwelling"
-            Me.m_ucUpwelling.Size = New System.Drawing.Size(413, 359)
-            Me.m_ucUpwelling.TabIndex = 3
-            Me.m_ucUpwelling.UIContext = Nothing
-            '
             'frmAdvection
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -422,8 +422,6 @@ Namespace Ecospace.Advection
             Me.m_scMain.ResumeLayout(False)
             Me.m_tlpComputeControls.ResumeLayout(False)
             CType(Me.m_nudWind, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tsControls.ResumeLayout(False)
-            Me.m_tsControls.PerformLayout()
             Me.m_scMaps.Panel1.ResumeLayout(False)
             Me.m_scMaps.Panel2.ResumeLayout(False)
             CType(Me.m_scMaps, System.ComponentModel.ISupportInitialize).EndInit()
@@ -432,6 +430,8 @@ Namespace Ecospace.Advection
             Me.m_scOutputMaps.Panel2.ResumeLayout(False)
             CType(Me.m_scOutputMaps, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scOutputMaps.ResumeLayout(False)
+            Me.m_tsControls.ResumeLayout(False)
+            Me.m_tsControls.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 

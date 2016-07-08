@@ -166,9 +166,9 @@ Namespace Ecospace.Advection
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'HACK
-            Me.m_manager.HACKUpdateAdvectionToMonth(1 + Me.m_tscmMonth.SelectedIndex)
+            ' Me.m_manager.HACKUpdateAdvectionToMonth(1 + Me.m_tscmMonth.SelectedIndex)
             Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
-            'DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            DirectCast(layer.Data, cEcospaceLayerAdvection).Month = (1 + Me.m_tscmMonth.SelectedIndex)
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -193,19 +193,24 @@ Namespace Ecospace.Advection
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
 
+            'Wind
             Dim layer As cDisplayRasterLayer = Me.m_ucWind.DataLayer
             For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
                 DirectCast(lvel, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
             Next
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Temp Hack until we get the advection map setup to montly values
-            Me.m_manager.HACKUpdateAdvectionToMonth(1 + Me.m_tscmMonth.SelectedIndex)
+            'Advection
             layer = Me.m_ucMap.DataLayer
-            'DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
+                DirectCast(lvel, cEcospaceLayerAdvection).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            Next
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            'Upwelling
+            layer = Me.m_ucUpwelling.DataLayer
+            DirectCast(layer.Data, cEcospaceLayerUpwelling).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
         End Sub
 
@@ -412,6 +417,7 @@ Namespace Ecospace.Advection
                 Me.UpdateControls()
             End If
         End Sub
+
 
 #End Region ' Internals
 

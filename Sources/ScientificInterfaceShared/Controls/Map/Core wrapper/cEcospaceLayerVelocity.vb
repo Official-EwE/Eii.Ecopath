@@ -163,7 +163,7 @@ Namespace Controls.Map.Layers
 
         Public ReadOnly Property VelocityLayers() As cEcospaceLayerSingle()
             Get
-                Return New cEcospaceLayerSingle() {Me.m_lYVel, Me.m_lYVel}
+                Return New cEcospaceLayerSingle() {Me.m_lXVel, Me.m_lYVel}
             End Get
         End Property
 

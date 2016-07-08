@@ -403,16 +403,16 @@ Namespace Ecospace.Advection
           
         End Sub
 
+        'jb Monthly Advection Maps are now delt with correctly by the layers
+        'Public Sub HACKUpdateAdvectionToMonth(iMon As Integer)
+        '    Try
+        '        Array.Copy(Me.m_data.MonthlyXvel(iMon), Me.m_data.Xvel, Me.m_data.Xvel.Length)
+        '        Array.Copy(Me.m_data.MonthlyYvel(iMon), Me.m_data.Yvel, Me.m_data.Yvel.Length)
+        '        Array.Copy(Me.m_data.MonthlyUpWell(iMon), Me.m_data.UpVel, Me.m_data.UpVel.Length)
+        '    Catch ex As Exception
 
-        Public Sub HACKUpdateAdvectionToMonth(iMon As Integer)
-            Try
-                Array.Copy(Me.m_data.MonthlyXvel(iMon), Me.m_data.Xvel, Me.m_data.Xvel.Length)
-                Array.Copy(Me.m_data.MonthlyYvel(iMon), Me.m_data.Yvel, Me.m_data.Yvel.Length)
-                Array.Copy(Me.m_data.MonthlyUpWell(iMon), Me.m_data.UpVel, Me.m_data.UpVel.Length)
-            Catch ex As Exception
-
-            End Try
-        End Sub
+        '    End Try
+        'End Sub
 
 
         Public Sub SyncWindToMonth(iMonthToCopy As Integer)
