@@ -1925,6 +1925,7 @@ Public Class cCore
                 Me.UpdateTimeSeries()
 
                 'Set Default Ecospace Biomass Forcing values
+                'all groups that have Ecosim biomass forcing will be forced in Ecospace
                 Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
 
                 ' Invalidate Ecosim outputs
