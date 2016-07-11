@@ -379,9 +379,6 @@ Public Class cTimeSeriesDataStructures
     ''' <param name="isEcospaceGroupForced"></param>
     Public Sub setDefaultEcospaceBioForcing(isEcospaceGroupForced() As Boolean)
 
-
-        Exit Sub
-
         Try
 
             If isEcospaceGroupForced.Length <> Me.nGroups + 1 Then
@@ -394,7 +391,7 @@ Public Class cTimeSeriesDataStructures
 
             If PoolForceBB Is Nothing Then
                 'No biomass forcing loaded
-                'the Array.Clear() above will set isGroupForced() to False
+                'the Array.Clear() above will set isEcospaceGroupForced() to False
                 Return
             End If
 

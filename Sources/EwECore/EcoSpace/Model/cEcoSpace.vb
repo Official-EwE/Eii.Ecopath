@@ -1157,9 +1157,7 @@ Public Class cEcoSpace
 
                 Me.RestoreForcedBiomass()
 
-                '#If 0 Then
                 Me.ForceBiomassWithEcosimTimeSeries(its)
-                '#End If
 
                 For ip = 0 To m_Data.NGroups
                     For i = 1 To m_Data.InRow
@@ -1527,9 +1525,7 @@ Public Class cEcoSpace
     ''' </summary>
     Private Sub ForceBiomassWithEcosimTimeSeries(iTime As Integer)
 
-        Exit Sub
-        Debug.Assert(False, "ForceBiomassWithEcosimTimeSeries() Oppss shouldn't be here!")
-        System.Console.WriteLine("WARNING: Ecospace biomass forced by Ecosim biomass forcing!")
+        'System.Console.WriteLine("WARNING: Ecospace biomass forced by Ecosim biomass forcing!")
 
         Try
             'What timeseries are available for forced catches?
@@ -1547,7 +1543,7 @@ Public Class cEcoSpace
                 'If ip = 1 Then
                 If Me.m_Data.IsEcosimBioForcingEnabled(ip) Then
 
-                    'jb If there is valid data assume that it's forced! Really!
+                    'jb Only if there is valid data for this timestep
                     If Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex) > 0 Then
                         SumB = 0
 
@@ -1561,6 +1557,7 @@ Public Class cEcoSpace
 
                                 'VC 10-June-2016 The calculation below actually should scale based on area of cell, so cell width
                                 'we should revisit and fix the bug that Joe talkes about above
+                                'JB the biomass values are in kg/km I think that means the size of the cell is irrelevant
                                 '****************** SEE ABOVE  ************************
                                 If Me.m_Data.Depth(i, j) > 0 Then
                                     SumB += m_Data.Bcell(i, j, ip)
@@ -1571,7 +1568,7 @@ Public Class cEcoSpace
 
                         'Get the forced biomass (fb)
                         Dim fb As Single = 0
-                        Dim meanForcedB As Single
+                        Dim sumForcedB As Single = 0 'for debugging
                         'fb = 0.08 * WaterCells ' * (1 - m_Data.TimeNow / m_Data.TotalTime) 
                         'jb get the forced biomass value
                         fb = Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
@@ -1587,22 +1584,18 @@ Public Class cEcoSpace
                                 If Me.m_Data.Depth(i, j) > 0 Then
                                     'jb version 29-June-2016
                                     m_Data.Bcell(i, j, ip) = (WaterCells / SumB) * fb * m_Data.Bcell(i, j, ip)
-                                    meanForcedB += m_Data.Bcell(i, j, ip)
+                                    sumForcedB += m_Data.Bcell(i, j, ip)
                                 End If
                             Next j
                         Next i
-                        ''update Btime with the forced biomass (VC: I haven't checked if anything is done with Btime later in code)
-                        'Btime(ip) = fb
-                        'End If
 
                         'Debugging the mean ecospace biomass should match the forcing value
-                        System.Console.WriteLine("Ecospace Forced B grp=" + ip.ToString + " BForced/Bmean=" + (fb / (meanForcedB / WaterCells)).ToString)
-                        Debug.Assert(Math.Round(fb / (meanForcedB / WaterCells), 3) = 1.0, "ForceBiomassWithEcosimTimeSeries(...) did not set forced biomass correctly")
+                        System.Console.WriteLine("Ecospace Forced B grp=" + ip.ToString + " BForced/Bmean=" + (fb / (sumForcedB / WaterCells)).ToString)
+                        Debug.Assert(Math.Round(fb / (sumForcedB / WaterCells), 3) = 1.0, "ForceBiomassWithEcosimTimeSeries(...) did not set forced biomass correctly")
 
                     End If 'Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
                 End If ' Me.m_Data.IsEcosimBioForcing(ip)
             Next ip
-
 
         Catch ex As Exception
 
