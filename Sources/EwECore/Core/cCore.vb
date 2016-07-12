@@ -160,7 +160,11 @@ Public Class cCore
     Friend m_validators As cValidatorManager = Nothing
 
     Friend m_TSData As cTimeSeriesDataStructures = Nothing
-    Friend m_SpaceTSData As cEcospaceTimeSeriesDataStructures = Nothing
+
+    'jb 16-June-2016 Remove the cEcospaceTimeSeriesDataStructures when implementing Ecosim biomass forcing in EcoSpace
+    'Ecospace can use the Cores cTimeSeriesDataStructures object until we need something better
+    'Friend m_SpaceTSData As cEcospaceTimeSeriesDataStructures = Nothing
+
     Friend m_Stanza As cStanzaDatastructures = Nothing
     Friend m_FitToTimeSeriesData As cF2TSDataStructures = Nothing
     Friend m_tracerData As cContaminantTracerDataStructures = Nothing
@@ -8722,10 +8726,9 @@ Public Class cCore
 
         m_Ecospace.Messages.AddMessageHandler(New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_SyncObj))
 
-        'm_EcoSpaceData = New cEcospaceDataStructures
-        m_SpaceTSData = New cEcospaceTimeSeriesDataStructures
-
-        m_Ecospace.TimeSeriesData = m_SpaceTSData
+        'jb 16-June-2016 Remove the cEcospaceTimeSeriesDataStructures when implementing Ecosim biomass forcing in EcoSpace
+        'Ecospace can use the Cores cTimeSeriesDataStructures object
+        m_Ecospace.TimeSeriesData = Me.m_TSData
 
         'data need to initialize
         m_EcoSpaceData.StanzaGroups = Me.m_Stanza
