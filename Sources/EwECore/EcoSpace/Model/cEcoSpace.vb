@@ -128,7 +128,10 @@ Public Class cEcoSpace
     Private m_OptMPA As IMPASearchModel
     Private m_SpatialData As cSpatialDataStructures
 
-    Private m_refdata As cEcospaceTimeSeriesDataStructures
+    ''jb 16-June-2016 Remove the cEcospaceTimeSeriesDataStructures when implementing Ecosim biomass forcing in EcoSpace
+    'use use the existing time series data structures
+    'Private m_refdata As cEcospaceTimeSeriesDataStructures
+    Private m_refdata As cTimeSeriesDataStructures
 
     Public m_StopRun As Boolean
 
@@ -445,11 +448,21 @@ Public Class cEcoSpace
         End Set
     End Property
 
-    Public Property TimeSeriesData() As cEcospaceTimeSeriesDataStructures
+    'jb 16-June-2016 Remove the cEcospaceTimeSeriesDataStructures when implementing Ecosim biomass forcing in EcoSpace
+    'Public Property EcospaceTimeSeriesData() As cEcospaceTimeSeriesDataStructures
+    '    Get
+    '        Return m_refdata
+    '    End Get
+    '    Set(ByVal newValue As cEcospaceTimeSeriesDataStructures)
+    '        m_refdata = newValue
+    '    End Set
+    'End Property
+
+    Public Property TimeSeriesData() As cTimeSeriesDataStructures
         Get
             Return m_refdata
         End Get
-        Set(ByVal newValue As cEcospaceTimeSeriesDataStructures)
+        Set(ByVal newValue As cTimeSeriesDataStructures)
             m_refdata = newValue
         End Set
     End Property

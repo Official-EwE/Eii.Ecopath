@@ -817,6 +817,13 @@ Public Class cTimeSeriesDataStructures
 End Class
 
 
+#Region "Obsolete "
+
+#If 0 Then
+
+
+'jb 12-July-2016 Removed the cEcospaceTimeSeriesDataStructures with the implementation of Ecosim biomass forcing time series in Ecospace
+'Just use the Cores cTimeSeriesDataStructures object until we need something more advanced  
 ''' <summary>
 ''' Time series reference data for Ecospace
 ''' </summary>
@@ -872,3 +879,7 @@ Public Class cEcospaceTimeSeriesDataStructures
     End Sub
 
 End Class
+
+#End If
+
+#End Region
