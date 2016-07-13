@@ -395,4 +395,7 @@
   <data name="STATUS_SAVED_QUOTASHARES" xml:space="preserve">
     <value>{0} saved quotashare parameters to {1}</value>
   </data>
+  <data name="REGMETHOD_NOFISHING" xml:space="preserve">
+    <value>No fishing</value>
+  </data>
 </root>

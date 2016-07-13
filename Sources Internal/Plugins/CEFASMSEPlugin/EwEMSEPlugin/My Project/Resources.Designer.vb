@@ -648,6 +648,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to No fishing.
+        '''</summary>
+        Friend ReadOnly Property REGMETHOD_NOFISHING() As String
+            Get
+                Return ResourceManager.GetString("REGMETHOD_NOFISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (none).
         '''</summary>
         Friend ReadOnly Property REGMETHOD_NONE() As String

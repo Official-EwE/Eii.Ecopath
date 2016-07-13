@@ -49,6 +49,7 @@ Public Class cRegulations
         WeakestStock
         HighestValue
         SelectiveFishing
+        NoFishing
     End Enum
 
     Private m_methods As eRegMethod()

@@ -4115,6 +4115,10 @@ Public Class cMSE
 
                         Next
 
+                    Case cRegulations.eRegMethod.NoFishing
+
+                        _simdata.FishRateGear(iFleet, iTime) = 0
+
                 End Select
             Next
 
