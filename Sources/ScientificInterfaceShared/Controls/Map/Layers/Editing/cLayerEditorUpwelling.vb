@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -21,9 +21,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Core
 
 #End Region ' Imports 
 
@@ -31,50 +29,47 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports manual modification of Ecospace migration data.
+    ''' Layer editor that supports selections of months.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorMigration
+    Public Class cLayerEditorUpwelling
         Inherits cLayerEditorRange
         Implements IMonthFilter
 
 #Region " Construction "
 
         Public Sub New()
-            MyBase.New(GetType(ucLayerEditorMigration))
-         End Sub
+            Me.New(GetType(ucLayerEditorRange))
+        End Sub
+
+        Public Sub New(ByVal t As Type)
+            MyBase.New(t)
+            Me.CellValue = 1
+        End Sub
 
 #End Region ' Construction
 
 #Region " Public interfaces "
 
-        Public Event OnFilterChanged(sender As IContentFilter) _
-            Implements IMonthFilter.FilterChanged
-
-        Public Sub [Next]()
-            Me.Month = cSystemUtils.IIF(Me.Month = cCore.N_MONTHS, 1, Me.Month + 1)
-        End Sub
+        Public Event OnFilterChanged(sender As IContentFilter) Implements IMonthFilter.FilterChanged
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the index of the Ecopath group whose migration data
-        ''' is being edited.
+        ''' Get/set the index of the Ecopath group to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Month() As Integer _
             Implements IMonthFilter.Month
             Get
-                Dim layerMig As cEcospaceLayerMigration = CType((Me.Layer.Data), cEcospaceLayerMigration)
-                Return layerMig.SecundaryIndex
+                Return Me.Layer.Data.SecundaryIndex
             End Get
             Set(ByVal value As Integer)
-                Dim layerMig As cEcospaceLayerMigration = CType((Me.Layer.Data), cEcospaceLayerMigration)
-                ' Will month index change?
-                If (value <> layerMig.SecundaryIndex) Then
-                    ' #Yes: update month index in the underlying Ecospace layer
-                    layerMig.SecundaryIndex = value
+                ' Will Group index change?
+                If (value <> Me.Layer.Data.SecundaryIndex) Then
+                    ' #Yes: update Group index in the underlying Ecospace layer
+                    Me.Layer.Data.SecundaryIndex = value
                     ' Force map update
-                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map Or cDisplayLayer.eChangeFlags.Descriptive, False)
 
                     Try
                         RaiseEvent OnFilterChanged(Me)

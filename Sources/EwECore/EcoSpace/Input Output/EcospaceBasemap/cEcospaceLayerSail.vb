@@ -48,7 +48,7 @@ Public Class cEcospaceLayerSail
     ''' Note that cells will be accessed for the currently selected fleet index.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             If Me.ValidateCellPosition(iRow, iCol) Then
                 Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))

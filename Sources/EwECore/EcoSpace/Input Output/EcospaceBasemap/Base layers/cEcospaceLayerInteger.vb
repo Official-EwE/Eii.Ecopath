@@ -87,7 +87,7 @@ Public Class cEcospaceLayerInteger
 #Region " Cell interaction "
 
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Return DirectCast(Me.Data, Integer(,))(iRow, iCol)
         End Get

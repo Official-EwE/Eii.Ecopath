@@ -82,7 +82,7 @@ Public Class cEcospaceLayerBoolean
 #Region " Cell interaction "
 
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Return DirectCast(Me.Data, Boolean(,))(iRow, iCol)
         End Get

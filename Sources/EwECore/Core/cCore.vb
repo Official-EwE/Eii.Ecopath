@@ -14128,8 +14128,16 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Ecospace upwelling map changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerUpwelling))
 
                 Case eDataTypes.EcospaceLayerAdvection
-                    Me.EcospaceBasemap.LayerAdvection.Invalidate()
-                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection map changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerAdvection))
+                    For Each l As cEcospaceLayer In Me.EcospaceBasemap.LayerAdvection
+                        l.Invalidate()
+                    Next
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace advection maps changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerAdvection))
+
+                Case eDataTypes.EcospaceLayerWind
+                    For Each l As cEcospaceLayer In Me.EcospaceBasemap.LayerWind
+                        l.Invalidate()
+                    Next
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace wind maps changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerWind))
 
             End Select
 

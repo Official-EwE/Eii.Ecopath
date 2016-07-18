@@ -166,12 +166,19 @@
     <Compile Include="Controls\Map\DirectRendering\ucLegendBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorUpwelling.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVelocity.vb" />
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.Designer.vb">
       <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMonthVelocity.Designer.vb">
+      <DependentUpon>ucLayerEditorMonthVelocity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMonthVelocity.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExclusion.vb" />
@@ -789,6 +796,9 @@
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.resx">
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMonthVelocity.resx">
+      <DependentUpon>ucLayerEditorMonthVelocity.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.resx">
       <DependentUpon>ucLayerEditorPort.vb</DependentUpon>

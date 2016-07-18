@@ -37,7 +37,7 @@ Public Class cEcospaceLayerMPA
         Me.m_dataType = eDataTypes.EcospaceLayerMPA
     End Sub
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim d As Integer()(,) = DirectCast(Me.Data, Integer()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then Return Math.Min(1, d(Me.Index)(iRow, iCol)) Else Return CInt(cCore.NULL_VALUE)

@@ -42,7 +42,7 @@ Public Class cEcospaceLayerHabitatCapacity
 
 #Region " Cell interaction "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
             If Me.ValidateCellPosition(iRow, iCol) Then Return data(Me.Index)(iRow, iCol)

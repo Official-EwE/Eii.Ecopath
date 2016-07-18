@@ -69,6 +69,8 @@ Namespace Utilities
         Public Shared Function GetMonthName(ByVal iMonth As Integer, _
                                             Optional ByVal bFullName As Boolean = True) As String
             Try
+                If (iMonth < 1 Or iMonth > 12) Then Return ""
+
                 Dim dt As New DateTime(1, iMonth, 1)
                 If bFullName Then
                     Return dt.ToString("MMMM")

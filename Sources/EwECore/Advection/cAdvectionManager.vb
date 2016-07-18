@@ -415,25 +415,25 @@ Namespace Ecospace.Advection
         'End Sub
 
 
-        Public Sub SyncWindToMonth(iMonthToCopy As Integer)
+        'Public Sub SyncWindToMonth(iMonthToCopy As Integer)
 
-            Try
-                For iMon As Integer = 1 To 12
-                    If iMon <> iMonthToCopy Then
-                        For ir As Integer = 0 To Me.m_data.InRow + 1
-                            For ic As Integer = 0 To Me.m_data.InCol + 1
-                                Me.m_data.Xv(ir, ic, iMon) = Me.m_data.Xv(ir, ic, iMonthToCopy)
-                                Me.m_data.Yv(ir, ic, iMon) = Me.m_data.Yv(ir, ic, iMonthToCopy)
-                            Next
-                        Next
-                    End If
-                Next iMon
+        '    Try
+        '        For iMon As Integer = 1 To 12
+        '            If iMon <> iMonthToCopy Then
+        '                For ir As Integer = 0 To Me.m_data.InRow + 1
+        '                    For ic As Integer = 0 To Me.m_data.InCol + 1
+        '                        Me.m_data.Xv(ir, ic, iMon) = Me.m_data.Xv(ir, ic, iMonthToCopy)
+        '                        Me.m_data.Yv(ir, ic, iMon) = Me.m_data.Yv(ir, ic, iMonthToCopy)
+        '                    Next
+        '                Next
+        '            End If
+        '        Next iMon
 
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
+        '    Catch ex As Exception
+        '        Debug.Assert(False, ex.Message)
+        '    End Try
 
-        End Sub
+        'End Sub
 
 
 
@@ -442,9 +442,10 @@ Namespace Ecospace.Advection
             Me.m_comp.Revert()
 
             Try
-                Dim layer As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerAdvection
-                ' Invalidate layer
-                layer.Invalidate()
+                ' Invalidate layers
+                For Each layer As cEcospaceLayer In Me.m_core.EcospaceBasemap.LayerAdvection
+                    layer.Invalidate()
+                Next
                 Return True
             Catch ex As Exception
                 cLog.Write(ex)
@@ -452,7 +453,6 @@ Namespace Ecospace.Advection
             Return False
 
         End Function
-
 
         Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean
             Me.m_comp.Interrupted = True
@@ -485,11 +485,11 @@ Namespace Ecospace.Advection
         Private Sub OnAdvectionCalcsProgressHandler(ByVal iInteration As Integer)
 
             Try
-                Dim layer As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerAdvection
-
                 If m_RunProgressDelegate IsNot Nothing Then
-                    ' Invalidate layer
-                    layer.Invalidate()
+                    ' Invalidate layers
+                    For Each layer As cEcospaceLayer In Me.m_core.EcospaceBasemap.LayerAdvection
+                        layer.Invalidate()
+                    Next
                     ' Call the delegate supplied by the interface
                     If m_syncObject IsNot Nothing Then
                         m_syncObject.BeginInvoke(Me.m_RunProgressDelegate, New Object() {Me.m_comp.Iteration})

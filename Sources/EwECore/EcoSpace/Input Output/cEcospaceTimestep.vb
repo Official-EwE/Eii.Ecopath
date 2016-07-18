@@ -88,7 +88,7 @@ Public Class cEcospaceTimestep
         ''' <param name="iRow">Row index of the cell to access.</param>
         ''' <param name="iCol">Column index of the cell to access.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
                 Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
                 Return data(iRow, iCol, Me.m_iGroup)
@@ -120,7 +120,7 @@ Public Class cEcospaceTimestep
         ''' <param name="iRow">Row index of the cell to access.</param>
         ''' <param name="iCol">Column index of the cell to access.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
                 Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
                 Return data(Me.m_iFleet, iRow, iCol)

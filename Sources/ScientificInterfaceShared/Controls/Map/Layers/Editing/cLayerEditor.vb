@@ -415,6 +415,43 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        Public Overridable ReadOnly Property CanDuplicate() As Boolean
+            Get
+                Return (Me.Layer.Data.SecundaryIndexCounter <> eCoreCounterTypes.NotSet)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Duplicate layer data across indexed layers.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable Sub Duplicate(ByVal iFrom As Integer)
+
+            If (Not Me.IsEditable) Then Return
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim cc As Integer = Me.UIContext.Core.GetCoreCounter(Me.Layer.Data.SecundaryIndexCounter)
+            Dim val As Object = Nothing
+
+            For i As Integer = 1 To bm.InRow
+                For j As Integer = 1 To bm.InCol
+                    If (layerDepth.IsWaterCell(i, j)) Then
+                        val = Me.Layer.Data.Cell(i, j, iFrom)
+                        For k As Integer = 1 To cc
+                            If (k <> iFrom) Then
+                                Me.Layer.Data.Cell(i, j, k) = val
+                            End If
+                        Next k
+                    End If
+                Next j
+            Next i
+
+            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
+
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Fill the layer with the current <see cref="CellValue"/>

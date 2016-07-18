@@ -83,7 +83,7 @@ Public Class cEcospaceLayerImportance
         Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_IMPORTANCE, Me.Index)
     End Function
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             If Me.ValidateCellPosition(iRow, iCol) Then
                 Return DirectCast(Me.Data, Single()(,))(Me.Index)(iRow, iCol)

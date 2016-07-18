@@ -40,7 +40,6 @@ Public Class cEcospaceLayerAdvection
 
 #End Region ' Private vars
 
-
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
@@ -54,53 +53,28 @@ Public Class cEcospaceLayerAdvection
 
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerAdvection, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerAdvection
+        Me.m_ccSecundaryIndex = eCoreCounterTypes.nMonths
 
     End Sub
 
 #End Region ' Construction
 
-#Region " Filter "
-
-    Public Property Month() As Integer
-        Get
-            Return Me.m_iMonth
-        End Get
-        Set(ByVal value As Integer)
-            value = Math.Max(1, Math.Min(cCore.N_MONTHS, value))
-            If (value <> Me.m_iMonth) Then
-                Me.m_iMonth = value
-                Me.Invalidate()
-            End If
-        End Set
-    End Property
-
-#End Region ' Filter
-
-
 #Region " Overrides "
 
-    Public Overrides Property Cell(iRow As Integer, iCol As Integer) As Object
-        Get
-            Return Me.Cell(iRow, iCol, Me.m_iMonth)
-        End Get
-        Set(ByVal value As Object)
-            Me.Cell(iRow, iCol, Me.m_iMonth) = value
-        End Set
-    End Property
-
-    Public Overloads Property Cell(iRow As Integer, iCol As Integer, iMonth As Integer) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim data As Single()(,) = DirectCast(Me.Data, Single()(,))
-            Return data(iMonth)(iRow, iCol)
+            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
+            Return data(iIndexSec)(iRow, iCol)
         End Get
         Set(ByVal value As Object)
             Dim d As Single()(,) = DirectCast(Me.Data, Single()(,))
             Dim s As Single = Convert.ToSingle(value)
-            d(iMonth)(iRow, iCol) = s
+            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
+            d(iIndexSec)(iRow, iCol) = s
             Me.Invalidate()
         End Set
     End Property
-
 
     Protected Overrides Function DefaultName() As String
         Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_ADVECTION,

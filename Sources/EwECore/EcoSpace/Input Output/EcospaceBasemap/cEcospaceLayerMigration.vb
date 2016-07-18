@@ -51,14 +51,15 @@ Public Class cEcospaceLayerMigration
 
 #Region " Cell interaction "
 
-    Public Property Month As Integer = 1
-
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer,
+                                   Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
-            Return DirectCast(Me.Data, Single(,)(,))(Me.Index, Me.Month)(iRow, iCol)
+            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
+            Return DirectCast(Me.Data, Single(,)(,))(Me.Index, iIndexSec)(iRow, iCol)
         End Get
         Set(ByVal value As Object)
-            DirectCast(Me.Data, Single(,)(,))(Me.Index, Me.Month)(iRow, iCol) = CSng(value)
+            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
+            DirectCast(Me.Data, Single(,)(,))(Me.Index, iIndexSec)(iRow, iCol) = CSng(value)
         End Set
     End Property
 

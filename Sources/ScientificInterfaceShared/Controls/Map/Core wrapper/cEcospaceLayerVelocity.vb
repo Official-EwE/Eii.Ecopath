@@ -89,11 +89,31 @@ Namespace Controls.Map.Layers
             Me.m_lXVel = DirectCast(manager.Layers(vn)(0), cEcospaceLayerSingle)
             Me.m_lYVel = DirectCast(manager.Layers(vn)(1), cEcospaceLayerSingle)
 
+            ' Facade
+            Me.m_dataType = Me.m_lXVel.DataType
+            Me.m_coreComponent = Me.m_lXVel.CoreComponent
+            Me.m_ccSecundaryIndex = Me.m_lXVel.SecundaryIndexCounter
+
         End Sub
 
 #End Region ' Construction
 
 #Region " Cell interaction "
+
+        ' Aargh, this needs some serious refactoring
+
+        Public Property Month As Integer
+            Get
+                If (Me.m_lXVel.SecundaryIndexCounter <> eCoreCounterTypes.nMonths) Then Return cCore.NULL_VALUE
+                Return Me.m_lXVel.SecundaryIndex
+            End Get
+            Set(value As Integer)
+                If (Me.m_lXVel.SecundaryIndexCounter <> eCoreCounterTypes.nMonths) Then Return
+                Me.m_lXVel.SecundaryIndex = value
+                Me.m_lYVel.SecundaryIndex = value
+                Me.Invalidate()
+            End Set
+        End Property
 
         ''' <summary>
         ''' Get/set a cell value in the form of Single(2), where index 0 represents
@@ -101,32 +121,32 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="iRow"></param>
         ''' <param name="iCol"></param>
-        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
-                Return New Single() {Me.XVelocity(iRow, iCol), Me.YVelocity(iRow, iCol)}
+                Return New Single() {Me.XVelocity(iRow, iCol, iIndexSec), Me.YVelocity(iRow, iCol, iIndexSec)}
             End Get
             Set(ByVal value As Object)
                 Dim asValues As Single() = DirectCast(value, Single())
-                Me.XVelocity(iRow, iCol) = asValues(0)
-                Me.YVelocity(iRow, iCol) = asValues(1)
+                Me.XVelocity(iRow, iCol, iIndexSec) = asValues(0)
+                Me.YVelocity(iRow, iCol, iIndexSec) = asValues(1)
             End Set
         End Property
 
-        Public Property XVelocity(iRow As Integer, iCol As Integer) As Single
+        Public Property XVelocity(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Single
             Get
-                Return CSng(Me.m_lXVel.Cell(iRow, iCol))
+                Return CSng(Me.m_lXVel.Cell(iRow, iCol, iIndexSec))
             End Get
             Set(value As Single)
-                Me.m_lXVel.Cell(iRow, iCol) = value
+                Me.m_lXVel.Cell(iRow, iCol, iIndexSec) = value
             End Set
         End Property
 
-        Public Property YVelocity(iRow As Integer, iCol As Integer) As Single
+        Public Property YVelocity(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Single
             Get
-                Return CSng(Me.m_lYVel.Cell(iRow, iCol))
+                Return CSng(Me.m_lYVel.Cell(iRow, iCol, iIndexSec))
             End Get
             Set(value As Single)
-                Me.m_lYVel.Cell(iRow, iCol) = value
+                Me.m_lYVel.Cell(iRow, iCol, iIndexSec) = value
             End Set
         End Property
 
