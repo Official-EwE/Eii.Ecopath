@@ -62,6 +62,9 @@ Public MustInherit Class cEcospaceLayer
     ''' when first queried.</remarks>
     Protected m_bInvalidateStats As Boolean = True
 
+    Private m_iSecundaryIndex As Integer = 1
+    Protected m_ccSecundaryIndex As eCoreCounterTypes = eCoreCounterTypes.NotSet
+
 #End Region ' Private variables
 
 #Region " Constructors "
@@ -230,8 +233,14 @@ Public MustInherit Class cEcospaceLayer
 
     Public Overridable Property Description() As String
 
-    ' This function does not require a GetVariable/SetVariable counterpart
-    Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="iRow"></param>
+    ''' <param name="iCol"></param>
+    ''' <param name="iIndexSec"></param>
+    ''' <returns></returns>
+    Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -271,6 +280,35 @@ Public MustInherit Class cEcospaceLayer
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public MustOverride Sub Invalidate()
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Secundary index type for layers that contain, for instance, monthly data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property SecundaryIndexCounter As eCoreCounterTypes
+        Get
+            Return Me.m_ccSecundaryIndex
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Secundary index for layers that contain, for instance, monthly data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SecundaryIndex As Integer
+        Get
+            Return Me.m_iSecundaryIndex
+        End Get
+        Set(ByVal value As Integer)
+            value = Math.Max(1, Math.Min(Me.m_core.GetCoreCounter(Me.SecundaryIndexCounter), value))
+            If (value <> Me.m_iSecundaryIndex) Then
+                Me.m_iSecundaryIndex = value
+                Me.Invalidate()
+            End If
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -360,6 +398,5 @@ Public MustInherit Class cEcospaceLayer
 
 #End Region ' Overrides
 
-   
 End Class
 

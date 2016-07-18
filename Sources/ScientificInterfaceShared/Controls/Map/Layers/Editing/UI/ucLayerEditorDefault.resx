@@ -121,6 +121,9 @@
   <data name="m_ucSlider.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_ucSlider.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_ucSlider.Location" type="System.Drawing.Point, System.Drawing">
     <value>68, 99</value>
@@ -133,13 +136,13 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_ucSlider.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Name" xml:space="preserve">
     <value>m_ucSlider</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
     <value>$this</value>
@@ -157,7 +160,7 @@
     <value>40, 13</value>
   </data>
   <data name="m_lblCursor.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>8</value>
   </data>
   <data name="m_lblCursor.Text" xml:space="preserve">
     <value>&amp;Cursor:</value>
@@ -184,7 +187,7 @@
     <value>38, 13</value>
   </data>
   <data name="m_lblName.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_lblName.Text" xml:space="preserve">
     <value>Name:</value>
@@ -211,7 +214,7 @@
     <value>129, 20</value>
   </data>
   <data name="m_tbxName.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_tbxName.Name" xml:space="preserve">
     <value>m_tbxName</value>
@@ -238,7 +241,7 @@
     <value>56, 13</value>
   </data>
   <data name="m_lblMin.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>6</value>
   </data>
   <data name="m_lblMin.Text" xml:space="preserve">
     <value>Min value:</value>
@@ -265,7 +268,7 @@
     <value>100, 20</value>
   </data>
   <data name="m_tbxMin.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_tbxMin.Name" xml:space="preserve">
     <value>m_tbxMin</value>
@@ -289,7 +292,7 @@
     <value>100, 20</value>
   </data>
   <data name="m_tbxMax.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_tbxMax.Name" xml:space="preserve">
     <value>m_tbxMax</value>
@@ -316,7 +319,7 @@
     <value>59, 13</value>
   </data>
   <data name="m_lblMax.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblMax.Text" xml:space="preserve">
     <value>Max value:</value>
@@ -343,7 +346,7 @@
     <value>23, 46</value>
   </data>
   <data name="m_plLegend.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_plLegend.Name" xml:space="preserve">
     <value>m_plLegend</value>
@@ -363,9 +366,6 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
-  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 119</value>
   </data>
@@ -373,6 +373,6 @@
     <value>ucLayerEditorDefault</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

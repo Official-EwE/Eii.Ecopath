@@ -193,10 +193,10 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerUpwelling, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            ' LayerMLD
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(0, eVarNameFlags.LayerMLD, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
+            '' LayerMLD
+            'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            'val = New cValue(0, eVarNameFlags.LayerMLD, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            'm_values.Add(val.varName, val)
 
             ' LayerDriver
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
@@ -335,8 +335,8 @@ Public Class cEcospaceBasemap
             ' Upwelling
             Me.m_dictLayers(eVarNameFlags.LayerUpwelling) = New cEcospaceLayer() {New cEcospaceLayerUpwelling(theCore, Me)}
 
-            ' MLD
-            Me.m_dictLayers(eVarNameFlags.LayerMLD) = New cEcospaceLayer() {New cEcospaceLayerMLD(theCore, Me)}
+            '' MLD
+            'Me.m_dictLayers(eVarNameFlags.LayerMLD) = New cEcospaceLayer() {New cEcospaceLayerMLD(theCore, Me)}
 
             'set status flags to default values
             ResetStatusFlags()
@@ -753,46 +753,36 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Advection layer in Ecospace.
+    ''' Get the Advection layers in Ecospace.
     ''' </summary>
-    ''' <remarks>
-    ''' This layer is a tricky one since it provides uniform access to
-    ''' both advection directional as well as velocity information. See the
-    ''' actual layer for details.
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerAdvection() As cEcospaceLayerAdvection
+    Public ReadOnly Property LayerAdvection() As cEcospaceLayer()
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerAdvection)(0), cEcospaceLayerAdvection)
+            Return Me.Layers(eVarNameFlags.LayerAdvection)
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Ecospace wind layer.
+    ''' Get the Ecospace wind layers.
     ''' </summary>
-    ''' <remarks>
-    ''' This layer is a tricky one since it provides uniform access to
-    ''' two amplitude components, XVel and YVel. See the actual layer for details.
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerWind() As cEcospaceLayer ' cEcospaceLayerWind
+    Public ReadOnly Property LayerWind() As cEcospaceLayer()
         Get
-            'Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerWind)(0), cEcospaceLayerWind)
-            Return Nothing
+            Return Me.Layers(eVarNameFlags.LayerWind)
         End Get
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the Ecospace Mixed Layer Depths layer.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerMixedLayerDepths() As cEcospaceLayerSingle
-        Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMLD)(0), cEcospaceLayerSingle)
-        End Get
-    End Property
+    '''' -----------------------------------------------------------------------
+    '''' <summary>
+    '''' Get the Ecospace Mixed Layer Depths layer.
+    '''' </summary>
+    '''' -----------------------------------------------------------------------
+    'Public ReadOnly Property LayerMixedLayerDepths() As cEcospaceLayerSingle
+    '    Get
+    '        Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerMLD)(0), cEcospaceLayerSingle)
+    '    End Get
+    'End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -927,8 +917,8 @@ Public Class cEcospaceBasemap
                 Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.Xv, Me.m_core.m_EcoSpaceData.Yv)
             Case eVarNameFlags.LayerUpwelling
                 Return Me.m_core.m_EcoSpaceData.MonthlyUpWell
-            Case eVarNameFlags.LayerMLD
-                Return Me.m_core.m_EcoSpaceData.DepthA
+            'Case eVarNameFlags.LayerMLD
+            '    Return Me.m_core.m_EcoSpaceData.DepthA
             Case eVarNameFlags.LayerImportance
                 Return Me.m_core.m_EcoSpaceData.ImportanceLayerMap
             Case eVarNameFlags.LayerDriver

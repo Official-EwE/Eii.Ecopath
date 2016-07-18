@@ -681,6 +681,7 @@ Namespace Ecospace.Advection
                     'save the velocities xvel and yvel
                     m_data.Yvel(i, j) = vys * saveconst
                     m_data.Xvel(i, j) = vxs * saveconst
+
                     'joe, velocities below are for deep water, deeper than hsurface; ecospace probably will never use those
                     'but can be saved in some other array names like YvelDeep and XvelDeep if we want
                     ' m_data.Yvel(ipscen + nftype, i, j) = vyd * saveconst : m_data.Xvel(ipscen + nftype, i, j) = vxd * saveconst
@@ -853,7 +854,9 @@ exitline:
 
         Private Sub fireRunStarted()
             Try
-                Me.m_RunStartedDelegate.Invoke()
+                If (Me.m_RunStartedDelegate IsNot Nothing) Then
+                    Me.m_RunStartedDelegate.Invoke()
+                End If
             Catch ex As Exception
 
             End Try
@@ -861,7 +864,9 @@ exitline:
 
         Private Sub fireRunEnded()
             Try
-                Me.m_RunCompletedDelegate.Invoke(Me.m_iter, Me.m_bInterrupted, Me.m_bBadFlow)
+                If (Me.m_RunCompletedDelegate IsNot Nothing) Then
+                    Me.m_RunCompletedDelegate.Invoke(Me.m_iter, Me.m_bInterrupted, Me.m_bBadFlow)
+                End If
             Catch ex As Exception
 
             End Try
@@ -870,7 +875,9 @@ exitline:
 
         Private Sub fireProgress()
             Try
-                Me.m_RunProgressDelegate.Invoke(m_iter)
+                If (Me.m_RunProgressDelegate IsNot Nothing) Then
+                    Me.m_RunProgressDelegate.Invoke(m_iter)
+                End If
             Catch ex As Exception
 
             End Try

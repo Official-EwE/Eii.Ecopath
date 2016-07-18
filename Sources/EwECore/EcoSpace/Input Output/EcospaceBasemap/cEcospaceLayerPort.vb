@@ -39,7 +39,7 @@ Public Class cEcospaceLayerPort
 
 #Region " Cell interaction "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Dim data As Boolean()(,) = DirectCast(Me.Data, Boolean()(,))
             If (Me.Index = 0) Then

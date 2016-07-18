@@ -129,7 +129,7 @@
     <value>37, 13</value>
   </data>
   <data name="m_lbValue.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>10</value>
   </data>
   <data name="m_lbValue.Text" xml:space="preserve">
     <value>Value:</value>
@@ -157,13 +157,13 @@
     <value>96, 20</value>
   </data>
   <data name="m_nudValue.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>11</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Name" xml:space="preserve">
     <value>m_nudValue</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Parent" xml:space="preserve">
     <value>$this</value>
@@ -211,7 +211,7 @@
     <value>96, 23</value>
   </data>
   <data name="m_btnSmooth.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>13</value>
   </data>
   <data name="m_btnSmooth.Text" xml:space="preserve">
     <value>Smooth</value>
@@ -238,7 +238,7 @@
     <value>27, 23</value>
   </data>
   <data name="m_btnReset.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;m_btnReset.Name" xml:space="preserve">
     <value>m_btnReset</value>
@@ -258,9 +258,6 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
-  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 181</value>
   </data>
@@ -268,6 +265,6 @@
     <value>ucLayerEditorRange</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

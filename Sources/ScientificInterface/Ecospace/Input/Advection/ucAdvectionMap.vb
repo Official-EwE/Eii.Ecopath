@@ -151,18 +151,6 @@ Namespace Ecospace.Advection
         ''' -------------------------------------------------------------------
         Protected Overridable Sub UpdateControls()
 
-            Dim img As Image = Nothing
-
-            If Me.Enabled Then
-                If Me.DataLayer.Editor.IsEditable Then
-                    img = SharedResources.Editable
-                Else
-                    img = SharedResources.NotEditable
-                End If
-            End If
-
-            ' Set pane icon to the editable state of the data layer
-            Me.m_hdrTitle.Image = img
             ' Set pane title to the name of the data layer
             Me.m_hdrTitle.Text = Me.DataLayer.Name
 

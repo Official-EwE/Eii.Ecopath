@@ -79,7 +79,7 @@ Public Class cEcospaceLayerDriver
 
 #Region " Overrides "
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Try
                 If Me.ValidateCellPosition(iRow, iCol) Then

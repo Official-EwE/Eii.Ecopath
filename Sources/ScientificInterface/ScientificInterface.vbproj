@@ -1298,10 +1298,6 @@
       <DependentUpon>ucUpwelling.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\Advection\ucMLD.resx">
-      <DependentUpon>ucMLD.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Advection\frmAdvection.resx">
       <DependentUpon>frmAdvection.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1576,12 +1572,6 @@
       <DependentUpon>ucUpwelling.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Input\Advection\ucUpwelling.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\Advection\ucMLD.Designer.vb">
-      <DependentUpon>ucMLD.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\Advection\ucMLD.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\Advection\frmAdvection.Designer.vb">

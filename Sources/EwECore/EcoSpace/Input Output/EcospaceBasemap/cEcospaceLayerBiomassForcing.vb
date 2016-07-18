@@ -39,7 +39,7 @@ Public Class cEcospaceLayerBiomassForcing
         Me.m_dataType = eDataTypes.EcospaceLayerBiomassForcing
     End Sub
 
-    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+    Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
             Try
                 Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))

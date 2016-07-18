@@ -34,13 +34,6 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceLayerWind
     Inherits cEcospaceLayerSingle
 
-#Region " Private vars "
-
-    ''' <summary>Month [1, 12] to operate on.</summary>
-    Private m_iMonth As Integer = 1
-
-#End Region ' Private vars
-
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
@@ -53,46 +46,23 @@ Public Class cEcospaceLayerWind
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerWind, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerWind
+        Me.m_ccSecundaryIndex = eCoreCounterTypes.nMonths
     End Sub
 
 #End Region ' Construction
 
-#Region " Filter "
-
-    Public Property Month() As Integer
-        Get
-            Return Me.m_iMonth
-        End Get
-        Set(ByVal value As Integer)
-            value = Math.Max(1, Math.Min(cCore.N_MONTHS, value))
-            If (value <> Me.m_iMonth) Then
-                Me.m_iMonth = value
-                Me.Invalidate()
-            End If
-        End Set
-    End Property
-
-#End Region ' Filter
-
 #Region " Overrides "
 
-    Public Overrides Property Cell(iRow As Integer, iCol As Integer) As Object
+    Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
         Get
-            Return Me.Cell(iRow, iCol, Me.m_iMonth)
-        End Get
-        Set(ByVal value As Object)
-            Me.Cell(iRow, iCol, Me.m_iMonth) = value
-        End Set
-    End Property
-
-    Public Overloads Property Cell(iRow As Integer, iCol As Integer, iMonth As Integer) As Object
-        Get
-            Return DirectCast(Me.Data, Single(,,))(iRow, iCol, iMonth)
+            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
+            Return DirectCast(Me.Data, Single(,,))(iRow, iCol, iIndexSec)
         End Get
         Set(ByVal value As Object)
             Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
             Dim s As Single = Convert.ToSingle(value)
-            d(iRow, iCol, iMonth) = s
+            If (iIndexSec = cCore.NULL_VALUE) Then iIndexSec = Me.SecundaryIndex
+            d(iRow, iCol, iIndexSec) = s
             Me.Invalidate()
         End Set
     End Property
@@ -103,4 +73,5 @@ Public Class cEcospaceLayerWind
     End Function
 
 #End Region ' Overrides
+
 End Class

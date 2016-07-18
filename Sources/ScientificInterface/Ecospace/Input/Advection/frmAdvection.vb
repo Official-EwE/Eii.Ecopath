@@ -25,6 +25,7 @@ Imports EwECore
 Imports EwECore.Ecospace.Advection
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
@@ -33,13 +34,11 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Namespace Ecospace.Advection
 
     Public Class frmAdvection
-        Implements ILayerEditorGUI
 
 #Region " Private vars "
 
         Private m_manager As cAdvectionManager = Nothing
 
-        Private m_fpWind As cEwEFormatProvider = Nothing
         Private m_dlgtStarted As cAdvectionManager.ComputationStartedDelegate = Nothing
         Private m_dlgtProgress As cAdvectionManager.ComputationProgressDelegate = Nothing
         Private m_dlgtStopped As cAdvectionManager.ComputationCompletedDelegate = Nothing
@@ -69,34 +68,30 @@ Namespace Ecospace.Advection
 
             Me.m_manager = Me.Core.AdvectionManager
 
-            ' Set up format providers
-            Me.m_fpWind = New cEwEFormatProvider(Me.UIContext, Me.m_nudWind, GetType(Single))
-
             ' Connect all layers to the zoom toolbar
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.AddZoomContainer(uc.ZoomCtrl)
             Next
             Me.m_ucZoomToolbar.PositionMode = ucMapZoom.ePositionModeTypes.Center
 
-            ' Populate month dropdown
-            Me.m_tscmMonth.Items.Clear()
-            For i As Integer = 1 To cCore.N_MONTHS
-                Me.m_tscmMonth.Items.Add(cDateUtils.GetMonthName(i))
-            Next
-            Me.m_tscmMonth.SelectedIndex = 0
-
             ' Initialize editors
             Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVelocity)
-            Me.m_edtWind.GUI = Me
+            AddHandler Me.m_edtWind.OnFilterChanged, AddressOf OnMonthChanged
+
+            Me.m_tlpControls.SuspendLayout()
+            Dim ctrl As UserControl = Me.m_edtWind.CreateEditorControl()
+            ctrl.TabIndex = Me.m_lblWIndEditorPlaceholder.TabIndex
+            ctrl.Dock = DockStyle.Fill
+            Dim iRow As Integer = Me.m_tlpControls.GetRow(Me.m_lblWIndEditorPlaceholder)
+            Dim iCol As Integer = Me.m_tlpControls.GetColumn(Me.m_lblWIndEditorPlaceholder)
+            Me.m_tlpControls.Controls.Remove(Me.m_lblWIndEditorPlaceholder)
+            Me.m_tlpControls.Controls.Add(ctrl, iCol, iRow)
+            Me.m_tlpControls.ResumeLayout()
 
             Me.m_dlgtStarted = New cAdvectionManager.ComputationStartedDelegate(AddressOf OnCalcStarted)
             Me.m_dlgtProgress = New cAdvectionManager.ComputationProgressDelegate(AddressOf OnCalcProgress)
             Me.m_dlgtStopped = New cAdvectionManager.ComputationCompletedDelegate(AddressOf OnCalcStopped)
             Me.m_manager.Connect(Me.m_dlgtStarted, Me.m_dlgtStopped, Me.m_dlgtProgress)
-
-            ' Listen to format providers
-            'AddHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
-            'AddHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
 
             ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
@@ -115,18 +110,14 @@ Namespace Ecospace.Advection
             ' Stop any pending run, just in case
             Me.StopRun()
 
-            ' Unplug
+            ' Unplug editor
+            RemoveHandler Me.m_edtWind.OnFilterChanged, AddressOf OnMonthChanged
             Me.m_edtWind.GUI = Nothing
             Me.m_edtWind = Nothing
 
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.RemoveZoomContainer(uc.ZoomCtrl)
             Next
-
-            ' RemoveHandler Me.m_fpVXelocity.OnValueChanged, AddressOf OnVelocityChanged
-            ' RemoveHandler Me.m_fpVYelocity.OnValueChanged, AddressOf OnVelocityChanged
-
-            Me.m_fpWind.Release()
 
             MyBase.OnFormClosed(e)
 
@@ -153,85 +144,62 @@ Namespace Ecospace.Advection
 
 #Region " Control events "
 
+        Private Sub OnMonthChanged(sender As IContentFilter)
 
-        Private Sub OnBtCopyMonthClick(sender As System.Object, e As System.EventArgs) Handles m_tsbtCopyMonth.Click
+            If (TypeOf sender Is IMonthFilter) Then
+                ' Sync advection and upwelling maps with Wind month selection
+                Dim iMonth As Integer = DirectCast(sender, IMonthFilter).Month
+                DirectCast(Me.m_ucMap.DataLayer.Editor, IMonthFilter).Month = iMonth
+                DirectCast(Me.m_ucUpwelling.DataLayer.Editor, IMonthFilter).Month = iMonth
 
-            Dim iMon As Integer = 1 + Me.m_tscmMonth.SelectedIndex
-            Me.m_manager.SyncWindToMonth(iMon)
+                '' Inform the manager??
+                'Me.m_manager.SyncWindToMonth(iMonth)
+            End If
 
         End Sub
 
         Private Sub OnBtPhysicsModelClick(sender As System.Object, e As System.EventArgs) Handles m_btPhysicsModel.Click
+
             Me.m_manager.RunPhysicsModel()
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'HACK
-            ' Me.m_manager.HACKUpdateAdvectionToMonth(1 + Me.m_tscmMonth.SelectedIndex)
-            Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
-            DirectCast(layer.Data, cEcospaceLayerAdvection).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            'For Each l As cEcospaceLayer In bm.Layers(eVarNameFlags.LayerAdvection)
+            '    l.Invalidate()
+            'Next
+
+            Me.m_ucMap.Invalidate()
+            Me.m_ucUpwelling.Invalidate()
 
             Me.UpdateControls()
 
         End Sub
 
-        Private Sub OnToggleOptions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiToggleOptions.Click
+        'Private Sub OnShowMonth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
 
-            ' Sanity check
-            If Me.UIContext Is Nothing Then Return
 
-            Me.m_scMain.Panel1Collapsed = Not Me.m_scMain.Panel1Collapsed
-            Me.UpdateControls()
+        '    ' Sanity check
+        '    If Me.UIContext Is Nothing Then Return
 
-        End Sub
+        '    'Wind
+        '    Dim layer As cDisplayRasterLayer = Me.m_ucWind.DataLayer
+        '    For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
+        '        DirectCast(lvel, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+        '    Next
+        '    layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
-        Private Sub OnShowMonth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tscmMonth.SelectedIndexChanged
+        '    'Advection
+        '    layer = Me.m_ucMap.DataLayer
+        '    For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
+        '        DirectCast(lvel, cEcospaceLayerAdvection).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+        '    Next
+        '    layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
-            ' Sanity check
-            If Me.UIContext Is Nothing Then Return
+        '    'Upwelling
+        '    layer = Me.m_ucUpwelling.DataLayer
+        '    DirectCast(layer.Data, cEcospaceLayerUpwelling).Month = (1 + Me.m_tscmMonth.SelectedIndex)
+        '    layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
-            'Wind
-            Dim layer As cDisplayRasterLayer = Me.m_ucWind.DataLayer
-            For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
-                DirectCast(lvel, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-            Next
-            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-
-            'Advection
-            layer = Me.m_ucMap.DataLayer
-            For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
-                DirectCast(lvel, cEcospaceLayerAdvection).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-            Next
-            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-
-            'Upwelling
-            layer = Me.m_ucUpwelling.DataLayer
-            DirectCast(layer.Data, cEcospaceLayerUpwelling).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-            layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-
-        End Sub
-
-        Private Sub OnCursorSizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_sliderCursor.ValueChanged
-
-            ' Sanity check
-            If Me.UIContext Is Nothing Then Return
-
-            ' Get cursor size
-            Dim iCursorSize As Integer = CInt(Me.m_sliderCursor.Value)
-
-            ' Distribute cursor size
-            For Each uc As ucAdvectionMap In Me.Maps
-                If uc.DataLayer IsNot Nothing Then
-                    uc.DataLayer.Editor.CursorSize = iCursorSize
-                    uc.Map.UpdateCursorFeedback()
-                End If
-            Next
-
-        End Sub
+        'End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnStart.Click
@@ -246,33 +214,6 @@ Namespace Ecospace.Advection
         Private Sub OnRevertVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnRevert.Click
             Me.Revert()
-        End Sub
-
-        Private Sub OnEditWindLayer(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnEditWind.Click
-
-            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucWind.DataLayer, cDisplayRasterLayer)
-            Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-            cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
-
-        End Sub
-
-        Private Sub OnEditMLDLayer(sender As System.Object, e As System.EventArgs)
-
-
-            'Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucMLD.DataLayer, cDisplayRasterLayer)
-            'Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-            'cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
-
-        End Sub
-
-        Private Sub OnEditUpwellingLayer(sender As System.Object, e As System.EventArgs)
-
-
-            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_ucUpwelling.DataLayer, cDisplayRasterLayer)
-            Dim cmd As cEditLayerCommand = DirectCast(Me.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-            cmd.Invoke(rl, Nothing, eLayerEditTypes.EditData)
-
         End Sub
 
 #End Region ' Control events
@@ -324,38 +265,6 @@ Namespace Ecospace.Advection
 
 #End Region ' Event handlers
 
-#Region " ILayerEditor implementation "
-
-        Public Sub Initialize(ByVal editor As cLayerEditor) _
-            Implements ILayerEditorGUI.Initialize
-            ' NOP
-        End Sub
-
-        Public Sub StartEdit(ByVal editor As cLayerEditor) _
-            Implements ILayerEditorGUI.StartEdit
-
-            If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
-                Me.m_edtWind.CellValue = CSng(Me.m_nudWind.Value)
-            End If
-
-        End Sub
-
-        Public Sub EndEdit(ByVal editor As cLayerEditor) _
-            Implements ILayerEditorGUI.EndEdit
-            ' NOP
-        End Sub
-
-        Public Sub UpdateLayerEditorContent(ByVal editor As cLayerEditor) _
-            Implements ILayerEditorGUI.UpdateContent
-
-            If (Object.ReferenceEquals(editor, Me.m_edtWind)) Then
-                Me.m_nudWind.Value = CDec(Me.m_edtWind.CellValue)
-            End If
-
-        End Sub
-
-#End Region ' ILayerEditor implementation
-
 #Region " Internals "
 
         Protected Overrides Sub UpdateControls()
@@ -367,19 +276,9 @@ Namespace Ecospace.Advection
             Me.m_btnStop.Enabled = Me.m_bSearching
             Me.m_btnRevert.Enabled = Me.m_bHasRun
 
-            Me.m_tsmiToggleOptions.Checked = Not Me.m_scMain.Panel1Collapsed
-
         End Sub
 
-        'Private Sub UpdateTransportVelocity()
-        '    ' Dim sVX As Single = CSng(Me.m_fpVXelocity.Value)
-        '    ' Dim sVY As Single = CSng(Me.m_fpVYelocity.Value)
-        '    'Dim sVel As Single = CSng(Math.Sqrt(sVX * sVX + sVY * sVY))
-        '    Me.m_fpWind.Value = 1.0
-        'End Sub
-
         Private Function Maps() As ucAdvectionMap()
-            'Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucMLD, Me.m_ucUpwelling, Me.m_ucWind}
             Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucUpwelling, Me.m_ucWind}
         End Function
 

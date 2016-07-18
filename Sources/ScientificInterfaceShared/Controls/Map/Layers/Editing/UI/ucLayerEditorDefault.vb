@@ -39,7 +39,7 @@ Namespace Controls.Map.Layers
     ''' =======================================================================
     Public Class ucLayerEditorDefault
 
-        Private m_fpName As cEwEFormatProvider = Nothing
+        Protected m_fpName As cEwEFormatProvider = Nothing
 
         Public Sub New()
             MyBase.New()

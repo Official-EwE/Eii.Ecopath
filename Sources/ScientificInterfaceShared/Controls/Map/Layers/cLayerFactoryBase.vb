@@ -288,28 +288,28 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererUpwelling(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                    editor = New cLayerEditorRange()
+                    editor = New cLayerEditorUpwelling()
                     layer = New cDisplayRasterLayer(uic, bmd.LayerUpwelling, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
                     layer.Name = "Upwelling"
 
                     lLayers.Add(layer)
 
-                Case eVarNameFlags.LayerMLD
+                'Case eVarNameFlags.LayerMLD
 
-                    ' ToDo: globalize this
+                '    ' ToDo: globalize this
 
-                    key = New cValueID(eDataTypes.EcospaceLayerMLD, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                '    key = New cValueID(eDataTypes.EcospaceLayerMLD, bmd.DBID, eVarNameFlags.Name)
+                '    ad = core.AuxillaryData(key)
 
-                    vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                    editor = New cLayerEditorMLD()
-                    layer = New cDisplayRasterLayer(uic, bmd.LayerMixedLayerDepths, renderer, editor, bmd, varName)
-                    layer.Name = "Mixed layer depths"
+                '    vs = ad.VisualStyle
+                '    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                '    renderer = New cLayerRendererValue(vs)
+                '    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                '    editor = New cLayerEditorMLD()
+                '    layer = New cDisplayRasterLayer(uic, bmd.LayerMixedLayerDepths, renderer, editor, bmd, varName)
+                '    layer.Name = "Mixed layer depths"
 
-                    lLayers.Add(layer)
+                '    lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerPort
 
@@ -455,7 +455,6 @@ Namespace Controls.Map
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING '"Relative biomass forcing"
 
                 Case eVarNameFlags.LayerAdvection,
-                     eVarNameFlags.LayerMLD,
                      eVarNameFlags.LayerWind,
                      eVarNameFlags.LayerUpwelling
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_ADVECTION
