@@ -2204,8 +2204,6 @@ Public Class cEIIXMLDataSource
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthMap", "")), ecospaceDS.DepthInput, ecospaceDS.InRow, ecospaceDS.InCol)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
-            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "FlowMap", "")), ecospaceDS.Xvel, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
             bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
@@ -2240,6 +2238,9 @@ Public Class cEIIXMLDataSource
             If (1 <= iMonth And iMonth <= cCore.N_MONTHS) Then
                 bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "WindXVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Xv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                 bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "WindYVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "AdvectionXVelMap", "")), ecospaceDS.MonthlyXvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "AdvectionYVelMap", "")), ecospaceDS.MonthlyYvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "UpwellingMap", "")), ecospaceDS.MonthlyUpWell(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
             End If
         Next
 

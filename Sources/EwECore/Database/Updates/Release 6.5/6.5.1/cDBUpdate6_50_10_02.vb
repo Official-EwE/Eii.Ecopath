@@ -62,8 +62,7 @@ Friend Class cDBUpdate6_50_10_02
 
         Dim bSucces As Boolean = db.Execute("ALTER TABLE EcospaceScenarioMonth ADD COLUMN AdvectionXVelMap MEMO") And
                                  db.Execute("ALTER TABLE EcospaceScenarioMonth ADD COLUMN AdvectionYVelMap MEMO") And
-                                 db.Execute("ALTER TABLE EcospaceScenarioMonth ADD COLUMN UpwellingXVelMap MEMO") And
-                                 db.Execute("ALTER TABLE EcospaceScenarioMonth ADD COLUMN UpwellingYVelMap MEMO")
+                                 db.Execute("ALTER TABLE EcospaceScenarioMonth ADD COLUMN UpwellingMap MEMO")
 
         If Not bSucces Then Return False
 

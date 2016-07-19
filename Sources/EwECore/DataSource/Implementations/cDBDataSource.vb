@@ -7770,6 +7770,7 @@ Namespace DataSources
                         bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "WindYVelMap", "")), iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Yv, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                         bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "AdvectionXVelMap", "")), ecospaceDS.MonthlyXvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                         bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "AdvectionYVelMap", "")), ecospaceDS.MonthlyYvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                        bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "UpwellingMap", "")), ecospaceDS.MonthlyUpWell(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     End If
 
                 End While
@@ -7891,6 +7892,7 @@ Namespace DataSources
                     drow("WindYVelMap") = cStringUtils.ArrayToString(ecospaceDS.Yv, iMonth, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
                     drow("AdvectionXVelMap") = cStringUtils.ArrayToString(ecospaceDS.MonthlyXvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
                     drow("AdvectionYVelMap") = cStringUtils.ArrayToString(ecospaceDS.MonthlyYvel(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                    drow("UpwellingMap") = cStringUtils.ArrayToString(ecospaceDS.MonthlyUpWell(iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                     If (bNewRow) Then
                         writer.AddRow(drow)
