@@ -45,6 +45,7 @@ Public Class Strategy
     Private m_core As cCore = Nothing
     Private m_MSE As cMSE = Nothing
     Private m_EcosimData As cEcosimDatastructures = Nothing
+    Public Property RunThisStrategy As Boolean = True
     Public Property Name As String = ""
     Public Property FileName As String = ""
 
