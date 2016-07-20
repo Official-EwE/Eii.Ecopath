@@ -910,7 +910,7 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection
-                Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.MonthlyXvel, Me.m_core.m_EcoSpaceData.MonthlyXvel)
+                Return cSystemUtils.IIF(iIndex = 1, Me.m_core.m_EcoSpaceData.MonthlyXvel, Me.m_core.m_EcoSpaceData.MonthlyYvel)
             Case eVarNameFlags.LayerMigration
                 Return Me.m_core.m_EcoSpaceData.MigMaps
             Case eVarNameFlags.LayerWind
