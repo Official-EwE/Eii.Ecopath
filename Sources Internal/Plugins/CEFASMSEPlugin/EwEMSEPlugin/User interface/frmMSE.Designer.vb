@@ -78,6 +78,7 @@ Partial Class frmMSE
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
+        Me.m_btnStrategies2Run = New System.Windows.Forms.Button()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_rbWriteAlways = New System.Windows.Forms.CheckBox()
         Me.m_btnBiomassLimits = New System.Windows.Forms.Button()
@@ -298,6 +299,7 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
+        Me.m_plStep3.Controls.Add(Me.m_btnStrategies2Run)
         Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
@@ -305,6 +307,12 @@ Partial Class frmMSE
         Me.m_plStep3.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
         Me.m_plStep3.Name = "m_plStep3"
+        '
+        'm_btnStrategies2Run
+        '
+        resources.ApplyResources(Me.m_btnStrategies2Run, "m_btnStrategies2Run")
+        Me.m_btnStrategies2Run.Name = "m_btnStrategies2Run"
+        Me.m_btnStrategies2Run.UseVisualStyleBackColor = True
         '
         'm_tlpFishingControls
         '
@@ -594,4 +602,5 @@ Partial Class frmMSE
     Private WithEvents m_pbEII As System.Windows.Forms.PictureBox
     Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
     Private WithEvents m_btnBiomassLimits As Button
+    Friend WithEvents m_btnStrategies2Run As Button
 End Class

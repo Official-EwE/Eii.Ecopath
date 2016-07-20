@@ -704,4 +704,17 @@ Public Class frmMSE
 
     End Sub
 
+    Private Sub m_btnStrategies2Run_Click(sender As Object, e As EventArgs) Handles m_btnStrategies2Run.Click
+
+        Try
+            'Dim frm As New frmSelectStrategies(Me.MSE)
+            'If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            'Me.MSE.Strategies.Load()
+            'Me.UpdateControls()
+            'End If
+        Catch ex As Exception
+            cLog.Write(ex, "CEFAS.frmMSE::OnStrategies2Run")
+        End Try
+
+    End Sub
 End Class
