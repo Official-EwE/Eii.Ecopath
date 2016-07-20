@@ -781,51 +781,6 @@ Public Class cEcoSpace
 
     End Function
 
-    ''' <summary>
-    ''' Calculate advection for a given month.
-    ''' </summary>
-    ''' <param name="iMonth">Month [1, 12] to calculate advection for.</param>
-    Public Sub CalcAdvection(ByVal iMonth As Integer)
-
-        Debug.Assert(iMonth > 0)
-
-        Try
-            For i As Integer = 0 To Me.m_Data.InRow
-                For j As Integer = 0 To Me.m_Data.InCol
-                    Me.m_Data.Xvloc(i, j) = Me.m_Data.Xv(i, j, iMonth)
-                    Me.m_Data.Yvloc(i, j) = Me.m_Data.Yv(i, j, iMonth)
-
-                    If Me.m_Data.Depth(i, j) > 0 Then
-                        If Me.m_Data.Depth(i + 1, j) > 0 Then
-                            If Me.m_Data.DepthA(i + 1, j) > Me.m_Data.DepthA(i, j) Then Me.m_Data.DepthY(i, j) = Me.m_Data.DepthA(i, j) Else Me.m_Data.DepthY(i, j) = Me.m_Data.DepthA(i + 1, j)
-                        End If
-                        If Me.m_Data.Depth(i, j + 1) > 0 Then
-                            If Me.m_Data.DepthA(i, j + 1) > Me.m_Data.DepthA(i, j) Then Me.m_Data.DepthX(i, j) = Me.m_Data.DepthA(i, j) Else Me.m_Data.DepthX(i, j) = Me.m_Data.DepthA(i, j + 1)
-                        End If
-                    End If
-                Next
-            Next
-        Catch ex As Exception
-
-        End Try
-
-        Try
-            For i As Integer = 0 To Me.m_Data.InRow + 1
-                For j As Integer = 0 To Me.m_Data.InCol + 1
-                    If Me.m_Data.Depth(i, j) > 0 Then
-                        Me.m_Data.Xvel(i, j) = Me.m_Data.Xvloc(i, j)
-                        Me.m_Data.Yvel(i, j) = Me.m_Data.Yvloc(i, j)
-                    End If
-                Next
-            Next
-        Catch ex As Exception
-
-        End Try
-
-        Me.SM_MapApparentUpwell()
-    End Sub
-
-
     Public Sub Clear()
 
         Try
@@ -2396,12 +2351,6 @@ Public Class cEcoSpace
                     Next i
                 Next ist
             Next isp
-
-            If Me.m_Data.isAdvectionActive Then
-                Me.m_AdvectionManager.RunPhysicsModel()
-            Else
-                Me.m_AdvectionManager.ClearAdvectionResults()
-            End If
 
             'set dispersal rate arrays for solvegrid
             SetMovementParameters()
@@ -5813,63 +5762,6 @@ exitline:
 
     End Sub
 
-    ''' <summary>
-    ''' Sets apparent upwelling/downwelling rates based only on flow forcing field 
-    ''' sketched by model user
-    ''' </summary>
-    Private Sub SM_MapApparentUpwell()
-
-        Dim Fl As Single
-        Dim i As Integer
-        Dim j As Integer
-
-        For i = 0 To m_Data.InRow : For j = 0 To m_Data.InCol : m_Data.flow(i, j) = 0 : Next : Next
-
-        ' JS: Moved to UI
-        ' , UpMax As Single, UpLoc As Single, Cl2 As Single
-        'Cl2 = 0.01 / m_Data.CellLength ' ^ 2
-        For i = 0 To m_Data.InRow
-            For j = 0 To m_Data.InCol
-                If m_Data.Depth(i, j) > 0 Then
-                    If m_Data.Depth(i + 1, j) > 0 Then
-                        Fl = m_Data.Yvloc(i, j) * m_Data.DepthY(i, j)
-                        'Yvel(i, j) = Yvloc(i, j) '?????????????????????
-                        m_Data.flow(i, j) -= Fl
-                        m_Data.flow(i + 1, j) = m_Data.flow(i + 1, j) + Fl
-                    End If
-                    If m_Data.Depth(i, j + 1) > 0 Then
-                        Fl = m_Data.Xvloc(i, j) * m_Data.DepthX(i, j)
-                        'Xvel(i, j) = Xvloc(i, j) '??????????????????????????
-                        m_Data.flow(i, j) = m_Data.flow(i, j) - Fl
-                        m_Data.flow(i, j + 1) = m_Data.flow(i, j + 1) + Fl
-                    End If
-                End If
-            Next
-        Next
-
-        ' JS: Moved to UI
-        'UpMax = 0
-        'For i = 1 To m_Data.InRow
-        '    For j = 1 To m_Data.InCol
-        '        If m_Data.Depth(i, j) > 0 Then
-        '            If Math.Abs(m_Data.flow(i, j)) > UpMax Then UpMax = Math.Abs(m_Data.flow(i, j))
-        '        End If
-        '    Next
-        'Next
-        'UpMax = UpMax * Cl2
-        ''  Up.Cls()
-        'For i = 1 To m_Data.InRow
-        '    For j = 1 To m_Data.InCol
-        '        If m_Data.Depth(i, j) > 0 Then
-        '            UpLoc = -m_Data.flow(i, j) * Cl2
-        '            m_Data.UpVel(i, j) = UpLoc  'Added for this model  SM.
-        '            'Up.Circle (j + 0.5, i + 0.5 - UpLoc / UpMax), 0.1
-        '            'Up.Line (j + 0.5, i + 0.5)-Step(0, -UpLoc / UpMax)
-        '        End If
-        '    Next
-        'Next
-        ''UpCap.Caption = "Upwelling velocities, max=" + Format$(UpMax / CellLength, "###.##") + "km/yr"
-    End Sub
 
 
     Private Sub readAdvectFile()
@@ -8847,6 +8739,111 @@ exitline:
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
+    End Sub
+
+
+    
+    ''' <summary>
+    ''' Calculate advection for a given month.
+    ''' </summary>
+    ''' <param name="iMonth">Month [1, 12] to calculate advection for.</param>
+    Public Sub CalcAdvection(ByVal iMonth As Integer)
+
+        Debug.Assert(iMonth > 0)
+
+        Try
+            For i As Integer = 0 To Me.m_Data.InRow
+                For j As Integer = 0 To Me.m_Data.InCol
+                    Me.m_Data.Xvloc(i, j) = Me.m_Data.Xv(i, j, iMonth)
+                    Me.m_Data.Yvloc(i, j) = Me.m_Data.Yv(i, j, iMonth)
+
+                    If Me.m_Data.Depth(i, j) > 0 Then
+                        If Me.m_Data.Depth(i + 1, j) > 0 Then
+                            If Me.m_Data.DepthA(i + 1, j) > Me.m_Data.DepthA(i, j) Then Me.m_Data.DepthY(i, j) = Me.m_Data.DepthA(i, j) Else Me.m_Data.DepthY(i, j) = Me.m_Data.DepthA(i + 1, j)
+                        End If
+                        If Me.m_Data.Depth(i, j + 1) > 0 Then
+                            If Me.m_Data.DepthA(i, j + 1) > Me.m_Data.DepthA(i, j) Then Me.m_Data.DepthX(i, j) = Me.m_Data.DepthA(i, j) Else Me.m_Data.DepthX(i, j) = Me.m_Data.DepthA(i, j + 1)
+                        End If
+                    End If
+                Next
+            Next
+        Catch ex As Exception
+
+        End Try
+
+        Try
+            For i As Integer = 0 To Me.m_Data.InRow + 1
+                For j As Integer = 0 To Me.m_Data.InCol + 1
+                    If Me.m_Data.Depth(i, j) > 0 Then
+                        Me.m_Data.Xvel(i, j) = Me.m_Data.Xvloc(i, j)
+                        Me.m_Data.Yvel(i, j) = Me.m_Data.Yvloc(i, j)
+                    End If
+                Next
+            Next
+        Catch ex As Exception
+
+        End Try
+
+        Me.SM_MapApparentUpwell()
+    End Sub
+
+    
+    ''' <summary>
+    ''' Sets apparent upwelling/downwelling rates based only on flow forcing field 
+    ''' sketched by model user
+    ''' </summary>
+    Private Sub SM_MapApparentUpwell()
+
+        Dim Fl As Single
+        Dim i As Integer
+        Dim j As Integer
+
+        For i = 0 To m_Data.InRow : For j = 0 To m_Data.InCol : m_Data.flow(i, j) = 0 : Next : Next
+
+        ' JS: Moved to UI
+        ' , UpMax As Single, UpLoc As Single, Cl2 As Single
+        'Cl2 = 0.01 / m_Data.CellLength ' ^ 2
+        For i = 0 To m_Data.InRow
+            For j = 0 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    If m_Data.Depth(i + 1, j) > 0 Then
+                        Fl = m_Data.Yvloc(i, j) * m_Data.DepthY(i, j)
+                        'Yvel(i, j) = Yvloc(i, j) '?????????????????????
+                        m_Data.flow(i, j) -= Fl
+                        m_Data.flow(i + 1, j) = m_Data.flow(i + 1, j) + Fl
+                    End If
+                    If m_Data.Depth(i, j + 1) > 0 Then
+                        Fl = m_Data.Xvloc(i, j) * m_Data.DepthX(i, j)
+                        'Xvel(i, j) = Xvloc(i, j) '??????????????????????????
+                        m_Data.flow(i, j) = m_Data.flow(i, j) - Fl
+                        m_Data.flow(i, j + 1) = m_Data.flow(i, j + 1) + Fl
+                    End If
+                End If
+            Next
+        Next
+
+        ' JS: Moved to UI
+        'UpMax = 0
+        'For i = 1 To m_Data.InRow
+        '    For j = 1 To m_Data.InCol
+        '        If m_Data.Depth(i, j) > 0 Then
+        '            If Math.Abs(m_Data.flow(i, j)) > UpMax Then UpMax = Math.Abs(m_Data.flow(i, j))
+        '        End If
+        '    Next
+        'Next
+        'UpMax = UpMax * Cl2
+        ''  Up.Cls()
+        'For i = 1 To m_Data.InRow
+        '    For j = 1 To m_Data.InCol
+        '        If m_Data.Depth(i, j) > 0 Then
+        '            UpLoc = -m_Data.flow(i, j) * Cl2
+        '            m_Data.UpVel(i, j) = UpLoc  'Added for this model  SM.
+        '            'Up.Circle (j + 0.5, i + 0.5 - UpLoc / UpMax), 0.1
+        '            'Up.Line (j + 0.5, i + 0.5)-Step(0, -UpLoc / UpMax)
+        '        End If
+        '    Next
+        'Next
+        ''UpCap.Caption = "Upwelling velocities, max=" + Format$(UpMax / CellLength, "###.##") + "km/yr"
     End Sub
 
 #End If
