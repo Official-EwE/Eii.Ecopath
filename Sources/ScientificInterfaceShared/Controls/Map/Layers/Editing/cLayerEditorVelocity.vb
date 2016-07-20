@@ -182,8 +182,8 @@ Namespace Controls.Map.Layers
             Dim sX As Single = 0
             Dim sY As Single = 0
 
-            For i As Integer = 1 To bm.InRow
-                For j As Integer = 1 To bm.InCol
+            For i As Integer = 0 To bm.InRow + 1
+                For j As Integer = 0 To bm.InCol + 1
                     If (layerDepth.IsWaterCell(i, j)) Then
                         sX = layer.XVelocity(i, j, iFrom)
                         sY = layer.YVelocity(i, j, iFrom)
