@@ -1827,6 +1827,9 @@ Public Class cMSE
                             'Set the index to the CurrentStrategy used by me.currentStrategy to retrieve the correct strategy
                             m_iCurStategy = istrat
 
+                            'Only run strategies that have been set to run
+                            If Not currentStrategy.RunThisStrategy Then Continue For
+
                             'Initialise Arrays for recording the F's from Targ and Cons HCR's
                             InitArraysForStrategy()
 
