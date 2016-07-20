@@ -33,13 +33,6 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceLayerAdvection
     Inherits cEcospaceLayerSingle
 
-#Region " Private vars "
-
-    ''' <summary>Month [1, 12] to operate on.</summary>
-    Private m_iMonth As Integer = 1
-
-#End Region ' Private vars
-
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
