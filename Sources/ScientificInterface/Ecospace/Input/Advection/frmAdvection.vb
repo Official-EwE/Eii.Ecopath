@@ -151,55 +151,10 @@ Namespace Ecospace.Advection
                 Dim iMonth As Integer = DirectCast(sender, IMonthFilter).Month
                 DirectCast(Me.m_ucMap.DataLayer.Editor, IMonthFilter).Month = iMonth
                 DirectCast(Me.m_ucUpwelling.DataLayer.Editor, IMonthFilter).Month = iMonth
-
-                '' Inform the manager??
-                'Me.m_manager.SyncWindToMonth(iMonth)
             End If
 
         End Sub
 
-        Private Sub OnBtPhysicsModelClick(sender As System.Object, e As System.EventArgs) Handles m_btPhysicsModel.Click
-
-            Me.m_manager.RunPhysicsModel()
-
-            'Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-            'For Each l As cEcospaceLayer In bm.Layers(eVarNameFlags.LayerAdvection)
-            '    l.Invalidate()
-            'Next
-
-            Me.m_ucMap.Invalidate()
-            Me.m_ucUpwelling.Invalidate()
-
-            Me.UpdateControls()
-
-        End Sub
-
-        'Private Sub OnShowMonth(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-
-
-        '    ' Sanity check
-        '    If Me.UIContext Is Nothing Then Return
-
-        '    'Wind
-        '    Dim layer As cDisplayRasterLayer = Me.m_ucWind.DataLayer
-        '    For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
-        '        DirectCast(lvel, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-        '    Next
-        '    layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-
-        '    'Advection
-        '    layer = Me.m_ucMap.DataLayer
-        '    For Each lvel As cEcospaceLayerSingle In DirectCast(layer.Data, cEcospaceLayerVelocity).VelocityLayers
-        '        DirectCast(lvel, cEcospaceLayerAdvection).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-        '    Next
-        '    layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-
-        '    'Upwelling
-        '    layer = Me.m_ucUpwelling.DataLayer
-        '    DirectCast(layer.Data, cEcospaceLayerUpwelling).Month = (1 + Me.m_tscmMonth.SelectedIndex)
-        '    layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-
-        'End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnStart.Click
@@ -211,10 +166,6 @@ Namespace Ecospace.Advection
             Me.m_manager.StopRun()
         End Sub
 
-        Private Sub OnRevertVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnRevert.Click
-            Me.Revert()
-        End Sub
 
 #End Region ' Control events
 
@@ -274,7 +225,6 @@ Namespace Ecospace.Advection
 
             Me.m_btnStart.Enabled = Not bBusy And Not Me.m_bSearching
             Me.m_btnStop.Enabled = Me.m_bSearching
-            Me.m_btnRevert.Enabled = Me.m_bHasRun
 
         End Sub
 
@@ -287,7 +237,6 @@ Namespace Ecospace.Advection
             ' Already running? Abort
             If Me.m_bSearching Then Return
 
-            'If Not Me.m_manager.IsRunning Then Me.m_manager.Run(Me)
             If Not Me.m_manager.IsRunning Then Me.m_manager.RunPhyicsModel(Me)
             Me.m_bSearching = Me.m_manager.IsRunning
 

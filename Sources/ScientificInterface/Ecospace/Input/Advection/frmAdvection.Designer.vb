@@ -54,10 +54,8 @@ Namespace Ecospace.Advection
             Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap()
             Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling()
             Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_btPhysicsModel = New System.Windows.Forms.Button()
             Me.m_lblWIndEditorPlaceholder = New System.Windows.Forms.Label()
             Me.m_hdrCompute = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_btnRevert = New System.Windows.Forms.Button()
             Me.m_tlpComputeControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_btnStart = New System.Windows.Forms.Button()
             Me.m_btnStop = New System.Windows.Forms.Button()
@@ -173,10 +171,8 @@ Namespace Ecospace.Advection
             Me.m_tlpControls.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_tlpControls.ColumnCount = 1
             Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpControls.Controls.Add(Me.m_btPhysicsModel, 0, 4)
             Me.m_tlpControls.Controls.Add(Me.m_lblWIndEditorPlaceholder, 0, 0)
             Me.m_tlpControls.Controls.Add(Me.m_hdrCompute, 0, 1)
-            Me.m_tlpControls.Controls.Add(Me.m_btnRevert, 0, 3)
             Me.m_tlpControls.Controls.Add(Me.m_tlpComputeControls, 0, 2)
             Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
@@ -190,16 +186,6 @@ Namespace Ecospace.Advection
             Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlpControls.Size = New System.Drawing.Size(175, 374)
             Me.m_tlpControls.TabIndex = 0
-            '
-            'm_btPhysicsModel
-            '
-            Me.m_btPhysicsModel.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_btPhysicsModel.Location = New System.Drawing.Point(3, 96)
-            Me.m_btPhysicsModel.Name = "m_btPhysicsModel"
-            Me.m_btPhysicsModel.Size = New System.Drawing.Size(169, 23)
-            Me.m_btPhysicsModel.TabIndex = 3
-            Me.m_btPhysicsModel.Text = "Run new Physics Model"
-            Me.m_btPhysicsModel.UseVisualStyleBackColor = True
             '
             'm_lblWIndEditorPlaceholder
             '
@@ -224,17 +210,6 @@ Namespace Ecospace.Advection
             Me.m_hdrCompute.TabIndex = 1
             Me.m_hdrCompute.Text = "Compute advection velocities"
             Me.m_hdrCompute.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_btnRevert
-            '
-            Me.m_btnRevert.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnRevert.Location = New System.Drawing.Point(3, 67)
-            Me.m_btnRevert.Name = "m_btnRevert"
-            Me.m_btnRevert.Size = New System.Drawing.Size(169, 23)
-            Me.m_btnRevert.TabIndex = 2
-            Me.m_btnRevert.Text = "&Revert"
-            Me.m_btnRevert.UseVisualStyleBackColor = True
             '
             'm_tlpComputeControls
             '
@@ -336,9 +311,7 @@ Namespace Ecospace.Advection
         Private WithEvents m_ucZoomToolbar As ucMapZoomToolbar
         Private WithEvents m_btnStart As System.Windows.Forms.Button
         Private WithEvents m_tlpComputeControls As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_btnRevert As System.Windows.Forms.Button
         Private WithEvents m_btnStop As System.Windows.Forms.Button
-        Friend WithEvents m_btPhysicsModel As System.Windows.Forms.Button
         Friend WithEvents m_scMaps As SplitContainer
         Friend WithEvents m_scOutputMaps As SplitContainer
         Private WithEvents m_tlpControls As TableLayoutPanel
