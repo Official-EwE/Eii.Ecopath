@@ -74,11 +74,12 @@ Partial Class frmMSE
         Me.m_tbxMaxTime = New System.Windows.Forms.TextBox()
         Me.m_btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_plStep4 = New System.Windows.Forms.Panel()
+        Me.m_btnSelectStrategies = New System.Windows.Forms.Button()
+        Me.m_btnStrategies2Run = New System.Windows.Forms.Button()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.m_plStep3 = New System.Windows.Forms.Panel()
-        Me.m_btnStrategies2Run = New System.Windows.Forms.Button()
         Me.m_tlpFishingControls = New System.Windows.Forms.TableLayoutPanel()
         Me.m_rbWriteAlways = New System.Windows.Forms.CheckBox()
         Me.m_btnBiomassLimits = New System.Windows.Forms.Button()
@@ -267,6 +268,8 @@ Partial Class frmMSE
         '
         'm_plStep4
         '
+        Me.m_plStep4.Controls.Add(Me.m_btnSelectStrategies)
+        Me.m_plStep4.Controls.Add(Me.m_btnStrategies2Run)
         Me.m_plStep4.Controls.Add(Me.m_btnDeleteResults)
         Me.m_plStep4.Controls.Add(Me.m_hdrStep4)
         Me.m_plStep4.Controls.Add(Me.m_tbxNModels2Run)
@@ -277,6 +280,18 @@ Partial Class frmMSE
         Me.m_plStep4.Controls.Add(Me.m_tbxNYearsProject)
         resources.ApplyResources(Me.m_plStep4, "m_plStep4")
         Me.m_plStep4.Name = "m_plStep4"
+        '
+        'm_btnSelectStrategies
+        '
+        resources.ApplyResources(Me.m_btnSelectStrategies, "m_btnSelectStrategies")
+        Me.m_btnSelectStrategies.Name = "m_btnSelectStrategies"
+        Me.m_btnSelectStrategies.UseVisualStyleBackColor = True
+        '
+        'm_btnStrategies2Run
+        '
+        resources.ApplyResources(Me.m_btnStrategies2Run, "m_btnStrategies2Run")
+        Me.m_btnStrategies2Run.Name = "m_btnStrategies2Run"
+        Me.m_btnStrategies2Run.UseVisualStyleBackColor = True
         '
         'm_hdrStep4
         '
@@ -299,7 +314,6 @@ Partial Class frmMSE
         '
         'm_plStep3
         '
-        Me.m_plStep3.Controls.Add(Me.m_btnStrategies2Run)
         Me.m_plStep3.Controls.Add(Me.m_tlpFishingControls)
         Me.m_plStep3.Controls.Add(Me.m_hdrStep3)
         Me.m_plStep3.Controls.Add(Me.m_btnReviewTFM)
@@ -307,12 +321,6 @@ Partial Class frmMSE
         Me.m_plStep3.Controls.Add(Me.m_tbxNumAvailableFishingStrategies)
         resources.ApplyResources(Me.m_plStep3, "m_plStep3")
         Me.m_plStep3.Name = "m_plStep3"
-        '
-        'm_btnStrategies2Run
-        '
-        resources.ApplyResources(Me.m_btnStrategies2Run, "m_btnStrategies2Run")
-        Me.m_btnStrategies2Run.Name = "m_btnStrategies2Run"
-        Me.m_btnStrategies2Run.UseVisualStyleBackColor = True
         '
         'm_tlpFishingControls
         '
@@ -603,4 +611,5 @@ Partial Class frmMSE
     Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
     Private WithEvents m_btnBiomassLimits As Button
     Friend WithEvents m_btnStrategies2Run As Button
+    Friend WithEvents m_btnSelectStrategies As Button
 End Class

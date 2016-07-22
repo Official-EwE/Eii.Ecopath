@@ -270,6 +270,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Strategies Overview.
+        '''</summary>
+        Friend ReadOnly Property FORMNAME_STRATEGIES_OVERVIEW() As String
+            Get
+                Return ResourceManager.GetString("FORMNAME_STRATEGIES_OVERVIEW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} distrparm {1}.
         '''</summary>
         Friend ReadOnly Property GRID_DISTRPARM_DATANAME() As String
@@ -477,6 +486,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Name.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NAME() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Other mort. feeding time.
         '''</summary>
         Friend ReadOnly Property HEADER_OTHERMORTFEEDTIME() As String
@@ -509,6 +527,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_QUOTASHARE() As String
             Get
                 Return ResourceManager.GetString("HEADER_QUOTASHARE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run (Yes/No).
+        '''</summary>
+        Friend ReadOnly Property HEADER_RUN_YES_NO() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RUN_YES_NO", resourceCulture)
             End Get
         End Property
         

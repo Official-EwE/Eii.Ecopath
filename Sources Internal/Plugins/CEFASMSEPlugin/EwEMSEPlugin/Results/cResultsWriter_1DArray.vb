@@ -78,10 +78,11 @@ Public Class cResultsWriter_1DArray
 
         For iElement = 1 To m_ResultsArray.nElements
             For iStrategy = 1 To m_ResultsArray.nStrategies
-                m_StreamWriters(iElement - 1).Write("{0},{1},{2},{3}", _
-                       cStringUtils.ToCSVField(m_ResultsArray.ElementName(iElement)), _
-                       cStringUtils.FormatNumber(m_ResultsArray.ModelID), _
-                       cStringUtils.ToCSVField(StrategyName(iStrategy)), _
+                If m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
+                m_StreamWriters(iElement - 1).Write("{0},{1},{2},{3}",
+                       cStringUtils.ToCSVField(m_ResultsArray.ElementName(iElement)),
+                       cStringUtils.FormatNumber(m_ResultsArray.ModelID),
+                       cStringUtils.ToCSVField(StrategyName(iStrategy)),
                        cStringUtils.ToCSVField(m_ResultsArray.DataName))
                 For iTime = 1 To m_ResultsArray.NumberOfTimeRecords
                     m_StreamWriters(iElement - 1).Write("," & m_ResultsArray.GetValue_Formatted4CSV(iStrategy, iElement, iTime))

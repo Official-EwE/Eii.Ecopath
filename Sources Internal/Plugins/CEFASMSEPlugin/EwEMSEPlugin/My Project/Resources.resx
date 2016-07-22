@@ -398,4 +398,13 @@
   <data name="REGMETHOD_NOFISHING" xml:space="preserve">
     <value>No fishing</value>
   </data>
+  <data name="FORMNAME_STRATEGIES_OVERVIEW" xml:space="preserve">
+    <value>Strategies Overview</value>
+  </data>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HEADER_RUN_YES_NO" xml:space="preserve">
+    <value>Run (Yes/No)</value>
+  </data>
 </root>

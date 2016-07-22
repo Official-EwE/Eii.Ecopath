@@ -129,6 +129,7 @@ Public Class cResultsWriter_2DArray
 
                 For iStrategy = 1 To m_ResultsArray.nStrategies
                     'Output the Landings to file
+                    If m_MSE.Strategies(iStrategy - 1).RunThisStrategy = False Then Continue For
                     m_StreamWriters(iFleet, iGrp).Write("{0},{1},{2},{3},{4}", _
                                                                   cStringUtils.ToCSVField(GroupName), _
                                                                   cStringUtils.ToCSVField(FleetName), _

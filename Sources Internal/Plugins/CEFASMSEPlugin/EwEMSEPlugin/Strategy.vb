@@ -204,51 +204,57 @@ Public Class Strategy
 
         Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
         If (reader IsNot Nothing) Then
-
+            buff = reader.ReadLine()
+            recs = buff.Split(","c)
+            If cStringUtils.ConvertToInteger(recs(1)) = 1 Then
+                Me.RunThisStrategy = True
+            Else
+                Me.RunThisStrategy = False
+            End If
             reader.ReadLine()
-            Do Until reader.EndOfStream
-                buff = reader.ReadLine()
-                recs = buff.Split(","c)
+                Do Until reader.EndOfStream
+                    buff = reader.ReadLine()
+                    recs = buff.Split(","c)
 
-                Dim tempHCRGroup As HCR_Group
-                'Each HCR Group needs to be a new object
-                tempHCRGroup = New HCR_Group(m_core, m_MSE)
+                    Dim tempHCRGroup As HCR_Group
+                    'Each HCR Group needs to be a new object
+                    tempHCRGroup = New HCR_Group(m_core, m_MSE)
 
-                Try
-                    ' Resolve group
-                    tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
-                    tempHCRGroup.LowerLimit = cStringUtils.ConvertToSingle(recs(2))
-                    tempHCRGroup.UpperLimit = cStringUtils.ConvertToSingle(recs(3))
-                    tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
-                    tempHCRGroup.MaxF = cStringUtils.ConvertToSingle(recs(6))
-                    If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
-                        tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
-                    End If
-                    'backwards compatability with older file that don't contain Time Frame Rules
-                    If recs.Length > 8 Then
-                        tempHCRGroup.TimeFrameRule.NYears = cStringUtils.ConvertToInteger(recs(8))
+                    Try
+                        ' Resolve group
+                        tempHCRGroup.GroupB = Me.ResolveGroup(recs(0), cStringUtils.ConvertToInteger(recs(1)))
+                        tempHCRGroup.LowerLimit = cStringUtils.ConvertToSingle(recs(2))
+                        tempHCRGroup.UpperLimit = cStringUtils.ConvertToSingle(recs(3))
+                        tempHCRGroup.GroupF = Me.ResolveGroup(recs(4), cStringUtils.ConvertToInteger(recs(5)))
+                        tempHCRGroup.MaxF = cStringUtils.ConvertToSingle(recs(6))
+                        If Not [Enum].TryParse(recs(7), tempHCRGroup.TypeOfHCR) Then
+                            tempHCRGroup.TypeOfHCR = CType(CInt(recs(7)), HCRType)
+                        End If
+                        'backwards compatability with older file that don't contain Time Frame Rules
+                        If recs.Length > 8 Then
+                            tempHCRGroup.TimeFrameRule.NYears = cStringUtils.ConvertToInteger(recs(8))
+                        Else
+                            tempHCRGroup.TimeFrameRule.NYears = 0
+                        End If
+                    Catch ex As Exception
+                        ' Whoah!
+                        cMSEUtils.LogError(msg, "Strategy could not load from " & strFilename & ". " & ex.Message)
+                        bSuccess = False
+                        Exit Do
+                    End Try
+
+                    ' Only add valid strategies!
+                    If tempHCRGroup.isValid(strMsg) Then
+                        Me.Add(tempHCRGroup)
                     Else
-                        tempHCRGroup.TimeFrameRule.NYears = 0
+                        cMSEUtils.LogError(msg, "Strategy loaded from " & strFilename & " is not valid.")
+                        bSuccess = False
                     End If
-                Catch ex As Exception
-                    ' Whoah!
-                    cMSEUtils.LogError(msg, "Strategy could not load from " & strFilename & ". " & ex.Message)
-                    bSuccess = False
-                    Exit Do
-                End Try
 
-                ' Only add valid strategies!
-                If tempHCRGroup.isValid(strMsg) Then
-                    Me.Add(tempHCRGroup)
-                Else
-                    cMSEUtils.LogError(msg, "Strategy loaded from " & strFilename & " is not valid.")
-                    bSuccess = False
-                End If
+                Loop
+            End If 'cMSEUtils.readToTag(reader, START_TAG)
 
-            Loop
-        End If 'cMSEUtils.readToTag(reader, START_TAG)
-
-        cMSEUtils.ReleaseReader(reader)
+            cMSEUtils.ReleaseReader(reader)
 
         'for debugging
         Debug.Assert(bSuccess, Me.ToString + ".Read() Failed to read hcrs from file.")
@@ -270,20 +276,25 @@ Public Class Strategy
 
         Dim strm As StreamWriter = cMSEUtils.GetWriter(strFilename, False)
         If (strm IsNot Nothing) Then
+            If Me.RunThisStrategy Then
+                strm.WriteLine("Run, 1")
+            Else
+                strm.WriteLine("Run, 0")
+            End If
 
             'msg.AddVariable(New cVariableStatus(eStatusFlags.OK, _
             '                                    String.Format(My.Resources.STATUS_SAVED_DETAIL, Path.GetFileName(iStrategy.FileName)), _
             '                                    eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
             strm.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType, NYears(Time Frame Rule)")
             For Each iHCR In Me
-                strm.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.LowerLimit) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.UpperLimit) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.MaxF) & "," & _
-                                          cStringUtils.ToCSVField(iHCR.TypeOfHCR) & "," & _
+                strm.WriteLine(cStringUtils.ToCSVField(iHCR.GroupB.Name) & "," &
+                                          cStringUtils.ToCSVField(iHCR.GroupB.Index) & "," &
+                                          cStringUtils.ToCSVField(iHCR.LowerLimit) & "," &
+                                          cStringUtils.ToCSVField(iHCR.UpperLimit) & "," &
+                                          cStringUtils.ToCSVField(iHCR.GroupF.Name) & "," &
+                                          cStringUtils.ToCSVField(iHCR.GroupF.Index) & "," &
+                                          cStringUtils.ToCSVField(iHCR.MaxF) & "," &
+                                          cStringUtils.ToCSVField(iHCR.TypeOfHCR) & "," &
                                           cStringUtils.ToCSVField(iHCR.TimeFrameRule.NYears))
             Next
         End If
