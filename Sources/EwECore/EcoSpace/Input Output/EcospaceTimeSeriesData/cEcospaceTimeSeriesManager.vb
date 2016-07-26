@@ -81,10 +81,17 @@ Namespace EcospaceTimeSeries
 
 #Region "Public Methods"
 
-
+        ''' <summary>
+        ''' Added a new cEcospaceTimeSeriesRec record. 
+        ''' </summary>
+        ''' <param name="TimeSeriesRec"></param>
+        ''' <returns></returns>
         Public Function Add(TimeSeriesRec As cEcospaceTimeSeriesRec) As Boolean
 
             Try
+                'Add TimeSeriesRec to the list of cEcospaceTimeSeriesRec objects
+                'cEcospaceTimeSeriesRec are stored by date, all the recs with the same date will be in one list
+                'Me.ByDate(date,CreateNew:=True) will create a new list if it doesn't already exist
                 Me.ByDate(TimeSeriesRec.TimeStamp, CreateNew:=True).Add(TimeSeriesRec)
             Catch ex As Exception
                 Return False
@@ -92,7 +99,11 @@ Namespace EcospaceTimeSeries
             Return True
         End Function
 
-
+        ''' <summary>
+        ''' Read the Ecospace time series XYZ formatted file 
+        ''' </summary>
+        ''' <param name="Filename"></param>
+        ''' <returns></returns>
         Public Function Read(Filename As String) As Boolean
 
             Me.Init()
@@ -111,12 +122,18 @@ Namespace EcospaceTimeSeries
             Return False
         End Function
 
-
+        ''' <summary>
+        ''' Calculate stats for this time step 
+        ''' </summary>
+        ''' <param name="iTimeStep">Current model time step</param>
+        ''' <param name="biomass">Predicted biomass</param>
+        ''' <returns></returns>
         Public Function CalculateStats(iTimeStep As Integer, biomass(,,) As Single) As Boolean
             Dim zstat As Double
             Dim TimeStepDate As Date = Me.getDate(iTimeStep)
             Try
 
+                'is there records for this model date
                 If Me.ContainsDate(TimeStepDate) Then
 
                     'get a list of all the records for this date
@@ -149,6 +166,7 @@ Namespace EcospaceTimeSeries
 
             Catch ex As Exception
                 EwEUtils.Core.cLog.Write(ex, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
+                Return False
             End Try
 
             Return True
@@ -160,6 +178,13 @@ Namespace EcospaceTimeSeries
 #Region "Private Methods"
 
 
+        ''' <summary>
+        ''' Get a list of cEcospaceTimeSeriesRec objects for this date. 
+        ''' If CreateNew = True add a new list and return it, if CreateNew = False return nothing.   
+        ''' </summary>
+        ''' <param name="RecDate"></param>
+        ''' <param name="CreateNew"></param>
+        ''' <returns></returns>
         Private Function ByDate(RecDate As Date, Optional CreateNew As Boolean = False) As List(Of cEcospaceTimeSeriesRec)
             If m_dcDataByDate.ContainsKey(RecDate) Then
                 Return m_dcDataByDate.Item(RecDate)
@@ -176,7 +201,10 @@ Namespace EcospaceTimeSeries
         End Function
 
 
-
+        ''' <summary>
+        ''' Is there Ecospace time series data loaded
+        ''' </summary>
+        ''' <returns>True if there is loaded data, False otherwise. Does not test the map bounds or dates.</returns>
         Public ReadOnly Property ContainsData As Boolean
             Get
                 If Me.m_dcDataByDate IsNot Nothing Then
@@ -186,6 +214,12 @@ Namespace EcospaceTimeSeries
             End Get
         End Property
 
+
+        ''' <summary>
+        ''' Does the currently loaded data contain this date
+        ''' </summary>
+        ''' <param name="RecDate"></param>
+        ''' <returns></returns>
         Private Function ContainsDate(RecDate As Date) As Boolean
 
             If m_dcDataByDate.ContainsKey(RecDate) Then
@@ -195,6 +229,13 @@ Namespace EcospaceTimeSeries
 
         End Function
 
+
+
+        ''' <summary>
+        ''' Get the calendar date for the current model time step
+        ''' </summary>
+        ''' <param name="itimestep"></param>
+        ''' <returns></returns>
         Private Function getDate(itimestep As Integer) As Date
             'convert Ecospace time step into date
             Dim stYear As Integer
@@ -211,7 +252,12 @@ Namespace EcospaceTimeSeries
 
         End Function
 
-
+        ''' <summary>
+        ''' Are the start date and the end date of the input time series data within the model run
+        ''' </summary>
+        ''' <param name="StartDate"></param>
+        ''' <param name="EndDate"></param>
+        ''' <returns>True if any part of the dates are in bounds, False otherwise. </returns>
         Private Function checkDates(StartDate As Date, EndDate As Date) As Boolean
             If Me.m_core.EwEModel.FirstYear <> 0 Then
                 Dim mSD As New Date(Me.m_core.EwEModel.FirstYear, 1, 1)
@@ -228,6 +274,13 @@ Namespace EcospaceTimeSeries
             Return True
         End Function
 
+
+        ''' <summary>
+        ''' Check the Extent of the input time series data against the current Ecospace map extent
+        ''' </summary>
+        ''' <param name="MaxRow"></param>
+        ''' <param name="MaxCol"></param>
+        ''' <returns>Return True if the row and col are inbounds, False otherwise.</returns>
         Private Function checkExtent(MaxRow As Integer, MaxCol As Integer) As Boolean
 
             If MaxRow > Me.m_SpaceData.InRow Or MaxCol > Me.m_SpaceData.InCol Then
