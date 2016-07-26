@@ -195,6 +195,9 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesManager.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesXYZReader.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesRec.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerExclusion.vb" />

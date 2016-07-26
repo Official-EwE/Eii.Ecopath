@@ -118,6 +118,8 @@ Public Class cEcoSpace
 
     Private m_AdvectionManager As Ecospace.Advection.cAdvectionManager
 
+    Private m_TimeSeriesManager As EcospaceTimeSeries.cEcospaceTimeSeriesManager
+
     Private m_EPdata As cEcopathDataStructures
     Private m_SimData As cEcosimDatastructures
     Private m_Data As cEcospaceDataStructures
@@ -531,6 +533,19 @@ Public Class cEcoSpace
             Me.m_OnRunCompletedDelegate = value
         End Set
     End Property
+
+
+    Public Property TimeSeriesManager() As EcospaceTimeSeries.cEcospaceTimeSeriesManager
+        Set(value As EcospaceTimeSeries.cEcospaceTimeSeriesManager)
+            Me.m_TimeSeriesManager = value
+        End Set
+        Get
+            Return Me.m_TimeSeriesManager
+        End Get
+    End Property
+
+
+
 
 #End Region
 
@@ -1166,7 +1181,7 @@ Public Class cEcoSpace
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 'Fit to loaded time series data
-                Me.AccumulateFitStats()
+                Me.AccumulateFitStats(itt, Me.m_Data.Bcell)
 
                 If itt = 1 Then
                     Me.setBaseValues(itt)
@@ -1330,7 +1345,11 @@ Public Class cEcoSpace
     ''' Call Ecosim.AccumulateDataInfo() to gather the fit to time series stats once a year at the end of the sixth month
     ''' </summary>
     ''' <remarks></remarks>
-    Private Sub AccumulateFitStats()
+    Private Sub AccumulateFitStats(iTimeStep As Integer, Biomass(,,) As Single)
+
+        If m_TimeSeriesManager.ContainsData Then
+            Me.m_TimeSeriesManager.CalculateStats(iTimeStep, Biomass)
+        End If
 
         'System.Console.WriteLine("Warning: Ecospace.AccumulateFitStats() not called for debugging Monthly Timeseries.")
         Return

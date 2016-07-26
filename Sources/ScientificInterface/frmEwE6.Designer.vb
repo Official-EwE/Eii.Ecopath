@@ -159,6 +159,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsmiEcospaceLoadTimeSeries = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -248,7 +249,7 @@ Partial Public Class frmEwE6
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceManageConfigurations})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tsmiEcospaceLoadTimeSeries, Me.m_tssEcospace4, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceManageConfigurations})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -807,6 +808,11 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
+        'm_tsmiEcospaceLoadTimeSeries
+        '
+        Me.m_tsmiEcospaceLoadTimeSeries.Name = "m_tsmiEcospaceLoadTimeSeries"
+        resources.ApplyResources(Me.m_tsmiEcospaceLoadTimeSeries, "m_tsmiEcospaceLoadTimeSeries")
+        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -926,6 +932,6 @@ Partial Public Class frmEwE6
     Private WithEvents ExportModel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcobaseExport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiExternalTools As System.Windows.Forms.ToolStripMenuItem
-
+    Friend WithEvents m_tsmiEcospaceLoadTimeSeries As ToolStripMenuItem
 End Class
 
