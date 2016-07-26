@@ -896,8 +896,12 @@ Namespace Core
         ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all the groups and data</summary>
         EcospaceSS
 
-        ''' <summary>Sum of squares fit of Ecospace predicted values to reference data for a region</summary>
-        EcospaceRegionSS
+        ''' <summary>Sum of squares fit of Ecospace predicted values by group</summary>
+        EcospaceSSGroup
+
+
+        '''' <summary>Sum of squares fit of Ecospace predicted values to reference data for a region</summary>
+        'EcospaceRegionSS
 
         ''' <summary>Sum of squares fit of Ecosim predicted values to all reference data across all the groups and data</summary>
         EcosimSS

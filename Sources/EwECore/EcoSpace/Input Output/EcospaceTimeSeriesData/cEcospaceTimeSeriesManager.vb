@@ -36,7 +36,7 @@ Namespace EcospaceTimeSeries
         Private m_SpaceData As cEcospaceDataStructures
 
         'sum of squares by group
-        Private m_ss() As Single
+        Private m_ss() As Double
 
         'Naming convection for SS variables follows
         'EwE5 and Ecosim.AccumulateDataInfo() and PlotDataInfo()
@@ -69,7 +69,7 @@ Namespace EcospaceTimeSeries
         Public Sub InitForRun()
 
             'Clear out the results
-            Me.m_ss = New Single(Me.m_core.nGroups) {}
+            Me.m_ss = New Double(Me.m_core.nGroups) {}
             Erpred = New List(Of Double)
 
             Me.DatSumZ = 0.0
@@ -157,12 +157,16 @@ Namespace EcospaceTimeSeries
 
                             'log prediction error
                             zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+                            Me.m_ss(Rec.iGroupID) += zstat ^ 2
+
                             'Debug.Assert(Not Double.IsNaN(zstat))
                             If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
                                 Me.Erpred.Add(zstat)
                                 Me.DatSumZ += zstat
                                 Me.DatSumZ2 += zstat ^ 2
                             End If
+
+                            Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
 
                         Catch ex As Exception
                             System.Console.WriteLine(Me.ToString + ".CalculateStats() Invalid data point.")
@@ -185,6 +189,20 @@ Namespace EcospaceTimeSeries
             Return True
 
         End Function
+
+
+        Public ReadOnly Property SS As Double
+            Get
+                Return Me.DatSumZ2
+            End Get
+        End Property
+
+        Public ReadOnly Property SSGroup(igrp As Integer) As Double
+            Get
+                Return Me.m_ss(igrp)
+            End Get
+        End Property
+
 
 #End Region
 
