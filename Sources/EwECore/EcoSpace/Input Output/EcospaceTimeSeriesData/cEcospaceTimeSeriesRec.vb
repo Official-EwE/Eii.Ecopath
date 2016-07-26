@@ -43,6 +43,7 @@ Namespace EcospaceTimeSeries
 
         Public VarType As eVarNameFlags
 
+
         Public Sub New(strRec As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass)
             Dim data() As String = EwEUtils.Utilities.cStringUtils.SplitQualified(strRec, ",")
 
