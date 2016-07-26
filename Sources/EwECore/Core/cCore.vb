@@ -10784,7 +10784,10 @@ Public Class cCore
 
             Next
 
-            Me.m_EcospaceStats.SS = m_EcoSpaceData.SS
+            Me.m_EcospaceStats.SS = Me.m_EcospaceTimeSeriesManager.SS
+            For igrp = 1 To Me.nGroups
+                Me.m_EcospaceStats.SSGroup(igrp) = Me.m_EcospaceTimeSeriesManager.SSGroup(igrp)
+            Next
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & "LoadEcospaceResults() Error: " & ex.Message)
