@@ -8690,6 +8690,7 @@ Public Class cCore
     Private m_EcospaceBasemap As cEcospaceBasemap
     Private m_spaceresults As cEcospaceTimestep
     Private m_SpaceInterfaceCallBack As EcoSpaceInterfaceDelegate
+    Private m_EcospaceTimeSeriesManager As EcospaceTimeSeries.cEcospaceTimeSeriesManager
 
     'Ecospace output lists
     '  Friend m_EcospaceGroupSummaries As New cCoreInputOutputList(Of cEcospaceGroupSummary)(eDataTypes.NotSet, 1)
@@ -8739,6 +8740,8 @@ Public Class cCore
         m_spatialdataconnectionManager.Init(Me, Me.m_SpatialData)
         m_spatialOperationLog = New cSpatialOperationLog(Me)
 
+        Me.m_EcospaceTimeSeriesManager = New EcospaceTimeSeries.cEcospaceTimeSeriesManager(Me, m_EcoSpaceData)
+
         'counters needed 
         'this could change to get the counter from the above data structures
         m_EcoSpaceData.NGroups = Me.nGroups
@@ -8761,6 +8764,7 @@ Public Class cCore
         m_Ecospace.SpatialData = m_SpatialData
         m_Ecospace.EcoFunctions = Me.EcoFunction
         m_Ecospace.AdvectionManager = Me.AdvectionManager
+        m_Ecospace.TimeSeriesManager = Me.m_EcospaceTimeSeriesManager
 
         'sub in core to call at each time step
         m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
@@ -9037,6 +9041,16 @@ Public Class cCore
             Return False
         End Try
 
+    End Function
+
+    Public Function LoadEcospaceTimeSeriesData(Filename As String) As Boolean
+
+        Try
+            Return Me.m_Ecospace.TimeSeriesManager.Read(Filename)
+        Catch ex As Exception
+
+        End Try
+        Return False
     End Function
 
     Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)

@@ -4933,6 +4933,23 @@ Public Class frmEwE6
         End Try
     End Sub
 
+
+    Private Sub m_tsmiEcospaceLoadTimeSeries_Click(sender As Object, e As EventArgs) Handles m_tsmiEcospaceLoadTimeSeries.Click
+        Try '
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
+            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+                Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
 #End Region  ' Big and evil event handlers
 
 End Class
