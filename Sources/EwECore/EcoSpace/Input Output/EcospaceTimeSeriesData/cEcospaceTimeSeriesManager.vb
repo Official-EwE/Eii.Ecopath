@@ -66,8 +66,9 @@ Namespace EcospaceTimeSeries
         End Sub
 
 
-        Private Sub Init()
-            Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+        Public Sub InitForRun()
+
+            'Clear out the results
             Me.m_ss = New Single(Me.m_core.nGroups) {}
             Erpred = New List(Of Double)
 
@@ -75,6 +76,13 @@ Namespace EcospaceTimeSeries
             Me.DatSumZ2 = 0.0
 
         End Sub
+
+
+        Private Sub InitForRead()
+            'Create a new list of cEcospaceTimeSeriesRec
+            Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+        End Sub
+
 
 
 #End Region
@@ -106,7 +114,7 @@ Namespace EcospaceTimeSeries
         ''' <returns></returns>
         Public Function Read(Filename As String) As Boolean
 
-            Me.Init()
+            Me.InitForRead()
 
             Try
                 If IO.File.Exists(Filename) Then
@@ -139,18 +147,23 @@ Namespace EcospaceTimeSeries
                     'get a list of all the records for this date
                     For Each Rec As cEcospaceTimeSeriesRec In Me.ByDate(TimeStepDate)
 
+                        System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
+
                         'There is no zero value or bounds checking
                         'so trap all the errors until we are doing something better
                         Try
                             'Nope but this will work for testing
-                            Me.m_ss(Rec.iGroupID) += CSng((biomass(Rec.iGroupID, Rec.Row, Rec.Col) - Rec.CellValue) ^ 2)
+                            Me.m_ss(Rec.iGroupID) += CSng((biomass(Rec.Row, Rec.Col, Rec.iGroupID) - Rec.CellValue) ^ 2)
 
                             'log prediction error
-                            zstat = Math.Log(Rec.CellValue / biomass(Rec.iGroupID, Rec.Row, Rec.Col))
+                            zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+                            'Debug.Assert(Not Double.IsNaN(zstat))
+                            If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
+                                Me.Erpred.Add(zstat)
+                                Me.DatSumZ += zstat
+                                Me.DatSumZ2 += zstat ^ 2
+                            End If
 
-                            Me.Erpred.Add(zstat)
-                            Me.DatSumZ += zstat
-                            Me.DatSumZ2 += zstat ^ 2
                         Catch ex As Exception
                             System.Console.WriteLine(Me.ToString + ".CalculateStats() Invalid data point.")
                         End Try

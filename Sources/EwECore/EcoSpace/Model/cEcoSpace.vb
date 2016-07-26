@@ -2565,6 +2565,8 @@ Public Class cEcoSpace
             'Spin-Up biomass base has not been initialized yet
             Me.bInitSpinUpBase = True
 
+            Me.m_TimeSeriesManager.InitForRun()
+
             'For debugging Effort Zones code
             'sets up some zones with modified effort
             'Me.m_Data.DebugTestEffortZones()
