@@ -10784,7 +10784,11 @@ Public Class cCore
 
             Next
 
+            'Populate the Stats objects 
             Me.m_EcospaceStats.SS = Me.m_EcospaceTimeSeriesManager.SS
+            'if the manager contains data then SS has been calculated
+            'this doesn't mean it isn't zero!
+            Me.m_EcospaceStats.isSSCalculated = Me.m_EcospaceTimeSeriesManager.ContainsData
             For igrp = 1 To Me.nGroups
                 Me.m_EcospaceStats.SSGroup(igrp) = Me.m_EcospaceTimeSeriesManager.SSGroup(igrp)
             Next
