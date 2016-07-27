@@ -8781,7 +8781,6 @@ Public Class cCore
         'm_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.EcosimEnvResFunctions)
         m_EcosimEnviroResponseManager.Init(Me.m_EcoSimData, Me.m_EcoSimData.CapEnvResData)
 
-
         Return True
 
     End Function
@@ -9902,6 +9901,7 @@ Public Class cCore
 
             bSuccess = bSuccess And Me.CapacityMapInteractionManager.Load()
 
+            Me.m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
             'For debugging add the RelCin Layer to the Capacity maps
             'you have to turn On the Contaminant tracer to edit the RelCin map
             'Me.m_mapInteractionManager.AddMap(Me.m_EcoSpaceData.RelCin, "Relative Contaminants")
@@ -10673,8 +10673,6 @@ Public Class cCore
 
             'load a new results object for the new scenario
             m_spaceresults = New cEcospaceTimestep(Me, Me.m_EcoSimData, Me.m_EcoSpaceData, Me.m_Stanza)
-
-            m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
 
 
             'in the other InitEcospacexxxx the data is loaded during the init

@@ -1222,12 +1222,18 @@ Public Class cEcoSpace
                 m_search.EcoSpaceSummarizeIndicators(Fgear, runTime, RuntimePB, m_Data.nWaterCells)
             End If
 
-            Dim SpaceSS As Single
-            'If SpDatYear > 0 Then 'there is time series data so calculate SS SpSS
-            SpaceSS = CalculateSpaceSS()
-            'End If
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb Stats now done by EcospaceTimeSeriesManager()
+            'Dim SpaceSS As Single
+            ''If SpDatYear > 0 Then 'there is time series data so calculate SS SpSS
+            'SpaceSS = CalculateSpaceSS()
+            ''End If
 
-            m_Ecosim.PlotDataInfo(False, m_Data.SS)
+            'm_Ecosim.PlotDataInfo(False, m_Data.SS)
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            Me.m_TimeSeriesManager.RunCompleted()
+
             Dim totalIter As Single
             For i = 1 To m_Data.nGridSolverThreads
                 totalIter = totalIter + totalIterThread(i)

@@ -41,8 +41,10 @@ Namespace EcospaceTimeSeries
         Public TimeStamp As Date
         Public CellValue As Single
 
-        Public VarType As eVarNameFlags
+        Public SS As Double
+        Public PredictedValue As Double
 
+        Public VarType As eVarNameFlags
 
         Public Sub New(strRec As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass)
             Dim data() As String = EwEUtils.Utilities.cStringUtils.SplitQualified(strRec, ",")
@@ -53,11 +55,37 @@ Namespace EcospaceTimeSeries
             Me.TimeStamp = EwEUtils.Utilities.cStringUtils.ConvertToDate(data(eDataCols.Timestamp))
             Me.CellValue = EwEUtils.Utilities.cStringUtils.ConvertToSingle(data(eDataCols.Value))
 
+            Me.PredictedValue = cCore.NULL_VALUE
+            Me.SS = cCore.NULL_VALUE
+
             VarType = DataType
         End Sub
 
         Shared Function FromString(strRec As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass) As cEcospaceTimeSeriesRec
             Return New cEcospaceTimeSeriesRec(strRec, DataType)
+        End Function
+
+
+        Public Function ToCSVString() As String
+            Dim csvStr As New System.Text.StringBuilder()
+            Dim delim As String = ","
+
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.Row))
+            csvStr.Append(delim)
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.Col))
+            csvStr.Append(delim)
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.iGroupID))
+            csvStr.Append(delim)
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.TimeStamp.ToString("yyyy-MM-dd")))
+            csvStr.Append(delim)
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.CellValue))
+            csvStr.Append(delim)
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.PredictedValue))
+            csvStr.Append(delim)
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.SS))
+            csvStr.Append(delim)
+
+            Return csvStr.ToString
         End Function
 
     End Class
