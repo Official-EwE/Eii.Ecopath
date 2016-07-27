@@ -53,6 +53,8 @@ Namespace EcospaceTimeSeries
         'sumof(log(obs/pred)^2)
         Private DatSumZ2 As Double
 
+        Private m_FileName As String
+
 #End Region
 
 #Region "Construction Initialization"
@@ -74,6 +76,14 @@ Namespace EcospaceTimeSeries
 
             Me.DatSumZ = 0.0
             Me.DatSumZ2 = 0.0
+
+            'Clear out any results from the last run
+            For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
+                For Each rec As cEcospaceTimeSeriesRec In recs
+                    rec.PredictedValue = cCore.NULL_VALUE
+                    rec.SS = cCore.NULL_VALUE
+                Next
+            Next
 
         End Sub
 
@@ -114,6 +124,8 @@ Namespace EcospaceTimeSeries
         ''' <returns></returns>
         Public Function Read(Filename As String) As Boolean
 
+            Me.m_FileName = Filename
+
             Me.InitForRead()
 
             Try
@@ -152,11 +164,15 @@ Namespace EcospaceTimeSeries
                         'There is no zero value or bounds checking
                         'so trap all the errors until we are doing something better
                         Try
-                            'Nope but this will work for testing
-                            Me.m_ss(Rec.iGroupID) += CSng((biomass(Rec.Row, Rec.Col, Rec.iGroupID) - Rec.CellValue) ^ 2)
 
                             'log prediction error
                             zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+
+                            'save the predicted and calculated SS values back into the record
+                            Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
+                            Rec.SS = zstat
+
+                            'By Group
                             Me.m_ss(Rec.iGroupID) += zstat ^ 2
 
                             'Debug.Assert(Not Double.IsNaN(zstat))
@@ -202,6 +218,15 @@ Namespace EcospaceTimeSeries
                 Return Me.m_ss(igrp)
             End Get
         End Property
+
+
+        Public Sub RunCompleted()
+            Try
+                Me.SaveResults()
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
 
 #End Region
@@ -322,6 +347,33 @@ Namespace EcospaceTimeSeries
             Return True
 
         End Function
+
+        Private Sub SaveResults()
+            If Not Me.ContainsData Then
+                Exit Sub
+            End If
+
+            Try
+                Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,SS(log(ObservedValue/PredictedValue)"
+                Dim newFN As String = IO.Path.Combine(IO.Path.GetDirectoryName(Me.m_FileName), IO.Path.GetFileNameWithoutExtension(Me.m_FileName) + "_SS-Results.csv")
+                Dim strm As New IO.StreamWriter(newFN)
+                strm.WriteLine(header)
+                For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
+                    For Each rec As cEcospaceTimeSeriesRec In recs
+                        If rec.PredictedValue <> cCore.NULL_VALUE Then
+                            strm.WriteLine(rec.ToCSVString)
+                        End If
+                    Next
+                Next
+
+                strm.Close()
+
+            Catch ex As Exception
+
+            End Try
+
+
+        End Sub
 
 
         Private Sub dumpDebugData()
