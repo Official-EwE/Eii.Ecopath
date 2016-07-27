@@ -893,15 +893,16 @@ Namespace Core
         ''' <summary>Future extension: time series can be associated with any variable</summary>
         CustomVariable
 
-        ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all the groups and data</summary>
+        ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all groups</summary>
         EcospaceSS
 
         ''' <summary>Sum of squares fit of Ecospace predicted values by group</summary>
         EcospaceSSGroup
 
-
-        '''' <summary>Sum of squares fit of Ecospace predicted values to reference data for a region</summary>
-        'EcospaceRegionSS
+        ''' <summary>
+        ''' Has SS been calculated. Is there Ecospace Timeseries data loaded.
+        ''' </summary>
+        EcospaceSSCalculated
 
         ''' <summary>Sum of squares fit of Ecosim predicted values to all reference data across all the groups and data</summary>
         EcosimSS

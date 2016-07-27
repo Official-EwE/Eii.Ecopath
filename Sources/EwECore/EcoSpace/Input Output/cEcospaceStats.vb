@@ -41,13 +41,18 @@ Public Class cEcospaceStats
         Try
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
+
             'SS
-            val = New cValue(New Single, eVarNameFlags.EcospaceSS, eStatusFlags.Null, eValueTypes.Sng)
+            val = New cValue(New Single, eVarNameFlags.EcospaceSS, eStatusFlags.NotEditable, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
-            'no validators
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceSSGroup, eStatusFlags.OK, eCoreCounterTypes.nGroups, AddressOf theCore.GetCoreCounter)
+
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceSSGroup, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf theCore.GetCoreCounter)
             m_values.Add(val.varName, val)
+
+            val = New cValue(New Boolean, eVarNameFlags.EcospaceSSCalculated, eStatusFlags.NotEditable, eValueTypes.Bool)
+            m_values.Add(val.varName, val)
+
 
 
             ''Region SS
@@ -96,7 +101,10 @@ Public Class cEcospaceStats
 
     End Function
 
-
+    ''' <summary>
+    ''' SS sumed across all groups and variables
+    ''' </summary>
+    ''' <returns>sumof(log(observed/predicted))</returns>
     Public Property SS() As Double
         Get
             Return CSng(GetVariable(eVarNameFlags.EcospaceSS))
@@ -118,7 +126,11 @@ Public Class cEcospaceStats
     End Property
 
 
-
+    ''' <summary>
+    ''' SS by group
+    ''' </summary>
+    ''' <param name="iGrp"></param>
+    ''' <returns>sumof(log(observed(igroup)/predicted(igroup))</returns>
     Public Property SSGroup(iGrp As Integer) As Double
         Get
             Return CSng(GetVariable(eVarNameFlags.EcospaceSSGroup, iGrp))
@@ -138,6 +150,24 @@ Public Class cEcospaceStats
             SetStatus(eVarNameFlags.EcospaceSSGroup, value)
         End Set
     End Property
+
+    Public Property isSSCalculated As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceSSCalculated))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceSSCalculated, value)
+        End Set
+    End Property
+
+    Public ReadOnly Property isSSCalculatedStatus As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcospaceSSCalculated)
+        End Get
+    End Property
+
+    'EcospaceSSCalculated
 
 #Region "No longer implemented"
 
