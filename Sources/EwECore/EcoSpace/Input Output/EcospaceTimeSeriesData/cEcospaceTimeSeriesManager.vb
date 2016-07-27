@@ -28,6 +28,15 @@ Namespace EcospaceTimeSeries
 
     Public Class cEcospaceTimeSeriesManager
 
+        'ToDo 27-July-2016 Add Error messages back to the core instead of just Asserts
+        'ToDo 27-July-2016  Document the file formats (input and output) and how it works
+        'ToDo 27-July-2016 Let the user selected the output file name. 
+        '   Maybe when the user is selecting the input file have them choose the output file
+        '   Use the default filename
+        'ToDo 27-July-2016 Added SS output to the UI. Results form... Main Run UI some place?
+        'ToDo 27-July-2016 Added Group SS output to Results form
+
+
 #Region "Private data"
 
 
