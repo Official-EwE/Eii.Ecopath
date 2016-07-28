@@ -46,6 +46,11 @@ Namespace EcospaceTimeSeries
             Me.Init()
 
             Try
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Throw New Exception("Opps Testing exceptions: " + Me.FileName)
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                 Dim strm As New StreamReader(Me.FileName)
                 Dim header As String
                 Dim RecBuffer As String
@@ -66,8 +71,10 @@ Namespace EcospaceTimeSeries
                 strm.Close()
 
             Catch ex As Exception
-                EwEUtils.Core.cLog.Write(ex, "Ecospace failed to read time series file '" + Me.FileName + "'")
-                Return False
+
+                EwEUtils.Core.cLog.Write(ex, Me.ToString + ".Read() failed to read time series file '" + Me.FileName + "'")
+                Throw New Exception(ex.Message)
+
             End Try
 
             Return True
