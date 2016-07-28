@@ -39,7 +39,7 @@ Public Class cValidatorOddEven
         ' Perform 'normal' validation
         If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False
 
-        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim fmt As New Style.cVarnameTypeFormatter()
         Dim iValue As Integer = 0
         Dim dTest As Double = 0
         Dim bOdd As Boolean = True
@@ -63,11 +63,11 @@ Public Class cValidatorOddEven
 
         If (bOdd <> Me.m_bOdd) Then
             If Me.m_bOdd Then
-                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_ODD, _
-                                                              cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_ODD,
+                                                              fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             Else
-                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_EVEN, _
-                                                              cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_EVEN,
+                                                              fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             End If
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
             ValueObject.Status(iSecondaryIndex) = eStatusFlags.FailedValidation

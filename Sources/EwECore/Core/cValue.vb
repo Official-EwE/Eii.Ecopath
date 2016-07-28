@@ -112,9 +112,9 @@ Namespace ValueWrapper
         ''' <param name="VarName">The variable name representing the value.</param>
         ''' <param name="Status">Value status.</param>
         ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
-        Sub New(ByVal Value As Object, _
-                ByVal VarName As eVarNameFlags, _
-                ByVal Status As eStatusFlags, _
+        Sub New(ByVal Value As Object,
+                ByVal VarName As eVarNameFlags,
+                ByVal Status As eStatusFlags,
                 ByVal VarType As eValueTypes)
             Me.New(Value, VarName, Status, VarType, Nothing)
         End Sub
@@ -127,10 +127,10 @@ Namespace ValueWrapper
         ''' <param name="Status">Value status.</param>
         ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
         ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see>.</param>
-        Sub New(ByVal Value As Object, _
-                ByVal VarName As eVarNameFlags, _
-                ByVal Status As eStatusFlags, _
-                ByVal VarType As eValueTypes, _
+        Sub New(ByVal Value As Object,
+                ByVal VarName As eVarNameFlags,
+                ByVal Status As eStatusFlags,
+                ByVal VarType As eValueTypes,
                 ByVal MetaData As cVariableMetaData)
             Me.New(Value, VarName, Status, VarType, MetaData, Nothing)
         End Sub
@@ -144,11 +144,11 @@ Namespace ValueWrapper
         ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
         ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see> to use.</param>
         ''' <param name="Validator"><see cref="cValidatorDefault">Validator</see> to use.</param>
-        Sub New(ByVal Value As Object, _
-                ByVal VarName As eVarNameFlags, _
-                ByVal Status As eStatusFlags, _
-                ByVal VarType As eValueTypes, _
-                ByRef MetaData As cVariableMetaData, _
+        Sub New(ByVal Value As Object,
+                ByVal VarName As eVarNameFlags,
+                ByVal Status As eStatusFlags,
+                ByVal VarType As eValueTypes,
+                ByRef MetaData As cVariableMetaData,
                 ByRef Validator As cValidatorDefault)
 
             Me.m_value = Value
@@ -348,7 +348,7 @@ Namespace ValueWrapper
 
             If m_validator.Validate(Me, m_metadata, iSecondaryIndex) Then
                 If m_validationstatus = eStatusFlags.FailedValidation Then
-                    'if the new value failed validation then set the value back to it's original value
+                    'if the new value failed validation then set the value back to its original value
                     m_value = m_orgvalue
                 End If
 
@@ -439,6 +439,10 @@ Namespace ValueWrapper
                             bNeedDefault = True
                         End If
                     Else
+
+                        ' JS 29Jul16: This section should go, but need to find the variables that this conflicts with. I suppose this code was 
+                        ' planted to handle defaulting NumericUpDown controls...
+
                         ' #No: numerical value provided for a numerical variable
 
                         ' Ok, here's a tricky bit. For SOME type of variables entering a '0' will clear it. This only
@@ -461,7 +465,6 @@ Namespace ValueWrapper
                     End If
                 End If
             End If
-
             If (bNeedDefault) Then
                 Select Case Me.varType
                     Case eValueTypes.Str
@@ -545,7 +548,7 @@ Namespace ValueWrapper
         Protected m_Countertype As eCoreCounterTypes
 
 
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, _
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
                 ByRef CounterDelegate As CoreCounterDelegate, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
             MyBase.New(Nothing, VarName, Status, theValueType)
 
@@ -581,7 +584,7 @@ Namespace ValueWrapper
         ''' <param name="CounterType">Type of core counter to use for dimensioning the array</param>
         ''' <param name="CounterDelegate">Delegate supplied by the core use to retrieve the size of the data</param>
         ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, _
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags,
                 ByVal CounterType As eCoreCounterTypes, ByRef CounterDelegate As CoreCounterDelegate)
             Me.New(theValueType, VarName, Status, CounterType, CounterDelegate, Nothing, Nothing)
         End Sub
@@ -787,7 +790,6 @@ Namespace ValueWrapper
 
 #End Region ' cValueArray
 
-
 #Region "cValueArrayIndexed"
 
     Public Class cValueArrayIndexed
@@ -806,7 +808,7 @@ Namespace ValueWrapper
         ''' <param name="CounterType"></param>
         ''' <param name="CounterDelegate"></param>
         ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes, _
+        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
                 ByRef CounterDelegate As CoreIndexedCounterDelegate, ByVal iArrayIndex As Integer, ByVal DataType As eDataTypes)
             MyBase.New(theValueType, VarName, Status, CounterType, Nothing)
 
@@ -883,6 +885,5 @@ Namespace ValueWrapper
     End Class
 
 #End Region
-
 
 End Namespace

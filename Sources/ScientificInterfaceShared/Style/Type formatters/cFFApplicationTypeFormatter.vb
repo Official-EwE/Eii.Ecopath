@@ -60,7 +60,7 @@ Namespace Style
             Debug.Assert(Me.GetDescribedType() Is value.GetType())
 
             Dim strValue As String = value.ToString
-            Dim strDescr As String = cResourceUtils.LoadString("FFAPPLICATIONTARGET_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("FFAPPLICATIONTARGET_" & strValue.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

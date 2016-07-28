@@ -56,7 +56,7 @@ Namespace Style
             Dim strValue As String = value.ToString
             If (eDataSourceTypes.NotSet.Equals(value)) Then Return ""
 
-            Dim strDescr As String = cResourceUtils.LoadString("DATASOURCE_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("DATASOURCE_" & strValue.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

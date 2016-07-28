@@ -13047,7 +13047,7 @@ Public Class cCore
     ''' <remarks>Ther results of the validation are in the cValue Object</remarks>
     Friend Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
-        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim fmt As New Style.cVarnameTypeFormatter()
 
         'For now the validation is done right here (inline)
         'if this gets to bulky the core can call another routine to do the validation for different variables
@@ -13060,11 +13060,11 @@ Public Class cCore
 
                 If Me.m_EcoSimData.relQ(iflt, igrp) > 0 Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                 End If
 
@@ -13074,11 +13074,11 @@ Public Class cCore
 
                 If iSecondaryIndex > Me.FishingPolicyManager.ObjectiveParameters.BaseYear Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                 End If
 
@@ -13091,11 +13091,11 @@ Public Class cCore
                 If value > 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
                                 value > m_EcoSpaceData.SumStart(0) Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -13109,11 +13109,11 @@ Public Class cCore
                 If value >= 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
                                 value < m_EcoSpaceData.SumStart(1) Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -13127,11 +13127,11 @@ Public Class cCore
                 'end of the last summary period is still in bounds
                 If value > 0 And m_EcoSpaceData.SumStart(1) + CSng(value * m_EcoSpaceData.TimeStep) <= m_EcoSpaceData.TotalTime Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -13148,11 +13148,11 @@ Public Class cCore
 
                 If value > 0 And value <= m_EcoSpaceData.TotalTime And value >= Me.m_MPAOptData.EcoSpaceStartYear + Me.m_MPAOptData.MinRunLength Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -13164,11 +13164,11 @@ Public Class cCore
 
                 If value > 0 And value < m_EcoSpaceData.TotalTime And value + Me.m_MPAOptData.MinRunLength <= Me.m_MPAOptData.EcoSpaceEndYear Then
                     'passed validation
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
 
                 End If
@@ -13183,7 +13183,7 @@ Public Class cCore
                 End If
 
                 If otherVal = 0 Then
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
@@ -13200,14 +13200,14 @@ Public Class cCore
 
                 If (man IsNot Nothing) Then
                     If value <= 0 Then
-                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                         ValueObject.ValidationStatus = eStatusFlags.OK
                         ValueObject.ValidationStatus = eStatusFlags.Null
                     ElseIf value > man.NumLevels Then
                         ValueObject.ValidationMessage = My.Resources.CoreMessages.PEDIGREE_OUTOFRANGE
                         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
                     Else
-                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                         ValueObject.ValidationStatus = eStatusFlags.OK
                         ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                     End If
@@ -13223,7 +13223,7 @@ Public Class cCore
     Private Sub validateEcosimSummaryTimes(ByRef ValueObject As cValue)
 
         Dim val As Single = CSng(ValueObject.Value)
-        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim fmt As New Style.cVarnameTypeFormatter()
         Dim endsummary As Single
 
         'get the end of the summary period in years
@@ -13245,12 +13245,12 @@ Public Class cCore
         'is the end of the summary periods in bounds
         If endsummary <= m_EcoSimData.NumYears Then
             'passed validation
-            ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.OK
             ValueObject.Status(cCore.NULL_VALUE) = eStatusFlags.OK
         Else
             'failed validation
-            ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         End If
 
@@ -13258,9 +13258,9 @@ Public Class cCore
     End Sub
 
     Private Function GetAffectedVariableStatus(ByVal obj As cCoreInputOutputBase, ByVal varName As eVarNameFlags, Optional ByVal iSecIndex As Integer = cCore.NULL_VALUE) As cVariableStatus
-        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim fmt As New Style.cVarnameTypeFormatter()
         Return New cVariableStatus(obj, eStatusFlags.OK,
-                                   cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, cni.GetVarName(varName)),
+                                   cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, fmt.GetDescriptor(varName)),
                                    varName, iSecIndex)
     End Function
 

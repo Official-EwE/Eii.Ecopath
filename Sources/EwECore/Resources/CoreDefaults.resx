@@ -357,6 +357,318 @@
   <data name="UNIT_TIME_YEAR" xml:space="preserve">
     <value>year</value>
   </data>
+  <data name="VARIABLE_AREA" xml:space="preserve">
+    <value>Area||Habitat area (fraction)</value>
+  </data>
+  <data name="VARIABLE_AUTHOR" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="VARIABLE_BABSPLIT" xml:space="preserve">
+    <value>BAB|BA/B||Relative biomass accumulation rate</value>
+  </data>
+  <data name="VARIABLE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
+    <value>Barrier avoidance wt.||Barrier avoidance weight</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMINPUT" xml:space="preserve">
+    <value>BA||Biomass accumulation</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMOUTPUT" xml:space="preserve">
+    <value>BA||Biomass accumulation</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATE" xml:space="preserve">
+    <value>BA rate||Biomass accumulation rate</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATEPERYEAR" xml:space="preserve">
+    <value>BA rate||Biomass accumulation rate</value>
+  </data>
+  <data name="VARIABLE_BIOMASS" xml:space="preserve">
+    <value>B||Biomass</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAINPUT" xml:space="preserve">
+    <value>B(a)|B area|Biomass in habitat area</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAOUTPUT" xml:space="preserve">
+    <value>B(a)|B area|Biomass in habitat area</value>
+  </data>
+  <data name="VARIABLE_CB" xml:space="preserve">
+    <value>CB||Consumption / Biomass</value>
+  </data>
+  <data name="VARIABLE_CONTACT" xml:space="preserve">
+    <value>Contact||Contact information</value>
+  </data>
+  <data name="VARIABLE_CPUECOST" xml:space="preserve">
+    <value>CPUE||Cost per unit of effort|Cost per unit of effort; costs that are a function of effort</value>
+  </data>
+  <data name="VARIABLE_DBID" xml:space="preserve">
+    <value>ID||Unique ID</value>
+  </data>
+  <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="VARIABLE_DETIMP" xml:space="preserve">
+    <value>Detritus import</value>
+  </data>
+  <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
+    <value>Detritus fate</value>
+  </data>
+  <data name="VARIABLE_DIETCOMP" xml:space="preserve">
+    <value>DC|Diet||Diet composition</value>
+  </data>
+  <data name="VARIABLE_DISCARDFATE" xml:space="preserve">
+    <value>Discard fate</value>
+  </data>
+  <data name="VARIABLE_DISCARDMORTALITY" xml:space="preserve">
+    <value>Discard Mort.||Discard mort. rate|Discard mortality rate</value>
+  </data>
+  <data name="VARIABLE_DISCARDS" xml:space="preserve">
+    <value>Discards</value>
+  </data>
+  <data name="VARIABLE_EATEFFBAD" xml:space="preserve">
+    <value>Rel. feed rate in bad hab.|||Relative feeding rate in bad habitat</value>
+  </data>
+  <data name="VARIABLE_ECOPATHFIRSTYEAR" xml:space="preserve">
+    <value>Year|||First year for the Ecopath model</value>
+  </data>
+  <data name="VARIABLE_ECOSIMNYEARS" xml:space="preserve">
+    <value>Number of Ecosim years</value>
+  </data>
+  <data name="VARIABLE_EEINPUT" xml:space="preserve">
+    <value>EE||Ecotrophic Efficiency</value>
+  </data>
+  <data name="VARIABLE_EEOUTPUT" xml:space="preserve">
+    <value>EE||Ecotrophic Efficiency</value>
+  </data>
+  <data name="VARIABLE_EMIG" xml:space="preserve">
+    <value>Emigration</value>
+  </data>
+  <data name="VARIABLE_EMIGRATE" xml:space="preserve">
+    <value>e||Emig. rate|Emigration rate</value>
+  </data>
+  <data name="VARIABLE_FISHMORTTOTMORT" xml:space="preserve">
+    <value>F/Z||Fishing mort. over total mort.|Fishing mortality over total mortality rate</value>
+  </data>
+  <data name="VARIABLE_FIXEDCOST" xml:space="preserve">
+    <value>Fixed cost|||Fixed cost is the cost of operating a fleet unit, independent of effort, in the unit time defined in Ecopath</value>
+  </data>
+  <data name="VARIABLE_FIXEDFECUNDITY" xml:space="preserve">
+    <value>FixedFec|||Fixed fecundity</value>
+  </data>
+  <data name="VARIABLE_FORAGINGTIMELOWERLIMIT" xml:space="preserve">
+    <value>Foraging lower limit|||In EwE version 6.4 and prior, Ecosim limits the foraging time to 0.1 of a time step. This limit can now be lowered to 0.01</value>
+  </data>
+  <data name="VARIABLE_GEINPUT" xml:space="preserve">
+    <value>GE|G/E|Production / consumption</value>
+  </data>
+  <data name="VARIABLE_GEOUTPUT" xml:space="preserve">
+    <value>GE|G/E|Production / consumption</value>
+  </data>
+  <data name="VARIABLE_GS" xml:space="preserve">
+    <value>GS||Unassim. consumption|Unassimilated consumption</value>
+  </data>
+  <data name="VARIABLE_IMMIG" xml:space="preserve">
+    <value>Immigration</value>
+  </data>
+  <data name="VARIABLE_IMPDIET" xml:space="preserve">
+    <value>DCimp||Imported diet</value>
+  </data>
+  <data name="VARIABLE_INDEX" xml:space="preserve">
+    <value>#||Index</value>
+  </data>
+  <data name="VARIABLE_INMIGAREAMOVEWEIGHT" xml:space="preserve">
+    <value>Mig. in area movement|||Movement weight for species within migratory area</value>
+  </data>
+  <data name="VARIABLE_ISADVECTED" xml:space="preserve">
+    <value>Advected||Is advected|Is this group affected by advection?</value>
+  </data>
+  <data name="VARIABLE_ISMIGRATORY" xml:space="preserve">
+    <value>Migratory||Is migratory|Is this a migratory group?</value>
+  </data>
+  <data name="VARIABLE_LANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="VARIABLE_LAYERADVECTION" xml:space="preserve">
+    <value>Advection||Advection map</value>
+  </data>
+  <data name="VARIABLE_LAYERBIOMASSFORCING" xml:space="preserve">
+    <value>Biomass forcing</value>
+  </data>
+  <data name="VARIABLE_LAYERBIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>Biomass(rel) map||Relative Biomass forcing|Relative Biomass forcing map</value>
+  </data>
+  <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
+    <value>Depth|||Depth map (bathymetry)</value>
+  </data>
+  <data name="VARIABLE_LAYERDRIVER" xml:space="preserve">
+    <value>Drivers||Environmental drivers|Environmental driver map</value>
+  </data>
+  <data name="VARIABLE_LAYEREXCLUSION" xml:space="preserve">
+    <value>Exclusion||Exclusion map|Map with cells to exclude from computations</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITAT" xml:space="preserve">
+    <value>Habitats||Habitat map</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITY" xml:space="preserve">
+    <value>HabCap (out)||Habitat capacity map (computed)</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
+    <value>HabCap map||Habitat capacity map</value>
+  </data>
+  <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
+    <value>Migration||Migration map</value>
+  </data>
+  <data name="VARIABLE_LAYERMLD" xml:space="preserve">
+    <value>MLD||Mixed layer depth map</value>
+  </data>
+  <data name="VARIABLE_LAYERMPA" xml:space="preserve">
+    <value>MPA map||Marine Protected Area map</value>
+  </data>
+  <data name="VARIABLE_LAYERPORT" xml:space="preserve">
+    <value>Ports||Ports map</value>
+  </data>
+  <data name="VARIABLE_LAYERREGION" xml:space="preserve">
+    <value>Region||Map with statistical regions</value>
+  </data>
+  <data name="VARIABLE_LAYERRELCIN" xml:space="preserve">
+    <value>C(rel) map||Relative C map|Relative contaminants map</value>
+  </data>
+  <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
+    <value>PP(rel) map||Relative PP map|Relative Primary Production map</value>
+  </data>
+  <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
+    <value>Sailing cost||Sailing cost map</value>
+  </data>
+  <data name="VARIABLE_LAYERUPWELLING" xml:space="preserve">
+    <value>Upwelling||Upwelling map</value>
+  </data>
+  <data name="VARIABLE_LAYERWIND" xml:space="preserve">
+    <value>Wind||Wind map</value>
+  </data>
+  <data name="VARIABLE_LEADINGBIOMASS" xml:space="preserve">
+    <value>Leading B||Leading biomass|Leading (entry) life stage for calculating biomasses</value>
+  </data>
+  <data name="VARIABLE_LEADINGCB" xml:space="preserve">
+    <value>Leading QB|Leading Q/B||Leading (entry) life stage for calculating consumption/biomass</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCCOL" xml:space="preserve">
+    <value>E/W mig. C.|E/W mig. concentration||East/West size of the migration concentration area</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCROW" xml:space="preserve">
+    <value>N/S mig. C.|N/S mig. concentration||North/South size of migration concentration area</value>
+  </data>
+  <data name="VARIABLE_MSEBBASE" xml:space="preserve">
+    <value>MSE base biomass </value>
+  </data>
+  <data name="VARIABLE_MVEL" xml:space="preserve">
+    <value>Base disp. rate||Base dispersal rate</value>
+  </data>
+  <data name="VARIABLE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="VARIABLE_NONMARKETVALUE" xml:space="preserve">
+    <value>Shadow price|||Shadow price or non-market value represents the value of a resource in the ecosystem, e.g., for non-exploitative uses</value>
+  </data>
+  <data name="VARIABLE_NOTSET" xml:space="preserve">
+    <value>(None)||(No variable)</value>
+  </data>
+  <data name="VARIABLE_NUMDIGITS" xml:space="preserve">
+    <value>Number of decimal digits</value>
+  </data>
+  <data name="VARIABLE_NUTFORCEFUNCTIONNUMBER" xml:space="preserve">
+    <value>Nutrition forcing function</value>
+  </data>
+  <data name="VARIABLE_OFFVESSELPRICE" xml:space="preserve">
+    <value>Price||Off-vessel price</value>
+  </data>
+  <data name="VARIABLE_OTHERMORTINPUT" xml:space="preserve">
+    <value>M0||Other mortality</value>
+  </data>
+  <data name="VARIABLE_PBINPUT" xml:space="preserve">
+    <value>PB|P/B|Production / biomass</value>
+  </data>
+  <data name="VARIABLE_PBOUTPUT" xml:space="preserve">
+    <value>PB|P/B|Production / biomass (computed)</value>
+  </data>
+  <data name="VARIABLE_PP" xml:space="preserve">
+    <value>PP|%PP|Percentage of Primary Production</value>
+  </data>
+  <data name="VARIABLE_PREDMORT" xml:space="preserve">
+    <value>M2||Pred. mort.|Predation mortality</value>
+  </data>
+  <data name="VARIABLE_QBINPUT" xml:space="preserve">
+    <value>QB|Q/B|Consumption / biomass</value>
+  </data>
+  <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
+    <value>QB|Q/B|Consumption / biomass</value>
+  </data>
+  <data name="VARIABLE_RECPOWERSPLIT" xml:space="preserve">
+    <value>Rec. rate||Relative recruitment rate</value>
+  </data>
+  <data name="VARIABLE_RELMOVEBAD" xml:space="preserve">
+    <value>Rel. disp. in bad hab.||Relative dispersal in bad habitat</value>
+  </data>
+  <data name="VARIABLE_RELVULBAD" xml:space="preserve">
+    <value>Rel. vul to pred. in bad hab.|||Relative vulnerability to predation in bad habitat (proportion for primary producers)</value>
+  </data>
+  <data name="VARIABLE_SAILCOST" xml:space="preserve">
+    <value>Sail cost||Cost of sailing map</value>
+  </data>
+  <data name="VARIABLE_SALINITYOPT" xml:space="preserve">
+    <value>Sal opt||Optimum salinity</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADLEFT" xml:space="preserve">
+    <value>Sal tol below||Salinity tolerance below optimum</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADRIGHT" xml:space="preserve">
+    <value>Sal tol above||Salinity tolerance above optimum</value>
+  </data>
+  <data name="VARIABLE_SEMULT" xml:space="preserve">
+    <value>Tot.Eff.Mult.||Total effort multiplier</value>
+  </data>
+  <data name="VARIABLE_STANZAMORTALITY" xml:space="preserve">
+    <value>Z||Tot. mort. rate|Total mortality rate</value>
+  </data>
+  <data name="VARIABLE_SWITCHINGPOWER" xml:space="preserve">
+    <value>Switching power</value>
+  </data>
+  <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
+    <value>Catch</value>
+  </data>
+  <data name="VARIABLE_TEMPERATUREOPT" xml:space="preserve">
+    <value>T opt||Optimum temperature</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADLEFT" xml:space="preserve">
+    <value>T tol below||Temperature tolerance below optimum</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADRIGHT" xml:space="preserve">
+    <value>Ttol above||Temperature tolerance above optimum</value>
+  </data>
+  <data name="VARIABLE_TL" xml:space="preserve">
+    <value>TL||Trophic level</value>
+  </data>
+  <data name="VARIABLE_TTLX" xml:space="preserve">
+    <value>TTLX||Trophic level</value>
+  </data>
+  <data name="VARIABLE_UNITCURRENCY" xml:space="preserve">
+    <value>Currency||Currency unit</value>
+  </data>
+  <data name="VARIABLE_UNITMONETARY" xml:space="preserve">
+    <value>Monetary||Monetary unit</value>
+  </data>
+  <data name="VARIABLE_UNITTIME" xml:space="preserve">
+    <value>t||Time unit</value>
+  </data>
+  <data name="VARIABLE_VBK" xml:space="preserve">
+    <value>K||von Bertalanffy curvature parameter</value>
+  </data>
+  <data name="VARIABLE_VULMULT" xml:space="preserve">
+    <value>v||Vulnerability</value>
+  </data>
+  <data name="VARIABLE_WMATWINF" xml:space="preserve">
+    <value>WmatWinf|Wmat/Winf||Weight at maturity over weight at infancy</value>
+  </data>
+  <data name="VARIABLE_Z" xml:space="preserve">
+    <value>Z|Tot. mort.|Total mortality</value>
+  </data>
   <data name="VERSION_EXT_COMPILED" xml:space="preserve">
     <value>{0} (compiled {1})</value>
   </data>

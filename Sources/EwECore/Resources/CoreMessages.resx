@@ -614,18 +614,15 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>Unable to modify indicated variable</comment>
   </data>
   <data name="VARIABLE_VALIDATION_CLEARED" xml:space="preserve">
-    <value>Variable '{0}' cleared</value>
+    <value>{0} cleared</value>
     <comment>{0}=variable name</comment>
   </data>
-  <data name="VARIABLE_VALIDATION_ERROR" xml:space="preserve">
-    <value>Error during validation of variable.</value>
-  </data>
   <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
-    <value>Value '{1}' rejected for variable '{0}'</value>
+    <value>{0} cannot be {1}</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
-    <value>Value '{1}' accepted for variable '{0}'</value>
+    <value>{0} set to {1}</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="TIMESERIES_LOAD_FAILED" xml:space="preserve">
@@ -740,11 +737,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=path</comment>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">
-    <value>Value '{1}' for variable '{0}' must be even</value>
+    <value>{0} must be even, and cannot be {1}</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
-    <value>Value '{1}' for variable '{0}' must be odd</value>
+    <value>{0} must be odd, and cannot be {1}</value>
     <comment>{0}=variable name, {1}=value</comment>
   </data>
   <data name="PSD_MISSING_INPUT" xml:space="preserve">
@@ -817,10 +814,6 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING" xml:space="preserve">
     <value>The parameter estimation routine can work only with one of B, P/B, and EE unknown per group. Here, more than one of these are unknown for group '{0}'.{1}{1}In addition, the Q/B may be unknown for a given predator, i.e., IF: B, PB, QB and EE are known for one of its prey, and IF: all groups that prey on these two groups have known B and QB.{1}{1}Please re-edit the input parameters.</value>
     <comment>{0}=group name, {1}=line feed</comment>
-  </data>
-  <data name="VARIABLE_VALIDATION_ADJUSTED" xml:space="preserve">
-    <value>Variable '{0}' has been adjusted</value>
-    <comment>{0}=variable name</comment>
   </data>
   <data name="B_MISSING_GROUP" xml:space="preserve">
     <value>B missing for group '{0}'</value>
@@ -1326,5 +1319,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   </data>
   <data name="PEDIGREE_OUTOFRANGE" xml:space="preserve">
     <value>The pedigree value is out of range</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_ADJUSTED" xml:space="preserve">
+    <value>{0} has been corrected</value>
   </data>
 </root>

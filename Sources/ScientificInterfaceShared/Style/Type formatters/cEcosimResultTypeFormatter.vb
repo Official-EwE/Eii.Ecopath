@@ -21,10 +21,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.Ecosim
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwECore
-Imports EwECore.Ecosim
 
 #End Region ' Imports
 

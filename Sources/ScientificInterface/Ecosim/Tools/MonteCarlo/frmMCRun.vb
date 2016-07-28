@@ -27,10 +27,10 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
-Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
 Imports EwEUtils.SystemUtilities
+Imports EwECore.Style
 
 #End Region
 
@@ -544,8 +544,8 @@ Namespace Ecosim
             Try
                 ' Be conservative in providing status feedback
                 'If (Me.m_mcmanager.nTrialIterations Mod cCore.N_MONTHS = 0) Then
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, _
-                                                          My.Resources.STATUS_SEARCH_SEARCHING, _
+                cApplicationStatusNotifier.UpdateProgress(Me.Core,
+                                                          My.Resources.STATUS_SEARCH_SEARCHING,
                                                           Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
                 'End If
 
@@ -644,7 +644,7 @@ Namespace Ecosim
 
                 ElseIf Not Me.Core.HasAppliedTimeSeries() Then
 
-                    Dim fmsg As New cFeedbackMessage(My.Resources.MONTECARLO_PROMPT_RUNWITHOUTTS, eCoreComponentType.EcoSimMonteCarlo, _
+                    Dim fmsg As New cFeedbackMessage(My.Resources.MONTECARLO_PROMPT_RUNWITHOUTTS, eCoreComponentType.EcoSimMonteCarlo,
                                                      eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                     fmsg.Reply = eMessageReply.NO
                     Me.Core.Messages.SendMessage(fmsg)
@@ -701,7 +701,7 @@ Namespace Ecosim
         Private Sub m_cmdRunMonteCarlo_OnUpdate(ByVal cmd As cCommand) _
             Handles m_cmdRunMonteCarlo.OnUpdate
 
-            cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And _
+            cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() And
                           Not Me.m_mcmanager.IsRunning
 
             If Me.Core.HasAppliedTimeSeries() Then
@@ -889,7 +889,7 @@ Namespace Ecosim
             Me.m_bInUpdate = True
 
             Dim bIsBusy As Boolean = Me.Core.StateMonitor.IsBusy
- 
+
             Me.m_spPlot.Panel2Collapsed = Not Me.m_tsbnShowGroups.Checked
             Me.m_btnApply.Enabled = Not bIsBusy And (Me.m_mcmanager.SSBestFit < Me.m_mcmanager.SSorg)
             Me.m_cbRetainEstimates.Enabled = Not bIsBusy

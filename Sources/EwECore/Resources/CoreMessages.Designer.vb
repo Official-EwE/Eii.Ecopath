@@ -3029,16 +3029,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Variable &apos;{0}&apos; has been adjusted.
+        '''  Looks up a localized string similar to {0} has been corrected.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_VALIDATION_ADJUSTED() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_ADJUSTED", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to Variable &apos;{0}&apos; cleared.
+        '''  Looks up a localized string similar to {0} cleared.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_VALIDATION_CLEARED() As String
             Get
@@ -3047,16 +3047,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Error during validation of variable..
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_VALIDATION_ERROR() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_VALIDATION_ERROR", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; rejected for variable &apos;{0}&apos;.
+        '''  Looks up a localized string similar to {0} cannot be {1}.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED() As String
             Get
@@ -3065,7 +3056,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be even.
+        '''  Looks up a localized string similar to {0} must be even, and cannot be {1}.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_EVEN() As String
             Get
@@ -3074,7 +3065,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; for variable &apos;{0}&apos; must be odd.
+        '''  Looks up a localized string similar to {0} must be odd, and cannot be {1}.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_ODD() As String
             Get
@@ -3083,7 +3074,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Value &apos;{1}&apos; accepted for variable &apos;{0}&apos;.
+        '''  Looks up a localized string similar to {0} set to {1}.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_VALIDATION_PASSED() As String
             Get

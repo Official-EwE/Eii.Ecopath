@@ -51,7 +51,7 @@ Namespace Style
             Dim strValue As String = value.ToString
             If (eAutosaveTypes.NotSet.Equals(value)) Then strValue = "ALL"
 
-            Dim strDescr As String = cResourceUtils.LoadString("BIODIVERSITY_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("BIODIVERSITY_" & strValue.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

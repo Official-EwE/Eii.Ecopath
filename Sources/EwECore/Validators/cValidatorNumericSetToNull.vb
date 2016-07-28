@@ -28,10 +28,10 @@ Public Class cValidatorNumericSetToNull
 
     Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
-        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim fmt As New Style.cVarnameTypeFormatter()
 
         ' JS 10Jan08: First check whether value is the one allowed NULL value. Secondly check
-        ' whether the value fils within the allowed metadata range.
+        ' whether the value fits within the allowed metadata range.
         ' The null value check is performed first because the allowed NULL value may fit within 
         ' the allowed metadata range; in this special case the variable status will be set to OK
         ' instead of NULL which is not correct.
@@ -39,7 +39,7 @@ Public Class cValidatorNumericSetToNull
         ' Check whether value equals the one allowed metadata null value
         If (CSng(ValueObject.Value(iSecondaryIndex)) = CSng(MetaData.NullValue)) Then
             'passed validation
-            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.OK
             ValueObject.Status(iSecondaryIndex) = eStatusFlags.Null
             Return True
@@ -49,21 +49,21 @@ Public Class cValidatorNumericSetToNull
         If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), MetaData.Min) And _
                 MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), MetaData.Max) Then
             'passed validation
-            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.OK
             ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
             Return True
         End If
 
         ' JS 09Jan08: If validation failed, set status to Failed Validation at any time.
-        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+        ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         Return True
 
         ''failed the validation 
         'If Not MetaData.MinOperator.Compare(CType(ValueObject.Value(iSecondaryIndex), Single), MetaData.Min) Then
         '    'if the value is less than the min then status is FailedValidation
-        '    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, cni.GetVarName(ValueObject.varName))
+        '    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, fmt.GetDescriptor(ValueObject.varName))
         '    ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         '    ValueObject.Status(iSecondaryIndex) = eStatusFlags.Null
         '    Return True
@@ -71,7 +71,7 @@ Public Class cValidatorNumericSetToNull
 
         'If Not MetaData.MaxOperator.Compare(CType(ValueObject.Value(iSecondaryIndex), Single), MetaData.Max) Then
         '    'if the value is greater than max then status is FailedValidation
-        '    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+        '    ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
         '    ValueObject.ValidationStatus = eStatusFlags.FailedValidation
         '    ' ValueObject.Status(iSecondaryIndex) = eStatusFlags.FailedValidation
         '    Return True

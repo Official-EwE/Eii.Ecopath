@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -23,7 +23,6 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwECore
 
 #End Region ' Imports
 
@@ -42,7 +41,7 @@ Namespace Style
     Public Class cVarnameTypeFormatter
         Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal data As Object, _
+        Public Function GetDescriptor(ByVal data As Object,
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
@@ -55,9 +54,8 @@ Namespace Style
             End Try
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-
             Dim strVar As String = cin.GetVarName(vn)
-            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & strVar.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("VARIABLE_" & strVar.ToUpper, My.Resources.CoreDefaults.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

@@ -722,6 +722,942 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Area||Habitat area (fraction).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_AREA() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_AREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Author.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_AUTHOR() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_AUTHOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BAB|BA/B||Relative biomass accumulation rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BABSPLIT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BABSPLIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Barrier avoidance wt.||Barrier avoidance weight.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BARRIERAVOIDANCEWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BARRIERAVOIDANCEWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BA||Biomass accumulation.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOACCUMINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BA||Biomass accumulation.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOACCUMOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BA rate||Biomass accumulation rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOACCUMRATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BA rate||Biomass accumulation rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOACCUMRATEPERYEAR() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMRATEPERYEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to B||Biomass.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to B(a)|B area|Biomass in habitat area.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOMASSAREAINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOMASSAREAINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to B(a)|B area|Biomass in habitat area.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_BIOMASSAREAOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOMASSAREAOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to CB||Consumption / Biomass.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CB() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Contact||Contact information.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CONTACT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CONTACT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to CPUE||Cost per unit of effort|Cost per unit of effort; costs that are a function of effort.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CPUECOST() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CPUECOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to ID||Unique ID.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DBID() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DBID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Description.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DESCRIPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Detritus import.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DETIMP() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DETIMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Detritus fate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DETRITUSFATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DETRITUSFATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to DC|Diet||Diet composition.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DIETCOMP() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DIETCOMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard fate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DISCARDFATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DISCARDFATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard Mort.||Discard mort. rate|Discard mortality rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DISCARDMORTALITY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DISCARDMORTALITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discards.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_DISCARDS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DISCARDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rel. feed rate in bad hab.|||Relative feeding rate in bad habitat.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_EATEFFBAD() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EATEFFBAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Year|||First year for the Ecopath model.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ECOPATHFIRSTYEAR() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ECOPATHFIRSTYEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Number of Ecosim years.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ECOSIMNYEARS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ECOSIMNYEARS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EE||Ecotrophic Efficiency.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_EEINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EEINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EE||Ecotrophic Efficiency.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_EEOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EEOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Emigration.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_EMIG() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EMIG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to e||Emig. rate|Emigration rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_EMIGRATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EMIGRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to F/Z||Fishing mort. over total mort.|Fishing mortality over total mortality rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_FISHMORTTOTMORT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_FISHMORTTOTMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fixed cost|||Fixed cost is the cost of operating a fleet unit, independent of effort, in the unit time defined in Ecopath.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_FIXEDCOST() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_FIXEDCOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to FixedFec|||Fixed fecundity.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_FIXEDFECUNDITY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_FIXEDFECUNDITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Foraging lower limit|||In EwE version 6.4 and prior, Ecosim limits the foraging time to 0.1 of a time step. This limit can now be lowered to 0.01.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_FORAGINGTIMELOWERLIMIT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_FORAGINGTIMELOWERLIMIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to GE|G/E|Production / consumption.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_GEINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_GEINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to GE|G/E|Production / consumption.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_GEOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_GEOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to GS||Unassim. consumption|Unassimilated consumption.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_GS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_GS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Immigration.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_IMMIG() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_IMMIG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to DCimp||Imported diet.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_IMPDIET() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_IMPDIET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to #||Index.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_INDEX() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_INDEX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mig. in area movement|||Movement weight for species within migratory area.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_INMIGAREAMOVEWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_INMIGAREAMOVEWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Advected||Is advected|Is this group affected by advection?.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ISADVECTED() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ISADVECTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Migratory||Is migratory|Is this a migratory group?.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ISMIGRATORY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ISMIGRATORY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Landings.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LANDINGS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LANDINGS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Advection||Advection map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERADVECTION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERADVECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass forcing.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERBIOMASSFORCING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERBIOMASSFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Biomass(rel) map||Relative Biomass forcing|Relative Biomass forcing map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERBIOMASSRELATIVEFORCING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERBIOMASSRELATIVEFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Depth|||Depth map (bathymetry).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERDEPTH() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERDEPTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Drivers||Environmental drivers|Environmental driver map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERDRIVER() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERDRIVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Exclusion||Exclusion map|Map with cells to exclude from computations.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYEREXCLUSION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYEREXCLUSION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitats||Habitat map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERHABITAT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERHABITAT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to HabCap (out)||Habitat capacity map (computed).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERHABITATCAPACITY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERHABITATCAPACITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to HabCap map||Habitat capacity map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERHABITATCAPACITYINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERHABITATCAPACITYINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Migration||Migration map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERMIGRATION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERMIGRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MLD||Mixed layer depth map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERMLD() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERMLD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA map||Marine Protected Area map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERMPA() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERMPA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ports||Ports map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERPORT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Region||Map with statistical regions.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERREGION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERREGION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to C(rel) map||Relative C map|Relative contaminants map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERRELCIN() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERRELCIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PP(rel) map||Relative PP map|Relative Primary Production map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERRELPP() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERRELPP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sailing cost||Sailing cost map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERSAIL() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERSAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Upwelling||Upwelling map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERUPWELLING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERUPWELLING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Wind||Wind map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERWIND() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERWIND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Leading B||Leading biomass|Leading (entry) life stage for calculating biomasses.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LEADINGBIOMASS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LEADINGBIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Leading QB|Leading Q/B||Leading (entry) life stage for calculating consumption/biomass.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LEADINGCB() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LEADINGCB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to E/W mig. C.|E/W mig. concentration||East/West size of the migration concentration area.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_MIGRATIONCONCCOL() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_MIGRATIONCONCCOL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to N/S mig. C.|N/S mig. concentration||North/South size of migration concentration area.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_MIGRATIONCONCROW() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_MIGRATIONCONCROW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE base biomass .
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_MSEBBASE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_MSEBBASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Base disp. rate||Base dispersal rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_MVEL() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_MVEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Name.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NAME() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Shadow price|||Shadow price or non-market value represents the value of a resource in the ecosystem, e.g., for non-exploitative uses.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NONMARKETVALUE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NONMARKETVALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (None)||(No variable).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NOTSET() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NOTSET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Number of decimal digits.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NUMDIGITS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NUMDIGITS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Nutrition forcing function.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NUTFORCEFUNCTIONNUMBER() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NUTFORCEFUNCTIONNUMBER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Price||Off-vessel price.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_OFFVESSELPRICE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_OFFVESSELPRICE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to M0||Other mortality.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_OTHERMORTINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_OTHERMORTINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PB|P/B|Production / biomass.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_PBINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PBINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PB|P/B|Production / biomass (computed).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_PBOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PBOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PP|%PP|Percentage of Primary Production.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_PP() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to M2||Pred. mort.|Predation mortality.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_PREDMORT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PREDMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to QB|Q/B|Consumption / biomass.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_QBINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_QBINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to QB|Q/B|Consumption / biomass.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_QBOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_QBOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rec. rate||Relative recruitment rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_RECPOWERSPLIT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_RECPOWERSPLIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rel. disp. in bad hab.||Relative dispersal in bad habitat.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_RELMOVEBAD() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_RELMOVEBAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rel. vul to pred. in bad hab.|||Relative vulnerability to predation in bad habitat (proportion for primary producers).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_RELVULBAD() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_RELVULBAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sail cost||Cost of sailing map.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SAILCOST() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SAILCOST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sal opt||Optimum salinity.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SALINITYOPT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SALINITYOPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sal tol below||Salinity tolerance below optimum.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SALINITYSPREADLEFT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SALINITYSPREADLEFT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sal tol above||Salinity tolerance above optimum.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SALINITYSPREADRIGHT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SALINITYSPREADRIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Tot.Eff.Mult.||Total effort multiplier.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SEMULT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SEMULT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Z||Tot. mort. rate|Total mortality rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_STANZAMORTALITY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_STANZAMORTALITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Switching power.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SWITCHINGPOWER() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SWITCHINGPOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_TCATCHINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_TCATCHINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to T opt||Optimum temperature.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_TEMPERATUREOPT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_TEMPERATUREOPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to T tol below||Temperature tolerance below optimum.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_TEMPERATURESPREADLEFT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_TEMPERATURESPREADLEFT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ttol above||Temperature tolerance above optimum.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_TEMPERATURESPREADRIGHT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_TEMPERATURESPREADRIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to TL||Trophic level.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_TL() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_TL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to TTLX||Trophic level.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_TTLX() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_TTLX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Currency||Currency unit.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_UNITCURRENCY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_UNITCURRENCY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monetary||Monetary unit.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_UNITMONETARY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_UNITMONETARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to t||Time unit.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_UNITTIME() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_UNITTIME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to K||von Bertalanffy curvature parameter.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_VBK() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VBK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to v||Vulnerability.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_VULMULT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VULMULT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to WmatWinf|Wmat/Winf||Weight at maturity over weight at infancy.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_WMATWINF() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_WMATWINF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Z|Tot. mort.|Total mortality.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_Z() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_Z", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} (compiled {1}).
         '''</summary>
         Public Shared ReadOnly Property VERSION_EXT_COMPILED() As String

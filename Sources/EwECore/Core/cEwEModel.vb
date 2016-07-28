@@ -83,13 +83,13 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' FirstYear
-            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 1950)
             val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' NumYears
-            meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
+            meta = New cVariableMetaData(1, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 1)
             val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)

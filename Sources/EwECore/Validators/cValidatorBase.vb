@@ -55,7 +55,6 @@ Public Class cValidatorDefault
 
     Public Overridable Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
-        Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim bCleared As Boolean = False
 
         Select Case ValueObject.varType
@@ -109,22 +108,24 @@ Public Class cValidatorDefault
 
         End Select
 
+        Dim fmt As New Style.cVarnameTypeFormatter()
+
         ' Prepare message
         If ValueObject.ValidationStatus = eStatusFlags.OK Then
             If bCleared Then
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, cni.GetVarName(ValueObject.varName))
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, fmt.GetDescriptor(ValueObject.varName))
             Else
                 If TypeOf ValueObject.Value Is System.Array And iSecondaryIndex >= 0 Then
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value(iSecondaryIndex))
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value(iSecondaryIndex))
                 Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                 End If
             End If
         Else
             If TypeOf ValueObject.Value Is System.Array And iSecondaryIndex >= 0 Then
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value(iSecondaryIndex))
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value(iSecondaryIndex))
             Else
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             End If
         End If
 

@@ -23,11 +23,11 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.SpatialData
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -50,7 +50,7 @@ Namespace Ecospace.Controls
         Private Class cDatasetSorter
             Implements IComparer(Of ISpatialDataSet)
 
-            Private m_fmt As New cVarnameTypeFormatter()
+            Private m_fmt As New EwECore.Style.cVarnameTypeFormatter()
 
             Public Function Compare(x As ISpatialDataSet, y As ISpatialDataSet) As Integer _
                 Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataSet).Compare

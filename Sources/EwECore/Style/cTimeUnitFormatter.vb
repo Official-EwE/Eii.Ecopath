@@ -51,9 +51,9 @@ Namespace Style
             Return GetType(eUnitAreaType)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function GetDescriptor(ByVal value As Object,
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                  Implements ITypeFormatter.GetDescriptor
+            Implements ITypeFormatter.GetDescriptor
 
             Dim unit As eUnitTimeType = DirectCast(value, eUnitTimeType)
 

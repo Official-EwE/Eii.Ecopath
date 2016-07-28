@@ -21,16 +21,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports ScientificInterfaceShared.Style
+Imports EwECore.Style
 Imports EwEUtils.Core
-Imports EwERemarksPlugin
-Imports EwECore.Auxiliary
-Imports EwECore
-Imports SourceGrid2.VisualModels
+Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Windows.Forms
 
 #End Region ' Imports
 
