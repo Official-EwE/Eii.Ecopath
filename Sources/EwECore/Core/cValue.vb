@@ -457,8 +457,11 @@ Namespace ValueWrapper
                                 If x = 0.0F And (Me.Metadata IsNot Nothing) Then
                                     ' #Yes: does metadata NOT allow 0.0?
                                     If Not (Metadata.MinOperator.Compare(0.0!, Metadata.Min) And Metadata.MaxOperator.Compare(0.0!, Metadata.Max)) Then
-                                        ' #Yes: '0' clears the variable
-                                        bNeedDefault = True
+                                        ' #Yes: Core_NULL is the default? 
+                                        If (CSng(Metadata.NullValue) = cCore.NULL_VALUE) Then
+                                            ' #Yes: '0' clears the variable
+                                            bNeedDefault = True
+                                        End If
                                     End If
                                 End If
                         End Select
