@@ -65,7 +65,7 @@ Namespace Utilities
                 ass = Assembly.GetExecutingAssembly()
             End If
 
-            If String.IsNullOrEmpty(strNamespace) Then
+            If String.IsNullOrWhiteSpace(strNamespace) Then
                 strNamespace = ass.GetName().Name.ToString()
             End If
 
@@ -151,40 +151,8 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Load a resource string from a .NET assembly.
-        ''' </summary>
-        ''' <param name="strName">The name of the string resource.</param>
-        ''' <param name="ass">The assembly to load the resource from.</param>
-        ''' <param name="strNamespace">The namespace within the assembly, if any.</param>
-        ''' <param name="culture">The culture info, if any.</param>
-        ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function LoadString(ByVal strName As String, _
-                                          Optional ByVal ass As Assembly = Nothing, _
-                                          Optional ByVal strNamespace As String = "", _
-                                          Optional ByVal culture As CultureInfo = Nothing) As String
-
-            Dim rm As ResourceManager = Nothing
-            Dim strRes As String = ""
-
-            ' Provide defaults
-            If (ass Is Nothing) Then ass = Assembly.GetExecutingAssembly()
-            If (culture Is Nothing) Then culture = Threading.Thread.CurrentThread.CurrentUICulture
-            If (String.IsNullOrEmpty(strNamespace)) Then strNamespace = ass.GetName.Name
-
-            rm = New ResourceManager(strNamespace & ".resources", ass)
-            Try
-                strRes = rm.GetString(strName, culture)
-            Catch ex As Exception
-                ' Whoah!
-            End Try
-
-            Return strRes
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Load a resource string from a .NET assembly.
+        ''' <seealso cref="LoadString(String, ResourceManager, CultureInfo)"/>
+        ''' <seealso cref="LoadString(String, Assembly, String, CultureInfo)"/>
         ''' </summary>
         ''' <param name="strName">The name of the string resource.</param>
         ''' <param name="typeAssembly">The type for which to find the assembly.</param>
@@ -199,6 +167,65 @@ Namespace Utilities
 
             Dim ass As Assembly = Assembly.GetAssembly(typeAssembly)
             Return LoadString(strName, ass, strNamespace, culture)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load a resource string from a .NET assembly.
+        ''' <seealso cref="LoadString(String, ResourceManager, CultureInfo)"/>
+        ''' <seealso cref="LoadString(String, Type, String, CultureInfo)"/>
+        ''' </summary>
+        ''' <param name="strName">The name of the string resource.</param>
+        ''' <param name="ass">The assembly to load the resource from.</param>
+        ''' <param name="strNamespace">The namespace within the assembly, if any.</param>
+        ''' <param name="culture">The culture info, if any. If not specified, the
+        ''' executing culture is used.</param>
+        ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
+        ''' <remarks>
+        ''' <para>This method will attempt to construct a resource manager for the given
+        ''' assembly and namespace, and will then attempt to load the string for the 
+        ''' indicated culture.</para>
+        ''' <para>If the resource manager to obtain the resource from is know, please
+        ''' use the much faster method <see cref="LoadString(String, ResourceManager, CultureInfo)"/> 
+        ''' instead.</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function LoadString(ByVal strName As String,
+                                          Optional ByVal ass As Assembly = Nothing,
+                                          Optional ByVal strNamespace As String = "",
+                                          Optional ByVal culture As CultureInfo = Nothing) As String
+
+            Dim rm As ResourceManager = Nothing
+            Dim strRes As String = ""
+
+            ' Provide defaults
+            If (ass Is Nothing) Then ass = Assembly.GetExecutingAssembly()
+            If (String.IsNullOrEmpty(strNamespace)) Then strNamespace = ass.GetName.Name & ".resources"
+
+            Return LoadString(strName, New ResourceManager(strNamespace, ass), culture)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load a resource string from a given resource manager.
+        ''' </summary>
+        ''' <param name="strName">The name of the string resource.</param>
+        ''' <param name="rm">The resource manager to load the string from.</param>
+        ''' <param name="culture">The culture info, if any.</param>
+        ''' <returns>A string, or <paramref name="strName"/> if an error occurred.</returns>
+        ''' -------------------------------------------------------------------     
+        Public Shared Function LoadString(ByVal strName As String, rm As ResourceManager,
+                                          Optional ByVal culture As CultureInfo = Nothing) As String
+            Dim strRes As String = ""
+            If (culture Is Nothing) Then culture = Threading.Thread.CurrentThread.CurrentUICulture
+            Try
+                strRes = rm.GetString(strName, culture)
+            Catch ex As Exception
+                ' Whoah!
+            End Try
+            Return strRes
+
         End Function
 
         ''' -------------------------------------------------------------------
