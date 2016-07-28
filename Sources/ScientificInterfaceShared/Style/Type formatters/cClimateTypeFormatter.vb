@@ -47,7 +47,7 @@ Namespace Style
                                       Implements ITypeFormatter.GetDescriptor
 
             Dim strValue As String = value.ToString
-            Dim strDescr As String = cResourceUtils.LoadString("CLIMATE_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("CLIMATE_" & strValue.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

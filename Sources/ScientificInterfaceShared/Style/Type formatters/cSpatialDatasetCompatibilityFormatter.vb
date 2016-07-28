@@ -53,7 +53,7 @@ Namespace Style
                 comp = DirectCast(value, cDatasetCompatilibity)
 
                 Dim val As cDatasetCompatilibity.eCompatibilityTypes = comp.Compatibility
-                Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & val.ToString().ToUpper, Me.GetType.Assembly)
+                Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & val.ToString().ToUpper, My.Resources.ResourceManager)
                 Dim astrBits As String() = Nothing
                 Dim iNumBits As Integer = 0
 

@@ -42,20 +42,20 @@ Public Class cValidatorCounter
     Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Try
-            Dim cni As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-
+            Dim fmt As New Style.cVarnameTypeFormatter()
             Dim n As Integer = m_core.GetCoreCounter(m_counter)
+
             If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), 0) And _
              MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), n) Then
                 'passed validation
-                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
                 ValueObject.ValidationStatus = eStatusFlags.OK
                 ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Return True
             End If
 
             ' JS 09Jan08: If validation failed, set status to Failed Validation at any time.
-            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
             Return True
 

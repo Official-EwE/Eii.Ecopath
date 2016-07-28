@@ -1,3 +1,4 @@
+Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -20,10 +21,9 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 

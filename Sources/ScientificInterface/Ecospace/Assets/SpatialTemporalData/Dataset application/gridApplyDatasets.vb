@@ -23,11 +23,12 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.SpatialData
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

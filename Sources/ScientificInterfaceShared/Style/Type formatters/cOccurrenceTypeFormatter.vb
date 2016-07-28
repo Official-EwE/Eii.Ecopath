@@ -51,7 +51,7 @@ Namespace Style
             If val = eOccurrenceStatusTypes.NotSet Then Return ""
 
             Dim strValue As String = val.ToString
-            Dim strDescr As String = cResourceUtils.LoadString("OCCURRENCESTATUS_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("OCCURRENCESTATUS_" & strValue.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

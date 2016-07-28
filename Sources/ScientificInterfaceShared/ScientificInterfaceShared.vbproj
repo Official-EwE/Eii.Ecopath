@@ -741,7 +741,6 @@
     <Compile Include="Style\Type formatters\cTaxonLevelTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTimeSeriesTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cTypeFormatterFactory.vb" />
-    <Compile Include="Style\Type formatters\cVarnameTypeFormatter.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\CollapsiblePanel\ucCollapsiblePanelController.resx">

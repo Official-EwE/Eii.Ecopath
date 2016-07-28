@@ -50,8 +50,8 @@ Namespace Style
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))
 
             Dim strValue As String = value.ToString
-   
-            Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & strValue.ToUpper, Me.GetType.Assembly)
+
+            Dim strDescr As String = cResourceUtils.LoadString("COMPATIBILITY_" & strValue.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

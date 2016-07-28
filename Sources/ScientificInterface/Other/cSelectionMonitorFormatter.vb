@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -18,7 +19,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+Imports EwECore.Style
 Imports EwEUtils.Core
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)

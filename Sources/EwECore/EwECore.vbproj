@@ -361,6 +361,7 @@
     <Compile Include="Style\cMapUnitFormatter.vb" />
     <Compile Include="Style\cTimeUnitFormatter.vb" />
     <Compile Include="Style\cUnitFormatter.vb" />
+    <Compile Include="Style\cVarnameTypeFormatter.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />

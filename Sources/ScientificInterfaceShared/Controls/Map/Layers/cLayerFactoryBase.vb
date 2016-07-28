@@ -23,6 +23,7 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers

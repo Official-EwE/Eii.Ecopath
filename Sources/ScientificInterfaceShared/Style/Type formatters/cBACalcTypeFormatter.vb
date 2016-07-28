@@ -55,7 +55,7 @@ Namespace Style
             End Try
 
             Dim strVar As String = vn.ToString()
-            Dim strDescr As String = cResourceUtils.LoadString("BA_CALC_" & strVar.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("BA_CALC_" & strVar.ToUpper, My.Resources.ResourceManager)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""
