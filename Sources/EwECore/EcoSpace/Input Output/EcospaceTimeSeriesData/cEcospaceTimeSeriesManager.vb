@@ -29,12 +29,20 @@ Namespace EcospaceTimeSeries
     Public Class cEcospaceTimeSeriesManager
 
         'ToDo 27-July-2016 Add Error messages back to the core instead of just Asserts
+        'Done 28-July-2016 Added core messages if read throws an Exception 
+        'Done 28-July-2016 Also sends message if dates or extents are out of bounds
+
         'ToDo 27-July-2016  Document the file formats (input and output) and how it works
+
         'ToDo 27-July-2016 Let the user selected the output file name. 
         '   Maybe when the user is selecting the input file have them choose the output file
         '   Use the default filename
+
         'ToDo 27-July-2016 Added SS output to the UI. Results form... Main Run UI some place?
+
         'ToDo 27-July-2016 Added Group SS output to Results form
+
+        'ToDo 27-July-2016 remove the DebugDump
 
 
 #Region "Private data"
@@ -86,7 +94,7 @@ Namespace EcospaceTimeSeries
             Me.DatSumZ = 0.0
             Me.DatSumZ2 = 0.0
 
-            'Clear out any results from the last run
+            'Clear out the results part of the cEcospaceTimeSeriesRec objects
             For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
                 For Each rec As cEcospaceTimeSeriesRec In recs
                     rec.PredictedValue = cCore.NULL_VALUE
@@ -119,7 +127,7 @@ Namespace EcospaceTimeSeries
                 'Add TimeSeriesRec to the list of cEcospaceTimeSeriesRec objects
                 'cEcospaceTimeSeriesRec are stored by date, all the recs with the same date will be in one list
                 'Me.ByDate(date,CreateNew:=True) will create a new list if it doesn't already exist
-                Me.ByDate(TimeSeriesRec.TimeStamp, CreateNew:=True).Add(TimeSeriesRec)
+                Me.RecsByDate(TimeSeriesRec.TimeStamp, CreateNew:=True).Add(TimeSeriesRec)
             Catch ex As Exception
                 Return False
             End Try
@@ -132,23 +140,38 @@ Namespace EcospaceTimeSeries
         ''' <param name="Filename"></param>
         ''' <returns></returns>
         Public Function Read(Filename As String) As Boolean
-
+            Dim bReturn As Boolean = True
             Me.m_FileName = Filename
+
+            If Not IO.File.Exists(Filename) Then
+                System.Console.WriteLine(Me.ToString + ".Read() file does not exist!")
+                Return False
+            End If
 
             Me.InitForRead()
 
             Try
-                If IO.File.Exists(Filename) Then
-                    Dim reader As New cEcospaceTimeSeriesXYZReader(Filename, Me)
-                    If reader.Read() Then
-                        Me.checkDates(reader.StartDate, reader.EndDate)
-                        Me.checkExtent(reader.MaxRow, reader.MaxCol)
-                    End If
-                End If
-            Catch ex As Exception
+                Dim reader As New cEcospaceTimeSeriesXYZReader(Filename, Me)
+                If reader.Read() Then
+                    Me.checkDates(reader.StartDate, reader.EndDate)
+                    Me.checkExtent(reader.MaxRow, reader.MaxCol)
+                    bReturn = True
+                End If 'If reader.Read() Then
 
+            Catch ex As Exception
+                'cEcospaceTimeSeriesXYZReader.Read() will throw the exception back here is there if there is an internal exception
+                Me.m_core.Messages.AddMessage(New cMessage("Ecospace could not load time series data due to error: " + ex.Message,
+                                                            EwEUtils.Core.eMessageType.ErrorEncountered,
+                                                            EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+                'Clear out any data that may been read
+                Me.m_dcDataByDate.Clear()
+                bReturn = False
             End Try
-            Return False
+
+            Me.m_core.Messages.sendAllMessages()
+
+            Return bReturn
+
         End Function
 
         ''' <summary>
@@ -159,16 +182,16 @@ Namespace EcospaceTimeSeries
         ''' <returns></returns>
         Public Function CalculateStats(iTimeStep As Integer, biomass(,,) As Single) As Boolean
             Dim zstat As Double
-            Dim TimeStepDate As Date = Me.getDate(iTimeStep)
+            Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
             Try
 
                 'is there records for this model date
                 If Me.ContainsDate(TimeStepDate) Then
 
                     'get a list of all the records for this date
-                    For Each Rec As cEcospaceTimeSeriesRec In Me.ByDate(TimeStepDate)
+                    For Each Rec As cEcospaceTimeSeriesRec In Me.RecsByDate(TimeStepDate)
 
-                        System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
+                        ' System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
 
                         'There is no zero value or bounds checking
                         'so trap all the errors until we are doing something better
@@ -191,9 +214,11 @@ Namespace EcospaceTimeSeries
                                 Me.DatSumZ2 += zstat ^ 2
                             End If
 
+                            'shouldn't happen!
                             Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
 
                         Catch ex As Exception
+                            'What to do if a data point throws an exception???
                             System.Console.WriteLine(Me.ToString + ".CalculateStats() Invalid data point.")
                         End Try
 
@@ -201,13 +226,15 @@ Namespace EcospaceTimeSeries
 
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                     'for debugging
-                    Me.dumpDebugData()
+                    'Me.dumpDebugData()
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 End If
 
             Catch ex As Exception
-                EwEUtils.Core.cLog.Write(ex, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
+                'This shouldn't happen!
+                'If it does it's some kind of a programming error...Really...
+                Debug.Assert(False, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
                 Return False
             End Try
 
@@ -250,7 +277,7 @@ Namespace EcospaceTimeSeries
         ''' <param name="RecDate"></param>
         ''' <param name="CreateNew"></param>
         ''' <returns></returns>
-        Private Function ByDate(RecDate As Date, Optional CreateNew As Boolean = False) As List(Of cEcospaceTimeSeriesRec)
+        Private Function RecsByDate(RecDate As Date, Optional CreateNew As Boolean = False) As List(Of cEcospaceTimeSeriesRec)
             If m_dcDataByDate.ContainsKey(RecDate) Then
                 Return m_dcDataByDate.Item(RecDate)
             End If
@@ -301,7 +328,7 @@ Namespace EcospaceTimeSeries
         ''' </summary>
         ''' <param name="itimestep"></param>
         ''' <returns></returns>
-        Private Function getDate(itimestep As Integer) As Date
+        Private Function TimeStepToDate(itimestep As Integer) As Date
             'convert Ecospace time step into date
             Dim stYear As Integer
             If Me.m_core.EwEModel.FirstYear <> 0 Then
@@ -324,19 +351,33 @@ Namespace EcospaceTimeSeries
         ''' <param name="EndDate"></param>
         ''' <returns>True if any part of the dates are in bounds, False otherwise. </returns>
         Private Function checkDates(StartDate As Date, EndDate As Date) As Boolean
+            Dim msg As New System.Text.StringBuilder
+            Dim bReturn As Boolean = True
+
             If Me.m_core.EwEModel.FirstYear <> 0 Then
                 Dim mSD As New Date(Me.m_core.EwEModel.FirstYear, 1, 1)
                 Dim mED As New Date(CInt(Me.m_core.EwEModel.FirstYear + Me.m_SpaceData.TotalTime), 1, 1)
                 If StartDate > mED Or EndDate < mSD Then
-                    'Failed 
-                    Debug.Assert(False, "Oppss Time series dates out of bounds. Check the Model date.")
-                    Return False
+                    'Failed date bounds
+                    msg.Append("Ecospace time series dates " + StartDate.ToShortDateString + " to " + EndDate.ToShortDateString + " do not overlap with current model dates. ")
+                    msg.Append("Check Model date or dates in input file.")
+
+                    bReturn = False
                 End If
             Else
-                Debug.Assert(False, "Oppss Model date has not been set")
-                Return False
+                'First year = 0 
+                'The user has not set a model data
+                msg.Append("EwE Model date has not been set. You must set this to use Ecospace time series data.")
+
+                bReturn = False
             End If
-            Return True
+
+            If msg.Length > 0 Then
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+            End If
+
+            Return bReturn
+
         End Function
 
 
@@ -349,7 +390,10 @@ Namespace EcospaceTimeSeries
         Private Function checkExtent(MaxRow As Integer, MaxCol As Integer) As Boolean
 
             If MaxRow > Me.m_SpaceData.InRow Or MaxCol > Me.m_SpaceData.InCol Then
-                Debug.Assert(False, "Oppss Time Series map exceeds the Ecospace map extent.")
+                'Debug.Assert(False, "Oppss Time Series map exceeds the Ecospace map extent.")
+                Dim msg As New System.Text.StringBuilder
+                msg.Append("Ecospace time series map extents outside the currently load map.")
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
                 Return False
             End If
 
