@@ -29,6 +29,8 @@ Namespace EcospaceTimeSeries
 
         Public FileName As String
 
+        Public TimeStampFormatString As String
+
         Private m_Manager As cEcospaceTimeSeriesManager
         Private m_StartDate As Date
         Private m_EndDate As Date
@@ -36,9 +38,12 @@ Namespace EcospaceTimeSeries
         Private m_MaxRow As Integer
         Private m_MaxCol As Integer
 
+        Private m_dctFailedRecs As Dictionary(Of eTimeSeriesRecValidations, Integer)
+
         Public Sub New(TimeSeriesFile As String, TSManager As cEcospaceTimeSeriesManager)
             Me.FileName = TimeSeriesFile
             Me.m_Manager = TSManager
+            Me.TimeStampFormatString = Me.m_Manager.TimeStepFormatString
         End Sub
 
         Public Function Read() As Boolean
@@ -62,10 +67,14 @@ Namespace EcospaceTimeSeries
 
                 Do While Not strm.EndOfStream
                     RecBuffer = strm.ReadLine()
-                    rec = New cEcospaceTimeSeriesRec(RecBuffer)
-                    Me.getMinMaxDates(rec)
-                    Me.getExtent(rec)
-                    Me.m_Manager.Add(rec)
+                    rec = cEcospaceTimeSeriesRec.FromString(RecBuffer, Me.TimeStampFormatString)
+                    If rec.Validation = eTimeSeriesRecValidations.isValid Then
+                        Me.getMinMaxDates(rec)
+                        Me.getExtent(rec)
+                        Me.m_Manager.Add(rec)
+                    Else
+                        Me.AddFailedRec(rec)
+                    End If
                 Loop
 
                 strm.Close()
@@ -77,6 +86,8 @@ Namespace EcospaceTimeSeries
 
             End Try
 
+            Me.dumpFailedRecs()
+
             Return True
         End Function
 
@@ -86,6 +97,8 @@ Namespace EcospaceTimeSeries
 
             Me.m_MaxRow = 0
             Me.m_MaxCol = 0
+
+            Me.m_dctFailedRecs = New Dictionary(Of eTimeSeriesRecValidations, Integer)
         End Sub
 
         Private Sub getMinMaxDates(rec As cEcospaceTimeSeriesRec)
@@ -99,6 +112,29 @@ Namespace EcospaceTimeSeries
                 m_EndDate = rec.TimeStamp
             End If
 
+        End Sub
+
+        Private Sub AddFailedRec(rec As cEcospaceTimeSeriesRec)
+            If Not Me.m_dctFailedRecs.ContainsKey(rec.Validation) Then
+                Me.m_dctFailedRecs.Add(rec.Validation, 0)
+            End If
+            Me.m_dctFailedRecs.Item(rec.Validation) += 1
+        End Sub
+
+        Private Sub dumpFailedRecs()
+            Dim msg As New Text.StringBuilder
+            If Me.m_dctFailedRecs.Count = 0 Then
+                Return
+            End If
+            msg.Append("Ecospace Time Series Failed to read ")
+            For Each pair As KeyValuePair(Of eTimeSeriesRecValidations, Integer) In Me.m_dctFailedRecs
+                System.Console.WriteLine(pair.Key.ToString + " " + pair.Value.ToString)
+                msg.Append(" " + pair.Value.ToString + " because of " + pair.Key.ToString)
+            Next
+            If msg.Length > 0 Then
+                Me.m_Manager.Core.Messages.AddMessage(New cMessage(msg.ToString, eMessageType.DataValidation,
+                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            End If
         End Sub
 
 

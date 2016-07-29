@@ -35,34 +35,68 @@ Namespace EcospaceTimeSeries
             Value
         End Enum
 
-        Public iGroupID As Integer
-        Public Row As Integer
-        Public Col As Integer
-        Public TimeStamp As Date
-        Public CellValue As Single
 
-        Public SS As Double
-        Public PredictedValue As Double
 
-        Public VarType As eVarNameFlags
+        Public iGroupID As Integer = cCore.NULL_VALUE
+        Public Row As Integer = cCore.NULL_VALUE
+        Public Col As Integer = cCore.NULL_VALUE
+        Public TimeStamp As Date = New Date(1, 1, 1)
+        Public CellValue As Single = cCore.NULL_VALUE
 
-        Public Sub New(strRec As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass)
-            Dim data() As String = EwEUtils.Utilities.cStringUtils.SplitQualified(strRec, ",")
+        Public SS As Double = cCore.NULL_VALUE
+        Public PredictedValue As Double = cCore.NULL_VALUE
 
-            Me.Row = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Row))
-            Me.Col = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Col))
-            Me.iGroupID = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.GroupID))
-            Me.TimeStamp = EwEUtils.Utilities.cStringUtils.ConvertToDate(data(eDataCols.Timestamp))
-            Me.CellValue = EwEUtils.Utilities.cStringUtils.ConvertToSingle(data(eDataCols.Value))
+        Public VarType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass
 
-            Me.PredictedValue = cCore.NULL_VALUE
-            Me.SS = cCore.NULL_VALUE
+        Public InputTimeStepFormat As String = "yyyy-MM-dd"
 
+        Private m_validation As eTimeSeriesRecValidations
+
+        Private Sub New(strRec As String, TimeStepFormatString As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass)
+            Dim data() As String
+
+            Me.InputTimeStepFormat = TimeStepFormatString
             VarType = DataType
+            Me.m_validation = eTimeSeriesRecValidations.isValid
+
+            Dim tempTimeStamp As Date
+            Try
+                If Me.PaserString(strRec, data) Then
+                    Me.Row = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Row))
+                    Me.Col = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Col))
+                    Me.iGroupID = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.GroupID))
+                    tempTimeStamp = EwEUtils.Utilities.cStringUtils.ConvertToDate(data(eDataCols.Timestamp), InputTimeStepFormat)
+                    'strip the day off of the timestamp
+                    Me.TimeStamp = New Date(tempTimeStamp.Year, tempTimeStamp.Month, 1)
+                    Me.CellValue = EwEUtils.Utilities.cStringUtils.ConvertToSingle(data(eDataCols.Value))
+                End If
+            Catch ex As Exception
+
+                'Set all the values to NULL
+                Me.Row = cCore.NULL_VALUE
+                Me.Col = cCore.NULL_VALUE
+                Me.iGroupID = cCore.NULL_VALUE
+                Me.TimeStamp = New Date(1, 1, 1)
+                Me.CellValue = cCore.NULL_VALUE
+
+            End Try
+
         End Sub
 
-        Shared Function FromString(strRec As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass) As cEcospaceTimeSeriesRec
-            Return New cEcospaceTimeSeriesRec(strRec, DataType)
+        Private Sub New()
+
+        End Sub
+
+        Shared Function FromString(strRec As String, DateFormatString As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass) As cEcospaceTimeSeriesRec
+            Try
+                Return New cEcospaceTimeSeriesRec(strRec, DateFormatString, DataType)
+            Catch ex As Exception
+                'Ok something really messed up 
+                System.Console.WriteLine(ex)
+            End Try
+            'Failed to create a rec from the string
+            'return object with default empty values
+            Return New cEcospaceTimeSeriesRec()
         End Function
 
 
@@ -76,6 +110,7 @@ Namespace EcospaceTimeSeries
             csvStr.Append(delim)
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.iGroupID))
             csvStr.Append(delim)
+            'Output timestamp format in hard coded
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.TimeStamp.ToString("yyyy-MM-dd")))
             csvStr.Append(delim)
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.CellValue))
@@ -88,6 +123,34 @@ Namespace EcospaceTimeSeries
             Return csvStr.ToString
         End Function
 
+
+        Private Function PaserString(recString As String, ByRef data() As String) As Boolean
+            Dim bReturn As Boolean = True
+            data = EwEUtils.Utilities.cStringUtils.SplitQualified(recString, ",")
+            If data.Length < 5 Then
+                Me.m_validation = eTimeSeriesRecValidations.MalformedString
+                bReturn = False
+            End If
+            For irec As Integer = 0 To 4
+                If String.IsNullOrEmpty(data(irec)) Then
+                    Me.m_validation = eTimeSeriesRecValidations.EmptyRec
+                    Return False
+                End If
+            Next
+
+            If Not data(eDataCols.Timestamp).Contains("-") Then
+                Me.m_validation = eTimeSeriesRecValidations.InvalidDateFormat
+                Return False
+            End If
+
+            Return bReturn
+        End Function
+
+        Public ReadOnly Property Validation As eTimeSeriesRecValidations
+            Get
+                Return Me.m_validation
+            End Get
+        End Property
     End Class
 
 End Namespace
