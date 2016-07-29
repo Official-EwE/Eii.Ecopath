@@ -274,6 +274,9 @@ Public Class frmEwE6
     Private WithEvents m_cmdEcosimChangeShape As cCommand = Nothing
     Private WithEvents m_cmdPickColor As cPickColorCommand = Nothing
 
+
+    Private WithEvents m_cmdEcospaceLoadXYRefData As cCommand = Nothing
+
     ' --- Ecospace external data ---
 
     ''' <summary>Command to define external spatial temporal data connections.</summary>
@@ -675,6 +678,8 @@ Public Class frmEwE6
 
         Me.m_cmdPickColor = New cPickColorCommand(cmdh)
 
+
+
 #If BETA = 1 Then
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnPreview)
         Me.m_tsbnPreview.Visible = True
@@ -701,6 +706,10 @@ Public Class frmEwE6
         Me.m_cmdEstimateVs = New cCommand(cmdh, "EstimateVs")
 
         Me.m_cmdExportEcosimResultsToCSV = New cEcosimSaveDataCommand(cmdh)
+
+        Me.m_cmdEcospaceLoadXYRefData = New cCommand(cmdh, "EcospaceLoadXYRefData")
+        Me.m_cmdEcospaceLoadXYRefData.AddControl(Me.m_tsmiEcospaceLoadXYRefData)
+
 
         ' --- Ecobase ---
 
@@ -882,13 +891,13 @@ Public Class frmEwE6
     ''' <param name="importance">Message importance.</param>
     ''' <param name="component">Core component to represent as message origin.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub SendMessage(ByVal strMsg As String, _
-                           Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
-                           Optional ByVal component As eCoreComponentType = eCoreComponentType.External, _
+    Public Sub SendMessage(ByVal strMsg As String,
+                           Optional ByVal importance As eMessageImportance = eMessageImportance.Warning,
+                           Optional ByVal component As eCoreComponentType = eCoreComponentType.External,
                            Optional strHyperlink As String = "")
 
         If Me.InvokeRequired() Then
-            Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage), _
+            Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage),
                                               New Object() {strMsg, importance, component})
             Return
         End If
@@ -910,11 +919,11 @@ Public Class frmEwE6
     ''' <param name="importance">Message importance.</param>
     ''' <param name="component">Core component to represent as message origin.</param>
     ''' -----------------------------------------------------------------------
-    Public Function AskFeedback(ByVal strMsg As String, _
-                             Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
-                             Optional ByVal component As eCoreComponentType = eCoreComponentType.Core, _
-                             Optional ByVal replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL, _
-                             Optional ByVal defaultreply As eMessageReply = eMessageReply.YES, _
+    Public Function AskFeedback(ByVal strMsg As String,
+                             Optional ByVal importance As eMessageImportance = eMessageImportance.Warning,
+                             Optional ByVal component As eCoreComponentType = eCoreComponentType.Core,
+                             Optional ByVal replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL,
+                             Optional ByVal defaultreply As eMessageReply = eMessageReply.YES,
                              Optional strHyperlink As String = "") As eMessageReply
 
         If Me.InvokeRequired() Then
@@ -962,7 +971,7 @@ Public Class frmEwE6
 
         Me.InitDockPanelPositions()
 
-#If Not Debug Then
+#If Not DEBUG Then
         ' Show start page (but not in DEBUG mode)
         Me.Panel(cPANEL_START).Show(Me.m_DockPanel, DockState.Document)
 #End If
@@ -1343,7 +1352,7 @@ Public Class frmEwE6
                     strMessage = My.Resources.STATUS_MODEL_COMPACTING_OS
                 Case eDatasourceAccessType.Failed_CannotSave
                     strMessage = My.Resources.STATUS_MODEL_COMPACTING_TEMPFILE
-                Case eDatasourceAccessType.Failed_FileNotFound, _
+                Case eDatasourceAccessType.Failed_FileNotFound,
                      eDatasourceAccessType.Failed_Unknown
                     strMessage = My.Resources.STATUS_MODEL_COMPACTING_FAILED
                 Case eDatasourceAccessType.Failed_ReadOnly
@@ -1395,7 +1404,7 @@ Public Class frmEwE6
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.TooOld
-                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)), _
+                Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)),
                                strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
 
             Case cEwEDatabase.eCompatibilityTypes.Importable
@@ -1415,10 +1424,10 @@ Public Class frmEwE6
                 ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.Future
-                If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)), _
-                                  eMessageImportance.Question, _
-                                  eCoreComponentType.DataSource, _
-                                  eMessageReplyStyle.YES_NO, _
+                If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)),
+                                  eMessageImportance.Question,
+                                  eCoreComponentType.DataSource,
+                                  eMessageReplyStyle.YES_NO,
                                   strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home)) = eMessageReply.NO Then
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
                 End If
@@ -1532,8 +1541,8 @@ Public Class frmEwE6
                 End If
 
                 tsmi = New ToolStripMenuItem()
-                tsmi.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, _
-                                          Me.Core.TimeSeriesDataset(i).Name, _
+                tsmi.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED,
+                                          Me.Core.TimeSeriesDataset(i).Name,
                                           fmt.GetDescriptor(Me.Core.TimeSeriesDataset(i).TimeSeriesInterval).ToLower())
                 tsmi.Tag = Me.Core.TimeSeriesDataset(i)
                 tsmi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
@@ -1696,7 +1705,7 @@ Public Class frmEwE6
     ''' the item to remove. If not provided, the search will start at the 
     ''' beginning of the list.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub RemoveModelMRU(ByVal strFileName As String, _
+    Private Sub RemoveModelMRU(ByVal strFileName As String,
                                Optional ByVal iStartPos As Integer = 0)
 
         Dim alMDBmru As ArrayList = My.Settings.MdbRecentlyUsedList
@@ -1821,8 +1830,8 @@ Public Class frmEwE6
     ''' form could not be created.
     ''' </returns>
     ''' ---------------------------------------------------------------------------
-    Private Function LoadFormFromType(ByVal strNavLink As String, _
-                                      ByVal t As Type, _
+    Private Function LoadFormFromType(ByVal strNavLink As String,
+                                      ByVal t As Type,
                                       ByVal state As eCoreExecutionState) As Form
 
         Dim classObject As Object
@@ -1948,7 +1957,7 @@ Public Class frmEwE6
     Private m_bNavigating As Boolean = False
     Private m_strLastActiveContent As String = ""
 
-    Private Sub UpdateSelectedNode(ByVal strNodeName As String, _
+    Private Sub UpdateSelectedNode(ByVal strNodeName As String,
                                    Optional ByVal bAllowDefault As Boolean = False)
 
         If Me.m_bNavigating Then Return
@@ -2021,7 +2030,7 @@ Public Class frmEwE6
     ''' <remarks>This code is designed for strFileName to indicate a path. It should 
     ''' be possible to indicate a database as well. One day...</remarks>
     ''' ---------------------------------------------------------------------------
-    Private Function LoadEcopathModel(ByVal strFileName As String, _
+    Private Function LoadEcopathModel(ByVal strFileName As String,
                                       ByVal loadsource As eLoadSourceType) As Boolean
 
         Dim ds As IEwEDataSource = Nothing
@@ -2030,7 +2039,7 @@ Public Class frmEwE6
 
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
 
-            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007, _
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
                  eDataSourceTypes.EII, eDataSourceTypes.EIIXML
 
                 ' Check if target file exists at all before affecting anything
@@ -2040,16 +2049,16 @@ Public Class frmEwE6
                     Select Case loadsource
 
                         Case eLoadSourceType.MRU
-                            If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
+                            If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName),
                                               replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
                                 Me.RemoveModelMRU(strFileName)
                                 Me.PopulateModelMRUDropdown()
                             End If
 
-                        Case eLoadSourceType.User, _
+                        Case eLoadSourceType.User,
                              eLoadSourceType.CommandLine
                             ' Unable to load model, show generic error
-                            Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName), _
+                            Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_MODELNOTFOUND, strFileName),
                                            eMessageImportance.Warning, eCoreComponentType.DataSource)
 
                         Case eLoadSourceType.API
@@ -2098,7 +2107,7 @@ Public Class frmEwE6
 
                 Case eLoadSourceType.User, eLoadSourceType.CommandLine
                     ' Unable to load model, show generic error
-                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName), _
+                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_INVALIDMODEL, strFileName),
                                    eMessageImportance.Warning, eCoreComponentType.DataSource)
 
                 Case eLoadSourceType.API
@@ -2165,8 +2174,8 @@ Public Class frmEwE6
     ''' <see cref="LoadEcopathModel"/> will need to be called.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Friend Function CreateEcopathModel(ByVal strFileName As String, _
-                                        ByVal strModelName As String, _
+    Friend Function CreateEcopathModel(ByVal strFileName As String,
+                                        ByVal strModelName As String,
                                         ByVal format As eDataSourceTypes) As cEwEDatabase
 
         Dim db As cEwEDatabase = Nothing
@@ -2177,8 +2186,8 @@ Public Class frmEwE6
         Select Case format
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 If File.Exists(strFileName) Then
-                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName), _
-                                                     eCoreComponentType.DataSource, eMessageType.DataValidation, _
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName),
+                                                     eCoreComponentType.DataSource, eMessageType.DataValidation,
                                                      eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                     fmsg.Reply = eMessageReply.NO
                     Me.Core.Messages.SendMessage(fmsg)
@@ -2251,10 +2260,10 @@ Public Class frmEwE6
     ''' <para>This method distills the database type from the provided file name.</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Friend Function CreateEcopathModel(ByVal strFileName As String, _
+    Friend Function CreateEcopathModel(ByVal strFileName As String,
                                         ByVal strModelName As String) As cEwEDatabase
-        Return Me.CreateEcopathModel(strFileName, _
-                                     strModelName, _
+        Return Me.CreateEcopathModel(strFileName,
+                                     strModelName,
                                      cDataSourceFactory.GetSupportedType(strFileName))
     End Function
 
@@ -2458,8 +2467,8 @@ Public Class frmEwE6
                 Select Case dlg.Mode
                     Case dlgEcospaceScenario.eDialogModeType.CreateScenario
                         ' User wants to create a scenario instead
-                        Return Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription, _
-                                dlg.ScenarioAuthor, dlg.ScenarioContact, _
+                        Return Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription,
+                                dlg.ScenarioAuthor, dlg.ScenarioContact,
                                 10, 10, 0, 0, 0.5)
                     Case dlgEcospaceScenario.eDialogModeType.LoadScenario
                         ' User wants to load a scenario
@@ -2482,15 +2491,15 @@ Public Class frmEwE6
     ''' <param name="strDescription"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function CreateEcospaceScenario(ByVal strName As String, ByVal strDescription As String, _
-            ByVal strAuthor As String, ByVal strContact As String, _
-            ByVal iNumRows As Integer, ByVal iNumCols As Integer, _
+    Private Function CreateEcospaceScenario(ByVal strName As String, ByVal strDescription As String,
+            ByVal strAuthor As String, ByVal strContact As String,
+            ByVal iNumRows As Integer, ByVal iNumCols As Integer,
             ByVal sLatTL As Single, ByVal sLonTL As Single, ByVal sCellSize As Single) As Boolean
 
         Dim bSucces As Boolean = False
 
         cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_CREATING, strName))
-        bSucces = Me.Core.NewEcospaceScenario(strName, strDescription, _
+        bSucces = Me.Core.NewEcospaceScenario(strName, strDescription,
             strAuthor, strContact, iNumRows, iNumCols, sLatTL, sLonTL, sCellSize)
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Return bSucces
@@ -3254,7 +3263,7 @@ Public Class frmEwE6
                 System.Diagnostics.Process.Start(strURL)
             Catch ex As Exception
                 ' Failed to launch
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SHELL_FAILURE, ex.Message), _
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SHELL_FAILURE, ex.Message),
                                         eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
                 Me.Core.Messages.SendMessage(msg)
             End Try
@@ -3449,8 +3458,8 @@ Public Class frmEwE6
         Next
 
         If bAllStanzaComplete = False Then
-            If Me.AskFeedback(My.Resources.PROMPT_STANZA_MISSING_LIFESTAGES, _
-                              eMessageImportance.Warning, eCoreComponentType.Core, _
+            If Me.AskFeedback(My.Resources.PROMPT_STANZA_MISSING_LIFESTAGES,
+                              eMessageImportance.Warning, eCoreComponentType.Core,
                               eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
                 Me.m_cmdEditGroups.Invoke()
             End If
@@ -3467,8 +3476,8 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnUpdateMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
-        cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded() = True) And _
-                      (Me.Core.nStanzas > 0) And _
+        cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded() = True) And
+                      (Me.Core.nStanzas > 0) And
                       (Not Me.Core.StateMonitor.IsBusy)
     End Sub
 
@@ -3607,7 +3616,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnSaveEcosimScenarioAs(ByVal cmd As cCommand) Handles m_cmdSaveEcosimScenarioAs.OnInvoke
 
-        Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.SaveScenario, _
+        Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.SaveScenario,
                 Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -3668,8 +3677,8 @@ Public Class frmEwE6
     Private Sub OnUpdateDeleteEcosimScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcosimScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = (m.HasEcopathLoaded) And _
-                      (Me.Core.nEcosimScenarios > 0) And _
+        cmd.Enabled = (m.HasEcopathLoaded) And
+                      (Me.Core.nEcosimScenarios > 0) And
                       (Not m.IsBusy)
     End Sub
 
@@ -3731,7 +3740,7 @@ Public Class frmEwE6
     Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
         ' JS 23sept08: dialog will switch to load mode if no ts present
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcosimLoaded() And _
+        cmd.Enabled = m.HasEcosimLoaded() And
                       Not m.IsBusy ' And Me.Core.HasTimeSeries()
     End Sub
 
@@ -3802,8 +3811,8 @@ Public Class frmEwE6
     Private Sub OnTrimEcosimShapesInvoke(cmd As cCommand) _
         Handles m_cmdEcosimTrimShapes.OnInvoke
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_TRIM_SHAPES, _
-                                         eCoreComponentType.ShapesManager, eMessageType.Any, eMessageImportance.Question, _
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_TRIM_SHAPES,
+                                         eCoreComponentType.ShapesManager, eMessageType.Any, eMessageImportance.Question,
                                          eMessageReplyStyle.YES_NO)
         Me.Core.Messages.SendMessage(fmsg)
 
@@ -3848,8 +3857,8 @@ Public Class frmEwE6
 
             Select Case dlg.Mode
                 Case dlgEcospaceScenario.eDialogModeType.CreateScenario
-                    Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription, _
-                            dlg.ScenarioAuthor, dlg.ScenarioContact, _
+                    Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription,
+                            dlg.ScenarioAuthor, dlg.ScenarioContact,
                             10, 10, 0, 0, 0.5)
                 Case dlgEcospaceScenario.eDialogModeType.LoadScenario
                     Me.LoadEcospaceScenario(DirectCast(dlg.Scenario, cEcospaceScenario))
@@ -3897,8 +3906,8 @@ Public Class frmEwE6
     Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
 
-        Dim dlg As New dlgEcospaceScenario(Me.UIContext, _
-                                           dlgEcospaceScenario.eDialogModeType.SaveScenario, _
+        Dim dlg As New dlgEcospaceScenario(Me.UIContext,
+                                           dlgEcospaceScenario.eDialogModeType.SaveScenario,
                                            Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex))
         Dim scenarioTarget As cEcospaceScenario = Nothing
 
@@ -3972,8 +3981,8 @@ Public Class frmEwE6
     Private Sub OnUpdateDeleteEcospaceScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcopathLoaded And _
-                      Not m.IsBusy And _
+        cmd.Enabled = m.HasEcopathLoaded And
+                      Not m.IsBusy And
                       Me.Core.nEcospaceScenarios > 0
     End Sub
 
@@ -4231,7 +4240,7 @@ Public Class frmEwE6
         Handles m_cmdImportLayerData.OnInvoke
         Try
             Select Case Me.m_cmdImportLayerData.Format
-                Case eNativeLayerFileFormatTypes.Default, _
+                Case eNativeLayerFileFormatTypes.Default,
                      eNativeLayerFileFormatTypes.XYZ
                     Dim dlg As New dlgImportLayerDataXYZ(Me.UIContext)
                     dlg.Layers = Me.m_cmdImportLayerData.Layers
@@ -4288,11 +4297,11 @@ Public Class frmEwE6
                             Dim bSuccess As Boolean = imp.Save(sfd.FileName)
                             Dim msg As cMessage = Nothing
                             If (bSuccess) Then
-                                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, sfd.FileName), _
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_SUCCESS, sfd.FileName),
                                                    eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
                                 msg.Hyperlink = Path.GetDirectoryName(sfd.FileName)
                             Else
-                                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, sfd.FileName), _
+                                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, sfd.FileName),
                                                    eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
                             End If
 
@@ -4427,8 +4436,8 @@ Public Class frmEwE6
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
-        Dim dlg As New dlgEcotracerScenario(Me.UIContext, _
-                                            dlgEcotracerScenario.eDialogModeType.SaveScenario, _
+        Dim dlg As New dlgEcotracerScenario(Me.UIContext,
+                                            dlgEcotracerScenario.eDialogModeType.SaveScenario,
                                             Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -4484,8 +4493,8 @@ Public Class frmEwE6
     Private Sub OnUpdateDeleteEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdDeleteEcotracerScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcopathLoaded And _
-                      Not m.IsBusy And _
+        cmd.Enabled = m.HasEcopathLoaded And
+                      Not m.IsBusy And
                       Me.Core.nEcotracerScenarios > 0
     End Sub
 
@@ -4891,7 +4900,7 @@ Public Class frmEwE6
 
         Try
             ' Busy loading or unloading Ecopath?
-            If (csm.CoreExecutionState = eCoreExecutionState.Idle) Or _
+            If (csm.CoreExecutionState = eCoreExecutionState.Idle) Or
                (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded) Then
                 ' Set or clear initial nav node
                 Me.UpdateSelectedNode("", (csm.CoreExecutionState = eCoreExecutionState.EcopathLoaded))
@@ -4909,10 +4918,10 @@ Public Class frmEwE6
     Private Sub OnCoreMessage(ByRef msg As cMessage)
         Try
             If msg.Type = eMessageType.DataAddedOrRemoved Then
-                If (msg.DataType = eDataTypes.EcoSimScenario) Or _
-                   (msg.DataType = eDataTypes.EcoSpaceScenario) Or _
-                   (msg.DataType = eDataTypes.EcotracerScenario) Or _
-                   (msg.DataType = eDataTypes.TimeSeriesDataset) Or _
+                If (msg.DataType = eDataTypes.EcoSimScenario) Or
+                   (msg.DataType = eDataTypes.EcoSpaceScenario) Or
+                   (msg.DataType = eDataTypes.EcotracerScenario) Or
+                   (msg.DataType = eDataTypes.TimeSeriesDataset) Or
                    (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
                     Me.PopulateScenarioDropdowns()
                 End If
@@ -4934,19 +4943,37 @@ Public Class frmEwE6
     End Sub
 
 
-    Private Sub m_tsmiEcospaceLoadTimeSeries_Click(sender As Object, e As EventArgs) Handles m_tsmiEcospaceLoadTimeSeries.Click
-        Try '
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+    'Private Sub m_tsmiEcospaceLoadTimeSeries_Click(sender As Object, e As EventArgs) Handles m_tsmiEcospaceLoadXYRefData.Click
+    '    Try '
+    '        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+    '        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
-            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-                Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
-            End If
+    '        cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
+    '        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+    '            Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
+    '        End If
 
-        Catch ex As Exception
+    '    Catch ex As Exception
 
-        End Try
+    '    End Try
+    'End Sub
+
+    Private Sub m_cmdEcospaceLoadXYRefData_OnUpdate(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnUpdate
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
+    End Sub
+
+    Private Sub m_cmdEcospaceLoadXYRefData_OnInvoke(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnInvoke
+        ' actions here
+
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+        cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
+        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+            Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
+        End If
+
     End Sub
 
 
