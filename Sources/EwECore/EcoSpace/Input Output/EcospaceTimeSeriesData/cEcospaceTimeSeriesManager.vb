@@ -87,6 +87,7 @@ Namespace EcospaceTimeSeries
         Private DatSumZ2 As Double
 
         Private m_FileName As String
+        Private m_OutputFilename As String
 
 #End Region
 
@@ -185,6 +186,10 @@ Namespace EcospaceTimeSeries
                 bReturn = False
             End Try
 
+            Me.m_core.Messages.AddMessage(New cMessage("Ecospace Timeseries " + Me.nRecords.ToString + " records loaded.",
+                                                       EwEUtils.Core.eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                       EwEUtils.Core.eMessageImportance.Information))
+
             Me.m_core.Messages.sendAllMessages()
 
             Return bReturn
@@ -282,6 +287,15 @@ Namespace EcospaceTimeSeries
         End Sub
 
 
+        Public Property OuputFileName As String
+            Get
+                Return Me.m_OutputFilename
+            End Get
+            Set(value As String)
+                Me.m_OutputFilename = value
+            End Set
+        End Property
+
         Friend ReadOnly Property Core As cCore
             Get
                 Return Me.m_core
@@ -315,6 +329,12 @@ Namespace EcospaceTimeSeries
             Return Nothing
 
         End Function
+
+        Public ReadOnly Property nRecords As Integer
+            Get
+                Return Me.m_dcDataByDate.Count
+            End Get
+        End Property
 
 
         ''' <summary>
@@ -426,14 +446,18 @@ Namespace EcospaceTimeSeries
         End Function
 
         Private Sub SaveResults()
+
             If Not Me.ContainsData Then
+                'nothing the save
                 Exit Sub
             End If
 
+            Dim msg As Text.StringBuilder
+
             Try
                 Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,SS(log(ObservedValue/PredictedValue)"
-                Dim newFN As String = IO.Path.Combine(IO.Path.GetDirectoryName(Me.m_FileName), IO.Path.GetFileNameWithoutExtension(Me.m_FileName) + "_SS-Results.csv")
-                Dim strm As New IO.StreamWriter(newFN)
+                Dim outPutFileName As String = Me.getDefaultFileName(Me.m_FileName)
+                Dim strm As New IO.StreamWriter(outPutFileName)
                 strm.WriteLine(header)
                 For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
                     For Each rec As cEcospaceTimeSeriesRec In recs
@@ -446,11 +470,21 @@ Namespace EcospaceTimeSeries
                 strm.Close()
 
             Catch ex As Exception
-
+                EwEUtils.Core.cLog.Write(ex, Me.ToString + ".SaveResults() Exception")
+                msg = New Text.StringBuilder
+                msg.Append("Ecospace Timeseries exception saving output file " + ex.Message)
             End Try
 
+            If msg IsNot Nothing Then
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.Any,
+                    EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+            End If
 
         End Sub
+
+        Public Function getDefaultFileName(InputFileName As String) As String
+            Return IO.Path.Combine(IO.Path.GetDirectoryName(Me.m_FileName), IO.Path.GetFileNameWithoutExtension(Me.m_FileName) + "_SS-Results.csv")
+        End Function
 
 
         Private Sub dumpDebugData()

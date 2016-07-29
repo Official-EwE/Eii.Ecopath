@@ -9052,6 +9052,7 @@ Public Class cCore
         Return False
     End Function
 
+
     Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)
 
         Try
