@@ -440,13 +440,11 @@ Namespace ValueWrapper
                         End If
                     Else
 
-                        ' JS 29Jul16: This section should go, but need to find the variables that this conflicts with. I suppose this code was 
-                        ' planted to handle defaulting NumericUpDown controls...
-
-                        ' #No: numerical value provided for a numerical variable
-
-                        ' Ok, here's a tricky bit. For SOME type of variables entering a '0' will clear it. This only
-                        ' applies to numerical variables whose metadata does not allow '0' values.
+                        ' JS 29Jul16: Unique default correction for Single values that cannot be 0,
+                        ' that are estimated by the model, and that have a default of cCore.NULL_VALUE.
+                        ' These variables, such as BiomassInput, EE, GE, QB, PB, etc, can be cleared
+                        ' by entering a 0 in the UI. This rather odd clearing behaviour is maintained for
+                        ' backward compatibility with EwE5.
 
                         ' Is a numerical var?
                         Select Case Me.varType
