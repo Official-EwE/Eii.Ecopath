@@ -26,11 +26,21 @@ Imports EwEUtils
 
 Namespace EcospaceTimeSeries
 
+    Public Enum eTimeSeriesRecValidations
+        isValid
+        MalformedString
+        InvalidDateFormat
+        EmptyRec
+    End Enum
+
     Public Class cEcospaceTimeSeriesManager
 
         'ToDo 27-July-2016 Add Error messages back to the core instead of just Asserts
-        'Done 28-July-2016 Added core messages if read throws an Exception 
-        'Done 28-July-2016 Also sends message if dates or extents are out of bounds
+        '   Done 28-July-2016 Added core messages if read throws an Exception 
+        '   Done 28-July-2016 Also sends message if dates or extents are out of bounds
+        '   Done 29-Jul-2016 Validates records and sends message
+
+        'ToDo 29-July-2016 Added message strings to resources
 
         'ToDo 27-July-2016  Document the file formats (input and output) and how it works
 
@@ -43,6 +53,12 @@ Namespace EcospaceTimeSeries
         'ToDo 27-July-2016 Added Group SS output to Results form
 
         'ToDo 27-July-2016 remove the DebugDump
+
+#Region "Public data/properties"
+
+        Public TimeStepFormatString As String = "yyyy-MM-dd"
+
+#End Region
 
 
 #Region "Private data"
@@ -152,6 +168,7 @@ Namespace EcospaceTimeSeries
 
             Try
                 Dim reader As New cEcospaceTimeSeriesXYZReader(Filename, Me)
+
                 If reader.Read() Then
                     Me.checkDates(reader.StartDate, reader.EndDate)
                     Me.checkExtent(reader.MaxRow, reader.MaxCol)
@@ -263,6 +280,13 @@ Namespace EcospaceTimeSeries
 
             End Try
         End Sub
+
+
+        Friend ReadOnly Property Core As cCore
+            Get
+                Return Me.m_core
+            End Get
+        End Property
 
 
 #End Region
