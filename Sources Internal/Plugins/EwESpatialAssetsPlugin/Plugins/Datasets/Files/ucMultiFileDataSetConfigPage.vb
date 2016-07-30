@@ -27,11 +27,10 @@ Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
 Imports EwECore.SpatialData
+Imports EwECore.Style
 Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -270,7 +269,7 @@ Namespace SpatialData
 
         Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_cmbVarName.Format
-            Dim fmt As New cVarnameTypeFormatter
+            Dim fmt As New cVarnameTypeFormatter()
             e.Value = fmt.GetDescriptor(e.ListItem)
         End Sub
 

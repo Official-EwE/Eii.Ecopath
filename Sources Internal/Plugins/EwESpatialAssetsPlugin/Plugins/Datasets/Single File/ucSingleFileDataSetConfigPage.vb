@@ -24,11 +24,11 @@ Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore.SpatialData
+Imports EwECore.Style
 Imports EwESpatialAssetsPlugin.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
