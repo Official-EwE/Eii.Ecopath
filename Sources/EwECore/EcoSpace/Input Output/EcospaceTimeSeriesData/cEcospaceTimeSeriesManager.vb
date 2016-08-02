@@ -164,13 +164,14 @@ Namespace EcospaceTimeSeries
         ''' <summary>
         ''' Read the Ecospace time series XYZ formatted file 
         ''' </summary>
-        ''' <param name="Filename"></param>
+        ''' <param name="InputFilename"></param>
         ''' <returns></returns>
-        Public Function Read(Filename As String) As Boolean
+        Public Function Load(InputFilename As String, OutputFileName As String) As Boolean
             Dim bReturn As Boolean = True
-            Me.m_FileName = Filename
+            Me.m_FileName = InputFilename
+            Me.m_OutputFilename = OutputFileName
 
-            If Not IO.File.Exists(Filename) Then
+            If Not IO.File.Exists(InputFilename) Then
                 System.Console.WriteLine(Me.ToString + ".Read() file does not exist!")
                 Return False
             End If
@@ -178,7 +179,7 @@ Namespace EcospaceTimeSeries
             Me.InitForRead()
 
             Try
-                Dim reader As New cEcospaceTimeSeriesXYZReader(Filename, Me)
+                Dim reader As New cEcospaceTimeSeriesXYZReader(InputFilename, Me)
 
                 If reader.Read() Then
                     Me.checkDates(reader.StartDate, reader.EndDate)
@@ -297,14 +298,14 @@ Namespace EcospaceTimeSeries
         End Sub
 
 
-        Public Property OuputFileName As String
-            Get
-                Return Me.m_OutputFilename
-            End Get
-            Set(value As String)
-                Me.m_OutputFilename = value
-            End Set
-        End Property
+        'Public Property OutputFileName As String
+        '    Get
+        '        Return Me.m_OutputFilename
+        '    End Get
+        '    Set(value As String)
+        '        Me.m_OutputFilename = value
+        '    End Set
+        'End Property
 
         Friend ReadOnly Property Core As cCore
             Get
@@ -466,8 +467,8 @@ Namespace EcospaceTimeSeries
 
             Try
                 Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
-                Dim outPutFileName As String = Me.getDefaultFileName(Me.m_FileName)
-                Dim strm As New IO.StreamWriter(outPutFileName)
+                '   Dim outPutFileName As String = Me.getDefaultOutputFileName(Me.m_FileName)
+                Dim strm As New IO.StreamWriter(Me.m_OutputFilename)
                 strm.WriteLine(header)
                 For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
                     For Each rec As cEcospaceTimeSeriesRec In recs
@@ -492,7 +493,8 @@ Namespace EcospaceTimeSeries
 
         End Sub
 
-        Public Function getDefaultFileName(InputFileName As String) As String
+        Public Function getDefaultOutputFileName(InputFileName As String) As String
+            Me.m_FileName = InputFileName
             Return IO.Path.Combine(IO.Path.GetDirectoryName(Me.m_FileName), IO.Path.GetFileNameWithoutExtension(Me.m_FileName) + "_SS-Results.csv")
         End Function
 
