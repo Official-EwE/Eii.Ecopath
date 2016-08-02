@@ -53,6 +53,7 @@ Namespace EcospaceTimeSeries
         'ToDo 27-July-2016 Added Group SS output to Results form
 
         'ToDo 27-July-2016 remove the DebugDump
+        '   Done 29-Jul-2016 
 
 #Region "Public data/properties"
 
@@ -99,25 +100,34 @@ Namespace EcospaceTimeSeries
             Me.m_core = Core
             Me.m_SpaceData = EcospaceData
 
+            'Create a new list of cEcospaceTimeSeriesRec
+            Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+
         End Sub
 
 
         Public Sub InitForRun()
 
-            'Clear out the results
-            Me.m_ss = New Double(Me.m_core.nGroups) {}
-            Erpred = New List(Of Double)
+            Try
 
-            Me.DatSumZ = 0.0
-            Me.DatSumZ2 = 0.0
+                'Clear out the results
+                Me.m_ss = New Double(Me.m_core.nGroups) {}
+                Erpred = New List(Of Double)
 
-            'Clear out the results part of the cEcospaceTimeSeriesRec objects
-            For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
-                For Each rec As cEcospaceTimeSeriesRec In recs
-                    rec.PredictedValue = cCore.NULL_VALUE
-                    rec.SS = cCore.NULL_VALUE
+                Me.DatSumZ = 0.0
+                Me.DatSumZ2 = 0.0
+
+                'Clear out the results part of the cEcospaceTimeSeriesRec objects
+                For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
+                    For Each rec As cEcospaceTimeSeriesRec In recs
+                        rec.PredictedValue = cCore.NULL_VALUE
+                        rec.SS = cCore.NULL_VALUE
+                    Next
                 Next
-            Next
+
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 
@@ -455,7 +465,7 @@ Namespace EcospaceTimeSeries
             Dim msg As Text.StringBuilder
 
             Try
-                Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,SS(log(ObservedValue/PredictedValue)"
+                Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
                 Dim outPutFileName As String = Me.getDefaultFileName(Me.m_FileName)
                 Dim strm As New IO.StreamWriter(outPutFileName)
                 strm.WriteLine(header)
