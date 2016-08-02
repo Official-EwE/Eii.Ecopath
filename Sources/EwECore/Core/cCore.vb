@@ -9042,15 +9042,21 @@ Public Class cCore
 
     End Function
 
-    Public Function LoadEcospaceTimeSeriesData(Filename As String) As Boolean
+    'Public Function LoadEcospaceTimeSeriesData(InputFileName As String, OutputFileName As String) As Boolean
 
-        Try
-            Return Me.m_Ecospace.TimeSeriesManager.Read(Filename)
-        Catch ex As Exception
+    '    Try
+    '        Return Me.m_Ecospace.TimeSeriesManager.Load(InputFileName, OutputFileName)
+    '    Catch ex As Exception
 
-        End Try
-        Return False
-    End Function
+    '    End Try
+    '    Return False
+    'End Function
+
+    Public ReadOnly Property EcospaceTimeSeriesManager As EcospaceTimeSeries.cEcospaceTimeSeriesManager
+        Get
+            Return Me.m_EcospaceTimeSeriesManager
+        End Get
+    End Property
 
 
     Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)

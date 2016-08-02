@@ -118,7 +118,6 @@ Namespace EcospaceTimeSeries
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.PredictedValue))
             csvStr.Append(delim)
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.SS))
-            csvStr.Append(delim)
 
             Return csvStr.ToString
         End Function
@@ -129,7 +128,7 @@ Namespace EcospaceTimeSeries
             data = EwEUtils.Utilities.cStringUtils.SplitQualified(recString, ",")
             If data.Length < 5 Then
                 Me.m_validation = eTimeSeriesRecValidations.MalformedString
-                bReturn = False
+                Return False
             End If
             For irec As Integer = 0 To 4
                 If String.IsNullOrEmpty(data(irec)) Then

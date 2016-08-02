@@ -4971,7 +4971,21 @@ Public Class frmEwE6
 
         cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
         If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-            Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
+            Dim InputFile As String = cmdFO.FileNames(0)
+            Dim OutputFile As String = Me.UIContext.Core.EcospaceTimeSeriesManager.getDefaultOutputFileName(InputFile)
+
+            'I couldn't get the cFileSaveCommand object to work the way I wanted
+            'Just use the real thing. I more obvious(er) what's going on.
+            Dim cdSave As New SaveFileDialog
+            cdSave.FileName = OutputFile
+            cdSave.Title = "Select file for Ecospace Timeseries results."
+            cdSave.Filter = "csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*"
+
+            If cdSave.ShowDialog = Windows.Forms.DialogResult.OK Then
+                OutputFile = cdSave.FileName
+            End If
+
+            Me.UIContext.Core.EcospaceTimeSeriesManager.Load(InputFile, OutputFile)
         End If
 
     End Sub
