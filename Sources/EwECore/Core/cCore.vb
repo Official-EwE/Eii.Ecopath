@@ -3799,6 +3799,8 @@ Public Class cCore
 
             Me.m_EcoPath.Clear()
 
+            Me.m_EcospaceTimeSeriesManager.Clear()
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Can't do this the Datasource needs to be Initialized again 
             'which only happens when the plugin is loaded.

@@ -137,7 +137,9 @@ Namespace EcospaceTimeSeries
             Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
         End Sub
 
-
+        Public Sub Clear()
+            Me.m_dcDataByDate.Clear()
+        End Sub
 
 #End Region
 
