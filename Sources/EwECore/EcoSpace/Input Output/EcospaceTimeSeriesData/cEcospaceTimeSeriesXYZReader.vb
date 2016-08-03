@@ -126,7 +126,8 @@ Namespace EcospaceTimeSeries
             If Me.m_dctFailedRecs.Count = 0 Then
                 Return
             End If
-            msg.Append("Ecospace Time Series Failed to read ")
+
+            msg.Append("Ecospace Time Series Failed to read")
             For Each pair As KeyValuePair(Of eTimeSeriesRecValidations, Integer) In Me.m_dctFailedRecs
                 System.Console.WriteLine(pair.Key.ToString + " " + pair.Value.ToString)
                 msg.Append(" " + pair.Value.ToString + " because of " + pair.Key.ToString)

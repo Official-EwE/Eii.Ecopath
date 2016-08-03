@@ -43,10 +43,13 @@ Namespace EcospaceTimeSeries
         'ToDo 29-July-2016 Added message strings to resources
 
         'ToDo 27-July-2016  Document the file formats (input and output) and how it works
+        '   Done 3-Aug-2016
 
         'ToDo 27-July-2016 Let the user selected the output file name. 
         '   Maybe when the user is selecting the input file have them choose the output file
         '   Use the default filename
+        '   Done 3-Aug-2016 the user selects the output file when selecting the input file
+        '       A default is supplied.
 
         'ToDo 27-July-2016 Added SS output to the UI. Results form... Main Run UI some place?
 
@@ -294,7 +297,6 @@ Namespace EcospaceTimeSeries
             End Get
         End Property
 
-
         Public Sub RunCompleted()
             Try
                 Me.SaveResults()
@@ -303,22 +305,11 @@ Namespace EcospaceTimeSeries
             End Try
         End Sub
 
-
-        'Public Property OutputFileName As String
-        '    Get
-        '        Return Me.m_OutputFilename
-        '    End Get
-        '    Set(value As String)
-        '        Me.m_OutputFilename = value
-        '    End Set
-        'End Property
-
         Friend ReadOnly Property Core As cCore
             Get
                 Return Me.m_core
             End Get
         End Property
-
 
 #End Region
 
