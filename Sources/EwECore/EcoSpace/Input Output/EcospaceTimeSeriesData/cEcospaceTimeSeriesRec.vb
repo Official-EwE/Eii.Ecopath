@@ -43,7 +43,7 @@ Namespace EcospaceTimeSeries
         Public TimeStamp As Date = New Date(1, 1, 1)
         Public CellValue As Single = cCore.NULL_VALUE
 
-        Public SS As Double = cCore.NULL_VALUE
+        Public PredError As Double = cCore.NULL_VALUE
         Public PredictedValue As Double = cCore.NULL_VALUE
 
         Public VarType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass
@@ -117,7 +117,7 @@ Namespace EcospaceTimeSeries
             csvStr.Append(delim)
             csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.PredictedValue))
             csvStr.Append(delim)
-            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.SS))
+            csvStr.Append(EwEUtils.Utilities.cStringUtils.ToCSVField(Me.PredError))
 
             Return csvStr.ToString
         End Function

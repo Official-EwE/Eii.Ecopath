@@ -121,7 +121,7 @@ Namespace EcospaceTimeSeries
                 For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
                     For Each rec As cEcospaceTimeSeriesRec In recs
                         rec.PredictedValue = cCore.NULL_VALUE
-                        rec.SS = cCore.NULL_VALUE
+                        rec.PredError = cCore.NULL_VALUE
                     Next
                 Next
 
@@ -158,6 +158,7 @@ Namespace EcospaceTimeSeries
                 'Me.ByDate(date,CreateNew:=True) will create a new list if it doesn't already exist
                 Me.RecsByDate(TimeSeriesRec.TimeStamp, CreateNew:=True).Add(TimeSeriesRec)
             Catch ex As Exception
+                EwEUtils.Core.cLog.Write(ex, "Failed to add Ecospace time series record.")
                 Return False
             End Try
             Return True
@@ -183,6 +184,7 @@ Namespace EcospaceTimeSeries
             Try
                 Dim reader As New cEcospaceTimeSeriesXYZReader(InputFilename, Me)
 
+                'Read will populate the managers list of time series records
                 If reader.Read() Then
                     Me.checkDates(reader.StartDate, reader.EndDate)
                     Me.checkExtent(reader.MaxRow, reader.MaxCol)
@@ -226,31 +228,32 @@ Namespace EcospaceTimeSeries
                     'get a list of all the records for this date
                     For Each Rec As cEcospaceTimeSeriesRec In Me.RecsByDate(TimeStepDate)
 
-                        ' System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
+                        'System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
 
-                        'There is no zero value or bounds checking
-                        'so trap all the errors until we are doing something better
+                        'Trap errors for each record incase the validation missed something
                         Try
 
-                            'log prediction error
-                            zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+                            If Me.isValid(biomass, Rec) Then
+                                'log prediction error
+                                zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
 
-                            'save the predicted and calculated SS values back into the record
-                            Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
-                            Rec.SS = zstat
+                                'save the predicted and calculated SS values back into the record
+                                Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
+                                Rec.PredError = zstat
 
-                            'By Group
-                            Me.m_ss(Rec.iGroupID) += zstat ^ 2
+                                'Debug.Assert(Not Double.IsNaN(zstat))
+                                If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
+                                    'By Group
+                                    Me.m_ss(Rec.iGroupID) += zstat ^ 2
 
-                            'Debug.Assert(Not Double.IsNaN(zstat))
-                            If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
-                                Me.Erpred.Add(zstat)
-                                Me.DatSumZ += zstat
-                                Me.DatSumZ2 += zstat ^ 2
+                                    Me.Erpred.Add(zstat)
+                                    Me.DatSumZ += zstat
+                                    Me.DatSumZ2 += zstat ^ 2
+                                End If
+
+                                'shouldn't happen!
+                                Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
                             End If
-
-                            'shouldn't happen!
-                            Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
 
                         Catch ex As Exception
                             'What to do if a data point throws an exception???
@@ -267,9 +270,10 @@ Namespace EcospaceTimeSeries
                 End If
 
             Catch ex As Exception
-                'This shouldn't happen!
+                'This shouldn't happen during normal execution!
                 'If it does it's some kind of a programming error...Really...
                 Debug.Assert(False, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
+                EwEUtils.Core.cLog.Write(ex)
                 Return False
             End Try
 
@@ -319,6 +323,27 @@ Namespace EcospaceTimeSeries
 #End Region
 
 #Region "Private Methods"
+
+        Private Function isValid(biomass(,,) As Single, Rec As cEcospaceTimeSeriesRec) As Boolean
+
+            Try
+
+                If Not Rec.Row <= Me.m_SpaceData.InRow And Rec.Col <= Me.m_SpaceData.InCol Then
+                    Return False
+                End If
+
+                If biomass(Rec.Row, Rec.Col, Rec.iGroupID) > 0.0 Then
+                    Return True
+                End If
+
+            Catch ex As Exception
+                Return False
+            End Try
+
+            'Failed
+            Return False
+
+        End Function
 
 
         ''' <summary>
@@ -469,8 +494,8 @@ Namespace EcospaceTimeSeries
 
             Try
                 Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
-                '   Dim outPutFileName As String = Me.getDefaultOutputFileName(Me.m_FileName)
                 Dim strm As New IO.StreamWriter(Me.m_OutputFilename)
+                strm.WriteLine(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
                 strm.WriteLine(header)
                 For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
                     For Each rec As cEcospaceTimeSeriesRec In recs
