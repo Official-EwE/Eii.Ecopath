@@ -13348,7 +13348,7 @@ Public Class cCore
                     Case eVarNameFlags.Biomass
                         Debug.Assert(False, "Biomass is not editable from the UI")
 
-                    Case eVarNameFlags.Area, eVarNameFlags.BiomassAreaInput
+                    Case eVarNameFlags.HabitatArea, eVarNameFlags.BiomassAreaInput
                         ' Area or BiomassAreaInput have changed: recalculate B (biomass)
                         m_EcoPathData.Binput(group.Index) = group.BiomassAreaInput * group.Area
                         ' Add to msg
@@ -13685,7 +13685,7 @@ Public Class cCore
 
                 Select Case value.varName
 
-                    Case eVarNameFlags.Area, eVarNameFlags.BiomassAreaInput
+                    Case eVarNameFlags.HabitatArea, eVarNameFlags.BiomassAreaInput
                         ' Set biomass area status
                         Me.Set_PB_QB_GE_BA_Flags(grp)
 

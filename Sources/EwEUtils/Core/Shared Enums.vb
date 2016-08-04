@@ -102,13 +102,15 @@ Namespace Core
         ''' <summary>Numerical position of an item in a list</summary>
         ''' <remarks>This value has replaced former EwE5 indices such as iGroup.</remarks>
         Index
-        ''' <summary>Area surface, as a fraction</summary>
+        ''' <summary>Model area</summary>
         Area
+        ''' <summary>Habitat area fraction</summary>
+        HabitatArea
         ''' <summary>Biomass</summary>
         Biomass
-        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see></summary>
+        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.HabitatArea">Area</see></summary>
         BiomassAreaInput
-        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.Area">Area</see></summary>
+        ''' <summary><see cref="eVarNameFlags.Biomass">Biomass</see> per <see cref="eVarNameFlags.HabitatArea">Area</see></summary>
         BiomassAreaOutput
         ''' <summary>Net. biomass accumulation as entered by the user</summary>
         BioAccumInput

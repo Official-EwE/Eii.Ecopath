@@ -297,7 +297,7 @@ Public Class cEcoPathGroupOutput
         val = New cValue(New Single, eVarNameFlags.GEOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.HabitatArea, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.BioAccumOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
@@ -418,12 +418,12 @@ Public Class cEcoPathGroupOutput
 
     Public Property Area() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Area))
+            Return CSng(GetVariable(eVarNameFlags.HabitatArea))
         End Get
 
         Set(ByVal newValue As Single)
             If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.Area, newValue)
+                SetVariable(eVarNameFlags.HabitatArea, newValue)
             End If
         End Set
 
@@ -1188,11 +1188,11 @@ Public Class cEcoPathGroupOutput
     Public Property AreaStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Area)
+            Return GetStatus(eVarNameFlags.HabitatArea)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Area, value)
+            SetStatus(eVarNameFlags.HabitatArea, value)
         End Set
 
     End Property

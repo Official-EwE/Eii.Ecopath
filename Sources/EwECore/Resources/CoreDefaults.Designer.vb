@@ -722,7 +722,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Area||Habitat area (fraction).
+        '''  Looks up a localized string similar to Area||Model area.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_AREA() As String
             Get
@@ -938,6 +938,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to No. years||Number of years|Number of years that the Ecopath model represents.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_ECOPATHNUMYEARS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ECOPATHNUMYEARS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Number of Ecosim years.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSIMNYEARS() As String
@@ -1042,6 +1051,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_GS() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_GS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Hab. area||Fraction of area useful as habitat.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_HABITATAREA() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_HABITATAREA", resourceCulture)
             End Get
         End Property
         

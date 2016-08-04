@@ -358,7 +358,7 @@
     <value>year</value>
   </data>
   <data name="VARIABLE_AREA" xml:space="preserve">
-    <value>Area||Habitat area (fraction)</value>
+    <value>Area||Model area</value>
   </data>
   <data name="VARIABLE_AUTHOR" xml:space="preserve">
     <value>Author</value>
@@ -429,6 +429,9 @@
   <data name="VARIABLE_ECOPATHFIRSTYEAR" xml:space="preserve">
     <value>Year|||First year for the Ecopath model</value>
   </data>
+  <data name="VARIABLE_ECOPATHNUMYEARS" xml:space="preserve">
+    <value>No. years||Number of years|Number of years that the Ecopath model represents</value>
+  </data>
   <data name="VARIABLE_ECOSIMNYEARS" xml:space="preserve">
     <value>Number of Ecosim years</value>
   </data>
@@ -464,6 +467,9 @@
   </data>
   <data name="VARIABLE_GS" xml:space="preserve">
     <value>GS||Unassim. consumption|Unassimilated consumption</value>
+  </data>
+  <data name="VARIABLE_HABITATAREA" xml:space="preserve">
+    <value>Hab. area||Fraction of area useful as habitat</value>
   </data>
   <data name="VARIABLE_IMMIG" xml:space="preserve">
     <value>Immigration</value>

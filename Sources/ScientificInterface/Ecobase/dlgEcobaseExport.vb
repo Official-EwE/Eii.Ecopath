@@ -105,7 +105,7 @@ Public Class dlgEcobaseExport
         Me.m_fpFirstYear.Value = model.FirstYear
         Me.m_fpLastYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelLastYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathNumYears))
         Me.m_fpLastYear.Value = Math.Max(model.NumYears - 1 + model.FirstYear, model.FirstYear)
-        Me.m_fpArea = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelArea, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.Area))
+        Me.m_fpArea = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelArea, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.HabitatArea))
         Me.m_fpArea.Value = model.Area
 
         ' -- Publication page --

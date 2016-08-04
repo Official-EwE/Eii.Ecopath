@@ -85,7 +85,7 @@ Public Class cEcoPathGroupInput
 
         'Area
         meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.HabitatArea, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'BioAccum
@@ -94,7 +94,7 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'biomass set to NULL_VALUE when cleared
-        meta = New cVariableMetaData(0, Single.MaxValue, _
+        meta = New cVariableMetaData(0, Single.MaxValue,
                 cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE) ' When value missing set this input to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Biomass))
         m_values.Add(val.varName, val)
@@ -110,15 +110,15 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'EE set to NULL_VALUE when cleared
-        meta = New cVariableMetaData(0, 1, _
-                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
+        meta = New cVariableMetaData(0, 1,
+                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
                 cCore.NULL_VALUE) ' When value missing set this input to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.EEInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EEInput))
         m_values.Add(val.varName, val)
 
         'OtherMortInput set to NULL_VALUE when cleared
-        meta = New cVariableMetaData(0, 1, _
-                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
+        meta = New cVariableMetaData(0, 1,
+                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
                 cCore.NULL_VALUE) ' When value missing set this input to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.OtherMortInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.OtherMortInput))
         m_values.Add(val.varName, val)
@@ -134,8 +134,8 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'GE
-        meta = New cVariableMetaData(0, 1, _
-                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
+        meta = New cVariableMetaData(0, 1,
+                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
                 cCore.NULL_VALUE) ' When value missing set this to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.GEInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.GEInput))
         m_values.Add(val.varName, val)
@@ -146,8 +146,8 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'PB
-        meta = New cVariableMetaData(0, Single.MaxValue, _
-                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
+        meta = New cVariableMetaData(0, Single.MaxValue,
+                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
                 cCore.NULL_VALUE) ' When value missing set this to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.PBInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.PBInput))
         m_values.Add(val.varName, val)
@@ -158,8 +158,8 @@ Public Class cEcoPathGroupInput
         m_values.Add(val.varName, val)
 
         'QB
-        meta = New cVariableMetaData(0, Single.MaxValue, _
-                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
+        meta = New cVariableMetaData(0, Single.MaxValue,
+                cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
                 cCore.NULL_VALUE) ' When value missing set this to CORE_NULL
         val = New cValue(New Single, eVarNameFlags.QBInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QBInput))
         m_values.Add(val.varName, val)
@@ -383,11 +383,11 @@ Public Class cEcoPathGroupInput
     ''' -----------------------------------------------------------------------
     Public Property Area() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.Area))
+            Return CSng(GetVariable(eVarNameFlags.HabitatArea))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.Area, value)
+            SetVariable(eVarNameFlags.HabitatArea, value)
         End Set
 
     End Property
@@ -786,11 +786,11 @@ Public Class cEcoPathGroupInput
     Public Property AreaStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.Area)
+            Return GetStatus(eVarNameFlags.HabitatArea)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.Area, value)
+            SetStatus(eVarNameFlags.HabitatArea, value)
         End Set
 
     End Property

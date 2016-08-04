@@ -62,7 +62,7 @@ Public Class cVariableMetadataFactory
         Dim unitsCurrAreaTime As eUnitType() = New eUnitType() {eUnitType.Currency, eUnitType.Area, eUnitType.Time}
 
         ' -- Ecopath group inputs --
-        Me.Metadata(eVarNameFlags.Area) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
+        Me.Metadata(eVarNameFlags.HabitatArea) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
                                                         cCore.NULL_VALUE, _
                                                         unitsProp)
         Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _

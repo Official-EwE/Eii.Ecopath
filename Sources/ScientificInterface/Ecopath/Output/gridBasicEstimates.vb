@@ -66,7 +66,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(eVarNameFlags.TTLX)
-            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.Area)
+            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.HabitatArea)
             Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaOutput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
             Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
             Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
@@ -144,7 +144,7 @@ Namespace Ecopath.Output
             End If
 
             Me(iRow, eColumnTypes.TL) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.TTLX)
-            Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
+            Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.HabitatArea)
             Me(iRow, eColumnTypes.BArea) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaOutput)
             Me(iRow, eColumnTypes.B) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Biomass)
             Me(iRow, eColumnTypes.BA) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumOutput)
