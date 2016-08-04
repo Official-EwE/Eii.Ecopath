@@ -244,7 +244,7 @@ Download and install a recent version of Ecopath 5 to update your database. Once
     <value>Please select a model to convert to EwE6.</value>
   </data>
   <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
-    <value>{0} connection/s</value>
+    <value> ({0} connection/s)</value>
     <comment>{0}=connection count</comment>
   </data>
   <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
@@ -13082,5 +13082,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="ECOBASE_ERROR_BALANCE" xml:space="preserve">
     <value>This model cannot be exported to EcoBase because it does not mass-balance</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING" xml:space="preserve">
+    <value> (Ecosim biomass forcing)</value>
   </data>
 </root>
