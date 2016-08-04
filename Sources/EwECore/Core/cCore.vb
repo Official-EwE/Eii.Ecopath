@@ -9425,6 +9425,12 @@ Public Class cCore
 
             'If Ecospace has not loaded then we can't update its IO objects
             If Me.m_StateMonitor.HasEcospaceLoaded Then
+
+                If Not Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded Then
+                    Me.m_EcoSpaceData.UseEcosimForcing = False
+                    Me.m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimForcing
+                End If
+
                 Me.m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
                 Me.m_publisher.SendMessage(New cMessage("Ecospace biomass forcing from Ecosim", eMessageType.DataModified,
                                                         eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
@@ -13849,6 +13855,10 @@ Public Class cCore
 
                     Case eVarNameFlags.EcospaceFirstOutputTimeStep
                         Me.updateEcospaceResultsWriters()
+
+                    Case eVarNameFlags.EcospaceUseEcosimBiomassForcing
+                        Me.m_publisher.AddMessage(New cMessage("Ecospace use Ecosim biomass forcing.", eMessageType.DataModified,
+                                                                  eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceModelParameter))
 
 
                 End Select 'Select Case value.varName

@@ -232,14 +232,18 @@ Public Class cEwEStatusBar
                 strTooltip = cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP,
                                            spaceScenario.Name,
                                            Me.ToTooltipLabel(spaceScenario.Description))
-                Dim man As cSpatialDataConnectionManager = core.SpatialDataConnectionManager
-                Dim n As Integer = man.NumConnectedAdapters
+
+                strName = spaceScenario.Name
+
+                Dim n As Integer = core.SpatialDataConnectionManager.NumConnectedAdapters
+
                 If (n > 0) Then
-                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name,
-                                            cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, n))
-                Else
-                    strName = spaceScenario.Name
+                    strName = strName & cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, n)
                 End If
+                If core.EcospaceModelParameters.UseEcosimBiomassForcing Then
+                    strName = strName & My.Resources.STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING
+                End If
+
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, strName, strTooltip)
             Else
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
