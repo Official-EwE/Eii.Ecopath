@@ -169,7 +169,7 @@ Namespace Ecospace.Controls
             Dim iRow As Integer = 0
             Dim iDS As Integer = 1
             Dim cell As EwECell = Nothing
-            Dim vnLast As eVarNameFlags = eVarNameFlags.Area
+            Dim vnLast As eVarNameFlags = eVarNameFlags.HabitatArea
             Dim hgc As EwEHierarchyGridCell = Nothing
             Dim vizParent As New cVisualizerEwEParentRowHeader()
             Dim vizKiddo As New cVisualizerEwEChildRowHeader()

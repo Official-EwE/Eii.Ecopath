@@ -1461,7 +1461,7 @@ Namespace Database
                 ' Translate col to varname
                 Select Case CInt(reader("paramNum"))
                     Case 1 ' feeding type, not used anymore in EwE5
-                    Case 2 : varName = eVarNameFlags.Area
+                    Case 2 : varName = eVarNameFlags.HabitatArea
                     Case 3 : varName = eVarNameFlags.BiomassAreaInput
                     Case 4 : varName = eVarNameFlags.PBInput
                     Case 5 : varName = eVarNameFlags.QBInput

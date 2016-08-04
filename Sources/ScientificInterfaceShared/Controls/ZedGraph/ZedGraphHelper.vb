@@ -85,9 +85,9 @@ Namespace Controls
             ''' <param name="strLabel">Label of the curve. If not provided, the
             ''' curve label is obtained from the core data object.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal src As ICoreInterface, _
-                           ByVal uic As cUIContext, _
-                           Optional ByVal strLabel As String = "", _
+            Public Sub New(ByVal src As ICoreInterface,
+                           ByVal uic As cUIContext,
+                           Optional ByVal strLabel As String = "",
                            Optional ByVal tag As Object = Nothing)
 
                 ' Sanity checks
@@ -169,7 +169,7 @@ Namespace Controls
                     If Not String.IsNullOrEmpty(Me.m_strLabel) Then Return Me.m_strLabel
                     ' Deduct from source
                     If Me.m_source IsNot Nothing Then
-                        Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, _
+                        Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED,
                                              Me.m_source.Index, Me.m_source.Name)
                     End If
                     ' Hmm...
@@ -441,8 +441,8 @@ Namespace Controls
         ''' Make sure to cleanup using <see cref="Detach">Detach</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Attach(ByVal uic As cUIContext, _
-                                      ByVal zgc As ZedGraphControl, _
+        Public Overridable Sub Attach(ByVal uic As cUIContext,
+                                      ByVal zgc As ZedGraphControl,
                                       Optional ByVal iNumPanels As Integer = 1)
 
             ' Sanity checks
@@ -649,15 +649,15 @@ Namespace Controls
         ''' is configured.</param>
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
-            ByVal strXAxisLabel As String, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
-            ByVal strYAxisLabel As String, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
-            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
+        Public Overridable Function ConfigurePane(ByVal strTitle As String,
+            ByVal strXAxisLabel As String, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double,
+            ByVal strYAxisLabel As String, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double,
+            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
             Optional ByVal iPane As Integer = 1) As GraphPane
 
-            Return Me.ConfigurePane(strTitle, _
-                                    strXAxisLabel, Nothing, dXAxisMin, dXAxisMax, _
-                                    strYAxisLabel, Nothing, dYAxisMin, dYAxisMax, _
+            Return Me.ConfigurePane(strTitle,
+                                    strXAxisLabel, Nothing, dXAxisMin, dXAxisMax,
+                                    strYAxisLabel, Nothing, dYAxisMin, dYAxisMax,
                                     bShowLegend, legendPos, iPane)
 
         End Function
@@ -681,15 +681,15 @@ Namespace Controls
         ''' is configured.</param>
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
-            ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double, _
-            ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double, _
-            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
+        Public Overridable Function ConfigurePane(ByVal strTitle As String,
+            ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double,
+            ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double,
+            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
             Optional ByVal iPane As Integer = 1) As GraphPane
 
-            Dim gp As GraphPane = Me.ConfigurePane(strTitle, _
-                                                   strXAxisLabel, aUnitsXAxis, _
-                                                   strYAxisLabel, aUnitsYAxis, _
+            Dim gp As GraphPane = Me.ConfigurePane(strTitle,
+                                                   strXAxisLabel, aUnitsXAxis,
+                                                   strYAxisLabel, aUnitsYAxis,
                                                    bShowLegend, legendPos, iPane)
             With gp
 
@@ -723,9 +723,9 @@ Namespace Controls
         ''' is configured.</param>
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
-             ByVal strXAxisLabel As String, ByVal strYAxisLabel As String, _
-             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
+        Public Overridable Function ConfigurePane(ByVal strTitle As String,
+             ByVal strXAxisLabel As String, ByVal strYAxisLabel As String,
+             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
              Optional ByVal iPane As Integer = 1) As GraphPane
 
             Return Me.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
@@ -747,10 +747,10 @@ Namespace Controls
         ''' is configured.</param>
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ConfigurePane(ByVal strTitle As String, _
-             ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, _
-             ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, _
-             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter, _
+        Public Overridable Function ConfigurePane(ByVal strTitle As String,
+             ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType,
+             ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType,
+             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
              Optional ByVal iPane As Integer = 1) As GraphPane
 
             Me.m_bShowLegend = bShowLegend
@@ -808,10 +808,10 @@ Namespace Controls
         ''' <remarks>Note that this method clears out all lines existing in the
         ''' indicated panel.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub PlotLines(ByVal lines() As LineItem, _
-                                         Optional ByVal iPane As Integer = 1, _
-                                         Optional ByVal bRescale As Boolean = True, _
-                                         Optional ByVal bClear As Boolean = True, _
+        Public Overridable Sub PlotLines(ByVal lines() As LineItem,
+                                         Optional ByVal iPane As Integer = 1,
+                                         Optional ByVal bRescale As Boolean = True,
+                                         Optional ByVal bClear As Boolean = True,
                                          Optional ByVal bCumulative As Boolean = False)
             Try
 
@@ -1229,12 +1229,12 @@ Namespace Controls
         ''' <remarks>All other source types will be rejected.</remarks>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateLineItem(ByVal src As ICoreInterface, _
-                                                   ByVal ppl As PointPairList, _
-                                                   Optional ByVal strLabel As String = "", _
+        Public Overridable Function CreateLineItem(ByVal src As ICoreInterface,
+                                                   ByVal ppl As PointPairList,
+                                                   Optional ByVal strLabel As String = "",
                                                    Optional ByVal tag As Object = Nothing) As LineItem
             ' SAnity check
-            Debug.Assert(TypeOf (src) Is cCoreGroupBase Or TypeOf (src) Is cFleetInput Or _
+            Debug.Assert(TypeOf (src) Is cCoreGroupBase Or TypeOf (src) Is cFleetInput Or
                          TypeOf (src) Is cGroupTimeSeries Or TypeOf (src) Is cFleetTimeSeries)
             Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel, tag), ppl)
         End Function
@@ -1403,14 +1403,14 @@ Namespace Controls
                 End If
 
                 Dim pp As PointPair = curve(iPoint)
-                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, _
-                                     curve.Label.Text, _
-                                     Me.StyleGuide.FormatNumber(pp.X), _
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT,
+                                     curve.Label.Text,
+                                     Me.StyleGuide.FormatNumber(pp.X),
                                      Me.StyleGuide.FormatNumber(pp.Y))
             ElseIf curve.IsPie Then
                 Dim slice As PieItem = DirectCast(curve, PieItem)
-                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
-                                     slice.Label.Text, _
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED,
+                                     slice.Label.Text,
                                      Me.StyleGuide.FormatNumber(slice.Value))
             End If
             Return ""
@@ -1428,9 +1428,9 @@ Namespace Controls
             Protected m_aUnitTypes() As eUnitType
             Protected m_strUnitMask As String = ""
 
-            Public Sub New(ByVal uic As cUIContext, _
-                           ByVal axis As Axis, _
-                           ByVal strUnitMask As String, _
+            Public Sub New(ByVal uic As cUIContext,
+                           ByVal axis As Axis,
+                           ByVal strUnitMask As String,
                            ByVal aUnitTypes() As eUnitType)
 
                 Me.m_uic = uic
@@ -1459,8 +1459,8 @@ Namespace Controls
             Me.m_zgc.Refresh()
         End Sub
 
-        Public Sub AxisLabel(ByVal axis As Axis, _
-                             ByVal strLabel As String, _
+        Public Sub AxisLabel(ByVal axis As Axis,
+                             ByVal strLabel As String,
                              Optional ByVal aUnitTypes() As eUnitType = Nothing)
             If String.IsNullOrEmpty(strLabel) Then
                 Try
@@ -1564,7 +1564,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get all lines tagged as <see cref="eLineType.ModelData">model data</see>
+        ''' Get all tagged data lines.
         ''' from a graph pane.
         ''' </summary>
         ''' <param name="iPane">The index of the graph pane to check.</param>
@@ -1582,9 +1582,9 @@ Namespace Controls
                         ' Get curve info
                         info = Me.CurveInfo(ci)
                         bIncludeCurve = True
-                        'If (info IsNot Nothing) Then
-                        '    bIncludeCurve = (info.LineType = eLineType.ModelData)
-                        'End If
+                        If (info IsNot Nothing) Then
+                            bIncludeCurve = (info.LineType <> eSketchDrawModeTypes.NotSet)
+                        End If
                         If bIncludeCurve Then
                             lLines.Add(ci)
                         End If
@@ -1879,7 +1879,7 @@ Namespace Controls
             If cmdFS.Result = DialogResult.OK Then
                 If Me.WriteDataToCSV(cmdFS.FileName) Then
                     ' ToDo: globalize this
-                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.GENERIC_FILESAVE_SUCCES, "Graph data", cmdFS.FileName), _
+                    Dim msg As New cMessage(cStringUtils.Localize(My.Resources.GENERIC_FILESAVE_SUCCES, "Graph data", cmdFS.FileName),
                                             eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
                     Me.m_uic.Core.Messages.SendMessage(msg)
@@ -1958,10 +1958,10 @@ Namespace Controls
         ''' After Joe Hui's Particle Size Distribution implementation.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Sub FindRegression(ByVal ppl As PointPairList, _
-                                     ByRef sSlope As Single, ByRef sSlopeStdErr As Single, _
-                                     ByRef sIntercept As Single, ByRef sInterceptStdErr As Single, _
-                                     ByRef sCorrelation As Single, ByRef sMin As Single, ByRef sMax As Single, _
+        Protected Sub FindRegression(ByVal ppl As PointPairList,
+                                     ByRef sSlope As Single, ByRef sSlopeStdErr As Single,
+                                     ByRef sIntercept As Single, ByRef sInterceptStdErr As Single,
+                                     ByRef sCorrelation As Single, ByRef sMin As Single, ByRef sMax As Single,
                                      ByRef iSampleSize As Integer)
 
             Dim ptp As PointPair = Nothing
@@ -2022,7 +2022,7 @@ Namespace Controls
             sSlopeStdErr = CSng(dEstStdErr / (Math.Sqrt(iNum - 1) * dXStdDev))
             sInterceptStdErr = CSng(dEstStdErr * Math.Sqrt((1 / iNum) + (dXMean ^ 2 / ((iNum - 1) * dXStdDev ^ 2))))
 
-            sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) / _
+            sCorrelation = CSng((iNum * dSumXY - dSumX * dSumY) /
                            (Math.Sqrt(iNum * dSumXSq - dSumX ^ 2) * Math.Sqrt(iNum * dSumYSq - dSumY ^ 2)))
             sMin = CSng(dXMin)
             sMax = CSng(dXMax)
@@ -2039,8 +2039,8 @@ Namespace Controls
         ''' <param name="sIntercept"></param>
         ''' <param name="iSampleSize"></param>
         ''' -------------------------------------------------------------------       
-        Protected Sub FindRegression(ByVal ppl As PointPairList, _
-                                     ByRef sSlope As Single, ByRef sIntercept As Single, _
+        Protected Sub FindRegression(ByVal ppl As PointPairList,
+                                     ByRef sSlope As Single, ByRef sIntercept As Single,
                                      ByRef iSampleSize As Integer)
 
             Dim ptp As PointPair = Nothing
@@ -2086,7 +2086,7 @@ Namespace Controls
                 Me.UpdateColours()
             End If
 
-            If ((changeType And cStyleGuide.eChangeType.GroupVisibility) > 0) Or _
+            If ((changeType And cStyleGuide.eChangeType.GroupVisibility) > 0) Or
                ((changeType And cStyleGuide.eChangeType.FleetVisibility) > 0) Then
                 Me.UpdateCurveVisibility()
             End If
@@ -2181,7 +2181,7 @@ Namespace Controls
         ''' <param name="ppl"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function CreateLineItem(ByVal info As cCurveInfo, _
+        Protected Overridable Function CreateLineItem(ByVal info As cCurveInfo,
                                                       ByVal ppl As PointPairList) As LineItem
 
             Dim li As LineItem = Nothing
@@ -2317,7 +2317,7 @@ Namespace Controls
         ''' <param name="iPane"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Protected Function ContainsCurve(ByVal item As cCurveInfo, _
+        Protected Function ContainsCurve(ByVal item As cCurveInfo,
                                          Optional ByVal iPane As Integer = 1) As Boolean
 
             Dim pane As GraphPane = Me.GetPane(iPane)

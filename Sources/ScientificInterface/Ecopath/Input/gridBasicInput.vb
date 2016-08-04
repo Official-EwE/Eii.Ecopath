@@ -68,7 +68,7 @@ Namespace Ecopath.Input
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.Area)
+            Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.HabitatArea)
             Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
             Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Time)
             Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBInput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
@@ -105,7 +105,7 @@ Namespace Ecopath.Input
                     iRow = Me.AddRow()
                     Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                     Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Area)
+                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.HabitatArea)
 
                     cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BiomassAreaInput)
                     cell.SuppressZero = True
@@ -155,7 +155,7 @@ Namespace Ecopath.Input
 
                     Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                     Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Area)
+                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.HabitatArea)
 
                     cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BiomassAreaInput)
                     cell.Behaviors.Add(Me.EwEEditHandler)

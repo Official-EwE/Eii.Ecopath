@@ -132,7 +132,7 @@ Public Class cEwEModel
 
             ' Time unit (text)
             meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+            val = New cValue(New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
@@ -145,14 +145,14 @@ Public Class cEwEModel
 
             ' Currency unit (text)
             meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+            val = New cValue(New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Monetary unit (enum)
             meta = New cVariableMetaData(4)
-            val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+            val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
@@ -165,7 +165,7 @@ Public Class cEwEModel
 
             ' Area unit (text)
             meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
+            val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
