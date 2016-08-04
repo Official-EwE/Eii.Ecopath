@@ -640,7 +640,6 @@ Public Class frmEwE6
         Me.m_cmdEcospaceConfigureConnection = New cEcospaceConfigureConnectionCommand(cmdh)
 
         Me.m_cmdEcospaceManageConfigs = New cCommand(cmdh, "ManageSpatialDatasetConfigurations")
-        Me.m_cmdEcospaceManageConfigs.AddControl(Me.m_tsmiEcospaceManageConfigurations)
 
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
         Me.m_cmdImportLayerData.AddControl(Me.m_tsmiEcospaceImportLayers)
