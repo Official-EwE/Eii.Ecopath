@@ -252,6 +252,21 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceUseEcosimBiomassForcing, eStatusFlags.Null, eValueTypes.Bool,
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceIsEcosimBioForcingLoaded, eStatusFlags.Null, eValueTypes.Bool,
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             'set status flags to default values
             ResetStatusFlags()
 
@@ -702,6 +717,30 @@ Public Class cEcospaceModelParameters
 
     End Property
 
+
+    Public Property UseEcosimBiomassForcing() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing, value)
+        End Set
+
+    End Property
+
+    Public Property IsEcosimBiomassForcingLoaded() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceIsEcosimBioForcingLoaded))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceIsEcosimBioForcingLoaded, value)
+        End Set
+
+    End Property
     ''' <summary>
     ''' User defined output directory for Ecospace Area Average results
     ''' </summary>

@@ -768,7 +768,9 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Is the Ecosim biomass time series forcing enabled for this group
     ''' </summary>
-    Public IsEcosimBioForcingEnabled() As Boolean
+    Public IsEcosimBioForcingGroup() As Boolean
+
+    Public UseEcosimForcing As Boolean
 
 #End Region
 
@@ -895,6 +897,21 @@ Public Class cEcospaceDataStructures
         End Get
     End Property
 
+
+    Public ReadOnly Property isEcosimBiomassForcingLoaded As Boolean
+        Get
+            For igrp As Integer = 1 To Me.NGroups
+                'if IsEcosimBioForcingGroup() is true for any group
+                'then Ecosim biomass forcing is loaded! really...
+                If Me.IsEcosimBioForcingGroup(igrp) Then
+                    Return True
+                End If
+            Next
+            Return False
+        End Get
+    End Property
+
+
 #End Region
 
 #Region "Public Methods"
@@ -910,6 +927,7 @@ Public Class cEcospaceDataStructures
         Me.InRow = 0
         Me.nvartot = 0
         Me.NoHabitats = 0
+        Me.UseEcosimForcing = False
 
         Try
 
@@ -1962,7 +1980,7 @@ Public Class cEcospaceDataStructures
             ReDim EcopathGroupDBID(m_ngroups)
             ReDim CapCalType(m_ngroups)
 
-            ReDim IsEcosimBioForcingEnabled(m_ngroups)
+            ReDim IsEcosimBioForcingGroup(m_ngroups)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimGroupDBID() Error: " & ex.Message)

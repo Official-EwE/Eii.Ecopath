@@ -373,7 +373,7 @@ Public Class cTimeSeriesDataStructures
     End Function
 
     ''' <summary>
-    ''' Set <see cref="cEcospaceDataStructures.IsEcosimBioForcingEnabled">cEcospaceDataStructures.IsEcosimBioForcingEnabled()</see> 
+    ''' Set <see cref="cEcospaceDataStructures.IsEcosimBioForcingGroup">cEcospaceDataStructures.IsEcosimBioForcingEnabled()</see> 
     ''' = True for all groups that have Ecosim Biomass Forcing time series loaded. This forces the Ecospace biomass with the Ecosim forcing time series.
     ''' </summary>
     ''' <param name="isEcospaceGroupForced"></param>
