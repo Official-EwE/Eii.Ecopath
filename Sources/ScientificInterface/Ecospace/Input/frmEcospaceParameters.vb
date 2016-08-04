@@ -73,6 +73,7 @@ Namespace Ecospace
         Private m_fpAnnualOutput As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
+        Private m_fpUseBiomassForcing As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
 
 
@@ -163,9 +164,13 @@ Namespace Ecospace
             Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceUseAnnualOutput)
 
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
+
+            Me.m_fpUseBiomassForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimForcing, parms, eVarNameFlags.EcospaceUseEcosimBiomassForcing)
+            Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
+
             Me.UpdateScenarioFormatProviders()
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
 
         End Sub
 
@@ -195,6 +200,7 @@ Namespace Ecospace
                 Me.m_fpMaxIterations.Release()
                 Me.m_fpUseExact.Release()
                 Me.m_fpMovePackets.Release()
+                Me.m_fpUseBiomassForcing.Release()
                 Me.m_fpAnnualOutput.Release()
 
                 Me.m_fpFirstOutputTimestep.Release()
@@ -266,8 +272,18 @@ Namespace Ecospace
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
 
+
             Me.m_bInUpdate = False
 
+        End Sub
+
+
+        Private Sub UpdateToTimeseriesChanges()
+            Try
+                Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Form content handling
@@ -409,6 +425,11 @@ Namespace Ecospace
             If ((msg.Source = eCoreComponentType.Core) And (msg.Type = eMessageType.GlobalSettingsChanged)) Then
                 Me.UpdateControls()
             End If
+
+            If msg.Source = eCoreComponentType.EcoSpace And msg.Type = eMessageType.DataModified Then
+                Me.UpdateToTimeseriesChanges()
+            End If
+
         End Sub
 
 #End Region ' Overrides

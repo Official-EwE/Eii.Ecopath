@@ -1521,8 +1521,11 @@ Public Class cEcoSpace
         'System.Console.WriteLine("WARNING: Ecospace biomass forced by Ecosim biomass forcing!")
 
         Try
-            'What timeseries are available for forced catches?
-            'Dim ix As Single = Me.EcoSim.TimeSeriesData.PoolForceBB(, )
+
+            If Not Me.m_Data.UseEcosimForcing Then
+                'User has turned OFF the Ecosim Biomass forcing
+                Exit Sub
+            End If
 
             Dim iForcingIndex As Integer = Me.m_refdata.toForcingTimeStep(iTime, m_Data.YearNow)
 
@@ -1534,7 +1537,7 @@ Public Class cEcoSpace
                 'loop over the Ecosim time series and find the group with forced biomass for this time step
                 'AAAAH Group 1 is forced (as an example, so let's force the biomass of this group
                 'If ip = 1 Then
-                If Me.m_Data.IsEcosimBioForcingEnabled(ip) Then
+                If Me.m_Data.IsEcosimBioForcingGroup(ip) Then
 
                     'jb Only if there is valid data for this timestep
                     If Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex) > 0 Then

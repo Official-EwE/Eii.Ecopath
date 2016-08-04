@@ -1928,16 +1928,13 @@ Public Class cCore
                 End If
                 Me.UpdateTimeSeries()
 
-                'Set Default Ecospace Biomass Forcing values
-                'all groups that have Ecosim biomass forcing will be forced in Ecospace
-                Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
-
                 ' Invalidate Ecosim outputs
                 Me.m_StateMonitor.SetEcoSimLoaded(True, TriState.True)
             End If
         End If
         Return bSucces
     End Function
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -2054,7 +2051,9 @@ Public Class cCore
             Me.setEcosimRunLength(Me.m_EcoSimData.NumYears, True)
         End If
 
-        Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
+        'Set Default Ecospace Biomass Forcing values
+        'all groups that have Ecosim biomass forcing will be forced in Ecospace
+        Me.UpdateEcospaceBioForcedByEcosim()
 
         'reset all efforts that were unloaded/disabled
         Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
@@ -8711,6 +8710,8 @@ Public Class cCore
 
 #End Region ' Variables
 
+#Region "Ecospace Public Methods"
+
     Public ReadOnly Property SpatialDataConnectionManager As SpatialData.cSpatialDataConnectionManager
         Get
             Return Me.m_spatialdataconnectionManager
@@ -9285,6 +9286,10 @@ Public Class cCore
         End Try
     End Sub
 
+#End Region
+
+#Region "Ecospace Private Methods"
+
     ''' <summary>
     ''' This gets call by Ecospace at every time step
     ''' </summary>
@@ -9412,6 +9417,27 @@ Public Class cCore
 
     End Sub
 
+
+    Private Sub UpdateEcospaceBioForcedByEcosim()
+        Try
+
+            Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
+
+            'If Ecospace has not loaded then we can't update its IO objects
+            If Me.m_StateMonitor.HasEcospaceLoaded Then
+                Me.m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
+                Me.m_publisher.SendMessage(New cMessage("Ecospace biomass forcing from Ecosim", eMessageType.DataModified,
+                                                        eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
+#End Region
 
 #Region " Ecospace interface objects "
 
@@ -9846,7 +9872,7 @@ Public Class cCore
                 Return False
             End If
 
-            Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingEnabled)
+            Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
 
 
             ' JS 12dec10: This seems wrong; Ecosim and Ecospace can run with different numbers of years.
@@ -10270,6 +10296,10 @@ Public Class cCore
 
             m_EcospaceModelParams.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
 
+            m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimForcing
+
+            m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
+
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
 
@@ -10330,6 +10360,7 @@ Public Class cCore
 
         Me.m_EcoSpaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
 
+        Me.m_EcoSpaceData.UseEcosimForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
 
         Return True
 

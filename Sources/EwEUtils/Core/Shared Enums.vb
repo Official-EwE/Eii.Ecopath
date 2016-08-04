@@ -655,6 +655,13 @@ Namespace Core
 
         EcospaceFirstOutputTimeStep
 
+        ''' <summary>Can Ecospace use Ecosim biomass forcing time series</summary>
+        EcospaceUseEcosimBiomassForcing
+
+        ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded. 
+        ''' This does not tell Ecospace to use the time series just that it is available to be used.</summary>
+        EcospaceIsEcosimBioForcingLoaded
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''

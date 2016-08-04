@@ -75,6 +75,7 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
+            Me.m_cbUseEcosimForcing = New System.Windows.Forms.CheckBox()
             Me.m_cbAnnualOutput = New System.Windows.Forms.CheckBox()
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
             Me.Label2 = New System.Windows.Forms.Label()
@@ -324,6 +325,7 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
+            Me.m_gbRunTime.Controls.Add(Me.m_cbUseEcosimForcing)
             Me.m_gbRunTime.Controls.Add(Me.m_cbAnnualOutput)
             Me.m_gbRunTime.Controls.Add(Me.m_clbAutosave)
             Me.m_gbRunTime.Controls.Add(Me.Label2)
@@ -344,6 +346,12 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
+            '
+            'm_cbUseEcosimForcing
+            '
+            resources.ApplyResources(Me.m_cbUseEcosimForcing, "m_cbUseEcosimForcing")
+            Me.m_cbUseEcosimForcing.Name = "m_cbUseEcosimForcing"
+            Me.m_cbUseEcosimForcing.UseVisualStyleBackColor = True
             '
             'm_cbAnnualOutput
             '
@@ -728,6 +736,7 @@ Namespace Ecospace
         Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Friend WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
         Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
+        Friend WithEvents m_cbUseEcosimForcing As CheckBox
     End Class
 
 End Namespace
