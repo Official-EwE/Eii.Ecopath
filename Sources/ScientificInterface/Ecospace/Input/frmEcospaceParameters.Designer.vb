@@ -75,7 +75,6 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
-            Me.m_cbUseEcosimForcing = New System.Windows.Forms.CheckBox()
             Me.m_cbAnnualOutput = New System.Windows.Forms.CheckBox()
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
             Me.Label2 = New System.Windows.Forms.Label()
@@ -94,7 +93,6 @@ Namespace Ecospace
             Me.m_plBiomass = New System.Windows.Forms.Panel()
             Me.m_tlpStuff = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plScenario = New System.Windows.Forms.Panel()
-            Me.m_plModel = New System.Windows.Forms.Panel()
             Me.m_plSpatial = New System.Windows.Forms.Panel()
             Me.Label4 = New System.Windows.Forms.Label()
             Me.m_pbLink = New System.Windows.Forms.PictureBox()
@@ -116,6 +114,15 @@ Namespace Ecospace
             Me.m_lblEast = New System.Windows.Forms.Label()
             Me.m_lblSouth = New System.Windows.Forms.Label()
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plModel = New System.Windows.Forms.Panel()
+            Me.m_plTimeSeries = New System.Windows.Forms.Panel()
+            Me.m_lvTimeSeriesFiles = New System.Windows.Forms.ListView()
+            Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_btLoadXYTimeSeries = New System.Windows.Forms.Button()
+            Me.m_cbUseEcosimForcing = New System.Windows.Forms.CheckBox()
+            Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -128,7 +135,6 @@ Namespace Ecospace
             Me.m_plBiomass.SuspendLayout()
             Me.m_tlpStuff.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
-            Me.m_plModel.SuspendLayout()
             Me.m_plSpatial.SuspendLayout()
             CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -139,6 +145,8 @@ Namespace Ecospace
             CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_plModel.SuspendLayout()
+            Me.m_plTimeSeries.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -195,7 +203,7 @@ Namespace Ecospace
             'm_hdrModel
             '
             resources.ApplyResources(Me.m_hdrModel, "m_hdrModel")
-            Me.m_hdrModel.CanCollapseParent = False
+            Me.m_hdrModel.CanCollapseParent = True
             Me.m_hdrModel.CollapsedParentHeight = 0
             Me.m_hdrModel.IsCollapsed = False
             Me.m_hdrModel.Name = "m_hdrModel"
@@ -325,7 +333,6 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
-            Me.m_gbRunTime.Controls.Add(Me.m_cbUseEcosimForcing)
             Me.m_gbRunTime.Controls.Add(Me.m_cbAnnualOutput)
             Me.m_gbRunTime.Controls.Add(Me.m_clbAutosave)
             Me.m_gbRunTime.Controls.Add(Me.Label2)
@@ -346,12 +353,6 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
-            '
-            'm_cbUseEcosimForcing
-            '
-            resources.ApplyResources(Me.m_cbUseEcosimForcing, "m_cbUseEcosimForcing")
-            Me.m_cbUseEcosimForcing.Name = "m_cbUseEcosimForcing"
-            Me.m_cbUseEcosimForcing.UseVisualStyleBackColor = True
             '
             'm_cbAnnualOutput
             '
@@ -455,8 +456,9 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tlpStuff, "m_tlpStuff")
             Me.m_tlpStuff.Controls.Add(Me.m_plScenario, 0, 0)
             Me.m_tlpStuff.Controls.Add(Me.m_plBiomass, 0, 2)
-            Me.m_tlpStuff.Controls.Add(Me.m_plModel, 0, 3)
             Me.m_tlpStuff.Controls.Add(Me.m_plSpatial, 0, 1)
+            Me.m_tlpStuff.Controls.Add(Me.m_plModel, 0, 3)
+            Me.m_tlpStuff.Controls.Add(Me.m_plTimeSeries, 0, 4)
             Me.m_tlpStuff.Name = "m_tlpStuff"
             '
             'm_plScenario
@@ -472,14 +474,6 @@ Namespace Ecospace
             Me.m_plScenario.Controls.Add(Me.m_lbAuthor)
             resources.ApplyResources(Me.m_plScenario, "m_plScenario")
             Me.m_plScenario.Name = "m_plScenario"
-            '
-            'm_plModel
-            '
-            Me.m_plModel.Controls.Add(Me.m_hdrModel)
-            Me.m_plModel.Controls.Add(Me.m_gbRunTime)
-            Me.m_plModel.Controls.Add(Me.m_tlpModelTop)
-            resources.ApplyResources(Me.m_plModel, "m_plModel")
-            Me.m_plModel.Name = "m_plModel"
             '
             'm_plSpatial
             '
@@ -629,6 +623,70 @@ Namespace Ecospace
             Me.m_hdrSpatial.IsCollapsed = False
             Me.m_hdrSpatial.Name = "m_hdrSpatial"
             '
+            'm_plModel
+            '
+            Me.m_plModel.Controls.Add(Me.m_hdrModel)
+            Me.m_plModel.Controls.Add(Me.m_gbRunTime)
+            Me.m_plModel.Controls.Add(Me.m_tlpModelTop)
+            resources.ApplyResources(Me.m_plModel, "m_plModel")
+            Me.m_plModel.Name = "m_plModel"
+            '
+            'm_plTimeSeries
+            '
+            Me.m_plTimeSeries.Controls.Add(Me.m_lvTimeSeriesFiles)
+            Me.m_plTimeSeries.Controls.Add(Me.m_btLoadXYTimeSeries)
+            Me.m_plTimeSeries.Controls.Add(Me.m_cbUseEcosimForcing)
+            Me.m_plTimeSeries.Controls.Add(Me.m_hdrTimeSeries)
+            resources.ApplyResources(Me.m_plTimeSeries, "m_plTimeSeries")
+            Me.m_plTimeSeries.Name = "m_plTimeSeries"
+            '
+            'm_lvTimeSeriesFiles
+            '
+            Me.m_lvTimeSeriesFiles.Activation = System.Windows.Forms.ItemActivation.OneClick
+            resources.ApplyResources(Me.m_lvTimeSeriesFiles, "m_lvTimeSeriesFiles")
+            Me.m_lvTimeSeriesFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
+            Me.m_lvTimeSeriesFiles.FullRowSelect = True
+            Me.m_lvTimeSeriesFiles.HotTracking = True
+            Me.m_lvTimeSeriesFiles.HoverSelection = True
+            Me.m_lvTimeSeriesFiles.Items.AddRange(New System.Windows.Forms.ListViewItem() {CType(resources.GetObject("m_lvTimeSeriesFiles.Items"), System.Windows.Forms.ListViewItem), CType(resources.GetObject("m_lvTimeSeriesFiles.Items1"), System.Windows.Forms.ListViewItem)})
+            Me.m_lvTimeSeriesFiles.MultiSelect = False
+            Me.m_lvTimeSeriesFiles.Name = "m_lvTimeSeriesFiles"
+            Me.m_lvTimeSeriesFiles.ShowItemToolTips = True
+            Me.m_lvTimeSeriesFiles.UseCompatibleStateImageBehavior = False
+            Me.m_lvTimeSeriesFiles.View = System.Windows.Forms.View.Details
+            '
+            'ColumnHeader1
+            '
+            resources.ApplyResources(Me.ColumnHeader1, "ColumnHeader1")
+            '
+            'ColumnHeader2
+            '
+            resources.ApplyResources(Me.ColumnHeader2, "ColumnHeader2")
+            '
+            'ColumnHeader3
+            '
+            resources.ApplyResources(Me.ColumnHeader3, "ColumnHeader3")
+            '
+            'm_btLoadXYTimeSeries
+            '
+            resources.ApplyResources(Me.m_btLoadXYTimeSeries, "m_btLoadXYTimeSeries")
+            Me.m_btLoadXYTimeSeries.Name = "m_btLoadXYTimeSeries"
+            Me.m_btLoadXYTimeSeries.UseVisualStyleBackColor = True
+            '
+            'm_cbUseEcosimForcing
+            '
+            resources.ApplyResources(Me.m_cbUseEcosimForcing, "m_cbUseEcosimForcing")
+            Me.m_cbUseEcosimForcing.Name = "m_cbUseEcosimForcing"
+            Me.m_cbUseEcosimForcing.UseVisualStyleBackColor = True
+            '
+            'm_hdrTimeSeries
+            '
+            resources.ApplyResources(Me.m_hdrTimeSeries, "m_hdrTimeSeries")
+            Me.m_hdrTimeSeries.CanCollapseParent = False
+            Me.m_hdrTimeSeries.CollapsedParentHeight = 0
+            Me.m_hdrTimeSeries.IsCollapsed = False
+            Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
+            '
             'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -653,7 +711,6 @@ Namespace Ecospace
             Me.m_tlpStuff.ResumeLayout(False)
             Me.m_plScenario.ResumeLayout(False)
             Me.m_plScenario.PerformLayout()
-            Me.m_plModel.ResumeLayout(False)
             Me.m_plSpatial.ResumeLayout(False)
             Me.m_plSpatial.PerformLayout()
             CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).EndInit()
@@ -665,6 +722,9 @@ Namespace Ecospace
             CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_plModel.ResumeLayout(False)
+            Me.m_plTimeSeries.ResumeLayout(False)
+            Me.m_plTimeSeries.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -736,7 +796,14 @@ Namespace Ecospace
         Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Friend WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
         Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
+        Friend WithEvents m_plTimeSeries As Panel
+        Friend WithEvents m_hdrTimeSeries As cEwEHeaderLabel
         Friend WithEvents m_cbUseEcosimForcing As CheckBox
+        Friend WithEvents m_btLoadXYTimeSeries As Button
+        Friend WithEvents m_lvTimeSeriesFiles As ListView
+        Friend WithEvents ColumnHeader1 As ColumnHeader
+        Friend WithEvents ColumnHeader2 As ColumnHeader
+        Friend WithEvents ColumnHeader3 As ColumnHeader
     End Class
 
 End Namespace
