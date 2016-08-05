@@ -127,14 +127,14 @@ Namespace EcospaceTimeSeries
                 Return
             End If
 
-            msg.Append("Ecospace Time Series Failed to read")
+            msg.Append("Ecospace Time Series failed to read")
             For Each pair As KeyValuePair(Of eTimeSeriesRecValidations, Integer) In Me.m_dctFailedRecs
                 System.Console.WriteLine(pair.Key.ToString + " " + pair.Value.ToString)
-                msg.Append(" " + pair.Value.ToString + " because of " + pair.Key.ToString)
+                msg.Append(" " + pair.Value.ToString + " records because of " + pair.Key.ToString)
             Next
             If msg.Length > 0 Then
                 Me.m_Manager.Core.Messages.AddMessage(New cMessage(msg.ToString, eMessageType.DataValidation,
-                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Information))
             End If
         End Sub
 

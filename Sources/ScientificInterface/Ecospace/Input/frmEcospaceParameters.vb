@@ -25,6 +25,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.My
 
 #End Region ' Imports
 
@@ -169,6 +170,7 @@ Namespace Ecospace
             Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
 
             Me.UpdateScenarioFormatProviders()
+            Me.UpdateTimeSeries()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
 
@@ -278,7 +280,7 @@ Namespace Ecospace
         End Sub
 
 
-        Private Sub UpdateToTimeseriesChanges()
+        Private Sub UpdateEcosimTimeseries()
             Try
                 Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
             Catch ex As Exception
@@ -427,7 +429,7 @@ Namespace Ecospace
             End If
 
             If msg.Source = eCoreComponentType.EcoSpace And msg.Type = eMessageType.DataModified Then
-                Me.UpdateToTimeseriesChanges()
+                Me.UpdateTimeSeries()
             End If
 
         End Sub
@@ -446,6 +448,48 @@ Namespace Ecospace
             Me.m_fpAuthor = New cPropertyFormatProvider(Me.UIContext, Me.m_tbAuthor, scenarioDef, eVarNameFlags.Author)
             Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
 
+        End Sub
+
+
+        Private Sub UpdateTimeSeries()
+            Me.UpdateEcosimTimeseries()
+            Me.UpdateTimeSeriesList()
+        End Sub
+
+        Private Sub UpdateTimeSeriesList()
+
+            Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+            If Not String.IsNullOrEmpty(manager.InputFileName) Then
+                ' If IO.File.Exists(manager.InputFileName) Then
+                Me.m_lvTimeSeriesFiles.Items(0).SubItems(1).Text = IO.Path.GetFileName(manager.InputFileName)
+                Me.m_lvTimeSeriesFiles.Items(0).SubItems(2).Text = manager.InputFileName
+
+                Me.m_lvTimeSeriesFiles.Items(1).SubItems(1).Text = IO.Path.GetFileName(manager.OuputFileName)
+                Me.m_lvTimeSeriesFiles.Items(1).SubItems(2).Text = manager.OuputFileName
+
+                '  End If
+            Else
+                Me.m_lvTimeSeriesFiles.Items(0).SubItems(1).Text = ""
+                Me.m_lvTimeSeriesFiles.Items(0).SubItems(2).Text = ""
+
+                Me.m_lvTimeSeriesFiles.Items(1).SubItems(1).Text = ""
+                Me.m_lvTimeSeriesFiles.Items(1).SubItems(2).Text = ""
+            End If
+
+        End Sub
+
+        Private Sub m_btLoadXYTimeSeries_Click(sender As Object, e As EventArgs) Handles m_btLoadXYTimeSeries.Click
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            cmdFO.Invoke(Resources.FILEFILTER_CSV & "|" & Resources.FILEFILTER_XYZ & "|" & Resources.FILEFILTER_TEXT)
+            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+                Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+                Dim InputFile As String = cmdFO.FileNames(0)
+                Dim OuputFile As String = manager.getDefaultOutputFileName(InputFile)
+                manager.Load(InputFile, OuputFile)
+            End If
         End Sub
 
 #End Region ' Internals

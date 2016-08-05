@@ -4354,46 +4354,21 @@ Public Class frmEwE6
 
     End Sub
 
-    'Private Sub m_tsmiEcospaceLoadTimeSeries_Click(sender As Object, e As EventArgs) Handles m_tsmiEcospaceLoadXYRefData.Click
-    '    Try '
-    '        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-    '        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-
-    '        cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
-    '        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-    '            Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
-    '        End If
-
-    '    Catch ex As Exception
-
-    '    End Try
-    'End Sub
-
     Private Sub m_cmdEcospaceLoadXYRefData_OnUpdate(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     Private Sub m_cmdEcospaceLoadXYRefData_OnInvoke(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnInvoke
-
-        ' ToDo: globalize this
-        ' ToDo: fix flow. Output file should not be set through a second popup; EwE does not do that anywhere.
-
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         cmdFO.Invoke(SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
         If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-            Dim strInputFile As String = cmdFO.FileNames(0)
-            Dim strOutputFile As String = Me.Core.EcospaceTimeSeriesManager.getDefaultOutputFileName(strInputFile)
-            Dim cdSave As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog("Select file for Ecospace Timeseries results", strOutputFile,
-                                                                               SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
-
-            If cdSave.ShowDialog = Windows.Forms.DialogResult.OK Then
-                strOutputFile = cdSave.FileName
-            End If
-
-            Me.UIContext.Core.EcospaceTimeSeriesManager.Load(strInputFile, strOutputFile)
+            Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+            Dim InputFile As String = cmdFO.FileNames(0)
+            Dim OuputFile As String = manager.getDefaultOutputFileName(InputFile)
+            manager.Load(InputFile, OuputFile)
         End If
 
     End Sub

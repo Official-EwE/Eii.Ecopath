@@ -62,6 +62,24 @@ Namespace EcospaceTimeSeries
 
         Public TimeStepFormatString As String = "yyyy-MM-dd"
 
+        Public Property InputFileName As String
+            Get
+                Return Me.m_FileName
+            End Get
+            Set(value As String)
+                Me.m_FileName = value
+            End Set
+        End Property
+
+        Public Property OuputFileName As String
+            Get
+                Return Me.m_OutputFilename
+            End Get
+            Set(value As String)
+                Me.m_OutputFilename = value
+            End Set
+        End Property
+
 #End Region
 
 
@@ -142,6 +160,8 @@ Namespace EcospaceTimeSeries
 
         Public Sub Clear()
             Me.m_dcDataByDate.Clear()
+            Me.m_FileName = String.Empty
+            Me.m_OutputFilename = String.Empty
         End Sub
 
 #End Region
@@ -174,13 +194,14 @@ Namespace EcospaceTimeSeries
         ''' <returns></returns>
         Public Function Load(InputFilename As String, OutputFileName As String) As Boolean
             Dim bReturn As Boolean = True
-            Me.m_FileName = InputFilename
-            Me.m_OutputFilename = OutputFileName
 
             If Not IO.File.Exists(InputFilename) Then
                 System.Console.WriteLine(Me.ToString + ".Read() file does not exist!")
                 Return False
             End If
+
+            Me.m_FileName = InputFilename
+            Me.m_OutputFilename = OutputFileName
 
             Me.InitForRead()
 
@@ -200,13 +221,24 @@ Namespace EcospaceTimeSeries
                                                             EwEUtils.Core.eMessageType.ErrorEncountered,
                                                             EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
                 'Clear out any data that may been read
-                Me.m_dcDataByDate.Clear()
+                Me.Clear()
                 bReturn = False
             End Try
 
-            Me.m_core.Messages.AddMessage(New cMessage("Ecospace Timeseries " + Me.nRecords.ToString + " records loaded.",
-                                                       EwEUtils.Core.eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace,
+            If Me.ContainsData Then
+
+                Me.m_core.Messages.AddMessage(New cMessage("Ecospace Time Series " + Me.nRecords.ToString + " records loaded.",
+                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
                                                        EwEUtils.Core.eMessageImportance.Information))
+            Else
+                'No data read from file
+                Me.m_core.Messages.AddMessage(New cMessage("Ecospace Time Series failed to load any records from the file.",
+                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                       EwEUtils.Core.eMessageImportance.Warning))
+                Me.Clear()
+                bReturn = False
+
+            End If
 
             Me.m_core.Messages.sendAllMessages()
 
@@ -432,7 +464,7 @@ Namespace EcospaceTimeSeries
                 Dim mED As New Date(CInt(Me.m_core.EwEModel.FirstYear + Me.m_SpaceData.TotalTime), 1, 1)
                 If StartDate > mED Or EndDate < mSD Then
                     'Failed date bounds
-                    msg.Append("Ecospace time series dates " + StartDate.ToShortDateString + " to " + EndDate.ToShortDateString + " do not overlap with current model dates. ")
+                    msg.Append("Ecospace Time Series dates " + StartDate.ToShortDateString + " to " + EndDate.ToShortDateString + " do not overlap with current model dates. ")
                     msg.Append("Check Model date or dates in input file.")
 
                     bReturn = False
@@ -446,7 +478,7 @@ Namespace EcospaceTimeSeries
             End If
 
             If msg.Length > 0 Then
-                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Information))
             End If
 
             Return bReturn
@@ -465,8 +497,8 @@ Namespace EcospaceTimeSeries
             If MaxRow > Me.m_SpaceData.InRow Or MaxCol > Me.m_SpaceData.InCol Then
                 'Debug.Assert(False, "Oppss Time Series map exceeds the Ecospace map extent.")
                 Dim msg As New System.Text.StringBuilder
-                msg.Append("Ecospace time series map extents outside the currently load map.")
-                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+                msg.Append("Ecospace Time Series map extents outside the currently load map.")
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Information))
                 Return False
             End If
 
@@ -482,6 +514,10 @@ Namespace EcospaceTimeSeries
             End If
 
             Dim msg As Text.StringBuilder
+
+            'build the output directory if it doesn't exist
+            'if this fails the streamwriter will throw an error and the user will get an error message
+            Utilities.cFileUtils.IsDirectoryAvailable(IO.Path.GetDirectoryName(Me.m_OutputFilename), True)
 
             Try
                 Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
@@ -501,19 +537,19 @@ Namespace EcospaceTimeSeries
             Catch ex As Exception
                 EwEUtils.Core.cLog.Write(ex, Me.ToString + ".SaveResults() Exception")
                 msg = New Text.StringBuilder
-                msg.Append("Ecospace Timeseries exception saving output file " + ex.Message)
+                msg.Append("Ecospace Time Series exception saving output file " + ex.Message)
             End Try
 
             If msg IsNot Nothing Then
-                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.Any,
+                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.ErrorEncountered,
                     EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
             End If
 
         End Sub
 
         Public Function getDefaultOutputFileName(InputFileName As String) As String
-            Me.m_FileName = InputFileName
-            Return IO.Path.Combine(IO.Path.GetDirectoryName(Me.m_FileName), IO.Path.GetFileNameWithoutExtension(Me.m_FileName) + "_SS-Results.csv")
+            Dim tempFileName As String = IO.Path.GetFileNameWithoutExtension(InputFileName) + "_Residuals.csv"
+            Return IO.Path.Combine(Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
         End Function
 
 
