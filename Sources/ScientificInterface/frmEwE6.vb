@@ -4247,7 +4247,7 @@ Public Class frmEwE6
                 Case eNativeLayerFileFormatTypes.ASCII
                     Dim ofd As New OpenFileDialog()
                     ofd.Title = SharedResources.CAPTION_SELECT_FILE
-                    ofd.Filter = SharedResources.FILEFILTER_ASCFILE
+                    ofd.Filter = SharedResources.FILEFILTER_ASC
                     If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(ofd.FileName) Then
@@ -4289,7 +4289,7 @@ Public Class frmEwE6
                     dlg.Layers = Me.m_cmdExportLayerData.Layers
                     dlg.ShowDialog(Me)
                 Case eNativeLayerFileFormatTypes.ASCII
-                    Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(SharedResources.CAPTION_SELECT_FILE, "", SharedResources.FILEFILTER_ASCFILE)
+                    Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(SharedResources.CAPTION_SELECT_FILE, "", SharedResources.FILEFILTER_ASC)
                     If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(Me.m_cmdExportLayerData.Layers(0)) Then
@@ -4351,6 +4351,50 @@ Public Class frmEwE6
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
         cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
+
+    End Sub
+
+    'Private Sub m_tsmiEcospaceLoadTimeSeries_Click(sender As Object, e As EventArgs) Handles m_tsmiEcospaceLoadXYRefData.Click
+    '    Try '
+    '        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+    '        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+    '        cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
+    '        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+    '            Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
+    '        End If
+
+    '    Catch ex As Exception
+
+    '    End Try
+    'End Sub
+
+    Private Sub m_cmdEcospaceLoadXYRefData_OnUpdate(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnUpdate
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
+    End Sub
+
+    Private Sub m_cmdEcospaceLoadXYRefData_OnInvoke(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnInvoke
+
+        ' ToDo: globalize this
+        ' ToDo: fix flow. Output file should not be set through a second popup; EwE does not do that anywhere.
+
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+        cmdFO.Invoke(SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
+        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+            Dim strInputFile As String = cmdFO.FileNames(0)
+            Dim strOutputFile As String = Me.Core.EcospaceTimeSeriesManager.getDefaultOutputFileName(strInputFile)
+            Dim cdSave As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog("Select file for Ecospace Timeseries results", strOutputFile,
+                                                                               SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
+
+            If cdSave.ShowDialog = Windows.Forms.DialogResult.OK Then
+                strOutputFile = cdSave.FileName
+            End If
+
+            Me.UIContext.Core.EcospaceTimeSeriesManager.Load(strInputFile, strOutputFile)
+        End If
 
     End Sub
 
@@ -4940,55 +4984,6 @@ Public Class frmEwE6
             cLog.Write(ex, "frmEwE6::OnProgressMessage(" & msg.Message & ")")
         End Try
     End Sub
-
-
-    'Private Sub m_tsmiEcospaceLoadTimeSeries_Click(sender As Object, e As EventArgs) Handles m_tsmiEcospaceLoadXYRefData.Click
-    '    Try '
-    '        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-    '        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-
-    '        cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
-    '        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-    '            Me.UIContext.Core.LoadEcospaceTimeSeriesData(cmdFO.FileNames(0))
-    '        End If
-
-    '    Catch ex As Exception
-
-    '    End Try
-    'End Sub
-
-    Private Sub m_cmdEcospaceLoadXYRefData_OnUpdate(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnUpdate
-        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
-    End Sub
-
-    Private Sub m_cmdEcospaceLoadXYRefData_OnInvoke(cmd As cCommand) Handles m_cmdEcospaceLoadXYRefData.OnInvoke
-        ' actions here
-
-        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-
-        cmdFO.Invoke("csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*")
-        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-            Dim InputFile As String = cmdFO.FileNames(0)
-            Dim OutputFile As String = Me.UIContext.Core.EcospaceTimeSeriesManager.getDefaultOutputFileName(InputFile)
-
-            'I couldn't get the cFileSaveCommand object to work the way I wanted
-            'Just use the real thing. I more obvious(er) what's going on.
-            Dim cdSave As New SaveFileDialog
-            cdSave.FileName = OutputFile
-            cdSave.Title = "Select file for Ecospace Timeseries results."
-            cdSave.Filter = "csv (*.csv)|*.csv|zxy (*.xyz)|*.xyz|All files (*.*)|*.*"
-
-            If cdSave.ShowDialog = Windows.Forms.DialogResult.OK Then
-                OutputFile = cdSave.FileName
-            End If
-
-            Me.UIContext.Core.EcospaceTimeSeriesManager.Load(InputFile, OutputFile)
-        End If
-
-    End Sub
-
 
 #End Region  ' Big and evil event handlers
 

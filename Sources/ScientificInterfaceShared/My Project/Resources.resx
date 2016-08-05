@@ -175,7 +175,7 @@
     <value>Value</value>
   </data>
   <data name="FILEFILTER_IMAGE" xml:space="preserve">
-    <value>Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff</value>
+    <value>Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff</value>
     <comment>| separated list of image filters. Order: bitmap, jpeg, gif, png, tiff</comment>
   </data>
   <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
@@ -340,7 +340,7 @@
   <data name="TOOLTIP_SAVETOCSV" xml:space="preserve">
     <value>Save to a CSV file</value>
   </data>
-  <data name="FILEFILTER_ASCFILE" xml:space="preserve">
+  <data name="FILEFILTER_ASC" xml:space="preserve">
     <value>ESRI Asc files|*.asc</value>
   </data>
   <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
@@ -3095,5 +3095,11 @@
   </data>
   <data name="HEADER_SHANNONDIVERSITY" xml:space="preserve">
     <value>Shannon diversity</value>
+  </data>
+  <data name="FILEFILTER_ALL" xml:space="preserve">
+    <value>All files|*.*</value>
+  </data>
+  <data name="FILEFILTER_XYZ" xml:space="preserve">
+    <value>XYZ point data file|*.xyz</value>
   </data>
 </root>

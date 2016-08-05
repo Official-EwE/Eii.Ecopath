@@ -1643,11 +1643,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to All files|*.*.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_ALL() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to ESRI Asc files|*.asc.
         '''</summary>
-        Public ReadOnly Property FILEFILTER_ASCFILE() As String
+        Public ReadOnly Property FILEFILTER_ASC() As String
             Get
-                Return ResourceManager.GetString("FILEFILTER_ASCFILE", resourceCulture)
+                Return ResourceManager.GetString("FILEFILTER_ASC", resourceCulture)
             End Get
         End Property
         
@@ -1670,7 +1679,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Bitmap image (*.bmp)|*.bmp|JPEG image (*.jpg;*.jpeg)|*.jpg;*.jpeg|GIF image (*.gif)|*.gif|PNG image (*.png)|*.png|TIFF image (*.tif;*.tiff)|*.tif;*.tiff.
+        '''  Looks up a localized string similar to Bitmap image|*.bmp|JPEG image|*.jpg;*.jpeg|GIF image|*.gif|PNG image|*.png|TIFF image|*.tif;*.tiff.
         '''</summary>
         Public ReadOnly Property FILEFILTER_IMAGE() As String
             Get
@@ -1756,6 +1765,15 @@ Namespace My.Resources
         Public ReadOnly Property FILEFILTER_TEXT() As String
             Get
                 Return ResourceManager.GetString("FILEFILTER_TEXT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to XYZ point data file|*.xyz.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_XYZ() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_XYZ", resourceCulture)
             End Get
         End Property
         
