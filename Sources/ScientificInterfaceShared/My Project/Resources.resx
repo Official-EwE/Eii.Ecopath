@@ -651,9 +651,6 @@
   <data name="HEADER_B_IS_FOR_BIOMASS" xml:space="preserve">
     <value>B = Biomass</value>
   </data>
-  <data name="HEADER_CAPITALDEPRECIATION_RATE" xml:space="preserve">
-    <value>Capital depreciation rate</value>
-  </data>
   <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
     <value>Cumulative catch</value>
   </data>
@@ -743,9 +740,6 @@
   </data>
   <data name="HEADER_EFFORTRELATEDCOST" xml:space="preserve">
     <value>Effort related cost (%)</value>
-  </data>
-  <data name="HEADER_EFFORTRESPPOWER" xml:space="preserve">
-    <value>Effort response power</value>
   </data>
   <data name="HEADER_EFFORT_LOWER" xml:space="preserve">
     <value>Effort lower</value>
@@ -887,12 +881,6 @@
   </data>
   <data name="HEADER_INDIVIDUAL_WEIGHT" xml:space="preserve">
     <value>Individual weight</value>
-  </data>
-  <data name="HEADER_INITCAPTIALGROWTHRATE" xml:space="preserve">
-    <value>Initial capital growth rate (prop., annual)</value>
-  </data>
-  <data name="HEADER_INITEFFORT" xml:space="preserve">
-    <value>Initial effort / capital capacity</value>
   </data>
   <data name="HEADER_KALWT" xml:space="preserve">
     <value>Kalman weight</value>

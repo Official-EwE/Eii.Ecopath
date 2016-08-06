@@ -3763,15 +3763,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Capital depreciation rate.
-        '''</summary>
-        Public ReadOnly Property HEADER_CAPITALDEPRECIATION_RATE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CAPITALDEPRECIATION_RATE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Catch.
         '''</summary>
         Public ReadOnly Property HEADER_CATCH() As String
@@ -4483,15 +4474,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Effort response power.
-        '''</summary>
-        Public ReadOnly Property HEADER_EFFORTRESPPOWER() As String
-            Get
-                Return ResourceManager.GetString("HEADER_EFFORTRESPPOWER", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Effective power.
         '''</summary>
         Public ReadOnly Property HEADER_EFFPOWER() As String
@@ -5046,24 +5028,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_INDIVIDUAL_WEIGHT() As String
             Get
                 Return ResourceManager.GetString("HEADER_INDIVIDUAL_WEIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Initial capital growth rate (prop., annual).
-        '''</summary>
-        Public ReadOnly Property HEADER_INITCAPTIALGROWTHRATE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_INITCAPTIALGROWTHRATE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Initial effort / capital capacity.
-        '''</summary>
-        Public ReadOnly Property HEADER_INITEFFORT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_INITEFFORT", resourceCulture)
             End Get
         End Property
         

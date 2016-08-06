@@ -379,7 +379,7 @@
     <value>BA rate||Biomass accumulation rate</value>
   </data>
   <data name="VARIABLE_BIOACCUMRATEPERYEAR" xml:space="preserve">
-    <value>BA rate||Biomass accumulation rate</value>
+    <value>BA rate (annual)||Biomass accumulation rate per year</value>
   </data>
   <data name="VARIABLE_BIOMASS" xml:space="preserve">
     <value>B||Biomass</value>
@@ -389,6 +389,12 @@
   </data>
   <data name="VARIABLE_BIOMASSAREAOUTPUT" xml:space="preserve">
     <value>B(a)|B area|Biomass in habitat area</value>
+  </data>
+  <data name="VARIABLE_CAPBASEGROWTH" xml:space="preserve">
+    <value>Init. cap. growth rate||Initial capital growth rate (prop., annual)</value>
+  </data>
+  <data name="VARIABLE_CAPDEPRECIATE" xml:space="preserve">
+    <value>Cap. depr. rate||Capital depreciation rate</value>
   </data>
   <data name="VARIABLE_CB" xml:space="preserve">
     <value>CB||Consumption / Biomass</value>
@@ -406,10 +412,10 @@
     <value>Description</value>
   </data>
   <data name="VARIABLE_DETIMP" xml:space="preserve">
-    <value>Detritus import</value>
+    <value>Det. import||Detritus import</value>
   </data>
   <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
-    <value>Detritus fate</value>
+    <value>Det. fate||Detritus fate</value>
   </data>
   <data name="VARIABLE_DIETCOMP" xml:space="preserve">
     <value>DC|Diet||Diet composition</value>
@@ -447,6 +453,9 @@
   <data name="VARIABLE_EMIGRATE" xml:space="preserve">
     <value>e||Emig. rate|Emigration rate</value>
   </data>
+  <data name="VARIABLE_EPOWER" xml:space="preserve">
+    <value>Effort response power</value>
+  </data>
   <data name="VARIABLE_FISHMORTTOTMORT" xml:space="preserve">
     <value>F/Z||Fishing mort. over total mort.|Fishing mortality over total mortality rate</value>
   </data>
@@ -469,7 +478,7 @@
     <value>GS||Unassim. consumption|Unassimilated consumption</value>
   </data>
   <data name="VARIABLE_HABITATAREA" xml:space="preserve">
-    <value>Hab. area||Fraction of area useful as habitat</value>
+    <value>Hab. area||Fraction of area used as habitat</value>
   </data>
   <data name="VARIABLE_IMMIG" xml:space="preserve">
     <value>Immigration</value>
@@ -478,7 +487,7 @@
     <value>DCimp||Imported diet</value>
   </data>
   <data name="VARIABLE_INDEX" xml:space="preserve">
-    <value>#||Index</value>
+    <value>#|No.||Sequential number</value>
   </data>
   <data name="VARIABLE_INMIGAREAMOVEWEIGHT" xml:space="preserve">
     <value>Mig. in area movement|||Movement weight for species within migratory area</value>
@@ -594,6 +603,9 @@
   <data name="VARIABLE_PBOUTPUT" xml:space="preserve">
     <value>PB|P/B|Production / biomass (computed)</value>
   </data>
+  <data name="VARIABLE_PCAPBASE" xml:space="preserve">
+    <value>Initial effort / capital capacity</value>
+  </data>
   <data name="VARIABLE_PP" xml:space="preserve">
     <value>PP|%PP|Percentage of Primary Production</value>
   </data>
@@ -616,7 +628,7 @@
     <value>Rel. vul to pred. in bad hab.|||Relative vulnerability to predation in bad habitat (proportion for primary producers)</value>
   </data>
   <data name="VARIABLE_SAILCOST" xml:space="preserve">
-    <value>Sail cost||Cost of sailing map</value>
+    <value>Sail cost||Cost of sailing</value>
   </data>
   <data name="VARIABLE_SALINITYOPT" xml:space="preserve">
     <value>Sal opt||Optimum salinity</value>
