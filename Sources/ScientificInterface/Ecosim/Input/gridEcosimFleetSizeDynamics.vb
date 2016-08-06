@@ -48,10 +48,10 @@ Namespace Ecosim
             ' Define column header
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORTRESPPOWER)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_INITEFFORT)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_CAPITALDEPRECIATION_RATE)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_INITCAPTIALGROWTHRATE)
+            Me(0, 2) = New EwEColumnHeaderCell(eVarNameFlags.EPower)
+            Me(0, 3) = New EwEColumnHeaderCell(eVarNameFlags.PcapBase)
+            Me(0, 4) = New EwEColumnHeaderCell(eVarNameFlags.CapDepreciate)
+            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.CapBaseGrowth)
 
         End Sub
 

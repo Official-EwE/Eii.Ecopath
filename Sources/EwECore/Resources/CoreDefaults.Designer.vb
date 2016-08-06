@@ -785,7 +785,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to BA rate||Biomass accumulation rate.
+        '''  Looks up a localized string similar to BA rate (annual)||Biomass accumulation rate per year.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_BIOACCUMRATEPERYEAR() As String
             Get
@@ -817,6 +817,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_BIOMASSAREAOUTPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_BIOMASSAREAOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Init. cap. growth rate||Initial capital growth rate (prop., annual).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CAPBASEGROWTH() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CAPBASEGROWTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cap. depr. rate||Capital depreciation rate.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CAPDEPRECIATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CAPDEPRECIATE", resourceCulture)
             End Get
         End Property
         
@@ -866,7 +884,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Detritus import.
+        '''  Looks up a localized string similar to Det. import||Detritus import.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_DETIMP() As String
             Get
@@ -875,7 +893,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Detritus fate.
+        '''  Looks up a localized string similar to Det. fate||Detritus fate.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_DETRITUSFATE() As String
             Get
@@ -992,6 +1010,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Effort response power.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_EPOWER() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EPOWER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to F/Z||Fishing mort. over total mort.|Fishing mortality over total mortality rate.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_FISHMORTTOTMORT() As String
@@ -1055,7 +1082,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Hab. area||Fraction of area useful as habitat.
+        '''  Looks up a localized string similar to Hab. area||Fraction of area used as habitat.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_HABITATAREA() As String
             Get
@@ -1082,7 +1109,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to #||Index.
+        '''  Looks up a localized string similar to #|No.||Sequential number.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_INDEX() As String
             Get
@@ -1433,6 +1460,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Initial effort / capital capacity.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_PCAPBASE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PCAPBASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to PP|%PP|Percentage of Primary Production.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_PP() As String
@@ -1496,7 +1532,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Sail cost||Cost of sailing map.
+        '''  Looks up a localized string similar to Sail cost||Cost of sailing.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_SAILCOST() As String
             Get
