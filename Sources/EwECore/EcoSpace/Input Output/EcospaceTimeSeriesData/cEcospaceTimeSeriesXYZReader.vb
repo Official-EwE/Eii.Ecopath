@@ -19,9 +19,12 @@
 '
 
 Option Strict On
+
+Imports System.IO
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports System.IO
+Imports EwEUtils.Utilities
+
 
 Namespace EcospaceTimeSeries
 
@@ -68,7 +71,7 @@ Namespace EcospaceTimeSeries
                 Do While Not strm.EndOfStream
                     RecBuffer = strm.ReadLine()
                     rec = cEcospaceTimeSeriesRec.FromString(RecBuffer, Me.TimeStampFormatString)
-                    If rec.Validation = eTimeSeriesRecValidations.isValid Then
+                    If rec.ReadValidation = eTimeSeriesRecValidations.isReadValid Then
                         Me.getMinMaxDates(rec)
                         Me.getExtent(rec)
                         Me.m_Manager.Add(rec)
@@ -115,10 +118,10 @@ Namespace EcospaceTimeSeries
         End Sub
 
         Private Sub AddFailedRec(rec As cEcospaceTimeSeriesRec)
-            If Not Me.m_dctFailedRecs.ContainsKey(rec.Validation) Then
-                Me.m_dctFailedRecs.Add(rec.Validation, 0)
+            If Not Me.m_dctFailedRecs.ContainsKey(rec.ReadValidation) Then
+                Me.m_dctFailedRecs.Add(rec.ReadValidation, 0)
             End If
-            Me.m_dctFailedRecs.Item(rec.Validation) += 1
+            Me.m_dctFailedRecs.Item(rec.ReadValidation) += 1
         End Sub
 
         Private Sub dumpFailedRecs()
@@ -127,10 +130,11 @@ Namespace EcospaceTimeSeries
                 Return
             End If
 
-            msg.Append("Ecospace Time Series failed to read")
+            msg.Append(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE)
             For Each pair As KeyValuePair(Of eTimeSeriesRecValidations, Integer) In Me.m_dctFailedRecs
                 System.Console.WriteLine(pair.Key.ToString + " " + pair.Value.ToString)
-                msg.Append(" " + pair.Value.ToString + " records because of " + pair.Key.ToString)
+                '" " + pair.Value.ToString + " records because of " + pair.Key.ToString
+                msg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_READ_FAIL_REASON, pair.Value, pair.Key))
             Next
             If msg.Length > 0 Then
                 Me.m_Manager.Core.Messages.AddMessage(New cMessage(msg.ToString, eMessageType.DataValidation,

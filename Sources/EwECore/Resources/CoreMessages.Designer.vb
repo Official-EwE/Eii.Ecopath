@@ -1157,6 +1157,78 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series dates {0} to {1} do not overlap with current model dates. Check Model date or dates in input file..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_LOAD_DATES() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_LOAD_DATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace could not load time series data due to error: {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_LOAD_EXCEPTION() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_LOAD_EXCEPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series failed to load any records from the file..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_LOAD_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_LOAD_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series map extents outside the currently load map..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE Model date has not been set. You must set this to use Ecospace time series data..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_LOAD_NO_DATE() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_LOAD_NO_DATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series {0} records loaded..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_NRECORDS_LOADED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_NRECORDS_LOADED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series failed to read.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to  {0}  records because of {1}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_READ_FAIL_REASON() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_READ_FAIL_REASON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecotracer scenario &apos;{0}&apos; failed to load. {1}.
         '''</summary>
         Public Shared ReadOnly Property ECOTRACER_LOAD_FAILED() As String
@@ -3036,7 +3108,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_ADJUSTED", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to {0} cleared.
         '''</summary>

@@ -20,14 +20,17 @@
 
 Option Strict On
 Option Explicit On
+
 Imports EwECore
 Imports EwEUtils
+Imports EwEUtils.Utilities
+
 
 
 Namespace EcospaceTimeSeries
 
     Public Enum eTimeSeriesRecValidations
-        isValid
+        isReadValid
         MalformedString
         InvalidDateFormat
         EmptyRec
@@ -50,6 +53,10 @@ Namespace EcospaceTimeSeries
         '   Use the default filename
         '   Done 3-Aug-2016 the user selects the output file when selecting the input file
         '       A default is supplied.
+        '   Added a UI to show the user what file is currently loaded
+        '   Default output file uses core output path
+
+        'ToDo 8-Aug-2016 Let the user set the output file via the UI instead of just the default
 
         'ToDo 27-July-2016 Added SS output to the UI. Results form... Main Run UI some place?
 
@@ -217,7 +224,7 @@ Namespace EcospaceTimeSeries
 
             Catch ex As Exception
                 'cEcospaceTimeSeriesXYZReader.Read() will throw the exception back here is there if there is an internal exception
-                Me.m_core.Messages.AddMessage(New cMessage("Ecospace could not load time series data due to error: " + ex.Message,
+                Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_EXCEPTION, ex.Message),
                                                             EwEUtils.Core.eMessageType.ErrorEncountered,
                                                             EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
                 'Clear out any data that may been read
@@ -227,12 +234,13 @@ Namespace EcospaceTimeSeries
 
             If Me.ContainsData Then
 
-                Me.m_core.Messages.AddMessage(New cMessage("Ecospace Time Series " + Me.nRecords.ToString + " records loaded.",
+
+                Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_NRECORDS_LOADED, Me.nRecords),
                                                        EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
                                                        EwEUtils.Core.eMessageImportance.Information))
             Else
                 'No data read from file
-                Me.m_core.Messages.AddMessage(New cMessage("Ecospace Time Series failed to load any records from the file.",
+                Me.m_core.Messages.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_FAILED,
                                                        EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
                                                        EwEUtils.Core.eMessageImportance.Warning))
                 Me.Clear()
@@ -464,15 +472,16 @@ Namespace EcospaceTimeSeries
                 Dim mED As New Date(CInt(Me.m_core.EwEModel.FirstYear + Me.m_SpaceData.TotalTime), 1, 1)
                 If StartDate > mED Or EndDate < mSD Then
                     'Failed date bounds
-                    msg.Append("Ecospace Time Series dates " + StartDate.ToShortDateString + " to " + EndDate.ToShortDateString + " do not overlap with current model dates. ")
-                    msg.Append("Check Model date or dates in input file.")
+                    msg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_DATES, StartDate.ToShortDateString, EndDate.ToShortDateString))
+                    'msg.Append("Ecospace Time Series dates " + StartDate.ToShortDateString + " to " + EndDate.ToShortDateString + " do not overlap with current model dates. ")
+                    'msg.Append("Check Model date or dates in input file.")
 
                     bReturn = False
                 End If
             Else
                 'First year = 0 
                 'The user has not set a model data
-                msg.Append("EwE Model date has not been set. You must set this to use Ecospace time series data.")
+                msg.Append(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_NO_DATE)
 
                 bReturn = False
             End If
@@ -497,7 +506,7 @@ Namespace EcospaceTimeSeries
             If MaxRow > Me.m_SpaceData.InRow Or MaxCol > Me.m_SpaceData.InCol Then
                 'Debug.Assert(False, "Oppss Time Series map exceeds the Ecospace map extent.")
                 Dim msg As New System.Text.StringBuilder
-                msg.Append("Ecospace Time Series map extents outside the currently load map.")
+                msg.Append(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS)
                 Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.DataValidation, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Information))
                 Return False
             End If
