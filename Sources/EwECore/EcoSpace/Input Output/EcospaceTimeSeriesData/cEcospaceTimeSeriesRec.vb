@@ -57,7 +57,7 @@ Namespace EcospaceTimeSeries
 
             Me.InputTimeStepFormat = TimeStepFormatString
             VarType = DataType
-            Me.m_validation = eTimeSeriesRecValidations.isValid
+            Me.m_validation = eTimeSeriesRecValidations.isReadValid
 
             Dim tempTimeStamp As Date
             Try
@@ -145,7 +145,7 @@ Namespace EcospaceTimeSeries
             Return bReturn
         End Function
 
-        Public ReadOnly Property Validation As eTimeSeriesRecValidations
+        Public ReadOnly Property ReadValidation As eTimeSeriesRecValidations
             Get
                 Return Me.m_validation
             End Get

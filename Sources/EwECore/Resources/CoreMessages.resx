@@ -1323,4 +1323,33 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="VARIABLE_VALIDATION_ADJUSTED" xml:space="preserve">
     <value>{0} has been corrected</value>
   </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_DATES" xml:space="preserve">
+    <value>Ecospace Time Series dates {0} to {1} do not overlap with current model dates. Check Model date or dates in input file.</value>
+    <comment>{0}=Start date, {1}=end date</comment>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_EXCEPTION" xml:space="preserve">
+    <value>Ecospace could not load time series data due to error: {0}</value>
+    <comment>Error during load</comment>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>Ecospace Time Series failed to load any records from the file.</value>
+    <comment>No records loaded from file</comment>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS" xml:space="preserve">
+    <value>Ecospace Time Series map extents outside the currently load map.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_NO_DATE" xml:space="preserve">
+    <value>EwE Model date has not been set. You must set this to use Ecospace time series data.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_NRECORDS_LOADED" xml:space="preserve">
+    <value>Ecospace Time Series {0} records loaded.</value>
+    <comment>Number of records loaded by Ecospace time series</comment>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE" xml:space="preserve">
+    <value>Ecospace Time Series failed to read</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_REASON" xml:space="preserve">
+    <value> {0}  records because of {1}</value>
+    <comment>{0}=Number of records, {1}=reason for failure</comment>
+  </data>
 </root>
