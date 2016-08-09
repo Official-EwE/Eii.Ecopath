@@ -312,7 +312,7 @@ Namespace Ecosim
                 'jb 12-Feb-2010 Reloading of forcing data overwrites user edits of effort
                 'We just need to make sure the forcing data arrays are dimensioned big enough to handle the run length
                 Me.m_RefData.nGroups = Me.nGroups
-                Me.m_RefData.redimForcingData(Math.Max(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch, Me.m_RefData.nDatPoints))
+                Me.m_RefData.redimForcingData(Me.m_Data.NumYears + Me.m_search.ExtraYearsForSearch)
 
                 DefaultDF()
 

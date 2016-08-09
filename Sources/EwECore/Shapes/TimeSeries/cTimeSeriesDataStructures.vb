@@ -194,7 +194,8 @@ Public Class cTimeSeriesDataStructures
         ''Constrain the time step index 
         ''to the last reference data time step
         'If its > Me.nDatPoints Then
-        '    its = nDatPoints
+        '    'really just for debugging
+        '    its = its
         'End If
 
         Return its
@@ -418,7 +419,7 @@ Public Class cTimeSeriesDataStructures
     ''' </summary>
     ''' <param name="nDatumPoints"></param>
     ''' <remarks></remarks>
-    Public Sub redimForcingData(ByVal nDatumPoints As Integer)
+    Public Sub redimForcingData_old(ByVal nDatumPoints As Integer)
 
         Try
             If PoolForceBB Is Nothing Then
@@ -449,6 +450,43 @@ Public Class cTimeSeriesDataStructures
             'End If
 
 
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Redim time series forcing data PoolForceBB(nGroups, nYears),PoolForceZ(nGroups, nYears) and PoolForceCatch(nGroups, nYears)
+    ''' </summary>
+    ''' <param name="nEcosimYears"></param>
+    ''' <remarks></remarks>
+    Public Sub redimForcingData(ByVal nEcosimYears As Integer)
+
+        Try
+
+            Dim npoints As Integer
+            If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
+                npoints = Math.Max(Me.nDatPoints, nEcosimYears * cCore.N_MONTHS)
+            Else
+                npoints = Math.Max(Me.nDatPoints, nEcosimYears)
+            End If
+
+
+            If PoolForceBB Is Nothing Then
+                ReDim PoolForceBB(nGroups, npoints)
+                ReDim PoolForceZ(nGroups, npoints)
+                ReDim PoolForceCatch(nGroups, npoints)
+
+            ElseIf npoints > Me.nDatPoints Then
+                'number of years the model is running for is greater then the forcing data
+                'preserve the existing forcing data 
+                ReDim Preserve PoolForceBB(nGroups, npoints)
+                ReDim Preserve PoolForceZ(nGroups, npoints)
+                ReDim Preserve PoolForceCatch(nGroups, npoints)
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -598,17 +636,22 @@ Public Class cTimeSeriesDataStructures
         'Time series forcing data is stored the same way as other time series data
         'but is applied to fixed arrays i.e. PoolForceBB().....
         Try
-            'jb do not load the timeseries data 
-            'just the forcing data i.e. PoolForceB
-            ' Me.loadEnabled()
+            ''jb do not load the timeseries data 
+            ''just the forcing data i.e. PoolForceB
+            '' Me.loadEnabled()
 
-            Dim npoints As Integer = Me.nYears
-            If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then npoints = Me.nDatPoints
+            'Dim npoints As Integer = Me.nYears
+            'If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
+            '    npoints = Math.Max(npoints, EcosimData.NTimes)
+            'Else
+            '    npoints = Math.Max(npoints, EcosimData.NumYears)
+            'End If
 
-            npoints = Math.Max(npoints, EcosimData.NumYears)
+            ''   npoints = Math.Max(npoints, EcosimData.NTimes)
 
-            Me.redimForcingData(npoints)
+            Me.redimForcingData(EcosimData.NumYears)
             Me.DoDatValCalculations(EcosimData)
+
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
