@@ -55,6 +55,10 @@ Source: "C:\Temp\Build\Interop.JRO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\Ionic.Zip.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\Microsoft.GLEE.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\Microsoft.Office.Interop.Access.Dao.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\BuildBot\slave\Ecopath6\Database\Generic_37.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
+Source: "C:\BuildBot\slave\Ecopath6\Database\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
+Source: "C:\BuildBot\slave\Ecopath6\Database\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
+Source: "C:\BuildBot\slave\Ecopath6\Database\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "C:\Temp\Build\ProjNet.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\ScientificInterfaceShared.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\SourceGrid2.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -80,6 +84,7 @@ Source: "C:\Temp\Build\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\User
 
 [Components]
 Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
+Name: "databases"; Description: "Sample EwE models"; Types: full custom
 Name: "plugin"; Description: "Plug-ins"; Types: full custom
 Name: "plugin\analysis"; Description: "Analysis"; Types: full custom
 Name: "plugin\analysis\ecolind"; Description: "Ecological Indicators"; Types: full
