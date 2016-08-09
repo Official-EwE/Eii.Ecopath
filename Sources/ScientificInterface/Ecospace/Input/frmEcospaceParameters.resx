@@ -1977,6 +1977,30 @@
   <data name="&gt;&gt;m_plModel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_btTimeSeriesOutputFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>234, 47</value>
+  </data>
+  <data name="m_btTimeSeriesOutputFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 20</value>
+  </data>
+  <data name="m_btTimeSeriesOutputFile.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="m_btTimeSeriesOutputFile.Text" xml:space="preserve">
+    <value>Output residuals file...</value>
+  </data>
+  <data name="&gt;&gt;m_btTimeSeriesOutputFile.Name" xml:space="preserve">
+    <value>m_btTimeSeriesOutputFile</value>
+  </data>
+  <data name="&gt;&gt;m_btTimeSeriesOutputFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btTimeSeriesOutputFile.Parent" xml:space="preserve">
+    <value>m_plTimeSeries</value>
+  </data>
+  <data name="&gt;&gt;m_btTimeSeriesOutputFile.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_lvTimeSeriesFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -2063,7 +2087,7 @@
     <value>m_plTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lvTimeSeriesFiles.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_btLoadXYTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
     <value>233, 18</value>
@@ -2075,7 +2099,7 @@
     <value>22</value>
   </data>
   <data name="m_btLoadXYTimeSeries.Text" xml:space="preserve">
-    <value>Load XY time series...</value>
+    <value>Input XY time series...</value>
   </data>
   <data name="&gt;&gt;m_btLoadXYTimeSeries.Name" xml:space="preserve">
     <value>m_btLoadXYTimeSeries</value>
@@ -2087,7 +2111,7 @@
     <value>m_plTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_btLoadXYTimeSeries.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_cbUseEcosimForcing.AccessibleName" xml:space="preserve">
     <value />
@@ -2123,7 +2147,7 @@
     <value>m_plTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_cbUseEcosimForcing.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrTimeSeries.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -2153,7 +2177,7 @@
     <value>m_plTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_hdrTimeSeries.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_plTimeSeries.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

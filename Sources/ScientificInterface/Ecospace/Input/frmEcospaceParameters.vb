@@ -419,6 +419,33 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnLoadXYTimeSeries_Click(sender As Object, e As EventArgs) Handles m_btLoadXYTimeSeries.Click
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            cmdFO.Invoke(Resources.FILEFILTER_CSV & "|" & Resources.FILEFILTER_XYZ & "|" & Resources.FILEFILTER_TEXT)
+            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+                Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+                Dim InputFile As String = cmdFO.FileNames(0)
+                Dim OuputFile As String = manager.getDefaultOutputFileName(InputFile)
+                manager.Load(InputFile, OuputFile)
+            End If
+        End Sub
+
+        Private Sub OnTimeSeriesOutputFile_Click(sender As Object, e As EventArgs) Handles m_btTimeSeriesOutputFile.Click
+            Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+            Dim dlgSave As New SaveFileDialog
+
+            dlgSave.Filter = Resources.FILEFILTER_CSV & "|" & Resources.FILEFILTER_XYZ & "|" & Resources.FILEFILTER_TEXT
+            dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OuputFileName)
+            dlgSave.FileName = IO.Path.GetFileName(manager.OuputFileName)
+            If dlgSave.ShowDialog = Windows.Forms.DialogResult.OK Then
+                manager.OuputFileName = dlgSave.FileName
+            End If
+
+        End Sub
+
 #End Region ' Control events
 
 #Region " Overrides "
@@ -478,19 +505,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub m_btLoadXYTimeSeries_Click(sender As Object, e As EventArgs) Handles m_btLoadXYTimeSeries.Click
 
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-
-            cmdFO.Invoke(Resources.FILEFILTER_CSV & "|" & Resources.FILEFILTER_XYZ & "|" & Resources.FILEFILTER_TEXT)
-            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
-                Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
-                Dim InputFile As String = cmdFO.FileNames(0)
-                Dim OuputFile As String = manager.getDefaultOutputFileName(InputFile)
-                manager.Load(InputFile, OuputFile)
-            End If
-        End Sub
 
 #End Region ' Internals
 

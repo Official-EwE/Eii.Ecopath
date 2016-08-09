@@ -44,6 +44,7 @@ Namespace EcospaceTimeSeries
         '   Done 29-Jul-2016 Validates records and sends message
 
         'ToDo 29-July-2016 Added message strings to resources
+        '   Done Ongoing 9-Aug-2016 there still may be more messages
 
         'ToDo 27-July-2016  Document the file formats (input and output) and how it works
         '   Done 3-Aug-2016
@@ -55,8 +56,7 @@ Namespace EcospaceTimeSeries
         '       A default is supplied.
         '   Added a UI to show the user what file is currently loaded
         '   Default output file uses core output path
-
-        'ToDo 8-Aug-2016 Let the user set the output file via the UI instead of just the default
+        '   Done?? 9-Aug-2016 Output file can be set from the UI
 
         'ToDo 27-July-2016 Added SS output to the UI. Results form... Main Run UI some place?
 
@@ -84,6 +84,12 @@ Namespace EcospaceTimeSeries
             End Get
             Set(value As String)
                 Me.m_OutputFilename = value
+                'Tell the world
+                'this lets the UI update to the change
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
+                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                       EwEUtils.Core.eMessageImportance.Information))
+
             End Set
         End Property
 
@@ -343,6 +349,9 @@ Namespace EcospaceTimeSeries
             Catch ex As Exception
 
             End Try
+
+            Me.Core.Messages.sendAllMessages()
+
         End Sub
 
         Friend ReadOnly Property Core As cCore
@@ -522,7 +531,7 @@ Namespace EcospaceTimeSeries
                 Exit Sub
             End If
 
-            Dim msg As Text.StringBuilder
+
 
             'build the output directory if it doesn't exist
             'if this fails the streamwriter will throw an error and the user will get an error message
@@ -543,16 +552,22 @@ Namespace EcospaceTimeSeries
 
                 strm.Close()
 
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_RESULTS_SAVED, Me.OuputFileName),
+                                                           EwEUtils.Core.eMessageType.DataExport,
+                                                           EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                           EwEUtils.Core.eMessageImportance.Information)
+                msg.Hyperlink = Me.OuputFileName
+                Me.m_core.Messages.AddMessage(msg)
+
             Catch ex As Exception
                 EwEUtils.Core.cLog.Write(ex, Me.ToString + ".SaveResults() Exception")
-                msg = New Text.StringBuilder
-                msg.Append("Ecospace Time Series exception saving output file " + ex.Message)
-            End Try
 
-            If msg IsNot Nothing Then
-                Me.m_core.Messages.AddMessage(New cMessage(msg.ToString, EwEUtils.Core.eMessageType.ErrorEncountered,
-                    EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
-            End If
+                Dim ExMsg As New Text.StringBuilder
+                ExMsg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_SAVE_EXCEPTION, ex.Message))
+
+                Me.m_core.Messages.AddMessage(New cMessage(ExMsg.ToString, EwEUtils.Core.eMessageType.ErrorEncountered,
+                   EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+            End Try
 
         End Sub
 

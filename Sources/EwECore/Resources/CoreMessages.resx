@@ -1352,4 +1352,15 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value> {0}  records because of {1}</value>
     <comment>{0}=Number of records, {1}=reason for failure</comment>
   </data>
+  <data name="ECOSPACE_TIMESERIES_OUTPUT_SET" xml:space="preserve">
+    <value>Ecospace Time Series output file set.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_RESULTS_SAVED" xml:space="preserve">
+    <value>Ecospace Time Series residuals saved to file {0}</value>
+    <comment>{0}=ouput file</comment>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_SAVE_EXCEPTION" xml:space="preserve">
+    <value>Ecospace Time Series exception saving output file: {0}</value>
+    <comment>{0}=exception message</comment>
+  </data>
 </root>
