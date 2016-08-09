@@ -116,6 +116,7 @@ Namespace Ecospace
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plModel = New System.Windows.Forms.Panel()
             Me.m_plTimeSeries = New System.Windows.Forms.Panel()
+            Me.m_btTimeSeriesOutputFile = New System.Windows.Forms.Button()
             Me.m_lvTimeSeriesFiles = New System.Windows.Forms.ListView()
             Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -633,12 +634,19 @@ Namespace Ecospace
             '
             'm_plTimeSeries
             '
+            Me.m_plTimeSeries.Controls.Add(Me.m_btTimeSeriesOutputFile)
             Me.m_plTimeSeries.Controls.Add(Me.m_lvTimeSeriesFiles)
             Me.m_plTimeSeries.Controls.Add(Me.m_btLoadXYTimeSeries)
             Me.m_plTimeSeries.Controls.Add(Me.m_cbUseEcosimForcing)
             Me.m_plTimeSeries.Controls.Add(Me.m_hdrTimeSeries)
             resources.ApplyResources(Me.m_plTimeSeries, "m_plTimeSeries")
             Me.m_plTimeSeries.Name = "m_plTimeSeries"
+            '
+            'm_btTimeSeriesOutputFile
+            '
+            resources.ApplyResources(Me.m_btTimeSeriesOutputFile, "m_btTimeSeriesOutputFile")
+            Me.m_btTimeSeriesOutputFile.Name = "m_btTimeSeriesOutputFile"
+            Me.m_btTimeSeriesOutputFile.UseVisualStyleBackColor = True
             '
             'm_lvTimeSeriesFiles
             '
@@ -804,6 +812,7 @@ Namespace Ecospace
         Friend WithEvents ColumnHeader1 As ColumnHeader
         Friend WithEvents ColumnHeader2 As ColumnHeader
         Friend WithEvents ColumnHeader3 As ColumnHeader
+        Friend WithEvents m_btTimeSeriesOutputFile As Button
     End Class
 
 End Namespace

@@ -1211,6 +1211,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series output file set..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_OUTPUT_SET() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_OUTPUT_SET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace Time Series failed to read.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE() As String
@@ -1225,6 +1234,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property ECOSPACE_TIMESERIES_READ_FAIL_REASON() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_TIMESERIES_READ_FAIL_REASON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series residuals saved to file {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_RESULTS_SAVED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_RESULTS_SAVED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace Time Series exception saving output file: {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_TIMESERIES_SAVE_EXCEPTION() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_TIMESERIES_SAVE_EXCEPTION", resourceCulture)
             End Get
         End Property
         
