@@ -7894,6 +7894,8 @@ Public Class cCore
             m_EcoSimData.redimTime(newNumberOfYears, m_TSData.nYears, bOverwriteNewData)
 
             'redim the cv vars to the new timesteps
+            'The MSE will use Ecosim.NumYears for the new run length
+            'So pass in the original number of years so it can figure out what to do
             Me.m_MSEData.redimTime(orgNYears)
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
@@ -7901,8 +7903,6 @@ Public Class cCore
             Me.m_TSData.LoadForcingData(m_EcoSimData)
 
             Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
-
-            ' Me.EcospaceModelParameters.TotalTime = m_EcoSimData.NumYears
 
             Me.m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
             'changed the run length for ecospace reset the summary periods to defaults
@@ -8225,6 +8225,12 @@ Public Class cCore
 
             End If
 
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".EcoSimRunCompleted() Exception: " & ex.Message)
+        End Try
+
+        Try
+
             'make sure ecosim can start again
             m_EcoSim.bStopRunning = False
 
@@ -8255,7 +8261,6 @@ Public Class cCore
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".EcoSimRunCompleted() Exception: " & ex.Message)
         End Try
-
 
     End Sub
 

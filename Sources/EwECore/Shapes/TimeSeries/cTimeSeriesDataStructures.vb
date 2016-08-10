@@ -417,63 +417,21 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>
     ''' Redim time series forcing data PoolForceBB(nGroups, nYears),PoolForceZ(nGroups, nYears) and PoolForceCatch(nGroups, nYears)
     ''' </summary>
-    ''' <param name="nDatumPoints"></param>
-    ''' <remarks></remarks>
-    Public Sub redimForcingData_old(ByVal nDatumPoints As Integer)
-
-        Try
-            If PoolForceBB Is Nothing Then
-                ReDim PoolForceBB(nGroups, nDatumPoints)
-                ReDim PoolForceZ(nGroups, nDatumPoints)
-                ReDim PoolForceCatch(nGroups, nDatumPoints)
-
-            ElseIf nDatumPoints > Me.nYears Then
-                'number of years the model is running for is greater then the forcing data
-                'preserve the existing forcing data 
-                ReDim Preserve PoolForceBB(nGroups, nDatumPoints)
-                ReDim Preserve PoolForceZ(nGroups, nDatumPoints)
-                ReDim Preserve PoolForceCatch(nGroups, nDatumPoints)
-            End If
-
-            'If PoolForceBB Is Nothing Then
-            '    ReDim PoolForceBB(nGroups, nDatumPoints)
-            '    ReDim PoolForceZ(nGroups, nDatumPoints)
-            '    ReDim PoolForceCatch(nGroups, nDatumPoints)
-            'End If
-
-            'If Not PoolForceBB Is Nothing And nDatumPoints > Me.nYears Then
-            '    'number of years the model is running for is greater then the forcing data
-            '    'preserve the existing forcing data 
-            '    ReDim Preserve PoolForceBB(nGroups, nDatumPoints)
-            '    ReDim Preserve PoolForceZ(nGroups, nDatumPoints)
-            '    ReDim Preserve PoolForceCatch(nGroups, nDatumPoints)
-            'End If
-
-
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-
-    End Sub
-
-
-    ''' <summary>
-    ''' Redim time series forcing data PoolForceBB(nGroups, nYears),PoolForceZ(nGroups, nYears) and PoolForceCatch(nGroups, nYears)
-    ''' </summary>
-    ''' <param name="nEcosimYears"></param>
+    ''' <param name="nEcosimYears">Ecosim run length in years</param>
     ''' <remarks></remarks>
     Public Sub redimForcingData(ByVal nEcosimYears As Integer)
 
         Try
-
+            'What is the max number of datapoints that will be needed for this Ecosim run length
+            'If the Ecosim run length is greater than the forcing data
+            'Then we need to increase the number of forcing data points 
+            'leaving the extra data points with zeros/no data
             Dim npoints As Integer
             If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
                 npoints = Math.Max(Me.nDatPoints, nEcosimYears * cCore.N_MONTHS)
             Else
                 npoints = Math.Max(Me.nDatPoints, nEcosimYears)
             End If
-
 
             If PoolForceBB Is Nothing Then
                 ReDim PoolForceBB(nGroups, npoints)
@@ -633,23 +591,14 @@ Public Class cTimeSeriesDataStructures
 
 
     Public Sub LoadForcingData(ByVal EcosimData As cEcosimDatastructures)
-        'Time series forcing data is stored the same way as other time series data
-        'but is applied to fixed arrays i.e. PoolForceBB().....
+        'Forcing data is loaded from the database into the same data structures as the other time series data DatVal(ipoint,itype)
+        'This allocates arrays for each forcing type PoolForceBB(group,point),PoolForceZ(group,point) and PoolForceCatch(group,point)
+        'and loads the data from DatVal(ipoint,itype) into the arrays used by the core
         Try
-            ''jb do not load the timeseries data 
-            ''just the forcing data i.e. PoolForceB
-            '' Me.loadEnabled()
-
-            'Dim npoints As Integer = Me.nYears
-            'If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
-            '    npoints = Math.Max(npoints, EcosimData.NTimes)
-            'Else
-            '    npoints = Math.Max(npoints, EcosimData.NumYears)
-            'End If
-
-            ''   npoints = Math.Max(npoints, EcosimData.NTimes)
-
+            'redimForcingData() will expand the forcing data to cover the number of ecosim years
+            'while preserving the currently loaded data
             Me.redimForcingData(EcosimData.NumYears)
+            'Load the data from DatVal(ipoint,itype) into the core arrays PoolForceBB(group,point)...
             Me.DoDatValCalculations(EcosimData)
 
         Catch ex As Exception

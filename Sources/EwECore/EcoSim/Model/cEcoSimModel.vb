@@ -431,7 +431,12 @@ Namespace Ecosim
 
         Private Sub RunModelThreaded(ByVal obj As Object)
 
-            Me.RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
+            Try
+                Me.RunModelValue(m_Data.NumYears, m_search.Frates, m_search.nBlocks)
+            Catch ex As Exception
+                Me.Messages.AddMessage(New cMessage(ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
+            End Try
+
 
             Try
                 m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunCompleted), Nothing)
@@ -695,6 +700,11 @@ Namespace Ecosim
             Dim RelFopt() As Single, QGrowUsed() As Single
             Dim Fgear() As Single
             Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'For testing error handling
+            'Throw New Exception("Ecosim test exception!")
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             'QYear() Max catchability increase. Catchability increase over time due to improved fishing efficiency
             'Used to modify relQ()
