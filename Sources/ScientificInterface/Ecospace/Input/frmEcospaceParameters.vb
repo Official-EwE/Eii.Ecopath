@@ -24,8 +24,9 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.My
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -74,9 +75,11 @@ Namespace Ecospace
         Private m_fpAnnualOutput As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
-        Private m_fpUseBiomassForcing As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
 
+        ' Ecospace time series
+        Private WithEvents m_bpUseBiomassForcing As cBooleanProperty = Nothing
+        Private m_fpUseBiomassForcing As cEwEFormatProvider = Nothing
 
         ' Properties to monitor for setting radio button check states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
@@ -84,10 +87,7 @@ Namespace Ecospace
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
-
         Private m_fpFirstOutputTimestep As cEwEFormatProvider
-
-
 
 #End Region ' Private vars
 
@@ -119,8 +119,11 @@ Namespace Ecospace
             Me.m_bpEffort = DirectCast(propMan.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
 
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
-            Me.m_clbAutosave.Items.Clear()
 
+            Me.m_bpUseBiomassForcing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.EcospaceUseEcosimBiomassForcing), cBooleanProperty)
+            Me.m_fpUseBiomassForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimForcing, Me.m_bpUseBiomassForcing)
+
+            Me.m_clbAutosave.Items.Clear()
             Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
@@ -166,11 +169,7 @@ Namespace Ecospace
 
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
 
-            Me.m_fpUseBiomassForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimForcing, parms, eVarNameFlags.EcospaceUseEcosimBiomassForcing)
-            Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
-
             Me.UpdateScenarioFormatProviders()
-            Me.UpdateTimeSeries()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core, eCoreComponentType.TimeSeries}
 
@@ -222,7 +221,6 @@ Namespace Ecospace
         ''' <summary>
         ''' Helper enum, used to determine the threading model type from ecospace data flags.
         ''' </summary>
-        ''' <remarks>MUAAAHAHAAHHAAH!</remarks>
         ''' -------------------------------------------------------------------
         Private Enum eThreadingModelType As Integer
             UseNewStanza
@@ -274,18 +272,13 @@ Namespace Ecospace
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
 
+            'Time series
+            Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+            Me.m_tbxXYTimeSeriesFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.InputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.InputFileName)
+            Me.m_tbxlOutputResidualsFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.OuputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OuputFileName)
 
             Me.m_bInUpdate = False
 
-        End Sub
-
-
-        Private Sub UpdateEcosimTimeseries()
-            Try
-                Me.m_fpUseBiomassForcing.Enabled = Me.Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
-            Catch ex As Exception
-
-            End Try
         End Sub
 
 #End Region ' Form content handling
@@ -300,8 +293,7 @@ Namespace Ecospace
         ''' <param name="changeFlags">The extent of the change.</param>
         ''' -------------------------------------------------------------------
         Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
-                Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged
-
+            Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged, m_bpUseBiomassForcing.PropertyChanged
             Me.UpdateControls()
         End Sub
 
@@ -419,12 +411,12 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnLoadXYTimeSeries_Click(sender As Object, e As EventArgs) Handles m_btLoadXYTimeSeries.Click
+        Private Sub OnLoadXYTimeSeries_Click(sender As Object, e As EventArgs) Handles m_btnLoadXYTimeSeries.Click
 
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
-            cmdFO.Invoke(Resources.FILEFILTER_CSV & "|" & Resources.FILEFILTER_XYZ & "|" & Resources.FILEFILTER_TEXT)
+            cmdFO.Invoke(SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
             If cmdFO.Result = Windows.Forms.DialogResult.OK Then
                 Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
                 Dim InputFile As String = cmdFO.FileNames(0)
@@ -433,11 +425,11 @@ Namespace Ecospace
             End If
         End Sub
 
-        Private Sub OnTimeSeriesOutputFile_Click(sender As Object, e As EventArgs) Handles m_btTimeSeriesOutputFile.Click
+        Private Sub OnTimeSeriesOutputFile_Click(sender As Object, e As EventArgs) Handles m_btnTimeSeriesOutputFile.Click
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
             Dim dlgSave As New SaveFileDialog
 
-            dlgSave.Filter = Resources.FILEFILTER_CSV & "|" & Resources.FILEFILTER_XYZ & "|" & Resources.FILEFILTER_TEXT
+            dlgSave.Filter = SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT
             dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OuputFileName)
             dlgSave.FileName = IO.Path.GetFileName(manager.OuputFileName)
             If dlgSave.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -456,7 +448,7 @@ Namespace Ecospace
             End If
 
             If msg.Source = eCoreComponentType.EcoSpace And msg.Type = eMessageType.DataModified Then
-                Me.UpdateTimeSeries()
+                Me.UpdateControls()
             End If
 
         End Sub
@@ -476,36 +468,6 @@ Namespace Ecospace
             Me.m_fpContact = New cPropertyFormatProvider(Me.UIContext, Me.m_tbContact, scenarioDef, eVarNameFlags.Contact)
 
         End Sub
-
-
-        Private Sub UpdateTimeSeries()
-            Me.UpdateEcosimTimeseries()
-            Me.UpdateTimeSeriesList()
-        End Sub
-
-        Private Sub UpdateTimeSeriesList()
-
-            Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
-            If Not String.IsNullOrEmpty(manager.InputFileName) Then
-                ' If IO.File.Exists(manager.InputFileName) Then
-                Me.m_lvTimeSeriesFiles.Items(0).SubItems(1).Text = IO.Path.GetFileName(manager.InputFileName)
-                Me.m_lvTimeSeriesFiles.Items(0).SubItems(2).Text = manager.InputFileName
-
-                Me.m_lvTimeSeriesFiles.Items(1).SubItems(1).Text = IO.Path.GetFileName(manager.OuputFileName)
-                Me.m_lvTimeSeriesFiles.Items(1).SubItems(2).Text = manager.OuputFileName
-
-                '  End If
-            Else
-                Me.m_lvTimeSeriesFiles.Items(0).SubItems(1).Text = ""
-                Me.m_lvTimeSeriesFiles.Items(0).SubItems(2).Text = ""
-
-                Me.m_lvTimeSeriesFiles.Items(1).SubItems(1).Text = ""
-                Me.m_lvTimeSeriesFiles.Items(1).SubItems(2).Text = ""
-            End If
-
-        End Sub
-
-
 
 #End Region ' Internals
 

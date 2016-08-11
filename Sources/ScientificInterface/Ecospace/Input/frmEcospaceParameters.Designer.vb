@@ -116,14 +116,14 @@ Namespace Ecospace
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plModel = New System.Windows.Forms.Panel()
             Me.m_plTimeSeries = New System.Windows.Forms.Panel()
-            Me.m_btTimeSeriesOutputFile = New System.Windows.Forms.Button()
-            Me.m_lvTimeSeriesFiles = New System.Windows.Forms.ListView()
-            Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-            Me.m_btLoadXYTimeSeries = New System.Windows.Forms.Button()
+            Me.m_btnTimeSeriesOutputFile = New System.Windows.Forms.Button()
+            Me.m_btnLoadXYTimeSeries = New System.Windows.Forms.Button()
             Me.m_cbUseEcosimForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblXY = New System.Windows.Forms.Label()
+            Me.m_tbxXYTimeSeriesFile = New System.Windows.Forms.TextBox()
+            Me.m_lblOutputResidualsFile = New System.Windows.Forms.Label()
+            Me.m_tbxlOutputResidualsFile = New System.Windows.Forms.TextBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -634,52 +634,28 @@ Namespace Ecospace
             '
             'm_plTimeSeries
             '
-            Me.m_plTimeSeries.Controls.Add(Me.m_btTimeSeriesOutputFile)
-            Me.m_plTimeSeries.Controls.Add(Me.m_lvTimeSeriesFiles)
-            Me.m_plTimeSeries.Controls.Add(Me.m_btLoadXYTimeSeries)
+            Me.m_plTimeSeries.Controls.Add(Me.m_lblOutputResidualsFile)
+            Me.m_plTimeSeries.Controls.Add(Me.m_tbxlOutputResidualsFile)
+            Me.m_plTimeSeries.Controls.Add(Me.m_tbxXYTimeSeriesFile)
+            Me.m_plTimeSeries.Controls.Add(Me.m_lblXY)
+            Me.m_plTimeSeries.Controls.Add(Me.m_btnTimeSeriesOutputFile)
+            Me.m_plTimeSeries.Controls.Add(Me.m_btnLoadXYTimeSeries)
             Me.m_plTimeSeries.Controls.Add(Me.m_cbUseEcosimForcing)
             Me.m_plTimeSeries.Controls.Add(Me.m_hdrTimeSeries)
             resources.ApplyResources(Me.m_plTimeSeries, "m_plTimeSeries")
             Me.m_plTimeSeries.Name = "m_plTimeSeries"
             '
-            'm_btTimeSeriesOutputFile
+            'm_btnTimeSeriesOutputFile
             '
-            resources.ApplyResources(Me.m_btTimeSeriesOutputFile, "m_btTimeSeriesOutputFile")
-            Me.m_btTimeSeriesOutputFile.Name = "m_btTimeSeriesOutputFile"
-            Me.m_btTimeSeriesOutputFile.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnTimeSeriesOutputFile, "m_btnTimeSeriesOutputFile")
+            Me.m_btnTimeSeriesOutputFile.Name = "m_btnTimeSeriesOutputFile"
+            Me.m_btnTimeSeriesOutputFile.UseVisualStyleBackColor = True
             '
-            'm_lvTimeSeriesFiles
+            'm_btnLoadXYTimeSeries
             '
-            Me.m_lvTimeSeriesFiles.Activation = System.Windows.Forms.ItemActivation.OneClick
-            resources.ApplyResources(Me.m_lvTimeSeriesFiles, "m_lvTimeSeriesFiles")
-            Me.m_lvTimeSeriesFiles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
-            Me.m_lvTimeSeriesFiles.FullRowSelect = True
-            Me.m_lvTimeSeriesFiles.HotTracking = True
-            Me.m_lvTimeSeriesFiles.HoverSelection = True
-            Me.m_lvTimeSeriesFiles.Items.AddRange(New System.Windows.Forms.ListViewItem() {CType(resources.GetObject("m_lvTimeSeriesFiles.Items"), System.Windows.Forms.ListViewItem), CType(resources.GetObject("m_lvTimeSeriesFiles.Items1"), System.Windows.Forms.ListViewItem)})
-            Me.m_lvTimeSeriesFiles.MultiSelect = False
-            Me.m_lvTimeSeriesFiles.Name = "m_lvTimeSeriesFiles"
-            Me.m_lvTimeSeriesFiles.ShowItemToolTips = True
-            Me.m_lvTimeSeriesFiles.UseCompatibleStateImageBehavior = False
-            Me.m_lvTimeSeriesFiles.View = System.Windows.Forms.View.Details
-            '
-            'ColumnHeader1
-            '
-            resources.ApplyResources(Me.ColumnHeader1, "ColumnHeader1")
-            '
-            'ColumnHeader2
-            '
-            resources.ApplyResources(Me.ColumnHeader2, "ColumnHeader2")
-            '
-            'ColumnHeader3
-            '
-            resources.ApplyResources(Me.ColumnHeader3, "ColumnHeader3")
-            '
-            'm_btLoadXYTimeSeries
-            '
-            resources.ApplyResources(Me.m_btLoadXYTimeSeries, "m_btLoadXYTimeSeries")
-            Me.m_btLoadXYTimeSeries.Name = "m_btLoadXYTimeSeries"
-            Me.m_btLoadXYTimeSeries.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnLoadXYTimeSeries, "m_btnLoadXYTimeSeries")
+            Me.m_btnLoadXYTimeSeries.Name = "m_btnLoadXYTimeSeries"
+            Me.m_btnLoadXYTimeSeries.UseVisualStyleBackColor = True
             '
             'm_cbUseEcosimForcing
             '
@@ -694,6 +670,28 @@ Namespace Ecospace
             Me.m_hdrTimeSeries.CollapsedParentHeight = 0
             Me.m_hdrTimeSeries.IsCollapsed = False
             Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
+            '
+            'm_lblXY
+            '
+            resources.ApplyResources(Me.m_lblXY, "m_lblXY")
+            Me.m_lblXY.Name = "m_lblXY"
+            '
+            'm_tbxXYTimeSeriesFile
+            '
+            resources.ApplyResources(Me.m_tbxXYTimeSeriesFile, "m_tbxXYTimeSeriesFile")
+            Me.m_tbxXYTimeSeriesFile.Name = "m_tbxXYTimeSeriesFile"
+            Me.m_tbxXYTimeSeriesFile.ReadOnly = True
+            '
+            'm_lblOutputResidualsFile
+            '
+            resources.ApplyResources(Me.m_lblOutputResidualsFile, "m_lblOutputResidualsFile")
+            Me.m_lblOutputResidualsFile.Name = "m_lblOutputResidualsFile"
+            '
+            'm_tbxlOutputResidualsFile
+            '
+            resources.ApplyResources(Me.m_tbxlOutputResidualsFile, "m_tbxlOutputResidualsFile")
+            Me.m_tbxlOutputResidualsFile.Name = "m_tbxlOutputResidualsFile"
+            Me.m_tbxlOutputResidualsFile.ReadOnly = True
             '
             'frmEcospaceParameters
             '
@@ -806,13 +804,13 @@ Namespace Ecospace
         Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
         Friend WithEvents m_plTimeSeries As Panel
         Friend WithEvents m_hdrTimeSeries As cEwEHeaderLabel
-        Friend WithEvents m_cbUseEcosimForcing As CheckBox
-        Friend WithEvents m_btLoadXYTimeSeries As Button
-        Friend WithEvents m_lvTimeSeriesFiles As ListView
-        Friend WithEvents ColumnHeader1 As ColumnHeader
-        Friend WithEvents ColumnHeader2 As ColumnHeader
-        Friend WithEvents ColumnHeader3 As ColumnHeader
-        Friend WithEvents m_btTimeSeriesOutputFile As Button
+        Private WithEvents m_cbUseEcosimForcing As CheckBox
+        Private WithEvents m_btnLoadXYTimeSeries As Button
+        Private WithEvents m_btnTimeSeriesOutputFile As Button
+        Private WithEvents m_lblOutputResidualsFile As Label
+        Private WithEvents m_tbxlOutputResidualsFile As TextBox
+        Private WithEvents m_tbxXYTimeSeriesFile As TextBox
+        Private WithEvents m_lblXY As Label
     End Class
 
 End Namespace
