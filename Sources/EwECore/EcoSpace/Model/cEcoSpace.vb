@@ -1543,7 +1543,6 @@ Public Class cEcoSpace
                     If Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex) > 0 Then
                         SumB = 0
 
-                        'If m_Data.TimeNow > 10 Then ' And m_Data.TimeNow < 20 Then
                         Dim WaterCells As Integer = 0
                         'this group has forced biomass in Ecosim timeseries
                         For i As Integer = 1 To m_Data.InRow
@@ -1562,12 +1561,12 @@ Public Class cEcoSpace
                             Next j
                         Next i
 
-                        'Get the forced biomass (fb)
-                        Dim fb As Single = 0
+                        Dim BForced As Single = 0
                         Dim sumForcedB As Single = 0 'for debugging
+                        Dim BMeanScalar As Single = WaterCells / SumB
                         'fb = 0.08 * WaterCells ' * (1 - m_Data.TimeNow / m_Data.TotalTime) 
                         'jb get the forced biomass value
-                        fb = Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
+                        BForced = Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
 
                         For i As Integer = 1 To m_Data.InRow
                             For j As Integer = 1 To m_Data.InCol
@@ -1579,15 +1578,18 @@ Public Class cEcoSpace
                                 'jb
                                 If Me.m_Data.Depth(i, j) > 0 Then
                                     'jb version 29-June-2016
-                                    m_Data.Bcell(i, j, ip) = (WaterCells / SumB) * fb * m_Data.Bcell(i, j, ip)
+                                    ' m_Data.Bcell(i, j, ip) = (WaterCells / SumB) * fb * m_Data.Bcell(i, j, ip)
+                                    m_Data.Bcell(i, j, ip) = BMeanScalar * BForced * m_Data.Bcell(i, j, ip)
                                     sumForcedB += m_Data.Bcell(i, j, ip)
                                 End If
                             Next j
                         Next i
 
-                        'Debugging the mean ecospace biomass should match the forcing value
-                        System.Console.WriteLine("Ecospace Forced B grp=" + ip.ToString + " BForced/Bmean=" + (fb / (sumForcedB / WaterCells)).ToString)
-                        Debug.Assert(Math.Round(fb / (sumForcedB / WaterCells), 3) = 1.0, "ForceBiomassWithEcosimTimeSeries(...) did not set forced biomass correctly")
+                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        ''Debugging the mean ecospace biomass should match the forcing value
+                        'System.Console.WriteLine("Ecospace Forced B grp=" + ip.ToString + " BForced/BMean=" + (BForced / (sumForcedB / WaterCells)).ToString)
+                        'Debug.Assert(Math.Round(BForced / (sumForcedB / WaterCells), 3) = 1.0, "ForceBiomassWithEcosimTimeSeries(...) did not set forced biomass correctly")
+                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     End If 'Me.EcoSim.TimeSeriesData.PoolForceBB(ip, iForcingIndex)
                 End If ' Me.m_Data.IsEcosimBioForcing(ip)
