@@ -277,6 +277,12 @@ Namespace Ecospace
             Me.m_tbxXYTimeSeriesFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.InputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.InputFileName)
             Me.m_tbxlOutputResidualsFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.OuputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OuputFileName)
 
+            'If Ecosim Biomass forcing is loaded then enable the control
+            'IsEcosimBiomassForcingLoaded() just tell use that there is Ecosim Biomass Forcing loaded
+            'NOT if it is being used by Ecospace 
+            'That is controled by UseEcosimBiomassForcing
+            Me.m_fpUseBiomassForcing.Enabled = Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
+
             Me.m_bInUpdate = False
 
         End Sub
