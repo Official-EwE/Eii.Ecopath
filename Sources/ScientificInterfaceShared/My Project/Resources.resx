@@ -3090,4 +3090,7 @@
   <data name="FILEFILTER_XYZ" xml:space="preserve">
     <value>XYZ point data file|*.xyz</value>
   </data>
+  <data name="LABEL_ALL_SUPPORTED_FILES" xml:space="preserve">
+    <value>All supported files</value>
+  </data>
 </root>

@@ -7135,6 +7135,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to All supported files.
+        '''</summary>
+        Public ReadOnly Property LABEL_ALL_SUPPORTED_FILES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_ALL_SUPPORTED_FILES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Choose folder....
         '''</summary>
         Public ReadOnly Property LABEL_CHOOSE_FOLDER() As String

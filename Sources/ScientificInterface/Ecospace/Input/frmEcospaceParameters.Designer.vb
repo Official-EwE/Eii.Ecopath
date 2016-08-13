@@ -116,14 +116,14 @@ Namespace Ecospace
             Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plModel = New System.Windows.Forms.Panel()
             Me.m_plTimeSeries = New System.Windows.Forms.Panel()
+            Me.m_lblOutputResidualsFile = New System.Windows.Forms.Label()
+            Me.m_tbxlOutputResidualsFile = New System.Windows.Forms.TextBox()
+            Me.m_tbxXYTimeSeriesFile = New System.Windows.Forms.TextBox()
+            Me.m_lblXY = New System.Windows.Forms.Label()
             Me.m_btnTimeSeriesOutputFile = New System.Windows.Forms.Button()
             Me.m_btnLoadXYTimeSeries = New System.Windows.Forms.Button()
             Me.m_cbUseEcosimForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lblXY = New System.Windows.Forms.Label()
-            Me.m_tbxXYTimeSeriesFile = New System.Windows.Forms.TextBox()
-            Me.m_lblOutputResidualsFile = New System.Windows.Forms.Label()
-            Me.m_tbxlOutputResidualsFile = New System.Windows.Forms.TextBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -645,6 +645,28 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plTimeSeries, "m_plTimeSeries")
             Me.m_plTimeSeries.Name = "m_plTimeSeries"
             '
+            'm_lblOutputResidualsFile
+            '
+            resources.ApplyResources(Me.m_lblOutputResidualsFile, "m_lblOutputResidualsFile")
+            Me.m_lblOutputResidualsFile.Name = "m_lblOutputResidualsFile"
+            '
+            'm_tbxlOutputResidualsFile
+            '
+            resources.ApplyResources(Me.m_tbxlOutputResidualsFile, "m_tbxlOutputResidualsFile")
+            Me.m_tbxlOutputResidualsFile.Name = "m_tbxlOutputResidualsFile"
+            Me.m_tbxlOutputResidualsFile.ReadOnly = True
+            '
+            'm_tbxXYTimeSeriesFile
+            '
+            resources.ApplyResources(Me.m_tbxXYTimeSeriesFile, "m_tbxXYTimeSeriesFile")
+            Me.m_tbxXYTimeSeriesFile.Name = "m_tbxXYTimeSeriesFile"
+            Me.m_tbxXYTimeSeriesFile.ReadOnly = True
+            '
+            'm_lblXY
+            '
+            resources.ApplyResources(Me.m_lblXY, "m_lblXY")
+            Me.m_lblXY.Name = "m_lblXY"
+            '
             'm_btnTimeSeriesOutputFile
             '
             resources.ApplyResources(Me.m_btnTimeSeriesOutputFile, "m_btnTimeSeriesOutputFile")
@@ -670,28 +692,6 @@ Namespace Ecospace
             Me.m_hdrTimeSeries.CollapsedParentHeight = 0
             Me.m_hdrTimeSeries.IsCollapsed = False
             Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
-            '
-            'm_lblXY
-            '
-            resources.ApplyResources(Me.m_lblXY, "m_lblXY")
-            Me.m_lblXY.Name = "m_lblXY"
-            '
-            'm_tbxXYTimeSeriesFile
-            '
-            resources.ApplyResources(Me.m_tbxXYTimeSeriesFile, "m_tbxXYTimeSeriesFile")
-            Me.m_tbxXYTimeSeriesFile.Name = "m_tbxXYTimeSeriesFile"
-            Me.m_tbxXYTimeSeriesFile.ReadOnly = True
-            '
-            'm_lblOutputResidualsFile
-            '
-            resources.ApplyResources(Me.m_lblOutputResidualsFile, "m_lblOutputResidualsFile")
-            Me.m_lblOutputResidualsFile.Name = "m_lblOutputResidualsFile"
-            '
-            'm_tbxlOutputResidualsFile
-            '
-            resources.ApplyResources(Me.m_tbxlOutputResidualsFile, "m_tbxlOutputResidualsFile")
-            Me.m_tbxlOutputResidualsFile.Name = "m_tbxlOutputResidualsFile"
-            Me.m_tbxlOutputResidualsFile.ReadOnly = True
             '
             'frmEcospaceParameters
             '

@@ -20,17 +20,13 @@
 
 Option Strict On
 Option Explicit On
-
-Imports EwECore
 Imports EwEUtils
 Imports EwEUtils.Utilities
 
-
-
 Namespace EcospaceTimeSeries
 
-    Public Enum eTimeSeriesRecValidations
-        isReadValid
+    Public Enum eTimeSeriesRecValidations As Integer
+        isReadValid = 0
         MalformedString
         InvalidDateFormat
         EmptyRec
@@ -65,36 +61,44 @@ Namespace EcospaceTimeSeries
         'ToDo 27-July-2016 remove the DebugDump
         '   Done 29-Jul-2016 
 
-#Region "Public data/properties"
+        'ToDo: Complete intellisense XML code comments
 
-        Public TimeStepFormatString As String = "yyyy-MM-dd"
+#Region " Public data/properties "
+
+        Public Property TimeStepFormatString As String = "yyyy-MM-dd"
 
         Public Property InputFileName As String
             Get
                 Return Me.m_FileName
             End Get
             Set(value As String)
-                Me.m_FileName = value
+                'Only send out notifications when needed
+                If (String.Compare(Me.m_FileName, value, True) <> 0) Then
+                    Me.m_FileName = value
+                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
+                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                       EwEUtils.Core.eMessageImportance.Information))
+                End If
             End Set
         End Property
 
         Public Property OuputFileName As String
             Get
+                If (String.IsNullOrWhiteSpace(Me.m_OutputFilename)) Then Return Me.getDefaultOutputFileName(Me.InputFileName)
                 Return Me.m_OutputFilename
             End Get
             Set(value As String)
-                Me.m_OutputFilename = value
-                'Tell the world
-                'this lets the UI update to the change
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
+                'Only send out notifications when needed
+                If (String.Compare(Me.m_OutputFilename, value, True) <> 0) Then
+                    Me.m_OutputFilename = value
+                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
                                                        EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
                                                        EwEUtils.Core.eMessageImportance.Information))
-
+                End If
             End Set
         End Property
 
-#End Region
-
+#End Region ' Public data/properties
 
 #Region "Private data"
 
@@ -185,7 +189,7 @@ Namespace EcospaceTimeSeries
         ''' Added a new cEcospaceTimeSeriesRec record. 
         ''' </summary>
         ''' <param name="TimeSeriesRec"></param>
-        ''' <returns></returns>
+        ''' <returns>True if successful.</returns>
         Public Function Add(TimeSeriesRec As cEcospaceTimeSeriesRec) As Boolean
 
             Try
@@ -204,7 +208,7 @@ Namespace EcospaceTimeSeries
         ''' Read the Ecospace time series XYZ formatted file 
         ''' </summary>
         ''' <param name="InputFilename"></param>
-        ''' <returns></returns>
+        ''' <returns>True if successful.</returns>
         Public Function Load(InputFilename As String, OutputFileName As String) As Boolean
             Dim bReturn As Boolean = True
 
@@ -265,7 +269,7 @@ Namespace EcospaceTimeSeries
         ''' </summary>
         ''' <param name="iTimeStep">Current model time step</param>
         ''' <param name="biomass">Predicted biomass</param>
-        ''' <returns></returns>
+        ''' <returns>True if successful.</returns>
         Public Function CalculateStats(iTimeStep As Integer, biomass(,,) As Single) As Boolean
             Dim zstat As Double
             Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
@@ -572,6 +576,7 @@ Namespace EcospaceTimeSeries
         End Sub
 
         Public Function getDefaultOutputFileName(InputFileName As String) As String
+            If (String.IsNullOrWhiteSpace(InputFileName)) Then Return ""
             Dim tempFileName As String = IO.Path.GetFileNameWithoutExtension(InputFileName) + "_Residuals.csv"
             Return IO.Path.Combine(Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
         End Function
