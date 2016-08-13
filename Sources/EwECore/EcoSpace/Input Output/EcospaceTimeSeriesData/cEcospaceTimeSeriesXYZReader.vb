@@ -21,18 +21,14 @@
 Option Strict On
 
 Imports System.IO
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
+'ToDo: complete intellisense XML code comments
 
 Namespace EcospaceTimeSeries
 
     Public Class cEcospaceTimeSeriesXYZReader
-
-        Public FileName As String
-
-        Public TimeStampFormatString As String
 
         Private m_Manager As cEcospaceTimeSeriesManager
         Private m_StartDate As Date
@@ -148,6 +144,10 @@ Namespace EcospaceTimeSeries
             Me.m_MaxCol = Math.Max(rec.Col, Me.m_MaxCol)
         End Sub
 
+
+        Public Property FileName As String
+
+        Public Property TimeStampFormatString As String
 
         Public ReadOnly Property StartDate As Date
             Get

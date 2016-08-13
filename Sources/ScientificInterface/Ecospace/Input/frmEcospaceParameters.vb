@@ -426,8 +426,7 @@ Namespace Ecospace
             If cmdFO.Result = Windows.Forms.DialogResult.OK Then
                 Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
                 Dim InputFile As String = cmdFO.FileNames(0)
-                Dim OuputFile As String = manager.getDefaultOutputFileName(InputFile)
-                manager.Load(InputFile, OuputFile)
+                manager.Load(InputFile, "")
             End If
         End Sub
 
