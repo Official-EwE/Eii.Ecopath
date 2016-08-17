@@ -1,0 +1,106 @@
+﻿Option Strict On
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Imports System
+
+#End Region ' Imports
+
+Namespace Extensions
+
+    Public Module Extensions
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extension method; fill an array with a given value.
+        ''' </summary>
+        ''' <typeparam name="T">Value type.</typeparam>
+        ''' <param name="arr">The array to fill.</param>
+        ''' <param name="[default]">The value to fill the array with.</param>
+        ''' -----------------------------------------------------------------------
+        <Runtime.CompilerServices.Extension()>
+        Public Sub Fill(Of T)(ByRef arr As T(), ByVal [default] As T)
+            If (arr Is Nothing) Then Return
+            For i As Integer = 0 To arr.Length - 1
+                arr(i) = [default]
+            Next
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extension method; fill an array with a given value.
+        ''' </summary>
+        ''' <typeparam name="T">Value type.</typeparam>
+        ''' <param name="arr">The array to fill.</param>
+        ''' <param name="[default]">The value to fill the array with.</param>
+        ''' -----------------------------------------------------------------------
+        <Runtime.CompilerServices.Extension()>
+        Public Sub Fill(Of T)(ByRef arr As T(,), ByVal [default] As T)
+            If (arr Is Nothing) Then Return
+            For i As Integer = 0 To arr.GetUpperBound(0)
+                For j As Integer = 0 To arr.GetUpperBound(1)
+                    arr(i, j) = [default]
+                Next j
+            Next i
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extension method; fill an array with a given value.
+        ''' </summary>
+        ''' <typeparam name="T">Value type.</typeparam>
+        ''' <param name="arr">The array to fill.</param>
+        ''' <param name="[default]">The value to fill the array with.</param>
+        ''' -----------------------------------------------------------------------
+        <Runtime.CompilerServices.Extension()>
+        Public Sub Fill(Of T)(ByRef arr As T(,,), ByVal [default] As T)
+            If (arr Is Nothing) Then Return
+            For i As Integer = 0 To arr.GetUpperBound(0)
+                For j As Integer = 0 To arr.GetUpperBound(1)
+                    For k As Integer = 0 To arr.GetUpperBound(2)
+                        arr(i, j, k) = [default]
+                    Next k
+                Next j
+            Next i
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extension method; extract a sub-array.
+        ''' </summary>
+        ''' <typeparam name="T"></typeparam>
+        ''' <param name="values"></param>
+        ''' <param name="iStart"></param>
+        ''' <param name="iEnd"></param>
+        ''' <returns></returns>
+        ''' -----------------------------------------------------------------------
+        <Runtime.CompilerServices.Extension()>
+        Public Function SubArray(Of T)(ByVal values() As T, ByVal iStart As Integer, ByVal iEnd As Integer) As T()
+            Dim n As Integer = iEnd - iStart + 1
+            Dim result(n - 1) As T
+            Array.Copy(values, iStart, result, 0, n)
+            Return result
+        End Function
+
+    End Module
+
+End Namespace 'Extensions

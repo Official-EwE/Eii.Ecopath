@@ -19,9 +19,8 @@
 '
 
 Option Strict On
-Imports System.Math
-Imports EwECore.SpatialData
 Imports EwEUtils.Core
+Imports EwEUtils.Extensions
 
 #Region "Public Class definitions"
 
@@ -1879,6 +1878,8 @@ Public Class cEcospaceDataStructures
             '  For i = 1 To InRow : For j = 1 To InCol : For k = 1 To cCore.N_MONTHS : Xv(i, j, k) = 1 : Yv(i, j, k) = 1 : Next : Next : Next
 
             Me.allocate(DepthInput, InRow + 1, InCol + 1)
+            'Resized basemap should have water everywhere
+            DepthInput.Fill(1)
             Me.allocate(Excluded, InRow + 1, InCol + 1)
 
             Me.allocate(Depth, InRow + 1, InCol + 1)

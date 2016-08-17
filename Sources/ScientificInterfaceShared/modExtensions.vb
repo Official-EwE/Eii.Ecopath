@@ -29,7 +29,7 @@ Namespace Extensions
 
     Public Module modExtensions
 
-        <System.Runtime.InteropServices.DllImportAttribute("user32.dll")> _
+        <Runtime.InteropServices.DllImportAttribute("user32.dll")>
         Private Function DestroyIcon(ByVal handle As IntPtr) As Boolean
         End Function
 

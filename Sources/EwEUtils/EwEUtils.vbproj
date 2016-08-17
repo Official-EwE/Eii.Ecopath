@@ -140,6 +140,7 @@
     <Compile Include="Core\INetworkAnalysisData.vb" />
     <Compile Include="Core\ITaxonSearchData.vb" />
     <Compile Include="Core\IRunType.vb" />
+    <Compile Include="modExtensions.vb" />
     <Compile Include="Utilities\ITypeFormatter.vb" />
     <Compile Include="Core\Shared Enums.vb" />
     <Compile Include="Database\cQueryBuilder.vb" />
