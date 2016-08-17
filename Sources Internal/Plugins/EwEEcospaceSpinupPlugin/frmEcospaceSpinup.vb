@@ -70,6 +70,7 @@ Public Class frmEcospaceSpinup
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
         RemoveHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
         RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
+        RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
     End Sub
 
 

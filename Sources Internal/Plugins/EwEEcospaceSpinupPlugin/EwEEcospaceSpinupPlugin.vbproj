@@ -114,7 +114,8 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.5072.22113, Culture=neutral, PublicKeyToken=dd4210ebb9723de9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
