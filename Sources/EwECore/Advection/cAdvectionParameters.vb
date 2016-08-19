@@ -76,11 +76,29 @@ Namespace Ecospace.Advection
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
+
+
             Me.ResetStatusFlags()
 
             Me.AllowValidation = True
 
         End Sub
+
+
+        Public Property UpwellingThreshold() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.AdvectionUpwellingThreshold))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.AdvectionUpwellingThreshold, value)
+            End Set
+        End Property
+
 
 
 #Region "Obsolete Properties of the old Advection Model"

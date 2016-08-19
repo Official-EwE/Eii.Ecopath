@@ -50,6 +50,8 @@ Namespace Ecospace.Advection
         ''' <summary>Flag stating whether a search was completed from this form.</summary>
         Private m_bHasRun As Boolean = False
 
+        Private m_fpUpwellingThreshold As cPropertyFormatProvider
+
 #End Region ' Private vars
 
         Public Sub New()
@@ -95,6 +97,9 @@ Namespace Ecospace.Advection
 
             ' Config EwEForm
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+
+            Me.m_fpUpwellingThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_txtUpwelling, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingThreshold)
+
 
             ' Kick off
             ' Me.UpdateTransportVelocity()
@@ -156,13 +161,13 @@ Namespace Ecospace.Advection
         End Sub
 
 
-        Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnStart.Click
+        Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
             Me.StartRun()
         End Sub
 
-        Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnStop.Click
+        Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
             Me.m_manager.StopRun()
         End Sub
 
@@ -264,6 +269,14 @@ Namespace Ecospace.Advection
                 Me.m_bHasRun = False
                 Me.UpdateControls()
             End If
+        End Sub
+
+        Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs)
+
+        End Sub
+
+        Private Sub TextBox1_Click(sender As Object, e As EventArgs)
+            Me.m_manager.ModelParameters.UpwellingThreshold = Single.Parse(m_txtUpwelling.Text)
         End Sub
 
 
