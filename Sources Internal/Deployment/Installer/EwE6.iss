@@ -3,11 +3,12 @@
 #include <idp.iss>
 
 #define MyAppName "Ecopath with Ecosim"
-#define MyAppVersion "6.6"
+#define MyAppVersion "6.6_dev"
 #define MyAppExeName "ewe6.exe"
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
 [Setup]
+SignTool=Signtool
 WizardImageFile=C:\Setup\EwE5Logo.bmp
 WizardSmallImageFile=C:\Setup\EwE6Header.bmp
 WizardImageStretch=False
@@ -16,10 +17,11 @@ AppVersion={#MyAppVersion}
 AppCopyright={#MyAppPublisher}
 AppId={{41587FF4-2D37-4CF2-8D45-0AA1378637A4}
 SetupIconFile=C:\Setup\Ecopath_install.ico
+UninstallDisplayIcon={app}\{#MyAppName}
 AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
-AppSupportURL=mailto:eweusers@devteam.org
+AppSupportURL=mailto:support@ecopath.org
 MinVersion=0,5.01sp3
 DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
 DefaultGroupName={#MyAppName} {#MyAppVersion}
@@ -29,6 +31,8 @@ SolidCompression=True
 Compression=zip 
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 UninstallDisplayIcon={app}\{#MyAppName}
+OutputBaseFilename=ewe
+OutputDir=C:\Temp\Setup
 
 [Dirs]
 Name: "{app}\Includes\LPSolve\"
@@ -59,7 +63,7 @@ Source: "C:\BuildBot\slave\Ecopath6\Database\Generic_37.EwEmdb"; DestDir: "{user
 Source: "C:\BuildBot\slave\Ecopath6\Database\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "C:\BuildBot\slave\Ecopath6\Database\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "C:\BuildBot\slave\Ecopath6\Database\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
-Source: "C:\Temp\Build\ProjNet.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "C:\Temp\Build\ProjNet.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\ScientificInterfaceShared.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\SourceGrid2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Temp\Build\SourceLibrary.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -117,6 +121,9 @@ Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwE6_userguide.chm"; Icon
 Name: "{group}\Links\Ecopath website"; Filename: "http://www.ecopath.org"
 Name: "{group}\Links\Ecopath on Facebook"; Filename: "http://www.facebook.com/eweconsortium"
 Name: "{group}\Links\User support"; Filename: "http://www.ecopath.org/support"
+
+[ThirdParty]
+UseRelativePaths=True
 
 [Code]
 function Framework45IsNotInstalled(): Boolean;
