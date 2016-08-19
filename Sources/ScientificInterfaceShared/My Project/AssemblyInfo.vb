@@ -36,12 +36,12 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyProduct("ScientificInterfaceShared")> 
 <Assembly: AssemblyCopyright("Copyright © 2008")> 
 <Assembly: CLSCompliant(True)> 
-<Assembly: ComVisible(False)> 
+<Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("2e41eb87-d9d5-4f40-a10b-a2f2c01d72ea")> 
+<Assembly: Guid("2e41eb87-d9d5-4f40-a10b-a2f2c01d72ea")>
 
-' Version information for an assembly consists of the following four values:
+
 '
 '      Major Version
 '      Minor Version 
@@ -52,7 +52,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.5.14126.0")> 
-<Assembly: AssemblyFileVersion("6.5.14126.0")> 
-
-<Assembly: NeutralResourcesLanguageAttribute("en")> 
+<Assembly: AssemblyVersion("6.6.14126.0")>
+<Assembly: AssemblyFileVersion("6.6.14126.0")>

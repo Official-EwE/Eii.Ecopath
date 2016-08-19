@@ -139,7 +139,7 @@
     <value>m_gridConnections</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.gridApplyDatasets, EwE6, Version=6.5.14124.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridConnections.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -172,7 +172,7 @@
     <value>m_hdrSource</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14124.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSource.Parent" xml:space="preserve">
     <value>m_plConnection</value>
@@ -223,7 +223,7 @@
     <value>4</value>
   </data>
   <data name="m_btnCalculate.Text" xml:space="preserve">
-    <value>Relative scalar</value>
+    <value>&amp;Calculate</value>
   </data>
   <data name="m_btnCalculate.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -631,7 +631,7 @@
     <value>m_hdrConfig</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14124.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConfig.Parent" xml:space="preserve">
     <value>m_plDataset</value>
@@ -724,7 +724,7 @@
     <value>m_hdrConnections</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14124.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrConnections.Parent" xml:space="preserve">
     <value>m_plAvailable</value>
@@ -799,7 +799,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14124.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -868,7 +868,7 @@
     <value>m_lbSourceDatasets</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox, EwE6, Version=6.5.14124.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_lbSourceDatasets.Parent" xml:space="preserve">
     <value>m_plAvailable</value>

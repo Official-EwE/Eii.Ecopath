@@ -874,12 +874,13 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer _
         Implements IEcospaceLayerManager.Layer
-        If (iIndex < 0) Then iIndex = 1
 
+        iIndex = Math.Max(iIndex, 1)
         For Each l As cEcospaceLayer In Me.Layers(varName)
-            If l.Index = iIndex Then Return l
+            If (l.Index = iIndex) Then Return l
         Next
         Return Nothing
+
     End Function
 
     ''' -----------------------------------------------------------------------

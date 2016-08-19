@@ -21,34 +21,15 @@ Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
-' General Information about an assembly is controlled through the following 
-' set of attributes. Change these attribute values to modify the information
-' associated with an assembly.
-
-' Review the values of the assembly attributes
-
-<Assembly: AssemblyTitle("EwEAquamapsEnvDataImporterPlugin")> 
+<Assembly: AssemblyTitle("EwEAquamapsEnvDataImporterPlugin")>
 <Assembly: AssemblyDescription("Plug-in that imports Aquamaps species distribution envelopes into the Ecospace capacity model")> 
 <Assembly: AssemblyCompany("Ecopath International Initiative")> 
 <Assembly: AssemblyProduct("EwEAquamapsEnvDataImporterPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © EII 2014")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
-'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("c7a2b285-eec9-4de2-80d5-e8f40c770f75")> 
-
-' Version information for an assembly consists of the following four values:
-'
-'      Major Version
-'      Minor Version 
-'      Build Number
-'      Revision
-'
-' You can specify all the values or you can default the Build and Revision Numbers 
-' by using the '*' as shown below:
-' <Assembly: AssemblyVersion("1.0.*")> 
-
-<Assembly: AssemblyVersion("6.5.14126.0")> 
-<Assembly: AssemblyFileVersion("6.5.14126.0")> 
+<Assembly: Guid("c7a2b285-eec9-4de2-80d5-e8f40c770f75")>
+<Assembly: AssemblyVersion("6.6.14126.0")>
+<Assembly: AssemblyFileVersion("6.6.14126.0")>
