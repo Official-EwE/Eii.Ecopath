@@ -34,7 +34,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: ComVisible(False)>
 
-' Version information for an assembly consists of the following four values:
+
 '
 '      Major Version
 '      Minor Version 

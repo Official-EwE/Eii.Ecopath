@@ -22,12 +22,6 @@ Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
-' General Information about an assembly is controlled through the following 
-' set of attributes. Change these attribute values to modify the information
-' associated with an assembly.
-
-' Review the values of the assembly attributes
-
 <Assembly: AssemblyTitle("FLEMFileReaderPlugin")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("Microsoft")> 
@@ -37,19 +31,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: ComVisible(False)>
 
-'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("c1dc9131-1ad8-40d5-954c-e852cb9afadd")> 
 
-' Version information for an assembly consists of the following four values:
-'
-'      Major Version
-'      Minor Version 
-'      Build Number
-'      Revision
-'
-' You can specify all the values or you can default the Build and Revision Numbers 
-' by using the '*' as shown below:
-' <Assembly: AssemblyVersion("1.0.*")> 
-
-<Assembly: AssemblyVersion("6.5.14126.0")> 
-<Assembly: AssemblyFileVersion("6.5.14126.0")> 
+<Assembly: AssemblyVersion("6.6.14126.0")> 
+<Assembly: AssemblyFileVersion("6.6.14126.0")> 

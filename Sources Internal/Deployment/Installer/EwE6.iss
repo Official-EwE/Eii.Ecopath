@@ -3,7 +3,7 @@
 #include <idp.iss>
 
 #define MyAppName "Ecopath with Ecosim"
-#define MyAppVersion "6.5"
+#define MyAppVersion "6.6"
 #define MyAppExeName "ewe6.exe"
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
