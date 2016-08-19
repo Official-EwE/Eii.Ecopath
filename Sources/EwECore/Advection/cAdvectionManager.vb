@@ -29,6 +29,11 @@ Imports EwEUtils.Utilities
 
 Namespace Ecospace.Advection
 
+    'ToDo 15-Aug-2016 added a variable for the threshold upwelling depth
+    'Right now it's hardwired at 30, make that a parameter.
+
+    'ToDo 15-Aug-2016 Check the Flow(,) variable to see if it is still needed?
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Manager for user interfaces to interact with the Ecospace Advection
@@ -48,7 +53,7 @@ Namespace Ecospace.Advection
     ''' via <see cref="cAdvectionManager.ModelParameters">ModelParameters</see>. The
     ''' computations use a series of Ecospace layers for input, please see the
     ''' internals of <see cref="cAdvection">cAdvection</see> for details.</para>
-    ''' <para>Advection computations are started via <see cref="cAdvectionManager.Run">Run</see>.
+    ''' <para>Advection computations are started via <see cref="cAdvectionManager.RunPhysicsModel()">Run</see>.
     ''' Computed results are exposed by the Ecospace <see cref="cEcospaceLayerAdvection">advection layer</see>,
     ''' which can be obtained via <see cref="cEcospaceBasemap.LayerAdvection">cEcospaceBasemap.LayerAdvection</see>.
     ''' </para>
@@ -120,8 +125,8 @@ Namespace Ecospace.Advection
         ''' <remarks>Make sure to properly <see cref="Disconnect">Disconnect</see>
         ''' when this manager is no longer needed.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub Connect(ByVal ComputationStartedCallBack As ComputationStartedDelegate, _
-                           ByVal ComputationCompletedBack As ComputationCompletedDelegate, _
+        Public Sub Connect(ByVal ComputationStartedCallBack As ComputationStartedDelegate,
+                           ByVal ComputationCompletedBack As ComputationCompletedDelegate,
                            ByVal ComputationProgressCallBack As ComputationProgressDelegate)
 
             Me.m_RunStartedDelegate = ComputationStartedCallBack
@@ -165,7 +170,7 @@ Namespace Ecospace.Advection
 
                 'get the data from the core
                 m_data = m_core.m_EcoSpaceData
-                m_parameters = m_core.AdvectionParameters
+                m_parameters = New cAdvectionParameters(Me.m_core, -1)
 
                 Return True
 
@@ -186,6 +191,8 @@ Namespace Ecospace.Advection
 
             Try
                 m_parameters.AllowValidation = False
+
+                Me.m_parameters.UpwellingThreshold = Me.m_comp.UpwellingThreshold
 
                 m_parameters.XVelocity = Me.m_data.XVelocity
                 m_parameters.YVelocity = Me.m_data.YVelocity
@@ -208,6 +215,8 @@ Namespace Ecospace.Advection
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Update() As Boolean
+
+            Me.m_comp.UpwellingThreshold = Me.m_parameters.UpwellingThreshold
 
             Me.m_data.XVelocity = Me.m_parameters.XVelocity
             Me.m_data.YVelocity = Me.m_parameters.YVelocity
@@ -280,7 +289,7 @@ Namespace Ecospace.Advection
         ''' <remarks></remarks>
         Public Function RunPhysicsModel() As Boolean
 
-            Debug.Assert(Not Me.m_core.StateMonitor.IsBusy, _
+            Debug.Assert(Not Me.m_core.StateMonitor.IsBusy,
                          Me.ToString + ".RunPhysicsModel() The Statemonitor thinks the Advection model is already running! This might be a bug.")
             If (Me.m_core.StateMonitor.IsBusy) Then Return False
 
@@ -290,10 +299,10 @@ Namespace Ecospace.Advection
             Dim bSuccess As Boolean
 
             If Me.IsRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING, _
-                                                            eMessageType.ErrorEncountered, _
-                                                            eCoreComponentType.EcoSpace, _
-                                                            eMessageImportance.Warning, _
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING,
+                                                            eMessageType.ErrorEncountered,
+                                                            eCoreComponentType.EcoSpace,
+                                                            eMessageImportance.Warning,
                                                             eDataTypes.EcospaceAdvectionManager))
                 Return False
             End If
@@ -303,10 +312,10 @@ Namespace Ecospace.Advection
                 bSuccess = Me.m_comp.RunPhysicsModel()
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
-                                                         eMessageType.ErrorEncountered, _
-                                                         eCoreComponentType.EcoSpace, _
-                                                         eMessageImportance.Critical, _
+                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
+                                                         eMessageType.ErrorEncountered,
+                                                         eCoreComponentType.EcoSpace,
+                                                         eMessageImportance.Critical,
                                                          eDataTypes.EcospaceAdvectionManager))
 
 
@@ -332,10 +341,10 @@ Namespace Ecospace.Advection
             Me.m_syncObject = SyncObject
 
             If Me.IsRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING, _
-                                                            eMessageType.ErrorEncountered, _
-                                                            eCoreComponentType.EcoSpace, _
-                                                            eMessageImportance.Warning, _
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING,
+                                                            eMessageType.ErrorEncountered,
+                                                            eCoreComponentType.EcoSpace,
+                                                            eMessageImportance.Warning,
                                                             eDataTypes.EcospaceAdvectionManager))
                 Return False
             End If
@@ -349,10 +358,10 @@ Namespace Ecospace.Advection
 
             Catch ex As Exception
                 cLog.Write(ex)
-                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message), _
-                                                         eMessageType.ErrorEncountered, _
-                                                         eCoreComponentType.EcoSpace, _
-                                                         eMessageImportance.Critical, _
+                m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ADVECTION_ERROR, ex.Message),
+                                                         eMessageType.ErrorEncountered,
+                                                         eCoreComponentType.EcoSpace,
+                                                         eMessageImportance.Critical,
                                                          eDataTypes.EcospaceAdvectionManager))
 
                 ' If an error has been thrown make sure the OnAdvectionCalcsCompletedHandler delegate is called
@@ -400,7 +409,7 @@ Namespace Ecospace.Advection
             Catch ex As Exception
                 Debug.Assert(False, "Opps Exception in cAdvectionManager.ClearAdvectionResults(): " & ex.Message)
             End Try
-          
+
         End Sub
 
 
@@ -613,11 +622,7 @@ Namespace Ecospace.Advection
 #End Region ' ICoreInterface implementation
 
 
-
-
 #Region "Code from the original advection model"
-
-#End Region
 
 #If 0 Then 'Hide the old code behind compiler directives
 
@@ -695,7 +700,7 @@ Namespace Ecospace.Advection
         End Function
 
 #End If
-
+#End Region
 
     End Class
 

@@ -46,7 +46,11 @@ Namespace Ecospace.Advection
         '   jb 14-Jun-2016 Ok Hook up the new model to the events and wired it into the threaded Run
         '   Seems to run but I haven't checked the events in the UI
 
+#Region "Public Vars"
 
+        Public Property UpwellingThreshold As Single = 30
+
+#End Region
 
 #Region " Private vars "
 

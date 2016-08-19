@@ -140,7 +140,7 @@ Public Class cCore
     Private m_MonteCarlo As cMonteCarloManager = Nothing
     Private m_ConTracer As cContaminantTracer = Nothing
     Private m_AdvectionManager As cAdvectionManager = Nothing
-    Private m_AdvectionParameters As cAdvectionParameters = Nothing
+    'Private m_AdvectionParameters As cAdvectionParameters = Nothing
 
     ''' <summary>Class to wrap stand alone functions for internal and external access.</summary>
     Private m_Functions As cEcoFunctions = Nothing
@@ -9933,7 +9933,7 @@ Public Class cCore
             bSuccess = bSuccess And InitEcospaceMPAs()
             bSuccess = bSuccess And InitEcospaceGroups()
             bSuccess = bSuccess And InitEcospaceFleets()
-            bSuccess = bSuccess And InitEcospaceAdvection()
+            '   bSuccess = bSuccess And InitEcospaceAdvection()
 
             'Init advection
             Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
@@ -9985,11 +9985,11 @@ Public Class cCore
             If (Me.m_AdvectionManager IsNot Nothing) Then
                 Me.m_AdvectionManager.Clear()
             End If
-            ' Discard advection IO object
-            If (Me.m_AdvectionParameters IsNot Nothing) Then
-                Me.m_AdvectionParameters.Dispose()
-                Me.m_AdvectionParameters = Nothing
-            End If
+            '' Discard advection IO object
+            'If (Me.m_AdvectionParameters IsNot Nothing) Then
+            '    Me.m_AdvectionParameters.Dispose()
+            '    Me.m_AdvectionParameters = Nothing
+            'End If
 
             'Me.m_EcoSpaceScenarios.Clear()
             'Me.m_EcoPathData.NumEcospaceScenarios = 0
@@ -11483,10 +11483,10 @@ Public Class cCore
 
 #Region " Advection "
 
-    Friend Function InitEcospaceAdvection() As Boolean
-        Me.m_AdvectionParameters = New cAdvectionParameters(Me, -1)
-        Return True
-    End Function
+    'Friend Function InitEcospaceAdvection() As Boolean
+    '    Me.m_AdvectionParameters = New cAdvectionParameters(Me, -1)
+    '    Return Me.m_AdvectionManager.Init
+    'End Function
 
     Public ReadOnly Property AdvectionManager() As cAdvectionManager
         Get
@@ -11494,11 +11494,11 @@ Public Class cCore
         End Get
     End Property
 
-    Public ReadOnly Property AdvectionParameters() As cAdvectionParameters
-        Get
-            Return Me.m_AdvectionParameters
-        End Get
-    End Property
+    'Public ReadOnly Property AdvectionParameters() As cAdvectionParameters
+    '    Get
+    '        Return Me.m_AdvectionParameters
+    '    End Get
+    'End Property
 
 #End Region ' Advection
 
@@ -13021,6 +13021,9 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceLayerDriver
                     If bValidatedOk Then Me.UpdateEcospaceDriverLayers()
+
+                Case eDataTypes.EcospaceAdvectionParameters
+                    If bValidatedOk Then Me.m_AdvectionManager.Update()
 
 
             End Select
