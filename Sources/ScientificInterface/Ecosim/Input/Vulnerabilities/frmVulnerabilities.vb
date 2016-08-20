@@ -78,6 +78,13 @@ Namespace Ecosim
             MyBase.OnFormClosed(e)
         End Sub
 
+        Private Sub OnScaleVtoTL(sender As Object, e As EventArgs) Handles m_tsbnScaleVtoTL.Click
+            Dim dlg As New dlgScaleVs(Me.UIContext)
+            If (dlg.ShowDialog(Me.UIContext.FormMain) = DialogResult.OK) Then
+                'NOP
+            End If
+        End Sub
+
 #End Region ' Overloads
 
     End Class

@@ -204,7 +204,7 @@ Public Class cEcopathDataStructures
     ''' <summary>User input matrix for Diet composition(<see cref="NumGroups">Pred</see>, <see cref="NumGroups">Prey</see>) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
     ''' matrix of species consumption ratios.</summary>
     Public DCInput(,) As Single
-    ''' <summary>Diet composition(per <see cref="NumGroups">pred</see>, <see cref="NumGroups">prey</see>) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
+    ''' <summary>Diet composition(per pred, prey) (ratio), a <see cref="NumGroups">NumGroups</see> * <see cref="NumGroups">NumGroups</see>
     ''' matrix of species consumption ratios.</summary>
     Public DC(,) As Single
     ''' <summary>Detritus fate(per <see cref="NumGroups">NumGroups</see>, <see cref="NumDetrit">NumDetrit</see>) (ratio)</summary>

@@ -45,13 +45,14 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmVulnerabilities))
             Me.m_tsVUlnerabilities = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbEstimateVs = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnScaleVtoTL = New System.Windows.Forms.ToolStripButton()
             Me.m_tsVUlnerabilities.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsVUlnerabilities
             '
             Me.m_tsVUlnerabilities.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsVUlnerabilities.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEstimateVs})
+            Me.m_tsVUlnerabilities.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbEstimateVs, Me.m_tsbnScaleVtoTL})
             resources.ApplyResources(Me.m_tsVUlnerabilities, "m_tsVUlnerabilities")
             Me.m_tsVUlnerabilities.Name = "m_tsVUlnerabilities"
             Me.m_tsVUlnerabilities.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -60,6 +61,13 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_tsbEstimateVs, "m_tsbEstimateVs")
             Me.m_tsbEstimateVs.Name = "m_tsbEstimateVs"
+            '
+            'm_tsbnScaleVtoTL
+            '
+            Me.m_tsbnScaleVtoTL.AutoToolTip = False
+            Me.m_tsbnScaleVtoTL.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnScaleVtoTL, "m_tsbnScaleVtoTL")
+            Me.m_tsbnScaleVtoTL.Name = "m_tsbnScaleVtoTL"
             '
             'frmVulnerabilities
             '
@@ -76,7 +84,7 @@ Namespace Ecosim
         End Sub
         Private WithEvents m_tsVUlnerabilities As cEwEToolstrip
         Private WithEvents m_tsbEstimateVs As System.Windows.Forms.ToolStripButton
-
+        Private WithEvents m_tsbnScaleVtoTL As ToolStripButton
     End Class
 
 End Namespace

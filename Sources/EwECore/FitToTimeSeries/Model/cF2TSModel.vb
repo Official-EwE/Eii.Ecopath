@@ -658,7 +658,7 @@ Namespace FitToTimeSeries
 
                 ' Set V to default before initialization of Ecosim so it uses the new V's
                 If Me.m_data.UseDefaultV Then
-                    Me.m_core.setVToDefault()
+                    Me.m_core.SetVToDefault()
                 End If
 
                 'Now Init Ecosim
