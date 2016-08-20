@@ -125,12 +125,15 @@
   <data name="SplitContainer1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_zoomToolbar.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_zoomToolbar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_zoomToolbar.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="m_zoomToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_zoomToolbar.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -139,7 +142,7 @@
     <value>100, 25</value>
   </data>
   <data name="m_zoomToolbar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>641, 25</value>
+    <value>640, 25</value>
   </data>
   <data name="m_zoomToolbar.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -148,7 +151,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -158,6 +161,9 @@
   </data>
   <data name="m_zoomContainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_zoomContainer.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="m_zoomContainer.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 24</value>
@@ -175,7 +181,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -247,7 +253,7 @@
     <value>m_tsEditBasemapThingies</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -257,6 +263,9 @@
   </data>
   <data name="m_ucLayers.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_ucLayers.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="m_ucLayers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -277,7 +286,7 @@
     <value>m_ucLayers</value>
   </data>
   <data name="&gt;&gt;m_ucLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -406,6 +415,6 @@
     <value>frmEcospaceMap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
