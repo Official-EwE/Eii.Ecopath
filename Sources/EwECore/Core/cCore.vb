@@ -7589,16 +7589,11 @@ Public Class cCore
 
     End Function
 
-
-
     Public ReadOnly Property MediatedInteractionManager() As cMediatedInteractionManager
-
         Get
             Return Me.m_MediatedInteractionManager
         End Get
-
     End Property
-
 
     Public ReadOnly Property ForcingShapeManager() As cForcingFunctionShapeManager
 
@@ -8578,10 +8573,10 @@ Public Class cCore
                 End If
             End If
 
-            Return Me.setVToDefault(sDefaultValue)
+            Return Me.SetVToDefault(sDefaultValue)
 
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "cCore.CheckResetDefaultVulnerabilities")
             Debug.Assert(False, ex.Message)
             Return False
         End Try
@@ -8590,7 +8585,7 @@ Public Class cCore
 
     End Function
 
-    Public Function setVToDefault(Optional ByVal sDefaultValue As Single = 2.0F) As Boolean
+    Public Function SetVToDefault(Optional ByVal sDefaultValue As Single = 2.0F) As Boolean
 
         Try
             Dim groupSim As cEcoSimGroupInput = Nothing
@@ -8601,7 +8596,7 @@ Public Class cCore
                 Next iPred
             Next iPrey
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "cCore.SetVToDefault(" & sDefaultValue & ")")
             Debug.Assert(False, ex.Message)
             Return False
         End Try
@@ -8610,6 +8605,31 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Ecosim scale vulnerabilities by trophic level.
+    ''' </summary>
+    ''' <param name="sVulLow"></param>
+    ''' <param name="sVulHigh"></param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ScaleVulnerabilitiesToTL(ByVal sVulLow As Single, ByVal sVulHigh As Single) As Boolean
+
+        Try
+            If (Me.m_EcoSim.ScaleVulnerabilitiesToTL(sVulLow, sVulHigh)) Then
+                Me.LoadEcosimGroups()
+                Me.m_publisher.SendMessage(New cMessage("Ecosim groups have changed.", eMessageType.DataModified,
+                                                        eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
+                Return True
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "cCore.ScaleVulnerabilitiesToTL(" & sVulLow & ", " & sVulHigh & ")")
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        Return False
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

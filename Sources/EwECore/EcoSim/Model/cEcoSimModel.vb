@@ -648,11 +648,51 @@ Namespace Ecosim
             m_MSE = MSEModel
         End Sub
 
-
         'Public Sub InitFPS(ByRef FPS As cFishingPolicySearch)
         '    Me.m_FPS = FPS
         'End Sub
 
+        ''' <summary>
+        ''' Scale vulnerabilities to trophic level
+        ''' </summary>
+        ''' <param name="Lower">The lower vulnerability to scale from.</param>
+        ''' <param name="Upper">The upport vulnerability to scale to.</param>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>
+        ''' Ported from EwE5 frmSim1.cmdfTL_Click
+        ''' </remarks>
+        Public Function ScaleVulnerabilitiesToTL(ByVal Lower As Single, ByVal Upper As Single) As Boolean
+
+            If Lower >= 1 And Upper > 1 And Upper > Lower Then
+
+                Dim maxTL As Single = 0
+                For i As Integer = 1 To Me.m_EPData.NumLiving
+                    If Me.m_EPData.TTLX(i) > maxTL Then maxTL = Me.m_EPData.TTLX(i)
+                Next
+                If maxTL < 2.1 Then
+                    ' ToDo: send notification message
+                    Return False
+                End If
+
+                'Scale v's between
+                For iPred As Integer = 1 To Me.m_EPData.NumLiving
+                    If Me.m_EPData.QB(iPred) > 0 Then
+                        Dim vul As Single = (Me.m_EPData.TTLX(iPred) - 2) / (maxTL - 2) * (Upper - Lower) + Lower
+                        If vul > 1 Then vul = CSng(10 * vul) / 10 Else vul = 0
+                        For iPrey As Integer = 1 To Me.m_EPData.NumGroups
+                            If Me.m_EPData.DC(iPred, iPrey) > 0 Then
+                                Me.m_Data.VulMult(iPrey, iPred) = vul
+                            End If
+                        Next
+                    End If
+                Next
+                Return True
+            End If
+
+            'ToDo: send error message
+            Return False
+
+        End Function
 
 #End Region
 
@@ -671,7 +711,7 @@ Namespace Ecosim
         ''' <param name="frateopt"></param>
         ''' <param name="nopt"></param>
         ''' <remarks>Hopefully this is temporary once all the existing code is changed to use RunModelValue(NumberOfYears,frateopt(),nopt) this can be removed</remarks>
-        Friend Sub RunModelValue(ByVal NumberOfYears As Integer, ByRef totval As Double, ByRef Employ As Double, _
+        Friend Sub RunModelValue(ByVal NumberOfYears As Integer, ByRef totval As Double, ByRef Employ As Double,
                        ByRef manvalue As Double, ByRef ecovalue As Double, ByRef frateopt() As Double, ByVal nopt As Integer)
 
             RunModelValue(NumberOfYears, frateopt, nopt)
@@ -5279,8 +5319,6 @@ Namespace Ecosim
 #End If
 
 #End Region
-
-
 
     End Class
 

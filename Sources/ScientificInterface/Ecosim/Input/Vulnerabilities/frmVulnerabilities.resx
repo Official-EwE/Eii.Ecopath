@@ -124,19 +124,19 @@
   <data name="m_tsbEstimateVs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="m_tsbEstimateVs.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -147,6 +147,30 @@
   </data>
   <data name="m_tsbEstimateVs.Text" xml:space="preserve">
     <value>&amp;Estimate vulnerabilities</value>
+  </data>
+  <data name="m_tsbnScaleVtoTL.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnScaleVtoTL.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnScaleVtoTL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 22</value>
+  </data>
+  <data name="m_tsbnScaleVtoTL.Text" xml:space="preserve">
+    <value>&amp;Scale to Trophic Levels...</value>
   </data>
   <data name="m_tsVUlnerabilities.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -165,7 +189,7 @@
     <value>m_tsVUlnerabilities</value>
   </data>
   <data name="&gt;&gt;m_tsVUlnerabilities.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsVUlnerabilities.Parent" xml:space="preserve">
     <value>$this</value>
@@ -195,10 +219,16 @@
   <data name="&gt;&gt;m_tsbEstimateVs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnScaleVtoTL.Name" xml:space="preserve">
+    <value>m_tsbnScaleVtoTL</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnScaleVtoTL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmVulnerabilities</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.14137.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
