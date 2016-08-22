@@ -2578,6 +2578,13 @@ Public Class cEcoSpace
 
             Me.m_TimeSeriesManager.InitForRun()
 
+            'Advection 
+            'Clear out the time step Advection and Upwelling vectors
+            'It the Advection model been run these may be populated 
+            Array.Clear(Me.m_Data.UpVel, 0, Me.m_Data.UpVel.Length)
+            Array.Clear(Me.m_Data.Xvel, 0, Me.m_Data.UpVel.Length)
+            Array.Clear(Me.m_Data.Yvel, 0, Me.m_Data.Yvel.Length)
+
             'For debugging Effort Zones code
             'sets up some zones with modified effort
             'Me.m_Data.DebugTestEffortZones()

@@ -81,6 +81,12 @@ Namespace Ecospace.Advection
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
+            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
+            val.Stored = False
+            Me.m_values.Add(val.varName, val)
+
+
 
             Me.ResetStatusFlags()
 
@@ -99,6 +105,17 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
+
+        'UpwellingPPMultiplier
+        Public Property UpwellingPPMultiplier() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.AdvectionUpwellingPPMultiplier))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.AdvectionUpwellingPPMultiplier, value)
+            End Set
+        End Property
 
 
 #Region "Obsolete Properties of the old Advection Model"
