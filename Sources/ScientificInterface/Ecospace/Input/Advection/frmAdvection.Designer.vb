@@ -60,6 +60,8 @@ Namespace Ecospace.Advection
             Me.m_tlpParameters = New System.Windows.Forms.TableLayoutPanel()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_txtUpwelling = New System.Windows.Forms.TextBox()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_txtPPMult = New System.Windows.Forms.TextBox()
             Me.m_ucZoomToolbar = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
             Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind()
             Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap()
@@ -170,7 +172,7 @@ Namespace Ecospace.Advection
             Me.m_tlpComputeControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpComputeControls.Controls.Add(Me.m_btnStart, 0, 0)
             Me.m_tlpComputeControls.Controls.Add(Me.m_btnStop, 1, 0)
-            Me.m_tlpComputeControls.Location = New System.Drawing.Point(3, 91)
+            Me.m_tlpComputeControls.Location = New System.Drawing.Point(3, 115)
             Me.m_tlpComputeControls.Name = "m_tlpComputeControls"
             Me.m_tlpComputeControls.RowCount = 1
             Me.m_tlpComputeControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -217,7 +219,7 @@ Namespace Ecospace.Advection
             Me.m_hdrCompute.CanCollapseParent = False
             Me.m_hdrCompute.CollapsedParentHeight = 0
             Me.m_hdrCompute.IsCollapsed = False
-            Me.m_hdrCompute.Location = New System.Drawing.Point(0, 70)
+            Me.m_hdrCompute.Location = New System.Drawing.Point(0, 94)
             Me.m_hdrCompute.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrCompute.Name = "m_hdrCompute"
             Me.m_hdrCompute.Size = New System.Drawing.Size(175, 18)
@@ -240,19 +242,20 @@ Namespace Ecospace.Advection
             '
             'm_tlpParameters
             '
-            Me.m_tlpParameters.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tlpParameters.ColumnCount = 2
             Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpParameters.Controls.Add(Me.Label1, 0, 0)
             Me.m_tlpParameters.Controls.Add(Me.m_txtUpwelling, 1, 0)
+            Me.m_tlpParameters.Controls.Add(Me.Label2, 0, 1)
+            Me.m_tlpParameters.Controls.Add(Me.m_txtPPMult, 1, 1)
+            Me.m_tlpParameters.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlpParameters.Location = New System.Drawing.Point(3, 36)
             Me.m_tlpParameters.Name = "m_tlpParameters"
-            Me.m_tlpParameters.RowCount = 1
-            Me.m_tlpParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44.0!))
-            Me.m_tlpParameters.Size = New System.Drawing.Size(169, 31)
+            Me.m_tlpParameters.RowCount = 2
+            Me.m_tlpParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpParameters.Size = New System.Drawing.Size(169, 55)
             Me.m_tlpParameters.TabIndex = 12
             '
             'Label1
@@ -260,21 +263,40 @@ Namespace Ecospace.Advection
             Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(3, 0)
+            Me.Label1.Location = New System.Drawing.Point(3, 3)
+            Me.Label1.Margin = New System.Windows.Forms.Padding(3)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(78, 26)
+            Me.Label1.Size = New System.Drawing.Size(78, 21)
             Me.Label1.TabIndex = 0
-            Me.Label1.Text = "Upwelling threshold"
+            Me.Label1.Text = "Upwelling threshold:"
             '
             'm_txtUpwelling
             '
             Me.m_txtUpwelling.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_txtUpwelling.Location = New System.Drawing.Point(87, 0)
-            Me.m_txtUpwelling.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
+            Me.m_txtUpwelling.Location = New System.Drawing.Point(87, 3)
             Me.m_txtUpwelling.Name = "m_txtUpwelling"
             Me.m_txtUpwelling.Size = New System.Drawing.Size(79, 20)
             Me.m_txtUpwelling.TabIndex = 1
+            '
+            'Label2
+            '
+            Me.Label2.AutoSize = True
+            Me.Label2.Location = New System.Drawing.Point(3, 30)
+            Me.Label2.Margin = New System.Windows.Forms.Padding(3)
+            Me.Label2.Name = "Label2"
+            Me.Label2.Size = New System.Drawing.Size(71, 22)
+            Me.Label2.TabIndex = 2
+            Me.Label2.Text = "PP upwelling multiplier:"
+            '
+            'm_txtPPMult
+            '
+            Me.m_txtPPMult.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_txtPPMult.Location = New System.Drawing.Point(87, 30)
+            Me.m_txtPPMult.Name = "m_txtPPMult"
+            Me.m_txtPPMult.Size = New System.Drawing.Size(79, 20)
+            Me.m_txtPPMult.TabIndex = 3
             '
             'm_ucZoomToolbar
             '
@@ -380,6 +402,8 @@ Namespace Ecospace.Advection
         Friend WithEvents m_tlpParameters As TableLayoutPanel
         Friend WithEvents Label1 As Label
         Friend WithEvents m_txtUpwelling As TextBox
+        Friend WithEvents Label2 As Label
+        Friend WithEvents m_txtPPMult As TextBox
     End Class
 
 End Namespace

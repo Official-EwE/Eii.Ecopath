@@ -253,7 +253,7 @@ Namespace Ecospace.Advection
 
                     Physicsmodel(WindXbase, WindYbase)
 
-                    fireProgress()
+                    Me.fireProgress()
 
                     'copy the X and Y velocities and upwelling into monthly arrays for storage
                     'The proper monthly value will get copied back into Xvel() and Yvel() 
@@ -271,7 +271,7 @@ Namespace Ecospace.Advection
 
                 Next imon
 
-                Me.m_bBadFlow = False 'Really it must be good....
+                Me.m_bBadFlow = False 'Really it must be good...
 
             Catch ex As Exception
                 'The bad flow flag was part of the old model
@@ -280,10 +280,20 @@ Namespace Ecospace.Advection
                 bReturn = False
             End Try
 
+            'Clear the X,Y and Upwelling data from memory
+            'so it's not used by the model by "mistake"
+            Me.ClearVelocityArrays()
+
             Me.fireRunEnded()
             Return bReturn
 
         End Function
+
+        Private Sub ClearVelocityArrays()
+            Array.Clear(Me.m_data.UpVel, 0, Me.m_data.UpVel.Length)
+            Array.Clear(Me.m_data.Xvel, 0, Me.m_data.UpVel.Length)
+            Array.Clear(Me.m_data.Yvel, 0, Me.m_data.Yvel.Length)
+        End Sub
 
 
         Private Sub Physicsmodel(WindXbase(,) As Single, WindYbase(,) As Single)
@@ -316,7 +326,6 @@ Namespace Ecospace.Advection
 
             'following initialize pressure field h, arrays for soln of equil h
             Const WindConst As Single = 864.0!
-            Const hsurface As Single = 30
             Const alpha As Single = 0.7
             Const gravcon As Single = 9.8
 
@@ -401,7 +410,7 @@ Namespace Ecospace.Advection
                     jm = j : If jm > m_data.InCol Then jm = m_data.InCol
                     If m_data.Depth(ic, jm) > 0 And m_data.Depth(im, jm) > 0 Then
                         'do rates for top boundary of cell
-                        Call GetDepthUp(i, j, hsurface, dtotal, hsurf, depth)
+                        Call GetDepthUp(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                         alphae = alpha : If depth = 0 Then alphae = 0
                         wv = WindYw(i, j) * (dtotal + alphae * hsurf)
                         gd = CSng(grav * (dtotal ^ 2 + alphae * hsurf ^ 2))
@@ -414,7 +423,7 @@ Namespace Ecospace.Advection
                     End If
                     If m_data.Depth(im, jc) > 0 And m_data.Depth(im, jm) > 0 Then
                         'do rates for left boundary of cell
-                        Call getdepthleft(i, j, hsurface, dtotal, hsurf, depth)
+                        Call getdepthleft(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                         alphae = alpha : If depth = 0 Then alphae = 0
                         wv = WindXw(i, j) * (dtotal + alphae * hsurf)
                         gd = CSng(grav * (dtotal ^ 2 + alphae * hsurf ^ 2))
@@ -466,7 +475,7 @@ Namespace Ecospace.Advection
                     vys = 0 : vyd = 0
                     If j <= m_data.InCol Then
                         If m_data.Depth(ic, j) > 0 And m_data.Depth(im, j) > 0 Then
-                            Call GetDepthUp(i, j, hsurface, dtotal, hsurf, depth)
+                            Call GetDepthUp(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                             alphae = alpha : If depth = 0 Then alphae = 0
                             wv = Windy(i, j)
                             vyd = wv + grav * dtotal * (h(i - 1, j) - h(i, j))
@@ -481,7 +490,7 @@ Namespace Ecospace.Advection
                     End If
                     If i <= m_data.InRow Then
                         If m_data.Depth(i, jc) > 0 And m_data.Depth(i, jm) > 0 Then
-                            Call getdepthleft(i, j, hsurface, dtotal, hsurf, depth)
+                            Call getdepthleft(i, j, Me.UpwellingThreshold, dtotal, hsurf, depth)
                             alphae = alpha : If depth = 0 Then alphae = 0
                             wv = Windx(i, j)
                             vxd = wv + grav * dtotal * (h(i, j - 1) - h(i, j))
@@ -510,7 +519,7 @@ Namespace Ecospace.Advection
             For i = 1 To m_data.InRow
                 For j = 1 To m_data.InCol
                     'If dscale * map(0, i, j) > hsurface Then
-                    If m_data.Depth(i, j) > hsurface Then
+                    If m_data.Depth(i, j) > Me.UpwellingThreshold Then
 
                         Me.m_data.UpVel(i, j) = Me.m_data.UpVel(i, j) * uconst
 

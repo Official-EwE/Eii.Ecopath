@@ -51,6 +51,7 @@ Namespace Ecospace.Advection
         Private m_bHasRun As Boolean = False
 
         Private m_fpUpwellingThreshold As cPropertyFormatProvider
+        Private m_fpPPMult As cPropertyFormatProvider
 
 #End Region ' Private vars
 
@@ -99,6 +100,7 @@ Namespace Ecospace.Advection
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
             Me.m_fpUpwellingThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_txtUpwelling, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingThreshold)
+            Me.m_fpPPMult = New cPropertyFormatProvider(Me.UIContext, Me.m_txtPPMult, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingPPMultiplier)
 
 
             ' Kick off
@@ -106,7 +108,7 @@ Namespace Ecospace.Advection
             'Me.UpdateLayerEditorContent()
             Me.UpdateControls()
 
-            If Me.m_manager.IsRunning Then Me.StartRun()
+            ' If Me.m_manager.IsRunning Then Me.StartRun()
 
         End Sub
 
@@ -161,12 +163,12 @@ Namespace Ecospace.Advection
         End Sub
 
 
-        Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStart.Click
 
             Me.StartRun()
         End Sub
 
-        Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
 
             Me.m_manager.StopRun()
         End Sub
@@ -242,7 +244,7 @@ Namespace Ecospace.Advection
             ' Already running? Abort
             If Me.m_bSearching Then Return
 
-            If Not Me.m_manager.IsRunning Then Me.m_manager.RunPhyicsModel(Me)
+            If Not Me.m_manager.IsRunning Then Me.m_manager.RunPhysicsModel(Me)
             Me.m_bSearching = Me.m_manager.IsRunning
 
             If m_bSearching Then
@@ -269,14 +271,6 @@ Namespace Ecospace.Advection
                 Me.m_bHasRun = False
                 Me.UpdateControls()
             End If
-        End Sub
-
-        Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs)
-
-        End Sub
-
-        Private Sub TextBox1_Click(sender As Object, e As EventArgs)
-            Me.m_manager.ModelParameters.UpwellingThreshold = Single.Parse(m_txtUpwelling.Text)
         End Sub
 
 

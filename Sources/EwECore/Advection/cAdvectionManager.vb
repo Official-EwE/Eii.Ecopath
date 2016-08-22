@@ -193,6 +193,7 @@ Namespace Ecospace.Advection
                 m_parameters.AllowValidation = False
 
                 Me.m_parameters.UpwellingThreshold = Me.m_comp.UpwellingThreshold
+                Me.m_parameters.UpwellingPPMultiplier = Me.m_data.PPupWell
 
                 m_parameters.XVelocity = Me.m_data.XVelocity
                 m_parameters.YVelocity = Me.m_data.YVelocity
@@ -217,6 +218,7 @@ Namespace Ecospace.Advection
         Public Function Update() As Boolean
 
             Me.m_comp.UpwellingThreshold = Me.m_parameters.UpwellingThreshold
+            Me.m_data.PPupWell = Me.m_parameters.UpwellingPPMultiplier
 
             Me.m_data.XVelocity = Me.m_parameters.XVelocity
             Me.m_data.YVelocity = Me.m_parameters.YVelocity
@@ -330,7 +332,7 @@ Namespace Ecospace.Advection
         End Function
 
 
-        Public Function RunPhyicsModel(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
+        Public Function RunPhysicsModel(ByVal SyncObject As System.ComponentModel.ISynchronizeInvoke) As Boolean
 
             ' Sanity check
             If (Me.m_core.StateMonitor.IsBusy) Then Return False
