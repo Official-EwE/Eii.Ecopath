@@ -36,15 +36,15 @@ Imports EwEUtils.Utilities
 ''' </remarks>
 Public Class cWebLinks
 
-    Private Const cStart As String = "http://www.ecopath.org/ewestart"
-    Private Const cHome As String = "http://www.ecopath.org"
-    'Private Const cRSS As String = "http://www.ecopath.org/aggregator/categories/1"
-    Private Const cTrac As String = "http://sources.ecopath.org/trac/Ecopath/report/1"
-    Private Const cCourse As String = "http://www.ecopath.org/courses"
-    Private Const cFacebook As String = "http://www.facebook.com/eweconsortium"
-    Private Const cFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
-    Private Const cEcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
-    Private Const cAccess2010 As String = "https://www.microsoft.com/en-us/download/details.aspx?id=13255"
+    Private Const g_Start As String = "http://www.ecopath.org/ewestart"
+    Private Const g_Home As String = "http://www.ecopath.org"
+    Private Const g_UsersRSS As String = "https://groups.google.com/forum/feed/eweusers/msgs/rss.xml?num=15"
+    Private Const g_Trac As String = "http://sources.ecopath.org/trac/Ecopath/report/1"
+    Private Const g_Course As String = "http://www.ecopath.org/courses"
+    Private Const g_Facebook As String = "http://www.facebook.com/eweconsortium"
+    Private Const g_BetaFeedback As String = "http://www.surveymonkey.com/s/5XD6HKC"
+    Private Const g_EcoBaseModelInfo As String = "http://ecobase.ecopath.org/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model={0}"
+    Private Const g_Access2010 As String = "https://www.microsoft.com/en-us/download/details.aspx?id=13255"
 
     Private m_core As cCore = Nothing
 
@@ -56,7 +56,7 @@ Public Class cWebLinks
         NotSet = 0
         Start
         Home
-        HomeRSS
+        UsersRSS
         Trac
         Facebook
         Courses
@@ -69,14 +69,14 @@ Public Class cWebLinks
 
         Select Case type
             Case eLinkType.Start : Return Me.EwEHomeURL()
-            Case eLinkType.Home : Return cWebLinks.cHome
-                'Case eLinkType.HomeRSS : Return cWebLinks.cRSS
-            Case eLinkType.Trac : Return cWebLinks.cTrac
-            Case eLinkType.Courses : Return cWebLinks.cCourse
-            Case eLinkType.Facebook : Return cWebLinks.cFacebook
-            Case eLinkType.Feedback : Return cWebLinks.cFeedback
-            Case eLinkType.EcoBaseModelInfo : Return cWebLinks.cEcoBaseModelInfo
-            Case eLinkType.Access2010 : Return cWebLinks.cAccess2010
+            Case eLinkType.Home : Return cWebLinks.g_Home
+            Case eLinkType.UsersRSS : Return cWebLinks.g_UsersRSS
+            Case eLinkType.Trac : Return cWebLinks.g_Trac
+            Case eLinkType.Courses : Return cWebLinks.g_Course
+            Case eLinkType.Facebook : Return cWebLinks.g_Facebook
+            Case eLinkType.Feedback : Return cWebLinks.g_BetaFeedback
+            Case eLinkType.EcoBaseModelInfo : Return cWebLinks.g_EcoBaseModelInfo
+            Case eLinkType.Access2010 : Return cWebLinks.g_Access2010
         End Select
         Return ""
 
@@ -93,7 +93,7 @@ Public Class cWebLinks
 
         Dim pm As cPluginManager = Me.m_core.PluginManager
         Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
-        Dim ub As New cUriBuilder(cStart)
+        Dim ub As New cUriBuilder(g_Start)
 
         For Each an As AssemblyName In aAssemblyNames
             ' Keep ewe component list really short; it's the plug-ins we're interested in
