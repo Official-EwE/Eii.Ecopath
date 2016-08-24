@@ -30,7 +30,6 @@ AlwaysShowDirOnReadyPage=True
 SolidCompression=True
 Compression=zip 
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
-UninstallDisplayIcon={app}\{#MyAppName}
 OutputBaseFilename=ewe
 OutputDir=C:\Temp\Setup
 
@@ -184,17 +183,18 @@ end;
 
 [Registry]
 ; ewefile
-Root: HKCR; Subkey: "ewefile\"; ValueType: string; ValueName: ""; ValueData: "Ecopath with Ecosim model"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "ewefile\Shell\Open\Command\"; ValueType: string; ValueName: ""; ValueData: """{app}\EwE6.exe"" ""%1""" ;Flags: uninsdeletekey
-Root: HKCR; Subkey: "ewefile\DefaultIcon\"; ValueType: string; ValueName: ""; ValueData: "{app}\EwE6.exe,0"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "ewefile\"; ValueType: string; ValueData: "Ecopath with Ecosim model"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "ewefile\Shell\Open\Command\"; ValueType: string; ValueData: """{app}\EwE6.exe"" ""%1"""; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "ewefile\DefaultIcon\"; ValueType: string; ValueData: "{app}\EwE6.exe,0"; Flags: uninsdeletekey
 ; ewefile types
-Root: HKCR; Subkey: ".ewemdb\"; ValueType: string; ValueName: ""; ValueData: "ewefile"; Flags: uninsdeletekey
-Root: HKCR; Subkey: ".eweaccdb\"; ValueType: string; ValueName: ""; ValueData: "ewefile"; Flags: uninsdeletekey
-Root: HKCR; Subkey: ".eiixml\"; ValueType: string; ValueName: ""; ValueData: "ewefile"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: ".ewemdb\"; ValueType: string; ValueData: "ewefile"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: ".eweaccdb\"; ValueType: string; ValueData: "ewefile"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: ".eiixml\"; ValueType: string; ValueData: "ewefile"; Flags: uninsdeletekey
 ; EcoBase URL protocol handler
-Root: HKCR; Subkey: "ewe-ecobase\"; ValueType: string; ValueName: ""; ValueData: "URL:ewe-ecobase"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "ewe-ecobase\FriendlyTypeName"; ValueType: string; ValueName: ""; ValueData: "Ecopath with Ecosim Ecobase importer"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "ewe-ecobase\URL Protocol"; Flags: uninsdeletekeyifempty
-Root: HKCR; Subkey: "ewe-ecobase\DefaultIcon\"; ValueType: string; ValueName: ""; ValueData: "{app}\EwE6.exe,0"; Flags: uninsdeletekey
-Root: HKCR; Subkey: "ewe-ecobase\Shell\Open\Command\"; ValueType: string; ValueName: ""; ValueData: """{app}\EwE6.exe"" ""%1"""; Flags: uninsdeletekey
-
+Root: "HKCR"; Subkey: "ewe-ecobase\"; ValueType: string; ValueData: "URL:ewe-ecobase"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "ewe-ecobase\FriendlyTypeName"; ValueType: string; ValueData: "Ecopath with Ecosim Ecobase importer"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "ewe-ecobase\URL Protocol"; Flags: uninsdeletekeyifempty
+Root: "HKCR"; Subkey: "ewe-ecobase\DefaultIcon\"; ValueType: string; ValueData: "{app}\EwE6.exe,0"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "ewe-ecobase\Shell\Open\Command\"; ValueType: string; ValueData: """{app}\EwE6.exe"" ""%1"""; Flags: uninsdeletekey
+; Iexplore rendering mode for start page
+Root: "HKLM"; Subkey: "Software\Wow6432node\Microsoft\Internet Explorer\Main\Feature Control\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "EwE6.exe"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
