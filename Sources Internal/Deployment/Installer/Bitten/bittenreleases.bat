@@ -1,1 +1,0 @@
-"C:\Python25\Scripts\bitten-slave.exe" --form-auth http://sources.ecopath.org/trac/Ecopath/builds --config=config.ini --name=releases --no-loop
