@@ -254,9 +254,7 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
-            If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
-                Me.m_pbFlowDiagram.Invalidate()
-            End If
+            Me.m_pbFlowDiagram.Invalidate()
         End Sub
 
         Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
