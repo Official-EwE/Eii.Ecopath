@@ -81,7 +81,7 @@ Namespace Ecospace.Advection
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
             val.Stored = False
             Me.m_values.Add(val.varName, val)
