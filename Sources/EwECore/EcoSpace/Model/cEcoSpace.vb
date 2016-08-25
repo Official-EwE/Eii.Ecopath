@@ -3330,7 +3330,17 @@ Public Class cEcoSpace
         'e movement to left
         Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
-        AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'jb org code
+        'AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        '[km/timestep] / [cell length]
+        ' AdScale = (315.36 / Me.m_Data.nTimeStepsPerYear) / m_Data.CellLength 'convert from cm/sec to km/month
+
+        'Advection vectors Xvel(,) are in cm/sec convert to km/year, same units as the mrate()
+        '[km/year] / [cell length]
+        AdScale = 315.36 / m_Data.CellLength
 
         'set depth for the boundary cells to be equal to the depth just inside the model
         m_Data.Width(0) = m_Data.Width(1)
@@ -3380,9 +3390,6 @@ Public Class cEcoSpace
 
                         For ip = 1 To m_Data.NGroups
                             If j > 0 And j < m_Data.InCol Then
-                                'Debug.Assert(Not (ip = 44 And m_Data.Mrate(ip) <> 0))
-
-                                'Debug.Assert(Not (i = 1))
 
                                 If m_Data.HabCap(ip)(i, j + 1) = m_Data.HabCap(ip)(i, j) Then
                                     d(i, j, ip) = m_Data.Mrate(ip)
@@ -5202,9 +5209,6 @@ exitline:
         'Set gk to some other value for testing
         'gk = 0.001
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-        ' Return 1.0F
-
 
         Try
             'If both cells are in the same migration area then use the internal migMaps movement probabilities

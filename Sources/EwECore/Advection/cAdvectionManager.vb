@@ -31,6 +31,7 @@ Namespace Ecospace.Advection
 
     'ToDo 15-Aug-2016 added a variable for the threshold upwelling depth
     'Right now it's hardwired at 30, make that a parameter.
+    '   Done 22-Aug-2016
 
     'ToDo 15-Aug-2016 Check the Flow(,) variable to see if it is still needed?
 

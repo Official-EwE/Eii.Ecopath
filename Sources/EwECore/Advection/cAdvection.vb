@@ -39,12 +39,17 @@ Namespace Ecospace.Advection
 
         'ToDo 14-Jun-2015
         'Database storage of Montly advection and upwelling arrays MonthlyXvel()(,)...
+        '   Done
         'UI needs to use Monthly arrays MonthlyXvel()(,)...
+        '   Done
         'Remove unused elements from UI
+        '   Done
         'Reorganize modeling code to remove/archive old code
+        '   Done
         'Hook the new model up the to events of the old model
         '   jb 14-Jun-2016 Ok Hook up the new model to the events and wired it into the threaded Run
         '   Seems to run but I haven't checked the events in the UI
+        '   Done
 
 #Region "Public Vars"
 
@@ -281,7 +286,7 @@ Namespace Ecospace.Advection
             End Try
 
             'Clear the X,Y and Upwelling data from memory
-            'so it's not used by the model by "mistake"
+            'so it's not used in the model by "mistake"
             Me.ClearVelocityArrays()
 
             Me.fireRunEnded()
@@ -325,6 +330,7 @@ Namespace Ecospace.Advection
             cmunit = 1000 ' : If Abs(velxs(ipscen)) > 2 Or Abs(velys(ipscen)) > 2 Then cmunit = 100
 
             'following initialize pressure field h, arrays for soln of equil h
+            'WindConst cm/sec to m/day
             Const WindConst As Single = 864.0!
             Const alpha As Single = 0.7
             Const gravcon As Single = 9.8
@@ -367,7 +373,8 @@ Namespace Ecospace.Advection
 
             'this must convert velocity from m/day (model units) to cm/sec (100/(60*60*24))
             'cmunit inflates by 1000 so that it can be stored as an integer
-            saveconst = 100.0! / (60.0! * 60.0! * 24) * cmunit
+            'JB Aug-2016 removed the cmunit multiplier just save results as cm/sec
+            saveconst = 100.0! / (60.0! * 60.0! * 24) ' * cmunit
 
             'set pressure at boundaries (0, inrowp+1, incolp+1 array rows and cols)
             'and linear system forcing input f at each cell due to water inputs
@@ -388,6 +395,7 @@ Namespace Ecospace.Advection
                         'End If
                         '  If map(0, i, j) > 0 Then f(i, j) = f(i, j) + evapconst
                     End If
+                    'Convert input cm/sec to m/day
                     Windx(i, j) = WindConst * WindXbase(i, j)
                     Windy(i, j) = WindConst * WindYbase(i, j)
                     WindYw(i, j) = Windy(i, j) / (Lengthcell * 1000)
@@ -503,6 +511,7 @@ Namespace Ecospace.Advection
                     End If
 
                     'save the velocities xvel and yvel
+                    'convert from m/day to cm/sec
                     m_data.Yvel(i, j) = vys * saveconst
                     m_data.Xvel(i, j) = vxs * saveconst
 
