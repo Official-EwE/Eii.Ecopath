@@ -43,8 +43,6 @@ Namespace Controls
 
         ''' <summary>Property that serves as data and style source.</summary>
         Private m_prop As cProperty = Nothing
-        ''' <summary>The wrapped control</summary>
-        Private m_ctrl As Control = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -115,11 +113,6 @@ Namespace Controls
             Me.m_prop = prop
             AddHandler Me.m_prop.PropertyChanged, AddressOf OnPropertyChanged
 
-            Me.m_ctrl = ctrl
-            If (TypeOf (Me.m_ctrl) Is Control) Then
-                AddHandler DirectCast(Me.m_ctrl, Control).Enter, AddressOf OnGotFocus
-            End If
-
             ' Fire change event manually to immediately show the property value
             Me.OnPropertyChanged(Me.m_prop, cProperty.eChangeFlags.All)
         End Sub
@@ -137,11 +130,7 @@ Namespace Controls
             End If
 
             If Me.m_ctrl IsNot Nothing Then
-                If (TypeOf (Me.m_ctrl) Is Control) Then
-                    RemoveHandler DirectCast(Me.m_ctrl, Control).Enter, AddressOf OnGotFocus
-                End If
                 cToolTipShared.GetInstance().SetToolTip(Me.m_ctrl, "")
-                Me.m_ctrl = Nothing
             End If
 
             MyBase.Release()
@@ -234,7 +223,7 @@ Namespace Controls
         ''' an application-wide <see cref="cPropertySelectionCommand">PropertySelectionCommand</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Overrides Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 

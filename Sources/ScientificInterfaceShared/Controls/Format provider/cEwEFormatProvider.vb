@@ -26,6 +26,8 @@ Option Explicit On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports 
@@ -1316,6 +1318,8 @@ Namespace Controls
         Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
         ''' <summary>The wrapper that interacts with the control</summary>
         Private m_ctrlWrapper As IControlWrapper = Nothing
+        ''' <summary>The wrapped control</summary>
+        Protected m_ctrl As Control = Nothing
 
 #End Region ' Private vars
 
@@ -1345,6 +1349,7 @@ Namespace Controls
             Me.m_tValue = tValue
             ' Get wrapper
             Me.m_ctrlWrapper = cControlWrapperFactory.GetControlWrapper(uic, ctrl, Me, aItems, metadata, formatter)
+            Me.m_ctrl = ctrl
 
             ' Cannot be
             Debug.Assert(Me.m_ctrlWrapper IsNot Nothing)
@@ -1355,6 +1360,10 @@ Namespace Controls
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
             ' Respond to control closure events
             AddHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf OnControlDisposed
+
+            If (TypeOf (Me.m_ctrl) Is Control) Then
+                AddHandler DirectCast(Me.m_ctrl, Control).Enter, AddressOf OnGotFocus
+            End If
 
         End Sub
 
@@ -1402,16 +1411,20 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Release()
+
             If (Me.m_ctrlWrapper IsNot Nothing) Then
                 RemoveHandler Me.m_ctrlWrapper.Control.Disposed, AddressOf OnControlDisposed
                 Me.m_ctrlWrapper.Release()
                 Me.m_ctrlWrapper = Nothing
             End If
 
+            Me.m_ctrl = Nothing
+
             If Me.UIContext IsNot Nothing Then
                 RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
                 Me.UIContext = Nothing
             End If
+
         End Sub
 
 #End Region ' Release
@@ -1542,6 +1555,21 @@ Namespace Controls
 #End Region ' Value
 
 #Region " Updates "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, called when the wrapped control receives focus. Handled to fire 
+        ''' an application-wide <see cref="cPropertySelectionCommand">PropertySelectionCommand</see>.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+
+            If Object.ReferenceEquals(dsc, Nothing) Then Return
+
+            dsc.Invoke()
+        End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

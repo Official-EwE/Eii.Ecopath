@@ -62,88 +62,88 @@ Public Class cVariableMetadataFactory
         Dim unitsCurrAreaTime As eUnitType() = New eUnitType() {eUnitType.Currency, eUnitType.Area, eUnitType.Time}
 
         ' -- Ecopath group inputs --
-        Me.Metadata(eVarNameFlags.HabitatArea) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.HabitatArea) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsProp)
-        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.Biomass) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.Biomass) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed) ' When value missing set this input to CORE_NULL
-        Me.Metadata(eVarNameFlags.BiomassAreaInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.BiomassAreaInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsCurr)
-        Me.Metadata(eVarNameFlags.DetImp) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.DetImp) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsCurrTime)
-        Me.Metadata(eVarNameFlags.EEInput) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.EEInput) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed) ' When value missing set this input to CORE_NULL
-        Me.Metadata(eVarNameFlags.OtherMortInput) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.OtherMortInput) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed) ' When value missing set this input to CORE_NULL
-        Me.Metadata(eVarNameFlags.Emig) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.Emig) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.EmigRate) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.EmigRate) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.GEInput) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
+        Me.Metadata(eVarNameFlags.GEInput) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
                                                         cCore.NULL_VALUE) ' When value missing set this to CORE_NULL
-        Me.Metadata(eVarNameFlags.GS) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.GS) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.PBInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.PBInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        cCore.NULL_VALUE,
                                                         unitPropTime) ' When value missing set this to CORE_NULL
-        Me.Metadata(eVarNameFlags.Immig) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.Immig) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.QBInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.QBInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        cCore.NULL_VALUE,
                                                         unitPropTime) ' When value missing set this to CORE_NULL
-        Me.Metadata(eVarNameFlags.BioAccumRate) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.BioAccumRate) = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.ImpDiet) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.ImpDiet) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.PoolColor) = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.PoolColor) = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.NonMarketValue) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.NonMarketValue) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.DietComp) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.DietComp) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsProp)
-        Me.Metadata(eVarNameFlags.DetritusFate) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.DetritusFate) = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsProp)
-        Me.Metadata(eVarNameFlags.VBK) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        , _
+        Me.Metadata(eVarNameFlags.VBK) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        ,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.TCatchInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.TCatchInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.AinLWInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.AinLWInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.BinLWInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.BinLWInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.LooInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.LooInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.WinfInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.WinfInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.t0Input) = New cVariableMetaData(-1, 0, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.t0Input) = New cVariableMetaData(-1, 0, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
-        Me.Metadata(eVarNameFlags.TmaxInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), _
-                                                        cCore.NULL_VALUE, _
+        Me.Metadata(eVarNameFlags.TmaxInput) = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo),
+                                                        cCore.NULL_VALUE,
                                                         unitsNotAssesed)
         Me.Metadata(eVarNameFlags.IsFished) = New cVariableMetaData()
 
