@@ -2724,6 +2724,10 @@ Namespace Core
     ''' <summary>
     ''' Types of dynamic units supported by EwE.
     ''' </summary>
+    ''' <remarks>
+    ''' 28 Aug 2016: Units system needs to change to embed operations within unit list: unitMonitary, unitOver, unitTIme
+    ''' This will make complicated unit format masks obsolete, and can make unit formatting general
+    ''' </remarks>
     ''' -------------------------------------------------------------------
     Public Enum eUnitType As Byte
         ''' <summary>Not a dynamic unit.</summary>
@@ -2742,6 +2746,10 @@ Namespace Core
         Biomass
         ''' <summary>Propotion unit.</summary>
         Proportion
+        ''' <summary>Unit operator 'x'</summary>
+        [Times]
+        ''' <summary>Unit operator '/'</summary>
+        [Over]
         ''' <summary>Fixed unit type: meter</summary>
         Fixed_m
         ''' <summary>Fixed unit type: centimeter per second</summary>
