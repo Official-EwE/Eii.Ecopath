@@ -48,21 +48,21 @@ Public MustInherit Class cEcospaceLayer
 #Region " Private variables "
 
     ''' <summary>Manager delivering the data, if any.</summary>
-    Private m_manager As IEcospaceLayerManager = Nothing
+    Protected m_manager As IEcospaceLayerManager = Nothing
     ''' <summary>If set, this flag will direct the manager how to get to the actual map data.</summary>
-    Private m_vnData As eVarNameFlags = eVarNameFlags.NotSet
+    Protected m_vnData As eVarNameFlags = eVarNameFlags.NotSet
     ''' <summary>Metadata to restrict values that can enter a layer.</summary>
-    Private m_metadata As cVariableMetaData = Nothing
+    Protected m_metadata As cVariableMetaData = Nothing
     ''' <summary>If set, a hard-linked reference to an array.</summary>
-    Private m_data As Object = Nothing
+    Protected m_data As Object = Nothing
     ''' <summary>Type of the data.</summary>
-    Private m_typeValue As Type = Nothing
+    Protected m_typeValue As Type = Nothing
     ''' <summary>States whether cached statistics should be recalculated.</summary>
     ''' <remarks>True at startup to make sure that stats are properly calculated
     ''' when first queried.</remarks>
     Protected m_bInvalidateStats As Boolean = True
 
-    Private m_iSecundaryIndex As Integer = 1
+    Protected m_iSecundaryIndex As Integer = 1
     Protected m_ccSecundaryIndex As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
 #End Region ' Private variables

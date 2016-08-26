@@ -18,29 +18,9 @@
 ' ===============================================================================
 '
 
-Option Strict On
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' ===============================================================================
-'
-
 #Region " Imports "
 
+Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 
@@ -93,6 +73,7 @@ Namespace Controls.Map.Layers
             Me.m_dataType = Me.m_lXVel.DataType
             Me.m_coreComponent = Me.m_lXVel.CoreComponent
             Me.m_ccSecundaryIndex = Me.m_lXVel.SecundaryIndexCounter
+            Me.m_metadata = Me.m_lXVel.MetadataCell
 
         End Sub
 

@@ -2742,6 +2742,10 @@ Namespace Core
         Biomass
         ''' <summary>Propotion unit.</summary>
         Proportion
+        ''' <summary>Fixed unit type: meter</summary>
+        Fixed_m
+        ''' <summary>Fixed unit type: centimeter per second</summary>
+        Fixed_cm_per_sec
     End Enum
 
     ''' ---------------------------------------------------------------------------

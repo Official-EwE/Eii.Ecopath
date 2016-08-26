@@ -52,6 +52,8 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function UnitString(ByVal unitType As eUnitType) As String
 
+            ' ToDo: localize this method
+
             Dim strUnitString As String = "?"
             Dim model As cEwEModel = Me.m_core.EwEModel
 
@@ -76,12 +78,17 @@ Namespace Style
                     Dim fmt As New cAreaUnitFormatter(model.UnitAreaCustomText)
                     strUnitString = fmt.GetDescriptor(model.UnitArea)
 
-                Case eUnitType.Biomass
-                    ' ToDo: localize this
-                    strUnitString = "unit biomass" ' Fixed
-
                 Case eUnitType.Proportion
                     strUnitString = "prop"
+
+                Case eUnitType.Biomass
+                    strUnitString = "unit biomass" ' Fixed
+
+                Case eUnitType.Fixed_m
+                    strUnitString = "m"
+
+                Case eUnitType.Fixed_cm_per_sec
+                    strUnitString = "cm/sec"
 
                 Case eUnitType.None
                     ' NOP

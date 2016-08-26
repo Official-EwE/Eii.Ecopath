@@ -22,8 +22,10 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -72,25 +74,45 @@ Namespace Controls.Map.Layers
             MyBase.Initialize(editor)
 
             Dim edt As cLayerEditor = Me.Editor
-            Dim md As New cVariableMetaData(Convert.ToDecimal(Math.Max(-100000, Me.Editor.CellValueMin)), _
-                                            Convert.ToDecimal(Math.Min(100000, Me.Editor.CellValueMax)), _
-                                            cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), _
-                                            cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            Dim prop As cProperty = edt.Layer.GetProperty()
 
-            Me.m_fpValue = New cEwEFormatProvider(Me.UIContext, Me.m_nudValue, edt.Layer.ValueType, md)
-            AddHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
-
-            If edt.Layer.ValueType Is GetType(Integer) Then
-                Me.m_nudValue.DecimalPlaces = 0
+            If (edt.Layer.GetProperty() IsNot Nothing) Then
+                Me.m_fpValue = New cPropertyFormatProvider(Me.UIContext, Me.m_nudValue, prop)
             Else
-                Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
+                ' Try to obtain editor metadata from layer
+                Dim md As cVariableMetaData = Nothing
+
+                If (edt.Layer.Data IsNot Nothing) Then
+                    If (edt.Layer.Data.MetadataCell IsNot Nothing) Then
+                        md = edt.Layer.Data.MetadataCell
+                    End If
+                End If
+
+                ' No default metadata found?
+                If (md Is Nothing) Then
+                    ' #Yes: create metadata from layer editor settings
+                    md = New cVariableMetaData(Convert.ToDecimal(Math.Max(-100000, Me.Editor.CellValueMin)),
+                                            Convert.ToDecimal(Math.Min(100000, Me.Editor.CellValueMax)),
+                                            cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo),
+                                            cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+                End If
+                Me.m_fpValue = New cEwEFormatProvider(Me.UIContext, Me.m_nudValue, edt.Layer.ValueType, md)
+
+                ' Config numerical precision
+                If edt.Layer.ValueType Is GetType(Integer) Then
+                    Me.m_nudValue.DecimalPlaces = 0
+                Else
+                    Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
+                End If
+
+                ' Config increment
+                If (md.Max - md.Min) <= 1000 Then
+                    Me.m_nudValue.Increment = CDec((md.Max - md.Min) / 100)
+                End If
+
             End If
 
-            ' Set increment
-            If (md.Max - md.Min) <= 1000 Then
-                Me.m_nudValue.Increment = CDec((md.Max - md.Min) / 100)
-            End If
-
+            AddHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
             AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub

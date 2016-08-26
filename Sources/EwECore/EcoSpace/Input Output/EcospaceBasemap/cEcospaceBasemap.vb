@@ -108,114 +108,126 @@ Public Class cEcospaceBasemap
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' *************************************************************************************** '
-            ' Variables for layers, providing metadata and an anchor point for remarks, visual styles '
-            ' *************************************************************************************** '
+            ' ************************************************************************************************* '
+            ' Variables for layers, providing metadata and an anchor point for remarks, visual styles, metadata '
+            ' ************************************************************************************************* '
+
+            Dim unitsProp As eUnitType() = New eUnitType() {eUnitType.Proportion}
+            Dim unitsCmSec As eUnitType() = New eUnitType() {eUnitType.Proportion}
 
             ' LayerRelPP
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerRelPP, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerRelCin
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerRelCin, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerDepth
-            meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, New eUnitType() {eUnitType.Fixed_m})
             val = New cValue(0, eVarNameFlags.LayerDepth, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerHabitat
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
             val = New cValue(0, eVarNameFlags.LayerHabitat, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerHabitatCapacity
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerHabitatCapacity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerHabitatCapacityInput
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerHabitatCapacityInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerMPA
             meta = New cVariableMetaData(0, Me.m_core.GetCoreCounter(eCoreCounterTypes.nMPAs), cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             val = New cValue(0, eVarNameFlags.LayerMPA, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerRegion
             meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             val = New cValue(0, eVarNameFlags.LayerRegion, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerMigration
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerMigration, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
-
-            '' LayerDistribution
-            'meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            'val = New cValue(0, eVarNameFlags.LayerDistribution, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            'm_values.Add(val.varName, val)
 
             ' MPASeed
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerPort
             meta = New cVariableMetaData()
             val = New cValue(0, eVarNameFlags.LayerPort, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerSail
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' Advection interface
             ' LayerAdvection
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsCmSec)
             val = New cValue(0, eVarNameFlags.LayerAdvection, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerWind
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsCmSec)
             val = New cValue(0, eVarNameFlags.LayerWind, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerUpwelling
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerUpwelling, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
-
-            '' LayerMLD
-            'meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            'val = New cValue(0, eVarNameFlags.LayerMLD, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            'm_values.Add(val.varName, val)
 
             ' LayerDriver
             meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(0, eVarNameFlags.LayerDriver, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' BiomassForcing
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, New eUnitType() {eUnitType.Biomass})
             val = New cValue(0, eVarNameFlags.LayerBiomassForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' RelativeBiomassForcing
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerBiomassRelativeForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerExclusion
             meta = New cVariableMetaData()
             val = New cValue(0, eVarNameFlags.LayerExclusion, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
             m_values.Add(val.varName, val)
 
             ' ----------------
