@@ -148,7 +148,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_tbxNModels2Run.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_lblNTrials.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -253,7 +253,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="m_tbxNYearsProject.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -283,7 +283,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_tbxNYearsProject.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="m_lblNYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -313,7 +313,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_lblNYears.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_lblMassBalanceTol.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -943,7 +943,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_btnDeleteResults.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_btnSelectStrategies.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Right</value>
@@ -971,33 +971,6 @@
   </data>
   <data name="&gt;&gt;m_btnSelectStrategies.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_btnStrategies2Run.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnStrategies2Run.Location" type="System.Drawing.Point, System.Drawing">
-    <value>690, 47</value>
-  </data>
-  <data name="m_btnStrategies2Run.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 23</value>
-  </data>
-  <data name="m_btnStrategies2Run.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_btnStrategies2Run.Text" xml:space="preserve">
-    <value>Select Strats</value>
-  </data>
-  <data name="&gt;&gt;m_btnStrategies2Run.Name" xml:space="preserve">
-    <value>m_btnStrategies2Run</value>
-  </data>
-  <data name="&gt;&gt;m_btnStrategies2Run.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStrategies2Run.Parent" xml:space="preserve">
-    <value>m_plStep4</value>
-  </data>
-  <data name="&gt;&gt;m_btnStrategies2Run.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_hdrStep4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -1027,7 +1000,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_hdrStep4.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_lblNModels.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1057,7 +1030,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;m_lblNModels.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="Button1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1141,7 +1114,7 @@
     <value>m_plStep4</value>
   </data>
   <data name="&gt;&gt;Button1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_plStep4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
