@@ -354,7 +354,6 @@ Namespace Ecospace.Advection
 
             Me.SetWait()
             Try
-                '   Me.Update()
 
                 thrd = New Thread(AddressOf Me.RunThreaded)
                 thrd.Start()

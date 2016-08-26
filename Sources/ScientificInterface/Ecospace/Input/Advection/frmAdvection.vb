@@ -102,13 +102,7 @@ Namespace Ecospace.Advection
             Me.m_fpUpwellingThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_txtUpwelling, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingThreshold)
             Me.m_fpPPMult = New cPropertyFormatProvider(Me.UIContext, Me.m_txtPPMult, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingPPMultiplier)
 
-
-            ' Kick off
-            ' Me.UpdateTransportVelocity()
-            'Me.UpdateLayerEditorContent()
             Me.UpdateControls()
-
-            ' If Me.m_manager.IsRunning Then Me.StartRun()
 
         End Sub
 
@@ -162,7 +156,6 @@ Namespace Ecospace.Advection
 
         End Sub
 
-
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStart.Click
 
             Me.StartRun()
@@ -205,15 +198,22 @@ Namespace Ecospace.Advection
             Me.StopRun()
             Me.m_ucMap.Invalidate()
 
-            If bBadFlow Then
-                Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_ADVECTION_INBALANCED,
-                                                 eCoreComponentType.EcoSpace, eMessageType.Any,
-                                                 eMessageImportance.Warning, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
-                fmsg.Suppressable = True
-                Me.Core.Messages.SendMessage(fmsg)
-                If fmsg.Reply = eMessageReply.YES Then
-                    Me.Revert()
-                End If
+            'jb left the original message in place incase after testing this is a better way to do it
+            'If bBadFlow Then
+            '    Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_ADVECTION_INBALANCED,
+            '                                     eCoreComponentType.EcoSpace, eMessageType.Any,
+            '                                     eMessageImportance.Warning, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
+            '    fmsg.Suppressable = True
+            '    Me.Core.Messages.SendMessage(fmsg)
+            '    If fmsg.Reply = eMessageReply.YES Then
+            '        Me.Revert()
+            '    End If
+            'End If
+
+            If bBadFlow Or bInterrupted Then
+                Dim msg As New cMessage(My.Resources.ADVECTION_FAILED, eMessageType.ErrorEncountered,
+                                        eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                Me.Core.Messages.SendMessage(msg)
             End If
 
             Me.m_bHasRun = True
@@ -263,15 +263,15 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Sub Revert()
-            If Me.m_manager.Revert Then
-                Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
-                layer.IsModified = True
-                layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-                Me.m_bHasRun = False
-                Me.UpdateControls()
-            End If
-        End Sub
+        'Private Sub Revert()
+        '    If Me.m_manager.Revert Then
+        '        Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
+        '        layer.IsModified = True
+        '        layer.Update(cDisplayLayer.eChangeFlags.Map, False)
+        '        Me.m_bHasRun = False
+        '        Me.UpdateControls()
+        '    End If
+        'End Sub
 
 
 #End Region ' Internals

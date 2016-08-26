@@ -3330,14 +3330,6 @@ Public Class cEcoSpace
         'e movement to left
         Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'jb org code
-        'AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-        '[km/timestep] / [cell length]
-        ' AdScale = (315.36 / Me.m_Data.nTimeStepsPerYear) / m_Data.CellLength 'convert from cm/sec to km/month
-
         'Advection vectors Xvel(,) are in cm/sec convert to km/year, same units as the mrate()
         '[km/year] / [cell length]
         AdScale = 315.36 / m_Data.CellLength
