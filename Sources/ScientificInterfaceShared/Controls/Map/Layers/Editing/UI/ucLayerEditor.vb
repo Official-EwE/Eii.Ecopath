@@ -1,4 +1,6 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Imports EwECore
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,7 +22,8 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports EwECore.Style
+Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -48,8 +51,8 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
-        Public Overridable Sub Attach(ByVal uic As cUIContext, _
-                                      ByVal editor As cLayerEditor, _
+        Public Overridable Sub Attach(ByVal uic As cUIContext,
+                                      ByVal editor As cLayerEditor,
                                       ByVal layer As cDisplayRasterLayer)
             Me.UIContext = uic
             Me.Editor = editor
@@ -108,12 +111,31 @@ Namespace Controls.Map.Layers
         Public Overridable Sub UpdateContent(ByVal editor As cLayerEditor) _
             Implements ILayerEditorGUI.UpdateContent
 
-            'Dim strLabel As String = ""
+            Dim strLabel As String = ""
             Dim img As Image = SharedResources.ProtectFormHS
 
             If (Me.IsAttached = True) Then
-                '' Get label text (could use diplay text?)
-                'strLabel = String.Format(My.Resources.CAPTION_EDITING_LAYER, Me.Editor.Layer.DisplayText())
+                Dim fmtV As New cVarnameTypeFormatter()
+                'Dim fmtU As New cUnitFormatter(Me.UIContext.Core)
+                Dim md As cVariableMetaData = Nothing
+                Dim vn As eVarNameFlags = eVarNameFlags.NotSet
+
+                ' Get label text 
+                If (Layer.Data IsNot Nothing) Then
+                    md = Layer.Data.MetadataCell()
+                    vn = Layer.Data.VarName
+                End If
+
+                If (md.Units IsNot Nothing) Then
+                    ' ToDo: format units
+                End If
+
+                If (vn = eVarNameFlags.NotSet) Then
+                    strLabel = Layer.DisplayText()
+                Else
+                    strLabel = fmtV.GetDescriptor(vn)
+                End If
+
                 ' Get layer image
                 If editor.IsReadOnly Then
                     img = SharedResources.ProtectFormHS
@@ -127,7 +149,7 @@ Namespace Controls.Map.Layers
             End If
 
             Me.m_lblCaption.Image = img
-            'Me.m_lblCaption.Text = strLabel
+            Me.m_lblCaption.Text = strLabel
 
         End Sub
 
