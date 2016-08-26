@@ -13086,4 +13086,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING" xml:space="preserve">
     <value> (Ecosim biomass forcing)</value>
   </data>
+  <data name="ADVECTION_FAILED" xml:space="preserve">
+    <value>Advection model run either encountered an error or was interrupted. Advection vectors will not be updated.</value>
+    <comment>Advection model run failed</comment>
+  </data>
 </root>

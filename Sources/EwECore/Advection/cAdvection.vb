@@ -80,8 +80,9 @@ Namespace Ecospace.Advection
         ''' <summary>Iteration results quality flag.</summary>
         Private m_bBadFlow As Boolean = False
 
-        Private m_XvelOrg(,) As Single
-        Private m_YvelOrg(,) As Single
+        Private m_OrgMonthlyXvel()(,) As Single
+        Private m_OrgMonthlyYvel()(,) As Single
+        Private m_OrgMonthlyUpWell()(,) As Single
 
 #End Region ' Private vars
 
@@ -92,11 +93,6 @@ Namespace Ecospace.Advection
             Me.m_core = core
             Me.m_data = core.m_EcoSpaceData
             Me.m_ecospace = ecospace
-
-            ReDim Me.m_XvelOrg(Me.m_data.InRow + 1, Me.m_data.InCol + 1)
-            Array.Copy(Me.m_data.Xvel, Me.m_XvelOrg, Me.m_data.Xvel.LongLength)
-            ReDim Me.m_YvelOrg(Me.m_data.InRow + 1, Me.m_data.InCol + 1)
-            Array.Copy(Me.m_data.Yvel, Me.m_YvelOrg, Me.m_data.Yvel.LongLength)
 
         End Sub
 
@@ -188,8 +184,22 @@ Namespace Ecospace.Advection
         Public Function Revert() As Boolean
 
             Try
-                Array.Copy(Me.m_XvelOrg, Me.m_data.Xvel, Me.m_data.Xvel.LongLength)
-                Array.Copy(Me.m_YvelOrg, Me.m_data.Yvel, Me.m_data.Yvel.LongLength)
+                For imon As Integer = 1 To 12
+
+                    For ir As Integer = 0 To Me.m_data.InRow + 1
+                        For ic As Integer = 0 To Me.m_data.InCol + 1
+                            Me.m_data.MonthlyXvel(imon)(ir, ic) = Me.m_OrgMonthlyXvel(imon)(ir, ic)
+                            Me.m_data.MonthlyYvel(imon)(ir, ic) = Me.m_OrgMonthlyYvel(imon)(ir, ic)
+                            Me.m_data.MonthlyUpWell(imon)(ir, ic) = Me.m_OrgMonthlyUpWell(imon)(ir, ic)
+                        Next ic
+                    Next ir
+                    'I'm not sure but using copy might in break the UI 
+                    'the layer will no longer point to the correct memory???
+                    'Array.Copy(m_OrgMonthlyXvel(imon), Me.m_data.MonthlyXvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    'Array.Copy(m_OrgMonthlyYvel(imon), Me.m_data.MonthlyXvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    'Array.Copy(m_OrgMonthlyUpWell(imon), Me.m_data.MonthlyXvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                Next imon
+
                 Return True
             Catch ex As Exception
                 Return False
@@ -239,6 +249,15 @@ Namespace Ecospace.Advection
 
             Try
 
+                'just in case
+                'Can't do this at the end of the run because it is/can be used by the UI
+                'To tell if a run was stopped
+                Me.m_bInterrupted = False
+
+                'make a backup copy of the advection vectors
+                'incase this fails
+                Me.storeOrgValues()
+
                 Dim WindXbase(,) As Single, WindYbase(,) As Single
                 WindXbase = New Single(m_data.InRow + 1, m_data.InCol + 1) {}
                 WindYbase = New Single(m_data.InRow + 1, m_data.InCol + 1) {}
@@ -255,6 +274,8 @@ Namespace Ecospace.Advection
                             WindYbase(ir, ic) = Me.m_data.Yv(ir, ic, imon)
                         Next ic
                     Next ir
+
+                    If Me.m_bInterrupted Then Exit For
 
                     Physicsmodel(WindXbase, WindYbase)
 
@@ -285,6 +306,10 @@ Namespace Ecospace.Advection
                 bReturn = False
             End Try
 
+            If Me.m_bBadFlow Or Me.m_bInterrupted Then
+                Me.Revert()
+            End If
+
             'Clear the X,Y and Upwelling data from memory
             'so it's not used in the model by "mistake"
             Me.ClearVelocityArrays()
@@ -298,6 +323,15 @@ Namespace Ecospace.Advection
             Array.Clear(Me.m_data.UpVel, 0, Me.m_data.UpVel.Length)
             Array.Clear(Me.m_data.Xvel, 0, Me.m_data.UpVel.Length)
             Array.Clear(Me.m_data.Yvel, 0, Me.m_data.Yvel.Length)
+
+            Try
+                Me.m_OrgMonthlyXvel = Nothing
+                Me.m_OrgMonthlyYvel = Nothing
+                Me.m_OrgMonthlyUpWell = Nothing
+            Catch ex As Exception
+
+            End Try
+
         End Sub
 
 
@@ -315,7 +349,7 @@ Namespace Ecospace.Advection
             Dim wv As Single, gd As Single, Tol As Single, jstart As Integer
             Dim vxs As Single, vxd As Single, vys As Single, vyd As Single
             Dim uconst As Single
-            Dim cmunit As Single, inrowp As Integer, incolp As Integer, h(,) As Single
+            Dim inrowp As Integer, incolp As Integer, h(,) As Single
             Dim W As Single
 
             ''xxxxxxxxxxxxxxxxxxxxxxxxx
@@ -326,8 +360,6 @@ Namespace Ecospace.Advection
             'Dim iout As Integer, jout As Integer
             'Dim ii As Single, d1 As Single, jj As Integer
             ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-            cmunit = 1000 ' : If Abs(velxs(ipscen)) > 2 Or Abs(velys(ipscen)) > 2 Then cmunit = 100
 
             'following initialize pressure field h, arrays for soln of equil h
             'WindConst cm/sec to m/day
@@ -374,7 +406,7 @@ Namespace Ecospace.Advection
             'this must convert velocity from m/day (model units) to cm/sec (100/(60*60*24))
             'cmunit inflates by 1000 so that it can be stored as an integer
             'JB Aug-2016 removed the cmunit multiplier just save results as cm/sec
-            saveconst = 100.0! / (60.0! * 60.0! * 24) ' * cmunit
+            saveconst = 100.0! / (60.0! * 60.0! * 24)
 
             'set pressure at boundaries (0, inrowp+1, incolp+1 array rows and cols)
             'and linear system forcing input f at each cell due to water inputs
@@ -681,6 +713,31 @@ exitline:
             hsurf = hsurface
             depth = dtotal - hsurf
             If depth < 0 Then depth = 0 : hsurf = dtotal
+
+        End Sub
+
+
+        Private Sub storeOrgValues()
+            Try
+
+                m_OrgMonthlyXvel = New Single(12)(,) {}
+                m_OrgMonthlyYvel = New Single(12)(,) {}
+                m_OrgMonthlyUpWell = New Single(12)(,) {}
+
+                For imon As Integer = 1 To 12
+                    m_OrgMonthlyXvel(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+                    m_OrgMonthlyYvel(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+                    m_OrgMonthlyUpWell(imon) = New Single(Me.m_data.InRow + 1, Me.m_data.InCol + 1) {}
+
+                    Array.Copy(Me.m_data.MonthlyXvel(imon), m_OrgMonthlyXvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Copy(Me.m_data.MonthlyXvel(imon), m_OrgMonthlyYvel(imon), Me.m_data.MonthlyXvel(imon).Length)
+                    Array.Copy(Me.m_data.MonthlyXvel(imon), m_OrgMonthlyUpWell(imon), Me.m_data.MonthlyXvel(imon).Length)
+                Next
+
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
 
         End Sub
 

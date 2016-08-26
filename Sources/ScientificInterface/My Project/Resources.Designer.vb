@@ -98,6 +98,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Advection model run either encountered an error or was interrupted. Advection vectors will not be updated..
+        '''</summary>
+        Public ReadOnly Property ADVECTION_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ADVECTION_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to External data set {0}.
         '''</summary>
         Public ReadOnly Property CAPTION_DATASET() As String
