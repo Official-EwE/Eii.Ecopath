@@ -100,14 +100,14 @@ Public Class cEcospaceLayerBoolean
     ''' <inheritdocs cref="cEcospaceLayer.MaxValue"/>
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            Return CSng(Math.Max(CSng(True), CSng(False)))
+            Return 1
         End Get
     End Property
 
     ''' <inheritdocs cref="cEcospaceLayer.MinValue"/>
     Public Overrides ReadOnly Property MinValue() As Single
         Get
-            Return CSng(Math.Min(CSng(True), CSng(False)))
+            Return 0
         End Get
     End Property
 

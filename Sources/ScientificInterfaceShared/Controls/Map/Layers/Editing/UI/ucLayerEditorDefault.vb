@@ -75,11 +75,11 @@ Namespace Controls.Map.Layers
                 Me.m_fpName.Enabled = Me.HasUniqueSource()
                 Me.m_fpName.Value = Layer.Name
 
-                Dim sMin As Single = editor.CellValueMin
-                Dim sMax As Single = editor.CellValueMax
+                Dim sMin As Single = cCore.NULL_VALUE
+                Dim sMax As Single = cCore.NULL_VALUE
                 Dim r As cLayerRenderer = editor.Layer.Renderer
 
-                If (r IsNot Nothing) And (sMin = cCore.NULL_VALUE) And (sMax = cCore.NULL_VALUE) Then
+                If (r IsNot Nothing) Then
                     sMin = r.ScaleMin
                     sMax = r.ScaleMax
                 End If
