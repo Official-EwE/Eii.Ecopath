@@ -534,6 +534,7 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
+        'ToDo_JS: split GetProperty int two: GetNameProperty to get the layer name, GetDataProperty to get the layer Data descriptor
         Public Overrides ReadOnly Property GetProperty As Properties.cProperty
             Get
                 If (Me.m_uic Is Nothing) Then Return Nothing
