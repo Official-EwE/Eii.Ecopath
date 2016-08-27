@@ -74,6 +74,7 @@ Namespace Controls.Map.Layers
             Me.m_coreComponent = Me.m_lXVel.CoreComponent
             Me.m_ccSecundaryIndex = Me.m_lXVel.SecundaryIndexCounter
             Me.m_metadata = Me.m_lXVel.MetadataCell
+            Me.m_manager = manager
 
         End Sub
 
