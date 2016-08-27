@@ -122,7 +122,7 @@ Namespace Controls.Map.Layers
         ''' such as remark feedback and broadcasted updates, as well as the ability to attach 
         ''' <see cref="EwECore.Auxiliary.cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
         ''' </remarks>
-        Private m_propBacklink As cProperty = Nothing
+        Private m_propName As cProperty = Nothing
 
         Private m_aUnitTypes() As eUnitType = Nothing
         Private m_strUnitMask As String = ""
@@ -152,13 +152,13 @@ Namespace Controls.Map.Layers
         ''' <param name="sValueSet"></param>
         ''' <param name="sValueClear"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal data As cEcospaceLayer, _
-                       ByVal renderer As cLayerRenderer, _
-                       ByVal editor As cLayerEditor, _
-                       Optional ByVal source As cCoreInputOutputBase = Nothing, _
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
-                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal data As cEcospaceLayer,
+                       ByVal renderer As cLayerRenderer,
+                       ByVal editor As cLayerEditor,
+                       Optional ByVal source As cCoreInputOutputBase = Nothing,
+                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name,
+                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE,
                        Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
 
             MyBase.New(uic, renderer)
@@ -181,10 +181,10 @@ Namespace Controls.Map.Layers
             Me.m_sValueSet = sValueSet
             Me.m_sValueClear = sValueClear
             Me.m_valueType = data.ValueType
-            Me.m_propBacklink = uic.PropertyManager.GetProperty(source, varName)
+            Me.m_propName = uic.PropertyManager.GetProperty(source, varName)
 
-            If (m_propBacklink IsNot Nothing) Then
-                AddHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
+            If (m_propName IsNot Nothing) Then
+                AddHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
             End If
 
         End Sub
@@ -213,9 +213,9 @@ Namespace Controls.Map.Layers
                     If Me.m_uic IsNot Nothing Then
                         Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mh)
                     End If
-                    If Me.m_propBacklink IsNot Nothing Then
-                        RemoveHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
-                        Me.m_propBacklink = Nothing
+                    If Me.m_propName IsNot Nothing Then
+                        RemoveHandler Me.m_propName.PropertyChanged, AddressOf OnPropertyChanged
+                        Me.m_propName = Nothing
                     End If
                 End If
             End If
@@ -267,7 +267,7 @@ Namespace Controls.Map.Layers
         ''' to commit a layer data change to the core, and should be false if the 
         ''' layer is responding to a core layer change message.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub Update(ByVal updateType As eChangeFlags, _
+        Public Overrides Sub Update(ByVal updateType As eChangeFlags,
                                     Optional ByVal bNotifyCore As Boolean = True)
 
             ' Prevent looped updates
@@ -289,8 +289,8 @@ Namespace Controls.Map.Layers
                             End If
                         Else
                             ' #No: Fire off property change to make other copies of non-core layers respond
-                            If (Me.m_propBacklink IsNot Nothing) Then
-                                Me.m_propBacklink.FireChangeNotification(cProperty.eChangeFlags.Custom)
+                            If (Me.m_propName IsNot Nothing) Then
+                                Me.m_propName.FireChangeNotification(cProperty.eChangeFlags.Custom)
                             End If
                         End If
                     End If
@@ -319,11 +319,11 @@ Namespace Controls.Map.Layers
                 ' No overriding name defined?
                 If String.IsNullOrWhiteSpace(Me.m_strName) Then
                     ' #Yes: is a backlink property provided?
-                    If (Me.m_propBacklink IsNot Nothing) Then
+                    If (Me.m_propName IsNot Nothing) Then
                         ' #Yes: and is this property linked to a true name?
-                        If (Me.m_propBacklink.VarName = eVarNameFlags.Name) Then
+                        If (Me.m_propName.VarName = eVarNameFlags.Name) Then
                             ' #Yes: return name property value
-                            Return CStr(Me.m_propBacklink.GetValue())
+                            Return CStr(Me.m_propName.GetValue())
                         End If
                     End If
                     ' Alternative: is data attached?
@@ -534,12 +534,24 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
-        'ToDo_JS: split GetProperty int two: GetNameProperty to get the layer name, GetDataProperty to get the layer Data descriptor
-        Public Overrides ReadOnly Property GetProperty As Properties.cProperty
+        Public Function SetNameProperty() As Boolean
+
+        End Function
+
+        Public Overrides ReadOnly Property GetNameProperty As Properties.cProperty
             Get
-                If (Me.m_uic Is Nothing) Then Return Nothing
-                Dim pm As cPropertyManager = Me.m_uic.PropertyManager
-                Return pm.GetProperty(Me.Source, Me.VarName, Me.SourceSec)
+                Return Me.m_propName
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property GetDataProperty As Properties.cProperty
+            Get
+                If (Me.Data Is Nothing) Then
+                    If (TypeOf Me.Data Is cEcospaceLayer) And (TypeOf Me.Data Is cCoreInputOutputBase) Then
+                        Return Me.m_uic.PropertyManager.GetProperty(DirectCast(Me.Data.Manager, cCoreInputOutputBase), Me.Data.VarName, Me.SourceSec)
+                    End If
+                End If
+                Return Nothing
             End Get
         End Property
 

@@ -203,7 +203,7 @@ Public MustInherit Class cEcospaceLayer
     ''' Get the <see cref="IEcospaceLayerManager">manager</see> responsible for this layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected ReadOnly Property Manager As IEcospaceLayerManager
+    Public ReadOnly Property Manager As IEcospaceLayerManager
         Get
             Return Me.m_manager
         End Get

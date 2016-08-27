@@ -75,11 +75,11 @@ Namespace Controls.Map.Layers
                 Me.m_fpName.Enabled = Me.HasUniqueSource()
                 Me.m_fpName.Value = Layer.Name
 
-                Dim sMin As Single = cCore.NULL_VALUE
-                Dim sMax As Single = cCore.NULL_VALUE
+                Dim sMin As Single = editor.CellValueMin
+                Dim sMax As Single = editor.CellValueMax
                 Dim r As cLayerRenderer = editor.Layer.Renderer
 
-                If (r IsNot Nothing) Then
+                If (r IsNot Nothing) And (sMin = cCore.NULL_VALUE) And (sMax = cCore.NULL_VALUE) Then
                     sMin = r.ScaleMin
                     sMax = r.ScaleMax
                 End If
@@ -130,7 +130,8 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' Diagnostic method, states if a layer has a unique core variable 
         ''' link. Layers with unique sources support extras that can be stored
-        ''' in the database such as remarks and visual styles.
+        ''' in the database such as remarks and visual styles, and can have their
+        ''' name changed by the user.
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
