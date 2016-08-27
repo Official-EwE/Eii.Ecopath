@@ -9908,7 +9908,7 @@ Namespace DataSources
                     tracerDS.Cimmig(iGroup) = CSng(reader("Cimmig"))
                     tracerDS.Cenv(iGroup) = CSng(reader("Cenv"))
                     tracerDS.cdecay(iGroup) = CSng(reader("Cdecay"))
-                    tracerDS.CexcretionRate(iGroup) = CSng(reader("Cexcretionrate"))
+                    tracerDS.CexcretionRate(iGroup) = CSng(Me.m_db.ReadSafe(reader, "Cexcretionrate", 0.1))
 
                 End While
                 Me.m_db.ReleaseReader(reader)
