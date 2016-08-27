@@ -77,7 +77,7 @@ Namespace Controls.Map
             ' Kick off
             Me.OnLayerChanged(l, cDisplayLayer.eChangeFlags.Descriptive)
 
-            Dim p As cProperty = Me.m_layer.GetProperty()
+            Dim p As cProperty = Me.m_layer.GetNameProperty()
             If (p IsNot Nothing) Then
                 AddHandler p.PropertyChanged, AddressOf OnLayerPropertyChanged
                 OnLayerPropertyChanged(p, cProperty.eChangeFlags.All)
@@ -91,7 +91,7 @@ Namespace Controls.Map
                 ' Remove from event handler
                 RemoveHandler m_layer.LayerChanged, AddressOf OnLayerChanged
 
-                Dim p As cProperty = Me.m_layer.GetProperty()
+                Dim p As cProperty = Me.m_layer.GetNameProperty()
                 If (p IsNot Nothing) Then
                     RemoveHandler p.PropertyChanged, AddressOf OnLayerPropertyChanged
                 End If
@@ -269,7 +269,7 @@ Namespace Controls.Map
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
             Dim rcPreview As Rectangle = Nothing
-            Dim prop As cProperty = Me.m_layer.GetProperty()
+            Dim prop As cProperty = Me.m_layer.GetNameProperty()
             Dim img As Image = Nothing
             Dim fmt As New StringFormat()
 

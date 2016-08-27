@@ -50,9 +50,6 @@ Namespace Controls.Map.Layers
         Protected m_bSelected As Boolean = False
         Protected m_bInUpdate As Boolean = False
 
-        ''' <summary>By default allow core data validation</summary>
-        Private m_bAllowValidation As Boolean = True
-
 #End Region ' Private vars
 
 #Region " Construction / destruction "
@@ -227,14 +224,7 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        Public Property AllowValidation() As Boolean
-            Get
-                Return Me.m_bAllowValidation
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bAllowValidation = value
-            End Set
-        End Property
+        Public Property AllowValidation() As Boolean = True
 
         Public Property RenderMode As eLayerRenderType
             Get
@@ -247,7 +237,23 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        Public Overridable ReadOnly Property GetProperty() As cProperty
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cProperty"/> that provides access to the layer name. 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property GetNameProperty() As cProperty
+            Get
+                Return Nothing
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cProperty"/> that provides access to the layer data and metadata. 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overridable ReadOnly Property GetDataProperty As Properties.cProperty
             Get
                 Return Nothing
             End Get

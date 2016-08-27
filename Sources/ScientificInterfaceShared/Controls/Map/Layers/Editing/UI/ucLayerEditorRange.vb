@@ -74,14 +74,9 @@ Namespace Controls.Map.Layers
             MyBase.Initialize(editor)
 
             Dim edt As cLayerEditor = Me.Editor
-            Dim prop As cProperty = edt.Layer.GetProperty()
-            Dim bUseProp As Boolean = False
+            Dim prop As cProperty = edt.Layer.GetDataProperty()
 
             If (prop IsNot Nothing) Then
-                bUseProp = prop.VarName <> eVarNameFlags.Name
-            End If
-
-            If (bUseProp) Then
                 Me.m_fpValue = New cPropertyFormatProvider(Me.UIContext, Me.m_nudValue, prop)
             Else
                 ' Try to obtain editor metadata from layer

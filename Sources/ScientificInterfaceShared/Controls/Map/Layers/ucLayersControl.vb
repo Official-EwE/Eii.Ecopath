@@ -454,7 +454,7 @@ Namespace Controls.Map
             Dim prop As cProperty = Nothing
 
             If (Not Object.ReferenceEquals(layer, Nothing)) Then
-                prop = layer.GetProperty()
+                prop = layer.GetNameProperty()
             End If
 
             If (cmd IsNot Nothing) And (prop IsNot Nothing) Then

@@ -420,7 +420,7 @@ Namespace Ecospace.Basemap.Layers
 
             If (HasUniqueSource()) Then
 
-                Dim p As cProperty = Me.m_layerOriginal.GetProperty()
+                Dim p As cProperty = Me.m_layerOriginal.GetNameProperty()
                 If (p IsNot Nothing) Then
                     p.SetRemark(Me.m_tbRemarks.Text)
                     p.SetValue(CStr(Me.m_fpName.Value))

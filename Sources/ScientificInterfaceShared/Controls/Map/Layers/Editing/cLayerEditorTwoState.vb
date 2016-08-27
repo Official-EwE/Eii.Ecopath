@@ -65,13 +65,13 @@ Namespace Controls.Map.Layers
 
             If (Me.AutoToggleCellValue) Then
 
-                ' Clicked on data cell?
-                If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueSet)) Then
-                    ' #Yes: start clearing values
-                    Me.CellValue = CSng(Layer.ValueClear)
-                Else
-                    ' #No: start setting values
+                ' Clicked on an empty cell?
+                If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueClear)) Then
+                    ' #Yes: start setting values
                     Me.CellValue = CSng(Layer.ValueSet)
+                Else
+                    ' #No: start clearing values
+                    Me.CellValue = CSng(Layer.ValueClear)
                 End If
 
                 If Me.GUI IsNot Nothing Then

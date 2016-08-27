@@ -78,7 +78,7 @@ Namespace Controls.Map
                     renderer = New cLayerRendererDepth(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Always
                     editor = New cLayerEditorDepth()
-                    layer = New cDisplayRasterLayer(uic, bmd.LayerDepth, renderer, editor, bmd, eVarNameFlags.LayerDepth)
+                    layer = New cDisplayRasterLayer(uic, bmd.LayerDepth, renderer, editor, bmd, varName)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerHabitat
