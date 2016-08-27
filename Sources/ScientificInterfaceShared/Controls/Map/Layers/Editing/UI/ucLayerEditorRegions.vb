@@ -77,8 +77,14 @@ Namespace Controls.Map.Layers
             Dim decVal As Decimal = CDec(editor.CellValue)
 
             ' Set control value
-            Me.m_nudRegion.Value = Math.Min(decMax, decVal)
-            Me.m_nudRegion.Maximum = decMax
+            Dim val As Decimal = Math.Min(decMax, decVal)
+            If (val > Me.m_nudRegion.Maximum) Then
+                Me.m_nudRegion.Maximum = decMax
+                Me.m_nudRegion.Value = decVal
+            Else
+                Me.m_nudRegion.Value = decVal
+                Me.m_nudRegion.Maximum = decMax
+            End If
 
         End Sub
 
