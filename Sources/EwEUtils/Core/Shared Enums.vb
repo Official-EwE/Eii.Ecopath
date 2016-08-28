@@ -2746,10 +2746,6 @@ Namespace Core
         Biomass
         ''' <summary>Propotion unit.</summary>
         Proportion
-        ''' <summary>Unit operator 'x'</summary>
-        [Times]
-        ''' <summary>Unit operator '/'</summary>
-        [Over]
         ''' <summary>Fixed unit type: meter</summary>
         Fixed_m
         ''' <summary>Fixed unit type: centimeter per second</summary>
