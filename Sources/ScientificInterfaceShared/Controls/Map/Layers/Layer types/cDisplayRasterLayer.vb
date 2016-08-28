@@ -546,7 +546,7 @@ Namespace Controls.Map.Layers
 
         Public Overrides ReadOnly Property GetDataProperty As Properties.cProperty
             Get
-                If (Me.Data Is Nothing) Then
+                If (Me.Data IsNot Nothing) Then
                     If (TypeOf Me.Data Is cEcospaceLayer) And (TypeOf Me.Data Is cCoreInputOutputBase) Then
                         Return Me.m_uic.PropertyManager.GetProperty(DirectCast(Me.Data.Manager, cCoreInputOutputBase), Me.Data.VarName, Me.SourceSec)
                     End If
