@@ -90,9 +90,6 @@ Namespace Style
                 Case eUnitType.Fixed_cm_per_sec
                     strUnitString = "cm/sec"
 
-                Case eUnitType.Over, eUnitType.Times
-                    Debug.Assert(False, "Operators not supported yet")
-
                 Case eUnitType.None
                     ' NOP
 
