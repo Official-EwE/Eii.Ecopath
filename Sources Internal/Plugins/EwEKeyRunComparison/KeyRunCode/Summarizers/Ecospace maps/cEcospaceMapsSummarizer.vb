@@ -63,7 +63,6 @@ Public Class cEcospaceMapsSummarizer
         Me.m_lVars.Add(eVarNameFlags.LayerHabitat)
         Me.m_lVars.Add(eVarNameFlags.LayerHabitatCapacityInput)
         Me.m_lVars.Add(eVarNameFlags.LayerMigration)
-        Me.m_lVars.Add(eVarNameFlags.LayerMLD)
         Me.m_lVars.Add(eVarNameFlags.LayerPort)
         Me.m_lVars.Add(eVarNameFlags.LayerRelCin)
         Me.m_lVars.Add(eVarNameFlags.LayerRelPP)
