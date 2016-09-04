@@ -125,60 +125,90 @@ Name: "{group}\Links\User support"; Filename: "http://www.ecopath.org/support"
 UseRelativePaths=True
 
 [Code]
-function Framework45IsNotInstalled(): Boolean;
+function IsDotNetDetected(version: string; service: cardinal): boolean;
+// Indicates whether the specified version and service pack of the .NET Framework is installed.
+//
+// version -- Specify one of these strings for the required .NET Framework version:
+//    'v1.1'          .NET Framework 1.1
+//    'v2.0'          .NET Framework 2.0
+//    'v3.0'          .NET Framework 3.0
+//    'v3.5'          .NET Framework 3.5
+//    'v4\Client'     .NET Framework 4.0 Client Profile
+//    'v4\Full'       .NET Framework 4.0 Full Installation
+//    'v4.5'          .NET Framework 4.5
+//    'v4.5.1'        .NET Framework 4.5.1
+//    'v4.5.2'        .NET Framework 4.5.2
+//    'v4.6'          .NET Framework 4.6
+//    'v4.6.1'        .NET Framework 4.6.1
+//    'v4.6.2'        .NET Framework 4.6.2
+//
+// service -- Specify any non-negative integer for the required service pack level:
+//    0               No service packs required
+//    1, 2, etc.      Service pack 1, 2, etc. required
 var
-  bSuccess: Boolean;
-  regVersion: Cardinal;
+    key, versionKey: string;
+    install, release, serviceCount, versionRelease: cardinal;
+    success: boolean;
 begin
-  Result := True;
+    versionKey := version;
+    versionRelease := 0;
 
-  bSuccess := RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', regVersion);
-  if (True = bSuccess) and (regVersion >= 378389) then begin
-    Result := False;
-  end;
-end; 
+    // .NET 1.1 and 2.0 embed release number in version key
+    if version = 'v1.1' then begin
+        versionKey := 'v1.1.4322';
+    end else if version = 'v2.0' then begin
+        versionKey := 'v2.0.50727';
+    end
 
-procedure InitializeWizard();
-begin
- if Framework45IsNotInstalled() then
- begin
-   idpAddFile('go.microsoft.com/fwlink', ExpandConstant('{tmp}NetFrameworkInstaller.exe'));
-   idpDownloadAfter(wpReady);
- end;
-end;
-
-procedure InstallFramework;
-var
-  StatusText: string;
-  ResultCode: Integer;
-begin
-  StatusText := WizardForm.StatusLabel.Caption;
-  WizardForm.StatusLabel.Caption := 'Installing .NET Framework 4.5.2. This might take a few minutes';
-  WizardForm.ProgressGauge.Style := npbstMarquee;
-  try
-    if not Exec(ExpandConstant('{tmp}\NetFrameworkInstaller.exe'), '/passive /norestart', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
-    begin
-      MsgBox('.NET installation failed with code: ' + IntToStr(ResultCode) + '.', mbError, MB_OK);
-    end;
-  finally
-    WizardForm.StatusLabel.Caption := StatusText;
-    WizardForm.ProgressGauge.Style := npbstNormal;
-
-    DeleteFile(ExpandConstant('{tmp}\NetFrameworkInstaller.exe'));
-  end;
-end;
-
-procedure CurStepChanged(CurStep: TSetupStep);
-begin
-  case CurStep of
-    ssPostInstall:
-      begin
-        if Framework45IsNotInstalled() then
-        begin
-          InstallFramework();
+    // .NET 4.5 and newer install as update to .NET 4.0 Full
+    else if Pos('v4.', version) = 1 then begin
+        versionKey := 'v4\Full';
+        case version of
+          'v4.5':   versionRelease := 378389;
+          'v4.5.1': versionRelease := 378675; // 378758 on Windows 8 and older
+          'v4.5.2': versionRelease := 379893;
+          'v4.6':   versionRelease := 393295; // 393297 on Windows 8.1 and older
+          'v4.6.1': versionRelease := 394254; // 394271 on Windows 8.1 and older
+          'v4.6.2': versionRelease := 394802; // 394806 on Windows 8.1 and older
         end;
-      end;
-  end;
+    end;
+
+    // installation key group for all .NET versions
+    key := 'SOFTWARE\Microsoft\NET Framework Setup\NDP\' + versionKey;
+
+    // .NET 3.0 uses value InstallSuccess in subkey Setup
+    if Pos('v3.0', version) = 1 then begin
+        success := RegQueryDWordValue(HKLM, key + '\Setup', 'InstallSuccess', install);
+    end else begin
+        success := RegQueryDWordValue(HKLM, key, 'Install', install);
+    end;
+
+    // .NET 4.0 and newer use value Servicing instead of SP
+    if Pos('v4', version) = 1 then begin
+        success := success and RegQueryDWordValue(HKLM, key, 'Servicing', serviceCount);
+    end else begin
+        success := success and RegQueryDWordValue(HKLM, key, 'SP', serviceCount);
+    end;
+
+    // .NET 4.5 and newer use additional value Release
+    if versionRelease > 0 then begin
+        success := success and RegQueryDWordValue(HKLM, key, 'Release', release);
+        success := success and (release >= versionRelease);
+    end;
+
+    result := success and (install = 1) and (serviceCount >= service);
+end;
+
+
+function InitializeSetup(): Boolean;
+begin
+    if not IsDotNetDetected('v4.6', 0) then begin
+        MsgBox('Ecopath with Ecosim requires Microsoft .NET Framework 4.6.'#13#13
+            'Please use Windows Update to install this version,'#13
+            'and then re-run the EwE setup program.', mbInformation, MB_OK);
+        result := false;
+    end else
+        result := true;
 end;
 
 [Registry]
