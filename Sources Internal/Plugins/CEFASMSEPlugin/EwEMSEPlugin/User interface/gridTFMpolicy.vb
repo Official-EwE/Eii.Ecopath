@@ -112,7 +112,7 @@ Public Class gridTargetFishingMortalityPolicy
         Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_UPPER_B)
         Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
         Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell(SharedResources.HEADER_FISHINGMORTALITY)
-        Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell(My.Resources.HEADER_HCR_TYPE)
+        ' Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell(My.Resources.HEADER_HCR_TYPE)
         Me(0, eColumnTypes.TimeFrameRuleYears) = New EwEColumnHeaderCell(My.Resources.HEADER_TIMEFRAMERULES)
 
         Me.FixedColumns = 2
