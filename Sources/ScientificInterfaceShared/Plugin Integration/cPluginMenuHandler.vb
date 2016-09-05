@@ -177,20 +177,40 @@ Namespace Integration
                 ' Old style: split locations by pipe char '|'
                 aLocations = strLocation.Split("|"c)
             End If
-            bFound = String.IsNullOrEmpty(strLocation)
+            bFound = String.IsNullOrWhiteSpace(strLocation)
 
             ' Find named menu item for every level
             While iLocation < aLocations.Length And Not bError
                 iItem = 0
                 bFound = False
+
+                ' New EwE 6.6: can create menu items now too
+                Dim strNodeName As String = aLocations(iLocation).Trim()
+                Dim strLabel As String = ""
+
+                If strNodeName.IndexOf(":"c) > -1 Then
+                    Dim bits As String() = strNodeName.Split(":"c)
+                    strNodeName = bits(0)
+                    strLabel = bits(1)
+                End If
+
                 While iItem < tsic.Count And Not bFound
                     If (TypeOf tsic.Item(iItem) Is ToolStripMenuItem) Then
                         tsi = DirectCast(tsic.Item(iItem), ToolStripMenuItem)
-                        bFound = (String.Compare(tsi.Name.Trim(), aLocations(iLocation).Trim(), False) = 0)
+                        bFound = (String.Compare(tsi.Name.Trim(), strNodeName, False) = 0)
                     End If
                     iItem += 1
                 End While
-                If bFound Then tsic = tsi.DropDownItems
+                If bFound Then
+                    tsic = tsi.DropDownItems
+                ElseIf Not String.IsNullOrWhiteSpace(strLabel) Then
+                    ' New EwE 6.6: can create menu items now too
+                    Dim tmp As New ToolStripMenuItem(strLabel)
+                    tmp.Name = strNodeName
+                    tsic.Add(tmp)
+                    tsic = tmp.DropDownItems
+                    bFound = True
+                End If
                 bError = Not bFound
                 iLocation += 1
             End While
