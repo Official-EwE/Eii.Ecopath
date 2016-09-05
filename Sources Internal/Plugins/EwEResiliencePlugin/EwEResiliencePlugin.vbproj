@@ -220,19 +220,19 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
-      <Name>EwECore %28EwECore\EwECore%29</Name>
+      <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
-      <Name>EwEPlugin %28EwEPlugin\EwEPlugin%29</Name>
+      <Name>EwEPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
-      <Name>EwEUtils %28EwEUtils\EwEUtils%29</Name>
+      <Name>EwEUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
-      <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
+      <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

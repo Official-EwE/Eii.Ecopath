@@ -25,10 +25,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("SailCostPlugin")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("SailCostPlugin")> 
+<Assembly: AssemblyTitle("GOMSailCostPlugin")>
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("Global Ocean Modelling Unit, UBC")>
+<Assembly: AssemblyProduct("GOMSailCostPlugin")>
 <Assembly: AssemblyCopyright("Copyright ©  2013")> 
 <Assembly: AssemblyTrademark("")> 
 

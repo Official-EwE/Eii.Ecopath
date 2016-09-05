@@ -88,9 +88,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.SailCostPlugin.My.MySettings
+        Friend ReadOnly Property Settings() As Global.GOMSailCostPlugin.My.MySettings
             Get
-                Return Global.SailCostPlugin.My.MySettings.Default
+                Return Global.GOMSailCostPlugin.My.MySettings.Default
             End Get
         End Property
     End Module
