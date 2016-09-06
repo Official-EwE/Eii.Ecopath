@@ -238,12 +238,6 @@ Namespace SpatialData
             Return 1.0
         End Function
 
-        Public Overridable ReadOnly Property ScalarText As String
-            Get
-                Return My.Resources.CoreMessages.ADAPTER_RELATIVE_SCALAR_TEXT
-            End Get
-        End Property
-
 #End Region ' Public access
 
     End Class

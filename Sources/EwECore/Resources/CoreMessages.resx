@@ -1248,12 +1248,6 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Data connection {0} cannot locate its data</value>
     <comment>{0}=dataset name</comment>
   </data>
-  <data name="ADAPTER_BIOMASSFORCING_SCALAR_TEXT" xml:space="preserve">
-    <value>Average biomass</value>
-  </data>
-  <data name="ADAPTER_RELATIVE_SCALAR_TEXT" xml:space="preserve">
-    <value>Relative scalar</value>
-  </data>
   <data name="STATUS_PLUGIN_USERDISABLED" xml:space="preserve">
     <value>Plug-in {0} disabled from loading via user settings</value>
     <comment>{0}=plugin module name</comment>
