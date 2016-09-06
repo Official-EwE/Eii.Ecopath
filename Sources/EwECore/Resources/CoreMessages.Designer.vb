@@ -65,24 +65,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Average biomass.
-        '''</summary>
-        Public Shared ReadOnly Property ADAPTER_BIOMASSFORCING_SCALAR_TEXT() As String
-            Get
-                Return ResourceManager.GetString("ADAPTER_BIOMASSFORCING_SCALAR_TEXT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Relative scalar.
-        '''</summary>
-        Public Shared ReadOnly Property ADAPTER_RELATIVE_SCALAR_TEXT() As String
-            Get
-                Return ResourceManager.GetString("ADAPTER_RELATIVE_SCALAR_TEXT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to An error occurred running the advection computations: {0}.
         '''</summary>
         Public Shared ReadOnly Property ADVECTION_ERROR() As String
