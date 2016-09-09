@@ -46,6 +46,8 @@ Namespace SpatialData
         ''' <summary>Has the base map for this layer been initialized?</summary>
         Private m_IsBaseInitialized() As Boolean
 
+        Private m_baseMeanBio() As Single
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -68,6 +70,7 @@ Namespace SpatialData
             'Each map will be initialized once on the first call
             m_baseLayers = New Single(n)(,) {}
             m_IsBaseInitialized = New Boolean(n) {}
+            m_baseMeanBio = New Single(n) {}
 
         End Sub
 
@@ -86,9 +89,19 @@ Namespace SpatialData
 
                 Dim value As Double
                 If sValueAtT <> cCore.NULL_VALUE Then
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxx
+                    'jb 9-Sept-2016 changed to just use the external pattern and change over time
                     'External data is the pattern of biomass distribution relative to the Ecospace base biomass
                     'B = [B base at t=zero] * [B external] * [1/mean B external at t=zero]
-                    value = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * conn.Scale
+                    'value = CDbl(Me.m_baseLayers(layer.Index)(iRow, iCol)) * sValueAtT * conn.Scale
+                    'xxxxxxxxxxxxxxxxxxxxxx
+
+                    'jb 9-Sept-2016 still needs to be debugged
+                    'Use the pattern of the external data scaled to the ecospace base biomass
+                    'conn.Scale = [number of water cells] / [sum of external data across depth map] = 1/[mean external data]
+                    'Me.m_baseMeanBio() = average ecospace biomass across map
+                    value = sValueAtT * conn.Scale * Me.m_baseMeanBio(layer.Index)
                 Else
                     value = sValueAtT
                 End If
@@ -140,7 +153,7 @@ Namespace SpatialData
                 'InitializeBaseLayer() should only be called once at the start of each run and cleared between runs
                 Debug.Assert(m_baseLayers(iLayer) Is Nothing, Me.ToString + ".InitializeBaseLayer() Trying to initialize a layer that has already been initialized.")
 
-                Dim n As Integer = Me.m_core.GetCoreCounter(m_coreCounter)
+                Dim n As Integer
                 Dim layer() As cEcospaceLayer = Me.m_core.EcospaceBasemap.Layers(Me.m_varName)
 
                 'Allocate base map storeage for this layer
@@ -150,8 +163,16 @@ Namespace SpatialData
                 For ir As Integer = 1 To m_spaceData.InRow
                     For ic As Integer = 1 To m_spaceData.InCol
                         m_baseLayers(iLayer)(ir, ic) = CSng(layer(iLayer - 1).Cell(ir, ic))
+                        If Me.m_spaceData.Depth(ir, ic) > 0 Then
+                            Me.m_baseMeanBio(iLayer) += CSng(layer(iLayer - 1).Cell(ir, ic))
+                            n += 1
+                        End If
                     Next
                 Next
+
+                'average biomass across the map
+                If n = 0 Then n = 1
+                Me.m_baseMeanBio(iLayer) /= n
 
                 'Stop initialization from being called multiple times...
                 Me.m_IsBaseInitialized(iLayer) = True
