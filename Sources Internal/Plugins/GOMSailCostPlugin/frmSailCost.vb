@@ -16,20 +16,37 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
 
+Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 
+#End Region ' Imports
+
 Public Class frmSailCost
+
+#Region " Private vars "
 
     Private m_plugin As cSailCostPlugin
     Private m_bInInit As Boolean
 
-    Public Sub New()
+#End Region ' Private vars
+
+    Public Sub New(plugin As cSailCostPlugin, uic As cUIContext)
         MyBase.New()
-        InitializeComponent()
+
+        Me.m_plugin = plugin
+        Me.UIContext = uic
+
+        Me.InitializeComponent()
+
     End Sub
+
+#Region " Form overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -43,6 +60,7 @@ Public Class frmSailCost
         End Try
         Me.m_bInInit = False
 
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -52,24 +70,6 @@ Public Class frmSailCost
 
         End Try
         MyBase.OnFormClosed(e)
-    End Sub
-
-    Friend Sub Init(SailCostPlugin As cSailCostPlugin)
-        Me.m_plugin = SailCostPlugin
-    End Sub
-
-    Private Sub OnChanged()
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub OnCheckedChanged_chkUseSailCost(sender As System.Object, e As System.EventArgs) Handles m_chkUseSailCost.CheckedChanged
-        Try
-            If Not Me.m_bInInit Then
-                Me.m_plugin.UseSailCostPlugin = Me.m_chkUseSailCost.Checked
-            End If
-        Catch ex As Exception
-
-        End Try
     End Sub
 
     Protected Overrides Sub UpdateControls()
@@ -93,11 +93,19 @@ Public Class frmSailCost
             Me.m_chkUseSailCost.Checked = bActive
             Me.m_chkUseSailCost.Enabled = bConfigOK
 
-            Me.m_clbValidation.SuspendLayout()
-            Me.m_clbValidation.Items.Clear()
-            Me.m_clbValidation.Items.Add("Effort file (" & strEffort & ")", File.Exists(Me.m_plugin.EffortFile))
-            Me.m_clbValidation.Items.Add("LME cells file (" & strCells & ")", File.Exists(Me.m_plugin.LMECellsFile))
-            Me.m_clbValidation.ResumeLayout()
+            Dim lviEffort As New ListViewItem("Effort")
+            lviEffort.SubItems.Add(strEffort)
+            lviEffort.SubItems.Add(CStr(File.Exists(Me.m_plugin.EffortFile)))
+
+            Dim lviCells As New ListViewItem("LME cells")
+            lviCells.SubItems.Add(strCells)
+            lviCells.SubItems.Add(CStr(File.Exists(Me.m_plugin.LMECellsFile)))
+
+            Me.m_lvValidation.SuspendLayout()
+            Me.m_lvValidation.Items.Clear()
+            Me.m_lvValidation.Items.AddRange(New ListViewItem() {lviCells, lviEffort})
+
+            Me.m_lvValidation.ResumeLayout()
 
         Catch ex As Exception
 
@@ -105,8 +113,26 @@ Public Class frmSailCost
 
     End Sub
 
-    Private Sub m_btnChoosePath_Click(sender As Object, e As EventArgs) Handles m_btnChoosePath.Click
+#End Region ' Form overrides
 
+#Region " Event handlers "
+
+    Public Overrides Sub OnCoreMessage(msg As cMessage)
+        MyBase.OnCoreMessage(msg)
+
+        If (msg.Source = eCoreComponentType.TimeSeries) Then
+            ' Lazy update UI
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+        End If
+
+    End Sub
+
+    Private Sub OnChanged()
+        Me.UpdateControls()
+    End Sub
+
+    Private Sub OnChoosePath(sender As Object, e As EventArgs) _
+        Handles m_btnChoosePath.Click
 
         Dim dlg As FolderBrowserDialog = cEwEFileDialogHelper.FolderBrowserDialog("Select GOM LME Effort data path",
                                                                                   Me.m_plugin.DataPath)
@@ -117,5 +143,20 @@ Public Class frmSailCost
         Me.UpdateControls()
 
     End Sub
+
+    Private Sub OnUseSailCostToggled(sender As System.Object, e As System.EventArgs) _
+        Handles m_chkUseSailCost.CheckedChanged
+        Try
+            If Not Me.m_bInInit Then
+                Me.m_plugin.UseSailCostPlugin = Me.m_chkUseSailCost.Checked
+            End If
+        Catch ex As Exception
+
+        End Try
+
+        Me.UpdateControls()
+    End Sub
+
+#End Region ' Event handlers
 
 End Class

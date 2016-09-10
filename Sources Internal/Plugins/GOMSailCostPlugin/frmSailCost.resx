@@ -158,13 +158,13 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>15, 228</value>
   </data>
   <data name="m_chkUseSailCost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 17</value>
+    <value>261, 17</value>
   </data>
   <data name="m_chkUseSailCost.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="m_chkUseSailCost.Text" xml:space="preserve">
-    <value>Use LME effort zones.</value>
+    <value>Use this plug-in to drive fishing effort by LME zone</value>
   </data>
   <data name="&gt;&gt;m_chkUseSailCost.Name" xml:space="preserve">
     <value>m_chkUseSailCost</value>
@@ -256,39 +256,6 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
   <data name="&gt;&gt;m_tbxPath.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_clbValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_clbValidation.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_clbValidation.Items" xml:space="preserve">
-    <value>Effort file</value>
-  </data>
-  <data name="m_clbValidation.Items1" xml:space="preserve">
-    <value>LME cells file</value>
-  </data>
-  <data name="m_clbValidation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 87</value>
-  </data>
-  <data name="m_clbValidation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>488, 124</value>
-  </data>
-  <data name="m_clbValidation.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_clbValidation.Name" xml:space="preserve">
-    <value>m_clbValidation</value>
-  </data>
-  <data name="&gt;&gt;m_clbValidation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_clbValidation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_clbValidation.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -314,13 +281,52 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lvValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lvValidation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 87</value>
+  </data>
+  <data name="m_lvValidation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>488, 135</value>
+  </data>
+  <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Name" xml:space="preserve">
+    <value>m_lvValidation</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_colDriver.Text" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="m_colDriver.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_colFile.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="m_colFile.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="m_colFound.Text" xml:space="preserve">
+    <value>Found</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>656, 432</value>
@@ -331,10 +337,28 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
   <data name="$this.Text" xml:space="preserve">
     <value>Global Ocean Model LME effort configuration</value>
   </data>
+  <data name="&gt;&gt;m_colDriver.Name" xml:space="preserve">
+    <value>m_colDriver</value>
+  </data>
+  <data name="&gt;&gt;m_colDriver.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_colFile.Name" xml:space="preserve">
+    <value>m_colFile</value>
+  </data>
+  <data name="&gt;&gt;m_colFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_colFound.Name" xml:space="preserve">
+    <value>m_colFound</value>
+  </data>
+  <data name="&gt;&gt;m_colFound.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmSailCost</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -28,23 +28,23 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 
 Public Class cSailCostPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
-    Implements EwEPlugin.IEcopathPlugin
+    Implements IUIContextPlugin
+    Implements INavigationTreeItemPlugin
+    Implements IEcopathPlugin
     Implements IEcopathRunInitializedPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceBeginTimestepPlugin
     Implements IEcospaceEndTimestepPlugin
     Implements IEcospaceRunCompletedPlugin
 
-#Region "Private variables"
+#Region " Private variables "
 
     Private m_core As cCore
     Private m_ecospacedata As cEcospaceDataStructures
     Private m_ecopathdata As cEcopathDataStructures
     Private m_ecosim As cEcoSimScenario
     Private m_SailOrg As Single(,,)
-    Private sCon As String
+    Private m_sCon As String
     Private LMEarea() As Double
     Private RelEffortLME(,,) As Single
     Private nCellsInLME() As Integer    'VC131216: was defined as double, but I changed it to integer
@@ -52,19 +52,15 @@ Public Class cSailCostPlugin
     Private CellListForAllLMEs() As Integer
     Private CellListForEachLME(,) As Integer
 
-    Private SumArea As Double = 0
-    Private noFleets As Integer = 14
-    Private noYears As Integer = 101
+    Private m_SumArea As Double = 0
+    Private m_nFleets As Integer = 14
+    Private m_nYears As Integer = 101 ' ToDo: extend for FishMIP
 
     Private m_strDataPath As String
     Private m_bUseSailCostPlugin As Boolean
 
     Private m_uic As cUIContext
     Private m_frmUI As frmSailCost
-
-    'Hardwire input files
-    Private m_strEffortFile As String = ""
-    Private m_strCellsFile As String = "LMECells_OneDegree.csv"
 
     Private AreaFishedLME(,) As Single
     Private m_lastYear As Integer
@@ -73,40 +69,39 @@ Public Class cSailCostPlugin
 
 #End Region
 
-#Region "Events"
+#Region " Events "
 
-    Event OnChanged()
+    Friend Event OnChanged()
 
-#End Region
+#End Region ' Events
 
 #Region "Public variables and Properties"
 
     Public ReadOnly Property IsInputdataValid() As Boolean
         Get
-
-            Dim bReturn As Boolean = True
-            Try
-                If Not File.Exists(Path.Combine(Me.DataPath, Me.m_strEffortFile)) _
-                Or Not File.Exists(Path.Combine(Me.DataPath, Me.m_strCellsFile)) Then
-                    bReturn = False
-                End If
-            Catch ex As Exception
-                bReturn = False
-            End Try
-            Return bReturn
-
+            Return (File.Exists(Me.EffortFile) And File.Exists(Me.LMECellsFile))
         End Get
     End Property
 
     Public ReadOnly Property EffortFile As String
         Get
-            Return Path.Combine(Me.DataPath, Me.m_strEffortFile)
+            Dim strEffortFile As String = ""
+            Dim CurrentScenario As Integer = m_core.ActiveTimeSeriesDatasetIndex
+
+            Select Case CurrentScenario
+                Case 1 To 4
+                    strEffortFile = "RelEffort_LME_Scenario" & CurrentScenario & ".csv"
+                Case Else
+                    strEffortFile = "RelEffort_Country_Fleet.csv"
+            End Select
+
+            Return Path.Combine(Me.DataPath, strEffortFile)
         End Get
     End Property
 
     Public ReadOnly Property LMECellsFile As String
         Get
-            Return Path.Combine(Me.DataPath, Me.m_strCellsFile)
+            Return Path.Combine(Me.DataPath, "LMECells_OneDegree.csv")
         End Get
     End Property
 
@@ -115,9 +110,11 @@ Public Class cSailCostPlugin
             Return Me.m_bUseSailCostPlugin
         End Get
         Set(ByVal value As Boolean)
-            Me.m_bUseSailCostPlugin = value
-            My.Settings.UseSailCostPlugin = Me.m_bUseSailCostPlugin
-            My.Settings.Save()
+            If (value <> Me.m_bUseSailCostPlugin) Then
+                Me.m_bUseSailCostPlugin = value
+                My.Settings.UseSailCostPlugin = Me.m_bUseSailCostPlugin
+                My.Settings.Save()
+            End If
         End Set
     End Property
 
@@ -126,9 +123,11 @@ Public Class cSailCostPlugin
             Return Me.m_strDataPath
         End Get
         Set(ByVal value As String)
-            Me.m_strDataPath = value
-            My.Settings.DataPath = Me.m_strDataPath
-            My.Settings.Save()
+            If (value <> Me.m_strDataPath) Then
+                Me.m_strDataPath = value
+                My.Settings.DataPath = Me.m_strDataPath
+                My.Settings.Save()
+            End If
         End Set
     End Property
 
@@ -144,9 +143,8 @@ Public Class cSailCostPlugin
         End If
 
         If Not bHasUI Then
-            Me.m_frmUI = New frmSailCost()
+            Me.m_frmUI = New frmSailCost(Me, Me.m_uic)
             Me.m_frmUI.UIContext = Me.m_uic
-            Me.m_frmUI.Init(Me)
         End If
 
         Return Me.m_frmUI
@@ -161,7 +159,10 @@ Public Class cSailCostPlugin
         End Try
     End Sub
 
-    Private Function CheckForInputData()
+    Private Function CheckForInputData() As Boolean
+
+        ' Don't bother
+        If (Not Me.UseSailCostPlugin) Then Return False
 
         Try
             If IsInputdataValid() Then Return True
@@ -173,12 +174,11 @@ Public Class cSailCostPlugin
         Me.UseSailCostPlugin = False
         'Tell the interface
         Me.FireOnChanged()
-        Me.SendCoreMessage("GOM LME effort invalid data. Plugin will not be used.")
+        Me.SendCoreMessage("GOM LME effort cannot find driver CSV data. Effort will NOT be altered.")
 
         Return False
 
     End Function
-
 
     Private Sub SendCoreMessage(ByVal msg As String)
         Try
@@ -190,7 +190,7 @@ Public Class cSailCostPlugin
 
     Private Sub CellsInLMEs()
 
-        Dim sInputFile As String = Path.Combine(DataPath, Me.m_strCellsFile)
+        Dim sInputFile As String = Me.LMECellsFile()
         ' Dim TotalArea As Double = 363567776    'km2
 
         'zero LME contains all the water cells at the start
@@ -243,7 +243,7 @@ Public Class cSailCostPlugin
 
     Private Sub EffortCSVfileReading()
 
-        Dim sInputFile As String = Path.Combine(DataPath, Me.m_strEffortFile)
+        Dim sInputFile As String = Me.EffortFile()
         Using sr As StreamReader = New StreamReader(sInputFile)
             'Read headings:
             Dim line As String = sr.ReadLine()
@@ -258,7 +258,7 @@ Public Class cSailCostPlugin
                     Dim iLME As Integer = CInt(colVal(0))
                     Dim iFl As Integer = CInt(colVal(1))
                     If iFl <= 11 Then
-                        For i As Integer = 1 To noYears   '=2006 - 1949
+                        For i As Integer = 1 To m_nYears   '=2006 - 1949
                             RelEffortLME(iLME, iFl, i) = CSng(colVal(i + 1))
                         Next
                     End If
@@ -292,7 +292,7 @@ Public Class cSailCostPlugin
 
 #End Region ' Private modules
 
-#Region "Plugin Events"
+#Region " Plugin Events "
 
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
         Try
@@ -311,28 +311,13 @@ Public Class cSailCostPlugin
     Public Sub EcospaceInitRunCompleted(ByVal EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
         Try
             UseSailCostPlugin = True
-            If Not Me.UseSailCostPlugin Then
-                Return
-            End If
+
+            If Not Me.UseSailCostPlugin Then Return
+            If Not CheckForInputData() Then Return
 
             Dim iTs As Integer = m_core.ActiveTimeSeriesDatasetIndex
             Dim CurrentScenario As Integer = iTs
             MsgBox("Running future scenario no " & CurrentScenario & ". Change scenario by changing the time series (this is used in SailCost to set MPAs)")
-            Select Case CurrentScenario
-                'jb I'm not sure about this indexing
-                Case 0
-                    m_strEffortFile = "EffortOutput\RelEffort_Country_Fleet.csv"
-                Case -1
-                    m_strEffortFile = "EffortOutput\RelEffort_Country_Fleet.csv"
-                Case Else
-                    m_strEffortFile = "EffortOutput\RelEffort_LME_Scenario" & CurrentScenario & ".csv"
-            End Select
-
-            If Not CheckForInputData() Then
-                'CheckForInputData() will set Me.bUseSailCostPlugin = False
-                'If it failed to find valid input files
-                Return
-            End If
 
             m_ecospacedata = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
@@ -340,8 +325,8 @@ Public Class cSailCostPlugin
 
             ReDim LMEarea(66)
             ReDim nCellsInLME(66)
-            ReDim RelEffortLME(1200, noFleets, noYears)  '(countries, fleets, years)
-            ReDim EffortbyFleetLMEYear(noFleets, 66, noYears)
+            ReDim RelEffortLME(1200, m_nFleets, m_nYears)  '(countries, fleets, years)
+            ReDim EffortbyFleetLMEYear(m_nFleets, 66, m_nYears)
 
             CellsInLMEs()
 
@@ -540,14 +525,14 @@ Public Class cSailCostPlugin
                 Dim FileN As String = Path.Combine(Me.DataPath, fnam)
                 Using sw As StreamWriter = New StreamWriter(FileN, False)  'true makes it append
                     Dim sInfo As String = "LME\Fleet"
-                    For iFlt As Integer = 0 To noFleets
+                    For iFlt As Integer = 0 To m_nFleets
                         sInfo += "," & iFlt
                     Next
                     sw.WriteLine(sInfo)
 
                     For iLME As Integer = 1 To 66
                         sInfo = iLME.ToString
-                        For iFlt As Integer = 0 To noFleets
+                        For iFlt As Integer = 0 To m_nFleets
                             sInfo += "," & EffortbyFleetLMEYear(iFlt, iLME, iyr)
                         Next
                         sw.WriteLine(sInfo)
@@ -570,7 +555,10 @@ Public Class cSailCostPlugin
     Public Function LoadModel(ByVal dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
         Try
             Dim ds As DataSources.IEwEDataSource = DirectCast(dataSource, DataSources.IEwEDataSource)
-            Me.DataPath = ds.Directory
+
+            ' Do NOT alter the data directory
+            'Me.DataPath = ds.Directory
+
             If Not ds.FileName.ToUpper.Contains("ECOOCEAN") Then
                 'Turn the Plugin off if the filename does not contain EcoOcean
                 'The user can explicity turn it back On
@@ -588,7 +576,7 @@ Public Class cSailCostPlugin
         Return True
     End Function
 
-#End Region
+#End Region ' Plugin Events
 
 #Region " Plugin misc "
 

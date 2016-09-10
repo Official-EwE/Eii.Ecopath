@@ -28,8 +28,11 @@ Partial Class frmSailCost
         Me.m_lblPath = New System.Windows.Forms.Label()
         Me.m_btnChoosePath = New System.Windows.Forms.Button()
         Me.m_tbxPath = New System.Windows.Forms.TextBox()
-        Me.m_clbValidation = New System.Windows.Forms.CheckedListBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lvValidation = New System.Windows.Forms.ListView()
+        Me.m_colDriver = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_colFile = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_colFound = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'm_lblWarning
@@ -62,31 +65,46 @@ Partial Class frmSailCost
         Me.m_tbxPath.Name = "m_tbxPath"
         Me.m_tbxPath.ReadOnly = True
         '
-        'm_clbValidation
-        '
-        resources.ApplyResources(Me.m_clbValidation, "m_clbValidation")
-        Me.m_clbValidation.BackColor = System.Drawing.SystemColors.ButtonFace
-        Me.m_clbValidation.FormattingEnabled = True
-        Me.m_clbValidation.Items.AddRange(New Object() {resources.GetString("m_clbValidation.Items"), resources.GetString("m_clbValidation.Items1")})
-        Me.m_clbValidation.Name = "m_clbValidation"
-        '
         'Label1
         '
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
+        'm_lvValidation
+        '
+        resources.ApplyResources(Me.m_lvValidation, "m_lvValidation")
+        Me.m_lvValidation.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.m_colDriver, Me.m_colFile, Me.m_colFound})
+        Me.m_lvValidation.FullRowSelect = True
+        Me.m_lvValidation.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.m_lvValidation.Name = "m_lvValidation"
+        Me.m_lvValidation.UseCompatibleStateImageBehavior = False
+        Me.m_lvValidation.View = System.Windows.Forms.View.Details
+        '
+        'm_colDriver
+        '
+        resources.ApplyResources(Me.m_colDriver, "m_colDriver")
+        '
+        'm_colFile
+        '
+        resources.ApplyResources(Me.m_colFile, "m_colFile")
+        '
+        'm_colFound
+        '
+        resources.ApplyResources(Me.m_colFound, "m_colFound")
+        '
         'frmSailCost
         '
         resources.ApplyResources(Me, "$this")
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_lvValidation)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.m_clbValidation)
         Me.Controls.Add(Me.m_tbxPath)
         Me.Controls.Add(Me.m_btnChoosePath)
         Me.Controls.Add(Me.m_lblPath)
         Me.Controls.Add(Me.m_chkUseSailCost)
         Me.Controls.Add(Me.m_lblWarning)
+        Me.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom
         Me.Name = "frmSailCost"
         Me.ShowInTaskbar = False
         Me.TabText = ""
@@ -94,11 +112,14 @@ Partial Class frmSailCost
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents m_chkUseSailCost As System.Windows.Forms.CheckBox
     Private WithEvents m_lblPath As Windows.Forms.Label
     Private WithEvents m_btnChoosePath As Windows.Forms.Button
     Private WithEvents m_lblWarning As Windows.Forms.Label
     Private WithEvents m_tbxPath As Windows.Forms.TextBox
-    Private WithEvents m_clbValidation As Windows.Forms.CheckedListBox
     Friend WithEvents Label1 As Windows.Forms.Label
+    Private WithEvents m_lvValidation As Windows.Forms.ListView
+    Private WithEvents m_colDriver As Windows.Forms.ColumnHeader
+    Private WithEvents m_colFile As Windows.Forms.ColumnHeader
+    Private WithEvents m_colFound As Windows.Forms.ColumnHeader
+    Private WithEvents m_chkUseSailCost As Windows.Forms.CheckBox
 End Class
