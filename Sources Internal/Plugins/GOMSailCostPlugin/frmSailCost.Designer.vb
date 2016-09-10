@@ -104,7 +104,6 @@ Partial Class frmSailCost
         Me.Controls.Add(Me.m_lblPath)
         Me.Controls.Add(Me.m_chkUseSailCost)
         Me.Controls.Add(Me.m_lblWarning)
-        Me.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom
         Me.Name = "frmSailCost"
         Me.ShowInTaskbar = False
         Me.TabText = ""
