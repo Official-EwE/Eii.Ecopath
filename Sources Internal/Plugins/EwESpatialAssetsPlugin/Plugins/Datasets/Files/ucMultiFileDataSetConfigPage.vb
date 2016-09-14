@@ -318,31 +318,27 @@ Namespace SpatialData
                 Try
 
                     ' Merge file list
-                    Dim lFilesTemp As cFileEntry() = Me.m_lFiles.ToArray()
-                    Dim strFile As String = ""
-                    Dim bFound As Boolean = False
+                    Dim dtCurr As New Dictionary(Of String, cFileEntry)
+                    For Each fe As cFileEntry In Me.m_lFiles
+                        dtCurr(Path.GetFileName(fe.FileName).ToLower) = fe
+                    Next
+                    Dim lFilesNew As String() = ofd.FileNames
+                    Dim dt As New DateTime(Me.UIContext.Core.EcosimFirstYear, 1, 1)
 
                     Me.m_lFiles.Clear()
 
-                    For i As Integer = 0 To ofd.FileNames.Length - 1
+                    For i As Integer = 0 To lFilesNew.Length - 1
 
-                        strFile = ofd.FileNames(i)
-                        bFound = False
+                        Dim strFile As String = lFilesNew(i)
+                        Dim strKey As String = Path.GetFileName(strFile).ToLower()
+                        Dim fe As cFileEntry = Nothing
 
-                        ' Maintain original file def, if already present
-                        For Each fe As cFileEntry In lFilesTemp
-                            If (cFileUtils.Equals(fe.FileName, strFile, True)) Then
-                                Me.m_lFiles.Add(fe)
-                                bFound = True
-                                Exit For
-                            End If
-                        Next
-
-                        If (Not bFound) Then
-                            Dim dt As DateTime = Me.ToFileDate(i, ofd.FileNames(i))
-                            Dim fe As New cFileEntry(ofd.FileNames(i), dt)
-                            Me.m_lFiles.Add(fe)
+                        If dtCurr.ContainsKey(strKey) Then
+                            fe = New cFileEntry(strFile, dtCurr(strKey).FileDate)
+                        Else
+                            fe = New cFileEntry(strFile, dt)
                         End If
+                        Me.m_lFiles.Add(fe)
                     Next
 
                     Me.m_strSource = Path.GetDirectoryName(Me.m_lFiles(0).FileName)
@@ -445,7 +441,9 @@ Namespace SpatialData
             For i As Integer = 0 To Me.m_lFiles.Count - 1
                 Dim entry As cFileEntry = Me.m_lFiles(i)
                 Dim bmp As Bitmap = imgOK
-                If Not File.Exists(entry.FileName) Then bmp = imgError
+                If Not File.Exists(entry.FileName) Then
+                    bmp = imgError
+                End If
                 Dim iRow As Integer = Me.m_dgvFiles.Rows.Add(bmp, Path.GetFileName(entry.FileName), entry.FileDate)
                 Me.m_dgvFiles.Rows(iRow).Tag = entry
             Next
