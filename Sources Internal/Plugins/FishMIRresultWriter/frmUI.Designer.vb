@@ -1,4 +1,6 @@
-﻿Partial Class frmUI
+﻿Imports ScientificInterfaceShared.Controls
+
+Partial Class frmUI
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -21,16 +23,15 @@
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUI))
-        Me.m_ts = New System.Windows.Forms.ToolStrip()
+        Me.m_ts = New cEwEToolstrip()
         Me.m_tsbnPopulate = New System.Windows.Forms.ToolStripButton()
         Me.m_grid = New FishMIRresultWriter.gridUI()
-        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_ts
         '
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAutosave, Me.m_tsbnPopulate})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPopulate})
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
         '
@@ -73,12 +74,6 @@
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
-        'm_tsbnAutosave
-        '
-        Me.m_tsbnAutosave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
-        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
-        '
         'frmUI
         '
         resources.ApplyResources(Me, "$this")
@@ -96,8 +91,7 @@
 
     End Sub
 
-    Private WithEvents m_ts As Windows.Forms.ToolStrip
+    Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_tsbnPopulate As Windows.Forms.ToolStripButton
     Private WithEvents m_grid As gridUI
-    Private WithEvents m_tsbnAutosave As Windows.Forms.ToolStripButton
 End Class

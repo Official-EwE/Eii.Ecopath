@@ -5,15 +5,15 @@ Imports ScientificInterfaceShared.Forms
 Public Class frmUI
     Inherits frmEwEGrid
 
-    Private m_plugin As cFishMIPResultWriterPlugin = Nothing
-
     Public Sub New(uic As cUIContext, plugin As cFishMIPResultWriterPlugin)
         Me.UIContext = uic
         Me.InitializeComponent()
-        Me.m_plugin = plugin
+        Me.plugin = plugin
         Me.m_grid.Plugin = plugin
         Me.Grid = m_grid
     End Sub
+
+    Public Property plugin As cFishMIPResultWriterPlugin = Nothing
 
     Private Sub m_tsbnFill_Click(sender As Object, e As EventArgs) Handles m_tsbnPopulate.Click
 
@@ -45,10 +45,8 @@ Public Class frmUI
         Next
 
         Me.Grid.RefreshContent()
+        Me.Plugin.ConfigChanged
 
     End Sub
 
-    Private Sub m_tsbnAutosave_Click(sender As Object, e As EventArgs) Handles m_tsbnAutosave.Click
-        'Me.Core.Autosave(Me)
-    End Sub
 End Class
