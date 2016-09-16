@@ -213,10 +213,12 @@ Namespace Ecospace
         Private Sub UpdateRow(grp As cEcospaceGroup)
 
             Dim iGroup As Integer = grp.Index
-            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+            Dim style As cStyleGuide.eStyleFlags
             Dim mapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
 
-            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat) Then
+            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Or (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both) Then
+                style = cStyleGuide.eStyleFlags.OK
+            Else
                 style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
             End If
 

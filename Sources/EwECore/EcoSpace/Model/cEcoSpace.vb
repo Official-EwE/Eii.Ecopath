@@ -7023,10 +7023,12 @@ exitline:
     ''' </summary>
     ''' <remarks>Habitat capacity of a map cell = sum product of habitat preference and habitat area in cell</remarks>
     Private Sub setHabCapFromHabitat()
+
         Dim i As Integer, j As Integer, K As Integer
 
         For K = 1 To Me.m_Data.NGroups
-            If Me.m_Data.isGroupHabCapChanged(K) And (Me.m_Data.CapCalType(K) <> eEcospaceCapacityCalType.EnvResponses) Then
+            If (Me.m_Data.isGroupHabCapChanged(K) = True) And
+               ((Me.m_Data.CapCalType(K) = eEcospaceCapacityCalType.Habitat) Or (Me.m_Data.CapCalType(K) = eEcospaceCapacityCalType.Both)) Then
                 For i = 1 To Me.m_Data.InRow
                     For j = 1 To Me.m_Data.InCol
                         If m_Data.Depth(i, j) > 0.0 Then
@@ -7347,7 +7349,7 @@ exitline:
                 Dim bUseHapCapInput As Boolean = False
 
                 ' If no input bUseHapCapInput will be false, and homogenous map input of 1 will be assumed
-                If (Me.m_Data.CapCalType(igrp) <> eEcospaceCapacityCalType.Habitat) Then
+                If ((Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses) Or (Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Both)) Then
                     Dim irow As Integer = 1
                     While (bUseHapCapInput = False) And (irow <= Me.m_Data.InRow)
                         Dim icol As Integer = 1
@@ -7688,7 +7690,8 @@ exitline:
                 'System.Console.Write("Active Layer = " + map.Layer.Name + ",")
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
-                    If Me.m_Data.isGroupHabCapChanged(igrp) And Me.m_Data.CapCalType(igrp) <> eEcospaceCapacityCalType.Habitat Then
+                    If (Me.m_Data.isGroupHabCapChanged(igrp) = True) And
+                      ((Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses) Or (Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Both)) Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'System.Console.Write(igrp.ToString + ",")

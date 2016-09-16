@@ -59,11 +59,12 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Me.m_tsbnNone.Image = SharedResources.Editable
             Me.m_tsbnHabitats.Image = SharedResources.Habitat
             Me.m_tsbnEnvResponses.Image = SharedResources.FunctionHS
             Me.m_tsbnBoth.Image = SharedResources.HabitatFunctionHS
 
-            For i As Integer = 1 To Me.Core.nGroups
+            For i As Integer = 1 To Me.Core.nLivingGroups
                 Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(i)
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
                 Me.m_lProps.Add(prop)
@@ -89,22 +90,24 @@ Namespace Ecospace
 
             If (Not Me.m_bDirty) Then Return
 
+            Dim iNone As Integer = 0
             Dim iHab As Integer = 0
             Dim iCap As Integer = 0
             Dim iBoth As Integer = 0
 
             For Each prop As cProperty In Me.m_lProps
                 Select Case DirectCast(prop.GetValue, eEcospaceCapacityCalType)
+                    Case eEcospaceCapacityCalType.None : iNone += 1
                     Case eEcospaceCapacityCalType.EnvResponses : iCap += 1
                     Case eEcospaceCapacityCalType.Habitat : iHab += 1
                     Case eEcospaceCapacityCalType.Both : iBoth += 1
-
                 End Select
             Next
 
-            Me.m_tsbnHabitats.Checked = (iHab = Me.Core.nGroups)
-            Me.m_tsbnEnvResponses.Checked = (iCap = Me.Core.nGroups)
-            Me.m_tsbnBoth.Checked = (iBoth = Me.Core.nGroups)
+            Me.m_tsbnNone.Checked = (iNone = Me.Core.nLivingGroups)
+            Me.m_tsbnHabitats.Checked = (iHab = Me.Core.nLivingGroups)
+            Me.m_tsbnEnvResponses.Checked = (iCap = Me.Core.nLivingGroups)
+            Me.m_tsbnBoth.Checked = (iBoth = Me.Core.nLivingGroups)
 
             MyBase.UpdateControls()
 
@@ -113,6 +116,17 @@ Namespace Ecospace
 #End Region ' Overrides
 
 #Region " Events "
+
+        Private Sub OnUseOnlyInput(sender As Object, e As EventArgs) _
+            Handles m_tsbnNone.Click
+
+            Try
+                Me.SetAllTo(eEcospaceCapacityCalType.None)
+            Catch ex As Exception
+                cLog.Write(ex, "frmCapacityCalcType.OnUseOnlyInput")
+            End Try
+
+        End Sub
 
         Private Sub OnUseOnlyHabitat(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnHabitats.Click

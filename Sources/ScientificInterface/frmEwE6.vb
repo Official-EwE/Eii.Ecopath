@@ -4634,8 +4634,12 @@ Public Class frmEwE6
                         iDockState = pgcmd.DockState
                         If iDockState = 0 Then iDockState = DockState.Document
 
-                        ' Show the form in the dock panel
-                        DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(iDockState, DockState))
+                        Try
+                            ' Show the form in the dock panel
+                            DirectCast(pgcmd.Form, DockContent).Show(Me.m_DockPanel, DirectCast(iDockState, DockState))
+                        Catch ex As Exception
+
+                        End Try
 
                         ' Fix window state
                         If pgcmd.Form.WindowState = FormWindowState.Minimized Then

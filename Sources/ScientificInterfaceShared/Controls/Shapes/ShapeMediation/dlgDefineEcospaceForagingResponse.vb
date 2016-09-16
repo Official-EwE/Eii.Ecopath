@@ -145,7 +145,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Dim lstGroups As New List(Of Integer)
         For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
             Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(iGrp)
-            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Then
+            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Or (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both) Then
                 lstGroups.Add(iGrp)
             End If
         Next
