@@ -3382,6 +3382,8 @@ Namespace Core
     '''</summary>
     ''' -----------------------------------------------------------------------
     Public Enum eEcospaceCapacityCalType As Integer
+        ''' <summary>Capacity is not calculated, but is obtained from inputs only.</summary>
+        None = -1
         ''' <summary>Only environmental responses and capacity input layers are used to calculate capacity. Habitats are ignored for this purpose</summary>
         EnvResponses = 0
         ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored.</summary>

@@ -416,7 +416,7 @@ Namespace SpatialData
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function ToRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
-            Return New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
+            Return New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfTL.Y - ptfBR.Y)
         End Function
 
         Private Function ToStatus(flag As eCompatibilityTypes) As eStatusFlags

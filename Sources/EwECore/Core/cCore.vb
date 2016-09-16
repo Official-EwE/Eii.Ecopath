@@ -2712,14 +2712,12 @@ Public Class cCore
                 If (String.Compare(value, Me.m_settings.AutosaveFormat(savetype), True) <> 0) Then
                     Me.m_settings.AutosaveFormat(savetype) = value
                     Me.OnSettingsChanged()
-                End If
 
-                Select Case savetype
-                    Case eAutosaveTypes.EcospaceResults
-                        If (Not String.IsNullOrWhiteSpace(value) And Me.Autosave(savetype) = False) Then
-                            Me.Autosave(savetype) = True
-                        End If
-                End Select
+                    Select Case savetype
+                        Case eAutosaveTypes.EcospaceResults
+                            Me.Autosave(savetype) = (Not String.IsNullOrWhiteSpace(value))
+                    End Select
+                End If
             Catch ex As Exception
                 cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
             End Try
@@ -6093,12 +6091,10 @@ Public Class cCore
 
         For iHabitat As Integer = 0 To Me.nHabitats - 1
             Select Case grp.CapacityCalculationType
-                Case eEcospaceCapacityCalType.Habitat
+                Case eEcospaceCapacityCalType.Habitat, eEcospaceCapacityCalType.Both
                     grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
-                Case eEcospaceCapacityCalType.EnvResponses
+                Case eEcospaceCapacityCalType.EnvResponses, eEcospaceCapacityCalType.None
                     grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
-                Case eEcospaceCapacityCalType.Both
-                    grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
                 Case Else
                     Debug.Assert(False)
             End Select

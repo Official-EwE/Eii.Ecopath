@@ -21,7 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
@@ -51,12 +50,12 @@ Public Class cRemarksPlugin
 #Region " Plug-in implementation "
 
     Public Sub Initialize(ByVal core As Object) _
-        Implements EwEPlugin.IPlugin.Initialize
+        Implements IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
     End Sub
 
     Public Sub Dispose() _
-        Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements IDisposedPlugin.Dispose
         Me.m_core = Nothing
         If Me.HasUI Then
             Me.m_frm.Close()
@@ -65,7 +64,7 @@ Public Class cRemarksPlugin
         End If
     End Sub
 
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             ' The name will (hopefilly) sort the menu item near m_tsmiViewRemarks
             Return "m_tsmiViewRemarksCollector"
@@ -73,21 +72,21 @@ Public Class cRemarksPlugin
     End Property
 
     Public ReadOnly Property ControlImage() As System.Drawing.Image _
-     Implements EwEPlugin.IGUIPlugin.ControlImage
+     Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
     Public ReadOnly Property ControlText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+        Implements IGUIPlugin.ControlText
         Get
             Return My.Resources.CAPTION
         End Get
     End Property
 
     Public ReadOnly Property ControlTooltipText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Implements IGUIPlugin.ControlTooltipText
         Get
             ' ToDo: globalize this
             Return "Show all remarks in the model"
@@ -95,14 +94,14 @@ Public Class cRemarksPlugin
     End Property
 
     Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState _
-        Implements EwEPlugin.IGUIPlugin.EnabledState
+        Implements IGUIPlugin.EnabledState
         Get
             Return eCoreExecutionState.Idle
         End Get
     End Property
 
     Public Sub UIContext(ByVal uic As Object) _
-        Implements EwEPlugin.IUIContextPlugin.UIContext
+        Implements IUIContextPlugin.UIContext
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
         Catch ex As Exception
@@ -110,21 +109,21 @@ Public Class cRemarksPlugin
     End Sub
 
     Public ReadOnly Property MenuItemLocation() As String _
-        Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Implements IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuView"
         End Get
     End Property
 
     Public ReadOnly Property IsChecked As Boolean _
-        Implements EwEPlugin.IMenuItemTogglePlugin.IsChecked
+        Implements IMenuItemTogglePlugin.IsChecked
         Get
             Return Me.HasUI
         End Get
     End Property
 
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
-        Implements EwEPlugin.IGUIPlugin.OnControlClick
+        Implements IGUIPlugin.OnControlClick
         Try
             If (Me.m_core Is Nothing) Then Return
             If Me.HasUI Then
@@ -141,28 +140,28 @@ Public Class cRemarksPlugin
     End Sub
 
     Public ReadOnly Property Author() As String _
-        Implements EwEPlugin.IPlugin.Author
+        Implements IPlugin.Author
         Get
             Return "Jeroen Steenbeek"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
-        Implements EwEPlugin.IPlugin.Contact
+        Implements IPlugin.Contact
         Get
             Return "mailto:jeroensteenbeek@gmail.com"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
-        Implements EwEPlugin.IPlugin.Description
+        Implements IPlugin.Description
         Get
             ' ToDo: globalize this
             Return "Plug-in for EwE6 that shows all active remarks"
         End Get
     End Property
 
-    Public Function DockState() As Integer Implements EwEPlugin.IDockStatePlugin.DockState
+    Public Function DockState() As Integer Implements IDockStatePlugin.DockState
         Return WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide
     End Function
 
