@@ -1,4 +1,24 @@
-﻿Option Strict On
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+Option Strict On
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2
@@ -41,7 +61,7 @@ Public Class gridUI
             Me(iRow, 1) = New EwERowHeaderCell(Me.Core.EcoPathGroupInputs(i).Name)
 
             For j As Integer = 0 To [Enum].GetValues(GetType(cFishMIPResultWriterPlugin.eResultTypes)).Length - 1
-                Me(iRow, 2 + j) = New EwECheckboxCell(Me.Plugin.m_config(i, j))
+                Me(iRow, 2 + j) = New EwECheckboxCell(Me.Plugin.Configuration(i, j))
                 Me(iRow, 2 + j).Behaviors.Add(Me.EwEEditHandler)
             Next
         Next
@@ -55,7 +75,7 @@ Public Class gridUI
 
     Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
-        Me.Plugin.m_config(p.Row, p.Column - 2) = CBool(cell.GetValue(p))
+        Me.Plugin.Configuration(p.Row, p.Column - 2) = CBool(cell.GetValue(p))
         BeginInvoke(New MethodInvoker(AddressOf Me.Plugin.ConfigChanged))
 
         Return True

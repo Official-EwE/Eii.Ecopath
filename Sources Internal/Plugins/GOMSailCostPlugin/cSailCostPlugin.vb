@@ -12,10 +12,11 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
 
 Option Explicit On
 
@@ -30,7 +31,6 @@ Imports ScientificInterfaceShared.Controls
 Public Class cSailCostPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
-    Implements IEcopathPlugin
     Implements IEcopathRunInitializedPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceBeginTimestepPlugin
@@ -79,6 +79,9 @@ Public Class cSailCostPlugin
 
     Public ReadOnly Property IsInputdataValid() As Boolean
         Get
+            ' This really should not happen, but hey
+            If (Me.m_core.DataSource Is Nothing) Then Return False
+            If Not Me.m_core.DataSource.FileName.ToUpper.Contains("ECOOCEAN") Then Return False
             Return (File.Exists(Me.EffortFile) And File.Exists(Me.LMECellsFile))
         End Get
     End Property
@@ -107,7 +110,7 @@ Public Class cSailCostPlugin
 
     Public Property UseSailCostPlugin As Boolean
         Get
-            Return Me.m_bUseSailCostPlugin
+            Return Me.m_bUseSailCostPlugin And IsInputdataValid
         End Get
         Set(ByVal value As Boolean)
             If (value <> Me.m_bUseSailCostPlugin) Then
@@ -158,27 +161,6 @@ Public Class cSailCostPlugin
 
         End Try
     End Sub
-
-    Private Function CheckForInputData() As Boolean
-
-        ' Don't bother
-        If (Not Me.UseSailCostPlugin) Then Return False
-
-        Try
-            If IsInputdataValid() Then Return True
-        Catch ex As Exception
-            ' Whoah
-        End Try
-
-        'Turn Off the Plugin
-        Me.UseSailCostPlugin = False
-        'Tell the interface
-        Me.FireOnChanged()
-        Me.SendCoreMessage("GOM LME effort cannot find driver CSV data. Effort will NOT be altered.")
-
-        Return False
-
-    End Function
 
     Private Sub SendCoreMessage(ByVal msg As String)
         Try
@@ -310,10 +292,7 @@ Public Class cSailCostPlugin
 
     Public Sub EcospaceInitRunCompleted(ByVal EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
         Try
-            UseSailCostPlugin = True
-
             If Not Me.UseSailCostPlugin Then Return
-            If Not CheckForInputData() Then Return
 
             Dim iTs As Integer = m_core.ActiveTimeSeriesDatasetIndex
             Dim CurrentScenario As Integer = iTs
@@ -547,34 +526,6 @@ Public Class cSailCostPlugin
         End Try
 
     End Sub
-
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
-        Return True
-    End Function
-
-    Public Function LoadModel(ByVal dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Try
-            Dim ds As DataSources.IEwEDataSource = DirectCast(dataSource, DataSources.IEwEDataSource)
-
-            ' Do NOT alter the data directory
-            'Me.DataPath = ds.Directory
-
-            If Not ds.FileName.ToUpper.Contains("ECOOCEAN") Then
-                'Turn the Plugin off if the filename does not contain EcoOcean
-                'The user can explicity turn it back On
-                Me.UseSailCostPlugin = False
-            End If
-        Catch ex As Exception
-
-        End Try
-
-        Return True
-
-    End Function
-
-    Public Function SaveModel(ByVal dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        Return True
-    End Function
 
 #End Region ' Plugin Events
 

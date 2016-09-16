@@ -1,4 +1,24 @@
-﻿Option Strict On
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+Option Strict On
 #Region " Imports "
 
 Imports System.Drawing
@@ -31,7 +51,8 @@ Public Class cFishMIPResultWriterPlugin
 
     Private m_uic As cUIContext = Nothing
     Private m_ui As frmUI = Nothing
-    Friend m_config As Boolean(,)
+
+    Friend Property Configuration As Boolean(,)
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
@@ -98,7 +119,7 @@ Public Class cFishMIPResultWriterPlugin
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) _
         Implements IEcospaceInitializedPlugin.EcospaceInitialized
 
-        ReDim Me.m_config(Me.m_uic.Core.nGroups, [Enum].GetValues(GetType(eResultTypes)).Length)
+        ReDim Me.Configuration(Me.m_uic.Core.nGroups, [Enum].GetValues(GetType(eResultTypes)).Length)
         Me.LoadConfig()
 
     End Sub
@@ -135,7 +156,7 @@ Public Class cFishMIPResultWriterPlugin
         For i As Integer = 1 To core.nGroups
             groups(Key(core.EcoPathGroupInputs(i).Name)) = i
             For j As Integer = 0 To [Enum].GetValues(GetType(eResultTypes)).Length - 1
-                Me.m_config(i, j) = False
+                Me.Configuration(i, j) = False
             Next
         Next
 
@@ -144,7 +165,7 @@ Public Class cFishMIPResultWriterPlugin
             If (Not String.IsNullOrWhiteSpace(sections(i))) Then
                 For Each strGroup As String In sections(i).Split(";"c)
                     If groups.ContainsKey(Key(strGroup)) Then
-                        m_config(groups(Key(strGroup)), i) = True
+                        Configuration(groups(Key(strGroup)), i) = True
                     End If
                 Next
             End If
@@ -162,7 +183,7 @@ Public Class cFishMIPResultWriterPlugin
             If (i > 0) Then sb.Append("|"c)
             Dim b As Boolean = False
             For j As Integer = 1 To core.nGroups
-                If (Me.m_config(j, i)) Then
+                If (Me.Configuration(j, i)) Then
                     If (b) Then sb.Append(";")
                     sb.Append(Key(core.EcoPathGroupInputs(j).Name))
                     b = True
@@ -203,7 +224,7 @@ Public Class cFishMIPResultWriterPlugin
                 Dim data(bm.InRow, bm.InCol) As Single
                 For iGrp As Integer = 1 To core.nGroups
 
-                    If Me.m_config(iGrp, result) Then
+                    If Me.Configuration(iGrp, result) Then
                         For iRow As Integer = 1 To bm.InRow
                             For icol As Integer = 1 To bm.InCol
                                 If (depth.IsWaterCell(iRow, icol)) Then
