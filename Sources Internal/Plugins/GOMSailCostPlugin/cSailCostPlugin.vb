@@ -21,7 +21,6 @@
 Option Explicit On
 
 Imports System.IO
-Imports System.Windows.Forms
 
 Imports EwECore
 Imports EwEPlugin
@@ -57,7 +56,6 @@ Public Class cSailCostPlugin
     Private m_nYears As Integer = 101 ' ToDo: extend for FishMIP
 
     Private m_strDataPath As String
-    Private m_bOverwriteEffort As Boolean = False
     Private m_bWriteMortalities As Boolean = False
 
     Private m_uic As cUIContext
@@ -109,18 +107,7 @@ Public Class cSailCostPlugin
         End Get
     End Property
 
-    Public Property OverwriteEffort As Boolean
-        Get
-            Return Me.m_bOverwriteEffort And Me.IsInputdataValid
-        End Get
-        Set(ByVal value As Boolean)
-            If (value <> Me.m_bOverwriteEffort) Then
-                Me.m_bOverwriteEffort = value
-                My.Settings.OverwriteEffort = Me.m_bOverwriteEffort
-                My.Settings.Save()
-            End If
-        End Set
-    End Property
+    Public Property OverwriteEffort As Boolean = False
 
     Public Property WriteMortalities As Boolean
         Get
@@ -295,7 +282,8 @@ Public Class cSailCostPlugin
 
             Me.m_core = DirectCast(core, cCore)
             Me.m_strDataPath = My.Settings.DataPath
-            Me.m_bOverwriteEffort = My.Settings.OverwriteEffort
+            Me.OverwriteEffort = False
+            Me.m_bWriteMortalities = My.Settings.WriteMortalities
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)

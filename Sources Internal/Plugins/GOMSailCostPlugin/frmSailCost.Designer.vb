@@ -56,13 +56,15 @@ Partial Class frmSailCost
         Me.m_cbUseMortalitiesWriter = New System.Windows.Forms.CheckBox()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrLMEEffort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cbAgree = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'm_lblWarning
         '
         resources.ApplyResources(Me.m_lblWarning, "m_lblWarning")
-        Me.m_lblWarning.BackColor = System.Drawing.Color.LightYellow
+        Me.m_lblWarning.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.m_lblWarning.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_lblWarning.ForeColor = System.Drawing.Color.Red
         Me.m_lblWarning.Name = "m_lblWarning"
         '
         'm_chkUseSailCost
@@ -137,6 +139,12 @@ Partial Class frmSailCost
         Me.m_hdrLMEEffort.IsCollapsed = False
         Me.m_hdrLMEEffort.Name = "m_hdrLMEEffort"
         '
+        'm_cbAgree
+        '
+        resources.ApplyResources(Me.m_cbAgree, "m_cbAgree")
+        Me.m_cbAgree.Name = "m_cbAgree"
+        Me.m_cbAgree.UseVisualStyleBackColor = True
+        '
         'frmSailCost
         '
         resources.ApplyResources(Me, "$this")
@@ -150,6 +158,7 @@ Partial Class frmSailCost
         Me.Controls.Add(Me.m_btnChoosePath)
         Me.Controls.Add(Me.m_lblPath)
         Me.Controls.Add(Me.m_cbUseMortalitiesWriter)
+        Me.Controls.Add(Me.m_cbAgree)
         Me.Controls.Add(Me.m_chkUseSailCost)
         Me.Controls.Add(Me.m_lblWarning)
         Me.Name = "frmSailCost"
@@ -172,4 +181,5 @@ Partial Class frmSailCost
     Private WithEvents m_cbUseMortalitiesWriter As Windows.Forms.CheckBox
     Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrLMEEffort As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_cbAgree As Windows.Forms.CheckBox
 End Class

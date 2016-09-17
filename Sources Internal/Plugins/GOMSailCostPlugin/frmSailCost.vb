@@ -79,6 +79,7 @@ Public Class frmSailCost
 
         ' ToDo: globalize this
 
+        Dim bAgree As Boolean = Me.m_cbAgree.Checked
         Dim bConfigOK As Boolean = False
         Dim bActive As Boolean = False
 
@@ -93,7 +94,7 @@ Public Class frmSailCost
 
             Me.m_tbxPath.Text = Me.m_plugin.DataPath
             Me.m_chkUseSailCost.Checked = bActive
-            Me.m_chkUseSailCost.Enabled = bConfigOK
+            Me.m_chkUseSailCost.Enabled = bConfigOK And bAgree
 
             Dim lviEffort As New ListViewItem("Effort")
             lviEffort.SubItems.Add(strEffort)
@@ -144,6 +145,12 @@ Public Class frmSailCost
 
         Me.UpdateControls()
 
+    End Sub
+
+    Private Sub OnAgreeToggled(sender As Object, e As EventArgs) _
+        Handles m_cbAgree.CheckedChanged
+        If Not Me.m_cbAgree.Checked Then Me.m_plugin.OverwriteEffort = False
+        Me.UpdateControls()
     End Sub
 
     Private Sub OnUseSailCostToggled(sender As System.Object, e As System.EventArgs) _
