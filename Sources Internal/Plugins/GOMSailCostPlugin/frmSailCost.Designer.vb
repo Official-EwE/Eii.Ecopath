@@ -53,6 +53,9 @@ Partial Class frmSailCost
         Me.m_colDriver = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colFile = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.m_colFound = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_cbUseMortalitiesWriter = New System.Windows.Forms.CheckBox()
+        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrLMEEffort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.SuspendLayout()
         '
         'm_lblWarning
@@ -112,16 +115,41 @@ Partial Class frmSailCost
         '
         resources.ApplyResources(Me.m_colFound, "m_colFound")
         '
+        'm_cbUseMortalitiesWriter
+        '
+        resources.ApplyResources(Me.m_cbUseMortalitiesWriter, "m_cbUseMortalitiesWriter")
+        Me.m_cbUseMortalitiesWriter.Name = "m_cbUseMortalitiesWriter"
+        Me.m_cbUseMortalitiesWriter.UseVisualStyleBackColor = True
+        '
+        'CEwEHeaderLabel1
+        '
+        resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+        Me.CEwEHeaderLabel1.CanCollapseParent = False
+        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel1.IsCollapsed = False
+        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+        '
+        'm_hdrLMEEffort
+        '
+        resources.ApplyResources(Me.m_hdrLMEEffort, "m_hdrLMEEffort")
+        Me.m_hdrLMEEffort.CanCollapseParent = False
+        Me.m_hdrLMEEffort.CollapsedParentHeight = 0
+        Me.m_hdrLMEEffort.IsCollapsed = False
+        Me.m_hdrLMEEffort.Name = "m_hdrLMEEffort"
+        '
         'frmSailCost
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_hdrLMEEffort)
+        Me.Controls.Add(Me.CEwEHeaderLabel1)
         Me.Controls.Add(Me.m_lvValidation)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.m_tbxPath)
         Me.Controls.Add(Me.m_btnChoosePath)
         Me.Controls.Add(Me.m_lblPath)
+        Me.Controls.Add(Me.m_cbUseMortalitiesWriter)
         Me.Controls.Add(Me.m_chkUseSailCost)
         Me.Controls.Add(Me.m_lblWarning)
         Me.Name = "frmSailCost"
@@ -141,4 +169,7 @@ Partial Class frmSailCost
     Private WithEvents m_colFile As Windows.Forms.ColumnHeader
     Private WithEvents m_colFound As Windows.Forms.ColumnHeader
     Private WithEvents m_chkUseSailCost As Windows.Forms.CheckBox
+    Private WithEvents m_cbUseMortalitiesWriter As Windows.Forms.CheckBox
+    Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrLMEEffort As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class

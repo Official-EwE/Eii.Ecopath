@@ -89,7 +89,7 @@ Public Class frmSailCost
 
         Try
             bConfigOK = Me.m_plugin.IsInputdataValid()
-            bActive = Me.m_plugin.UseSailCostPlugin And bConfigOK
+            bActive = Me.m_plugin.OverwriteEffort And bConfigOK
 
             Me.m_tbxPath.Text = Me.m_plugin.DataPath
             Me.m_chkUseSailCost.Checked = bActive
@@ -150,12 +150,23 @@ Public Class frmSailCost
         Handles m_chkUseSailCost.CheckedChanged
         Try
             If Not Me.m_bInInit Then
-                Me.m_plugin.UseSailCostPlugin = Me.m_chkUseSailCost.Checked
+                Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
             End If
         Catch ex As Exception
 
         End Try
+        Me.UpdateControls()
+    End Sub
 
+    Private Sub OnUseMortalitiesWriterToggled(sender As Object, e As EventArgs) _
+        Handles m_cbUseMortalitiesWriter.CheckedChanged
+        Try
+            If Not Me.m_bInInit Then
+                Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
+            End If
+        Catch ex As Exception
+
+        End Try
         Me.UpdateControls()
     End Sub
 

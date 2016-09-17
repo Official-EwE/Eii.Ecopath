@@ -57,7 +57,8 @@ Public Class cSailCostPlugin
     Private m_nYears As Integer = 101 ' ToDo: extend for FishMIP
 
     Private m_strDataPath As String
-    Private m_bUseSailCostPlugin As Boolean
+    Private m_bOverwriteEffort As Boolean = False
+    Private m_bWriteMortalities As Boolean = False
 
     Private m_uic As cUIContext
     Private m_frmUI As frmSailCost
@@ -108,14 +109,27 @@ Public Class cSailCostPlugin
         End Get
     End Property
 
-    Public Property UseSailCostPlugin As Boolean
+    Public Property OverwriteEffort As Boolean
         Get
-            Return Me.m_bUseSailCostPlugin And IsInputdataValid
+            Return Me.m_bOverwriteEffort And Me.IsInputdataValid
         End Get
         Set(ByVal value As Boolean)
-            If (value <> Me.m_bUseSailCostPlugin) Then
-                Me.m_bUseSailCostPlugin = value
-                My.Settings.UseSailCostPlugin = Me.m_bUseSailCostPlugin
+            If (value <> Me.m_bOverwriteEffort) Then
+                Me.m_bOverwriteEffort = value
+                My.Settings.OverwriteEffort = Me.m_bOverwriteEffort
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property WriteMortalities As Boolean
+        Get
+            Return Me.m_bWriteMortalities
+        End Get
+        Set(ByVal value As Boolean)
+            If (value <> Me.m_bWriteMortalities) Then
+                Me.m_bWriteMortalities = value
+                My.Settings.WriteMortalities = Me.m_bWriteMortalities
                 My.Settings.Save()
             End If
         End Set
@@ -136,7 +150,7 @@ Public Class cSailCostPlugin
 
 #End Region
 
-#Region "Private Methods"
+#Region " Private Methods "
 
     Private Function GetUI() As frmSailCost
         Dim bHasUI As Boolean = False
@@ -272,7 +286,7 @@ Public Class cSailCostPlugin
     End Sub
 
 
-#End Region ' Private modules
+#End Region ' Private Methods
 
 #Region " Plugin Events "
 
@@ -281,7 +295,7 @@ Public Class cSailCostPlugin
 
             Me.m_core = DirectCast(core, cCore)
             Me.m_strDataPath = My.Settings.DataPath
-            Me.m_bUseSailCostPlugin = My.Settings.UseSailCostPlugin
+            Me.m_bOverwriteEffort = My.Settings.OverwriteEffort
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -292,7 +306,7 @@ Public Class cSailCostPlugin
 
     Public Sub EcospaceInitRunCompleted(ByVal EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
         Try
-            If Not Me.UseSailCostPlugin Then Return
+            If Not Me.OverwriteEffort Then Return
 
             Dim iTs As Integer = m_core.ActiveTimeSeriesDatasetIndex
             Dim CurrentScenario As Integer = iTs
@@ -335,7 +349,7 @@ Public Class cSailCostPlugin
             'Me.ScaleBiomassToEcopathBase(DirectCast(EcospaceDatastructures, cEcospaceDataStructures), iTime)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            If Not Me.UseSailCostPlugin Then
+            If Not Me.OverwriteEffort Then
                 Exit Sub
             End If
 
@@ -479,9 +493,7 @@ Public Class cSailCostPlugin
 
     Public Sub EcospaceRunCompleted(ByVal EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
-        If Not Me.UseSailCostPlugin Then
-            Return
-        End If
+        If Not Me.WriteMortalities Then Return
 
         Try
             Dim TimeSeriesWriter As New cEcospaceTimeSeriesWriter

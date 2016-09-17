@@ -123,17 +123,17 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lblWarning.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 9</value>
+    <value>12, 27</value>
   </data>
   <data name="m_lblWarning.Size" type="System.Drawing.Size, System.Drawing">
-    <value>629, 42</value>
+    <value>633, 42</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_lblWarning.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_lblWarning.Text" xml:space="preserve">
-    <value>Warning: This plugin is only compatable with the GOM EcoOcean model.
+    <value>Warning: LME effort overwriting is only compatable with the GOM EcoOcean model.
 Map cells, groups and input file names are hardwired to the GOM model.</value>
   </data>
   <data name="m_lblWarning.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
@@ -149,19 +149,19 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblWarning.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="m_chkUseSailCost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkUseSailCost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 228</value>
+    <value>15, 247</value>
   </data>
   <data name="m_chkUseSailCost.Size" type="System.Drawing.Size, System.Drawing">
     <value>261, 17</value>
   </data>
   <data name="m_chkUseSailCost.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_chkUseSailCost.Text" xml:space="preserve">
     <value>Use this plug-in to drive fishing effort by LME zone</value>
@@ -176,13 +176,13 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_chkUseSailCost.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="m_lblPath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 64</value>
+    <value>12, 83</value>
   </data>
   <data name="m_lblPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 13</value>
@@ -203,13 +203,13 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_btnChoosePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnChoosePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>569, 59</value>
+    <value>569, 78</value>
   </data>
   <data name="m_btnChoosePath.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -230,13 +230,13 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnChoosePath.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_tbxPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 61</value>
+    <value>75, 80</value>
   </data>
   <data name="m_tbxPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>488, 20</value>
@@ -254,19 +254,19 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxPath.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 89</value>
+    <value>13, 108</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
     <value>&amp;Validation:</value>
@@ -281,31 +281,10 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_lvValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="m_lvValidation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 87</value>
-  </data>
-  <data name="m_lvValidation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>488, 135</value>
-  </data>
-  <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Name" xml:space="preserve">
-    <value>m_lvValidation</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_colDriver.Text" xml:space="preserve">
     <value>Driver</value>
@@ -322,6 +301,120 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
   <data name="m_colFound.Text" xml:space="preserve">
     <value>Found</value>
   </data>
+  <data name="m_lvValidation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 106</value>
+  </data>
+  <data name="m_lvValidation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>488, 135</value>
+  </data>
+  <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Name" xml:space="preserve">
+    <value>m_lvValidation</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_cbUseMortalitiesWriter.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbUseMortalitiesWriter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbUseMortalitiesWriter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 301</value>
+  </data>
+  <data name="m_cbUseMortalitiesWriter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 17</value>
+  </data>
+  <data name="m_cbUseMortalitiesWriter.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_cbUseMortalitiesWriter.Text" xml:space="preserve">
+    <value>Write mortalities time series</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseMortalitiesWriter.Name" xml:space="preserve">
+    <value>m_cbUseMortalitiesWriter</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseMortalitiesWriter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseMortalitiesWriter.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseMortalitiesWriter.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 280</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>632, 18</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+    <value>Mortalities time series</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
+    <value>CEwEHeaderLabel1</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_hdrLMEEffort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrLMEEffort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrLMEEffort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 9</value>
+  </data>
+  <data name="m_hdrLMEEffort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>632, 18</value>
+  </data>
+  <data name="m_hdrLMEEffort.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrLMEEffort.Text" xml:space="preserve">
+    <value>LME effort</value>
+  </data>
+  <data name="m_hdrLMEEffort.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrLMEEffort.Name" xml:space="preserve">
+    <value>m_hdrLMEEffort</value>
+  </data>
+  <data name="&gt;&gt;m_hdrLMEEffort.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrLMEEffort.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrLMEEffort.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -335,7 +428,7 @@ Map cells, groups and input file names are hardwired to the GOM model.</value>
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Global Ocean Model LME effort configuration</value>
+    <value>Global Ocean Model plug-in</value>
   </data>
   <data name="&gt;&gt;m_colDriver.Name" xml:space="preserve">
     <value>m_colDriver</value>
