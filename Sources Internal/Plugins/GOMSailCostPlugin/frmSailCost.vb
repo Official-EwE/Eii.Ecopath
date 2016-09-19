@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,11 +21,12 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports System.Drawing
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
@@ -33,8 +35,8 @@ Public Class frmSailCost
 
 #Region " Private vars "
 
-    Private m_plugin As cSailCostPlugin
-    Private m_bInInit As Boolean
+    Private m_plugin As cSailCostPlugin = Nothing
+    Private m_bInitialized As Boolean = False
 
 #End Region ' Private vars
 
@@ -53,16 +55,16 @@ Public Class frmSailCost
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_bInInit = True
         Try
-            Me.UpdateControls()
             AddHandler Me.m_plugin.OnChanged, AddressOf Me.OnChanged
         Catch ex As Exception
             System.Console.WriteLine("WARNING: GOM LME Configuration interface failed to loaded correctly. Exception " + ex.Message)
         End Try
-        Me.m_bInInit = False
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
+        Me.m_bInitialized = True
+
+        Me.UpdateControls()
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -77,9 +79,8 @@ Public Class frmSailCost
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        ' ToDo: globalize this
+        If Not Me.m_bInitialized Then Return
 
-        Dim bAgree As Boolean = Me.m_cbAgree.Checked
         Dim bConfigOK As Boolean = False
         Dim bActive As Boolean = False
 
@@ -94,7 +95,7 @@ Public Class frmSailCost
 
             Me.m_tbxPath.Text = Me.m_plugin.DataPath
             Me.m_chkUseSailCost.Checked = bActive
-            Me.m_chkUseSailCost.Enabled = bConfigOK And bAgree
+            Me.m_chkUseSailCost.Enabled = bConfigOK
 
             Dim lviEffort As New ListViewItem("Effort")
             lviEffort.SubItems.Add(strEffort)
@@ -109,6 +110,15 @@ Public Class frmSailCost
             Me.m_lvValidation.Items.AddRange(New ListViewItem() {lviCells, lviEffort})
 
             Me.m_lvValidation.ResumeLayout()
+
+            Select Case Me.m_plugin.RunMode
+                Case cSailCostPlugin.eRunMode.Org : Me.m_rbRunModeOrg.Checked = True
+                Case cSailCostPlugin.eRunMode.FixedEffort : Me.m_rbRunModeFixed.Checked = True
+                Case cSailCostPlugin.eRunMode.NoFishing : Me.m_rbRunModeNone.Checked = True
+            End Select
+            Me.m_tbxRunModeFixedYear.Text = CStr(Me.m_plugin.FixedEffortYear)
+
+            Me.BackColor = cSystemUtils.IIF(Me.m_plugin.OverwriteEffort, Color.LightGreen, SystemColors.Control)
 
         Catch ex As Exception
 
@@ -147,34 +157,49 @@ Public Class frmSailCost
 
     End Sub
 
-    Private Sub OnAgreeToggled(sender As Object, e As EventArgs) _
-        Handles m_cbAgree.CheckedChanged
-        If Not Me.m_cbAgree.Checked Then Me.m_plugin.OverwriteEffort = False
-        Me.UpdateControls()
-    End Sub
-
     Private Sub OnUseSailCostToggled(sender As System.Object, e As System.EventArgs) _
         Handles m_chkUseSailCost.CheckedChanged
+
+        If Not Me.m_bInitialized Then Return
         Try
-            If Not Me.m_bInInit Then
-                Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
-            End If
+            Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
         Catch ex As Exception
 
         End Try
         Me.UpdateControls()
+
     End Sub
 
     Private Sub OnUseMortalitiesWriterToggled(sender As Object, e As EventArgs) _
         Handles m_cbUseMortalitiesWriter.CheckedChanged
+
+        If Not Me.m_bInitialized Then Return
         Try
-            If Not Me.m_bInInit Then
-                Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
-            End If
+            Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
         Catch ex As Exception
 
         End Try
         Me.UpdateControls()
+    End Sub
+
+    Private Sub OnRunModeChanged(sender As Object, e As EventArgs) _
+        Handles m_rbRunModeOrg.CheckedChanged, m_rbRunModeFixed.CheckedChanged, m_rbRunModeNone.CheckedChanged
+
+        If Not Me.m_bInitialized Then Return
+        Try
+            Me.m_plugin.RunMode = DirectCast(CInt(DirectCast(sender, Control).Tag), cSailCostPlugin.eRunMode)
+        Catch ex As Exception
+            Debug.Assert(False, "RadioButton tag most likely malformed, please check")
+        End Try
+    End Sub
+
+    Private Sub OnFixedEffortYearChanged(sender As Object, e As EventArgs) Handles m_tbxRunModeFixedYear.TextChanged
+
+        If Not Me.m_bInitialized Then Return
+        Try
+            Integer.TryParse(Me.m_tbxRunModeFixedYear.Text, Me.m_plugin.FixedEffortYear)
+        Catch ex As Exception
+        End Try
     End Sub
 
 #End Region ' Event handlers

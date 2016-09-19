@@ -155,13 +155,13 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblWarning.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>14</value>
   </data>
   <data name="m_chkUseSailCost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkUseSailCost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 228</value>
+    <value>12, 182</value>
   </data>
   <data name="m_chkUseSailCost.Size" type="System.Drawing.Size, System.Drawing">
     <value>261, 17</value>
@@ -182,13 +182,13 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_chkUseSailCost.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>13</value>
   </data>
   <data name="m_lblPath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 103</value>
+    <value>12, 80</value>
   </data>
   <data name="m_lblPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>57, 13</value>
@@ -209,13 +209,13 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>11</value>
   </data>
   <data name="m_btnChoosePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnChoosePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 98</value>
+    <value>570, 75</value>
   </data>
   <data name="m_btnChoosePath.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -236,16 +236,16 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnChoosePath.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>10</value>
   </data>
   <data name="m_tbxPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 100</value>
+    <value>78, 77</value>
   </data>
   <data name="m_tbxPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>488, 20</value>
+    <value>486, 20</value>
   </data>
   <data name="m_tbxPath.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -260,13 +260,13 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxPath.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 132</value>
+    <value>13, 109</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 13</value>
@@ -287,10 +287,31 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="m_lvValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lvValidation.Location" type="System.Drawing.Point, System.Drawing">
+    <value>78, 103</value>
+  </data>
+  <data name="m_lvValidation.Size" type="System.Drawing.Size, System.Drawing">
+    <value>486, 73</value>
+  </data>
+  <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Name" xml:space="preserve">
+    <value>m_lvValidation</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="m_colDriver.Text" xml:space="preserve">
     <value>Driver</value>
@@ -307,27 +328,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_colFound.Text" xml:space="preserve">
     <value>Found</value>
   </data>
-  <data name="m_lvValidation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 126</value>
-  </data>
-  <data name="m_lvValidation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>488, 96</value>
-  </data>
-  <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Name" xml:space="preserve">
-    <value>m_lvValidation</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_cbUseMortalitiesWriter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -335,13 +335,13 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>NoControl</value>
   </data>
   <data name="m_cbUseMortalitiesWriter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 282</value>
+    <value>12, 312</value>
   </data>
   <data name="m_cbUseMortalitiesWriter.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 17</value>
   </data>
   <data name="m_cbUseMortalitiesWriter.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>14</value>
   </data>
   <data name="m_cbUseMortalitiesWriter.Text" xml:space="preserve">
     <value>Write mortalities time series</value>
@@ -356,19 +356,19 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbUseMortalitiesWriter.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>12</value>
   </data>
   <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 261</value>
+    <value>9, 291</value>
   </data>
   <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>632, 18</value>
   </data>
   <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>13</value>
   </data>
   <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
     <value>Mortalities time series</value>
@@ -386,7 +386,7 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="m_hdrLMEEffort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -419,37 +419,142 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrLMEEffort.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
-  <data name="m_cbAgree.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblRunMode.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_cbAgree.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_lblRunMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 215</value>
   </data>
-  <data name="m_cbAgree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 77</value>
+  <data name="m_lblRunMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 13</value>
   </data>
-  <data name="m_cbAgree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 17</value>
+  <data name="m_lblRunMode.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
-  <data name="m_cbAgree.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="m_lblRunMode.Text" xml:space="preserve">
+    <value>&amp;Run mode:</value>
   </data>
-  <data name="m_cbAgree.Text" xml:space="preserve">
-    <value>I know what I'm doing</value>
+  <data name="&gt;&gt;m_lblRunMode.Name" xml:space="preserve">
+    <value>m_lblRunMode</value>
   </data>
-  <data name="&gt;&gt;m_cbAgree.Name" xml:space="preserve">
-    <value>m_cbAgree</value>
+  <data name="&gt;&gt;m_lblRunMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cbAgree.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAgree.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblRunMode.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_cbAgree.ZOrder" xml:space="preserve">
-    <value>8</value>
+  <data name="&gt;&gt;m_lblRunMode.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_rbRunModeOrg.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbRunModeOrg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>78, 213</value>
+  </data>
+  <data name="m_rbRunModeOrg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 17</value>
+  </data>
+  <data name="m_rbRunModeOrg.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_rbRunModeOrg.Text" xml:space="preserve">
+    <value>Original (Global Ocean Model)</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeOrg.Name" xml:space="preserve">
+    <value>m_rbRunModeOrg</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeOrg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeOrg.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeOrg.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_rbRunModeFixed.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbRunModeFixed.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbRunModeFixed.Location" type="System.Drawing.Point, System.Drawing">
+    <value>78, 236</value>
+  </data>
+  <data name="m_rbRunModeFixed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 17</value>
+  </data>
+  <data name="m_rbRunModeFixed.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_rbRunModeFixed.Text" xml:space="preserve">
+    <value>Constant effort after:</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeFixed.Name" xml:space="preserve">
+    <value>m_rbRunModeFixed</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeFixed.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeFixed.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeFixed.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tbxRunModeFixedYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>216, 235</value>
+  </data>
+  <data name="m_tbxRunModeFixedYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 20</value>
+  </data>
+  <data name="m_tbxRunModeFixedYear.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_tbxRunModeFixedYear.Name" xml:space="preserve">
+    <value>m_tbxRunModeFixedYear</value>
+  </data>
+  <data name="&gt;&gt;m_tbxRunModeFixedYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxRunModeFixedYear.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxRunModeFixedYear.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_rbRunModeNone.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbRunModeNone.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbRunModeNone.Location" type="System.Drawing.Point, System.Drawing">
+    <value>78, 259</value>
+  </data>
+  <data name="m_rbRunModeNone.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="m_rbRunModeNone.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_rbRunModeNone.Text" xml:space="preserve">
+    <value>No fishing</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeNone.Name" xml:space="preserve">
+    <value>m_rbRunModeNone</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeNone.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeNone.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbRunModeNone.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

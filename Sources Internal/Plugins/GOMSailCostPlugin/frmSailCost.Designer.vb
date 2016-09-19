@@ -56,7 +56,11 @@ Partial Class frmSailCost
         Me.m_cbUseMortalitiesWriter = New System.Windows.Forms.CheckBox()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrLMEEffort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_cbAgree = New System.Windows.Forms.CheckBox()
+        Me.m_lblRunMode = New System.Windows.Forms.Label()
+        Me.m_rbRunModeOrg = New System.Windows.Forms.RadioButton()
+        Me.m_rbRunModeFixed = New System.Windows.Forms.RadioButton()
+        Me.m_tbxRunModeFixedYear = New System.Windows.Forms.TextBox()
+        Me.m_rbRunModeNone = New System.Windows.Forms.RadioButton()
         Me.SuspendLayout()
         '
         'm_lblWarning
@@ -139,17 +143,51 @@ Partial Class frmSailCost
         Me.m_hdrLMEEffort.IsCollapsed = False
         Me.m_hdrLMEEffort.Name = "m_hdrLMEEffort"
         '
-        'm_cbAgree
+        'm_lblRunMode
         '
-        resources.ApplyResources(Me.m_cbAgree, "m_cbAgree")
-        Me.m_cbAgree.Name = "m_cbAgree"
-        Me.m_cbAgree.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_lblRunMode, "m_lblRunMode")
+        Me.m_lblRunMode.Name = "m_lblRunMode"
+        '
+        'm_rbRunModeOrg
+        '
+        resources.ApplyResources(Me.m_rbRunModeOrg, "m_rbRunModeOrg")
+        Me.m_rbRunModeOrg.Checked = True
+        Me.m_rbRunModeOrg.Name = "m_rbRunModeOrg"
+        Me.m_rbRunModeOrg.TabStop = True
+        Me.m_rbRunModeOrg.Tag = "0"
+        Me.m_rbRunModeOrg.UseVisualStyleBackColor = True
+        '
+        'm_rbRunModeFixed
+        '
+        resources.ApplyResources(Me.m_rbRunModeFixed, "m_rbRunModeFixed")
+        Me.m_rbRunModeFixed.Name = "m_rbRunModeFixed"
+        Me.m_rbRunModeFixed.TabStop = True
+        Me.m_rbRunModeFixed.Tag = "1"
+        Me.m_rbRunModeFixed.UseVisualStyleBackColor = True
+        '
+        'm_tbxRunModeFixedYear
+        '
+        resources.ApplyResources(Me.m_tbxRunModeFixedYear, "m_tbxRunModeFixedYear")
+        Me.m_tbxRunModeFixedYear.Name = "m_tbxRunModeFixedYear"
+        '
+        'm_rbRunModeNone
+        '
+        resources.ApplyResources(Me.m_rbRunModeNone, "m_rbRunModeNone")
+        Me.m_rbRunModeNone.Name = "m_rbRunModeNone"
+        Me.m_rbRunModeNone.TabStop = True
+        Me.m_rbRunModeNone.Tag = "2"
+        Me.m_rbRunModeNone.UseVisualStyleBackColor = True
         '
         'frmSailCost
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_tbxRunModeFixedYear)
+        Me.Controls.Add(Me.m_rbRunModeNone)
+        Me.Controls.Add(Me.m_rbRunModeFixed)
+        Me.Controls.Add(Me.m_rbRunModeOrg)
+        Me.Controls.Add(Me.m_lblRunMode)
         Me.Controls.Add(Me.m_hdrLMEEffort)
         Me.Controls.Add(Me.CEwEHeaderLabel1)
         Me.Controls.Add(Me.m_lvValidation)
@@ -158,7 +196,6 @@ Partial Class frmSailCost
         Me.Controls.Add(Me.m_btnChoosePath)
         Me.Controls.Add(Me.m_lblPath)
         Me.Controls.Add(Me.m_cbUseMortalitiesWriter)
-        Me.Controls.Add(Me.m_cbAgree)
         Me.Controls.Add(Me.m_chkUseSailCost)
         Me.Controls.Add(Me.m_lblWarning)
         Me.Name = "frmSailCost"
@@ -181,5 +218,9 @@ Partial Class frmSailCost
     Private WithEvents m_cbUseMortalitiesWriter As Windows.Forms.CheckBox
     Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrLMEEffort As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_cbAgree As Windows.Forms.CheckBox
+    Private WithEvents m_lblRunMode As Windows.Forms.Label
+    Friend WithEvents m_rbRunModeOrg As Windows.Forms.RadioButton
+    Friend WithEvents m_rbRunModeFixed As Windows.Forms.RadioButton
+    Friend WithEvents m_tbxRunModeFixedYear As Windows.Forms.TextBox
+    Private WithEvents m_rbRunModeNone As Windows.Forms.RadioButton
 End Class

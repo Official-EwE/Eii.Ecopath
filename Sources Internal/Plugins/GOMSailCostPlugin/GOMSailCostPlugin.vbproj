@@ -93,9 +93,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Ecopath6\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    <Reference Include="SourceGrid2">
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -104,7 +103,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\..\..\Ecopath6\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

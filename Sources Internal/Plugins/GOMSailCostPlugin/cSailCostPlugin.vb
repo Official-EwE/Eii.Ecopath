@@ -36,6 +36,12 @@ Public Class cSailCostPlugin
     Implements IEcospaceEndTimestepPlugin
     Implements IEcospaceRunCompletedPlugin
 
+    Public Enum eRunMode
+        Org = 0
+        FixedEffort = 1
+        NoFishing = 2
+    End Enum
+
 #Region " Private variables "
 
     Private m_core As cCore
@@ -53,7 +59,7 @@ Public Class cSailCostPlugin
 
     Private m_SumArea As Double = 0
     Private m_nFleets As Integer = 14
-    Private m_nYears As Integer = 101 ' ToDo: extend for FishMIP
+    Private m_nYears As Integer = 101
 
     Private m_strDataPath As String
     Private m_bWriteMortalities As Boolean = False
@@ -74,7 +80,7 @@ Public Class cSailCostPlugin
 
 #End Region ' Events
 
-#Region "Public variables and Properties"
+#Region " Public bits "
 
     Public ReadOnly Property IsInputdataValid() As Boolean
         Get
@@ -109,6 +115,10 @@ Public Class cSailCostPlugin
 
     Public Property OverwriteEffort As Boolean = False
 
+    Public Property RunMode As eRunMode = eRunMode.Org
+
+    Public Property FixedEffortYear As Integer = 2006
+
     Public Property WriteMortalities As Boolean
         Get
             Return Me.m_bWriteMortalities
@@ -135,7 +145,7 @@ Public Class cSailCostPlugin
         End Set
     End Property
 
-#End Region
+#End Region ' Public bits
 
 #Region " Private Methods "
 
@@ -241,7 +251,7 @@ Public Class cSailCostPlugin
                     Dim iLME As Integer = CInt(colVal(0))
                     Dim iFl As Integer = CInt(colVal(1))
                     If iFl <= 11 Then
-                        For i As Integer = 1 To m_nYears   '=2006 - 1949
+                        For i As Integer = 1 To Math.Min(m_nYears, colVal.Length - 2)   '=2006 - 1949
                             RelEffortLME(iLME, iFl, i) = CSng(colVal(i + 1))
                         Next
                     End If
@@ -337,25 +347,50 @@ Public Class cSailCostPlugin
             'Me.ScaleBiomassToEcopathBase(DirectCast(EcospaceDatastructures, cEcospaceDataStructures), iTime)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            If Not Me.OverwriteEffort Then
-                Exit Sub
-            End If
+            If Not Me.OverwriteEffort Then Return
 
             'Only load the data when the year has changed
             'This let the core account for running a different number of timesteps per year
             If m_lastYear <> m_ecospacedata.YearNow Then
-                Me.m_lastYear = m_ecospacedata.YearNow
-                Dim iYr As Integer = m_ecospacedata.YearNow ' iTime / 12 + 1
-                'Repeat the last year if we have run pass the end of the data
-                'If iYr > noYears Then iYr = noYears
 
+                Me.m_lastYear = m_ecospacedata.YearNow
+
+                Dim iCurrtYear As Integer = Me.m_ecospacedata.YearNow
+                Dim iFixedYear As Integer = Me.FixedEffortYear
+                Dim iYr As Integer = 0
                 Dim AnnualIncrease As Double = 1.02
                 Dim EffortCreep As Double = 1
-                If iYr < 57 Then
-                    EffortCreep = AnnualIncrease ^ (iYr - 1)
-                Else
-                    EffortCreep = AnnualIncrease ^ (56)
-                End If
+
+                ' Make years relative to scenario start year
+                If (iCurrtYear > 1900) Then iCurrtYear -= 1950
+                If (iFixedYear > 1900) Then iFixedYear -= 1950
+
+                ' Prevent from running past end of the data
+                iCurrtYear = Math.Min(101, iCurrtYear)
+
+                Select Case Me.RunMode
+                    Case eRunMode.FixedEffort
+                        ' Fix the effort at the given year, e.g. repeat the last year if we have run pass the end of the data
+                        iYr = Math.Min(iCurrtYear, iFixedYear) ' iTime / 12 + 1
+                        If iYr < 57 Then
+                            EffortCreep = AnnualIncrease ^ (iYr - 1)
+                        Else
+                            EffortCreep = AnnualIncrease ^ (56)
+                        End If
+
+                    Case eRunMode.NoFishing
+                        ' No fishing whatsoever - use a 0 multiplier ;)
+                        iYr = 1
+                        EffortCreep = 0
+
+                    Case eRunMode.Org
+                        iYr = iCurrtYear ' iTime / 12 + 1
+                        If iYr < 57 Then
+                            EffortCreep = AnnualIncrease ^ (iYr - 1)
+                        Else
+                            EffortCreep = AnnualIncrease ^ (56)
+                        End If
+                End Select
 
                 If m_ecospacedata.YearNow = 1 Or m_ecospacedata.YearNow = 40 Or m_ecospacedata.YearNow = 57 Then SetCellsAsLMEs(m_ecospacedata.YearNow)
 
@@ -468,8 +503,7 @@ Public Class cSailCostPlugin
             'row = (CC - 1) \ 720 + 1
             Dim iR As Integer = (iSeq - 1) \ m_ecospacedata.InCol + 1
             Dim iC As Integer = (iSeq - 1) Mod m_ecospacedata.InCol + 1
-            'ds.MPA(iR, iC) = 1
-            Debug.Assert(False, "This code needs reviewing because of overlapping MPA changes.")
+            Me.m_ecospacedata.MPA(1)(iR, iC) = 1
             numbers.RemoveAt(RandomIndex)
         Next
 
