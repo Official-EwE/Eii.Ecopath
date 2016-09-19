@@ -381,7 +381,7 @@ Public Class cFishMIPResultWriterPlugin
 
     Public Overrides ReadOnly Property DisplayName As String
         Get
-            Return "FishMIP output writer"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
