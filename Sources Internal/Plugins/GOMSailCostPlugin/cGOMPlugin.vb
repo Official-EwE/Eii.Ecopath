@@ -27,7 +27,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 
-Public Class cSailCostPlugin
+Public Class cGOMPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
     Implements IEcopathRunInitializedPlugin
@@ -65,7 +65,7 @@ Public Class cSailCostPlugin
     Private m_bWriteMortalities As Boolean = False
 
     Private m_uic As cUIContext
-    Private m_frmUI As frmSailCost
+    Private m_frmUI As frmGOMPlugin
 
     Private AreaFishedLME(,) As Single
     Private m_lastYear As Integer
@@ -149,7 +149,7 @@ Public Class cSailCostPlugin
 
 #Region " Private Methods "
 
-    Private Function GetUI() As frmSailCost
+    Private Function GetUI() As frmGOMPlugin
         Dim bHasUI As Boolean = False
 
         If (Me.m_frmUI IsNot Nothing) Then
@@ -157,7 +157,7 @@ Public Class cSailCostPlugin
         End If
 
         If Not bHasUI Then
-            Me.m_frmUI = New frmSailCost(Me, Me.m_uic)
+            Me.m_frmUI = New frmGOMPlugin(Me, Me.m_uic)
             Me.m_frmUI.UIContext = Me.m_uic
         End If
 
@@ -598,7 +598,7 @@ Public Class cSailCostPlugin
 
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "GOM effort by LME."
+            Return My.Resources.CAPTION
         End Get
     End Property
 

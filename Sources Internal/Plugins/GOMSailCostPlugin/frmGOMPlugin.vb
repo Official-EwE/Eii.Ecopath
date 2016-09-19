@@ -31,16 +31,16 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
-Public Class frmSailCost
+Public Class frmGOMPlugin
 
 #Region " Private vars "
 
-    Private m_plugin As cSailCostPlugin = Nothing
+    Private m_plugin As cGOMPlugin = Nothing
     Private m_bInitialized As Boolean = False
 
 #End Region ' Private vars
 
-    Public Sub New(plugin As cSailCostPlugin, uic As cUIContext)
+    Public Sub New(plugin As cGOMPlugin, uic As cUIContext)
         MyBase.New()
 
         Me.m_plugin = plugin
@@ -60,6 +60,9 @@ Public Class frmSailCost
         Catch ex As Exception
             System.Console.WriteLine("WARNING: GOM LME Configuration interface failed to loaded correctly. Exception " + ex.Message)
         End Try
+
+        Me.Text = My.Resources.CAPTION
+        Me.TabText = Me.Text
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.TimeSeries}
         Me.m_bInitialized = True
@@ -112,9 +115,9 @@ Public Class frmSailCost
             Me.m_lvValidation.ResumeLayout()
 
             Select Case Me.m_plugin.RunMode
-                Case cSailCostPlugin.eRunMode.Org : Me.m_rbRunModeOrg.Checked = True
-                Case cSailCostPlugin.eRunMode.FixedEffort : Me.m_rbRunModeFixed.Checked = True
-                Case cSailCostPlugin.eRunMode.NoFishing : Me.m_rbRunModeNone.Checked = True
+                Case cGOMPlugin.eRunMode.Org : Me.m_rbRunModeOrg.Checked = True
+                Case cGOMPlugin.eRunMode.FixedEffort : Me.m_rbRunModeFixed.Checked = True
+                Case cGOMPlugin.eRunMode.NoFishing : Me.m_rbRunModeNone.Checked = True
             End Select
             Me.m_tbxRunModeFixedYear.Text = CStr(Me.m_plugin.FixedEffortYear)
 
@@ -187,7 +190,7 @@ Public Class frmSailCost
 
         If Not Me.m_bInitialized Then Return
         Try
-            Me.m_plugin.RunMode = DirectCast(CInt(DirectCast(sender, Control).Tag), cSailCostPlugin.eRunMode)
+            Me.m_plugin.RunMode = DirectCast(CInt(DirectCast(sender, Control).Tag), cGOMPlugin.eRunMode)
         Catch ex As Exception
             Debug.Assert(False, "RadioButton tag most likely malformed, please check")
         End Try

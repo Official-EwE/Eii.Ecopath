@@ -96,7 +96,7 @@ Public Class cFishMIPResultWriterPlugin
 
     Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
         Get
-            Return "Configure FishMIP output writer"
+            Return My.Resources.CAPTION
         End Get
     End Property
 
@@ -124,6 +124,39 @@ Public Class cFishMIPResultWriterPlugin
 
     End Sub
 
+    Public Sub InitEcoOcean()
+
+        Dim core As cCore = Me.m_uic.Core
+        Dim smalluns As Integer() = New Integer() {1, 4, 7, 10, 13, 16}
+        For Each cat As cFishMIPResultWriterPlugin.eResultTypes In [Enum].GetValues(GetType(cFishMIPResultWriterPlugin.eResultTypes))
+
+            For igroup As Integer = 1 To core.nGroups
+
+                Dim bChecked As Boolean = False
+                Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(igroup)
+                Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(igroup)
+                Dim name As String = grp.Name.ToLower()
+
+                Select Case cat
+                    Case cFishMIPResultWriterPlugin.eResultTypes.tsb
+                        bChecked = grp.IsProducer() Or grp.IsConsumer()
+                    Case cFishMIPResultWriterPlugin.eResultTypes.tcb
+                        bChecked = grp.IsConsumer() And grpOut.TTLX() > 1
+                    Case cFishMIPResultWriterPlugin.eResultTypes.b10cm
+                        bChecked = grp.Index <= 24
+                    Case cFishMIPResultWriterPlugin.eResultTypes.b30cm
+                        bChecked = grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
+                    Case cFishMIPResultWriterPlugin.eResultTypes.tc
+                        bChecked = grp.IsFished()
+                End Select
+
+                Me.Configuration(igroup, cat) = bChecked
+            Next
+        Next
+
+        Me.ConfigChanged()
+
+    End Sub
     Public Sub ConfigChanged()
         Me.SaveConfig()
     End Sub

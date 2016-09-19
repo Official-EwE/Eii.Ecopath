@@ -19,7 +19,7 @@
 '
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmSailCost
+Partial Class frmGOMPlugin
     Inherits ScientificInterfaceShared.Forms.frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -42,7 +42,7 @@ Partial Class frmSailCost
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSailCost))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmGOMPlugin))
         Me.m_lblWarning = New System.Windows.Forms.Label()
         Me.m_chkUseSailCost = New System.Windows.Forms.CheckBox()
         Me.m_lblPath = New System.Windows.Forms.Label()
@@ -178,7 +178,7 @@ Partial Class frmSailCost
         Me.m_rbRunModeNone.Tag = "2"
         Me.m_rbRunModeNone.UseVisualStyleBackColor = True
         '
-        'frmSailCost
+        'frmGOMPlugin
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -198,7 +198,7 @@ Partial Class frmSailCost
         Me.Controls.Add(Me.m_cbUseMortalitiesWriter)
         Me.Controls.Add(Me.m_chkUseSailCost)
         Me.Controls.Add(Me.m_lblWarning)
-        Me.Name = "frmSailCost"
+        Me.Name = "frmGOMPlugin"
         Me.ShowInTaskbar = False
         Me.TabText = ""
         Me.ResumeLayout(False)

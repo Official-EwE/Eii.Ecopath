@@ -43,23 +43,38 @@ Partial Class frmUI
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUI))
-        Me.m_ts = New cEwEToolstrip()
-        Me.m_tsbnPopulate = New System.Windows.Forms.ToolStripButton()
+        Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsddPresents = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.m_tsmiGOM = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_grid = New FishMIRresultWriter.gridUI()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_ts
         '
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPopulate})
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAutosave, Me.m_tsddPresents})
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'm_tsbnPopulate
+        'm_tsbnAutosave
         '
-        Me.m_tsbnPopulate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.m_tsbnPopulate, "m_tsbnPopulate")
-        Me.m_tsbnPopulate.Name = "m_tsbnPopulate"
+        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
+        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
+        '
+        'm_tsddPresents
+        '
+        Me.m_tsddPresents.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tsddPresents.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiGOM})
+        resources.ApplyResources(Me.m_tsddPresents, "m_tsddPresents")
+        Me.m_tsddPresents.Name = "m_tsddPresents"
+        '
+        'm_tsmiGOM
+        '
+        Me.m_tsmiGOM.Name = "m_tsmiGOM"
+        resources.ApplyResources(Me.m_tsmiGOM, "m_tsmiGOM")
         '
         'm_grid
         '
@@ -112,6 +127,8 @@ Partial Class frmUI
     End Sub
 
     Private WithEvents m_ts As cEwEToolstrip
-    Private WithEvents m_tsbnPopulate As Windows.Forms.ToolStripButton
     Private WithEvents m_grid As gridUI
+    Private WithEvents m_tsddPresents As Windows.Forms.ToolStripDropDownButton
+    Private WithEvents m_tsmiGOM As Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsbnAutosave As Windows.Forms.ToolStripButton
 End Class

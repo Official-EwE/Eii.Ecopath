@@ -242,10 +242,10 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 77</value>
+    <value>82, 77</value>
   </data>
   <data name="m_tbxPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>486, 20</value>
+    <value>482, 20</value>
   </data>
   <data name="m_tbxPath.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -292,11 +292,26 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   <data name="m_lvValidation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_colDriver.Text" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="m_colDriver.Width" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="m_colFile.Text" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="m_colFile.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="m_colFound.Text" xml:space="preserve">
+    <value>Found</value>
+  </data>
   <data name="m_lvValidation.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 103</value>
+    <value>82, 103</value>
   </data>
   <data name="m_lvValidation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>486, 73</value>
+    <value>482, 73</value>
   </data>
   <data name="m_lvValidation.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -312,21 +327,6 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
   </data>
   <data name="&gt;&gt;m_lvValidation.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="m_colDriver.Text" xml:space="preserve">
-    <value>Driver</value>
-  </data>
-  <data name="m_colDriver.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="m_colFile.Text" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="m_colFile.Width" type="System.Int32, mscorlib">
-    <value>120</value>
-  </data>
-  <data name="m_colFound.Text" xml:space="preserve">
-    <value>Found</value>
   </data>
   <data name="m_cbUseMortalitiesWriter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -428,13 +428,13 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>13, 215</value>
   </data>
   <data name="m_lblRunMode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 13</value>
+    <value>63, 13</value>
   </data>
   <data name="m_lblRunMode.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="m_lblRunMode.Text" xml:space="preserve">
-    <value>&amp;Run mode:</value>
+    <value>&amp;Fffort mode:</value>
   </data>
   <data name="&gt;&gt;m_lblRunMode.Name" xml:space="preserve">
     <value>m_lblRunMode</value>
@@ -452,7 +452,7 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>True</value>
   </data>
   <data name="m_rbRunModeOrg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 213</value>
+    <value>82, 213</value>
   </data>
   <data name="m_rbRunModeOrg.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 17</value>
@@ -482,7 +482,7 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>NoControl</value>
   </data>
   <data name="m_rbRunModeFixed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 236</value>
+    <value>82, 236</value>
   </data>
   <data name="m_rbRunModeFixed.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 17</value>
@@ -533,7 +533,7 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>NoControl</value>
   </data>
   <data name="m_rbRunModeNone.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 259</value>
+    <value>82, 259</value>
   </data>
   <data name="m_rbRunModeNone.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 17</value>
@@ -569,7 +569,7 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Global Ocean Model plug-in</value>
+    <value>&lt;title&gt;</value>
   </data>
   <data name="&gt;&gt;m_colDriver.Name" xml:space="preserve">
     <value>m_colDriver</value>
@@ -590,7 +590,7 @@ Map cells, and groups are hard-wired to the GOM EcoOcean model.</value>
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmSailCost</value>
+    <value>frmGOMPlugin</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
