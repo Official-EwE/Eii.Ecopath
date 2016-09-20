@@ -3501,8 +3501,10 @@ Public Class cEcoSpace
             Next j
         Next i
 
-        'Me.debugDumpFlowRates(Bcw, 23, "SetMovementParameters b")
-        'Me.debugDumpFlowRates(C, 23, "SetMovementParameters c")
+        'Me.debugDumpFlowRates(Bcw, 24, "SetMovementParameters b")
+        'Me.debugDumpFlowRates(C, 24, "SetMovementParameters c")
+        'Me.debugDumpFlowRates(d, 24, "SetMovementParameters d")
+        'Me.debugDumpFlowRates(e, 24, "SetMovementParameters e")
 
         If m_tracerData.EcoSpaceConSimOn Then
             'set movement rates for physical contaminant concentration to

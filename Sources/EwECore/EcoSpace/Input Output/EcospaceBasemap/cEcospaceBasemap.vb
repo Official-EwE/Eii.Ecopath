@@ -85,13 +85,13 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' Latitude (top-left coord of layer)
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(-90.0F, 90.0F, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             ' Longitude (top-left coord of layer)
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.Longitude, eStatusFlags.Null, eValueTypes.Sng,
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)

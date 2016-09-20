@@ -13957,6 +13957,13 @@ Public Class cCore
                 Me.m_publisher.AddMessage(New cMessage("", eMessageType.DataModified,
                              eCoreComponentType.MSE, eMessageImportance.Maintenance, eDataTypes.MSEGroupInput))
 
+            Case eDataTypes.EcospaceBasemap
+
+                If value.varName = eVarNameFlags.Latitude Then
+                    Me.m_EcoSpaceData.CalculateCellWidth()
+                End If
+
+
 
         End Select
 
