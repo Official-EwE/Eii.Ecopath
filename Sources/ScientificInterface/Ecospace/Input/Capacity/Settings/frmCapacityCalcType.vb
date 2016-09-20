@@ -90,21 +90,21 @@ Namespace Ecospace
 
             If (Not Me.m_bDirty) Then Return
 
-            Dim iNone As Integer = 0
+            'Dim iNone As Integer = 0
             Dim iHab As Integer = 0
             Dim iCap As Integer = 0
             Dim iBoth As Integer = 0
 
             For Each prop As cProperty In Me.m_lProps
                 Select Case DirectCast(prop.GetValue, eEcospaceCapacityCalType)
-                    Case eEcospaceCapacityCalType.None : iNone += 1
+                    'Case eEcospaceCapacityCalType.None : iNone += 1
                     Case eEcospaceCapacityCalType.EnvResponses : iCap += 1
                     Case eEcospaceCapacityCalType.Habitat : iHab += 1
                     Case eEcospaceCapacityCalType.Both : iBoth += 1
                 End Select
             Next
 
-            Me.m_tsbnNone.Checked = (iNone = Me.Core.nLivingGroups)
+            'Me.m_tsbnNone.Checked = (iNone = Me.Core.nLivingGroups)
             Me.m_tsbnHabitats.Checked = (iHab = Me.Core.nLivingGroups)
             Me.m_tsbnEnvResponses.Checked = (iCap = Me.Core.nLivingGroups)
             Me.m_tsbnBoth.Checked = (iBoth = Me.Core.nLivingGroups)
@@ -117,16 +117,16 @@ Namespace Ecospace
 
 #Region " Events "
 
-        Private Sub OnUseOnlyInput(sender As Object, e As EventArgs) _
-            Handles m_tsbnNone.Click
+        'Private Sub OnUseOnlyInput(sender As Object, e As EventArgs) _
+        '    Handles m_tsbnNone.Click
 
-            Try
-                Me.SetAllTo(eEcospaceCapacityCalType.None)
-            Catch ex As Exception
-                cLog.Write(ex, "frmCapacityCalcType.OnUseOnlyInput")
-            End Try
+        '    Try
+        '        Me.SetAllTo(eEcospaceCapacityCalType.None)
+        '    Catch ex As Exception
+        '        cLog.Write(ex, "frmCapacityCalcType.OnUseOnlyInput")
+        '    End Try
 
-        End Sub
+        'End Sub
 
         Private Sub OnUseOnlyHabitat(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnHabitats.Click

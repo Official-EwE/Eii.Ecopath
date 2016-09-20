@@ -2653,6 +2653,57 @@ Public Class cCore
     ''' </summary>
     ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
     ''' to access this setting for.</param>
+    ''' <remarks>This should be the default getter/setter</remarks>
+    ''' -----------------------------------------------------------------------
+    Public Property Autosave(savetype As eAutosaveTypes, format As String) As Boolean
+        Get
+            If (String.IsNullOrWhiteSpace(format)) Then Return Me.Autosave(savetype)
+
+            Dim fmt As String = Me.m_settings.AutosaveFormat(savetype)
+            Dim bts As String() = fmt.Split(";"c)
+            fmt = ""
+            For i As Integer = 0 To bts.Count - 1
+                If (bts(i) = format) Then Return True
+            Next
+            Return False
+        End Get
+        Set(value As Boolean)
+            If (String.IsNullOrWhiteSpace(format)) Then
+                Me.Autosave(savetype) = value
+            Else
+                Dim fmt As String = Me.m_settings.AutosaveFormat(savetype)
+
+                If (value = True) Then
+                    If Not fmt.Contains(format) Then
+                        If Not String.IsNullOrWhiteSpace(fmt) Then fmt = fmt & ";"c
+                        fmt = fmt & format
+                    End If
+                    ' Just make sure
+                    Me.Autosave(savetype) = True
+                Else
+                    Dim bts As String() = fmt.Split(";"c)
+                    fmt = ";"
+                    For i As Integer = 0 To bts.Count - 1
+                        If (bts(i) <> format) Then
+                            fmt = fmt & bts(i) & ";"c
+                        End If
+                    Next
+                End If
+                Me.m_settings.AutosaveFormat(savetype) = fmt
+            End If
+
+            Me.OnSettingsChanged()
+        End Set
+
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether a <see cref="eAutosaveTypes">auto-save capable component</see>
+    ''' is allowed to auto-save.
+    ''' </summary>
+    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
+    ''' to access this setting for.</param>
     ''' -----------------------------------------------------------------------
     Public Property Autosave(savetype As eAutosaveTypes) As Boolean
         Get
@@ -6093,7 +6144,7 @@ Public Class cCore
             Select Case grp.CapacityCalculationType
                 Case eEcospaceCapacityCalType.Habitat, eEcospaceCapacityCalType.Both
                     grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
-                Case eEcospaceCapacityCalType.EnvResponses, eEcospaceCapacityCalType.None
+                Case eEcospaceCapacityCalType.EnvResponses ' , eEcospaceCapacityCalType.None
                     grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
                 Case Else
                     Debug.Assert(False)
