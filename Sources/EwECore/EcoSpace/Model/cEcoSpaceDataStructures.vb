@@ -1924,17 +1924,11 @@ Public Class cEcospaceDataStructures
                 PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
+            'Populate the Width() array
+            Me.CalculateCellWidth()
+
             For i = 1 To InRow
 
-                'jb 28-Nov-2013 find width for the center of the cell
-                If (Me.AssumeSquareCells) Then
-                    Width(i) = 1
-                Else
-                    'half a cell height in degrees 
-                    Dim Lat As Single = Lat1 - Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
-                    Width(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
-                End If
 
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
@@ -1961,6 +1955,29 @@ Public Class cEcospaceDataStructures
             Debug.Assert(False, Me.ToString & ".ReDimMapDims() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".ReDimMapDims() Error: " & ex.Message)
         End Try
+
+    End Sub
+
+    Friend Sub CalculateCellWidth()
+
+        Dim halfcell As Single = Me.CellLength / 2 / (60 * 1.852F)
+        Dim dtLat As Single
+        For i As Integer = 1 To InRow
+
+            dtLat = Me.CellLength * (i - 1) / (60 * 1.852F) - halfcell
+            'System.Console.WriteLine((Lat1 - dtLat).ToString + ", ")
+
+            'jb 28-Nov-2013 find width for the center of the cell
+            If (Me.AssumeSquareCells) Then
+                Width(i) = 1
+            Else
+                'half a cell height in degrees 
+                Dim Lat As Single = Lat1 - dtLat
+                Width(i) = CSng(Math.Cos(Lat / 90.0 * Math.PI / 2.0))
+            End If
+
+        Next i
+
 
     End Sub
 
