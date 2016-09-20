@@ -46,7 +46,7 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index
             Name
-            None
+            'None
             Habitat
             EnvDrivers
             Both
@@ -73,7 +73,7 @@ Namespace Ecospace
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.None) = New EwEColumnHeaderCell("None")
+            'Me(0, eColumnTypes.None) = New EwEColumnHeaderCell("None")
             Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
             Me(0, eColumnTypes.EnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
             Me(0, eColumnTypes.Both) = New EwEColumnHeaderCell("Both")
@@ -90,8 +90,8 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.Habitat) = New EwECheckboxCell(False)
                 Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(EwEEditHandler)
 
-                Me(iGroup, eColumnTypes.None) = New EwECheckboxCell(False)
-                Me(iGroup, eColumnTypes.None).Behaviors.Add(EwEEditHandler)
+                'Me(iGroup, eColumnTypes.None) = New EwECheckboxCell(False)
+                'Me(iGroup, eColumnTypes.None).Behaviors.Add(EwEEditHandler)
 
                 Me(iGroup, eColumnTypes.EnvDrivers) = New EwECheckboxCell(False)
                 Me(iGroup, eColumnTypes.EnvDrivers).Behaviors.Add(EwEEditHandler)
@@ -131,8 +131,8 @@ Namespace Ecospace
                 Me.m_bInUpdate = True
                 Try
                     Select Case DirectCast(p.Column, eColumnTypes)
-                        Case eColumnTypes.None
-                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.None)
+                        'Case eColumnTypes.None
+                        '    If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.None)
 
                         Case eColumnTypes.Habitat
                             If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.Habitat)
@@ -166,8 +166,8 @@ Namespace Ecospace
 
             Dim iGroup As Integer = grp.Index
 
-            Me(iGroup, eColumnTypes.None).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.None)
-            Me.InvalidateCell(Me(iGroup, eColumnTypes.None))
+            'Me(iGroup, eColumnTypes.None).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.None)
+            'Me.InvalidateCell(Me(iGroup, eColumnTypes.None))
 
             Me(iGroup, eColumnTypes.Habitat).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
             Me.InvalidateCell(Me(iGroup, eColumnTypes.Habitat))

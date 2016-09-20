@@ -115,8 +115,7 @@ Public Class gridTimeSeries
 
             Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(ts.Index))
 
-            cell = New SourceGrid2.Cells.Real.Cell
-            cell.Value = ts
+            cell = New EwECell(ts, cStyleGuide.eStyleFlags.NotEditable)
             cell.VisualModel = New cVisualModelThumbnail(Me.Handler)
             Me(eRowType.Thumbnail, i + 1) = cell
 
