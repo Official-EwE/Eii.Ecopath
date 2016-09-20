@@ -367,49 +367,50 @@ Namespace Controls.EwEGrid
 
             ' Iterate through cells
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
-
-                If cell.DataModel.StandardValuesExclusive Then
-                    items = cell.DataModel.StandardValues
-                    bIsStandardValuesExclusive = True
-                End If
-
-                ' Is this cell editable?
-                If cell.DataModel.EnableEdit Then
-                    ' #Yes: explore the variable this cell represents by checking an attached property
-                    ' Is a property cell?
-                    If TypeOf cell Is PropertyCell Then
-                        ' #Yes: get the property
-                        Dim p As cProperty = DirectCast(cell, PropertyCell).GetProperty()
-                        ' Does this property refer to a variable other than found earlier?
-                        If ((vn <> eVarNameFlags.NotSet) And (p.VarName <> vn)) Then
-                            ' #Yes: this is a mixed selection.
-                            bIsMixedSelection = True
-                        End If
-
-                        ' Does this property hold a value other than found earlier?
-                        If (objValue IsNot Nothing) Then
-                            If (Not objValue.Equals(p.GetValue())) Then
-                                ' #Yes: this is mixed value
-                                bIsMixedValue = True
-                            End If
-                        End If
-
-                        ' Update varname
-                        vn = p.VarName
-                        ' Update value
-                        objValue = p.GetValue()
-                    Else
-                        ' Does this property hold a value other than found earlier?
-                        If (objValue IsNot Nothing) Then
-                            If (Not objValue.Equals(cell.Value)) Then
-                                ' #Yes: this is mixed value
-                                bIsMixedValue = True
-                            End If
-                        End If
-                        objValue = cell.Value
+                If (cell.DataModel IsNot Nothing) Then
+                    If cell.DataModel.StandardValuesExclusive Then
+                        items = cell.DataModel.StandardValues
+                        bIsStandardValuesExclusive = True
                     End If
-                    ' There was at least one editable cell
-                    bHasEditableCells = True
+
+                    ' Is this cell editable?
+                    If cell.DataModel.EnableEdit Then
+                        ' #Yes: explore the variable this cell represents by checking an attached property
+                        ' Is a property cell?
+                        If TypeOf cell Is PropertyCell Then
+                            ' #Yes: get the property
+                            Dim p As cProperty = DirectCast(cell, PropertyCell).GetProperty()
+                            ' Does this property refer to a variable other than found earlier?
+                            If ((vn <> eVarNameFlags.NotSet) And (p.VarName <> vn)) Then
+                                ' #Yes: this is a mixed selection.
+                                bIsMixedSelection = True
+                            End If
+
+                            ' Does this property hold a value other than found earlier?
+                            If (objValue IsNot Nothing) Then
+                                If (Not objValue.Equals(p.GetValue())) Then
+                                    ' #Yes: this is mixed value
+                                    bIsMixedValue = True
+                                End If
+                            End If
+
+                            ' Update varname
+                            vn = p.VarName
+                            ' Update value
+                            objValue = p.GetValue()
+                        Else
+                            ' Does this property hold a value other than found earlier?
+                            If (objValue IsNot Nothing) Then
+                                If (Not objValue.Equals(cell.Value)) Then
+                                    ' #Yes: this is mixed value
+                                    bIsMixedValue = True
+                                End If
+                            End If
+                            objValue = cell.Value
+                        End If
+                        ' There was at least one editable cell
+                        bHasEditableCells = True
+                    End If
                 End If
             Next
 
