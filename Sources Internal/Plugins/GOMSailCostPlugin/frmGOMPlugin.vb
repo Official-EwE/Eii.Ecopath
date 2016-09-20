@@ -178,7 +178,7 @@ Public Class frmGOMPlugin
 
         If Not Me.m_bInitialized Then Return
         Try
-            Me.m_plugin.OverwriteEffort = Me.m_chkUseSailCost.Checked
+            Me.m_plugin.WriteTimeseries = Me.m_chkUseSailCost.Checked
         Catch ex As Exception
 
         End Try

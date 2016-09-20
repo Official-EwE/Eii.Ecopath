@@ -62,7 +62,6 @@ Public Class cGOMPlugin
     Private m_nYears As Integer = 101
 
     Private m_strDataPath As String
-    Private m_bWriteMortalities As Boolean = False
 
     Private m_uic As cUIContext
     Private m_frmUI As frmGOMPlugin
@@ -115,22 +114,11 @@ Public Class cGOMPlugin
 
     Public Property OverwriteEffort As Boolean = False
 
+    Public Property WriteTimeseries As Boolean = False
+
     Public Property RunMode As eRunMode = eRunMode.Org
 
     Public Property FixedEffortYear As Integer = 2006
-
-    Public Property WriteMortalities As Boolean
-        Get
-            Return Me.m_bWriteMortalities
-        End Get
-        Set(ByVal value As Boolean)
-            If (value <> Me.m_bWriteMortalities) Then
-                Me.m_bWriteMortalities = value
-                My.Settings.WriteMortalities = Me.m_bWriteMortalities
-                My.Settings.Save()
-            End If
-        End Set
-    End Property
 
     Public Property DataPath As String
         Get
@@ -293,7 +281,6 @@ Public Class cGOMPlugin
             Me.m_core = DirectCast(core, cCore)
             Me.m_strDataPath = My.Settings.DataPath
             Me.OverwriteEffort = False
-            Me.m_bWriteMortalities = My.Settings.WriteMortalities
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -515,7 +502,8 @@ Public Class cGOMPlugin
 
     Public Sub EcospaceRunCompleted(ByVal EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
-        If Not Me.WriteMortalities Then Return
+        If Not Me.OverwriteEffort Then Return
+        If Not Me.WriteTimeseries Then Return
 
         Try
             Dim TimeSeriesWriter As New cEcospaceTimeSeriesWriter
