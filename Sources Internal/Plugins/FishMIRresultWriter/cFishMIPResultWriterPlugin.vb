@@ -18,12 +18,11 @@
 ' ===============================================================================
 '
 
-Option Strict On
 #Region " Imports "
 
+Option Strict On
 Imports System.Drawing
 Imports System.IO
-Imports System.Text
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
@@ -46,6 +45,8 @@ Public Class cFishMIPResultWriterPlugin
         b10cm
         b30cm
         tc
+        tcb10cm
+        tcb30cm
         ' tla
     End Enum
 
@@ -113,7 +114,15 @@ Public Class cFishMIPResultWriterPlugin
     End Property
 
     Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
+        If (Me.m_uic IsNot Nothing) Then
+            Me.m_core = Nothing
+        End If
+
         Me.m_uic = DirectCast(uic, cUIContext)
+
+        If (Me.m_uic IsNot Nothing) Then
+            Me.m_core = Me.m_uic.Core
+        End If
     End Sub
 
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) _
@@ -148,15 +157,19 @@ Public Class cFishMIPResultWriterPlugin
                         bChecked = grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
                     Case cFishMIPResultWriterPlugin.eResultTypes.tc
                         bChecked = grp.IsFished()
+                    Case cFishMIPResultWriterPlugin.eResultTypes.tcb10cm
+                        bChecked = grp.IsFished() And grp.Index <= 24
+                    Case cFishMIPResultWriterPlugin.eResultTypes.tcb30cm
+                        bChecked = grp.IsFished() And grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
                 End Select
 
                 Me.Configuration(igroup, cat) = bChecked
             Next
         Next
-
         Me.ConfigChanged()
 
     End Sub
+
     Public Sub ConfigChanged()
         Me.SaveConfig()
     End Sub
@@ -183,53 +196,67 @@ Public Class cFishMIPResultWriterPlugin
 
     Private Sub LoadConfig()
 
-        Dim groups As New Dictionary(Of String, Integer)
         Dim core As cCore = Me.m_uic.Core
+        Dim strFile As String = Me.ConfigFileName()
 
         For i As Integer = 1 To core.nGroups
-            groups(Key(core.EcoPathGroupInputs(i).Name)) = i
             For j As Integer = 0 To [Enum].GetValues(GetType(eResultTypes)).Length - 1
                 Me.Configuration(i, j) = False
             Next
         Next
 
-        Dim sections As String() = My.Settings.targets.Split("|"c)
-        For i As Integer = 0 To Math.Min(sections.Length, [Enum].GetValues(GetType(eResultTypes)).Length) - 1
-            If (Not String.IsNullOrWhiteSpace(sections(i))) Then
-                For Each strGroup As String In sections(i).Split(";"c)
-                    If groups.ContainsKey(Key(strGroup)) Then
-                        Configuration(groups(Key(strGroup)), i) = True
+        If File.Exists(strFile) Then
+            Dim r As New StreamReader(strFile)
+            Dim l As String = ""
+
+            Try
+                While Not r.EndOfStream
+                    l = r.ReadLine
+                    If Not String.IsNullOrWhiteSpace(l) Then
+                        Dim bits As String() = l.Split("="c)
+                        Dim j As eResultTypes = 0
+                        If [Enum].TryParse(bits(0), j) Then
+                            For Each strGroup As String In bits(1).Split(" "c)
+                                Dim i As Integer = CInt(strGroup)
+                                Configuration(i, j) = True
+                            Next
+                        End If
                     End If
-                Next
-            End If
-        Next
+                End While
+            Catch ex As Exception
+                ' Woopsy
+            End Try
+            r.Close()
+        End If
 
     End Sub
 
     Private Sub SaveConfig()
 
         Dim core As cCore = Me.m_uic.Core
-        Dim sb As New StringBuilder()
-        Dim vals As Array = [Enum].GetValues(GetType(eResultTypes))
+        Dim strFile As String = Me.ConfigFileName()
+        Dim w As New StreamWriter(strFile)
 
-        For i As Integer = 0 To [Enum].GetValues(GetType(eResultTypes)).Length - 1
-            If (i > 0) Then sb.Append("|"c)
+        For Each j As eResultTypes In [Enum].GetValues(GetType(eResultTypes))
             Dim b As Boolean = False
-            For j As Integer = 1 To core.nGroups
-                If (Me.Configuration(j, i)) Then
-                    If (b) Then sb.Append(";")
-                    sb.Append(Key(core.EcoPathGroupInputs(j).Name))
+            w.Write(j.ToString & "=")
+            For i As Integer = 1 To core.nGroups
+                If (Me.Configuration(i, j)) Then
+                    If (b) Then w.Write(" ")
+                    w.Write(i)
                     b = True
                 End If
             Next
+            w.WriteLine()
         Next
-        My.Settings.targets = sb.ToString()
-        My.Settings.Save()
+        w.Flush()
+        w.Close()
 
     End Sub
 
-    Private Function Key(strGroup As String) As String
-        Return strGroup.ToLower().Replace(";", "").Replace("=", "").Replace("|", "")
+    Private Function ConfigFileName() As String
+        Dim strFile As String = Me.m_core.DataSource.ToString
+        Return Path.Combine(Path.GetDirectoryName(strFile), Path.GetFileNameWithoutExtension(strFile) & "_fishmip.config")
     End Function
 
 #End Region ' Config

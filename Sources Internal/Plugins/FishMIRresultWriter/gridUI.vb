@@ -41,11 +41,13 @@ Public Class gridUI
 
         Me(0, 0) = New EwEColumnHeaderCell("")
         Me(0, 1) = New EwEColumnHeaderCell("Group")
+        Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tsb) = New EwEColumnHeaderCell("Total system B")
+        Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tcb) = New EwEColumnHeaderCell("Total consumer B")
         Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.b10cm) = New EwEColumnHeaderCell("B > 10cm")
         Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.b30cm) = New EwEColumnHeaderCell("B > 30cm")
         Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tc) = New EwEColumnHeaderCell("Total catch")
-        Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tcb) = New EwEColumnHeaderCell("Total consumer B")
-        Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tsb) = New EwEColumnHeaderCell("Total system B")
+        Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tcb10cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
+        Me(0, 2 + cFishMIPResultWriterPlugin.eResultTypes.tcb30cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
 
         Me.FixedColumns = 2
 
