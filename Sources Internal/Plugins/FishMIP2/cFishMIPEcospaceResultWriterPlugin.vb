@@ -21,21 +21,25 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
+''' ===========================================================================
+''' <summary>
+''' Plugin to write aggregated Ecospace results for FishMIP2.
+''' </summary>
+''' ===========================================================================
 Public Class cFishMIPEcospaceResultWriterPlugin
     Inherits cEcospaceASCMapResultsWriter
-    Implements IEcospaceInitializedPlugin
     Implements IEcospaceResultWriterPlugin
+    Implements IEcospaceInitializedPlugin
+
+#Region " Generic bits "
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
@@ -57,20 +61,30 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return Me.DataName
+            Return "FishMipSpaceWriter"
         End Get
     End Property
 
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) _
-        Implements IEcospaceInitializedPlugin.EcospaceInitialized
-
-    End Sub
-
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-
+        ' NOP; rely on cFishMipCore instead
     End Sub
+
+#End Region ' Generic bits
 
 #Region " Writing "
+
+    Private m_bSaveAnnualPreserved As Boolean = False
+
+    Public Overrides Sub StartWrite()
+        MyBase.StartWrite()
+        m_bSaveAnnualPreserved = Me.m_ds.SaveAnnual
+        m_ds.SaveAnnual = False
+    End Sub
+
+    Public Overrides Sub EndWrite()
+        MyBase.EndWrite()
+        m_ds.SaveAnnual = Me.m_bSaveAnnualPreserved
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.WriteResults"/>
@@ -81,59 +95,58 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim depth As cEcospaceLayerDepth = bm.LayerDepth
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-        Dim strm As StreamWriter = Nothing
         Dim strFile As String = ""
+        Dim strPath As String = Path.Combine(Me.OutputDirectory, "FishMIP")
 
-        If tsData.iTimeStep < Me.FirstOutputTimeStep Then Return
+        If (tsData.iTimeStep < Me.FirstOutputTimeStep) Then Return
+        If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then Return
 
         Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+        Dim t As DateTime = core.EcospaceTimestepToAbsoluteTime(tsData.iTimeStep)
 
-        If (cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
-            For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-                strFile = Path.Combine(Me.OutputDirectory, "FishMip_" & result.ToString & "_" & tsData.iTimeStep & ".asc")
+        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+            strFile = Path.Combine(Me.OutputDirectory, String.Format("{0}_{1:D4}-{2:D2}.asc", result.ToString(), t.Year, t.Month))
 
-                Dim data(bm.InRow, bm.InCol) As Single
-                For iGrp As Integer = 1 To core.nGroups
-
-                    If config(iGrp, result) Then
-                        For iRow As Integer = 1 To bm.InRow
-                            For icol As Integer = 1 To bm.InCol
-                                If (depth.IsWaterCell(iRow, icol)) Then
-                                    Dim val As Single = cCore.NULL_VALUE
-                                    Select Case result
-                                        Case cConfiguration.eResultTypes.tc,
-                                             cConfiguration.eResultTypes.tcb,
-                                             cConfiguration.eResultTypes.tc30cm
-                                            val = tsData.CatchMap(iRow, icol, iGrp)
-                                        Case cConfiguration.eResultTypes.tsb,
-                                             cConfiguration.eResultTypes.b10cm,
-                                             cConfiguration.eResultTypes.b30cm
-                                            val = tsData.BiomassMap(iRow, icol, iGrp)
-                                        Case Else
-                                            Debug.Assert(False, "Result type not supported")
-                                    End Select
-                                    If (val <> cCore.NULL_VALUE) Then
-                                        data(iRow, icol) += val
-                                    End If
-                                End If
-                            Next
-                        Next
-                    End If
-
-                    Try
-                        strm = New StreamWriter(strFile, False)
-                        If (strm IsNot Nothing) Then
-                            Me.SaveASCFile(strm, data)
-                            strm.Flush()
-                            strm.Close()
-                            strm = Nothing
+            Dim data(bm.InRow, bm.InCol) As Single
+            For iRow As Integer = 1 To bm.InRow
+                For icol As Integer = 1 To bm.InCol
+                    data(iRow, icol) = cCore.NULL_VALUE
+                    If (depth.IsWaterCell(iRow, icol)) Then
+                        Dim val As Single = 0
+                        For iGrp As Integer = 1 To core.nGroups
+                            If config(iGrp, result) Then
+                                Select Case result
+                                    Case cConfiguration.eResultTypes.tsb,
+                                         cConfiguration.eResultTypes.tcb,
+                                         cConfiguration.eResultTypes.b10cm,
+                                         cConfiguration.eResultTypes.b30cm
+                                        val = tsData.BiomassMap(iRow, icol, iGrp)
+                                    Case cConfiguration.eResultTypes.tc,
+                                         cConfiguration.eResultTypes.tcb,
+                                         cConfiguration.eResultTypes.tc30cm
+                                        val = tsData.CatchMap(iRow, icol, iGrp)
+                                    Case Else
+                                        Debug.Assert(False, "Result type not supported")
+                                End Select
+                            End If
+                        Next iGrp
+                        If (val >= 0) Then
+                            data(iRow, icol) = val
                         End If
-                    Catch ex As IOException
-                        cLog.Write(ex)
-                    End Try
-                Next
-            Next
-        End If
+                    End If
+                Next icol
+            Next iRow
+
+            Try
+                Using strm As New StreamWriter(strFile, False)
+                    Me.SaveASCFile(strm, data)
+                    strm.Flush()
+                    strm.Close()
+                End Using
+            Catch ex As IOException
+                cLog.Write(ex)
+            End Try
+        Next
 
     End Sub
 
@@ -223,6 +236,12 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     End Sub
 
+    Private m_ds As cEcospaceDataStructures = Nothing
+
+    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
+        m_ds = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+    End Sub
+
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CAPTION
@@ -231,7 +250,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "dataFishMP"
+            Return "dataFishMIP"
         End Get
     End Property
 
