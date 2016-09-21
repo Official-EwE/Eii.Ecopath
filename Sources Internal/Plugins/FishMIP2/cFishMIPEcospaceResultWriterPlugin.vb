@@ -34,19 +34,8 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class cFishMIPEcospaceResultWriterPlugin
     Inherits cEcospaceASCMapResultsWriter
-    Implements IUIContextPlugin
     Implements IEcospaceInitializedPlugin
     Implements IEcospaceResultWriterPlugin
-    Implements INavigationTreeItemPlugin
-
-#Region " Private variables "
-
-    Private m_uic As cUIContext = Nothing
-    Private m_ui As frmConfig = Nothing
-
-#End Region ' Private variables
-
-    Friend Property Configuration As cConfiguration = Nothing
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
@@ -72,114 +61,14 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         End Get
     End Property
 
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
-        frmPlugin = Me.GetUI()
-    End Sub
-
-    Public ReadOnly Property NavigationTreeItemLocation As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            Return "ndSpatialDynamic\ndEcospaceTools"
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
-        Get
-            Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
-        Get
-            Return eCoreExecutionState.EcospaceLoaded
-        End Get
-    End Property
-
-    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
-        If (Me.m_uic IsNot Nothing) Then
-            Me.m_core = Nothing
-        End If
-
-        Me.m_uic = DirectCast(uic, cUIContext)
-
-        If (Me.m_uic IsNot Nothing) Then
-            Me.m_core = Me.m_uic.Core
-        End If
-    End Sub
-
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) _
         Implements IEcospaceInitializedPlugin.EcospaceInitialized
-
-        Me.Configuration = New cConfiguration(Me.m_core)
-        Me.Configuration.Load()
-
-    End Sub
-
-    Public Sub InitEcoOcean()
-
-        Dim core As cCore = Me.m_uic.Core
-        Dim smalluns As Integer() = New Integer() {1, 4, 7, 10, 13, 16}
-        For Each cat As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-
-            For igroup As Integer = 1 To core.nGroups
-
-                Dim bChecked As Boolean = False
-                Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(igroup)
-                Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(igroup)
-                Dim name As String = grp.Name.ToLower()
-
-                Select Case cat
-                    Case cConfiguration.eResultTypes.tsb
-                        bChecked = grp.IsProducer() Or grp.IsConsumer()
-                    Case cConfiguration.eResultTypes.tcb
-                        bChecked = grp.IsConsumer() And grpOut.TTLX() > 1
-                    Case cConfiguration.eResultTypes.b10cm
-                        bChecked = grp.Index <= 24
-                    Case cConfiguration.eResultTypes.b30cm
-                        bChecked = grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
-                    Case cConfiguration.eResultTypes.tc
-                        bChecked = grp.IsFished()
-                    Case cConfiguration.eResultTypes.tcb10cm
-                        bChecked = grp.IsFished() And grp.Index <= 24
-                    Case cConfiguration.eResultTypes.tcb30cm
-                        bChecked = grp.IsFished() And grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
-                End Select
-
-                Me.Configuration(igroup, cat) = bChecked
-            Next
-        Next
-        Me.Configuration.Save()
 
     End Sub
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
 
     End Sub
-
-#Region " UI "
-
-    Private Function HasUI() As Boolean
-        If (Me.m_ui Is Nothing) Then Return False
-        Return Not Me.m_ui.IsDisposed()
-    End Function
-
-    Public Function GetUI() As frmConfig
-        If Not HasUI() Then Return New frmConfig(Me.m_uic, Me)
-        Return m_ui
-    End Function
-
-#End Region ' UI
 
 #Region " Writing "
 
@@ -188,7 +77,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
     ''' -----------------------------------------------------------------------
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
-        Dim core As cCore = Me.m_uic.Core
+        Dim core As cCore = cFishMIPcore.GetInstance().Core
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim depth As cEcospaceLayerDepth = bm.LayerDepth
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
@@ -197,6 +86,8 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
         If tsData.iTimeStep < Me.FirstOutputTimeStep Then Return
 
+        Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+
         If (cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
                 strFile = Path.Combine(Me.OutputDirectory, "FishMip_" & result.ToString & "_" & tsData.iTimeStep & ".asc")
@@ -204,7 +95,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                 Dim data(bm.InRow, bm.InCol) As Single
                 For iGrp As Integer = 1 To core.nGroups
 
-                    If Me.Configuration(iGrp, result) Then
+                    If config(iGrp, result) Then
                         For iRow As Integer = 1 To bm.InRow
                             For icol As Integer = 1 To bm.InCol
                                 If (depth.IsWaterCell(iRow, icol)) Then
@@ -212,7 +103,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                                     Select Case result
                                         Case cConfiguration.eResultTypes.tc,
                                              cConfiguration.eResultTypes.tcb,
-                                             cConfiguration.eResultTypes.tcb30cm
+                                             cConfiguration.eResultTypes.tc30cm
                                             val = tsData.CatchMap(iRow, icol, iGrp)
                                         Case cConfiguration.eResultTypes.tsb,
                                              cConfiguration.eResultTypes.b10cm,
@@ -253,7 +144,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Return ".asc"
     End Function
 
-#End Region ' Base writer overrides
+#End Region ' Writing
 
 #Region " Internals "
 

@@ -115,6 +115,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cConfiguration.vb" />
+    <Compile Include="cFishMIPcore.vb" />
+    <Compile Include="cFishMIPEcosimResultWriter.vb" />
     <Compile Include="cFishMIPEcospaceResultWriterPlugin.vb" />
     <Compile Include="UI\frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>

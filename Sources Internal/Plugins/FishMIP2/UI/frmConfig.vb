@@ -27,18 +27,14 @@ Imports ScientificInterfaceShared.Forms
 Public Class frmConfig
     Inherits frmEwEGrid
 
-    Public Sub New(uic As cUIContext, plugin As cFishMIPEcospaceResultWriterPlugin)
+    Public Sub New(uic As cUIContext)
 
         Me.UIContext = uic
         Me.InitializeComponent()
 
-        Me.Plugin = plugin
-        Me.m_grid.Configuration = Me.Plugin.Configuration
         Me.Grid = m_grid
 
     End Sub
-
-    Public Property Plugin As cFishMIPEcospaceResultWriterPlugin = Nothing
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
@@ -58,29 +54,16 @@ Public Class frmConfig
 
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
-        Me.m_tsbnAutosave.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceResults, Me.Plugin.DataName)
     End Sub
 
     Private Sub m_tsmiGOM_Click(sender As Object, e As EventArgs) Handles m_tsmiGOM.Click
 
-        Me.Plugin.InitEcoOcean()
+        cFishMIPcore.GetInstance().Configuration().LoadEcoOcean()
         Me.m_grid.RefreshContent()
 
     End Sub
 
     Private m_bInUpdate As Boolean = False
-
-    Private Sub OnAutosaveToggle(sender As Object, e As EventArgs) Handles m_tsbnAutosave.Click
-        If (Me.m_bInUpdate) Then Return
-        Me.m_bInUpdate = True
-        Try
-            Me.Plugin.Enabled = Not m_tsbnAutosave.Checked
-            Me.Core.Autosave(eAutosaveTypes.EcospaceResults, Me.Plugin.DataName) = Me.Plugin.Enabled
-        Catch ex As Exception
-
-        End Try
-        Me.m_bInUpdate = False
-    End Sub
 
     Public Overrides Sub OnCoreMessage(msg As cMessage)
         MyBase.OnCoreMessage(msg)

@@ -31,13 +31,20 @@ Public Class cConfiguration
     Private Property Configuration As Boolean(,)
 
     Public Enum eResultTypes As Integer
+        ''' <summary>Total system B</summary>
         tsb
+        ''' <summary>Total consumer B</summary>
         tcb
+        ''' <summary>B > 10cm</summary>
         b10cm
+        ''' <summary>B > 30cm</summary>
         b30cm
+        ''' <summary>Total catch</summary>
         tc
-        tcb10cm
-        tcb30cm
+        ''' <summary>Catch > 10cm</summary>
+        tc10cm
+        ''' <summary>Catch > 30cm</summary>
+        tc30cm
         ' tla
     End Enum
 
@@ -120,6 +127,49 @@ Public Class cConfiguration
         w.Close()
 
     End Sub
+
+#Region " Presets "
+
+    Public Sub LoadEcoOcean()
+
+        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim smalluns As Integer() = New Integer() {1, 4, 7, 10, 13, 16}
+        Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+
+        For Each cat As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+
+            For igroup As Integer = 1 To core.nGroups
+
+                Dim bChecked As Boolean = False
+                Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(igroup)
+                Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(igroup)
+                Dim name As String = grp.Name.ToLower()
+
+                Select Case cat
+                    Case cConfiguration.eResultTypes.tsb
+                        bChecked = grp.IsProducer() Or grp.IsConsumer()
+                    Case cConfiguration.eResultTypes.tcb
+                        bChecked = grp.IsConsumer() And grpOut.TTLX() > 1
+                    Case cConfiguration.eResultTypes.b10cm
+                        bChecked = grp.Index <= 24
+                    Case cConfiguration.eResultTypes.b30cm
+                        bChecked = grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
+                    Case cConfiguration.eResultTypes.tc
+                        bChecked = grp.IsFished()
+                    Case cConfiguration.eResultTypes.tc10cm
+                        bChecked = grp.IsFished() And grp.Index <= 24
+                    Case cConfiguration.eResultTypes.tc30cm
+                        bChecked = grp.IsFished() And grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
+                End Select
+
+                config(igroup, cat) = bChecked
+            Next
+        Next
+        config.Save()
+
+    End Sub
+
+#End Region ' Presets 
 
     Private Function ConfigFileName() As String
         Dim strFile As String = Me.m_core.DataSource.ToString

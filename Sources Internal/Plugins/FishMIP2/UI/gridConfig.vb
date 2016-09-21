@@ -31,7 +31,7 @@ Public Class gridConfig
         MyBase.New()
     End Sub
 
-    Public Property Configuration As cConfiguration
+    Private m_config As cConfiguration = cFishMIPcore.GetInstance().Configuration
 
     Protected Overrides Sub InitStyle()
 
@@ -46,8 +46,8 @@ Public Class gridConfig
         Me(0, 2 + cConfiguration.eResultTypes.b10cm) = New EwEColumnHeaderCell("B > 10cm")
         Me(0, 2 + cConfiguration.eResultTypes.b30cm) = New EwEColumnHeaderCell("B > 30cm")
         Me(0, 2 + cConfiguration.eResultTypes.tc) = New EwEColumnHeaderCell("Total catch")
-        Me(0, 2 + cConfiguration.eResultTypes.tcb10cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
-        Me(0, 2 + cConfiguration.eResultTypes.tcb30cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
+        Me(0, 2 + cConfiguration.eResultTypes.tc10cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
+        Me(0, 2 + cConfiguration.eResultTypes.tc30cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
 
         Me.FixedColumns = 2
 
@@ -63,7 +63,7 @@ Public Class gridConfig
             Me(iRow, 1) = New EwERowHeaderCell(Me.Core.EcoPathGroupInputs(i).Name)
 
             For Each j As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-                Me(iRow, 2 + j) = New EwECheckboxCell(Me.Configuration(i, j))
+                Me(iRow, 2 + j) = New EwECheckboxCell(Me.m_config(i, j))
                 Me(iRow, 2 + j).Behaviors.Add(Me.EwEEditHandler)
             Next
         Next
@@ -77,8 +77,8 @@ Public Class gridConfig
 
     Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
-        Me.Configuration(p.Row, CType(p.Column - 2, cConfiguration.eResultTypes)) = CBool(cell.GetValue(p))
-        BeginInvoke(New MethodInvoker(AddressOf Me.Configuration.Save))
+        Me.m_config(p.Row, CType(p.Column - 2, cConfiguration.eResultTypes)) = CBool(cell.GetValue(p))
+        BeginInvoke(New MethodInvoker(AddressOf Me.m_config.Save))
 
         Return True
 
