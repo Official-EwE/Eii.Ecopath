@@ -29,6 +29,11 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' ===========================================================================
+''' <summary>
+''' Plugin to write aggregated Ecosim results for FishMIP2.
+''' </summary>
+''' ===========================================================================
 Public Class cFishMIPEcosimResultWriter
     Implements IEcosimRunInitializedPlugin
     Implements IEcosimBeginTimestepPlugin
@@ -36,8 +41,16 @@ Public Class cFishMIPEcosimResultWriter
     Implements IEcosimRunCompletedPlugin
     Implements IAutoSavePlugin
 
-    Private m_bSaving As Boolean = False
+#Region " Private vars "
+
+    ''' <summary>Aggregated data</summary>
     Private m_data As Single(,)
+    ''' <summary>Retained state flag</summary>
+    Private m_bSaving As Boolean = False
+
+#End Region ' Private vars
+
+#Region " General bits "
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
@@ -59,35 +72,53 @@ Public Class cFishMIPEcosimResultWriter
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "hmm"
+            Return "FishMipSimWriter"
         End Get
     End Property
 
-    Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
-
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-        ' NOP
+        ' NOP; rely on cFishMipCore instead
     End Sub
 
-    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
-        Me.m_bSaving = AutoSave
-        If Not Me.AutoSave Then Return
+#End Region ' General bits
 
+#Region " Ecosim integration "
+
+    Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
+        Implements IEcosimRunInitializedPlugin.EcosimRunInitialized
+
+        ' Capture autosave flag for the entire run
+        Me.m_bSaving = AutoSave
+
+        ' Not autosaving? Done
+        If Not Me.m_bSaving Then Return
+
+        ' Init array for storing aggregated results
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         ReDim Me.m_data(core.nEcosimTimeSteps, [Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
     End Sub
 
-    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) Implements IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) _
+        Implements IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+
+        ' Not autosaving? Done
+        If Not Me.m_bSaving Then Return
+
+        ' Clear array record - as if needed, but hey
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
             Me.m_data(iTime, result) = 0
         Next
+
     End Sub
 
-    Public Sub EcosimEndTimeStepPost(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) Implements IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
+    Public Sub EcosimEndTimeStepPost(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer, Ecosimresults As Object) _
+        Implements IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
 
-        If Not Me.AutoSave Then Return
+        ' Not autosaving? Done
+        If Not Me.m_bSaving Then Return
 
+        ' Aggregate results
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
         Dim simbits As cEcoSimResults = DirectCast(Ecosimresults, cEcoSimResults)
@@ -115,23 +146,28 @@ Public Class cFishMIPEcosimResultWriter
             Next
             Me.m_data(iTime, result) = val
         Next
+
     End Sub
 
-    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
+    Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
+        Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
 
-        If Not Me.AutoSave Then Return
+        ' Not autosaving? Done
+        If Not Me.m_bSaving Then Return
 
+        ' Write output files
+        Dim strPath As String = Me.AutoSaveOutputPath
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         Dim w As StreamWriter = Nothing
         Dim sStepsPerYear As Single = CSng(core.nEcosimTimeSteps / core.nEcosimYears)
 
-        Dim strPath As String = Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), Me.AutoSaveOutputPath)
-        cFileUtils.IsDirectoryAvailable(strPath, True)
+        ' Not able to create output path? Abort
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
 
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
             w = New StreamWriter(Path.Combine(strPath, result.ToString() & ".csv"))
             Try
-                w.WriteLine("Year,Month," & result.ToString())
+                w.WriteLine("year,month," & result.ToString())
                 For i As Integer = 1 To core.nEcosimTimeSteps
                     Dim y As Integer = core.EcosimFirstYear + CInt((i - 1) / sStepsPerYear)
                     Dim t As Integer = CInt(((i - 1) Mod sStepsPerYear)) + 1
@@ -144,23 +180,47 @@ Public Class cFishMIPEcosimResultWriter
             w.Close()
         Next
 
+        ' Notify UI
         Dim msg As New cMessage("FishMIP results have been saved to {0}", eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
         msg.Hyperlink = strPath
         core.Messages.SendMessage(msg)
 
+        ' Free Willy
+        Me.m_data = Nothing
+
     End Sub
 
-    Public Function AutoSaveName() As String Implements IAutoSavePlugin.AutoSaveName
+#End Region ' Ecosim integration
+
+#Region " Autosave "
+
+    Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
+
+    Public Function AutoSaveName() As String _
+        Implements IAutoSavePlugin.AutoSaveName
+
+        ' For the UI
         Return "FishMip results"
+
     End Function
 
-    Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
+    Public Function AutoSaveType() As eAutosaveTypes _
+        Implements IAutoSavePlugin.AutoSaveType
+
+        ' Show level with Ecosim
         Return eAutosaveTypes.Ecosim
+
     End Function
 
-    Public Function AutoSaveOutputPath() As String Implements IAutoSavePlugin.AutoSaveOutputPath
+    Public Function AutoSaveOutputPath() As String _
+        Implements IAutoSavePlugin.AutoSaveOutputPath
+
+        ' Present complete path to UI
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         Return Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), "FishMIP")
+
     End Function
+
+#End Region ' Autosave
 
 End Class
