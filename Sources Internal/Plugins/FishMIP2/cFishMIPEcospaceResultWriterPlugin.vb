@@ -164,10 +164,12 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Dim core As cCore = cFishMIPcore.GetInstance().Core
 
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-            If (Me.m_writers(result) IsNot Nothing) Then
-                Me.m_writers(result).Flush()
-                Me.m_writers(result).Close()
-                Me.m_writers(result) = Nothing
+            If (Me.m_writers IsNot Nothing) Then
+                If (Me.m_writers(result) IsNot Nothing) Then
+                    Me.m_writers(result).Flush()
+                    Me.m_writers(result).Close()
+                    Me.m_writers(result) = Nothing
+                End If
             End If
         Next
 
