@@ -35,9 +35,21 @@ Imports EwEUtils.Utilities
 ''' </summary>
 ''' ===========================================================================
 Public Class cFishMIPEcospaceResultWriterPlugin
-    Inherits cEcospaceASCMapResultsWriter
-    Implements IEcospaceResultWriterPlugin
-    Implements IEcospaceInitializedPlugin
+    Implements IEcospaceInitRunCompletedPlugin
+    Implements IEcospaceBeginTimestepPlugin
+    Implements IEcospaceEndTimestepPlugin
+    Implements IEcospaceRunCompletedPlugin
+    Implements IAutoSavePlugin
+
+#Region " Private vars "
+
+    ''' <summary>Retained state flag</summary>
+    Private m_bSaving As Boolean = False
+    ''' <summary>Currently open writers</summary>
+    Private m_writers() As StreamWriter = Nothing
+    Private m_ds As cEcospaceDataStructures = Nothing
+
+#End Region ' Private vars
 
 #Region " Generic bits "
 
@@ -71,47 +83,53 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
 #End Region ' Generic bits
 
-#Region " Writing "
+#Region " Ecospace integration "
 
-    Private m_bSaveAnnualPreserved As Boolean = False
+    Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
+        Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
-    Public Overrides Sub StartWrite()
-        MyBase.StartWrite()
-        m_bSaveAnnualPreserved = Me.m_ds.SaveAnnual
-        m_ds.SaveAnnual = False
+        Me.m_bSaving = Me.AutoSave
+        If (Not Me.m_bSaving) Then Return
+
+        Dim strPath As String = Me.AutoSaveOutputPath()
+        If cFileUtils.IsDirectoryAvailable(strPath, True) = False Then
+            Me.m_bSaving = False
+            Return
+        End If
+
+        Me.m_ds = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+
+        ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
+
+        Try
+            For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+                Me.m_writers(result) = New StreamWriter(Path.Combine(Me.AutoSaveOutputPath, result.ToString & ".txt"))
+                Me.m_writers(result).WriteLine("Time,Latitude,Longitude," & result.ToString())
+            Next
+        Catch ex As Exception
+            Me.m_bSaving = False
+            ' Clean up failed writers
+        End Try
     End Sub
 
-    Public Overrides Sub EndWrite()
-        MyBase.EndWrite()
-        m_ds.SaveAnnual = Me.m_bSaveAnnualPreserved
+    Public Sub EcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
+        ' NOP
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.WriteResults"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+    Public Sub EcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
 
+        ' Not autosaving? Done
+        If Not Me.m_bSaving Then Return
+
+        ' Aggregate results
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
-        Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-        Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-        Dim strFile As String = ""
-        Dim strPath As String = Path.Combine(Me.OutputDirectory, "FishMIP")
-
-        If (tsData.iTimeStep < Me.FirstOutputTimeStep) Then Return
-        If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then Return
-
         Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
-        Dim t As DateTime = core.EcospaceTimestepToAbsoluteTime(tsData.iTimeStep)
 
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-            strFile = Path.Combine(Me.OutputDirectory, String.Format("{0}_{1:D4}-{2:D2}.asc", result.ToString(), t.Year, t.Month))
-
-            Dim data(bm.InRow, bm.InCol) As Single
-            For iRow As Integer = 1 To bm.InRow
-                For icol As Integer = 1 To bm.InCol
-                    data(iRow, icol) = cCore.NULL_VALUE
-                    If (depth.IsWaterCell(iRow, icol)) Then
+            For iRow As Integer = 1 To Me.m_ds.InRow
+                For iCol As Integer = 1 To Me.m_ds.InCol
+                    If Me.m_ds.Depth(iRow, iCol) > 0 Then
                         Dim val As Single = 0
                         For iGrp As Integer = 1 To core.nGroups
                             If config(iGrp, result) Then
@@ -120,140 +138,79 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                                          cConfiguration.eResultTypes.tcb,
                                          cConfiguration.eResultTypes.b10cm,
                                          cConfiguration.eResultTypes.b30cm
-                                        val = tsData.BiomassMap(iRow, icol, iGrp)
+                                        val += Me.m_ds.Bcell(iRow, iCol, iGrp)
                                     Case cConfiguration.eResultTypes.tc,
-                                         cConfiguration.eResultTypes.tcb,
+                                         cConfiguration.eResultTypes.tc10cm,
                                          cConfiguration.eResultTypes.tc30cm
-                                        val = tsData.CatchMap(iRow, icol, iGrp)
+                                        val += Me.m_ds.CatchMap(iRow, iCol, iGrp)
                                     Case Else
                                         Debug.Assert(False, "Result type not supported")
                                 End Select
                             End If
                         Next iGrp
-                        If (val >= 0) Then
-                            data(iRow, icol) = val
-                        End If
+                        Me.m_writers(result).WriteLine("{0},{1},{2},{3}",
+                                                   iTime - 1,
+                                                   bm.RowToLat(iRow), bm.ColToLon(iCol),
+                                                   val)
                     End If
-                Next icol
+                Next iCol
             Next iRow
-
-            Try
-                Using strm As New StreamWriter(strFile, False)
-                    Me.SaveASCFile(strm, data)
-                    strm.Flush()
-                    strm.Close()
-                End Using
-            Catch ex As IOException
-                cLog.Write(ex)
-            End Try
         Next
 
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Function FileExtension() As String
-        Return ".asc"
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+
+        Dim core As cCore = cFishMIPcore.GetInstance().Core
+
+        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+            If (Me.m_writers(result) IsNot Nothing) Then
+                Me.m_writers(result).Flush()
+                Me.m_writers(result).Close()
+                Me.m_writers(result) = Nothing
+            End If
+        Next
+
+        If Me.m_bSaving Then
+            ' Notify UI
+            Dim msg As New cMessage(String.Format("FishMIP Ecospace results have been saved to {0}", Me.AutoSaveOutputPath),
+                                    eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
+            msg.Hyperlink = Me.AutoSaveOutputPath
+            core.Messages.SendMessage(msg)
+        End If
+    End Sub
+
+#End Region ' Ecospace integration
+
+#Region " Autosave "
+
+    Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
+
+    Public Function AutoSaveName() As String _
+        Implements IAutoSavePlugin.AutoSaveName
+
+        ' For the UI
+        Return "FishMip results"
+
     End Function
 
-#End Region ' Writing
+    Public Function AutoSaveType() As eAutosaveTypes _
+        Implements IAutoSavePlugin.AutoSaveType
 
-#Region " Internals "
+        ' Show for Ecospace
+        Return eAutosaveTypes.Ecospace
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write the run information file to accompany the run results.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub WriteRunInfoFile()
+    End Function
 
-        Try
-            Dim strFN As String = Path.Combine(Me.OutputDirectory, "Ecospace RunInfo.txt")
-            Dim strm As New StreamWriter(strFN, False)
+    Public Function AutoSaveOutputPath() As String _
+        Implements IAutoSavePlugin.AutoSaveOutputPath
 
-            strm.WriteLine("EcoSpace .asc map output")
-            Me.WriteRunInfo(strm)
+        ' Present complete path to UI
+        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Return Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), "FishMIP")
 
-            strm.Flush()
-            strm.Close()
-            strm = Nothing
+    End Function
 
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write an entire ASCII file for a group, time step and variable.
-    ''' </summary>
-    ''' <param name="strm"></param>
-    ''' -----------------------------------------------------------------------
-    Protected Overloads Sub SaveASCFile(ByVal strm As StreamWriter, data As Single(,))
-        Try
-            Me.WriteASCIIHeader(strm)
-            Me.WriteASCIIBody(strm, data)
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
-        End Try
-    End Sub
-
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write ESRI ASCII body block.
-    ''' </summary>
-    ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
-    ''' -----------------------------------------------------------------------
-    Protected Overloads Sub WriteASCIIBody(ByVal writer As StreamWriter, ByVal data(,) As Single)
-
-        Dim value As Double = 0
-        Dim strValue As String = ""
-
-        Debug.Assert(data IsNot Nothing)
-
-        For ir As Integer = 1 To Me.EcospaceData.InRow
-            For ic As Integer = 1 To Me.EcospaceData.InCol
-                If ic > 1 Then writer.Write(" ")
-                If Me.EcospaceData.Depth(ir, ic) > 0 Then
-                    value = data(ir, ic)
-                Else
-                    value = cCore.NULL_VALUE
-                End If
-
-                strValue = cStringUtils.FormatNumber(value)
-                If (ir = 1 And ic = 1) Then
-                    If (strValue.IndexOf("."c) = -1) Then
-                        strValue = strValue + ".0"
-                    End If
-                End If
-
-                writer.Write(strValue)
-            Next
-            writer.WriteLine("")
-        Next
-
-    End Sub
-
-    Private m_ds As cEcospaceDataStructures = Nothing
-
-    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
-        m_ds = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
-    End Sub
-
-    Public Overrides ReadOnly Property DisplayName As String
-        Get
-            Return My.Resources.CAPTION
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return "dataFishMIP"
-        End Get
-    End Property
-
-#End Region ' Internals
+#End Region ' Autosave
 
 End Class

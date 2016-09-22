@@ -181,8 +181,8 @@ Public Class cFishMIPEcosimResultWriter
         Next
 
         ' Notify UI
-        Dim msg As New cMessage("FishMIP results have been saved to {0}", eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
-        msg.Hyperlink = strPath
+        Dim msg As New cMessage(String.Format("FishMIP Ecosim results have been saved to {0}", Me.AutoSaveOutputPath),
+                                    eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
         core.Messages.SendMessage(msg)
 
         ' Free Willy
@@ -207,7 +207,7 @@ Public Class cFishMIPEcosimResultWriter
     Public Function AutoSaveType() As eAutosaveTypes _
         Implements IAutoSavePlugin.AutoSaveType
 
-        ' Show level with Ecosim
+        ' Show for Ecosim
         Return eAutosaveTypes.Ecosim
 
     End Function
