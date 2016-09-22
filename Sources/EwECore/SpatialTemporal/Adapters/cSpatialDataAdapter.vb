@@ -392,12 +392,12 @@ Namespace SpatialData
                 End While ' iRow
 
                 If bSuccess Then
-                    Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), _
+                    Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()),
                                                                eStatusFlags.OK)
                 End If
 
             Catch ex As Exception
-                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), _
+                Me.m_core.SpatialOperationLog.LogOperation(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message),
                                                            eStatusFlags.FailedValidation)
                 cLog.Write(ex, "cSpatialDataAdapter::Adapt(" & layer.ToString() & ")")
                 bSuccess = False

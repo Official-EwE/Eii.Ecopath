@@ -346,6 +346,7 @@
     <Compile Include="Shapes\Utilities\Import\cShapeImporter.vb" />
     <Compile Include="Samples\cEcopathSample.vb" />
     <Compile Include="Samples\cSamplesManager.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cAdvectionAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cBiomassForcingAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cBiomassRelativeAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cCapacityDataAdapter.vb" />
