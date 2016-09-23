@@ -643,7 +643,7 @@ Namespace Controls
 
             Private Sub Validate()
                 ' Update internal value
-                If Not Decimal.Equals(Me.m_provider.Value, Me.m_ud.Value) Then
+                If (CDec(Me.m_provider.Value) <> Me.m_ud.Value) Then
                     Me.m_provider.Value = Me.m_ud.Value
                     Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
                 End If
