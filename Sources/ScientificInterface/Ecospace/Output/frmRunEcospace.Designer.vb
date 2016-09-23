@@ -75,6 +75,7 @@ Namespace Ecospace
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_rbDisplayEnvDriver = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
             Me.m_btnDisplayGroups1 = New System.Windows.Forms.Button()
@@ -284,6 +285,7 @@ Namespace Ecospace
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayContaminantC)
             Me.m_plMapData.Controls.Add(Me.m_hdrDist)
+            Me.m_plMapData.Controls.Add(Me.m_rbDisplayEnvDriver)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayCoverB)
             resources.ApplyResources(Me.m_plMapData, "m_plMapData")
             Me.m_plMapData.Name = "m_plMapData"
@@ -337,6 +339,12 @@ Namespace Ecospace
             Me.m_hdrDist.CollapsedParentHeight = 0
             Me.m_hdrDist.IsCollapsed = False
             Me.m_hdrDist.Name = "m_hdrDist"
+            '
+            'm_rbDisplayEnvDriver
+            '
+            resources.ApplyResources(Me.m_rbDisplayEnvDriver, "m_rbDisplayEnvDriver")
+            Me.m_rbDisplayEnvDriver.Name = "m_rbDisplayEnvDriver"
+            Me.m_rbDisplayEnvDriver.UseVisualStyleBackColor = True
             '
             'm_rbDisplayCoverB
             '
@@ -520,13 +528,13 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
             Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
-            Me.m_zgPlotLarge.ScrollGrace = 0.0R
-            Me.m_zgPlotLarge.ScrollMaxX = 0.0R
-            Me.m_zgPlotLarge.ScrollMaxY = 0.0R
-            Me.m_zgPlotLarge.ScrollMaxY2 = 0.0R
-            Me.m_zgPlotLarge.ScrollMinX = 0.0R
-            Me.m_zgPlotLarge.ScrollMinY = 0.0R
-            Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
+            Me.m_zgPlotLarge.ScrollGrace = 0R
+            Me.m_zgPlotLarge.ScrollMaxX = 0R
+            Me.m_zgPlotLarge.ScrollMaxY = 0R
+            Me.m_zgPlotLarge.ScrollMaxY2 = 0R
+            Me.m_zgPlotLarge.ScrollMinX = 0R
+            Me.m_zgPlotLarge.ScrollMinY = 0R
+            Me.m_zgPlotLarge.ScrollMinY2 = 0R
             '
             'frmRunEcospace
             '
@@ -612,7 +620,7 @@ Namespace Ecospace
         Private WithEvents m_plGraphData As System.Windows.Forms.Panel
         Private WithEvents m_cbAutoSavePNG As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveTimeSteps As System.Windows.Forms.Label
-
+        Private WithEvents m_rbDisplayEnvDriver As RadioButton
 
     End Class
 

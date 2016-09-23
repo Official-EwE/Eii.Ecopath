@@ -220,7 +220,7 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Biomass by cell (row, col, group)</summary>
     Public Bcell(,,) As Single
-    ''' <summary>Catch by cell (row, col, group)</summary>
+    ''' <summary>Contaminant by cell (row, col, group)</summary>
     Public Ccell(,,) As Single
     Public Clast(,,) As Single
     Public AMmTr(,,) As Single

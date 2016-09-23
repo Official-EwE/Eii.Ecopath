@@ -76,6 +76,7 @@ Namespace Ecospace
             CatchGraph
             PredMortRateGraph
             ConsumpRateGraph
+            Driver
         End Enum
 
 #Region " Variables "
@@ -108,9 +109,6 @@ Namespace Ecospace
 
         Private m_layerDepth As cEcospaceLayer = Nothing
 
-        ''' <summary>The speed of the plotting. 1 is the slowest, 10 is the fastest.</summary>
-        Private m_iPlotStepSize As Integer
-
         ''' <summary>The row and col number of map plots.</summary>
         Private m_iNumPlotsVert As Integer, m_iNumPlotsHorz As Integer
         ''' <summary>Number of rows and columns if basen</summary>
@@ -120,7 +118,7 @@ Namespace Ecospace
         Private m_drawers As List(Of cMapDrawerBase)
         Private m_nMapsPerThread As Integer
 
-        Private m_bmpBiomassMap As Bitmap = Nothing
+        Private m_bmpMap As Bitmap = Nothing
 
         'jb added
         Private m_spaceStats As cEcospaceStats = Nothing
@@ -206,9 +204,6 @@ Namespace Ecospace
             Me.m_iTimeStepCur = 0
             Me.m_iTimeStepPrev = 0
 
-            'Plot speed 1-slowest 10-fastest
-            Me.m_iPlotStepSize = 1
-
             Me.CheckRefreshSingleItemDropdown()
 
         End Sub
@@ -245,8 +240,17 @@ Namespace Ecospace
             Dim drawer As cMapDrawerBase
             Dim nThreads As Integer = Environment.ProcessorCount
             Dim sg As cStyleGuide = Me.StyleGuide
+            Dim nItems As Integer = -1
 
-            Me.m_nMapsPerThread = (Me.Core.nGroups + nThreads - 1) \ nThreads
+            Select Case Me.m_plottype
+                Case ePlotTypes.Effort : Return
+                Case ePlotTypes.Driver
+                    nItems = Me.Core.nEnvironmentalDriverLayers
+                Case Else
+                    nItems = Me.Core.nGroups
+            End Select
+
+            Me.m_nMapsPerThread = (nItems + nThreads - 1) \ nThreads
             If Me.m_drawers Is Nothing Then
                 Me.m_drawers = New List(Of cMapDrawerBase)
             Else
@@ -256,8 +260,13 @@ Namespace Ecospace
             Me.InitOutputBitmaps()
 
             For i As Integer = 1 To nThreads
-                drawer = New cMapDrawerGroup(Me.Core, Me.StyleGuide)
-                drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
+                Select Case Me.m_plottype
+                    Case ePlotTypes.Driver
+                        drawer = New cMapDrawerLayer(Me.Core, Me.StyleGuide)
+                    Case Else
+                        drawer = New cMapDrawerGroup(Me.Core, Me.StyleGuide)
+                End Select
+                drawer.Graphics = Graphics.FromImage(Me.m_bmpMap)
                 drawer.Colors = Me.m_legend.Colors
                 drawer.ShowExcluded = Me.StyleGuide.ShowExcludedCells
                 Me.m_drawers.Add(drawer)
@@ -266,9 +275,9 @@ Namespace Ecospace
         End Sub
 
         Private Sub InitOutputBitmaps()
-            Me.m_bmpBiomassMap = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height)
+            Me.m_bmpMap = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height)
             For Each drawer As cMapDrawerBase In Me.m_drawers
-                drawer.Graphics = Graphics.FromImage(m_bmpBiomassMap)
+                drawer.Graphics = Graphics.FromImage(m_bmpMap)
             Next
         End Sub
 
@@ -482,6 +491,21 @@ Namespace Ecospace
 
 #Region " Map plot "
 
+        Private Sub PlotMap(ByVal g As Graphics)
+            Try
+                Select Case m_plottype
+                    Case ePlotTypes.Effort
+                        PlotFleetMap(g)
+                    Case ePlotTypes.Driver
+                        PlotDriverMap(g, eVarNameFlags.LayerDriver)
+                    Case Else
+                        PlotGroupMap(g)
+                End Select
+            Catch ex As Exception
+                ' Whoah!
+            End Try
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Plot group-related data via multiple threads.
@@ -498,24 +522,24 @@ Namespace Ecospace
             Dim iYear As Integer = dtTime.Year
             Dim iMonth As Integer = dtTime.Month
             Dim drawer As cMapDrawerBase = Nothing
-            Dim iNumVisGroups As Integer = 0
+            Dim iNumVisItems As Integer = 0
             Dim lVisItems As New List(Of cCoreGroupBase)
-            Dim bShowGroup As Boolean = False
+            Dim bShowItem As Boolean = False
 
             For iGroup As Integer = 1 To Me.Core.nGroups
 
                 Select Case Me.ShowItemMode
                     Case eShowItemType.ShowAll
-                        bShowGroup = True
+                        bShowItem = True
                     Case eShowItemType.ShowSingle
-                        bShowGroup = (iGroup = Me.ItemToShow)
+                        bShowItem = (iGroup = Me.ItemToShow)
                     Case eShowItemType.ShowNonHidden
-                        bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
+                        bShowItem = Me.StyleGuide.GroupVisible(iGroup)
                 End Select
 
-                If bShowGroup Then
+                If bShowItem Then
                     lVisItems.Add(Me.Core.EcoPathGroupInputs(iGroup))
-                    iNumVisGroups += 1
+                    iNumVisItems += 1
                 End If
             Next
 
@@ -524,7 +548,7 @@ Namespace Ecospace
             Dim originList As New List(Of PointF)
             Dim rectList As New List(Of Rectangle)
 
-            cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVisGroups, Me.m_iInRow, Me.m_iInCol, _
+            cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVisItems, Me.m_iInRow, Me.m_iInCol,
                                         Me.m_iNumPlotsHorz, Me.m_iNumPlotsVert, originList, rectList)
 
             ' Clear background
@@ -589,6 +613,10 @@ Namespace Ecospace
                                 ' This type of map cannot be drawn threaded because cMapDrawers are hard-wired
                                 ' to render groups. Ugh.
 
+                            Case ePlotTypes.Driver
+                                drawer.Map = Nothing ' The drawer will pick up what it needs
+                                RelScaler = Nothing
+
                         End Select
 
                         Dim mapArgs As New cMapDrawerArgs(maptype, RelScaler, Me.m_FishingMortMax)
@@ -597,7 +625,7 @@ Namespace Ecospace
                         drawer.InRow = Me.m_iInRow
                         drawer.Month = iMonth
 
-                        ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, iNumVisGroups - 1)
+                        ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, iNumVisItems - 1)
 
                         drawer.ClearItems()
                         For i As Integer = ifirst To ilast
@@ -618,24 +646,112 @@ Namespace Ecospace
                     drawer.SignalState.WaitOne()
                 Next
 
-                g.DrawImage(m_bmpBiomassMap, 0, 0)
+                g.DrawImage(m_bmpMap, 0, 0)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
         End Sub
 
-        Private Sub PlotMap(ByVal g As Graphics)
-            Try
-                System.Console.WriteLine("PlotMap")
-                If (Me.m_plottype = ePlotTypes.Effort) Then
-                    PlotFleetMap(g)
-                Else
-                    PlotGroupMap(g)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Plot group-related data via multiple threads.
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' -------------------------------------------------------------------
+        Private Sub PlotDriverMap(ByVal g As Graphics, varname As eVarNameFlags)
+
+            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim dtTime As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
+            Dim iYear As Integer = dtTime.Year
+            Dim iMonth As Integer = dtTime.Month
+            Dim iNumVisItems As Integer = 0
+            Dim lVisItems As New List(Of cEcospaceLayer)
+            Dim bShowItem As Boolean = False
+            Dim layers As cEcospaceLayer() = bm.Layers(varname)
+
+            For iLayer As Integer = 1 To layers.Count
+
+                Select Case Me.ShowItemMode
+                    Case eShowItemType.ShowAll
+                        bShowItem = True
+                    Case eShowItemType.ShowSingle
+                        bShowItem = (iLayer = Me.ItemToShow)
+                        'Case eShowItemType.ShowNonHidden
+                        '    bShowItem = Me.StyleGuide.GroupVisible(iGroup)
+                End Select
+
+                If bShowItem Then
+                    lVisItems.Add(layers(iLayer - 1))
+                    iNumVisItems += 1
                 End If
+            Next
+
+            ' JS05Mar10: disabled console output to keep moving fast
+            'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+            Dim originList As New List(Of PointF)
+            Dim rectList As New List(Of Rectangle)
+
+            cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVisItems, Me.m_iInRow, Me.m_iInCol,
+                                        Me.m_iNumPlotsHorz, Me.m_iNumPlotsVert, originList, rectList)
+
+            ' Clear background
+            Me.InitOutputBitmaps()
+
+            Try
+
+                Dim iFrom As Integer = 0
+                Dim iTo As Integer = 0
+                Dim strDate As String = dtTime.ToShortDateString()
+
+                For Each drawer As cMapDrawerBase In m_drawers
+
+                    If drawer.AllowedToRun Then
+
+                        'init the drawer to the latest values
+                        drawer.OriginList = originList
+                        drawer.RectList = rectList
+                        drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+                        drawer.ShowLabels = Me.m_bShowLabels
+                        drawer.ShowDateInLabel = Me.m_bShowDateInLabel
+                        drawer.Date = strDate
+                        drawer.InvertLabelColors = Me.m_bInvertLabelColor
+                        drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
+
+                        drawer.StanzaDS = Nothing
+
+                        drawer.InCol = Me.m_iInCol
+                        drawer.InRow = Me.m_iInRow
+                        drawer.Month = iMonth
+                        DirectCast(drawer, cMapDrawerLayer).Map = varname
+
+                        iTo = Math.Min(iFrom + Me.m_nMapsPerThread - 1, iNumVisItems - 1)
+
+                        drawer.ClearItems()
+                        For i As Integer = iFrom To iTo
+                            drawer.AddItem(lVisItems(i), i)
+                        Next
+                        drawer.ShowMPA = Me.m_bShowMPA
+
+                        drawer.SignalState.Reset()
+
+                        drawer.AllowedToRun = False
+                        ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, Nothing)
+
+                        iFrom += m_nMapsPerThread
+                    End If
+                Next
+
+                For Each drawer As cMapDrawerBase In m_drawers
+                    drawer.SignalState.WaitOne()
+                Next
+
+                g.DrawImage(m_bmpMap, 0, 0)
             Catch ex As Exception
-                ' Whoah!
+                Debug.Assert(False, ex.Message)
             End Try
+
         End Sub
 
         Private Sub SetFleetsForSelGroups()
@@ -683,7 +799,7 @@ Namespace Ecospace
 
                 If iNumVizFleets = 0 Then Return
 
-                cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVizFleets, Me.m_iInRow, Me.m_iInCol, _
+                cMapDrawerBase.CalcMapAreas(Me.m_pbMap.ClientRectangle, iNumVizFleets, Me.m_iInRow, Me.m_iInCol,
                                             Me.m_iNumPlotsHorz, Me.m_iNumPlotsVert, lOrigins, lMaps)
 
                 For i As Integer = 0 To iNumVizFleets - 1
@@ -698,7 +814,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub DrawFishingBaseMap(ByVal mapFishing(,,) As Single, _
+        Private Sub DrawFishingBaseMap(ByVal mapFishing(,,) As Single,
                                        iFleet As Integer, ByVal rcPos As Rectangle, ByVal g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
@@ -721,9 +837,9 @@ Namespace Ecospace
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
 
-                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
-                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
-                        CSng(rcPos.Width() / m_iInCol), _
+                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol),
+                        CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow),
+                        CSng(rcPos.Width() / m_iInCol),
                         CSng(rcPos.Height() / m_iInRow))
                     Dim tmpBrush As SolidBrush = Nothing
 
@@ -847,11 +963,11 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnSelectDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbDisplayRelBiomass.CheckedChanged, _
-                    m_rbDisplayFishingEffort.CheckedChanged, _
-                    m_rbDisplayCoverB.CheckedChanged, _
-                    m_rbDisplayContaminantC.CheckedChanged, _
-                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged
+            Handles m_rbDisplayRelBiomass.CheckedChanged,
+                    m_rbDisplayFishingEffort.CheckedChanged,
+                    m_rbDisplayCoverB.CheckedChanged,
+                    m_rbDisplayContaminantC.CheckedChanged,
+                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged, m_rbDisplayEnvDriver.CheckedChanged
 
             ' To catch premature events
             If (Me.UIContext Is Nothing) Then Return
@@ -869,8 +985,11 @@ Namespace Ecospace
                 Me.m_plottype = ePlotTypes.F
             ElseIf Me.m_rbDisplayFOverB.Checked Then
                 Me.m_plottype = ePlotTypes.FOverB
+            ElseIf Me.m_rbDisplayEnvDriver.Checked Then
+                Me.m_plottype = ePlotTypes.Driver
             End If
 
+            Me.InitDrawingThreads()
             Me.CheckRefreshSingleItemDropdown()
             Me.UpdateControls()
             Me.RefreshPlot()
@@ -883,14 +1002,26 @@ Namespace Ecospace
             Me.m_bOverlay = m_cbOverlay.Checked
         End Sub
 
-        Private Sub OnSelectGroupToShow(ByVal sender As Object, ByVal e As EventArgs) _
+        Private Sub OnSelectItemToDisplay(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_cmbDisplayItem.SelectedIndexChanged
+
+            If (Me.m_bInUpdate) Then Return
+
             Try
                 Me.ItemToShow = (Me.m_cmbDisplayItem.SelectedIndex + 1)
-                ' Me.UpdateGraph()
             Catch ex As Exception
 
             End Try
+        End Sub
+
+        Private Sub OnSelectDriverToShow(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+
+            Dim iSel As Integer = Math.Max(Math.Min(9, Me.m_cmbLabelPos.SelectedIndex), 0)
+            Me.m_labelposHorz = DirectCast(CInt(iSel Mod 3), StringAlignment)
+            Me.m_labelposVert = DirectCast(CInt(Math.Floor(iSel / 3)), StringAlignment)
+            Me.RefreshMap()
+
         End Sub
 
         Private Sub OnAutosaveTimeStepsChanged(sender As System.Object, e As System.EventArgs) _
@@ -1118,7 +1249,7 @@ Namespace Ecospace
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
             'Init memory for C/B, F/B
-            Me.initLocalMemory(TimeStepData)
+            Me.InitLocalMemory(TimeStepData)
 
             ' Biomass plotting
             ' For each time step, we get the Biomass from the core and store it into our array
@@ -1393,6 +1524,7 @@ Namespace Ecospace
             Dim csm As cCoreStateMonitor = Me.Core.StateMonitor
             Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())
             Dim bUseNewStanza As Boolean = CBool(Me.m_bpUseNewStanza.GetValue())
+            Dim bHasDrivers As Boolean = (Me.Core.nEnvironmentalDriverLayers > 0)
 
             Me.m_bInUpdate = True
 
@@ -1410,6 +1542,9 @@ Namespace Ecospace
             ' Enable contaminant options based on space tracer enabled state
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
             Me.m_rbDisplayCoverB.Enabled = CBool(Me.m_bpConTracing.GetValue())
+
+            ' Enable driver options
+            Me.m_rbDisplayEnvDriver.Enabled = bHasDrivers
 
             Select Case Me.ShowItemMode
                 Case eShowItemType.ShowAll
@@ -1463,24 +1598,30 @@ Namespace Ecospace
 
             ' No need to refresh if nothing changes
             If (Me.m_plottypelast = Me.m_plottype) Then Return
-            ' Exit if not switching between group and fleet views
-            If ((Me.m_plottypelast = ePlotTypes.Effort) = (Me.m_plottype = ePlotTypes.Effort)) Then Return
 
             Me.m_plottypelast = Me.m_plottype
+            Me.m_bInUpdate = True
 
             Dim desc As New cCoreInterfaceFormatter()
             Me.m_cmbDisplayItem.Items.Clear()
 
-            If (Me.m_plottype <> ePlotTypes.Effort) Then
-                For i As Integer = 1 To Me.Core.nGroups
-                    Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroups(i), eDescriptorTypes.Name))
-                Next i
-            Else
-                For i As Integer = 1 To Me.Core.nFleets
-                    Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
-                Next i
-            End If
-            Me.m_cmbDisplayItem.SelectedIndex = 0
+            Select Case Me.m_plottype
+                Case ePlotTypes.Effort
+                    For i As Integer = 1 To Me.Core.nFleets
+                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
+                    Next i
+                Case ePlotTypes.Driver
+                    Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+                    For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
+                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(bm.LayerDriver(i), eDescriptorTypes.Name))
+                    Next
+                Case Else
+                    For i As Integer = 1 To Me.Core.nGroups
+                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroups(i), eDescriptorTypes.Name))
+                    Next i
+            End Select
+            Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -1502,7 +1643,6 @@ Namespace Ecospace
                 Me.m_zgh.ItemToShow = Me.ItemToShow
                 Me.m_zgh.UpdateCurveVisibility()
 
-
                 Me.m_zgh.Redraw()
 
             End If
@@ -1510,7 +1650,7 @@ Namespace Ecospace
         End Sub
 
 
-        Private Sub initLocalMemory(TimeStepData As cEcospaceTimestep)
+        Private Sub InitLocalMemory(TimeStepData As cEcospaceTimestep)
             Dim size As Integer = (TimeStepData.inCols + 1) * (TimeStepData.inRows + 1) * (Me.Core.nGroups + 1)
             Dim bAllocNew As Boolean = False
 
@@ -1604,11 +1744,11 @@ Namespace Ecospace
 
                 Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), SharedResources.SCALE_LOG)
 
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = IO.Path.GetDirectoryName(strFileName)
             Catch ex As Exception
-                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message), _
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, My.Resources.HEADER_MAP_IMAGES, strFileName, ex.Message),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             End Try
 
@@ -1630,7 +1770,7 @@ Namespace Ecospace
         ''' <param name="strValueName">Name of the plotted variable.</param>
         ''' <param name="strDataName"></param>
         ''' -------------------------------------------------------------------
-        Private Sub SaveMapLegendImage(strFileName As String, imgFormat As ImageFormat, _
+        Private Sub SaveMapLegendImage(strFileName As String, imgFormat As ImageFormat,
                                        strValueName As String, strDataName As String)
 
             Dim strExt As String = IO.Path.GetExtension(strFileName)
