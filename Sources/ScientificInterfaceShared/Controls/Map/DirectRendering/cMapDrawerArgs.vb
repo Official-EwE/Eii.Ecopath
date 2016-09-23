@@ -30,8 +30,12 @@ Namespace Controls.Map
                        ByVal theRelScaler() As Single, _
                        ByVal MaxLegendF As Single)
 
-            Dim data(theRelScaler.Length) As Single
-            theRelScaler.CopyTo(data, 0)
+            Dim data As Single() = Nothing
+
+            If (theRelScaler IsNot Nothing) Then
+                ReDim data(theRelScaler.Length)
+                theRelScaler.CopyTo(data, 0)
+            End If
 
             Me.m_maptype = maptype
             Me.m_relscaler = data
