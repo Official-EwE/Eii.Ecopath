@@ -249,6 +249,9 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public Sub Refresh()
 
+            ' Stop set / refresh cycles
+            If (Me.m_bInUpdate) Then Return
+
             Dim newValue As Object = Nothing
             Dim strNewRemark As String = ""
             Dim coreStatus As eStatusFlags = 0
@@ -347,6 +350,8 @@ Namespace Properties
             Return Me.Value(bHonourNull)
         End Function
 
+        Private m_bInUpdate As Boolean = False
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Set a value in the property and commit it to the EwE core.
@@ -381,6 +386,9 @@ Namespace Properties
             Dim vs As cVariableStatus = Nothing
             Dim changeFlags As eChangeFlags = 0
             Dim iIndex As Integer = cCore.NULL_VALUE
+
+            If Me.m_bInUpdate Then Return False
+            Me.m_bInUpdate = True
 
             ' Is this a property associated with core data?
             If (Me.m_Source IsNot Nothing) Then
@@ -420,6 +428,8 @@ Namespace Properties
                 End If
 
             End If
+
+            Me.m_bInUpdate = False
 
             ' Will the value change?
             If (Me.IsValue(newValue) = False) Then
