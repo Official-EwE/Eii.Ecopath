@@ -209,7 +209,7 @@ Public Class cEcospaceMapWrapper
             Dim rectList As New List(Of Rectangle)
             Dim mapArgs As New cMapDrawerArgs(cMapDrawerBase.eMapType.RelBiomass, asScaler, 0)
 
-            cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol, _
+            cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol,
                                         iNumPlotsHorz, iNumPlotsVert, originList, rectList)
 
             Using g As Graphics = Graphics.FromImage(Me.m_bmp)
@@ -255,11 +255,6 @@ Public Class cEcospaceMapWrapper
             Next
 
             Me.m_picbox.Image = Me.m_bmp
-
-            'For Each drawer In m_drawers
-            '    drawer.Font.Dispose()
-            '    drawer.Font = Nothing
-            'Next
 
         End If
 
