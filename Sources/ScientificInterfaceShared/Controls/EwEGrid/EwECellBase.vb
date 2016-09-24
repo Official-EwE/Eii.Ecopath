@@ -24,6 +24,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
@@ -41,7 +42,7 @@ Namespace Controls.EwEGrid
     ''' feedback.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public MustInherit Class EwECellBase
         Inherits Cell
         Implements IEwECell
@@ -49,7 +50,6 @@ Namespace Controls.EwEGrid
 
 #Region " Private helper class "
 
-        ' JS 26Jan08: experimental new behaviour for EwECells: trap enter key
         Class cCatchEnterPressBehaviour
             Inherits BehaviorModels.Common
 
@@ -133,29 +133,11 @@ Namespace Controls.EwEGrid
             ' Set shared visualizer
             Me.VisualModel = New cEwECellVisualizer()
 
-            ' Configure data model
-            Me.DataModel.AllowNull = True
-            Me.DataModel.DefaultValue = cCore.NULL_VALUE
-
-            ' Catch ENTER presses
-            Me.m_bmCatchEnter = New cCatchEnterPressBehaviour()
-            Me.Behaviors.Add(Me.m_bmCatchEnter)
-
-            ' Only resize width, not height of cells
-            Me.m_bmResize = New SourceGrid2.BehaviorModels.Resize(CellResizeMode.Width)
-            Me.Behaviors.Add(Me.m_bmResize)
-
-        End Sub
-
-        Public Sub New(ByVal objVal As Object, ByVal editor As SourceGrid2.DataModels.EditorControlBase)
-            MyBase.New(objVal, editor)
-
-            ' Set shared visualizer
-            Me.VisualModel = New cEwECellVisualizer()
-
-            ' Configure data model
-            Me.DataModel.AllowNull = True
-            Me.DataModel.DefaultValue = cCore.NULL_VALUE
+            ' Configure data model, if any
+            If (DataModel IsNot Nothing) Then
+                Me.DataModel.AllowNull = True
+                Me.DataModel.DefaultValue = cCore.NULL_VALUE
+            End If
 
             ' Catch ENTER presses
             Me.m_bmCatchEnter = New cCatchEnterPressBehaviour()
@@ -211,12 +193,14 @@ Namespace Controls.EwEGrid
 
             Set(ByVal s As cStyleGuide.eStyleFlags)
                 Me.m_style = s
-                If ((s And cStyleGuide.eStyleFlags.NotEditable) = 0) Then
-                    Me.DataModel.EnableEdit = True
-                    Me.DataModel.EditableMode = SourceGrid2.EditableMode.Default
-                Else
-                    Me.DataModel.EnableEdit = False
-                    Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
+                If (Me.DataModel IsNot Nothing) Then
+                    If ((s And cStyleGuide.eStyleFlags.NotEditable) = 0) Then
+                        Me.DataModel.EnableEdit = True
+                        Me.DataModel.EditableMode = SourceGrid2.EditableMode.Default
+                    Else
+                        Me.DataModel.EnableEdit = False
+                        Me.DataModel.EditableMode = SourceGrid2.EditableMode.None
+                    End If
                 End If
             End Set
 
@@ -244,7 +228,7 @@ Namespace Controls.EwEGrid
                 Return Me.m_bSuppressZero
             End Get
             Set(ByVal bSuppress As Boolean)
-                If (bSuppress <> Me.m_bSuppressZero) Then
+                If (bSuppress <> Me.m_bSuppressZero) And (Me.DataModel IsNot Nothing) Then
                     Me.m_bSuppressZero = bSuppress
                     Me.DataModel.DefaultValue = sZeroValue
                     Me.Invalidate()
@@ -305,6 +289,9 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DisplayText() As String
             Get
+                If (Me.DataModel Is Nothing) Then
+                    Return "" ' Could smartly resolve this via type formatters etc... ugh 
+                End If
 
                 Dim objValue As Object = Me.Value
                 Dim tValue As Type = Me.DataModel.ValueType
@@ -389,8 +376,10 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Sub ConfigureCell(ByVal md As cVariableMetaData)
 
-            ' Sanity check
+            ' Sanity checks
             If (md Is Nothing) Then Return
+            If (Me.DataModel Is Nothing) Then Return
+
             ' Set default val
             Me.DataModel.DefaultValue = md.NullValue
 
