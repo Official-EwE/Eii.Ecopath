@@ -131,8 +131,10 @@ Public Class cFishMIPEcosimResultWriter
                         Case cConfiguration.eResultTypes.tsb,
                              cConfiguration.eResultTypes.tcb,
                              cConfiguration.eResultTypes.b10cm,
-                             cConfiguration.eResultTypes.b30cm
-                            val += simbits.Biomass(iGrp)
+                             cConfiguration.eResultTypes.b30cm,
+                             cConfiguration.eResultTypes.bcom
+                            ' Use absolute biomasses
+                            val += simbits.Biomass(iGrp) * core.StartBiomass(iGrp)
                         Case cConfiguration.eResultTypes.tc,
                              cConfiguration.eResultTypes.tc10cm,
                              cConfiguration.eResultTypes.tc30cm
