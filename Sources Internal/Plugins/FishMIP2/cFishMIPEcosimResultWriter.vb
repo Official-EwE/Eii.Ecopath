@@ -121,7 +121,8 @@ Public Class cFishMIPEcosimResultWriter
         ' Aggregate results
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
-        Dim simbits As cEcoSimResults = DirectCast(Ecosimresults, cEcoSimResults)
+        Dim simresult As cEcoSimResults = DirectCast(Ecosimresults, cEcoSimResults)
+        Dim simdata As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
             Dim val As Single = 0
@@ -134,12 +135,12 @@ Public Class cFishMIPEcosimResultWriter
                              cConfiguration.eResultTypes.b30cm,
                              cConfiguration.eResultTypes.bcom
                             ' Use absolute biomasses
-                            val += simbits.Biomass(iGrp) * core.StartBiomass(iGrp)
+                            val += simdata.StartBiomass(iGrp) * simresult.Biomass(iGrp)
                         Case cConfiguration.eResultTypes.tc,
                              cConfiguration.eResultTypes.tc10cm,
                              cConfiguration.eResultTypes.tc30cm
                             For iFleet As Integer = 1 To core.nFleets
-                                val += simbits.BCatch(iGrp, iFleet)
+                                val += simresult.BCatch(iGrp, iFleet)
                             Next
                         Case Else
                             Debug.Assert(False, "Result type not supported")
@@ -171,7 +172,7 @@ Public Class cFishMIPEcosimResultWriter
             Try
                 w.WriteLine("year,month," & result.ToString())
                 For i As Integer = 1 To core.nEcosimTimeSteps
-                    Dim y As Integer = core.EcosimFirstYear + CInt((i - 1) / sStepsPerYear)
+                    Dim y As Integer = core.EcosimFirstYear + CInt(Math.Floor((i - 1) / sStepsPerYear))
                     Dim t As Integer = CInt(((i - 1) Mod sStepsPerYear)) + 1
                     w.WriteLine("{0},{1},{2}", y, t, cStringUtils.FormatNumber(Me.m_data(i, result)))
                 Next
