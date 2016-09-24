@@ -47,7 +47,8 @@ Public Class gridConfig
         Me(0, 2 + cConfiguration.eResultTypes.b30cm) = New EwEColumnHeaderCell("B > 30cm")
         Me(0, 2 + cConfiguration.eResultTypes.tc) = New EwEColumnHeaderCell("Total catch")
         Me(0, 2 + cConfiguration.eResultTypes.tc10cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
-        Me(0, 2 + cConfiguration.eResultTypes.tc30cm) = New EwEColumnHeaderCell("Catch  B > 10cm")
+        Me(0, 2 + cConfiguration.eResultTypes.tc30cm) = New EwEColumnHeaderCell("Catch  B > 30cm")
+        Me(0, 2 + cConfiguration.eResultTypes.bcom) = New EwEColumnHeaderCell("B commercial")
 
         Me.FixedColumns = 2
 

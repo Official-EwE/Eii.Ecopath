@@ -31,21 +31,22 @@ Public Class cConfiguration
     Private Property Configuration As Boolean(,)
 
     Public Enum eResultTypes As Integer
-        ''' <summary>Total system B</summary>
+        ''' <summary>Total system Biomass density (gC/m2)</summary>
         tsb
-        ''' <summary>Total consumer B</summary>
+        ''' <summary>Total consumer Biomass density (gC/m2)</summary>
         tcb
-        ''' <summary>B > 10cm</summary>
+        ''' <summary>B > 10cm (gC/m2)</summary>
         b10cm
-        ''' <summary>B > 30cm</summary>
+        ''' <summary>B > 30cm (gC/m2)</summary>
         b30cm
-        ''' <summary>Total catch</summary>
+        ''' <summary>Total catch (g wet biomass /m2)</summary>
         tc
-        ''' <summary>Catch > 10cm</summary>
+        ''' <summary>Catch > 10cm (g wet biomass /m2)</summary>
         tc10cm
-        ''' <summary>Catch > 30cm</summary>
+        ''' <summary>Catch > 30cm (g wet biomass /m2)</summary>
         tc30cm
-        ' tla
+        ''' <summary>Biomass of commercial species (gC/m2)</summary>
+        bcom
     End Enum
 
     Public Sub New(core As cCore)
