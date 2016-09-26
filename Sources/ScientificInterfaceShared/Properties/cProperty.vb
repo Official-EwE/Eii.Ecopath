@@ -100,11 +100,11 @@ Namespace Properties
         ''' <summary>
         ''' Constructor, initializes the property
         ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance that is the data source for this property.</param>
+        ''' <param name="src">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance that is the data source for this property.</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">Variable name</see> in <paramref name="Source">Source</paramref> that is the data source for this property.</param>
-        ''' <param name="SourceSec">The object acting as index on <paramref name="VarName">VarName</paramref> in case this is an indexed variable.</param>
+        ''' <param name="srcSec">The object acting as index on <paramref name="VarName">VarName</paramref> in case this is an indexed variable.</param>
         ''' <param name="iSecIndexOffset">An optional offset that defines the diffence between the index provided by
-        ''' <paramref name="SourceSec">srcSec</paramref> and the actual storage position in the underlying arrays.</param>
+        ''' <paramref name="srcSec">srcSec</paramref> and the actual storage position in the underlying arrays.</param>
         ''' <remarks>
         ''' <para>The <paramref name="iSecIndexOffset">iSecIndexOffset</paramref> parameter is useful in cases where secundary
         ''' objects represent array indices other than their ID value.</para>
@@ -113,20 +113,20 @@ Namespace Properties
         ''' secundary indexes have an <see cref="cCoreInputOutputBase.Index">Index</see> value that is most likely higher than
         ''' the the detritus fate array index range. To compensate for this difference, a 
         ''' <paramref name="iSecIndexOffset">iSecIndexOffset</paramref> value of {<see cref="cCore.nGroups">numgroups</see>} -
-        ''' {<see cref="cCore.nDetritusGroups">numdetritusgroups</see>} will ensure that the <paramref name="SourceSec">srcSec</paramref>
+        ''' {<see cref="cCore.nDetritusGroups">numdetritusgroups</see>} will ensure that the <paramref name="srcSec">srcSec</paramref>
         ''' object is used to correctly access the underlying array.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal Source As EwECore.cCoreInputOutputBase,
-                       ByVal VarName As eVarNameFlags,
-                       Optional ByVal SourceSec As EwECore.cCoreInputOutputBase = Nothing,
+        Public Sub New(ByVal src As EwECore.cCoreInputOutputBase, _
+                       ByVal VarName As eVarNameFlags, _
+                       Optional ByVal srcSec As EwECore.cCoreInputOutputBase = Nothing, _
                        Optional ByVal iSecIndexOffset As Integer = 0)
 
-            Me.m_key = New cValueID(Source, VarName, SourceSec)
+            Me.m_key = New cValueID(src, VarName, srcSec)
 
-            Me.m_Source = Source
+            Me.m_Source = src
             Me.m_VarName = VarName
-            Me.m_SourceSec = SourceSec
+            Me.m_SourceSec = srcSec
             Me.m_iSecIndex = cCore.NULL_VALUE
             Me.m_iSecIndexOffset = iSecIndexOffset
 
@@ -249,9 +249,6 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public Sub Refresh()
 
-            ' Stop set / refresh cycles
-            If (Me.m_bInUpdate) Then Return
-
             Dim newValue As Object = Nothing
             Dim strNewRemark As String = ""
             Dim coreStatus As eStatusFlags = 0
@@ -350,8 +347,6 @@ Namespace Properties
             Return Me.Value(bHonourNull)
         End Function
 
-        Private m_bInUpdate As Boolean = False
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Set a value in the property and commit it to the EwE core.
@@ -386,9 +381,6 @@ Namespace Properties
             Dim vs As cVariableStatus = Nothing
             Dim changeFlags As eChangeFlags = 0
             Dim iIndex As Integer = cCore.NULL_VALUE
-
-            If Me.m_bInUpdate Then Return False
-            Me.m_bInUpdate = True
 
             ' Is this a property associated with core data?
             If (Me.m_Source IsNot Nothing) Then
@@ -428,8 +420,6 @@ Namespace Properties
                 End If
 
             End If
-
-            Me.m_bInUpdate = False
 
             ' Will the value change?
             If (Me.IsValue(newValue) = False) Then
