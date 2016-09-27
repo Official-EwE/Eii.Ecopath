@@ -87,8 +87,10 @@ Public Class cConfiguration
                             Dim j As eResultTypes = 0
                             If [Enum].TryParse(bits(0), j) Then
                                 For Each strGroup As String In bits(1).Split(" "c)
-                                    Dim i As Integer = CInt(strGroup)
-                                    Configuration(i, j) = True
+                                    Dim iGrp As Integer = 0
+                                    If (Integer.TryParse(strGroup, iGrp)) Then
+                                        Configuration(iGrp, j) = True
+                                    End If
                                 Next
                             End If
                         End If
