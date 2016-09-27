@@ -278,7 +278,9 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            Me.AutoSizeColumnRange(1, Me.ColumnsCount - 1, 1, Me.RowsCount - 1)
+            Me.AutoSizeColumn(eColumnTypes.MPAIndex, 40)
+            Me.AutoSizeColumn(eColumnTypes.MPAStatus, 80)
+            Me.StretchColumnsToFitWidth()
         End Sub
 
         ''' -----------------------------------------------------------------------
