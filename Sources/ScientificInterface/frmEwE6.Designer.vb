@@ -74,9 +74,9 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcospaceDefineRegions = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineImportanceMaps = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceInputMaps = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcospaceLoadXYRefData = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiEcospaceDatasets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcospaceLoadXYRefData = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
@@ -322,11 +322,6 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcospaceInputMaps.Name = "m_tsmiEcospaceInputMaps"
         resources.ApplyResources(Me.m_tsmiEcospaceInputMaps, "m_tsmiEcospaceInputMaps")
         '
-        'm_tsmiEcospaceLoadXYRefData
-        '
-        Me.m_tsmiEcospaceLoadXYRefData.Name = "m_tsmiEcospaceLoadXYRefData"
-        resources.ApplyResources(Me.m_tsmiEcospaceLoadXYRefData, "m_tsmiEcospaceLoadXYRefData")
-        '
         'm_tssEcospace4
         '
         Me.m_tssEcospace4.Name = "m_tssEcospace4"
@@ -336,6 +331,11 @@ Partial Public Class frmEwE6
         '
         resources.ApplyResources(Me.m_tsmiEcospaceDatasets, "m_tsmiEcospaceDatasets")
         Me.m_tsmiEcospaceDatasets.Name = "m_tsmiEcospaceDatasets"
+        '
+        'm_tsmiEcospaceLoadXYRefData
+        '
+        Me.m_tsmiEcospaceLoadXYRefData.Name = "m_tsmiEcospaceLoadXYRefData"
+        resources.ApplyResources(Me.m_tsmiEcospaceLoadXYRefData, "m_tsmiEcospaceLoadXYRefData")
         '
         'sep3
         '
