@@ -278,8 +278,8 @@ Namespace Ecopath.Controls.FlowDiagram
                     DC_all(c.nFleets + i, c.nFleets + j) = sDiet
 
                     Dim sB As Single = Me.Biomass(i)
-                    Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sDiet)
-                    Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sDiet)
+                    Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
+                    Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
                     B_all(c.nFleets + i) = sB
                 Next j
                 PP_all(c.nFleets + i) = c.EcoPathGroupInputs(i).PP
@@ -293,8 +293,8 @@ Namespace Ecopath.Controls.FlowDiagram
                     DC_all(i, c.nFleets + j) = sDiet
 
                     Dim sB As Single = Me.Biomass(i + c.nGroups)
-                    Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sDiet)
-                    Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sDiet)
+                    Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
+                    Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
                     B_all(i) = sB
                 Next j
                 ' Just to be explicit: fleets are full-on consumers
