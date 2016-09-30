@@ -47,7 +47,7 @@ Partial Class frmConfig
         Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsddPresents = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsmiGOM = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_grid = New gridConfig()
+        Me.m_grid = New FishMIP2Plugin.gridConfig()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -108,14 +108,14 @@ Partial Class frmConfig
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
-        'frmUI
+        'frmConfig
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ControlBox = False
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_ts)
-        Me.Name = "frmUI"
+        Me.Name = "frmConfig"
         Me.ShowInTaskbar = False
         Me.TabText = ""
         Me.m_ts.ResumeLayout(False)

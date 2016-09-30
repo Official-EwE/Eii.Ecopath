@@ -135,7 +135,7 @@ Public Class cFishMIPEcosimResultWriter
                              cConfiguration.eResultTypes.b30cm,
                              cConfiguration.eResultTypes.bcom
                             ' Use absolute biomasses
-                            val += simdata.StartBiomass(iGrp) * simresult.Biomass(iGrp)
+                            val += simdata.StartBiomass(iGrp) * simresult.Biomass(iGrp) / 10
                         Case cConfiguration.eResultTypes.tc,
                              cConfiguration.eResultTypes.tc10cm,
                              cConfiguration.eResultTypes.tc30cm
@@ -170,11 +170,11 @@ Public Class cFishMIPEcosimResultWriter
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
             w = New StreamWriter(Path.Combine(strPath, result.ToString() & ".csv"))
             Try
-                w.WriteLine("year,month," & result.ToString())
+                w.WriteLine("year," & result.ToString())
                 For i As Integer = 1 To core.nEcosimTimeSteps
                     Dim y As Integer = core.EcosimFirstYear + CInt(Math.Floor((i - 1) / sStepsPerYear))
                     Dim t As Integer = CInt(((i - 1) Mod sStepsPerYear)) + 1
-                    w.WriteLine("{0},{1},{2}", y, t, cStringUtils.FormatNumber(Me.m_data(i, result)))
+                    w.WriteLine("{0:D4}_{1:D2},{2}", y, t, cStringUtils.FormatNumber(Me.m_data(i, result)))
                 Next
             Catch ex As Exception
 
@@ -186,6 +186,7 @@ Public Class cFishMIPEcosimResultWriter
         ' Notify UI
         Dim msg As New cMessage(String.Format("FishMIP Ecosim results have been saved to {0}", Me.AutoSaveOutputPath),
                                     eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
+        msg.Hyperlink = Me.AutoSaveOutputPath
         core.Messages.SendMessage(msg)
 
         ' Free Willy

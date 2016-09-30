@@ -32,15 +32,18 @@ Public Class frmConfig
         Me.UIContext = uic
         Me.InitializeComponent()
 
-        Me.Grid = m_grid
+        Me.Text = My.Resources.CAPTION
+        Me.TabText = Me.Text
 
     End Sub
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
-        Me.Text = My.Resources.CAPTION
-        Me.TabText = Me.Text
+        If (Me.UIContext Is Nothing) Then Return
+
+        Me.Grid = m_grid
+
         Me.m_tsbnAutosave.Image = ScientificInterfaceShared.My.Resources.saveHS
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}

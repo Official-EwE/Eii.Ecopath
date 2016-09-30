@@ -31,7 +31,7 @@ Public Class gridConfig
         MyBase.New()
     End Sub
 
-    Private m_config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+    Private m_config As cConfiguration = Nothing
 
     Protected Overrides Sub InitStyle()
 
@@ -55,6 +55,10 @@ Public Class gridConfig
     End Sub
 
     Protected Overrides Sub FillData()
+
+        If (Me.m_config Is Nothing) Then
+            Me.m_config = cFishMIPcore.GetInstance().Configuration
+        End If
 
         Me.RowsCount = 1
         For i As Integer = 1 To Me.UIContext.Core.nGroups
