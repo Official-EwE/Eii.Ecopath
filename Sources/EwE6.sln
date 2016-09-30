@@ -77,6 +77,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwECore", "EwECore", "{A14E
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwECore", "EwECore\EwECore.vbproj", "{CDECE065-503A-4562-A955-06777B2F909E}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FishMIP2Plugin", "..\Sources Internal\Plugins\FishMIP2\FishMIP2Plugin.vbproj", "{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GlobalOceanModelPlugin", "..\Sources Internal\Plugins\GOMSailCostPlugin\GlobalOceanModelPlugin.vbproj", "{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwESpatialAssetsPlugin", "..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj", "{C1081265-6A9D-4087-8BB5-E907D86FD719}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -306,6 +312,42 @@ Global
 		{CDECE065-503A-4562-A955-06777B2F909E}.Release|x64.Build.0 = Release|x64
 		{CDECE065-503A-4562-A955-06777B2F909E}.Release|x86.ActiveCfg = Release|x86
 		{CDECE065-503A-4562-A955-06777B2F909E}.Release|x86.Build.0 = Release|x86
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Debug|x64.ActiveCfg = Debug|x64
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Debug|x64.Build.0 = Debug|x64
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Debug|x86.ActiveCfg = Debug|x86
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Debug|x86.Build.0 = Debug|x86
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Release|x64.ActiveCfg = Release|x64
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Release|x64.Build.0 = Release|x64
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Release|x86.ActiveCfg = Release|x86
+		{A8329A9F-B2A3-465D-AE6B-00E1BB2BACC3}.Release|x86.Build.0 = Release|x86
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Debug|x64.ActiveCfg = Debug|x64
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Debug|x64.Build.0 = Debug|x64
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Debug|x86.ActiveCfg = Debug|x86
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Debug|x86.Build.0 = Debug|x86
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Release|x64.ActiveCfg = Release|x64
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Release|x64.Build.0 = Release|x64
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Release|x86.ActiveCfg = Release|x86
+		{E2011D02-4AC4-4CC1-9417-BEB82AF68F8E}.Release|x86.Build.0 = Release|x86
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Debug|x64.ActiveCfg = Debug|x64
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Debug|x64.Build.0 = Debug|x64
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Debug|x86.ActiveCfg = Debug|x86
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Debug|x86.Build.0 = Debug|x86
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x64.ActiveCfg = Release|x64
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x64.Build.0 = Release|x64
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x86.ActiveCfg = Release|x86
+		{C1081265-6A9D-4087-8BB5-E907D86FD719}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -244,7 +244,7 @@ Namespace SpatialData
                                     ' #Yes: start process of extracting external data
 
                                     ' Start logging the operations on successfully locked data
-                                    Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
+                                    Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, Me.VarName, layer)
 
                                     ' Sanity check
                                     Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")

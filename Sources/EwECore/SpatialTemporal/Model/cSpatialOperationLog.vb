@@ -114,13 +114,14 @@ Namespace SpatialData
         ''' <param name="dt">The absolute time represented by this time step.</param>
         ''' <param name="layer">The layer that is being processed.</param>
         ''' -------------------------------------------------------------------
-        Friend Sub BeginLayerLog(ByVal timestep As Integer, ByVal dt As DateTime, ByVal layer As cEcospaceLayer)
+        Friend Sub BeginLayerLog(ByVal timestep As Integer, ByVal dt As DateTime, varname As eVarNameFlags, ByVal layer As cEcospaceLayer)
 
             If (Me.m_msgCurrent IsNot Nothing) Then
                 Me.EndLayerLog()
             End If
 
-            Me.m_msgCurrent = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_LOADING, layer.Name, timestep, dt), _
+            Dim ftm As New Style.cVarnameTypeFormatter()
+            Me.m_msgCurrent = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_LOADING, ftm.GetDescriptor(varname), layer.Name, timestep, dt),
                                            eMessageType.GISOperation, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_vn = layer.VarName
             Me.m_iIndex = layer.Index
