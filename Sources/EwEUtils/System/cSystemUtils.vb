@@ -28,6 +28,7 @@ Imports System.IO
 Imports System.Net
 Imports System.Security.Principal
 Imports System.Threading
+Imports System.Windows.Forms
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -56,7 +57,7 @@ Namespace SystemUtilities
         ''' <param name="bIP4">True to get the IP4 address, False to get the IP6 address.</param>
         ''' <returns>The IP address of the host machine.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function GetHostIP(Optional strHost As String = "", _
+        Public Shared Function GetHostIP(Optional strHost As String = "",
                                          Optional bIP4 As Boolean = True) As String
             If String.IsNullOrWhiteSpace(strHost) Then strHost = GetHostName()
             For Each ip As IPAddress In Dns.GetHostEntry(strHost).AddressList
@@ -143,9 +144,9 @@ Namespace SystemUtilities
         ''' here to detect the application file in all possible locations.</param>
         ''' <param name="strOutputParameters">Arguments to pass to the executable.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Function AppExec(ByVal strAppName As String, _
-                                       ByVal strOutputParameters As String, _
-                                       ByRef strError As String, _
+        Public Shared Function AppExec(ByVal strAppName As String,
+                                       ByVal strOutputParameters As String,
+                                       ByRef strError As String,
                                        Optional ByVal strPath As String = "") As Boolean
 
             ' Check if Directory is forced 
@@ -169,7 +170,7 @@ Namespace SystemUtilities
         ''' </returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function ApplicationLaunchLocations() As String()
-            Return New String() {Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(7), _
+            Return New String() {Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(7),
                                  Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles) & "\Ecopath"}
         End Function
 
@@ -182,9 +183,9 @@ Namespace SystemUtilities
         ''' <param name="strOutputParameters"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        Private Shared Function ExecuteApplication(ByVal strLocationDir As String, _
-                                                   ByVal strAppName As String, _
-                                                   ByVal strOutputParameters As String, _
+        Private Shared Function ExecuteApplication(ByVal strLocationDir As String,
+                                                   ByVal strAppName As String,
+                                                   ByVal strOutputParameters As String,
                                                    ByRef strError As String) As Boolean
             Dim proc As New System.Diagnostics.Process()
             Dim bSuccess As Boolean = False
@@ -250,13 +251,13 @@ Namespace SystemUtilities
         Public Shared Function IsWindows() As Boolean
 
             Select Case cSystemUtils.Platform
-                Case PlatformID.MacOSX, _
-                     PlatformID.Unix, _
+                Case PlatformID.MacOSX,
+                     PlatformID.Unix,
                      PlatformID.Xbox
                     Return False
-                Case PlatformID.Win32NT, _
-                     PlatformID.Win32S, _
-                     PlatformID.Win32Windows, _
+                Case PlatformID.Win32NT,
+                     PlatformID.Win32S,
+                     PlatformID.Win32Windows,
                      PlatformID.WinCE
                     Return True
                 Case Else
@@ -357,7 +358,7 @@ Namespace SystemUtilities
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsBatteryPower() As Boolean
-            Return System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus = Windows.Forms.PowerLineStatus.Offline
+            Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
         End Function
 
         ''' -------------------------------------------------------------------
