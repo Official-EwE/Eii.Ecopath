@@ -315,6 +315,18 @@ Public Class gridStrategiesOverview
 
     End Sub
 
+    Public Sub CheckAll()
+        For iRow = 1 To Me.RowsCount - 1
+            Me(iRow, eColumnTypes.RunStrategy).Value = False
+        Next
+    End Sub
+
+    Public Sub UncheckAll()
+        For iRow = 1 To Me.RowsCount - 1
+            Me(iRow, eColumnTypes.RunStrategy).Value = True
+        Next
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update lock, should be set when modifying cell values from the code
