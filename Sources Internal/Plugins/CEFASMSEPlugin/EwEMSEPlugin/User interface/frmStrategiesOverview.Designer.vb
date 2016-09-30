@@ -29,6 +29,8 @@ Partial Class frmStrategiesOverview
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
         Me.m_grid = New EwEMSEPlugin.gridStrategiesOverview()
+        Me.m_btnCheckAll = New System.Windows.Forms.Button()
+        Me.m_btnCheckNone = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'm_ts
@@ -48,7 +50,7 @@ Partial Class frmStrategiesOverview
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.Size = New System.Drawing.Size(65, 24)
         Me.m_btnCancel.TabIndex = 2
-        Me.m_btnCancel.Text = ScientificInterfaceShared.My.Resources.BUTTON_CANCEL
+        Me.m_btnCancel.Text = "Cancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
         'm_btnSave
@@ -58,7 +60,7 @@ Partial Class frmStrategiesOverview
         Me.m_btnSave.Name = "m_btnSave"
         Me.m_btnSave.Size = New System.Drawing.Size(70, 23)
         Me.m_btnSave.TabIndex = 3
-        Me.m_btnSave.Text = ScientificInterfaceShared.My.Resources.BUTTON_OK
+        Me.m_btnSave.Text = "OK"
         Me.m_btnSave.UseVisualStyleBackColor = True
         '
         'm_grid
@@ -83,9 +85,9 @@ Partial Class frmStrategiesOverview
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
         Me.m_grid.IsOutputGrid = True
-        Me.m_grid.Location = New System.Drawing.Point(12, 28)
+        Me.m_grid.Location = New System.Drawing.Point(12, 70)
         Me.m_grid.Name = "m_grid"
-        Me.m_grid.Size = New System.Drawing.Size(484, 455)
+        Me.m_grid.Size = New System.Drawing.Size(484, 413)
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -98,11 +100,31 @@ Partial Class frmStrategiesOverview
         Me.m_grid.TabIndex = 0
         Me.m_grid.UIContext = Nothing
         '
+        'm_btnCheckAll
+        '
+        Me.m_btnCheckAll.Location = New System.Drawing.Point(338, 40)
+        Me.m_btnCheckAll.Name = "m_btnCheckAll"
+        Me.m_btnCheckAll.Size = New System.Drawing.Size(76, 24)
+        Me.m_btnCheckAll.TabIndex = 4
+        Me.m_btnCheckAll.Text = "Check All"
+        Me.m_btnCheckAll.UseVisualStyleBackColor = True
+        '
+        'm_btnCheckNone
+        '
+        Me.m_btnCheckNone.Location = New System.Drawing.Point(420, 40)
+        Me.m_btnCheckNone.Name = "m_btnCheckNone"
+        Me.m_btnCheckNone.Size = New System.Drawing.Size(76, 24)
+        Me.m_btnCheckNone.TabIndex = 5
+        Me.m_btnCheckNone.Text = "Uncheck All"
+        Me.m_btnCheckNone.UseVisualStyleBackColor = True
+        '
         'frmStrategiesOverview
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(512, 525)
+        Me.Controls.Add(Me.m_btnCheckNone)
+        Me.Controls.Add(Me.m_btnCheckAll)
         Me.Controls.Add(Me.m_btnSave)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_ts)
@@ -110,7 +132,7 @@ Partial Class frmStrategiesOverview
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmStrategiesOverview"
         Me.TabText = ""
-        Me.Text = My.Resources.FORMNAME_STRATEGIES_OVERVIEW
+        Me.Text = "Strategies Overview"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -120,4 +142,6 @@ Partial Class frmStrategiesOverview
     Friend WithEvents m_ts As cEwEToolstrip
     Friend WithEvents m_btnCancel As Button
     Friend WithEvents m_btnSave As Button
+    Friend WithEvents m_btnCheckAll As Button
+    Friend WithEvents m_btnCheckNone As Button
 End Class

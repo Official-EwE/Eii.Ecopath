@@ -258,13 +258,13 @@ Public Class gridErrorCVs
             Debug.Assert(False, Me.ToString + ".OnCellEdited() Exception: " + ex.Message)
         End Try
 
-        If bEdited Then
-            Try
+        'If bEdited Then
+        Try
                 RaiseEvent onEdited()
             Catch ex As Exception
 
             End Try
-        End If
+        'End If
 
         Return MyBase.OnCellEdited(p, cell)
 

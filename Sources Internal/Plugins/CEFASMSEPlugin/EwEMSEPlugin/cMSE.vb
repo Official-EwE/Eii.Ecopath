@@ -82,6 +82,8 @@ Public Class cMSE
     Private m_diets As cDiets = Nothing
     Private m_implementation_error As Single
     Private m_currentModelID As Integer
+    Public m_currentTimeStep As Integer
+    Private m_FleetImpError As Single()
 
     'Private m_currentStrategy As Strategy = Nothing
 
@@ -1731,6 +1733,8 @@ Public Class cMSE
         Dim FleetCatchTable As DataTable
         Dim ResultsTable As DataTable
 
+        ReDim m_FleetImpError(m_core.nFleets)
+
         Try
 
             Me.StockAssessment.BeginRun()
@@ -1820,6 +1824,10 @@ Public Class cMSE
                         Me.m_iCurStategy = 0
                         Dim StratArray() As Strategy = Strategies.ToArray()
                         For istrat As Integer = 0 To StratArray.Count - 1
+
+                            'reset the seed for the random number generator of implementation and observation errors so that 
+                            'the same errors are applied for a model across all strategies
+                            Me.m_StockAssessment.ResetSeed(iModel)
 
                             'Re-load any Ecosim forcing data for the hind cast period
                             Me.setFishForcedToBase()
@@ -3667,6 +3675,8 @@ Public Class cMSE
         Dim QMult(m_ecosim.EcosimData.nGroups) As Single
         Dim NumberTimeStepsIntoProjection As Integer
 
+        m_currentTimeStep = iTime
+
         NumberTimeStepsIntoProjection = iTime - OriginalNTimesteps
 
         If ChangeEffortFlag = True And iTime > OriginalNTimesteps Then 'Flag is only set to true when the button on the form is clicked
@@ -3684,6 +3694,9 @@ Public Class cMSE
                 '        HCR.TimeFrameRule.calcFsfromTimeFrameRules(iTime)
                 '    Next
                 'End If
+                For iFleet = 1 To m_ecosim.EcosimData.nGear
+                    m_FleetImpError(iFleet) = StockAssessment.getImplementationError(iFleet)
+                Next
 
                 Me.setQModifiers(iTime)
 
@@ -4143,7 +4156,7 @@ Public Class cMSE
                     'It is part of the stock assessment for practical reasons 
                     '   CV can be included in the interface
                     '   Random number generator needs to be seeded at the same time as the stock assessment model
-                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.StockAssessment.getImplementationError(iFleet)
+                    _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime) * Me.m_FleetImpError(iFleet)
                 Else
                     _simdata.FishRateGear(iFleet, iTime) = _simdata.FishRateGear(iFleet, iTime - 1)
                 End If 'Me.m_currentStrategy.Regulations.Method(iFleet) <> cRegulations.eRegMethod.None

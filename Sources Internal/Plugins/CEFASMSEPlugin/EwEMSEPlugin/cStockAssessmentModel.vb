@@ -146,6 +146,9 @@ Public Class cStockAssessmentModel
 
     End Sub
 
+    Public Sub ResetSeed(ByVal iModel As Integer)
+        m_rand = New Random(iModel)
+    End Sub
 
     Private Sub Init()
         Try
@@ -391,8 +394,8 @@ Public Class cStockAssessmentModel
 
     Public Function getImplementationError(iFleet As Integer) As Single
 
-        'Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
         Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal()))
+        'Return CSng(Math.Exp(Me.CVImpError(iFleet) * getNextRandNormal(True, iFleet)))
 
     End Function
 
@@ -428,6 +431,56 @@ Public Class cStockAssessmentModel
 
         'System.Console.Write(val.ToString & ",")
         Return val
+    End Function
+
+    Private Function getNextRandNormal(ByVal Save2File As Boolean, ByVal iFleet As Integer) As Single
+
+        Dim val As Single
+        Dim V1 As Double, V2 As Double
+
+        If Save2File = False Then Return Nothing
+
+        'Me.m_rand() gets re-seeded for every run in InitRandom()  ### Since making changes not sure this is true now!!!!! ####
+
+        'Box Muller transformation 
+        'http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+        'Mean = 0 SD = 1
+        Do
+            V1 = Me.m_rand.NextDouble
+            V2 = Me.m_rand.NextDouble
+        Loop Until V1 > 0
+        val = CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * Math.PI * V2))
+
+#If DEBUG Then
+        Dim test_file_exists As Boolean = True
+        If Not File.Exists(cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.Results, "test_errors.csv")) Then
+            test_file_exists = False
+        End If
+        Dim fn As String = cMSEUtils.MSEFile(Me.MSE.DataPath, cMSEUtils.eMSEPaths.Results, "test_errors.csv")
+        Dim strmImpErrors As StreamWriter
+        strmImpErrors = cMSEUtils.GetWriter(fn, True)
+        'Headers
+        If Not test_file_exists Then
+            strmImpErrors.WriteLine("Fleet,ModelID,Strategy,TimeStep, Error")
+        End If
+        strmImpErrors.Write(Me.m_pathdata.FleetName(iFleet))
+        strmImpErrors.Write("," & Me.m_MSE.CurrentModelID)
+        strmImpErrors.Write("," & Me.m_MSE.currentStrategy.Name)
+        strmImpErrors.Write("," & Me.m_MSE.m_currentTimeStep)
+        strmImpErrors.Write("," & val)
+        strmImpErrors.WriteLine()
+        strmImpErrors.Close()
+        strmImpErrors.Dispose()
+#End If
+
+        'OK This should have worked but didn't
+        'It generated a difference sequence every time it was reset for a new run
+        'I must have done something wrong but can't figure out what...
+        'val = CSng(Me.m_NormalDist.NextDouble())
+
+        'System.Console.Write(val.ToString & ",")
+        Return val
+
     End Function
 
 

@@ -360,15 +360,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cost function type.
-        '''</summary>
-        Friend ReadOnly Property HEADER_COST_FUNCTION_TYPE() As String
-            Get
-                Return ResourceManager.GetString("HEADER_COST_FUNCTION_TYPE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Distribution type.
         '''</summary>
         Friend ReadOnly Property HEADER_DISTRIBUTIONTYPE() As String
@@ -428,6 +419,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_GROUP_NAME() As String
             Get
                 Return ResourceManager.GetString("HEADER_GROUP_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to HCR Type.
+        '''</summary>
+        Friend ReadOnly Property HEADER_HCR_TYPE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_HCR_TYPE", resourceCulture)
             End Get
         End Property
         

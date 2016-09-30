@@ -219,8 +219,8 @@
   <data name="HEADER_BOUND_UPPER" xml:space="preserve">
     <value>Upper boundary</value>
   </data>
-  <data name="HEADER_COST_FUNCTION_TYPE" xml:space="preserve">
-    <value>Cost function type</value>
+  <data name="HEADER_HCR_TYPE" xml:space="preserve">
+    <value>HCR Type</value>
   </data>
   <data name="HEADER_DISTRIBUTIONTYPE" xml:space="preserve">
     <value>Distribution type</value>
