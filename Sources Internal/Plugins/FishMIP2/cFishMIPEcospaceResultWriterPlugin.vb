@@ -139,7 +139,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                                          cConfiguration.eResultTypes.b10cm,
                                          cConfiguration.eResultTypes.b30cm,
                                          cConfiguration.eResultTypes.bcom
-                                        val += Me.m_ds.Bcell(iRow, iCol, iGrp)
+                                        val += Me.m_ds.Bcell(iRow, iCol, iGrp) / 10 ' Unit conversion
                                     Case cConfiguration.eResultTypes.tc,
                                          cConfiguration.eResultTypes.tc10cm,
                                          cConfiguration.eResultTypes.tc30cm

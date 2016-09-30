@@ -135,7 +135,7 @@ Public Class cFishMIPEcosimResultWriter
                              cConfiguration.eResultTypes.b30cm,
                              cConfiguration.eResultTypes.bcom
                             ' Use absolute biomasses
-                            val += simdata.StartBiomass(iGrp) * simresult.Biomass(iGrp) / 10
+                            val += simdata.StartBiomass(iGrp) * simresult.Biomass(iGrp) / 10 ' Unit conversion
                         Case cConfiguration.eResultTypes.tc,
                              cConfiguration.eResultTypes.tc10cm,
                              cConfiguration.eResultTypes.tc30cm
