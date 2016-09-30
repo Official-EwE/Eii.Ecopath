@@ -137,7 +137,8 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                                     Case cConfiguration.eResultTypes.tsb,
                                          cConfiguration.eResultTypes.tcb,
                                          cConfiguration.eResultTypes.b10cm,
-                                         cConfiguration.eResultTypes.b30cm
+                                         cConfiguration.eResultTypes.b30cm,
+                                         cConfiguration.eResultTypes.bcom
                                         val += Me.m_ds.Bcell(iRow, iCol, iGrp)
                                     Case cConfiguration.eResultTypes.tc,
                                          cConfiguration.eResultTypes.tc10cm,

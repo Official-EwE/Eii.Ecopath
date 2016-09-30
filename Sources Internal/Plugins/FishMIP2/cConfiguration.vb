@@ -163,6 +163,8 @@ Public Class cConfiguration
                         bChecked = grp.IsFished() And grp.Index <= 24
                     Case cConfiguration.eResultTypes.tc30cm
                         bChecked = grp.IsFished() And grp.Index <= 24 And Array.IndexOf(smalluns, grp.Index) = -1
+                    Case eResultTypes.bcom
+                        bChecked = grp.IsFished()
                 End Select
 
                 config(igroup, cat) = bChecked

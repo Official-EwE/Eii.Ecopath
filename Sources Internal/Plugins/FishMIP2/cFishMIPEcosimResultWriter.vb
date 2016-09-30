@@ -162,7 +162,7 @@ Public Class cFishMIPEcosimResultWriter
         Dim strPath As String = Me.AutoSaveOutputPath
         Dim core As cCore = cFishMIPcore.GetInstance().Core
         Dim w As StreamWriter = Nothing
-        Dim sStepsPerYear As Single = CSng(core.nEcosimTimeSteps / core.nEcosimYears)
+        Dim sStepsPerYear As Single = cCore.N_MONTHS ' CSng(core.nEcosimTimeSteps / core.nEcosimYears)
 
         ' Not able to create output path? Abort
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
