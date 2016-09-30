@@ -2822,7 +2822,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Accessing external data for &apos;{0}&apos; at time {1} ({2:yyyy/MM/dd}).
+        '''  Looks up a localized string similar to {0} loading external data into {1} at step {2} ({3:yyyy/MM}).
         '''</summary>
         Public Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
             Get
