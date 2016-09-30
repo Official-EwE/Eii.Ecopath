@@ -1,4 +1,5 @@
 ﻿Imports ScientificInterfaceShared.Controls
+Imports SourceGrid2
 
 Public Class frmStrategiesOverview
 
@@ -16,6 +17,7 @@ Public Class frmStrategiesOverview
         'Me.m_data = New Strategies(mse, mse.Core)
         Me.m_data.Load()
         Me.Grid = m_grid
+        'Me.m_grid.Init(Me.m_data)
         Me.UIContext = uic
     End Sub
 
@@ -61,5 +63,15 @@ Public Class frmStrategiesOverview
 
     End Sub
 
+    Private Sub m_btnCheckAll_Click(sender As Object, e As EventArgs) Handles m_btnCheckAll.Click
 
+        m_grid.CheckAll()
+
+    End Sub
+
+    Private Sub m_btnCheckNone_Click(sender As Object, e As EventArgs) Handles m_btnCheckNone.Click
+
+        m_grid.UncheckAll()
+
+    End Sub
 End Class
