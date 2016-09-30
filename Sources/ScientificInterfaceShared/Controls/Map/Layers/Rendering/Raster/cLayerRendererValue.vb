@@ -40,9 +40,19 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererValue
         Inherits cRasterLayerRenderer
 
+        Private m_bHasError As Boolean = False
+        Private m_bHasNull As Boolean = False
+
+        Private Enum eSymbolTypes As Integer
+            None = 0
+            [Null] = 1
+            [Error] = 2
+        End Enum
+
+
         Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _
-                    cVisualStyle.eVisualStyleTypes.Font Or _
+            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or
+                    cVisualStyle.eVisualStyleTypes.Font Or
                     cVisualStyle.eVisualStyleTypes.Gradient)
 
         End Sub
@@ -64,31 +74,28 @@ Namespace Controls.Map.Layers
                                            Optional ByVal iSymbol As Integer = 0)
 
             If (Me.ForeBrush Is Nothing) Then Me.Update()
-            If (Not Me.IsStyleValid) Then iSymbol = 3
 
-            Select Case iSymbol
-                Case 0
+            Select Case DirectCast(iSymbol, eSymbolTypes)
+                Case eSymbolTypes.None
                     cColorRampIndicator.DrawColorRamp(g, Me.ColorRamp, rc, False)
-                Case 1
+                Case eSymbolTypes.Null
                     Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Percent25, Color.Gray, Color.Transparent)
                         g.FillRectangle(br, rc)
                     End Using
-                Case 2
+                Case eSymbolTypes.Error
                     Using br As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.Percent25, Color.Red, Color.Transparent)
                         g.FillRectangle(br, rc)
                     End Using
-                Case 3
-                    Me.RenderError(g, rc)
                 Case Else
                     Debug.Assert(False, "Unsupported symbol requested")
             End Select
 
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As Graphics, _
-                                        ByVal rc As Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As Graphics,
+                                        ByVal rc As Rectangle,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Dim sValue As Single = CSng(value)
@@ -98,8 +105,15 @@ Namespace Controls.Map.Layers
                 Return
             End If
 
+            Me.m_bHasError = False
+            Me.m_bHasNull = False
+
             If (Not cNumberUtils.IsFinite(sValue)) Or (sValue = cCore.NULL_VALUE) Or (sValue = 0 And Me.SuppressZero) Then
-                Me.RenderPreview(g, rc, 1)
+                Me.RenderPreview(g, rc, eSymbolTypes.Null)
+
+                Me.m_bHasNull = True
+                Me.InvalidateSymbols()
+
                 Return
             End If
 
@@ -117,8 +131,13 @@ Namespace Controls.Map.Layers
                 ' Draw background
                 If (value IsNot Nothing) And (Me.Font IsNot Nothing) Then
                     If bOutOfRange Then
-                        RenderPreview(g, rc, 2)
+
+                        RenderPreview(g, rc, eSymbolTypes.Error)
+                        Me.m_bHasError = True
+                        Me.InvalidateSymbols()
+
                     Else
+
                         ' Render value on top for highlighted layers
                         Dim sValRange As Single = (sValMax - sValMin)
 
@@ -183,21 +202,11 @@ Namespace Controls.Map.Layers
             Return cStringUtils.FormatNumber(value)
         End Function
 
-        Public Overrides ReadOnly Property nExtraSymbols As Integer
-            Get
-                Return 2
-            End Get
-        End Property
-
-        Public Overrides ReadOnly Property SymbolName(iSymbol As Integer) As String
-            Get
-                Select Case iSymbol
-                    Case 1 : Return My.Resources.GENERIC_VALUE_NO_DATA
-                    Case 2 : Return My.Resources.GENERIC_VALUE_INVALID
-                End Select
-                Return ""
-            End Get
-        End Property
+        Protected Overrides Sub UpdateSymbols()
+            MyBase.UpdateSymbols()
+            If Me.m_bHasNull Then Me.AddSymbol(My.Resources.GENERIC_VALUE_NO_DATA, eSymbolTypes.Null)
+            If Me.m_bHasError Then Me.AddSymbol(My.Resources.GENERIC_VALUE_INVALID, eSymbolTypes.Error)
+        End Sub
 
     End Class
 

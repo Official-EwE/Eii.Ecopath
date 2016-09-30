@@ -54,57 +54,57 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the total number of groups in the flow diagram, including
-        ''' living and non-living groups.
+        ''' Returns the total number of items in the flow diagram, including
+        ''' living and non-living items.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        ReadOnly Property NumGroups() As Integer
+        ReadOnly Property NumItems() As Integer
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the number of living groups in the flow diagram. Based on
         ''' the approach in Ecopath, occur before the non-living groups in the
-        ''' total list of <see cref="NumGroups">groups</see>.
+        ''' total list of <see cref="NumItems">groups</see>.
         ''' </summary>
         ''' <remarks>
         ''' Living groups can have incoming / predation and outgoing / prey links, 
-        ''' whereas all non-living groups (<see cref="NumGroups"/> - <see cref="NumLivingGroups"/>)
+        ''' whereas all non-living groups (<see cref="NumItems"/> - <see cref="NumLivingitems"/>)
         ''' can only have incoming / predation links.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        ReadOnly Property NumLivingGroups() As Integer
+        ReadOnly Property NumLivingitems() As Integer
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the color to render a group in the flow diagram.
+        ''' Get the color to render an item in the flow diagram.
         ''' </summary>
-        ''' <param name="iGroup">The index of the group to get the color for.</param>
+        ''' <param name="iItem">The index of the item to get a color for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color
+        ReadOnly Property ItemColor(ByVal iItem As Integer) As Color
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the name to render a group in the flow diagram.
+        ''' Get the name to render an item in the flow diagram.
         ''' </summary>
-        ''' <param name="iGroup">The index of the group to get the name for.</param>
+        ''' <param name="iItem">The index of the item to get the name for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property GroupName(ByVal iGroup As Integer) As String
+        ReadOnly Property ItemName(ByVal iItem As Integer) As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get whether a group should be rendered as visible.
+        ''' Get whether an item should be rendered as visible.
         ''' </summary>
-        ''' <param name="iGroup">The index of the group to get the visible state for.</param>
+        ''' <param name="iIndex">The index of the item to get the visibility state for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property IsGroupVisible(ByVal iGroup As Integer) As Boolean
+        ReadOnly Property IsItemVisible(ByVal iIndex As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the value to reflect in the diagram for a group.
+        ''' Get the value to reflect in the diagram for an item.
         ''' </summary>
-        ''' <param name="iGroup">The index of the group to get the value for.</param>
+        ''' <param name="iItem">The index of the item to get the value for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property Value(ByVal iGroup As Integer) As Single
+        ReadOnly Property Value(ByVal iItem As Integer) As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -118,8 +118,8 @@ Namespace Controls
         ''' <summary>
         ''' Get the value to place on a link in the diagram.
         ''' </summary>
-        ''' <param name="iPred">The index of the predator group / source of the link.</param>
-        ''' <param name="iPrey">The index of the prey group / target of the link.</param>
+        ''' <param name="iPred">The index of the predatory source of the link.</param>
+        ''' <param name="iPrey">The index of the prey target of the link.</param>
         ''' -------------------------------------------------------------------
         ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
 

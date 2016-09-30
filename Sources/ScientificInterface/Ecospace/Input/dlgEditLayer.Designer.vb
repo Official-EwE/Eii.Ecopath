@@ -59,7 +59,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tsddImport = New System.Windows.Forms.ToolStripDropDownButton()
             Me.m_tsmiImportCSV = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiImportXYZ = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiAsc = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiImportAsc = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsddExport = New System.Windows.Forms.ToolStripDropDownButton()
             Me.m_tsmiExportCSV = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiExportXYZ = New System.Windows.Forms.ToolStripMenuItem()
@@ -176,14 +176,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_grid.Layer = Nothing
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
             Me.m_grid.VectorFieldIndex = 0
@@ -199,7 +199,7 @@ Namespace Ecospace.Basemap.Layers
             'm_tsddImport
             '
             Me.m_tsddImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsddImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiImportCSV, Me.m_tsmiImportXYZ, Me.m_tsmiAsc})
+            Me.m_tsddImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiImportCSV, Me.m_tsmiImportXYZ, Me.m_tsmiImportAsc})
             resources.ApplyResources(Me.m_tsddImport, "m_tsddImport")
             Me.m_tsddImport.Name = "m_tsddImport"
             '
@@ -213,10 +213,10 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tsmiImportXYZ.Name = "m_tsmiImportXYZ"
             resources.ApplyResources(Me.m_tsmiImportXYZ, "m_tsmiImportXYZ")
             '
-            'm_tsmiAsc
+            'm_tsmiImportAsc
             '
-            Me.m_tsmiAsc.Name = "m_tsmiAsc"
-            resources.ApplyResources(Me.m_tsmiAsc, "m_tsmiAsc")
+            Me.m_tsmiImportAsc.Name = "m_tsmiImportAsc"
+            resources.ApplyResources(Me.m_tsmiImportAsc, "m_tsmiImportAsc")
             '
             'm_tsddExport
             '
@@ -397,7 +397,7 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_tsddImport As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmiImportCSV As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiImportXYZ As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsmiAsc As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_tsmiImportAsc As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsddExport As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmiExportCSV As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiExportXYZ As System.Windows.Forms.ToolStripMenuItem

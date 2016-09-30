@@ -1357,4 +1357,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Ecospace Time Series exception saving output file: {0}</value>
     <comment>{0}=exception message</comment>
   </data>
+  <data name="ASCII_READ_ERROR_MISSINGFIELD" xml:space="preserve">
+    <value>Failed to read ASCII file with missing header fields</value>
+  </data>
+  <data name="ASCII_READ_ERROR_UNKNOWNFIELD" xml:space="preserve">
+    <value>Failed to read ASCII file with unknown header field {0}</value>
+    <comment>{0}=field name</comment>
+  </data>
 </root>
