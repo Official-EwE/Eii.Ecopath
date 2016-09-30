@@ -58,7 +58,7 @@ Namespace SpatialData
                 ' De-spationalize
                 Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
                 Dim dx As Single = ptfBR.X - ptfTL.X
-                Dim dy As Single = ptfBR.Y - ptfTL.Y
+                Dim dy As Single = ptfTL.Y - ptfBR.Y
                 ptfTL = New PointF(bm.PosTopLeft.X, bm.PosTopLeft.Y)
                 ptfBR = New PointF(bm.PosTopLeft.X + dx, bm.PosTopLeft.Y - dy)
             End If
