@@ -49,7 +49,7 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Private variables "
 
         Private components As System.ComponentModel.IContainer = Nothing
-        Private m_data As cFlowDiagramGroupData = Nothing
+        Private m_data As IFlowDiagramData = Nothing
         Private m_doodler As cFlowDiagramManager = Nothing
         Private m_tree As cTreeFlowDiagramRenderer = Nothing
 
@@ -107,7 +107,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
 
-            Me.m_data = New cFlowDiagramGroupData(Me.UIContext)
+            Me.m_data = New cFlowDiagramFleetGroupData(Me.UIContext)
             Me.m_tree = New cTreeFlowDiagramRenderer(Me.m_data)
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 

@@ -62,19 +62,20 @@ Namespace Controls.Map
             Private m_sMin As Single
             Private m_sMax As Single
             Private m_strName As String
+            Private m_renderer As cLayerRenderer = Nothing
 
             Public Sub New(strName As String, sMin As Single, sMax As Single)
                 Me.m_strName = strName
                 Me.m_sMin = sMin
                 Me.m_sMax = sMax
+                Me.m_renderer = New cLayerRendererValue(New EwECore.Auxiliary.cVisualStyle())
+                Me.m_renderer.ScaleMin = Me.m_sMin
+                Me.m_renderer.ScaleMax = Me.m_sMax
             End Sub
 
             Public Overrides ReadOnly Property Renderer As Layers.cLayerRenderer
                 Get
-                    Dim rv As New cLayerRendererValue(New EwECore.Auxiliary.cVisualStyle())
-                    rv.ScaleMin = Me.m_sMin
-                    rv.ScaleMax = Me.m_sMax
-                    Return rv
+                    Return Me.m_renderer
                 End Get
             End Property
 
@@ -437,7 +438,7 @@ Namespace Controls.Map
             Dim szBox As New SizeF(0, 0)
             Dim strText As String = ""
 
-            For i As Integer = 0 To l.Renderer.nExtraSymbols
+            For i As Integer = 0 To l.Renderer.nSymbols
 
                 If (i = 0) Then
                     strText = l.Name
@@ -471,7 +472,7 @@ Namespace Controls.Map
 
             Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
 
-            For i As Integer = 0 To l.Renderer.nExtraSymbols
+            For i As Integer = 0 To l.Renderer.nSymbols
 
                 Dim strText As String = l.Name
                 If (i > 0) Then
@@ -481,24 +482,24 @@ Namespace Controls.Map
 
                 Dim szBox As SizeF = g.MeasureString(cSystemUtils.IIF(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
                 Dim rcPreview As Rectangle = New Rectangle(pt.X, pt.Y, Me.LayerBoxWidth, CInt(Math.Max(Me.LayerBoxHeight, szBox.Height)))
-
+                Dim iSymbolKey As Integer = l.Renderer.SymbolKey(i)
                 Select Case style
 
                     Case eLayerRenderStyle.Element
-                        l.Renderer.RenderPreview(g, rcPreview, i)
+                        l.Renderer.RenderPreview(g, rcPreview, iSymbolKey)
                         g.DrawRectangle(Pens.Black, rcPreview)
                         g.DrawString(strText, ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
 
                     Case eLayerRenderStyle.Symbol
-                        l.Renderer.RenderPreview(g, rcPreview, i)
+                        l.Renderer.RenderPreview(g, rcPreview, iSymbolKey)
                         g.DrawString(strText, ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
 
                     Case eLayerRenderStyle.Gradient
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max), _
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max),
                                      ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
-                        g.DrawString(l.Name, _
+                        g.DrawString(l.Name,
                                      ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height)
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min), _
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min),
                                      ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height * 2)
 
                         rcPreview.Height *= 3

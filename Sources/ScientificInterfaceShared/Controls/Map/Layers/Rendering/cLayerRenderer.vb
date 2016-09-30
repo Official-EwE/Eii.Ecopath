@@ -39,6 +39,49 @@ Namespace Controls.Map.Layers
     Public MustInherit Class cLayerRenderer
         : Implements IDisposable
 
+#Region " Helper classes "
+
+        ''' <summary>
+        ''' When rendering content, layers may require display of extra symbols that
+        ''' can be registered by each layer. These symbols will then be included in
+        ''' legends etc.
+        ''' </summary>
+        Protected Class cSymbol
+
+            Private m_strName As String = ""
+            Private m_iKey As Integer = 0
+
+            ''' <summary>
+            ''' Create a new symbol.
+            ''' </summary>
+            ''' <param name="strName">The name of the symbol.</param>
+            ''' <param name="iKey">The layer-specific symbol key.</param>
+            Public Sub New(strName As String, iKey As Integer)
+                Me.m_strName = strName
+                Me.m_iKey = iKey
+            End Sub
+
+            ''' <summary>
+            ''' Get the layer-specific symbol name.
+            ''' </summary>
+            Public ReadOnly Property Name As String
+                Get
+                    Return Me.m_strName
+                End Get
+            End Property
+
+            ''' <summary>
+            ''' Get the layer-specific symbol key.
+            ''' </summary>
+            Public ReadOnly Property Key As Integer
+                Get
+                    Return Me.m_iKey
+                End Get
+            End Property
+        End Class
+
+#End Region ' Helper classes
+
 #Region " Private vars "
 
         ''' <summary>Default brush to render the cell with.</summary>
@@ -46,6 +89,8 @@ Namespace Controls.Map.Layers
         ''' <summary><see cref="cVisualStyle">Style</see> describing what colours
         ''' and font to use for rendering.</summary>
         Private m_vs As cVisualStyle = Nothing
+
+        Private m_lSymbols As New List(Of cSymbol)
 
 #End Region ' Private vars
 
@@ -58,7 +103,7 @@ Namespace Controls.Map.Layers
         ''' <param name="vs"></param>
         ''' <param name="layerStyleFlags"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal vs As cVisualStyle, _
+        Public Sub New(ByVal vs As cVisualStyle,
                        Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
             Me.m_vs = vs
             Me.VisualStyleFlags = layerStyleFlags
@@ -125,11 +170,11 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="g">The graphics to render onto.</param>
         ''' <param name="rc">The area to render into.</param>
-        ''' <param name="iSymbol">The <see cref="nExtraSymbols">symbol</see> to render.
+        ''' <param name="iSymbol">The <see cref="nSymbols">symbol</see> to render.
         ''' If left at 0 the default cell value should be drawn.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderPreview(ByVal g As Graphics, _
-                                              ByVal rc As Rectangle, _
+        Public MustOverride Sub RenderPreview(ByVal g As Graphics,
+                                              ByVal rc As Rectangle,
                                               Optional iSymbol As Integer = 0)
 
         ''' -----------------------------------------------------------------------
@@ -143,11 +188,11 @@ Namespace Controls.Map.Layers
         ''' <param name="ptfBR">Bottom-right coordinate represented by the device area.</param>
         ''' <param name="style">Layer style to use when rendering/</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub Render(ByVal g As Graphics, _
-                                       ByVal layer As cDisplayLayer, _
-                                       ByVal rc As Rectangle, _
-                                       ByVal ptfTL As PointF, _
-                                       ByVal ptfBR As PointF, _
+        Public MustOverride Sub Render(ByVal g As Graphics,
+                                       ByVal layer As cDisplayLayer,
+                                       ByVal rc As Rectangle,
+                                       ByVal ptfTL As PointF,
+                                       ByVal ptfBR As PointF,
                                        ByVal style As cStyleGuide.eStyleFlags)
 
         ''' -----------------------------------------------------------------------
@@ -224,30 +269,86 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Property RenderMode As eLayerRenderType = eLayerRenderType.Selected
 
-        ''' -----------------------------------------------------------------------
+#Region " Symbols "
+
+        Private bSymbolsValid As Boolean = False
+
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the number of extra symbols, beyond the regular cell value, that 
-        ''' this renderer uses and will need displaying in legends.
+        ''' Add a layer-specific symbol.
         ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property nExtraSymbols As Integer
-            Get
-                Return 0
-            End Get
-        End Property
+        ''' <param name="strName"></param>
+        ''' <param name="i"></param>
+        ''' -------------------------------------------------------------------
+        Protected Sub AddSymbol(strName As String, i As Integer)
+            Me.m_lSymbols.Add(New cSymbol(strName, i))
+        End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get the name of all <see cref="nExtraSymbols">extra symbols</see> that need 
-        ''' displaying in legends.
+        ''' Get the number of symbols that this renderer uses and will need displaying 
+        ''' in legends.
         ''' </summary>
-        ''' <param name="iSymbol">The one-based symbol index.</param>
         ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property SymbolName(iSymbol As Integer) As String
+        Public ReadOnly Property nSymbols As Integer
             Get
-                Return ""
+                If Not bSymbolsValid Then Me.UpdateSymbols()
+                Return Me.m_lSymbols.Count
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the name for a layer-specific symbol.
+        ''' </summary>
+        ''' <param name="iSymbol">One-based symbol index</param>
+        ''' <returns>An empty string if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property SymbolName(iSymbol As Integer) As String
+            Get
+                If Not bSymbolsValid Then Me.UpdateSymbols()
+                If (iSymbol < 1) Or iSymbol > Me.m_lSymbols.Count Then Return ""
+                Return Me.m_lSymbols(iSymbol - 1).Name
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the key for a layer-specific symbol.
+        ''' </summary>
+        ''' <param name="iSymbol">One-based symbol index</param>
+        ''' <returns>0 if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property SymbolKey(iSymbol As Integer) As Integer
+            Get
+                If Not bSymbolsValid Then Me.UpdateSymbols()
+                If (iSymbol < 1) Or iSymbol > Me.m_lSymbols.Count Then Return 0
+                Return Me.m_lSymbols(iSymbol - 1).Key
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Invalidate any symbols already registered. To update symbols override
+        ''' <see cref="UpdateSymbols()"/> 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Sub InvalidateSymbols()
+            Me.m_lSymbols.Clear()
+            Me.bSymbolsValid = False
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Override to <see cref="AddSymbol(String, Integer)">add layer-specific
+        ''' symbols</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Sub UpdateSymbols()
+            Me.bSymbolsValid = True
+        End Sub
+
+#End Region ' Symbols
 
     End Class
 

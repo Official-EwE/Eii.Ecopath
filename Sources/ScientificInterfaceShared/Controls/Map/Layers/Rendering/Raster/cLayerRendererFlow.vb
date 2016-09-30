@@ -64,10 +64,10 @@ Namespace Controls.Map.Layers
         ''' [0, 1] as the second index.</param>
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub RenderCell(ByVal g As Graphics, _
-                                        ByVal rc As Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As Graphics,
+                                        ByVal rc As Rectangle,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Dim asValues As Single() = Nothing
@@ -115,19 +115,13 @@ Namespace Controls.Map.Layers
             If TypeOf value Is Single() Then
                 asValues = DirectCast(value, Single())
                 If asValues.Length = 2 Then
-                    Return String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
+                    Return String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE,
                                          cStringUtils.FormatNumber(asValues(0)), cStringUtils.FormatNumber(asValues(1)))
                 End If
             End If
             Return ""
 
         End Function
-
-        Public Overrides ReadOnly Property nExtraSymbols As Integer
-            Get
-                Return 0
-            End Get
-        End Property
 
     End Class
 

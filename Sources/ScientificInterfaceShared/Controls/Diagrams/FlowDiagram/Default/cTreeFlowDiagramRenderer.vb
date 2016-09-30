@@ -232,9 +232,9 @@ Namespace Controls
 
             Me.m_data = data
 
-            ReDim Me.m_sAngle(Me.m_data.NumGroups)
-            ReDim Me.m_asLabelOffsetX(Me.m_data.NumGroups)
-            ReDim Me.m_asLabelOffsetY(Me.m_data.NumGroups)
+            ReDim Me.m_sAngle(Me.m_data.NumItems)
+            ReDim Me.m_asLabelOffsetX(Me.m_data.NumItems)
+            ReDim Me.m_asLabelOffsetY(Me.m_data.NumItems)
 
             Me.m_node = New cFlowDiagramNode()
             Me.m_connectors = New cFlowDiagramConnector()
@@ -328,7 +328,7 @@ Namespace Controls
                 Case IFlowDiagramRenderer.eFDHighlightType.None
                     Select Case Me.m_colorusagetype
                         Case eFDColorUsageTypes.EwE
-                            clrFill = Me.m_data.GroupColor(iGroup)
+                            clrFill = Me.m_data.ItemColor(iGroup)
                         Case eFDColorUsageTypes.Value
                             clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
                         Case Else
@@ -409,23 +409,42 @@ Namespace Controls
                                         Me.LineConnectionType)
         End Sub
 
-        Friend Sub DrawLegend(ByVal g As Graphics, _
-                              ByVal sValMax As Single, ByVal ptTopLeft As Point, _
-                              ByVal strTitle As String) _
+        Friend Sub DrawLegend(ByVal g As Graphics, ByVal ptTopLeft As Point) _
             Implements IFlowDiagramRenderer.DrawLegend
+
+            ' ToDo: globalize this
 
             Dim tsShowLegend As TriState = Me.ShowLegend
             If (tsShowLegend = TriState.UseDefault) Then
                 Select Case Me.m_colorusagetype
-                    Case eFDColorUsageTypes.Value, _
+                    Case eFDColorUsageTypes.Value,
                          eFDColorUsageTypes.Flow
                         tsShowLegend = TriState.True
                 End Select
             End If
 
             If (tsShowLegend = TriState.True) Then
+                Dim strTitle As String = ""
+                Dim sMin As Single = 0
+                Dim sMax As Single = 0
+                Select Case Me.AutoColorUsage
+                    Case eFDColorUsageTypes.None
+                        Return
+                    Case eFDColorUsageTypes.Value
+                        sMin = Me.m_data.ValueMin
+                        sMax = Me.m_data.ValueMax
+                        strTitle = "Value"
+                    Case eFDColorUsageTypes.EwE
+                        sMin = 1
+                        sMax = Me.m_data.NumItems
+                        strTitle = "Components"
+                    Case eFDColorUsageTypes.Flow
+                        sMin = Me.m_data.LinkValueMin
+                        sMax = Me.m_data.LinkValueMax
+                        strTitle = "Flow"
+                End Select
                 Dim lgd As New cLegend(Me.UIContext, strTitle)
-                lgd.AddGradient("", 0, sValMax)
+                lgd.AddGradient("", sMin, sMax)
                 lgd.Draw(g, ptTopLeft)
             End If
 
@@ -457,7 +476,7 @@ Namespace Controls
             Dim iTL As Integer
 
             ' Calc how the groups are distributed over trophic levels [1, iNumTL+]
-            For iGroup As Integer = 1 To Me.m_data.NumGroups
+            For iGroup As Integer = 1 To Me.m_data.NumItems
                 iTL = iNumTL
                 While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
                     iTL -= 1
@@ -466,7 +485,7 @@ Namespace Controls
             Next
 
             ' Distribute groups horizontally
-            For iGroup As Integer = 1 To Me.m_data.NumGroups
+            For iGroup As Integer = 1 To Me.m_data.NumItems
 
                 iTL = iNumTL
                 While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
@@ -880,7 +899,7 @@ Namespace Controls
 
             Dim sb As New StringBuilder()
             Dim sValue As Single = Me.m_data.Value(iGroup)
-            Dim strName As String = Me.m_data.GroupName(iGroup)
+            Dim strName As String = Me.m_data.ItemName(iGroup)
 
             sb.AppendLine(strName)
             If Me.m_bIsNodeDrawValue And (sValue <> 0.0!) Then

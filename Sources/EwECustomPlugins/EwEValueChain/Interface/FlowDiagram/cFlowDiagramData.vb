@@ -104,9 +104,9 @@ Public Class cFlowDiagramData
         End Set
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.GroupColor"/>
-    Public ReadOnly Property GroupColor(iGroup As Integer) As System.Drawing.Color _
-        Implements IFlowDiagramData.GroupColor
+    ''' <inheritdocs cref="IFlowDiagramData.ItemColor"/>
+    Public ReadOnly Property ItemColor(iGroup As Integer) As System.Drawing.Color _
+        Implements IFlowDiagramData.ItemColor
         Get
             Select Case Me.GetUnit(iGroup).UnitType
                 Case cUnitFactory.eUnitType.Consumer
@@ -119,9 +119,9 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.GroupName"/>
-    Public ReadOnly Property GroupName(iGroup As Integer) As String _
-        Implements IFlowDiagramData.GroupName
+    ''' <inheritdocs cref="IFlowDiagramData.ItemName"/>
+    Public ReadOnly Property ItemName(iGroup As Integer) As String _
+        Implements IFlowDiagramData.ItemName
         Get
             Dim u As cUnit = Me.GetUnit(iGroup)
             Dim strName As String = ""
@@ -131,9 +131,9 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.IsGroupVisible"/>
-    Public ReadOnly Property IsGroupVisible(iGroup As Integer) As Boolean _
-        Implements IFlowDiagramData.IsGroupVisible
+    ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible"/>
+    Public ReadOnly Property IsItemVisible(iGroup As Integer) As Boolean _
+        Implements IFlowDiagramData.IsItemVisible
         Get
             ' ToDo: use filters here
             Return True
@@ -167,17 +167,17 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.NumGroups"/>
-    Public ReadOnly Property NumGroups As Integer _
-        Implements IFlowDiagramData.NumGroups
+    ''' <inheritdocs cref="IFlowDiagramData.NumItems"/>
+    Public ReadOnly Property NumItems As Integer _
+        Implements IFlowDiagramData.NumItems
         Get
             Return Me.m_nGroups
         End Get
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.NumLivingGroups"/>
-    Public ReadOnly Property NumLivingGroups As Integer _
-        Implements IFlowDiagramData.NumLivingGroups
+    ''' <inheritdocs cref="IFlowDiagramData.NumLivingitems"/>
+    Public ReadOnly Property NumLivingitems As Integer _
+        Implements IFlowDiagramData.NumLivingitems
         Get
             Return Me.m_nLivingGroups
         End Get

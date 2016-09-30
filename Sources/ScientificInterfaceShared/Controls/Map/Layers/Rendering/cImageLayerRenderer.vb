@@ -47,7 +47,7 @@ Namespace Controls.Map.Layers
         ''' <param name="vs"></param>
         ''' <param name="layerStyleFlags"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal vs As cVisualStyle, _
+        Public Sub New(ByVal vs As cVisualStyle,
                        Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
             MyBase.New(vs, layerStyleFlags)
         End Sub
@@ -64,11 +64,11 @@ Namespace Controls.Map.Layers
         ''' <param name="ptfTL">Top-left corner (lon, lat) represented by <paramref name="rc"/>.</param>
         ''' <param name="ptfBR">Bottom-right corner (lon, lat) represented by <paramref name="rc"/>.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub Render(ByVal g As Graphics, _
-                                       ByVal layer As cDisplayLayer, _
-                                       ByVal rc As Rectangle, _
-                                       ByVal ptfTL As PointF, _
-                                       ByVal ptfBR As PointF, _
+        Public Overrides Sub Render(ByVal g As Graphics,
+                                       ByVal layer As cDisplayLayer,
+                                       ByVal rc As Rectangle,
+                                       ByVal ptfTL As PointF,
+                                       ByVal ptfBR As PointF,
                                        ByVal style As cStyleGuide.eStyleFlags)
 
             If (Not TypeOf layer Is cDisplayImageLayer) Then Return
@@ -97,18 +97,6 @@ Namespace Controls.Map.Layers
         Public Overrides Function GetDisplayText(value As Object) As String
             Return ""
         End Function
-
-        Public Overrides ReadOnly Property nExtraSymbols As Integer
-            Get
-                Return 0
-            End Get
-        End Property
-
-        Public Overrides ReadOnly Property SymbolName(iSymbol As Integer) As String
-            Get
-                Return ""
-            End Get
-        End Property
 
     End Class
 

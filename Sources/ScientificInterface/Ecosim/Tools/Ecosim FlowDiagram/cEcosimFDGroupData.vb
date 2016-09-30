@@ -38,7 +38,6 @@ Namespace Ecosim
 
 #Region " Internals "
 
-        Private m_uic As cUIContext = Nothing
         Private m_sDietMin As Single = 0
         Private m_sDietMax As Single = 0
         Private m_sBiomassMin As Single = 0
@@ -63,13 +62,6 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Friend Property UIContext() As cUIContext _
             Implements IFlowDiagramData.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Private Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.Refresh"/>
@@ -80,22 +72,22 @@ Namespace Ecosim
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.NumGroups"/>
+        ''' <inheritdocs cref="IFlowDiagramData.NumItems"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumGroups() As Integer _
-              Implements IFlowDiagramData.NumGroups
+        Public ReadOnly Property NumItems() As Integer _
+              Implements IFlowDiagramData.NumItems
             Get
-                Return Me.m_uic.Core.nGroups
+                Return Me.UIContext.Core.nGroups
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.NumLivingGroups"/>
+        ''' <inheritdocs cref="IFlowDiagramData.NumLivingitems"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumLivingGroups() As Integer _
-                Implements IFlowDiagramData.NumLivingGroups
+        Public ReadOnly Property NumLivingitems() As Integer _
+                Implements IFlowDiagramData.NumLivingitems
             Get
-                Return Me.m_uic.Core.nLivingGroups
+                Return Me.UIContext.Core.nLivingGroups
             End Get
         End Property
 
@@ -105,7 +97,7 @@ Namespace Ecosim
         Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
-                Return Me.m_uic.Core.EcoSimGroupOutputs(iIndex).Biomass(Me.TimeStep)
+                Return Me.UIContext.Core.EcoSimGroupOutputs(iIndex).Biomass(Me.TimeStep)
             End Get
         End Property
 
@@ -120,32 +112,32 @@ Namespace Ecosim
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.GroupName"/>
+        ''' <inheritdocs cref="IFlowDiagramData.ItemName"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupName(ByVal iIndex As Integer) As String _
-                Implements IFlowDiagramData.GroupName
+        Public ReadOnly Property ItemName(ByVal iIndex As Integer) As String _
+                Implements IFlowDiagramData.ItemName
             Get
-                Return Me.m_uic.Core.EcoPathGroupInputs(iIndex).Name
+                Return Me.UIContext.Core.EcoPathGroupInputs(iIndex).Name
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.GroupColor"/>
+        ''' <inheritdocs cref="IFlowDiagramData.ItemColor"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color _
-                Implements IFlowDiagramData.GroupColor
+        Public ReadOnly Property ItemColor(ByVal iGroup As Integer) As Color _
+                Implements IFlowDiagramData.ItemColor
             Get
-                Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, iGroup)
+                Return Me.UIContext.StyleGuide.GroupColor(Me.UIContext.Core, iGroup)
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.IsGroupVisible"/>
+        ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsGroupVisible(ByVal iGroup As Integer) As Boolean _
-                Implements IFlowDiagramData.IsGroupVisible
+        Public ReadOnly Property IsItemVisible(ByVal iGroup As Integer) As Boolean _
+                Implements IFlowDiagramData.IsItemVisible
             Get
-                Return Me.m_uic.StyleGuide.GroupVisible(iGroup)
+                Return Me.UIContext.StyleGuide.GroupVisible(iGroup)
             End Get
         End Property
 
@@ -155,7 +147,7 @@ Namespace Ecosim
         Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
-                Dim group As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(iPred)
+                Dim group As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(iPred)
                 Return group.DietComp(iPrey)
             End Get
         End Property
@@ -166,7 +158,7 @@ Namespace Ecosim
         Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single _
                 Implements IFlowDiagramData.TrophicLevel
             Get
-                Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).TTLX
+                Return Me.UIContext.Core.EcoPathGroupOutputs(iIndex).TTLX
             End Get
         End Property
 
@@ -176,7 +168,7 @@ Namespace Ecosim
         Public ReadOnly Property BiomassMax() As Single _
                 Implements IFlowDiagramData.ValueMax
             Get
-                If Me.m_bInvalid Then Me.Recalc()
+                Me.Recalc()
                 Return Me.m_sBiomassMax
             End Get
         End Property
@@ -187,7 +179,7 @@ Namespace Ecosim
         Public ReadOnly Property BiomassMin() As Single _
                Implements IFlowDiagramData.ValueMin
             Get
-                If Me.m_bInvalid Then Me.Recalc()
+                Me.Recalc()
                 Return Me.m_sBiomassMin
             End Get
         End Property
@@ -198,7 +190,7 @@ Namespace Ecosim
         Public ReadOnly Property DietMin() As Single _
                  Implements IFlowDiagramData.LinkValueMin
             Get
-                If Me.m_bInvalid Then Me.Recalc()
+                Me.Recalc()
                 Return Me.m_sDietMin
             End Get
         End Property
@@ -209,7 +201,7 @@ Namespace Ecosim
         Public ReadOnly Property DietMax() As Single _
                   Implements IFlowDiagramData.LinkValueMax
             Get
-                If Me.m_bInvalid Then Me.Recalc()
+                Me.Recalc()
                 Return Me.m_sDietMax
             End Get
         End Property
@@ -238,8 +230,8 @@ Namespace Ecosim
             Me.m_sDietMax = 0
             Me.m_sDietMin = Single.MaxValue
 
-            For i As Integer = 1 To Me.NumGroups
-                For j As Integer = 1 To Me.NumGroups
+            For i As Integer = 1 To Me.NumItems
+                For j As Integer = 1 To Me.NumItems
                     Dim sDiet As Single = Me.Diet(i, j)
                     Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
                     Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)

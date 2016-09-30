@@ -113,7 +113,7 @@ Namespace Controls
 
             Me.m_tree.DrawBackground(g, rc)
             Me.m_tree.DrawTitle(g, rc)
-            Me.m_tree.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), Me.m_data.Title)
+            Me.m_tree.DrawLegend(g, New Point(5, 5))
 
             For Each hl As IFlowDiagramRenderer.eFDHighlightType In s_draworder
                 DrawFlow(g, rc, hl)
@@ -127,8 +127,8 @@ Namespace Controls
             Dim bDraw As Boolean = False
 
             ' Draw connections
-            For iPred As Integer = 1 To Me.m_data.NumLivingGroups()
-                For iPrey As Integer = 1 To Me.m_data.NumGroups()
+            For iPred As Integer = 1 To Me.m_data.NumLivingitems()
+                For iPrey As Integer = 1 To Me.m_data.NumItems()
 
                     Dim sDiet As Single = Me.m_data.LinkValue(iPred, iPrey)
                     If (sDiet > 0) Then
@@ -137,7 +137,7 @@ Namespace Controls
                         hl = IFlowDiagramRenderer.eFDHighlightType.None
                         bDraw = True
 
-                        If (Not Me.m_data.IsGroupVisible(iPred)) Or (Not Me.m_data.IsGroupVisible(iPrey)) Then
+                        If (Not Me.m_data.IsItemVisible(iPred)) Or (Not Me.m_data.IsItemVisible(iPrey)) Then
                             bDraw = (Me.m_tree.ShowHiddenNodes = eFDShowHiddenType.GrayedOut)
                             hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                         End If
@@ -171,13 +171,13 @@ Namespace Controls
             Next
 
             ' Draw nodes
-            For j As Integer = 1 To Me.m_data.NumGroups
+            For j As Integer = 1 To Me.m_data.NumItems
 
                 ' Determine node highlight state
                 hl = IFlowDiagramRenderer.eFDHighlightType.None
                 bDraw = True
 
-                If (Not Me.m_data.IsGroupVisible(j)) Then
+                If (Not Me.m_data.IsItemVisible(j)) Then
                     bDraw = (Me.m_tree.ShowHiddenNodes = eFDShowHiddenType.GrayedOut)
                     hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                 End If
@@ -265,10 +265,10 @@ Namespace Controls
             Try
                 Dim rc As Rectangle = ctrl.ClientRectangle()
 
-                settings.SaveSetting("Global", "NumGroups", Me.m_data.NumGroups)
+                settings.SaveSetting("Global", "NumGroups", Me.m_data.NumItems)
                 settings.SaveSetting("Global", "Width", rc.Width)
                 settings.SaveSetting("Global", "Height", rc.Height)
-                For i As Integer = 1 To Me.m_data.NumGroups
+                For i As Integer = 1 To Me.m_data.NumItems
                     settings.SaveSetting("Locations", i.ToString + "x", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).X))
                     settings.SaveSetting("Locations", i.ToString + "y", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).Y))
                     settings.SaveSetting("Locations", i.ToString + "xlabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).X))
@@ -297,7 +297,7 @@ Namespace Controls
             Try
 
                 Dim ptf As PointF
-                Dim iNumGroups As Integer = Math.Min(CInt(settings.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumGroups)
+                Dim iNumGroups As Integer = Math.Min(CInt(settings.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumItems)
                 ctrl.ClientSize = New Size(CInt(settings.GetSetting("Global", "Width", "100")), CInt(settings.GetSetting("Global", "Height", "100")))
                 Dim rc As Rectangle = ctrl.ClientRectangle()
 
@@ -370,7 +370,7 @@ Namespace Controls
         ''' <param name="rc">Flow diagram area to find the node within.</param>
         ''' <param name="pt">Point to test for.</param>
         ''' <returns>
-        ''' Returns the index of a <see cref="IFlowDiagramData.IsGroupVisible">visible</see>
+        ''' Returns the index of a <see cref="IFlowDiagramData.IsItemVisible">visible</see>
         ''' node at the location, or, of not found, return a non-visible node at the
         ''' location only if <see cref="IFlowDiagramRenderer.ShowHiddenNodes"/> is not set to 
         ''' <see cref="eFDShowHiddenType.Invisible"/>. If no node was found, 0 
@@ -383,9 +383,9 @@ Namespace Controls
             Dim iNodeHid As Integer = 0
             Dim iNodeTmp As Integer = 1
 
-            While (iNodeTmp <= Me.m_data.NumGroups) And (iNodeViz = 0)
+            While (iNodeTmp <= Me.m_data.NumItems) And (iNodeViz = 0)
                 If Me.m_tree.IsNodeAtPoint(rc, pt, iNodeTmp, Me.m_data.Value(iNodeTmp)) Then
-                    If (Me.m_data.IsGroupVisible(iNodeTmp)) Then
+                    If (Me.m_data.IsItemVisible(iNodeTmp)) Then
                         iNodeViz = iNodeTmp
                     Else
                         If (Me.m_tree.ShowHiddenNodes <> eFDShowHiddenType.Invisible) Then
@@ -407,7 +407,7 @@ Namespace Controls
         ''' <param name="rc">Flow diagram area to find the node label within.</param>
         ''' <param name="pt">Point to test for.</param>
         ''' <returns>
-        ''' Returns the index of a <see cref="IFlowDiagramData.IsGroupVisible">visible</see>
+        ''' Returns the index of a <see cref="IFlowDiagramData.IsItemVisible">visible</see>
         ''' node at the location, or 0 if no node was found.
         ''' </returns>
         ''' -------------------------------------------------------------------
@@ -420,9 +420,9 @@ Namespace Controls
             Dim iNodeHid As Integer = 0
             Dim iNodeTmp As Integer = 1
 
-            While (iNodeTmp <= Me.m_data.NumGroups) And (iNodeViz = 0)
+            While (iNodeTmp <= Me.m_data.NumItems) And (iNodeViz = 0)
                 If Me.m_tree.IsLabelAtPoint(rc, pt, iNodeTmp, Me.m_tree.FormatLabelText(iNodeTmp), g, font) Then
-                    If (Me.m_data.IsGroupVisible(iNodeTmp)) Then
+                    If (Me.m_data.IsItemVisible(iNodeTmp)) Then
                         iNodeViz = iNodeTmp
                     Else
                         If (Me.m_tree.ShowHiddenNodes <> eFDShowHiddenType.Invisible) Then

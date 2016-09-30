@@ -83,6 +83,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to read ASCII file with missing header fields.
+        '''</summary>
+        Public Shared ReadOnly Property ASCII_READ_ERROR_MISSINGFIELD() As String
+            Get
+                Return ResourceManager.GetString("ASCII_READ_ERROR_MISSINGFIELD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to read ASCII file with unknown header field {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ASCII_READ_ERROR_UNKNOWNFIELD() As String
+            Get
+                Return ResourceManager.GetString("ASCII_READ_ERROR_UNKNOWNFIELD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to B missing for group &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property B_MISSING_GROUP() As String

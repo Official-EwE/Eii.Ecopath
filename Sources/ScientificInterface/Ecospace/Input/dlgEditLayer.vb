@@ -242,7 +242,7 @@ Namespace Ecospace.Basemap.Layers
         End Sub
 
         Private Sub OnImportAscii(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsmiAsc.Click
+            Handles m_tsmiImportAsc.Click
 
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)

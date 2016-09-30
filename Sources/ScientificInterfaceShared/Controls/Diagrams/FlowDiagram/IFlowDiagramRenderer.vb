@@ -47,7 +47,7 @@ Namespace Controls
         Sub DrawTitle(ByVal g As Graphics, ByVal rc As Rectangle)
         Sub DrawNode(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iGroup As Integer, ByVal highlight As eFDHighlightType)
         Sub DrawConnection(ByVal g As Graphics, ByVal rc As Rectangle, ByVal iPred As Integer, ByVal iPrey As Integer, ByVal highlight As eFDHighlightType)
-        Sub DrawLegend(ByVal g As Graphics, ByVal sValMax As Single, ByVal ptTopLeft As Point, ByVal strTitle As String)
+        Sub DrawLegend(ByVal g As Graphics, ByVal ptTopLeft As Point)
 
         Function RenderFont() As Font
         Function TextColor() As Color

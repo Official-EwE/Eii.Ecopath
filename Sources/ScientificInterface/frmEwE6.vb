@@ -4258,6 +4258,8 @@ Public Class frmEwE6
                                 Next
                             Next
                             l.Invalidate()
+                        Else
+
                         End If
                     End If
             End Select

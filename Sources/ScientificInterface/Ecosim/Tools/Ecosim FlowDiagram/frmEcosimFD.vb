@@ -27,13 +27,11 @@ Imports System.Data
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.Auxiliary
 
 #End Region ' Imports
 
@@ -354,17 +352,17 @@ Namespace Ecosim
                         m_mdataGridView.Rows.Add()
                         'adding first column values
                         m_mdataGridView.Rows(0).Cells(0).Value = "Prey/Pred Rates"
-                        m_mdataGridView.Rows(1).Cells(0).Value = Me.m_data.GroupName(m_iHighlightedNode)
+                        m_mdataGridView.Rows(1).Cells(0).Value = Me.m_data.ItemName(m_iHighlightedNode)
                         m_mdataGridView.Rows(1).Cells(0).Style.BackColor = Color.Gold
 
                         'Dim rowval As Integer = 0
                         Dim celval As Integer = 1
-                        For j As Integer = 1 To Me.m_data.NumGroups
+                        For j As Integer = 1 To Me.m_data.NumItems
 
                             If (Me.m_data.Diet(m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
 
                                 Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(m_iHighlightedNode)
-                                Dim gpnm As String = Me.m_data.GroupName(j)
+                                Dim gpnm As String = Me.m_data.ItemName(j)
 
                                 m_mdataGridView.Columns.Add("column", "header")
                                 m_mdataGridView.Rows(0).Cells(celval).Value = gpnm
@@ -376,7 +374,7 @@ Namespace Ecosim
                             ElseIf (Me.m_data.Diet(j, m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
 
                                 Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(m_iHighlightedNode).Consumption(j)
-                                Dim gpnm1 As String = Me.m_data.GroupName(j)
+                                Dim gpnm1 As String = Me.m_data.ItemName(j)
 
                                 m_mdataGridView.Columns.Add("column", "header")
                                 m_mdataGridView.Rows(0).Cells(celval).Value = gpnm1
