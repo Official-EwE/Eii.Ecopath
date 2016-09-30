@@ -26,6 +26,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -40,6 +41,7 @@ Public Class cFishMIPEcosimResultWriter
     Implements IEcosimEndTimestepPostPlugin
     Implements IEcosimRunCompletedPlugin
     Implements IAutoSavePlugin
+    Implements IUIContextPlugin
 
 #Region " Private vars "
 
@@ -47,6 +49,10 @@ Public Class cFishMIPEcosimResultWriter
     Private m_data As Single(,)
     ''' <summary>Retained state flag</summary>
     Private m_bSaving As Boolean = False
+
+    Private m_uic As cUIContext = Nothing
+    Private m_iYear As Integer = 0
+    Private m_strRun As String = ""
 
 #End Region ' Private vars
 
@@ -82,6 +88,13 @@ Public Class cFishMIPEcosimResultWriter
 
 #End Region ' General bits
 
+#Region " UIC "
+
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
+        Me.m_uic = DirectCast(uic, cUIContext)
+    End Sub
+
+#End Region
 #Region " Ecosim integration "
 
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
@@ -92,6 +105,11 @@ Public Class cFishMIPEcosimResultWriter
 
         ' Not autosaving? Done
         If Not Me.m_bSaving Then Return
+
+        Dim dlg As New dlgSimRun(Me.m_strRun, Me.m_iYear)
+        dlg.ShowDialog(m_uic.FormMain)
+        Me.m_iYear = dlg.Year
+        Me.m_strRun = dlg.RunName
 
         ' Init array for storing aggregated results
         Dim core As cCore = cFishMIPcore.GetInstance().Core
@@ -168,13 +186,15 @@ Public Class cFishMIPEcosimResultWriter
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
 
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-            w = New StreamWriter(Path.Combine(strPath, result.ToString() & ".csv"))
+            w = New StreamWriter(Path.Combine(strPath, Me.m_strRun & "_" & result.ToString() & ".csv"))
             Try
                 w.WriteLine("year," & result.ToString())
                 For i As Integer = 1 To core.nEcosimTimeSteps
                     Dim y As Integer = core.EcosimFirstYear + CInt(Math.Floor((i - 1) / sStepsPerYear))
                     Dim t As Integer = CInt(((i - 1) Mod sStepsPerYear)) + 1
-                    w.WriteLine("{0:D4}_{1:D2},{2}", y, t, cStringUtils.FormatNumber(Me.m_data(i, result)))
+                    If (y >= m_iYear) Then
+                        w.WriteLine("{0:D4}_{1:D2},{2}", y, t, cStringUtils.FormatNumber(Me.m_data(i, result)))
+                    End If
                 Next
             Catch ex As Exception
 

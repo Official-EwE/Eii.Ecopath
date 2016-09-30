@@ -118,6 +118,12 @@
     <Compile Include="cFishMIPcore.vb" />
     <Compile Include="cFishMIPEcosimResultWriter.vb" />
     <Compile Include="cFishMIPEcospaceResultWriterPlugin.vb" />
+    <Compile Include="frmSimRun.Designer.vb">
+      <DependentUpon>frmSimRun.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSimRun.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </Compile>
@@ -145,6 +151,9 @@
     <Compile Include="My Project\Settings.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmSimRun.resx">
+      <DependentUpon>frmSimRun.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmConfig.resx">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </EmbeddedResource>
