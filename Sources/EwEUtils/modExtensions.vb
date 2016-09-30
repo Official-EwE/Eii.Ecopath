@@ -35,13 +35,13 @@ Namespace Extensions
         ''' </summary>
         ''' <typeparam name="T">Value type.</typeparam>
         ''' <param name="arr">The array to fill.</param>
-        ''' <param name="[default]">The value to fill the array with.</param>
+        ''' <param name="value">The value to fill the array with.</param>
         ''' -----------------------------------------------------------------------
         <Runtime.CompilerServices.Extension()>
-        Public Sub Fill(Of T)(ByRef arr As T(), ByVal [default] As T)
+        Public Sub Fill(Of T)(ByRef arr As T(), ByVal value As T)
             If (arr Is Nothing) Then Return
             For i As Integer = 0 To arr.Length - 1
-                arr(i) = [default]
+                arr(i) = value
             Next
         End Sub
 
@@ -51,14 +51,14 @@ Namespace Extensions
         ''' </summary>
         ''' <typeparam name="T">Value type.</typeparam>
         ''' <param name="arr">The array to fill.</param>
-        ''' <param name="[default]">The value to fill the array with.</param>
+        ''' <param name="value">The value to fill the array with.</param>
         ''' -----------------------------------------------------------------------
         <Runtime.CompilerServices.Extension()>
-        Public Sub Fill(Of T)(ByRef arr As T(,), ByVal [default] As T)
+        Public Sub Fill(Of T)(ByRef arr As T(,), ByVal value As T)
             If (arr Is Nothing) Then Return
             For i As Integer = 0 To arr.GetUpperBound(0)
                 For j As Integer = 0 To arr.GetUpperBound(1)
-                    arr(i, j) = [default]
+                    arr(i, j) = value
                 Next j
             Next i
         End Sub
@@ -69,15 +69,15 @@ Namespace Extensions
         ''' </summary>
         ''' <typeparam name="T">Value type.</typeparam>
         ''' <param name="arr">The array to fill.</param>
-        ''' <param name="[default]">The value to fill the array with.</param>
+        ''' <param name="value">The value to fill the array with.</param>
         ''' -----------------------------------------------------------------------
         <Runtime.CompilerServices.Extension()>
-        Public Sub Fill(Of T)(ByRef arr As T(,,), ByVal [default] As T)
+        Public Sub Fill(Of T)(ByRef arr As T(,,), ByVal value As T)
             If (arr Is Nothing) Then Return
             For i As Integer = 0 To arr.GetUpperBound(0)
                 For j As Integer = 0 To arr.GetUpperBound(1)
                     For k As Integer = 0 To arr.GetUpperBound(2)
-                        arr(i, j, k) = [default]
+                        arr(i, j, k) = value
                     Next k
                 Next j
             Next i

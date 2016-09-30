@@ -880,7 +880,7 @@ Namespace Utilities
         Public Shared Function CompactString(ByVal strSrc As String,
                                              ByVal iWidth As Integer,
                                              ByVal ft As Font,
-                                             Optional ByVal tfFlags As Windows.Forms.TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
+                                             Optional ByVal tfFlags As TextFormatFlags = TextFormatFlags.SingleLine Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString) As String
 
             If (String.IsNullOrWhiteSpace(strSrc)) Then Return ""
 
