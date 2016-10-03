@@ -763,6 +763,7 @@ Namespace Samples
             Dim strDigitMask As String = "D" & CInt(Math.Ceiling(Math.Log10(Me.m_iRunLength)))
             Dim i As Integer = 1
             Dim msg As cProgressMessage = Nothing
+            Dim bIsBalanced As Boolean = False
 
             Dim iEcosim As Integer = Me.m_core.ActiveEcosimScenarioIndex
             Dim iEcosimTS As Integer = Me.m_core.ActiveTimeSeriesDatasetIndex
@@ -782,27 +783,33 @@ Namespace Samples
                     cLog.Write("Ecosampler running baseline")
 
                     Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, "Sample_baseline")
-                    Me.m_core.RunEcoPath()
-                    If (iEcosim > 0) Then Me.m_core.RunEcoSim()
-                    If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
+                    Me.m_core.RunEcoPath(bIsBalanced)
+                    If (bIsBalanced) Then
+                        If (iEcosim > 0) Then Me.m_core.RunEcoSim()
+                        If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
+                    Else
+                        ' ToDo: globalize this
+                        Me.SendProgress(100, "Baseline does not balance. Ecosampler run aborted")
+                        Me.m_bStopRun = True
+                    End If
 
                     While (i <= Me.m_iRunLength) And (Not Me.m_bStopRun)
 
                         ' Run sample
                         Dim s As cEcopathSample = Me.Sample(i)
-                        If (s.Rating > 0) Then
 
-                            cLog.Write("Ecosampler running sample " & i & ", " & s.Hash)
-                            Me.SendProgress(CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_RUNNING, i))
+                        cLog.Write("Ecosampler running sample " & i & ", " & s.DBID)
+                        Me.SendProgress(CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_RUNNING, i))
 
-                            Me.Load(s)
+                        Me.Load(s)
 
-                            Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, "Sample_" & s.DBID.ToString(strDigitMask))
-                            Me.m_core.RunEcoPath()
+                        Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, String.Format("Sample_{0:D5}", s.Index))
+                        Me.m_core.RunEcoPath(bIsBalanced)
+                        If (bIsBalanced) Then
                             If (iEcosim > 0) Then Me.m_core.RunEcoSim()
                             If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
                         Else
-                            cLog.Write("Ecosampler skipped sample " & i & ", " & s.Hash)
+                            cLog.Write("Ecosampler sample " & i & ", " & s.DBID & " did not balance")
                         End If
 
                         i += 1
