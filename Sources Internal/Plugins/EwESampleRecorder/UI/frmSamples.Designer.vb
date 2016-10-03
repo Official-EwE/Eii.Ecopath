@@ -115,12 +115,13 @@ Partial Class frmSamples
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
-        Me.m_grid.DataName = "grid content"
+        Me.m_grid.DataName = "EcoSampler"
         resources.ApplyResources(Me.m_grid, "m_grid")
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = True
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -149,7 +150,6 @@ Partial Class frmSamples
         '
         'm_tsddImport
         '
-        Me.m_tsddImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.ImageAndText
         Me.m_tsddImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiImportModel, Me.m_tsmiImportCefas})
         resources.ApplyResources(Me.m_tsddImport, "m_tsddImport")
         Me.m_tsddImport.Name = "m_tsddImport"
