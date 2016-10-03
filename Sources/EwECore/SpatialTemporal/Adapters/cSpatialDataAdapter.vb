@@ -236,8 +236,8 @@ Namespace SpatialData
                             If (ds.HasDataAtT(dt)) Then
 
                                 ' Internal log, no need to translate
-                                strMsg = "cSpatialDataAdapter::Populate({0}) dataset {1} trying to load data for T{2}, ext({3},{4}) to ({5},{6})"
-                                cLog.Write(cStringUtils.Localize(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+                                strMsg = "cSpatialDataAdapter::Populate({0}.{1}) dataset {2} trying to load data for T{3}, ext({4},{5}) to ({6},{7})"
+                                cLog.Write(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
 
                                 ' #Yes: Can lock that data?
                                 If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
