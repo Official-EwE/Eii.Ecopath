@@ -1028,8 +1028,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=raster data summary</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_LOADING" xml:space="preserve">
-    <value>{0} loading external data into {1} at step {2} ({3:yyyy/MM})</value>
-    <comment>{0}=adapter varname, {1}=layer name, {2}=time step, {3}=absolute date</comment>
+    <value>Accessing external data into {0} ({1}) at step {2} ({3:yyyy/MM})</value>
+    <comment>{0}=adapter name, {1}=layer name, {2}=time step, {3}=absolute date</comment>
   </data>
   <data name="OUTPUT_DIRECTORY_MISSING" xml:space="preserve">
     <value>Output directory does not exist.</value>
