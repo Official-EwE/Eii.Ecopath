@@ -39,6 +39,7 @@ Public Class EwESampleRecorderPlugin
     Implements IDockStatePlugin
     Implements ISaveFilterPlugin
     Implements ISearchPlugin
+    Implements IHelpPlugin
 
 #Region " Internal vars "
 
@@ -101,8 +102,8 @@ Public Class EwESampleRecorderPlugin
 
     Public Function DockState() As Integer _
         Implements EwEPlugin.IDockStatePlugin.DockState
-        Return cSystemUtils.IIF(cSystemUtils.IsRightToLeft, _
-                                WeifenLuo.WinFormsUI.Docking.DockState.DockLeft, _
+        Return cSystemUtils.IIF(cSystemUtils.IsRightToLeft,
+                                WeifenLuo.WinFormsUI.Docking.DockState.DockLeft,
                                 WeifenLuo.WinFormsUI.Docking.DockState.DockRight)
     End Function
 
@@ -229,7 +230,7 @@ Public Class EwESampleRecorderPlugin
         If (Not Me.IsRecording) Then Return
 
         Try
-            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumSamples), _
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumSamples),
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Catch ex As Exception
@@ -280,6 +281,30 @@ Public Class EwESampleRecorderPlugin
     End Sub
 
 #End Region ' Search plugin
+
+#Region " Help plugin "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpTopic"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String _
+        Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return ".\UserGuide\EcoSampler.pdf"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpURL"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String _
+        Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return Me.HelpTopic
+        End Get
+    End Property
+
+#End Region ' Help plugin
 
 #Region " Regional bits "
 
