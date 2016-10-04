@@ -113,7 +113,7 @@ Namespace Forms
 
                 If (Me.m_grid IsNot Nothing) Then
                     Me.m_grid.UIContext = Me.UIContext
-                    Me.m_grid.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState)
+                    Me.m_grid.IsOutputGrid = frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.IsRunForm
                 End If
 
             End Set
@@ -253,7 +253,7 @@ Namespace Forms
                     End If
 
                     Me.m_qeHandler = New cQuickEditHandler()
-                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, frmEwE.IsOutputForm(Me.CoreExecutionState))
+                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.Grid.IsOutputGrid)
 
                 End If
             Else
