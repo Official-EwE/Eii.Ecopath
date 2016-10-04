@@ -54,7 +54,7 @@ Public Class frmSamples
         Me.Text = My.Resources.TABTEXT
         Me.TabText = My.Resources.TABTEXT
 
-        Me.Grid = Me.m_grid
+        Me.m_grid.UIContext = uic
 
     End Sub
 
@@ -73,7 +73,6 @@ Public Class frmSamples
             Me.m_nudNumSamples.Value = man.nSamples
         End If
 
-        Me.QuickEditHandler.ShowImportExport = False
         Me.Icon = System.Drawing.Icon.FromHandle(My.Resources.SampleHS.GetHicon)
 
         Me.LoadSamples()
@@ -268,7 +267,7 @@ Public Class frmSamples
     Private Sub OnImportCefasSamples(sender As System.Object, e As System.EventArgs) _
         Handles m_tsmiImportCefas.Click
 
-        Throw New NotImplementedException("Todo: implement this")
+        Me.Core.Messages.SendMessage(New cMessage("Cefas MSE sample import is not implemented yet", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
 
     End Sub
 

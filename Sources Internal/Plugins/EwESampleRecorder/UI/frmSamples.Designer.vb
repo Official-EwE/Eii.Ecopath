@@ -22,7 +22,7 @@ Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
 Partial Class frmSamples
-    Inherits frmEwEGrid
+    Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _

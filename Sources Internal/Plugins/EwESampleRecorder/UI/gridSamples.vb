@@ -30,6 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+#Const ShowRatings = 0
 
 Public Class gridSamples
     Inherits EwEGrid
@@ -37,13 +38,17 @@ Public Class gridSamples
     Private Enum eColumnTypes As Integer
         Index
         Loaded
+#If ShowRatings Then
         Rating
+#End If
         [Date]
-        System
+        Source
     End Enum
 
+    ' ToDo: show system column only wben having samples from multiple systems
+
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
     End Sub
 
     Protected Overrides Sub InitStyle()
@@ -53,10 +58,12 @@ Public Class gridSamples
 
         ' ToDo: globalize this
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Loaded) = New EwEColumnHeaderCell("Loaded")
-        Me(0, eColumnTypes.Rating) = New EwEColumnHeaderCell("Rating")
-        Me(0, eColumnTypes.Date) = New EwEColumnHeaderCell("Date")
-        Me(0, eColumnTypes.System) = New EwEColumnHeaderCell("System")
+        Me(0, eColumnTypes.Loaded) = New EwEColumnHeaderCell(My.Resources.HEADER_LOADED)
+#If ShowRatings Then
+        Me(0, eColumnTypes.Rating) = New EwEColumnHeaderCell(My.Resources.HEADER_RATING)
+#End If
+        Me(0, eColumnTypes.Date) = New EwEColumnHeaderCell(My.Resources.HEADER_DATE)
+        Me(0, eColumnTypes.Source) = New EwEColumnHeaderCell(My.Resources.HEADER_SYSTEM)
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -70,19 +77,39 @@ Public Class gridSamples
         If (Me.UIContext Is Nothing) Then Return
 
         Dim man As cEcopathSampleManager = Me.Core.SampleManager
+        Dim strLastSource As String = ""
+        Dim bMixedSources As Boolean = False
+        Dim strSource As String = ""
 
         For i As Integer = 1 To man.nSamples
             Dim iRow As Integer = Me.AddRow()
             Dim s As cEcopathSample = man.Sample(i)
             Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, s, eVarNameFlags.Index)
+#If ShowRatings Then
             Me(iRow, eColumnTypes.Rating) = New PropertyCell(Me.PropertyManager, s, eVarNameFlags.SampleRating)
+#End If
             Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.Date) = New EwECell(s.Generated, cStyleGuide.eStyleFlags.NotEditable)
-            Me(iRow, eColumnTypes.System) = New EwECell(s.Source, cStyleGuide.eStyleFlags.NotEditable)
+
+            strSource = s.Source
+            If (String.Compare(strSource, Environment.MachineName) = 0) Then strSource = My.Resources.VALUE_THISCOMPUTER
+
+            Me(iRow, eColumnTypes.Source) = New EwECell(s.Source, cStyleGuide.eStyleFlags.NotEditable)
             Me.Sample(iRow) = s
+
+            If Not String.IsNullOrWhiteSpace(s.Source) Then
+                If (String.Compare(s.Source, strLastSource) <> 0) Then
+                    If Not String.IsNullOrWhiteSpace(strLastSource) Then
+                        bMixedSources = True
+                    End If
+                    strLastSource = s.Source
+                End If
+            End If
         Next
 
         Me.UpdateLoadState()
+
+        'Me.Columns(eColumnTypes.Source).Visible = bMixedSources
 
     End Sub
 
@@ -97,7 +124,9 @@ Public Class gridSamples
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim s As cEcopathSample = Me.Sample(iRow)
             Me(iRow, eColumnTypes.Loaded).Value = cSystemUtils.IIF(man.IsLoaded(s), SharedResources.GENERIC_VALUE_YES, "")
+#If ShowRatings Then
             Me(iRow, eColumnTypes.Rating).Value = s.Rating
+#End If
         Next
 
     End Sub

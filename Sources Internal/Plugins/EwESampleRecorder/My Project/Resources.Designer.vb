@@ -61,6 +61,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Date.
+        '''</summary>
+        Friend ReadOnly Property HEADER_DATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Loaded.
+        '''</summary>
+        Friend ReadOnly Property HEADER_LOADED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LOADED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rating.
+        '''</summary>
+        Friend ReadOnly Property HEADER_RATING() As String
+            Get
+                Return ResourceManager.GetString("HEADER_RATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to System.
+        '''</summary>
+        Friend ReadOnly Property HEADER_SYSTEM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SYSTEM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Load.
         '''</summary>
         Friend ReadOnly Property LABEL_LOAD() As String
@@ -141,6 +177,15 @@ Namespace My.Resources
         Friend ReadOnly Property TABTEXT() As String
             Get
                 Return ResourceManager.GetString("TABTEXT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (this computer).
+        '''</summary>
+        Friend ReadOnly Property VALUE_THISCOMPUTER() As String
+            Get
+                Return ResourceManager.GetString("VALUE_THISCOMPUTER", resourceCulture)
             End Get
         End Property
     End Module

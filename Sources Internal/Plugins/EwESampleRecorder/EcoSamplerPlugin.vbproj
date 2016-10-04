@@ -182,6 +182,9 @@
     <None Include="UserGuide\EcoSampler.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="UserGuide\EcoSampler.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
