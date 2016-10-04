@@ -1053,6 +1053,7 @@
     <Content Include="Resources\glyph_vl_med_blue.png" />
     <Content Include="Resources\glyph_vl_med_dblue.png" />
     <None Include="Resources\HabitatFunctionHS.png" />
+    <Content Include="Resources\ImportHS.png" />
     <Content Include="Resources\NavHS.png" />
     <None Include="Resources\plugin.png" />
     <None Include="Resources\pluginpoint.png" />
