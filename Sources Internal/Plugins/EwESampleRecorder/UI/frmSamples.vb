@@ -92,6 +92,12 @@ Public Class frmSamples
 
     End Sub
 
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Overridden to prevent panel from closing with 'close all docs'
@@ -117,7 +123,7 @@ Public Class frmSamples
             Me.m_tsbnRecord.Image = cSystemUtils.IIF(Me.m_plugin.IsRecording, My.Resources.RecordingHS, My.Resources.RecordHS)
         End If
 
-        Me.m_tsddImport.Image = SharedResources.ImportXMLHS
+        Me.m_tsddImport.Image = SharedResources.ImportHS
 
         Me.m_btnLoad.Enabled = Not bIsRunning And bHasSelection
         Me.m_btnLoad.Text = cSystemUtils.IIF(bIsLoaded, My.Resources.LABEL_UNLOAD, My.Resources.LABEL_LOAD)

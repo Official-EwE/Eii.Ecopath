@@ -136,7 +136,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcoSampler.
+        '''  Looks up a localized string similar to Ecosampler.
         '''</summary>
         Friend ReadOnly Property TABTEXT() As String
             Get

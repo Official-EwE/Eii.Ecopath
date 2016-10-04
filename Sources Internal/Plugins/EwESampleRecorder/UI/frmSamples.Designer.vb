@@ -150,6 +150,7 @@ Partial Class frmSamples
         '
         'm_tsddImport
         '
+        Me.m_tsddImport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tsddImport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiImportModel, Me.m_tsmiImportCefas})
         resources.ApplyResources(Me.m_tsddImport, "m_tsddImport")
         Me.m_tsddImport.Name = "m_tsddImport"

@@ -135,7 +135,7 @@
     <comment>{0} = sample count</comment>
   </data>
   <data name="TABTEXT" xml:space="preserve">
-    <value>EcoSampler</value>
+    <value>Ecosampler</value>
   </data>
   <data name="LABEL_LOAD" xml:space="preserve">
     <value>&amp;Load</value>
