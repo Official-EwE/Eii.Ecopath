@@ -42,6 +42,7 @@ Public MustInherit Class gridShapeBase
     Private m_lInvalidatedShapes As New List(Of cShapeData)
 
     Public Sub New()
+        Me.TrackPropertySelection = False
     End Sub
 
     Public Overrides Property UIContext() As ScientificInterfaceShared.Controls.cUIContext
