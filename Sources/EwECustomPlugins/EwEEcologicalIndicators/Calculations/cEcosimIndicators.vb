@@ -141,10 +141,9 @@ Public Class cEcosimIndicators
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.ShannonDiversity"/>
     ''' -----------------------------------------------------------------------
-    Protected Overrides Function modelShannonDiversity() As Single
+    Protected Overrides Function ModelShannonDiversity() As Single
         Return Me.EcosimDS.ShannonDiversity(Me.Time)
     End Function
-
 
 #End Region ' Core data access and public bits
 

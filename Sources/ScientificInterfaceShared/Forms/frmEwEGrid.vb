@@ -253,7 +253,7 @@ Namespace Forms
                     End If
 
                     Me.m_qeHandler = New cQuickEditHandler()
-                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, frmEwE.IsOutputForm(Me.CoreExecutionState) Or Me.Grid.IsOutputGrid)
+                    Me.m_qeHandler.Attach(Me.Grid, Me.UIContext, ts, Me.Grid.IsOutputGrid)
 
                 End If
             Else

@@ -275,7 +275,7 @@ Public MustInherit Class cIndicators
     ''' underlying model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected MustOverride Function modelShannonDiversity() As Single
+    Protected MustOverride Function ModelShannonDiversity() As Single
 
 #End Region ' Inputs 
 
@@ -419,7 +419,6 @@ Public MustInherit Class cIndicators
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicNeritic)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicOceanic))
 
-
             For i As Integer = 1 To group.NTaxon
                 Dim iTaxon As Integer = group.iTaxon(i)
                 taxon = Me.Core.Taxon(iTaxon)
@@ -474,8 +473,11 @@ Public MustInherit Class cIndicators
 
         Next iGroup
 
+        ' Trouble shooting
+        Debug.Assert(sInveB = 0 Or sDemB = 0 Or sInveB <> sDemB)
+        Debug.Assert(sFishC = sFishC Or sCT = 0 Or sFishC <> sCT)
 
-        ' Calculate and store indicators
+        ' Store indicators
 
         ' Biomass indicators
         Me.m_sTotalB = sTotalB
@@ -489,7 +491,7 @@ Public MustInherit Class cIndicators
         Me.m_sPelB = sPelB
         Me.m_sDemPelB = CSng(cSystemUtils.IIF(sPelB = 0, 0, sDemB / sPelB))
         Me.m_sKemptonsQ = Me.ModelKemptionsQ()
-        Me.m_sShannonDiversity = Me.modelShannonDiversity()
+        Me.m_sShannonDiversity = Me.ModelShannonDiversity()
 
         ' Catch indicators
         Me.m_sCT = sCT
@@ -743,7 +745,6 @@ Public MustInherit Class cIndicators
     ''' -----------------------------------------------------------------------
     Public Function DemB() As Single
         Return Me.m_sDemB
-
     End Function
 
     ''' -----------------------------------------------------------------------
