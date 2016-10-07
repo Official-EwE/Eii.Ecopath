@@ -57,7 +57,7 @@ Public Class gridConfig
     Protected Overrides Sub FillData()
 
         If (Me.m_config Is Nothing) Then
-            Me.m_config = cFishMIPcore.GetInstance().Configuration
+            Me.m_config = cFishMIPPlugin.GetInstance().Configuration
         End If
 
         Me.RowsCount = 1
@@ -79,6 +79,15 @@ Public Class gridConfig
         MyBase.FinishStyle()
         Me.FixedColumnWidths = False
     End Sub
+
+    Public Overrides Property IsOutputGrid As Boolean
+        Get
+            Return False
+        End Get
+        Set(value As Boolean)
+            ' NOP
+        End Set
+    End Property
 
     Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 

@@ -115,13 +115,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cConfiguration.vb" />
-    <Compile Include="cFishMIPcore.vb" />
-    <Compile Include="cFishMIPEcosimResultWriter.vb" />
+    <Compile Include="cFishMIPPlugin.vb" />
+    <Compile Include="cFishMIPEcosimResultWriterPlugin.vb" />
     <Compile Include="cFishMIPEcospaceResultWriterPlugin.vb" />
-    <Compile Include="frmSimRun.Designer.vb">
-      <DependentUpon>frmSimRun.vb</DependentUpon>
+    <Compile Include="UI\dlgSpaceRun.Designer.vb">
+      <DependentUpon>dlgSpaceRun.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSimRun.vb">
+    <Compile Include="UI\dlgSpaceRun.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\dlgSimRun.Designer.vb">
+      <DependentUpon>dlgSimRun.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\dlgSimRun.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\frmConfig.Designer.vb">
@@ -151,8 +157,11 @@
     <Compile Include="My Project\Settings.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSimRun.resx">
-      <DependentUpon>frmSimRun.vb</DependentUpon>
+    <EmbeddedResource Include="UI\dlgSpaceRun.resx">
+      <DependentUpon>dlgSpaceRun.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\dlgSimRun.resx">
+      <DependentUpon>dlgSimRun.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmConfig.resx">
       <DependentUpon>frmConfig.vb</DependentUpon>

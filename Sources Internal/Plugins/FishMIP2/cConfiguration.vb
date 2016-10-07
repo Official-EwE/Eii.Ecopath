@@ -135,9 +135,9 @@ Public Class cConfiguration
 
     Public Sub LoadEcoOcean()
 
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
         Dim smalluns As Integer() = New Integer() {1, 4, 7, 10, 13, 16}
-        Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+        Dim config As cConfiguration = cFishMIPPlugin.GetInstance().Configuration
 
         For Each cat As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
 

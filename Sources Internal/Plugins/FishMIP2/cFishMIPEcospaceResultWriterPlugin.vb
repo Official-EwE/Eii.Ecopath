@@ -26,6 +26,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -40,6 +41,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
     Implements IEcospaceEndTimestepPlugin
     Implements IEcospaceRunCompletedPlugin
     Implements IAutoSavePlugin
+    Implements IUIContextPlugin
 
 #Region " Private vars "
 
@@ -48,6 +50,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
     ''' <summary>Currently open writers</summary>
     Private m_writers() As StreamWriter = Nothing
     Private m_ds As cEcospaceDataStructures = Nothing
+    Private m_uic As cUIContext = Nothing
 
 #End Region ' Private vars
 
@@ -85,6 +88,47 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
 #Region " Ecospace integration "
 
+    Private m_strRunHist As String = ""
+    Private m_iYearHist As Integer = 1971
+    Private m_strRunFore As String = ""
+    Private m_iYearFore As Integer = 2006
+    Private m_bHasWriters As Boolean = False
+    Private m_dNoData As Double = 1.0E-20!
+
+    Private Sub InitWriters(strFile As String)
+
+        If (Me.m_bHasWriters) Then CloseWriters()
+
+        Try
+            For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+                Me.m_writers(result) = New StreamWriter(Path.Combine(Me.AutoSaveOutputPath, strFile & "_" & result.ToString & ".csv"))
+                Me.m_writers(result).WriteLine("Time,Latitude,Longitude," & result.ToString())
+            Next
+            Me.m_bHasWriters = True
+        Catch ex As Exception
+            Me.m_bSaving = False
+            ' Clean up failed writers
+        End Try
+
+    End Sub
+
+    Private Sub CloseWriters()
+
+        If Not Me.m_bHasWriters Then Return
+
+        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+            If (Me.m_writers IsNot Nothing) Then
+                If (Me.m_writers(result) IsNot Nothing) Then
+                    Me.m_writers(result).Flush()
+                    Me.m_writers(result).Close()
+                    Me.m_writers(result) = Nothing
+                End If
+            End If
+        Next
+        Me.m_bHasWriters = False
+
+    End Sub
+
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
         Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
@@ -99,17 +143,22 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
         Me.m_ds = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
+        ' Capture autosave flag for the entire run
+        Me.m_bSaving = AutoSave
+
+        ' Not autosaving? Done
+        If Not Me.m_bSaving Then Return
+
         ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
-        Try
-            For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-                Me.m_writers(result) = New StreamWriter(Path.Combine(Me.AutoSaveOutputPath, result.ToString & ".txt"))
-                Me.m_writers(result).WriteLine("Time,Latitude,Longitude," & result.ToString())
-            Next
-        Catch ex As Exception
-            Me.m_bSaving = False
-            ' Clean up failed writers
-        End Try
+        Dim dlg As New dlgSpaceRun(Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore, Me.m_dNoData)
+        dlg.ShowDialog(Me.m_uic.FormMain)
+        Me.m_strRunHist = dlg.RunHistorical
+        Me.m_iYearHist = dlg.YearHist
+        Me.m_strRunFore = dlg.RunForecast
+        Me.m_iYearFore = dlg.YearForecast
+        Me.m_dNoData = dlg.NoData
+
     End Sub
 
     Public Sub EcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
@@ -122,15 +171,26 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         If Not Me.m_bSaving Then Return
 
         ' Aggregate results
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
-        Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+        Dim config As cConfiguration = cFishMIPPlugin.GetInstance().Configuration
+
+        Dim dt As DateTime = core.EcospaceTimestepToAbsoluteTime(iTime)
+        If (dt.Year < Me.m_iYearHist) Then Return
+        If (dt.Month = 1) Then
+            If (dt.Year = m_iYearHist) Then
+                Me.InitWriters(Me.m_strRunHist)
+            ElseIf (dt.Year = Me.m_iYearFore) Then
+                Me.InitWriters(Me.m_strRunFore)
+            End If
+        End If
 
         For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
             For iRow As Integer = 1 To Me.m_ds.InRow
                 For iCol As Integer = 1 To Me.m_ds.InCol
+                    Dim bHasData As Boolean = False
+                    Dim val As Double = 0
                     If Me.m_ds.Depth(iRow, iCol) > 0 Then
-                        Dim val As Single = 0
                         For iGrp As Integer = 1 To core.nGroups
                             If config(iGrp, result) Then
                                 Select Case result
@@ -140,20 +200,24 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                                          cConfiguration.eResultTypes.b30cm,
                                          cConfiguration.eResultTypes.bcom
                                         val += Me.m_ds.Bcell(iRow, iCol, iGrp) / 10 ' Unit conversion
+                                        bHasData = True
                                     Case cConfiguration.eResultTypes.tc,
                                          cConfiguration.eResultTypes.tc10cm,
                                          cConfiguration.eResultTypes.tc30cm
                                         val += Me.m_ds.CatchMap(iRow, iCol, iGrp)
+                                        bHasData = True
                                     Case Else
                                         Debug.Assert(False, "Result type not supported")
                                 End Select
                             End If
                         Next iGrp
-                        Me.m_writers(result).WriteLine("{0},{1},{2},{3}",
+                    End If
+
+                    If Not bHasData Then val = Me.m_dNoData
+                    Me.m_writers(result).WriteLine("{0},{1},{2},{3}",
                                                    iTime - 1,
                                                    bm.RowToLat(iRow), bm.ColToLon(iCol),
                                                    val)
-                    End If
                 Next iCol
             Next iRow
         Next
@@ -162,17 +226,9 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
 
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
 
-        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-            If (Me.m_writers IsNot Nothing) Then
-                If (Me.m_writers(result) IsNot Nothing) Then
-                    Me.m_writers(result).Flush()
-                    Me.m_writers(result).Close()
-                    Me.m_writers(result) = Nothing
-                End If
-            End If
-        Next
+        Me.CloseWriters()
 
         If Me.m_bSaving Then
             ' Notify UI
@@ -209,10 +265,14 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Implements IAutoSavePlugin.AutoSaveOutputPath
 
         ' Present complete path to UI
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
         Return Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), "FishMIP")
 
     End Function
+
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
+        Me.m_uic = CType(uic, cUIContext)
+    End Sub
 
 #End Region ' Autosave
 

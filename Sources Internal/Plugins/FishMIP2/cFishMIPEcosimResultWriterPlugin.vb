@@ -35,7 +35,7 @@ Imports ScientificInterfaceShared.Controls
 ''' Plugin to write aggregated Ecosim results for FishMIP2.
 ''' </summary>
 ''' ===========================================================================
-Public Class cFishMIPEcosimResultWriter
+Public Class cFishMIPEcosimResultWriterPlugin
     Implements IEcosimRunInitializedPlugin
     Implements IEcosimBeginTimestepPlugin
     Implements IEcosimEndTimestepPostPlugin
@@ -112,7 +112,7 @@ Public Class cFishMIPEcosimResultWriter
         Me.m_strRun = dlg.RunName
 
         ' Init array for storing aggregated results
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
         ReDim Me.m_data(core.nEcosimTimeSteps, [Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
     End Sub
@@ -137,8 +137,8 @@ Public Class cFishMIPEcosimResultWriter
         If Not Me.m_bSaving Then Return
 
         ' Aggregate results
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
-        Dim config As cConfiguration = cFishMIPcore.GetInstance().Configuration
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
+        Dim config As cConfiguration = cFishMIPPlugin.GetInstance().Configuration
         Dim simresult As cEcoSimResults = DirectCast(Ecosimresults, cEcoSimResults)
         Dim simdata As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
@@ -178,7 +178,7 @@ Public Class cFishMIPEcosimResultWriter
 
         ' Write output files
         Dim strPath As String = Me.AutoSaveOutputPath
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
         Dim w As StreamWriter = Nothing
         Dim sStepsPerYear As Single = cCore.N_MONTHS ' CSng(core.nEcosimTimeSteps / core.nEcosimYears)
 
@@ -240,7 +240,7 @@ Public Class cFishMIPEcosimResultWriter
         Implements IAutoSavePlugin.AutoSaveOutputPath
 
         ' Present complete path to UI
-        Dim core As cCore = cFishMIPcore.GetInstance().Core
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
         Return Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), "FishMIP")
 
     End Function

@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
-Public Class cFishMIPcore
+Public Class cFishMIPPlugin
     Implements IPlugin
     Implements IEcopathPlugin
     Implements IMenuItemPlugin
@@ -39,12 +39,12 @@ Public Class cFishMIPcore
 
     Private m_uic As cUIContext = Nothing
     Private m_ui As frmConfig = Nothing
-    Private Shared s_inst As cFishMIPcore
+    Private Shared s_inst As cFishMIPPlugin
     Private m_config As cConfiguration = Nothing
 
 #End Region ' Private variables
 
-    Public Shared Function GetInstance() As cFishMIPcore
+    Public Shared Function GetInstance() As cFishMIPPlugin
         Return s_inst
     End Function
 

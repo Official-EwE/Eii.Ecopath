@@ -423,7 +423,7 @@ Namespace Controls.EwEGrid
         ''' does not prevent that editable controls are added to the grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property IsOutputGrid As Boolean = True
+        Public Overridable Property IsOutputGrid As Boolean = False
 
         ''' -------------------------------------------------------------------
         ''' <summary>

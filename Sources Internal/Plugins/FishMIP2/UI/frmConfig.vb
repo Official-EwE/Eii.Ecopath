@@ -30,19 +30,21 @@ Public Class frmConfig
     Public Sub New(uic As cUIContext)
 
         Me.UIContext = uic
+        Me.CoreExecutionState = eCoreExecutionState.EcopathLoaded
+
         Me.InitializeComponent()
 
         Me.Text = My.Resources.CAPTION
         Me.TabText = Me.Text
+        Me.Grid = m_grid
 
     End Sub
 
     Protected Overrides Sub OnLoad(e As EventArgs)
+
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
-
-        Me.Grid = m_grid
 
         Me.m_tsbnAutosave.Image = ScientificInterfaceShared.My.Resources.saveHS
 
@@ -55,13 +57,19 @@ Public Class frmConfig
         MyBase.OnFormClosed(e)
     End Sub
 
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
     End Sub
 
     Private Sub m_tsmiGOM_Click(sender As Object, e As EventArgs) Handles m_tsmiGOM.Click
 
-        cFishMIPcore.GetInstance().Configuration().LoadEcoOcean()
+        cFishMIPPlugin.GetInstance().Configuration().LoadEcoOcean()
         Me.m_grid.RefreshContent()
 
     End Sub
