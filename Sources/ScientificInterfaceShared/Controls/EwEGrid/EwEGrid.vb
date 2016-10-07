@@ -466,7 +466,7 @@ Namespace Controls.EwEGrid
         ''' Get the <see cref="cCore">core</see> that this grid connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property Core() As cCore
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -480,7 +480,7 @@ Namespace Controls.EwEGrid
         ''' connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property StyleGuide() As cStyleGuide
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -494,7 +494,7 @@ Namespace Controls.EwEGrid
         ''' this grid can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property PropertyManager() As cPropertyManager
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -508,7 +508,7 @@ Namespace Controls.EwEGrid
         ''' this grid can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public ReadOnly Property CommandHandler() As cCommandHandler
             Get
                 If Me.UIContext Is Nothing Then Return Nothing
@@ -530,7 +530,7 @@ Namespace Controls.EwEGrid
         ''' </list>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Protected ReadOnly Property EwEEditHandler() As BehaviorModels.IBehaviorModel
             Get
                 If (Me.m_bm Is Nothing) Then Me.m_bm = New cEwEGridBacklinkModel(Me)
@@ -638,9 +638,9 @@ Namespace Controls.EwEGrid
             Me.FixedColumns = 2
             Me.FixedRows = 1
             Me.GridToolTipActive = True
-            Me.ContextMenuStyle = SourceGrid2.ContextMenuStyle.CellContextMenu Or _
-                                  SourceGrid2.ContextMenuStyle.CopyPasteSelection Or _
-                                  SourceGrid2.ContextMenuStyle.ColumnResize Or _
+            Me.ContextMenuStyle = SourceGrid2.ContextMenuStyle.CellContextMenu Or
+                                  SourceGrid2.ContextMenuStyle.CopyPasteSelection Or
+                                  SourceGrid2.ContextMenuStyle.ColumnResize Or
                                   SourceGrid2.ContextMenuStyle.AutoSize
             Me.AutoStretchRowsToFitHeight = False
 
@@ -770,7 +770,7 @@ Namespace Controls.EwEGrid
         ''' the header row is set to a fixed height of 45 (shudder)
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), Description("States whether columns are fixed in width and height")> _
+        <Browsable(True), Description("States whether columns are fixed in width and height")>
         Public Property FixedColumnWidths() As Boolean
             Get
                 Return m_bFixedColumnWidths
@@ -808,9 +808,9 @@ Namespace Controls.EwEGrid
         ''' It is advised to set this setting to False for larger grids.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("States whether the grid maintains a list of selected cProperty instances."), _
-         DefaultValue(True)> _
+        <Browsable(True),
+         Description("States whether the grid maintains a list of selected cProperty instances."),
+         DefaultValue(True)>
         Public Property TrackPropertySelection() As Boolean = True
 
         ''' -------------------------------------------------------------------
@@ -822,9 +822,9 @@ Namespace Controls.EwEGrid
         ''' <param name="iColFrom">Start column for resizing.</param>
         ''' <param name="iColTo">End column for resizing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SizeColumnsEqually(Optional ByVal iColFrom As Integer = 0, _
-                                      Optional ByVal iColTo As Integer = 10000, _
-                                      Optional ByVal iMinWidth As Integer = 10, _
+        Public Sub SizeColumnsEqually(Optional ByVal iColFrom As Integer = 0,
+                                      Optional ByVal iColTo As Integer = 10000,
+                                      Optional ByVal iMinWidth As Integer = 10,
                                       Optional ByVal iMaxWidth As Integer = 10000)
 
             Dim iWidth As Integer = iMinWidth
@@ -879,6 +879,8 @@ Namespace Controls.EwEGrid
         ''' <note_js>Method does not require UI context to be present.</note_js>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub ClearData()
+
+            Me.Selection.Clear()
 
             ' Clear row content, smartly
             For iRow As Integer = 0 To Me.RowsCount - 1
