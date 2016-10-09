@@ -93,7 +93,7 @@ Public Class cFishMIPEcospaceResultWriterPlugin
     Private m_strRunFore As String = ""
     Private m_iYearFore As Integer = 2006
     Private m_bHasWriters As Boolean = False
-    Private m_dNoData As Double = 1.0E-20!
+    Private m_dNoData As Double = 1.0E+20!
 
     Private Sub InitWriters(strFile As String)
 
@@ -216,10 +216,13 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                     If Not bHasData Then val = Me.m_dNoData
                     Me.m_writers(result).WriteLine("{0},{1},{2},{3}",
                                                    iTime - 1,
-                                                   bm.RowToLat(iRow), bm.ColToLon(iCol),
+                                                   bm.RowToLat(iRow) - bm.CellSize / 2, bm.ColToLon(iCol) + bm.CellSize / 2,
                                                    val)
                 Next iCol
             Next iRow
+        Next
+        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+            Me.m_writers(result).Flush()
         Next
 
     End Sub
