@@ -63,6 +63,20 @@ Public Class cConfiguration
         End Set
     End Property
 
+    Public Function IsEmpty() As Boolean
+
+        For Each j As eResultTypes In [Enum].GetValues(GetType(eResultTypes))
+            Dim b As Boolean = False
+            For i As Integer = 1 To Me.m_core.nGroups
+                If (Me.Configuration(i, j)) Then
+                    Return False
+                End If
+            Next
+        Next
+        Return True
+
+    End Function
+
     Public Sub Load()
 
         Dim core As cCore = Me.m_core

@@ -323,7 +323,8 @@ Namespace SpatialData
                         dtCurr(Path.GetFileName(fe.FileName).ToLower) = fe
                     Next
                     Dim lFilesNew As String() = ofd.FileNames
-                    Dim dt As New DateTime(Me.UIContext.Core.EcosimFirstYear, 1, 1)
+                    Dim dt As New DateTime(Math.Max(1, Me.UIContext.Core.EcosimFirstYear), 1, 1)
+                    Dim strMask As String = ""
 
                     Me.m_lFiles.Clear()
 
@@ -336,6 +337,8 @@ Namespace SpatialData
                         If dtCurr.ContainsKey(strKey) Then
                             fe = New cFileEntry(strFile, dtCurr(strKey).FileDate)
                         Else
+                            dt = dt.AddMonths(1)
+                            cStringUtils.GetDateBruteForce(Path.GetFileName(strFile), dt, strMask)
                             fe = New cFileEntry(strFile, dt)
                         End If
                         Me.m_lFiles.Add(fe)

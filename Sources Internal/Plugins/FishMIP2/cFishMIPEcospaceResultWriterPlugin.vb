@@ -158,8 +158,12 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
         ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
-        Dim dlg As New dlgSpaceRun(Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore, Me.m_dNoData)
-        dlg.ShowDialog(Me.m_uic.FormMain)
+        Dim dlg As New dlgSpaceRun(Me.m_uic.Core, Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore, Me.m_dNoData)
+        If dlg.ShowDialog(Me.m_uic.FormMain) = Windows.Forms.DialogResult.Cancel Then
+            Me.m_uic.Core.StopEcospace()
+            Return
+        End If
+
         Me.m_strRunHist = dlg.RunHistorical
         Me.m_iYearHist = dlg.YearHist
         Me.m_strRunFore = dlg.RunForecast
