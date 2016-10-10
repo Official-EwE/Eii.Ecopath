@@ -210,11 +210,13 @@ Namespace SpatialData
 
             'Get the scalar value from a function
             'So different adapters can use a different scalar calculation
-            dScale = Me.calScalar(dMapTotValue, iNumWaterCells)
+            dScale = Me.CalculateScalar(dMapTotValue, iNumWaterCells)
 
             ' Report for the calculation period
-            Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
-            Return cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap 'comp.Compatibility
+            Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
+            Dim comp As cDatasetCompatilibity = man.Compatibility(ds)
+            comp.Refresh()
+            Return comp.Compatibility
 
         End Function
 
@@ -225,7 +227,7 @@ Namespace SpatialData
         ''' <param name="nMapCells">Total number of cells included in the sum.</param>
         ''' <returns> (1 / mean)</returns>
         ''' <remarks>Default scalar for relative adapters. Return the mean scalar as a multiplier.</remarks>
-        Public Overridable Function calScalar(SumOverPeriod As Double, nMapCells As Double) As Double
+        Public Overridable Function CalculateScalar(SumOverPeriod As Double, nMapCells As Double) As Double
             Try
                 'This is the default value for a relative scalar that is used as multiplier 
                 'RelPP and Relative biomass can use this 

@@ -36,7 +36,7 @@ Namespace Ecospace.Controls
     ' ToDo: respond to dataset changes
 
     Public Class cSpatialDatasetListbox
-        Inherits ListBox
+        Inherits cFlickerFreeListBox
         Implements IUIElement
 
         Private m_uic As cUIContext = Nothing
@@ -124,7 +124,7 @@ Namespace Ecospace.Controls
 
             If (ds Is Nothing) Then Return
 
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+            Dim comp As cDatasetCompatilibity = m_manSets.Compatibility(ds)
             Dim img As Image = cSystemUtils.IIF(Me.m_manConn.IsApplied(ds), SharedResources.Database, SharedResources.database_NA)
             Dim clrText As Color = e.ForeColor
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)

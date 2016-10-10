@@ -373,8 +373,9 @@ Namespace Ecospace
             If (Me.m_ds Is Nothing) Then Return
             If (Me.m_lExternalDataMapExtents.Count = 0) Then Return
 
+            Dim manSets As cSpatialDataSetManager = Me.m_uic.Core.SpatialDataConnectionManager.DatasetManager
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, Me.m_ds)
+            Dim comp As cDatasetCompatilibity = manSets.Compatibility(Me.m_ds)
             Dim clrFillFull As Color = Color.FromKnownColor(KnownColor.LightBlue)
             Dim clrOutlineFull As Color = Color.FromKnownColor(KnownColor.Blue)
             Dim bError As Boolean = False

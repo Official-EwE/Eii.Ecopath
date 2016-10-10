@@ -258,7 +258,7 @@ Namespace SpatialData
             For Each adt As cSpatialDataAdapter In Me.Adapters
                 For Each conn As cSpatialDataConnection In adt.Connections(bEnabledOnly:=bEnabledOnly)
                     If conn.IsConfigured() Then
-                        Dim comp As New cDatasetCompatilibity(Me.m_core, conn.Dataset)
+                        Dim comp As cDatasetCompatilibity = Me.m_datasetManager.Compatibility(conn.Dataset)
                         If (comp.NumError > 0) And (Not problems.Contains(conn.Dataset)) Then
                             problems.Add(conn.Dataset)
                         End If
@@ -345,7 +345,7 @@ Namespace SpatialData
         End Function
 
         Public Sub Update(ByVal ds As ISpatialDataSet)
-            ' ToDo: implement selective update
+            Me.m_datasetManager.Compatibility(ds).Invalidate()
             Me.Update()
             ' ToDo: Only send out event if this dataset is used in a spat/temp configuration
             Me.Update(eMessageType.DataModified)

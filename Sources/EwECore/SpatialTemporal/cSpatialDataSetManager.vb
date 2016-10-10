@@ -50,6 +50,8 @@ Namespace SpatialData
 
         Private Shared cCONFIG_FILE As String = "ewe_datasets.xml"
 
+        Private m_lComp As New Dictionary(Of ISpatialDataSet, cDatasetCompatilibity)
+
         Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
         Private m_lDeleted As List(Of Guid) = Nothing
         Private m_lVirtual As List(Of ISpatialDataSet) = Nothing
@@ -92,7 +94,7 @@ Namespace SpatialData
             'Me.m_fswSpy.Filter = "*.xml"
             'Me.m_fswSpy.EnableRaisingEvents = True
 
-            Me.m_indexer = New cSpatialDatasetIndexer(core)
+            Me.m_indexer = New cSpatialDatasetIndexer(core, Me)
 
             'AddHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
 
@@ -285,6 +287,9 @@ Namespace SpatialData
         Public Sub Changed()
             If Me.AllowValidation Then
                 Try
+                    ' Need full reassessment
+                    Me.m_lComp.Clear()
+
                     'Notify the world
                     RaiseEvent OnConfigurationChanged(Me)
                 Catch ex As Exception
@@ -388,6 +393,7 @@ Namespace SpatialData
             Me.m_lAvailable.Clear()
             Me.m_lVirtual.Clear()
             Me.m_lDeleted.Clear()
+            Me.m_lComp.Clear()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -696,6 +702,20 @@ Namespace SpatialData
         End Property
 
 #End Region ' Data ownership
+
+#Region " Compatibility "
+
+        Public Function Compatibility(ds As ISpatialDataSet) As cDatasetCompatilibity
+
+            If (ds Is Nothing) Then Return Nothing
+            If Not Me.m_lComp.ContainsKey(ds) Then
+                Me.m_lComp(ds) = New cDatasetCompatilibity(Me.m_core, ds)
+            End If
+            Return Me.m_lComp(ds)
+
+        End Function
+
+#End Region ' Compatibility
 
 #Region " Internals "
 

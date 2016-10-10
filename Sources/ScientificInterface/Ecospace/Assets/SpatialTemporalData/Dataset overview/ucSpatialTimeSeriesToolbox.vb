@@ -74,6 +74,8 @@ Namespace Ecospace.Controls
         Private m_mhSpace As cMessageHandler = Nothing
         Private m_mhSpatial As cMessageHandler = Nothing
 
+        Private m_manSets As cSpatialDataSetManager = Nothing
+
         Private m_bmpError As Bitmap
         Private m_bmpWarning As Bitmap
 
@@ -232,7 +234,7 @@ Namespace Ecospace.Controls
 
             MyBase.OnLoad(e)
             If (Me.m_uic Is Nothing) Then Return
-
+            Me.m_manSets = Me.m_uic.Core.SpatialDataConnectionManager.DatasetManager
             Me.RefreshContent()
 
         End Sub
@@ -307,7 +309,7 @@ Namespace Ecospace.Controls
             Dim strText As String = ""
 
             If (pos IsNot Nothing) Then
-                Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+                Dim comp As cDatasetCompatilibity = m_manSets.Compatibility(pos.m_ds)
                 Dim iStep As Integer = TimestepFromPoint(ptClick)
                 Dim dtStep As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep)
                 Dim strDate As String = dtStep.ToShortDateString
@@ -570,7 +572,7 @@ Namespace Ecospace.Controls
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.m_ds)
 
             ' Fill back bar
             Using br As New SolidBrush(cColorUtils.GetVariant(cStyleGuide.GetColor(comp), 0.75))
@@ -596,7 +598,7 @@ Namespace Ecospace.Controls
             Dim rcDot As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
             Dim rcImg As New Rectangle(rcBar.X, CInt(rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_imgradius), 2 * c_imgradius, 2 * c_imgradius)
 
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(pos.m_ds)
             Dim clrBar As Color = cStyleGuide.GetColor(comp)
             Dim clrText As Color = SystemColors.ControlText
             Dim clrOutline As Color
