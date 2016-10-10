@@ -1426,24 +1426,35 @@ Namespace Utilities
                                                  ByRef dt As DateTime,
                                                  Optional ByRef strFormat As String = "") As Boolean
 
+            ' Possible date formats, with and without day specified. {0}:separator, {1}:month, {2}:day
             Dim fmts() As String = New String() {"yyyy{0}{1}", "{1}{0}yyyy", "yyyy{0}{1}{0}{2}", "{2}{0}{1}{0}yyyy", "{1}{0}{2}{0}yyyy"}
+            ' Possible separator characters
             Dim seps() As String = New String() {"", "-", "\", "/", ".", " "}
+            ' Possible month specifiers (one or two digits only)
             Dim months() As String = New String() {"MM", "M"}
-            Dim dates() As String = New String() {"dd", "d"}
+            ' Possible day specifiers (one or two digits only)
+            Dim days() As String = New String() {"dd", "d"}
 
-            ' Find first digit
-            Dim bDone As Boolean = False
             Dim x As Integer = strText.Length
             Dim i As Integer = 0
+            Dim bDone As Boolean = False
 
             While Not bDone
+                ' Found a digit?
                 If Char.IsDigit(strText(i)) Then
+                    ' No format prescribed?
                     If String.IsNullOrWhiteSpace(strFormat) Then
+                        ' #Yes: for all possible formats
                         For Each f As String In fmts
+                            ' Remember if this format needs a day specifier
                             Dim bD As Boolean = f.Contains("{2}")
+                            ' For all possible separators
                             For Each s As String In seps
+                                ' For all possible month formats
                                 For Each m As String In months
-                                    For Each d As String In dates
+                                    ' For all possible day formats
+                                    For Each d As String In days
+                                        ' Build format mask
                                         Dim strT As String = ""
                                         If bD Then
                                             strT = String.Format(f, s, m, d)
@@ -1451,29 +1462,46 @@ Namespace Utilities
                                             strT = String.Format(f, s, m)
                                         End If
                                         Dim l As Integer = strT.Length
+                                        ' Enough characters left to try this mask?
                                         If (i + l < x) Then
+                                            ' #Yes: extract substring and try to parse 
                                             Dim tst As String = strText.Substring(i, l)
+                                            ' Parse ok?
                                             If DateTime.TryParseExact(tst, strT, Nothing, Globalization.DateTimeStyles.None, dt) Then
+                                                ' #Yes: expose successful format
                                                 strFormat = strT
+                                                ' Done
                                                 Return True
                                             End If
                                         End If
-                                    Next
-                                Next
-                            Next
-                        Next
+                                    Next ' Days
+                                Next ' Months
+                            Next ' Separators
+                        Next ' Formats
                     Else
+                        ' Use prescribed format
                         Dim l As Integer = strFormat.Length
+                        ' Enough characters left to try this mask?
                         If (i + l < x) Then
+                            ' #Yes: extract substring and try to parse 
                             Dim tst As String = strText.Substring(i, l)
                             If DateTime.TryParseExact(tst, strFormat, Nothing, Globalization.DateTimeStyles.None, dt) Then
+                                ' OK. No need to return the format mask ;)
                                 Return True
                             End If
                         End If
                     End If
+
+                    ' Skip further digits
+                    While (i < x - 1 And Char.IsDigit(strText(i)))
+                        i += 1
+                    End While
                 End If
+
+                ' Next!
                 i += 1
                 bDone = (i = x)
+
             End While
             Return False
 
