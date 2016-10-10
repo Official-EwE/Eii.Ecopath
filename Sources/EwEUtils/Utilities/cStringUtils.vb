@@ -33,7 +33,6 @@ Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports System.Threading
 
 #End Region ' Imports
 
@@ -1378,6 +1377,109 @@ Namespace Utilities
             Return sb.ToString
 
         End Function
+
+#Region " Date parsing "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Try to locate and parse a numerical date from a string. The data can be
+        ''' specified as YYYY{sep}MM or MM{sep}YYYY.
+        ''' </summary>
+        ''' <param name="strText">The text to parse.</param>
+        ''' <param name="dt">The parsed date, if any.</param>
+        ''' <returns>True if either date format was found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetDate(strText As String, ByRef dt As DateTime) As Boolean
+
+            Dim y, m As Integer
+            Dim bSuccess As Boolean = False
+            Dim exp1 As New Regex("[^a-z0-9+]\d{4}.\d{2}[^a-z0-9+]")
+            Dim res1 As Match = exp1.Match(strText)
+            Dim exp2 As New Regex("[^a-z0-9+]\d{2}.\d{4}[^a-z0-9+]")
+            Dim res2 As Match = exp2.Match(strText)
+
+            If (res1.Length = 9) Then
+                bSuccess = Integer.TryParse(res1.Value.Substring(1, 4), y) And Integer.TryParse(res1.Value.Substring(6, 2), m)
+            ElseIf (res2.Length = 9) Then
+                bSuccess = Integer.TryParse(res2.Value.Substring(1, 2), m) And Integer.TryParse(res2.Value.Substring(4, 4), y)
+            End If
+
+            If bSuccess Then
+                dt = New DateTime(y, m, 1)
+            End If
+            Return bSuccess
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Use a brute force strategy to try to locate and parse a numerical date 
+        ''' from a string. This method tries several orders of year, month and
+        ''' date fields, with different separators, to find a match. 
+        ''' </summary>
+        ''' <param name="strText">The text to parse.</param>
+        ''' <param name="dt">The parsed date, if any.</param>
+        ''' <param name="strFormat">The format mask that returned a result, if any.</param>
+        ''' <returns>True if either date format was found.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetDateBruteForce(ByVal strText As String,
+                                                 ByRef dt As DateTime,
+                                                 Optional ByRef strFormat As String = "") As Boolean
+
+            Dim fmts() As String = New String() {"yyyy{0}{1}", "{1}{0}yyyy", "yyyy{0}{1}{0}{2}", "{2}{0}{1}{0}yyyy", "{1}{0}{2}{0}yyyy"}
+            Dim seps() As String = New String() {"", "-", "\", "/", ".", " "}
+            Dim months() As String = New String() {"MM", "M"}
+            Dim dates() As String = New String() {"dd", "d"}
+
+            ' Find first digit
+            Dim bDone As Boolean = False
+            Dim x As Integer = strText.Length
+            Dim i As Integer = 0
+
+            While Not bDone
+                If Char.IsDigit(strText(i)) Then
+                    If String.IsNullOrWhiteSpace(strFormat) Then
+                        For Each f As String In fmts
+                            Dim bD As Boolean = f.Contains("{2}")
+                            For Each s As String In seps
+                                For Each m As String In months
+                                    For Each d As String In dates
+                                        Dim strT As String = ""
+                                        If bD Then
+                                            strT = String.Format(f, s, m, d)
+                                        Else
+                                            strT = String.Format(f, s, m)
+                                        End If
+                                        Dim l As Integer = strT.Length
+                                        If (i + l < x) Then
+                                            Dim tst As String = strText.Substring(i, l)
+                                            If DateTime.TryParseExact(tst, strT, Nothing, Globalization.DateTimeStyles.None, dt) Then
+                                                strFormat = strT
+                                                Return True
+                                            End If
+                                        End If
+                                    Next
+                                Next
+                            Next
+                        Next
+                    Else
+                        Dim l As Integer = strFormat.Length
+                        If (i + l < x) Then
+                            Dim tst As String = strText.Substring(i, l)
+                            If DateTime.TryParseExact(tst, strFormat, Nothing, Globalization.DateTimeStyles.None, dt) Then
+                                Return True
+                            End If
+                        End If
+                    End If
+                End If
+                i += 1
+                bDone = (i = x)
+            End While
+            Return False
+
+        End Function
+
+#End Region ' Date parsing
 
 #Region " Replace "
 
