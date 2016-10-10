@@ -1415,7 +1415,7 @@ Namespace Utilities
         ''' <summary>
         ''' Use a brute force strategy to try to locate and parse a numerical date 
         ''' from a string. This method tries several orders of year, month and
-        ''' date fields, with different separators, to find a match. 
+        ''' optional day fields, with different separators, to find a match. 
         ''' </summary>
         ''' <param name="strText">The text to parse.</param>
         ''' <param name="dt">The parsed date, if any.</param>
