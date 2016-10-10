@@ -130,7 +130,7 @@ Namespace SpatialData
 
 
 
-        Public Overrides Function calScalar(SumOverPeriod As Double, nMapCells As Double) As Double
+        Public Overrides Function CalculateScalar(SumOverPeriod As Double, nMapCells As Double) As Double
             Try
                 'Return Average of the input biomass
                 'For biomass forcing we can not be certain what the scalar is.

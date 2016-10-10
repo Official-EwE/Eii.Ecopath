@@ -609,7 +609,7 @@ Namespace Ecospace.Controls
                 End If
 
                 If (bIsConfigured And bNeedsScaling) Then
-                    Dim worker As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+                    Dim worker As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
                     comp = worker.Compatibility
                 End If
             End If
@@ -653,7 +653,7 @@ Namespace Ecospace.Controls
                 Try
                     Me.m_lblDatasetInfo.Text = conn.Dataset.DisplayName
 
-                    Dim comp As New cDatasetCompatilibity(Me.UIContext.Core, conn.Dataset)
+                    Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(conn.Dataset)
                     Dim fmt As New cSpatialDatasetCompatibilityFormatter()
                     Me.m_lblCompatibility.Text = fmt.Summary(comp)
 

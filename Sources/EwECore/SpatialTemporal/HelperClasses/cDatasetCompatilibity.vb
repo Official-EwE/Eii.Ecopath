@@ -61,6 +61,8 @@ Namespace SpatialData
         ''' <summary>Number of indexed files</summary>
         Private m_iNumIndexed As Integer = 0
 
+        Private m_bInvalid As Boolean = True
+
 #End Region ' Private vars
 
 #Region " Construction "
@@ -76,7 +78,7 @@ Namespace SpatialData
         ''' This method will make an assessment of the full Ecospace run time.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(core As cCore, ds As ISpatialDataSet)
+        Friend Sub New(core As cCore, ds As ISpatialDataSet)
 
             ' Sanity checks
             Debug.Assert(core IsNot Nothing)
@@ -89,38 +91,8 @@ Namespace SpatialData
 
             Me.m_rcfBasemap = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
 
-            Dim iNumTimeSteps As Integer = core.nEcospaceTimeSteps
-            ' Special case for datasets without temporal range
-            If (ds.TimeStart = Date.MinValue) Or (ds.TimeEnd = Date.MaxValue) Then
-                iNumTimeSteps = 0
-            End If
+            Me.Refresh()
 
-            ' Assess the entire Ecospace run time
-            Me.Assess(1, iNumTimeSteps)
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Assess the compatibility of a <see cref="ISpatialDataSet"/> with a 
-        ''' loaded Ecospace scenario.
-        ''' </summary>
-        ''' <param name="core">The core with a loaded Ecospace scenario.</param>
-        ''' <param name="ds">The <see cref="ISpatialDataSet"/>to assess.</param>
-        ''' <param name="iNumTimeSteps">One-based Ecospace time step for the
-        ''' assessement.</param>
-        ''' <param name="iTimeStart">Number of time steps to assess.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(core As cCore, ds As ISpatialDataSet, iTimeStart As Integer, iNumTimeSteps As Integer)
-            ' Sanity checks
-            Debug.Assert(core IsNot Nothing)
-            Debug.Assert(ds IsNot Nothing)
-
-            Me.m_core = core
-            Me.m_ds = ds
-
-            ' Assess the entire Ecospace run time
-            Me.Assess(iTimeStart, iNumTimeSteps)
         End Sub
 
 #End Region ' Construction
@@ -145,6 +117,24 @@ Namespace SpatialData
             ''' <summary>Temporal and total spatial overlap.</summary>
             TotalOverlap
         End Enum
+
+        Public Sub Invalidate()
+            Me.m_bInvalid = True
+        End Sub
+
+        Public Sub Refresh()
+
+            Dim iNumTimeSteps As Integer = Me.m_core.nEcospaceTimeSteps
+            ' Special case for datasets without temporal range
+            If (Me.m_ds.TimeStart = Date.MinValue) Or (Me.m_ds.TimeEnd = Date.MaxValue) Then
+                iNumTimeSteps = 0
+            End If
+
+            ' Assess the entire Ecospace run time
+            Me.Assess(1, iNumTimeSteps)
+            Me.m_bInvalid = False
+
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -171,6 +161,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Compatibility As eCompatibilityTypes
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 If (Me.m_iNumError > 0) Then Return eCompatibilityTypes.Errors
                 If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.NoTemporal
                 If (Me.m_iNumIndexed = 0) Then Return eCompatibilityTypes.TemporalNotIndexed
@@ -233,6 +224,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumAssessedTimeSteps As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iNumTimeSteps
             End Get
         End Property
@@ -248,6 +240,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumOverlappingTimeSteps As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iNumTimeOverlap
             End Get
         End Property
@@ -264,6 +257,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumPartialSpatialOverlap As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iNumPartialSpatialOverlap
             End Get
         End Property
@@ -280,6 +274,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumFullSpatialOverlap As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iNumFullSpatialOverlap
             End Get
         End Property
@@ -293,12 +288,14 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumError As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iNumError
             End Get
         End Property
 
         Public ReadOnly Property NumIndexed As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iNumIndexed
             End Get
         End Property
@@ -311,12 +308,14 @@ Namespace SpatialData
 
         Public ReadOnly Property LastTimeStep As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.m_iLastTimeStep
             End Get
         End Property
 
         Public ReadOnly Property PercentIndexed As Integer
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 If (Me.m_iNumTimeOverlap > 0) Then
                     Return CInt(Math.Ceiling(100 * Me.m_iNumIndexed / Me.m_iNumTimeOverlap))
                 End If
@@ -326,12 +325,14 @@ Namespace SpatialData
 
         Public ReadOnly Property Status As eStatusFlags
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.ToStatus(Me.Compatibility)
             End Get
         End Property
 
         Public ReadOnly Property StatusAt(iTimeStep As Integer) As eStatusFlags
             Get
+                If (Me.m_bInvalid) Then Me.Refresh()
                 Return Me.ToStatus(Me.CompatibilityAt(iTimeStep))
             End Get
         End Property
@@ -360,6 +361,7 @@ Namespace SpatialData
             Me.m_iNumIndexed = 0
             Me.m_iNumFullSpatialOverlap = 0
             Me.m_iNumPartialSpatialOverlap = 0
+            Me.m_iNumError = 0
 
             ' Protect against improper use
             If (Me.m_core.ActiveEcospaceScenarioIndex = -1) Then Return False

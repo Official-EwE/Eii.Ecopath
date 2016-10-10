@@ -188,7 +188,7 @@ Namespace Ecospace.Controls
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
             Dim ds As ISpatialDataSet = conn.Dataset
-            Dim comp As New cDatasetCompatilibity(Me.Core, ds)
+            Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
             Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
             Dim strVal As String = ""
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable

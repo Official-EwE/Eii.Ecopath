@@ -101,7 +101,14 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
         Try
             For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-                Me.m_writers(result) = New StreamWriter(Path.Combine(Me.AutoSaveOutputPath, strFile & "_" & result.ToString & ".csv"))
+                Dim fo As String = ""
+                If strFile.Contains("{0}") Then
+                    fo = String.Format(strFile, result.ToString).ToLower
+                Else
+                    fo = strFile & "_" & result.ToString()
+                End If
+                fo = Path.ChangeExtension(fo, ".csv")
+                Me.m_writers(result) = New StreamWriter(Path.Combine(Me.AutoSaveOutputPath, fo))
                 Me.m_writers(result).WriteLine("Time,Latitude,Longitude," & result.ToString())
             Next
             Me.m_bHasWriters = True

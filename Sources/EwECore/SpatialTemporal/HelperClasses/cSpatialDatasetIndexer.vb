@@ -42,6 +42,7 @@ Namespace SpatialData
         Private m_sync As New Object()
         ''' <summary>The core to operate on.</summary>
         Private m_core As cCore = Nothing
+        Private m_manSets As cSpatialDataSetManager = Nothing
 
         ''' <summary>One-item wait queue.</summary>
         Private m_dsNext As ISpatialDataSet = Nothing
@@ -60,8 +61,9 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="core">The core to index against.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(core As cCore)
+        Public Sub New(core As cCore, man As cSpatialDataSetManager)
             Me.m_core = core
+            Me.m_manSets = man
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -85,7 +87,7 @@ Namespace SpatialData
             ' Check if there is work to do
             If (ds IsNot Nothing) Then
                 ' Check if we really need to do this
-                Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
+                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
                 ' Is set full indexed?
                 If (comp.NumIndexed = comp.NumOverlappingTimeSteps) Then
                     ' #Yes: nothing to index for the current scenario
@@ -193,7 +195,8 @@ Namespace SpatialData
                                 If (ds.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) Then
                                     ' ToDo: Every dataset call should be subject to a timeout
                                     ds.UpdateIndexAtT(dt)
-                                    Dim comp As New cDatasetCompatilibity(Me.m_core, ds)
+                                    Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
+                                    comp.Refresh()
                                     Me.OnSpatialIndexUpdated(strMessage, eProgressState.Running, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
                                 End If
                             End If

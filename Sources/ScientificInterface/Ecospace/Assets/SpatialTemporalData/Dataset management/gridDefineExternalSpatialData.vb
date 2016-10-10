@@ -208,7 +208,7 @@ Namespace Ecospace.Controls
 
                 End If
 
-                Dim comp As New cDatasetCompatilibity(Me.Core, ds)
+                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
 
                 Dim strTStart As String = SharedResources.GENERIC_VALUE_FIRSTTIMESTEP
                 Dim strTEnd As String = ""
