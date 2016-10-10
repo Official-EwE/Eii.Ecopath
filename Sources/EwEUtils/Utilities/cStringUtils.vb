@@ -1420,11 +1420,13 @@ Namespace Utilities
         ''' <param name="strText">The text to parse.</param>
         ''' <param name="dt">The parsed date, if any.</param>
         ''' <param name="strFormat">The format mask that returned a result, if any.</param>
+        ''' <param name="iMatchPos">The index in the string where the result was found.</param>
         ''' <returns>True if either date format was found.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function GetDateBruteForce(ByVal strText As String,
                                                  ByRef dt As DateTime,
-                                                 Optional ByRef strFormat As String = "") As Boolean
+                                                 Optional ByRef strFormat As String = "",
+                                                 Optional ByRef iMatchPos As Integer = -1) As Boolean
 
             ' Possible date formats, with and without day specified. {0}:separator, {1}:month, {2}:day
             Dim fmts() As String = New String() {"yyyy{0}{1}", "{1}{0}yyyy", "yyyy{0}{1}{0}{2}", "{2}{0}{1}{0}yyyy", "{1}{0}{2}{0}yyyy"}
@@ -1436,8 +1438,8 @@ Namespace Utilities
             Dim days() As String = New String() {"dd", "d"}
 
             Dim x As Integer = strText.Length
-            Dim i As Integer = 0
-            Dim bDone As Boolean = False
+            Dim i As Integer = Math.Max(iMatchPos, 0)
+            Dim bDone As Boolean = (i >= x)
 
             While Not bDone
                 ' Found a digit?
@@ -1445,31 +1447,32 @@ Namespace Utilities
                     ' No format prescribed?
                     If String.IsNullOrWhiteSpace(strFormat) Then
                         ' #Yes: for all possible formats
-                        For Each f As String In fmts
+                        For Each fmt As String In fmts
                             ' Remember if this format needs a day specifier
-                            Dim bD As Boolean = f.Contains("{2}")
+                            Dim bIncludeDay As Boolean = fmt.Contains("{2}")
                             ' For all possible separators
-                            For Each s As String In seps
+                            For Each sep As String In seps
                                 ' For all possible month formats
-                                For Each m As String In months
+                                For Each month As String In months
                                     ' For all possible day formats
-                                    For Each d As String In days
+                                    For Each day As String In days
                                         ' Build format mask
-                                        Dim strT As String = ""
-                                        If bD Then
-                                            strT = String.Format(f, s, m, d)
+                                        Dim mask As String = ""
+                                        If bIncludeDay Then
+                                            mask = String.Format(fmt, sep, month, day)
                                         Else
-                                            strT = String.Format(f, s, m)
+                                            mask = String.Format(fmt, sep, month)
                                         End If
-                                        Dim l As Integer = strT.Length
+                                        Dim len As Integer = mask.Length
                                         ' Enough characters left to try this mask?
-                                        If (i + l < x) Then
+                                        If (i + len < x) Then
                                             ' #Yes: extract substring and try to parse 
-                                            Dim tst As String = strText.Substring(i, l)
+                                            Dim part As String = strText.Substring(i, len)
                                             ' Parse ok?
-                                            If DateTime.TryParseExact(tst, strT, Nothing, Globalization.DateTimeStyles.None, dt) Then
-                                                ' #Yes: expose successful format
-                                                strFormat = strT
+                                            If DateTime.TryParseExact(part, mask, Nothing, Globalization.DateTimeStyles.None, dt) Then
+                                                ' #Yes: expose successful format and position where this format was found
+                                                strFormat = mask
+                                                iMatchPos = i
                                                 ' Done
                                                 Return True
                                             End If
@@ -1480,12 +1483,12 @@ Namespace Utilities
                         Next ' Formats
                     Else
                         ' Use prescribed format
-                        Dim l As Integer = strFormat.Length
+                        Dim len As Integer = strFormat.Length
                         ' Enough characters left to try this mask?
-                        If (i + l < x) Then
+                        If (i + len < x) Then
                             ' #Yes: extract substring and try to parse 
-                            Dim tst As String = strText.Substring(i, l)
-                            If DateTime.TryParseExact(tst, strFormat, Nothing, Globalization.DateTimeStyles.None, dt) Then
+                            Dim part As String = strText.Substring(i, len)
+                            If DateTime.TryParseExact(part, strFormat, Nothing, Globalization.DateTimeStyles.None, dt) Then
                                 ' OK. No need to return the format mask ;)
                                 Return True
                             End If
@@ -1500,9 +1503,11 @@ Namespace Utilities
 
                 ' Next!
                 i += 1
-                bDone = (i = x)
+                bDone = (i >= x)
 
             End While
+
+            ' No luck
             Return False
 
         End Function
