@@ -105,12 +105,14 @@ Partial Class dlgSpaceRun
         resources.ApplyResources(Me.m_tbxEnd, "m_tbxEnd")
         Me.m_tbxEnd.Name = "m_tbxEnd"
         Me.m_tbxEnd.ReadOnly = True
+        Me.m_tbxEnd.TabStop = False
         '
         'm_tbxStart
         '
         resources.ApplyResources(Me.m_tbxStart, "m_tbxStart")
         Me.m_tbxStart.Name = "m_tbxStart"
         Me.m_tbxStart.ReadOnly = True
+        Me.m_tbxStart.TabStop = False
         '
         'm_pbAlert
         '

@@ -199,13 +199,13 @@
     <value>16</value>
   </data>
   <data name="m_tbxYearHist.Location" type="System.Drawing.Point, System.Drawing">
-    <value>133, 33</value>
+    <value>66, 33</value>
   </data>
   <data name="m_tbxYearHist.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 20</value>
   </data>
   <data name="m_tbxYearHist.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_tbxYearHist.Text" xml:space="preserve">
     <value>1978</value>
@@ -427,16 +427,16 @@
     <value>7</value>
   </data>
   <data name="m_tbxStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 33</value>
+    <value>133, 33</value>
   </data>
   <data name="m_tbxStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 20</value>
   </data>
   <data name="m_tbxStart.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_tbxStart.Text" xml:space="preserve">
-    <value>Start</value>
+    <value>Forecast - 1</value>
   </data>
   <data name="&gt;&gt;m_tbxStart.Name" xml:space="preserve">
     <value>m_tbxStart</value>

@@ -199,13 +199,13 @@
     <value>13</value>
   </data>
   <data name="m_tbxYearHist.Location" type="System.Drawing.Point, System.Drawing">
-    <value>133, 33</value>
+    <value>66, 33</value>
   </data>
   <data name="m_tbxYearHist.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 20</value>
   </data>
   <data name="m_tbxYearHist.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_tbxYearHist.Text" xml:space="preserve">
     <value>1978</value>
@@ -232,7 +232,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>13</value>
   </data>
   <data name="m_btnOK.Text" xml:space="preserve">
     <value>OK</value>
@@ -376,16 +376,16 @@
     <value>5</value>
   </data>
   <data name="m_tbxStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 33</value>
+    <value>133, 33</value>
   </data>
   <data name="m_tbxStart.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 20</value>
   </data>
   <data name="m_tbxStart.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_tbxStart.Text" xml:space="preserve">
-    <value>Start</value>
+    <value>Forecast - 1</value>
   </data>
   <data name="&gt;&gt;m_tbxStart.Name" xml:space="preserve">
     <value>m_tbxStart</value>
@@ -499,7 +499,7 @@
     <value>162, 13</value>
   </data>
   <data name="m_lblError.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>12</value>
   </data>
   <data name="m_lblError.Text" xml:space="preserve">
     <value>FishMIP configuration not loaded</value>
@@ -530,9 +530,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>424, 202</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>FishMIP Ecospace run</value>
