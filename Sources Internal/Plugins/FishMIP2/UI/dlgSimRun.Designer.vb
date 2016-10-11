@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class dlgSimRun
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,82 +20,154 @@ Partial Class dlgSimRun
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_tbxRun = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.m_tbxYear = New System.Windows.Forms.TextBox()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSimRun))
+        Me.m_lblFileHist = New System.Windows.Forms.Label()
+        Me.m_tbxFileHist = New System.Windows.Forms.TextBox()
+        Me.m_lblYearHist = New System.Windows.Forms.Label()
+        Me.m_tbxYearHist = New System.Windows.Forms.TextBox()
+        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_lblFileFore = New System.Windows.Forms.Label()
+        Me.m_lblYearFore = New System.Windows.Forms.Label()
+        Me.m_tbxFileFore = New System.Windows.Forms.TextBox()
+        Me.m_tbxYearFore = New System.Windows.Forms.TextBox()
+        Me.m_tbxEnd = New System.Windows.Forms.TextBox()
+        Me.m_tbxStart = New System.Windows.Forms.TextBox()
+        Me.m_pbAlert = New System.Windows.Forms.PictureBox()
+        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrHist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblError = New System.Windows.Forms.Label()
+        CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'Label1
+        'm_lblFileHist
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 15)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(85, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "&Result file name:"
+        resources.ApplyResources(Me.m_lblFileHist, "m_lblFileHist")
+        Me.m_lblFileHist.Name = "m_lblFileHist"
         '
-        'm_tbxRun
+        'm_tbxFileHist
         '
-        Me.m_tbxRun.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxRun.Location = New System.Drawing.Point(132, 12)
-        Me.m_tbxRun.Name = "m_tbxRun"
-        Me.m_tbxRun.Size = New System.Drawing.Size(313, 20)
-        Me.m_tbxRun.TabIndex = 1
+        resources.ApplyResources(Me.m_tbxFileHist, "m_tbxFileHist")
+        Me.m_tbxFileHist.Name = "m_tbxFileHist"
         '
-        'Label2
+        'm_lblYearHist
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(12, 41)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(114, 13)
-        Me.Label2.TabIndex = 0
-        Me.Label2.Text = "&Write results from year:"
+        resources.ApplyResources(Me.m_lblYearHist, "m_lblYearHist")
+        Me.m_lblYearHist.Name = "m_lblYearHist"
         '
-        'm_tbxYear
+        'm_tbxYearHist
         '
-        Me.m_tbxYear.Location = New System.Drawing.Point(132, 38)
-        Me.m_tbxYear.Name = "m_tbxYear"
-        Me.m_tbxYear.Size = New System.Drawing.Size(61, 20)
-        Me.m_tbxYear.TabIndex = 2
-        Me.m_tbxYear.Text = "1978"
+        resources.ApplyResources(Me.m_tbxYearHist, "m_tbxYearHist")
+        Me.m_tbxYearHist.Name = "m_tbxYearHist"
         '
-        'Button1
+        'm_btnOK
         '
-        Me.Button1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Button1.Location = New System.Drawing.Point(370, 65)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 3
-        Me.Button1.Text = "OK"
-        Me.Button1.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
+        '
+        'm_lblFileFore
+        '
+        resources.ApplyResources(Me.m_lblFileFore, "m_lblFileFore")
+        Me.m_lblFileFore.Name = "m_lblFileFore"
+        '
+        'm_lblYearFore
+        '
+        resources.ApplyResources(Me.m_lblYearFore, "m_lblYearFore")
+        Me.m_lblYearFore.Name = "m_lblYearFore"
+        '
+        'm_tbxFileFore
+        '
+        resources.ApplyResources(Me.m_tbxFileFore, "m_tbxFileFore")
+        Me.m_tbxFileFore.Name = "m_tbxFileFore"
+        '
+        'm_tbxYearFore
+        '
+        resources.ApplyResources(Me.m_tbxYearFore, "m_tbxYearFore")
+        Me.m_tbxYearFore.Name = "m_tbxYearFore"
+        '
+        'm_tbxEnd
+        '
+        resources.ApplyResources(Me.m_tbxEnd, "m_tbxEnd")
+        Me.m_tbxEnd.Name = "m_tbxEnd"
+        Me.m_tbxEnd.ReadOnly = True
+        '
+        'm_tbxStart
+        '
+        resources.ApplyResources(Me.m_tbxStart, "m_tbxStart")
+        Me.m_tbxStart.Name = "m_tbxStart"
+        Me.m_tbxStart.ReadOnly = True
+        '
+        'm_pbAlert
+        '
+        resources.ApplyResources(Me.m_pbAlert, "m_pbAlert")
+        Me.m_pbAlert.Name = "m_pbAlert"
+        Me.m_pbAlert.TabStop = False
+        '
+        'CEwEHeaderLabel1
+        '
+        resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+        Me.CEwEHeaderLabel1.CanCollapseParent = False
+        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel1.IsCollapsed = False
+        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+        '
+        'm_hdrHist
+        '
+        resources.ApplyResources(Me.m_hdrHist, "m_hdrHist")
+        Me.m_hdrHist.CanCollapseParent = False
+        Me.m_hdrHist.CollapsedParentHeight = 0
+        Me.m_hdrHist.IsCollapsed = False
+        Me.m_hdrHist.Name = "m_hdrHist"
+        '
+        'm_lblError
+        '
+        resources.ApplyResources(Me.m_lblError, "m_lblError")
+        Me.m_lblError.ForeColor = System.Drawing.Color.OrangeRed
+        Me.m_lblError.Name = "m_lblError"
         '
         'dlgSimRun
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(457, 100)
         Me.ControlBox = False
-        Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.m_tbxYear)
-        Me.Controls.Add(Me.m_tbxRun)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.m_lblError)
+        Me.Controls.Add(Me.m_pbAlert)
+        Me.Controls.Add(Me.CEwEHeaderLabel1)
+        Me.Controls.Add(Me.m_hdrHist)
+        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_tbxEnd)
+        Me.Controls.Add(Me.m_tbxYearFore)
+        Me.Controls.Add(Me.m_tbxStart)
+        Me.Controls.Add(Me.m_tbxYearHist)
+        Me.Controls.Add(Me.m_tbxFileFore)
+        Me.Controls.Add(Me.m_lblYearFore)
+        Me.Controls.Add(Me.m_tbxFileHist)
+        Me.Controls.Add(Me.m_lblFileFore)
+        Me.Controls.Add(Me.m_lblYearHist)
+        Me.Controls.Add(Me.m_lblFileHist)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "dlgSimRun"
-        Me.Text = "FishMIP Ecosim run"
+        Me.ShowInTaskbar = False
+        CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents Label2 As Windows.Forms.Label
-    Friend WithEvents Button1 As Windows.Forms.Button
-    Private WithEvents m_tbxRun As Windows.Forms.TextBox
-    Private WithEvents m_tbxYear As Windows.Forms.TextBox
+    Friend WithEvents m_btnOK As Windows.Forms.Button
+    Private WithEvents m_tbxFileHist As Windows.Forms.TextBox
+    Private WithEvents m_tbxYearHist As Windows.Forms.TextBox
+    Private WithEvents m_hdrHist As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lblYearHist As Windows.Forms.Label
+    Private WithEvents m_lblFileHist As Windows.Forms.Label
+    Private WithEvents m_lblFileFore As Windows.Forms.Label
+    Private WithEvents m_lblYearFore As Windows.Forms.Label
+    Private WithEvents m_tbxFileFore As Windows.Forms.TextBox
+    Private WithEvents m_tbxYearFore As Windows.Forms.TextBox
+    Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_tbxEnd As Windows.Forms.TextBox
+    Private WithEvents m_tbxStart As Windows.Forms.TextBox
+    Private WithEvents m_pbAlert As Windows.Forms.PictureBox
+    Private WithEvents m_lblError As Windows.Forms.Label
 End Class

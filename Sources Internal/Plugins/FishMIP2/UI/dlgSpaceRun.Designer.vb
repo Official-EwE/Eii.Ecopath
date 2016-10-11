@@ -22,6 +22,7 @@ Partial Class dlgSpaceRun
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSpaceRun))
         Me.m_lblFileHist = New System.Windows.Forms.Label()
         Me.m_tbxFileHist = New System.Windows.Forms.TextBox()
         Me.m_lblYearHist = New System.Windows.Forms.Label()
@@ -45,187 +46,112 @@ Partial Class dlgSpaceRun
         '
         'm_lblFileHist
         '
-        Me.m_lblFileHist.AutoSize = True
-        Me.m_lblFileHist.Location = New System.Drawing.Point(12, 62)
+        resources.ApplyResources(Me.m_lblFileHist, "m_lblFileHist")
         Me.m_lblFileHist.Name = "m_lblFileHist"
-        Me.m_lblFileHist.Size = New System.Drawing.Size(26, 13)
-        Me.m_lblFileHist.TabIndex = 4
-        Me.m_lblFileHist.Text = "&File:"
         '
         'm_tbxFileHist
         '
-        Me.m_tbxFileHist.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxFileHist.Location = New System.Drawing.Point(66, 59)
+        resources.ApplyResources(Me.m_tbxFileHist, "m_tbxFileHist")
         Me.m_tbxFileHist.Name = "m_tbxFileHist"
-        Me.m_tbxFileHist.Size = New System.Drawing.Size(346, 20)
-        Me.m_tbxFileHist.TabIndex = 5
         '
         'm_lblYearHist
         '
-        Me.m_lblYearHist.AutoSize = True
-        Me.m_lblYearHist.Location = New System.Drawing.Point(12, 36)
+        resources.ApplyResources(Me.m_lblYearHist, "m_lblYearHist")
         Me.m_lblYearHist.Name = "m_lblYearHist"
-        Me.m_lblYearHist.Size = New System.Drawing.Size(32, 13)
-        Me.m_lblYearHist.TabIndex = 1
-        Me.m_lblYearHist.Text = "&Year:"
         '
         'm_tbxYearHist
         '
-        Me.m_tbxYearHist.Location = New System.Drawing.Point(133, 33)
+        resources.ApplyResources(Me.m_tbxYearHist, "m_tbxYearHist")
         Me.m_tbxYearHist.Name = "m_tbxYearHist"
-        Me.m_tbxYearHist.Size = New System.Drawing.Size(61, 20)
-        Me.m_tbxYearHist.TabIndex = 3
-        Me.m_tbxYearHist.Text = "1978"
         '
         'm_btnOK
         '
-        Me.m_btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnOK.Location = New System.Drawing.Point(337, 228)
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
         Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.Size = New System.Drawing.Size(75, 23)
-        Me.m_btnOK.TabIndex = 17
-        Me.m_btnOK.Text = "OK"
         Me.m_btnOK.UseVisualStyleBackColor = True
         '
         'm_lblFileFore
         '
-        Me.m_lblFileFore.AutoSize = True
-        Me.m_lblFileFore.Location = New System.Drawing.Point(12, 140)
+        resources.ApplyResources(Me.m_lblFileFore, "m_lblFileFore")
         Me.m_lblFileFore.Name = "m_lblFileFore"
-        Me.m_lblFileFore.Size = New System.Drawing.Size(26, 13)
-        Me.m_lblFileFore.TabIndex = 10
-        Me.m_lblFileFore.Text = "&File:"
         '
         'm_lblYearFore
         '
-        Me.m_lblYearFore.AutoSize = True
-        Me.m_lblYearFore.Location = New System.Drawing.Point(12, 114)
+        resources.ApplyResources(Me.m_lblYearFore, "m_lblYearFore")
         Me.m_lblYearFore.Name = "m_lblYearFore"
-        Me.m_lblYearFore.Size = New System.Drawing.Size(32, 13)
-        Me.m_lblYearFore.TabIndex = 7
-        Me.m_lblYearFore.Text = "&Year:"
         '
         'm_tbxFileFore
         '
-        Me.m_tbxFileFore.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxFileFore.Location = New System.Drawing.Point(66, 137)
+        resources.ApplyResources(Me.m_tbxFileFore, "m_tbxFileFore")
         Me.m_tbxFileFore.Name = "m_tbxFileFore"
-        Me.m_tbxFileFore.Size = New System.Drawing.Size(346, 20)
-        Me.m_tbxFileFore.TabIndex = 11
         '
         'm_tbxYearFore
         '
-        Me.m_tbxYearFore.Location = New System.Drawing.Point(66, 111)
+        resources.ApplyResources(Me.m_tbxYearFore, "m_tbxYearFore")
         Me.m_tbxYearFore.Name = "m_tbxYearFore"
-        Me.m_tbxYearFore.Size = New System.Drawing.Size(61, 20)
-        Me.m_tbxYearFore.TabIndex = 8
-        Me.m_tbxYearFore.Text = "2006"
         '
         'm_lblNoData
         '
-        Me.m_lblNoData.AutoSize = True
-        Me.m_lblNoData.Location = New System.Drawing.Point(12, 192)
+        resources.ApplyResources(Me.m_lblNoData, "m_lblNoData")
         Me.m_lblNoData.Name = "m_lblNoData"
-        Me.m_lblNoData.Size = New System.Drawing.Size(48, 13)
-        Me.m_lblNoData.TabIndex = 13
-        Me.m_lblNoData.Text = "&No data:"
         '
         'm_tbxNoData
         '
-        Me.m_tbxNoData.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxNoData.Location = New System.Drawing.Point(66, 189)
+        resources.ApplyResources(Me.m_tbxNoData, "m_tbxNoData")
         Me.m_tbxNoData.Name = "m_tbxNoData"
-        Me.m_tbxNoData.Size = New System.Drawing.Size(346, 20)
-        Me.m_tbxNoData.TabIndex = 14
         '
         'm_tbxEnd
         '
-        Me.m_tbxEnd.Location = New System.Drawing.Point(133, 111)
+        resources.ApplyResources(Me.m_tbxEnd, "m_tbxEnd")
         Me.m_tbxEnd.Name = "m_tbxEnd"
         Me.m_tbxEnd.ReadOnly = True
-        Me.m_tbxEnd.Size = New System.Drawing.Size(61, 20)
-        Me.m_tbxEnd.TabIndex = 9
-        Me.m_tbxEnd.Text = "2006"
         '
         'm_tbxStart
         '
-        Me.m_tbxStart.Location = New System.Drawing.Point(66, 33)
+        resources.ApplyResources(Me.m_tbxStart, "m_tbxStart")
         Me.m_tbxStart.Name = "m_tbxStart"
         Me.m_tbxStart.ReadOnly = True
-        Me.m_tbxStart.Size = New System.Drawing.Size(61, 20)
-        Me.m_tbxStart.TabIndex = 2
-        Me.m_tbxStart.Text = "1978"
         '
         'm_pbAlert
         '
-        Me.m_pbAlert.Location = New System.Drawing.Point(15, 228)
+        resources.ApplyResources(Me.m_pbAlert, "m_pbAlert")
         Me.m_pbAlert.Name = "m_pbAlert"
-        Me.m_pbAlert.Size = New System.Drawing.Size(29, 23)
-        Me.m_pbAlert.TabIndex = 14
         Me.m_pbAlert.TabStop = False
         '
         'm_lblError
         '
-        Me.m_lblError.AutoSize = True
+        resources.ApplyResources(Me.m_lblError, "m_lblError")
         Me.m_lblError.ForeColor = System.Drawing.Color.OrangeRed
-        Me.m_lblError.Location = New System.Drawing.Point(50, 233)
         Me.m_lblError.Name = "m_lblError"
-        Me.m_lblError.Size = New System.Drawing.Size(162, 13)
-        Me.m_lblError.TabIndex = 15
-        Me.m_lblError.Text = "FishMIP configuration not loaded"
         '
         'm_hdrOther
         '
-        Me.m_hdrOther.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_hdrOther, "m_hdrOther")
         Me.m_hdrOther.CanCollapseParent = False
         Me.m_hdrOther.CollapsedParentHeight = 0
         Me.m_hdrOther.IsCollapsed = False
-        Me.m_hdrOther.Location = New System.Drawing.Point(12, 168)
         Me.m_hdrOther.Name = "m_hdrOther"
-        Me.m_hdrOther.Size = New System.Drawing.Size(400, 18)
-        Me.m_hdrOther.TabIndex = 12
-        Me.m_hdrOther.Text = "Other"
-        Me.m_hdrOther.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'CEwEHeaderLabel1
         '
-        Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
         Me.CEwEHeaderLabel1.CanCollapseParent = False
         Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
         Me.CEwEHeaderLabel1.IsCollapsed = False
-        Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(12, 90)
         Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(400, 18)
-        Me.CEwEHeaderLabel1.TabIndex = 6
-        Me.CEwEHeaderLabel1.Text = "Forecast reporting"
-        Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_hdrHist
         '
-        Me.m_hdrHist.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_hdrHist, "m_hdrHist")
         Me.m_hdrHist.CanCollapseParent = False
         Me.m_hdrHist.CollapsedParentHeight = 0
         Me.m_hdrHist.IsCollapsed = False
-        Me.m_hdrHist.Location = New System.Drawing.Point(12, 9)
         Me.m_hdrHist.Name = "m_hdrHist"
-        Me.m_hdrHist.Size = New System.Drawing.Size(400, 18)
-        Me.m_hdrHist.TabIndex = 0
-        Me.m_hdrHist.Text = "Historical reporting"
-        Me.m_hdrHist.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'dlgSpaceRun
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.AutoSize = True
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(424, 263)
         Me.ControlBox = False
         Me.Controls.Add(Me.m_lblError)
         Me.Controls.Add(Me.m_pbAlert)
@@ -247,7 +173,7 @@ Partial Class dlgSpaceRun
         Me.Controls.Add(Me.m_lblFileHist)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "dlgSpaceRun"
-        Me.Text = "FishMIP Ecospace run"
+        Me.ShowInTaskbar = False
         CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

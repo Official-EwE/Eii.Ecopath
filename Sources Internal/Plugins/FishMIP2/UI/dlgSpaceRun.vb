@@ -10,11 +10,6 @@ Public Class dlgSpaceRun
         Me.m_tbxFileHist.Text = strHist
         Me.m_tbxYearHist.Text = CStr(iYearHist)
         Me.m_tbxFileFore.Text = strFore
-        Me.m_tbxYearFore.Text = CStr(iYearFore)
-        Me.m_tbxNoData.Text = CStr(dNoData)
-
-        Me.m_tbxStart.Text = CStr(core.EcosimFirstYear)
-        Me.m_tbxEnd.Text = CStr(core.EcospaceTimestepToAbsoluteTime(parms.TotalTime).Year)
 
     End Sub
 

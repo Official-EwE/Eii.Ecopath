@@ -45,14 +45,16 @@ Public Class cFishMIPEcosimResultWriterPlugin
 
 #Region " Private vars "
 
-    ''' <summary>Aggregated data</summary>
-    Private m_data As Single(,)
     ''' <summary>Retained state flag</summary>
     Private m_bSaving As Boolean = False
 
     Private m_uic As cUIContext = Nothing
-    Private m_iYear As Integer = 0
-    Private m_strRun As String = ""
+    Private m_strRunHist As String = ""
+    Private m_iYearHist As Integer = 1971
+    Private m_strRunFore As String = ""
+    Private m_iYearFore As Integer = 2006
+    Private m_bHasWriters As Boolean = False
+    Private m_dNoData As Double = 1.0E+20!
 
 #End Region ' Private vars
 
@@ -94,7 +96,65 @@ Public Class cFishMIPEcosimResultWriterPlugin
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
 
-#End Region
+#End Region ' UIC
+
+#Region " Writing results "
+
+    ''' <summary>Currently open writers</summary>
+    Private m_writers() As StreamWriter = Nothing
+
+    Private Sub InitWriters(strFile As String)
+
+        If (Me.m_bHasWriters) Then CloseWriters()
+
+        ' Write output files
+        Dim strPath As String = Me.AutoSaveOutputPath
+        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
+        Dim w As StreamWriter = Nothing
+        Dim sStepsPerYear As Single = cCore.N_MONTHS ' CSng(core.nEcosimTimeSteps / core.nEcosimYears)
+
+        ' Not able to create output path? Abort
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
+
+        Try
+            For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+                Dim fo As String = ""
+                If strFile.Contains("{0}") Then
+                    fo = String.Format(strFile, result.ToString).ToLower
+                Else
+                    fo = strFile & "_" & result.ToString()
+                End If
+                fo = Path.ChangeExtension(fo, ".csv")
+                Me.m_writers(result) = New StreamWriter(Path.Combine(Me.AutoSaveOutputPath, fo))
+                Me.m_writers(result).WriteLine("Time," & result.ToString())
+            Next
+            Me.m_bHasWriters = True
+        Catch ex As Exception
+            Me.m_bSaving = False
+            ' Clean up failed writers
+        End Try
+
+    End Sub
+
+    Private Sub CloseWriters()
+
+        If Not Me.m_bHasWriters Then Return
+
+        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
+            If (Me.m_writers IsNot Nothing) Then
+                If (Me.m_writers(result) IsNot Nothing) Then
+                    Me.m_writers(result).Flush()
+                    Me.m_writers(result).Close()
+                    Me.m_writers(result) = Nothing
+                End If
+            End If
+        Next
+        Me.m_bHasWriters = False
+
+    End Sub
+
+#End Region ' Writing results
+
 #Region " Ecosim integration "
 
     Public Sub EcosimRunInitialized(EcosimDatastructures As Object) _
@@ -106,27 +166,22 @@ Public Class cFishMIPEcosimResultWriterPlugin
         ' Not autosaving? Done
         If Not Me.m_bSaving Then Return
 
-        Dim dlg As New dlgSimRun(Me.m_strRun, Me.m_iYear)
-        dlg.ShowDialog(m_uic.FormMain)
-        Me.m_iYear = dlg.Year
-        Me.m_strRun = dlg.RunName
+        Dim dlg As New dlgSimRun(Me.m_uic.Core, Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore)
+        dlg.ShowDialog(Me.m_uic.FormMain)
 
-        ' Init array for storing aggregated results
-        Dim core As cCore = cFishMIPPlugin.GetInstance().Core
-        ReDim Me.m_data(core.nEcosimTimeSteps, [Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
+        Me.m_strRunHist = dlg.RunHistorical
+        Me.m_iYearHist = dlg.YearHist
+        Me.m_strRunFore = dlg.RunForecast
+        Me.m_iYearFore = dlg.YearForecast
+
+        ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
     End Sub
 
     Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) _
         Implements IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
 
-        ' Not autosaving? Done
-        If Not Me.m_bSaving Then Return
-
-        ' Clear array record - as if needed, but hey
-        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-            Me.m_data(iTime, result) = 0
-        Next
+        ' NOP
 
     End Sub
 
@@ -138,7 +193,25 @@ Public Class cFishMIPEcosimResultWriterPlugin
 
         ' Aggregate results
         Dim core As cCore = cFishMIPPlugin.GetInstance().Core
+        Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim config As cConfiguration = cFishMIPPlugin.GetInstance().Configuration
+
+        Dim sStepsPerYear As Single = cCore.N_MONTHS ' CSng(core.nEcosimTimeSteps / core.nEcosimYears)
+        Dim y As Integer = core.EcosimFirstYear + CInt(Math.Floor((iTime - 1) / sStepsPerYear))
+        Dim m As Integer = CInt(((iTime - 1) Mod sStepsPerYear)) + 1
+
+        If (y < Me.m_iYearHist) Then Return
+        If (m = 1) Then
+            If (y = m_iYearHist) Then
+                Me.InitWriters(Me.m_strRunHist)
+            ElseIf (y = Me.m_iYearFore) Then
+                Me.InitWriters(Me.m_strRunFore)
+            End If
+        End If
+
+        If Not Me.m_bHasWriters Then Return
+
+        ' Aggregate results
         Dim simresult As cEcoSimResults = DirectCast(Ecosimresults, cEcoSimResults)
         Dim simdata As cEcosimDatastructures = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
@@ -165,7 +238,7 @@ Public Class cFishMIPEcosimResultWriterPlugin
                     End Select
                 End If
             Next
-            Me.m_data(iTime, result) = val
+            Me.m_writers(result).WriteLine("{0:D4}_{1:D2},{2}", y, m, cStringUtils.FormatNumber(val))
         Next
 
     End Sub
@@ -173,44 +246,17 @@ Public Class cFishMIPEcosimResultWriterPlugin
     Public Sub EcosimRunCompleted(EcosimDatastructures As Object) _
         Implements IEcosimRunCompletedPlugin.EcosimRunCompleted
 
-        ' Not autosaving? Done
-        If Not Me.m_bSaving Then Return
-
-        ' Write output files
-        Dim strPath As String = Me.AutoSaveOutputPath
         Dim core As cCore = cFishMIPPlugin.GetInstance().Core
-        Dim w As StreamWriter = Nothing
-        Dim sStepsPerYear As Single = cCore.N_MONTHS ' CSng(core.nEcosimTimeSteps / core.nEcosimYears)
 
-        ' Not able to create output path? Abort
-        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
+        Me.CloseWriters()
 
-        For Each result As cConfiguration.eResultTypes In [Enum].GetValues(GetType(cConfiguration.eResultTypes))
-            w = New StreamWriter(Path.Combine(strPath, Me.m_strRun & "_" & result.ToString() & ".csv"))
-            Try
-                w.WriteLine("year," & result.ToString())
-                For i As Integer = 1 To core.nEcosimTimeSteps
-                    Dim y As Integer = core.EcosimFirstYear + CInt(Math.Floor((i - 1) / sStepsPerYear))
-                    Dim t As Integer = CInt(((i - 1) Mod sStepsPerYear)) + 1
-                    If (y >= m_iYear) Then
-                        w.WriteLine("{0:D4}_{1:D2},{2}", y, t, cStringUtils.FormatNumber(Me.m_data(i, result)))
-                    End If
-                Next
-            Catch ex As Exception
-
-            End Try
-            w.Flush()
-            w.Close()
-        Next
-
-        ' Notify UI
-        Dim msg As New cMessage(String.Format("FishMIP Ecosim results have been saved to {0}", Me.AutoSaveOutputPath),
+        If Me.m_bSaving Then
+            ' Notify UI
+            Dim msg As New cMessage(String.Format("FishMIP Ecosim results have been saved to {0}", Me.AutoSaveOutputPath),
                                     eMessageType.DataExport, eCoreComponentType.Core, eMessageImportance.Information)
-        msg.Hyperlink = Me.AutoSaveOutputPath
-        core.Messages.SendMessage(msg)
-
-        ' Free Willy
-        Me.m_data = Nothing
+            msg.Hyperlink = Me.AutoSaveOutputPath
+            core.Messages.SendMessage(msg)
+        End If
 
     End Sub
 
