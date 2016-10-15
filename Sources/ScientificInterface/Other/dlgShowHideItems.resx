@@ -270,37 +270,37 @@
   <data name="&gt;&gt;m_btnNoneGroups.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_hdrFilterGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_hdrFilterGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_hdrFilterGroup.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrAdd.Location" type="System.Drawing.Point, System.Drawing">
     <value>202, 82</value>
   </data>
-  <data name="m_hdrFilterGroup.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 18</value>
   </data>
-  <data name="m_hdrFilterGroup.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrAdd.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="m_hdrFilterGroup.Text" xml:space="preserve">
-    <value>Quick select</value>
+  <data name="m_hdrAdd.Text" xml:space="preserve">
+    <value>Add to selection</value>
   </data>
-  <data name="m_hdrFilterGroup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrAdd.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrFilterGroup.Name" xml:space="preserve">
-    <value>m_hdrFilterGroup</value>
+  <data name="&gt;&gt;m_hdrAdd.Name" xml:space="preserve">
+    <value>m_hdrAdd</value>
   </data>
-  <data name="&gt;&gt;m_hdrFilterGroup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_hdrAdd.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_hdrFilterGroup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrAdd.Parent" xml:space="preserve">
     <value>m_plGroups</value>
   </data>
-  <data name="&gt;&gt;m_hdrFilterGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrAdd.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_btnLiving.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -694,7 +694,7 @@
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_plGroups</value>
@@ -757,7 +757,7 @@
     <value>m_hdrFleets</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFleets.Parent" xml:space="preserve">
     <value>m_plFleets</value>

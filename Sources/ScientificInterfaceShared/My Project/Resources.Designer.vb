@@ -2103,6 +2103,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} of {1}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_N_OF_M() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_N_OF_M", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (/{0}).
         '''</summary>
         Public ReadOnly Property GENERIC_LABEL_PERUNIT() As String

@@ -46,7 +46,7 @@ Namespace Ecosim
             Me.m_clbGroups = New System.Windows.Forms.CheckedListBox()
             Me.m_btnAllGroups = New System.Windows.Forms.Button()
             Me.m_btnNoneGroups = New System.Windows.Forms.Button()
-            Me.m_hdrFilterGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrAdd = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnLiving = New System.Windows.Forms.Button()
             Me.m_btnNonLiving = New System.Windows.Forms.Button()
             Me.m_btnStanza = New System.Windows.Forms.Button()
@@ -97,13 +97,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_btnNoneGroups, "m_btnNoneGroups")
             Me.m_btnNoneGroups.Name = "m_btnNoneGroups"
             '
-            'm_hdrFilterGroup
+            'm_hdrAdd
             '
-            resources.ApplyResources(Me.m_hdrFilterGroup, "m_hdrFilterGroup")
-            Me.m_hdrFilterGroup.CanCollapseParent = False
-            Me.m_hdrFilterGroup.CollapsedParentHeight = 0
-            Me.m_hdrFilterGroup.IsCollapsed = False
-            Me.m_hdrFilterGroup.Name = "m_hdrFilterGroup"
+            resources.ApplyResources(Me.m_hdrAdd, "m_hdrAdd")
+            Me.m_hdrAdd.CanCollapseParent = False
+            Me.m_hdrAdd.CollapsedParentHeight = 0
+            Me.m_hdrAdd.IsCollapsed = False
+            Me.m_hdrAdd.Name = "m_hdrAdd"
             '
             'm_btnLiving
             '
@@ -177,7 +177,7 @@ Namespace Ecosim
             '
             'm_plGroups
             '
-            Me.m_plGroups.Controls.Add(Me.m_hdrFilterGroup)
+            Me.m_plGroups.Controls.Add(Me.m_hdrAdd)
             Me.m_plGroups.Controls.Add(Me.m_hdrGroups)
             Me.m_plGroups.Controls.Add(Me.m_btnLiving)
             Me.m_plGroups.Controls.Add(Me.m_clbGroups)
@@ -249,7 +249,7 @@ Namespace Ecosim
         Private WithEvents m_clbFleets As System.Windows.Forms.CheckedListBox
         Private WithEvents m_btnAllFleets As System.Windows.Forms.Button
         Private WithEvents m_btnNoneFleets As System.Windows.Forms.Button
-        Private WithEvents m_hdrFilterGroup As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_hdrAdd As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnNonLiving As System.Windows.Forms.Button
         Private WithEvents m_btnConsumers As System.Windows.Forms.Button
         Private WithEvents m_btnProducers As System.Windows.Forms.Button
