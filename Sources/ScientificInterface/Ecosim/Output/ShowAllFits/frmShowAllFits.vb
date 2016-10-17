@@ -157,32 +157,29 @@ Namespace Ecosim
                         If plot.TimeSeries.Interval = eTSDataSetInterval.TimeStep Then dx = 1 / m_NTimes
                         data = plot.TimeSeries.ShapeData
                         For k As Integer = 1 To data.Length - 1
-                            If Math.Abs(data(k)) > 0 Then
+                            If (data(k) > 0) Then
                                 Dim dotXRelPos As Single = CSng(m_sPlotWidth * (k - 0.5!) * dx)
-                                Dim dotYRelPos As Single = CSng(m_sPlotHeight * (1 - Math.Abs(data(k)) * plot.TSDataScale / plot.YMax))
+                                Dim dotYRelPos As Single = CSng(m_sPlotHeight * (1 - data(k) * plot.TSDataScale / plot.YMax))
                                 Dim dotPos As SizeF = toDeviceSize(New SizeF(dotXRelPos, dotYRelPos), iWidth, iHeight)
-
-                                If (dotYRelPos >= 0) Then
-
-                                    Select Case handler.SketchDrawMode(plot.TimeSeries)
-                                        Case eSketchDrawModeTypes.TimeSeriesDriver
-                                            g.DrawEllipse(pen, New RectangleF(sPosX + dotPos.Width - (0.5! * m_sDotSize),
-                                                                              sPosY + dotPos.Height - (0.5! * m_sDotSize), m_sDotSize, m_sDotSize))
-                                        Case eSketchDrawModeTypes.TimeSeriesRefAbs
-                                            g.DrawRectangle(pen, New Rectangle(CInt(sPosX + dotPos.Width - (0.5! * m_sDotSize)),
-                                                                              CInt(sPosY + dotPos.Height - (0.5! * m_sDotSize)), CInt(m_sDotSize), CInt(m_sDotSize)))
-                                        Case eSketchDrawModeTypes.TimeSeriesRefRel
-                                            ' You've got to love pointless duplication!! See cShapeImage, ugh...
-                                            Dim pts(3) As PointF
-                                            pts(0) = New PointF(sPosX, CSng(sPosY - m_sDotSize / 2))
-                                            pts(1) = New PointF(CSng(sPosX + m_sDotSize / 2), sPosY)
-                                            pts(2) = New PointF(sPosX, CSng(sPosY + m_sDotSize / 2))
-                                            pts(3) = New PointF(CSng(sPosX - m_sDotSize / 2), sPosY)
-                                            g.DrawPolygon(pen, pts)
-                                        Case Else
-                                            Debug.Assert(False)
-                                    End Select
-                                End If
+                                Select Case handler.SketchDrawMode(plot.TimeSeries)
+                                    Case eSketchDrawModeTypes.TimeSeriesDriver
+                                        g.DrawEllipse(pen, New RectangleF(sPosX + dotPos.Width - (0.5! * m_sDotSize),
+                                                                          sPosY + dotPos.Height - (0.5! * m_sDotSize), m_sDotSize, m_sDotSize))
+                                    Case eSketchDrawModeTypes.TimeSeriesRefAbs
+                                        g.DrawRectangle(pen, New Rectangle(CInt(sPosX + dotPos.Width - (0.5! * m_sDotSize)),
+                                                                          CInt(sPosY + dotPos.Height - (0.5! * m_sDotSize)), CInt(m_sDotSize), CInt(m_sDotSize)))
+                                    Case eSketchDrawModeTypes.TimeSeriesRefRel
+                                        ' You've got to love pointless duplication!! See cShapeImage, ugh...
+                                        Dim pts(4) As PointF
+                                        pts(0) = New PointF(sPosX + dotPos.Width, sPosY + dotPos.Height - 0.5! * m_sDotSize)
+                                        pts(1) = New PointF(sPosX + dotPos.Width + 0.5! * m_sDotSize, sPosY + dotPos.Height)
+                                        pts(2) = New PointF(sPosX + dotPos.Width, sPosY + dotPos.Height + 0.5! * m_sDotSize)
+                                        pts(3) = New PointF(sPosX + dotPos.Width - 0.5! * m_sDotSize, sPosY + dotPos.Height)
+                                        pts(4) = pts(0)
+                                        g.DrawPolygon(pen, pts)
+                                    Case Else
+                                        Debug.Assert(False)
+                                End Select
                             End If
                         Next
 
@@ -446,7 +443,8 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method, transforms a model value (point) to a device value
+        ''' Helper method, transforms a model value (point) to a point on one of
+        ''' the plots
         ''' </summary>
         ''' <param name="p"></param>
         ''' <param name="width"></param>
@@ -454,12 +452,8 @@ Namespace Ecosim
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function toDevicePoint(ByVal p As PointF, ByVal width As Integer, ByVal height As Integer) As PointF
-            ' JS 11feb08: what are these hard-coded values 8, 2, 1.02F, 2.02F?
-            '    8    : originates from EwE5
-            '    2    : take both left and right margin into account
-            '    1.02F:
-            '    2.02F:
             ' Transforms the output value to the screen point value
+            ' This comes from EWE5. Real men don't write code comments, *sigh*
             Dim screenPt As New PointF(p.X * width / (8 + 2 * m_sLRMargin), _
                             height - (height * p.Y) / (1.02F * m_iRow + 2.02F * m_sTBMargin))
 
@@ -469,7 +463,8 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method, transforms a model value (size) to a device value
+        ''' Helper method, transforms a model value (size) to a value on one of
+        ''' the plots
         ''' </summary>
         ''' <param name="s"></param>
         ''' <param name="width"></param>
@@ -478,12 +473,8 @@ Namespace Ecosim
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
         Private Function toDeviceSize(ByVal s As SizeF, ByVal width As Integer, ByVal height As Integer) As SizeF
-            ' JS 11feb08: what are these hard-coded values 8, 2, 1.02F, 2.02F?
-            '    8    :
-            '    2    : take both left and right margin into account
-            '    1.02F:
-            '    2.02F:
-            Dim size As New SizeF(width * s.Width / (8 + 2 * m_sLRMargin), _
+            ' This comes from EWE5. Real men don't write code comments, *sigh*
+            Dim size As New SizeF(width * s.Width / (8 + 2 * m_sLRMargin),
                         height * s.Height / (1.02F * m_iRow + 2.02F * m_sTBMargin))
 
             Return size
