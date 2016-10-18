@@ -204,18 +204,20 @@ Public Class Strategy
 
         Dim reader As StreamReader = cMSEUtils.GetReader(strFilename)
         If (reader IsNot Nothing) Then
-            buff = reader.ReadLine()
-            recs = buff.Split(","c)
-            If cStringUtils.ConvertToInteger(recs(1)) = 1 Then
-                Me.RunThisStrategy = True
-            Else
-                Me.RunThisStrategy = False
-            End If
-            reader.ReadLine()
-                Do Until reader.EndOfStream
-                    buff = reader.ReadLine()
-                    recs = buff.Split(","c)
 
+            Do Until reader.EndOfStream
+                buff = reader.ReadLine()
+                recs = buff.Split(","c)
+                If recs(0) = "Run" Then
+                    If cStringUtils.ConvertToInteger(recs(1)) = 1 Then
+                        Me.RunThisStrategy = True
+                    Else
+                        Me.RunThisStrategy = False
+                    End If
+                    reader.ReadLine()
+                ElseIf recs(0) = "GroupNameForBiomass" Then
+                    reader.ReadLine()
+                Else
                     Dim tempHCRGroup As HCR_Group
                     'Each HCR Group needs to be a new object
                     tempHCRGroup = New HCR_Group(m_core, m_MSE)
@@ -251,7 +253,9 @@ Public Class Strategy
                         bSuccess = False
                     End If
 
-                Loop
+                End If
+
+            Loop
             End If 'cMSEUtils.readToTag(reader, START_TAG)
 
             cMSEUtils.ReleaseReader(reader)
