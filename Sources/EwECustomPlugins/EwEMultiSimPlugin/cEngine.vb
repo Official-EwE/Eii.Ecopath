@@ -829,21 +829,25 @@ Friend Class cEngine
         For i As Integer = 0 To Me.m_lManagers.Count - 1
 
             Dim man As cBaseShapeManager = Me.m_lManagers(i)
-            Dim bUpdated As Boolean = False
+            Dim bUpdate As Boolean = False
 
             ' Check all cached shapes
             For Each ff As cFFCache In Me.m_FFCache.Values
                 ' Is this shape changed, and is the manager not updated yet?
-                If (ff.IsChanged() And bUpdated = False) Then
+                If (ff.IsChanged() And bUpdate = False) Then
                     ' Does the manager owns this shape?
                     If (ff.BelongsTo(man)) Then
                         ' Ok, give'r
                         ff.Update()
                         ' Do not update again for this type of manager
-                        bUpdated = True
+                        bUpdate = True
                     End If
                 End If
             Next
+
+            ' Now update the manager itself
+            If bUpdate Then man.Update()
+
         Next
 
     End Sub
