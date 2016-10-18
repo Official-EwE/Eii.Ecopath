@@ -288,13 +288,13 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_graphProgress, "m_graphProgress")
             Me.m_graphProgress.IsAutoScrollRange = True
             Me.m_graphProgress.Name = "m_graphProgress"
-            Me.m_graphProgress.ScrollGrace = 0.0R
-            Me.m_graphProgress.ScrollMaxX = 0.0R
-            Me.m_graphProgress.ScrollMaxY = 0.0R
-            Me.m_graphProgress.ScrollMaxY2 = 0.0R
-            Me.m_graphProgress.ScrollMinX = 0.0R
-            Me.m_graphProgress.ScrollMinY = 0.0R
-            Me.m_graphProgress.ScrollMinY2 = 0.0R
+            Me.m_graphProgress.ScrollGrace = 0R
+            Me.m_graphProgress.ScrollMaxX = 0R
+            Me.m_graphProgress.ScrollMaxY = 0R
+            Me.m_graphProgress.ScrollMaxY2 = 0R
+            Me.m_graphProgress.ScrollMinX = 0R
+            Me.m_graphProgress.ScrollMinY = 0R
+            Me.m_graphProgress.ScrollMinY2 = 0R
             '
             'm_gridProgress
             '
@@ -307,8 +307,8 @@ Namespace Ecospace
             Me.m_gridProgress.BackColor = System.Drawing.Color.White
             Me.m_gridProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridProgress.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridProgress.CustomSort = False
             Me.m_gridProgress.DataName = "grid content"
             Me.m_gridProgress.FixedColumnWidths = False
@@ -318,14 +318,14 @@ Namespace Ecospace
             Me.m_gridProgress.IsOutputGrid = True
             Me.m_gridProgress.Name = "m_gridProgress"
             Me.m_gridProgress.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridProgress.UIContext = Nothing
             '
             'm_tpResults
@@ -371,13 +371,13 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_graphResults, "m_graphResults")
             Me.m_graphResults.IsAutoScrollRange = True
             Me.m_graphResults.Name = "m_graphResults"
-            Me.m_graphResults.ScrollGrace = 0.0R
-            Me.m_graphResults.ScrollMaxX = 0.0R
-            Me.m_graphResults.ScrollMaxY = 0.0R
-            Me.m_graphResults.ScrollMaxY2 = 0.0R
-            Me.m_graphResults.ScrollMinX = 0.0R
-            Me.m_graphResults.ScrollMinY = 0.0R
-            Me.m_graphResults.ScrollMinY2 = 0.0R
+            Me.m_graphResults.ScrollGrace = 0R
+            Me.m_graphResults.ScrollMaxX = 0R
+            Me.m_graphResults.ScrollMaxY = 0R
+            Me.m_graphResults.ScrollMaxY2 = 0R
+            Me.m_graphResults.ScrollMinX = 0R
+            Me.m_graphResults.ScrollMinY = 0R
+            Me.m_graphResults.ScrollMinY2 = 0R
             '
             'm_btnResetMPAs
             '
@@ -409,8 +409,8 @@ Namespace Ecospace
             Me.m_gridResults.BackColor = System.Drawing.Color.White
             Me.m_gridResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridResults.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridResults.CustomSort = False
             Me.m_gridResults.DataName = "grid content"
             Me.m_gridResults.FixedColumnWidths = False
@@ -420,14 +420,14 @@ Namespace Ecospace
             Me.m_gridResults.IsOutputGrid = True
             Me.m_gridResults.Name = "m_gridResults"
             Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridResults.UIContext = Nothing
             '
             'm_hdrOutput
@@ -576,8 +576,8 @@ Namespace Ecospace
             Me.m_gridObjectives.BackColor = System.Drawing.Color.White
             Me.m_gridObjectives.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjectives.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridObjectives.CustomSort = False
             Me.m_gridObjectives.DataName = "grid content"
             resources.ApplyResources(Me.m_gridObjectives, "m_gridObjectives")
@@ -591,14 +591,14 @@ Namespace Ecospace
             Me.m_gridObjectives.ShowMaxPortUtil = False
             Me.m_gridObjectives.ShowMPAOptParams = False
             Me.m_gridObjectives.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridObjectives.UIContext = Nothing
             '
             'm_gridFleet
@@ -611,8 +611,8 @@ Namespace Ecospace
             Me.m_gridFleet.BackColor = System.Drawing.Color.White
             Me.m_gridFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridFleet.CustomSort = False
             Me.m_gridFleet.DataName = "grid content"
             resources.ApplyResources(Me.m_gridFleet, "m_gridFleet")
@@ -625,14 +625,14 @@ Namespace Ecospace
             Me.m_gridFleet.Manager = Nothing
             Me.m_gridFleet.Name = "m_gridFleet"
             Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridFleet.UIContext = Nothing
             '
             'm_gridGroup
@@ -645,8 +645,8 @@ Namespace Ecospace
             Me.m_gridGroup.BackColor = System.Drawing.Color.White
             Me.m_gridGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridGroup.CustomSort = False
             Me.m_gridGroup.DataName = "grid content"
             resources.ApplyResources(Me.m_gridGroup, "m_gridGroup")
@@ -658,14 +658,14 @@ Namespace Ecospace
             Me.m_gridGroup.Manager = Nothing
             Me.m_gridGroup.Name = "m_gridGroup"
             Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridGroup.UIContext = Nothing
             '
             'm_tabMap
