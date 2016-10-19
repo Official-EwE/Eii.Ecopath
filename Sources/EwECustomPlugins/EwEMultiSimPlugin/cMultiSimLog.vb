@@ -135,7 +135,8 @@ Friend Class cMultiSimLog
     ''' -----------------------------------------------------------------------
     Public Function Add(ByVal strLine As String) As Boolean
         If (Not Me.IsOpen()) Then Return False
-        Me.m_sw.WriteLine(strLine)
+        Dim dt As DateTime = DateTime.Now
+        Me.m_sw.WriteLine(dt.ToShortDateString & " " & dt.ToShortTimeString & ": " & strLine)
         Return True
     End Function
 
