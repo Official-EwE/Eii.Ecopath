@@ -359,8 +359,8 @@ Friend Class cEngine
             sw.Close()
 
         Catch ex As Exception
-            strError = cStringUtils.Localize(My.Resources.EXAMPLE_EXPORT_FAILED, strFileSample, ex.Message)
             Me.m_valStatus = Me.m_valStatus Or eStatusFlags.ErrorEncountered
+            strError = cStringUtils.Localize(My.Resources.EXAMPLE_EXPORT_FAILED, strFileSample, ex.Message)
             strOutFolder = ""
             bSuccess = False
         End Try
