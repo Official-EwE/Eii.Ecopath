@@ -306,14 +306,17 @@ Friend Class cEngine
     ''' -----------------------------------------------------------------------
     Public Function GenerateSample(ByVal types As eFunctionTypes, bMonthly As Boolean, ByRef strFileSample As String) As Boolean
 
+        Dim scenario As cEwEScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
         Dim strOutFolder As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
         Dim lShapes As New List(Of cForcingFunction)
         Dim sw As StreamWriter = Nothing
-        Dim msg As cMessage = Nothing
         Dim i As Integer = 0
+        Dim strError As String = ""
         Dim bSuccess As Boolean = True
 
         Me.m_types = types
+
+        Me.ClearStatus()
         Me.BuildFFNameCache(True)
 
         If Not cFileUtils.IsDirectoryAvailable(strOutFolder, True) Then Return False
@@ -355,18 +358,17 @@ Friend Class cEngine
 
             sw.Close()
 
-            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXAMPLE_SUCCESS, strFileSample), _
-                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-            msg.Hyperlink = strOutFolder
         Catch ex As Exception
-
-            msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXAMPLE_FAILED, strFileSample, ex.Message), _
-                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
-            strFileSample = ""
+            strError = cStringUtils.Localize(My.Resources.EXAMPLE_EXPORT_FAILED, strFileSample, ex.Message)
+            Me.m_valStatus = Me.m_valStatus Or eStatusFlags.ErrorEncountered
+            strOutFolder = ""
             bSuccess = False
         End Try
 
-        Me.m_core.Messages.SendMessage(msg)
+        Me.BroadcastStatus(cStringUtils.Localize(My.Resources.EXAMPLE_EXPORT_SUCCESS, strFileSample),
+                           cStringUtils.Localize(My.Resources.EXAMPLE_EXPORT_WARNING, strFileSample, scenario.Name),
+                           strError, strOutFolder)
+
         Return bSuccess
 
     End Function
@@ -412,21 +414,21 @@ Friend Class cEngine
             ' Explore all functions
             For j As Integer = 0 To man.Count - 1
                 Dim ff As cForcingFunction = man(j)
-                strKey = ff.Name.ToLower
+                strKey = Key(ff.Name)
 
                 If (bCheckDuplicates And Me.m_FFCache.ContainsKey(strKey)) Then
 
                     dupl = Me.m_FFCache(strKey)
 
                     ' Add error
-                    Me.m_valDetails.Add(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                            cStringUtils.Localize(My.Resources.VAL_FN_DUPLICATE, ff.Name), _
+                    Me.m_valDetails.Add(New cVariableStatus(eStatusFlags.FailedValidation,
+                                                            cStringUtils.Localize(My.Resources.VALIDATION_DETAIL_FN_DUPLICATE, ff.Name),
                                                             eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
-                    Me.m_valStatus = Me.m_valStatus Or eStatusFlags.ErrorEncountered
+                    Me.m_valStatus = Me.m_valStatus Or eStatusFlags.FailedValidation
                 End If
 
                 ' Add function
-                Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
+                Me.m_FFCache(strKey) = New cFFCache(ff)
 
             Next
         Next
@@ -435,6 +437,11 @@ Friend Class cEngine
         Return ((Me.m_valStatus And eStatusFlags.ErrorEncountered) = 0)
 
     End Function
+
+    Private Function Key(strName As String) As String
+        Return strName.Trim().ToLowerInvariant()
+    End Function
+
 
 #Region " Running "
 
@@ -446,7 +453,7 @@ Friend Class cEngine
 
         Dim reader As StreamReader = Nothing
         Dim values() As String = Nothing
-        Dim strName As String = ""
+        Dim strKey As String = ""
         Dim month As Integer = 0
         Dim value As Single = 0.0!
         Dim lff As New List(Of cFFCache)
@@ -470,9 +477,9 @@ Friend Class cEngine
 
             ' Map to FF Cache items
             For i As Integer = 0 To values.Length - 1
-                strName = values(i).Trim.ToLower()
-                If Me.m_FFCache.ContainsKey(strName) Then
-                    lff.Add(Me.m_FFCache(strName))
+                strKey = Me.Key(values(i))
+                If Me.m_FFCache.ContainsKey(strKey) Then
+                    lff.Add(Me.m_FFCache(strKey))
                 Else
                     lff.Add(Nothing)
                 End If
@@ -542,7 +549,7 @@ Friend Class cEngine
 
         ' Abort if an error occurred!
         If Not Me.BuildFFNameCache(False) Then
-            Dim msg As New cMessage(My.Resources.VAL_RESULT_FAILED, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            Dim msg As New cMessage(My.Resources.VALIDATION_RESULT_FAILED, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
             For Each vs As cVariableStatus In Me.m_valDetails
                 msg.AddVariable(vs)
             Next
@@ -634,8 +641,7 @@ Friend Class cEngine
         Dim scenario As cEwEScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
         Dim msg As cMessage = Nothing
 
-        Me.m_valStatus = eStatusFlags.OK
-        Me.m_valDetails.Clear()
+        Me.ClearStatus()
         Me.m_log.Open()
 
         Me.BuildFFNameCache(True)
@@ -665,29 +671,10 @@ Friend Class cEngine
 
         Me.m_log.Close()
 
-        ' == Prepare result message ==
-
-        If (Me.m_valStatus = eStatusFlags.OK) Then
-            msg = New cFeedbackMessage(cStringUtils.Localize(My.Resources.VAL_RESULT_SUCCESS, scenario.Name), _
-                                       eCoreComponentType.External, eMessageType.DataExport, _
-                                       eMessageImportance.Information, eMessageReplyStyle.OK)
-        ElseIf ((Me.m_valStatus And eStatusFlags.ErrorEncountered) = 0) Then
-            msg = New cMessage(cStringUtils.Localize(My.Resources.VAL_RESULT_WARNING, Me.m_log.FileName), _
-                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
-        Else
-            msg = New cMessage(cStringUtils.Localize(My.Resources.VAL_RESULT_FAILED, Me.m_log.FileName), _
-                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
-        End If
-
-        ' Attach details
-        For Each vs As cVariableStatus In Me.m_valDetails
-            msg.AddVariable(vs)
-        Next
-        msg.Hyperlink = Me.m_strOutFolder
-
-        ' Send!
-        Me.m_core.Messages.SendMessage(msg)
-        Me.m_log.Add(msg)
+        ' == Process results ==
+        Me.BroadcastStatus(cStringUtils.Localize(My.Resources.VALIDATION_RESULT_SUCCESS, scenario.Name),
+                           cStringUtils.Localize(My.Resources.VALIDATION_RESULT_WARNING, Me.m_log.FileName),
+                           cStringUtils.Localize(My.Resources.VALIDATION_RESULT_FAILED, Me.m_log.FileName))
 
     End Sub
 
@@ -724,12 +711,12 @@ Friend Class cEngine
                     ' Get file
                     strName = values(i).Trim()
                     ' Does exist?
-                    If Not Me.m_FFCache.ContainsKey(strName.ToLower()) Then
+                    If Not Me.m_FFCache.ContainsKey(Me.Key(strName)) Then
                         ' #No: count missing
                         iNumMissing += 1
                         ' Log event
-                        vsInfo = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                     cStringUtils.Localize(My.Resources.VAL_CSV_FN_MISSING, strFileName, strName), _
+                        vsInfo = New cVariableStatus(eStatusFlags.MissingParameter,
+                                                     cStringUtils.Localize(My.Resources.VAL_CSV_FN_MISSING, strFileName, strName),
                                                      eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                         Me.m_valDetails.Add(vsInfo)
                         status = status Or vsInfo.Status
@@ -851,6 +838,45 @@ Friend Class cEngine
         Next
 
     End Sub
+
+    Private Sub BroadcastStatus(strSuccess As String, strWarning As String, strError As String, Optional strHyperlink As String = "")
+
+        Dim msg As cMessage = Nothing
+
+        If (Me.m_valStatus = eStatusFlags.OK) Then
+            msg = New cFeedbackMessage(strSuccess,
+                                       eCoreComponentType.External, eMessageType.DataExport,
+                                       eMessageImportance.Information, eMessageReplyStyle.OK)
+        ElseIf ((Me.m_valStatus And eStatusFlags.ErrorEncountered) = 0) Then
+            msg = New cMessage(strWarning,
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+        Else
+            msg = New cMessage(strError,
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+        End If
+        msg.Hyperlink = strHyperlink
+
+        ' Attach details
+        For Each vs As cVariableStatus In Me.m_valDetails
+            msg.AddVariable(vs)
+        Next
+        msg.Hyperlink = Me.m_strOutFolder
+
+        ' Send!
+        Me.m_core.Messages.SendMessage(msg)
+        Me.m_log.Add(msg)
+
+        Me.ClearStatus()
+
+    End Sub
+
+    Private Sub ClearStatus()
+
+        Me.m_valDetails.Clear()
+        Me.m_valStatus = eStatusFlags.OK
+
+    End Sub
+
 
 #End Region ' Internals
 
