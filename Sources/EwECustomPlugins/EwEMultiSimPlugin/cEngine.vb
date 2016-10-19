@@ -29,6 +29,7 @@ Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -199,10 +200,10 @@ Friend Class cEngine
     ''' <param name="astrFiles"></param>
     ''' <param name="strOutFolder">The output folder to write a log file to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ValidateFiles(ByVal dgtComplete As RunCompletedDelegate, _
-                             ByVal dgtDisableFile As DisableFileDelegate, _
-                             ByVal astrFiles As String(), _
-                             ByVal strOutFolder As String, _
+    Public Sub ValidateFiles(ByVal dgtComplete As RunCompletedDelegate,
+                             ByVal dgtDisableFile As DisableFileDelegate,
+                             ByVal astrFiles As String(),
+                             ByVal strOutFolder As String,
                              ByVal types As eFunctionTypes)
 
         If (Me.IsRunning) Then Return
@@ -245,12 +246,12 @@ Friend Class cEngine
     ''' annual values (<see cref="TriState.[False]"/>), or in both modes (<see cref="TriState.UseDefault"/>).</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Run(ByVal dgtProgress As RunProgressDelegate, _
-                   ByVal dgtComplete As RunCompletedDelegate, _
-                   ByVal astrFiles As String(), _
-                   ByVal strOutFolder As String, _
-                   ByVal types As eFunctionTypes, _
-                   ByVal bReadMonthly As Boolean, _
+    Public Sub Run(ByVal dgtProgress As RunProgressDelegate,
+                   ByVal dgtComplete As RunCompletedDelegate,
+                   ByVal astrFiles As String(),
+                   ByVal strOutFolder As String,
+                   ByVal types As eFunctionTypes,
+                   ByVal bReadMonthly As Boolean,
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
         If (Me.IsRunning) Then Return
@@ -462,6 +463,7 @@ Friend Class cEngine
         If Me.m_bReadMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
 
         If File.Exists(strFileName) Then
+            Me.m_log.Add("- Opened file " & strFileName & "OK")
 
             ' Prevent 'our' FFs from updating prematurely while reading CSV file
             ' This also resets the FFs to their original values before the MultiSim run to make sure this iteration starts afresh
@@ -480,8 +482,10 @@ Friend Class cEngine
                 strKey = Me.Key(values(i))
                 If Me.m_FFCache.ContainsKey(strKey) Then
                     lff.Add(Me.m_FFCache(strKey))
+                    m_log.Add("- Using function " & values(i))
                 Else
                     lff.Add(Nothing)
+                    m_log.Add("- Skipping function " & values(i) & ", function not found")
                 End If
             Next
 
@@ -527,6 +531,8 @@ Friend Class cEngine
             ' Commit shape changes to the core in a logical order that ensures that fishing mortality is correctly derived from effort
             Me.CommitShapes()
 
+        Else
+            Me.m_log.Add("- Unable to open file " & strFileName)
         End If
 
         ' Close reader to release the csv file
@@ -544,6 +550,8 @@ Friend Class cEngine
         'Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
         'Me.m_core.SetStopRunDelegate(AddressOf StopRun)
         cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_INITIALIZING, -1)
+
+        Dim scenario As cEcoSimScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
 
         Me.m_log.Open()
 
@@ -575,19 +583,25 @@ Friend Class cEngine
                 If Not Me.m_bStopRun Then
                     Me.m_core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
+                    m_log.Add("Reading CSV file " & strFile)
                     Me.ReadCSVIntoFF(strFile)
+                    m_log.Add("- Done")
                 End If
 
                 If Not Me.m_bStopRun Then
                     Me.m_core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
+                    m_log.Add("Running Ecosim scenario " & scenario.Name & ":")
                     Me.m_core.RunEcoSim(Nothing, False)
+                    m_log.Add("- Done")
                 End If
 
                 If Not Me.m_bStopRun Then
                     Me.m_core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
+                    m_log.Add("Writing MultiSim results to " & strFolder & ":")
                     Me.WriteResults(strFolder, strFile, Me.m_options)
+                    m_log.Add("- Done")
                 End If
 
                 i += 1
@@ -731,27 +745,27 @@ Friend Class cEngine
 
                 ' Log summary
                 If (iNumMissing = 0) Then
-                    vsInfo = New cVariableStatus(eStatusFlags.OK, _
-                                                 My.Resources.VAL_CSV_SUMMARY_OK, _
+                    vsInfo = New cVariableStatus(eStatusFlags.OK,
+                                                 My.Resources.VAL_CSV_SUMMARY_OK,
                                                  eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                     Me.m_valDetails.Add(vsInfo)
                 Else
-                    vsInfo = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                                 cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing), _
+                    vsInfo = New cVariableStatus(eStatusFlags.MissingParameter,
+                                                 cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing),
                                                  eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                     Me.m_valDetails.Add(vsInfo)
                 End If
 
             Catch ex As Exception
-                vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                             cStringUtils.Localize(My.Resources.VAL_CSV_READ_ERROR, strFileName, ex.Message), _
+                vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered,
+                                             cStringUtils.Localize(My.Resources.VAL_CSV_READ_ERROR, strFileName, ex.Message),
                                              eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                 Me.m_valDetails.Add(vsInfo)
                 status = status Or vsInfo.Status
             End Try
         Else
-            vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered, _
-                                         cStringUtils.Localize(My.Resources.VAL_CSV_READ_MISSING, strFileName), _
+            vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered,
+                                         cStringUtils.Localize(My.Resources.VAL_CSV_READ_MISSING, strFileName),
                                          eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
             Me.m_valDetails.Add(vsInfo)
             status = status Or vsInfo.Status
@@ -769,11 +783,22 @@ Friend Class cEngine
     ''' <param name="strPath"></param>
     ''' <param name="strFile"></param>
     ''' <param name="outputs"></param>
-    Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, _
+    Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String,
                              ByVal outputs As cEcosimResultWriter.eResultTypes())
 
         Dim resultsWriter As New cEcosimResultWriter(Me.m_core)
-        resultsWriter.WriteResults(strPath, outputs)
+
+        If resultsWriter.WriteResults(strPath, outputs) Then
+            Dim fmt As New cEcosimResultTypeFormatter()
+            Dim sbFormat As New Text.StringBuilder()
+            For Each output As cEcosimResultWriter.eResultTypes In outputs
+                If sbFormat.Length > 0 Then sbFormat.Append(", ")
+                sbFormat.Append(fmt.GetDescriptor(output))
+            Next
+            Me.m_log.Add("- Written Ecosim " & sbFormat.ToString)
+        Else
+            Me.m_log.Add("- Failed to write Ecosim outputs")
+        End If
 
     End Sub
 
