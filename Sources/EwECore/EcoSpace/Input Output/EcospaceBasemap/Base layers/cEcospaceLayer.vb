@@ -233,13 +233,15 @@ Public MustInherit Class cEcospaceLayer
 
     Public Overridable Property Description() As String
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the value of a cell.
     ''' </summary>
     ''' <param name="iRow"></param>
     ''' <param name="iCol"></param>
     ''' <param name="iIndexSec"></param>
     ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public MustOverride Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
 
     ''' -----------------------------------------------------------------------
