@@ -35,21 +35,23 @@ Namespace SpatialData
     Public Class cAdvectionAdapter
         Inherits cSpatialDataAdapter
 
-
         Private m_spaceData As cEcospaceDataStructures
         Private m_iMonthIndex As Integer
         Private m_orgXData()(,) As Single
         Private m_orgYData()(,) As Single
 
+        ''' <summary>The month that last received data.</summary>
+        Private m_iLastReceived As Integer = -1
+        ''' <summary>The most recently received map.</summary>
+        Private m_lastXData(,) As Double = Nothing
+        Private m_lastYData(,) As Double = Nothing
 
         Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
-
         End Sub
 
         Friend Overrides Sub SaveLayerData()
             Try
-
                 'saving and restoring values via the base SaveLayerData() RestoreLayerData
                 'would require modifications to that code
                 'this is a lot simpler
@@ -74,6 +76,7 @@ Namespace SpatialData
         End Sub
 
         Friend Overrides Sub RestoreLayerData()
+
             Try
                 For i As Integer = 0 To 11
                     For ir As Integer = 0 To Me.m_spaceData.InRow + 1
@@ -86,6 +89,12 @@ Namespace SpatialData
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
+
+            ' Forget last received map
+            Me.m_iLastReceived = -1
+            Me.m_lastXData = Nothing
+            Me.m_lastYData = Nothing
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -98,6 +107,63 @@ Namespace SpatialData
 
         End Sub
 
+        ''' <summary>
+        ''' Overridden to remember the last received advection pattern.
+        ''' </summary>
+        ''' <param name="bm"></param>
+        ''' <param name="layer"></param>
+        ''' <param name="conn"></param>
+        ''' <param name="iTime"></param>
+        ''' <param name="dt"></param>
+        ''' <param name="dataExternal"></param>
+        ''' <param name="dNoData"></param>
+        ''' <returns></returns>
+        Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer, conn As cSpatialDataConnection, iTime As Integer, dt As Date, dataExternal As ISpatialRaster, dNoData As Double) As Boolean
+
+            ' Init last received map buffer
+            If (Me.m_lastXData Is Nothing) Then
+                ReDim Me.m_lastXData(Me.m_spaceData.InRow + 1, Me.m_spaceData.InCol + 1)
+                ReDim Me.m_lastYData(Me.m_spaceData.InRow + 1, Me.m_spaceData.InCol + 1)
+            End If
+
+            ' Clear last received map
+            For ir As Integer = 0 To Me.m_spaceData.InRow + 1
+                For ic As Integer = 0 To Me.m_spaceData.InCol + 1
+                    Me.m_lastXData(ir, ic) = cCore.NULL_VALUE
+                    Me.m_lastYData(ir, ic) = cCore.NULL_VALUE
+                Next ic
+            Next ir
+
+            Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
+
+        End Function
+
+        ''' <summary>
+        ''' OVerridden to re-inject the last received advection pattern
+        ''' </summary>
+        ''' <param name="iTime"></param>
+        ''' <param name="dNoData"></param>
+        ''' <param name="layer"></param>
+        ''' <returns></returns>
+        Public Overrides Function Populate(iTime As Integer, dNoData As Double, Optional layer As cEcospaceLayer = Nothing) As Boolean
+
+            If MyBase.Populate(iTime, dNoData, layer) Then
+                ' Did 
+                If (Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow) Then
+                    For ir As Integer = 0 To Me.m_spaceData.InRow + 1
+                        For ic As Integer = 0 To Me.m_spaceData.InCol + 1
+                            If Me.m_lastXData(ir, ic) <> cCore.NULL_VALUE Then
+                                Me.m_spaceData.MonthlyXvel(Me.m_spaceData.MonthNow)(ir, ic) = CSng(Me.m_lastXData(ir, ic))
+                            End If
+                            If Me.m_lastYData(ir, ic) <> cCore.NULL_VALUE Then
+                                Me.m_spaceData.MonthlyYvel(Me.m_spaceData.MonthNow)(ir, ic) = CSng(Me.m_lastYData(ir, ic))
+                            End If
+                        Next
+                    Next
+                End If
+            End If
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
@@ -114,6 +180,16 @@ Namespace SpatialData
                 'MonthNow is the current month set Ecospace 1-12
                 'Advection layer are stored by month
                 layer.Cell(iRow, iCol, Me.m_spaceData.MonthNow) = sValueAtT
+
+                ' Also store this in the last map for beautiful copy and paste work
+                Select Case layer.Index
+                    Case 1
+                        Me.m_lastXData(iRow, iCol) = sValueAtT
+                    Case 2
+                        Me.m_lastYData(iRow, iCol) = sValueAtT
+                End Select
+                Me.m_iLastReceived = Me.m_spaceData.MonthNow
+
             Catch ex As Exception
 
                 Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"

@@ -140,13 +140,13 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerHabitatCapacity
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerHabitatCapacity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.Stored = False
             m_values.Add(val.varName, val)
 
             ' LayerHabitatCapacityInput
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerHabitatCapacityInput, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.Stored = False
             m_values.Add(val.varName, val)

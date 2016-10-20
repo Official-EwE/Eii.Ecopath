@@ -90,8 +90,8 @@ Namespace SpatialData
             Me.m_dgvFiles.AllowUserToResizeColumns = False
             Me.m_dgvFiles.AllowUserToResizeRows = False
             Me.m_dgvFiles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_dgvFiles.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.m_dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
             Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colError, Me.m_colFileName, Me.m_colTime})
@@ -113,7 +113,7 @@ Namespace SpatialData
             '
             Me.m_colError.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
             Me.m_colError.Frozen = True
-            Me.m_colError.HeaderText = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
+            Me.m_colError.HeaderText = ""
             Me.m_colError.Name = "m_colError"
             Me.m_colError.ReadOnly = True
             Me.m_colError.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
@@ -153,7 +153,7 @@ Namespace SpatialData
             'm_tbxName
             '
             Me.m_tbxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxName.Location = New System.Drawing.Point(80, 20)
             Me.m_tbxName.MaxLength = 100
             Me.m_tbxName.Name = "m_tbxName"
@@ -164,8 +164,8 @@ Namespace SpatialData
             '
             Me.m_tbxDescription.AcceptsReturn = True
             Me.m_tbxDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxDescription.Location = New System.Drawing.Point(80, 46)
             Me.m_tbxDescription.Multiline = True
             Me.m_tbxDescription.Name = "m_tbxDescription"
@@ -198,7 +198,7 @@ Namespace SpatialData
             'm_hdrFiles
             '
             Me.m_hdrFiles.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrFiles.CanCollapseParent = False
             Me.m_hdrFiles.CollapsedParentHeight = 71
             Me.m_hdrFiles.IsCollapsed = False
@@ -319,7 +319,7 @@ Namespace SpatialData
             'm_tbxDatePart
             '
             Me.m_tbxDatePart.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxDatePart.HideSelection = False
             Me.m_tbxDatePart.Location = New System.Drawing.Point(197, 67)
             Me.m_tbxDatePart.Name = "m_tbxDatePart"
@@ -330,7 +330,7 @@ Namespace SpatialData
             'm_hdrTime
             '
             Me.m_hdrTime.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrTime.CanCollapseParent = True
             Me.m_hdrTime.CollapsedParentHeight = 76
             Me.m_hdrTime.IsCollapsed = False
@@ -390,7 +390,7 @@ Namespace SpatialData
             'm_lblLocationSample
             '
             Me.m_lblLocationSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_lblLocationSample.Location = New System.Drawing.Point(82, 23)
             Me.m_lblLocationSample.Name = "m_lblLocationSample"
             Me.m_lblLocationSample.Size = New System.Drawing.Size(263, 18)
@@ -424,18 +424,19 @@ Namespace SpatialData
             'm_cmbVarName
             '
             Me.m_cmbVarName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbVarName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbVarName.FormattingEnabled = True
             Me.m_cmbVarName.Location = New System.Drawing.Point(80, 125)
             Me.m_cmbVarName.Name = "m_cmbVarName"
             Me.m_cmbVarName.Size = New System.Drawing.Size(361, 21)
+            Me.m_cmbVarName.Sorted = True
             Me.m_cmbVarName.TabIndex = 5
             '
             'm_hdrDescription
             '
             Me.m_hdrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrDescription.CanCollapseParent = True
             Me.m_hdrDescription.CollapsedParentHeight = 94
             Me.m_hdrDescription.IsCollapsed = False
