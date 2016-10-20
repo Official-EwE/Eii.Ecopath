@@ -871,7 +871,16 @@ Public Class cEcoSpace
         Dim stpwchEffort As New Stopwatch
 
         Try
-
+            'SET Dumpcb=False TO STOP DUMPING ALL C/B VALUES TO CSV FILE
+            'AND/OR RESET FILE PATHWAY FOR SAVING
+            Dim Dumpcb As Boolean
+            Dumpcb = True
+            'If m_tracerData.EcoSpaceConSimOn And Dumpcb Then
+            Dim CoutFile As String = ”C:\Users\Carl Walters\Documents\EwE output\spaceconc.csv”
+            Dim CoutWriter As New System.IO.StreamWriter(CoutFile, False)
+            Dim CoutVals() As String
+            ReDim CoutVals(3 + m_Data.NGroups)
+            'end If
             ReDim Fgear(m_EPdata.NumFleet)
             ReDim RelFopt(1)
             'stanza counters
@@ -910,6 +919,9 @@ Public Class cEcoSpace
             m_Data.TimeNow = 0
             m_Data.YearNow = 1
             Me.ForceBiomassWithEcosimTimeSeries(1)
+            ' hack to dump ecotracer C/B to csv file 
+
+
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
@@ -1174,9 +1186,57 @@ Public Class cEcoSpace
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'contaminant tracing
                 If m_tracerData.EcoSpaceConSimOn Then
+                    Dim itc As Integer, ntc As Integer
+                    Dim Derivcon(,,) As Single, Derivcon2(,,) As Single
+                    Dim totderivcon As Single
+                    ReDim Derivcon(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
+                    ReDim Derivcon2(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
 
-                    Me.runContaminantTracerSolveGrid()
+                    ntc = Me.estimateMaxTimestep()
 
+                    Me.runContaminantTracerExplicit1(Derivcon, Derivcon2, ntc)
+
+                    For itc = 2 To ntc
+                        Me.runSpaceCSolverThreads(CSng(ntc))
+
+                        'Me.runContaminantTracerSolveGrid()
+                        Me.runContaminantTracerExplicit1(Derivcon, Derivcon2, ntc)
+
+                        totderivcon = 0
+                        For ip = 0 To m_Data.NGroups
+                            For i = 1 To m_Data.InRow
+                                For j = 1 To m_Data.InCol
+                                    totderivcon = totderivcon + Derivcon(i, j, ip)
+                                Next
+                            Next
+                        Next
+
+
+                    Next
+                    Me.summarizeContaminantTracer()
+                    itc = ntc
+                    If Dumpcb Then  'hack to dump C/B values to csv file
+                        CoutVals(0) = CStr(itt) & ","
+                        For i = 1 To m_Data.InRow
+                            For j = 1 To m_Data.InCol
+                                CoutVals(1) = CStr(i) & ”,”
+                                CoutVals(2) = CStr(j) & ”,”
+                                CoutVals(3) = m_Data.Ccell(i, j, 0) & ”,”
+                                For ip = 1 To m_Data.NGroups
+                                    CoutVals(3 + ip) = CStr(m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)) & ”,”
+                                Next
+                                For ii As Integer = 0 To 3 + m_Data.NGroups
+                                    CoutWriter.Write(CoutVals(ii))
+                                Next
+                                CoutWriter.WriteLine()
+                            Next
+                        Next
+
+                        'Dim CoutWriter As New System.IO.StreamWriter(CoutFile, True)
+
+                        ' CoutWriter.Close()
+
+                    End If
                 End If 'm_tracerData.EcoSpaceConSimOn 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1211,7 +1271,7 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
+            CoutWriter.Close()
             ' Me.m_Data.AverageSpatialResults()
             Me.m_Data.SummarizeResultsByFleet(itt, Me.m_EPdata.cost, Me.m_search.Jobs)
 
@@ -1990,6 +2050,103 @@ Public Class cEcoSpace
 
     End Sub
 
+    Private Sub runSpaceCSolverThreads(ByVal timefactor As Single)
+        Dim solver As cSpaceSolver
+        Dim iFrstCell As Integer
+        Dim iLstCell As Integer
+        Dim etRunTime As Double
+
+
+
+        iFrstCell = 1
+        iLstCell = 0
+
+        ' Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        ' Console.WriteLine("Ecospace ThreadID = " & thrdID.ToString)
+
+        'Create one WaitHandle and pass it to all the threads
+        'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
+        'this allows any waiting threads to continue
+        Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
+        Dim stpTotRun As Stopwatch = Stopwatch.StartNew
+
+        Try
+
+            'set the shared thread increment counter to the number of threads
+            cSpaceSolver.ThreadIncrementer = m_spaceSolvers.Count
+
+            'Number of cells to compute for the current thread
+            Dim nCells As Integer
+            'Total number of cells that have been computed
+            Dim nCellsCompleted As Integer
+            'Loop counter
+            Dim iSolve As Integer
+
+            'loop through each solver, create a thread for it, and run it
+            For Each solver In m_spaceSolvers
+                iSolve += 1
+                'Compute the work load for each thread on the fly
+                'this prevents any rounding weirdness that could cause cSpaceSolver.ThreadIncrementer to not hit Zero
+                'Causing a deadlock on WaitOb.WaitOne()
+                nCells = Me.computeThreadLoad(m_Data.iTotalWaterCells, nCellsCompleted, m_spaceSolvers.Count, iSolve)
+
+                nCellsCompleted += nCells
+
+                iLstCell = iFrstCell + nCells - 1
+                If iLstCell > m_Data.iTotalWaterCells Then
+                    iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
+                End If
+
+                solver.FirstLastCells(iFrstCell, iLstCell)
+                solver.SetTimeStepC(m_Data.TimeStep / timefactor)
+                'same wait object for all the threads
+                'Once the thread counter has been Decrement to Zero
+                'the Wait object will be released by the solver
+                solver.WaitHandle = WaitOb
+
+                ThreadPool.QueueUserWorkItem(AddressOf solver.SolveC)
+
+                iFrstCell += nCells
+
+            Next solver
+
+            Debug.Assert((iSolve = Me.m_Data.nSpaceSolverThreads) And (m_spaceSolvers.Count = Me.m_Data.nSpaceSolverThreads), "Ecospace.runSpaceSolverThreads() Thread counters are incorrect.")
+            Debug.Assert(nCellsCompleted = m_Data.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
+            ' System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
+
+            'Not implemented on MONO
+            ' Me.dumpRunningThreadInfo("Before")
+
+            'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
+            If Not WaitOb.WaitOne() Then
+                Debug.Assert(False, "Timed out!")
+                cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
+            End If
+
+            etRunTime = stpTotRun.Elapsed.TotalSeconds
+
+            Me.UpdateThreadedResults()
+
+            stpTotRun.Stop()
+            'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
+            'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
+            'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
+
+            'Me.dumpCellComputeTimes()
+
+            WaitOb.Dispose()
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.Message)
+            Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
+        End Try
+
+        ' GC.Collect()
+
+    End Sub
+
     Private Sub runContaminantTracerSolveGrid()
         Dim i As Integer
         Dim j As Integer
@@ -1999,7 +2156,59 @@ Public Class cEcoSpace
 
         Me.grdslvConSim.FirstLastGroups(0, m_EPdata.NumGroups)
         'the grid solver has already been initialized with a reference to the contaminant tracing data
+        'Me.grdslvConSim.Solve(Nothing)
         Me.grdslvConSim.Solve(Nothing)
+
+        'ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
+
+        'For i = 1 To m_Data.InRow
+        '    For j = 1 To m_Data.InCol
+
+        '        iRgn = m_Data.Region(i, j)
+        '        If iRgn > m_Data.nRegions Then iRgn = 0
+
+        '        For ip = 0 To m_Data.NGroups
+        '            'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
+        '            Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
+        '            'ww i don't think this line should be here
+        '            'm_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
+        '            m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
+
+        '            If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
+
+        '            m_tracerData.TracerConcByRegion(iRgn, ip, itt) = m_tracerData.TracerConcByRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip)
+        '            m_tracerData.TracerCBRegion(iRgn, ip, itt) = m_tracerData.TracerCBRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
+
+        '        Next ip
+
+        '    Next j
+        'Next i
+
+        ''average contamintant results by region
+        'For iRgn = 0 To m_Data.nRegions
+        '    Dim nInRgn As Integer = m_Data.nCellsInRegion(iRgn)
+        '    If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 
+
+        '    For igrp As Integer = 0 To m_Data.NGroups
+        '        m_tracerData.TracerConcByRegion(iRgn, igrp, itt) = m_tracerData.TracerConcByRegion(iRgn, igrp, itt) / nInRgn
+        '        m_tracerData.TracerCBRegion(iRgn, igrp, itt) = m_tracerData.TracerCBRegion(iRgn, igrp, itt) / nInRgn
+        '    Next igrp
+        'Next iRgn
+
+
+    End Sub
+
+    Private Sub summarizeContaminantTracer()
+        Dim i As Integer
+        Dim j As Integer
+        Dim iRgn As Integer
+        Dim ip As Integer
+        Dim Wtr As Double
+
+        'Me.grdslvConSim.FirstLastGroups(0, m_EPdata.NumGroups)
+        'the grid solver has already been initialized with a reference to the contaminant tracing data
+        'Me.grdslvConSim.Solve(Nothing)
+        'Me.grdslvConSim.Solve(Nothing)
 
         ReDim m_tracerData.ConcMax(m_EPdata.NumGroups)
 
@@ -2012,7 +2221,8 @@ Public Class cEcoSpace
                 For ip = 0 To m_Data.NGroups
                     'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
                     Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
-                    m_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
+                    'ww i don't think this line should be here
+                    'm_Data.Ccell(i, j, ip) = Wtr * m_Data.Clast(i, j, ip) + (1 - Wtr) * m_Data.Ccell(i, j, ip)
                     m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
 
                     If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
@@ -2039,6 +2249,78 @@ Public Class cEcoSpace
 
     End Sub
 
+    Private Sub runContaminantTracerExplicit1(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
+        Dim i As Integer, j As Integer, iGrp As Integer
+        Dim Tst As Single
+
+        'set smaller timestep previously calculated in estimateMaxTimeStep
+        Tst = m_Data.TimeStep / CSng(ntc)
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    For iGrp = 0 To m_Data.NGroups
+                        Derivcon(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) +
+                            Bcw(i, j, iGrp) * m_Data.Ccell(i - 1, j, iGrp) +
+                            C(i, j, iGrp) * m_Data.Ccell(i + 1, j, iGrp) +
+                            d(i, j - 1, iGrp) * m_Data.Ccell(i, j - 1, iGrp) +
+                            e(i, j + 1, iGrp) * m_Data.Ccell(i, j + 1, iGrp) +
+                            m_Data.AMmTr(i, j, iGrp) * m_Data.Ccell(i, j, iGrp)
+                        'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                    Next
+                End If
+            Next
+        Next
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    For iGrp = 0 To m_Data.NGroups
+                        m_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+                        'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                    Next
+                End If
+            Next
+        Next
+
+    End Sub
+
+    Private Sub runContaminantTracerExplicit2(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
+        Dim i As Integer, j As Integer, iGrp As Integer
+        Dim Tst As Single
+
+        'set smaller timestep previously calculated in estimateMaxTimeStep
+        Tst = m_Data.TimeStep / CSng(ntc)
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    For iGrp = 0 To m_Data.NGroups
+                        Derivcon(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) +
+                            Bcw(i, j, iGrp) * m_Data.Ccell(i - 1, j, iGrp) +
+                            C(i, j, iGrp) * m_Data.Ccell(i + 1, j, iGrp) +
+                            d(i, j - 1, iGrp) * m_Data.Ccell(i, j - 1, iGrp) +
+                            e(i, j + 1, iGrp) * m_Data.Ccell(i, j + 1, iGrp) +
+                            m_Data.AMmTr(i, j, iGrp) * m_Data.Ccell(i, j, iGrp)
+                        'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
+                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                    Next
+                End If
+            Next
+        Next
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    For iGrp = 0 To m_Data.NGroups
+                        m_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + 0.5 * (3.0 * Derivcon(i, j, iGrp) - Derivcon2(i, j, iGrp)) * Tst
+                        'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                    Next
+                End If
+            Next
+        Next
+    End Sub
 
     Private Sub dumpGridRunTimes()
         Dim totCPU As Single
@@ -2544,8 +2826,8 @@ Public Class cEcoSpace
                     End If
 
                     'init the grid solver object
-                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, _
-                                       m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, _
+                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e,
+                                       m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol,
                                        m_Data.jEndCol, m_Data.IsMigratory, threadGroupsConSim, m_Data.UseExact)
 
                 Catch ex As Exception
@@ -2555,6 +2837,36 @@ Public Class cEcoSpace
                     cLog.Write(ex)
                 End Try
 
+            End If
+
+            'initialize contaminant tracer data
+            If m_tracerData.EcoSpaceConSimOn Then
+                'temporary ww
+                'm_Data.Ccell(6, 6, 0) = 300
+                'm_Data.Clast(6, 6, 0) = 300
+                'end temp
+                If m_tracerData.Czero(0) > 0 Then 'there is an initial environmental concentration, distribute over map
+                    Dim TinP As Single, Tcell As Single
+                    For i = 1 To m_Data.InRow
+                            For j = 1 To m_Data.InCol
+                                If m_Data.Depth(i, j) > 0 Then
+                                    Tcell = Tcell + 1
+                                    TinP = TinP + m_Data.RelCin(i, j)
+                                End If
+                            Next
+                        Next
+                    If TinP > 0 Then 'there is contaminant input at at least one cell
+                        For i = 1 To m_Data.InRow
+                            For j = 1 To m_Data.InCol
+                                If m_Data.Depth(i, j) > 0 Then
+                                    m_Data.Ccell(i, j, 0) = m_tracerData.Czero(0) * Tcell / TinP * m_Data.RelCin(i, j)
+                                    'm_Data.Ccell(i, j, 0) = m_tracerData.Czero(0) * m_Data.RelCin(i, j)
+                                    m_Data.Clast(i, j, 0) = m_Data.Ccell(i, j, 0)
+                                End If
+                            Next
+                        Next
+                    End If
+                End If
             End If
 
             m_Ecosim.InitializeDataInfo()
@@ -5408,6 +5720,48 @@ exitline:
 
     End Sub
 
+    Private Function estimateMaxTimestep()
+        Dim ntc As Integer
+        Dim i As Integer, j As Integer, iGrp As Integer
+        Dim Ceq As Single, Cin As Single, Cout As Single
+        Dim Terr As Single, Ttemp As Single, maxT As Single
+
+
+        maxT = m_Data.TimeStep
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                End If
+                For iGrp = 1 To m_Data.NGroups
+                    Cin = m_Data.Ftr(i, j, iGrp) '+ inflows from surrounding cells
+                    Cin = Cin + Bcw(i, j, iGrp) * m_Data.Ccell(i - 1, j, iGrp)
+                    Cin = Cin + C(i, j, iGrp) * m_Data.Ccell(i + 1, j, iGrp)
+                    Cin = Cin + d(i, j - 1, iGrp) * m_Data.Ccell(i, j - 1, iGrp)
+                    Cin = Cin + e(i, j + 1, iGrp) * m_Data.Ccell(i, j + 1, iGrp)
+                    Cout = -m_Data.AMmTr(i, j, iGrp)
+                    Ceq = Cin / Cout
+                    'calculate distance to equilibrium (%)
+                    Terr = CSng(2.0 * Math.Abs(Ceq - m_Data.Ccell(i, j, iGrp)) / (Ceq + m_Data.Ccell(i, j, iGrp) + 1.0E-30))
+                    If Terr < 0.5 Then
+                        Terr = 0.5
+                    End If
+                    'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
+                    'the timestep scales from (0.01 to 0.1) times 1/closs as ConcTr approaches Ceq
+                    Ttemp = CSng(0.1 / Terr / Cout)
+                    If Ttemp < maxT Then
+                        maxT = Ttemp
+                    End If
+                Next
+            Next
+        Next
+
+        ntc = Math.Ceiling(m_Data.TimeStep / maxT)
+
+        Return ntc
+
+    End Function
+
 #End Region
 
 #Region "Data summary"
@@ -6212,6 +6566,8 @@ exitline:
         Return newX
 
     End Function
+
+
 #End Region
 
 #Region "Summary stats"

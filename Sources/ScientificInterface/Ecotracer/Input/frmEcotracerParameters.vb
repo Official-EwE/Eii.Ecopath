@@ -34,7 +34,7 @@ Namespace Ecotracer
     ''' </summary>
     Public Class frmEcotracerParameters
 
-#Region "Private data"
+#Region " Private vars "
 
         Private m_fpScenarioName As cEwEFormatProvider = Nothing
         Private m_fpScenarioDescription As cEwEFormatProvider = Nothing
@@ -43,17 +43,17 @@ Namespace Ecotracer
         Private m_propEcosimConTracing As cBooleanProperty = Nothing
         Private m_propEcospaceConTracing As cBooleanProperty = Nothing
 
-#End Region
+#End Region ' Private vars
 
-#Region "Constructor"
+#Region " Constructor "
 
         Public Sub New()
             InitializeComponent()
         End Sub
 
-#End Region
+#End Region ' Constructor
 
-#Region " Events "
+#Region " Overloads and events "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
@@ -75,9 +75,10 @@ Namespace Ecotracer
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
+
         End Sub
 
-        Private Sub frmEcotracerParameters_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
             Me.CoreComponents = Nothing
 
@@ -103,7 +104,6 @@ Namespace Ecotracer
             SetTracerRunMode(eTracerRunModeTypes.Disabled)
         End Sub
 
-
         Private Sub rbSim_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbSim.Click
             SetTracerRunMode(eTracerRunModeTypes.RunSim)
         End Sub
@@ -112,7 +112,30 @@ Namespace Ecotracer
             SetTracerRunMode(eTracerRunModeTypes.RunSpace)
         End Sub
 
-#End Region ' Events
+        Private Sub OnVisitSAUP(sender As System.Object, e As System.EventArgs) _
+            Handles m_pbSAUP.Click
+            Me.OpenLink("http://www.seaaroundus.org/")
+        End Sub
+
+        Private Sub OnVisitFMIR(sender As System.Object, e As System.EventArgs) _
+            Handles m_pbFMIR.Click
+            ' ToDo: add FMIR sponsor link
+            'Me.OpenLink("http://?/")
+        End Sub
+
+        Private Sub OnVisitEU(sender As System.Object, e As System.EventArgs) _
+            Handles m_pbEU.Click
+            ' ToDo: add EU sponsor link
+            'Me.OpenLink("http://>")
+        End Sub
+
+        Private Sub OnVisitLenfest(sender As System.Object, e As System.EventArgs) _
+            Handles m_pbLenfest.Click
+            ' ToDo: add Lenfest sponsor link
+            'Me.OpenLink("http://?/")
+        End Sub
+
+#End Region ' Overloads and events
 
 #Region " Overrides "
 
@@ -214,9 +237,27 @@ Namespace Ecotracer
         Private Sub SetTracerRunMode(ByVal tracerRunMode As eTracerRunModeTypes)
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EnableEcotracer")
-
             cmd.Tag = tracerRunMode
             cmd.Invoke()
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Open an external link.
+        ''' </summary>
+        ''' <param name="strURL">The link to navigate to.</param>
+        ''' -----------------------------------------------------------------------
+        Private Sub OpenLink(strURL As String)
+
+            Try
+                Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                If (cmd IsNot Nothing) Then
+                    cmd.Invoke(strURL)
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "cEwEBioDivPlugin::NavigateTo(" & strURL & ")")
+            End Try
 
         End Sub
 

@@ -385,7 +385,7 @@
     <value>m_hdrScenario</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrScenario.Parent" xml:space="preserve">
     <value>$this</value>
@@ -418,7 +418,7 @@
     <value>m_hdrSponsors</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSponsors.Parent" xml:space="preserve">
     <value>$this</value>
@@ -432,115 +432,115 @@
   <data name="m_tlpSponsors.ColumnCount" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_pbSponsor1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbFMIR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_pbSponsor1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbFMIR.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="m_pbSponsor1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbFMIR.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 56</value>
   </data>
-  <data name="m_pbSponsor1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbFMIR.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="m_pbSponsor1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbFMIR.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor1.Name" xml:space="preserve">
-    <value>m_pbSponsor1</value>
+  <data name="&gt;&gt;m_pbFMIR.Name" xml:space="preserve">
+    <value>m_pbFMIR</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbFMIR.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbFMIR.Parent" xml:space="preserve">
     <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbFMIR.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_pbSponsor2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbEU.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_pbSponsor2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbEU.Location" type="System.Drawing.Point, System.Drawing">
     <value>166, 3</value>
   </data>
-  <data name="m_pbSponsor2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbEU.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 56</value>
   </data>
-  <data name="m_pbSponsor2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbEU.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="m_pbSponsor2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbEU.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor2.Name" xml:space="preserve">
-    <value>m_pbSponsor2</value>
+  <data name="&gt;&gt;m_pbEU.Name" xml:space="preserve">
+    <value>m_pbEU</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbEU.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbEU.Parent" xml:space="preserve">
     <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbEU.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_pbSponsor3.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="m_pbLenfest.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Zoom</value>
   </data>
-  <data name="m_pbSponsor3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbLenfest.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_pbSponsor3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbLenfest.Location" type="System.Drawing.Point, System.Drawing">
     <value>329, 3</value>
   </data>
-  <data name="m_pbSponsor3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbLenfest.Size" type="System.Drawing.Size, System.Drawing">
     <value>157, 56</value>
   </data>
-  <data name="m_pbSponsor3.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbLenfest.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="m_pbSponsor3.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbLenfest.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor3.Name" xml:space="preserve">
-    <value>m_pbSponsor3</value>
+  <data name="&gt;&gt;m_pbLenfest.Name" xml:space="preserve">
+    <value>m_pbLenfest</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbLenfest.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbLenfest.Parent" xml:space="preserve">
     <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbLenfest.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_pbSponsor4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_pbSAUP.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_pbSponsor4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_pbSAUP.Location" type="System.Drawing.Point, System.Drawing">
     <value>492, 3</value>
   </data>
-  <data name="m_pbSponsor4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_pbSAUP.Size" type="System.Drawing.Size, System.Drawing">
     <value>159, 56</value>
   </data>
-  <data name="m_pbSponsor4.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+  <data name="m_pbSAUP.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>CenterImage</value>
   </data>
-  <data name="m_pbSponsor4.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbSAUP.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor4.Name" xml:space="preserve">
-    <value>m_pbSponsor4</value>
+  <data name="&gt;&gt;m_pbSAUP.Name" xml:space="preserve">
+    <value>m_pbSAUP</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor4.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSAUP.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor4.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSAUP.Parent" xml:space="preserve">
     <value>m_tlpSponsors</value>
   </data>
-  <data name="&gt;&gt;m_pbSponsor4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_pbSAUP.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_tlpSponsors.Location" type="System.Drawing.Point, System.Drawing">
@@ -568,7 +568,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpSponsors.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbSponsor1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsor2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsor3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSponsor4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbFMIR" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbEU" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_pbLenfest" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_pbSAUP" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,Percent,25,Percent,25,Percent,25" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrInitialization.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -595,7 +595,7 @@
     <value>m_hdrInitialization</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.Parent" xml:space="preserve">
     <value>$this</value>
@@ -706,6 +706,6 @@
     <value>frmEcotracerParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

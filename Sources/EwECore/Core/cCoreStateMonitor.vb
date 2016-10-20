@@ -25,6 +25,7 @@ Option Strict On
 Imports EwECore.DataSources
 Imports EwEUtils.Core
 Imports System.ComponentModel
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -77,6 +78,8 @@ Public Class cCoreStateMonitor
     Private m_iEcospaceState As eCoreExecutionState = eCoreExecutionState.Idle
     ''' <summary>Ecotracer execution state flag.</summary>
     Private m_iEcotracerState As eCoreExecutionState = eCoreExecutionState.Idle
+    ''' <summary>Ecotracer execution result state flag.</summary>
+    Private m_iEcotracerResultState As eEcotracerRunState = eEcotracerRunState.None
 
     ''' <summary>Flag stating the current search mode.</summary>
     Private m_searchmode As eSearchModes = eSearchModes.NotInSearch
@@ -226,10 +229,10 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Private Sub CalcExecutionState(ByVal iEcopathState As eCoreExecutionState, _
-            ByVal iEcosimState As eCoreExecutionState, _
-            ByVal iEcospaceState As eCoreExecutionState, _
-            ByVal iEcotracerState As eCoreExecutionState, _
+    Private Sub CalcExecutionState(ByVal iEcopathState As eCoreExecutionState,
+            ByVal iEcosimState As eCoreExecutionState,
+            ByVal iEcospaceState As eCoreExecutionState,
+            ByVal iEcotracerState As eCoreExecutionState,
             Optional ByVal tsForceUpdate As TriState = TriState.UseDefault)
 
         Dim iState As eCoreExecutionState = eCoreExecutionState.Idle
@@ -244,7 +247,7 @@ Public Class cCoreStateMonitor
         bEcotracerStateChange = (iEcotracerState <> Me.m_iEcotracerState)
 
         ' No state changes?
-        If (Not bEcopathStateChange And Not bEcosimStateChange And Not bEcospaceStateChange And Not bEcotracerStateChange) And _
+        If (Not bEcopathStateChange And Not bEcosimStateChange And Not bEcospaceStateChange And Not bEcotracerStateChange) And
            (tsForceUpdate <> TriState.True) Then Return
 
         ' Accept ecopath state
@@ -289,19 +292,19 @@ Public Class cCoreStateMonitor
     ''' broadcasted when the data state of either Ecopath or Ecosim changes.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateDataState(ByVal bDatasourceModified As Boolean, _
-            ByVal bEcopathModified As Boolean, _
-            ByVal bEcosimModified As Boolean, _
-            ByVal bEcospaceModified As Boolean, _
-            ByVal bEcotracerModified As Boolean, _
-            ByVal bPluginModified As Boolean, _
+    Private Sub UpdateDataState(ByVal bDatasourceModified As Boolean,
+            ByVal bEcopathModified As Boolean,
+            ByVal bEcosimModified As Boolean,
+            ByVal bEcospaceModified As Boolean,
+            ByVal bEcotracerModified As Boolean,
+            ByVal bPluginModified As Boolean,
             Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
-        Dim bChange As Boolean = (bDatasourceModified <> Me.m_bDatasourceModified) Or _
-           (bEcopathModified <> Me.m_bEcopathModified) Or _
-           (bEcosimModified <> Me.m_bEcosimModified) Or _
-           (bEcospaceModified <> Me.m_bEcospaceModified) Or _
-           (bEcotracerModified <> Me.m_bEcotracerModified) Or _
+        Dim bChange As Boolean = (bDatasourceModified <> Me.m_bDatasourceModified) Or
+           (bEcopathModified <> Me.m_bEcopathModified) Or
+           (bEcosimModified <> Me.m_bEcosimModified) Or
+           (bEcospaceModified <> Me.m_bEcospaceModified) Or
+           (bEcotracerModified <> Me.m_bEcotracerModified) Or
            (bPluginModified <> Me.m_bPluginModified)
 
         ' Update flags
@@ -340,7 +343,7 @@ Public Class cCoreStateMonitor
 
 #Region " Data "
 
-    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource, _
+    Friend Sub UpdateDataState(ByVal ds As IEwEDataSource,
                                Optional ByVal tsSendUpdate As EwEUtils.Core.TriState = TriState.UseDefault)
 
         Dim bDatasourceModified As Boolean = False
@@ -362,9 +365,9 @@ Public Class cCoreStateMonitor
             bPluginModified = Me.m_core.PluginManager.IsDatabaseModified
         End If
 
-        Me.UpdateDataState(bDatasourceModified, bEcopathModified, _
-                           bEcosimModified, bEcospaceModified, _
-                           bEcotracerModified, bPluginModified, _
+        Me.UpdateDataState(bDatasourceModified, bEcopathModified,
+                           bEcosimModified, bEcospaceModified,
+                           bEcotracerModified, bPluginModified,
                            tsSendUpdate)
     End Sub
 
@@ -378,7 +381,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' <param name="cc">The core component that changed.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType, _
+    Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType,
                                     Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
         Dim pm As EwEPlugin.cPluginManager = Me.m_core.PluginManager
@@ -388,10 +391,10 @@ Public Class cCoreStateMonitor
         Dim bHandled As Boolean = False
 
         Select Case cc
-            Case eCoreComponentType.Core, _
-                 eCoreComponentType.DataSource, _
-                 eCoreComponentType.External, _
-                 eCoreComponentType.NotSet, _
+            Case eCoreComponentType.Core,
+                 eCoreComponentType.DataSource,
+                 eCoreComponentType.External,
+                 eCoreComponentType.NotSet,
                  eCoreComponentType.SearchObjective
                 ' NOP
 
@@ -399,16 +402,16 @@ Public Class cCoreStateMonitor
                 SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
                 bHandled = True
 
-            Case eCoreComponentType.EcoSim, _
-                 eCoreComponentType.EcoSimFitToTimeSeries, _
-                 eCoreComponentType.EcoSimMonteCarlo, _
-                 eCoreComponentType.FishingPolicySearch, _
-                 eCoreComponentType.ShapesManager, _
+            Case eCoreComponentType.EcoSim,
+                 eCoreComponentType.EcoSimFitToTimeSeries,
+                 eCoreComponentType.EcoSimMonteCarlo,
+                 eCoreComponentType.FishingPolicySearch,
+                 eCoreComponentType.ShapesManager,
                  eCoreComponentType.TimeSeries
                 SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
                 bHandled = True
 
-            Case eCoreComponentType.EcoSpace, _
+            Case eCoreComponentType.EcoSpace,
                  eCoreComponentType.MPAOptimization
                 Me.SetEcospaceLoaded(Me.HasEcospaceLoaded(), tsSendUpdate, False)
                 bHandled = True
@@ -447,15 +450,15 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcopathLoaded(ByVal bHasModel As Boolean, _
+    Friend Sub SetEcopathLoaded(ByVal bHasModel As Boolean,
                                 Optional ByVal tsForceUpdate As TriState = TriState.UseDefault)
         ' Update execution state
         If bHasModel Then
             ' Switch to ecopath loaded. All other model states must be reset to either idle or loaded
-            Me.CalcExecutionState(eCoreExecutionState.EcopathLoaded, _
-                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
-                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState), _
+            Me.CalcExecutionState(eCoreExecutionState.EcopathLoaded,
+                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState),
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
+                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState),
                 tsForceUpdate)
         Else
             Me.CalcExecutionState(eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, tsForceUpdate)
@@ -471,9 +474,9 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcopathState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(eCoreExecutionState.EcopathInitialized, _
-            DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
-            DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(eCoreExecutionState.EcopathInitialized,
+            DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState),
+            DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
             DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -486,9 +489,9 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcopathState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(eCoreExecutionState.EcopathRunning, _
-                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(eCoreExecutionState.EcopathRunning,
+                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState),
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -502,9 +505,9 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcopathState <> eCoreExecutionState.EcopathRunning) Then Return
         ' Update execution state
-        Me.CalcExecutionState(eCoreExecutionState.EcopathCompleted, _
-                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(eCoreExecutionState.EcopathCompleted,
+                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState),
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -517,9 +520,9 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcopathState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(eCoreExecutionState.PSDCompleted, _
-                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState), _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(eCoreExecutionState.PSDCompleted,
+                DirectCast(Math.Min(Me.m_iEcosimState, eCoreExecutionState.EcosimLoaded), eCoreExecutionState),
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -540,15 +543,15 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcoSimLoaded(ByVal bHasScenario As Boolean, _
-                               Optional ByVal tsForceUpdate As TriState = TriState.UseDefault, _
+    Friend Sub SetEcoSimLoaded(ByVal bHasScenario As Boolean,
+                               Optional ByVal tsForceUpdate As TriState = TriState.UseDefault,
                                Optional ByVal bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             ' Switch to ecosim loaded state. Space and Tracer states must be reset to either idle or loaded
-            Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimLoaded, _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
-                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState), _
+            Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimLoaded,
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
+                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState),
                 tsForceUpdate)
         Else
             Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.Idle, eCoreExecutionState.Idle, eCoreExecutionState.Idle, tsForceUpdate)
@@ -570,22 +573,22 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcosimState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimInitialized, _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimInitialized,
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' State change entry point; to be called when an Ecosim scenario is started.
+    ''' State change entry point; to be called when an Ecosim run is started.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Friend Sub SetEcosimRun()
         ' Check for invalid state transitions
         If (Me.m_iEcosimState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimRunning, _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimRunning,
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -595,15 +598,16 @@ Public Class cCoreStateMonitor
     ''' completed its timesteps.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcosimCompleted()
+    Friend Sub SetEcosimCompleted(ByVal bEcotracerOn As Boolean)
         ' Check for invalid state transitions
         If (Me.m_iEcosimState <> eCoreExecutionState.EcosimRunning) Then Return
 
         Me.m_bRequiresEcosimFullInit = False
+        Me.m_iEcotracerResultState = cSystemUtils.IIF(bEcotracerOn, eEcotracerRunState.Ecosim, eEcotracerRunState.None)
 
         ' Update execution state
-        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimCompleted, _
-                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState), _
+        Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimCompleted,
+                DirectCast(Math.Min(Me.m_iEcospaceState, eCoreExecutionState.EcospaceLoaded), eCoreExecutionState),
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -624,14 +628,14 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcospaceLoaded(ByVal bHasScenario As Boolean, _
-                                 Optional ByVal tsForceUpdate As TriState = TriState.UseDefault, _
+    Friend Sub SetEcospaceLoaded(ByVal bHasScenario As Boolean,
+                                 Optional ByVal tsForceUpdate As TriState = TriState.UseDefault,
                                 Optional ByVal bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
             ' Switch to ecospace loaded state. Tracer state must be reset to either idle or loaded
-            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceLoaded, _
-                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState), _
+            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceLoaded,
+                DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState),
                 tsForceUpdate)
         Else
             Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.Idle, Me.m_iEcotracerState, tsForceUpdate)
@@ -653,7 +657,7 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcosimState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceInitialized, _
+        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceInitialized,
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -666,7 +670,7 @@ Public Class cCoreStateMonitor
         ' Check for invalid state transitions
         If (Me.m_iEcosimState = eCoreExecutionState.Idle) Then Return
         ' Update execution state
-        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceRunning, _
+        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceRunning,
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -676,11 +680,13 @@ Public Class cCoreStateMonitor
     ''' completed its timesteps.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcospaceCompleted()
+    Friend Sub SetEcospaceCompleted(ByVal bEcotracerOn As Boolean)
         ' Check for invalid state transitions
         If (Me.m_iEcospaceState <> eCoreExecutionState.EcospaceRunning) Then Return
+        Me.m_iEcotracerResultState = cSystemUtils.IIF(bEcotracerOn, eEcotracerRunState.Ecospace, eEcotracerRunState.None)
+
         ' Update execution state
-        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceCompleted, _
+        Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceCompleted,
                 DirectCast(Math.Min(Me.m_iEcotracerState, eCoreExecutionState.EcotracerLoaded), eCoreExecutionState))
     End Sub
 
@@ -701,8 +707,8 @@ Public Class cCoreStateMonitor
     ''' false   - do NOT send update
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetEcotracerLoaded(ByVal bHasScenario As Boolean, _
-                                  Optional ByVal tsForceUpdate As TriState = TriState.UseDefault, _
+    Friend Sub SetEcotracerLoaded(ByVal bHasScenario As Boolean,
+                                  Optional ByVal tsForceUpdate As TriState = TriState.UseDefault,
                                   Optional ByVal bResetDataState As Boolean = True)
         ' Update execution state
         If bHasScenario Then
@@ -857,6 +863,16 @@ Public Class cCoreStateMonitor
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Returns whether Ecotracer results have been computed for the last 
+    ''' <see cref="HasEcosimRan()">Ecosim run</see> .
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasEcotracerRanForEcosim() As Boolean
+        Return Me.HasEcosimRan And Me.m_iEcotracerResultState = eEcotracerRunState.Ecosim
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns whether an Ecospace scenario has been loaded.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -889,6 +905,16 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function HasEcospaceRan() As Boolean
         Return Me.m_iEcospaceState = eCoreExecutionState.EcospaceCompleted
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether Ecotracer results have been computed for the last 
+    ''' <see cref="HasEcospaceRan()">Ecospace run</see> .
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasEcotracerRanForEcospace() As Boolean
+        Return Me.HasEcospaceRan And Me.m_iEcotracerResultState = eEcotracerRunState.Ecospace
     End Function
 
     ''' -----------------------------------------------------------------------

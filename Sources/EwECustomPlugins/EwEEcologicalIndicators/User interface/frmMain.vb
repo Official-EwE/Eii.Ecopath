@@ -486,7 +486,7 @@ Public Class frmMain
     Private Sub OnVisitCSIC(sender As System.Object, e As System.EventArgs) _
         Handles m_pbCSIC.Click
         ' User wants to visit CSIC
-        Me.OpenLink("http://www.csic.es/web/guest/home")
+        Me.OpenLink("http://www.csic.es/")
     End Sub
 
     Private Sub OnVisitICM(sender As System.Object, e As System.EventArgs) _

@@ -39,8 +39,9 @@ Namespace Ecotracer
             ConcEnv
             ConcImmBiomass
             DirectAbsorptionRate
-            DecayRate
-            ExcretionRate
+            PhysicalDecayRate
+            AssimProp
+            MetablismRate
         End Enum
 
         Public Sub New()
@@ -69,8 +70,9 @@ Namespace Ecotracer
             Me(0, eColumnTypes.ConcEnv) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_INITIAL)
             Me(0, eColumnTypes.ConcImmBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_IN_IMM_B)
             Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.DecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DECAY_RATE_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.ExcretionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_EXCRETION_RATE)
+            Me(0, eColumnTypes.PhysicalDecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYSICAL_DECAY_RATE_UNIT, eUnitType.Time)
+            Me(0, eColumnTypes.AssimProp) = New EwEColumnHeaderCell(SharedResources.HEADER_EXCRETION_RATE)
+            Me(0, eColumnTypes.MetablismRate) = New EwEColumnHeaderCell(SharedResources.HEADER_METABOLISMRATE_UNIT, eUnitType.Time)
 
             Me.FixedColumns = 2
 
@@ -96,8 +98,9 @@ Namespace Ecotracer
                 Me(iRow, eColumnTypes.ConcEnv) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CZero)
                 Me(iRow, eColumnTypes.ConcImmBiomass) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CImmig)
                 Me(iRow, eColumnTypes.DirectAbsorptionRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CEnvironment)
-                Me(iRow, eColumnTypes.DecayRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CDecay)
-                Me(iRow, eColumnTypes.ExcretionRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CExcretionRate)
+                Me(iRow, eColumnTypes.PhysicalDecayRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CPhysicalDecayRate)
+                Me(iRow, eColumnTypes.AssimProp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CAssimilationProp)
+                Me(iRow, eColumnTypes.MetablismRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.CMetablismRate)
 
             Next iGroup
 

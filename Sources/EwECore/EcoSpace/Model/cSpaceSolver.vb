@@ -113,6 +113,7 @@ Public Class cSpaceSolver
     Private VulPred() As Single
     Private ig As Integer
     Private pbb() As Single
+    Private TimeStepC As Single
 
     'These are total sums for every cell, so must be summed for each thread seperately, then combined after they've all run
     'Public BtimeLocal() As Single
@@ -278,6 +279,9 @@ Public Class cSpaceSolver
         iLstCell = iLastCell
     End Sub
 
+    Public Sub SetTimeStepC(ByVal timestpc As Single)
+        TimeStepC = timestpc
+    End Sub
 
     ''' <summary>
     ''' Do any processing necessary at the start of a new year
@@ -379,7 +383,50 @@ Public Class cSpaceSolver
 
     End Sub
 
+    Public Sub SolveC(ByVal obParam As Object)
+        'For our purposes here we are ignoring the obParam argument 
+        'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
 
+        ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
+
+        'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        'Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+        'Console.WriteLine("     N Map Cells = " & (iLstCell - iFrstCell + 1).ToString)
+
+        'Me.m_stpWatch.Reset()
+        Me.m_stpWatch.Start()
+
+        Try
+            Dim iCell As Integer
+
+            'do the processing here
+            For iCell = iFrstCell To iLstCell
+
+                Debug.Assert(Me.m_Data.Depth(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell)) > 0, "Opps Ecospace iWaterCellIndex() and jWaterCellIndex() contain land cells.")
+                'iCell is the linear index of the two dimensional spatial array
+                'iWaterCellIndex(iCell) and jWaterCellIndex(iCell) were populted with the indexes(irow,jcol) of water cells only during initialization
+                'Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
+                SolveCellc(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
+
+                'Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
+            Next iCell
+
+        Catch ex As Exception
+            cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        'set signal state to 'signaled' 
+        'the processing has finished SignalState.WaitOne() will return immediately
+        If Interlocked.Decrement(cSpaceSolver.ThreadIncrementer) = 0 Then
+            WaitHandle.Set()
+        End If
+
+        Me.m_stpWatch.Stop()
+        Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
+        ' Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time(sec)" & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
+
+    End Sub
 #End Region
 
     Private Function SolveCell(ByVal i As Integer, ByVal j As Integer) As Boolean
@@ -548,8 +595,17 @@ Public Class cSpaceSolver
                     m_Data.AMmTr(i, j, iGrp) = -Closs(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
                     If m_Data.AMmTr(i, j, iGrp) >= 0 Then m_Data.AMmTr(i, j, iGrp) = -1.0E+30
                     '   If m_Data.SpaceTime And FastIntegrate(ip) = False Then
-                    m_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + m_Data.Ccell(i, j, iGrp) / TimeStep2 '/ m_Data.TimeStep
-                    m_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStep2 '/ m_Data.TimeStep
+                    '  m_data_Cder(i, j, iGrp) = Cintotal(iGrp) + m_Data.AMmTr(i, j, iGrp) + inflows from surrounding cells
+                    'old backward euler
+                    'm_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + m_Data.Ccell(i, j, iGrp) / m_data.TimeStep
+                    'm_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / m_Data.TimeStep
+                    'new BDF2
+                    'm_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + (1.3333F * m_Data.Ccell(i, j, iGrp) - 0.3333F * m_Data.Clast(i, j, iGrp)) / TimeStep2 '/ m_Data.TimeStep
+                    'm_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStep2 '/ m_Data.TimeStep
+                    'THIS NO LONGER DOES A TIMESTEP
+                    'This will no longer be used SolveGrid!
+                    'This is only to calculate the expected timestep
+                    'The timestep version of this is now calculated in SolveCellC
                     '  End If
                 Next
             End If
@@ -633,6 +689,57 @@ Public Class cSpaceSolver
             cLog.Write(ex)
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException(Me.ToString & ".SolveCell() Error: " & ex.Message)
+        End Try
+
+    End Function
+
+    Private Function SolveCellC(ByVal i As Integer, ByVal j As Integer) As Boolean
+        Dim iGrp As Integer
+        Dim PopWt As Single
+        Dim CellAreaKM2 As Single
+        Dim TimeStep2c As Single
+
+        Try
+            ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
+            ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
+            'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
+            TimeStep2c = CSng(TimeStepC * 0.66667)
+
+            'Cell area in KM2 at the equator * relative width of the cell
+            CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
+
+            For iGrp = 0 To m_Data.NGroups
+                m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
+            Next
+
+            m_ConTracer.loss = loss 'set loss to ecospace loss for this cell
+            m_ConTracer.ConDeriv(BB, Derivcon, Cintotal, Closs, m_Data.RelCin(i, j), True)
+
+            For iGrp = 0 To m_Data.NGroups
+                m_Data.Ftr(i, j, iGrp) = Cintotal(iGrp)
+                m_Data.AMmTr(i, j, iGrp) = -Closs(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
+                If m_Data.AMmTr(i, j, iGrp) >= 0 Then m_Data.AMmTr(i, j, iGrp) = -1.0E+30
+                '   If m_Data.SpaceTime And FastIntegrate(ip) = False Then
+                '  m_data_Cder(i, j, iGrp) = Cintotal(iGrp) + m_Data.AMmTr(i, j, iGrp) + inflows from surrounding cells
+                'old backward euler
+                'm_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + m_Data.Ccell(i, j, iGrp) / m_data.TimeStep
+                'm_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / m_Data.TimeStep
+                'new BDF2
+                'm_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + m_Data.Ccell(i, j, iGrp) / TimeStepC
+                'm_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + (1.3333F * m_Data.Ccell(i, j, iGrp) - 0.3333F * m_Data.Clast(i, j, iGrp)) / TimeStep2c '/ m_Data.TimeStep
+                'm_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStepC '/ m_Data.TimeStep
+                'm_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStep2c '/ m_Data.TimeStep
+
+                '  End If
+            Next
+
+
+            Return True
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.StackTrace)
+            Throw New ApplicationException(Me.ToString & ".SolveCellc() Error: " & ex.Message)
         End Try
 
     End Function

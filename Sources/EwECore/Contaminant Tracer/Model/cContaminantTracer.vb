@@ -71,14 +71,15 @@ Public Class cContaminantTracer
 
     Public Sub Cupdate(ByVal Biom() As Single)
         Dim i As Integer, istep As Integer, Ceq As Single, Tst As Single, InputMult As Single
-        Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, ConCtot As Single
+        Dim maxT As Single, nstep As Integer, Ttemp As Single, Terr As Single, tempsum As Single
+        Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, ConCtot As Single, Derivcon2() As Single
 
-        ReDim Derivcon(m_EPData.NumGroups), Cintotal(m_EPData.NumGroups), Closs(m_EPData.NumGroups)
+        ReDim Derivcon(m_EPData.NumGroups), Cintotal(m_EPData.NumGroups), Closs(m_EPData.NumGroups), Derivcon2(m_EPData.NumGroups)
 
         'update change in Contaminant concentrations for 1 month--call after first call to derivt
         'in adamsbasforth, rk4
         'use Closs first to calculate total uptake from environment as loss to env conc
-        Tst = 1.0# / (12 * 3)
+        'Tst = 1.0# / (12 * 30)
         ConcTr(m_EPData.NumGroups + 1) = 0
 
         If m_TracerData.ConForceNumber > 0 Then
@@ -88,19 +89,56 @@ Public Class cContaminantTracer
             InputMult = 1
         End If
 
-        For istep = 1 To 3
+        'find the maximum allowable timestep
+        ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
+        maxT = 1.0# / 12
+        For i = 0 To m_EPData.NumGroups
+            'calculate equilibrium state estimate
+            Ceq = CSng(Cintotal(i) / (Closs(i)) + 1.0E-20)
+            'calculate distance to equilibrium (%)
+            Terr = CSng(2.0 * Math.Abs(Ceq - ConcTr(i)) / (Ceq + ConcTr(i)))
+            If Terr < 0.1 Then
+                'this forces the maximum timestep size to be 1/closs
+                Terr = 0.1
+            End If
+            'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
+            'the timestep scales from (0.01 to 1.0) times 1/closs as ConcTr approaches Ceq
+            Ttemp = CSng(0.001 / Terr / Closs(i))
+            If Ttemp < maxT Then
+                maxT = Ttemp
+            End If
+        Next
+        nstep = CInt(Math.Ceiling(1.0 / 12.0 / maxT))
+        Tst = CSng(1.0# / (12 * nstep))
+
+        'Euler 1st step
+        For i = 0 To m_EPData.NumGroups
+            ConcTr(i) = ConcTr(i) + Derivcon(i) * Tst
+            Derivcon2(i) = Derivcon(i)
+        Next
+
+        'Adams bashford steps 2-N
+        For istep = 2 To nstep
             ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
-            ConCtot = 0
             For i = 0 To m_EPData.NumGroups
-                ConCtot = ConCtot + ConcTr(i)
-                Ceq = CSng(Cintotal(i) / (Closs(i) + 1.0E-20))
-                ConcTr(i) = CSng(Ceq + (ConcTr(i) - Ceq) * Math.Exp(-Closs(i) * Tst))
-                'ESData.ConcTr(i) =ConcTr(i) + Derivcon(i) * Tst
-                If istep = 3 Then
-                    ConcTr(m_EPData.NumGroups + 1) = ConcTr(m_EPData.NumGroups + 1) + ConcTr(i)
-                End If
+                'ConCtot = ConCtot + ConcTr(i)
+                'Analytic solution assuming Cintotal is constant (this does not conserve mass in general)
+                'Ceq = CSng(Cintotal(i) / (Closs(i) + 1.0E-20))
+                'ConcTr(i) = CSng(Ceq + (ConcTr(i) - Ceq) * Math.Exp(-Closs(i) * Tst))
+                'Euler
+                'ConcTr(i) = ConcTr(i) + Derivcon(i) * Tst
+                'Adams Bashford multistep
+                ConcTr(i) = CSng(ConcTr(i) + (3.0 * Derivcon(i) - Derivcon2(i)) * Tst / 2.0)
+                Derivcon2(i) = Derivcon(i)
             Next
         Next
+        'Sum up the total concentration in the last ConcTr position
+        tempsum = 0
+        For i = 0 To m_EPData.NumGroups
+            ConcTr(m_EPData.NumGroups + 1) = ConcTr(m_EPData.NumGroups + 1) + ConcTr(i)
+            tempsum = tempsum + Derivcon(i)
+        Next
+
     End Sub
 
 
@@ -128,13 +166,14 @@ Public Class cContaminantTracer
             i = m_ESData.ilink(ii) : j = m_ESData.jlink(ii)
             ConFlow = ConKtrophic(ii) * ConcTr(i) '(ConKtrophic(ii) = eat / biomass(iPrey))
             ' m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConFlow * (1 - m_EPData.GS(j)) 
-            m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConFlow * (1 - m_EPData.GS(j)) * (1 - m_TracerData.CexcretionRate(j))
+            m_TracerData.Cinflow(j) = m_TracerData.Cinflow(j) + ConFlow * (1 - m_TracerData.CassimProp(j))
 
             'flow to environment of consumed contaminant excreted over all trophic flows
-            ExcretToEnv = ExcretToEnv + ConFlow * (1 - m_EPData.GS(j)) * m_TracerData.CexcretionRate(j)
+            'ExcretToEnv = ExcretToEnv + ConFlow * (1 - m_EPData.GS(j)) * m_TracerData.CassimProp(j)
+            ExcretToEnv = ExcretToEnv + ConFlow * m_TracerData.CassimProp(j)
 
             For K = m_EPData.NumLiving + 1 To m_EPData.NumGroups
-                m_TracerData.Cinflow(K) = m_TracerData.Cinflow(K) + m_EPData.GS(j) * ConFlow * m_EPData.DF(j, K - m_EPData.NumLiving)
+                'm_TracerData.Cinflow(K) = m_TracerData.Cinflow(K) + m_EPData.GS(j) * ConFlow * m_EPData.DF(j, K - m_EPData.NumLiving)
             Next
 
         Next
@@ -176,6 +215,7 @@ Public Class cContaminantTracer
         Closs(0) = 0
         For i = 1 To m_EPData.NumGroups
             Closs(0) = Closs(0) + m_TracerData.Cenv(i) * Biom(i)
+            ExcretToEnv = ExcretToEnv + ConcTr(i) * m_TracerData.CmetabolismRate(i)
         Next
         DetToEnv = 0
         For i = m_EPData.NumLiving + 1 To m_EPData.NumGroups
@@ -202,7 +242,7 @@ Public Class cContaminantTracer
 
             'and set up total instantaneous loss rate (note m_tracer.CoutFlow nonzero only for i=0)
             'jb for Ecospace loss will need to be ecospace loss 
-            Closs(i) = loss(i) / Biom(i) + m_TracerData.cdecay(i) + m_TracerData.CoutFlow(i) + Cgradloss(i) '+ 1E-20
+            Closs(i) = loss(i) / Biom(i) + m_TracerData.cdecay(i) + m_TracerData.CoutFlow(i) + Cgradloss(i) + m_TracerData.CmetabolismRate(i) '+ 1E-20
             Derivcon(i) = Cintotal(i) - Closs(i) * ConcTr(i)
             'Ceq = Cintotal / Closs
             'update concentration over one month assuming constant inflow and loss over month
@@ -256,9 +296,9 @@ Public Class cContaminantTracer
         Dim igrp As Integer
         For igrp = 0 To m_EPData.NumGroups + 1
             TracerData.TracerConc(igrp, iTime) = Me.ConcTr(igrp)
-            If igrp <= m_EPData.NumGroups Then
-                If Biomass(igrp) > 0 Then TracerData.TracerConc(igrp, iTime) = TracerData.TracerConc(igrp, iTime) / Biomass(igrp)
-            End If
+            'If igrp <= m_EPData.NumGroups Then
+            'If Biomass(igrp) > 0 Then TracerData.TracerConc(igrp, iTime) = TracerData.TracerConc(igrp, iTime) / Biomass(igrp)
+            'End If
         Next igrp
     End Sub
 

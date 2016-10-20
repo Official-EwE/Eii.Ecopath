@@ -1563,15 +1563,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecosim data not available.
-        '''</summary>
-        Public ReadOnly Property GENERIC_ECOSIM_NO_DATA_AVAILABLE() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_ECOSIM_NO_DATA_AVAILABLE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Ecospace.
         '''</summary>
         Public ReadOnly Property GENERIC_ECOSPACE() As String
@@ -4326,6 +4317,33 @@ Namespace My.Resources
         Public ReadOnly Property VALUE_PREVIEW() As String
             Get
                 Return ResourceManager.GetString("VALUE_PREVIEW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to all regions.
+        '''</summary>
+        Public ReadOnly Property VALUE_REGION_ALL() As String
+            Get
+                Return ResourceManager.GetString("VALUE_REGION_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to region {0}.
+        '''</summary>
+        Public ReadOnly Property VALUE_REGION_N() As String
+            Get
+                Return ResourceManager.GetString("VALUE_REGION_N", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to undefined region.
+        '''</summary>
+        Public ReadOnly Property VALUE_REGION_UNDEFINED() As String
+            Get
+                Return ResourceManager.GetString("VALUE_REGION_UNDEFINED", resourceCulture)
             End Get
         End Property
     End Module

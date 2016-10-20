@@ -30,7 +30,7 @@ Imports EwEUtils.Core
 Public Class cEcotracerGroupInput
     Inherits cCoreGroupBase
 
-#Region "Constructor"
+#Region " Constructor "
 
     Friend Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
         MyBase.New(theCore)
@@ -65,12 +65,17 @@ Public Class cEcotracerGroupInput
 
             ' CDecay
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CDecay, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CDecay))
+            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CPhysicalDecayRate))
             Me.m_values.Add(val.varName, val)
 
-            ' CExcretionRate
+            ' CAssimilationProp
             meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CExcretionRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CExcretionRate))
+            val = New cValue(New Single, eVarNameFlags.CAssimilationProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CAssimilationProp))
+            Me.m_values.Add(val.varName, val)
+
+            ' CAssimilationProp
+            meta = New cVariableMetaData(0 + Single.Epsilon, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CMetablismRate))
             Me.m_values.Add(val.varName, val)
 
             'set status flags to default values
@@ -84,7 +89,7 @@ Public Class cEcotracerGroupInput
 
     End Sub
 
-#End Region
+#End Region ' Constructor
 
 #Region " Variable via dot(.) operator"
 
@@ -120,21 +125,31 @@ Public Class cEcotracerGroupInput
 
     Public Property CDecay() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CDecay), Single)
+            Return CType(GetVariable(eVarNameFlags.CPhysicalDecayRate), Single)
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CDecay, value)
+            SetVariable(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
     End Property
 
-    Public Property CExcretionRate() As Single
+    Public Property CAssimilationProp() As Single
         Get
-            Return CType(GetVariable(eVarNameFlags.CExcretionRate), Single)
+            Return CType(GetVariable(eVarNameFlags.CAssimilationProp), Single)
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CExcretionRate, value)
+            SetVariable(eVarNameFlags.CAssimilationProp, value)
+        End Set
+    End Property
+
+    Public Property CMetablismRate() As Single
+        Get
+            Return CType(GetVariable(eVarNameFlags.CMetablismRate), Single)
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.CMetablismRate, value)
         End Set
     End Property
 
@@ -181,11 +196,11 @@ Public Class cEcotracerGroupInput
     Public Property CDecayStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CDecay)
+            Return GetStatus(eVarNameFlags.CPhysicalDecayRate)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CDecay, value)
+            SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
 
     End Property
@@ -193,11 +208,11 @@ Public Class cEcotracerGroupInput
     Public Property CExcretionRateStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CExcretionRate)
+            Return GetStatus(eVarNameFlags.CAssimilationProp)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CExcretionRate, value)
+            SetStatus(eVarNameFlags.CAssimilationProp, value)
         End Set
 
     End Property

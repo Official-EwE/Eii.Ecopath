@@ -43,6 +43,7 @@ Partial Class frmEcotracerOutput
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcotracerOutput))
         Me.m_zgc = New ZedGraph.ZedGraphControl()
         Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -74,47 +75,34 @@ Partial Class frmEcotracerOutput
         '
         'm_zgc
         '
-        Me.m_zgc.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_zgc.Location = New System.Drawing.Point(0, 0)
+        resources.ApplyResources(Me.m_zgc, "m_zgc")
         Me.m_zgc.Name = "m_zgc"
-        Me.m_zgc.ScrollGrace = 0.0R
-        Me.m_zgc.ScrollMaxX = 0.0R
-        Me.m_zgc.ScrollMaxY = 0.0R
-        Me.m_zgc.ScrollMaxY2 = 0.0R
-        Me.m_zgc.ScrollMinX = 0.0R
-        Me.m_zgc.ScrollMinY = 0.0R
-        Me.m_zgc.ScrollMinY2 = 0.0R
-        Me.m_zgc.Size = New System.Drawing.Size(672, 557)
-        Me.m_zgc.TabIndex = 0
+        Me.m_zgc.ScrollGrace = 0R
+        Me.m_zgc.ScrollMaxX = 0R
+        Me.m_zgc.ScrollMaxY = 0R
+        Me.m_zgc.ScrollMaxY2 = 0R
+        Me.m_zgc.ScrollMinX = 0R
+        Me.m_zgc.ScrollMinY = 0R
+        Me.m_zgc.ScrollMinY2 = 0R
         '
         'm_lbGroups
         '
         Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Black
         Me.m_lbGroups.AllGroupsItemText = "(Environment)"
-        Me.m_lbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
         Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
         Me.m_lbGroups.FormattingEnabled = True
         Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayVisibleOnly
-        Me.m_lbGroups.IntegralHeight = False
         Me.m_lbGroups.IsAllGroupsItemSelected = False
-        Me.m_lbGroups.Location = New System.Drawing.Point(0, 18)
-        Me.m_lbGroups.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lbGroups.Name = "m_lbGroups"
         Me.m_lbGroups.SelectedGroup = Nothing
         Me.m_lbGroups.SelectedGroupIndex = -1
         Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.m_lbGroups.Size = New System.Drawing.Size(270, 268)
         Me.m_lbGroups.SortThreshold = -9999.0!
-        Me.m_lbGroups.TabIndex = 1
         '
         'm_scMain
         '
-        Me.m_scMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_scMain.Location = New System.Drawing.Point(0, 1)
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
         Me.m_scMain.Name = "m_scMain"
         '
         'm_scMain.Panel1
@@ -124,52 +112,29 @@ Partial Class frmEcotracerOutput
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_zgc)
-        Me.m_scMain.Size = New System.Drawing.Size(946, 557)
-        Me.m_scMain.SplitterDistance = 270
-        Me.m_scMain.TabIndex = 0
         '
         'm_tlpControls
         '
-        Me.m_tlpControls.ColumnCount = 1
-        Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        resources.ApplyResources(Me.m_tlpControls, "m_tlpControls")
         Me.m_tlpControls.Controls.Add(Me.m_plGroups, 0, 0)
         Me.m_tlpControls.Controls.Add(Me.m_plOpions, 0, 1)
         Me.m_tlpControls.Controls.Add(Me.m_plRun, 0, 2)
-        Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpControls.Name = "m_tlpControls"
-        Me.m_tlpControls.RowCount = 3
-        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpControls.Size = New System.Drawing.Size(270, 557)
-        Me.m_tlpControls.TabIndex = 0
         '
         'm_plGroups
         '
         Me.m_plGroups.Controls.Add(Me.m_hdrGroups)
         Me.m_plGroups.Controls.Add(Me.m_lbGroups)
-        Me.m_plGroups.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plGroups.Location = New System.Drawing.Point(0, 0)
-        Me.m_plGroups.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.m_plGroups, "m_plGroups")
         Me.m_plGroups.Name = "m_plGroups"
-        Me.m_plGroups.Size = New System.Drawing.Size(270, 286)
-        Me.m_plGroups.TabIndex = 0
         '
         'm_hdrGroups
         '
-        Me.m_hdrGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
         Me.m_hdrGroups.CanCollapseParent = False
         Me.m_hdrGroups.CollapsedParentHeight = 0
-        Me.m_hdrGroups.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_hdrGroups.IsCollapsed = False
-        Me.m_hdrGroups.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrGroups.Name = "m_hdrGroups"
-        Me.m_hdrGroups.Size = New System.Drawing.Size(270, 18)
-        Me.m_hdrGroups.TabIndex = 0
-        Me.m_hdrGroups.Text = "Groups"
-        Me.m_hdrGroups.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_plOpions
         '
@@ -180,89 +145,52 @@ Partial Class frmEcotracerOutput
         Me.m_plOpions.Controls.Add(Me.m_lblRegion)
         Me.m_plOpions.Controls.Add(Me.m_rbCB)
         Me.m_plOpions.Controls.Add(Me.m_rbConc)
-        Me.m_plOpions.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plOpions.Location = New System.Drawing.Point(0, 286)
-        Me.m_plOpions.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.m_plOpions, "m_plOpions")
         Me.m_plOpions.Name = "m_plOpions"
-        Me.m_plOpions.Size = New System.Drawing.Size(270, 173)
-        Me.m_plOpions.TabIndex = 0
         '
         'm_hdrPlotOptions
         '
-        Me.m_hdrPlotOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_hdrPlotOptions, "m_hdrPlotOptions")
         Me.m_hdrPlotOptions.CanCollapseParent = True
         Me.m_hdrPlotOptions.CollapsedParentHeight = 0
         Me.m_hdrPlotOptions.IsCollapsed = False
-        Me.m_hdrPlotOptions.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrPlotOptions.Name = "m_hdrPlotOptions"
-        Me.m_hdrPlotOptions.Size = New System.Drawing.Size(270, 20)
-        Me.m_hdrPlotOptions.TabIndex = 0
-        Me.m_hdrPlotOptions.Text = "Plot Options"
-        Me.m_hdrPlotOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_cmbRegions
         '
-        Me.m_cmbRegions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_cmbRegions, "m_cmbRegions")
         Me.m_cmbRegions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbRegions.FormattingEnabled = True
-        Me.m_cmbRegions.Location = New System.Drawing.Point(16, 145)
         Me.m_cmbRegions.Name = "m_cmbRegions"
-        Me.m_cmbRegions.Size = New System.Drawing.Size(251, 21)
-        Me.m_cmbRegions.TabIndex = 6
         '
         'm_btnShowHideGroups
         '
-        Me.m_btnShowHideGroups.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnShowHideGroups.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.m_btnShowHideGroups.Location = New System.Drawing.Point(3, 23)
+        resources.ApplyResources(Me.m_btnShowHideGroups, "m_btnShowHideGroups")
         Me.m_btnShowHideGroups.Name = "m_btnShowHideGroups"
-        Me.m_btnShowHideGroups.Size = New System.Drawing.Size(264, 23)
-        Me.m_btnShowHideGroups.TabIndex = 1
-        Me.m_btnShowHideGroups.Text = "Show/hide &groups..."
-        Me.m_btnShowHideGroups.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.m_btnShowHideGroups.UseVisualStyleBackColor = True
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 53)
+        resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(61, 13)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Show &data:"
         '
         'm_lblRegion
         '
-        Me.m_lblRegion.AutoSize = True
-        Me.m_lblRegion.Location = New System.Drawing.Point(3, 127)
+        resources.ApplyResources(Me.m_lblRegion, "m_lblRegion")
         Me.m_lblRegion.Name = "m_lblRegion"
-        Me.m_lblRegion.Size = New System.Drawing.Size(69, 13)
-        Me.m_lblRegion.TabIndex = 5
-        Me.m_lblRegion.Text = "Show &region:"
         '
         'm_rbCB
         '
-        Me.m_rbCB.AutoSize = True
+        resources.ApplyResources(Me.m_rbCB, "m_rbCB")
         Me.m_rbCB.Checked = True
-        Me.m_rbCB.Location = New System.Drawing.Point(16, 75)
         Me.m_rbCB.Name = "m_rbCB"
-        Me.m_rbCB.Size = New System.Drawing.Size(141, 17)
-        Me.m_rbCB.TabIndex = 3
         Me.m_rbCB.TabStop = True
-        Me.m_rbCB.Text = "Concentration / &Biomass"
         Me.m_rbCB.UseVisualStyleBackColor = True
         '
         'm_rbConc
         '
-        Me.m_rbConc.AutoSize = True
-        Me.m_rbConc.Location = New System.Drawing.Point(16, 98)
+        resources.ApplyResources(Me.m_rbConc, "m_rbConc")
         Me.m_rbConc.Name = "m_rbConc"
-        Me.m_rbConc.Size = New System.Drawing.Size(91, 17)
-        Me.m_rbConc.TabIndex = 4
-        Me.m_rbConc.Text = "&Concentration"
         Me.m_rbConc.UseVisualStyleBackColor = True
         '
         'm_plRun
@@ -271,70 +199,42 @@ Partial Class frmEcotracerOutput
         Me.m_plRun.Controls.Add(Me.m_hdrRun)
         Me.m_plRun.Controls.Add(Me.m_btnRunSpace)
         Me.m_plRun.Controls.Add(Me.m_btnRunSim)
-        Me.m_plRun.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plRun.Location = New System.Drawing.Point(0, 459)
-        Me.m_plRun.Margin = New System.Windows.Forms.Padding(0)
+        resources.ApplyResources(Me.m_plRun, "m_plRun")
         Me.m_plRun.Name = "m_plRun"
-        Me.m_plRun.Size = New System.Drawing.Size(270, 98)
-        Me.m_plRun.TabIndex = 1
         '
         'm_cbAutosaveResults
         '
-        Me.m_cbAutosaveResults.AutoSize = True
-        Me.m_cbAutosaveResults.Location = New System.Drawing.Point(6, 78)
+        resources.ApplyResources(Me.m_cbAutosaveResults, "m_cbAutosaveResults")
         Me.m_cbAutosaveResults.Name = "m_cbAutosaveResults"
-        Me.m_cbAutosaveResults.Size = New System.Drawing.Size(107, 17)
-        Me.m_cbAutosaveResults.TabIndex = 3
-        Me.m_cbAutosaveResults.Text = "&Auto-save results"
         Me.m_cbAutosaveResults.UseVisualStyleBackColor = True
         '
         'm_hdrRun
         '
-        Me.m_hdrRun.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
         Me.m_hdrRun.CanCollapseParent = False
         Me.m_hdrRun.CollapsedParentHeight = 0
         Me.m_hdrRun.IsCollapsed = False
-        Me.m_hdrRun.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrRun.Name = "m_hdrRun"
-        Me.m_hdrRun.Size = New System.Drawing.Size(270, 20)
-        Me.m_hdrRun.TabIndex = 0
-        Me.m_hdrRun.Text = "Run"
-        Me.m_hdrRun.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_btnRunSpace
         '
-        Me.m_btnRunSpace.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnRunSpace.Location = New System.Drawing.Point(3, 50)
+        resources.ApplyResources(Me.m_btnRunSpace, "m_btnRunSpace")
         Me.m_btnRunSpace.Name = "m_btnRunSpace"
-        Me.m_btnRunSpace.Size = New System.Drawing.Size(264, 22)
-        Me.m_btnRunSpace.TabIndex = 2
-        Me.m_btnRunSpace.Text = "Run Ecosp&ace"
         Me.m_btnRunSpace.UseVisualStyleBackColor = True
         '
         'm_btnRunSim
         '
-        Me.m_btnRunSim.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnRunSim.Location = New System.Drawing.Point(3, 23)
+        resources.ApplyResources(Me.m_btnRunSim, "m_btnRunSim")
         Me.m_btnRunSim.Name = "m_btnRunSim"
-        Me.m_btnRunSim.Size = New System.Drawing.Size(264, 21)
-        Me.m_btnRunSim.TabIndex = 1
-        Me.m_btnRunSim.Text = "Run Ecos&im"
         Me.m_btnRunSim.UseVisualStyleBackColor = True
         '
         'frmEcotracerOutput
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ClientSize = New System.Drawing.Size(946, 558)
         Me.Controls.Add(Me.m_scMain)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEcotracerOutput"
         Me.TabText = ""
-        Me.Text = "Ecotracer output"
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel2.ResumeLayout(False)
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()

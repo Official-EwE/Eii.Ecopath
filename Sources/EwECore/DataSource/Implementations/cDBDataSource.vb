@@ -9908,7 +9908,8 @@ Namespace DataSources
                     tracerDS.Cimmig(iGroup) = CSng(reader("Cimmig"))
                     tracerDS.Cenv(iGroup) = CSng(reader("Cenv"))
                     tracerDS.cdecay(iGroup) = CSng(reader("Cdecay"))
-                    tracerDS.CexcretionRate(iGroup) = CSng(Me.m_db.ReadSafe(reader, "Cexcretionrate", 0.1))
+                    tracerDS.CassimProp(iGroup) = CSng(Me.m_db.ReadSafe(reader, "CassimProp", 0.1))
+                    tracerDS.CmetabolismRate(iGroup) = CSng(Me.m_db.ReadSafe(reader, "CmetabolismRate", 1.0!))
 
                 End While
                 Me.m_db.ReleaseReader(reader)
@@ -10058,7 +10059,8 @@ Namespace DataSources
                     drow("Cimmig") = tracerDS.Cimmig(iGroup)
                     drow("Cenv") = tracerDS.Cenv(iGroup)
                     drow("Cdecay") = tracerDS.cdecay(iGroup)
-                    drow("Cexcretionrate") = tracerDS.CexcretionRate(iGroup)
+                    drow("CassimProp") = tracerDS.CassimProp(iGroup)
+                    drow("CmetabolismRate") = tracerDS.CmetabolismRate(iGroup)
 
                 Next iGroup
 
