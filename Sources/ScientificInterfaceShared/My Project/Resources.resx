@@ -1338,8 +1338,8 @@
   <data name="HEADER_CONCENTRATION_IN_IMM_B" xml:space="preserve">
     <value>Conc. in immigrating biomass (t/t)</value>
   </data>
-  <data name="HEADER_DECAY_RATE_UNIT" xml:space="preserve">
-    <value>Decay rate (t/{0})</value>
+  <data name="HEADER_PHYSICAL_DECAY_RATE_UNIT" xml:space="preserve">
+    <value>Physical decay rate (t/{0})</value>
     <comment>{0}: time unit</comment>
   </data>
   <data name="HEADER_DIRECT_ABSORPTION_RATE_UNIT" xml:space="preserve">
@@ -1347,7 +1347,7 @@
     <comment>{0}: time unit</comment>
   </data>
   <data name="HEADER_EXCRETION_RATE" xml:space="preserve">
-    <value>Prop. of contaminant excreted [0-1]</value>
+    <value>Prop. of contaminant excreted</value>
   </data>
   <data name="HEADER_FMAX" xml:space="preserve">
     <value>FMax</value>
@@ -3064,6 +3064,10 @@
   </data>
   <data name="GENERIC_SHOW_TROPHIC_LEVELS" xml:space="preserve">
     <value>Show trophic levels</value>
+  </data>
+  <data name="HEADER_METABOLISMRATE_UNIT" xml:space="preserve">
+    <value>Metabolic decay rate (/{0})</value>
+    <comment>{0}=time unit</comment>
   </data>
   <data name="HEADER_LATIN_NAME" xml:space="preserve">
     <value>Latin name</value>

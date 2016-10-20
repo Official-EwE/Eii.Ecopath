@@ -58,19 +58,19 @@ Namespace Ecotracer
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrSponsors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpSponsors = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_pbSponsor1 = New System.Windows.Forms.PictureBox()
-            Me.m_pbSponsor2 = New System.Windows.Forms.PictureBox()
-            Me.m_pbSponsor3 = New System.Windows.Forms.PictureBox()
-            Me.m_pbSponsor4 = New System.Windows.Forms.PictureBox()
+            Me.m_pbFMIR = New System.Windows.Forms.PictureBox()
+            Me.m_pbEU = New System.Windows.Forms.PictureBox()
+            Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
+            Me.m_pbSAUP = New System.Windows.Forms.PictureBox()
             Me.m_hdrInitialization = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_rbSpace = New System.Windows.Forms.RadioButton()
             Me.m_rbSim = New System.Windows.Forms.RadioButton()
             Me.m_rbDisabled = New System.Windows.Forms.RadioButton()
             Me.m_tlpSponsors.SuspendLayout()
-            CType(Me.m_pbSponsor1, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbSponsor2, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbSponsor3, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbSponsor4, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbFMIR, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbEU, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_tbContact
@@ -133,39 +133,39 @@ Namespace Ecotracer
             '
             resources.ApplyResources(Me.m_tlpSponsors, "m_tlpSponsors")
             Me.m_tlpSponsors.BackColor = System.Drawing.Color.White
-            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor1, 0, 0)
-            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor2, 1, 0)
-            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor3, 2, 0)
-            Me.m_tlpSponsors.Controls.Add(Me.m_pbSponsor4, 3, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbFMIR, 0, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbEU, 1, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbLenfest, 2, 0)
+            Me.m_tlpSponsors.Controls.Add(Me.m_pbSAUP, 3, 0)
             Me.m_tlpSponsors.Name = "m_tlpSponsors"
             '
-            'm_pbSponsor1
+            'm_pbFMIR
             '
-            resources.ApplyResources(Me.m_pbSponsor1, "m_pbSponsor1")
-            Me.m_pbSponsor1.Image = Global.ScientificInterface.My.Resources.Resources.logo_FIMR
-            Me.m_pbSponsor1.Name = "m_pbSponsor1"
-            Me.m_pbSponsor1.TabStop = False
+            resources.ApplyResources(Me.m_pbFMIR, "m_pbFMIR")
+            Me.m_pbFMIR.Image = Global.ScientificInterface.My.Resources.Resources.logo_FIMR
+            Me.m_pbFMIR.Name = "m_pbFMIR"
+            Me.m_pbFMIR.TabStop = False
             '
-            'm_pbSponsor2
+            'm_pbEU
             '
-            resources.ApplyResources(Me.m_pbSponsor2, "m_pbSponsor2")
-            Me.m_pbSponsor2.Image = Global.ScientificInterface.My.Resources.Resources.logo_EU
-            Me.m_pbSponsor2.Name = "m_pbSponsor2"
-            Me.m_pbSponsor2.TabStop = False
+            resources.ApplyResources(Me.m_pbEU, "m_pbEU")
+            Me.m_pbEU.Image = Global.ScientificInterface.My.Resources.Resources.logo_EU
+            Me.m_pbEU.Name = "m_pbEU"
+            Me.m_pbEU.TabStop = False
             '
-            'm_pbSponsor3
+            'm_pbLenfest
             '
-            Me.m_pbSponsor3.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
-            resources.ApplyResources(Me.m_pbSponsor3, "m_pbSponsor3")
-            Me.m_pbSponsor3.Name = "m_pbSponsor3"
-            Me.m_pbSponsor3.TabStop = False
+            Me.m_pbLenfest.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
+            resources.ApplyResources(Me.m_pbLenfest, "m_pbLenfest")
+            Me.m_pbLenfest.Name = "m_pbLenfest"
+            Me.m_pbLenfest.TabStop = False
             '
-            'm_pbSponsor4
+            'm_pbSAUP
             '
-            resources.ApplyResources(Me.m_pbSponsor4, "m_pbSponsor4")
-            Me.m_pbSponsor4.Image = Global.ScientificInterface.My.Resources.Resources.logo_SAUP
-            Me.m_pbSponsor4.Name = "m_pbSponsor4"
-            Me.m_pbSponsor4.TabStop = False
+            resources.ApplyResources(Me.m_pbSAUP, "m_pbSAUP")
+            Me.m_pbSAUP.Image = Global.ScientificInterface.My.Resources.Resources.logo_SAUP
+            Me.m_pbSAUP.Name = "m_pbSAUP"
+            Me.m_pbSAUP.TabStop = False
             '
             'm_hdrInitialization
             '
@@ -224,10 +224,10 @@ Namespace Ecotracer
             Me.ShowInTaskbar = False
             Me.TabText = ""
             Me.m_tlpSponsors.ResumeLayout(False)
-            CType(Me.m_pbSponsor1, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbSponsor2, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbSponsor3, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbSponsor4, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbFMIR, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbEU, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -243,10 +243,10 @@ Namespace Ecotracer
         Private WithEvents m_hdrScenario As cEwEHeaderLabel
         Private WithEvents m_hdrSponsors As cEwEHeaderLabel
         Private WithEvents m_tlpSponsors As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_pbSponsor1 As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbSponsor2 As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbSponsor3 As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbSponsor4 As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbFMIR As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbEU As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbSAUP As System.Windows.Forms.PictureBox
         Private WithEvents m_hdrInitialization As cEwEHeaderLabel
         Private WithEvents m_rbDisabled As System.Windows.Forms.RadioButton
         Private WithEvents m_rbSpace As System.Windows.Forms.RadioButton

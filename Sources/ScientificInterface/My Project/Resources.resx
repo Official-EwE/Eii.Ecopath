@@ -7314,9 +7314,6 @@ Description: {1}</value>
   <data name="CAPTION_NICHEPLOT_XAXIS_LABEL" xml:space="preserve">
     <value>Predator overlap index</value>
   </data>
-  <data name="GENERIC_ECOSIM_NO_DATA_AVAILABLE" xml:space="preserve">
-    <value>Ecosim data not available</value>
-  </data>
   <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecotracer scenario - Ecopath model {0}</value>
     <comment>{0}=scenario name</comment>

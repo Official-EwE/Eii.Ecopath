@@ -8283,7 +8283,7 @@ Public Class cCore
             Me.m_EcoSim.RunCompletedDelegate = Nothing
 
             ' Update core state monitor
-            Me.m_StateMonitor.SetEcosimCompleted()
+            Me.m_StateMonitor.SetEcosimCompleted(Me.m_tracerData.EcoSimConSimOn)
             ' Send messages after
             m_publisher.sendAllMessages()
 
@@ -9172,7 +9172,7 @@ Public Class cCore
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED,
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
 
-            Me.m_StateMonitor.SetEcospaceCompleted()
+            Me.m_StateMonitor.SetEcospaceCompleted(Me.m_tracerData.EcoSpaceConSimOn)
             Me.m_publisher.sendAllMessages()
 
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
@@ -12687,7 +12687,8 @@ Public Class cCore
                 grp.CImmig = Me.m_tracerData.Cimmig(iGroup)
                 grp.CEnvironment = Me.m_tracerData.Cenv(iGroup)
                 grp.CDecay = Me.m_tracerData.cdecay(iGroup)
-                grp.CExcretionRate = Me.m_tracerData.CexcretionRate(iGroup)
+                grp.CAssimilationProp = Me.m_tracerData.CassimProp(iGroup)
+                grp.CMetablismRate = Me.m_tracerData.CmetabolismRate(iGroup)
                 grp.PP = m_EcoPathData.PP(iGroup)
 
                 grp.ResetStatusFlags()
@@ -12719,7 +12720,8 @@ Public Class cCore
             Me.m_tracerData.Cimmig(iGroup) = grp.CImmig
             Me.m_tracerData.Cenv(iGroup) = grp.CEnvironment
             Me.m_tracerData.cdecay(iGroup) = grp.CDecay
-            Me.m_tracerData.CexcretionRate(iGroup) = grp.CExcretionRate
+            Me.m_tracerData.CassimProp(iGroup) = grp.CAssimilationProp
+            Me.m_tracerData.CmetabolismRate(iGroup) = grp.CMetablismRate
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".UpdateEcotracerGroup() Error: " & ex.Message)

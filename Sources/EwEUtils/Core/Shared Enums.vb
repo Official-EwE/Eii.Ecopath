@@ -62,7 +62,12 @@ Namespace Core
         EcospaceRunning
         ''' <summary>Ecospace scenario run is completed</summary>
         EcospaceCompleted
+    End Enum
 
+    Public Enum eEcotracerRunState As Integer
+        None
+        Ecosim
+        Ecospace
     End Enum
 
 #End Region ' Core execution state
@@ -1120,8 +1125,8 @@ Namespace Core
         CInflow
         ''' <summary>To document</summary>
         COutflow
-        ''' <summary>To document</summary>
-        CDecay
+        ''' <summary>Physical contaminant decay rate</summary>
+        CPhysicalDecayRate
         ''' <summary>To document</summary>
         ConForceNumber
         ''' <summary>To document</summary>
@@ -1130,8 +1135,10 @@ Namespace Core
         CEnvironment
         ''' <summary>To document</summary>
         CBEnvironment
-        ''' <summary>To document</summary>
-        CExcretionRate
+        ''' <summary>Proportion of contaminant excreted</summary>
+        CAssimilationProp
+        ''' <summary>Contaminant excretion or metabolism rate</summary>
+        CMetablismRate
         ''' <summary>To document</summary>
         Concentration
         ''' <summary>To document</summary>

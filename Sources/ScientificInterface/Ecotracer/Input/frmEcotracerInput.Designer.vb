@@ -52,11 +52,11 @@ Namespace Ecotracer
             Me.m_tlpGroups = New System.Windows.Forms.TableLayoutPanel()
             Me.m_grid = New ScientificInterface.Ecotracer.gridEcotracerInput()
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lbFFEnv = New System.Windows.Forms.Label()
-            Me.m_cmbEnvInflowFF = New System.Windows.Forms.ComboBox()
             Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbCZeroEnv = New System.Windows.Forms.Label()
             Me.m_lbCDecayRateEnv = New System.Windows.Forms.Label()
+            Me.m_cmbEnvInflowFF = New System.Windows.Forms.ComboBox()
+            Me.m_lbFFEnv = New System.Windows.Forms.Label()
             Me.m_lblCInflowEnv = New System.Windows.Forms.Label()
             Me.m_lblCDecay = New System.Windows.Forms.Label()
             Me.m_tbCDecayRateEnv = New System.Windows.Forms.TextBox()
@@ -80,8 +80,6 @@ Namespace Ecotracer
             '
             Me.m_plAaargh.Controls.Add(Me.m_tlpGroups)
             Me.m_plAaargh.Controls.Add(Me.m_hdrGroups)
-            Me.m_plAaargh.Controls.Add(Me.m_lbFFEnv)
-            Me.m_plAaargh.Controls.Add(Me.m_cmbEnvInflowFF)
             Me.m_plAaargh.Controls.Add(Me.m_tlp)
             Me.m_plAaargh.Controls.Add(Me.m_hdrInit)
             resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
@@ -104,8 +102,8 @@ Namespace Ecotracer
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
@@ -116,14 +114,14 @@ Namespace Ecotracer
             Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'm_hdrGroups
@@ -134,23 +132,13 @@ Namespace Ecotracer
             Me.m_hdrGroups.IsCollapsed = False
             Me.m_hdrGroups.Name = "m_hdrGroups"
             '
-            'm_lbFFEnv
-            '
-            resources.ApplyResources(Me.m_lbFFEnv, "m_lbFFEnv")
-            Me.m_lbFFEnv.Name = "m_lbFFEnv"
-            '
-            'm_cmbEnvInflowFF
-            '
-            Me.m_cmbEnvInflowFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbEnvInflowFF.FormattingEnabled = True
-            resources.ApplyResources(Me.m_cmbEnvInflowFF, "m_cmbEnvInflowFF")
-            Me.m_cmbEnvInflowFF.Name = "m_cmbEnvInflowFF"
-            '
             'm_tlp
             '
             resources.ApplyResources(Me.m_tlp, "m_tlp")
             Me.m_tlp.Controls.Add(Me.m_lbCZeroEnv, 0, 0)
             Me.m_tlp.Controls.Add(Me.m_lbCDecayRateEnv, 0, 1)
+            Me.m_tlp.Controls.Add(Me.m_cmbEnvInflowFF, 1, 2)
+            Me.m_tlp.Controls.Add(Me.m_lbFFEnv, 0, 2)
             Me.m_tlp.Controls.Add(Me.m_lblCInflowEnv, 3, 0)
             Me.m_tlp.Controls.Add(Me.m_lblCDecay, 3, 1)
             Me.m_tlp.Controls.Add(Me.m_tbCDecayRateEnv, 1, 1)
@@ -168,6 +156,18 @@ Namespace Ecotracer
             '
             resources.ApplyResources(Me.m_lbCDecayRateEnv, "m_lbCDecayRateEnv")
             Me.m_lbCDecayRateEnv.Name = "m_lbCDecayRateEnv"
+            '
+            'm_cmbEnvInflowFF
+            '
+            resources.ApplyResources(Me.m_cmbEnvInflowFF, "m_cmbEnvInflowFF")
+            Me.m_cmbEnvInflowFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbEnvInflowFF.FormattingEnabled = True
+            Me.m_cmbEnvInflowFF.Name = "m_cmbEnvInflowFF"
+            '
+            'm_lbFFEnv
+            '
+            resources.ApplyResources(Me.m_lbFFEnv, "m_lbFFEnv")
+            Me.m_lbFFEnv.Name = "m_lbFFEnv"
             '
             'm_lblCInflowEnv
             '
@@ -215,7 +215,6 @@ Namespace Ecotracer
             Me.Name = "frmEcotracerInput"
             Me.TabText = ""
             Me.m_plAaargh.ResumeLayout(False)
-            Me.m_plAaargh.PerformLayout()
             Me.m_tlpGroups.ResumeLayout(False)
             Me.m_tlp.ResumeLayout(False)
             Me.m_tlp.PerformLayout()

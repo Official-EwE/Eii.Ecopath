@@ -4213,15 +4213,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Decay rate (t/{0}).
-        '''</summary>
-        Public ReadOnly Property HEADER_DECAY_RATE_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_DECAY_RATE_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Dens. dep. catchability.
         '''</summary>
         Public ReadOnly Property HEADER_DENDEPCATCHABILITY_ABBR() As String
@@ -4555,7 +4546,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Prop. of contaminant excreted [0-1].
+        '''  Looks up a localized string similar to Prop. of contaminant excreted.
         '''</summary>
         Public ReadOnly Property HEADER_EXCRETION_RATE() As String
             Get
@@ -5437,6 +5428,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Metabolic decay rate (/{0}).
+        '''</summary>
+        Public ReadOnly Property HEADER_METABOLISMRATE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_METABOLISMRATE_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Method.
         '''</summary>
         Public ReadOnly Property HEADER_METHOD() As String
@@ -5793,6 +5793,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_PHYLUM() As String
             Get
                 Return ResourceManager.GetString("HEADER_PHYLUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Physical decay rate (t/{0}).
+        '''</summary>
+        Public ReadOnly Property HEADER_PHYSICAL_DECAY_RATE_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PHYSICAL_DECAY_RATE_UNIT", resourceCulture)
             End Get
         End Property
         

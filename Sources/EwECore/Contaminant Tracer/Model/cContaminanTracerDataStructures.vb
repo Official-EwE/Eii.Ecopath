@@ -84,8 +84,18 @@ Public Class cContaminantTracerDataStructures
     ''' metabolic rate for compounds that are lost in proportion to routine tissue
     ''' metabolism (eg conversion of carbon 14 organic form to c14-02).
     ''' </para>
+    ''' <para>Villy, per email 7Jun2016:</para>
+    ''' <para>
+    ''' CexcretionRate is renamed in the database to: CassimProp, (so existing 
+    ''' models don’t need to be changed).
+    ''' </para>
     ''' </remarks>
-    Public CexcretionRate() As Single
+    Public CassimProp() As Single
+
+    ''' <summary>
+    ''' Added cMetabolismRate (unit: per year)
+    ''' </summary>
+    Public CmetabolismRate() As Single
 
     Public ConForceNumber As Integer
 
@@ -118,7 +128,8 @@ Public Class cContaminantTracerDataStructures
         ReDim cdecay(nGroups)
         ReDim Cinflow(nGroups)
         ReDim CoutFlow(nGroups)
-        ReDim CexcretionRate(nGroups)
+        ReDim CassimProp(nGroups)
+        ReDim CmetabolismRate(nGroups)
     End Sub
 
     Public Sub redimForEcosimRun(ByVal nGroups As Integer, ByVal nTime As Integer)
@@ -147,7 +158,7 @@ Public Class cContaminantTracerDataStructures
         cdecay = Nothing '(nGroups)
         Cinflow = Nothing '(nGroups)
         CoutFlow = Nothing '(nGroups)
-        CexcretionRate = Nothing '(nGroups)
+        CassimProp = Nothing '(nGroups)
 
         'Me.RedimByNGroups(0)
     End Sub
@@ -161,10 +172,13 @@ Public Class cContaminantTracerDataStructures
         d.Cenv = CType(Cenv.Clone, Single())
         d.Cimmig = CType(Cimmig.Clone, Single())
         d.CoutFlow = CType(CoutFlow.Clone, Single())
-        d.CexcretionRate = CType(CexcretionRate.Clone, Single())
+        d.CassimProp = CType(CassimProp.Clone, Single())
         d.ConForceNumber = ConForceNumber
         d.EcoSimConSimOn = EcoSimConSimOn
         d.EcoSpaceConSimOn = EcoSpaceConSimOn
+
+        d.CmetabolismRate = Me.CmetabolismRate
+
     End Sub
 
     'Public Property EcoSimConSimOn() As Boolean

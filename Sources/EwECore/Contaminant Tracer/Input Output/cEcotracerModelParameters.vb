@@ -90,7 +90,7 @@ Public Class cEcotracerModelParameters
 
             ' CDecay
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CDecay, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CDecay))
+            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CPhysicalDecayRate))
             m_values.Add(val.varName, val)
 
             ''integers
@@ -161,11 +161,11 @@ Public Class cEcotracerModelParameters
 
     Public Property CDecay() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.CDecay))
+            Return CSng(GetVariable(eVarNameFlags.CPhysicalDecayRate))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CDecay, value)
+            SetVariable(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
     End Property
 
@@ -221,11 +221,11 @@ Public Class cEcotracerModelParameters
     Public Property CDecayStatus() As eStatusFlags
 
         Get
-            Return GetStatus(eVarNameFlags.CDecay)
+            Return GetStatus(eVarNameFlags.CPhysicalDecayRate)
         End Get
 
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.CDecay, value)
+            SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
         End Set
 
     End Property

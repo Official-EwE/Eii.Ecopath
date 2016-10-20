@@ -23,9 +23,10 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -60,8 +61,6 @@ Public Class frmEcotracerOutput
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Enum ePlotTypes As Byte
-        ''' <summary>Plot type has not been initialized yet.</summary>
-        NotSet = 0
         ''' <summary>Concentration plot.</summary>
         Conc
         ''' <summary>Concentration over biomass plot.</summary>
@@ -77,7 +76,7 @@ Public Class frmEcotracerOutput
     ''' <summary>Form display mode.</summary>
     Private m_curDisplayMode As eDisplayModeTypes = eDisplayModeTypes.NotInitialized
     ''' <summary>Form type of plot.</summary>
-    Private m_plottype As ePlotTypes = ePlotTypes.NotSet
+    Private m_plottype As ePlotTypes = ePlotTypes.CB
     ''' <summary>Thing to gather the data for the form.</summary>
     Private m_DisplayHelper As IDisplayModeHelper = Nothing
     ''' <summary>Update loop prevention flag.</summary>
@@ -91,7 +90,7 @@ Public Class frmEcotracerOutput
 #End Region ' Private vars
 
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
         Me.InitializeComponent()
     End Sub
 
@@ -138,7 +137,7 @@ Public Class frmEcotracerOutput
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
 
         ' JS10Apr10: this probably needs to be refined to ONLY include run completed states
-        If (msg.Source = eCoreComponentType.EcoSim) Or _
+        If (msg.Source = eCoreComponentType.EcoSim) Or
            (msg.Source = eCoreComponentType.EcoSpace) Then
             'let the interface update to all core states
             Me.RefreshData()
@@ -237,6 +236,8 @@ Public Class frmEcotracerOutput
             Me.PlotType = ePlotTypes.Conc
         ElseIf Me.m_rbCB.Checked Then
             Me.PlotType = ePlotTypes.CB
+        Else
+            Debug.Assert(False, "Radio button group is out of whack")
         End If
 
     End Sub
@@ -246,10 +247,9 @@ Public Class frmEcotracerOutput
         Me.RefreshGraph()
     End Sub
 
-    Private Sub OnSortedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-
-        Me.RefreshData()
-    End Sub
+    'Private Sub OnSortedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+    '    Me.RefreshData()
+    'End Sub
 
     Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnShowHideGroups.Click
@@ -274,6 +274,7 @@ Public Class frmEcotracerOutput
 
         End Try
     End Sub
+
 #End Region ' Events
 
 #Region " Internal bits "
@@ -345,7 +346,7 @@ Public Class frmEcotracerOutput
 
         ' Config controls based on the display helper
         Me.m_zgc.GraphPane.Title.Text = Me.m_DisplayHelper.Title
-        Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
+        Me.m_cmbRegions.Enabled = m_DisplayHelper.SupportsRegions
 
         Me.m_btnRunSim.Enabled = (Not Me.IsRunning)
         Me.m_btnRunSpace.Enabled = (Not Me.IsRunning)
@@ -363,13 +364,14 @@ Public Class frmEcotracerOutput
         Get
             Dim mode As eDisplayModeTypes = eDisplayModeTypes.NoResults
 
-            'Ecosim selected
-            If Me.Core.EcoSimModelParameters.ContaminantTracing Then
-                mode = eDisplayModeTypes.Ecosim
+            'Ecosim
+            If (Me.Core.StateMonitor.HasEcosimLoaded) Then
+                If Me.Core.EcoSimModelParameters.ContaminantTracing Then
+                    mode = eDisplayModeTypes.Ecosim
+                End If
             End If
 
             'Ecospace
-            'this is nested because EcospaceModelParameters will be Null if an Ecospace scenario has not been loaded
             If Me.Core.StateMonitor.HasEcospaceLoaded Then
                 If Me.Core.EcospaceModelParameters.ContaminantTracing Then
                     mode = eDisplayModeTypes.Ecospace
@@ -382,10 +384,14 @@ Public Class frmEcotracerOutput
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Re-populate the interface 
+    ''' Re-populate the interface
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub RefreshData()
+
+        ' Refresh region combobox
+        Dim iReg As Integer = Me.m_cmbRegions.SelectedIndex
+        Me.m_cmbRegions.Items.Clear()
 
         If Me.UIContext Is Nothing Then Return
 
@@ -395,13 +401,17 @@ Public Class frmEcotracerOutput
             'build the correct display mode helper based on the new display mode flag from getDisplayMode
             Me.m_DisplayHelper = Me.DisplayHelperFactory(modeNew)
 
-            'refresh the display mode helper
-            'if no new displayhelper was built this will refresh the current one based on the core state
-            Me.m_DisplayHelper.Refresh()
-
-            'keep the display mode for next time 
-            'it is used in DisplayHelperFactory()
-            Me.m_curDisplayMode = modeNew
+            If (Me.Core.ActiveEcospaceScenarioIndex > 0) And (Me.m_DisplayHelper.SupportsRegions) Then
+                ' 0 item = 0 region; e.g. all cells not assigned to a region
+                ' 1 - n = n region
+                ' n + 1 = all cells
+                Me.m_cmbRegions.Items.Add(SharedResources.GENERIC_VALUE_NONE)
+                For i As Integer = 1 To Me.Core.nRegions
+                    Me.m_cmbRegions.Items.Add(i)
+                Next
+                Me.m_cmbRegions.SelectedIndex = Math.Max(0, Math.Min(iReg, Me.m_cmbRegions.Items.Count - 1))
+                Me.m_cmbRegions.Items.Add(SharedResources.GENERIC_VALUE_ALL)
+            End If
 
             Me.UpdateControls()
         Catch ex As Exception
@@ -415,23 +425,20 @@ Public Class frmEcotracerOutput
     ''' </summary>
     Private Sub RefreshGraph()
 
-        'Set values in the display helper
-        'plot type
+        ' Configure display helper
         Me.m_DisplayHelper.PlotType = Me.m_plottype
-        'region to display 
-        Me.m_DisplayHelper.RegionIndex = Me.m_cmbRegions.SelectedIndex
+        If (Me.m_DisplayHelper.SupportsRegions) Then
+            Me.m_DisplayHelper.RegionIndex = Me.m_cmbRegions.SelectedIndex
+        End If
 
-        'Now get data from the display helper
-        'Text for graph
+        ' Configure graph
         Me.m_zgc.GraphPane.Title.Text = m_DisplayHelper.Title
         Me.m_zgc.GraphPane.XAxis.Title.Text = m_DisplayHelper.XAxisLabel
         Me.m_zgc.GraphPane.YAxis.Title.Text = m_DisplayHelper.YAxisLabel
+        Me.m_zgc.GraphPane.XAxis.Scale.Min = m_DisplayHelper.FirstYear
+        Me.m_zgc.GraphPane.XAxis.Scale.Max = m_DisplayHelper.FirstYear + m_DisplayHelper.nYears
 
-        'scale of graph
-        Me.m_zgc.GraphPane.XAxis.Scale.Min = CDbl(Me.Core.EcosimFirstYear)
-        Me.m_zgc.GraphPane.XAxis.Scale.Max = CDbl(Me.Core.EcosimFirstYear + m_DisplayHelper.nYears)
-
-        'plot the data
+        ' Update plot 
         Me.PlotSelectedGroups()
 
     End Sub
@@ -447,40 +454,42 @@ Public Class frmEcotracerOutput
         Dim aLinesGroup() As LineItem = Nothing
         Dim source As cCoreInputOutputBase = Nothing
 
-        ' ToDo_JS: validate tracer run status. This needs extending the core state monitor
+        If Me.m_DisplayHelper.CanPlot Then
 
-        If Not Me.m_DisplayHelper.bCanPlot Then Return
+            Try
 
-        Try
-
-            ' Iterate over all selected listbox items
-            For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
-                ' Get source at this item
-                source = Me.m_lbGroups.GetGroupAt(iListboxItem)
-                ' Is environment node?
-                If (source Is Nothing) Then
-                    ' #Yes: get environment lines
-                    aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0)
-                Else
-                    ' #No: get group lines
-                    aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index)
-                End If
-                ' Add all lines
-                For Each li As LineItem In aLinesGroup
-                    ' Is a line?
-                    If (li IsNot Nothing) Then
-                        ' #Yes: add it
-                        lLinesPlot.Add(li)
+                ' Iterate over all selected listbox items
+                For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
+                    ' Get source at this item
+                    source = Me.m_lbGroups.GetGroupAt(iListboxItem)
+                    ' Is environment node?
+                    If (source Is Nothing) Then
+                        ' #Yes: get environment lines
+                        aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0)
+                    Else
+                        ' #No: get group lines
+                        aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index)
                     End If
+                    ' Add all lines
+                    For Each li As LineItem In aLinesGroup
+                        ' Is a line?
+                        If (li IsNot Nothing) Then
+                            ' #Yes: add it
+                            lLinesPlot.Add(li)
+                        End If
+                    Next
                 Next
-            Next
 
-            ' Plot all encountered lines
-            Me.m_zgh.PlotLines(lLinesPlot.ToArray, , , , False)
+                ' Plot all encountered lines
+                Me.m_zgh.PlotLines(lLinesPlot.ToArray())
 
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End If
+
+        Me.m_zgh.RescaleAndRedraw()
 
     End Sub
 
@@ -514,31 +523,32 @@ Public Class frmEcotracerOutput
     ''' -----------------------------------------------------------------------
     Private Function DisplayHelperFactory(ByVal newDisplayMode As eDisplayModeTypes) As IDisplayModeHelper
 
+        Dim helper As IDisplayModeHelper = Nothing
+
         'This will only build a new IDisplayModeHelper if newDisplayMode is different from the current m_curDisplayMode
         If newDisplayMode <> Me.m_curDisplayMode Then
+
+            Me.m_curDisplayMode = newDisplayMode
 
             'build a new IDisplayModeHelper object
             Select Case newDisplayMode
                 Case eDisplayModeTypes.NoResults
-                    Return New cNoResultsDisplayHelper(Me.UIContext)
+                    helper = New cNoResultsDisplayHelper(Me.UIContext)
                 Case eDisplayModeTypes.Ecosim
-                    Return New cEcoSimDisplayHelper(Me.UIContext, Me.m_zgh)
+                    helper = New cEcoSimDisplayHelper(Me.UIContext, Me.m_zgh)
                 Case eDisplayModeTypes.Ecospace
-                    Return New cEcoSpaceDisplayHelper(Me.UIContext, Me.m_zgh)
+                    helper = New cEcoSpaceDisplayHelper(Me.UIContext, Me.m_zgh)
+                Case Else
+                    'something went wrong
+                    Debug.Assert(False, "DisplayHelperFactory() Invalid DisplayMode")
+                    helper = New cNoResultsDisplayHelper(Me.UIContext)
             End Select
-
-            'something went wrong
-            'the arg DisplayMode was not valid return the cNoResultsDisplayHelper object 
-            'this will let the interface run without data
-            Debug.Assert(False, "DisplayHelperFactory() Invalid DisplayMode")
-            Return New cNoResultsDisplayHelper(Me.UIContext)
-
         Else
-            'return the current IDisplayModeHelper object
-            'make sure there is one
             Debug.Assert(m_DisplayHelper IsNot Nothing, Me.ToString & ".DisplayHelperFactory() Current display mode has not been set! Something is wrong!")
-            Return Me.m_DisplayHelper
+            helper = Me.m_DisplayHelper
         End If
+
+        Return helper
 
     End Function
 
@@ -550,9 +560,9 @@ Public Class frmEcotracerOutput
 
 #End Region ' Overrides
 
-#Region "Display Mode Helper Classes"
+#Region " Display helpers "
 
-#Region "Interface definition"
+#Region " Interface definition "
 
     ''' =======================================================================
     ''' <summary>
@@ -574,56 +584,103 @@ Public Class frmEcotracerOutput
 
         Function GetGroupMax(ByVal iGroup As Integer) As Single
 
-        ''' <summary>Update the object base on the current core run state.</summary>
-        Sub Refresh()
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a refecence to the EwE Core.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property Core() As cCore
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a refecence to the EwE StyleGuide.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property StyleGuide() As cStyleGuide
 
-        ''' <summary>Title of the Graph.</summary>
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the title for the data plot.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property Title() As String
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the X axis label for the data plot.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property XAxisLabel() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the Y axis label for the data plot.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property YAxisLabel() As String
 
-        ReadOnly Property bCanPlot() As Boolean
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Is this helper enabled
+        ''' Get whether the underlying model has Ecotracer data to plot.
         ''' </summary>
-        ReadOnly Property Enabled() As Boolean
+        ''' -------------------------------------------------------------------
+        ReadOnly Property CanPlot() As Boolean
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Enabled specific to Ecospace
+        ''' Get whether regions are supported.
         ''' </summary>
-        ReadOnly Property EnabledForSpace() As Boolean
+        ''' -------------------------------------------------------------------
+        ReadOnly Property SupportsRegions() As Boolean
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Number of years the current model has run for
+        ''' Get the first years that the underlying model startd runnin at.
         ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property FirstYear As Integer
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of years that the underlying model has run for.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property nYears() As Integer
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Type of Plot Concentration or Concentration / Biomass
+        ''' Get the <see cref="ePlotTypes">type of data to plot</see>. 
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Property PlotType() As ePlotTypes
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Region to display, nRegions + 1 is all regions, Zero is undefined area
+        ''' Get/set the index of the region to display. Possible values should be
+        ''' interpreted as follows:
+        ''' <list type="bullet">
+        ''' <item><term>0</term><description>The 0 region, e.g., all cells not 
+        ''' assigned to a specific region</description></item>
+        ''' <item><term>1 to n</term><description>Region n</description></item>
+        ''' <item><term>n + 1</term><description>All regions [0, n] at once</description></item>
+        ''' </list>
         ''' </summary>
-        WriteOnly Property RegionIndex() As Integer
+        ''' -------------------------------------------------------------------
+        Property RegionIndex() As Integer
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Number of time steps per year in the current model
+        ''' Get the number of time steps per year that the underlying model has
+        ''' ran for.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property nStepPerYear() As Integer
-
 
     End Interface
 
-#End Region
+#End Region ' Interface definition
 
-#Region "No Results implementation"
+#Region " No Results "
 
     Private Class cNoResultsDisplayHelper
         Implements IDisplayModeHelper
@@ -635,13 +692,6 @@ Public Class frmEcotracerOutput
 
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Nothing
-            End Get
-            Set(ByVal value As cUIContext)
-                ' NOP
-            End Set
-        End Property
 
         Public ReadOnly Property Core() As cCore _
             Implements IDisplayModeHelper.Core
@@ -668,13 +718,6 @@ Public Class frmEcotracerOutput
             Return 0.0
         End Function
 
-        Public ReadOnly Property Enabled() As Boolean _
-            Implements IDisplayModeHelper.Enabled
-            Get
-                Return False
-            End Get
-        End Property
-
         Public ReadOnly Property Title() As String _
             Implements IDisplayModeHelper.Title
             Get
@@ -682,10 +725,12 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public Sub Refresh() _
-            Implements IDisplayModeHelper.Refresh
-            ' NOP
-        End Sub
+        Public ReadOnly Property FirstYear As Integer _
+            Implements IDisplayModeHelper.FirstYear
+            Get
+                Return Me.Core.EcosimFirstYear
+            End Get
+        End Property
 
         Public ReadOnly Property nYears() As Integer _
             Implements IDisplayModeHelper.nYears
@@ -696,23 +741,12 @@ Public Class frmEcotracerOutput
 
         Public Property PlotType() As ePlotTypes _
             Implements IDisplayModeHelper.PlotType
-            Get
-                Return ePlotTypes.NotSet
-            End Get
-            Set(ByVal value As ePlotTypes)
-                ' NOP
-            End Set
-        End Property
 
-        Public WriteOnly Property RegionIndex() As Integer _
+        Public Property RegionIndex() As Integer _
             Implements IDisplayModeHelper.RegionIndex
-            Set(ByVal value As Integer)
-                ' NOP
-            End Set
-        End Property
 
-        Public ReadOnly Property EnabledForSpace() As Boolean _
-            Implements IDisplayModeHelper.EnabledForSpace
+        Public ReadOnly Property SupportsRegions() As Boolean _
+            Implements IDisplayModeHelper.SupportsRegions
             Get
                 Return False
             End Get
@@ -721,21 +755,19 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property XAxisLabel() As String _
             Implements IDisplayModeHelper.XAxisLabel
             Get
-                ' ToDo: Globalize this
-                Return "X Axis"
+                Return ""
             End Get
         End Property
 
         Public ReadOnly Property YAxisLabel() As String _
             Implements IDisplayModeHelper.YAxisLabel
             Get
-                ' ToDo: Globalize this
-                Return "Y Axis"
+                Return ""
             End Get
         End Property
 
-        Public ReadOnly Property bCanPlot() As Boolean _
-            Implements IDisplayModeHelper.bCanPlot
+        Public ReadOnly Property CanPlot() As Boolean _
+            Implements IDisplayModeHelper.CanPlot
             Get
                 Return False
             End Get
@@ -746,37 +778,27 @@ Public Class frmEcotracerOutput
                 Return 0
             End Get
         End Property
+
     End Class
 
-#End Region
+#End Region ' No Results
 
-#Region "Ecosim implementation"
+#Region " Ecosim "
 
     Private Class cEcoSimDisplayHelper
         Implements IDisplayModeHelper
 
-        Private m_uic As cUIContext = Nothing
-        Private m_bEnabled As Boolean
-        Private m_plottype As ePlotTypes
         Private m_zgh As cZedGraphHelper
 
         Sub New(ByRef uic As cUIContext, ByVal ZedGraphHelper As cZedGraphHelper)
             ' Sanity check
             Debug.Assert(uic IsNot Nothing)
             Me.UIContext = uic
-            Me.m_bEnabled = False
             Me.m_zgh = ZedGraphHelper
         End Sub
 
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         ReadOnly Property Core() As cCore _
             Implements IDisplayModeHelper.Core
@@ -792,7 +814,7 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Private Function buildLine(ByVal iGroup As Integer) As LineItem
+        Private Function BuildLine(ByVal iGroup As Integer) As LineItem
 
             If iGroup < 0 Then Return Nothing ' Safety first
 
@@ -807,12 +829,12 @@ Public Class frmEcotracerOutput
             If iGroup > 0 Then
                 Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                 strLabel = group.Name
-                clrLine = Me.m_uic.StyleGuide.GroupColor(Me.Core, iGroup)
+                clrLine = Me.UIContext.StyleGuide.GroupColor(Me.Core, iGroup)
             End If
 
             'decide the plot type outside the loop 
             'so that there does not have to be an "If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then" inside the loop
-            If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then
+            If Me.PlotType = ePlotTypes.CB And iGroup > 0 Then
 
                 SimBio = Me.Core.EcoSimGroupOutputs(iGroup)
 
@@ -839,7 +861,7 @@ Public Class frmEcotracerOutput
         Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
             Implements IDisplayModeHelper.GetGroupLines
 
-            Return New LineItem() {buildLine(iGroup)}
+            Return New LineItem() {BuildLine(iGroup)}
 
         End Function
 
@@ -850,7 +872,7 @@ Public Class frmEcotracerOutput
             Try
                 'there is no biomass for the environment index so there is no way to compute C/B
                 'in that case use Concentration(group,time)
-                If Me.m_plottype = ePlotTypes.CB And iGroup > 0 Then
+                If Me.PlotType = ePlotTypes.CB And iGroup > 0 Then
 
                     Dim grpbio As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
                     For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
@@ -876,39 +898,18 @@ Public Class frmEcotracerOutput
 
         End Function
 
-        Public ReadOnly Property Enabled() As Boolean Implements IDisplayModeHelper.Enabled
-            Get
-                Me.Refresh()
-                'm_bEnabled is set in Refresh
-                Return Me.m_bEnabled
-            End Get
-        End Property
-
         Public ReadOnly Property Title() As String Implements IDisplayModeHelper.Title
             Get
-                'make sure we have the latest state
-                Me.Refresh()
-
-                If Enabled Then
-                    Return My.Resources.GENERIC_ECOSIM
-                Else
-                    Return My.Resources.GENERIC_ECOSIM_NO_DATA_AVAILABLE
-                End If
-
+                Return My.Resources.GENERIC_ECOSIM
             End Get
         End Property
 
-        Public Sub Refresh() _
-            Implements IDisplayModeHelper.Refresh
-
-            Me.m_bEnabled = False
-
-            'make sure Ecosim is the selected model and it has run
-            If Me.Core.EcoSimModelParameters.ContaminantTracing And Me.Core.StateMonitor.HasEcosimRan Then
-                Me.m_bEnabled = True
-            End If
-
-        End Sub
+        Public ReadOnly Property FirstYear As Integer _
+            Implements IDisplayModeHelper.FirstYear
+            Get
+                Return Me.Core.EcosimFirstYear
+            End Get
+        End Property
 
         Public ReadOnly Property nYears() As Integer _
             Implements IDisplayModeHelper.nYears
@@ -919,23 +920,12 @@ Public Class frmEcotracerOutput
 
         Public Property PlotType() As ePlotTypes _
             Implements IDisplayModeHelper.PlotType
-            Get
-                Return Me.m_plottype
-            End Get
-            Set(ByVal value As ePlotTypes)
-                Me.m_plottype = value
-            End Set
-        End Property
 
-        Public WriteOnly Property RegionIndex() As Integer _
+        Public Property RegionIndex() As Integer _
             Implements IDisplayModeHelper.RegionIndex
-            Set(ByVal value As Integer)
-                'ecosim does not use regions
-            End Set
-        End Property
 
-        Public ReadOnly Property EnabledForSpace() As Boolean _
-            Implements IDisplayModeHelper.EnabledForSpace
+        Public ReadOnly Property SupportsRegions() As Boolean _
+            Implements IDisplayModeHelper.SupportsRegions
             Get
                 Return False
             End Get
@@ -951,45 +941,40 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property YAxisLabel() As String _
             Implements IDisplayModeHelper.YAxisLabel
             Get
-                Dim lb As String
-
-                If Me.m_plottype = ePlotTypes.CB Then
-                    lb = SharedResources.HEADER_CONCENTRATION_OVER_B
-                Else
-                    lb = SharedResources.HEADER_CONCENTRATION
-                End If
-                Return lb
+                Select Case Me.PlotType
+                    Case ePlotTypes.CB
+                        Return SharedResources.HEADER_CONCENTRATION_OVER_B
+                    Case ePlotTypes.Conc
+                        Return SharedResources.HEADER_CONCENTRATION
+                    Case Else
+                        Debug.Assert(False, "Plot type not handled")
+                End Select
+                Return "?"
             End Get
         End Property
 
-        Public ReadOnly Property bCanPlot() As Boolean _
-            Implements IDisplayModeHelper.bCanPlot
+        Public ReadOnly Property CanPlot() As Boolean _
+            Implements IDisplayModeHelper.CanPlot
             Get
-                Return True
+                Return Me.Core.StateMonitor.HasEcotracerRanForEcosim
             End Get
         End Property
 
-        Public ReadOnly Property nStepPerYear() As Integer Implements IDisplayModeHelper.nStepPerYear
+        Public ReadOnly Property nStepPerYear() As Integer _
+            Implements IDisplayModeHelper.nStepPerYear
             Get
                 Return cCore.N_MONTHS
             End Get
         End Property
     End Class
 
-#End Region
+#End Region ' Ecosim
 
-#Region "EcoSpace implementation"
+#Region " EcoSpace "
 
     Private Class cEcoSpaceDisplayHelper
         Implements IDisplayModeHelper
 
-        Private m_uic As cUIContext = Nothing
-        Private m_bEnabled As Boolean
-        Private m_plottype As ePlotTypes
-        Private m_iRegion As Integer
-        Private m_bAllRgns As Boolean
-        Private m_rgn1 As Integer
-        Private m_rgn2 As Integer
         Private m_zgh As cZedGraphHelper
 
         Sub New(ByVal uic As cUIContext, ByVal ZedGraphHelper As cZedGraphHelper)
@@ -1001,13 +986,6 @@ Public Class frmEcotracerOutput
 
         Private Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         Private ReadOnly Property Core() As cCore _
             Implements IDisplayModeHelper.Core
@@ -1019,14 +997,14 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property StyleGuide() As cStyleGuide _
             Implements IDisplayModeHelper.StyleGuide
             Get
-                Return Me.m_uic.StyleGuide
+                Return Me.UIContext.StyleGuide
             End Get
         End Property
 
         Public Function GetGroupMax(ByVal iGroup As Integer) As Single Implements IDisplayModeHelper.GetGroupMax
             Dim smax As Single
 
-            If Me.m_plottype = ePlotTypes.Conc Then
+            If Me.PlotType = ePlotTypes.Conc Then
                 For ireg As Integer = 0 To Me.UIContext.Core.nRegions
                     For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
                         smax = Math.Max(Me.Core.EcotracerRegionGroupResults.Concentration(ireg, iGroup, iTimeStep), smax)
@@ -1046,23 +1024,29 @@ Public Class frmEcotracerOutput
         Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
             Implements IDisplayModeHelper.GetGroupLines
 
-            If iGroup < 0 Then Return Nothing ' Safety first
+            If iGroup < 0 Then Return Nothing
 
+            Dim iRegStart As Integer = Math.Max(0, Me.RegionIndex)
+            Dim iRegEnd As Integer = iRegStart
             Dim lstLines As New List(Of LineItem)
 
-            'm_rgn1 and m_rgn2 were set in RegionIndex
-            For ireg As Integer = Me.m_rgn1 To Me.m_rgn2
-                lstLines.Add(buildLine(iGroup, ireg))
+            If (Me.RegionIndex > Me.UIContext.Core.nRegions) Then
+                iRegStart = 1
+                iRegEnd = Me.Core.nRegions
+            End If
+
+            For iReg As Integer = iRegStart To iRegEnd
+                lstLines.Add(BuildLine(iGroup, iReg))
             Next
 
             Return lstLines.ToArray
 
         End Function
 
-        Private Function buildLine(ByVal iGroup As Integer, ByVal iRegion As Integer) As LineItem
+        Private Function BuildLine(ByVal iGroup As Integer, ByVal iRegion As Integer) As LineItem
 
             Dim td As cEcotracerRegionGroupOutput = Me.Core.EcotracerRegionGroupResults
-            Dim list As PointPairList
+            Dim list As New PointPairList()
             Dim clrLine As Color = Color.Black
             Dim strFilter As String = ""
             Dim strRegionName As String = ""
@@ -1081,17 +1065,16 @@ Public Class frmEcotracerOutput
                 strFilter = SharedResources.HEADER_ENVIRONMENT
             End If
 
-            If iRegion > 0 Then
-                strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strFilter, "Region")
-            Else
-                strLabel = strFilter
-            End If
+            Select Case iRegion
+                Case 0
+                    strRegionName = My.Resources.VALUE_REGION_UNDEFINED
+                Case Else
+                    strRegionName = cStringUtils.Localize(My.Resources.VALUE_REGION_N, iRegion)
+            End Select
+            strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strFilter, strRegionName)
 
-            'this will figure out which varname to display 
-            'base on the selected group and the ePlotTypes enum
-            Dim varName As eVarNameFlags = getVarName(iGroup)
-
-            list = New PointPairList()
+            ' Figure out which varname to display based on the selected group and the ePlotTypes enum
+            Dim varName As eVarNameFlags = GetVarName(iGroup)
 
             For iTimeStep As Integer = 1 To Me.Core.nEcospaceTimeSteps
                 dPos = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
@@ -1099,7 +1082,6 @@ Public Class frmEcotracerOutput
                 list.Add(dPos, CDbl(sY))
             Next iTimeStep
 
-            '  Return New LineItem(strLabel, list, clrLine, SymbolType.None, 1)
             Return Me.m_zgh.CreateLineItem(strLabel, eSketchDrawModeTypes.Line, clrLine, list)
 
         End Function
@@ -1108,11 +1090,11 @@ Public Class frmEcotracerOutput
         ''' Get the correct variable to display based on the selected Group and the ePlotTypes
         ''' </summary>
         ''' <param name="iGroup"></param>
-        Private Function getVarName(ByVal iGroup As Integer) As eVarNameFlags
+        Private Function GetVarName(ByVal iGroup As Integer) As eVarNameFlags
 
             If iGroup = 0 Then
                 'The zero group is the environment variable 
-                If Me.m_plottype = ePlotTypes.Conc Then
+                If Me.PlotType = ePlotTypes.Conc Then
                     Return eVarNameFlags.CEnvironment
                 Else
                     Return eVarNameFlags.CBEnvironment
@@ -1120,7 +1102,7 @@ Public Class frmEcotracerOutput
 
             Else
                 'normal groups
-                If Me.m_plottype = ePlotTypes.Conc Then
+                If Me.PlotType = ePlotTypes.Conc Then
                     Return eVarNameFlags.Concentration
                 Else
                     Return eVarNameFlags.ConcBio
@@ -1130,81 +1112,46 @@ Public Class frmEcotracerOutput
 
         End Function
 
-        Public ReadOnly Property Enabled() As Boolean Implements IDisplayModeHelper.Enabled
+        Public ReadOnly Property Title() As String _
+            Implements IDisplayModeHelper.Title
             Get
-                Me.Refresh()
-                'm_bEnabled is set in Refresh
-                Return m_bEnabled
+                Dim strRegionName As String = ""
+                Select Case Me.RegionIndex
+                    Case 0
+                        strRegionName = My.Resources.VALUE_REGION_UNDEFINED
+                    Case 1 To Me.UIContext.Core.nRegions
+                        strRegionName = cStringUtils.Localize(My.Resources.VALUE_REGION_N, Me.RegionIndex)
+                    Case Else
+                        strRegionName = My.Resources.VALUE_REGION_ALL
+                End Select
+                Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.GENERIC_ECOSPACE, strRegionName)
             End Get
         End Property
 
-        Public ReadOnly Property Title() As String Implements IDisplayModeHelper.Title
+        Public ReadOnly Property FirstYear As Integer _
+            Implements IDisplayModeHelper.FirstYear
             Get
-                Me.Refresh()
-                If Me.m_bEnabled Then
-                    Return My.Resources.GENERIC_ECOSPACE
-                Else
-                    Return My.Resources.GENERIC_ECOSPACE_NO_DATA_AVAILABLE
-                End If
+                Return Me.Core.EcosimFirstYear
             End Get
         End Property
 
-        Public Sub Refresh() Implements IDisplayModeHelper.Refresh
-
-            Me.m_bEnabled = False
-
-            'make sure Ecospace run before checking the EcospaceModelParameters object
-            'if Ecospace has not loaded EcospaceModelParameters will be NULL
-            If Me.Core.StateMonitor.HasEcospaceRan Then
-                If Me.Core.EcospaceModelParameters.ContaminantTracing Then
-                    Me.m_bEnabled = True
-                End If
-            End If
-
-        End Sub
-
-        Public ReadOnly Property nYears() As Integer Implements IDisplayModeHelper.nYears
+        Public ReadOnly Property nYears() As Integer _
+            Implements IDisplayModeHelper.nYears
             Get
                 Return Me.Core.nEcospaceYears
             End Get
         End Property
 
+        Public Property PlotType() As ePlotTypes _
+            Implements IDisplayModeHelper.PlotType
 
-        Public Property PlotType() As ePlotTypes Implements IDisplayModeHelper.PlotType
+        Public Property RegionIndex() As Integer _
+            Implements IDisplayModeHelper.RegionIndex
+
+        Public ReadOnly Property SupportsRegions() As Boolean _
+            Implements IDisplayModeHelper.SupportsRegions
             Get
-                Return Me.m_plottype
-            End Get
-
-            Set(ByVal value As ePlotTypes)
-                Me.m_plottype = value
-            End Set
-
-        End Property
-
-        Public WriteOnly Property RegionIndex() As Integer Implements IDisplayModeHelper.RegionIndex
-
-            Set(ByVal value As Integer)
-
-                'bounds checking
-                'Me.Core.nRegions + 1 is all Regions
-                If value < 0 Or value > Me.Core.nRegions + 1 Then
-                    Exit Property
-                End If
-
-                Me.m_rgn1 = value
-                Me.m_rgn2 = value
-
-                If value > Me.Core.nRegions Then
-                    Me.m_rgn1 = 0
-                    Me.m_rgn2 = Me.Core.nRegions
-                End If
-
-            End Set
-        End Property
-
-        Public ReadOnly Property EnabledForSpace() As Boolean Implements IDisplayModeHelper.EnabledForSpace
-            Get
-                Return Me.m_bEnabled
+                Return True
             End Get
         End Property
 
@@ -1215,22 +1162,23 @@ Public Class frmEcotracerOutput
         End Property
 
         Public ReadOnly Property YAxisLabel() As String Implements IDisplayModeHelper.YAxisLabel
-
             Get
-                Dim lb As String
-                If Me.m_plottype = ePlotTypes.CB Then
-                    lb = SharedResources.HEADER_CONCENTRATION_OVER_B
-                Else
-                    lb = SharedResources.HEADER_CONCENTRATION
-                End If
-                Return lb
+                Select Case Me.PlotType
+                    Case ePlotTypes.CB
+                        Return SharedResources.HEADER_CONCENTRATION_OVER_B
+                    Case ePlotTypes.Conc
+                        Return SharedResources.HEADER_CONCENTRATION
+                    Case Else
+                        Debug.Assert(False, "Plot type not supported")
+                End Select
+                Return "?"
             End Get
-
         End Property
 
-        Public ReadOnly Property bCanPlot() As Boolean Implements IDisplayModeHelper.bCanPlot
+        Public ReadOnly Property CanPlot() As Boolean _
+            Implements IDisplayModeHelper.CanPlot
             Get
-                Return True
+                Return Me.Core.StateMonitor.HasEcotracerRanForEcospace
             End Get
         End Property
 
@@ -1245,8 +1193,8 @@ Public Class frmEcotracerOutput
         End Property
     End Class
 
-#End Region
+#End Region ' Ecospace
 
-#End Region
+#End Region ' Display helpers
 
 End Class
