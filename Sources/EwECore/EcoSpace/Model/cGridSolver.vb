@@ -19,7 +19,6 @@
 '
 
 Option Strict On
-Imports System
 Imports System.Threading
 Imports EwEUtils.Core
 

@@ -18,7 +18,6 @@
 ' ===============================================================================
 '
 
-Imports System
 Imports System.Threading
 Imports EwEUtils.Core
 
