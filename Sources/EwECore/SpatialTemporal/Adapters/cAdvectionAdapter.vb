@@ -72,6 +72,8 @@ Namespace SpatialData
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
+            ReDim Me.m_lastXData(Me.m_spaceData.InRow + 1, Me.m_spaceData.InCol + 1)
+            ReDim Me.m_lastYData(Me.m_spaceData.InRow + 1, Me.m_spaceData.InCol + 1)
 
         End Sub
 
@@ -108,7 +110,7 @@ Namespace SpatialData
         End Sub
 
         ''' <summary>
-        ''' Overridden to remember the last received advection pattern.
+        ''' About to receive advection data. Overridden to remember the last received advection pattern.
         ''' </summary>
         ''' <param name="bm"></param>
         ''' <param name="layer"></param>
@@ -120,19 +122,21 @@ Namespace SpatialData
         ''' <returns></returns>
         Protected Friend Overrides Function Adapt(bm As cEcospaceBasemap, layer As cEcospaceLayer, conn As cSpatialDataConnection, iTime As Integer, dt As Date, dataExternal As ISpatialRaster, dNoData As Double) As Boolean
 
-            ' Init last received map buffer
-            If (Me.m_lastXData Is Nothing) Then
-                ReDim Me.m_lastXData(Me.m_spaceData.InRow + 1, Me.m_spaceData.InCol + 1)
-                ReDim Me.m_lastYData(Me.m_spaceData.InRow + 1, Me.m_spaceData.InCol + 1)
-            End If
-
-            ' Clear last received map
-            For ir As Integer = 0 To Me.m_spaceData.InRow + 1
-                For ic As Integer = 0 To Me.m_spaceData.InCol + 1
-                    Me.m_lastXData(ir, ic) = cCore.NULL_VALUE
-                    Me.m_lastYData(ir, ic) = cCore.NULL_VALUE
-                Next ic
-            Next ir
+            ' Init appropriate buffer with no_data values. The buffer will be filled with proper data in SetCell(..)
+            Select Case layer.Index
+                Case 1
+                    For ir As Integer = 0 To Me.m_spaceData.InRow + 1
+                        For ic As Integer = 0 To Me.m_spaceData.InCol + 1
+                            Me.m_lastXData(ir, ic) = cCore.NULL_VALUE
+                        Next ic
+                    Next ir
+                Case 2
+                    For ir As Integer = 0 To Me.m_spaceData.InRow + 1
+                        For ic As Integer = 0 To Me.m_spaceData.InCol + 1
+                            Me.m_lastYData(ir, ic) = cCore.NULL_VALUE
+                        Next ic
+                    Next ir
+            End Select
 
             Return MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
@@ -148,8 +152,9 @@ Namespace SpatialData
         Public Overrides Function Populate(iTime As Integer, dNoData As Double, Optional layer As cEcospaceLayer = Nothing) As Boolean
 
             If MyBase.Populate(iTime, dNoData, layer) Then
-                ' Did 
+                ' Is there external data waiting to be copied to a new timestep?
                 If (Me.m_iLastReceived >= 0) And (Me.m_iLastReceived <> Me.m_spaceData.MonthNow) Then
+                    ' #Yes: integrate all non-NULL external data values into this month's advection pattern
                     For ir As Integer = 0 To Me.m_spaceData.InRow + 1
                         For ic As Integer = 0 To Me.m_spaceData.InCol + 1
                             If Me.m_lastXData(ir, ic) <> cCore.NULL_VALUE Then
