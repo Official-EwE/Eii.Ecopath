@@ -846,7 +846,8 @@ Public Class cEcoSpace
 
 #Region " Private modeling code "
 
-    'SET Dumpcb=0 TO STOP DUMPING ALL C/B VALUES TO CSV FILE
+    'SET Dumpcb=0 TO STOP DUMPING ALL C/B VALUES TO CSV FILE AND/OR RESET FILE PATHWAY FOR SAVING
+
 #Const Dumpcb = 0
 
     ''' <summary>
@@ -875,7 +876,6 @@ Public Class cEcoSpace
         Dim stpwchEffort As New Stopwatch
 
         Try
-            'AND/OR RESET FILE PATHWAY FOR SAVING
 
 #If Dumpcb Then
             Dim CoutFile As String = ”spaceconc.csv”
