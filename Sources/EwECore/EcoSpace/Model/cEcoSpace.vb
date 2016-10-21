@@ -844,7 +844,11 @@ Public Class cEcoSpace
 
 #End Region
 
-#Region "Private modeling code"
+#Region " Private modeling code "
+
+    'SET Dumpcb=0 TO STOP DUMPING ALL C/B VALUES TO CSV FILE
+#Const Dumpcb = 0
+
     ''' <summary>
     ''' 
     ''' </summary>
@@ -871,16 +875,14 @@ Public Class cEcoSpace
         Dim stpwchEffort As New Stopwatch
 
         Try
-            'SET Dumpcb=False TO STOP DUMPING ALL C/B VALUES TO CSV FILE
             'AND/OR RESET FILE PATHWAY FOR SAVING
-            Dim Dumpcb As Boolean
-            Dumpcb = True
-            'If m_tracerData.EcoSpaceConSimOn And Dumpcb Then
-            Dim CoutFile As String = ”C:\Users\Carl Walters\Documents\EwE output\spaceconc.csv”
+
+#If Dumpcb Then
+            Dim CoutFile As String = ”spaceconc.csv”
             Dim CoutWriter As New System.IO.StreamWriter(CoutFile, False)
             Dim CoutVals() As String
             ReDim CoutVals(3 + m_Data.NGroups)
-            'end If
+#End If
             ReDim Fgear(m_EPdata.NumFleet)
             ReDim RelFopt(1)
             'stanza counters
@@ -1215,7 +1217,7 @@ Public Class cEcoSpace
                     Next
                     Me.summarizeContaminantTracer()
                     itc = ntc
-                    If Dumpcb Then  'hack to dump C/B values to csv file
+#If Dumbcb Then
                         CoutVals(0) = CStr(itt) & ","
                         For i = 1 To m_Data.InRow
                             For j = 1 To m_Data.InCol
@@ -1231,12 +1233,7 @@ Public Class cEcoSpace
                                 CoutWriter.WriteLine()
                             Next
                         Next
-
-                        'Dim CoutWriter As New System.IO.StreamWriter(CoutFile, True)
-
-                        ' CoutWriter.Close()
-
-                    End If
+#End If
                 End If 'm_tracerData.EcoSpaceConSimOn 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -1271,7 +1268,12 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'END OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+#If Dumpcb Then
+            CoutWriter.Flush()
             CoutWriter.Close()
+            CoutWriter.Dispose()
+#End If
             ' Me.m_Data.AverageSpatialResults()
             Me.m_Data.SummarizeResultsByFleet(itt, Me.m_EPdata.cost, Me.m_search.Jobs)
 
