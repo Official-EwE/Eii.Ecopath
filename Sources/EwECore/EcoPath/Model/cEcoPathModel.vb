@@ -542,9 +542,9 @@ Namespace Ecopath
                             ' #Yes: update BA
                             m_Data.BA(i) = sBA
                             ' Send out notification
-                            msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
-                                                cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_BA, Me.m_Data.GroupName(i)), _
-                                                eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight,
+                                                cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_BA, Me.m_Data.GroupName(i)),
+                                                eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                         End If
 
                     Case eEstimateTypes.Migration
