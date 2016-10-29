@@ -766,8 +766,8 @@ Public Class gridDefineGroups
                 ' #Yes: add full stanza set-up
                 si = New cStanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
             Else
-                ' #No: just add the name
-                si = New cStanzaInfo(stanza.Name)
+                ' #No: add with invalid vBK
+                si = New cStanzaInfo(stanza, -1)
             End If
             Me.m_lsiStanza.Add(si)
 
@@ -1858,9 +1858,19 @@ Public Class gridDefineGroups
             End If
         Next iGroup
 
+        ' Remove empty stanza, just in case
+        For Each si In Me.m_lsiStanza.ToArray()
+            If (si.HasGroups = False) Then
+                ' #Yes: Remove stanza config
+                Me.m_lsiStanza.Remove(si)
+                ' Flag stanza config for deletion if not new
+                If (Not si.IsNew()) Then Me.m_lsiStanzaRemoved.Add(si)
+            End If
+        Next
+
         ' Assess stanza changes
         For iStanza = 0 To Me.m_lsiStanza.Count - 1
-            si = DirectCast(Me.m_lsiStanza(iStanza), cStanzaInfo)
+            si = Me.m_lsiStanza(iStanza)
             bConfigurationChanged = bConfigurationChanged Or si.IsNew()
             bConfigurationChanged = bConfigurationChanged Or si.IsChanged(Me.Core)
         Next iStanza
