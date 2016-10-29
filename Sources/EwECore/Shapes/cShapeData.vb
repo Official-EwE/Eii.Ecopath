@@ -173,6 +173,7 @@ Public MustInherit Class cShapeData
     Public Property ShapeData(ByVal iPoint As Integer) As Single
         Get
             Try
+                If (iPoint < 0 Or iPoint > Me.m_nPoints) Then Return 0
                 Return m_xdata(iPoint)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".ShapeData(" & iPoint.ToString & ") Error: " & ex.Message)
@@ -182,6 +183,7 @@ Public MustInherit Class cShapeData
 
         Set(ByVal value As Single)
             Try
+                If (iPoint < 0 Or iPoint > Me.m_nPoints) Then Return
                 m_xdata(iPoint) = value
 
                 If Not Me.IsLockedUpdates() Then Me.Update()
