@@ -907,7 +907,7 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType, ByVal replies As eMessageReplyStyle, ByVal defaultReply As eMessageReply) As eMessageReply
+    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType, ByVal replies As eMessageReplyStyle, ByVal defaultReply As eMessageReply, ByVal strHyperlink As String, ByVal vars As cVariableStatus()) As eMessageReply
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -918,19 +918,21 @@ Public Class frmEwE6
     ''' <param name="component">Core component to represent as message origin.</param>
     ''' -----------------------------------------------------------------------
     Public Function AskFeedback(ByVal strMsg As String,
-                             Optional ByVal importance As eMessageImportance = eMessageImportance.Warning,
-                             Optional ByVal component As eCoreComponentType = eCoreComponentType.Core,
-                             Optional ByVal replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL,
-                             Optional ByVal defaultreply As eMessageReply = eMessageReply.YES,
-                             Optional strHyperlink As String = "") As eMessageReply
+                                Optional ByVal importance As eMessageImportance = eMessageImportance.Warning,
+                                Optional ByVal component As eCoreComponentType = eCoreComponentType.Core,
+                                Optional ByVal replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL,
+                                Optional ByVal defaultreply As eMessageReply = eMessageReply.YES,
+                                Optional strHyperlink As String = "",
+                                Optional vars As cVariableStatus() = Nothing) As eMessageReply
 
         If Me.InvokeRequired() Then
             Dim dlgt As New AskFeedbackDelegate(AddressOf Me.AskFeedback)
-            Dim aparms() As Object = New Object() {strMsg, importance, component, replystyle, defaultreply}
+            Dim aparms() As Object = New Object() {strMsg, importance, component, replystyle, defaultreply, vars}
             Return DirectCast(Me.Invoke(dlgt, aparms), eMessageReply)
         End If
 
         Dim fmsg As New cFeedbackMessage(strMsg, component, eMessageType.Any, importance, replystyle, eDataTypes.NotSet, defaultreply)
+        If (vars IsNot Nothing) Then fmsg.Variables.AddRange(vars)
         fmsg.Hyperlink = strHyperlink
         Me.Core.Messages.SendMessage(fmsg)
         Return fmsg.Reply
@@ -3450,15 +3452,19 @@ Public Class frmEwE6
     Private Sub OnEditMultiStanza(ByVal cmd As cCommand) Handles m_cmdEditMultiStanza.OnInvoke
 
         ' Test if all stanza groups have at least one life stage
-        Dim bAllStanzaComplete As Boolean = True
+        Dim vars As New List(Of cVariableStatus)
+
         For i As Integer = 0 To Me.Core.nStanzas - 1
-            bAllStanzaComplete = bAllStanzaComplete And (Me.Core.StanzaGroups(i).nLifeStages > 0)
+            If (Me.Core.StanzaGroups(i).nLifeStages = 0) Then
+                vars.Add(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL, Me.Core.StanzaGroups(i).Name),
+                                             eVarNameFlags.NotSet, eDataTypes.Stanza, eCoreComponentType.Core, 0))
+            End If
         Next
 
-        If bAllStanzaComplete = False Then
+        If (vars.Count > 0) Then
             If Me.AskFeedback(My.Resources.PROMPT_STANZA_MISSING_LIFESTAGES,
                               eMessageImportance.Warning, eCoreComponentType.Core,
-                              eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
+                              eMessageReplyStyle.YES_NO, vars:=vars.ToArray()) = eMessageReply.YES Then
                 Me.m_cmdEditGroups.Invoke()
             End If
             Return

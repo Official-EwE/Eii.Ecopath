@@ -13087,4 +13087,18 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Advection model run either encountered an error or was interrupted. Advection vectors will not be updated.</value>
     <comment>Advection model run failed</comment>
   </data>
+  <data name="PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL" xml:space="preserve">
+    <value>Stanza group '{0}' is declared but has no life stages</value>
+    <comment>{0}=stanza group name</comment>
+  </data>
+  <data name="VALUE_REGION_ALL" xml:space="preserve">
+    <value>(All regions)</value>
+  </data>
+  <data name="VALUE_REGION_N" xml:space="preserve">
+    <value>Region {0}</value>
+    <comment>{0}=region number</comment>
+  </data>
+  <data name="VALUE_REGION_UNDEFINED" xml:space="preserve">
+    <value>(Undefined region)</value>
+  </data>
 </root>
