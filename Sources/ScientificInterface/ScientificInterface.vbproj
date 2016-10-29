@@ -28,8 +28,6 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetZone>LocalIntranet</TargetZone>
-    <GenerateManifests>false</GenerateManifests>
-    <SignManifests>false</SignManifests>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
@@ -128,13 +126,7 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>5A8DF073C299AE0828E5FFB5439926BD7D32B957</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <ItemGroup>
+   <ItemGroup>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -1031,10 +1023,6 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="My Project\app.manifest" />
-    <None Include="My Project\EwE6.exe.manifest">
       <SubType>Designer</SubType>
     </None>
     <None Include="My Project\Settings.settings">
