@@ -112,10 +112,10 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the system icon for a <see cref="MessageBoxIcon">message box 
+        ''' Get the system icon for a <see cref="System.Windows.Forms.MessageBoxIcon">message box 
         ''' icon</see> identifier.
         ''' </summary>
-        ''' <param name="mbi"><see cref="MessageBoxIcon">message box icon</see>
+        ''' <param name="mbi"><see cref="System.Windows.Forms.MessageBoxIcon">message box icon</see>
         ''' identifier to get the system icon for.</param>
         ''' <returns>An <see cref="Icon">Icon</see>, or Nothing if the icon
         ''' could not be found.</returns>
