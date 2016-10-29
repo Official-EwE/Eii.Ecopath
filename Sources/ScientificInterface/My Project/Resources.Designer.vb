@@ -3159,6 +3159,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Stanza group &apos;{0}&apos; is declared but has no life stages.
+        '''</summary>
+        Public ReadOnly Property PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (for further details refer to the status panel).
         '''</summary>
         Public ReadOnly Property PROMPT_STATUS_FURTHERDETAILS() As String
@@ -4321,7 +4330,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to all regions.
+        '''  Looks up a localized string similar to (All regions).
         '''</summary>
         Public ReadOnly Property VALUE_REGION_ALL() As String
             Get
@@ -4330,7 +4339,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to region {0}.
+        '''  Looks up a localized string similar to Region {0}.
         '''</summary>
         Public ReadOnly Property VALUE_REGION_N() As String
             Get
@@ -4339,7 +4348,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to undefined region.
+        '''  Looks up a localized string similar to (Undefined region).
         '''</summary>
         Public ReadOnly Property VALUE_REGION_UNDEFINED() As String
             Get
