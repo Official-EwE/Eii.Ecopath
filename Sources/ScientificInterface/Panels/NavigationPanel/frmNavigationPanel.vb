@@ -192,7 +192,6 @@ Public Class frmNavigationPanel
             .Add("ndFunctionalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimFunctionalResponse)) ' ToDo: connect to help
             .Add("ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses)) ' ToDo: connect to help
 
-
             ' Ecosim Output
             .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmRunEcosim), "Run Ecosim.htm")
             .Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimOutputPlots), "Ecosim plot.htm")
@@ -209,21 +208,23 @@ Public Class frmNavigationPanel
             .Add("ndMSY", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMSY), "") ' ToDo: connect to help
 
             ' Ecospace
-            .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceDispersal), "Dispersal.htm")
-            .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmEcospaceParameters), "Ecospace parameters.htm")
-            .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.frmEcospaceMap), "Basemap.htm") ' ToDo: connect to help
-            .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceFishery), "Ecospace Fishery.htm")
-            .Add("ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAs))
-            .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.dlgEcospaceScenario)) ' ToDo: connect to help
-            .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmRunEcospace), "Run Ecospace.htm")
-            .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Advection.frmAdvection), "")
-            .Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAOptimizations), "EcoSeed.htm")
-            .Add("ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmSpatialTimeSeries), "")
+            .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), "Dispersal.htm")
+            .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceParameters), "Ecospace parameters.htm")
+            .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceMap), "Basemap.htm")
+            .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), "Ecospace Fishery.htm")
+            .Add("ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), "Ecospace Fishery.htm")
+            .Add("ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatFishery), "Ecospace Fishery.htm")
+            .Add("ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), "Ecospace Fishery.htm")
+            .Add("ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs))
+            .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(dlgEcospaceScenario)) ' ToDo: connect to help
+            .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(frmRunEcospace), "Run Ecospace.htm")
+            .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Advection.frmAdvection), "")
+            .Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAOptimizations), "EcoSeed.htm")
+            .Add("ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(frmSpatialTimeSeries), "")
 
             ' Ecospace output
             .Add("ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(Ecospace.frmEcospaceResults), "") ' ToDo: connect to help
 
-            ' ToDo_JS: Link to yet-to-be-written help text
             .Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "") ' ToDo: connect to help
             .Add("ndEcoTracer_Input", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerInput), "") ' ToDo: connect to help
             .Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
