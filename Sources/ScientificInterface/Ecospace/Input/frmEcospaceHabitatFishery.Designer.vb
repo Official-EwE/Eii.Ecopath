@@ -1,6 +1,6 @@
 ﻿Namespace Ecospace
 
-    Partial Class frmEcospaceMPAEnforcement
+    Partial Class frmEcospaceHabitatFishery
         Inherits frmEwEGrid
 
         'Form overrides dispose to clean up the component list.
@@ -23,14 +23,14 @@
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceMPAEnforcement))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceHabitatFishery))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnQuickHelp = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsbnDefineMPAs = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnDefineHabitats = New System.Windows.Forms.ToolStripButton()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_grid = New ScientificInterface.Ecospace.gridEcospaceMPAEnforcement()
             Me.m_lblInfo = New System.Windows.Forms.Label()
+            Me.m_grid = New ScientificInterface.Ecospace.gridEcospaceMPAEnforcement()
             Me.m_tsMain.SuspendLayout()
             Me.m_tlpContent.SuspendLayout()
             Me.SuspendLayout()
@@ -39,7 +39,7 @@
             '
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnQuickHelp, Me.ToolStripSeparator1, Me.m_tsbnDefineMPAs})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnQuickHelp, Me.ToolStripSeparator1, Me.m_tsbnDefineHabitats})
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
@@ -55,10 +55,10 @@
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
-            'm_tsbnDefineMPAs
+            'm_tsbnDefineHabitats
             '
-            resources.ApplyResources(Me.m_tsbnDefineMPAs, "m_tsbnDefineMPAs")
-            Me.m_tsbnDefineMPAs.Name = "m_tsbnDefineMPAs"
+            resources.ApplyResources(Me.m_tsbnDefineHabitats, "m_tsbnDefineHabitats")
+            Me.m_tsbnDefineHabitats.Name = "m_tsbnDefineHabitats"
             '
             'm_tlpContent
             '
@@ -67,6 +67,11 @@
             Me.m_tlpContent.Controls.Add(Me.m_grid, 0, 2)
             Me.m_tlpContent.Controls.Add(Me.m_lblInfo, 0, 1)
             Me.m_tlpContent.Name = "m_tlpContent"
+            '
+            'm_lblInfo
+            '
+            resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
+            Me.m_lblInfo.Name = "m_lblInfo"
             '
             'm_grid
             '
@@ -100,18 +105,13 @@
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'm_lblInfo
-            '
-            resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
-            Me.m_lblInfo.Name = "m_lblInfo"
-            '
-            'frmEcospaceMPAEnforcement
+            'frmEcospaceHabitatFishery
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_tlpContent)
-            Me.Name = "frmEcospaceMPAEnforcement"
+            Me.Name = "frmEcospaceHabitatFishery"
             Me.ShowInTaskbar = False
             Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
@@ -122,7 +122,7 @@
 
         End Sub
 
-        Private WithEvents m_tsbnDefineMPAs As ToolStripButton
+        Private WithEvents m_tsbnDefineHabitats As ToolStripButton
         Private WithEvents m_tlpContent As TableLayoutPanel
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_lblInfo As Label

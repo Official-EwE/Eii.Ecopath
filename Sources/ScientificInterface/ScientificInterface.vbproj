@@ -257,6 +257,12 @@
     <Compile Include="Ecospace\Input\frmEcospaceFishery.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.Designer.vb">
+      <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceMPAEnforcement.Designer.vb">
       <DependentUpon>frmEcospaceMPAEnforcement.vb</DependentUpon>
     </Compile>
@@ -981,6 +987,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceFishery.resx">
       <DependentUpon>frmEcospaceFishery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\frmEcospaceHabitatFishery.resx">
+      <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceMPAEnforcement.resx">
       <DependentUpon>frmEcospaceMPAEnforcement.vb</DependentUpon>

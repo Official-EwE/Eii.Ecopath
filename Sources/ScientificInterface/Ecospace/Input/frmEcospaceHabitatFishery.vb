@@ -27,7 +27,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-    Public Class frmEcospaceMPAEnforcement
+    Public Class frmEcospaceHabitatFishery
 
         Public Sub New()
             MyBase.New()
@@ -43,13 +43,17 @@ Namespace Ecospace
 
             If (Me.CommandHandler Is Nothing) Then Return
 
-            cmd = Me.CommandHandler.GetCommand(cEditMPAsCommand.cCOMMAND_NAME)
-            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnDefineMPAs)
+            cmd = Me.CommandHandler.GetCommand(cEditHabitatsCommand.cCOMMAND_NAME)
+            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnDefineHabitats)
 
-            Me.m_tsbnDefineMPAs.Image = SharedResources.MPA
+            Me.m_tsbnDefineHabitats.Image = SharedResources.Habitat
             Me.m_tsbnQuickHelp.Image = SharedResources.Info
             Me.m_lblInfo.Visible = False
 
+        End Sub
+
+        Private Sub m_lblInfo_Click(sender As Object, e As EventArgs) Handles m_lblInfo.Click
+            Me.m_lblInfo.Visible = False
         End Sub
 
         Private Sub OnShowQuickHelp(sender As Object, e As EventArgs) Handles m_tsbnQuickHelp.MouseDown
