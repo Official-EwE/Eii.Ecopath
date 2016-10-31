@@ -798,7 +798,8 @@ Namespace Database
             Catch ex As Exception
                 bWithSeason = False
             End Try
-            drow("WithSeason") = bWithSeason
+            'No longer applicable
+            'drow("WithSeason") = bWithSeason
 
             If (bWithSeason) Then
                 ' Convert Year1
@@ -824,7 +825,7 @@ Namespace Database
             End If
 
             drow("UnitMonetary") = Me.FixValue(reader, "monetaryUnit", "EUR")
-            drow("EcosimVulMultAll") = Me.FixValue(reader, "Ecosim vulMultAll")
+            'drow("EcosimVulMultAll") = Me.FixValue(reader, "Ecosim vulMultAll")
             writer.AddRow(drow)
             If Not writer.Commit() Then
                 Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_ERROR_COMMIT, "model"), _
@@ -2236,12 +2237,8 @@ Namespace Database
                     drow("Title") = fsd.Title
                     drow("zScale") = fsd.ZScale
                     drow("zMaxScale") = fsd.ZMaxScale
-                    drow("Yzero") = fsd.Yzero
-                    drow("Ybase") = fsd.YBase
-                    drow("Yend") = fsd.YBase
-                    drow("Steep") = fsd.YBase
-                    ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
+                    drow("FunctionParams") = ""
 
                 Case eDataTypes.EggProd
                     writer = Me.m_dbTarget.GetWriter("EcosimShapeEggProd")
@@ -2249,12 +2246,8 @@ Namespace Database
                     drow("Title") = fsd.Title
                     drow("zScale") = fsd.ZScale
                     drow("zMaxScale") = fsd.ZMaxScale
-                    drow("Yzero") = fsd.Yzero
-                    drow("Ybase") = fsd.YBase
-                    drow("Yend") = fsd.YBase
-                    drow("Steep") = fsd.YBase
-                    ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
+                    drow("FunctionParams") = ""
 
                 Case eDataTypes.Mediation
                     Dim nShapeNumber As Integer = CInt(Me.m_dbTarget.GetValue("SELECT COUNT(*) FROM EcosimShapeMediation"))
@@ -2266,14 +2259,9 @@ Namespace Database
                     drow = writer.NewRow()
                     drow("IMedBase") = fsd.IMedBase
                     drow("zScale") = fsd.ZScale
-                    ' New in EwE6
                     drow("Title") = cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MEDIATIONSHAPE, CInt(nShapeNumber + 1))
-                    drow("Yzero") = fsd.Yzero
-                    drow("Ybase") = fsd.YBase
-                    drow("Yend") = fsd.YBase
-                    drow("Steep") = fsd.YBase
-                    ' New in EwE6
                     drow("FunctionType") = eShapeFunctionType.NotSet
+                    drow("FunctionParams") = ""
 
                 Case Else
                     Debug.Assert(False, "Shape type not set during import; cannot continue")
@@ -2825,7 +2813,7 @@ Namespace Database
             Dim iDatasetID As Integer = 0
             Dim strDataset As String = ""
             Dim strDatasetLast As String = ""
-            Dim iNumYears As Integer = 0
+            Dim iNumPoints As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Time Series] WHERE modelName='{0}' ORDER BY Dataset", Me.m_strModelName))
             writer = Me.m_dbTarget.GetWriter("EcosimTimeSeriesDataset")
@@ -2855,9 +2843,7 @@ Namespace Database
                     drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
                     ' Calculate number of years in this time series
                     Dim strData As String = CStr(Me.FixValue(reader, "MemoField", ""))
-                    ' Set as initial max number of years for this dataset 
-                    iNumYears = CInt(strData.Length / 10)
-                    drow("NumYears") = iNumYears
+                    drow("NumPoints") = iNumPoints
 
                     Me.HashKey(eDataTypes.TimeSeriesDataset, strDataset) = iDatasetID
                     strDatasetLast = strDataset
@@ -2867,9 +2853,9 @@ Namespace Database
                     ' Calculate number of years in this time series
                     Dim strData As String = CStr(Me.FixValue(reader, "MemoField", ""))
                     ' Find max across dataset so far
-                    iNumYears = Math.Max(iNumYears, CInt(strData.Length / 10))
+                    iNumPoints = Math.Max(iNumPoints, CInt(strData.Length / 10))
                     ' Store this max
-                    drow("NumYears") = iNumYears
+                    drow("NumPoints") = iNumPoints
                 End If
 
             End While
