@@ -257,11 +257,26 @@
     <Compile Include="Ecospace\Input\frmEcospaceFishery.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceMPAEnforcement.Designer.vb">
+      <DependentUpon>frmEcospaceMPAEnforcement.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceMPAEnforcement.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmMPAs.Designer.vb">
       <DependentUpon>frmMPAs.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecospace\Input\frmMPAs.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridEcospaceFleetDynamics.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridEcospaceHabitatFishery.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridEcospaceMPAEnforcement.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridMPAs.vb">
       <SubType>Component</SubType>
@@ -966,6 +981,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceFishery.resx">
       <DependentUpon>frmEcospaceFishery.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\frmEcospaceMPAEnforcement.resx">
+      <DependentUpon>frmEcospaceMPAEnforcement.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmMPAs.resx">
       <DependentUpon>frmMPAs.vb</DependentUpon>
