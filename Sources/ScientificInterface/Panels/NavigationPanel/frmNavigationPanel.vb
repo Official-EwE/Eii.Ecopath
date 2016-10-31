@@ -213,7 +213,7 @@ Public Class frmNavigationPanel
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceMap), "Basemap.htm")
             .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), "Ecospace Fishery.htm")
-            .Add("ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatFishery), "Ecospace Fishery.htm")
+            .Add("ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceHabitatFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), "Ecospace Fishery.htm")
             .Add("ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs))
             .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(dlgEcospaceScenario)) ' ToDo: connect to help

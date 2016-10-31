@@ -152,7 +152,7 @@
   <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
-  <data name="m_tsbnDefineMPAs.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="m_tsbnDefineHabitats.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
@@ -167,14 +167,14 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="m_tsbnDefineMPAs.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbnDefineHabitats.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="m_tsbnDefineMPAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 22</value>
+  <data name="m_tsbnDefineHabitats.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 22</value>
   </data>
-  <data name="m_tsbnDefineMPAs.Text" xml:space="preserve">
-    <value>Define MPAs</value>
+  <data name="m_tsbnDefineHabitats.Text" xml:space="preserve">
+    <value>Define habitats</value>
   </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -247,7 +247,7 @@
     <value>1</value>
   </data>
   <data name="m_lblInfo.Text" xml:space="preserve">
-    <value>Select which MPA applies to which fleet</value>
+    <value>Select in which habitats a fleet can fish</value>
   </data>
   <data name="m_lblInfo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -306,8 +306,11 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>MPA enforcement</value>
+    <value>Habitat fishery</value>
   </data>
   <data name="&gt;&gt;m_tsbnQuickHelp.Name" xml:space="preserve">
     <value>m_tsbnQuickHelp</value>
@@ -321,14 +324,14 @@
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnDefineMPAs.Name" xml:space="preserve">
-    <value>m_tsbnDefineMPAs</value>
+  <data name="&gt;&gt;m_tsbnDefineHabitats.Name" xml:space="preserve">
+    <value>m_tsbnDefineHabitats</value>
   </data>
-  <data name="&gt;&gt;m_tsbnDefineMPAs.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbnDefineHabitats.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmEcospaceMPAEnforcement</value>
+    <value>frmEcospaceHabitatFishery</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
