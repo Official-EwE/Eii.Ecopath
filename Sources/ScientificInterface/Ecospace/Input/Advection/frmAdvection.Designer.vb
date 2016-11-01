@@ -49,7 +49,10 @@ Namespace Ecospace.Advection
         Private Sub InitializeComponent()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_scMaps = New System.Windows.Forms.SplitContainer()
+            Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind()
             Me.m_scOutputMaps = New System.Windows.Forms.SplitContainer()
+            Me.m_ucAdvection = New ScientificInterface.Ecospace.Advection.ucMap()
+            Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling()
             Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tlpComputeControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_btnStart = New System.Windows.Forms.Button()
@@ -62,10 +65,12 @@ Namespace Ecospace.Advection
             Me.m_txtUpwelling = New System.Windows.Forms.TextBox()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.m_txtPPMult = New System.Windows.Forms.TextBox()
-            Me.m_ucZoomToolbar = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
-            Me.m_ucWind = New ScientificInterface.Ecospace.Advection.ucWind()
-            Me.m_ucMap = New ScientificInterface.Ecospace.Advection.ucMap()
-            Me.m_ucUpwelling = New ScientificInterface.Ecospace.Advection.ucUpwelling()
+            Me.m_ucZoomToolbar = New ScientificInterface.ucAdvectionToolbar()
+            Me.m_tsAdvection = New System.Windows.Forms.ToolStrip()
+            Me.m_tslView = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tscmbViewMap = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tscmbViewMonth = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_sep = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -81,6 +86,7 @@ Namespace Ecospace.Advection
             Me.m_tlpControls.SuspendLayout()
             Me.m_tlpComputeControls.SuspendLayout()
             Me.m_tlpParameters.SuspendLayout()
+            Me.m_tsAdvection.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scMain
@@ -100,8 +106,8 @@ Namespace Ecospace.Advection
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tlpControls)
-            Me.m_scMain.Size = New System.Drawing.Size(550, 374)
-            Me.m_scMain.SplitterDistance = 371
+            Me.m_scMain.Size = New System.Drawing.Size(646, 328)
+            Me.m_scMain.SplitterDistance = 435
             Me.m_scMain.TabIndex = 0
             '
             'm_scMaps
@@ -118,9 +124,20 @@ Namespace Ecospace.Advection
             'm_scMaps.Panel2
             '
             Me.m_scMaps.Panel2.Controls.Add(Me.m_scOutputMaps)
-            Me.m_scMaps.Size = New System.Drawing.Size(371, 374)
-            Me.m_scMaps.SplitterDistance = 214
+            Me.m_scMaps.Size = New System.Drawing.Size(435, 328)
+            Me.m_scMaps.SplitterDistance = 216
             Me.m_scMaps.TabIndex = 0
+            '
+            'm_ucWind
+            '
+            Me.m_ucWind.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.m_ucWind.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucWind.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucWind.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
+            Me.m_ucWind.Name = "m_ucWind"
+            Me.m_ucWind.Size = New System.Drawing.Size(435, 216)
+            Me.m_ucWind.TabIndex = 0
+            Me.m_ucWind.UIContext = Nothing
             '
             'm_scOutputMaps
             '
@@ -130,14 +147,36 @@ Namespace Ecospace.Advection
             '
             'm_scOutputMaps.Panel1
             '
-            Me.m_scOutputMaps.Panel1.Controls.Add(Me.m_ucMap)
+            Me.m_scOutputMaps.Panel1.Controls.Add(Me.m_ucAdvection)
             '
             'm_scOutputMaps.Panel2
             '
             Me.m_scOutputMaps.Panel2.Controls.Add(Me.m_ucUpwelling)
-            Me.m_scOutputMaps.Size = New System.Drawing.Size(371, 156)
-            Me.m_scOutputMaps.SplitterDistance = 180
+            Me.m_scOutputMaps.Size = New System.Drawing.Size(435, 108)
+            Me.m_scOutputMaps.SplitterDistance = 368
             Me.m_scOutputMaps.TabIndex = 0
+            '
+            'm_ucAdvection
+            '
+            Me.m_ucAdvection.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.m_ucAdvection.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucAdvection.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucAdvection.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
+            Me.m_ucAdvection.Name = "m_ucAdvection"
+            Me.m_ucAdvection.Size = New System.Drawing.Size(368, 108)
+            Me.m_ucAdvection.TabIndex = 0
+            Me.m_ucAdvection.UIContext = Nothing
+            '
+            'm_ucUpwelling
+            '
+            Me.m_ucUpwelling.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+            Me.m_ucUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_ucUpwelling.Location = New System.Drawing.Point(0, 0)
+            Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
+            Me.m_ucUpwelling.Name = "m_ucUpwelling"
+            Me.m_ucUpwelling.Size = New System.Drawing.Size(63, 108)
+            Me.m_ucUpwelling.TabIndex = 0
+            Me.m_ucUpwelling.UIContext = Nothing
             '
             'm_tlpControls
             '
@@ -160,7 +199,7 @@ Namespace Ecospace.Advection
             Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpControls.Size = New System.Drawing.Size(175, 374)
+            Me.m_tlpControls.Size = New System.Drawing.Size(207, 328)
             Me.m_tlpControls.TabIndex = 0
             '
             'm_tlpComputeControls
@@ -176,7 +215,7 @@ Namespace Ecospace.Advection
             Me.m_tlpComputeControls.Name = "m_tlpComputeControls"
             Me.m_tlpComputeControls.RowCount = 1
             Me.m_tlpComputeControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpComputeControls.Size = New System.Drawing.Size(169, 27)
+            Me.m_tlpComputeControls.Size = New System.Drawing.Size(201, 27)
             Me.m_tlpComputeControls.TabIndex = 10
             '
             'm_btnStart
@@ -186,7 +225,7 @@ Namespace Ecospace.Advection
             Me.m_btnStart.Location = New System.Drawing.Point(0, 0)
             Me.m_btnStart.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.m_btnStart.Name = "m_btnStart"
-            Me.m_btnStart.Size = New System.Drawing.Size(81, 23)
+            Me.m_btnStart.Size = New System.Drawing.Size(97, 23)
             Me.m_btnStart.TabIndex = 0
             Me.m_btnStart.Text = "&Compute"
             Me.m_btnStart.UseVisualStyleBackColor = True
@@ -195,10 +234,10 @@ Namespace Ecospace.Advection
             '
             Me.m_btnStop.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnStop.Location = New System.Drawing.Point(87, 0)
+            Me.m_btnStop.Location = New System.Drawing.Point(103, 0)
             Me.m_btnStop.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_btnStop.Name = "m_btnStop"
-            Me.m_btnStop.Size = New System.Drawing.Size(82, 23)
+            Me.m_btnStop.Size = New System.Drawing.Size(98, 23)
             Me.m_btnStop.TabIndex = 1
             Me.m_btnStop.Text = "&Stop"
             Me.m_btnStop.UseVisualStyleBackColor = True
@@ -222,7 +261,7 @@ Namespace Ecospace.Advection
             Me.m_hdrCompute.Location = New System.Drawing.Point(0, 94)
             Me.m_hdrCompute.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrCompute.Name = "m_hdrCompute"
-            Me.m_hdrCompute.Size = New System.Drawing.Size(175, 18)
+            Me.m_hdrCompute.Size = New System.Drawing.Size(207, 18)
             Me.m_hdrCompute.TabIndex = 1
             Me.m_hdrCompute.Text = "Compute advection velocities"
             Me.m_hdrCompute.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -235,7 +274,7 @@ Namespace Ecospace.Advection
             Me.m_hdrParams.IsCollapsed = False
             Me.m_hdrParams.Location = New System.Drawing.Point(3, 13)
             Me.m_hdrParams.Name = "m_hdrParams"
-            Me.m_hdrParams.Size = New System.Drawing.Size(169, 20)
+            Me.m_hdrParams.Size = New System.Drawing.Size(201, 20)
             Me.m_hdrParams.TabIndex = 11
             Me.m_hdrParams.Text = "Model parameters"
             Me.m_hdrParams.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -243,8 +282,8 @@ Namespace Ecospace.Advection
             'm_tlpParameters
             '
             Me.m_tlpParameters.ColumnCount = 2
-            Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+            Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlpParameters.Controls.Add(Me.Label1, 0, 0)
             Me.m_tlpParameters.Controls.Add(Me.m_txtUpwelling, 1, 0)
             Me.m_tlpParameters.Controls.Add(Me.Label2, 0, 1)
@@ -255,47 +294,47 @@ Namespace Ecospace.Advection
             Me.m_tlpParameters.RowCount = 2
             Me.m_tlpParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpParameters.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpParameters.Size = New System.Drawing.Size(169, 55)
+            Me.m_tlpParameters.Size = New System.Drawing.Size(201, 55)
             Me.m_tlpParameters.TabIndex = 12
             '
             'Label1
             '
-            Me.Label1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.Label1.AutoSize = True
+            Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
             Me.Label1.Location = New System.Drawing.Point(3, 3)
             Me.Label1.Margin = New System.Windows.Forms.Padding(3)
             Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(78, 21)
+            Me.Label1.Size = New System.Drawing.Size(114, 21)
             Me.Label1.TabIndex = 0
-            Me.Label1.Text = "Upwelling threshold:"
+            Me.Label1.Text = "&Upwelling threshold:"
+            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_txtUpwelling
             '
-            Me.m_txtUpwelling.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_txtUpwelling.Location = New System.Drawing.Point(87, 3)
+            Me.m_txtUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_txtUpwelling.Location = New System.Drawing.Point(123, 3)
             Me.m_txtUpwelling.Name = "m_txtUpwelling"
-            Me.m_txtUpwelling.Size = New System.Drawing.Size(79, 20)
+            Me.m_txtUpwelling.Size = New System.Drawing.Size(75, 20)
             Me.m_txtUpwelling.TabIndex = 1
             '
             'Label2
             '
             Me.Label2.AutoSize = True
+            Me.Label2.Dock = System.Windows.Forms.DockStyle.Fill
             Me.Label2.Location = New System.Drawing.Point(3, 30)
             Me.Label2.Margin = New System.Windows.Forms.Padding(3)
             Me.Label2.Name = "Label2"
-            Me.Label2.Size = New System.Drawing.Size(71, 22)
+            Me.Label2.Size = New System.Drawing.Size(114, 22)
             Me.Label2.TabIndex = 2
-            Me.Label2.Text = "PP upwelling multiplier:"
+            Me.Label2.Text = "&PP upwelling multiplier:"
+            Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_txtPPMult
             '
-            Me.m_txtPPMult.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_txtPPMult.Location = New System.Drawing.Point(87, 30)
+            Me.m_txtPPMult.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_txtPPMult.Location = New System.Drawing.Point(123, 30)
             Me.m_txtPPMult.Name = "m_txtPPMult"
-            Me.m_txtPPMult.Size = New System.Drawing.Size(79, 20)
+            Me.m_txtPPMult.Size = New System.Drawing.Size(75, 20)
             Me.m_txtPPMult.TabIndex = 3
             '
             'm_ucZoomToolbar
@@ -307,49 +346,49 @@ Namespace Ecospace.Advection
             Me.m_ucZoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
             Me.m_ucZoomToolbar.Name = "m_ucZoomToolbar"
             Me.m_ucZoomToolbar.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-            Me.m_ucZoomToolbar.Size = New System.Drawing.Size(550, 25)
+            Me.m_ucZoomToolbar.Size = New System.Drawing.Size(646, 25)
             Me.m_ucZoomToolbar.TabIndex = 0
             Me.m_ucZoomToolbar.UIContext = Nothing
             '
-            'm_ucWind
+            'm_tsAdvection
             '
-            Me.m_ucWind.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.m_ucWind.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucWind.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucWind.Margin = New System.Windows.Forms.Padding(3, 0, 0, 3)
-            Me.m_ucWind.Name = "m_ucWind"
-            Me.m_ucWind.Size = New System.Drawing.Size(371, 214)
-            Me.m_ucWind.TabIndex = 0
-            Me.m_ucWind.UIContext = Nothing
+            Me.m_tsAdvection.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslView, Me.m_tscmbViewMap, Me.m_tscmbViewMonth, Me.m_sep})
+            Me.m_tsAdvection.Location = New System.Drawing.Point(3, 28)
+            Me.m_tsAdvection.Name = "m_tsAdvection"
+            Me.m_tsAdvection.Size = New System.Drawing.Size(646, 25)
+            Me.m_tsAdvection.TabIndex = 1
+            Me.m_tsAdvection.Text = "ToolStrip1"
             '
-            'm_ucMap
+            'm_tslView
             '
-            Me.m_ucMap.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.m_ucMap.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucMap.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucMap.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
-            Me.m_ucMap.Name = "m_ucMap"
-            Me.m_ucMap.Size = New System.Drawing.Size(180, 156)
-            Me.m_ucMap.TabIndex = 0
-            Me.m_ucMap.UIContext = Nothing
+            Me.m_tslView.Name = "m_tslView"
+            Me.m_tslView.Size = New System.Drawing.Size(35, 22)
+            Me.m_tslView.Text = "View:"
             '
-            'm_ucUpwelling
+            'm_tscmbViewMap
             '
-            Me.m_ucUpwelling.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.m_ucUpwelling.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucUpwelling.Location = New System.Drawing.Point(0, 0)
-            Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
-            Me.m_ucUpwelling.Name = "m_ucUpwelling"
-            Me.m_ucUpwelling.Size = New System.Drawing.Size(187, 156)
-            Me.m_ucUpwelling.TabIndex = 0
-            Me.m_ucUpwelling.UIContext = Nothing
+            Me.m_tscmbViewMap.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbViewMap.Name = "m_tscmbViewMap"
+            Me.m_tscmbViewMap.Size = New System.Drawing.Size(121, 25)
+            '
+            'm_tscmbViewMonth
+            '
+            Me.m_tscmbViewMonth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbViewMonth.Name = "m_tscmbViewMonth"
+            Me.m_tscmbViewMonth.Size = New System.Drawing.Size(121, 25)
+            '
+            'm_sep
+            '
+            Me.m_sep.Name = "m_sep"
+            Me.m_sep.Size = New System.Drawing.Size(6, 25)
             '
             'frmAdvection
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.ClientSize = New System.Drawing.Size(556, 411)
+            Me.ClientSize = New System.Drawing.Size(652, 365)
+            Me.Controls.Add(Me.m_tsAdvection)
             Me.Controls.Add(Me.m_ucZoomToolbar)
             Me.Controls.Add(Me.m_scMain)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -380,30 +419,36 @@ Namespace Ecospace.Advection
             Me.m_tlpComputeControls.ResumeLayout(False)
             Me.m_tlpParameters.ResumeLayout(False)
             Me.m_tlpParameters.PerformLayout()
+            Me.m_tsAdvection.ResumeLayout(False)
+            Me.m_tsAdvection.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-        'Private WithEvents m_ucMLD As ScientificInterface.Ecospace.Advection.ucMLD
         Private WithEvents m_ucUpwelling As ScientificInterface.Ecospace.Advection.ucUpwelling
         Private WithEvents m_ucWind As ScientificInterface.Ecospace.Advection.ucWind
-        Private WithEvents m_ucMap As ScientificInterface.Ecospace.Advection.ucMap
-        Private WithEvents m_ucZoomToolbar As ucMapZoomToolbar
-        Friend WithEvents m_scMaps As SplitContainer
-        Friend WithEvents m_scOutputMaps As SplitContainer
+        Private WithEvents m_ucAdvection As ScientificInterface.Ecospace.Advection.ucMap
+        Private WithEvents m_ucZoomToolbar As ucAdvectionToolbar
+        Private WithEvents m_scMaps As SplitContainer
+        Private WithEvents m_scOutputMaps As SplitContainer
         Private WithEvents m_tlpControls As TableLayoutPanel
         Private WithEvents m_tlpComputeControls As TableLayoutPanel
         Private WithEvents m_btnStart As Button
         Private WithEvents m_btnStop As Button
         Private WithEvents m_lblWIndEditorPlaceholder As Label
         Private WithEvents m_hdrCompute As cEwEHeaderLabel
-        Friend WithEvents m_hdrParams As cEwEHeaderLabel
-        Friend WithEvents m_tlpParameters As TableLayoutPanel
-        Friend WithEvents Label1 As Label
-        Friend WithEvents m_txtUpwelling As TextBox
-        Friend WithEvents Label2 As Label
-        Friend WithEvents m_txtPPMult As TextBox
+        Private WithEvents m_hdrParams As cEwEHeaderLabel
+        Private WithEvents m_tlpParameters As TableLayoutPanel
+        Private WithEvents Label1 As Label
+        Private WithEvents m_txtUpwelling As TextBox
+        Private WithEvents Label2 As Label
+        Private WithEvents m_txtPPMult As TextBox
+        Private WithEvents m_tsAdvection As ToolStrip
+        Private WithEvents m_tslView As ToolStripLabel
+        Private WithEvents m_tscmbViewMap As ToolStripComboBox
+        Private WithEvents m_tscmbViewMonth As ToolStripComboBox
+        Private WithEvents m_sep As ToolStripSeparator
     End Class
 
 End Namespace

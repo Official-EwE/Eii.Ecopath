@@ -21,7 +21,7 @@
 Namespace Controls.Map
 
     Partial Class ucMapZoomToolbar
-        Inherits System.Windows.Forms.UserControl
+        Inherits UserControl
 
         'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
@@ -29,7 +29,7 @@ Namespace Controls.Map
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucMapZoomToolbar))
@@ -202,6 +202,7 @@ Namespace Controls.Map
             Me.PerformLayout()
 
         End Sub
+
         Private WithEvents m_tsZoom As cEwEToolstrip
         Private WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
         Private WithEvents m_tsbSaveImage As System.Windows.Forms.ToolStripButton
