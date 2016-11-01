@@ -53,28 +53,19 @@ Namespace Controls
 
 #Region " Overrides "
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Layout handler, overridden to update the state of separators.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnLayout(ByVal e As LayoutEventArgs)
+        Private m_bIsDirty As Boolean = False
 
-            ' Already updating? Abort
-            If Me.m_bInUpdate Then Return
+        Protected Overrides Sub OnLayoutCompleted(e As EventArgs)
+            MyBase.OnLayoutCompleted(e)
 
-            ' Set lock
-            Me.m_bInUpdate = True
-            ' Update separators
-            Me.ShowHideRepeatingSeparators()
             ' Set default display properties
             Me.GripStyle = ToolStripGripStyle.Hidden
-            Me.RenderMode = ToolStripRenderMode.System
-            ' Do base class thing
-            MyBase.OnLayout(e)
+            'Me.RenderMode = ToolStripRenderMode.System
 
-            ' Release lock
-            Me.m_bInUpdate = False
+            If Not Me.DesignMode And Me.IsHandleCreated Then
+                Me.m_bIsDirty = True
+                BeginInvoke(New MethodInvoker(AddressOf ShowHideRepeatingSeparators))
+            End If
 
         End Sub
 
@@ -105,9 +96,13 @@ Namespace Controls
 
 #Region " Internals "
 
+        ''' <summary>
+        ''' Note that this method ONLY works for left-to-right toolstrips
+        ''' </summary>
         Private Sub ShowHideRepeatingSeparators()
 
             If Me.DesignMode Then Return
+            If Not Me.m_bIsDirty Then Return
 
             Dim tsi As ToolStripItem = Nothing
             Dim iNumVisibleControl As Integer = 0 ' Num vis controls since last separator
@@ -121,12 +116,27 @@ Namespace Controls
                 tsi = Me.Items(i)
                 ' Is a separator?
                 If (TypeOf tsi Is ToolStripSeparator) Then
-                    ' #Yes: show this separator only if it separates visible controls
+                    ' #Yes: show this separator only if it separates visible controls AND controls do not switch left/right alignment
                     If (iNumVisibleControl > 0) Then
+
+                        ' Peek ahead for alignment switch
+                        Dim al As Integer = CInt(tsi.Alignment)
+                        Dim bShow As Boolean = True
+
+                        For j As Integer = i + 1 To Me.Items.Count - 1
+                            Dim tsiTest As ToolStripItem = Me.Items(j)
+                            If (Not TypeOf tsiTest Is ToolStripSeparator) And (tsiTest.Visible) Then
+                                bShow = (tsiTest.Alignment = al)
+                                Exit For
+                            End If
+                        Next
+
                         ' Show separator
-                        tsi.Visible = True
-                        ' Remember this visible separator
-                        iLastVisibleSeparator = i
+                        tsi.Visible = bShow
+                        If (bShow) Then
+                            ' Remember this visible separator
+                            iLastVisibleSeparator = i
+                        End If
                     Else
                         tsi.Visible = False
                     End If
@@ -149,6 +159,7 @@ Namespace Controls
             End If
 
             Me.ResumeLayout()
+            Me.m_bIsDirty = False
 
         End Sub
 
