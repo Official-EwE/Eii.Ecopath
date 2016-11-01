@@ -286,10 +286,14 @@ Namespace Controls.Map
 
         Public Sub UpdatePosition(ByVal src As ucMapZoom)
             Me.m_bInUpdate = True
-            Me.m_map.Dock = src.m_map.Dock
-            Me.m_sbHorz.Value = src.m_sbHorz.Value
-            Me.m_sbVert.Value = src.m_sbVert.Value
-            Me.m_sZoom = src.m_sZoom
+            Try
+                Me.m_map.Dock = src.m_map.Dock
+                Me.m_sbHorz.Value = Math.Min(Math.Max(src.m_sbHorz.Value, 0), Me.m_sbHorz.Maximum)
+                Me.m_sbVert.Value = Math.Min(Math.Max(src.m_sbVert.Value, 0), Me.m_sbVert.Maximum)
+                Me.m_sZoom = src.m_sZoom
+            Catch ex As Exception
+                EwEUtils.Core.cLog.Write(ex, "ucMapZoom(" & Me.Name & ").UpdatePosition")
+            End Try
             Me.m_bInUpdate = False
             Me.UpdatePosition()
         End Sub
