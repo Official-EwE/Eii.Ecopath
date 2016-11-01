@@ -277,6 +277,10 @@ Namespace Controls.Map.Layers
                     Catch ex As Exception
                         ' NOP
                     End Try
+                    ' Last update UI
+                    If (Me.GUI IsNot Nothing) Then
+                        Me.GUI.UpdateContent(Me)
+                    End If
                 End If
             End Set
         End Property

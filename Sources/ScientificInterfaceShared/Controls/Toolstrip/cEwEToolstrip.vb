@@ -80,6 +80,29 @@ Namespace Controls
 
 #End Region ' Overrides
 
+#Region " Public bits "
+
+        Public Function Merge(ts As ToolStrip) As Boolean
+
+            If (ts Is Nothing) Then Return False
+
+            Me.SuspendLayout()
+            Try
+                For i As Integer = ts.Items.Count - 1 To 0 Step -1
+                    Me.Items.Insert(0, ts.Items(i))
+                Next
+                ts.Items.Clear()
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
+
+            Me.ResumeLayout()
+            Return True
+
+        End Function
+
+#End Region ' Public bits
+
 #Region " Internals "
 
         Private Sub ShowHideRepeatingSeparators()

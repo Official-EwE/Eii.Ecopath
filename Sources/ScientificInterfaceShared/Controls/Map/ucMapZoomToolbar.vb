@@ -44,7 +44,6 @@ Namespace Controls.Map
 
 #Region " Private vars "
 
-        Private m_uic As cUIContext = Nothing
         ''' <summary>Current <see cref="ucMapZoom.ePositionModeTypes">mode</see> to position the map.</summary>
         Private m_positionMode As ucMapZoom.ePositionModeTypes = ucMapZoom.ePositionModeTypes.Center
         ''' <summary>Predefined zoom levels.</summary>
@@ -94,13 +93,6 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -193,6 +185,12 @@ Namespace Controls.Map
         Public ReadOnly Property Layers As cDisplayLayer()
             Get
                 Return Me.m_lLayers.ToArray
+            End Get
+        End Property
+
+        Public ReadOnly Property Toolstrip As cEwEToolstrip
+            Get
+                Return Me.m_tsZoom
             End Get
         End Property
 

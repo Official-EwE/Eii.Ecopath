@@ -102,6 +102,16 @@ Namespace Ecospace.Advection
             Me.m_fpUpwellingThreshold = New cPropertyFormatProvider(Me.UIContext, Me.m_txtUpwelling, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingThreshold)
             Me.m_fpPPMult = New cPropertyFormatProvider(Me.UIContext, Me.m_txtPPMult, Me.m_manager.ModelParameters, eVarNameFlags.AdvectionUpwellingPPMultiplier)
 
+            Me.PopulateMapsCombo()
+            Me.PopulateMonthsCombo()
+
+            ' Add map control buttons
+            If Me.m_ucZoomToolbar.Toolstrip.Merge(m_tsAdvection) Then
+                Me.Controls.Remove(Me.m_tsAdvection)
+                'Me.m_tsAdvection.Dispose()
+                'Me.m_tsAdvection = Nothing
+            End If
+
             Me.UpdateControls()
 
         End Sub
@@ -150,22 +160,58 @@ Namespace Ecospace.Advection
             If (TypeOf sender Is IMonthFilter) Then
                 ' Sync advection and upwelling maps with Wind month selection
                 Dim iMonth As Integer = DirectCast(sender, IMonthFilter).Month
-                DirectCast(Me.m_ucMap.DataLayer.Editor, IMonthFilter).Month = iMonth
+                DirectCast(Me.m_ucAdvection.DataLayer.Editor, IMonthFilter).Month = iMonth
                 DirectCast(Me.m_ucUpwelling.DataLayer.Editor, IMonthFilter).Month = iMonth
+                Me.m_tscmbViewMonth.SelectedIndex = iMonth - 1
             End If
 
         End Sub
 
         Private Sub OnComputeVels(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStart.Click
-
             Me.StartRun()
         End Sub
 
         Private Sub OnStopComputing(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
-
             Me.m_manager.StopRun()
         End Sub
 
+        Private Sub OnSwitchViewMap(sender As Object, e As EventArgs) Handles m_tscmbViewMap.SelectedIndexChanged
+            Me.SuspendLayout()
+            Try
+                Select Case Me.m_tscmbViewMap.SelectedIndex
+                    Case 0 'all
+                        Me.m_scMaps.Panel1Collapsed = False
+                        Me.m_scMaps.Panel2Collapsed = False
+                        Me.m_scOutputMaps.Panel1Collapsed = False
+                        Me.m_scOutputMaps.Panel2Collapsed = False
+                    Case 1 'wind - top panel
+                        Me.m_scMaps.Panel1Collapsed = False
+                        Me.m_scMaps.Panel2Collapsed = True
+                    Case 2 'advection - bottom panel, left
+                        Me.m_scMaps.Panel1Collapsed = True
+                        Me.m_scMaps.Panel2Collapsed = False
+                        Me.m_scOutputMaps.Panel1Collapsed = True
+                        Me.m_scOutputMaps.Panel2Collapsed = False
+                    Case 3 'upwelling - bottom panel, right
+                        Me.m_scMaps.Panel1Collapsed = True
+                        Me.m_scMaps.Panel2Collapsed = False
+                        Me.m_scOutputMaps.Panel1Collapsed = False
+                        Me.m_scOutputMaps.Panel2Collapsed = True
+                End Select
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
+            Me.ResumeLayout()
+
+        End Sub
+
+        Private Sub OnSwitchViewMonth(sender As Object, e As EventArgs) Handles m_tscmbViewMonth.SelectedIndexChanged
+            Try
+                Me.m_edtWind.Month = Me.m_tscmbViewMonth.SelectedIndex + 1
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
 #End Region ' Control events
 
@@ -188,7 +234,7 @@ Namespace Ecospace.Advection
             'May not be that important
 
             ' Update data layer
-            Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
+            Dim layer As cDisplayRasterLayer = Me.m_ucAdvection.DataLayer
             layer.IsModified = True
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
@@ -196,7 +242,7 @@ Namespace Ecospace.Advection
 
         Private Sub OnCalcStopped(ByVal iIter As Integer, ByVal bInterrupted As Boolean, ByVal bBadFlow As Boolean)
             Me.StopRun()
-            Me.m_ucMap.Invalidate()
+            Me.m_ucAdvection.Invalidate()
 
             'jb left the original message in place incase after testing this is a better way to do it
             'If bBadFlow Then
@@ -225,6 +271,21 @@ Namespace Ecospace.Advection
 
 #Region " Internals "
 
+        Private Sub PopulateMapsCombo()
+            Me.m_tscmbViewMap.Items.Add(ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALL)
+            Me.m_tscmbViewMap.Items.Add(Me.m_ucWind.DataLayer.Name)
+            Me.m_tscmbViewMap.Items.Add(Me.m_ucAdvection.DataLayer.Name)
+            Me.m_tscmbViewMap.Items.Add(Me.m_ucUpwelling.DataLayer.Name)
+            Me.m_tscmbViewMap.SelectedIndex = 0
+        End Sub
+
+        Private Sub PopulateMonthsCombo()
+            For i As Integer = 1 To 12
+                Me.m_tscmbViewMonth.Items.Add(cDateUtils.GetMonthName(i))
+            Next
+            Me.m_tscmbViewMonth.SelectedIndex = 0
+        End Sub
+
         Protected Overrides Sub UpdateControls()
 
             ' Gather stats
@@ -236,7 +297,7 @@ Namespace Ecospace.Advection
         End Sub
 
         Private Function Maps() As ucAdvectionMap()
-            Return New ucAdvectionMap() {Me.m_ucMap, Me.m_ucUpwelling, Me.m_ucWind}
+            Return New ucAdvectionMap() {Me.m_ucAdvection, Me.m_ucUpwelling, Me.m_ucWind}
         End Function
 
         Private Sub StartRun()
@@ -262,17 +323,6 @@ Namespace Ecospace.Advection
             Me.UpdateControls()
 
         End Sub
-
-        'Private Sub Revert()
-        '    If Me.m_manager.Revert Then
-        '        Dim layer As cDisplayRasterLayer = Me.m_ucMap.DataLayer
-        '        layer.IsModified = True
-        '        layer.Update(cDisplayLayer.eChangeFlags.Map, False)
-        '        Me.m_bHasRun = False
-        '        Me.UpdateControls()
-        '    End If
-        'End Sub
-
 
 #End Region ' Internals
 
