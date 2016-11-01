@@ -67,6 +67,10 @@ Namespace Controls.Map.Layers
             Me.m_cmbMonth.Enabled = Me.IsAttached
             Me.m_btnCopy.Enabled = Me.Editor.CanDuplicate()
 
+            If (Me.m_cmbMonth.Items.Count > 0) Then
+                Me.m_cmbMonth.SelectedIndex = Me.Month - 1
+            End If
+
         End Sub
 
         Protected Overloads Property Editor() As cLayerEditorVelocity
