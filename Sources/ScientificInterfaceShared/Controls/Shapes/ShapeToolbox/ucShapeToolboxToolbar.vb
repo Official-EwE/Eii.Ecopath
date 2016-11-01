@@ -18,14 +18,14 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Strict On
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Utilities
-Imports EwECore
+
+#End Region ' Imports
 
 Namespace Controls
 
-    <CLSCompliant(True)> _
     Public Class ucShapeToolboxToolbar
 
 #Region " Private vars "
@@ -131,6 +131,7 @@ Namespace Controls
             tsi.Visible = bSupport
 
         End Sub
+
 #End Region ' Helper methods
 
 #Region " Event handlers "
