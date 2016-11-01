@@ -18,7 +18,6 @@
 ' ===============================================================================
 '
 
-Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Advection
@@ -61,11 +60,11 @@ Namespace Ecospace.Advection
             Me.m_hdrCompute = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpParameters = New System.Windows.Forms.TableLayoutPanel()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblUpwellingThreshold = New System.Windows.Forms.Label()
             Me.m_txtUpwelling = New System.Windows.Forms.TextBox()
-            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_lblUpwellingMult = New System.Windows.Forms.Label()
             Me.m_txtPPMult = New System.Windows.Forms.TextBox()
-            Me.m_ucZoomToolbar = New ScientificInterface.ucAdvectionToolbar()
+            Me.m_ucZoomToolbar = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
             Me.m_tsAdvection = New System.Windows.Forms.ToolStrip()
             Me.m_tslView = New System.Windows.Forms.ToolStripLabel()
             Me.m_tscmbViewMap = New System.Windows.Forms.ToolStripComboBox()
@@ -284,9 +283,9 @@ Namespace Ecospace.Advection
             Me.m_tlpParameters.ColumnCount = 2
             Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
             Me.m_tlpParameters.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpParameters.Controls.Add(Me.Label1, 0, 0)
+            Me.m_tlpParameters.Controls.Add(Me.m_lblUpwellingThreshold, 0, 0)
             Me.m_tlpParameters.Controls.Add(Me.m_txtUpwelling, 1, 0)
-            Me.m_tlpParameters.Controls.Add(Me.Label2, 0, 1)
+            Me.m_tlpParameters.Controls.Add(Me.m_lblUpwellingMult, 0, 1)
             Me.m_tlpParameters.Controls.Add(Me.m_txtPPMult, 1, 1)
             Me.m_tlpParameters.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlpParameters.Location = New System.Drawing.Point(3, 36)
@@ -297,17 +296,17 @@ Namespace Ecospace.Advection
             Me.m_tlpParameters.Size = New System.Drawing.Size(201, 55)
             Me.m_tlpParameters.TabIndex = 12
             '
-            'Label1
+            'm_lblUpwellingThreshold
             '
-            Me.Label1.AutoSize = True
-            Me.Label1.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.Label1.Location = New System.Drawing.Point(3, 3)
-            Me.Label1.Margin = New System.Windows.Forms.Padding(3)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(114, 21)
-            Me.Label1.TabIndex = 0
-            Me.Label1.Text = "&Upwelling threshold:"
-            Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_lblUpwellingThreshold.AutoSize = True
+            Me.m_lblUpwellingThreshold.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lblUpwellingThreshold.Location = New System.Drawing.Point(3, 3)
+            Me.m_lblUpwellingThreshold.Margin = New System.Windows.Forms.Padding(3)
+            Me.m_lblUpwellingThreshold.Name = "m_lblUpwellingThreshold"
+            Me.m_lblUpwellingThreshold.Size = New System.Drawing.Size(114, 21)
+            Me.m_lblUpwellingThreshold.TabIndex = 0
+            Me.m_lblUpwellingThreshold.Text = "&Upwelling threshold:"
+            Me.m_lblUpwellingThreshold.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_txtUpwelling
             '
@@ -317,17 +316,17 @@ Namespace Ecospace.Advection
             Me.m_txtUpwelling.Size = New System.Drawing.Size(75, 20)
             Me.m_txtUpwelling.TabIndex = 1
             '
-            'Label2
+            'm_lblUpwellingMult
             '
-            Me.Label2.AutoSize = True
-            Me.Label2.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.Label2.Location = New System.Drawing.Point(3, 30)
-            Me.Label2.Margin = New System.Windows.Forms.Padding(3)
-            Me.Label2.Name = "Label2"
-            Me.Label2.Size = New System.Drawing.Size(114, 22)
-            Me.Label2.TabIndex = 2
-            Me.Label2.Text = "&PP upwelling multiplier:"
-            Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            Me.m_lblUpwellingMult.AutoSize = True
+            Me.m_lblUpwellingMult.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lblUpwellingMult.Location = New System.Drawing.Point(3, 30)
+            Me.m_lblUpwellingMult.Margin = New System.Windows.Forms.Padding(3)
+            Me.m_lblUpwellingMult.Name = "m_lblUpwellingMult"
+            Me.m_lblUpwellingMult.Size = New System.Drawing.Size(114, 22)
+            Me.m_lblUpwellingMult.TabIndex = 2
+            Me.m_lblUpwellingMult.Text = "&PP upwelling multiplier:"
+            Me.m_lblUpwellingMult.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_txtPPMult
             '
@@ -425,11 +424,11 @@ Namespace Ecospace.Advection
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-        Private WithEvents m_ucUpwelling As ScientificInterface.Ecospace.Advection.ucUpwelling
-        Private WithEvents m_ucWind As ScientificInterface.Ecospace.Advection.ucWind
-        Private WithEvents m_ucAdvection As ScientificInterface.Ecospace.Advection.ucMap
-        Private WithEvents m_ucZoomToolbar As ucAdvectionToolbar
+        Private WithEvents m_scMain As SplitContainer
+        Private WithEvents m_ucUpwelling As ucUpwelling
+        Private WithEvents m_ucWind As ucWind
+        Private WithEvents m_ucAdvection As ucMap
+        Private WithEvents m_ucZoomToolbar As ucMapZoomToolbar
         Private WithEvents m_scMaps As SplitContainer
         Private WithEvents m_scOutputMaps As SplitContainer
         Private WithEvents m_tlpControls As TableLayoutPanel
@@ -440,9 +439,9 @@ Namespace Ecospace.Advection
         Private WithEvents m_hdrCompute As cEwEHeaderLabel
         Private WithEvents m_hdrParams As cEwEHeaderLabel
         Private WithEvents m_tlpParameters As TableLayoutPanel
-        Private WithEvents Label1 As Label
+        Private WithEvents m_lblUpwellingThreshold As Label
         Private WithEvents m_txtUpwelling As TextBox
-        Private WithEvents Label2 As Label
+        Private WithEvents m_lblUpwellingMult As Label
         Private WithEvents m_txtPPMult As TextBox
         Private WithEvents m_tsAdvection As ToolStrip
         Private WithEvents m_tslView As ToolStripLabel
