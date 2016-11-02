@@ -272,15 +272,7 @@ Namespace Database
                     Me.m_strFileName = strDatabase
 
                 Catch ex As OleDbException
-
-                    Select Case ex.ErrorCode
-                        Case -2147467259
-                            ' File not found
-                            datResult = eDatasourceAccessType.Failed_FileNotFound
-                        Case Else
-                            ' OleDb got into trouble
-                            datResult = eDatasourceAccessType.Failed_Unknown
-                    End Select
+                    datResult = eDatasourceAccessType.Failed_Unknown
                     cLog.Write(cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
                 Catch ex As InvalidOperationException
