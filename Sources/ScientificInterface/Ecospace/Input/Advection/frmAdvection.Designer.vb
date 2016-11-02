@@ -152,7 +152,7 @@ Namespace Ecospace.Advection
             '
             Me.m_scOutputMaps.Panel2.Controls.Add(Me.m_ucUpwelling)
             Me.m_scOutputMaps.Size = New System.Drawing.Size(435, 108)
-            Me.m_scOutputMaps.SplitterDistance = 368
+            Me.m_scOutputMaps.SplitterDistance = 219
             Me.m_scOutputMaps.TabIndex = 0
             '
             'm_ucAdvection
@@ -162,7 +162,7 @@ Namespace Ecospace.Advection
             Me.m_ucAdvection.Location = New System.Drawing.Point(0, 0)
             Me.m_ucAdvection.Margin = New System.Windows.Forms.Padding(0, 0, 3, 3)
             Me.m_ucAdvection.Name = "m_ucAdvection"
-            Me.m_ucAdvection.Size = New System.Drawing.Size(368, 108)
+            Me.m_ucAdvection.Size = New System.Drawing.Size(219, 108)
             Me.m_ucAdvection.TabIndex = 0
             Me.m_ucAdvection.UIContext = Nothing
             '
@@ -173,7 +173,7 @@ Namespace Ecospace.Advection
             Me.m_ucUpwelling.Location = New System.Drawing.Point(0, 0)
             Me.m_ucUpwelling.Margin = New System.Windows.Forms.Padding(3, 3, 0, 0)
             Me.m_ucUpwelling.Name = "m_ucUpwelling"
-            Me.m_ucUpwelling.Size = New System.Drawing.Size(63, 108)
+            Me.m_ucUpwelling.Size = New System.Drawing.Size(212, 108)
             Me.m_ucUpwelling.TabIndex = 0
             Me.m_ucUpwelling.UIContext = Nothing
             '

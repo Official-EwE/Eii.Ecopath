@@ -108,6 +108,9 @@ Namespace Ecospace.Advection
             ' Add map control buttons
             If Me.m_ucZoomToolbar.Toolstrip.Merge(m_tsAdvection) Then
                 Me.Controls.Remove(Me.m_tsAdvection)
+
+                ' Do not dispose (yet) until EwEToolStrip.Merge fully clones menu strip items.
+                ' For now, disposing the source toolstrip also deletes event handlers on its (former) toolstrip items. 
                 'Me.m_tsAdvection.Dispose()
                 'Me.m_tsAdvection = Nothing
             End If
@@ -184,15 +187,19 @@ Namespace Ecospace.Advection
                         Me.m_scMaps.Panel2Collapsed = False
                         Me.m_scOutputMaps.Panel1Collapsed = False
                         Me.m_scOutputMaps.Panel2Collapsed = False
+                        Me.m_scOutputMaps.IsSplitterFixed = False
                     Case 1 'wind - top panel
+                        Me.m_scOutputMaps.IsSplitterFixed = True
                         Me.m_scMaps.Panel1Collapsed = False
                         Me.m_scMaps.Panel2Collapsed = True
                     Case 2 'advection - bottom panel, left
+                        Me.m_scOutputMaps.IsSplitterFixed = True
                         Me.m_scMaps.Panel1Collapsed = True
                         Me.m_scMaps.Panel2Collapsed = False
                         Me.m_scOutputMaps.Panel1Collapsed = True
                         Me.m_scOutputMaps.Panel2Collapsed = False
                     Case 3 'upwelling - bottom panel, right
+                        Me.m_scOutputMaps.IsSplitterFixed = True
                         Me.m_scMaps.Panel1Collapsed = True
                         Me.m_scMaps.Panel2Collapsed = False
                         Me.m_scOutputMaps.Panel1Collapsed = False
