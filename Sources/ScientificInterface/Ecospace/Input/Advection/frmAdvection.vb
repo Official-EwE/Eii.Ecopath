@@ -107,13 +107,16 @@ Namespace Ecospace.Advection
 
             ' Add map control buttons
             If Me.m_ucZoomToolbar.Toolstrip.Merge(m_tsAdvection) Then
-                Me.Controls.Remove(Me.m_tsAdvection)
+                Me.m_tsAdvection.Visible = False
 
-                ' Do not dispose (yet) until EwEToolStrip.Merge fully clones menu strip items.
+                ' Do not dispose temporary toolstrip until EwEToolStrip.Merge fully clones menu strip items.
                 ' For now, disposing the source toolstrip also deletes event handlers on its (former) toolstrip items. 
                 'Me.m_tsAdvection.Dispose()
                 'Me.m_tsAdvection = Nothing
             End If
+
+            ' CWJ 2Nov16: Neither the upwelling threshold or pp multiplier are implemented in the current code, i.e. upwelling velocities are not calculated correctly
+            Me.m_plParameters.Visible = False
 
             Me.UpdateControls()
 
