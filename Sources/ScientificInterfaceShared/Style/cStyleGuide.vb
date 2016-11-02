@@ -1944,14 +1944,22 @@ Namespace Style
                                                   HatchStyle.DashedVertical, _
                                                   HatchStyle.Plaid}
 
-        Private m_agrads As cARGBColorRamp() = { _
-            New cARGBColorRamp(New Color() {Color.LightSkyBlue, Color.DarkBlue}, New Double() {0, 1}), _
-            New cARGBColorRamp(New Color() {Color.LightSeaGreen, Color.DarkGreen}, New Double() {0, 1}), _
-            New cARGBColorRamp(New Color() {Color.LightSteelBlue, Color.DarkGreen}, New Double() {0, 1}), _
-            New cARGBColorRamp(New Color() {Color.LightYellow, Color.DarkRed}, New Double() {0, 1}), _
-            New cARGBColorRamp(New Color() {Color.SandyBrown, Color.SaddleBrown}, New Double() {0, 1}), _
-            New cARGBColorRamp(New Color() {Color.FromArgb(255, 0, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 0)}, _
-                               New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6}) _
+        Private m_agrads As cARGBColorRamp() = {
+            New cARGBColorRamp(New Color() {Color.FromArgb(250, 230, 230), Color.FromArgb(250, 24, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(250, 250, 230), Color.FromArgb(250, 250, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(230, 250, 230), Color.FromArgb(24, 250, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(230, 250, 250), Color.FromArgb(24, 250, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(230, 230, 250), Color.FromArgb(24, 24, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(250, 230, 250), Color.FromArgb(240, 24, 250)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(230, 230, 230), Color.FromArgb(24, 24, 24)}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(240, 240, 255), Color.LightBlue, Color.MediumPurple, Color.Purple}, New Double() {0, 1 / 3, 1 / 3, 1 / 3}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(240, 255, 240), Color.LightGreen, Color.DarkGreen}, New Double() {0, 1 / 3, 2 / 3}),
+            New cARGBColorRamp(New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.LemonChiffon, Color.Orange, Color.SaddleBrown}, New Double() {0, 1 / 2, 1 / 2}),
+            New cARGBColorRamp(New Color() {Color.LightYellow, Color.SaddleBrown}, New Double() {0, 1}),
+            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.OrangeRed, Color.DarkRed}, New Double() {0, 1 / 3, 1 / 6, 1 / 6, 1 / 3}),
+            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.LightBlue, Color.DarkBlue}, New Double() {0, 1 / 3, 1 / 6, 1 / 6, 1 / 3}),
+            New cARGBColorRamp(New Color() {Color.FromArgb(255, 0, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 0)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6})
         }
 
         Private m_brHightLightDefault As Brush = Brushes.Red
