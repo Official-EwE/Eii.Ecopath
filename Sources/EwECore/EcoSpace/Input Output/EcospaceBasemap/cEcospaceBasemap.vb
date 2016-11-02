@@ -182,7 +182,7 @@ Public Class cEcospaceBasemap
             m_values.Add(val.varName, val)
 
             ' LayerSail
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0, unitsProp)
             val = New cValue(0, eVarNameFlags.LayerSail, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             val.Stored = False
             m_values.Add(val.varName, val)
