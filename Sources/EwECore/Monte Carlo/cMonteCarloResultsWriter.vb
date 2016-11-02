@@ -216,21 +216,29 @@ Friend Class cMonteCarloResultsWriter
                     strm.Write("," & Me.ToCSVString(Core.m_EcoPathData.DC, iPred))
                 Next
             Next
-            strm.WriteLine()
-
-            strm.Write(cStringUtils.ToCSVField("Ecosim biomass"))
+            strm.WriteLine(cStringUtils.ToCSVField("Ecosim biomass"))
+            strm.Write(",")
             For it As Integer = 1 To Me.Core.m_EcoSimData.NTimes
                 strm.Write(",")
                 strm.Write(cStringUtils.ToCSVField(it))
             Next
             strm.WriteLine()
-
-            'biomass at T from Ecosim results
             For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
                 strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Core.m_EcoPathData.GroupName(igrp)) & ",")
                 strm.WriteLine(Me.ToCSVString(Me.Core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, igrp))
             Next
-
+            strm.WriteLine(cStringUtils.ToCSVField("Ecosim catch"))
+            strm.Write(",")
+            For it As Integer = 1 To Me.Core.m_EcoSimData.NTimes
+                strm.Write(",")
+                strm.Write(cStringUtils.ToCSVField(it))
+            Next
+            strm.WriteLine()
+            For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
+                strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Core.m_EcoPathData.GroupName(igrp)) & ",")
+                strm.WriteLine(Me.ToCSVString(Me.Core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Yield, igrp))
+            Next
+            ' ToDo: Export Landings, Discards, DiscardMort, DiscardSurv ;)
             strm.Close()
             strm = Nothing
 
