@@ -1,4 +1,7 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Imports System.ComponentModel
+Imports System.Linq
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,9 +23,7 @@
 
 #Region " Imports "
 
-Option Strict On
-Imports EwEUtils.Utilities
-Imports System.ComponentModel
+Imports System.Reflection
 
 #End Region ' Imports
 
@@ -73,16 +74,31 @@ Namespace Controls
 
 #Region " Public bits "
 
-        Public Function Merge(ts As ToolStrip) As Boolean
+        ''' <summary>
+        ''' Merge items from a source toolstrip into this toolstrip.
+        ''' </summary>
+        ''' <param name="tsSource"></param>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>
+        ''' Note that merged toolstrip items are still connected to the lifespan of the <paramref name="tsSource">
+        ''' source toolstrip</paramref>. Event handlers are not copied over yet. This means that the
+        ''' source toolstrip can only be disposed when the merged toolstrip items are no longer needed.
+        ''' </remarks>
+        Public Function Merge(tsSource As ToolStrip) As Boolean
 
-            If (ts Is Nothing) Then Return False
+            If (tsSource Is Nothing) Then Return False
 
             Me.SuspendLayout()
             Try
-                For i As Integer = ts.Items.Count - 1 To 0 Step -1
-                    Me.Items.Insert(0, ts.Items(i))
+                For i As Integer = tsSource.Items.Count - 1 To 0 Step -1
+                    Dim item As ToolStripItem = tsSource.Items(i)
+                    ' Event list not copied over properly with Clone extension - abandon efforts for now
+                    ' This means that the source toolstrip cannot be disposed after the Merge has completed;
+                    ' it needs to be kept alive until the end of the life of the merge target toolstrip
+                    'Me.Items.Insert(0, Me.Clone(item))
+                    Me.Items.Insert(0, item)
                 Next
-                ts.Items.Clear()
+                tsSource.Items.Clear()
             Catch ex As Exception
                 Debug.Assert(False)
             End Try
@@ -162,6 +178,83 @@ Namespace Controls
             Me.m_bIsDirty = False
 
         End Sub
+
+        Private s_lNextItem As Long = 0
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' From https://www.devexpress.com/Support/Center/Question/Details/Q454839
+        ''' </summary>
+        ''' <param name="itemSrc"></param>
+        ''' <returns>A new, cloned tool strip item.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function Clone(itemSrc As ToolStripItem) As ToolStripItem
+
+            Dim itemNew As ToolStripItem = CType(Activator.CreateInstance(itemSrc.GetType()), ToolStripItem)
+            Dim propInfoList As IEnumerable(Of PropertyInfo) = From p In GetType(ToolStripItem).GetProperties()
+                                                               Let attributes = p.GetCustomAttributes(True)
+                                                               Let notBrowseable = (From a In attributes
+                                                                                    Where a.[GetType]() = GetType(BrowsableAttribute)
+                                                                                    Select Not TryCast(a, BrowsableAttribute).Browsable).FirstOrDefault()
+                                                               Where Not notBrowseable And p.CanRead And p.CanWrite Order By p.Name
+                                                               Select p
+
+            ' Copy sub items first
+            If TypeOf itemSrc Is ToolStripDropDownButton Then
+                For Each item As ToolStripItem In DirectCast(itemSrc, ToolStripDropDownButton).DropDownItems
+                    DirectCast(itemNew, ToolStripDropDownButton).DropDownItems.Add(Clone(item))
+                Next
+            ElseIf TypeOf itemSrc Is ToolStripComboBox Then
+                For Each item As Object In DirectCast(itemSrc, ToolStripComboBox).Items
+                    DirectCast(itemNew, ToolStripComboBox).Items.Add(item)
+                Next
+            End If
+
+            ' Copy over using reflections
+            For Each propertyInfo As PropertyInfo In propInfoList
+                Dim propertyInfoValue As Object = propertyInfo.GetValue(itemSrc, Nothing)
+                propertyInfo.SetValue(itemNew, propertyInfoValue, Nothing)
+            Next
+
+            ' Create a new menu name
+            itemNew.Name = itemSrc.Name & "-" & CStr(Math.Max(Threading.Interlocked.Increment(s_lNextItem), s_lNextItem - 1))
+
+            ' Process any other properties
+            If itemSrc.ImageIndex <> -1 Then
+                itemNew.ImageIndex = itemSrc.ImageIndex
+            End If
+
+            If Not String.IsNullOrWhiteSpace(itemSrc.ImageKey) Then
+                itemNew.ImageKey = itemSrc.ImageKey
+            End If
+
+            ' We need to make this visible 
+            itemNew.Visible = itemSrc.Visible
+
+            ' The handler list starts empty because we created its parent via a new
+            AddHandlers(itemSrc, itemNew)
+
+            Return itemNew
+
+        End Function
+
+        ''' <summary>
+        ''' Adds the handlers from the source component to the destination component
+        ''' </summary>
+        Private Sub AddHandlers(source As ToolStripItem, target As ToolStripItem)
+            Dim sourceEventHandlerList As EventHandlerList = EventHandlerList(source)
+            Dim destEventHandlerList As EventHandlerList = EventHandlerList(target)
+            destEventHandlerList.AddHandlers(sourceEventHandlerList)
+        End Sub
+
+        ''' <summary>
+        ''' Gets the event handler list from a component
+        ''' </summary>
+        ''' <returns>The EventHanderList or null if none</returns>
+        Private Function EventHandlerList(source As ToolStripItem) As EventHandlerList
+            Dim eventsInfo As PropertyInfo = source.[GetType]().GetProperty("Events", BindingFlags.Instance Or BindingFlags.NonPublic Or BindingFlags.Static)
+            Return DirectCast(eventsInfo.GetValue(source, Nothing), EventHandlerList)
+        End Function
 
 #End Region ' Internals
 
