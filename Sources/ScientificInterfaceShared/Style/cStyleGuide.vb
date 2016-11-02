@@ -1955,9 +1955,10 @@ Namespace Style
             New cARGBColorRamp(New Color() {Color.FromArgb(240, 240, 255), Color.LightBlue, Color.MediumPurple, Color.Purple}, New Double() {0, 1 / 3, 1 / 3, 1 / 3}),
             New cARGBColorRamp(New Color() {Color.FromArgb(240, 255, 240), Color.LightGreen, Color.DarkGreen}, New Double() {0, 1 / 3, 2 / 3}),
             New cARGBColorRamp(New Color() {Color.LightBlue, Color.DarkBlue}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.LemonChiffon, Color.Orange, Color.SaddleBrown}, New Double() {0, 1 / 2, 1 / 2}),
+            New cARGBColorRamp(New Color() {Color.LemonChiffon, Color.Orange, Color.SaddleBrown}, New Double() {0, 0.5, 0.5}),
             New cARGBColorRamp(New Color() {Color.LightYellow, Color.SaddleBrown}, New Double() {0, 1}),
-            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.OrangeRed, Color.DarkRed}, New Double() {0, 1 / 3, 1 / 6, 1 / 6, 1 / 3}),
+            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.White, Color.DarkRed}, New Double() {0, 0.5, 0.5}),
+            New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.OrangeRed, Color.DarkRed}, New Double() {0, 0.25, 0.25, 0.25, 0.25}),
             New cARGBColorRamp(New Color() {Color.DarkGreen, Color.LightGreen, Color.White, Color.LightBlue, Color.DarkBlue}, New Double() {0, 1 / 3, 1 / 6, 1 / 6, 1 / 3}),
             New cARGBColorRamp(New Color() {Color.FromArgb(255, 0, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(0, 255, 0), Color.FromArgb(0, 255, 255), Color.FromArgb(0, 0, 255), Color.FromArgb(255, 0, 255), Color.FromArgb(255, 0, 0)}, New Double() {0, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6, 1 / 6})
         }
