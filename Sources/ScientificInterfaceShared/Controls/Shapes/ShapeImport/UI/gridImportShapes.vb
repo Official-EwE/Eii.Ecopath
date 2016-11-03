@@ -83,9 +83,9 @@ Namespace Controls
                 Dim iRow As Integer = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(fn.Name)
                 Me(iRow, 1) = New EwECell(fmt.GetDescriptor(fn.ShapeFunction), cStyleGuide.eStyleFlags.NotEditable)
-                For i As Integer = 1 To 5
-                    Dim style As cStyleGuide.eStyleFlags = cSystemUtils.IIF(fn.Parms(i) >= 0, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.Null) Or cStyleGuide.eStyleFlags.NotEditable
-                    Me(iRow, 1 + i) = New EwECell(fn.Parms(i), style)
+                For i As Integer = 0 To 4
+                    Dim style As cStyleGuide.eStyleFlags = cSystemUtils.IIF(fn.ShapeParameters(i) >= 0, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.Null) Or cStyleGuide.eStyleFlags.NotEditable
+                    Me(iRow, 2 + i) = New EwECell(fn.ShapeParameters(i), style)
                 Next
             Next
 

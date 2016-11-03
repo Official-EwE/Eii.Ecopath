@@ -3223,18 +3223,18 @@ Public Class cEIIXMLDataSource
     ''' <param name="shapeType"><see cref="eDataTypes">Type of the shape</see> to add.</param>
     ''' <param name="iDBID">Database ID assigned to the new shape.</param>
     ''' <param name="asData">Shape point data.</param>
-    ''' <param name="sYZero">Zero data point shape primitive was created from.</param>
-    ''' <param name="sYBase">Base Y shape primitive was created from.</param>
-    ''' <param name="sYend">End Y shape primitve was created from.</param>
-    ''' <param name="sSteep">Steep value that shape primitive was created from.</param>
     ''' <param name="functionType">Primitive function type shape was created from.</param>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Function AppendShape(ByVal strShapeName As String, ByVal shapeType As eDataTypes, ByRef iDBID As Integer, _
-            ByVal asData As Single(), ByVal sYZero As Single, ByVal sYBase As Single, ByVal sYend As Single, ByVal sSteep As Single, ByVal functionType As Long) As Boolean _
+    Function AppendShape(ByVal strShapeName As String,
+                         ByVal shapeType As eDataTypes,
+                         ByRef iDBID As Integer,
+                         ByVal asData As Single(),
+                         ByVal functionType As Long,
+                         ByVal points As Single()) As Boolean _
             Implements IEcosimDatasource.AppendShape
 
-        Dim b_return As Boolean
+        Dim bSuccess As Boolean
         'increment the number of forcing shapes and pass that into EcoSimDatastructure it will resize to the new number of shapes
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
@@ -3244,13 +3244,11 @@ Public Class cEIIXMLDataSource
         'populate the Ecosim Data in memory with the values from the datasource
         'return the new Ecosim Index and Database ID
 
-        If shapeType = eDataTypes.Mediation Then
-            Return False
-        Else
+        If shapeType <> eDataTypes.Mediation Then
             Dim tmpNumberOfShapes As Integer = ecosimDS.NumForcingShapes + 1
 
             'add the shape to the underlying EcoSim data
-            b_return = ecosimDS.ResizeForcingShapes(tmpNumberOfShapes, tmpNumberOfShapes)
+            bSuccess = ecosimDS.ResizeForcingShapes(tmpNumberOfShapes, tmpNumberOfShapes)
 
             'fake DB id's
             For i As Integer = 1 To ecosimDS.NumForcingShapes
@@ -3260,10 +3258,8 @@ Public Class cEIIXMLDataSource
             ''Fake a database ID because there are no database ID in the EII files
             ''this will allow for testing of database ID
             'newDBID = ecosimDS.ForcingEggProdDBIDs(newEcoSimIndex)
-
-            Return b_return
         End If
-
+        Return bSuccess
 
     End Function
 

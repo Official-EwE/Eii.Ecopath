@@ -443,6 +443,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Alpha.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_ALPHA() As String
+            Get
+                Return ResourceManager.GetString("PARAM_ALPHA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Beta.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_BETA() As String
+            Get
+                Return ResourceManager.GetString("PARAM_BETA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Left bottom.
         '''</summary>
         Public Shared ReadOnly Property PARAM_LEFT_BOTTOM() As String
@@ -574,6 +592,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property PARAM_YEND() As String
             Get
                 Return ResourceManager.GetString("PARAM_YEND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Y scalar.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_YSCALAR() As String
+            Get
+                Return ResourceManager.GetString("PARAM_YSCALAR", resourceCulture)
             End Get
         End Property
         

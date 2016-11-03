@@ -906,16 +906,16 @@ Public Class cEIIDataSource
     ''' <param name="strShapeName">Name to assign to new shape.</param>
     ''' <param name="shapeType"><see cref="eDataTypes">Type of the shape</see> to add.</param>
     ''' <param name="iDBID">Database ID assigned to the new shape.</param>
-    ''' <param name="asData">Shape point data.</param>
-    ''' <param name="sYZero">Zero data point shape primitive was created from.</param>
-    ''' <param name="sYBase">Base Y shape primitive was created from.</param>
-    ''' <param name="sYend">End Y shape primitve was created from.</param>
-    ''' <param name="sSteep">Steep value that shape primitive was created from.</param>
+    ''' <param name="points">Shape point data.</param>
     ''' <param name="functionType">Primitive function type shape was created from.</param>
     ''' <returns>True if succesful.</returns>
     ''' -------------------------------------------------------------------
-    Function AppendShape(ByVal strShapeName As String, ByVal shapeType As eDataTypes, ByRef iDBID As Integer, _
-            ByVal asData As Single(), ByVal sYZero As Single, ByVal sYBase As Single, ByVal sYend As Single, ByVal sSteep As Single, ByVal functionType As Long) As Boolean _
+    Function AppendShape(ByVal strShapeName As String,
+                         ByVal shapeType As eDataTypes,
+                         ByRef iDBID As Integer,
+                         ByVal points As Single(),
+                         ByVal functionType As Long,
+                         ByVal params As Single()) As Boolean _
             Implements IEcosimDatasource.AppendShape
 
         Dim b_return As Boolean

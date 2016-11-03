@@ -75,7 +75,7 @@ Namespace Shapes.Utility
                     msgStatus = New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                     Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
                     For Each def As cShapeImportData.cFunctionDefinition In defs
-                        Dim ff As cForcingFunction = man.CreateNewShape(def.Name, def.ShapeFunction.Shape(nPoints), def.Parms(1), def.Parms(2), def.Parms(3), def.Parms(4), def.ShapeFunction.ShapeFunctionType)
+                        Dim ff As cForcingFunction = man.CreateNewShape(def.Name, def.ShapeFunction.Shape(nPoints), def.ShapeFunction.ShapeFunctionType, def.ShapeParameters)
                         Dim vs As cVariableStatus = Nothing
                         If (ff IsNot Nothing) Then
                             vs = New cVariableStatus(eStatusFlags.OK, _

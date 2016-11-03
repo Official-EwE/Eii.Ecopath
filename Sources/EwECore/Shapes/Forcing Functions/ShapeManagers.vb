@@ -53,19 +53,16 @@ Public MustInherit Class cBaseShapeManager
     ''' <summary>
     ''' Initialize/build all the shapes that belong to this shape manager
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>True if successful.</returns>
     Friend MustOverride Function Init() As Boolean
 
     ''' <summary>
     ''' Shapes can not be created outside the Shape Manager; they must be created by a ShapeManager.
     ''' </summary>
     ''' <returns>A valid shape if successfull. Otherwise Nothing</returns>
-    ''' <remarks>This is so that shapes are attached to there underlying EcoSim data when they are created </remarks>
-    Public MustOverride Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
-            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
-            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    Public MustOverride Function CreateNewShape(strName As String, points As Single(),
+                                                Optional shapeType As Long = eShapeFunctionType.NotSet,
+                                                Optional shapeParams As Single() = Nothing) As cForcingFunction
 
     ''' <summary>
     ''' Number of points in the data for this type of shape. This is specific to a ShapeManger implementation.
@@ -81,7 +78,7 @@ Public MustInherit Class cBaseShapeManager
     ''' </summary>
     ''' <param name="EcoSimData">EcoSim data used to populate the Shapes</param>
     ''' <remarks>New ShapeMangers can only be created by the Core so this is Declares as a Friend. Derived class should override the Init() function to initialize the Shapes. </remarks>
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         m_SimData = EcoSimData
         m_core = theCore
         m_DataType = DataType
@@ -107,7 +104,7 @@ Public MustInherit Class cBaseShapeManager
     ''' <returns>True if Successfull</returns>
     ''' <remarks>Override this in a derived class to add the data in the cForcingFunction to the underlying EcoSim data. 
     ''' This will also work for cMediationFunction Objects as they use cForcingFunction as a base class.</remarks>
-    Protected Overridable Overloads Function Add(ByVal ForcingFunction As cForcingFunction) As Boolean
+    Protected Overridable Overloads Function Add(ForcingFunction As cForcingFunction) As Boolean
         Try
             Me.m_shapes.Add(ForcingFunction)
             Me.UpdateIDs()
@@ -123,7 +120,7 @@ Public MustInherit Class cBaseShapeManager
     ''' Get a <see cref="cForcingFunction">shape</see> from the manager.
     ''' </summary>
     ''' <param name="ItemIndex">The zero-based index of the shape to obtain.</param>
-    Default Public Overridable ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
+    Default Public Overridable ReadOnly Property Item(ItemIndex As Integer) As cForcingFunction
         Get
             Try
                 Return m_shapes.Item(ItemIndex)
@@ -140,7 +137,7 @@ Public MustInherit Class cBaseShapeManager
     ''' Use a Core one based index to retrieve an item
     ''' </summary>
     ''' <param name="CoreOneBasedIndex">One based index to the item</param>
-    Public Overridable ReadOnly Property CoreItem(ByVal CoreOneBasedIndex As Integer) As cForcingFunction
+    Public Overridable ReadOnly Property CoreItem(CoreOneBasedIndex As Integer) As cForcingFunction
         Get
             Try
                 'convert core one based index to zero base for list
@@ -248,7 +245,7 @@ Public MustInherit Class cBaseShapeManager
     ''' Called by a shape to tell the manager that it has changed data. 
     ''' </summary>
     ''' <remarks>Tell the core that a shape has changed. </remarks>
-    Friend Overridable Sub ShapeChanged(Optional ByVal shape As cShapeData = Nothing)
+    Friend Overridable Sub ShapeChanged(Optional shape As cShapeData = Nothing)
         m_core.onChanged(Me, eMessageType.DataModified)
 
         ' Send a shape changed message
@@ -319,7 +316,7 @@ Public MustInherit Class cBaseShapeManager
     ''' <param name="theForcingShape"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Protected Function getShapeForEcoSimArrayIndex(ByVal iEcoSimIndex As Integer, ByRef theForcingShape As cForcingFunction) As Boolean
+    Protected Function getShapeForEcoSimArrayIndex(iEcoSimIndex As Integer, ByRef theForcingShape As cForcingFunction) As Boolean
         Dim ff As cForcingFunction
 
         'Hack loop over each forcing function until one is found with a matching iEcoSimIndex
@@ -356,7 +353,7 @@ Public MustInherit Class cBaseShapeManager
 #Region " ICoreInterface Implementation "
 
     ''' <inheritdocs cref="ICoreInterface.DataType"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return m_DataType
@@ -364,7 +361,7 @@ Public MustInherit Class cBaseShapeManager
     End Property
 
     ''' <inheritdocs cref="ICoreInterface.CoreComponent"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
             Return eCoreComponentType.ShapesManager
@@ -372,18 +369,18 @@ Public MustInherit Class cBaseShapeManager
     End Property
 
     ''' <inheritdocs cref="ICoreInterface.DBID"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Debug.Assert(False, "Not Implemented")
         End Set
     End Property
 
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Function GetID() As String Implements ICoreInterface.GetID
         Dim id As Integer = CType(m_DataType, Integer)
         Return cValueID.getDataTypeID(m_DataType, id)
@@ -394,7 +391,7 @@ Public MustInherit Class cBaseShapeManager
         Get
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Debug.Assert(False, "Not Implemented")
         End Set
     End Property
@@ -404,12 +401,28 @@ Public MustInherit Class cBaseShapeManager
         Get
             Return Me.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Debug.Assert(False, "Not Implemented")
         End Set
     End Property
 
 #End Region ' ICoreInterface Implementation
+
+#Region " Deprecated "
+
+    ''' <summary>
+    ''' Shapes can not be created outside the Shape Manager; they must be created by a ShapeManager.
+    ''' </summary>
+    ''' <returns>A valid shape if successfull. Otherwise Nothing</returns>
+    <Obsolete("Use CreateNewShape(name, data, shapetype, parms) instead")>
+    Public Function CreateNewShape(strName As String, points As Single(),
+                                   sYZero As Single, sYBase As Single,
+                                   sYEnd As Single, sSteep As Single,
+                                   Optional shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+        Return Me.CreateNewShape(strName, points, shapeType, New Single() {sYZero, sYBase, sYEnd, sSteep})
+    End Function
+
+#End Region ' Deprecated
 
 End Class
 
@@ -431,7 +444,7 @@ Public Class cForcingFunctionShapeManager
     ''' <param name="theCore">Reference to the Core that is used for functionality that only the core can know</param>
     ''' <param name="DataType"><see cref="eDataTypes">Data type</see> of shapes to load</param>
     ''' <remarks>This will create the new manager and load the data into shapes</remarks>
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
         Init()
@@ -455,10 +468,9 @@ Public Class cForcingFunctionShapeManager
     ''' </summary>
     ''' <returns>A shape that has been added to the Shape Manager</returns>
     ''' <remarks>A shape cannot be created on its own. It must be created by this factory so that it is hooked up to the core data on creation. </remarks>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
-            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
-            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(strName As String, points As Single(),
+                                             Optional shapeType As Long = eShapeFunctionType.NotSet,
+                                             Optional parms As Single() = Nothing) As cForcingFunction
 
         Dim dbID As Integer
         Dim shape As cForcingFunction
@@ -468,7 +480,7 @@ Public Class cForcingFunctionShapeManager
         'Add storage to the underlying data arrays and the db
         'AddShape() will NOT preserve the existing data  
         'All the data in the Ecosim data structures will be reloaded from the database
-        If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
+        If m_core.AddShape(strName, m_DataType, dbID, points, shapeType, parms) Then
 
             'get the index from the dbid for the new shape
             iEcoSimIndex = Array.IndexOf(m_SimData.ForcingDBIDs, dbID)
@@ -544,7 +556,7 @@ Public Class cMediationShapeManager
     Private m_medData As cMediationDataStructures
 
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
         Init()
@@ -563,15 +575,14 @@ Public Class cMediationShapeManager
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
-            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
-            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(strName As String, points As Single(),
+                                             Optional shapeType As Long = eShapeFunctionType.NotSet,
+                                             Optional shapeParams As Single() = Nothing) As cForcingFunction
 
         Dim dbID As Integer
         Dim medFunct As cMediationFunction
 
-        If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
+        If m_core.AddShape(strName, m_DataType, dbID, points, shapeType, shapeParams) Then
 
             'create a new shape that is hooked up to the underlying ecosim data
             medFunct = New cMediationFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
@@ -630,7 +641,7 @@ Public Class cLandingsMediationShapeManager
     Private m_medData As cMediationDataStructures
 
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
         Init()
@@ -645,19 +656,17 @@ Public Class cLandingsMediationShapeManager
     End Property
 
     ''' <summary>
-    ''' Create a new Mediation shape
+    ''' Create a new Landings shape
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
-            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
-            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(strName As String, points As Single(),
+                                             Optional shapeType As Long = eShapeFunctionType.NotSet,
+                                             Optional params As Single() = Nothing) As cForcingFunction
 
         Dim dbID As Integer
         Dim medFunct As cLandingsMediationFunction
 
-        If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
+        If m_core.AddShape(strName, m_DataType, dbID, points, shapeType, params) Then
 
             'create a new shape that is hooked up to the underlying ecosim data
             medFunct = New cLandingsMediationFunction(m_SimData, Me, Me.m_medData, dbID, m_DataType)
@@ -714,15 +723,13 @@ Public Class cEnviroResponseShapeManager
     Private m_medData As cMediationDataStructures
     Private m_spaceData As cEcospaceDataStructures
 
-
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByVal SpaceData As cEcospaceDataStructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, SpaceData As cEcospaceDataStructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
         Me.m_spaceData = SpaceData
         Init()
 
     End Sub
-
 
     Public Overrides ReadOnly Property NPoints() As Integer
         Get
@@ -733,14 +740,13 @@ Public Class cEnviroResponseShapeManager
     ''' <summary>
     ''' Create a new Mediation shape
     ''' </summary>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
-            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
-            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(strName As String, asData As Single(),
+                                             Optional shapeType As Long = eShapeFunctionType.NotSet,
+                                             Optional params() As Single = Nothing) As cForcingFunction
 
         Dim dbID As Integer
 
-        If m_core.AddShape(strName, m_DataType, dbID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType) Then
+        If m_core.AddShape(strName, m_DataType, dbID, asData, shapeType, params) Then
 
             Dim medFunct As cEnviroResponseFunction
 
@@ -802,7 +808,7 @@ Public Class cEggProductionShapeManager
 
     Private m_grplist As cGroupShapeList
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
 
     End Sub
@@ -857,7 +863,7 @@ Public Class cEggProductionShapeManager
 
     Friend Sub validationFailedMessage()
         ' ToDo: globalize this
-        m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation, _
+        m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation,
                                     eCoreComponentType.ShapesManager, eMessageImportance.Information, eDataTypes.EggProd))
     End Sub
 
@@ -927,7 +933,7 @@ Public Class cGroupShapePair
             Return Me.m_iManager
         End Get
 
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             If (value < m_manager.Count And value >= 0) Or (value = cCore.NULL_VALUE) Then
                 'only set the value if it passed the lame validation
                 Me.m_iManager = value
@@ -982,7 +988,7 @@ Public Class cGroupShapePair
 
 
 
-    Sub New(ByRef theManager As cEggProductionShapeManager, ByRef Shape As cForcingFunction, ByVal StanzaIndex As Integer)
+    Sub New(ByRef theManager As cEggProductionShapeManager, ByRef Shape As cForcingFunction, StanzaIndex As Integer)
         m_manager = theManager
 
         'Zero based public stanza index for stanza list 
@@ -1050,7 +1056,7 @@ Public Class cGroupShapeList
     End Sub
 
 
-    Default Public Property Item(ByVal Index As Integer) As cGroupShapePair
+    Default Public Property Item(Index As Integer) As cGroupShapePair
         Get
             Try
                 Return m_list.Item(Index)
@@ -1058,7 +1064,7 @@ Public Class cGroupShapeList
                 Return Nothing
             End Try
         End Get
-        Set(ByVal value As cGroupShapePair)
+        Set(value As cGroupShapePair)
             Try
                 m_list.Item(Index) = value
             Catch ex As Exception
@@ -1088,9 +1094,9 @@ End Class
 #Region " Fishing shape manager base class "
 
 Public MustInherit Class cFishingBaseShapeManager
-    : Inherits cBaseShapeManager
+    Inherits cBaseShapeManager
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
         Init()
     End Sub
@@ -1103,7 +1109,7 @@ Public MustInherit Class cFishingBaseShapeManager
 
     Public MustOverride Sub ResetToDefaults()
 
-    Public MustOverride Function EcopathBaseValue(ByVal iShape As Integer) As Single
+    Public MustOverride Function EcopathBaseValue(iShape As Integer) As Single
 
 End Class
 
@@ -1112,17 +1118,19 @@ End Class
 #Region " Fishing Rate Shape Manager "
 
 Public Class cFishingEffortShapeManger
-    : Inherits cFishingBaseShapeManager
+    Inherits cFishingBaseShapeManager
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
     End Sub
 
     ''' <summary>
-    ''' Fishing Rate shapes can not be created
+    ''' Fishing rate shapes can not be dynamically created; they are part of the fleet setup.
     ''' </summary>
     ''' <returns>Always Nothing.</returns>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData() As Single, Optional ByVal sYZero As Single = 0.0, Optional ByVal sYBase As Single = 0.0, Optional ByVal sYEnd As Single = 0.0, Optional ByVal sSteep As Single = 0.0, Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    Public Overrides Function CreateNewShape(strName As String, asData() As Single,
+                                             Optional shapeType As Long = eShapeFunctionType.NotSet,
+                                             Optional params As Single() = Nothing) As cForcingFunction
         Return Nothing
     End Function
 
@@ -1166,7 +1174,7 @@ Public Class cFishingEffortShapeManger
         Me.ShapeChanged()
     End Sub
 
-    Public Overrides Function EcopathBaseValue(ByVal iShape As Integer) As Single
+    Public Overrides Function EcopathBaseValue(iShape As Integer) As Single
         Return 1
     End Function
 
@@ -1177,17 +1185,17 @@ End Class
 #Region " Fish Mortality shape manager "
 
 Public Class cFishingMortalityShapeManger
-    : Inherits cFishingBaseShapeManager
+    Inherits cFishingBaseShapeManager
 
-    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
         MyBase.New(EcoSimData, theCore, DataType)
     End Sub
 
     ''' <summary>
-    ''' Fish Mort shapes can not be created
+    ''' Fishing mortality rate shapes can not be dynamically created; they are part of the fleet setup.
     ''' </summary>
-    ''' <returns>Always Nothing</returns>
-    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData() As Single, Optional ByVal sYZero As Single = 0.0, Optional ByVal sYBase As Single = 0.0, Optional ByVal sYEnd As Single = 0.0, Optional ByVal sSteep As Single = 0.0, Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+    ''' <returns>Always Nothing.</returns>
+    Public Overrides Function CreateNewShape(strName As String, asData() As Single, Optional shapeType As Long = 0, Optional params() As Single = Nothing) As cForcingFunction
         Return Nothing
     End Function
 
@@ -1219,7 +1227,7 @@ Public Class cFishingMortalityShapeManger
         Me.ShapeChanged()
     End Sub
 
-    Public Overrides Function EcopathBaseValue(ByVal iShape As Integer) As Single
+    Public Overrides Function EcopathBaseValue(iShape As Integer) As Single
         Return Me.m_core.m_EcoSimData.Fish1(iShape)
     End Function
 
@@ -1237,7 +1245,7 @@ End Class
 
 '    Private m_medData As cMediationDataStructures
 
-'    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, ByVal DataType As eDataTypes)
+'    Friend Sub New(ByRef EcoSimData As cEcosimDatastructures, ByRef theCore As cCore, DataType As eDataTypes)
 '        MyBase.New(EcoSimData, theCore, DataType)
 
 '        Me.Init()
@@ -1254,10 +1262,10 @@ End Class
 '    ''' <summary>
 '    ''' Create a new Mediation shape
 '    ''' </summary>
-'    Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
-'            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
-'            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
-'            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
+'    Public Overrides Function CreateNewShape(strName As String, asData As Single(), _
+'            Optional sYZero As Single = 0, Optional sYBase As Single = 0, _
+'            Optional sYEnd As Single = 0, Optional sSteep As Single = 0, _
+'            Optional shapeType As Long = eShapeFunctionType.NotSet) As cForcingFunction
 
 '        Dim dbID As Integer
 

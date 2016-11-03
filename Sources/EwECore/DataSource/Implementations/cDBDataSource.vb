@@ -4413,7 +4413,7 @@ Namespace DataSources
 
                 If iShapeID <= 0 Then
                     ' Define a new shape for this fleet
-                    Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, asDummy, 0, 0, 0, 0, eShapeFunctionType.NotSet)
+                    Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, asDummy, eShapeFunctionType.NotSet, Nothing)
                     dtNewFleetShapes.Add(iFleetID, iShapeID)
                     iShapeID += 1
                 End If
@@ -6235,25 +6235,18 @@ Namespace DataSources
         ''' <param name="shapeType"><see cref="eDataTypes">Type of the shape</see> to add.</param>
         ''' <param name="iShapeID">Database ID assigned to the new shape.</param>
         ''' <param name="asData">Shape point data.</param>
-        ''' <param name="sYZero">Zero data point shape primitive was created from.</param>
-        ''' <param name="sYBase">Base Y shape primitive was created from.</param>
-        ''' <param name="sYend">End Y shape primitve was created from.</param>
-        ''' <param name="sSteep">Steep value that shape primitive was created from.</param>
         ''' <param name="functionType">Primitive function type shape was created from.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Friend Function AppendShape(ByVal strShapeName As String, _
-                                    ByVal shapeType As eDataTypes, _
-                                    ByRef iShapeID As Integer, _
-                                    ByVal asData As Single(), _
-                                    ByVal sYZero As Single, _
-                                    ByVal sYBase As Single, _
-                                    ByVal sYend As Single, _
-                                    ByVal sSteep As Single, _
-                                    ByVal functionType As Long) As Boolean _
+        Friend Function AppendShape(ByVal strShapeName As String,
+                                    ByVal shapeType As eDataTypes,
+                                    ByRef iShapeID As Integer,
+                                    ByVal asData As Single(),
+                                    ByVal functionType As Long,
+                                    ByVal params As Single()) As Boolean _
                 Implements IEcosimDatasource.AppendShape
 
-            If Me.AppendShapeImpl(strShapeName, shapeType, iShapeID, asData, sYZero, sYBase, sYend, sSteep, functionType) Then
+            If Me.AppendShapeImpl(strShapeName, shapeType, iShapeID, asData, functionType, params) Then
                 ' #Yes: reload
                 'jb the number of shapes has changed in the database so we need to reload all the shape data in memory
                 Return Me.LoadShapes()
@@ -6271,22 +6264,16 @@ Namespace DataSources
         ''' <param name="shapeType"></param>
         ''' <param name="iShapeID"></param>
         ''' <param name="asData"></param>
-        ''' <param name="sYZero"></param>
-        ''' <param name="sYBase"></param>
-        ''' <param name="sYend"></param>
-        ''' <param name="sSteep"></param>
         ''' <param name="functionType"></param>
+        ''' <param name="params"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Private Function AppendShapeImpl(ByVal strShapeName As String, _
-                                         ByVal shapeType As eDataTypes, _
-                                         ByRef iShapeID As Integer, _
-                                         ByVal asData As Single(), _
-                                         ByVal sYZero As Single, _
-                                         ByVal sYBase As Single, _
-                                         ByVal sYend As Single, _
-                                         ByVal sSteep As Single, _
-                                         ByVal functionType As Long) As Boolean
+        Private Function AppendShapeImpl(ByVal strShapeName As String,
+                                         ByVal shapeType As eDataTypes,
+                                         ByRef iShapeID As Integer,
+                                         ByVal asData As Single(),
+                                         ByVal functionType As Long,
+                                         ByVal params As Single()) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -6325,7 +6312,7 @@ Namespace DataSources
                         writerShape = Me.m_db.GetWriter("EcosimShapeFishMort")
 
                     Case eDataTypes.NotSet
-                        Debug.Assert(False, String.format("Cannot load invalid shapetype for shape ID {0}", iShapeID))
+                        Debug.Assert(False, String.Format("Cannot load invalid shapetype for shape ID {0}", iShapeID))
                         Return False
 
                 End Select
@@ -6353,10 +6340,10 @@ Namespace DataSources
                 If (shapeType <> eDataTypes.FishMort) And (shapeType <> eDataTypes.FishingEffort) Then
 
                     drow("FunctionType") = CInt(functionType)
-                    drow("FunctionParams") = cStringUtils.ParamArrayToString(New Single() {sYZero, sYBase, sYend, sSteep})
+                    drow("FunctionParams") = cStringUtils.ParamArrayToString(params)
 
-                    If (shapeType = eDataTypes.Mediation) Or _
-                       (shapeType = eDataTypes.PriceMediation) Or _
+                    If (shapeType = eDataTypes.Mediation) Or
+                       (shapeType = eDataTypes.PriceMediation) Or
                        (shapeType = eDataTypes.CapacityMediation) Then
                         drow("IMedBase") = 1200 / 3
                     End If
@@ -6369,7 +6356,7 @@ Namespace DataSources
                 Me.m_db.ReleaseWriter(writerID)
 
             Catch ex As Exception
-                Me.LogMessage(String.format("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
+                Me.LogMessage(String.Format("Error {0} occurred while appending shape {1}, {2}", ex.Message, strShapeName, shapeType.ToString()))
                 bSucces = False
             End Try
 

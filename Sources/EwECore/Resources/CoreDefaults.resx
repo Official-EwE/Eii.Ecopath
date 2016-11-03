@@ -260,6 +260,12 @@
   <data name="ECOSPACE_WRITER_REGAVG" xml:space="preserve">
     <value>Region averages</value>
   </data>
+  <data name="PARAM_ALPHA" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="PARAM_BETA" xml:space="preserve">
+    <value>Beta</value>
+  </data>
   <data name="PARAM_LEFTPOINT" xml:space="preserve">
     <value>Left point</value>
   </data>
@@ -308,6 +314,9 @@
   </data>
   <data name="PARAM_YEND" xml:space="preserve">
     <value>Y end</value>
+  </data>
+  <data name="PARAM_YSCALAR" xml:space="preserve">
+    <value>Y scalar</value>
   </data>
   <data name="PARAM_YZERO" xml:space="preserve">
     <value>Y zero</value>

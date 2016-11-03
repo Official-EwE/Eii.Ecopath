@@ -43,18 +43,16 @@ Namespace Shapes.Utility
 
             Private m_strName As String
             Private m_fn As IShapeFunction
-            Private m_parms(5) As Single
+            Private m_parms As Single()
 
 #End Region ' Private vars
 
-            Public Sub New(strName As String, fn As IShapeFunction, p1 As Single, p2 As Single, p3 As Single, p4 As Single, p5 As Single)
+            Public Sub New(strName As String, fn As IShapeFunction, parms As Single())
                 Me.m_strName = strName
                 Me.m_fn = fn
-                Me.m_parms(1) = p1
-                Me.m_parms(2) = p2
-                Me.m_parms(3) = p3
-                Me.m_parms(4) = p4
-                Me.m_parms(5) = p5
+                If (parms IsNot Nothing) Then
+                    Me.m_parms = CType(parms.Clone(), Single())
+                End If
             End Sub
 
             Public ReadOnly Property Name As String
@@ -69,10 +67,9 @@ Namespace Shapes.Utility
                 End Get
             End Property
 
-            Public ReadOnly Property Parms(i As Integer) As Single
+            Public ReadOnly Property ShapeParameters As Single()
                 Get
-                    If (i < 1 Or i > Me.m_fn.nParameters) Then Return cCore.NULL_VALUE
-                    Return Me.m_parms(i)
+                    Return Me.m_parms
                 End Get
             End Property
 
@@ -172,7 +169,7 @@ Namespace Shapes.Utility
                             parms(i) = cCore.NULL_VALUE
                         End If
                     Next
-                    Dim f As New cFunctionDefinition(bits(0), fn, parms(0), parms(1), parms(2), parms(3), parms(4))
+                    Dim f As New cFunctionDefinition(bits(0), fn, parms)
                     Me.m_defs.Add(f)
                 Else
                     bSucces = False
