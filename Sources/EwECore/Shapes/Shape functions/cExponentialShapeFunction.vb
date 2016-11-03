@@ -39,7 +39,7 @@ Public Class cExponentialShapeFunction
         Get
             Select Case iParam
                 'Only override the scalar name
-                Case 4 : Return "Y scalar"
+                Case 4 : Return My.Resources.CoreDefaults.PARAM_YSCALAR
             End Select
             Return MyBase.ParamName(iParam)
         End Get

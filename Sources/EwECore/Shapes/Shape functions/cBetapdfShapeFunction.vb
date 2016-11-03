@@ -38,11 +38,11 @@ Public Class cBetapdfShapeFunction
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
             Select Case iParam
-                Case 1 : Return "alpha"
-                Case 2 : Return "beta"
-                Case 3 : Return "Y scalar"
+                Case 1 : Return My.Resources.CoreDefaults.PARAM_ALPHA
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_BETA
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_YSCALAR
             End Select
-            Return MyBase.ParamName(iParam)
+            Return "?"
         End Get
     End Property
 

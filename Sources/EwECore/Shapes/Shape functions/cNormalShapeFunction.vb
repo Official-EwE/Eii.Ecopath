@@ -180,9 +180,9 @@ Public Class cNormalShapeFunction
                 Dim shp As cEnviroResponseFunction = DirectCast(obj, cEnviroResponseFunction)
                 Debug.Assert(shp.ShapeFunctionType = eShapeFunctionType.Normal)
                 'ResponseLeftLimit  = mean - [half the data width]
-                shp.ResponseLeftLimit = shp.Steep - shp.YBase / 2
+                shp.ResponseLeftLimit = Me.Mean - Me.DataWidth / 2
                 'ResponseRightLimit  = mean + [half the data width]
-                shp.ResponseRightLimit = shp.Steep + shp.YBase / 2
+                shp.ResponseRightLimit = Me.Mean + Me.DataWidth / 2
             End If
         Catch ex As Exception
 

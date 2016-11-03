@@ -40,10 +40,6 @@ Public Class cImporter
     Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
     Private m_data As cImportData = Nothing
-    Private m_dictShapeEnvelopes As New Dictionary(Of Integer, cImportData.cEnvelopeData)
-
-    ' ToDo: obtain from EwE
-    Private Const NMedPoints As Integer = 1200
 
 #End Region ' Private vars
 
@@ -72,7 +68,6 @@ Public Class cImporter
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
         Try
 
-            Me.m_dictShapeEnvelopes.Clear()
             bSuccess = True
 
             cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, My.Resources.STATUS_CREATING, -1)
@@ -88,8 +83,7 @@ Public Class cImporter
                                                                           cStringUtils.Localize(My.Resources.STATUS_CREATING_DETAIL, strName), _
                                                                           -1)
                                 If Me.CreateShape(strName, env) Then
-                                    Me.m_dictShapeEnvelopes(env.DBID) = env
-                                    vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_IMPORT_DETAIL_SUCCESS, strName), _
+                                    vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_IMPORT_DETAIL_SUCCESS, strName),
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
                                 Else
                                     vs = New cVariableStatus(eStatusFlags.ErrorEncountered, String.Format(My.Resources.PROMPT_IMPORT_DETAIL_FAILED, strName), _
@@ -133,42 +127,11 @@ Public Class cImporter
     Private Function CreateShape(strName As String, env As cImportData.cEnvelopeData) As Boolean
 
         Dim man As cEnviroResponseShapeManager = Me.m_core.EnviroResponseShapeManager
-        Dim shp As cForcingFunction = Nothing
-        Dim data(NMedPoints) As Single
-        Dim p0 As Integer = 0
-        Dim p1 As Single = NMedPoints * env.MinPref / env.Max
-        Dim p2 As Single = NMedPoints * env.MaxPref / env.Max
-        Dim p3 = NMedPoints
+        Dim shp As cEnviroResponseFunction = Nothing
 
-        For i As Integer = 1 To NMedPoints
-
-            Dim x0 As Single = 0
-            Dim y0 As Single = 0
-            Dim rc As Single = 1.0
-
-            If (i < p1) Then
-                x0 = p0
-                y0 = 0
-                rc = cSystemUtils.IIF(p1 = 0, 1.0!, CSng(1 / p1))
-            ElseIf (i < p2) Then
-                x0 = p1
-                y0 = 1
-                rc = 0
-            ElseIf (i < p3) Then
-                x0 = p2
-                y0 = 1
-                rc = cSystemUtils.IIF((p3 - p2) = 0, -1, -1 / (p3 - p2))
-            Else
-                ' Past max: use 0
-                y0 = 0
-                rc = 0
-            End If
-
-            data(i) = y0 + CSng((i - x0) * rc)
-        Next
-
-        shp = man.CreateNewShape(strName, data)
-        env.DBID = shp.DBID
+        shp = DirectCast(man.CreateNewShape(strName, env.Shape(cMediationDataStructures.N_DEFAULT_MEDIATIONPOINTS), eShapeFunctionType.Trapezoid, env.Parameters), cEnviroResponseFunction)
+        shp.ResponseLeftLimit = env.LeftBottom
+        shp.ResponseRightLimit = env.RightBottom
 
         Return True
 
@@ -176,20 +139,7 @@ Public Class cImporter
 
     Private Function UpdateShapes() As Boolean
 
-        Dim man As cEnviroResponseShapeManager = Me.m_core.EnviroResponseShapeManager
-        For i As Integer = 0 To man.Count - 1
-            Dim shp As cEnviroResponseFunction = CType(man.Item(i), cEnviroResponseFunction)
-            Dim env As cImportData.cEnvelopeData = Nothing
-
-            If Me.m_dictShapeEnvelopes.ContainsKey(shp.DBID) Then
-                env = Me.m_dictShapeEnvelopes(shp.DBID)
-                shp.ResponseLeftLimit = env.Min
-                shp.ResponseRightLimit = env.Max
-            End If
-        Next
-        man.Update()
-
-        Return True
+        Return Me.m_core.EnviroResponseShapeManager.Update() And Me.m_core.SaveChanges(True)
 
     End Function
 

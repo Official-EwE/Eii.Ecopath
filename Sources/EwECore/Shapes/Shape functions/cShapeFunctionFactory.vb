@@ -39,6 +39,24 @@ Public Class cShapeFunctionFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get a <see cref="IShapeFunction"/> for a given <paramref name="ft">Shape function type</paramref>
+    ''' </summary>
+    ''' <param name="ft">The function type</param>
+    ''' <param name="pm"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetShapeFunction(ft As Long,
+                                            Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction
+
+        For Each sf As IShapeFunction In GetShapeFunctions(pm)
+            If (ft = sf.ShapeFunctionType) Then Return sf
+        Next
+        Return Nothing
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get an initialized <see cref="IShapeFunction"/> for a given <see cref="cForcingFunction"/>
     ''' </summary>
     ''' <param name="shape"></param>
@@ -48,7 +66,7 @@ Public Class cShapeFunctionFactory
     Public Shared Function GetShapeFunction(ByVal shape As cForcingFunction,
                                             Optional ByVal pm As cPluginManager = Nothing) As IShapeFunction
 
-        If shape Is Nothing Then Return Nothing
+        If (shape Is Nothing) Then Return Nothing
 
         For Each sf As IShapeFunction In GetShapeFunctions(pm)
             If (shape.ShapeFunctionType = sf.ShapeFunctionType) Then

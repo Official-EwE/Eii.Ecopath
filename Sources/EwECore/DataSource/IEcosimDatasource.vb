@@ -131,22 +131,16 @@ Namespace DataSources
         ''' <param name="shapeDataType"><see cref="eDataTypes">Type of the shape</see> to add.</param>
         ''' <param name="iDBID">Database ID assigned to the new shape.</param>
         ''' <param name="asData">Shape point data.</param>
-        ''' <param name="sYZero">Zero data point shape primitive was created from.</param>
-        ''' <param name="sYBase">Base Y shape primitive was created from.</param>
-        ''' <param name="sYend">End Y shape primitve was created from.</param>
-        ''' <param name="sSteep">Steep value that shape primitive was created from.</param>
         ''' <param name="functionType">Primitive function type shape was created from.</param>
+        ''' <param name="parms">Parameters for the <paramref name="functiontype"/> </param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendShape(ByVal strShapeName As String, _
-                             ByVal shapeDataType As eDataTypes, _
-                             ByRef iDBID As Integer, _
-                             ByVal asData As Single(), _
-                             ByVal sYZero As Single, _
-                             ByVal sYBase As Single, _
-                             ByVal sYend As Single, _
-                             ByVal sSteep As Single, _
-                             ByVal functionType As Long) As Boolean
+        Function AppendShape(ByVal strShapeName As String,
+                             ByVal shapeDataType As eDataTypes,
+                             ByRef iDBID As Integer,
+                             ByVal asData As Single(),
+                             ByVal functionType As Long,
+                             ByVal parms As Single()) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

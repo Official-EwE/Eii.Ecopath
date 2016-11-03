@@ -34,7 +34,6 @@ Public Class cTrapezoidShapeFunction
         MyBase.New()
     End Sub
 
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Shape"/>
     ''' <summary>
@@ -105,6 +104,61 @@ Public Class cTrapezoidShapeFunction
         Return Me.IsMediation(datatype)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set parameter 1.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property LeftBottom As Single
+        Get
+            Return Me.ParamValue(1)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(1) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set parameter 2.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property LeftTop As Single
+        Get
+            Return Me.ParamValue(2)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(2) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set parameter 3.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property RightTop As Single
+        Get
+            Return Me.ParamValue(3)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(3) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set parameter 4.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property RightBottom As Single
+        Get
+            Return Me.ParamValue(4)
+        End Get
+        Set(value As Single)
+            Me.ParamValue(4) = value
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.ParamName"/>

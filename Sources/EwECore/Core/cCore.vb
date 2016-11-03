@@ -1129,10 +1129,9 @@ Public Class cCore
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Friend Function AddShape(ByVal strName As String, ByVal DataType As eDataTypes, ByRef newDBID As Integer,
-            Optional ByVal asData As Single() = Nothing,
-            Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0,
-            Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0,
-            Optional ByVal shapeType As Long = eShapeFunctionType.NotSet) As Boolean
+                             Optional ByVal asData As Single() = Nothing,
+                             Optional ByVal shapeType As Long = eShapeFunctionType.NotSet,
+                             Optional ByVal parms As Single() = Nothing) As Boolean
 
         'the data source will allocate space in the EcoSim data arrays
         Dim ds As IEcosimDatasource = Nothing
@@ -1145,7 +1144,7 @@ Public Class cCore
         If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecosim) Then Return False
 
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
-        bSucces = ds.AppendShape(strName, DataType, newDBID, asData, sYZero, sYBase, sYEnd, sSteep, shapeType)
+        bSucces = ds.AppendShape(strName, DataType, newDBID, asData, shapeType, parms)
 
         If bSucces = False Then
             'oops.....

@@ -47,12 +47,8 @@ Public Class cForcingFunction
     Protected m_nYears As Integer
 
     ' Parameters use to build a Curve
-    'these are the variables is cEcoSimDatastructures.ShapeParameters
-    Protected m_p0 As Single
-    Protected m_p1 As Single
-    Protected m_p2 As Single
-    Protected m_p3 As Single
     Protected m_ShapeFunctionType As Long
+    Protected m_params As Single() = New Single() {}
 
     Protected m_ForcingApplicationType As eForcingApplicationTypes
 
@@ -60,62 +56,60 @@ Public Class cForcingFunction
     'it is more of a safe guard 
     Protected m_bInInit As Boolean
 
-
     Protected m_bLockUpdates As Boolean
 
 #End Region ' Protected data
 
 #Region " Public fields/properties "
 
-    Public Property YZero() As Single
-        Get
-            Return Me.m_p0
-        End Get
-        Set(ByVal value As Single)
-            Me.m_p0 = value
-            Me.Update()
-        End Set
-    End Property
-
-
-    Public Property YBase() As Single
-        Get
-            Return Me.m_p1
-        End Get
-        Set(ByVal value As Single)
-            Me.m_p1 = value
-            Me.Update()
-        End Set
-    End Property
-
-    Public Property YEnd() As Single
-        Get
-            Return Me.m_p2
-        End Get
-        Set(ByVal value As Single)
-            Me.m_p2 = value
-            Me.Update()
-        End Set
-    End Property
-
-    Public Property Steep() As Single
-        Get
-            Return Me.m_p3
-        End Get
-        Set(ByVal value As Single)
-            Me.m_p3 = value
-            Me.Update()
-        End Set
-    End Property
-
     Public Property ShapeFunctionType() As Long
         Get
             Return Me.m_ShapeFunctionType
         End Get
         Set(ByVal value As Long)
-            Me.m_ShapeFunctionType = value
+            If (Me.m_ShapeFunctionType <> value) Then
+                Me.m_ShapeFunctionType = value
+                Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(value)
+                If (fn IsNot Nothing) Then
+                    ReDim Me.m_params(fn.nParameters)
+                End If
+            End If
             Me.Update()
         End Set
+    End Property
+
+    Public ReadOnly Property nParams As Integer
+        Get
+            Return Me.m_params.Count
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="iParam">One-based parameter index.</param>
+    ''' <returns></returns>
+    Public Property ShapeFunctionParameter(iParam As Integer) As Single
+        Get
+            If 1 <= iParam And iParam <= Me.nParams Then
+                Return Me.m_params(iParam - 1)
+            End If
+            Return cCore.NULL_VALUE
+        End Get
+        Set(value As Single)
+            If 1 <= iParam And iParam <= Me.nParams Then
+                Me.m_params(iParam - 1) = value
+            End If
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    Public ReadOnly Property ShapeFunctionParameters() As Single()
+        Get
+            Return Me.m_params
+        End Get
     End Property
 
     Public Property ForcingApplicationType() As eForcingApplicationTypes
@@ -220,10 +214,7 @@ Public Class cForcingFunction
 
         'shape parameters
         m_ShapeFunctionType = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_p0 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
-        m_p1 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
-        m_p2 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
-        m_p3 = m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
+        m_params = CType(m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams.Clone(), Single())
 
         Me.IsSeasonal = m_data.isSeasonal(m_iEcoSimIndex)
 
@@ -292,10 +283,7 @@ Public Class cForcingFunction
 
             'shape parameters
             m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_p0
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_p1
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_p2
-            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_p3
+            m_data.ForcingShapeParams(m_iEcoSimIndex).ShapeFunctionParams = CType(Me.m_params.Clone(), Single())
 
             m_data.isSeasonal(m_iEcoSimIndex) = Me.IsSeasonal()
 
@@ -325,7 +313,7 @@ Public Class cForcingFunction
 
     Public Overridable Function ToCSVString() As String
 
-        Return Me.Name + ", mean " + Me.m_p3.ToString + ", YZero " + Me.m_p0.ToString + ", YEnd " + Me.m_p2.ToString
+        Return Me.Name '+ ", mean " + Me.m_p3.ToString + ", YZero " + Me.m_p0.ToString + ", YEnd " + Me.m_p2.ToString
 
     End Function
 
@@ -523,10 +511,7 @@ Public MustInherit Class cMediationBaseFunction
 
         'shape parameters
         m_ShapeFunctionType = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType
-        m_p0 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0)
-        m_p1 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1)
-        m_p2 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2)
-        m_p3 = m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3)
+        m_params = CType(m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams.Clone(), Single())
 
         Me.UnlockUpdates()
         m_bInInit = False
@@ -648,10 +633,7 @@ Public MustInherit Class cMediationBaseFunction
 
         'shape parameters
         m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionType = m_ShapeFunctionType
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(0) = m_p0
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(1) = m_p1
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(2) = m_p2
-        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParam(3) = m_p3
+        m_medData.MediationShapeParams(m_iEcoSimIndex).ShapeFunctionParams = CType(m_params.Clone(), Single())
 
         Return True
 

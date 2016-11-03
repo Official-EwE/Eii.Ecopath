@@ -67,21 +67,17 @@ Public Class cImportData
     ''' Data that holds information from a single envelope.
     ''' </summary>
     Public Class cEnvelopeData
+        Inherits cTrapezoidShapeFunction
 
         Public Sub New(strName As String, sMin As Single, sMinPref As Single, sMaxPref As Single, sMax As Single)
             Me.Name = strName
-            Me.Min = sMin
-            Me.MinPref = sMinPref
-            Me.MaxPref = sMaxPref
-            Me.Max = sMax
+            Me.LeftBottom = sMin
+            Me.LeftTop = sMinPref
+            Me.RightTop = sMaxPref
+            Me.RightBottom = sMax
         End Sub
 
         Public Property Name As String
-        Public Property Min As Single
-        Public Property MinPref As Single
-        Public Property Max As Single
-        Public Property MaxPref As Single
-        Public Property DBID As Integer
 
     End Class
 

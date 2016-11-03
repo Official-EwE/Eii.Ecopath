@@ -534,7 +534,7 @@ Namespace Controls
             For Each shape As cShapeData In ashapes
                 Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
                 If ff IsNot Nothing Then
-                    ff = fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.YZero, ff.YBase, ff.YEnd, ff.Steep, ff.ShapeFunctionType)
+                    ff = fsm.CreateNewShape(Me.GetNewShapeName(), ff.ShapeData, ff.ShapeFunctionType, ff.ShapeFunctionParameters)
                     If ff IsNot Nothing Then
                         lffNew.Add(ff)
                     End If
@@ -730,14 +730,12 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Herlper method; create a new forcing function.
+        ''' Helper method; create a new forcing function.
         ''' </summary>
         ''' <param name="strName">Name of the new forcing function.</param>
         ''' -------------------------------------------------------------------
         Private Sub CreateShape(ByVal strName As String)
             ' Create new shape
-
-
 
             Dim shapeNew As cForcingFunction = ShapeManager.CreateNewShape(strName, Nothing)
             ' Validate
