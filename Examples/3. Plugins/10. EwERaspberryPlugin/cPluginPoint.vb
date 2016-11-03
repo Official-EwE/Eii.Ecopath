@@ -131,6 +131,12 @@ Public Class cPluginPoint
 
 #End Region ' Generic bits
 
+#Region " Public bits "
+
+    Public Property Enabled As Boolean = True
+
+#End Region ' Public bits
+
 #Region " UI context plug-in implementation "
 
     ''' -----------------------------------------------------------------------
@@ -193,6 +199,8 @@ Public Class cPluginPoint
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         Try
+            If Not Me.Enabled Then Return
+
             For i As Integer = 1 To Me.m_epdata.NumGroups
                 If ((Me.m_epdata.B(i) * Me.m_threshold) > Bt(i)) Then
                     Me.Blow(i, 100 * Bt(i) / Me.m_epdata.B(i))
