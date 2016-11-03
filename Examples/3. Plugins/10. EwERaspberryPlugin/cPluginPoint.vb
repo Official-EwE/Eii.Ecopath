@@ -35,6 +35,7 @@ Public Class cPluginPoint
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IDisposedPlugin
+    Implements EwEPlugin.IMenuItemTogglePlugin
 
 #Region " Private vars "
 
@@ -72,6 +73,9 @@ Public Class cPluginPoint
             Me.m_core = DirectCast(core, cCore)
             Me.m_berry = New Media.SoundPlayer(My.Resources.berry)
             Me.m_berry.Load()
+
+            My.Settings.Reload()
+            Me.Enabled = My.Settings.Enabled
         Catch ex As Exception
             ' Umph
         End Try
@@ -136,6 +140,56 @@ Public Class cPluginPoint
     Public Property Enabled As Boolean = True
 
 #End Region ' Public bits
+
+#Region " Menu integration "
+
+    Public ReadOnly Property IsChecked As Boolean Implements IMenuItemTogglePlugin.IsChecked
+        Get
+            Return Me.Enabled
+        End Get
+    End Property
+
+    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
+        Get
+            Return "MenuEcosim"
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
+        Get
+            Return Nothing
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+        Get
+            Return "&Blow crash-berry"
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
+        Get
+            Return "Pfrt"
+        End Get
+    End Property
+
+    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
+        Get
+            Return eCoreExecutionState.EcopathLoaded
+        End Get
+    End Property
+
+    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Windows.Forms.Form) _
+        Implements IGUIPlugin.OnControlClick
+
+        Me.Enabled = Not Me.Enabled
+
+        My.Settings.Enabled = Me.Enabled
+        My.Settings.Save()
+
+    End Sub
+
+#End Region ' Menu integration
 
 #Region " UI context plug-in implementation "
 
@@ -255,8 +309,8 @@ Public Class cPluginPoint
             Me.m_bBlown = True
 
             Dim fmt As New cCoreInterfaceFormatter()
-            Dim strMessge As String = String.Format(My.Resources.PROMPT_CRASH, _
-                                                    fmt.GetDescriptor(Me.m_core.EcoPathGroupInputs(iGroup)), _
+            Dim strMessge As String = String.Format(My.Resources.PROMPT_CRASH,
+                                                    fmt.GetDescriptor(Me.m_core.EcoPathGroupInputs(iGroup)),
                                                     Me.m_uic.StyleGuide.FormatNumber(sPerc))
             Dim msg As New cMessage(strMessge, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
