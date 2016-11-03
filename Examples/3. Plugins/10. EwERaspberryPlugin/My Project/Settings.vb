@@ -13,50 +13,42 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
 
-Imports System.Configuration
 Imports System.IO
 Imports EwEUtils
+Imports System.Reflection
 
-''' <summary>
-''' Settings class that uses a custom <see cref="SettingsProvider"/>.
-''' </summary>
-''' <remarks>
-''' For details about the overridden settings behaviour refer to <see cref="cEwESettingsProvider"/>.
-''' </remarks>
-Partial Friend NotInheritable Class Settings
+Namespace My
 
-    ''' <summary>Custom <see cref="cEwESettingsProvider">settings provider</see>.</summary>
-    Private m_provider As cEwESettingsProvider = Nothing
-
-    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor.
+    ''' Settings class that uses a custom <see cref="System.Configuration.SettingsProvider"/>.
     ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub New()
+    ''' <remarks>
+    ''' For details about the overridden settings behaviour refer to <see cref="cEwESettingsProvider"/>.
+    ''' </remarks>
+    Partial Friend NotInheritable Class MySettings
 
-        MyBase.New()
+        ''' <summary>Custom <see cref="cEwESettingsProvider">settings provider</see>.</summary>
+        Private m_provider As cEwESettingsProvider = Nothing
 
-        Me.m_provider = New cEwESettingsProvider(Path.GetFileNameWithoutExtension(Application.ExecutablePath), Me)
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Sub New()
 
-    End Sub
+            MyBase.New()
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the default value for a given settings property name.
-    ''' </summary>
-    ''' <param name="strName">The name of the property to access. This name is not case-sensitive.</param>
-    ''' <returns>A value, or Nothing if a property by this name does not exist.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function GetDefaultValue(ByVal strName As String) As Object
-        Dim prop As SettingsProperty = Me.Properties(strName)
-        If prop IsNot Nothing Then Return prop.DefaultValue
-        Return Nothing
-    End Function
+            Dim asm As Assembly = Assembly.GetAssembly(GetType(MySettings))
+            Me.m_provider = New cEwESettingsProvider(Path.GetFileNameWithoutExtension(asm.Location), Me)
 
-End Class
+        End Sub
+
+    End Class
+
+End Namespace
