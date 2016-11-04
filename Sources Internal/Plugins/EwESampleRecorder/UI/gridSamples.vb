@@ -95,7 +95,7 @@ Public Class gridSamples
             Me(iRow, eColumnTypes.Date) = New EwECell(s.Generated, cStyleGuide.eStyleFlags.NotEditable)
 
             strSource = s.Source
-            If (String.Compare(strSource, Environment.MachineName) = 0) Then strSource = My.Resources.VALUE_THISCOMPUTER
+            If (String.Compare(strSource, man.MachineName) = 0) Then strSource = My.Resources.VALUE_THISCOMPUTER
 
             Me(iRow, eColumnTypes.Source) = New EwECell(strSource, cStyleGuide.eStyleFlags.NotEditable)
             Me.Sample(iRow) = s

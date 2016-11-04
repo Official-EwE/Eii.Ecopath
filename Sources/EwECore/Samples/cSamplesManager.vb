@@ -257,6 +257,16 @@ Namespace Samples
 
 #End Region ' ICoreInterface implementation 
 
+#Region " Public bits "
+
+        Public ReadOnly Property MachineName As String
+            Get
+                Return Environment.MachineName
+            End Get
+        End Property
+
+#End Region ' Public bits
+
 #Region " Sample management "
 
         ''' -------------------------------------------------------------------
@@ -620,7 +630,7 @@ Namespace Samples
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim s As New cEcopathSample(Me.m_core, -1, iIndex)
 
-            s.Source = Environment.MachineName
+            s.Source = Me.MachineName
             s.Generated = Date.Now()
             s.Hash = ""
 
