@@ -95,6 +95,18 @@ Namespace Samples
         Public Property Source As String = ""
 
         ''' <summary>
+        ''' Returns the number of EE values that exceed 1
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function NumInvalidEE() As Integer
+            Dim iTot As Integer = 0
+            For Each ee As Single In Me.m_ee
+                If ee > 1 Then iTot += 1
+            Next
+            Return iTot
+        End Function
+
+        ''' <summary>
         ''' Get/set the date that a sample was generated.
         ''' </summary>
         Public Property Generated As Date
