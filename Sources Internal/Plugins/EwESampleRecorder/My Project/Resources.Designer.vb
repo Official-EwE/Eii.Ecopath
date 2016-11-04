@@ -79,6 +79,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Num. EE&gt;1.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NUM_INVALID_EE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NUM_INVALID_EE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Rating.
         '''</summary>
         Friend ReadOnly Property HEADER_RATING() As String

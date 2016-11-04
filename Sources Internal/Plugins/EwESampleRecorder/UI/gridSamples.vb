@@ -38,6 +38,7 @@ Public Class gridSamples
     Private Enum eColumnTypes As Integer
         Index
         Loaded
+        NumInvalidEE
 #If ShowRatings Then
         Rating
 #End If
@@ -59,6 +60,7 @@ Public Class gridSamples
         ' ToDo: globalize this
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Loaded) = New EwEColumnHeaderCell(My.Resources.HEADER_LOADED)
+        Me(0, eColumnTypes.NumInvalidEE) = New EwEColumnHeaderCell(My.Resources.HEADER_NUM_INVALID_EE)
 #If ShowRatings Then
         Me(0, eColumnTypes.Rating) = New EwEColumnHeaderCell(My.Resources.HEADER_RATING)
 #End If
@@ -85,16 +87,17 @@ Public Class gridSamples
             Dim iRow As Integer = Me.AddRow()
             Dim s As cEcopathSample = man.Sample(i)
             Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, s, eVarNameFlags.Index)
+            Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.NumInvalidEE) = New EwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
 #If ShowRatings Then
             Me(iRow, eColumnTypes.Rating) = New PropertyCell(Me.PropertyManager, s, eVarNameFlags.SampleRating)
 #End If
-            Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.Date) = New EwECell(s.Generated, cStyleGuide.eStyleFlags.NotEditable)
 
             strSource = s.Source
             If (String.Compare(strSource, Environment.MachineName) = 0) Then strSource = My.Resources.VALUE_THISCOMPUTER
 
-            Me(iRow, eColumnTypes.Source) = New EwECell(s.Source, cStyleGuide.eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Source) = New EwECell(strSource, cStyleGuide.eStyleFlags.NotEditable)
             Me.Sample(iRow) = s
 
             If Not String.IsNullOrWhiteSpace(s.Source) Then

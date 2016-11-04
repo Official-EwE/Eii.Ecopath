@@ -161,4 +161,7 @@
   <data name="VALUE_THISCOMPUTER" xml:space="preserve">
     <value>(this computer)</value>
   </data>
+  <data name="HEADER_NUM_INVALID_EE" xml:space="preserve">
+    <value>Num. EE&gt;1</value>
+  </data>
 </root>
