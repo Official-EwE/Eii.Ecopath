@@ -94,10 +94,38 @@ Namespace Ecosim
                                      Optional ByVal tsMonthly As TriState = TriState.UseDefault,
                                      Optional ByVal bQuiet As Boolean = False) As Boolean
 
+            If (Not Me.m_core.StateMonitor.HasEcosimRan) Then Return False
+            Return Me.WriteResultsDirect(strPath, results, tsMonthly, bQuiet)
+
+        End Function
+
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Save all available Ecosim results to a .csv file without checking if
+        ''' Ecosim has ran. Dangerous!
+        ''' </summary>
+        ''' <param name="strPath">The path to write to. If not specified, output is
+        ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
+        ''' <param name="results">The results to write, or nothing to write all results.</param>
+        ''' <param name="tsMonthly">Flag stating how values are aggragated. Possible
+        ''' values are:
+        ''' <list type="bullet">
+        ''' <item><term><see cref="TriState.[True]"/></term><description>Values are only written as monthly values.</description></item>
+        ''' <item><term><see cref="TriState.[False]"/></term><description>Values are only written as annual values.</description></item>
+        ''' <item><term><see cref="TriState.UseDefault"/></term><description>Values are written as both annual and monthly values.</description></item>
+        ''' </list>
+        ''' </param>
+        ''' <param name="bQuiet">Flag stating if messages must be suppressed.</param>
+        ''' <returns>True if saved successfully.</returns>
+        ''' -----------------------------------------------------------------------
+        Friend Function WriteResultsDirect(ByVal strPath As String,
+                                           ByVal results As eResultTypes(),
+                                           ByVal tsMonthly As TriState,
+                                           ByVal bQuiet As Boolean) As Boolean
+
             Dim msg As cMessage = Nothing
             Dim bSucces As Boolean = True
-
-            If Not Me.m_core.StateMonitor.HasEcosimRan Then Return False
 
             If String.IsNullOrEmpty(strPath) Then
                 strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcosimResults)
@@ -172,7 +200,7 @@ Namespace Ecosim
             Dim strModelDetails As String = Me.GetModelDetails()
             Dim strDataDetails As String = ""
             Dim astrGroupNames As String = Me.GetAllGroupNames()
-            Dim grpOutput As cEcosimGroupOutput = Nothing
+            Dim group As cEcoPathGroupInput = Nothing
             Dim bSuccess As Boolean = True
 
             Select Case resulttype
@@ -188,30 +216,30 @@ Namespace Ecosim
 
                     Dim data(m_core.nGroups, m_core.nEcosimTimeSteps) As Single
                     For i As Integer = 1 To m_core.nGroups
-                        grpOutput = m_core.EcoSimGroupOutputs(i)
+                        group = m_core.EcoPathGroupInputs(i)
                         For j As Integer = 1 To m_core.nEcosimTimeSteps
                             Select Case resulttype
                                 Case eResultTypes.Biomass
-                                    data(i, j) = grpOutput.Biomass(j)
+                                    data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, i, j)
                                 Case eResultTypes.Mortality
-                                    data(i, j) = grpOutput.TotalMort(j)
+                                    data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TotalMort, i, j)
                                 Case eResultTypes.Catch
-                                    data(i, j) = grpOutput.Catch(j)
+                                    data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, i, j)
                                 Case eResultTypes.ConsumptionBiomass
-                                    data(i, j) = grpOutput.ConsumpBiomass(j)
+                                    data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ConsumpBiomass, i, j)
                                 Case eResultTypes.FeedingTime
-                                    data(i, j) = grpOutput.FeedingTime(j)
+                                    data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, i, j)
                                 Case eResultTypes.AvgWeightOrProdCons
-                                    If grpOutput.isMultiStanza Then
-                                        data(i, j) = grpOutput.AvgWeight(j)
+                                    If group.IsMultiStanza Then
+                                        data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, i, j)
                                     Else
-                                        data(i, j) = grpOutput.ProdConsump(j)
+                                        data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, i, j)
                                     End If
                                 Case eResultTypes.TL
-                                    data(i, j) = grpOutput.TL(j)
+                                    data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.TL, i, j)
                                 Case eResultTypes.Value
-                                    data(i, j) = grpOutput.Value(j)
-
+                                    ' For all fleets
+                                    data(i, j) = m_core.m_EcoSimData.ResultsSumValueByGroupGear(i, 0, j)
                             End Select
                         Next
 
@@ -225,15 +253,15 @@ Namespace Ecosim
 
                     For iGroup As Integer = 1 To Me.m_core.nGroups
 
-                        grpOutput = m_core.EcoSimGroupOutputs(iGroup)
+                        group = m_core.EcoPathGroupInputs(iGroup)
 
                         Dim iNumPred As Integer = 0
-                        Dim predNames As New StringBuilder
+                        Dim predNames As New StringBuilder()
 
                         For i As Integer = 1 To m_core.nLivingGroups
-                            If grpOutput.isPred(i) Then
+                            If group.IsPred(i) Then
                                 iNumPred += 1
-                                predNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+                                predNames.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
                                 predNames.Append(",")
                             End If
                         Next
@@ -244,16 +272,16 @@ Namespace Ecosim
                             iNumPred = 1
 
                             For i As Integer = 1 To m_core.nLivingGroups
-                                If grpOutput.isPred(i) Then
+                                If group.IsPred(i) Then
                                     For j As Integer = 1 To m_core.nEcosimTimeSteps
-                                        predData(iNumPred, j) = grpOutput.Predation(i, j)
+                                        predData(iNumPred, j) = m_core.m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Pred, iGroup, i, j)
                                     Next
                                     iNumPred += 1
                                 End If
                             Next
-                            strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
+                            strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & group.Name)
 
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name),
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
                                                                       bSaveAnnual, predData,
                                                                       strModelDetails, strDataDetails, predNames.ToString)
                         End If
@@ -264,15 +292,15 @@ Namespace Ecosim
                     ' For all predators
                     For iGroup As Integer = 1 To Me.m_core.nLivingGroups
 
-                        grpOutput = m_core.EcoSimGroupOutputs(iGroup)
+                        group = m_core.EcoPathGroupInputs(iGroup)
 
                         Dim iNumPrey As Integer = 0
                         Dim preyNames As New StringBuilder
 
                         For i As Integer = 1 To m_core.nGroups
-                            If grpOutput.isPrey(i) Then
+                            If group.IsPrey(i) Then
                                 iNumPrey += 1
-                                preyNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
+                                preyNames.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
                                 preyNames.Append(",")
                             End If
                         Next
@@ -283,16 +311,16 @@ Namespace Ecosim
                             iNumPrey = 0
 
                             For i As Integer = 1 To m_core.nGroups
-                                If grpOutput.isPrey(i) Then
+                                If group.IsPrey(i) Then
                                     iNumPrey += 1
                                     For j As Integer = 1 To m_core.nEcosimTimeSteps
-                                        preyData(iNumPrey, j) = grpOutput.PreyPercentage(i, j)
+                                        preyData(iNumPrey, j) = m_core.m_EcoSimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Prey, iGroup, i, j)
                                     Next
                                 End If
                             Next
 
-                            strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name),
+                            strDataDetails = "Data," & cStringUtils.ToCSVField(resulttype.ToString & " of " & group.Name)
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, group.Name),
                                                   bSaveAnnual, preyData,
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
@@ -631,7 +659,7 @@ Namespace Ecosim
             Dim str As New StringBuilder()
 
             For i As Integer = 1 To Me.m_core.nGroups
-                str.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
+                str.Append(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
                 If i <> Me.m_core.nGroups Then str.Append(",")
             Next
 
