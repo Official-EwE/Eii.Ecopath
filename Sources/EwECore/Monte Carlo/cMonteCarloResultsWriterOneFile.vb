@@ -29,9 +29,10 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 ''' <summary>
-''' 
+''' Pre-EwE6.6 result writer, writing all MC output to one single CSV file.
 ''' </summary>
-Friend Class cMonteCarloResultsWriter
+Public Class cMonteCarloResultsWriterOneFile
+    Implements IMonteCarloResultsWriter
 
     Private m_MC As cEcosimMonteCarlo
     Private m_core As cCore
@@ -44,7 +45,9 @@ Friend Class cMonteCarloResultsWriter
 
     End Sub
 
-    Public Sub Init()
+#Region " Public access "
+
+    Public Sub Init() Implements IMonteCarloResultsWriter.Init
 
         Me.m_bSaveError = False
         If Not Me.MC.SaveOutput Then Return
@@ -59,26 +62,26 @@ Friend Class cMonteCarloResultsWriter
                     File.Delete(strFile)
                 End If
 
-                Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, strFile), _
+                Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, strFile),
                                               eMessageType.DataExport, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Information)
                 Me.m_msgStatus.Hyperlink = Path.GetDirectoryName(strFile)
 
                 Me.WriteHeader()
 
                 'save the baseline data
-                Me.Save(True)
+                Me.Save(0)
 
             End If
 
         Catch ex As Exception
-            Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, strFile, ex.Message), _
+            Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, strFile, ex.Message),
                                           eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
             Me.m_bSaveError = True
             cLog.Write(ex)
         End Try
     End Sub
 
-    Public Sub Finish()
+    Public Sub Finish() Implements IMonteCarloResultsWriter.Finish
 
         ' Write save notification message
         If (Me.m_msgStatus IsNot Nothing) Then
@@ -89,71 +92,13 @@ Friend Class cMonteCarloResultsWriter
 
     End Sub
 
-    Private ReadOnly Property OutputFilename() As String
-        Get
-            Return Path.Combine(Me.DataDir, "MonteCarloTrials.csv")
-        End Get
-    End Property
-
-    Private Function DataDir() As String
-        Return Me.Core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
-    End Function
-
-    Private ReadOnly Property ModelName() As String
-        Get
-            Return Me.Core.DataSource.FileName
-        End Get
-    End Property
-
-    Private m_bSaveError As Boolean = False
-
-    Private Function IsSaving() As Boolean
-        Return Me.MC.SaveOutput And Not Me.m_bSaveError
-    End Function
-
-    Private Function ScenarioName() As String
-        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
-    End Function
-
-    Private ReadOnly Property MC() As cEcosimMonteCarlo
-        Get
-            Return Me.m_MC
-        End Get
-    End Property
-
-
-    Private ReadOnly Property Core() As cCore
-        Get
-            Return Me.m_core
-        End Get
-    End Property
-
-
-    Private Sub WriteHeader()
-        Try
-            If Not Me.IsSaving() Then Return
-
-            Dim strm As New StreamWriter(Me.OutputFilename)
-
-            If Me.m_core.SaveWithFileHeader Then
-                strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
-            End If
-            strm.Write(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
-            strm.Write(cStringUtils.ToCSVField("Num. trials") & "," & Me.m_MC.Ntrials)
-            strm.Close()
-
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".WriteHeader() Exception: " & ex.Message)
-        End Try
-
-    End Sub
-
     ''' <summary>
     ''' Save both iteration and baseline data to file
     ''' </summary>
-    ''' <param name="isBaseLineData"></param>
-    Public Sub Save(ByVal isBaseLineData As Boolean)
+    Public Sub Save(ByVal iTrial As Integer) Implements IMonteCarloResultsWriter.Save
+
         Dim strm As StreamWriter
+        Dim isBaseLineData As Boolean = (iTrial <= 0)
 
         Try
 
@@ -257,6 +202,77 @@ Friend Class cMonteCarloResultsWriter
         End Try
 
     End Sub
+
+    Public Function DataName() As String Implements IMonteCarloResultsWriter.DataName
+        Return "mcOneFile"
+    End Function
+
+    Public Function DsiplayName() As String Implements IMonteCarloResultsWriter.DisplayName
+        Return My.Resources.CoreDefaults.MONTECARLO_WRITER_ONEFILE
+    End Function
+
+#End Region ' Public access
+
+#Region " Internals "
+
+    Private ReadOnly Property OutputFilename() As String
+        Get
+            Return Path.Combine(Me.DataDir, "MonteCarloTrials.csv")
+        End Get
+    End Property
+
+    Private Function DataDir() As String
+        Return Me.Core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
+    End Function
+
+    Private ReadOnly Property ModelName() As String
+        Get
+            Return Me.Core.DataSource.FileName
+        End Get
+    End Property
+
+    Private m_bSaveError As Boolean = False
+
+    Private Function IsSaving() As Boolean
+        Return Me.MC.SaveOutput And Not Me.m_bSaveError
+    End Function
+
+    Private Function ScenarioName() As String
+        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+    End Function
+
+    Private ReadOnly Property MC() As cEcosimMonteCarlo
+        Get
+            Return Me.m_MC
+        End Get
+    End Property
+
+    Private ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
+    Private Sub WriteHeader()
+        Try
+            If Not Me.IsSaving() Then Return
+
+            Dim strm As New StreamWriter(Me.OutputFilename)
+
+            If Me.m_core.SaveWithFileHeader Then
+                strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+            End If
+            strm.Write(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
+            strm.Write(cStringUtils.ToCSVField("Num. trials") & "," & Me.m_MC.Ntrials)
+            strm.Close()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".WriteHeader() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
+#End Region ' Internals
 
 #Region " Save helper methods "
 

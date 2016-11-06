@@ -100,31 +100,31 @@ Namespace Properties
         ''' <summary>
         ''' Constructor, initializes the property
         ''' </summary>
-        ''' <param name="src">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance that is the data source for this property.</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">Variable name</see> in <paramref name="Source">Source</paramref> that is the data source for this property.</param>
-        ''' <param name="srcSec">The object acting as index on <paramref name="VarName">VarName</paramref> in case this is an indexed variable.</param>
+        ''' <param name="source">The <see cref="cCoreInputOutputBase"/> instance that is the data source for this property.</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">Variable name</see> in <paramref name="Source"/> that is the data source for this property.</param>
+        ''' <param name="srcSec">The object acting as index on <paramref name="VarName"/> in case this is an indexed variable.</param>
         ''' <param name="iSecIndexOffset">An optional offset that defines the diffence between the index provided by
-        ''' <paramref name="srcSec">srcSec</paramref> and the actual storage position in the underlying arrays.</param>
+        ''' <paramref name="srcSec"/> and the actual storage position in the underlying arrays.</param>
         ''' <remarks>
-        ''' <para>The <paramref name="iSecIndexOffset">iSecIndexOffset</paramref> parameter is useful in cases where secundary
+        ''' <para>The <paramref name="iSecIndexOffset"/> parameter is useful in cases where secundary
         ''' objects represent array indices other than their ID value.</para>
         ''' <para>A typical example would be the use of groups as secundary indexes to access Detritus fate information.
         ''' The Core detritus fate arrays are indexed by [1, {numdetritusgroups}], while the actual detritus groups that act as
-        ''' secundary indexes have an <see cref="cCoreInputOutputBase.Index">Index</see> value that is most likely higher than
+        ''' secundary indexes have an <see cref="cCoreInputOutputBase.Index"/> value that is most likely higher than
         ''' the the detritus fate array index range. To compensate for this difference, a 
-        ''' <paramref name="iSecIndexOffset">iSecIndexOffset</paramref> value of {<see cref="cCore.nGroups">numgroups</see>} -
-        ''' {<see cref="cCore.nDetritusGroups">numdetritusgroups</see>} will ensure that the <paramref name="srcSec">srcSec</paramref>
+        ''' <paramref name="iSecIndexOffset"/> value of {<see cref="cCore.nGroups">numgroups</see>} -
+        ''' {<see cref="cCore.nDetritusGroups"/>} will ensure that the <paramref name="srcSec"/>
         ''' object is used to correctly access the underlying array.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal src As EwECore.cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       Optional ByVal srcSec As EwECore.cCoreInputOutputBase = Nothing, _
+        Public Sub New(ByVal source As EwECore.cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
+                       Optional ByVal srcSec As EwECore.cCoreInputOutputBase = Nothing,
                        Optional ByVal iSecIndexOffset As Integer = 0)
 
-            Me.m_key = New cValueID(src, VarName, srcSec)
+            Me.m_key = New cValueID(source, VarName, srcSec)
 
-            Me.m_Source = src
+            Me.m_Source = source
             Me.m_VarName = VarName
             Me.m_SourceSec = srcSec
             Me.m_iSecIndex = cCore.NULL_VALUE

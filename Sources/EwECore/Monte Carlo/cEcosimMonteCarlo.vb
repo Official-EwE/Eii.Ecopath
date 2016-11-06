@@ -149,12 +149,30 @@ Public Class cEcosimMonteCarlo
     ''' <summary>Ecopath Diets (Group x Group)</summary>
     Public Dietmeans(,) As Single
 
+    ''' <summary>
+    ''' CV value (parameter x group)
+    ''' </summary>
     Public CVpar(,) As Single
+    ''' <summary>
+    ''' CV value for landings (fleet x group)
+    ''' </summary>
     Public CVparLanding(,) As Single
+    ''' <summary>
+    ''' CV value value for discards (fleet x group)
+    ''' </summary>
     Public CVparDiscard(,) As Single
 
+    ''' <summary>
+    ''' CV value (2 x parameter x group)
+    ''' </summary>
     Public ParLimit(,,) As Single
+    ''' <summary>
+    ''' CV value (2 x fleet x group)
+    ''' </summary>
     Public ParLimitLanding(,,) As Single
+    ''' <summary>
+    ''' CV value (2 x fleet x group)
+    ''' </summary>
     Public ParLimitDiscard(,,) As Single
 
     ''' <summary>Best fitting parameter to the last run Monte Carlo trials (eMCParam, iGrp)</summary>
@@ -172,8 +190,6 @@ Public Class cEcosimMonteCarlo
     Private m_startValuesDiets(,) As Single
 
     'Private orgVul(,) As Single
-
-    Private m_ouputWriter As cMonteCarloResultsWriter
 
     Private m_rand As Random
 
@@ -205,7 +221,8 @@ Public Class cEcosimMonteCarlo
 
         m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
 
-        Me.m_ouputWriter = New cMonteCarloResultsWriter(Me, Me.m_core)
+        ' Set default
+        Me.OutputWriter = New cMonteCarloResultsWriterOneFile(Me, Me.m_core)
 
     End Sub
 
@@ -319,6 +336,14 @@ Public Class cEcosimMonteCarlo
         End Try
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="IMonteCarloResultsWriter"/> to use for writing 
+    ''' results to drive. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property OutputWriter As IMonteCarloResultsWriter = Nothing
 
     ''' <summary>
     ''' Set the isVariable(group,parameter) boolean flag
@@ -563,7 +588,7 @@ Public Class cEcosimMonteCarlo
                 End Try
             End If
 
-            Me.m_ouputWriter.Init()
+            Me.OutputWriter.Init()
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -737,7 +762,7 @@ Public Class cEcosimMonteCarlo
                     End If ' m_esdata.SS < SSBestFit
 
                     ' Only save when an alternative balanced model was found
-                    Me.m_ouputWriter.Save(False)
+                    Me.OutputWriter.Save(m_iTrial)
 
                 End If 'iter < maxEcopathTries 
 
@@ -776,7 +801,7 @@ Public Class cEcosimMonteCarlo
             Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
 
-        Me.m_ouputWriter.Finish()
+        Me.OutputWriter.Finish()
 
         If Me.m_pluginmanager IsNot Nothing Then
             Try

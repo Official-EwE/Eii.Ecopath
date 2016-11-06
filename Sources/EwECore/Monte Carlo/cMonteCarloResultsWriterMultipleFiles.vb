@@ -38,12 +38,17 @@ Imports EwEUtils.Utilities
 ''' format of <see cref="cMonteCarloResultsWriterOneFile"/>. 
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
-Friend Class cMonteCarloResultsWriterMultipleFiles
+Public Class cMonteCarloResultsWriterMultipleFiles
+    Implements IMonteCarloResultsWriter
+
+#Region " Private vars "
 
     Private m_MC As cEcosimMonteCarlo
     Private m_core As cCore
     Private m_msgStatus As cMessage = Nothing
     Private m_bSaveError As Boolean = False
+
+#End Region ' Private vars
 
     Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
 
@@ -52,7 +57,7 @@ Friend Class cMonteCarloResultsWriterMultipleFiles
 
     End Sub
 
-    Public Sub Init()
+    Public Sub Init() Implements IMonteCarloResultsWriter.Init
 
         ' Reset error flag
         Me.m_bSaveError = False
@@ -73,51 +78,10 @@ Friend Class cMonteCarloResultsWriterMultipleFiles
 
     End Sub
 
-    Public Sub Finish()
-
-        ' Write save notification message
-        If (Me.m_msgStatus IsNot Nothing) Then
-            Me.m_core.Messages.SendMessage(Me.m_msgStatus)
-            Me.m_msgStatus = Nothing
-        End If
-        Me.m_bSaveError = False
-
-    End Sub
-
-    Private Function DataDir() As String
-        Return Me.Core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
-    End Function
-
-    Private ReadOnly Property ModelName() As String
-        Get
-            Return Me.Core.DataSource.FileName
-        End Get
-    End Property
-
-    Private Function IsSaving() As Boolean
-        Return Me.MC.SaveOutput And Not Me.m_bSaveError
-    End Function
-
-    Private Function ScenarioName() As String
-        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
-    End Function
-
-    Private ReadOnly Property MC() As cEcosimMonteCarlo
-        Get
-            Return Me.m_MC
-        End Get
-    End Property
-
-    Private ReadOnly Property Core() As cCore
-        Get
-            Return Me.m_core
-        End Get
-    End Property
-
     ''' <summary>
     ''' Save data to file.
     ''' </summary>
-    Public Sub Save(ByVal iTrial As Integer)
+    Public Sub Save(ByVal iTrial As Integer) Implements IMonteCarloResultsWriter.Save
 
         If Not Me.IsSaving() Then Return
 
@@ -180,6 +144,57 @@ Friend Class cMonteCarloResultsWriterMultipleFiles
         End Try
 
     End Sub
+
+    Public Sub Finish() Implements IMonteCarloResultsWriter.Finish
+
+        ' Write save notification message
+        If (Me.m_msgStatus IsNot Nothing) Then
+            Me.m_core.Messages.SendMessage(Me.m_msgStatus)
+            Me.m_msgStatus = Nothing
+        End If
+        Me.m_bSaveError = False
+
+    End Sub
+
+    Public Function DataName() As String Implements IMonteCarloResultsWriter.DataName
+        Return "mcMultFile"
+    End Function
+
+    Public Function DsiplayName() As String Implements IMonteCarloResultsWriter.DisplayName
+        Return My.Resources.CoreDefaults.MONTECARLO_WRITER_MULTIPLE
+    End Function
+
+#Region " Internals "
+
+    Private Function DataDir() As String
+        Return Me.Core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
+    End Function
+
+    Private ReadOnly Property ModelName() As String
+        Get
+            Return Me.Core.DataSource.FileName
+        End Get
+    End Property
+
+    Private Function IsSaving() As Boolean
+        Return Me.MC.SaveOutput And Not Me.m_bSaveError
+    End Function
+
+    Private Function ScenarioName() As String
+        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+    End Function
+
+    Private ReadOnly Property MC() As cEcosimMonteCarlo
+        Get
+            Return Me.m_MC
+        End Get
+    End Property
+
+    Private ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
 
     Private Sub WriteHeader(sw As StreamWriter, iTrial As Integer)
         Try
@@ -302,5 +317,7 @@ Friend Class cMonteCarloResultsWriterMultipleFiles
         Me.m_bSaveError = True
 
     End Sub
+
+#End Region ' Internals
 
 End Class

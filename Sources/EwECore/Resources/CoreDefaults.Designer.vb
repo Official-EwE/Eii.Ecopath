@@ -443,6 +443,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Results across multiple files, organized by iteration.
+        '''</summary>
+        Public Shared ReadOnly Property MONTECARLO_WRITER_MULTIPLE() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_WRITER_MULTIPLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to All results in one file.
+        '''</summary>
+        Public Shared ReadOnly Property MONTECARLO_WRITER_ONEFILE() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_WRITER_ONEFILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Alpha.
         '''</summary>
         Public Shared ReadOnly Property PARAM_ALPHA() As String

@@ -3986,83 +3986,90 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcopathInput(ByVal Input As cEcoPathGroupInput) As Boolean
+    Private Function LoadEcopathInput(ByVal group As cEcoPathGroupInput) As Boolean
         Dim iGroup As Integer
         Try
 
             'do not run the data validation when the object is populated
-            Input.AllowValidation = False
+            group.AllowValidation = False
 
             'convert the Database ID into an iGroup
-            iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, Input.DBID)
+            iGroup = Array.IndexOf(m_EcoPathData.GroupDBID, group.DBID)
 
             If iGroup >= 0 And iGroup <= m_EcoPathData.NumGroups Then
 
-                Input.Resize()
+                group.Resize()
 
                 'get the public variables
                 'jb June-7-2006 DatabaseID is now set in the constructor so that an object always knows it DatabaseID
                 'Input.DBID = m_EcoPathData.GroupDBID(iGroup)
-                Input.Name = m_EcoPathData.GroupName(iGroup)
+                group.Name = m_EcoPathData.GroupName(iGroup)
 
                 'input variables
-                Input.EEInput = CSng(m_EcoPathData.EEinput(iGroup))
-                Input.OtherMortInput = CSng(m_EcoPathData.OtherMortinput(iGroup))
-                Input.QBInput = CSng(m_EcoPathData.QBinput(iGroup))
-                Input.PBInput = CSng(m_EcoPathData.PBinput(iGroup))
-                Input.GEInput = CSng(m_EcoPathData.GEinput(iGroup))
-                Input.BiomassAreaInput = CSng(m_EcoPathData.BHinput(iGroup))
+                group.EEInput = CSng(m_EcoPathData.EEinput(iGroup))
+                group.OtherMortInput = CSng(m_EcoPathData.OtherMortinput(iGroup))
+                group.QBInput = CSng(m_EcoPathData.QBinput(iGroup))
+                group.PBInput = CSng(m_EcoPathData.PBinput(iGroup))
+                group.GEInput = CSng(m_EcoPathData.GEinput(iGroup))
+                group.BiomassAreaInput = CSng(m_EcoPathData.BHinput(iGroup))
 
-                Input.Area = m_EcoPathData.Area(iGroup)
-                Input.GS = m_EcoPathData.GS(iGroup)
-                Input.DetImport = m_EcoPathData.DtImp(iGroup)
-                Input.EmigRate = m_EcoPathData.Emig(iGroup)
-                Input.BioAccumRate = CSng(m_EcoPathData.BaBi(iGroup))
-                Input.Immigration = m_EcoPathData.Immig(iGroup)
-                Input.PP = m_EcoPathData.PP(iGroup)
-                Input.VBK = m_EcoPathData.vbK(iGroup)
-                Input.PoolColor = m_EcoPathData.GroupColor(iGroup)
-                Input.NonMarketValue = m_EcoPathData.Shadow(iGroup)
+                group.Area = m_EcoPathData.Area(iGroup)
+                group.GS = m_EcoPathData.GS(iGroup)
+                group.DetImport = m_EcoPathData.DtImp(iGroup)
+                group.EmigRate = m_EcoPathData.Emig(iGroup)
+                group.BioAccumRate = CSng(m_EcoPathData.BaBi(iGroup))
+                group.Immigration = m_EcoPathData.Immig(iGroup)
+                group.PP = m_EcoPathData.PP(iGroup)
+                group.VBK = m_EcoPathData.vbK(iGroup)
+                group.PoolColor = m_EcoPathData.GroupColor(iGroup)
+                group.NonMarketValue = m_EcoPathData.Shadow(iGroup)
 
-                Input.BioAccumInput = CSng((IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup))))
+                For i As Integer = 1 To nGroups
+                    group.IsPrey(i) = False
+                    If m_EcoPathData.DC(iGroup, i) > 0 Then group.IsPrey(i) = True
+                    group.IsPred(i) = False
+                    If m_EcoPathData.DC(i, iGroup) > 0 Then group.IsPred(i) = True
+                Next
+
+                group.BioAccumInput = CSng((IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup))))
 
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
                 'from original code
-                Input.Emigration = CSng(IIF(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
+                group.Emigration = CSng(IIF(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
                                                 m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.Emigration(iGroup)))
                 Dim j As Integer
                 'Diet Comp (DO NOT INCLUDE IMPORT IN THE DC ARRAY - THIS IS SEPARATED IN ECOPATHGROUP!)
                 For j = 1 To m_EcoPathData.NumGroups
-                    Input.DietComp(j) = m_EcoPathData.DCInput(iGroup, j)
+                    group.DietComp(j) = m_EcoPathData.DCInput(iGroup, j)
                 Next
-                Input.ImpDiet = m_EcoPathData.DCInput(iGroup, 0)
+                group.ImpDiet = m_EcoPathData.DCInput(iGroup, 0)
 
                 'detritus fate
                 For j = 1 To nDetritusGroups
-                    Input.DetritusFate(j) = m_EcoPathData.DF(iGroup, j)
+                    group.DetritusFate(j) = m_EcoPathData.DF(iGroup, j)
                 Next
 
                 'stanza variables setting the stanza id will also set the isMultiStanza Flag
-                Input.iStanza = getStanzaIndexForGroup(iGroup)
+                group.iStanza = getStanzaIndexForGroup(iGroup)
 
                 'PSD
-                Input.AinLWInput = m_PSDData.AinLWInput(iGroup)
-                Input.BinLWInput = m_PSDData.BinLWInput(iGroup)
-                Input.LooInput = m_PSDData.LooInput(iGroup)
-                Input.WinfInput = m_PSDData.WinfInput(iGroup)
-                Input.t0Input = m_PSDData.t0Input(iGroup)
-                Input.TcatchInput = m_PSDData.TcatchInput(iGroup)
-                Input.TmaxInput = m_PSDData.TmaxInput(iGroup)
+                group.AinLWInput = m_PSDData.AinLWInput(iGroup)
+                group.BinLWInput = m_PSDData.BinLWInput(iGroup)
+                group.LooInput = m_PSDData.LooInput(iGroup)
+                group.WinfInput = m_PSDData.WinfInput(iGroup)
+                group.t0Input = m_PSDData.t0Input(iGroup)
+                group.TcatchInput = m_PSDData.TcatchInput(iGroup)
+                group.TmaxInput = m_PSDData.TmaxInput(iGroup)
 
                 'Taxa
                 For i As Integer = 1 To Me.m_TaxonData.NumGroupTaxa(iGroup)
-                    Input.iTaxon(i) = Me.m_TaxonData.GroupTaxa(iGroup, i)
+                    group.iTaxon(i) = Me.m_TaxonData.GroupTaxa(iGroup, i)
                 Next
 
                 'set all the status flags to default value
-                Input.ResetStatusFlags()
+                group.ResetStatusFlags()
 
-                Input.AllowValidation = True
+                group.AllowValidation = True
             Else
                 Debug.Assert(False)
             End If
@@ -6177,7 +6184,8 @@ Public Class cCore
 
         Select Case obj.DataType
             Case eDataTypes.EcoPathGroupInput, eDataTypes.EcoPathGroupOutput,
-                 eDataTypes.EcoSimGroupInput, eDataTypes.EcospaceGroup, eDataTypes.EcotracerGroupInput
+                 eDataTypes.EcoSimGroupInput, eDataTypes.EcoSimGroupOutput,
+                 eDataTypes.EcospaceGroup, eDataTypes.EcotracerGroupInput
 
                 ' Cascase group name to all relevant core IO objects
                 objCascade = Me.EcoPathGroupInputs(obj.Index)
@@ -7611,22 +7619,6 @@ Public Class cCore
                 m_EcoSimData.getSummaryValueByGroup(iGroup, iFlt, sVal, endVal)
                 group.ValueStart(iFlt) = sVal
                 group.ValueEnd(iFlt) = endVal
-            Next
-
-            For i As Integer = 1 To nGroups
-
-                group.isPrey(i) = False
-                'is this i prey for this output group
-                If m_EcoPathData.DC(iGroup, i) > 0 Then
-                    group.isPrey(i) = True
-                End If
-
-                group.isPred(i) = False
-                'is this i a predator of this output group
-                If m_EcoPathData.DC(i, iGroup) > 0 Then
-                    group.isPred(i) = True
-                End If
-
             Next
 
             group.ResetStatusFlags()
