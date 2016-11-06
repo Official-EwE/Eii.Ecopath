@@ -243,6 +243,16 @@ Public Class cEcoPathGroupInput
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val.Stored = False
+        val.AffectsRunState = False
+        m_values.Add(val.varName, val)
+
+        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val.Stored = False
+        val.AffectsRunState = False
+        m_values.Add(val.varName, val)
+
         ' iTaxon dimensioned by nTaxa(iIndex)
         val = New cValueArrayIndexed(eValueTypes.IntArray, eVarNameFlags.GroupTaxa, eStatusFlags.Null, eCoreCounterTypes.nTaxonForGroup, AddressOf m_core.GetCoreCounter, Me.Index, Me.DataType)
         m_values.Add(val.varName, val)
@@ -647,7 +657,6 @@ Public Class cEcoPathGroupInput
 
     End Property
 
-    'Joeh
     Public Property TcatchInput() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.TCatchInput))
@@ -718,8 +727,6 @@ Public Class cEcoPathGroupInput
         End Set
     End Property
 
-    'End Joeh
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get whether a group is being fished. This value is kept up to date by 
@@ -734,6 +741,38 @@ Public Class cEcoPathGroupInput
         Friend Set(ByVal value As Boolean)
             Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
+    End Property
+
+    ''' <summary>
+    ''' Get whether this group is predated on by <paramref name="iGroup">group index</paramref>.
+    ''' </summary>
+    ''' <param name="iGroup">Group index of the predator</param>
+    Public Property IsPred(ByVal iGroup As Integer) As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.IsPred, iGroup))
+        End Get
+
+        Friend Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.IsPred, value, iGroup)
+        End Set
+
+    End Property
+
+    ''' <summary>
+    ''' Get whether this group predates on <paramref name="iGroup">group index</paramref>.
+    ''' </summary>
+    ''' <param name="iGroup">Group index of the prey</param>
+    Public Property IsPrey(ByVal iGroup As Integer) As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.IsPrey, iGroup))
+        End Get
+
+        Friend Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.IsPrey, value, iGroup)
+        End Set
+
     End Property
 
 #End Region

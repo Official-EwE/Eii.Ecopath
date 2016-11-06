@@ -78,7 +78,6 @@ Public Class cEcoSimGroupInput
 
     End Function
 
-
 #Region "Mapping of variable names"
     'mapping to underlying data structure names
     ' MaxRelPB  =  'PBmaxs max rel P/B

@@ -51,7 +51,6 @@ Public Class cMonteCarloManager
     'Synchronization object from the user interface that handles the passing of data from the model thread to the user interface thread
     Private m_SyncObject As System.ComponentModel.ISynchronizeInvoke
 
-
     'Time step handler for ecosim 
     Private m_EcosimTimeStepHandler As EcoSimTimeStepDelegate
 

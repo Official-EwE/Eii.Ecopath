@@ -56,43 +56,26 @@ Public Class cEcosimGroupOutput
         Me.m_dataType = eDataTypes.EcoSimGroupOutput
 
         'See Me.Init() for list of variables
-
-        'Boolean vars use same structures as other vars
-        'isPred
-        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
-                                AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        'isPrey
-        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
-                              AddressOf m_core.GetCoreCounter)
-        m_values.Add(val.varName, val)
-
-        'no validators
         val = New cValue(0, eVarNameFlags.EcosimGroupBiomassStart, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         val = New cValue(0, eVarNameFlags.EcosimGroupBiomassEnd, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        'no validators
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimGroupCatchEnd, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.GetCoreCounter)
         m_values.Add(val.varName, val)
 
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimGroupCatchStart, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.GetCoreCounter)
         m_values.Add(val.varName, val)
 
-        'no validators
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimGroupValueStart, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.GetCoreCounter)
         m_values.Add(val.varName, val)
 
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcosimGroupValueEnd, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.GetCoreCounter)
         m_values.Add(val.varName, val)
 
-        'no validators
         val = New cValue(False, eVarNameFlags.EcosimIsCatchAggregated, eStatusFlags.OK, eValueTypes.Bool)
         m_values.Add(val.varName, val)
-
 
     End Sub
 
@@ -229,39 +212,6 @@ Public Class cEcosimGroupOutput
 
         Friend Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcosimIsCatchAggregated, value)
-        End Set
-
-    End Property
-
-
-    ''' <summary>
-    ''' Get whether this group is predated on by <paramref name="iGroup">group index</paramref>.
-    ''' </summary>
-    ''' <param name="iGroup">Group index of the predator</param>
-    Public Property isPred(ByVal iGroup As Integer) As Boolean
-
-        Get
-            Return CBool(GetVariable(eVarNameFlags.IsPred, iGroup))
-        End Get
-
-        Friend Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsPred, value, iGroup)
-        End Set
-
-    End Property
-
-    ''' <summary>
-    ''' Get whether this group predates on <paramref name="iGroup">group index</paramref>.
-    ''' </summary>
-    ''' <param name="iGroup">Group index of the prey</param>
-    Public Property isPrey(ByVal iGroup As Integer) As Boolean
-
-        Get
-            Return CBool(GetVariable(eVarNameFlags.IsPrey, iGroup))
-        End Get
-
-        Friend Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.IsPrey, value, iGroup)
         End Set
 
     End Property
@@ -619,5 +569,23 @@ Public Class cEcosimGroupOutput
     End Property
 
 #End Region
+
+#Region " Deprecated "
+
+    <Obsolete("Use cEcopathGroupInput.IsPred() instead")>
+    Public ReadOnly Property isPred(iGroup As Integer) As Boolean
+        Get
+            Return Me.m_core.EcoPathGroupInputs(Me.Index).IsPred(iGroup)
+        End Get
+    End Property
+
+    <Obsolete("Use cEcopathGroupInput.IsPrey() instead")>
+    Public ReadOnly Property isPrey(iGroup As Integer) As Boolean
+        Get
+            Return Me.m_core.EcoPathGroupInputs(Me.Index).IsPrey(iGroup)
+        End Get
+    End Property
+
+#End Region ' Deprecated
 
 End Class

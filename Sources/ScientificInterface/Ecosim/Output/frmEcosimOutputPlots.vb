@@ -151,7 +151,7 @@ Namespace Ecosim
 
             Dim group As cCoreGroupBase = Nothing
 
-            Me.m_parms = Me.UIContext.Core.EcoSimModelParameters()
+            Me.m_parms = Core.EcoSimModelParameters()
             Me.m_paneMaster = Me.m_graph.MasterPane
 
             Me.m_zgh = New cZedGraphHelper()
@@ -333,8 +333,8 @@ Namespace Ecosim
             ' Configure pane
             Me.m_zgh.ConfigurePane(strTitle,
                        SharedResources.HEADER_TIME,
-                       CDbl(Me.UIContext.Core.EcosimFirstYear),
-                       CDbl(Me.UIContext.Core.EcosimFirstYear + (Me.UIContext.Core.nEcosimTimeSteps / cCore.N_MONTHS)),
+                       CDbl(Core.EcosimFirstYear),
+                       CDbl(Core.EcosimFirstYear + (Core.nEcosimTimeSteps / cCore.N_MONTHS)),
                        strYAxisLabel, 0, dYAxisMax,
                        False, LegendPos.TopCenter, Me.m_aiPlotPane(plot))
 
@@ -366,8 +366,8 @@ Namespace Ecosim
             Dim iCount As Integer = 0
             Dim dXValue As Double = 0
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim groupSimOut As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
-            Dim group As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(iGroup)
+            Dim groupSimOut As cEcosimGroupOutput = Core.EcoSimGroupOutputs(iGroup)
+            Dim group As cEcoPathGroupInput = Core.EcoPathGroupInputs(iGroup)
 
             Dim pplB As New PointPairList()
             Dim pplConsB As New PointPairList()
@@ -390,21 +390,21 @@ Namespace Ecosim
             Next
 
             ' Do not render when sim has not ran
-            If Not Me.UIContext.Core.StateMonitor.HasEcosimRan Then Return
+            If Not Core.StateMonitor.HasEcosimRan Then Return
 
-            Dim applCatchFleet(Me.UIContext.Core.nFleets) As PointPairList
-            Dim applFishMortFleet(Me.UIContext.Core.nFleets) As PointPairList
-            Dim applValueFleet(Me.UIContext.Core.nFleets) As PointPairList
+            Dim applCatchFleet(Core.nFleets) As PointPairList
+            Dim applFishMortFleet(Core.nFleets) As PointPairList
+            Dim applValueFleet(Core.nFleets) As PointPairList
 
-            For i As Integer = 0 To Me.UIContext.Core.nFleets
+            For i As Integer = 0 To Core.nFleets
                 applCatchFleet(i) = New PointPairList()
                 applFishMortFleet(i) = New PointPairList()
                 applValueFleet(i) = New PointPairList()
             Next
 
-            For i As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
+            For i As Integer = 1 To Core.nEcosimTimeSteps
                 ' Time
-                dXValue = Me.UIContext.Core.EcosimFirstYear + (i / cCore.N_MONTHS)
+                dXValue = Core.EcosimFirstYear + (i / cCore.N_MONTHS)
                 ' Get sim results
                 pplB.Add(dXValue, groupSimOut.Biomass(i))
                 pplConsB.Add(dXValue, groupSimOut.ConsumpBiomass(i))
@@ -421,7 +421,7 @@ Namespace Ecosim
                     applCatchFleet(0).Add(dXValue, CSng(groupSimOut.CatchByFleet(0, i)))
                     applValueFleet(0).Add(dXValue, CSng(groupSimOut.ValueByFleet(0, i)))
                 Else
-                    For iFleet As Integer = 1 To Me.UIContext.Core.nFleets
+                    For iFleet As Integer = 1 To Core.nFleets
                         applFishMortFleet(iFleet).Add(dXValue, CSng(groupSimOut.FishingMortByFleet(iFleet, i)))
                         applCatchFleet(iFleet).Add(dXValue, CSng(groupSimOut.CatchByFleet(iFleet, i)))
                         applValueFleet(iFleet).Add(dXValue, CSng(groupSimOut.ValueByFleet(iFleet, i)))
@@ -461,10 +461,10 @@ Namespace Ecosim
                 Next li
 
             Else
-                For i As Integer = 1 To Me.UIContext.Core.nFleets
+                For i As Integer = 1 To Core.nFleets
 
-                    Dim fleet As cFleetInput = Me.UIContext.Core.FleetInputs(i)
-                    Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Me.UIContext.Core, i)
+                    Dim fleet As cFleetInput = Core.FleetInputs(i)
+                    Dim clr As Color = Me.UIContext.StyleGuide.FleetColor(Core, i)
                     If fleet.Landings(iGroup) > 0 Then
                         Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(fleet, applCatchFleet(i)), True)
                         Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(fleet, applValueFleet(i)), True)
@@ -514,12 +514,12 @@ Namespace Ecosim
 
             'Predation mortality 
             iCount = 0
-            For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
-                If groupSimOut.isPred(i) Then
+            For i As Integer = 1 To Core.nLivingGroups
+                If group.IsPred(i) Then
                     Dim ppl As New PointPairList
-                    Dim pred As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(i)
-                    For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
-                        dXValue = Me.UIContext.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
+                    Dim pred As cEcoPathGroupInput = Core.EcoPathGroupInputs(i)
+                    For j As Integer = 1 To Core.nEcosimTimeSteps
+                        dXValue = Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.Predation(i, j))
                     Next
                     Me.AddCurveToGraphPane(ePlot.PredationMortality, Me.m_zgh.CreateLineItem(pred, ppl))
@@ -529,12 +529,12 @@ Namespace Ecosim
 
             'Prey %
             iCount = 0
-            For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
-                If groupSimOut.isPrey(i) Then
+            For i As Integer = 1 To Core.nLivingGroups
+                If group.IsPrey(i) Then
                     Dim ppl As New PointPairList
-                    Dim prey As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(i)
-                    For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
-                        dXValue = Me.UIContext.Core.EcosimFirstYear + (j / cCore.N_MONTHS)
+                    Dim prey As cEcoPathGroupInput = Core.EcoPathGroupInputs(i)
+                    For j As Integer = 1 To Core.nEcosimTimeSteps
+                        dXValue = Core.EcosimFirstYear + (j / cCore.N_MONTHS)
                         ppl.Add(dXValue, groupSimOut.PreyPercentage(i, j) * 100)
                     Next
                     Me.AddCurveToGraphPane(ePlot.Prey, Me.m_zgh.CreateLineItem(prey, ppl))
@@ -556,8 +556,8 @@ Namespace Ecosim
             Dim iMaxLines As Integer = 1
 
             ' First count #TS (for colouring)
-            For i As Integer = 1 To Me.UIContext.Core.nTimeSeries
-                ts = Me.UIContext.Core.EcosimTimeSeries(i)
+            For i As Integer = 1 To Core.nTimeSeries
+                ts = Core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = TSType Then
                     If TypeOf ts Is cGroupTimeSeries Then
                         gts = DirectCast(ts, cGroupTimeSeries)
@@ -569,8 +569,8 @@ Namespace Ecosim
             Next
 
             ' Build lines
-            For i As Integer = 1 To Me.UIContext.Core.nTimeSeries
-                ts = Me.UIContext.Core.EcosimTimeSeries(i)
+            For i As Integer = 1 To Core.nTimeSeries
+                ts = Core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = TSType Then
                     If TypeOf ts Is cGroupTimeSeries Then
                         gts = DirectCast(ts, cGroupTimeSeries)
@@ -593,7 +593,7 @@ Namespace Ecosim
             Dim xpos As Double = 0.0
             Dim deltaT As Double = 1 / cCore.N_MONTHS
             Dim da() As Single = gts.ShapeData()
-            Dim iYear As Integer = Me.UIContext.Core.EcosimFirstYear
+            Dim iYear As Integer = Core.EcosimFirstYear
             Dim h As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 
             If (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (gts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (gts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
@@ -634,7 +634,8 @@ Namespace Ecosim
         Private Sub ShowGroup()
 
             Dim iGroup As Integer = m_lbGroups.SelectedIndex + 1
-            Dim grpOutput As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+            Dim grpBase As cEcoPathGroupInput = Core.EcoPathGroupInputs(iGroup)
+            Dim grpOutput As cEcosimGroupOutput = Core.EcoSimGroupOutputs(iGroup)
 
             Dim lAvgPredConsumption As New List(Of Single)
             Dim lAvgPredIndex As New List(Of Integer)
@@ -645,14 +646,14 @@ Namespace Ecosim
             Dim lCatch As New List(Of Single)
             Dim lFleetIndex As New List(Of Integer)
 
-            For i As Integer = 1 To Me.UIContext.Core.nLivingGroups
+            For i As Integer = 1 To Core.nLivingGroups
 
-                If grpOutput.isPred(i) Then
+                If grpBase.IsPred(i) Then
                     lAvgPredConsumption.Add(grpOutput.AvgPredConsumption(i))
                     lAvgPredIndex.Add(i)
                 End If
 
-                If grpOutput.isPrey(i) Then
+                If grpBase.IsPrey(i) Then
                     lAvgPreyConsumption.Add(grpOutput.AvgPreyConsumption(i))
                     lAvgPreyIndex.Add(i)
                 End If
@@ -669,10 +670,10 @@ Namespace Ecosim
                 Me.m_lbFleets.ShowAllFleetsItem = True
             Else
                 ' #No: Show all relevant fleets, sorted by landings
-                For i As Integer = 1 To Me.UIContext.Core.nFleets
-                    If Me.UIContext.Core.FleetInputs(i).Landings(iGroup) > 0 Then
+                For i As Integer = 1 To Core.nFleets
+                    If Core.FleetInputs(i).Landings(iGroup) > 0 Then
                         Dim sCatch As Single = 0
-                        For j As Integer = 1 To Me.UIContext.Core.nEcosimTimeSteps
+                        For j As Integer = 1 To Core.nEcosimTimeSteps
                             sCatch += grpOutput.CatchByFleet(i, j)
                         Next
                         lCatch.Add(sCatch)
@@ -692,8 +693,8 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiGroupIndex">Array of group index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox, _
-                                         ByVal aiGroupIndex() As Integer, _
+        Private Sub PopulateGroupListBox(ByVal l As cGroupListBox,
+                                         ByVal aiGroupIndex() As Integer,
                                          ByVal asValues() As Single)
 
             l.Populate(aiGroupIndex)
@@ -712,8 +713,8 @@ Namespace Ecosim
         ''' <param name="l">Listbox to add items to.</param>
         ''' <param name="aiFleetIndex">Array of fleet index values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub PopulateFleetListBox(ByVal l As cFleetListBox, _
-                                         ByVal aiFleetIndex() As Integer, _
+        Private Sub PopulateFleetListBox(ByVal l As cFleetListBox,
+                                         ByVal aiFleetIndex() As Integer,
                                          ByVal asValues() As Single)
 
             l.Populate(aiFleetIndex)
@@ -745,8 +746,8 @@ Namespace Ecosim
         ''' <param name="paneType">Index of the graph pane</param>
         ''' <param name="li">The curve</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurveToGraphPane(ByVal paneType As ePlot, _
-                                        ByVal li As LineItem, _
+        Private Sub AddCurveToGraphPane(ByVal paneType As ePlot,
+                                        ByVal li As LineItem,
                                         Optional ByVal bCumulative As Boolean = False)
             Dim lli As New List(Of ZedGraph.LineItem)
             lli.Add(li)
@@ -761,8 +762,8 @@ Namespace Ecosim
         ''' <param name="lli">The lists of data points for the multiple curves</param>
         ''' <remarks>Overloaded method with different color options.</remarks>
         ''' -------------------------------------------------------------------
-        Private Sub AddCurvesToGraphPane(ByVal paneType As ePlot, _
-                                         ByVal lli As List(Of LineItem), _
+        Private Sub AddCurvesToGraphPane(ByVal paneType As ePlot,
+                                         ByVal lli As List(Of LineItem),
                                          Optional ByVal bCumulative As Boolean = False)
 
             If Not Me.m_abPlotVisible(paneType) Then Return
@@ -786,7 +787,7 @@ Namespace Ecosim
         Private Function GetPlotTitle(ByVal data As ePlot) As String
 
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim group As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+            Dim group As cEcosimGroupOutput = Core.EcoSimGroupOutputs(iGroup)
 
             ' Configure mort pane caption
             If (data = ePlot.Mortality) Then
@@ -805,7 +806,7 @@ Namespace Ecosim
         Private Function GetPlotYAxisLabel(data As ePlot) As String
 
             Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
-            Dim group As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+            Dim group As cEcosimGroupOutput = Core.EcoSimGroupOutputs(iGroup)
 
             Select Case data
 

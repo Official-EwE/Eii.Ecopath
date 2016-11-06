@@ -217,6 +217,7 @@
     <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
+    <Compile Include="Monte Carlo\cMonteCarloResultsWriterMultipleFiles.vb" />
     <Compile Include="MPAOptimization\Model\cMPAOptBaseClass.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />
@@ -436,7 +437,7 @@
     <Compile Include="EcoSpace\Input Output\cEnviroInputMap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
-    <Compile Include="Monte Carlo\cMonteCarloResultsWriter.vb" />
+    <Compile Include="Monte Carlo\cMonteCarloResultsWriterOneFile.vb" />
     <Compile Include="Pedigree\cPedigreeLevel.vb" />
     <Compile Include="Pedigree\cPedigreeManager.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerGroupInput.vb" />

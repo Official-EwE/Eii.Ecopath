@@ -114,7 +114,7 @@ Public Interface ICoreInputOutput
     ''' <summary>
     ''' Gets whether the instance is disposed.
     ''' </summary>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <Browsable(False)>
     ReadOnly Property Disposed As Boolean
 
 End Interface ' ICoreInputOutput
@@ -319,7 +319,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Returns the unique ID for this object as a text string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Function getID() As String _
         Implements ICoreInterface.GetID
         Return cValueID.getDataTypeID(Me.m_dataType, Me.DBID)
@@ -331,7 +331,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' the type of core data that this class implements.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property DataType() As eDataTypes _
         Implements ICoreInterface.DataType
         Get
@@ -346,7 +346,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' level of impact that objects have on the EwE computing model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property CoreComponent() As eCoreComponentType _
         Implements ICoreInterface.CoreComponent
         Get
@@ -362,7 +362,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="objSec">Secundary object within the given <paramref name="varName">variable</paramref>
     ''' that a remark applies to.</param>
     ''' -----------------------------------------------------------------------
-    Public Property Remark(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
+    Public Property Remark(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name,
                            Optional ByVal objSec As cCoreInputOutputBase = Nothing) As String
         Get
             Dim key As cValueID = Nothing
@@ -479,7 +479,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="VarName">Variable to request status information for.</param>
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags, _
+    Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags,
                                           Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
             Dim val As cValue = m_values.Item(VarName)
@@ -499,8 +499,8 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="newStatus">The new status values to set.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function SetStatus(ByVal VarName As eVarNameFlags, _
-                              ByVal newStatus As eStatusFlags, _
+    Friend Function SetStatus(ByVal VarName As eVarNameFlags,
+                              ByVal newStatus As eStatusFlags,
                               Optional ByVal iIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
         Try
             m_values.Item(VarName).Status(iIndex) = newStatus
@@ -520,8 +520,8 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="statusFlags">The status values to add.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function SetStatusFlags(ByVal VarName As eVarNameFlags, _
-                                   ByVal statusFlags As eStatusFlags, _
+    Friend Function SetStatusFlags(ByVal VarName As eVarNameFlags,
+                                   ByVal statusFlags As eStatusFlags,
                                    Optional ByVal iIndex As Integer = -9999) As Boolean
         Try
             m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) Or statusFlags
@@ -588,8 +588,8 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <remarks>The outcome of the SetVariable call can be examined via 
     ''' <see cref="cValue.ValidationStatus">cValue.ValidationStatus</see>.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function SetVariable(ByVal VarName As eVarNameFlags, _
-            ByVal newValue As Object, _
+    Public Overridable Function SetVariable(ByVal VarName As eVarNameFlags,
+            ByVal newValue As Object,
             Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean _
             Implements ICoreInputOutput.SetVariable
 
@@ -655,7 +655,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <returns>A <see cref="cVariableMetaData">metadata</see> instance, or
     ''' Null if a variable does not have associated metadata.</returns>
     ''' -----------------------------------------------------------------------
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Function GetVariableMetadata(ByVal varName As eVarNameFlags) As cVariableMetaData
 
         If Me.m_values.ContainsKey(varName) Then
@@ -679,7 +679,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' the EwECore, and should be turned ON to respond to changes made by 
     ''' user interfaces or by remote calculations.
     ''' </remarks>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Friend Overridable Property AllowValidation() As Boolean
         Get
             Return m_bValidate
@@ -760,7 +760,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Applicaton layers built on top of the core will probably never need direct 
     ''' access to this property. To abstract its storage methods it seems best to
     ''' restrict access to this property to the Core assembly only.</remarks>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return DirectCast(GetVariable(eVarNameFlags.DBID), Integer)
@@ -774,7 +774,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Get the outcome of the most recently performed variable validation 
     ''' attempt on a cCoreInutOutputBase instance.
     ''' </summary>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property ValidationStatus() As cVariableStatus _
         Implements ICoreInputOutput.ValidationStatus
         Get
@@ -788,7 +788,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' </summary>
     ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see>
     ''' to retrieve the value descriptor for.</param>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public ReadOnly Property ValueDescriptor(ByVal varName As eVarNameFlags) As cValue
         Get
             If Me.m_values.ContainsKey(varName) Then Return Me.m_values(varName)
