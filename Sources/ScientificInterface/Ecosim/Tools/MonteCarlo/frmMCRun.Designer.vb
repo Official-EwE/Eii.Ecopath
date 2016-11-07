@@ -916,6 +916,7 @@ Namespace Ecosim
             Me.m_cmbSaveFormat.FormattingEnabled = True
             resources.ApplyResources(Me.m_cmbSaveFormat, "m_cmbSaveFormat")
             Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
+            Me.m_cmbSaveFormat.Sorted = True
             '
             'frmMCRun
             '

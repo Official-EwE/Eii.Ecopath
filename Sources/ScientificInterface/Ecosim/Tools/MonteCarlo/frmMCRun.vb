@@ -246,8 +246,13 @@ Namespace Ecosim
             Next
 
             For i As Integer = 1 To Me.m_mcmanager.nResultWriters
+                Dim writer As IMonteCarloResultsWriter = Me.m_mcmanager.ResultWriter(i)
                 Me.m_cmbSaveFormat.Items.Add(Me.m_mcmanager.ResultWriter(i))
-                If (i = Me.m_mcmanager.iActiveResultWriter) Then Me.m_cmbSaveFormat.SelectedIndex = (i - 1)
+                If (Me.m_mcmanager.ActiveResultWriter IsNot Nothing) Then
+                    If (Me.m_mcmanager.ActiveResultWriter.GetType() Is writer.GetType()) Then
+                        m_cmbSaveFormat.SelectedItem = writer
+                    End If
+                End If
             Next
 
             Me.m_bInUpdate = False
@@ -326,7 +331,7 @@ Namespace Ecosim
         Private Sub OnSaveFormatSelected(sender As Object, e As EventArgs) _
             Handles m_cmbSaveFormat.SelectedIndexChanged
             Try
-                Me.m_mcmanager.iActiveResultWriter = Me.m_cmbSaveFormat.SelectedIndex + 1
+                Me.m_mcmanager.ActiveResultWriter = DirectCast(Me.m_cmbSaveFormat.SelectedItem, IMonteCarloResultsWriter)
             Catch ex As Exception
             End Try
         End Sub
