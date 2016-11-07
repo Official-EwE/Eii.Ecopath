@@ -1,3 +1,4 @@
+Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -21,9 +22,10 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports System.Reflection
 Imports System.Threading
 Imports EwECore.Ecosim
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
@@ -60,6 +62,8 @@ Public Class cMonteCarloManager
     Private m_dlgMCTrialStepHandler As MonteCarloTrialProgressDelegate
 
     Private m_lstMessages As New List(Of cMessage)
+    ''' <summary>Available monte carlo result writers.</summary>
+    Private m_ResultsWriters As New List(Of IMonteCarloResultsWriter)
 
     'for ICoreInterface
     Private m_dbid As Integer
@@ -68,14 +72,11 @@ Public Class cMonteCarloManager
 
 #End Region
 
-#Region "Construction and initialization"
-
+#Region "Construction and initialization "
 
     Friend Sub New()
-
-
+        ' NOP
     End Sub
-
 
     Friend Sub init(ByRef theCore As cCore)
 
@@ -90,6 +91,19 @@ Public Class cMonteCarloManager
             m_mc.dlgMonteCarloMessageHandler = AddressOf Me.MCSendMessageHandler
 
             m_mc.Init()
+
+            m_ResultsWriters.Clear()
+
+            m_ResultsWriters.Add(New cMonteCarloResultsWriterOneFile(Me.m_mc, Me.m_core))
+            m_ResultsWriters.Add(New cMonteCarloResultsWriterMultipleFiles(Me.m_mc, Me.m_core))
+
+            ' Plug-in manager provided?
+            If (theCore.PluginManager IsNot Nothing) Then
+                ' #Yes: see if a plug-in based writer supports the requested format
+                For Each ip As IMonteCarloResultWriterPlugin In theCore.PluginManager.GetPlugins(GetType(IMonteCarloResultWriterPlugin))
+                    m_ResultsWriters.Add(ip)
+                Next
+            End If
 
             InitGroups()
             LoadGroups()
@@ -134,6 +148,52 @@ Public Class cMonteCarloManager
         End Try
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of available <see cref="IMonteCarloResultsWriter">Monte
+    ''' Carlo result writers</see>.
+    ''' <seealso cref="ResultWriter"/>
+    ''' <seealso cref="IMonteCarloResultsWriter"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property nResultWriters As Integer
+        Get
+            Return Me.m_ResultsWriters.Count
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a <see cref="IMonteCarloResultsWriter"/>.
+    ''' <seealso cref="nResultWriters"/>
+    ''' <seealso cref="IMonteCarloResultsWriter"/>
+    ''' </summary>
+    ''' <param name="iIndex">One-based index of the result writer to obtain.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function ResultWriter(iIndex As Integer) As IMonteCarloResultsWriter
+        Try
+            If (iIndex < 0) Or (iIndex > Me.nResultWriters) Then Return Nothing
+            Return Me.m_ResultsWriters(iIndex - 1)
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+        Return Nothing
+    End Function
+
+    Public Property iActiveResultWriter As Integer
+        Get
+            If (Me.m_mc.ResultWriter Is Nothing) Then Return 0
+            For i As Integer = 1 To Me.nResultWriters
+                If (Me.m_mc.ResultWriter.GetType() Is Me.ResultWriter(i).GetType()) Then
+                    Return i
+                End If
+            Next
+        End Get
+        Set(value As Integer)
+            Me.m_mc.ResultWriter = Me.ResultWriter(value)
+        End Set
+    End Property
 
 #End Region
 

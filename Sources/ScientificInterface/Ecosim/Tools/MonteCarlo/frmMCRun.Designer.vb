@@ -118,6 +118,7 @@ Namespace Ecosim
             Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -281,8 +282,8 @@ Namespace Ecosim
             Me.m_gridB.BackColor = System.Drawing.Color.White
             Me.m_gridB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridB.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridB.CustomSort = False
             Me.m_gridB.DataName = "grid content"
             Me.m_gridB.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.B
@@ -294,14 +295,14 @@ Namespace Ecosim
             Me.m_gridB.IsOutputGrid = True
             Me.m_gridB.Name = "m_gridB"
             Me.m_gridB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridB.UIContext = Nothing
             '
             'm_tsB
@@ -335,8 +336,8 @@ Namespace Ecosim
             Me.m_gridPB.BackColor = System.Drawing.Color.White
             Me.m_gridPB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridPB.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridPB.CustomSort = False
             Me.m_gridPB.DataName = "grid content"
             Me.m_gridPB.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.PB
@@ -348,14 +349,14 @@ Namespace Ecosim
             Me.m_gridPB.IsOutputGrid = True
             Me.m_gridPB.Name = "m_gridPB"
             Me.m_gridPB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridPB.UIContext = Nothing
             '
             'm_tsPB
@@ -389,8 +390,8 @@ Namespace Ecosim
             Me.m_gridQB.BackColor = System.Drawing.Color.White
             Me.m_gridQB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridQB.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridQB.CustomSort = False
             Me.m_gridQB.DataName = "grid content"
             Me.m_gridQB.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.QB
@@ -402,14 +403,14 @@ Namespace Ecosim
             Me.m_gridQB.IsOutputGrid = True
             Me.m_gridQB.Name = "m_gridQB"
             Me.m_gridQB.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridQB.UIContext = Nothing
             '
             'm_tsQB
@@ -443,8 +444,8 @@ Namespace Ecosim
             Me.m_gridEE.BackColor = System.Drawing.Color.White
             Me.m_gridEE.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridEE.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridEE.CustomSort = False
             Me.m_gridEE.DataName = "grid content"
             Me.m_gridEE.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.EE
@@ -456,14 +457,14 @@ Namespace Ecosim
             Me.m_gridEE.IsOutputGrid = True
             Me.m_gridEE.Name = "m_gridEE"
             Me.m_gridEE.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridEE.UIContext = Nothing
             '
             'm_tsEE
@@ -491,8 +492,8 @@ Namespace Ecosim
             Me.m_gridBA.BackColor = System.Drawing.Color.White
             Me.m_gridBA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridBA.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridBA.CustomSort = False
             Me.m_gridBA.DataName = "grid content"
             Me.m_gridBA.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.BA
@@ -504,14 +505,14 @@ Namespace Ecosim
             Me.m_gridBA.IsOutputGrid = True
             Me.m_gridBA.Name = "m_gridBA"
             Me.m_gridBA.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridBA.UIContext = Nothing
             '
             'm_tsBA
@@ -539,8 +540,8 @@ Namespace Ecosim
             Me.m_gridDiets.BackColor = System.Drawing.Color.White
             Me.m_gridDiets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridDiets.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridDiets.CustomSort = False
             Me.m_gridDiets.DataName = "grid content"
             Me.m_gridDiets.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.Diets
@@ -552,14 +553,14 @@ Namespace Ecosim
             Me.m_gridDiets.IsOutputGrid = True
             Me.m_gridDiets.Name = "m_gridDiets"
             Me.m_gridDiets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDiets.UIContext = Nothing
             '
             'm_tsDiets
@@ -593,8 +594,8 @@ Namespace Ecosim
             Me.m_gridLandings.BackColor = System.Drawing.Color.White
             Me.m_gridLandings.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridLandings.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridLandings.CustomSort = False
             Me.m_gridLandings.DataName = "grid content"
             Me.m_gridLandings.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.Landings
@@ -606,14 +607,14 @@ Namespace Ecosim
             Me.m_gridLandings.IsOutputGrid = True
             Me.m_gridLandings.Name = "m_gridLandings"
             Me.m_gridLandings.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridLandings.UIContext = Nothing
             '
             'm_tsLandings
@@ -647,8 +648,8 @@ Namespace Ecosim
             Me.m_gridDiscards.BackColor = System.Drawing.Color.White
             Me.m_gridDiscards.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridDiscards.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridDiscards.CustomSort = False
             Me.m_gridDiscards.DataName = "grid content"
             Me.m_gridDiscards.DisplayInputValue = ScientificInterfaceShared.Definitions.eMCRunDisplayInputValueTypes.Discards
@@ -660,14 +661,14 @@ Namespace Ecosim
             Me.m_gridDiscards.IsOutputGrid = True
             Me.m_gridDiscards.Name = "m_gridDiscards"
             Me.m_gridDiscards.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDiscards.UIContext = Nothing
             '
             'm_tsDiscards
@@ -712,13 +713,13 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
+            Me.m_graph.ScrollGrace = 0R
+            Me.m_graph.ScrollMaxX = 0R
+            Me.m_graph.ScrollMaxY = 0R
+            Me.m_graph.ScrollMaxY2 = 0R
+            Me.m_graph.ScrollMinX = 0R
+            Me.m_graph.ScrollMinY = 0R
+            Me.m_graph.ScrollMinY2 = 0R
             '
             'm_tsPlot
             '
@@ -782,8 +783,8 @@ Namespace Ecosim
             Me.m_gridBestFit.BackColor = System.Drawing.Color.White
             Me.m_gridBestFit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridBestFit.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridBestFit.CustomSort = False
             Me.m_gridBestFit.DataName = "grid content"
             resources.ApplyResources(Me.m_gridBestFit, "m_gridBestFit")
@@ -794,14 +795,14 @@ Namespace Ecosim
             Me.m_gridBestFit.IsOutputGrid = True
             Me.m_gridBestFit.Name = "m_gridBestFit"
             Me.m_gridBestFit.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridBestFit.UIContext = Nothing
             '
             'm_cbSave
@@ -909,11 +910,19 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbestValue, 7, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
             '
+            'm_cmbSaveFormat
+            '
+            Me.m_cmbSaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbSaveFormat.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbSaveFormat, "m_cmbSaveFormat")
+            Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
+            '
             'frmMCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnStop
+            Me.Controls.Add(Me.m_cmbSaveFormat)
             Me.Controls.Add(Me.m_cbSave)
             Me.Controls.Add(Me.m_tlpOutputs)
             Me.Controls.Add(Me.m_hdrOutputParam)
@@ -1048,6 +1057,7 @@ Namespace Ecosim
         Private WithEvents m_gridDiets As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_clbEnabledVariables As cFlickerFreeCheckedListBox
         Private WithEvents m_lblEnabledVariables As System.Windows.Forms.Label
+        Private WithEvents m_cmbSaveFormat As ComboBox
     End Class
 
 End Namespace
