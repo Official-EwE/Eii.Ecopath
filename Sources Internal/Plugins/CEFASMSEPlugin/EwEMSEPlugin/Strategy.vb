@@ -215,9 +215,7 @@ Public Class Strategy
                         Me.RunThisStrategy = False
                     End If
                     reader.ReadLine()
-                ElseIf recs(0) = "GroupNameForBiomass" Then
-                    reader.ReadLine()
-                Else
+                ElseIf recs(0) <> "GroupNameForBiomass" Then
                     Dim tempHCRGroup As HCR_Group
                     'Each HCR Group needs to be a new object
                     tempHCRGroup = New HCR_Group(m_core, m_MSE)
