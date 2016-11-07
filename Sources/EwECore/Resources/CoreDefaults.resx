@@ -261,7 +261,7 @@
     <value>Region averages</value>
   </data>
   <data name="MONTECARLO_WRITER_MULTIPLE" xml:space="preserve">
-    <value>Results across multiple files, organized by iteration</value>
+    <value>Separate files per trial</value>
   </data>
   <data name="MONTECARLO_WRITER_ONEFILE" xml:space="preserve">
     <value>All results in one file</value>

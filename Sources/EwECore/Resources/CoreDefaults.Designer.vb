@@ -443,7 +443,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Results across multiple files, organized by iteration.
+        '''  Looks up a localized string similar to Separate files per trial.
         '''</summary>
         Public Shared ReadOnly Property MONTECARLO_WRITER_MULTIPLE() As String
             Get

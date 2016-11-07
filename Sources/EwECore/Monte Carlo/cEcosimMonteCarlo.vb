@@ -222,7 +222,7 @@ Public Class cEcosimMonteCarlo
         m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
 
         ' Set default
-        Me.OutputWriter = New cMonteCarloResultsWriterOneFile(Me, Me.m_core)
+        Me.ResultWriter = New cMonteCarloResultsWriterOneFile(Me, Me.m_core)
 
     End Sub
 
@@ -343,7 +343,7 @@ Public Class cEcosimMonteCarlo
     ''' results to drive. 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property OutputWriter As IMonteCarloResultsWriter = Nothing
+    Public Property ResultWriter As IMonteCarloResultsWriter = Nothing
 
     ''' <summary>
     ''' Set the isVariable(group,parameter) boolean flag
@@ -588,8 +588,6 @@ Public Class cEcosimMonteCarlo
                 End Try
             End If
 
-            Me.OutputWriter.Init()
-
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.StackTrace)
@@ -643,6 +641,7 @@ Public Class cEcosimMonteCarlo
     End Property
 
     Public Sub Run(ByVal ob As Object)
+
         Dim iter As Integer 'number of ecopath interation to find new pararameters for each trial
         Dim Fpenalty As Single
         Dim bFirstRun As Boolean = True
@@ -661,6 +660,10 @@ Public Class cEcosimMonteCarlo
         System.Console.WriteLine("----------Starting Monte Carlo----------")
         Try
             initForRun()
+
+            If (Me.ResultWriter IsNot Nothing) Then
+                Me.ResultWriter.Init()
+            End If
 
             ' Fire plug-in point
             If Me.m_pluginmanager IsNot Nothing Then
@@ -761,8 +764,10 @@ Public Class cEcosimMonteCarlo
                         End If 'bRetainBiomass
                     End If ' m_esdata.SS < SSBestFit
 
-                    ' Only save when an alternative balanced model was found
-                    Me.OutputWriter.Save(m_iTrial)
+                    If (Me.ResultWriter IsNot Nothing) Then
+                        ' Only save when an alternative balanced model was found
+                        Me.ResultWriter.Save(m_iTrial)
+                    End If
 
                 End If 'iter < maxEcopathTries 
 
@@ -795,15 +800,16 @@ Public Class cEcosimMonteCarlo
             Me.m_ecopath.suppressMessages = False
 
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & m_iTrial & ")")
             Debug.Assert(False, ex.StackTrace)
             m_ecopath.suppressMessages = False
-            Throw New ApplicationException(Me.ToString & ".Run", ex)
         End Try
 
-        Me.OutputWriter.Finish()
+        If (Me.ResultWriter IsNot Nothing) Then
+            Me.ResultWriter.Finish()
+        End If
 
-        If Me.m_pluginmanager IsNot Nothing Then
+        If (Me.m_pluginmanager IsNot Nothing) Then
             Try
                 Me.m_pluginmanager.MontCarloRunCompleted()
             Catch ex As Exception

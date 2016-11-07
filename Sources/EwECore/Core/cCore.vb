@@ -2534,7 +2534,7 @@ Public Class cCore
                     ' NOP
 
                 Case eAutosaveTypes.Ecosim, eAutosaveTypes.EcosimResults
-                    strScenario = "Ecosim_"
+                    strScenario = "ecosim_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -2542,7 +2542,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.MonteCarlo
-                    strScenario = "MC_"
+                    strScenario = "mc_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -2550,7 +2550,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.MSE
-                    strScenario = "MSE_"
+                    strScenario = "mse_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -2558,7 +2558,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.MSY
-                    strScenario = "MSY_"
+                    strScenario = "msy_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -2573,9 +2573,9 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.EcospaceResultsRegion
-                    strScenario = "Ecospace_summary_"
+                    strScenario = "ecospace_summary_"
 
-                    strScenario = "Ecospace_"
+                    strScenario = "ecospace_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -2583,7 +2583,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.MPAOpt
-                    strScenario = "MPA_opt_"
+                    strScenario = "mpa_opt_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -2591,7 +2591,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.Ecotracer
-                    strScenario = "Ecotracer_"
+                    strScenario = "ecotracer_"
                     If (Me.ActiveEcotracerScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
                     Else

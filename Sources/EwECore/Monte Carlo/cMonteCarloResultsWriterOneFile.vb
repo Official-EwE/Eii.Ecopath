@@ -50,7 +50,7 @@ Public Class cMonteCarloResultsWriterOneFile
     Public Sub Init() Implements IMonteCarloResultsWriter.Init
 
         Me.m_bSaveError = False
-        If Not Me.MC.SaveOutput Then Return
+        If Not Me.IsSaving Then Return
 
         Dim strFile As String = Me.OutputFilename()
 

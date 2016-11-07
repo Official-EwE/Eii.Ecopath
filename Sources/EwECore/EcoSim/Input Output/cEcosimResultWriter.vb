@@ -25,6 +25,7 @@ Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -199,7 +200,7 @@ Namespace Ecosim
 
             Dim strModelDetails As String = Me.GetModelDetails()
             Dim strDataDetails As String = ""
-            Dim astrGroupNames As String = Me.GetAllGroupNames()
+            Dim astrGroupNames As String = Me.GetAllGroupIdentifiers()
             Dim group As cEcoPathGroupInput = Nothing
             Dim bSuccess As Boolean = True
 
@@ -386,85 +387,47 @@ Namespace Ecosim
             Dim strFileName As String = ""
             Dim strExt As String = ".csv"
 
-            If bSaveAnnual Then
-                Select Case outputtype
-                    Case eResultTypes.Biomass
-                        strFileName = "Biomass_annual"
-                    Case eResultTypes.Mortality
-                        strFileName = "Mortality_annual"
-                    Case eResultTypes.Catch
-                        strFileName = "Catch_annual"
-                    Case eResultTypes.ConsumptionBiomass
-                        strFileName = "Cons_biom_annual"
-                    Case eResultTypes.FeedingTime
-                        strFileName = "FeedingTime_annual"
-                    Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = "Weight_annual"
-                    Case eResultTypes.PredationMortality
-                        strFileName = "Predation_annual " & strGroupName
-                    Case eResultTypes.Prey
-                        strFileName = "Prey_annual " & strGroupName
-                    Case eResultTypes.TL
-                        strFileName = "TL_annual"
-                    Case eResultTypes.Value
-                        strFileName = "Value_annual"
-                    Case eResultTypes.FIB
-                        strFileName = "FIB_annual"
-                    Case eResultTypes.KemptonsQ
-                        strFileName = "KemptonsQ_annual"
-                    Case eResultTypes.ShannonDiversity
-                        strFileName = "ShannonDiversity_annual"
-                    Case eResultTypes.TLC
-                        strFileName = "TLC_annual"
-                    Case eResultTypes.TotalCatch
-                        strFileName = "TotalCatch_annual"
-                    Case eResultTypes.CatchFleetGroup
-                        strFileName = "FleetGroupCatch_annual"
-                    Case eResultTypes.MortFleetGroup
-                        strFileName = "FleetGroupMort_annual"
-                    Case eResultTypes.ValueFleetGroup
-                        strFileName = "FleetGroupValue_annual"
-                End Select
-            Else
-                Select Case outputtype
-                    Case eResultTypes.Biomass
-                        strFileName = "Biomass"
-                    Case eResultTypes.Mortality
-                        strFileName = "Mortality"
-                    Case eResultTypes.Catch
-                        strFileName = "Catch"
-                    Case eResultTypes.ConsumptionBiomass
-                        strFileName = "Cons_biom"
-                    Case eResultTypes.FeedingTime
-                        strFileName = "FeedingTime"
-                    Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = "Weight"
-                    Case eResultTypes.PredationMortality
-                        strFileName = "Predation " & strGroupName
-                    Case eResultTypes.Prey
-                        strFileName = "Prey " & strGroupName
-                    Case eResultTypes.TL
-                        strFileName = "TL"
-                    Case eResultTypes.Value
-                        strFileName = "Value"
-                    Case eResultTypes.FIB
-                        strFileName = "FIB"
-                    Case eResultTypes.KemptonsQ
-                        strFileName = "KemptonsQ"
-                    Case eResultTypes.ShannonDiversity
-                        strFileName = "ShannonDiversity"
-                    Case eResultTypes.TLC
-                        strFileName = "TLC"
-                    Case eResultTypes.TotalCatch
-                        strFileName = "TotalCatch"
-                    Case eResultTypes.CatchFleetGroup
-                        strFileName = "FleetGroupCatch"
-                    Case eResultTypes.MortFleetGroup
-                        strFileName = "FleetGroupMort"
-                    Case eResultTypes.ValueFleetGroup
-                        strFileName = "FleetGroupValue"
-                End Select
-            End If
+
+            Select Case outputtype
+                Case eResultTypes.Biomass
+                    strFileName = "biomass"
+                Case eResultTypes.Mortality
+                    strFileName = "mortality"
+                Case eResultTypes.Catch
+                    strFileName = "catch"
+                Case eResultTypes.ConsumptionBiomass
+                    strFileName = "consumption-biomass"
+                Case eResultTypes.FeedingTime
+                    strFileName = "feedingtime"
+                Case eResultTypes.AvgWeightOrProdCons
+                    strFileName = "weight"
+                Case eResultTypes.PredationMortality
+                    strFileName = "predation_" & strGroupName
+                Case eResultTypes.Prey
+                    strFileName = "prey_" & strGroupName
+                Case eResultTypes.TL
+                    strFileName = "tl"
+                Case eResultTypes.Value
+                    strFileName = "value"
+                Case eResultTypes.FIB
+                    strFileName = "fib"
+                Case eResultTypes.KemptonsQ
+                    strFileName = "kemptonsq"
+                Case eResultTypes.ShannonDiversity
+                    strFileName = "shannondiversity"
+                Case eResultTypes.TLC
+                    strFileName = "tlc"
+                Case eResultTypes.TotalCatch
+                    strFileName = "totalcatch"
+                Case eResultTypes.CatchFleetGroup
+                    strFileName = "catch-fleet-group"
+                Case eResultTypes.MortFleetGroup
+                    strFileName = "mort-fleet-group"
+                Case eResultTypes.ValueFleetGroup
+                    strFileName = "value-fleet-group"
+            End Select
+
+            strFileName = strFileName & "_" & cSystemUtils.IIF(bSaveAnnual, "annual", "monthly")
 
             Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
             If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
@@ -477,7 +440,7 @@ Namespace Ecosim
                                         ByVal data As Single(,),
                                         ByVal strModelDetails As String,
                                         ByVal strDataDetails As String,
-                                        ByVal strGroupNames As String) As Boolean
+                                        ByVal strGroups As String) As Boolean
 
             If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
             Try
@@ -494,7 +457,7 @@ Namespace Ecosim
                         Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
                         Dim nGroups As Integer = data.GetLength(0) - 1
                         Dim sum(nGroups) As Single
-                        sw.WriteLine("Year," & strGroupNames)
+                        sw.WriteLine("year," & strGroups)
                         For j As Integer = 1 To simYears
                             sw.Write(Me.m_core.EcosimFirstYear - 1 + j)
                             For i As Integer = 1 To nGroups
@@ -508,7 +471,7 @@ Namespace Ecosim
                             sw.WriteLine()
                         Next
                     Else
-                        sw.WriteLine("TimeStep," & strGroupNames)
+                        sw.WriteLine("timestep," & strGroups)
                         'Each time steps
                         For j As Integer = 1 To data.GetLength(1) - 1
                             sw.Write(j)
@@ -548,7 +511,7 @@ Namespace Ecosim
                     End If
 
                     If bAnnual Then
-                        sw.WriteLine("Year,Value")
+                        sw.WriteLine("year,value")
 
                         Dim simYears As Integer = CInt((data.Length - 1) / cCore.N_MONTHS)
                         Dim sum As Single
@@ -560,7 +523,7 @@ Namespace Ecosim
                             sw.WriteLine(Me.m_core.EcosimFirstYear - 1 + j & "," & cStringUtils.FormatSingle(sum / cCore.N_MONTHS))
                         Next
                     Else
-                        sw.WriteLine("TimeStep,Value")
+                        sw.WriteLine("timestep,value")
                         'Each time steps
                         For j As Integer = 1 To data.Length - 1
                             sw.WriteLine(j & "," & cStringUtils.FormatSingle(data(j)))
@@ -607,7 +570,7 @@ Namespace Ecosim
                     If bAnnual Then
 
                         Dim simYears As Integer = Me.m_core.nEcosimYears
-                        sw.WriteLine("Year,Fleet,Group,Value")
+                        sw.WriteLine("year,fleet,group,value")
                         For y As Integer = 1 To simYears
                             For i As Integer = 1 To Me.m_core.nFleets
                                 For j As Integer = 1 To Me.m_core.nGroups
@@ -622,7 +585,7 @@ Namespace Ecosim
                             Next
                         Next
                     Else
-                        sw.WriteLine("TimeStep,Fleet,Group,Value")
+                        sw.WriteLine("timestep,fleet,group,value")
                         'Each time steps
                         For t As Integer = 1 To Me.m_core.nEcosimTimeSteps
                             For i As Integer = 1 To Me.m_core.nFleets
@@ -654,15 +617,22 @@ Namespace Ecosim
             Return Me.m_core.DefaultFileHeader(eAutosaveTypes.EcosimResults)
         End Function
 
-        Private Function GetAllGroupNames() As String
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the Ecosim result writer should show group names (true) 
+        ''' or indexes (false). False by default.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property ShowGroupNames As Boolean = False
+
+        Private Function GetAllGroupIdentifiers() As String
 
             Dim str As New StringBuilder()
-
             For i As Integer = 1 To Me.m_core.nGroups
-                str.Append(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(i).Name))
-                If i <> Me.m_core.nGroups Then str.Append(",")
-            Next
-
+                If (i > 1) Then str.Append(","c)
+                str.Append(cStringUtils.ToCSVField(cSystemUtils.IIF(ShowGroupNames,
+                                                                    Me.m_core.EcoPathGroupInputs(i).Name, CStr(Me.m_core.EcoPathGroupInputs(i).Index))))
+            Next i
             Return str.ToString()
 
         End Function

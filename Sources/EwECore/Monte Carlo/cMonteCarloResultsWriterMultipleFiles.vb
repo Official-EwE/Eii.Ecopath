@@ -85,13 +85,18 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         If Not Me.IsSaving() Then Return
 
+        Dim strPathInput As String = Path.Combine(Me.DataDir, "mc_input")
+        Dim strPathOutput As String = Path.Combine(Me.DataDir, String.Format("mc_output_trial{0:D4}", iTrial))
+
         Try
             If (iTrial <= 0) Then
+
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
                     If (Me.m_MC.IsVariable(par)) Then
                         Dim sw As StreamWriter = Nothing
                         Try
-                            sw = New StreamWriter(Path.Combine(Me.DataDir, String.Format("mc_baseline_{0}.csv", par.ToString())))
+                            cFileUtils.IsDirectoryAvailable(strPathInput, True)
+                            sw = New StreamWriter(Path.Combine(strPathInput, String.Format("mc_baseline_{0}.csv", par.ToString())))
                             Me.WriteHeader(sw, iTrial)
                             Me.WriteBaselineBody(sw, par)
 
@@ -110,7 +115,8 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                     If (Me.m_MC.IsVariable(par)) Then
                         Dim sw As StreamWriter = Nothing
                         Try
-                            sw = New StreamWriter(Path.Combine(Me.DataDir, String.Format("mc_trial{0:D4}_{1}.csv", iTrial, par.ToString())))
+                            cFileUtils.IsDirectoryAvailable(strPathInput, True)
+                            sw = New StreamWriter(Path.Combine(strPathInput, String.Format("mc_trial{0:D4}_{1}.csv", iTrial, par.ToString())))
                             Me.WriteHeader(sw, iTrial)
                             Me.WriteTrialBody(sw, par)
 
@@ -127,10 +133,9 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
                 ' Write Ecosim output
                 Dim writerSim As New Ecosim.cEcosimResultWriter(Me.Core)
-                Dim DataDirSim As String = Path.Combine(Me.DataDir, String.Format("mc_trial{0:D4}_ecosim", iTrial))
 
-                If Not writerSim.WriteResultsDirect(DataDirSim, Nothing, TriState.UseDefault, True) Then
-                    Me.ReportSaveError("Unable to save Ecosim results to " & DataDirSim)
+                If Not writerSim.WriteResultsDirect(strPathOutput, Nothing, TriState.UseDefault, True) Then
+                    Me.ReportSaveError("Unable to save Ecosim results to " & strPathOutput)
                     Me.m_bSaveError = True
                 End If
 
@@ -202,10 +207,9 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
                 sw.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
                 sw.WriteLine(cStringUtils.ToCSVField("Num. trials") & "," & Me.m_MC.Ntrials)
+                sw.WriteLine(cStringUtils.ToCSVField("Trial") & "," & cSystemUtils.IIF(iTrial <= 0, "baseline", CStr(iTrial)))
+                sw.WriteLine(cStringUtils.ToCSVField("SS") & "," & cSystemUtils.IIF(iTrial <= 0, cStringUtils.ToCSVField(Me.MC.SSorg), cStringUtils.ToCSVField(Me.MC.SSCurrent)))
             End If
-            sw.WriteLine(cStringUtils.ToCSVField("Trial") & "," & cSystemUtils.IIF(iTrial <= 0, "baseline", CStr(iTrial)))
-            sw.WriteLine(cStringUtils.ToCSVField("SS") & "," & cSystemUtils.IIF(iTrial <= 0, cStringUtils.ToCSVField(Me.MC.SSorg), cStringUtils.ToCSVField(Me.MC.SSCurrent)))
-
         Catch ex As Exception
             Me.ReportSaveError(ex.Message)
             Debug.Assert(False, Me.ToString & ".WriteHeader() Exception: " & ex.Message)
@@ -217,14 +221,13 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         Select Case par
             Case eMCParams.Landings, eMCParams.Discards
-                sw.WriteLine("#Group,Group,#Fleet,Fleet,{0}_cv,{0}_lower,{0}_upper", par.ToString)
+                sw.WriteLine("group,fleet,{0}_cv,{0}_lower,{0}_upper", par.ToString.ToLower)
                 For iGroup As Integer = 1 To Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     For iFleet As Integer = 1 To Core.nFleets
                         Dim fleet As cFleetInput = Me.Core.FleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
-                            sw.Write("{0},{1}", group.Index, cStringUtils.ToCSVField(group.Name))
-                            sw.Write("{0},{1}", fleet.Index, cStringUtils.ToCSVField(fleet.Name))
+                            sw.Write("{0},{1}", iGroup, iFleet)
                             Select Case par
                                 Case eMCParams.Landings
                                     sw.WriteLine(",{0},{1},{2}", Me.MC.CVparLanding(iFleet, iGroup), Me.MC.ParLimitLanding(0, iFleet, iGroup), Me.MC.ParLimitLanding(1, iFleet, iGroup))
@@ -236,16 +239,15 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 Next iGroup
 
             Case eMCParams.Diets
-                sw.WriteLine("#Pred,Pred,{0}_multiplier", par.ToString)
+                sw.WriteLine("predator,{0}_multiplier", par.ToString.ToLower)
                 For iGroup As Integer = 1 To Core.nGroups
-                    sw.Write("{0},{1}", iGroup, cStringUtils.ToCSVField(Core.EcoPathGroupInputs(iGroup).Name))
-                    sw.WriteLine(",{0}", Me.MC.CVpar(par, iGroup))
+                    sw.Write("{0},{1}", iGroup, Me.MC.CVpar(par, iGroup))
                 Next
 
             Case Else
-                sw.WriteLine("#Group,Group,{0}_cv,{0}_lower,{0}_upper", par.ToString)
+                sw.WriteLine("group,{0}_cv,{0}_lower,{0}_upper", par.ToString.ToLower)
                 For iGroup As Integer = 1 To Core.nGroups
-                    sw.Write("{0},{1}", iGroup, cStringUtils.ToCSVField(Core.EcoPathGroupInputs(iGroup).Name))
+                    sw.Write("{0}", iGroup)
                     sw.WriteLine(",{0},{1},{2}", Me.MC.CVpar(par, iGroup), Me.MC.ParLimit(0, par, iGroup), Me.MC.ParLimit(1, par, iGroup))
                 Next
         End Select
@@ -256,14 +258,13 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         Select Case par
             Case eMCParams.Landings, eMCParams.Discards
-                sw.WriteLine("#Group,Group,#Fleet,Fleet,{0}", par.ToString)
+                sw.WriteLine("group,fleet,{0}", par.ToString.ToLower)
                 For iGroup As Integer = 1 To Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     For iFleet As Integer = 1 To Core.nFleets
                         Dim fleet As cFleetInput = Me.Core.FleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
-                            sw.Write("{0},{1}", group.Index, cStringUtils.ToCSVField(group.Name))
-                            sw.Write("{0},{1}", fleet.Index, cStringUtils.ToCSVField(fleet.Name))
+                            sw.Write("{0},{1}", group.Index, fleet.Index, cStringUtils.ToCSVField(fleet.Name))
                             Select Case par
                                 Case eMCParams.Landings
                                     sw.WriteLine(",{0}", cStringUtils.ToCSVField(Me.Core.m_EcoPathData.Landing(iFleet, iGroup)))
@@ -275,14 +276,14 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 Next iGroup
 
             Case eMCParams.Diets
-                sw.Write("#Pred,Pred")
+                sw.Write("predator")
                 For iPrey As Integer = 1 To Me.Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPrey)
                     sw.Write("," & group.Index)
                 Next
                 sw.WriteLine()
                 For iPred As Integer = 1 To Core.nGroups
-                    sw.Write("{0},{1}", iPred, cStringUtils.ToCSVField(Core.EcoPathGroupInputs(iPred).Name))
+                    sw.Write("{0}", iPred)
                     For iPrey As Integer = 1 To Me.Core.nGroups
                         sw.Write(",{0}", cStringUtils.ToCSVField(Me.m_core.m_EcoPathData.DC(iPred, iPrey)))
                     Next
@@ -290,10 +291,10 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 Next
 
             Case Else
-                sw.WriteLine("#Group,Group,{0}", par.ToString)
+                sw.WriteLine("group,{0}", par.ToString)
                 For iGroup As Integer = 1 To Core.nGroups
                     Dim group As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
-                    sw.Write("{0},{1}", iGroup, cStringUtils.ToCSVField(Core.EcoPathGroupInputs(iGroup).Name))
+                    sw.Write("{0}", iGroup)
                     Dim val As Single = 0
                     Select Case par
                         Case eMCParams.Biomass : val = Me.Core.m_EcoPathData.B(iGroup)
@@ -302,7 +303,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                         Case eMCParams.QB : val = Me.Core.m_EcoPathData.QB(iGroup)
                         Case eMCParams.EE : val = Me.Core.m_EcoPathData.EE(iGroup)
                         Case Else
-                            Debug.Assert(False)
+                            Debug.Assert(False, "Yo! Variable not supported yet!")
                     End Select
                     sw.WriteLine(",{0}", cStringUtils.ToCSVField(val))
                 Next

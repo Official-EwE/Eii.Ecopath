@@ -245,6 +245,11 @@ Namespace Ecosim
                 Me.UpdateUI(var)
             Next
 
+            For i As Integer = 1 To Me.m_mcmanager.nResultWriters
+                Me.m_cmbSaveFormat.Items.Add(Me.m_mcmanager.ResultWriter(i))
+                If (i = Me.m_mcmanager.iActiveResultWriter) Then Me.m_cmbSaveFormat.SelectedIndex = (i - 1)
+            Next
+
             Me.m_bInUpdate = False
 
             Me.UpdateControls()
@@ -317,6 +322,24 @@ Namespace Ecosim
 #End Region ' Form overrides
 
 #Region " Events "
+
+        Private Sub OnSaveFormatSelected(sender As Object, e As EventArgs) _
+            Handles m_cmbSaveFormat.SelectedIndexChanged
+            Try
+                Me.m_mcmanager.iActiveResultWriter = Me.m_cmbSaveFormat.SelectedIndex + 1
+            Catch ex As Exception
+            End Try
+        End Sub
+
+
+        Private Sub m_cmbSaveFormat_Format(sender As Object, e As ListControlConvertEventArgs) _
+            Handles m_cmbSaveFormat.Format
+            Try
+                e.Value = DirectCast(e.ListItem, IMonteCarloResultsWriter).DisplayName
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
         Private Sub OnStop(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_btnStop.Click
@@ -897,6 +920,7 @@ Namespace Ecosim
             Me.m_nudNumTrials.Enabled = Not bIsBusy
             Me.m_btnTS.Enabled = Not bIsBusy
             Me.m_cbSave.Enabled = Not bIsBusy
+            Me.m_cmbSaveFormat.Enabled = Not bIsBusy
             Me.m_cbSRA.Enabled = Not bIsBusy
 
             Me.m_fpFMratio.Style = cSystemUtils.IIF(Me.m_mcmanager.IncludeFpenalty, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
