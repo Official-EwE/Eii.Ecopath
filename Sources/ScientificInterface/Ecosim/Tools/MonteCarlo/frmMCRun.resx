@@ -163,7 +163,7 @@
     <value>81, 25</value>
   </data>
   <data name="m_btnRunTrials.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_btnRunTrials.Text" xml:space="preserve">
     <value>&amp;Run trials</value>
@@ -193,7 +193,7 @@
     <value>81, 25</value>
   </data>
   <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_btnStop.Text" xml:space="preserve">
     <value>&amp;Stop</value>
@@ -1576,7 +1576,7 @@
     <value>599, 336</value>
   </data>
   <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_tcMain.Name" xml:space="preserve">
     <value>m_tcMain</value>
@@ -1792,7 +1792,7 @@
     <value>100, 25</value>
   </data>
   <data name="m_btnApply.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_btnApply.Text" xml:space="preserve">
     <value>&amp;Apply best fits</value>
@@ -2134,7 +2134,7 @@
     <value>309, 18</value>
   </data>
   <data name="m_hdrOutputParam.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_hdrOutputParam.Text" xml:space="preserve">
     <value>Output</value>
@@ -2173,7 +2173,7 @@
     <value>306, 46</value>
   </data>
   <data name="m_tlpOutputs.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_tlpOutputs.Name" xml:space="preserve">
     <value>m_tlpOutputs</value>
@@ -2197,7 +2197,7 @@
     <value>161, 21</value>
   </data>
   <data name="m_cmbSaveFormat.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_cmbSaveFormat.Name" xml:space="preserve">
     <value>m_cmbSaveFormat</value>

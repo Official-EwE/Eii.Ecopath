@@ -93,14 +93,13 @@ Public Class cMonteCarloManager
             m_mc.Init()
 
             m_ResultsWriters.Clear()
-
             m_ResultsWriters.Add(New cMonteCarloResultsWriterOneFile(Me.m_mc, Me.m_core))
             m_ResultsWriters.Add(New cMonteCarloResultsWriterMultipleFiles(Me.m_mc, Me.m_core))
 
             ' Plug-in manager provided?
-            If (theCore.PluginManager IsNot Nothing) Then
+            If (m_core.PluginManager IsNot Nothing) Then
                 ' #Yes: see if a plug-in based writer supports the requested format
-                For Each ip As IMonteCarloResultWriterPlugin In theCore.PluginManager.GetPlugins(GetType(IMonteCarloResultWriterPlugin))
+                For Each ip As IMonteCarloResultWriterPlugin In m_core.PluginManager.GetPlugins(GetType(IMonteCarloResultWriterPlugin))
                     m_ResultsWriters.Add(ip)
                 Next
             End If
@@ -181,17 +180,12 @@ Public Class cMonteCarloManager
         Return Nothing
     End Function
 
-    Public Property iActiveResultWriter As Integer
+    Public Property ActiveResultWriter As IMonteCarloResultsWriter
         Get
-            If (Me.m_mc.ResultWriter Is Nothing) Then Return 0
-            For i As Integer = 1 To Me.nResultWriters
-                If (Me.m_mc.ResultWriter.GetType() Is Me.ResultWriter(i).GetType()) Then
-                    Return i
-                End If
-            Next
+            Return Me.m_mc.ResultWriter
         End Get
-        Set(value As Integer)
-            Me.m_mc.ResultWriter = Me.ResultWriter(value)
+        Set(value As IMonteCarloResultsWriter)
+            Me.m_mc.ResultWriter = value
         End Set
     End Property
 
