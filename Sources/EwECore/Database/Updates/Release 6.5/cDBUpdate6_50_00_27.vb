@@ -162,7 +162,8 @@ Friend Class cDBUpdate6_50_00_27
 
         Dim bSuccess As Boolean = True
         For Each str As String In New String() {"SalOpt", "SdSalLeft", "SdSalRight", "TempOpt", "TempLeft", "TempRight"}
-            bSuccess = bSuccess And db.Execute("ALTER TABLE EcoSimScenarioGroup DROP COLUMN " & str)
+            ' non-critical field removal
+            db.Execute("ALTER TABLE EcoSimScenarioGroup DROP COLUMN " & str)
         Next
         For Each str As String In New String() {"SalinityForcingShapeID", "TemperatureForcingShapeID"}
             Dim strIndex As String = db.GetIndexName("EcosimScenario", str)
