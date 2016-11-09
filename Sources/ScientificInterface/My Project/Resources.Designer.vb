@@ -1833,7 +1833,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to .
+        '''  Looks up a localized string similar to All MPAs enforced.
         '''</summary>
         Public ReadOnly Property HEADER_ALL_REGULATIONS_APPLY() As String
             Get
