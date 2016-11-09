@@ -13101,4 +13101,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="VALUE_REGION_UNDEFINED" xml:space="preserve">
     <value>(Undefined region)</value>
   </data>
+  <data name="HEADER_ALL_REGULATIONS_APPLY" xml:space="preserve">
+    <value />
+  </data>
 </root>
