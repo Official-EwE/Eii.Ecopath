@@ -80,23 +80,17 @@ Namespace Ecospace
 
         Protected Overrides Sub InitStyle()
 
-            'Call base class InitStyle method. 
             MyBase.InitStyle()
-
-            ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            'Define grid dimensions
             Me.Redim(1, 2 + Me.Core.nHabitats)
-
-            'Set header cells #(0,0)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.AllHabitats) = New EwEColumnHeaderCell(My.Resources.HEADER_FISH_EVERYWHERE)
 
-            'Dynamic column header - Habitats
-            For j As Integer = 0 To Me.Core.nHabitats - 1
+            For j As Integer = 1 To Me.Core.nHabitats - 1
                 source = Me.Core.EcospaceHabitats(j)
                 Me(0, eColumnTypes.AllHabitats + j) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next

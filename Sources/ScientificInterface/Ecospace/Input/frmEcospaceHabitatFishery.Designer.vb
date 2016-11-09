@@ -29,8 +29,8 @@
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnDefineHabitats = New System.Windows.Forms.ToolStripButton()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_grid = New ScientificInterface.Ecospace.gridEcospaceHabitatFishery()
             Me.m_lblInfo = New System.Windows.Forms.Label()
-            Me.m_grid = New ScientificInterface.Ecospace.gridEcospaceMPAEnforcement()
             Me.m_tsMain.SuspendLayout()
             Me.m_tlpContent.SuspendLayout()
             Me.SuspendLayout()
@@ -68,11 +68,6 @@
             Me.m_tlpContent.Controls.Add(Me.m_lblInfo, 0, 1)
             Me.m_tlpContent.Name = "m_tlpContent"
             '
-            'm_lblInfo
-            '
-            resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
-            Me.m_lblInfo.Name = "m_lblInfo"
-            '
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
@@ -105,6 +100,11 @@
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
+            'm_lblInfo
+            '
+            resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
+            Me.m_lblInfo.Name = "m_lblInfo"
+            '
             'frmEcospaceHabitatFishery
             '
             resources.ApplyResources(Me, "$this")
@@ -126,7 +126,7 @@
         Private WithEvents m_tlpContent As TableLayoutPanel
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_lblInfo As Label
-        Private WithEvents m_grid As gridEcospaceMPAEnforcement
+        Private WithEvents m_grid As gridEcospaceHabitatFishery
         Private WithEvents m_tsbnQuickHelp As ToolStripButton
         Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     End Class

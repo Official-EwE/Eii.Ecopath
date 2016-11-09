@@ -88,8 +88,8 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff31507\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi31507\deflang3082\deflangfe3082\themelang3082\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset1\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 020b0503020204020204}Microsoft YaHe [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang3082\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 00000000000000000000}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property acknowledgements() As String
             Get
@@ -1829,6 +1829,15 @@ Namespace My.Resources
         Public ReadOnly Property HABITAT_DELETE_CONFIRMATION() As String
             Get
                 Return ResourceManager.GetString("HABITAT_DELETE_CONFIRMATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Public ReadOnly Property HEADER_ALL_REGULATIONS_APPLY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ALL_REGULATIONS_APPLY", resourceCulture)
             End Get
         End Property
         
@@ -4248,16 +4257,8 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang4105\deflangfe4105{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
-        '''{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\qc\b\f0\fs18 \par
-        '''Programming:\b0 \par
-        '''Joe Buszowski, Villy Christensen, Sherman Lai, Jeroen Steenbeek, Carl Walters, Will Walters.\par
-        '''\par
-        '''\b Documentation:\b0 \par
-        '''Villy Christensen, Daniel Pauly, Robyn Forrest, Audrey Valls, Carl Walters.\par
-        '''\par
-        '''\b Testing:\b0 \par
-        '''Cathy Bulman, Marta Coll, Sylvie Guenette, Sheila Heymans, Carie Hoover,  [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff31507\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi31507\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Time [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property team() As String
             Get

@@ -46,6 +46,7 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
+            All
             FirstMPA
         End Enum
 
@@ -81,20 +82,16 @@ Namespace Ecospace
 
         Protected Overrides Sub InitStyle()
 
-            'Call base class InitStyle method. 
             MyBase.InitStyle()
 
-            ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            'Define grid dimensions
             Me.Redim(1 + Core.nFleets, 3 + Me.Core.nMPAs)
-
-            'Set header cells #(0,0)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.All) = New EwEColumnHeaderCell(My.Resources.HEADER_ALL_REGULATIONS_APPLY)
 
             For i As Integer = 1 To Me.Core.nFleets
                 source = Me.Core.FleetInputs(i)
@@ -119,11 +116,17 @@ Namespace Ecospace
                 Dim source As cEcospaceFleet = Me.Core.EcospaceFleets(i)
 
                 If (bEnable) Then
+                    Me(i, eColumnTypes.All) = New Cells.Real.CheckBox(False)
+                    Me(i, eColumnTypes.All).Behaviors.Add(Me.EwEEditHandler)
+
                     For iMPA As Integer = 1 To Me.Core.nMPAs
                         Me(i, eColumnTypes.FirstMPA + iMPA - 1) = New Cells.Real.CheckBox(Not CBool(source.MPAFishery(iMPA)))
                         Me(i, eColumnTypes.FirstMPA + iMPA - 1).Behaviors.Add(Me.EwEEditHandler)
                     Next
+
+                    Me.UpdateRow(i)
                 Else
+                    Me(i, eColumnTypes.All) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     For iMPA As Integer = 1 To Me.Core.nMPAs
                         Me(i, eColumnTypes.FirstMPA + iMPA - 1) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     Next
@@ -142,8 +145,21 @@ Namespace Ecospace
         Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
             Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(p.Row)
-            Dim iMPA As Integer = p.Column - eColumnTypes.FirstMPA + 1
-            fleet.MPAFishery(iMPA) = Not CBool(cell.GetValue(p))
+
+            Select Case p.Column
+
+                Case eColumnTypes.All
+                    For iMPA As Integer = 1 To Me.Core.nMPAs
+                        fleet.MPAFishery(iMPA) = (CBool(cell.GetValue(p)) = False)
+                    Next
+
+                Case Else
+                    Dim iMPA As Integer = p.Column - eColumnTypes.FirstMPA + 1
+                    fleet.MPAFishery(iMPA) = (CBool(cell.GetValue(p)) = False)
+
+            End Select
+
+            Me.UpdateRow(p.Row)
 
         End Function
 
@@ -164,6 +180,29 @@ Namespace Ecospace
 
 #End Region ' Event handlers
 
+#Region " Internals "
+
+        Private Sub UpdateRow(iRow As Integer)
+
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
+
+            Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(iRow)
+            Dim bAllRestricted As Boolean = True
+
+            For iMPA As Integer = 1 To Me.Core.nMPAs
+                Dim bRestricted As Boolean = (fleet.MPAFishery(iMPA) = False)
+                Me(iRow, eColumnTypes.FirstMPA + iMPA - 1).Value = bRestricted
+                bAllRestricted = bAllRestricted And bRestricted
+            Next
+
+            Me(iRow, eColumnTypes.All).Value = bAllRestricted
+
+            Me.m_bInUpdate = False
+
+        End Sub
+
+#End Region ' Internals
     End Class
 
 End Namespace
