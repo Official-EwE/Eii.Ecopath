@@ -13102,6 +13102,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>(Undefined region)</value>
   </data>
   <data name="HEADER_ALL_REGULATIONS_APPLY" xml:space="preserve">
-    <value />
+    <value>All MPAs enforced</value>
   </data>
 </root>
