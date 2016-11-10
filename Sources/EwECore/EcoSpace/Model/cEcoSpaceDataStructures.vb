@@ -419,8 +419,9 @@ Public Class cEcospaceDataStructures
     ''' <summary>Number of MPAs</summary>
     Public MPAno As Integer
     Public MPAname() As String
-    ''' <summary>MPA open/closed state (Month, nMPA), true when open for fishing.</summary>
+    ''' <summary>MPA monthly open/closed state (Month x MPA), true when open for fishing.</summary>
     Public MPAmonth(,) As Boolean
+    ''' <summary>MPA enforcement (fleet x MPA), true if an MPA is open to fishing for a given fleet</summary>
     Public MPAfishery(,) As Boolean
 
     ''' <summary>Fleet/Gear cell access (fleet, row, col).</summary>
