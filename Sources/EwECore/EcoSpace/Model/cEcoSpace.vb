@@ -4153,20 +4153,15 @@ exitline:
                     Dim bFished As Boolean = False
                     ' Is this is a fished water cell?
                     If (Me.m_Data.Depth(i, j) > 0) And (Me.m_Data.PAreaFished(ig)(i, j) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
-                        'Ok it is potentialy fished 
-                        'Is this cell in an MPA
+                        '#Yes: Cell is potentialy fished 
+                        ' If this cell is closed to fishing for this fleet and month by any of the MPAs, then do not allow fishing here 
                         bFished = True
-                        For impa As Integer = 1 To Me.m_Data.MPAno
-                            'If for any reason this cell is closed to fishing for this fleet by any of the MPA's
-                            'Set this cell to isFished = False for this fleet
-
-                            Dim iCellMPA As Integer = Me.m_Data.MPA(impa)(i, j)
-                            'does this cell have an MPA
-                            'Me.m_Data.MPAfishery(ig, iCellMPA) = True if this fleet can fish in the MPA
-                            'Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iCellMPA) = True  if the MPA is open in this month
-                            If (iCellMPA <> 0) And (Not Me.m_Data.MPAfishery(ig, iCellMPA)) And (Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iCellMPA)) Then
-                                'This cell contains an MPA that is fished by this fleet in this month
-                                'So it's closed to fishing for this fleet
+                        For iMPA As Integer = 1 To Me.m_Data.MPAno
+                            ' Is this MPA active in this cell?
+                            '   - Me.m_Data.MPAfishery(ig, iMPA) = True if this fleet can fish in the MPA
+                            '   - Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iCellMPA) = True if the MPA is open for fishing (e.g., is NOT enforced) in this month
+                            If (Me.m_Data.MPA(iMPA)(i, j) > 0) And (Not Me.m_Data.MPAfishery(ig, iMPA)) And (Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iMPA)) Then
+                                ' #Yes: This MPA prohibits this fleet from fishing in this cell for this month
                                 bFished = False
                                 Exit For
                             End If
