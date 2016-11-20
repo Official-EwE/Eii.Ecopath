@@ -67,13 +67,15 @@ Public Class dlgMergeGroups
     Private Sub OnFormatGroupItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_cmbTarget.Format, m_clbGroups.Format
 
-        If Me.IsDisposed Then Return
-
         Try
             Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem)
+            Dim grp As cCoreGroupBase = DirectCast(e.ListItem, cCoreGroupBase)
+
+            If (Not grp.Disposed) Then
+                e.Value = fmt.GetDescriptor(e.ListItem)
+            End If
         Catch ex As Exception
-            ' Eat up
+            ' mmm
         End Try
 
     End Sub
