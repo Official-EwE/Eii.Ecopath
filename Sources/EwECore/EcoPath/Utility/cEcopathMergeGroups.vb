@@ -138,7 +138,7 @@ Public Class cEcopathMergeGroups
             If ecopathds.StanzaGroup(iGroup) Then
 
                 Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
-                Dim iStanza As Integer = stanzads.BaseStanza(iGroup)
+                Dim iStanza As Integer = stanzads.SpeciesCode(iGroup, 0)
 
                 ' Find stanza for this group
                 For isp As Integer = 1 To stanzads.Nsplit 'No. of split group

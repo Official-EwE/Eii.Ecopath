@@ -127,6 +127,7 @@ Public Class cStanzaDatastructures
 
     ''' <summary>Egg production shape is seasonal.</summary>
     Public EggProdIsSeasonal() As Boolean
+
     ''' <summary></summary>
     ''' <remarks>
     ''' <list type="bullet">
@@ -135,7 +136,7 @@ Public Class cStanzaDatastructures
     ''' <item>2: Ecopath no for leading QB stanza.</item>
     ''' </list>
     ''' </remarks>
-    Public SpeciesCode(,) As Single
+    Public SpeciesCode(,) As Integer
 
 #Region " Private data "
 
