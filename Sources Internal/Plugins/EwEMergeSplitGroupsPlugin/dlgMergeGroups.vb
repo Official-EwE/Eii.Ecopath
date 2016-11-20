@@ -23,6 +23,8 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
@@ -100,7 +102,6 @@ Public Class dlgMergeGroups
 
     End Sub
 
-
     Private Sub OnNameChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tbxNewName.TextChanged
 
@@ -119,13 +120,12 @@ Public Class dlgMergeGroups
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOK.Click
 
-        If (Not Me.m_engine.Merge(Me.SelectedGroups(), Me.m_tbxNewName.Text)) Then
-            ' ToDo: some kind of message
-            Return
+        If (Me.m_engine.Merge(Me.SelectedGroups(), Me.m_tbxNewName.Text)) Then
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
+        Else
+            ' Throw some kind of error...
         End If
-
-        Me.DialogResult = Windows.Forms.DialogResult.OK
-        Me.Close()
 
     End Sub
 
@@ -134,6 +134,13 @@ Public Class dlgMergeGroups
 
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
+
+    End Sub
+
+    Private Sub OnClickGeomar(sender As Object, e As EventArgs) _
+        Handles m_pbLogo.Click
+
+        Me.OpenLink("http://www.geomar.de")
 
     End Sub
 
@@ -173,6 +180,25 @@ Public Class dlgMergeGroups
 
         Me.m_clbGroups.Enabled = (iTarget > 0)
         Me.m_btnOK.Enabled = bCanMerge
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Open an external link.
+    ''' </summary>
+    ''' <param name="strURL">The link to navigate to.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub OpenLink(strURL As String)
+
+        Try
+            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            If (cmd IsNot Nothing) Then
+                cmd.Invoke(strURL)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "dlgMergeGroups::NavigateTo(" & strURL & ")")
+        End Try
 
     End Sub
 

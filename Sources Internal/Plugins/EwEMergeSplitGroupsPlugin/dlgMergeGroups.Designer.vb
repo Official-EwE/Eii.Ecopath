@@ -52,6 +52,11 @@ Partial Class dlgMergeGroups
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_clbGroups = New System.Windows.Forms.CheckedListBox()
+        Me.m_tlpLogo = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbLogo = New System.Windows.Forms.PictureBox()
+        Me.m_hdrSponsor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tlpLogo.SuspendLayout()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblAgg1
@@ -101,12 +106,36 @@ Partial Class dlgMergeGroups
         Me.m_clbGroups.FormattingEnabled = True
         Me.m_clbGroups.Name = "m_clbGroups"
         '
+        'm_tlpLogo
+        '
+        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
+        Me.m_tlpLogo.BackColor = System.Drawing.Color.White
+        Me.m_tlpLogo.Controls.Add(Me.m_pbLogo, 1, 1)
+        Me.m_tlpLogo.Name = "m_tlpLogo"
+        '
+        'm_pbLogo
+        '
+        Me.m_pbLogo.BackgroundImage = Global.EwEMergeSplitGroupsPlugin.My.Resources.Resources.geomar_logo_en_print
+        resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
+        Me.m_pbLogo.Name = "m_pbLogo"
+        Me.m_pbLogo.TabStop = False
+        '
+        'm_hdrSponsor
+        '
+        resources.ApplyResources(Me.m_hdrSponsor, "m_hdrSponsor")
+        Me.m_hdrSponsor.CanCollapseParent = False
+        Me.m_hdrSponsor.CollapsedParentHeight = 0
+        Me.m_hdrSponsor.IsCollapsed = False
+        Me.m_hdrSponsor.Name = "m_hdrSponsor"
+        '
         'dlgMergeGroups
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_hdrSponsor)
+        Me.Controls.Add(Me.m_tlpLogo)
         Me.Controls.Add(Me.m_clbGroups)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
@@ -118,6 +147,8 @@ Partial Class dlgMergeGroups
         Me.Name = "dlgMergeGroups"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
+        Me.m_tlpLogo.ResumeLayout(False)
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -131,4 +162,7 @@ Partial Class dlgMergeGroups
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_clbGroups As Windows.Forms.CheckedListBox
+    Private WithEvents m_tlpLogo As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbLogo As Windows.Forms.PictureBox
+    Private WithEvents m_hdrSponsor As cEwEHeaderLabel
 End Class
