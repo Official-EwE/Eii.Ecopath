@@ -29,7 +29,7 @@ Public Class cTaxonDataStructures
     Public NumTaxon As Integer = 0
     ''' <summary>Taxonomy code DBID (xNumTaxa).</summary>
     Public TaxonDBID() As Integer
-    ''' <summary>Taxon assignments (xNumTaxa) -> iGroup / iStanza</summary>
+    ''' <summary>Taxon assignments (xNumTaxa) -> <see cref="IsTaxonStanza">iGroup / iStanza</see></summary>
     ''' <remarks>This number should be interpreted as a group index if
     ''' <see cref="IsTaxonStanza">IsTaxonStanza(i)</see> is set to False,
     ''' or denotes a stanza index otherwise.</remarks>

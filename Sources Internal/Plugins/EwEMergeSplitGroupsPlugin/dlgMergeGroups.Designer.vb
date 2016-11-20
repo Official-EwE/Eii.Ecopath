@@ -44,13 +44,13 @@ Partial Class dlgMergeGroups
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.m_lblAgg1 = New System.Windows.Forms.Label()
-        Me.m_cmbGroup1 = New System.Windows.Forms.ComboBox()
+        Me.m_cmbTarget = New System.Windows.Forms.ComboBox()
         Me.m_lblAgg2 = New System.Windows.Forms.Label()
-        Me.m_cmbGroup2 = New System.Windows.Forms.ComboBox()
         Me.m_lblNew = New System.Windows.Forms.Label()
         Me.m_tbxNewName = New System.Windows.Forms.TextBox()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_clbGroups = New System.Windows.Forms.CheckedListBox()
         Me.SuspendLayout()
         '
         'm_lblAgg1
@@ -58,45 +58,35 @@ Partial Class dlgMergeGroups
         Me.m_lblAgg1.AutoSize = True
         Me.m_lblAgg1.Location = New System.Drawing.Point(12, 15)
         Me.m_lblAgg1.Name = "m_lblAgg1"
-        Me.m_lblAgg1.Size = New System.Drawing.Size(48, 13)
+        Me.m_lblAgg1.Size = New System.Drawing.Size(41, 13)
         Me.m_lblAgg1.TabIndex = 0
-        Me.m_lblAgg1.Text = "Group &1:"
+        Me.m_lblAgg1.Text = "&Target:"
         '
-        'm_cmbGroup1
+        'm_cmbTarget
         '
-        Me.m_cmbGroup1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_cmbTarget.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_cmbGroup1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbGroup1.FormattingEnabled = True
-        Me.m_cmbGroup1.Location = New System.Drawing.Point(80, 12)
-        Me.m_cmbGroup1.Name = "m_cmbGroup1"
-        Me.m_cmbGroup1.Size = New System.Drawing.Size(261, 21)
-        Me.m_cmbGroup1.TabIndex = 1
+        Me.m_cmbTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbTarget.FormattingEnabled = True
+        Me.m_cmbTarget.Location = New System.Drawing.Point(80, 12)
+        Me.m_cmbTarget.Name = "m_cmbTarget"
+        Me.m_cmbTarget.Size = New System.Drawing.Size(290, 21)
+        Me.m_cmbTarget.TabIndex = 1
         '
         'm_lblAgg2
         '
         Me.m_lblAgg2.AutoSize = True
         Me.m_lblAgg2.Location = New System.Drawing.Point(12, 42)
         Me.m_lblAgg2.Name = "m_lblAgg2"
-        Me.m_lblAgg2.Size = New System.Drawing.Size(48, 13)
+        Me.m_lblAgg2.Size = New System.Drawing.Size(44, 13)
         Me.m_lblAgg2.TabIndex = 0
-        Me.m_lblAgg2.Text = "Group &2:"
-        '
-        'm_cmbGroup2
-        '
-        Me.m_cmbGroup2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_cmbGroup2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbGroup2.FormattingEnabled = True
-        Me.m_cmbGroup2.Location = New System.Drawing.Point(80, 39)
-        Me.m_cmbGroup2.Name = "m_cmbGroup2"
-        Me.m_cmbGroup2.Size = New System.Drawing.Size(261, 21)
-        Me.m_cmbGroup2.TabIndex = 1
+        Me.m_lblAgg2.Text = "&Groups:"
         '
         'm_lblNew
         '
+        Me.m_lblNew.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.m_lblNew.AutoSize = True
-        Me.m_lblNew.Location = New System.Drawing.Point(12, 69)
+        Me.m_lblNew.Location = New System.Drawing.Point(12, 204)
         Me.m_lblNew.Name = "m_lblNew"
         Me.m_lblNew.Size = New System.Drawing.Size(61, 13)
         Me.m_lblNew.TabIndex = 0
@@ -104,17 +94,17 @@ Partial Class dlgMergeGroups
         '
         'm_tbxNewName
         '
-        Me.m_tbxNewName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_tbxNewName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxNewName.Location = New System.Drawing.Point(80, 66)
+        Me.m_tbxNewName.Location = New System.Drawing.Point(80, 201)
         Me.m_tbxNewName.Name = "m_tbxNewName"
-        Me.m_tbxNewName.Size = New System.Drawing.Size(261, 20)
+        Me.m_tbxNewName.Size = New System.Drawing.Size(290, 20)
         Me.m_tbxNewName.TabIndex = 2
         '
         'm_btnOK
         '
         Me.m_btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnOK.Location = New System.Drawing.Point(185, 94)
+        Me.m_btnOK.Location = New System.Drawing.Point(214, 227)
         Me.m_btnOK.Name = "m_btnOK"
         Me.m_btnOK.Size = New System.Drawing.Size(75, 23)
         Me.m_btnOK.TabIndex = 3
@@ -125,27 +115,40 @@ Partial Class dlgMergeGroups
         '
         Me.m_btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.m_btnCancel.Location = New System.Drawing.Point(266, 94)
+        Me.m_btnCancel.Location = New System.Drawing.Point(295, 227)
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.m_btnCancel.TabIndex = 4
         Me.m_btnCancel.Text = "Cancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
+        'm_clbGroups
+        '
+        Me.m_clbGroups.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_clbGroups.CheckOnClick = True
+        Me.m_clbGroups.FormattingEnabled = True
+        Me.m_clbGroups.IntegralHeight = False
+        Me.m_clbGroups.Location = New System.Drawing.Point(80, 42)
+        Me.m_clbGroups.Name = "m_clbGroups"
+        Me.m_clbGroups.Size = New System.Drawing.Size(290, 153)
+        Me.m_clbGroups.TabIndex = 5
+        '
         'dlgMergeGroups
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
-        Me.ClientSize = New System.Drawing.Size(353, 126)
+        Me.ClientSize = New System.Drawing.Size(382, 259)
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_clbGroups)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_tbxNewName)
-        Me.Controls.Add(Me.m_cmbGroup2)
         Me.Controls.Add(Me.m_lblNew)
         Me.Controls.Add(Me.m_lblAgg2)
-        Me.Controls.Add(Me.m_cmbGroup1)
+        Me.Controls.Add(Me.m_cmbTarget)
         Me.Controls.Add(Me.m_lblAgg1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "dlgMergeGroups"
@@ -159,12 +162,11 @@ Partial Class dlgMergeGroups
     End Sub
 
     Private WithEvents m_lblAgg1 As System.Windows.Forms.Label
-    Private WithEvents m_cmbGroup1 As System.Windows.Forms.ComboBox
+    Private WithEvents m_cmbTarget As System.Windows.Forms.ComboBox
     Private WithEvents m_lblAgg2 As System.Windows.Forms.Label
-    Private WithEvents m_cmbGroup2 As System.Windows.Forms.ComboBox
     Private WithEvents m_lblNew As System.Windows.Forms.Label
     Private WithEvents m_tbxNewName As System.Windows.Forms.TextBox
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
-
+    Private WithEvents m_clbGroups As Windows.Forms.CheckedListBox
 End Class

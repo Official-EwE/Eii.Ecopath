@@ -371,7 +371,7 @@ Public MustInherit Class cShapeData
 
     Public Function GetID() As String _
         Implements ICoreInterface.GetID
-        Return cValueID.getDataTypeID(m_datatype, Me.DBID)
+        Return cValueID.GetDataTypeID(m_datatype, Me.DBID)
     End Function
 
     Public ReadOnly Property DataType() As eDataTypes _

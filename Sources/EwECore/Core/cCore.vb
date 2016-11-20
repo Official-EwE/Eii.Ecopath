@@ -12798,6 +12798,29 @@ Public Class cCore
 
     End Property
 
+    ''' <summary>
+    ''' Get all auxillary data that related to a given object.
+    ''' </summary>
+    ''' <param name="dt"></param>
+    ''' <param name="iDBID"></param>
+    ''' <param name="bIncldueReferrals"></param>
+    ''' <returns></returns>
+    Public ReadOnly Property AuxillaryData(dt As eDataTypes, iDBID As Integer, Optional ByVal bIncldueReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
+        Get
+            Dim dic As New Dictionary(Of String, cAuxiliaryData)
+            For Each strKey As String In Me.m_dtAuxiliaryData.Keys
+                Dim vid As cValueID = cValueID.FromString(strKey)
+                If vid.DataTypePrim = dt And vid.DBIDPrim = iDBID Then
+                    dic(strKey) = Me.m_dtAuxiliaryData(strKey)
+                End If
+                If bIncldueReferrals And vid.DataTypeSec = dt And vid.DBIDSec = iDBID Then
+                    dic(strKey) = Me.m_dtAuxiliaryData(strKey)
+                End If
+            Next
+            Return dic
+        End Get
+    End Property
+
 #Region " Pedigree "
 
     Private Function InitPedigreeManagers() As Boolean

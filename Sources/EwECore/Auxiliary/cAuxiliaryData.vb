@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
 Imports System.Xml
 Imports EwEUtils.SystemUtilities
+Imports System.Text
 
 #End Region ' Imports
 
@@ -203,8 +204,8 @@ Namespace Auxiliary
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property IsEmpty() As Boolean
             Get
-                Return String.IsNullOrWhiteSpace(Me.Remark) And _
-                       (Me.m_visualstyle Is Nothing) And _
+                Return String.IsNullOrWhiteSpace(Me.Remark) And
+                       (Me.m_visualstyle Is Nothing) And
                        String.IsNullOrWhiteSpace(Me.Settings.ToString())
             End Get
         End Property
@@ -226,6 +227,8 @@ Namespace Auxiliary
         End Sub
 
 #End Region ' Public properties
+
+#Region " ICoreComponent implementation "
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
@@ -306,6 +309,32 @@ Namespace Auxiliary
 
             End Try
         End Sub
+
+#End Region ' ICoreComponent implementation
+
+#Region " Utility "
+
+        Public Sub MergeWith(data As cAuxiliaryData)
+
+            ' Sanity check
+            If (data Is Nothing) Then Return
+
+            ' -- Remark --
+            If (String.IsNullOrWhiteSpace(Me.Remark)) Then
+                Me.Remark = data.Remark
+            ElseIf Not String.IsNullOrWhiteSpace(data.Remark) Then
+                Dim sb As New StringBuilder()
+                sb.AppendLine(Me.Remark)
+                sb.Append(data.Remark)
+                Me.Remark = sb.ToString
+            End If
+
+            ' Cannot automatically merge visualstyle
+            ' Cannot automatically merge settings
+
+        End Sub
+
+#End Region ' Utility
 
     End Class
 

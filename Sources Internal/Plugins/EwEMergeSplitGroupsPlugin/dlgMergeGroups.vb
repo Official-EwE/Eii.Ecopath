@@ -49,7 +49,7 @@ Public Class dlgMergeGroups
         Dim core As cCore = Me.m_uic.Core
 
         For i As Integer = 1 To core.nGroups
-            Me.m_cmbGroup1.Items.Add(core.EcoPathGroupInputs(i))
+            Me.m_cmbTarget.Items.Add(core.EcoPathGroupInputs(i))
         Next
 
         Me.UpdateControls()
@@ -65,39 +65,39 @@ Public Class dlgMergeGroups
 #Region " Events "
 
     Private Sub OnFormatGroupItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-        Handles m_cmbGroup1.Format, m_cmbGroup2.Format
+        Handles m_cmbTarget.Format, m_clbGroups.Format
 
-        Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
-        e.Value = fmt.GetDescriptor(e.ListItem)
+        If Me.IsDisposed Then Return
+
+        Try
+            Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
+            e.Value = fmt.GetDescriptor(e.ListItem)
+        Catch ex As Exception
+            ' Eat up
+        End Try
 
     End Sub
 
-    Private Sub OnGroup1Selected(sender As System.Object, e As System.EventArgs) _
-        Handles m_cmbGroup1.SelectedIndexChanged
+    Private Sub OnTargetSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbTarget.SelectedIndexChanged
 
         Dim core As cCore = Me.m_uic.Core
-        Dim grps As Integer() = Me.m_engine.CompatibleGroups(Me.SelectedGroup(Me.m_cmbGroup1))
+        Dim iTarget As Integer = Me.SelectedTarget()
+        Dim grps As Integer() = Me.m_engine.CompatibleGroups(iTarget)
 
-        Me.m_cmbGroup2.Items.Clear()
+        Me.m_clbGroups.Items.Clear()
         For i As Integer = 0 To grps.Count - 1
-            Me.m_cmbGroup2.Items.Add(Me.m_uic.Core.EcoPathGroupInputs(grps(i)))
+            Me.m_clbGroups.Items.Add(Me.m_uic.Core.EcoPathGroupInputs(grps(i)))
         Next
 
-        If (Me.m_cmbGroup2.Items.Count > 0) Then
-            Me.m_cmbGroup2.SelectedIndex = 0
+        If (iTarget > 0) Then
+            Me.m_tbxNewName.Text = Me.m_uic.Core.EcoPathGroupInputs(iTarget).Name
         End If
 
         Me.UpdateControls()
 
     End Sub
 
-    Private Sub OnGroup2Selected(sender As System.Object, e As System.EventArgs) _
-        Handles m_cmbGroup2.SelectedIndexChanged
-
-        Me.m_tbxNewName.Text = Me.m_engine.GroupName(Me.SelectedGroup(Me.m_cmbGroup1), Me.SelectedGroup(Me.m_cmbGroup2))
-        Me.UpdateControls()
-
-    End Sub
 
     Private Sub OnNameChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tbxNewName.TextChanged
@@ -106,10 +106,18 @@ Public Class dlgMergeGroups
 
     End Sub
 
+    Private Sub OnGroupCheck(sender As Object, e As ItemCheckEventArgs) _
+        Handles m_clbGroups.ItemCheck
+
+        ' Lazy update when item check is complete
+        BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+
+    End Sub
+
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOK.Click
 
-        If (Not Me.m_engine.Merge(Me.SelectedGroup(Me.m_cmbGroup1), Me.SelectedGroup(Me.m_cmbGroup2), Me.m_tbxNewName.Text)) Then
+        If (Not Me.m_engine.Merge(Me.SelectedGroups(), Me.m_tbxNewName.Text)) Then
             ' ToDo: some kind of message
             Return
         End If
@@ -131,9 +139,9 @@ Public Class dlgMergeGroups
 
 #Region " Internals "
 
-    Private Function SelectedGroup(cmd As ComboBox) As Integer
+    Private Function SelectedTarget() As Integer
 
-        Dim item As Object = cmd.SelectedItem
+        Dim item As Object = Me.m_cmbTarget.SelectedItem
 
         If (item Is Nothing) Then Return cCore.NULL_VALUE
         If (Not TypeOf (item) Is cCoreGroupBase) Then Return cCore.NULL_VALUE
@@ -141,14 +149,27 @@ Public Class dlgMergeGroups
 
     End Function
 
+    Private Function SelectedGroups() As Integer()
+
+        Dim lgroups As New List(Of Integer)
+        Dim iTarget As Integer = Me.SelectedTarget
+
+        If (iTarget > 0) Then lgroups.Add(iTarget)
+
+        For Each item As Object In Me.m_clbGroups.CheckedItems
+            Dim group As cCoreGroupBase = DirectCast(item, cCoreGroupBase)
+            If Not lgroups.Contains(group.Index) Then lgroups.Add(group.Index)
+        Next
+        Return lgroups.ToArray()
+
+    End Function
+
     Private Sub UpdateControls()
 
-        Dim i1 As Integer = Me.SelectedGroup(Me.m_cmbGroup1)
-        Dim i2 As Integer = Me.SelectedGroup(Me.m_cmbGroup2)
-        Dim strName As String = Me.m_tbxNewName.Text
-        Dim bCanMerge As Boolean = Me.m_engine.CanMergeGroups(i1, i2, strName)
+        Dim iTarget As Integer = Me.SelectedTarget()
+        Dim bCanMerge As Boolean = Me.m_engine.CanMergeGroups(SelectedGroups(), Me.m_tbxNewName.Text) And (iTarget > 0)
 
-        Me.m_cmbGroup2.Enabled = (Me.m_cmbGroup2.Items.Count > 0)
+        Me.m_clbGroups.Enabled = (iTarget > 0)
         Me.m_btnOK.Enabled = bCanMerge
 
     End Sub

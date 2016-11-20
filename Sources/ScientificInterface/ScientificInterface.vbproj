@@ -2063,6 +2063,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
+      <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
+      <Name>EwEMergeSplitGroupsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESampleRecorder\EcoSamplerPlugin.vbproj">
+      <Project>{a0f75147-c78f-4b42-83fe-0f7c73213582}</Project>
+      <Name>EcoSamplerPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
