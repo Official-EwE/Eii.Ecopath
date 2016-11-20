@@ -159,7 +159,7 @@ Public Class cLandingsInteraction
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
     <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides Function GetID() As String
-        Return cValueID.getDataTypeID(Me.DataType, CInt(m_iFleet * 1000 + m_iGroup))
+        Return cValueID.GetDataTypeID(Me.DataType, CInt(m_iFleet * 1000 + m_iGroup))
     End Function
 
 #End Region

@@ -583,7 +583,7 @@ Public Class cEcospaceTimestep
     End Property
 
     Public Function GetID() As String Implements ICoreInterface.GetID
-        Return cValueID.getDataTypeID(Me.DataType, Me.DBID)
+        Return cValueID.GetDataTypeID(Me.DataType, Me.DBID)
     End Function
 
     Public Property Index() As Integer Implements ICoreInterface.Index

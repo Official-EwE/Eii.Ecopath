@@ -383,7 +383,7 @@ Public MustInherit Class cBaseShapeManager
     <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Function GetID() As String Implements ICoreInterface.GetID
         Dim id As Integer = CType(m_DataType, Integer)
-        Return cValueID.getDataTypeID(m_DataType, id)
+        Return cValueID.GetDataTypeID(m_DataType, id)
     End Function
 
     ''' <inheritdocs cref="ICoreInterface.Index"/>

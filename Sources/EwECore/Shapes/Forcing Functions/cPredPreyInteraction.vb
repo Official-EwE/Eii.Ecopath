@@ -201,7 +201,7 @@ Public Class cPredPreyInteraction
     ''' <inheritdocs cref="ICoreInterface.GetID"/>
     <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides Function GetID() As String
-        Return cValueID.getDataTypeID(Me.DataType, CInt(m_pred * 1000 + m_prey))
+        Return cValueID.GetDataTypeID(Me.DataType, CInt(m_pred * 1000 + m_prey))
     End Function
 
 #End Region
