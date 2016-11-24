@@ -79,6 +79,11 @@ Namespace Ecosim
             Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument()
+            Me.m_tlpControl = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plContent = New System.Windows.Forms.Panel()
+            Me.m_chkShowDiscards = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowLandings = New System.Windows.Forms.CheckBox()
+            Me.m_plFormatting = New System.Windows.Forms.Panel()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -90,6 +95,9 @@ Namespace Ecosim
             CType(Me.m_nudRowNum, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tsMain.SuspendLayout()
+            Me.m_tlpControl.SuspendLayout()
+            Me.m_plContent.SuspendLayout()
+            Me.m_plFormatting.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_scMain
@@ -101,26 +109,7 @@ Namespace Ecosim
             'm_scMain.Panel1
             '
             resources.ApplyResources(Me.m_scMain.Panel1, "m_scMain.Panel1")
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowSS)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowYear)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_cbShowGroupNo)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowWeight)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowCatch)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowZ)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowB)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudMarginTB)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudMarginLR)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudDotSize)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudLineWidth)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_nudRowNum)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_chkScaleForPrinter)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblTBMargin)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblMarginLR)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_hdrDisplayOptions)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_hdrGeneral)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblRowNum)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblLineWidth)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblDotSize)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_tlpControl)
             '
             'm_scMain.Panel2
             '
@@ -242,17 +231,17 @@ Namespace Ecosim
             '
             'm_hdrDisplayOptions
             '
-            resources.ApplyResources(Me.m_hdrDisplayOptions, "m_hdrDisplayOptions")
             Me.m_hdrDisplayOptions.CanCollapseParent = False
             Me.m_hdrDisplayOptions.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrDisplayOptions, "m_hdrDisplayOptions")
             Me.m_hdrDisplayOptions.IsCollapsed = False
             Me.m_hdrDisplayOptions.Name = "m_hdrDisplayOptions"
             '
             'm_hdrGeneral
             '
-            resources.ApplyResources(Me.m_hdrGeneral, "m_hdrGeneral")
-            Me.m_hdrGeneral.CanCollapseParent = False
+            Me.m_hdrGeneral.CanCollapseParent = True
             Me.m_hdrGeneral.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrGeneral, "m_hdrGeneral")
             Me.m_hdrGeneral.IsCollapsed = False
             Me.m_hdrGeneral.Name = "m_hdrGeneral"
             '
@@ -350,6 +339,61 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
+            'm_tlpControl
+            '
+            resources.ApplyResources(Me.m_tlpControl, "m_tlpControl")
+            Me.m_tlpControl.Controls.Add(Me.m_plContent, 0, 0)
+            Me.m_tlpControl.Controls.Add(Me.m_plFormatting, 0, 1)
+            Me.m_tlpControl.Name = "m_tlpControl"
+            '
+            'm_plContent
+            '
+            Me.m_plContent.Controls.Add(Me.m_hdrDisplayOptions)
+            Me.m_plContent.Controls.Add(Me.m_chkShowB)
+            Me.m_plContent.Controls.Add(Me.m_chkShowZ)
+            Me.m_plContent.Controls.Add(Me.m_chkShowLandings)
+            Me.m_plContent.Controls.Add(Me.m_chkShowDiscards)
+            Me.m_plContent.Controls.Add(Me.m_chkShowCatch)
+            resources.ApplyResources(Me.m_plContent, "m_plContent")
+            Me.m_plContent.Name = "m_plContent"
+            '
+            'm_chkShowDiscards
+            '
+            resources.ApplyResources(Me.m_chkShowDiscards, "m_chkShowDiscards")
+            Me.m_chkShowDiscards.Checked = True
+            Me.m_chkShowDiscards.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowDiscards.Name = "m_chkShowDiscards"
+            Me.m_chkShowDiscards.UseVisualStyleBackColor = True
+            '
+            'm_chkShowLandings
+            '
+            resources.ApplyResources(Me.m_chkShowLandings, "m_chkShowLandings")
+            Me.m_chkShowLandings.Checked = True
+            Me.m_chkShowLandings.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowLandings.Name = "m_chkShowLandings"
+            Me.m_chkShowLandings.UseVisualStyleBackColor = True
+            '
+            'm_plFormatting
+            '
+            Me.m_plFormatting.Controls.Add(Me.m_hdrGeneral)
+            Me.m_plFormatting.Controls.Add(Me.m_chkShowSS)
+            Me.m_plFormatting.Controls.Add(Me.m_lblRowNum)
+            Me.m_plFormatting.Controls.Add(Me.m_chkShowYear)
+            Me.m_plFormatting.Controls.Add(Me.m_lblDotSize)
+            Me.m_plFormatting.Controls.Add(Me.m_cbShowGroupNo)
+            Me.m_plFormatting.Controls.Add(Me.m_chkShowWeight)
+            Me.m_plFormatting.Controls.Add(Me.m_lblLineWidth)
+            Me.m_plFormatting.Controls.Add(Me.m_chkScaleForPrinter)
+            Me.m_plFormatting.Controls.Add(Me.m_nudMarginTB)
+            Me.m_plFormatting.Controls.Add(Me.m_lblMarginLR)
+            Me.m_plFormatting.Controls.Add(Me.m_nudMarginLR)
+            Me.m_plFormatting.Controls.Add(Me.m_lblTBMargin)
+            Me.m_plFormatting.Controls.Add(Me.m_nudDotSize)
+            Me.m_plFormatting.Controls.Add(Me.m_nudRowNum)
+            Me.m_plFormatting.Controls.Add(Me.m_nudLineWidth)
+            resources.ApplyResources(Me.m_plFormatting, "m_plFormatting")
+            Me.m_plFormatting.Name = "m_plFormatting"
+            '
             'frmShowAllFits
             '
             resources.ApplyResources(Me, "$this")
@@ -360,7 +404,6 @@ Namespace Ecosim
             Me.ShowInTaskbar = False
             Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)
-            Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
@@ -373,6 +416,11 @@ Namespace Ecosim
             CType(Me.m_pbPlots, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
+            Me.m_tlpControl.ResumeLayout(False)
+            Me.m_plContent.ResumeLayout(False)
+            Me.m_plContent.PerformLayout()
+            Me.m_plFormatting.ResumeLayout(False)
+            Me.m_plFormatting.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -411,6 +459,11 @@ Namespace Ecosim
         Private WithEvents m_nudMarginLR As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMarginTB As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_cbShowGroupNo As System.Windows.Forms.CheckBox
+        Private WithEvents m_tlpControl As TableLayoutPanel
+        Private WithEvents m_plContent As Panel
+        Private WithEvents m_chkShowLandings As CheckBox
+        Private WithEvents m_chkShowDiscards As CheckBox
+        Private WithEvents m_plFormatting As Panel
     End Class
 
 End Namespace

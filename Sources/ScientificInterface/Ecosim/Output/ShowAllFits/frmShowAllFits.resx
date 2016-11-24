@@ -129,179 +129,47 @@
   <data name="m_scMain.Panel1.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_chkShowSS.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowSS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_chkShowSS.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 321</value>
-  </data>
-  <data name="m_chkShowSS.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 17</value>
-  </data>
-  <data name="m_chkShowSS.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="m_chkShowSS.Text" xml:space="preserve">
-    <value>Show &amp;SS contribution</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowSS.Name" xml:space="preserve">
-    <value>m_chkShowSS</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowSS.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowSS.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowSS.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_chkShowYear.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 298</value>
-  </data>
-  <data name="m_chkShowYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 17</value>
-  </data>
-  <data name="m_chkShowYear.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="m_chkShowYear.Text" xml:space="preserve">
-    <value>Show &amp;year</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowYear.Name" xml:space="preserve">
-    <value>m_chkShowYear</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowYear.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowYear.ZOrder" xml:space="preserve">
+  <data name="m_tlpControl.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="m_cbShowGroupNo.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="m_hdrDisplayOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
-  <data name="m_cbShowGroupNo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrDisplayOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_cbShowGroupNo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 252</value>
+  <data name="m_hdrDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="m_cbShowGroupNo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 17</value>
+  <data name="m_hdrDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 18</value>
   </data>
-  <data name="m_cbShowGroupNo.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="m_hdrDisplayOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="m_cbShowGroupNo.Text" xml:space="preserve">
-    <value>Show &amp;group no.</value>
+  <data name="m_hdrDisplayOptions.Text" xml:space="preserve">
+    <value>Data to show</value>
   </data>
-  <data name="&gt;&gt;m_cbShowGroupNo.Name" xml:space="preserve">
-    <value>m_cbShowGroupNo</value>
+  <data name="m_hdrDisplayOptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_cbShowGroupNo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrDisplayOptions.Name" xml:space="preserve">
+    <value>m_hdrDisplayOptions</value>
   </data>
-  <data name="&gt;&gt;m_cbShowGroupNo.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+  <data name="&gt;&gt;m_hdrDisplayOptions.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_cbShowGroupNo.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_hdrDisplayOptions.Parent" xml:space="preserve">
+    <value>m_plContent</value>
   </data>
-  <data name="m_chkShowWeight.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 275</value>
-  </data>
-  <data name="m_chkShowWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 17</value>
-  </data>
-  <data name="m_chkShowWeight.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="m_chkShowWeight.Text" xml:space="preserve">
-    <value>Show &amp;weight</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowWeight.Name" xml:space="preserve">
-    <value>m_chkShowWeight</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowWeight.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowWeight.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_chkShowCatch.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowCatch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 73</value>
-  </data>
-  <data name="m_chkShowCatch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 17</value>
-  </data>
-  <data name="m_chkShowCatch.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_chkShowCatch.Text" xml:space="preserve">
-    <value>Show &amp;catch</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowCatch.Name" xml:space="preserve">
-    <value>m_chkShowCatch</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowCatch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowCatch.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowCatch.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_chkShowZ.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowZ.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 49</value>
-  </data>
-  <data name="m_chkShowZ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 17</value>
-  </data>
-  <data name="m_chkShowZ.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_chkShowZ.Text" xml:space="preserve">
-    <value>Show &amp;mortality (Z)</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowZ.Name" xml:space="preserve">
-    <value>m_chkShowZ</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowZ.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowZ.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowZ.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;m_hdrDisplayOptions.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_chkShowB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkShowB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 25</value>
+    <value>3, 21</value>
   </data>
   <data name="m_chkShowB.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 17</value>
@@ -319,256 +187,163 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkShowB.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>m_plContent</value>
   </data>
   <data name="&gt;&gt;m_chkShowB.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>1</value>
   </data>
-  <data name="m_nudMarginTB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudMarginTB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 226</value>
-  </data>
-  <data name="m_nudMarginTB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="m_nudMarginTB.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginTB.Name" xml:space="preserve">
-    <value>m_nudMarginTB</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginTB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginTB.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginTB.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_nudMarginLR.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudMarginLR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 200</value>
-  </data>
-  <data name="m_nudMarginLR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="m_nudMarginLR.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginLR.Name" xml:space="preserve">
-    <value>m_nudMarginLR</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginLR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginLR.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_nudMarginLR.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_nudDotSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudDotSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 174</value>
-  </data>
-  <data name="m_nudDotSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="m_nudDotSize.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_nudDotSize.Name" xml:space="preserve">
-    <value>m_nudDotSize</value>
-  </data>
-  <data name="&gt;&gt;m_nudDotSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudDotSize.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_nudDotSize.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_nudLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudLineWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 148</value>
-  </data>
-  <data name="m_nudLineWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="m_nudLineWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_nudLineWidth.Name" xml:space="preserve">
-    <value>m_nudLineWidth</value>
-  </data>
-  <data name="&gt;&gt;m_nudLineWidth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudLineWidth.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_nudLineWidth.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="m_nudRowNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_nudRowNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>67, 122</value>
-  </data>
-  <data name="m_nudRowNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="m_nudRowNum.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowNum.Name" xml:space="preserve">
-    <value>m_nudRowNum</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowNum.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowNum.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_nudRowNum.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="m_chkScaleForPrinter.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_chkShowZ.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_chkScaleForPrinter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 355</value>
+  <data name="m_chkShowZ.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 44</value>
   </data>
-  <data name="m_chkScaleForPrinter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 17</value>
+  <data name="m_chkShowZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 17</value>
   </data>
-  <data name="m_chkScaleForPrinter.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+  <data name="m_chkShowZ.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="m_chkScaleForPrinter.Text" xml:space="preserve">
-    <value>Scale &amp;for printer</value>
+  <data name="m_chkShowZ.Text" xml:space="preserve">
+    <value>Show &amp;mortality (Z)</value>
   </data>
-  <data name="&gt;&gt;m_chkScaleForPrinter.Name" xml:space="preserve">
-    <value>m_chkScaleForPrinter</value>
+  <data name="&gt;&gt;m_chkShowZ.Name" xml:space="preserve">
+    <value>m_chkShowZ</value>
   </data>
-  <data name="&gt;&gt;m_chkScaleForPrinter.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_chkShowZ.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_chkScaleForPrinter.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+  <data name="&gt;&gt;m_chkShowZ.Parent" xml:space="preserve">
+    <value>m_plContent</value>
   </data>
-  <data name="&gt;&gt;m_chkScaleForPrinter.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="&gt;&gt;m_chkShowZ.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="m_lblTBMargin.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_chkShowLandings.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblTBMargin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 228</value>
-  </data>
-  <data name="m_lblTBMargin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="m_lblTBMargin.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_lblTBMargin.Text" xml:space="preserve">
-    <value>&amp;TB margin:</value>
-  </data>
-  <data name="&gt;&gt;m_lblTBMargin.Name" xml:space="preserve">
-    <value>m_lblTBMargin</value>
-  </data>
-  <data name="&gt;&gt;m_lblTBMargin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblTBMargin.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblTBMargin.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="m_lblMarginLR.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblMarginLR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 202</value>
-  </data>
-  <data name="m_lblMarginLR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
-  </data>
-  <data name="m_lblMarginLR.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_lblMarginLR.Text" xml:space="preserve">
-    <value>&amp;LR margin:</value>
-  </data>
-  <data name="&gt;&gt;m_lblMarginLR.Name" xml:space="preserve">
-    <value>m_lblMarginLR</value>
-  </data>
-  <data name="&gt;&gt;m_lblMarginLR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMarginLR.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_lblMarginLR.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="m_hdrDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrDisplayOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_chkShowLandings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_hdrDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_chkShowLandings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 113</value>
+  </data>
+  <data name="m_chkShowLandings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="m_chkShowLandings.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_chkShowLandings.Text" xml:space="preserve">
+    <value>Show &amp;landings</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.Name" xml:space="preserve">
+    <value>m_chkShowLandings</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.Parent" xml:space="preserve">
+    <value>m_plContent</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_chkShowDiscards.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowDiscards.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkShowDiscards.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 90</value>
+  </data>
+  <data name="m_chkShowDiscards.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="m_chkShowDiscards.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_chkShowDiscards.Text" xml:space="preserve">
+    <value>Show &amp;discards</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.Name" xml:space="preserve">
+    <value>m_chkShowDiscards</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.Parent" xml:space="preserve">
+    <value>m_plContent</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_chkShowCatch.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowCatch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 67</value>
+  </data>
+  <data name="m_chkShowCatch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 17</value>
+  </data>
+  <data name="m_chkShowCatch.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_chkShowCatch.Text" xml:space="preserve">
+    <value>Show &amp;catch</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowCatch.Name" xml:space="preserve">
+    <value>m_chkShowCatch</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowCatch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowCatch.Parent" xml:space="preserve">
+    <value>m_plContent</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowCatch.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_plContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plContent.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_hdrDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 18</value>
+  <data name="m_plContent.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_hdrDisplayOptions.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 134</value>
+  </data>
+  <data name="m_plContent.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_hdrDisplayOptions.Text" xml:space="preserve">
-    <value>Data to show</value>
+  <data name="&gt;&gt;m_plContent.Name" xml:space="preserve">
+    <value>m_plContent</value>
   </data>
-  <data name="m_hdrDisplayOptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
+  <data name="&gt;&gt;m_plContent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_hdrDisplayOptions.Name" xml:space="preserve">
-    <value>m_hdrDisplayOptions</value>
+  <data name="&gt;&gt;m_plContent.Parent" xml:space="preserve">
+    <value>m_tlpControl</value>
   </data>
-  <data name="&gt;&gt;m_hdrDisplayOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  <data name="&gt;&gt;m_plContent.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;m_hdrDisplayOptions.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDisplayOptions.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_hdrGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="m_hdrGeneral.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
   </data>
   <data name="m_hdrGeneral.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 97</value>
+    <value>0, 0</value>
   </data>
   <data name="m_hdrGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 18</value>
+    <value>158, 18</value>
   </data>
   <data name="m_hdrGeneral.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="m_hdrGeneral.Text" xml:space="preserve">
     <value>Plot formatting</value>
@@ -580,25 +355,55 @@
     <value>m_hdrGeneral</value>
   </data>
   <data name="&gt;&gt;m_hdrGeneral.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGeneral.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>m_plFormatting</value>
   </data>
   <data name="&gt;&gt;m_hdrGeneral.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>0</value>
+  </data>
+  <data name="m_chkShowSS.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowSS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkShowSS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 220</value>
+  </data>
+  <data name="m_chkShowSS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 17</value>
+  </data>
+  <data name="m_chkShowSS.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_chkShowSS.Text" xml:space="preserve">
+    <value>Show &amp;SS contribution</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.Name" xml:space="preserve">
+    <value>m_chkShowSS</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_lblRowNum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblRowNum.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 124</value>
+    <value>4, 23</value>
   </data>
   <data name="m_lblRowNum.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
   </data>
   <data name="m_lblRowNum.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="m_lblRowNum.Text" xml:space="preserve">
     <value>&amp;Plots/row:</value>
@@ -610,49 +415,49 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblRowNum.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>m_plFormatting</value>
   </data>
   <data name="&gt;&gt;m_lblRowNum.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>2</value>
   </data>
-  <data name="m_lblLineWidth.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_chkShowYear.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblLineWidth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 150</value>
+  <data name="m_chkShowYear.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 197</value>
   </data>
-  <data name="m_lblLineWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
+  <data name="m_chkShowYear.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 17</value>
   </data>
-  <data name="m_lblLineWidth.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+  <data name="m_chkShowYear.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
-  <data name="m_lblLineWidth.Text" xml:space="preserve">
-    <value>&amp;Line width:</value>
+  <data name="m_chkShowYear.Text" xml:space="preserve">
+    <value>Show &amp;year</value>
   </data>
-  <data name="&gt;&gt;m_lblLineWidth.Name" xml:space="preserve">
-    <value>m_lblLineWidth</value>
+  <data name="&gt;&gt;m_chkShowYear.Name" xml:space="preserve">
+    <value>m_chkShowYear</value>
   </data>
-  <data name="&gt;&gt;m_lblLineWidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_chkShowYear.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblLineWidth.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+  <data name="&gt;&gt;m_chkShowYear.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
   </data>
-  <data name="&gt;&gt;m_lblLineWidth.ZOrder" xml:space="preserve">
-    <value>18</value>
+  <data name="&gt;&gt;m_chkShowYear.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_lblDotSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblDotSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 177</value>
+    <value>4, 76</value>
   </data>
   <data name="m_lblDotSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
   </data>
   <data name="m_lblDotSize.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>5</value>
   </data>
   <data name="m_lblDotSize.Text" xml:space="preserve">
     <value>&amp;Dot size:</value>
@@ -664,10 +469,355 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblDotSize.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
+    <value>m_plFormatting</value>
   </data>
   <data name="&gt;&gt;m_lblDotSize.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>4</value>
+  </data>
+  <data name="m_cbShowGroupNo.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbShowGroupNo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbShowGroupNo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 151</value>
+  </data>
+  <data name="m_cbShowGroupNo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 17</value>
+  </data>
+  <data name="m_cbShowGroupNo.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_cbShowGroupNo.Text" xml:space="preserve">
+    <value>Show &amp;group no.</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowGroupNo.Name" xml:space="preserve">
+    <value>m_cbShowGroupNo</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowGroupNo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowGroupNo.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowGroupNo.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_chkShowWeight.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 174</value>
+  </data>
+  <data name="m_chkShowWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 17</value>
+  </data>
+  <data name="m_chkShowWeight.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_chkShowWeight.Text" xml:space="preserve">
+    <value>Show &amp;weight</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowWeight.Name" xml:space="preserve">
+    <value>m_chkShowWeight</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowWeight.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowWeight.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_lblLineWidth.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblLineWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 49</value>
+  </data>
+  <data name="m_lblLineWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="m_lblLineWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lblLineWidth.Text" xml:space="preserve">
+    <value>&amp;Line width:</value>
+  </data>
+  <data name="&gt;&gt;m_lblLineWidth.Name" xml:space="preserve">
+    <value>m_lblLineWidth</value>
+  </data>
+  <data name="&gt;&gt;m_lblLineWidth.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblLineWidth.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_lblLineWidth.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_chkScaleForPrinter.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkScaleForPrinter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 243</value>
+  </data>
+  <data name="m_chkScaleForPrinter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 17</value>
+  </data>
+  <data name="m_chkScaleForPrinter.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="m_chkScaleForPrinter.Text" xml:space="preserve">
+    <value>Scale &amp;for printer</value>
+  </data>
+  <data name="&gt;&gt;m_chkScaleForPrinter.Name" xml:space="preserve">
+    <value>m_chkScaleForPrinter</value>
+  </data>
+  <data name="&gt;&gt;m_chkScaleForPrinter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkScaleForPrinter.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_chkScaleForPrinter.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_nudMarginTB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudMarginTB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 125</value>
+  </data>
+  <data name="m_nudMarginTB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="m_nudMarginTB.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginTB.Name" xml:space="preserve">
+    <value>m_nudMarginTB</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginTB.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginTB.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginTB.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="m_lblMarginLR.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblMarginLR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 101</value>
+  </data>
+  <data name="m_lblMarginLR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="m_lblMarginLR.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_lblMarginLR.Text" xml:space="preserve">
+    <value>&amp;LR margin:</value>
+  </data>
+  <data name="&gt;&gt;m_lblMarginLR.Name" xml:space="preserve">
+    <value>m_lblMarginLR</value>
+  </data>
+  <data name="&gt;&gt;m_lblMarginLR.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMarginLR.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_lblMarginLR.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_nudMarginLR.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudMarginLR.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 99</value>
+  </data>
+  <data name="m_nudMarginLR.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="m_nudMarginLR.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginLR.Name" xml:space="preserve">
+    <value>m_nudMarginLR</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginLR.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginLR.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_nudMarginLR.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_lblTBMargin.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblTBMargin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 127</value>
+  </data>
+  <data name="m_lblTBMargin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 13</value>
+  </data>
+  <data name="m_lblTBMargin.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_lblTBMargin.Text" xml:space="preserve">
+    <value>&amp;TB margin:</value>
+  </data>
+  <data name="&gt;&gt;m_lblTBMargin.Name" xml:space="preserve">
+    <value>m_lblTBMargin</value>
+  </data>
+  <data name="&gt;&gt;m_lblTBMargin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblTBMargin.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_lblTBMargin.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_nudDotSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudDotSize.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 73</value>
+  </data>
+  <data name="m_nudDotSize.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="m_nudDotSize.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_nudDotSize.Name" xml:space="preserve">
+    <value>m_nudDotSize</value>
+  </data>
+  <data name="&gt;&gt;m_nudDotSize.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudDotSize.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_nudDotSize.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="m_nudRowNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudRowNum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 21</value>
+  </data>
+  <data name="m_nudRowNum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="m_nudRowNum.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.Name" xml:space="preserve">
+    <value>m_nudRowNum</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_nudRowNum.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_nudLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudLineWidth.Location" type="System.Drawing.Point, System.Drawing">
+    <value>68, 47</value>
+  </data>
+  <data name="m_nudLineWidth.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 20</value>
+  </data>
+  <data name="m_nudLineWidth.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.Name" xml:space="preserve">
+    <value>m_nudLineWidth</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.Parent" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_nudLineWidth.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="m_plFormatting.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_plFormatting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 134</value>
+  </data>
+  <data name="m_plFormatting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_plFormatting.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 264</value>
+  </data>
+  <data name="m_plFormatting.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_plFormatting.Name" xml:space="preserve">
+    <value>m_plFormatting</value>
+  </data>
+  <data name="&gt;&gt;m_plFormatting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_plFormatting.Parent" xml:space="preserve">
+    <value>m_tlpControl</value>
+  </data>
+  <data name="&gt;&gt;m_plFormatting.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpControl.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tlpControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>158, 482</value>
+  </data>
+  <data name="m_tlpControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tlpControl.Name" xml:space="preserve">
+    <value>m_tlpControl</value>
+  </data>
+  <data name="&gt;&gt;m_tlpControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpControl.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_tlpControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpControl.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plContent" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plFormatting" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -902,17 +1052,17 @@
   <data name="m_tsddPrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJeSURBVDhPrZHrT1JhAMZZ61N/Qn3vc31wba3rZku8ptUG
+        imgwXUnZQAsUlWVAhjntYi3J0dE5RYda6Bya0lg6xZjMy9LlpkBeSoQEJAzhCc45yrS1tdVve7azs/M8
+        v3fvYfx3jEbjwfZ+a1Hn0DT+FN3gFOjPf0drsIrGLAte7GPr5zZsy2509I0iOackzMyWHKUrMbTvJo5o
+        DRMIhcJYc3lgGv9EpnvAjDb9CMan7eAUKnGRLXbTlb00682vFpZctJMiat7wBjAzvwqdwYwkriTM5IgF
+        dCVGQ9eHY2rdCLYjdvuKc4+9zzQJ85QN7AI50rKkgUfqN3ja1Be7h7Ka1sxoedA8t2vdMa84fZhbdKKh
+        bQApuaWQ1bagUTeMlGtSakD8gEiTv+hYIvQf8VJrQvPbMTwhDLj3WAthpRq5omqk88uRmC1G5k0F6jQ9
+        KJarkciVUAM1r/vh8QVI836C2yH4A0HyJN9cfnz56oVURSBfXBs5QSk1IH/eCf17K7oGxkF0GvGsqRfK
+        +naUqjQorKgHr6garIJKXOJJkZBVjFuRd2zBfZy7UkgNyOra4Vheo5178WxuwbaygUNgkDlAMJArfIhk
+        rhhxTD41IKlqdU/OLiJyZ7tEn9e9Qcw6NjE84yLLPfTA5bxynMkQxAYqVIRC2aDz29cCcPnCWP4exvxq
+        CKOff6DX4kWLyU0Wd3KBJSTLcQm8bnIgX1R1SqLUrA9ZHOS//ZtEB47H8w6TA1HuKBrPZuTLkMorQ1JO
+        CRI4dxHPEuH81ds4nS7AydTrOJGUR5lJO/8GXf1XGIxfoxcmK/PXiO0AAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_tsddPrint.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -940,7 +1090,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -1084,6 +1234,6 @@
     <value>frmShowAllFits</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -322,7 +322,7 @@ Public Class cStanzaGroup
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the zero-based index of the group that determines B for this stanza.
+    ''' Get/set the zero-based index of the life stage that determines B for this stanza.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property LeadingB() As Integer
@@ -336,7 +336,7 @@ Public Class cStanzaGroup
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the zero-based index of the group that determines CB for this stanza.
+    ''' Get/set the zero-based index of the life stage that determines CB for this stanza.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property LeadingCB() As Integer
