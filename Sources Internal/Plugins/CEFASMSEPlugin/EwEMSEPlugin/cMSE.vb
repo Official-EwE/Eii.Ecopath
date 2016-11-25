@@ -631,6 +631,7 @@ Public Class cMSE
     End Function
 
     Public Property WriteAllResults As Boolean = False
+    Public Property WriteYearlyOnly As Boolean = False
 
 #End Region ' Public methods
 
@@ -1577,34 +1578,77 @@ Public Class cMSE
         Dim Effort_Collector = New cResultsCollector_Efforts
         Dim Effort_Collector_Yearly = New cResultsCollector_Efforts_Yearly
 
-        Collectors.Add(Biomass_Collector)
+        If Not Me.WriteYearlyOnly Then
+            Collectors.Add(Biomass_Collector)
+            Collectors.Add(RealisedTotalF_Collector)
+            Collectors.Add(RealisedLandedF_Collector)
+            Collectors.Add(RealisedDiscardedF_Collector)
+            Collectors.Add(CatchesTotal_Collector)
+            Collectors.Add(Landings_Collector)
+            Collectors.Add(Discards_Collector)
+            Collectors.Add(Value_Collector)
+            Collectors.Add(Effort_Collector)
+        End If
+
         Collectors.Add(Biomass_Collector_Yearly)
-        Collectors.Add(RealisedTotalF_Collector)
         Collectors.Add(RealisedTotalF_Collector_Yearly)
-        Collectors.Add(RealisedLandedF_Collector)
         Collectors.Add(RealisedLandedF_Collector_Yearly)
-        Collectors.Add(RealisedDiscardedF_Collector)
         Collectors.Add(RealisedDiscardedF_Collector_Yearly)
-        Collectors.Add(CatchesTotal_Collector)
         Collectors.Add(CatchesTotal_Collector_Yearly)
-        Collectors.Add(Landings_Collector)
         Collectors.Add(Landings_Collector_Yearly)
-        Collectors.Add(Discards_Collector)
         Collectors.Add(Discards_Collector_Yearly)
         Collectors.Add(HCR_F_Cons_Collector)
         Collectors.Add(HCR_F_Targ_Collector)
         Collectors.Add(HCR_Quota_Cons_Collector)
         Collectors.Add(HCR_Quota_Targ_Collector)
-        Collectors.Add(Value_Collector)
         Collectors.Add(Value_Collector_Yearly)
+        Collectors.Add(Effort_Collector_Yearly)
         Collectors.Add(HighestValueGroup_Collector)
         Collectors.Add(ChokeGroup_Collector)
-        Collectors.Add(Effort_Collector)
-        Collectors.Add(Effort_Collector_Yearly)
 
         For Each iCollector In Collectors
             iCollector.Initialise(Me)
         Next
+
+        If Not Me.WriteYearlyOnly Then
+
+            Dim Biomass_Writer = New cResultsWriter_1DArray
+            Biomass_Writer.Initialise(msgReport, Me, Biomass_Collector, cMSEUtils.eMSEPaths.Biomass)
+            Writers.Add(Biomass_Writer)
+
+            Dim RealisedTotalFs_Writer = New cResultsWriter_1DArray
+            RealisedTotalFs_Writer.Initialise(msgReport, Me, RealisedTotalF_Collector, cMSEUtils.eMSEPaths.RealisedF)
+            Writers.Add(RealisedTotalFs_Writer)
+
+            Dim RealisedLandedFs_Writer = New cResultsWriter_1DArray
+            RealisedLandedFs_Writer.Initialise(msgReport, Me, RealisedLandedF_Collector, cMSEUtils.eMSEPaths.RealisedLandedF)
+            Writers.Add(RealisedLandedFs_Writer)
+
+            Dim RealisedDiscardedFs_Writer = New cResultsWriter_1DArray
+            RealisedDiscardedFs_Writer.Initialise(msgReport, Me, RealisedDiscardedF_Collector, cMSEUtils.eMSEPaths.RealisedDiscardF)
+            Writers.Add(RealisedDiscardedFs_Writer)
+
+            Dim TotalCatch_Writer = New cResultsWriter_2DArray
+            TotalCatch_Writer.Initialise(msgReport, Me, CatchesTotal_Collector, cMSEUtils.eMSEPaths.CatchTrajectories)
+            Writers.Add(TotalCatch_Writer)
+
+            Dim Landings_Writer = New cResultsWriter_2DArray
+            Landings_Writer.Initialise(msgReport, Me, Landings_Collector, cMSEUtils.eMSEPaths.LandingsTrajectories)
+            Writers.Add(Landings_Writer)
+
+            Dim Discards_Writer = New cResultsWriter_2DArray
+            Discards_Writer.Initialise(msgReport, Me, Discards_Collector, cMSEUtils.eMSEPaths.DiscardsTrajectories)
+            Writers.Add(Discards_Writer)
+
+            Dim Value_Writer = New cResultsWriter_2DArray
+            Value_Writer.Initialise(msgReport, Me, Value_Collector, cMSEUtils.eMSEPaths.ValueTrajectories)
+            Writers.Add(Value_Writer)
+
+            Dim Effort_Writer = New cResultsWriter_1DArray
+            Effort_Writer.Initialise(msgReport, Me, Effort_Collector, cMSEUtils.eMSEPaths.Effort)
+            Writers.Add(Effort_Writer)
+
+        End If
 
         Dim ChokeGroup_Writer = New cResultsWriter_1DArray
         ChokeGroup_Writer.Initialise(msgReport, Me, ChokeGroup_Collector, cMSEUtils.eMSEPaths.ChokeGroup)
@@ -1612,95 +1656,57 @@ Public Class cMSE
         Dim HighestValueGroup_Writer = New cResultsWriter_1DArray
         HighestValueGroup_Writer.Initialise(msgReport, Me, HighestValueGroup_Collector, cMSEUtils.eMSEPaths.HighestValueGroup)
 
-        'Dim RealisedTotalFs_Writer = New cResultsWriter_RealisedFs
-        Dim RealisedTotalFs_Writer = New cResultsWriter_1DArray
-        RealisedTotalFs_Writer.Initialise(msgReport, Me, RealisedTotalF_Collector, cMSEUtils.eMSEPaths.RealisedF)
         Dim RealisedTotalFs_Writer_Yearly = New cResultsWriter_1DArray
         RealisedTotalFs_Writer_Yearly.Initialise(msgReport, Me, RealisedTotalF_Collector_Yearly, cMSEUtils.eMSEPaths.RealisedF)
 
-        'Dim RealisedLandedFs_Writer = New cResultsWriter_RealisedFs
-        Dim RealisedLandedFs_Writer = New cResultsWriter_1DArray
-        RealisedLandedFs_Writer.Initialise(msgReport, Me, RealisedLandedF_Collector, cMSEUtils.eMSEPaths.RealisedLandedF)
         Dim RealisedLandedFs_Writer_Yearly = New cResultsWriter_1DArray
         RealisedLandedFs_Writer_Yearly.Initialise(msgReport, Me, RealisedLandedF_Collector_Yearly, cMSEUtils.eMSEPaths.RealisedLandedF)
 
-        'Dim RealisedDiscardedFs_Writer = New cResultsWriter_RealisedFs
-        Dim RealisedDiscardedFs_Writer = New cResultsWriter_1DArray
-        RealisedDiscardedFs_Writer.Initialise(msgReport, Me, RealisedDiscardedF_Collector, cMSEUtils.eMSEPaths.RealisedDiscardF)
         Dim RealisedDiscardFs_Writer_Yearly = New cResultsWriter_1DArray
         RealisedDiscardFs_Writer_Yearly.Initialise(msgReport, Me, RealisedDiscardedF_Collector_Yearly, cMSEUtils.eMSEPaths.RealisedDiscardF)
 
-        'Dim TotalCatch_Writer = New cResultsWriter_Catches
-        Dim TotalCatch_Writer = New cResultsWriter_2DArray
-        TotalCatch_Writer.Initialise(msgReport, Me, CatchesTotal_Collector, cMSEUtils.eMSEPaths.CatchTrajectories)
         Dim TotalCatch_Writer_Yearly = New cResultsWriter_2DArray
         TotalCatch_Writer_Yearly.Initialise(msgReport, Me, CatchesTotal_Collector_Yearly, cMSEUtils.eMSEPaths.CatchTrajectories)
 
-        'Dim Landings_Writer = New cResultsWriter_Catches
-        Dim Landings_Writer = New cResultsWriter_2DArray
-        Landings_Writer.Initialise(msgReport, Me, Landings_Collector, cMSEUtils.eMSEPaths.LandingsTrajectories)
         Dim Landings_Writer_Yearly = New cResultsWriter_2DArray
         Landings_Writer_Yearly.Initialise(msgReport, Me, Landings_Collector_Yearly, cMSEUtils.eMSEPaths.LandingsTrajectories)
 
-        'Dim Discards_Writer = New cResultsWriter_Catches
-        Dim Discards_Writer = New cResultsWriter_2DArray
-        Discards_Writer.Initialise(msgReport, Me, Discards_Collector, cMSEUtils.eMSEPaths.DiscardsTrajectories)
         Dim Discards_Writer_Yearly = New cResultsWriter_2DArray
         Discards_Writer_Yearly.Initialise(msgReport, Me, Discards_Collector_Yearly, cMSEUtils.eMSEPaths.DiscardsTrajectories)
 
-        'Dim HCR_Fs_Cons_Writer = New cResultsWriter_HCR_Fs
         Dim HCR_Fs_Cons_Writer = New cResultsWriter_1DArray
         HCR_Fs_Cons_Writer.Initialise(msgReport, Me, HCR_F_Cons_Collector, cMSEUtils.eMSEPaths.HCRF_Cons)
 
-        'Dim HCR_Fs_Targ_Writer = New cResultsWriter_HCR_Fs
         Dim HCR_Fs_Targ_Writer = New cResultsWriter_1DArray
         HCR_Fs_Targ_Writer.Initialise(msgReport, Me, HCR_F_Targ_Collector, cMSEUtils.eMSEPaths.HCRF_Targ)
 
-        'Dim HCR_Quotas_Targ_Writer = New cResultsWriter_HCR_Quota
         Dim HCR_Quotas_Targ_Writer = New cResultsWriter_2DArray
         HCR_Quotas_Targ_Writer.Initialise(msgReport, Me, HCR_Quota_Targ_Collector, cMSEUtils.eMSEPaths.HCRQuota_Targ)
 
-        'Dim HCR_Quotas_Cons_Writer = New cResultsWriter_HCR_Quota
         Dim HCR_Quotas_Cons_Writer = New cResultsWriter_2DArray
         HCR_Quotas_Cons_Writer.Initialise(msgReport, Me, HCR_Quota_Cons_Collector, cMSEUtils.eMSEPaths.HCRQuota_Cons)
 
-        Dim Value_Writer = New cResultsWriter_2DArray
-        Value_Writer.Initialise(msgReport, Me, Value_Collector, cMSEUtils.eMSEPaths.ValueTrajectories)
         Dim Value_Writer_Yearly = New cResultsWriter_2DArray
         Value_Writer_Yearly.Initialise(msgReport, Me, Value_Collector_Yearly, cMSEUtils.eMSEPaths.ValueTrajectories)
 
-        'Dim Discards_Writer = New cResultsWriter_Catches
-        Dim Biomass_Writer = New cResultsWriter_1DArray
-        Biomass_Writer.Initialise(msgReport, Me, Biomass_Collector, cMSEUtils.eMSEPaths.Biomass)
         Dim Biomass_Writer_Yearly = New cResultsWriter_1DArray
         Biomass_Writer_Yearly.Initialise(msgReport, Me, Biomass_Collector_Yearly, cMSEUtils.eMSEPaths.Biomass)
 
-        Dim Effort_Writer = New cResultsWriter_1DArray
-        Effort_Writer.Initialise(msgReport, Me, Effort_Collector, cMSEUtils.eMSEPaths.Effort)
         Dim Effort_Writer_Yearly = New cResultsWriter_1DArray
         Effort_Writer_Yearly.Initialise(msgReport, Me, Effort_Collector_Yearly, cMSEUtils.eMSEPaths.Effort)
 
-        Writers.Add(Effort_Writer)
         Writers.Add(Effort_Writer_Yearly)
-        Writers.Add(RealisedTotalFs_Writer)
         Writers.Add(RealisedTotalFs_Writer_Yearly)
-        Writers.Add(RealisedLandedFs_Writer)
         Writers.Add(RealisedLandedFs_Writer_Yearly)
-        Writers.Add(RealisedDiscardedFs_Writer)
         Writers.Add(RealisedDiscardFs_Writer_Yearly)
-        Writers.Add(TotalCatch_Writer)
         Writers.Add(TotalCatch_Writer_Yearly)
-        Writers.Add(Landings_Writer)
         Writers.Add(Landings_Writer_Yearly)
-        Writers.Add(Discards_Writer)
         Writers.Add(Discards_Writer_Yearly)
         Writers.Add(HCR_Fs_Cons_Writer)
         Writers.Add(HCR_Fs_Targ_Writer)
         Writers.Add(HCR_Quotas_Cons_Writer)
         Writers.Add(HCR_Quotas_Targ_Writer)
-        Writers.Add(Value_Writer)
         Writers.Add(Value_Writer_Yearly)
-        Writers.Add(Biomass_Writer)
         Writers.Add(Biomass_Writer_Yearly)
         Writers.Add(HighestValueGroup_Writer)
         Writers.Add(ChokeGroup_Writer)

@@ -108,6 +108,7 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
+        Me.m_chkYearly = New System.Windows.Forms.CheckBox()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -267,6 +268,7 @@ Partial Class frmMSE
         '
         'm_plStep4
         '
+        Me.m_plStep4.Controls.Add(Me.m_chkYearly)
         Me.m_plStep4.Controls.Add(Me.m_btnSelectStrategies)
         Me.m_plStep4.Controls.Add(Me.m_btnDeleteResults)
         Me.m_plStep4.Controls.Add(Me.m_hdrStep4)
@@ -516,6 +518,12 @@ Partial Class frmMSE
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
         '
+        'm_chkYearly
+        '
+        resources.ApplyResources(Me.m_chkYearly, "m_chkYearly")
+        Me.m_chkYearly.Name = "m_chkYearly"
+        Me.m_chkYearly.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         resources.ApplyResources(Me, "$this")
@@ -603,4 +611,5 @@ Partial Class frmMSE
     Private WithEvents m_rbWriteAlways As System.Windows.Forms.CheckBox
     Private WithEvents m_btnBiomassLimits As Button
     Friend WithEvents m_btnSelectStrategies As Button
+    Friend WithEvents m_chkYearly As CheckBox
 End Class

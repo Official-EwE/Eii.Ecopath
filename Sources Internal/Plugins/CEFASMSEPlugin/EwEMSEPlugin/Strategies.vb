@@ -166,8 +166,6 @@ Public Class Strategies
                 bSuccess = False
             End If
 
-
-
             StratCounter += 1
         Next StrategyFile
 

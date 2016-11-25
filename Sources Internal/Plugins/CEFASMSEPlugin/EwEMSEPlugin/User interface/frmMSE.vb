@@ -360,6 +360,7 @@ Public Class frmMSE
         Handles m_btnRun.Click
         Try
             Me.MSE.WriteAllResults = Me.m_rbWriteAlways.Checked
+            Me.MSE.WriteYearlyOnly = Me.m_chkYearly.Checked
             Me.MSE.LoadSampledParams()
         Catch ex As Exception
             cLog.Write(ex, "CEFAS.frmMSE::OnRun")
