@@ -200,7 +200,7 @@ Public Class cDatabase
         Me.OOPFlushSchemaCache()
 
         ' JS 17Nov11: Use OOP transaction to minimize time on getting and releasing adapters
-        If Me.OOPBeginTransaction(ass) Then
+        If Me.OOPBeginTransaction(ass, True) Then
 
             Try
                 ' Store model parameters

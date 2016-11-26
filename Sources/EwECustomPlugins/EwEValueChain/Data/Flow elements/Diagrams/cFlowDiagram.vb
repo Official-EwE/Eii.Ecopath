@@ -39,26 +39,13 @@ Imports System.Reflection
 Public Class cFlowDiagram
     : Inherits cOOPStorable
 
-#Region " Private vars "
-
-    Private m_strName As String = "Default"
-
-#End Region ' Private vars
-
 #Region " Properties "
 
     <Browsable(True), _
        DisplayName("Name"), _
-       Description("Name of this diagram"), _
-       cPropertySorter.PropertyOrder(1)> _
-    Public Overridable Property Name() As String
-        Get
-            Return Me.m_strName
-        End Get
-        Set(ByVal strName As String)
-            Me.m_strName = strName
-        End Set
-    End Property
+       Description("Name of this diagram"),
+       cPropertySorter.PropertyOrder(1)>
+    Public Overridable Property Name() As String = "Default"
 
 #End Region ' Properties
 
