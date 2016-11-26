@@ -219,66 +219,6 @@
   <data name="&gt;&gt;m_chkShowZ.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_chkShowLandings.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowLandings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_chkShowLandings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 113</value>
-  </data>
-  <data name="m_chkShowLandings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 17</value>
-  </data>
-  <data name="m_chkShowLandings.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_chkShowLandings.Text" xml:space="preserve">
-    <value>Show &amp;landings</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowLandings.Name" xml:space="preserve">
-    <value>m_chkShowLandings</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowLandings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowLandings.Parent" xml:space="preserve">
-    <value>m_plContent</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowLandings.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_chkShowDiscards.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_chkShowDiscards.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_chkShowDiscards.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 90</value>
-  </data>
-  <data name="m_chkShowDiscards.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 17</value>
-  </data>
-  <data name="m_chkShowDiscards.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_chkShowDiscards.Text" xml:space="preserve">
-    <value>Show &amp;discards</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowDiscards.Name" xml:space="preserve">
-    <value>m_chkShowDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowDiscards.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowDiscards.Parent" xml:space="preserve">
-    <value>m_plContent</value>
-  </data>
-  <data name="&gt;&gt;m_chkShowDiscards.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <data name="m_chkShowCatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -304,7 +244,7 @@
     <value>m_plContent</value>
   </data>
   <data name="&gt;&gt;m_chkShowCatch.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="m_plContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -316,7 +256,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 134</value>
+    <value>158, 88</value>
   </data>
   <data name="m_plContent.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -763,7 +703,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plFormatting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 134</value>
+    <value>0, 88</value>
   </data>
   <data name="m_plFormatting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1052,17 +992,17 @@
   <data name="m_tsddPrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="m_tsddPrint.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
