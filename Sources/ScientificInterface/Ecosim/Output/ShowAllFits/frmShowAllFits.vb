@@ -400,10 +400,6 @@ Namespace Ecosim
                 m_lShownPlotsType.Add(eTimeSeriesType.CatchesRel)
             End If
 
-            If Me.m_chkShowDiscards.Checked Then
-                m_lShownPlotsType.Add(eTimeSeriesType.la)
-            End If
-
             Me.m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
 
             Me.UpdatePlots()
@@ -758,9 +754,7 @@ Namespace Ecosim
         Private Sub OnShowDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_chkShowB.CheckedChanged,
                     m_chkShowZ.CheckedChanged,
-                    m_chkShowCatch.CheckedChanged,
-                    m_chkShowLandings.CheckedChanged,
-                    m_chkShowDiscards.CheckedChanged
+                    m_chkShowCatch.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
             Me.SetPlotTypes()
