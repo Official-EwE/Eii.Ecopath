@@ -1006,6 +1006,7 @@
     <Content Include="Includes\SourceLibrary.dll" />
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
+    <None Include="Resources\AddHS.png" />
     <Content Include="Resources\Annual.png" />
     <None Include="Resources\saveOutputHS.png" />
     <None Include="Resources\openOutputHS.png" />
