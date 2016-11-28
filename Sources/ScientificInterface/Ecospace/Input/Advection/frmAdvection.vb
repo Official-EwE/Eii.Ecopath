@@ -115,9 +115,6 @@ Namespace Ecospace.Advection
                 'Me.m_tsAdvection = Nothing
             End If
 
-            ' CWJ 2Nov16: Neither the upwelling threshold or pp multiplier are implemented in the current code, i.e. upwelling velocities are not calculated correctly
-            Me.m_plParameters.Visible = False
-
             Me.UpdateControls()
 
         End Sub
