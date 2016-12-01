@@ -3769,10 +3769,11 @@ Public Class cEcoSpace
                                 'C(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
                                 'Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
                                 If m_Data.IsAdvected(ip) Then
+                                    'jb 1-Dec-2016 Include cell width scaler in Y velocity movements
                                     If m_Data.Yvel(i, j) > 0 Then
-                                        Bcw(i + 1, j, ip) = Bcw(i + 1, j, ip) + m_Data.Yvel(i, j) * AdScale
+                                        Bcw(i + 1, j, ip) = Bcw(i + 1, j, ip) + m_Data.Yvel(i, j) * AdScale * m_Data.Width(i)
                                     Else
-                                        C(i, j, ip) = C(i, j, ip) - m_Data.Yvel(i, j) * AdScale
+                                        C(i, j, ip) = C(i, j, ip) - m_Data.Yvel(i, j) * AdScale * m_Data.Width(i)
                                     End If
 
                                 End If
