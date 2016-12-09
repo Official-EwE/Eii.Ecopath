@@ -274,10 +274,6 @@ Namespace Ecopath
 
             Me.setEstimateWhat()
 
-            'jb clear out missing array and recompute it in FindMissing() this does not really need to happen every run
-            'only if something changes
-            ReDim missing(m_Data.NumGroups, 4)
-            'ReDim missingDiets(m_Data.NumGroups, m_Data.NumGroups)
             Me.FindMissing()
 
             Try
@@ -1131,8 +1127,13 @@ Namespace Ecopath
 
         End Function
 
-        Private Function FindMissing() As Boolean
+        Friend Function FindMissing() As Boolean
             Dim i As Integer
+
+            'jb clear out missing array and recompute it in FindMissing() this does not really need to happen every run
+            'only if something changes
+            ReDim missing(m_Data.NumGroups, 4)
+            'ReDim missingDiets(m_Data.NumGroups, m_Data.NumGroups)
 
             'jb in Ewe this also included a test for Biomass/Area bh() for detritus groups 
             'the test is only performed once then missing values are let through??????
