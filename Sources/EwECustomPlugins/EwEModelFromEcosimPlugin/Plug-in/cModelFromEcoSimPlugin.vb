@@ -290,7 +290,8 @@ Public Class cModelFromEcosimPluginPoint
             Select Case Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime,
                                                  Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
                 Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened, eDatasourceAccessType.Success
-                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, iYear, strModelName), eStatusFlags.OK)
+                    Dim dt As New Date(Me.m_core.EcosimFirstYear - 1 + iYear, iMonth + 1, 1)
+                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, dt.ToShortDateString(), strModelName), eStatusFlags.OK)
                 Case eDatasourceAccessType.Failed_CannotSave
                     Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NOACCESS, strModelPath), eStatusFlags.ErrorEncountered)
                 Case eDatasourceAccessType.Failed_OSUnsupported
