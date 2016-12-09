@@ -17,5 +17,8 @@
     <Setting Name="WPower" Type="System.Single" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="Month" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

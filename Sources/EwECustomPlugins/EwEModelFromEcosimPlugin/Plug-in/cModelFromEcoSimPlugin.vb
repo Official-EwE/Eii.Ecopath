@@ -270,39 +270,52 @@ Public Class cModelFromEcosimPluginPoint
         Dim strModelName As String = ""
         Dim strModelPath As String = ""
         Dim DBCreated As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
-        Dim iMonth As Integer = iTime Mod cCore.N_MONTHS
-        Dim iYear As Integer = CInt(iTime / cCore.N_MONTHS)
 
-        If (Not Me.m_bAutosaving) Then Return
-        If (iMonth <> 0) Then Return
+        Try
 
-        ' Is generator explicitly enabled and should a model be created for the current time step?
-        If (Me.m_data.CreateModel(iYear)) Then
+            Dim nStepsPerYear As Integer = CInt(Me.m_core.nEcosimYears / Me.m_core.nEcosimTimeSteps)
+            Dim iMonth As Integer = iTime Mod nStepsPerYear
+            Dim iYear As Integer = CInt(iTime / nStepsPerYear)
 
-            ' #Yes: generate
-            strModelName = Me.m_data.ModelName(iYear)
-            strModelPath = Path.Combine(Me.m_data.OutputPath, _
+            If (Not Me.m_bAutosaving) Then Return
+            If (iMonth <> (My.Settings.Month - 1)) Then Return
+
+            ' Is generator explicitly enabled and should a model be created for the current time step?
+            If (Me.m_data.CreateModel(iYear)) Then
+
+                ' #Yes: generate
+                strModelName = Me.m_data.ModelName(iYear)
+                strModelPath = Path.Combine(Me.m_data.OutputPath,
                                         Path.ChangeExtension(strModelName, cDataSourceFactory.GetDefaultExtension(Me.m_data.OutputFormat)))
 
-            ' Go Jimmy
-            cApplicationStatusNotifier.StartProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_GENERATING_MODEL, strModelName))
+                ' Go Jimmy
+                cApplicationStatusNotifier.StartProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_GENERATING_MODEL, strModelName))
 
-            Select Case Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime,
-                                                 Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
-                Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened, eDatasourceAccessType.Success
-                    Dim dt As New Date(Me.m_core.EcosimFirstYear - 1 + iYear, iMonth + 1, 1)
-                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, dt.ToShortDateString(), strModelName), eStatusFlags.OK)
-                Case eDatasourceAccessType.Failed_CannotSave
-                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NOACCESS, strModelPath), eStatusFlags.ErrorEncountered)
-                Case eDatasourceAccessType.Failed_OSUnsupported
-                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NODRIVERS, strModelPath), eStatusFlags.ErrorEncountered)
-                Case Else
-                    Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_SEELOG, strModelPath), eStatusFlags.ErrorEncountered)
-            End Select
+                Try
 
-            cApplicationStatusNotifier.EndProgress(Me.m_core)
+                    Select Case Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime,
+                                                     Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
+                        Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened, eDatasourceAccessType.Success
+                            Dim dt As New Date(Me.m_core.EcosimFirstYear - 1 + iYear, iMonth + 1, 1)
+                            Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, dt.ToShortDateString(), strModelName), eStatusFlags.OK)
+                        Case eDatasourceAccessType.Failed_CannotSave
+                            Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NOACCESS, strModelPath), eStatusFlags.ErrorEncountered)
+                        Case eDatasourceAccessType.Failed_OSUnsupported
+                            Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NODRIVERS, strModelPath), eStatusFlags.ErrorEncountered)
+                        Case Else
+                            Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_SEELOG, strModelPath), eStatusFlags.ErrorEncountered)
+                    End Select
+                Catch ex As Exception
 
-        End If
+                End Try
+
+                cApplicationStatusNotifier.EndProgress(Me.m_core)
+
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 #End Region ' Ecosim integration
