@@ -113,6 +113,18 @@ Namespace My
                 Me("WPower") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
+        Public Property Month() As Integer
+            Get
+                Return CType(Me("Month"),Integer)
+            End Get
+            Set
+                Me("Month") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
