@@ -24,6 +24,7 @@ Option Strict On
 Imports System.Globalization
 Imports System.Text
 Imports EwECore.DataSources
+Imports EwECore.Ecopath
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
@@ -671,14 +672,33 @@ Namespace Samples
             If (Not Me.m_core.StateMonitor.HasEcopathLoaded) Then Return False
 
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecopath As cEcoPathModel = Me.m_core.m_EcoPath
+
+            ecopath.FindMissing()
 
             ' Restore parameters
-            For iGroup As Integer = 1 To epdata.NumGroups
-                epdata.B(iGroup) = s.B(iGroup)
-                epdata.PB(iGroup) = s.PB(iGroup)
-                epdata.QB(iGroup) = s.QB(iGroup)
-                epdata.EE(iGroup) = s.EE(iGroup)
+            'user wants to keep the best fit parameters
+            For iGroup As Integer = 1 To m_core.nGroups
+
+                If ecopath.missing(iGroup, 1) = False Then
+                    epdata.Binput(iGroup) = s.B(iGroup)
+                    epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
+                End If
+
+                If ecopath.missing(iGroup, 2) = False Then
+                    epdata.PBinput(iGroup) = s.PB(iGroup)
+                End If
+
+                If ecopath.missing(iGroup, 3) = False Then
+                    epdata.QBinput(iGroup) = s.QB(iGroup)
+                End If
+
+                If ecopath.missing(iGroup, 4) = False Then
+                    epdata.EEinput(iGroup) = s.EE(iGroup)
+                End If
+
                 epdata.BA(iGroup) = s.BA(iGroup)
+
                 For iFleet As Integer = 1 To epdata.NumFleet
                     epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)
                     epdata.Discard(iFleet, iGroup) = s.Discard(iFleet, iGroup)
@@ -690,19 +710,18 @@ Namespace Samples
                 If (epdata.QBinput(iGroup) >= 0) Then epdata.QBinput(iGroup) = s.QB(iGroup)
                 If (epdata.EEinput(iGroup) >= 0) Then epdata.EEinput(iGroup) = s.EE(iGroup)
                 If (epdata.BAInput(iGroup) >= 0) Then epdata.BAInput(iGroup) = s.BA(iGroup)
-            Next
 
-            For iPred As Integer = 1 To epdata.NumLiving
                 For iPrey As Integer = 0 To epdata.NumGroups
-                    epdata.DC(iPred, iPrey) = s.DC(iPred, iPrey)
-                    epdata.DCInput(iPred, iPrey) = s.DC(iPred, iPrey)
+                    epdata.DC(iGroup, iPrey) = s.DC(iGroup, iPrey)
+                    epdata.DCInput(iGroup, iPrey) = s.DC(iGroup, iPrey)
                 Next
             Next
+
             Me.m_core.m_EcoPath.DetritusCalculations()
             Me.m_data.m_loaded = s
 
-            ' Report 'DataAddedOrRemoved' to prevent this from further dirtying the datasource
-            Me.m_core.onChanged(Me, eMessageType.DataAddedOrRemoved)
+            ' Report an inactive message type to prevent dirtying the datasource
+            Me.m_core.onChanged(Me, eMessageType.DataImport)
 
             Return True
 
