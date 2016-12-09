@@ -169,7 +169,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Year {0} saved to {1}.
+        '''  Looks up a localized string similar to Ecosim time {0} saved to {1}.
         '''</summary>
         Friend ReadOnly Property STATUS_SAVE_SUCCESS() As String
             Get
