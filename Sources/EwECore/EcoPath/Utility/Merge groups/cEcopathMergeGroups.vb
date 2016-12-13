@@ -217,6 +217,8 @@ Public Class cEcopathMergeGroups
                               estimate As eEstimate, bCalcEstimate As Boolean) As Boolean
 
         Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim taxonds As cTaxonDataStructures = Me.m_core.m_TaxonData
 
         Me.m_data.IndexTarget = agg1
         Me.m_data.IndexMerge = agg2
@@ -230,6 +232,9 @@ Public Class cEcopathMergeGroups
         Dim Btot As Single = (ecopathds.B(agg1) + ecopathds.B(agg2))
         Dim Qtot As Single = (ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.B(agg2) * ecopathds.QB(agg2))
         Dim Ptot As Single = (ecopathds.B(agg1) * ecopathds.PB(agg1) + ecopathds.B(agg2) * ecopathds.PB(agg2))
+        Dim Ctot As Single = ecopathds.fCatch(agg1) + ecopathds.fCatch(agg2)
+
+        If (0 = Ctot) Then Ctot = 1 ' To prevent division by zero
 
         Me.m_data.PBinput = (ecopathds.PB(agg1) * ecopathds.B(agg1) + ecopathds.PB(agg2) * ecopathds.B(agg2)) / Btot
         Me.m_data.BaBi = (ecopathds.BaBi(agg1) * ecopathds.B(agg1) + ecopathds.BaBi(agg2) * ecopathds.B(agg2)) / Btot
@@ -335,11 +340,9 @@ Public Class cEcopathMergeGroups
             Case eEstimate.EE : m_data.EEinput = cCore.NULL_VALUE
         End Select
 
+        ' Stanza
         If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
 
-            ' Perform stanza merge
-
-            Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
             Dim iStanza As Integer = -1
             Dim iLifestage1 As Integer = -1
             Dim iLifestage2 As Integer = -1
@@ -366,6 +369,20 @@ Public Class cEcopathMergeGroups
 
         End If
 
+        ' Taxa
+        For i As Integer = 1 To taxonds.NumTaxon
+            If Not (taxonds.IsTaxonStanza(i)) Then
+                Select Case taxonds.TaxonTarget(i)
+                    Case Me.m_data.IndexTarget
+                        Me.m_data.TaxonPropBiomass(i) = ecopathds.B(agg1) * taxonds.TaxonPropBiomass(i) / Btot
+                        Me.m_data.TaxonPropCatch(i) = ecopathds.fCatch(agg1) * taxonds.TaxonPropCatch(i) / Ctot
+                    Case Me.m_data.IndexMerge
+                        Me.m_data.TaxonPropBiomass(i) = ecopathds.B(agg2) * taxonds.TaxonPropBiomass(i) / Btot
+                        Me.m_data.TaxonPropCatch(i) = ecopathds.fCatch(agg2) * taxonds.TaxonPropCatch(i) / Ctot
+                End Select
+            End If
+        Next
+
         Me.m_data.IsValid = Not String.IsNullOrWhiteSpace(Me.m_data.GroupName)
 
     End Function
@@ -383,6 +400,8 @@ Public Class cEcopathMergeGroups
         If Not Me.m_data.IsValid Then Return False
 
         Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim taxonds As cTaxonDataStructures = Me.m_core.m_TaxonData
         Dim agg1 As Integer = Me.m_data.IndexTarget
 
         ' Merge generic fields
@@ -417,21 +436,25 @@ Public Class cEcopathMergeGroups
         Next
         ecopathds.DtImp(agg1) = Me.m_data.DtImp
 
-        'Landing and discards are just summed
+        ' Fisheries
         For i As Integer = 1 To ecopathds.NumFleet
             ecopathds.Market(i, agg1) = Me.m_data.Market(i)
             ecopathds.Landing(i, agg1) = Me.m_data.Landing(i)
             ecopathds.Discard(i, agg1) = Me.m_data.Discard(i)
         Next
 
+        ' Stanza
         If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
-
-            Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
-
             stanzads.Age1(Me.m_data.iStanza, Me.m_data.iLifeStage) = Me.m_data.Age1(Me.m_data.iStanza, Me.m_data.iLifeStage)
             stanzads.Stanza_Z(Me.m_data.iStanza, Me.m_data.iLifeStage) = Me.m_data.StanzaZ(Me.m_data.iStanza, Me.m_data.iLifeStage)
-
         End If
+
+        ' Taxa
+        For Each iTaxon As Integer In Me.m_data.TaxonPropBiomass.Keys
+            taxonds.TaxonTarget(iTaxon) = agg1
+            taxonds.TaxonPropBiomass(iTaxon) = Me.m_data.TaxonPropBiomass(iTaxon)
+            taxonds.TaxonPropCatch(iTaxon) = Me.m_data.TaxonPropCatch(iTaxon)
+        Next
 
         ' Remark magic
         Me.MergeRemarks(eDataTypes.EcoPathGroupInput, ecopathds.GroupDBID(Me.m_data.IndexTarget), ecopathds.GroupDBID(Me.m_data.IndexMerge))

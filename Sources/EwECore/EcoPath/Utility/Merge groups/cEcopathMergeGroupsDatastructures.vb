@@ -71,6 +71,10 @@ Public Class cEcopathMergeGroupsDatastructures
     Public Age1(,) As Integer
     Public StanzaZ(,) As Single
 
+    ' Taxa
+    Public TaxonPropBiomass As New Dictionary(Of Integer, Single)
+    Public TaxonPropCatch As New Dictionary(Of Integer, Single)
+
     Public IsValid As Boolean = False
 
     Public Sub Init(ecopathds As cEcopathDataStructures, stanzaDS As cStanzaDatastructures)
@@ -94,6 +98,9 @@ Public Class cEcopathMergeGroupsDatastructures
 
         ReDim StanzaZ(stanzaDS.Nsplit, stanzaDS.MaxStanza)
         Array.Copy(stanzaDS.Stanza_Z, StanzaZ, StanzaZ.Length)
+
+        Me.TaxonPropBiomass.Clear()
+        Me.TaxonPropCatch.Clear()
 
     End Sub
 

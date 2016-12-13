@@ -692,6 +692,7 @@
     <Compile Include="Plugin Integration\cPluginMenuHandler.vb" />
     <Compile Include="Plugin Integration\cPluginNavTreeHandler.vb" />
     <Compile Include="Properties\cFormulaProperty.vb" />
+    <Compile Include="Properties\cScientificNameProperty.vb" />
     <Compile Include="Properties\cStringProperty.vb" />
     <Compile Include="Properties\cBooleanProperty.vb" />
     <Compile Include="Properties\cIntegerProperty.vb" />
