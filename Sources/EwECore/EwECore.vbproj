@@ -505,7 +505,7 @@
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />
     <Compile Include="EcoPath\Input Output\cEcoPathStats.vb" />
-    <Compile Include="Taxon\cTaxon.vb" />
+    <Compile Include="SpatialTemporal\cTaxon.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimFleetOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimOutput.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimResultWriter.vb" />

@@ -773,7 +773,6 @@ Public Class cEcoPathGroupOutput
             End If
         End Set
     End Property
-    'End Joeh
 
     Public Property GS() As Single
         Get
