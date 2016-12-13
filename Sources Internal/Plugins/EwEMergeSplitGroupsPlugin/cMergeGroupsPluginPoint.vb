@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -77,6 +77,8 @@ Public Class cMergeGroupsPluginPoint
         Dim engine As New cEcopathMergeGroups(core)
 
         If Not engine.CanMergeGroups(True) Then Return
+
+        Me.m_uic.Core.RunEcoPath()
 
         Dim dlg As New dlgMergeGroups(Me.m_uic)
         dlg.ShowDialog()

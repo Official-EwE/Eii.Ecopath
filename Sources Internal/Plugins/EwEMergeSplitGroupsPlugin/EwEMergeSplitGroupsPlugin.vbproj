@@ -105,31 +105,39 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.5072.22113, Culture=neutral, PublicKeyToken=dd4210ebb9723de9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cMergeGroupsPluginPoint.vb" />
-    <Compile Include="dlgMergeGroups.Designer.vb">
+    <Compile Include="UI\dlgMergeGroups.Designer.vb">
       <DependentUpon>dlgMergeGroups.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgMergeGroups.vb">
+    <Compile Include="UI\dlgMergeGroups.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -147,9 +155,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UI\gridTaxonomy.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\gridDietComposition.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\gridBasicInput.vb">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgMergeGroups.resx">
+    <EmbeddedResource Include="UI\dlgMergeGroups.resx">
       <DependentUpon>dlgMergeGroups.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">

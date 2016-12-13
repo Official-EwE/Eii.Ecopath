@@ -71,6 +71,60 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to est.
+        '''</summary>
+        Friend ReadOnly Property HEADER_EST() As String
+            Get
+                Return ResourceManager.GetString("HEADER_EST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to in.
+        '''</summary>
+        Friend ReadOnly Property HEADER_IN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_IN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Merge.
+        '''</summary>
+        Friend ReadOnly Property HEADER_MERGE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MERGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prop. B.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PROP_B() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROP_B", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prop. C.
+        '''</summary>
+        Friend ReadOnly Property HEADER_PROP_C() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PROP_C", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Variable.
+        '''</summary>
+        Friend ReadOnly Property HEADER_VARIABLE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_VARIABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Merge groups....
         '''</summary>
         Friend ReadOnly Property MENUITEM_MERGE_TEXT() As String

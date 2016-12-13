@@ -18,12 +18,12 @@
 ' ===============================================================================
 '
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class dlgConfig
     Inherits System.Windows.Forms.UserControl
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -40,7 +40,7 @@ Partial Class dlgConfig
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_tbxFolder = New System.Windows.Forms.TextBox()
@@ -50,7 +50,6 @@ Partial Class dlgConfig
         Me.m_tbxDescription = New System.Windows.Forms.TextBox()
         Me.m_tbxName = New System.Windows.Forms.TextBox()
         Me.m_lbxFiles = New System.Windows.Forms.ListBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Label1
@@ -127,24 +126,13 @@ Partial Class dlgConfig
         Me.m_lbxFiles.IntegralHeight = False
         Me.m_lbxFiles.Location = New System.Drawing.Point(81, 88)
         Me.m_lbxFiles.Name = "m_lbxFiles"
-        Me.m_lbxFiles.Size = New System.Drawing.Size(191, 207)
+        Me.m_lbxFiles.Size = New System.Drawing.Size(191, 232)
         Me.m_lbxFiles.TabIndex = 7
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(53, 301)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(81, 17)
-        Me.CheckBox1.TabIndex = 8
-        Me.CheckBox1.Text = "CheckBox1"
-        Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'dlgConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.m_lbxFiles)
         Me.Controls.Add(Me.m_tbxName)
         Me.Controls.Add(Me.m_tbxDescription)
@@ -167,5 +155,4 @@ Partial Class dlgConfig
     Friend WithEvents m_tbxDescription As System.Windows.Forms.TextBox
     Friend WithEvents m_tbxName As System.Windows.Forms.TextBox
     Friend WithEvents m_lbxFiles As System.Windows.Forms.ListBox
-    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
 End Class

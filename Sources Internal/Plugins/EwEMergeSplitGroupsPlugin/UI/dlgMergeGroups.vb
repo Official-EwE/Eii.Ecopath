@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -24,8 +24,10 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -33,6 +35,8 @@ Public Class dlgMergeGroups
 
     Private m_uic As cUIContext = Nothing
     Private m_engine As cEcopathMergeGroups = Nothing
+    Private m_bInUpdate As Boolean = True
+    Private m_images As New ImageList()
 
     Public Sub New(uic As cUIContext)
 
@@ -41,6 +45,15 @@ Public Class dlgMergeGroups
 
         Me.InitializeComponent()
 
+        Me.m_images.Images.Add(SharedResources.OK)
+        Me.m_images.Images.Add(SharedResources.Warning)
+        Me.m_images.Images.Add(SharedResources.Critical)
+        Me.m_tcInputs.ImageList = Me.m_images
+
+        Me.m_grid.Init(uic, Me.m_engine.Data)
+        Me.m_gridDietComp.Init(uic, Me.m_engine.Data)
+        Me.m_gridTaxa.Init(uic, Me.m_engine.Data)
+
     End Sub
 
 #Region " Overrides "
@@ -48,12 +61,15 @@ Public Class dlgMergeGroups
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Debug.Assert(Me.m_uic.Core.StateMonitor.HasEcopathRan)
+
         Dim core As cCore = Me.m_uic.Core
 
         For i As Integer = 1 To core.nGroups
             Me.m_cmbTarget.Items.Add(core.EcoPathGroupInputs(i))
         Next
 
+        Me.m_bInUpdate = False
         Me.UpdateControls()
 
     End Sub
@@ -67,7 +83,7 @@ Public Class dlgMergeGroups
 #Region " Events "
 
     Private Sub OnFormatGroupItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-        Handles m_cmbTarget.Format, m_clbGroups.Format
+        Handles m_cmbTarget.Format, m_cmbMerge.Format
 
         Try
             Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
@@ -89,38 +105,44 @@ Public Class dlgMergeGroups
         Dim iTarget As Integer = Me.SelectedTarget()
         Dim grps As Integer() = Me.m_engine.CompatibleGroups(iTarget)
 
-        Me.m_clbGroups.Items.Clear()
+        Me.m_cmbMerge.Items.Clear()
         For i As Integer = 0 To grps.Count - 1
-            Me.m_clbGroups.Items.Add(Me.m_uic.Core.EcoPathGroupInputs(grps(i)))
+            Me.m_cmbMerge.Items.Add(Me.m_uic.Core.EcoPathGroupInputs(grps(i)))
         Next
 
         If (iTarget > 0) Then
             Me.m_tbxNewName.Text = Me.m_uic.Core.EcoPathGroupInputs(iTarget).Name
         End If
 
-        Me.UpdateControls()
+        Me.UpdatePreview(True)
+
+    End Sub
+
+    Private Sub OnMergeSelected(sender As Object, e As EventArgs) _
+        Handles m_cmbMerge.SelectedIndexChanged
+
+        Me.UpdatePreview(True)
 
     End Sub
 
     Private Sub OnNameChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tbxNewName.TextChanged
 
-        Me.UpdateControls()
+        Me.UpdatePreview(False)
 
     End Sub
 
-    Private Sub OnGroupCheck(sender As Object, e As ItemCheckEventArgs) _
-        Handles m_clbGroups.ItemCheck
+    Private Sub OnEstimateVarChanged(sender As Object, e As EventArgs) _
+        Handles m_rbB.CheckedChanged, m_rbPB.CheckedChanged, m_rbQB.CheckedChanged, m_rbEE.CheckedChanged
 
-        ' Lazy update when item check is complete
-        BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+        Me.UpdatePreview(False)
 
     End Sub
 
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOK.Click
 
-        If (Me.m_engine.Merge(Me.SelectedGroups(), Me.m_tbxNewName.Text)) Then
+        If (Me.m_engine.Merge()) Then
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
         Else
@@ -158,28 +180,93 @@ Public Class dlgMergeGroups
 
     End Function
 
-    Private Function SelectedGroups() As Integer()
+    Private Function SelectedMerge() As Integer
 
-        Dim lgroups As New List(Of Integer)
-        Dim iTarget As Integer = Me.SelectedTarget
+        Dim item As Object = Me.m_cmbMerge.SelectedItem
 
-        If (iTarget > 0) Then lgroups.Add(iTarget)
-
-        For Each item As Object In Me.m_clbGroups.CheckedItems
-            Dim group As cCoreGroupBase = DirectCast(item, cCoreGroupBase)
-            If Not lgroups.Contains(group.Index) Then lgroups.Add(group.Index)
-        Next
-        Return lgroups.ToArray()
+        If (item Is Nothing) Then Return cCore.NULL_VALUE
+        If (Not TypeOf (item) Is cCoreGroupBase) Then Return cCore.NULL_VALUE
+        Return DirectCast(item, cCoreGroupBase).Index
 
     End Function
 
+    Private Function SelectedName() As String
+
+        Return Me.m_tbxNewName.Text
+
+    End Function
+
+    Private Function SelectedEstimation() As cEcopathMergeGroups.eEstimate
+        If Me.m_rbB.Checked Then Return cEcopathMergeGroups.eEstimate.Biomass
+        If Me.m_rbPB.Checked Then Return cEcopathMergeGroups.eEstimate.PB
+        If Me.m_rbQB.Checked Then Return cEcopathMergeGroups.eEstimate.QB
+        If Me.m_rbEE.Checked Then Return cEcopathMergeGroups.eEstimate.EE
+        Return cEcopathMergeGroups.eEstimate.NotSet
+    End Function
+
+    'Private Function SelectedGroups() As Integer()
+
+    '    Dim lgroups As New List(Of Integer)
+    '    Dim iTarget As Integer = Me.SelectedTarget
+
+    '    If (iTarget > 0) Then lgroups.Add(iTarget)
+
+    '    For Each item As Object In Me.m_clbGroups.CheckedItems
+    '        Dim group As cCoreGroupBase = DirectCast(item, cCoreGroupBase)
+    '        If Not lgroups.Contains(group.Index) Then lgroups.Add(group.Index)
+    '    Next
+    '    Return lgroups.ToArray()
+
+    'End Function
+
     Private Sub UpdateControls()
 
-        Dim iTarget As Integer = Me.SelectedTarget()
-        Dim bCanMerge As Boolean = Me.m_engine.CanMergeGroups(SelectedGroups(), Me.m_tbxNewName.Text) And (iTarget > 0)
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
 
-        Me.m_clbGroups.Enabled = (iTarget > 0)
-        Me.m_btnOK.Enabled = bCanMerge
+        Dim data As cEcopathMergeGroupsDatastructures = Me.m_engine.Data
+
+        Me.m_rbB.Checked = (data.Estimate = cEcopathMergeGroups.eEstimate.Biomass)
+        Me.m_rbPB.Checked = (data.Estimate = cEcopathMergeGroups.eEstimate.PB)
+        Me.m_rbQB.Checked = (data.Estimate = cEcopathMergeGroups.eEstimate.QB)
+        Me.m_rbEE.Checked = (data.Estimate = cEcopathMergeGroups.eEstimate.EE)
+
+        Dim iTarget As Integer = Me.SelectedTarget()
+        Dim iMerge As Integer = Me.SelectedMerge()
+        Dim bHasEstimate As Boolean = (Me.SelectedEstimation <> cEcopathMergeGroups.eEstimate.NotSet)
+        Dim bCanMerge As Boolean = iTarget > 0 And iMerge > 0
+
+        Me.m_cmbMerge.Enabled = (iTarget > 0)
+        Me.m_btnOK.Enabled = bCanMerge And bHasEstimate
+
+        Me.m_tabBasicInput.ImageIndex = cSystemUtils.IIF(bCanMerge And bHasEstimate, 0, 2)
+        Me.m_tabDiets.ImageIndex = 0
+        Me.m_tabTaxonomy.ImageIndex = 0
+
+        Me.m_bInUpdate = False
+
+    End Sub
+
+    Private Sub UpdatePreview(bCalcEstimation As Boolean)
+
+        If (Me.m_bInUpdate) Then Return
+
+        Try
+            Me.m_engine.Calculate(Me.SelectedTarget(), Me.SelectedMerge(), Me.SelectedName(), Me.SelectedEstimation(), bCalcEstimation)
+            Me.m_grid.UpdateContent()
+
+            If bCalcEstimation Then
+                Me.m_gridDietComp.RefreshContent()
+            Else
+                Me.m_gridDietComp.UpdateContent()
+            End If
+            ' Full refresh
+            Me.m_gridTaxa.RefreshContent()
+
+        Catch ex As Exception
+
+        End Try
+        Me.UpdateControls()
 
     End Sub
 
@@ -201,6 +288,7 @@ Public Class dlgMergeGroups
         End Try
 
     End Sub
+
 
 #End Region ' Internals
 

@@ -238,7 +238,7 @@ Public Class cEcopathMergeGroups
 
         Me.m_data.PBinput = (ecopathds.PB(agg1) * ecopathds.B(agg1) + ecopathds.PB(agg2) * ecopathds.B(agg2)) / Btot
         Me.m_data.BaBi = (ecopathds.BaBi(agg1) * ecopathds.B(agg1) + ecopathds.BaBi(agg2) * ecopathds.B(agg2)) / Btot
-        Me.m_data.BA = ecopathds.BA(agg1) + ecopathds.BA(agg2)
+        Me.m_data.BAInput = ecopathds.BA(agg1) + ecopathds.BA(agg2)
         Me.m_data.Immig = ecopathds.Immig(agg1) + ecopathds.Immig(agg2)
         Me.m_data.Emigration = ecopathds.Emigration(agg1) + ecopathds.Emigration(agg2)
         Me.m_data.Emig = (ecopathds.Emig(agg1) * ecopathds.B(agg1) + ecopathds.Emig(agg2) * ecopathds.B(agg2)) / Btot
@@ -270,8 +270,6 @@ Public Class cEcopathMergeGroups
                     Me.m_data.DCInput(agg1, iPrey) = (ecopathds.DCInput(agg1, iPrey) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, iPrey) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
                 Next iPrey
                 Me.m_data.DCInput(agg1, 0) = (ecopathds.DCInput(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
-
-
             End If
             Me.m_data.QBinput = Qtot / Btot
         Else
@@ -410,7 +408,7 @@ Public Class cEcopathMergeGroups
         ecopathds.BHinput(agg1) = Me.m_data.BHinput
         ecopathds.PBinput(agg1) = Me.m_data.PBinput
         ecopathds.BaBi(agg1) = Me.m_data.BaBi
-        ecopathds.BA(agg1) = Me.m_data.BA
+        ecopathds.BAInput(agg1) = Me.m_data.BAInput
         ecopathds.Immig(agg1) = Me.m_data.Immig
         ecopathds.Emigration(agg1) = Me.m_data.Emigration
         ecopathds.Emig(agg1) = Me.m_data.Emig

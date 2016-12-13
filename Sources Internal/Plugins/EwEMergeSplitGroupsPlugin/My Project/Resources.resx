@@ -124,4 +124,22 @@
   <data name="MENUITEM_MERGE_TEXT" xml:space="preserve">
     <value>Merge groups...</value>
   </data>
+  <data name="HEADER_EST" xml:space="preserve">
+    <value>est</value>
+  </data>
+  <data name="HEADER_IN" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="HEADER_MERGE" xml:space="preserve">
+    <value>Merge</value>
+  </data>
+  <data name="HEADER_VARIABLE" xml:space="preserve">
+    <value>Variable</value>
+  </data>
+  <data name="HEADER_PROP_B" xml:space="preserve">
+    <value>Prop. B</value>
+  </data>
+  <data name="HEADER_PROP_C" xml:space="preserve">
+    <value>Prop. C</value>
+  </data>
 </root>

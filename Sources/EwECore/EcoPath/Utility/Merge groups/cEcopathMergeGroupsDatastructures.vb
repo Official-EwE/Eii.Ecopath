@@ -40,7 +40,6 @@ Public Class cEcopathMergeGroupsDatastructures
     Public BH As Single
     Public BAInput As Single
     Public BaBi As Single
-    Public BA As Single
     Public PBinput As Single
     Public QBinput As Single
     Public EEinput As Single
@@ -85,7 +84,11 @@ Public Class cEcopathMergeGroupsDatastructures
         ReDim DiscardFate(ecopathds.NumGroups)
 
         ReDim DCInput(ecopathds.NumGroups, ecopathds.NumGroups)
-        Array.Copy(ecopathds.DCInput, DCInput, DCInput.Length)
+        For iPred As Integer = 1 To ecopathds.NumLiving
+            For iPrey As Integer = 0 To ecopathds.NumGroups
+                DCInput(iPred, iPrey) = ecopathds.DCInput(iPred, iPrey)
+            Next
+        Next
 
         ReDim BaseStanza(stanzaDS.Nsplit)
         Array.Copy(stanzaDS.BaseStanza, BaseStanza, BaseStanza.Length)
