@@ -196,7 +196,8 @@
     <Compile Include="EcoBase\cEcobaseData.vb" />
     <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
     <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
-    <Compile Include="EcoPath\Utility\cEcopathMergeGroups.vb" />
+    <Compile Include="EcoPath\Utility\Merge groups\cEcopathMergeGroups.vb" />
+    <Compile Include="EcoPath\Utility\Merge groups\cEcopathMergeGroupsDatastructures.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimEnviroInputData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />

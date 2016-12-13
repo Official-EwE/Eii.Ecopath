@@ -46,19 +46,26 @@ Public Class cEcospaceResultWriterFactory
     Friend Shared Function GetWriters(ByVal pm As cPluginManager) As IEcospaceResultsWriter()
 
         Dim writers As New List(Of IEcospaceResultsWriter)
-        For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
-            If (GetType(IEcospaceResultsWriter).IsAssignableFrom(t) And Not t.IsAbstract()) Then
-                writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
-            End If
-        Next
 
-        ' Plug-in manager provided?
-        If (pm IsNot Nothing) Then
-            ' #Yes: see if a plug-in based writer supports the requested format
-            For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
-                writers.Add(ip)
+        Try
+
+            For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
+                If (GetType(IEcospaceResultsWriter).IsAssignableFrom(t) And Not t.IsAbstract()) Then
+                    writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
+                End If
             Next
-        End If
+
+            ' Plug-in manager provided?
+            If (pm IsNot Nothing) Then
+                ' #Yes: see if a plug-in based writer supports the requested format
+                For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
+                    writers.Add(ip)
+                Next
+            End If
+
+        Catch ex As Exception
+            cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters()")
+        End Try
 
         Return writers.ToArray()
 

@@ -81,15 +81,15 @@ Namespace Ecopath.Input
             Next
 
             ' # DietImport header cell
-            Me(rowCnt - 3, 0) = New EwERowHeaderCell(CStr(rowCnt - 3))
+            Me(rowCnt - 3, 0) = New EwERowHeaderCell()
             Me(rowCnt - 3, 1) = New EwERowHeaderCell(SharedResources.HEADER_IMPORT)
 
             ' # Sum header cell
-            Me(rowCnt - 2, 0) = New EwERowHeaderCell(CStr(rowCnt - 2))
+            Me(rowCnt - 2, 0) = New EwERowHeaderCell()
             Me(rowCnt - 2, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
 
             ' # Sum - 1 header cell
-            Me(rowCnt - 1, 0) = New EwERowHeaderCell(CStr(rowCnt - 1))
+            Me(rowCnt - 1, 0) = New EwERowHeaderCell()
             Me(rowCnt - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_1_MINUS_SUM)
 
             Me.FixedColumns = 2
