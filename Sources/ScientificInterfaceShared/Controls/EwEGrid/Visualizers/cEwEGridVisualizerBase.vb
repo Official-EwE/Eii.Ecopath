@@ -45,7 +45,7 @@ Namespace Controls.EwEGrid
 #Region " Private bits "
 
         ''' <summary>Border width for Highlighted cells</summary>
-        Private m_nHighlightBorderWidth As Integer = 4
+        Private m_nHighlightBorderWidth As Integer = 2
         ''' <summary>Text indentation level.</summary>
         Private m_iTextIndent As Integer = 0
 

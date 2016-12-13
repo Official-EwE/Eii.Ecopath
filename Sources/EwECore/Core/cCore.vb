@@ -12798,14 +12798,44 @@ Public Class cCore
 
     End Property
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get all auxillary data that related to a given core object.
+    ''' </summary>
+    ''' <param name="source">The core object to retrieve <see cref="cAuxiliaryData">auxillary data</see> for.</param>
+    ''' <param name="bIncludeReferrals"><para>Flag stating if also auxillary data 
+    ''' needs to be found for other core objects that use this object as a
+    ''' secundary index.</para>
+    ''' <para>For instance, when searching for group input remarks, setting 
+    ''' this flag to false will only return remarks allocated to the group.
+    ''' Setting this flag to true will also return remarks for fleet landings
+    ''' that refer to the group.</para></param>
+    ''' <returns></returns>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property AuxillaryData(source As cCoreInputOutputBase,
+                                           Optional ByVal bIncludeReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
+        Get
+            Return Me.AuxillaryData(source.DataType, source.DBID, bIncludeReferrals)
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Get all auxillary data that related to a given object.
     ''' </summary>
-    ''' <param name="dt"></param>
-    ''' <param name="iDBID"></param>
-    ''' <param name="bIncldueReferrals"></param>
+    ''' <param name="dt">The datatype of the core object.</param>
+    ''' <param name="iDBID">The database ID of the core object.</param>
+    ''' <param name="bIncludeReferrals"><para>Flag stating if also auxillary data 
+    ''' needs to be found for other core objects that use this object as a
+    ''' secundary index.</para>
+    ''' <para>For instance, when searching for group input remarks, setting 
+    ''' this flag to false will only return remarks allocated to the group.
+    ''' Setting this flag to true will also return remarks for fleet landings
+    ''' that refer to the group.</para></param>
     ''' <returns></returns>
-    Public ReadOnly Property AuxillaryData(dt As eDataTypes, iDBID As Integer, Optional ByVal bIncldueReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property AuxillaryData(dt As eDataTypes, iDBID As Integer,
+                                           Optional ByVal bIncludeReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
         Get
             Dim dic As New Dictionary(Of String, cAuxiliaryData)
             For Each strKey As String In Me.m_dtAuxiliaryData.Keys
@@ -12813,7 +12843,7 @@ Public Class cCore
                 If vid.DataTypePrim = dt And vid.DBIDPrim = iDBID Then
                     dic(strKey) = Me.m_dtAuxiliaryData(strKey)
                 End If
-                If bIncldueReferrals And vid.DataTypeSec = dt And vid.DBIDSec = iDBID Then
+                If bIncludeReferrals And vid.DataTypeSec = dt And vid.DBIDSec = iDBID Then
                     dic(strKey) = Me.m_dtAuxiliaryData(strKey)
                 End If
             Next

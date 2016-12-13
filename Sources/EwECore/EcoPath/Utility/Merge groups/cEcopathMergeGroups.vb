@@ -29,6 +29,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
 Imports System.Drawing
+Imports EwECore.Auxiliary
 
 #End Region ' Imports
 
@@ -39,10 +40,19 @@ Imports System.Drawing
 ''' ---------------------------------------------------------------------------
 Public Class cEcopathMergeGroups
 
+    Public Enum eEstimate As Integer
+        NotSet = 0
+        Biomass
+        PB
+        QB
+        EE
+    End Enum
+
 #Region " Private variables "
 
     ''' <summary>The core that holds the source model.</summary>
     Private m_core As cCore = Nothing
+    Private m_data As cEcopathMergeGroupsDatastructures = Nothing
 
     ''' <summary>Status message.</summary>
     Private m_msgStatus As cMessage = Nothing
@@ -59,11 +69,19 @@ Public Class cEcopathMergeGroups
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As cCore)
         Me.m_core = core
+        Me.m_data = New cEcopathMergeGroupsDatastructures()
+        Me.m_data.Init(core.m_EcoPathData, core.m_Stanza)
     End Sub
 
 #End Region ' Construction
 
 #Region " Public access "
+
+    Public ReadOnly Property Data As cEcopathMergeGroupsDatastructures
+        Get
+            Return Me.m_data
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -195,106 +213,127 @@ Public Class cEcopathMergeGroups
 
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Merge two groups. This will update parameters of the <paramref name="agg1">
-    ''' first group</paramref>, and will delete the <paramref name=" agg2">second
-    ''' group</paramref> if the merge is successful.
-    ''' </summary>
-    ''' <param name="agg1">The one-based index of the first group to merge.</param>
-    ''' <param name="agg2">The one-based index of the second group to merge.</param>
-    ''' <param name="strName">The name to assign to the merged group.</param>
-    ''' <param name="bMergeColors">Flag, stating if the colour of the resulting 
-    ''' group must be an average of both group colours.</param>
-    ''' <returns>True if successful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function Merge(agg1 As Integer, agg2 As Integer, strName As String,
-                          Optional bMergeColors As Boolean = False) As Boolean
-
-        ' Sanity checks
-        If (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) = -1) Then Return False
-        If (String.IsNullOrWhiteSpace(strName)) Then Return False
+    Public Function Calculate(agg1 As Integer, agg2 As Integer, strName As String,
+                              estimate As eEstimate, bCalcEstimate As Boolean) As Boolean
 
         Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
 
-        ' Merge generic fields
-        ecopathds.GroupName(agg1) = strName
-        ecopathds.PBinput(agg1) = (ecopathds.PB(agg1) * ecopathds.B(agg1) + ecopathds.PB(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
-        ' VALIDATE_JS: BaBi allowed to be NULL?
-        ecopathds.BaBi(agg1) = (ecopathds.BaBi(agg1) * ecopathds.B(agg1) + ecopathds.BaBi(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
-        ecopathds.BA(agg1) = ecopathds.BA(agg1) + ecopathds.BA(agg2)
-        ecopathds.Immig(agg1) = ecopathds.Immig(agg1) + ecopathds.Immig(agg2)
-        ecopathds.Emigration(agg1) = ecopathds.Emigration(agg1) + ecopathds.Emigration(agg2)
-        ecopathds.Emig(agg1) = (ecopathds.Emig(agg1) * ecopathds.B(agg1) + ecopathds.Emig(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+        Me.m_data.IndexTarget = agg1
+        Me.m_data.IndexMerge = agg2
+        Me.m_data.Estimate = estimate
+        Me.m_data.GroupName = strName
+        Me.m_data.IsValid = False
+
+        ' Sanity checks
+        If (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) = -1) Then Return False
+
+        Dim Btot As Single = (ecopathds.B(agg1) + ecopathds.B(agg2))
+        Dim Qtot As Single = (ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.B(agg2) * ecopathds.QB(agg2))
+        Dim Ptot As Single = (ecopathds.B(agg1) * ecopathds.PB(agg1) + ecopathds.B(agg2) * ecopathds.PB(agg2))
+
+        Me.m_data.PBinput = (ecopathds.PB(agg1) * ecopathds.B(agg1) + ecopathds.PB(agg2) * ecopathds.B(agg2)) / Btot
+        Me.m_data.BaBi = (ecopathds.BaBi(agg1) * ecopathds.B(agg1) + ecopathds.BaBi(agg2) * ecopathds.B(agg2)) / Btot
+        Me.m_data.BA = ecopathds.BA(agg1) + ecopathds.BA(agg2)
+        Me.m_data.Immig = ecopathds.Immig(agg1) + ecopathds.Immig(agg2)
+        Me.m_data.Emigration = ecopathds.Emigration(agg1) + ecopathds.Emigration(agg2)
+        Me.m_data.Emig = (ecopathds.Emig(agg1) * ecopathds.B(agg1) + ecopathds.Emig(agg2) * ecopathds.B(agg2)) / Btot
         'Catch(Agg1) = Catch(Agg1) + Catch(Agg2)
         ' fCatch calculated on the fly from landings and discards; no need to update
-        ecopathds.det(0, agg1) = ecopathds.det(0, agg1) + ecopathds.det(0, agg2)
+        Me.m_data.Det = ecopathds.det(0, agg1) + ecopathds.det(0, agg2)
 
+        ' Discard fate for detritus groups
         If (agg1 > ecopathds.NumLiving) Then
-            For i As Integer = 1 To ecopathds.NumFleet
-                If ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2) > 0 Then
-                    ecopathds.DiscardFate(i, agg1 - ecopathds.NumLiving) = (ecopathds.Discard(i, agg1) * ecopathds.DiscardFate(i, agg1 - ecopathds.NumLiving) + ecopathds.Discard(i, agg2) * ecopathds.DiscardFate(i, agg2 - ecopathds.NumLiving)) / (ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2))
+            For iFleet As Integer = 1 To ecopathds.NumFleet
+                If ecopathds.Discard(iFleet, agg1) + ecopathds.Discard(iFleet, agg2) > 0 Then
+                    Me.m_data.DiscardFate(iFleet) = (ecopathds.Discard(iFleet, agg1) * ecopathds.DiscardFate(iFleet, agg1 - ecopathds.NumLiving) + ecopathds.Discard(iFleet, agg2) * ecopathds.DiscardFate(iFleet, agg2 - ecopathds.NumLiving)) / (ecopathds.Discard(iFleet, agg1) + ecopathds.Discard(iFleet, agg2))
                 End If
             Next
         End If
 
-        If (ecopathds.B(agg1) + ecopathds.B(agg2)) > 0 Then
-            If agg1 <= ecopathds.NumLiving Then       'Both are living
-                ecopathds.EEinput(agg1) = (ecopathds.EE(agg1) * ecopathds.B(agg1) + ecopathds.EE(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
-                If ecopathds.QB(agg1) > 0 Or ecopathds.QB(agg2) > 0 Then    'Weighted after consumption
-                    ecopathds.GS(agg1) = (ecopathds.GS(agg1) * ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.GS(agg2) * ecopathds.B(agg2) * ecopathds.QB(agg2)) / (ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.B(agg2) * ecopathds.QB(agg2))
-                End If
+        Me.m_data.EEinput = cCore.NULL_VALUE
+        Me.m_data.GS = cCore.NULL_VALUE
+
+        ' Is living?
+        If (agg1 <= ecopathds.NumLiving) Then
+            ' #Yes: do living bits
+            Me.m_data.EEinput = (ecopathds.EE(agg1) * ecopathds.B(agg1) + ecopathds.EE(agg2) * ecopathds.B(agg2)) / Btot
+
+            ' Has consumption?
+            If (Qtot > 0) Then
+                Me.m_data.GS = (ecopathds.GS(agg1) * ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.GS(agg2) * ecopathds.B(agg2) * ecopathds.QB(agg2)) / Qtot
+                For iPrey As Integer = 1 To ecopathds.NumGroups
+                    Me.m_data.DCInput(agg1, iPrey) = (ecopathds.DCInput(agg1, iPrey) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, iPrey) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
+                Next iPrey
+                Me.m_data.DCInput(agg1, 0) = (ecopathds.DCInput(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
+
+
             End If
-            ecopathds.Shadow(agg1) = (ecopathds.Shadow(agg1) * ecopathds.B(agg1) + ecopathds.Shadow(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+            Me.m_data.QBinput = Qtot / Btot
+        Else
+            ' #No: detritus
+            Me.m_data.DtImp = ecopathds.DtImp(agg1) + ecopathds.DtImp(agg2)
         End If
 
-        If (agg1 <= ecopathds.NumLiving) Then          'diet comp for living groups
-            If ecopathds.QB(agg1) > 0 Or ecopathds.QB(agg2) > 0 Then
-                Dim SumCons As Single = ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.QB(agg2) * ecopathds.B(agg2)
-                For i As Integer = 1 To ecopathds.NumGroups          'prey
-                    If ecopathds.B(i) > 0 Then        'Exclude aggregated groups
-                        If SumCons > 0 Then 'Eaten by the two groups of all prey
-                            ecopathds.DCInput(agg1, i) = (ecopathds.DCInput(agg1, i) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, i) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / SumCons
-                            If ecopathds.DCInput(agg1, i) > 0 Then ecopathds.DietWasChanged(agg1, i)
-                        End If
-                    End If
-                Next i
-                If SumCons > 0 Then ecopathds.DCInput(agg1, 0) = (ecopathds.DCInput(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / SumCons
-                ' Calculate the DC(Agg1,Import)
-                If (ecopathds.B(agg1) + ecopathds.B(agg2)) > 0 Then 'QB aggregation is only for living groups
-                    ecopathds.QBinput(agg1) = (ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.QB(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
-                End If
-            End If
-        Else
-            'It's detritus! Do dtimp:
-            ecopathds.DtImp(agg1) = ecopathds.DtImp(agg1) + ecopathds.DtImp(agg2)
-        End If
+        ' Fix amounts eaten of agg2
         For i As Integer = 1 To ecopathds.NumGroups
-            ecopathds.DCInput(i, agg1) = ecopathds.DCInput(i, agg1) + ecopathds.DCInput(i, agg2)
-            If ecopathds.DCInput(i, agg1) > 0 Then ecopathds.DietWasChanged(i, agg1)
-        Next i                 'Eaten by predators of the two groups
+            Me.m_data.DCInput(i, agg1) = ecopathds.DCInput(i, agg1) + ecopathds.DCInput(i, agg2)
+        Next i
+
+        ' Sum diet to one
+        For iPred As Integer = 1 To ecopathds.NumLiving
+            ' Is a consumer?
+            If ecopathds.PP(iPred) < 1 Then
+                ' #Yes: calc sum
+                Dim SumDiet As Single = 0.0
+                ' For each of potential prey
+                ' ** NOTE THAT THE LOWER BOUND USED HERE IS 0 INSTEAD OF 1! This is to include
+                ' ** DC Impoprt in the calculations - which is stored at index 0.
+                For iPrey As Integer = 0 To ecopathds.NumGroups
+                    ' Add consumption to sum
+                    SumDiet += Me.m_data.DCInput(iPred, iPrey)
+                Next iPrey
+
+                ' Is there predation with a need to recalc?
+                If (SumDiet > 0) And (SumDiet <> 1.0) Then
+                    ' For each prey
+                    ' JS 28Aug15: Rescale imports too!!!
+                    For iPrey As Integer = 0 To ecopathds.NumGroups
+                        ' Rescale consumption
+                        Me.m_data.DCInput(iPred, iPrey) = Me.m_data.DCInput(iPred, iPrey) / SumDiet
+                    Next iPrey
+                End If
+            End If ' PP < 1
+        Next iPred
+
+        Me.m_data.Shadow = (ecopathds.Shadow(agg1) * ecopathds.B(agg1) + ecopathds.Shadow(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
 
         'Landing and discards are just summed
         For i As Integer = 1 To ecopathds.NumFleet
             If ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2) > 0 Then
-                ecopathds.Market(i, agg1) = (ecopathds.Market(i, agg1) * ecopathds.Landing(i, agg1) + ecopathds.Market(i, agg2) * ecopathds.Landing(i, agg2)) / (ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2))
+                Me.m_data.Market(i) = (ecopathds.Market(i, agg1) * ecopathds.Landing(i, agg1) + ecopathds.Market(i, agg2) * ecopathds.Landing(i, agg2)) / (ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2))
             End If
-            ecopathds.Landing(i, agg1) = ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2)
-            ecopathds.Discard(i, agg1) = ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2)
+            Me.m_data.Landing(i) = ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2)
+            Me.m_data.Discard(i) = ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2)
         Next
 
-        'Biomasses are not required for detritus groups
-        'total biomass:
-        ecopathds.Binput(agg1) = ecopathds.B(agg1) + ecopathds.B(agg2)
-        'Cannot know which combined area we are talking about, so use the area for the first group:
-        ecopathds.BHinput(agg1) = ecopathds.Binput(agg1) / ecopathds.Area(agg1)
-        ecopathds.Binput(agg2) = 0
-        ecopathds.BHinput(agg2) = 0
+        Me.m_data.Binput = ecopathds.B(agg1) + ecopathds.B(agg2)
+        Me.m_data.Area = (ecopathds.Area(agg1) + ecopathds.Area(agg2)) / 2
+        Me.m_data.BHinput = (ecopathds.BH(agg1) + ecopathds.BH(agg2)) / m_data.Area
 
-        Dim c1 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg1))
-        Dim c2 As Color = cColorUtils.IntToColor(ecopathds.GroupColor(agg2))
-        Dim cAgg As Color = Color.FromArgb(255, (CInt(c1.R) + CInt(c2.R)) \ 2, (CInt(c1.G) + CInt(c2.G)) \ 2, (CInt(c1.B) + CInt(c2.B)) \ 2)
-        ecopathds.GroupColor(agg1) = cColorUtils.ColorToInt(cAgg)
+        ' Need to determine estimation?
+        If (bCalcEstimate) Then
+            If (ecopathds.BHinput(agg1) < 0) And (ecopathds.BHinput(agg2) < 0) Then Me.m_data.Estimate = eEstimate.Biomass
+            If (ecopathds.PBinput(agg1) < 0) And (ecopathds.PBinput(agg2) < 0) Then Me.m_data.Estimate = eEstimate.PB
+            If (ecopathds.QBinput(agg1) < 0) And (ecopathds.QBinput(agg2) < 0) Then Me.m_data.Estimate = eEstimate.QB
+            If (ecopathds.EEinput(agg1) < 0) And (ecopathds.EEinput(agg2) < 0) Then Me.m_data.Estimate = eEstimate.EE
+        End If
+
+        Select Case Me.m_data.Estimate
+            Case eEstimate.Biomass : m_data.Binput = cCore.NULL_VALUE
+            Case eEstimate.PB : m_data.PBinput = cCore.NULL_VALUE
+            Case eEstimate.QB : m_data.QBinput = cCore.NULL_VALUE
+            Case eEstimate.EE : m_data.EEinput = cCore.NULL_VALUE
+        End Select
 
         If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
 
@@ -317,41 +356,299 @@ Public Class cEcopathMergeGroups
 
             Debug.Assert(iStanza >= 0 And iLifestage1 >= 0 And iLifestage2 >= 0)
 
-            If stanzads.BaseStanza(iStanza) = agg2 Then stanzads.BaseStanza(iStanza) = agg1
-            If stanzads.BaseStanzaCB(iStanza) = agg2 Then stanzads.BaseStanzaCB(iStanza) = agg1
-            stanzads.Age1(iStanza, iLifestage1) = Math.Min(stanzads.Age1(iStanza, iLifestage1), stanzads.Age1(iStanza, iLifestage2))
-            stanzads.Stanza_Z(iStanza, iLifestage1) = (stanzads.Stanza_Z(iStanza, iLifestage1) + stanzads.Stanza_Z(iStanza, iLifestage2)) / 2
+            If stanzads.BaseStanza(iStanza) = agg2 Then Me.m_data.BaseStanza(iStanza) = agg1
+            If stanzads.BaseStanzaCB(iStanza) = agg2 Then Me.m_data.BaseStanzaCB(iStanza) = agg1
+
+            Me.m_data.Age1(iStanza, iLifestage1) = Math.Min(stanzads.Age1(iStanza, iLifestage1), stanzads.Age1(iStanza, iLifestage2))
+            Me.m_data.StanzaZ(iStanza, iLifestage1) = (stanzads.Stanza_Z(iStanza, iLifestage1) + stanzads.Stanza_Z(iStanza, iLifestage2)) / 2
+            Me.m_data.iStanza = iStanza
+            Me.m_data.iLifeStage = iLifestage1
 
         End If
 
-        ''Aggregate BasicRemarks()
-        'For i = 2 To 10
-        '    AggregateRemarks("[BasicParam Remarks]", "groupName", "remarks", "RefCode", "paramNum", CStr(i))
-        'Next
-        ''Aggregate Catch
-        'For i = 1 To NumGear
-        '    AggregateRemarks("[Catch]", "groupName", "remarksCatch", "RefCodeCatch", "gearName", GearName(i))
-        '    AggregateRemarks("[Catch]", "groupName", "remarksPrice", "RefCodePrice", "gearName", GearName(i))
-        '    AggregateRemarks("[Catch]", "groupName", "remarksDiscards", "RefCodeDiscards", "gearName", GearName(i))
-        'Next
+        Me.m_data.IsValid = Not String.IsNullOrWhiteSpace(Me.m_data.GroupName)
 
-        'If (agg1 > ecopathds.NumLiving) Then    'Detritus group so aggregate discardfate
-        '    For i As Integer = 1 To ecopathds.NumGear
-        '        AggregateRemarks("[Discard Fate]", "groupColName", "remarksCatch", "RefCodeCatch", "gearName", GearName(i))
-        '    Next
-        'End If
+    End Function
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Merge two groups.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function Merge() As Boolean
+
+        ' Sanity checks
+        If Not Me.m_data.IsValid Then Return False
+
+        Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim agg1 As Integer = Me.m_data.IndexTarget
+
+        ' Merge generic fields
+        ecopathds.GroupName(agg1) = Me.m_data.GroupName
+        ecopathds.Binput(agg1) = Me.m_data.Binput
+        ecopathds.BHinput(agg1) = Me.m_data.BHinput
+        ecopathds.PBinput(agg1) = Me.m_data.PBinput
+        ecopathds.BaBi(agg1) = Me.m_data.BaBi
+        ecopathds.BA(agg1) = Me.m_data.BA
+        ecopathds.Immig(agg1) = Me.m_data.Immig
+        ecopathds.Emigration(agg1) = Me.m_data.Emigration
+        ecopathds.Emig(agg1) = Me.m_data.Emig
+        ecopathds.det(0, agg1) = Me.m_data.Det
+
+        If (agg1 > ecopathds.NumLiving) Then
+            For i As Integer = 1 To ecopathds.NumFleet
+                ecopathds.DiscardFate(i, agg1 - ecopathds.NumLiving) = Me.m_data.DiscardFate(agg1 - ecopathds.NumLiving)
+            Next
+        End If
+
+        ecopathds.EEinput(agg1) = Me.m_data.EEinput
+        ecopathds.GS(agg1) = Me.m_data.GS
+        ecopathds.Shadow(agg1) = Me.m_data.Shadow
+        ecopathds.QBinput(agg1) = Me.m_data.QBinput
+
+        ' Diet
+        For iPred As Integer = 1 To Me.m_core.nLivingGroups
+            For iPrey As Integer = 0 To Me.m_core.nGroups
+                ecopathds.DCInput(iPred, iPrey) = Me.m_data.DCInput(iPred, iPrey)
+                ' ecopathds.DietWasChanged(agg1, i) is not needed; Ecopath will reinit
+            Next
+        Next
+        ecopathds.DtImp(agg1) = Me.m_data.DtImp
+
+        'Landing and discards are just summed
+        For i As Integer = 1 To ecopathds.NumFleet
+            ecopathds.Market(i, agg1) = Me.m_data.Market(i)
+            ecopathds.Landing(i, agg1) = Me.m_data.Landing(i)
+            ecopathds.Discard(i, agg1) = Me.m_data.Discard(i)
+        Next
+
+        If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
+
+            Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
+
+            stanzads.Age1(Me.m_data.iStanza, Me.m_data.iLifeStage) = Me.m_data.Age1(Me.m_data.iStanza, Me.m_data.iLifeStage)
+            stanzads.Stanza_Z(Me.m_data.iStanza, Me.m_data.iLifeStage) = Me.m_data.StanzaZ(Me.m_data.iStanza, Me.m_data.iLifeStage)
+
+        End If
+
+        ' Remark magic
+        Me.MergeRemarks(eDataTypes.EcoPathGroupInput, ecopathds.GroupDBID(Me.m_data.IndexTarget), ecopathds.GroupDBID(Me.m_data.IndexMerge))
+        Me.MergeRemarks(eDataTypes.EcoPathGroupOutput, ecopathds.GroupDBID(Me.m_data.IndexTarget), ecopathds.GroupDBID(Me.m_data.IndexMerge))
 
         Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
         Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
 
         If Me.m_core.SaveChanges(True, cCore.eBatchChangeLevelFlags.Ecopath) Then
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
-            Return Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, Me.m_core.RemoveGroup(agg2))
+            Return Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, Me.m_core.RemoveGroup(Me.m_data.IndexMerge))
         End If
 
         Return False
-
     End Function
+
+    Private Sub MergeRemarks(dt As eDataTypes, iDBID1 As Integer, iDBID2 As Integer)
+
+        ' Get all remarks for the group that is going to disappear
+        Dim merge As Dictionary(Of String, cAuxiliaryData) = Me.m_core.AuxillaryData(dt, iDBID2, True)
+        ' For all keys
+        For Each mergekey As String In merge.Keys
+            ' Get data
+            Dim auxMerge As cAuxiliaryData = merge(mergekey)
+            ' Has remark?
+            If (Not String.IsNullOrWhiteSpace(auxMerge.Remark)) Then
+                ' #Yes: deconstruct ID
+                Dim vidTarget As cValueID = cValueID.FromString(mergekey)
+                ' Reroute ID to target group
+                If (vidTarget.DataTypePrim = dt And vidTarget.DBIDPrim = iDBID2) Then vidTarget.DBIDPrim = iDBID1
+                If (vidTarget.DataTypeSec = dt And vidTarget.DBIDSec = iDBID2) Then vidTarget.DBIDSec = iDBID1
+                ' Apply to core
+                Me.m_core.AuxillaryData(vidTarget).MergeWith(auxMerge)
+            End If
+        Next
+
+    End Sub
+
+    Private Sub MergeTaxa()
+
+        Dim taxonds As cTaxonDataStructures = Me.m_core.m_TaxonData
+        Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+
+        ' Taxon biomasses
+        Dim dtB As New Dictionary(Of Integer, Single)
+        Dim Btot As Single = ecopathds.B(Me.m_data.IndexTarget) + ecopathds.B(Me.m_data.IndexMerge)
+
+        For i As Integer = 1 To taxonds.NumTaxon
+            If Not (taxonds.IsTaxonStanza(i)) Then
+                Select Case taxonds.TaxonTarget(i)
+                    Case Me.m_data.IndexTarget
+                        dtB(i) = ecopathds.B(Me.m_data.IndexTarget) * taxonds.TaxonPropBiomass(i)
+                    Case Me.m_data.IndexMerge
+                        dtB(i) = ecopathds.B(Me.m_data.IndexMerge) * taxonds.TaxonPropBiomass(i)
+                End Select
+            End If
+        Next
+
+        For Each iTaxon As Integer In dtB.Keys
+            taxonds.TaxonTarget(iTaxon) = Me.m_data.IndexTarget
+            taxonds.TaxonPropBiomass(iTaxon) = dtB(iTaxon) / Btot
+        Next
+
+        ' ToDo: update proportion of Catch
+
+    End Sub
+
+    '''' -----------------------------------------------------------------------
+    '''' <summary>
+    '''' Merge two groups. This will update parameters of the <paramref name="agg1">
+    '''' first group</paramref>, and will delete the <paramref name=" agg2">second
+    '''' group</paramref> if the merge is successful.
+    '''' </summary>
+    '''' <param name="agg1">The one-based index of the first group to merge.</param>
+    '''' <param name="agg2">The one-based index of the second group to merge.</param>
+    '''' <param name="strName">The name to assign to the merged group.</param>
+    '''' <returns>True if successful.</returns>
+    '''' -----------------------------------------------------------------------
+    'Public Function Merge(agg1 As Integer, agg2 As Integer, strName As String,
+    '                      estimate As eEstimate) As Boolean
+
+    '    ' Sanity checks
+    '    If (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) = -1) Then Return False
+    '    If (String.IsNullOrWhiteSpace(strName)) Then Return False
+
+    '    Dim ecopathds As cEcopathDataStructures = Me.m_core.m_EcoPathData
+
+    '    ' Merge generic fields
+    '    ecopathds.GroupName(agg1) = strName
+    '    ecopathds.PBinput(agg1) = (ecopathds.PB(agg1) * ecopathds.B(agg1) + ecopathds.PB(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+    '    ' VALIDATE_JS: BaBi allowed to be NULL?
+    '    ecopathds.BaBi(agg1) = (ecopathds.BaBi(agg1) * ecopathds.B(agg1) + ecopathds.BaBi(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+    '    ecopathds.BA(agg1) = ecopathds.BA(agg1) + ecopathds.BA(agg2)
+    '    ecopathds.Immig(agg1) = ecopathds.Immig(agg1) + ecopathds.Immig(agg2)
+    '    ecopathds.Emigration(agg1) = ecopathds.Emigration(agg1) + ecopathds.Emigration(agg2)
+    '    ecopathds.Emig(agg1) = (ecopathds.Emig(agg1) * ecopathds.B(agg1) + ecopathds.Emig(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+    '    'Catch(Agg1) = Catch(Agg1) + Catch(Agg2)
+    '    ' fCatch calculated on the fly from landings and discards; no need to update
+    '    ecopathds.det(0, agg1) = ecopathds.det(0, agg1) + ecopathds.det(0, agg2)
+
+    '    If (agg1 > ecopathds.NumLiving) Then
+    '        For i As Integer = 1 To ecopathds.NumFleet
+    '            If ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2) > 0 Then
+    '                ecopathds.DiscardFate(i, agg1 - ecopathds.NumLiving) = (ecopathds.Discard(i, agg1) * ecopathds.DiscardFate(i, agg1 - ecopathds.NumLiving) + ecopathds.Discard(i, agg2) * ecopathds.DiscardFate(i, agg2 - ecopathds.NumLiving)) / (ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2))
+    '            End If
+    '        Next
+    '    End If
+
+    '    If (ecopathds.B(agg1) + ecopathds.B(agg2)) > 0 Then
+    '        If agg1 <= ecopathds.NumLiving Then       'Both are living
+    '            ecopathds.EEinput(agg1) = (ecopathds.EE(agg1) * ecopathds.B(agg1) + ecopathds.EE(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+    '            If ecopathds.QB(agg1) > 0 Or ecopathds.QB(agg2) > 0 Then    'Weighted after consumption
+    '                ecopathds.GS(agg1) = (ecopathds.GS(agg1) * ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.GS(agg2) * ecopathds.B(agg2) * ecopathds.QB(agg2)) / (ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.B(agg2) * ecopathds.QB(agg2))
+    '            End If
+    '        End If
+    '        ecopathds.Shadow(agg1) = (ecopathds.Shadow(agg1) * ecopathds.B(agg1) + ecopathds.Shadow(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+    '    End If
+
+    '    If (agg1 <= ecopathds.NumLiving) Then          'diet comp for living groups
+    '        If ecopathds.QB(agg1) > 0 Or ecopathds.QB(agg2) > 0 Then
+    '            Dim SumCons As Single = ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.QB(agg2) * ecopathds.B(agg2)
+    '            For i As Integer = 1 To ecopathds.NumGroups          'prey
+    '                If ecopathds.B(i) > 0 Then        'Exclude aggregated groups
+    '                    If SumCons > 0 Then 'Eaten by the two groups of all prey
+    '                        ecopathds.DCInput(agg1, i) = (ecopathds.DCInput(agg1, i) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, i) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / SumCons
+    '                        If ecopathds.DCInput(agg1, i) > 0 Then ecopathds.DietWasChanged(agg1, i)
+    '                    End If
+    '                End If
+    '            Next i
+    '            If SumCons > 0 Then ecopathds.DCInput(agg1, 0) = (ecopathds.DCInput(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / SumCons
+    '            ' Calculate the DC(Agg1,Import)
+    '            If (ecopathds.B(agg1) + ecopathds.B(agg2)) > 0 Then 'QB aggregation is only for living groups
+    '                ecopathds.QBinput(agg1) = (ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.QB(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
+    '            End If
+    '        End If
+    '    Else
+    '        'It's detritus! Do dtimp:
+    '        ecopathds.DtImp(agg1) = ecopathds.DtImp(agg1) + ecopathds.DtImp(agg2)
+    '    End If
+    '    For i As Integer = 1 To ecopathds.NumGroups
+    '        ecopathds.DCInput(i, agg1) = ecopathds.DCInput(i, agg1) + ecopathds.DCInput(i, agg2)
+    '        If ecopathds.DCInput(i, agg1) > 0 Then ecopathds.DietWasChanged(i, agg1)
+    '    Next i                 'Eaten by predators of the two groups
+
+    '    'Landing and discards are just summed
+    '    For i As Integer = 1 To ecopathds.NumFleet
+    '        If ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2) > 0 Then
+    '            ecopathds.Market(i, agg1) = (ecopathds.Market(i, agg1) * ecopathds.Landing(i, agg1) + ecopathds.Market(i, agg2) * ecopathds.Landing(i, agg2)) / (ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2))
+    '        End If
+    '        ecopathds.Landing(i, agg1) = ecopathds.Landing(i, agg1) + ecopathds.Landing(i, agg2)
+    '        ecopathds.Discard(i, agg1) = ecopathds.Discard(i, agg1) + ecopathds.Discard(i, agg2)
+    '    Next
+
+    '    'Biomasses are not required for detritus groups
+    '    'total biomass:
+    '    ecopathds.Binput(agg1) = ecopathds.B(agg1) + ecopathds.B(agg2)
+    '    'Cannot know which combined area we are talking about, so use the area for the first group:
+    '    ecopathds.BHinput(agg1) = ecopathds.Binput(agg1) / ecopathds.Area(agg1)
+    '    ecopathds.Binput(agg2) = 0
+    '    ecopathds.BHinput(agg2) = 0
+
+    '    If Me.m_core.m_EcoPathData.StanzaGroup(agg1) Then
+
+    '        ' Perform stanza merge
+
+    '        Dim stanzads As cStanzaDatastructures = Me.m_core.m_Stanza
+    '        Dim iStanza As Integer = -1
+    '        Dim iLifestage1 As Integer = -1
+    '        Dim iLifestage2 As Integer = -1
+
+    '        For isp As Integer = 1 To stanzads.Nsplit
+    '            For ist As Integer = 1 To stanzads.Nstanza(isp)
+    '                If stanzads.EcopathCode(isp, ist) = agg1 Then
+    '                    iLifestage1 = ist
+    '                    iStanza = isp
+    '                End If
+    '                If stanzads.EcopathCode(isp, ist) = agg2 Then iLifestage2 = ist
+    '            Next
+    '        Next
+
+    '        Debug.Assert(iStanza >= 0 And iLifestage1 >= 0 And iLifestage2 >= 0)
+
+    '        If stanzads.BaseStanza(iStanza) = agg2 Then stanzads.BaseStanza(iStanza) = agg1
+    '        If stanzads.BaseStanzaCB(iStanza) = agg2 Then stanzads.BaseStanzaCB(iStanza) = agg1
+    '        stanzads.Age1(iStanza, iLifestage1) = Math.Min(stanzads.Age1(iStanza, iLifestage1), stanzads.Age1(iStanza, iLifestage2))
+    '        stanzads.Stanza_Z(iStanza, iLifestage1) = (stanzads.Stanza_Z(iStanza, iLifestage1) + stanzads.Stanza_Z(iStanza, iLifestage2)) / 2
+
+    '    End If
+
+    '    ''Aggregate BasicRemarks()
+    '    'For i = 2 To 10
+    '    '    AggregateRemarks("[BasicParam Remarks]", "groupName", "remarks", "RefCode", "paramNum", CStr(i))
+    '    'Next
+    '    ''Aggregate Catch
+    '    'For i = 1 To NumGear
+    '    '    AggregateRemarks("[Catch]", "groupName", "remarksCatch", "RefCodeCatch", "gearName", GearName(i))
+    '    '    AggregateRemarks("[Catch]", "groupName", "remarksPrice", "RefCodePrice", "gearName", GearName(i))
+    '    '    AggregateRemarks("[Catch]", "groupName", "remarksDiscards", "RefCodeDiscards", "gearName", GearName(i))
+    '    'Next
+
+    '    'If (agg1 > ecopathds.NumLiving) Then    'Detritus group so aggregate discardfate
+    '    '    For i As Integer = 1 To ecopathds.NumGear
+    '    '        AggregateRemarks("[Discard Fate]", "groupColName", "remarksCatch", "RefCodeCatch", "gearName", GearName(i))
+    '    '    Next
+    '    'End If
+
+    '    Me.m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
+    '    Me.m_core.StateMonitor.UpdateDataState(Me.m_core.DataSource)
+
+    '    If Me.m_core.SaveChanges(True, cCore.eBatchChangeLevelFlags.Ecopath) Then
+    '        Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+    '        Return Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, Me.m_core.RemoveGroup(agg2))
+    '    End If
+
+    '    Return False
+
+    'End Function
 
 #End Region ' Public access
 
