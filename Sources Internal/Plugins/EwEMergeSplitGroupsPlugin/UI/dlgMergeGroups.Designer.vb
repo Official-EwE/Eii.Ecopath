@@ -61,7 +61,7 @@ Partial Class dlgMergeGroups
         Me.m_cmbMerge = New System.Windows.Forms.ComboBox()
         Me.m_tcInputs = New System.Windows.Forms.TabControl()
         Me.m_tabBasicInput = New System.Windows.Forms.TabPage()
-        Me.m_grid = New EwEMergeSplitGroupsPlugin.gridBasicInput()
+        Me.m_grid = New EwEMergeSplitGroupsPlugin.gridGroupInput()
         Me.m_tabDiets = New System.Windows.Forms.TabPage()
         Me.m_gridDietComp = New EwEMergeSplitGroupsPlugin.gridDietComposition()
         Me.m_tabTaxonomy = New System.Windows.Forms.TabPage()
@@ -343,7 +343,7 @@ Partial Class dlgMergeGroups
     Private WithEvents m_rbB As Windows.Forms.RadioButton
     Private WithEvents Label1 As Windows.Forms.Label
     Private WithEvents m_cmbMerge As Windows.Forms.ComboBox
-    Private WithEvents m_grid As gridBasicInput
+    Private WithEvents m_grid As gridGroupInput
     Private WithEvents m_tcInputs As Windows.Forms.TabControl
     Private WithEvents m_tabBasicInput As Windows.Forms.TabPage
     Private WithEvents m_tabDiets As Windows.Forms.TabPage

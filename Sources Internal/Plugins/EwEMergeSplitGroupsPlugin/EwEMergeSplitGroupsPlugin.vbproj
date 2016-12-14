@@ -161,7 +161,7 @@
     <Compile Include="UI\gridDietComposition.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\gridBasicInput.vb">
+    <Compile Include="UI\gridGroupInput.vb">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>

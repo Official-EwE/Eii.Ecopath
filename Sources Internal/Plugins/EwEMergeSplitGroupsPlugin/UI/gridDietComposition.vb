@@ -166,10 +166,20 @@ Public Class gridDietComposition
                 If (iPred = -1 Or iPrey = -1) Then
                     Dim i As Integer = iPred
                     Dim j As Integer = iPrey
+
+                    ' Hide cells from groups that will be merged from new group row and col
+                    If (iPred <> iPrey) Then
+                        If (iPred = Me.m_data.IndexTarget Or iPred = Me.m_data.IndexMerge Or iPrey = Me.m_data.IndexTarget Or iPrey = Me.m_data.IndexMerge) Then
+                            style = style Or eStyleFlags.Null
+                        End If
+                    End If
+
                     If i = -1 Then i = Me.m_data.IndexTarget
                     If j = -1 Then j = Me.m_data.IndexTarget
+
                     val = Me.m_data.DCInput(i, j)
                     style = style Or eStyleFlags.Sum
+
                 Else
                     Dim pred As cEcoPathGroupInput = core.EcoPathGroupInputs(iPred)
                     If (iPred = Me.m_data.IndexTarget Or iPred = Me.m_data.IndexMerge) Or
@@ -186,6 +196,10 @@ Public Class gridDietComposition
                     End If
                 End If
 
+                ' To prevent copy/paste surprises
+                If ((style And eStyleFlags.Null) = eStyleFlags.Null) Then
+                    val = 0
+                End If
                 cell = New EwECell(val, style)
                 cell.SuppressZero = True
                 Me(iRow, iCol) = cell

@@ -31,7 +31,7 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
-Public Class gridBasicInput
+Public Class gridGroupInput
     Inherits EwEGrid
 
     Private Enum eColumnTypes As Integer
@@ -86,8 +86,11 @@ Public Class gridBasicInput
         Me.AddRow(eVarNameFlags.PBInput)
         Me.AddRow(eVarNameFlags.QBInput)
         Me.AddRow(eVarNameFlags.EEInput)
-        Me.AddRow(eVarNameFlags.BioAccumInput)
         Me.AddRow(eVarNameFlags.GS)
+        Me.AddRow(eVarNameFlags.Immig)
+        Me.AddRow(eVarNameFlags.Emig)
+        Me.AddRow(eVarNameFlags.EmigRate)
+        Me.AddRow(eVarNameFlags.BioAccumInput)
 
     End Sub
 
@@ -137,8 +140,8 @@ Public Class gridBasicInput
         Dim varIn As eVarNameFlags = DirectCast(Me.Rows(iRow).Tag, eVarNameFlags)
         Dim varOut As eVarNameFlags = varIn
         Dim val As Single = 0
-        Dim style As eStyleFlags = eStyleFlags.OK Or eStyleFlags.NotEditable
-        Dim styleEst As eStyleFlags = eStyleFlags.Null Or eStyleFlags.NotEditable
+        Dim style As eStyleFlags = eStyleFlags.OK
+        Dim styleEst As eStyleFlags = eStyleFlags.Null
 
         Select Case varIn
 
@@ -169,34 +172,42 @@ Public Class gridBasicInput
                 val = Me.m_data.EEinput
                 If (Me.m_data.Estimate = cEcopathMergeGroups.eEstimate.EE) Then style = styleEst
 
-            Case eVarNameFlags.BioAccumInput
-                varOut = eVarNameFlags.BioAccumOutput
-                val = Me.m_data.BAInput
-
             Case eVarNameFlags.GS
                 varOut = eVarNameFlags.GS
                 val = Me.m_data.GS
 
+            Case eVarNameFlags.BioAccumInput
+                varOut = eVarNameFlags.BioAccumOutput
+                val = Me.m_data.BAInput
+
+            Case eVarNameFlags.Immig
+                varOut = eVarNameFlags.NotSet
+                val = Me.m_data.Immig
+
+            Case eVarNameFlags.EmigRate
+                varOut = eVarNameFlags.NotSet
+                val = Me.m_data.EmigRate
+
+            Case eVarNameFlags.Emig
+                varOut = eVarNameFlags.NotSet
+                val = Me.m_data.Emigration
+
         End Select
 
         If (Me.m_data.IndexTarget > 0) Then
-            Dim i1 As cCoreGroupBase = Me.Core.EcoPathGroupInputs(Me.m_data.IndexTarget)
-            Me.UpdateCell(iRow, eColumnTypes.Agg1In, CSng(i1.GetVariable(varIn)), DirectCast(i1.GetStatus(varIn), eStyleFlags) Or eStyleFlags.NotEditable)
-            Dim o1 As cCoreGroupBase = Me.Core.EcoPathGroupOutputs(Me.m_data.IndexTarget)
-            Me.UpdateCell(iRow, eColumnTypes.Agg1Out, CSng(o1.GetVariable(varOut)), DirectCast(o1.GetStatus(varOut), eStyleFlags) Or eStyleFlags.NotEditable)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1In, Me.Core.EcoPathGroupInputs(Me.m_data.IndexTarget), varIn)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1Out, Me.Core.EcoPathGroupOutputs(Me.m_data.IndexTarget), varOut)
         Else
-            Me.UpdateCell(iRow, eColumnTypes.Agg1In, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
-            Me.UpdateCell(iRow, eColumnTypes.Agg1Out, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1In, 0, eStyleFlags.Null)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1Out, 0, eStyleFlags.Null)
         End If
 
         If (Me.m_data.IndexMerge > 0) Then
-            Dim i2 As cCoreGroupBase = Me.Core.EcoPathGroupInputs(Me.m_data.IndexMerge)
-            Me.UpdateCell(iRow, eColumnTypes.Agg2In, CSng(i2.GetVariable(varIn)), DirectCast(i2.GetStatus(varIn), eStyleFlags) Or eStyleFlags.NotEditable)
-            Dim o2 As cCoreGroupBase = Me.Core.EcoPathGroupOutputs(Me.m_data.IndexMerge)
-            Me.UpdateCell(iRow, eColumnTypes.Agg2Out, CSng(o2.GetVariable(varOut)), DirectCast(o2.GetStatus(varOut), eStyleFlags) Or eStyleFlags.NotEditable)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2In, Me.Core.EcoPathGroupInputs(Me.m_data.IndexMerge), varIn)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2Out, Me.Core.EcoPathGroupOutputs(Me.m_data.IndexMerge), varOut)
         Else
-            Me.UpdateCell(iRow, eColumnTypes.Agg2In, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
-            Me.UpdateCell(iRow, eColumnTypes.Agg2Out, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2In, 0, eStyleFlags.Null)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2Out, 0, eStyleFlags.Null)
         End If
 
         Me.UpdateCell(iRow, eColumnTypes.Merge, val, style)
@@ -214,11 +225,26 @@ Public Class gridBasicInput
 
     End Sub
 
+    Private Sub UpdateCell(iRow As Integer, iCol As Integer, source As cCoreGroupBase, var As eVarNameFlags)
+
+        Dim style As eStyleFlags = eStyleFlags.OK
+        Dim val As Single = 0
+
+        If (var = eVarNameFlags.NotSet) Then
+            style = style Or eStyleFlags.Null
+        Else
+            val = CSng(source.GetVariable(var))
+            style = DirectCast(source.GetStatus(var), eStyleFlags)
+        End If
+        Me.UpdateCell(iRow, iCol, val, style)
+
+    End Sub
+
     Private Sub UpdateCell(iRow As Integer, iCol As Integer, val As Single, style As eStyleFlags)
 
         Dim c As EwECell = DirectCast(Me(iRow, iCol), EwECell)
         c.Value = val
-        c.Style = style
+        c.Style = style Or eStyleFlags.NotEditable
 
     End Sub
 
