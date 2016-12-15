@@ -267,6 +267,8 @@ Public Class cModelFromEcosimPluginPoint
                                      ByVal Ecosimresults As Object) _
                                      Implements EwEPlugin.IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
 
+        If Not Me.m_bAutosaving Then Return
+
         Dim strModelName As String = ""
         Dim strModelPath As String = ""
         Dim DBCreated As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
