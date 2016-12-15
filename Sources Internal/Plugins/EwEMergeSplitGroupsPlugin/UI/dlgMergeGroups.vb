@@ -252,6 +252,9 @@ Public Class dlgMergeGroups
         If (Me.m_bInUpdate) Then Return
 
         Try
+            If bCalcEstimation Then
+                Me.m_tbxNewName.Text = Me.m_engine.GroupName(Me.SelectedTarget(), Me.SelectedMerge())
+            End If
             Me.m_engine.Calculate(Me.SelectedTarget(), Me.SelectedMerge(), Me.SelectedName(), Me.SelectedEstimation(), bCalcEstimation)
             Me.m_grid.UpdateContent()
 

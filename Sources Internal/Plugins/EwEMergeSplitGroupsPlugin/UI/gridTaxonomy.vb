@@ -65,10 +65,10 @@ Public Class gridTaxonomy
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
-        Me(0, eColumnTypes.MergB) = New EwEColumnHeaderCell(My.Resources.HEADER_PROP_B)
+        Me(0, eColumnTypes.MergB) = New EwEColumnHeaderCell(cStringUtils.LocalizeSentence(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_MERGE, My.Resources.HEADER_PROP_B))
         Me(0, eColumnTypes.Agg1B) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Agg2B) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.MergC) = New EwEColumnHeaderCell(My.Resources.HEADER_PROP_C)
+        Me(0, eColumnTypes.MergC) = New EwEColumnHeaderCell(cStringUtils.LocalizeSentence(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_MERGE, My.Resources.HEADER_PROP_C))
         Me(0, eColumnTypes.Agg1C) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Agg2C) = New EwEColumnHeaderCell()
 
@@ -147,7 +147,7 @@ Public Class gridTaxonomy
 
         Dim c As EwEColumnHeaderCell = DirectCast(Me(0, iCol), EwEColumnHeaderCell)
         If (iIndex > 0) Then
-            c.Value = cStringUtils.Localize(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, iIndex, strVal)
+            c.Value = cStringUtils.LocalizeSentence(SharedResources.GENERIC_LABEL_DETAILED, iIndex, strVal)
         Else
             c.Value = strVal
         End If

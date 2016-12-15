@@ -916,8 +916,6 @@ Public Class cEcoPathGroupOutput
 
     End Property
 
-
-
     Public Property Consumption() As Single()
 
         Get

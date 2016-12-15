@@ -71,7 +71,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to est.
+        '''  Looks up a localized string similar to est..
         '''</summary>
         Friend ReadOnly Property HEADER_EST() As String
             Get

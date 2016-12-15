@@ -91,7 +91,7 @@ Public Class gridDietComposition
             If (grp1 IsNot Nothing) Then
                 If (i = grp1.Index) Then
                     Me.Rows.Insert(iRow)
-                    Me(iRow, 0) = New EwERowHeaderCell("New")
+                    Me(iRow, 0) = New EwERowHeaderCell(My.Resources.HEADER_MERGE)
                     Me(iRow, 1) = New EwERowHeaderCell(Me.m_data.GroupName)
                     Me.m_iRowTarget = iRow
                     iRow += 1
@@ -108,7 +108,7 @@ Public Class gridDietComposition
             If (grp2 IsNot Nothing) Then
                 If (i = grp1.Index And grp1.IsConsumer) Then
                     Me.Columns.Insert(iCol)
-                    Me(0, iCol) = New EwEColumnHeaderCell("New")
+                    Me(0, iCol) = New EwEColumnHeaderCell(My.Resources.HEADER_MERGE)
                     Me.m_iColTarget = iCol
                     iCol += 1
                 End If

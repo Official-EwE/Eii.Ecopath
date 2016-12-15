@@ -3217,7 +3217,7 @@ Public Class frmEwE6
             Next
         End If
         cmd.Checked = (nAutoSaving > 0)
-        cmd.Status = cStringUtils.Localize("{0} EwE component(s) are auto-saving results", nAutoSaving)
+        ' cmd.Status = cStringUtils.Localize("{0} EwE component(s) are auto-saving results", nAutoSaving)
     End Sub
 
     ''' <summary>

@@ -1241,7 +1241,7 @@ Namespace Utilities
         ''' Converts a string to proper sentence case, capitalizing only the first
         ''' (or last, depending on reading order) word in a sentence and turning 
         ''' all other characters to lower case. 
-        ''' Note that all-caps words are unaffected. Sentences are detected from periods.
+        ''' Note that words with multiple caps are unaffected. Sentences are detected from periods.
         ''' </summary>
         ''' <param name="strExpression">The string to convert.</param>
         ''' <returns>A string in proper sentence case.</returns>
@@ -1266,9 +1266,15 @@ Namespace Utilities
 
                 ' Protect all words that are pure upper case. The rest will be turned to lower case
                 For i As Integer = 0 To astrBits.Length - 1
-                    If (String.Compare(astrBits(i), astrBits(i).ToUpper, False) <> 0) Then
-                        astrBits(i) = astrBits(i).ToLower()
-                    End If
+                    Dim nCaps As Integer = 0
+                    Dim nChars As Integer = 0
+                    For Each c As Char In astrBits(i)
+                        If Char.IsLetter(c) Then
+                            If CStr(c) = CStr(c).ToUpper() Then nCaps += 1
+                            nChars += 1
+                        End If
+                    Next
+                    If (nCaps = 1) And (nChars > 1) Then astrBits(i) = astrBits(i).ToLower()
                 Next
 
                 ' Combine sentences
@@ -2116,268 +2122,41 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' <para>Safe string formatting to substitute one value into a <see cref="String.Format">string format 
+        ''' <para>Safe string formatting to substitute value(s) into a <see cref="String.Format">string format 
         ''' mask</see>.</para>
         ''' <para>If the formatting fails, the original mask is returned and the 
         ''' failure is recorded in the EwE error log.</para>
         ''' </summary>
         ''' <param name="strMask">The string mask to use for formatting, containing
         ''' only one placeholder {0}.</param>
-        ''' <param name="val1">The one value to substitute into the mask.</param>
+        ''' <param name="vals">The value(s) to substitute into the mask.</param>
         ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String, ByVal val1 As Object) As String
-            Try
-                Return String.Format(strMask, val1)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute two different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' two placeholders {0} and {1}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute three different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute four different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <param name="val4">The fourth value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object, ByVal val4 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3, val4)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute five different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <param name="val4">The fourth value to substitute into the mask.</param>
-        ''' <param name="val5">The fifth value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object, ByVal val4 As Object, ByVal val5 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3, val4, val5)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute six different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <param name="val4">The fourth value to substitute into the mask.</param>
-        ''' <param name="val5">The fifth value to substitute into the mask.</param>
-        ''' <param name="val6">The sixth value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object,
-                                        ByVal val4 As Object, ByVal val5 As Object, ByVal val6 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3, val4, val5, val6)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute seven different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <param name="val4">The fourth value to substitute into the mask.</param>
-        ''' <param name="val5">The fifth value to substitute into the mask.</param>
-        ''' <param name="val6">The sixth value to substitute into the mask.</param>
-        ''' <param name="val7">The seventh value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object,
-                                        ByVal val4 As Object, ByVal val5 As Object, ByVal val6 As Object,
-                                        ByVal val7 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3, val4, val5, val6, val7)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute eight different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <param name="val4">The fourth value to substitute into the mask.</param>
-        ''' <param name="val5">The fifth value to substitute into the mask.</param>
-        ''' <param name="val6">The sixth value to substitute into the mask.</param>
-        ''' <param name="val7">The seventh value to substitute into the mask.</param>
-        ''' <param name="val8">The eighth value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object,
-                                        ByVal val4 As Object, ByVal val5 As Object, ByVal val6 As Object,
-                                        ByVal val7 As Object, ByVal val8 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3, val4, val5, val6, val7, val8)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute eight different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="val1">The first value to substitute into the mask.</param>
-        ''' <param name="val2">The second value to substitute into the mask.</param>
-        ''' <param name="val3">The third value to substitute into the mask.</param>
-        ''' <param name="val4">The fourth value to substitute into the mask.</param>
-        ''' <param name="val5">The fifth value to substitute into the mask.</param>
-        ''' <param name="val6">The sixth value to substitute into the mask.</param>
-        ''' <param name="val7">The seventh value to substitute into the mask.</param>
-        ''' <param name="val8">The eighth value to substitute into the mask.</param>
-        ''' <param name="val9">The ninth value to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String,
-                                        ByVal val1 As Object, ByVal val2 As Object, ByVal val3 As Object,
-                                        ByVal val4 As Object, ByVal val5 As Object, ByVal val6 As Object,
-                                        ByVal val7 As Object, ByVal val8 As Object, ByVal val9 As Object) As String
-            Try
-                Return String.Format(strMask, val1, val2, val3, val4, val5, val6, val7, val8, val9)
-            Catch ex As Exception
-                Debug.Assert(False, "Localization error on " & strMask)
-                cLog.Write(ex, "Localization error on " & strMask)
-            End Try
-            Return strMask
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Safe string formatting to substitute an array of different values into 
-        ''' a <see cref="String.Format">string format mask</see>.</para>
-        ''' <para>If the formatting fails, the original mask is returned and the 
-        ''' failure is recorded in the EwE error log.</para>
-        ''' </summary>
-        ''' <param name="strMask">The string mask to use for formatting, containing
-        ''' three placeholders {0}, {1} and {2}.</param>
-        ''' <param name="vals">The values to substitute into the mask.</param>
-        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function Localize(ByVal strMask As String, ByVal vals As Object()) As String
+        Public Shared Function Localize(ByVal strMask As String, ByVal ParamArray vals As Object()) As String
             Try
                 Return String.Format(strMask, vals)
+            Catch ex As Exception
+                Debug.Assert(False, "Localization error on " & strMask)
+                cLog.Write(ex, "Localization error on " & strMask)
+            End Try
+            Return strMask
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Safe string formatting to substitute value(s) into a <see cref="String.Format">string format 
+        ''' mask</see>.</para>
+        ''' <para>If the formatting fails, the original mask is returned and the 
+        ''' failure is recorded in the EwE error log.</para>
+        ''' </summary>
+        ''' <param name="strMask">The string mask to use for formatting, containing
+        ''' only one placeholder {0}.</param>
+        ''' <param name="vals">The value(s) to substitute into the mask.</param>
+        ''' <returns>The formatted string, or the original mask if an error occurred.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function LocalizeSentence(ByVal strMask As String, ByVal ParamArray vals As Object()) As String
+            Try
+                Return cStringUtils.ToSentenceCase(String.Format(strMask, vals))
             Catch ex As Exception
                 Debug.Assert(False, "Localization error on " & strMask)
                 cLog.Write(ex, "Localization error on " & strMask)

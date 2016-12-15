@@ -328,6 +328,16 @@ Public Class frmNetworkAnalysis
         Me.ShowOptions(tsbtnOptions.Checked)
     End Sub
 
+    Private Sub OnFontsClicked(sender As Object, e As EventArgs) Handles tsbnFonts.Click
+
+        If (Me.m_uic Is Nothing) Then Return
+        Dim cmd As cShowOptionsCommand = CType(Me.m_uic.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+        If (cmd IsNot Nothing) Then
+            cmd.Invoke(ScientificInterfaceShared.Definitions.eApplicationOptionTypes.Fonts)
+        End If
+
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Event handler, triggered after 'DisplayGroups' command has been invoked.

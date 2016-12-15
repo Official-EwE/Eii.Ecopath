@@ -115,7 +115,7 @@ Public Class gridGroupInput
 
         Me.Rows(iRow).Tag = var
 
-        Me(iRow, 0) = New EwERowHeaderCell(Me.m_fmt.GetDescriptor(var, eDescriptorTypes.Abbreviation))
+        Me(iRow, 0) = New EwERowHeaderCell(Me.m_fmt.GetDescriptor(var))
         For i As Integer = 1 To Me.ColumnsCount - 1
             cell = New EwECell("", eStyleFlags.NotEditable)
             cell.SuppressZero() = True
@@ -218,7 +218,7 @@ Public Class gridGroupInput
 
         Dim c As EwEColumnHeaderCell = DirectCast(Me(0, iCol), EwEColumnHeaderCell)
         If (iIndex > 0) Then
-            c.Value = cStringUtils.Localize(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, iIndex, strVal)
+            c.Value = cStringUtils.LocalizeSentence(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, iIndex, strVal)
         Else
             c.Value = strVal
         End If

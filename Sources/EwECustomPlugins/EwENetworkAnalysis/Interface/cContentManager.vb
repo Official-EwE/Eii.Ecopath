@@ -327,7 +327,7 @@ Public MustInherit Class cContentManager
         ' Hide toolstrip items
         For Each tsi As ToolStripItem In Me.Toolstrip.Items
             Select Case tsi.Name
-                Case "tsmiRun", "tsbtnOptions"
+                Case "tsmiRun", "tsbtnOptions", "tsbnFonts"
                     tsi.Visible = True
                 Case Else
                     tsi.Visible = False
@@ -343,9 +343,23 @@ Public MustInherit Class cContentManager
     ''' <param name="cf"></param>
     ''' -----------------------------------------------------------------------
     Protected Overridable Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
-        If Me.Graph.Visible Or Me.Grid.Visible Then
-            Me.DisplayData()
-        End If
+
+        Dim bContentVisible As Boolean = False
+
+        Try
+
+            If (Me.Graph IsNot Nothing) Then bContentVisible = bContentVisible Or Me.Graph.Visible
+            If (Me.Grid IsNot Nothing) Then bContentVisible = bContentVisible Or Me.Grid.Visible
+            If (Me.Plot IsNot Nothing) Then bContentVisible = bContentVisible Or Me.Plot.Visible
+
+            If (bContentVisible) Then
+                Me.DisplayData()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Protected Sub ToolstripShowGroupSelections(Optional ByVal strLabel1 As String = "", _
