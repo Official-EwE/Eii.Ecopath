@@ -49,7 +49,7 @@ Public Class cEcopathMergeGroupsDatastructures
     Public OtherMortinput As Single
     Public Immig As Single
     Public Emigration As Single
-    Public Emig As Single
+    Public EmigRate As Single
     Public Det As Single
     Public DtImp As Single
     Public Shadow As Single

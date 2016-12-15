@@ -65,6 +65,7 @@ Partial Class frmNetworkAnalysis
         Me.tscmbSelection2 = New System.Windows.Forms.ToolStripComboBox()
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton()
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton()
+        Me.tsbnFonts = New System.Windows.Forms.ToolStripButton()
         Me.m_hdrPage = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         ts3 = New System.Windows.Forms.ToolStripSeparator()
         ts1 = New System.Windows.Forms.ToolStripSeparator()
@@ -154,13 +155,13 @@ Partial Class frmNetworkAnalysis
         '
         resources.ApplyResources(Me.m_graph, "m_graph")
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
+        Me.m_graph.ScrollGrace = 0R
+        Me.m_graph.ScrollMaxX = 0R
+        Me.m_graph.ScrollMaxY = 0R
+        Me.m_graph.ScrollMaxY2 = 0R
+        Me.m_graph.ScrollMinX = 0R
+        Me.m_graph.ScrollMinY = 0R
+        Me.m_graph.ScrollMinY2 = 0R
         '
         'm_datagrid
         '
@@ -179,7 +180,7 @@ Partial Class frmNetworkAnalysis
         'm_toolstrip
         '
         Me.m_toolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsbtnOptions, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF})
+        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsbtnOptions, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbnFonts})
         resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
         Me.m_toolstrip.Name = "m_toolstrip"
         Me.m_toolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -238,6 +239,12 @@ Partial Class frmNetworkAnalysis
         resources.ApplyResources(Me.tsbtnOutputGraphEMF, "tsbtnOutputGraphEMF")
         Me.tsbtnOutputGraphEMF.Name = "tsbtnOutputGraphEMF"
         '
+        'tsbnFonts
+        '
+        Me.tsbnFonts.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.tsbnFonts, "tsbnFonts")
+        Me.tsbnFonts.Name = "tsbnFonts"
+        '
         'm_hdrPage
         '
         resources.ApplyResources(Me.m_hdrPage, "m_hdrPage")
@@ -293,4 +300,5 @@ Partial Class frmNetworkAnalysis
     Friend WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents m_pbSponsors As System.Windows.Forms.PictureBox
     Private WithEvents m_lblSponsors As System.Windows.Forms.Label
+    Private WithEvents tsbnFonts As Windows.Forms.ToolStripButton
 End Class

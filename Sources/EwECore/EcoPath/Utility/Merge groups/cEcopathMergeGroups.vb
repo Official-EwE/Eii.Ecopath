@@ -241,7 +241,7 @@ Public Class cEcopathMergeGroups
         Me.m_data.BAInput = ecopathds.BA(agg1) + ecopathds.BA(agg2)
         Me.m_data.Immig = ecopathds.Immig(agg1) + ecopathds.Immig(agg2)
         Me.m_data.Emigration = ecopathds.Emigration(agg1) + ecopathds.Emigration(agg2)
-        Me.m_data.Emig = (ecopathds.Emig(agg1) * ecopathds.B(agg1) + ecopathds.Emig(agg2) * ecopathds.B(agg2)) / Btot
+        Me.m_data.EmigRate = (ecopathds.Emig(agg1) * ecopathds.B(agg1) + ecopathds.Emig(agg2) * ecopathds.B(agg2)) / Btot
         'Catch(Agg1) = Catch(Agg1) + Catch(Agg2)
         ' fCatch calculated on the fly from landings and discards; no need to update
         Me.m_data.Det = ecopathds.det(0, agg1) + ecopathds.det(0, agg2)
@@ -265,48 +265,32 @@ Public Class cEcopathMergeGroups
 
             ' Has consumption?
             If (Qtot > 0) Then
+
+                ' Merge amounts that other groups eat of agg1 and agg2
+                For i As Integer = 1 To ecopathds.NumGroups
+                    If (i <> agg1 And i <> agg2) Then
+                        Me.m_data.DCInput(i, agg1) = ecopathds.DCInput(i, agg1) + ecopathds.DCInput(i, agg2)
+                    End If
+                Next i
+
                 Me.m_data.GS = (ecopathds.GS(agg1) * ecopathds.B(agg1) * ecopathds.QB(agg1) + ecopathds.GS(agg2) * ecopathds.B(agg2) * ecopathds.QB(agg2)) / Qtot
+
+                ' Fix diet of agg1
                 For iPrey As Integer = 1 To ecopathds.NumGroups
-                    Me.m_data.DCInput(agg1, iPrey) = (ecopathds.DCInput(agg1, iPrey) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, iPrey) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
+                    Dim iPreyMerge As Integer = iPrey
+                    ' Special case: cannibalism
+                    If (iPrey = agg2) Then iPreyMerge = agg1
+                    Me.m_data.DCInput(agg1, iPreyMerge) = (ecopathds.DCInput(agg1, iPrey) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, iPrey) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
                 Next iPrey
+
                 Me.m_data.DCInput(agg1, 0) = (ecopathds.DCInput(agg1, 0) * ecopathds.QB(agg1) * ecopathds.B(agg1) + ecopathds.DCInput(agg2, 0) * ecopathds.QB(agg2) * ecopathds.B(agg2)) / Qtot
+
             End If
             Me.m_data.QBinput = Qtot / Btot
         Else
             ' #No: detritus
             Me.m_data.DtImp = ecopathds.DtImp(agg1) + ecopathds.DtImp(agg2)
         End If
-
-        ' Fix amounts eaten of agg2
-        For i As Integer = 1 To ecopathds.NumGroups
-            Me.m_data.DCInput(i, agg1) = ecopathds.DCInput(i, agg1) + ecopathds.DCInput(i, agg2)
-        Next i
-
-        ' Sum diet to one
-        For iPred As Integer = 1 To ecopathds.NumLiving
-            ' Is a consumer?
-            If ecopathds.PP(iPred) < 1 Then
-                ' #Yes: calc sum
-                Dim SumDiet As Single = 0.0
-                ' For each of potential prey
-                ' ** NOTE THAT THE LOWER BOUND USED HERE IS 0 INSTEAD OF 1! This is to include
-                ' ** DC Impoprt in the calculations - which is stored at index 0.
-                For iPrey As Integer = 0 To ecopathds.NumGroups
-                    ' Add consumption to sum
-                    SumDiet += Me.m_data.DCInput(iPred, iPrey)
-                Next iPrey
-
-                ' Is there predation with a need to recalc?
-                If (SumDiet > 0) And (SumDiet <> 1.0) Then
-                    ' For each prey
-                    ' JS 28Aug15: Rescale imports too!!!
-                    For iPrey As Integer = 0 To ecopathds.NumGroups
-                        ' Rescale consumption
-                        Me.m_data.DCInput(iPred, iPrey) = Me.m_data.DCInput(iPred, iPrey) / SumDiet
-                    Next iPrey
-                End If
-            End If ' PP < 1
-        Next iPred
 
         Me.m_data.Shadow = (ecopathds.Shadow(agg1) * ecopathds.B(agg1) + ecopathds.Shadow(agg2) * ecopathds.B(agg2)) / (ecopathds.B(agg1) + ecopathds.B(agg2))
 
@@ -411,7 +395,7 @@ Public Class cEcopathMergeGroups
         ecopathds.BAInput(agg1) = Me.m_data.BAInput
         ecopathds.Immig(agg1) = Me.m_data.Immig
         ecopathds.Emigration(agg1) = Me.m_data.Emigration
-        ecopathds.Emig(agg1) = Me.m_data.Emig
+        ecopathds.Emig(agg1) = Me.m_data.EmigRate
         ecopathds.det(0, agg1) = Me.m_data.Det
 
         If (agg1 > ecopathds.NumLiving) Then
