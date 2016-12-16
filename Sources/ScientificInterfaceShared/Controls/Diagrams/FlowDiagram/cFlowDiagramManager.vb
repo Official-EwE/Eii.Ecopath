@@ -127,7 +127,8 @@ Namespace Controls
             Dim bDraw As Boolean = False
 
             ' Draw connections
-            For iPred As Integer = 1 To Me.m_data.NumLivingitems()
+            For iPred As Integer = 1 To Me.m_data.NumItems()
+
                 For iPrey As Integer = 1 To Me.m_data.NumItems()
 
                     Dim sDiet As Single = Me.m_data.LinkValue(iPred, iPrey)
@@ -157,8 +158,8 @@ Namespace Controls
                             Case IFlowDiagramRenderer.eFDHighlightType.None
                                 bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.None)
                             Case IFlowDiagramRenderer.eFDHighlightType.Selected
-                                bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or _
-                                                  (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or _
+                                bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or
+                                                  (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or
                                                   (hl = IFlowDiagramRenderer.eFDHighlightType.Selected)
                         End Select
 
