@@ -58,16 +58,13 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_tsFlowDiagram As cEwEToolstrip
         Private WithEvents m_pgFlowDiagram As System.Windows.Forms.PropertyGrid
-        Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsmiLoad As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiSaveToImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tslLayout As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
-
+        Private WithEvents m_tsmiFont As ToolStripButton
         Private m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
@@ -100,6 +97,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            Me.m_tsmiFont.Image = SharedResources.CaseSensitive
             Me.m_tsmiResetLayout.Image = SharedResources.ResetHS
 
             If (Me.UIContext Is Nothing) Then Return
@@ -124,6 +122,12 @@ Namespace Ecopath.Controls.FlowDiagram
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
 
+            ' Fonts
+            cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.m_tsmiFont, eApplicationOptionTypes.Fonts)
+            End If
+
             Me.LoadSettings()
 
             ' Restore last layout
@@ -144,6 +148,12 @@ Namespace Ecopath.Controls.FlowDiagram
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
 
+            ' Fonts
+            cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.RemoveControl(Me.m_tsmiFont)
+            End If
+
             RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
             Me.SaveSettings()
 
@@ -154,7 +164,7 @@ Namespace Ecopath.Controls.FlowDiagram
             MyBase.OnCoreMessage(msg)
 
             ' Refresh the diagram data when ecopath data has changed
-            If (msg.Source = eCoreComponentType.EcoPath) And _
+            If (msg.Source = eCoreComponentType.EcoPath) And
                (msg.Type = eMessageType.DataModified) Then
                 Me.m_data.Refresh()
                 Me.m_pbFlowDiagram.Invalidate()
@@ -266,52 +276,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiLoad.Click
-
-            Dim ifData As cXMLSettings = Nothing
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-
-            ' ToDo: Globalize this
-            cmdFO.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1, "Select flow diagram layout to load")
-
-            If (cmdFO.Result = DialogResult.OK) Then
-                Try
-                    ifData = New cXMLSettings()
-                    ifData.LoadFromFile(cmdFO.FileName)
-                    m_doodler.Load(ifData, Me.m_pbFlowDiagram)
-                Catch ex As Exception
-                    Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
-                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
-                    Me.Core.Messages.SendMessage(msg)
-                End Try
-            End If
-
-        End Sub
-
-        Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiSave.Click
-
-            Dim ifData As cXMLSettings = Nothing
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-
-            cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
-
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-                Try
-                    ifData = New cXMLSettings()
-                    ifData.LoadFromFile(cmdFS.FileName)
-                    m_doodler.Save(ifData, Me.m_pbFlowDiagram)
-                Catch ex As Exception
-                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
-                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
-                    Me.Core.Messages.SendMessage(msg)
-                End Try
-            End If
-        End Sub
-
         Private Sub OnSettings(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSettings.Click
 
@@ -373,14 +337,14 @@ Namespace Ecopath.Controls.FlowDiagram
                     bmp.Save(cmdFS.FileName, fmt)
 
                     ' ToDo: globalize this
-                    Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Flow diagram image", cmdFS.FileName), _
+                    Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Flow diagram image", cmdFS.FileName),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
                     Me.Core.Messages.SendMessage(msg)
 
                 Catch ex As Exception
                     cLog.Write(ex, "frmFlowDiagram::SaveImage(" & cmdFS.FileName & ")")
-                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                 eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)
                 End Try
@@ -483,12 +447,10 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
             Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
             Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tslLayout = New System.Windows.Forms.ToolStripLabel()
-            Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -526,7 +488,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiFont, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -543,6 +505,12 @@ Namespace Ecopath.Controls.FlowDiagram
             resources.ApplyResources(Me.m_tsmiSettings, "m_tsmiSettings")
             Me.m_tsmiSettings.Name = "m_tsmiSettings"
             '
+            'm_tsmiFont
+            '
+            Me.m_tsmiFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsmiFont, "m_tsmiFont")
+            Me.m_tsmiFont.Name = "m_tsmiFont"
+            '
             'm_tss2
             '
             Me.m_tss2.Name = "m_tss2"
@@ -557,23 +525,6 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             Me.m_tss1.Name = "m_tss1"
             resources.ApplyResources(Me.m_tss1, "m_tss1")
-            '
-            'm_tslLayout
-            '
-            Me.m_tslLayout.Name = "m_tslLayout"
-            resources.ApplyResources(Me.m_tslLayout, "m_tslLayout")
-            '
-            'm_tsmiLoad
-            '
-            Me.m_tsmiLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsmiLoad, "m_tsmiLoad")
-            Me.m_tsmiLoad.Name = "m_tsmiLoad"
-            '
-            'm_tsmiSave
-            '
-            Me.m_tsmiSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
-            Me.m_tsmiSave.Name = "m_tsmiSave"
             '
             'm_tsmiResetLayout
             '
