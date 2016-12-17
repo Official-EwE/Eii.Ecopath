@@ -18,8 +18,6 @@
 ' ===============================================================================
 '
 
-Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
@@ -55,7 +53,7 @@ Partial Class frmMain
         Me.m_lblCredits = New System.Windows.Forms.Label()
         Me.m_plCredits = New System.Windows.Forms.Panel()
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_pbICM = New System.Windows.Forms.PictureBox()
+        Me.m_pbIRD = New System.Windows.Forms.PictureBox()
         Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
         Me.m_btnChangeDefault = New System.Windows.Forms.Button()
@@ -95,7 +93,7 @@ Partial Class frmMain
         Me.m_tpSettings.SuspendLayout()
         Me.m_plCredits.SuspendLayout()
         Me.m_tlpCredits.SuspendLayout()
-        CType(Me.m_pbICM, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpEcopath.SuspendLayout()
@@ -180,18 +178,18 @@ Partial Class frmMain
         '
         Me.m_tlpCredits.BackColor = System.Drawing.Color.White
         resources.ApplyResources(Me.m_tlpCredits, "m_tlpCredits")
-        Me.m_tlpCredits.Controls.Add(Me.m_pbICM, 1, 1)
-        Me.m_tlpCredits.Controls.Add(Me.m_pbCSIC, 3, 1)
+        Me.m_tlpCredits.Controls.Add(Me.m_pbIRD, 3, 1)
         Me.m_tlpCredits.Controls.Add(Me.m_pbEII, 5, 1)
+        Me.m_tlpCredits.Controls.Add(Me.m_pbCSIC, 1, 1)
         Me.m_tlpCredits.Name = "m_tlpCredits"
         '
-        'm_pbICM
+        'm_pbIRD
         '
-        Me.m_pbICM.BackgroundImage = Global.EwEEcologicalIndicatorsPlugin.My.Resources.Resources.icm
-        resources.ApplyResources(Me.m_pbICM, "m_pbICM")
-        Me.m_pbICM.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.m_pbICM.Name = "m_pbICM"
-        Me.m_pbICM.TabStop = False
+        Me.m_pbIRD.BackgroundImage = Global.EwEEcologicalIndicatorsPlugin.My.Resources.Resources.logo_ird
+        resources.ApplyResources(Me.m_pbIRD, "m_pbIRD")
+        Me.m_pbIRD.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.m_pbIRD.Name = "m_pbIRD"
+        Me.m_pbIRD.TabStop = False
         '
         'm_pbCSIC
         '
@@ -353,13 +351,13 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_graphSim, "m_graphSim")
         Me.m_graphSim.Name = "m_graphSim"
-        Me.m_graphSim.ScrollGrace = 0.0R
-        Me.m_graphSim.ScrollMaxX = 0.0R
-        Me.m_graphSim.ScrollMaxY = 0.0R
-        Me.m_graphSim.ScrollMaxY2 = 0.0R
-        Me.m_graphSim.ScrollMinX = 0.0R
-        Me.m_graphSim.ScrollMinY = 0.0R
-        Me.m_graphSim.ScrollMinY2 = 0.0R
+        Me.m_graphSim.ScrollGrace = 0R
+        Me.m_graphSim.ScrollMaxX = 0R
+        Me.m_graphSim.ScrollMaxY = 0R
+        Me.m_graphSim.ScrollMaxY2 = 0R
+        Me.m_graphSim.ScrollMinX = 0R
+        Me.m_graphSim.ScrollMinY = 0R
+        Me.m_graphSim.ScrollMinY2 = 0R
         '
         'm_tpEcospace
         '
@@ -398,13 +396,13 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_graphMCpath, "m_graphMCpath")
         Me.m_graphMCpath.Name = "m_graphMCpath"
-        Me.m_graphMCpath.ScrollGrace = 0.0R
-        Me.m_graphMCpath.ScrollMaxX = 0.0R
-        Me.m_graphMCpath.ScrollMaxY = 0.0R
-        Me.m_graphMCpath.ScrollMaxY2 = 0.0R
-        Me.m_graphMCpath.ScrollMinX = 0.0R
-        Me.m_graphMCpath.ScrollMinY = 0.0R
-        Me.m_graphMCpath.ScrollMinY2 = 0.0R
+        Me.m_graphMCpath.ScrollGrace = 0R
+        Me.m_graphMCpath.ScrollMaxX = 0R
+        Me.m_graphMCpath.ScrollMaxY = 0R
+        Me.m_graphMCpath.ScrollMaxY2 = 0R
+        Me.m_graphMCpath.ScrollMinX = 0R
+        Me.m_graphMCpath.ScrollMinY = 0R
+        Me.m_graphMCpath.ScrollMinY2 = 0R
         '
         'm_tpMCsim
         '
@@ -417,13 +415,13 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_graphMCsim, "m_graphMCsim")
         Me.m_graphMCsim.Name = "m_graphMCsim"
-        Me.m_graphMCsim.ScrollGrace = 0.0R
-        Me.m_graphMCsim.ScrollMaxX = 0.0R
-        Me.m_graphMCsim.ScrollMaxY = 0.0R
-        Me.m_graphMCsim.ScrollMaxY2 = 0.0R
-        Me.m_graphMCsim.ScrollMinX = 0.0R
-        Me.m_graphMCsim.ScrollMinY = 0.0R
-        Me.m_graphMCsim.ScrollMinY2 = 0.0R
+        Me.m_graphMCsim.ScrollGrace = 0R
+        Me.m_graphMCsim.ScrollMaxX = 0R
+        Me.m_graphMCsim.ScrollMaxY = 0R
+        Me.m_graphMCsim.ScrollMaxY2 = 0R
+        Me.m_graphMCsim.ScrollMinX = 0R
+        Me.m_graphMCsim.ScrollMinY = 0R
+        Me.m_graphMCsim.ScrollMinY2 = 0R
         '
         'm_btnSaveToCSV
         '
@@ -466,7 +464,7 @@ Partial Class frmMain
         Me.m_tpSettings.PerformLayout()
         Me.m_plCredits.ResumeLayout(False)
         Me.m_tlpCredits.ResumeLayout(False)
-        CType(Me.m_pbICM, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpEcopath.ResumeLayout(False)
@@ -502,7 +500,7 @@ Partial Class frmMain
     Private WithEvents m_hdrExecution As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpCredits As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbCSIC As System.Windows.Forms.PictureBox
-    Private WithEvents m_pbICM As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbIRD As System.Windows.Forms.PictureBox
     Private WithEvents m_plCredits As System.Windows.Forms.Panel
     Private WithEvents m_lblCredits As System.Windows.Forms.Label
     Private WithEvents m_cbRunWithMC As System.Windows.Forms.CheckBox
