@@ -239,12 +239,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\csic.png" />
-    <None Include="Resources\icm.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\BioDiversityPlugin.ico" />
     <Content Include="Resources\BioDiversityPlugin.png" />
     <Content Include="Resources\eii.png" />
+    <None Include="Resources\logo_ird.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

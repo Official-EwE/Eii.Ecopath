@@ -254,16 +254,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property icm() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("icm", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Commercial B.
         '''</summary>
         Friend ReadOnly Property IND_COMMB() As String
@@ -1025,6 +1015,16 @@ Namespace My.Resources
         Friend ReadOnly Property IND_VALUE_TL() As String
             Get
                 Return ResourceManager.GetString("IND_VALUE_TL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property logo_ird() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("logo_ird", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

@@ -489,10 +489,10 @@ Public Class frmMain
         Me.OpenLink("http://www.csic.es/")
     End Sub
 
-    Private Sub OnVisitICM(sender As System.Object, e As System.EventArgs) _
-        Handles m_pbICM.Click
-        ' User wants to visit ICM
-        Me.OpenLink("http://www.icm.csic.es/")
+    Private Sub OnVisitIRD(sender As System.Object, e As System.EventArgs) _
+        Handles m_pbIRD.Click
+        ' User wants to visit IRD
+        Me.OpenLink("http://www.ird.fr/")
     End Sub
 
     Private Sub OnVisitEII(sender As System.Object, e As System.EventArgs) _
