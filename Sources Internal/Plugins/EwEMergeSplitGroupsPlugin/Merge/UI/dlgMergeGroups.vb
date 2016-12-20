@@ -23,11 +23,12 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwECore.Ecopath
 Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -38,10 +39,10 @@ Public Class dlgMergeGroups
     Private m_bInUpdate As Boolean = True
     Private m_images As New ImageList()
 
-    Public Sub New(uic As cUIContext)
+    Public Sub New(uic As cUIContext, engine As cEcopathMergeGroups)
 
         Me.m_uic = uic
-        Me.m_engine = New cEcopathMergeGroups(Me.m_uic.Core)
+        Me.m_engine = engine
 
         Me.InitializeComponent()
 

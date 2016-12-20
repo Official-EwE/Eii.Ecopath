@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Ecopath
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities

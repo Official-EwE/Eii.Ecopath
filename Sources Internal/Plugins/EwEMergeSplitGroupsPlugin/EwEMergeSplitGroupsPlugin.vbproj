@@ -133,11 +133,11 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cMergeGroupsPluginPoint.vb" />
-    <Compile Include="UI\dlgMergeGroups.Designer.vb">
+    <Compile Include="Merge\cMergeGroupsPluginPoint.vb" />
+    <Compile Include="Merge\UI\dlgMergeGroups.Designer.vb">
       <DependentUpon>dlgMergeGroups.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\dlgMergeGroups.vb">
+    <Compile Include="Merge\UI\dlgMergeGroups.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -155,18 +155,25 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="UI\gridTaxonomy.vb">
+    <Compile Include="Merge\UI\gridTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\gridDietComposition.vb">
+    <Compile Include="Merge\UI\gridDietComposition.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\gridGroupInput.vb">
+    <Compile Include="Merge\UI\gridGroupInput.vb">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Split\cSplitGroupPluginPoint.vb" />
+    <Compile Include="Split\UI\dlgSplitGroup.Designer.vb">
+      <DependentUpon>dlgSplitGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Split\UI\dlgSplitGroup.vb">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\dlgMergeGroups.resx">
+    <EmbeddedResource Include="Merge\UI\dlgMergeGroups.resx">
       <DependentUpon>dlgMergeGroups.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -174,6 +181,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Split\UI\dlgSplitGroup.resx">
+      <DependentUpon>dlgSplitGroup.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +222,7 @@
   <ItemGroup>
     <Content Include="Resources\geomar_logo_en_print.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

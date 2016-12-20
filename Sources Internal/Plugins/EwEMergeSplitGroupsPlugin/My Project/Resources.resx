@@ -142,4 +142,7 @@
   <data name="HEADER_PROP_C" xml:space="preserve">
     <value>Prop. C</value>
   </data>
+  <data name="MENUITEM_SPLIT_TEXT" xml:space="preserve">
+    <value>Split group...</value>
+  </data>
 </root>

@@ -132,5 +132,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("MENUITEM_MERGE_TEXT", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Split group....
+        '''</summary>
+        Friend ReadOnly Property MENUITEM_SPLIT_TEXT() As String
+            Get
+                Return ResourceManager.GetString("MENUITEM_SPLIT_TEXT", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

@@ -21,10 +21,11 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Windows.Forms
+Imports EwECore
+Imports EwECore.Ecopath
 Imports EwEPlugin
 Imports ScientificInterfaceShared.Controls
-Imports EwECore
-Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -80,7 +81,7 @@ Public Class cMergeGroupsPluginPoint
 
         Me.m_uic.Core.RunEcoPath()
 
-        Dim dlg As New dlgMergeGroups(Me.m_uic)
+        Dim dlg As New dlgMergeGroups(Me.m_uic, engine)
         dlg.ShowDialog()
 
     End Sub
@@ -126,7 +127,7 @@ Public Class cMergeGroupsPluginPoint
 
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "EwEDevTeam@gmail.com"
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 

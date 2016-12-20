@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Ecopath
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
