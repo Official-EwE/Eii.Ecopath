@@ -261,12 +261,14 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                         Dim fleet As cFleetInput = Me.Core.FleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
                             sw.Write("{0},{1}", group.Index, fleet.Index, cStringUtils.ToCSVField(fleet.Name))
+                            Dim val As Single = 0.0
                             Select Case par
                                 Case eMCParams.Landings
-                                    sw.WriteLine(",{0}", cStringUtils.ToCSVField(Me.Core.m_EcoPathData.Landing(iFleet, iGroup)))
+                                    val = Me.Core.m_EcoPathData.Landing(iFleet, iGroup)
                                 Case eMCParams.Discards
-                                    sw.WriteLine(",{0}", cStringUtils.ToCSVField(Me.Core.m_EcoPathData.Discard(iFleet, iGroup)))
+                                    val = Me.Core.m_EcoPathData.Discard(iFleet, iGroup)
                             End Select
+                            sw.Write(",{0}", cSystemUtils.IIF(val > 0, cStringUtils.ToCSVField(val), ""))
                         End If
                     Next iFleet
                 Next iGroup
@@ -281,7 +283,8 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 For iPred As Integer = 1 To Core.nGroups
                     sw.Write("{0}", iPred)
                     For iPrey As Integer = 1 To Me.Core.nGroups
-                        sw.Write(",{0}", cStringUtils.ToCSVField(Me.m_core.m_EcoPathData.DC(iPred, iPrey)))
+                        Dim val As Single = Me.m_core.m_EcoPathData.DC(iPred, iPrey)
+                        sw.Write(",{0}", cSystemUtils.IIF(val > 0, cStringUtils.ToCSVField(val), ""))
                     Next
                     sw.WriteLine()
                 Next
@@ -301,7 +304,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                         Case Else
                             Debug.Assert(False, "Yo! Variable not supported yet!")
                     End Select
-                    sw.WriteLine(",{0}", cStringUtils.ToCSVField(val))
+                    sw.WriteLine(",{0}", cSystemUtils.IIF(val > 0, cStringUtils.ToCSVField(val), ""))
                 Next
         End Select
 
