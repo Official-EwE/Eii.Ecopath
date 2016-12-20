@@ -9,6 +9,7 @@
 
 #define Ecosampler 1
 #define SpatTemp 0
+#define MergeGroups 0
 
 [Setup]
 ; SignTool=Signtool
@@ -89,7 +90,6 @@ Source: "C:\Temp\Build\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\
 Source: "C:\Temp\Build\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 Source: "C:\Temp\Build\UserGuide\Link - 2010 - Adding rigor to ecological network models by evalu.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\prebal
 Source: "C:\Temp\Build\UserGuide\ResultsExtractorPlug.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\output\resultextractor
-Source: "C:\Temp\Build\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "C:\Temp\Build\Tools\code_for_plotting_dirichlets.R"; DestDir: "{app}\Tools\"; Flags: ignoreversion
 ; Source: "C:\Temp\Build\ProjNet.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\BuildBot\slave\Ecopath6\Database\Generic_37.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
@@ -98,8 +98,13 @@ Source: "C:\BuildBot\slave\Ecopath6\Database\Tampa_Bay.EwEmdb"; DestDir: "{userd
 Source: "C:\BuildBot\slave\Ecopath6\Database\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 #if Ecosampler == 1
 Source: "C:\Temp\Build\EcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
+Source: "C:\Temp\Build\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
+#endif
+#if MergeGroups == 1
+Source: "C:\Temp\Build\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mergegroups
 #endif
 #if SpatTemp == 1
+Source: "C:\Temp\Build\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 Source: "C:\Temp\Build\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "C:\Temp\Build\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "C:\Temp\Build\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -236,6 +241,9 @@ Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
+#if MergeGroups == 1
+Name: "plugin\automation\mergegroups"; Description: "Merge groups"; Types: full
+#endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"
 #endif
