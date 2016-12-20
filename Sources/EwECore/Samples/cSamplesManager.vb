@@ -683,20 +683,20 @@ Namespace Samples
                     epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
                 End If
 
-                If (epdata.PBinput(iGroup) >= 0) Then
+                If (epdata.PBinput(iGroup) > 0) Then
                     epdata.PBinput(iGroup) = s.PB(iGroup)
                 End If
 
-                If (epdata.QBinput(iGroup) >= 0) Then
+                If (epdata.QBinput(iGroup) > 0) Then
                     epdata.QBinput(iGroup) = s.QB(iGroup)
                 End If
 
-                If (epdata.EEinput(iGroup) >= 0) Then
+                If (epdata.EEinput(iGroup) > 0) Then
                     epdata.EEinput(iGroup) = s.EE(iGroup)
                 End If
 
-                If (epdata.BA(iGroup) > 0 Or epdata.BaBi(iGroup) > 0) Then
-                    epdata.BA(iGroup) = s.BA(iGroup)
+                If (epdata.BA(iGroup) > 0) Then
+                    epdata.BAInput(iGroup) = s.BA(iGroup)
                 End If
 
                 For iFleet As Integer = 1 To epdata.NumFleet
@@ -704,15 +704,7 @@ Namespace Samples
                     epdata.Discard(iFleet, iGroup) = s.Discard(iFleet, iGroup)
                 Next
 
-                ' To inform the user, but should not affect the model results
-                If (epdata.BHinput(iGroup) >= 0) Then epdata.BHinput(iGroup) = s.B(iGroup)
-                If (epdata.PBinput(iGroup) >= 0) Then epdata.PBinput(iGroup) = s.PB(iGroup)
-                If (epdata.QBinput(iGroup) >= 0) Then epdata.QBinput(iGroup) = s.QB(iGroup)
-                If (epdata.EEinput(iGroup) >= 0) Then epdata.EEinput(iGroup) = s.EE(iGroup)
-                If (epdata.BAInput(iGroup) >= 0) Then epdata.BAInput(iGroup) = s.BA(iGroup)
-
                 For iPrey As Integer = 0 To epdata.NumGroups
-                    epdata.DC(iGroup, iPrey) = s.DC(iGroup, iPrey)
                     epdata.DCInput(iGroup, iPrey) = s.DC(iGroup, iPrey)
                 Next
             Next
