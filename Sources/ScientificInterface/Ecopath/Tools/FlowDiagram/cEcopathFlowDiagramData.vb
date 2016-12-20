@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -23,17 +23,19 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-Namespace Ecosim
+Namespace Ecopath.Controls.FlowDiagram
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Data for rendering the Ecosim groups and trophic links as a flow diagram.
+    ''' Data for rendering the Ecopath groups, fleets, and trophic links as a 
+    ''' flow diagram.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cEcosimFDGroupData
+    Public Class cEcopathFlowDiagramData
         Implements IFlowDiagramData
 
 #Region " Internals "
@@ -44,6 +46,8 @@ Namespace Ecosim
         Private m_sBiomassMax As Single = 0
 
         Private m_bInvalid As Boolean = True
+
+        Private m_TTLX_all() As Single
 
 #End Region ' Internals
 
@@ -74,20 +78,22 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.NumItems"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumItems() As Integer _
+        Public ReadOnly Property NumGroups() As Integer _
               Implements IFlowDiagramData.NumItems
             Get
-                Return Me.UIContext.Core.nGroups
+                Dim c As cCore = Me.UIContext.Core
+                Return c.nGroups + c.nFleets
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.NumLivingitems"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumLivingitems() As Integer _
+        Public ReadOnly Property NumLivingGroups() As Integer _
                 Implements IFlowDiagramData.NumLivingitems
             Get
-                Return Me.UIContext.Core.nLivingGroups
+                Dim c As cCore = Me.UIContext.Core
+                Return c.nLivingGroups + c.nFleets
             End Get
         End Property
 
@@ -97,47 +103,65 @@ Namespace Ecosim
         Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
-                Return Me.UIContext.Core.EcoSimGroupOutputs(iIndex).Biomass(Me.TimeStep)
+                Dim c As cCore = Me.UIContext.Core
+                If (iIndex <= c.nGroups) Then Return c.EcoPathGroupOutputs(iIndex).Biomass
+                iIndex -= c.nGroups
+                Dim b As Single = 0
+                For i As Integer = 1 To c.nGroups
+                    b += c.FleetInputs(iIndex).Landings(i) + c.FleetInputs(iIndex).Discards(i)
+                Next
+                Return b
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueLabel"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassLabel(ByVal sBiomass As Single) As String _
+        Public ReadOnly Property BiomassLabel(sBiomass As Single) As String _
               Implements IFlowDiagramData.ValueLabel
             Get
-                Return String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
+                Return cStringUtils.Localize(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.ItemName"/>
+        ''' <inheritdocs cref="IFlowDiagramData.ItemName(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemName(ByVal iIndex As Integer) As String _
+        Public ReadOnly Property GroupName(ByVal iIndex As Integer) As String _
                 Implements IFlowDiagramData.ItemName
             Get
-                Return Me.UIContext.Core.EcoPathGroupInputs(iIndex).Name
+                Dim c As cCore = Me.UIContext.Core
+                If (iIndex <= c.nGroups) Then Return c.EcoPathGroupInputs(iIndex).Name
+                iIndex -= c.nGroups
+                Return c.FleetInputs(iIndex).Name
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.ItemColor"/>
+        ''' <inheritdocs cref="IFlowDiagramData.ItemColor(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property ItemColor(ByVal iGroup As Integer) As Color _
+        Public ReadOnly Property GroupColor(ByVal iIndex As Integer) As Color _
                 Implements IFlowDiagramData.ItemColor
             Get
-                Return Me.UIContext.StyleGuide.GroupColor(Me.UIContext.Core, iGroup)
+                Dim c As cCore = Me.UIContext.Core
+                Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+                If (iIndex <= c.nGroups) Then Return sg.GroupColor(c, iIndex)
+                iIndex -= c.nGroups
+                Return sg.FleetColor(c, iIndex)
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible"/>
+        ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsItemVisible(ByVal iGroup As Integer) As Boolean _
+        Public ReadOnly Property IsGroupVisible(ByVal iIndex As Integer) As Boolean _
                 Implements IFlowDiagramData.IsItemVisible
             Get
-                Return Me.UIContext.StyleGuide.GroupVisible(iGroup)
+                Dim c As cCore = Me.UIContext.Core
+                Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+                If (iIndex <= c.nGroups) Then Return sg.GroupVisible(iIndex)
+                iIndex -= c.nGroups
+                Return sg.FleetVisible(iIndex)
             End Get
         End Property
 
@@ -147,8 +171,17 @@ Namespace Ecosim
         Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
-                Dim group As cEcoPathGroupInput = Me.UIContext.Core.EcoPathGroupInputs(iPred)
-                Return group.DietComp(iPrey)
+                Dim c As cCore = Me.UIContext.Core
+                If (iPred <= c.nGroups) And (iPrey <= c.nGroups) Then
+                    Dim group As cEcoPathGroupInput = c.EcoPathGroupInputs(iPred)
+                    Return group.DietComp(iPrey)
+                End If
+                iPred -= c.nGroups
+                If (iPrey <= c.nGroups) Then
+                    Dim fleet As cFleetInput = c.FleetInputs(iPred)
+                    Return fleet.Landings(iPrey) + fleet.Discards(iPrey)
+                End If
+                Return 0
             End Get
         End Property
 
@@ -158,7 +191,12 @@ Namespace Ecosim
         Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single _
                 Implements IFlowDiagramData.TrophicLevel
             Get
-                Return Me.UIContext.Core.EcoPathGroupOutputs(iIndex).TTLX
+                Dim c As cCore = Me.UIContext.Core
+                If (iIndex <= c.nGroups) Then Return c.EcoPathGroupOutputs(iIndex).TTLX
+                iIndex -= c.nGroups
+
+                Me.Recalc()
+                Return Me.m_TTLX_all(iIndex)
             End Get
         End Property
 
@@ -168,7 +206,7 @@ Namespace Ecosim
         Public ReadOnly Property BiomassMax() As Single _
                 Implements IFlowDiagramData.ValueMax
             Get
-                Me.Recalc()
+                If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sBiomassMax
             End Get
         End Property
@@ -179,7 +217,7 @@ Namespace Ecosim
         Public ReadOnly Property BiomassMin() As Single _
                Implements IFlowDiagramData.ValueMin
             Get
-                Me.Recalc()
+                If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sBiomassMin
             End Get
         End Property
@@ -190,7 +228,7 @@ Namespace Ecosim
         Public ReadOnly Property DietMin() As Single _
                  Implements IFlowDiagramData.LinkValueMin
             Get
-                Me.Recalc()
+                If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sDietMin
             End Get
         End Property
@@ -201,7 +239,7 @@ Namespace Ecosim
         Public ReadOnly Property DietMax() As Single _
                   Implements IFlowDiagramData.LinkValueMax
             Get
-                Me.Recalc()
+                If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sDietMax
             End Get
         End Property
@@ -212,11 +250,6 @@ Namespace Ecosim
         Public Property Title As String _
             Implements IFlowDiagramData.Title
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>Get/set the time step in Ecosim.</summary>
-        ''' -------------------------------------------------------------------
-        Public Property TimeStep As Integer
-
 #End Region ' Properties
 
 #Region " Internals "
@@ -224,24 +257,56 @@ Namespace Ecosim
         Private Sub Recalc()
 
             If Not Me.m_bInvalid Then Return
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim c As cCore = Me.UIContext.Core
+            Dim DC_all(c.nGroups + c.nFleets, c.nGroups + c.nFleets) As Single
+            Dim B_all(c.nGroups + c.nFleets) As Single
+            Dim PP_all(c.nGroups + c.nFleets) As Single
+            ReDim Me.m_TTLX_all(c.nGroups + c.nFleets)
 
             Me.m_sBiomassMax = 0
             Me.m_sBiomassMin = Single.MaxValue
             Me.m_sDietMax = 0
             Me.m_sDietMin = Single.MaxValue
 
-            For i As Integer = 1 To Me.NumItems
-                For j As Integer = 1 To Me.NumItems
+            For i As Integer = 1 To c.nGroups
+                For j As Integer = 1 To c.nGroups
                     Dim sDiet As Single = Me.Diet(i, j)
                     Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
                     Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
-
-                    Dim sB As Single = Me.Biomass(i)
-                    Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sDiet)
-                    Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sDiet)
+                    DC_all(c.nFleets + i, c.nFleets + j) = sDiet
                 Next j
+
+                Dim sB As Single = Me.Biomass(i)
+                Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
+                Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
+                B_all(i) = sB
+
+                PP_all(c.nFleets + i) = c.EcoPathGroupInputs(i).PP
+
             Next i
 
+            For i As Integer = 1 To c.nFleets
+
+                For j As Integer = 1 To c.nGroups
+                    Dim sDiet As Single = Me.Diet(i + c.nGroups, j)
+                    Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
+                    Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
+                    DC_all(i, c.nFleets + j) = sDiet
+                Next j
+
+                Dim sB As Single = Me.Biomass(i + c.nGroups)
+                Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
+                Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
+                B_all(i + c.nFleets) = sB
+
+                ' Just to be explicit: fleets are full-on consumers
+                PP_all(i) = 0
+            Next i
+
+            Dim fn As cEcoFunctions = c.EcoFunction
+            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, DC_all, m_TTLX_all)
             Me.m_bInvalid = False
 
         End Sub

@@ -28,10 +28,7 @@ Imports System.IO
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -43,8 +40,8 @@ Namespace Ecopath.Controls.FlowDiagram
     ''' Form presenting the Ecopath Flow Diagram interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class frmFlowDiagram
-        : Inherits frmEwE
+    Public Class frmEcopathFlowDiagram
+        Inherits frmEwE
 
 #Region " Private variables "
 
@@ -65,7 +62,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiFont As ToolStripButton
-        Private m_bInUpdate As Boolean = False
+        Private WithEvents m_tsmiCenterLabels As ToolStripButton
 
 #End Region ' Private variables
 
@@ -99,13 +96,14 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Me.m_tsmiFont.Image = SharedResources.CaseSensitive
             Me.m_tsmiResetLayout.Image = SharedResources.ResetHS
+            Me.m_tsmiCenterLabels.Image = SharedResources.AlignObjectsCenteredHorizontalHS
 
             If (Me.UIContext Is Nothing) Then Return
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
 
-            Me.m_data = New cFlowDiagramFleetGroupData(Me.UIContext)
+            Me.m_data = New cEcopathFlowDiagramData(Me.UIContext)
             Me.m_tree = New cTreeFlowDiagramRenderer(Me.m_data)
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
@@ -114,7 +112,6 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.UpdateControls()
 
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
-            AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
             ' Display Groups
             cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -128,11 +125,10 @@ Namespace Ecopath.Controls.FlowDiagram
                 cmd.AddControl(Me.m_tsmiFont, eApplicationOptionTypes.Fonts)
             End If
 
-            Me.LoadSettings()
-
             ' Restore last layout
-            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD01")
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
             Me.m_doodler.Load(ad.Settings, Me.m_pbFlowDiagram)
+            Me.m_tree.Load(ad.Settings)
 
         End Sub
 
@@ -154,10 +150,8 @@ Namespace Ecopath.Controls.FlowDiagram
                 cmd.RemoveControl(Me.m_tsmiFont)
             End If
 
-            RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
-            Me.SaveSettings()
-
             MyBase.OnFormClosed(e)
+
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
@@ -251,22 +245,26 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Private Sub OnTreeChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
-            'During initialization don't responsed to changes in the Flow Diagram
-            'This prevents a recursive loop during initialization
-            If Me.m_bInUpdate Then Return
-
             Me.m_pbFlowDiagram.Invalidate(True)
-            Me.SaveSettings()
 
             ' Preserve layout
-            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD01")
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
             Me.m_doodler.Save(ad.Settings, Me.m_pbFlowDiagram)
+            Me.m_tree.Save(ad.Settings)
 
         End Sub
 
 #End Region ' Tree events
 
 #Region " Commands "
+
+        Private Sub OnCenterLabels(sender As Object, e As EventArgs) _
+            Handles m_tsmiCenterLabels.Click
+
+            Me.m_tree.CenterLabels()
+            Me.m_pbFlowDiagram.Invalidate()
+
+        End Sub
 
         Private Sub OnResetLayout(sender As System.Object, e As System.EventArgs) _
             Handles m_tsmiResetLayout.Click
@@ -356,83 +354,18 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #End Region ' Commands
 
-#Region " Settings "
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler to respond to individual settings changes.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' -----------------------------------------------------------------------
-        Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
-
-            Try
-                If (Me.m_bInUpdate) Then Return
-                Me.LoadSettings()
-                Me.m_pgFlowDiagram.Invalidate()
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-#End Region ' Settings
-
 #End Region ' Events
 
 #Region " Internals "
+
+        Private Function DataName() As String
+            Return "FD01"
+        End Function
 
         Protected Function FileName() As String
             Dim model As cEwEModel = Me.UIContext.Core.EwEModel
             Return cFileUtils.ToValidFileName(model.Name & " " & Me.m_tree.Title, False)
         End Function
-
-        Protected Sub LoadSettings()
-
-            Me.m_bInUpdate = True
-
-            Me.m_tree.ShowTitle = My.Settings.FDShowTitle
-            Me.m_tree.ShowLegend = CType(My.Settings.FDShowLegend, TriState)
-            Me.m_tree.NumberOfTrophicLevels = My.Settings.FDNumTL
-            Me.m_tree.AutoColorUsage = CType(My.Settings.FDAutoColorUsage, eFDColorUsageTypes)
-            Me.m_tree.NodeType = DirectCast(My.Settings.FDNodeType, eFDNodeTypes)
-            Me.m_tree.CustomNodeColor = My.Settings.FDCustomNodeColor
-            Me.m_tree.AutoNodeSize = My.Settings.FDNodeAutoSize
-            Me.m_tree.CustomNodeSize = My.Settings.FDNodeCustomSize
-            Me.m_tree.AutoLineWidth = My.Settings.FDAutoLineWidth
-            Me.m_tree.CustomLineWidth = My.Settings.FDCustomLineWidth
-            Me.m_tree.CustomLineColor = My.Settings.FDCustomLineColor
-            Me.m_tree.ShowHiddenMode = CType(My.Settings.FDShowHiddenNodes, eFDShowHiddenType)
-
-            Me.m_bInUpdate = False
-
-        End Sub
-
-        Protected Sub SaveSettings()
-
-            If (Me.m_bInUpdate) Then Return
-
-            Me.m_bInUpdate = True
-
-            My.Settings.FDShowTitle = Me.m_tree.ShowTitle
-            My.Settings.FDShowLegend = Me.m_tree.ShowLegend
-            My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
-            My.Settings.FDAutoColorUsage = Me.m_tree.AutoColorUsage
-            My.Settings.FDNodeType = Me.m_tree.NodeType
-            My.Settings.FDCustomNodeColor = Me.m_tree.CustomNodeColor
-            My.Settings.FDNodeAutoSize = Me.m_tree.AutoNodeSize
-            My.Settings.FDNodeCustomSize = Me.m_tree.CustomNodeSize
-            My.Settings.FDAutoLineWidth = Me.m_tree.AutoLineWidth
-            My.Settings.FDCustomLineWidth = Me.m_tree.CustomLineWidth
-            My.Settings.FDCustomLineColor = Me.m_tree.CustomLineColor
-            My.Settings.FDShowHiddenNodes = Me.m_tree.ShowHiddenMode
-
-            My.Settings.Save()
-
-            Me.m_bInUpdate = False
-
-        End Sub
 
         Protected Overrides Sub UpdateControls()
             Me.m_scContent.Panel2Collapsed = Not Me.m_tsmiSettings.Checked
@@ -440,17 +373,18 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFlowDiagram))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcopathFlowDiagram))
             Me.m_pbFlowDiagram = New System.Windows.Forms.PictureBox()
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
             Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid()
             Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
             Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
             Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsmiCenterLabels = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -488,7 +422,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiFont, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -505,12 +439,6 @@ Namespace Ecopath.Controls.FlowDiagram
             resources.ApplyResources(Me.m_tsmiSettings, "m_tsmiSettings")
             Me.m_tsmiSettings.Name = "m_tsmiSettings"
             '
-            'm_tsmiFont
-            '
-            Me.m_tsmiFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsmiFont, "m_tsmiFont")
-            Me.m_tsmiFont.Name = "m_tsmiFont"
-            '
             'm_tss2
             '
             Me.m_tss2.Name = "m_tss2"
@@ -525,6 +453,18 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             Me.m_tss1.Name = "m_tss1"
             resources.ApplyResources(Me.m_tss1, "m_tss1")
+            '
+            'm_tsmiFont
+            '
+            Me.m_tsmiFont.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsmiFont, "m_tsmiFont")
+            Me.m_tsmiFont.Name = "m_tsmiFont"
+            '
+            'm_tsmiCenterLabels
+            '
+            Me.m_tsmiCenterLabels.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsmiCenterLabels, "m_tsmiCenterLabels")
+            Me.m_tsmiCenterLabels.Name = "m_tsmiCenterLabels"
             '
             'm_tsmiResetLayout
             '

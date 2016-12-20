@@ -24,6 +24,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Text
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Definitions
@@ -219,6 +220,8 @@ Namespace Controls
         Private Shared g_fmt As New StringFormat()
         ''' <summary>Minimum mouse hit area size</summary>
         Private Shared g_minsize As Integer = 10
+
+        Private m_bInUpdate As Boolean = False
 
 #End Region ' Privates
 
@@ -541,9 +544,9 @@ Namespace Controls
 
         <Browsable(True), _
         Category("Appearance"), _
-        cLocalizedDisplayName("GENERIC_SHOW_TROPHIC_LEVELS"), _
-        DefaultValue(5)> _
-        Public Property SHowTrophicLevels() As Boolean
+        cLocalizedDisplayName("GENERIC_SHOW_TROPHIC_LEVELS"),
+        DefaultValue(5)>
+        Public Property ShowTrophicLevels() As Boolean
             Get
                 Return Me.m_bShowTrophicLevels
             End Get
@@ -784,8 +787,90 @@ Namespace Controls
 
 #Region " Public access "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save renderer settings.
+        ''' </summary>
+        ''' <param name="settings">The <see cref="cXMLSettings">settings</see> to save to.</param>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function Save(ByVal settings As cXMLSettings) As Boolean
+
+            Try
+
+                settings.SaveSetting("Appearance", "ShowTitle", Me.ShowTitle.ToString())
+                settings.SaveSetting("Appearance", "ShowLegend", Me.ShowLegend.ToString())
+                settings.SaveSetting("Appearance", "ShowHiddenNodes", Me.ShowHiddenMode.ToString())
+                settings.SaveSetting("Appearance", "NumTL", CStr(Me.NumberOfTrophicLevels))
+                settings.SaveSetting("Appearance", "ColorUsage", Me.AutoColorUsage.ToString())
+                settings.SaveSetting("Appearance", "NodeType", Me.NodeType.ToString())
+                settings.SaveSetting("Appearance", "NodeColor", CStr(cColorUtils.ColorToInt(Me.CustomNodeColor)))
+                settings.SaveSetting("Appearance", "NodeAutosize", Me.AutoNodeSize.ToString())
+                settings.SaveSetting("Appearance", "NodeSize", Me.CustomNodeSize.ToString())
+                settings.SaveSetting("Appearance", "LineAutowidth", Me.AutoLineWidth.ToString())
+                settings.SaveSetting("Appearance", "LineWidth", Me.CustomLineWidth.ToString())
+                settings.SaveSetting("Appearance", "LineColor", CStr(cColorUtils.ColorToInt(Me.CustomLineColor)))
+
+                settings.Flush()
+
+            Catch ex As Exception
+                ' ToDo: send an error message
+                cLog.Write(ex, "cTreeFlowDiagramRenderer.Save")
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load renderer settings.
+        ''' </summary>
+        ''' <param name="settings">The <see cref="cXMLSettings">settings</see> to load from.</param>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function Load(ByVal settings As cXMLSettings) As Boolean
+
+            Dim bSuccess As Boolean = True
+
+            Me.m_bInUpdate = True
+
+            Try
+
+                Boolean.TryParse(settings.GetSetting("Appearance", "ShowTitle", CStr(True)), Me.ShowTitle)
+                [Enum].TryParse(settings.GetSetting("Appearance", "ShowLegend", CStr(TriState.UseDefault)), Me.ShowLegend)
+                [Enum].TryParse(settings.GetSetting("Appearance", "ShowHiddenNodes", CStr(eFDShowHiddenType.Invisible)), Me.ShowHiddenMode)
+                Integer.TryParse(settings.GetSetting("Appearance", "NumTL", "5"), Me.NumberOfTrophicLevels)
+                [Enum].TryParse(settings.GetSetting("Appearance", "ColorUsage", CStr(eFDColorUsageTypes.EwE)), Me.AutoColorUsage)
+                [Enum].TryParse(settings.GetSetting("Appearance", "NodeType", CStr(eFDNodeTypes.Circle)), Me.NodeType)
+                Me.CustomNodeColor = cColorUtils.IntToColor(CInt(settings.GetSetting("Appearance", "NodeColor", CStr(cColorUtils.ColorToInt(Color.Blue)))))
+                Boolean.TryParse(settings.GetSetting("Appearance", "NodeAutosize", CStr(True)), Me.AutoNodeSize)
+                Integer.TryParse(settings.GetSetting("Appearance", "NodeSize", CStr(25)), Me.CustomNodeSize)
+                Boolean.TryParse(settings.GetSetting("Appearance", "LineAutowidth", CStr(True)), Me.AutoLineWidth)
+                Single.TryParse(settings.GetSetting("Appearance", "LineWidth", CStr(2)), Me.CustomLineWidth)
+                Me.CustomLineColor = cColorUtils.IntToColor(CInt(settings.GetSetting("Appearance", "LineColor", CStr(cColorUtils.ColorToInt(Color.Silver)))))
+
+            Catch ex As Exception
+                ' ToDo: send an error message
+                cLog.Write(ex, "cTreeFlowDiagramRenderer.Load")
+                bSuccess = False
+            End Try
+
+            Me.m_bInUpdate = False
+            Me.Update()
+
+            Return bSuccess
+
+        End Function
+
+        Public Sub CenterLabels()
+            For i As Integer = 0 To Me.m_asLabelOffsetX.Length - 1
+                Me.m_asLabelOffsetX(i) = 0
+            Next
+            Me.Update()
+        End Sub
+
         Public Sub ResetLayout()
             Me.InitNodePositions()
+            Me.Update()
         End Sub
 
         Public Property NodeLocation(ByVal i As Integer, ByVal rc As Rectangle) As PointF _
@@ -914,6 +999,7 @@ Namespace Controls
 #Region " Internals "
 
         Protected Sub Update()
+            If Me.m_bInUpdate Then Return
             Try
                 RaiseEvent OnChanged(Me)
             Catch ex As Exception
@@ -927,12 +1013,18 @@ Namespace Controls
 
                 If Me.m_bAutoNodeSize Then
                     If sValue > 0 And sValueMax > 0 Then
+                        Select Case Me.m_nodetype
+                            Case eFDNodeTypes.Circle
+                                iSize = CInt(Me.m_iNodeSize * Math.Sqrt((2 * sValue / sValueMax) / Math.PI) * 2)
+                            Case eFDNodeTypes.Rectangle
+                                iSize = CInt(Me.m_iNodeSize * Math.Sqrt(2 * sValue / sValueMax))
+                        End Select
                         ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
                         ' Note that Math.Log = ln
-                        iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
+                        'iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
                     End If
                 End If
-                Return Math.Max(2, iSize)
+                Return Math.Max(3, iSize)
             End Get
         End Property
 

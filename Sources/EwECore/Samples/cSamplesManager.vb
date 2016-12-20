@@ -674,30 +674,30 @@ Namespace Samples
             Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecopath As cEcoPathModel = Me.m_core.m_EcoPath
 
-            ecopath.FindMissing()
-
             ' Restore parameters
             'user wants to keep the best fit parameters
             For iGroup As Integer = 1 To m_core.nGroups
 
-                If ecopath.missing(iGroup, 1) = False Then
+                If (epdata.BHinput(iGroup) > 0) Then
                     epdata.Binput(iGroup) = s.B(iGroup)
                     epdata.BHinput(iGroup) = s.B(iGroup) / epdata.Area(iGroup)
                 End If
 
-                If ecopath.missing(iGroup, 2) = False Then
+                If (epdata.PBinput(iGroup) >= 0) Then
                     epdata.PBinput(iGroup) = s.PB(iGroup)
                 End If
 
-                If ecopath.missing(iGroup, 3) = False Then
+                If (epdata.QBinput(iGroup) >= 0) Then
                     epdata.QBinput(iGroup) = s.QB(iGroup)
                 End If
 
-                If ecopath.missing(iGroup, 4) = False Then
+                If (epdata.EEinput(iGroup) >= 0) Then
                     epdata.EEinput(iGroup) = s.EE(iGroup)
                 End If
 
-                epdata.BA(iGroup) = s.BA(iGroup)
+                If (epdata.BA(iGroup) > 0 Or epdata.BaBi(iGroup) > 0) Then
+                    epdata.BA(iGroup) = s.BA(iGroup)
+                End If
 
                 For iFleet As Integer = 1 To epdata.NumFleet
                     epdata.Landing(iFleet, iGroup) = s.Landing(iFleet, iGroup)

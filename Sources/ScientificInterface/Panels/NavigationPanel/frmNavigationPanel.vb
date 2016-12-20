@@ -151,7 +151,7 @@ Public Class frmNavigationPanel
             .Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(gridSearchRates), "Search rates.htm")
             .Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputQuantity), "Fishery (Ecopath parameterization).htm")
             .Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputValue), "Fishery (Ecopath parameterization).htm")
-            .Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.frmFlowDiagram), "Flow diagram.htm")
+            .Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.frmEcopathFlowDiagram), "Flow diagram.htm")
             .Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(gridEcopathStatistics), "")
             .Add("ndNichePredPreyPlot", eCoreExecutionState.EcopathCompleted, GetType(frmNichePredPreyPlot), "")
             ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"
@@ -199,7 +199,7 @@ Public Class frmNavigationPanel
             .Add("ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmShowAllFits), "Ecosim results.htm")
             .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmStockRecruitmentPlot), "Stock recruitment S R plot.htm")
             .Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
-            .Add("ndFDSliderPlugin", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimFD))
+            .Add("ndFDSliderPlugin", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimFlowDiagram))
 
             ' Ecosim Tools
             .Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMCRun), "Monte Carlo runs.htm") ' ToDo: connect to help

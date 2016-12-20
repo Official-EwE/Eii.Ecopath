@@ -21,8 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.ComponentModel
 Imports System.Data
 Imports System.Drawing.Imaging
 Imports System.IO
@@ -45,13 +43,13 @@ Namespace Ecosim
     ''' Thank you, Naveen and Mark (USGS), for this contribution!
     ''' </remarks>
     ''' =======================================================================
-    Public Class frmEcosimFD
-        : Inherits frmEwE
+    Public Class frmEcosimFlowDiagram
+        Inherits frmEwE
 
 #Region " Private variables "
 
         Private components As System.ComponentModel.IContainer = Nothing
-        Private m_data As cEcosimFDGroupData = Nothing
+        Private m_data As cEcosimFlowDiagramData = Nothing
         Private m_doodler As cFlowDiagramManager = Nothing
         Private m_tree As cEcosimTreeFlowDiagramRenderer = Nothing
 
@@ -75,7 +73,6 @@ Namespace Ecosim
         Private WithEvents m_lblYear As System.Windows.Forms.Label
         Private WithEvents m_tbxMonth As TextBox
         Private WithEvents m_tbxYear As TextBox
-        Private m_bInUpdate As Boolean = False
         Private m_noofTimeSlicesPerYear As Integer
         Private TimeSeriesds As EwECore.cTimeSeriesDataset
         Private m_EcosimFirstYear As Integer
@@ -153,7 +150,7 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
 
-            Me.m_data = New cEcosimFDGroupData(Me.UIContext)
+            Me.m_data = New cEcosimFlowDiagramData(Me.UIContext)
             Me.m_tree = New cEcosimTreeFlowDiagramRenderer(Me.m_data)
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
 
@@ -177,17 +174,22 @@ Namespace Ecosim
                 TimeSeriesds = Me.UIContext.Core.TimeSeriesDataset(1)
                 m_EcosimFirstYear = TimeSeriesds.FirstYear
                 m_tbxYear.Text = m_EcosimFirstYear.ToString
-                m_tbxMonth.Text = firstMonth.ToString
+                m_tbxMonth.Text = cDateUtils.GetMonthName(firstMonth, False)
             Else
                 m_EcosimFirstYear = 0
                 m_tbxYear.Text = m_EcosimFirstYear.ToString
-                m_tbxMonth.Text = firstMonth.ToString
+                m_tbxMonth.Text = cDateUtils.GetMonthName(firstMonth, False)
             End If
 
             'Default delay value of Slider Animation: 10ms, value range [10, 1000] ms
             Dim md As New cVariableMetaData(10, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             Me.m_fpDelay = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDelay, GetType(Integer), md)
             Me.m_fpDelay.Value = 10
+
+            ' Restore last layout for this scenario. This needs to be done before the tree gets configured next...
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
+            Me.m_doodler.Load(ad.Settings, Me.m_pbFlowDiagram)
+            Me.m_tree.Load(ad.Settings)
 
             'Displaying Biomass values on Ecosim FlowDiagram
             Me.m_tree.NodeDrawValue = True
@@ -198,14 +200,6 @@ Namespace Ecosim
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
-
-            AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
-
-            Me.LoadSettings()
-
-            ' Restore last layout for this scenario
-            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD" & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID)
-            Me.m_doodler.Load(ad.Settings, Me.m_pbFlowDiagram)
 
         End Sub
 
@@ -231,19 +225,17 @@ Namespace Ecosim
 
             RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
 
-            RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
-            Me.SaveSettings()
-
             Me.m_fpDelay.Release()
 
             MyBase.OnFormClosed(e)
+
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
             ' Refresh the diagram data when ecopath data has changed
-            If (msg.Source = eCoreComponentType.EcoPath) And _
+            If (msg.Source = eCoreComponentType.EcoPath) And
                (msg.Type = eMessageType.DataModified) Then
                 Me.m_data.Refresh()
                 Me.m_pbFlowDiagram.Invalidate()
@@ -457,12 +449,12 @@ Namespace Ecosim
                 Me.m_pbFlowDiagram.Invalidate(True)
             End If
 
-            Me.SaveSettings()
             Me.m_pbFlowDiagram.Invalidate()
 
             ' Preserve layout
-            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("FD" & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID)
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
             Me.m_doodler.Save(ad.Settings, Me.m_pbFlowDiagram)
+            Me.m_tree.Save(ad.Settings)
 
         End Sub
 
@@ -557,9 +549,8 @@ Namespace Ecosim
             End If
 
             Me.m_pbFlowDiagram.Invalidate(True)
-            Me.SaveSettings()
-        End Sub
 
+        End Sub
 
 
         Private Sub OnTreeFlowRateLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
@@ -637,7 +628,7 @@ Namespace Ecosim
                     ifData.LoadFromFile(cmdFO.FileName)
                     m_doodler.Load(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
-                    Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)
                 End Try
@@ -660,7 +651,7 @@ Namespace Ecosim
                     ifData.LoadFromFile(cmdFS.FileName)
                     m_doodler.Save(ifData, Me.m_pbFlowDiagram)
                 Catch ex As Exception
-                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)
                 End Try
@@ -738,14 +729,14 @@ Namespace Ecosim
                 Try
                     bmp.Save(cmdfs.FileName, fmt)
 
-                    Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "flow diagram image", cmdfs.FileName), _
+                    Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "flow diagram image", cmdfs.FileName),
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(cmdfs.FileName)
                     Me.Core.Messages.SendMessage(msg)
 
                 Catch ex As Exception
                     cLog.Write(ex, "frmEcosimFD::saveimage(" & cmdfs.FileName & ")")
-                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdfs.FileName, ex.Message), _
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdfs.FileName, ex.Message),
                                 eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)
                 End Try
@@ -868,7 +859,7 @@ Namespace Ecosim
             Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
             Dim month As Integer = (CurrentTimestep Mod m_noofTimeSlicesPerYear) + 1
             m_tbxYear.Text = currentYear.ToString
-            m_tbxMonth.Text = month.ToString
+            m_tbxMonth.Text = cDateUtils.GetMonthName(month, False)
 
             'Updating the values of DataGridView as the slider is moved
             If Me.m_tree.ShowBiomassLegend = True Then
@@ -948,7 +939,7 @@ Namespace Ecosim
                 Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
                 Dim month As Integer = (CurrentTimestep Mod m_noofTimeSlicesPerYear) + 1
                 AppendTextBox(m_tbxYear, currentYear.ToString)
-                AppendTextBox(m_tbxMonth, month.ToString)
+                AppendTextBox(m_tbxMonth, cDateUtils.GetMonthName(month, False))
                 'Redraw the flow diagram with updated biomass values. 
                 Me.m_data.Refresh()
                 Me.m_pbFlowDiagram.Invalidate()
@@ -1037,32 +1028,13 @@ Namespace Ecosim
 
 #End Region
 
-#Region " Settings "
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler to respond to individual settings changes.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="e"></param>
-        ''' -----------------------------------------------------------------------
-        Private Sub OnSettingsChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
-
-            Try
-                If (Me.m_bInUpdate) Then Return
-                Me.LoadSettings()
-                Me.m_pgFlowDiagram.Invalidate()
-            Catch ex As Exception
-
-            End Try
-
-        End Sub
-
-#End Region ' Settings
-
 #End Region ' Events
 
 #Region " Internals "
+
+        Private Function DataName() As String
+            Return "FD_SIM" & Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).DBID
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1085,63 +1057,6 @@ Namespace Ecosim
                 End If
             End Set
         End Property
-
-        Private Sub LoadSettings()
-
-            Me.m_bInUpdate = True
-
-            Try
-                Me.m_tree.ShowTitle = My.Settings.FDShowTitle
-                Me.m_tree.ShowLegend = CType(My.Settings.FDShowLegend, TriState)
-                Me.m_tree.NumberOfTrophicLevels = My.Settings.FDNumTL
-                Me.m_tree.AutoColorUsage = CType(My.Settings.FDAutoColorUsage, eFDColorUsageTypes)
-                Me.m_tree.NodeType = DirectCast(My.Settings.FDNodeType, eFDNodeTypes)
-                Me.m_tree.CustomNodeColor = My.Settings.FDCustomNodeColor
-                Me.m_tree.AutoNodeSize = My.Settings.FDNodeAutoSize
-                Me.m_tree.CustomNodeSize = My.Settings.FDNodeCustomSize
-                Me.m_tree.AutoLineWidth = My.Settings.FDAutoLineWidth
-                Me.m_tree.CustomLineWidth = My.Settings.FDCustomLineWidth
-                Me.m_tree.CustomLineColor = My.Settings.FDCustomLineColor
-                Me.m_tree.ShowHiddenMode = CType(My.Settings.FDShowHiddenNodes, eFDShowHiddenType)
-                Me.m_fpDelay.Value = My.Settings.FDAnimateDelay
-            Catch ex As Exception
-                cLog.Write(ex, "frmEcosimFD.LoadSettings")
-            End Try
-  
-            Me.m_bInUpdate = False
-
-        End Sub
-
-        Private Sub SaveSettings()
-
-            If (Me.m_bInUpdate) Then Return
-
-            Me.m_bInUpdate = True
-
-            Try
-                My.Settings.FDShowTitle = Me.m_tree.ShowTitle
-                My.Settings.FDShowLegend = Me.m_tree.ShowLegend
-                My.Settings.FDNumTL = Me.m_tree.NumberOfTrophicLevels
-                My.Settings.FDAutoColorUsage = Me.m_tree.AutoColorUsage
-                My.Settings.FDNodeType = Me.m_tree.NodeType
-                My.Settings.FDCustomNodeColor = Me.m_tree.CustomNodeColor
-                My.Settings.FDNodeAutoSize = Me.m_tree.AutoNodeSize
-                My.Settings.FDNodeCustomSize = Me.m_tree.CustomNodeSize
-                My.Settings.FDAutoLineWidth = Me.m_tree.AutoLineWidth
-                My.Settings.FDCustomLineWidth = Me.m_tree.CustomLineWidth
-                My.Settings.FDCustomLineColor = Me.m_tree.CustomLineColor
-                My.Settings.FDShowHiddenNodes = Me.m_tree.ShowHiddenMode
-                My.Settings.FDAnimateDelay = CInt(Me.m_fpDelay.Value)
-
-                My.Settings.Save()
-
-            Catch ex As Exception
-                cLog.Write(ex, "frmEcosimFD.SaveSettings")
-            End Try
-
-            Me.m_bInUpdate = False
-
-        End Sub
 
         Protected Overrides Sub UpdateControls()
 
@@ -1166,7 +1081,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimFD))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimFlowDiagram))
             Me.m_pbFlowDiagram = New System.Windows.Forms.PictureBox()
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
             Me.m_btnStop = New System.Windows.Forms.Button()

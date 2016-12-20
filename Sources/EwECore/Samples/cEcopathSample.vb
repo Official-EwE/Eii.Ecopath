@@ -24,6 +24,7 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -62,6 +63,8 @@ Namespace Samples
             Me.AllowValidation = False
             Me.Index = iIndex
             Me.DBID = DBID
+
+            ' ToDo: globalize this
             Me.Name = "Sample " & iIndex
 
             'Rating

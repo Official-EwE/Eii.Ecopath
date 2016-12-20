@@ -1127,7 +1127,7 @@ Namespace Ecopath
 
         End Function
 
-        Friend Function FindMissing() As Boolean
+        Private Function FindMissing() As Boolean
             Dim i As Integer
 
             'jb clear out missing array and recompute it in FindMissing() this does not really need to happen every run
