@@ -64,16 +64,14 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         If (Not Me.IsSaving) Then Return
 
+        Me.m_msgStatus = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, Me.DataDir),
+                                          eMessageType.DataExport, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Information)
+        Me.m_msgStatus.Hyperlink = Me.DataDir
+
         If cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then
-
-            Me.m_msgStatus = New cMessage("", eMessageType.DataExport, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Information)
-            Me.m_msgStatus.Hyperlink = Me.DataDir
-
             Me.Save(cCore.NULL_VALUE)
         Else
-            Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_ERROR, Me.DataDir, "Directory not available"),
-                                          eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
-            Me.m_bSaveError = True
+            Me.ReportSaveError("Directory unavailable")
         End If
 
     End Sub
@@ -105,7 +103,6 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                             sw.Dispose()
                         Catch ex As Exception
                             Me.ReportSaveError(ex.Message)
-                            Me.m_bSaveError = True
                         End Try
 
                     End If
@@ -125,7 +122,6 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                             sw.Dispose()
                         Catch ex As Exception
                             Me.ReportSaveError(ex.Message)
-                            Me.m_bSaveError = True
                         End Try
 
                     End If
@@ -136,7 +132,6 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
                 If Not writerSim.WriteResultsDirect(strPathOutput, Nothing, TriState.UseDefault, True) Then
                     Me.ReportSaveError("Unable to save Ecosim results to " & strPathOutput)
-                    Me.m_bSaveError = True
                 End If
 
             Else
@@ -144,6 +139,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             End If
 
         Catch ex As Exception
+            ' ToDo: log error
             cLog.Write(ex, "cMonteCarloResultsWriterMultipleFiles.Save(" & iTrial & ")")
             Debug.Assert(False)
         End Try
@@ -312,6 +308,11 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     End Sub
 
     Private Sub ReportSaveError(strMessage As String)
+
+        If (Me.m_bSaveError = False) Then
+            Me.m_msgStatus = New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_ERROR, Me.DataDir),
+                                          eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
+        End If
 
         Dim vs As New cVariableStatus(eStatusFlags.ErrorEncountered, strMessage, eVarNameFlags.NotSet, eDataTypes.Auxillary, eCoreComponentType.EcoSimMonteCarlo, 0)
         Me.m_msgStatus.AddVariable(vs)
