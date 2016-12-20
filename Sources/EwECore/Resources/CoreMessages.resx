@@ -1274,8 +1274,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Please load a model before attempting to merge groups</value>
   </data>
   <data name="MONTECARLO_RESULTS_SAVED_ERROR" xml:space="preserve">
-    <value>Failed to save Monte Carlo results to {0}. {1}</value>
-    <comment>{0}=file path, {1}=error text</comment>
+    <value>Failed to save Monte Carlo results to {0}</value>
+    <comment>{0}=file path</comment>
   </data>
   <data name="MONTECARLO_RESULTS_SAVED_SUCCESS" xml:space="preserve">
     <value>Monte Carlo results saved to {0}</value>
@@ -1363,5 +1363,9 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ASCII_READ_ERROR_UNKNOWNFIELD" xml:space="preserve">
     <value>Failed to read ASCII file with unknown header field {0}</value>
     <comment>{0}=field name</comment>
+  </data>
+  <data name="ECOPATH_GROUPMERGE_SUCCESS" xml:space="preserve">
+    <value>Groups {0} and {1} have been merged into {2}</value>
+    <comment>{0}, {1}: source group names, {2}=target group name</comment>
   </data>
 </root>

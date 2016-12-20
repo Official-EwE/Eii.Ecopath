@@ -416,6 +416,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Groups {0} and {1} have been merged into {2}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOPATH_GROUPMERGE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_GROUPMERGE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!.
         '''</summary>
         Public Shared ReadOnly Property ECOPATH_GS_WARNING() As String
@@ -2156,7 +2165,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to save Monte Carlo results to {0}. {1}.
+        '''  Looks up a localized string similar to Failed to save Monte Carlo results to {0}.
         '''</summary>
         Public Shared ReadOnly Property MONTECARLO_RESULTS_SAVED_ERROR() As String
             Get
