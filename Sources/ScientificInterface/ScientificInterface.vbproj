@@ -184,7 +184,7 @@
     <Compile Include="Ecopath\frmModelParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\FlowDiagram\cFDGroupFleetData.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\cEcopathFlowDiagramData.vb" />
     <Compile Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.Designer.vb">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </Compile>
@@ -218,8 +218,8 @@
     <Compile Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFDGroupData.vb" />
-    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.vb">
+    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFlowDiagramData.vb" />
+    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset application\cConverterPicker.vb" />
@@ -336,7 +336,7 @@
     <Compile Include="Ecopath\gridDefineFleets.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Tools\FlowDiagram\frmGroupFlowDiagram.vb">
+    <Compile Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\dlgDefineGroups.Designer.vb">
@@ -973,8 +973,8 @@
     <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.resx">
       <DependentUpon>dlgScaleVs.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFD.resx">
-      <DependentUpon>frmEcosimFD.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFlowDiagram.resx">
+      <DependentUpon>frmEcosimFlowDiagram.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset application\dlgApplyConnection.resx">
       <DependentUpon>dlgApplyConnection.vb</DependentUpon>
@@ -1063,8 +1063,8 @@
     <None Include="_Designs_\EwE6 application layout.cd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ecopath\Tools\FlowDiagram\frmGroupFlowDiagram.resx">
-      <DependentUpon>frmGroupFlowDiagram.vb</DependentUpon>
+    <EmbeddedResource Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.resx">
+      <DependentUpon>frmEcopathFlowDiagram.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\dlgDefineGroups.resx">

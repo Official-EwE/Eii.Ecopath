@@ -198,6 +198,7 @@
     <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
     <Compile Include="EcoPath\Utility\Merge groups\cEcopathMergeGroups.vb" />
     <Compile Include="EcoPath\Utility\Merge groups\cEcopathMergeGroupsDatastructures.vb" />
+    <Compile Include="EcoPath\Utility\Split group\cEcopathSplitGroup.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimEnviroInputData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
@@ -633,6 +634,8 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Database\Updates\Release 6.6\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

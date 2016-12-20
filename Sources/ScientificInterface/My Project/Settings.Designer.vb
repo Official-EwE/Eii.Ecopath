@@ -783,18 +783,6 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("ControlDark")>  _
-    Public Property FDCustomLineColor() As Global.System.Drawing.Color
-        Get
-            Return CType(Me("FDCustomLineColor"),Global.System.Drawing.Color)
-        End Get
-        Set
-            Me("FDCustomLineColor") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("")>  _
     Public Property FontFlowDiagram() As String
         Get
@@ -802,138 +790,6 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("FontFlowDiagram") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-    Public Property FDNodeType() As Integer
-        Get
-            Return CType(Me("FDNodeType"),Integer)
-        End Get
-        Set
-            Me("FDNodeType") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("10")>  _
-    Public Property FDNodeCustomSize() As Integer
-        Get
-            Return CType(Me("FDNodeCustomSize"),Integer)
-        End Get
-        Set
-            Me("FDNodeCustomSize") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-    Public Property FDNodeAutoSize() As Boolean
-        Get
-            Return CType(Me("FDNodeAutoSize"),Boolean)
-        End Get
-        Set
-            Me("FDNodeAutoSize") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
-    Public Property FDShowTitle() As Boolean
-        Get
-            Return CType(Me("FDShowTitle"),Boolean)
-        End Get
-        Set
-            Me("FDShowTitle") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-    Public Property FDShowLegend() As Integer
-        Get
-            Return CType(Me("FDShowLegend"),Integer)
-        End Get
-        Set
-            Me("FDShowLegend") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("5")>  _
-    Public Property FDNumTL() As Integer
-        Get
-            Return CType(Me("FDNumTL"),Integer)
-        End Get
-        Set
-            Me("FDNumTL") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-    Public Property FDAutoColorUsage() As Integer
-        Get
-            Return CType(Me("FDAutoColorUsage"),Integer)
-        End Get
-        Set
-            Me("FDAutoColorUsage") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("LightGray")>  _
-    Public Property FDCustomNodeColor() As Global.System.Drawing.Color
-        Get
-            Return CType(Me("FDCustomNodeColor"),Global.System.Drawing.Color)
-        End Get
-        Set
-            Me("FDCustomNodeColor") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-    Public Property FDAutoLineWidth() As Boolean
-        Get
-            Return CType(Me("FDAutoLineWidth"),Boolean)
-        End Get
-        Set
-            Me("FDAutoLineWidth") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("0.5")>  _
-    Public Property FDCustomLineWidth() As Single
-        Get
-            Return CType(Me("FDCustomLineWidth"),Single)
-        End Get
-        Set
-            Me("FDCustomLineWidth") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-    Public Property FDShowHiddenNodes() As Integer
-        Get
-            Return CType(Me("FDShowHiddenNodes"),Integer)
-        End Get
-        Set
-            Me("FDShowHiddenNodes") = value
         End Set
     End Property
     
@@ -996,18 +852,6 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("ShowExtraVariableInfo") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("10")>  _
-    Public Property FDAnimateDelay() As Integer
-        Get
-            Return CType(Me("FDAnimateDelay"),Integer)
-        End Get
-        Set
-            Me("FDAnimateDelay") = value
         End Set
     End Property
     

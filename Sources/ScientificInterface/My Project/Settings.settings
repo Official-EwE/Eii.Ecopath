@@ -182,44 +182,8 @@
     <Setting Name="SpatialTemporalConfigFile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FDCustomLineColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">ControlDark</Value>
-    </Setting>
     <Setting Name="FontFlowDiagram" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="FDNodeType" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="FDNodeCustomSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
-    </Setting>
-    <Setting Name="FDNodeAutoSize" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="FDShowTitle" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="FDShowLegend" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="FDNumTL" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
-    </Setting>
-    <Setting Name="FDAutoColorUsage" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="FDCustomNodeColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">LightGray</Value>
-    </Setting>
-    <Setting Name="FDAutoLineWidth" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="FDCustomLineWidth" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">0.5</Value>
-    </Setting>
-    <Setting Name="FDShowHiddenNodes" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="MapShowExcludedCells" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -238,9 +202,6 @@
     </Setting>
     <Setting Name="ShowExtraVariableInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="FDAnimateDelay" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="ColorCustom" Type="System.Collections.ArrayList" Scope="User">
       <Value Profile="(Default)" />
