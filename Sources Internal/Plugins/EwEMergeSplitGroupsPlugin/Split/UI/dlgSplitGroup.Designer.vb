@@ -66,8 +66,12 @@ Partial Class dlgSplitGroup
         Me.m_lblStartAge = New System.Windows.Forms.Label()
         Me.m_tbxAge1 = New System.Windows.Forms.TextBox()
         Me.m_tbxAge2 = New System.Windows.Forms.TextBox()
+        Me.m_tlpLogo = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbLogo = New System.Windows.Forms.PictureBox()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.m_plMoveTaxa.SuspendLayout()
+        Me.m_tlpLogo.SuspendLayout()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_btnOK
@@ -181,12 +185,14 @@ Partial Class dlgSplitGroup
         resources.ApplyResources(Me.m_lbxTaxa1, "m_lbxTaxa1")
         Me.m_lbxTaxa1.FormattingEnabled = True
         Me.m_lbxTaxa1.Name = "m_lbxTaxa1"
+        Me.m_lbxTaxa1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         '
         'm_lbxTaxa2
         '
         resources.ApplyResources(Me.m_lbxTaxa2, "m_lbxTaxa2")
         Me.m_lbxTaxa2.FormattingEnabled = True
         Me.m_lbxTaxa2.Name = "m_lbxTaxa2"
+        Me.m_lbxTaxa2.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         '
         'm_plMoveTaxa
         '
@@ -222,12 +228,27 @@ Partial Class dlgSplitGroup
         resources.ApplyResources(Me.m_tbxAge2, "m_tbxAge2")
         Me.m_tbxAge2.Name = "m_tbxAge2"
         '
+        'm_tlpLogo
+        '
+        Me.m_tlpLogo.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
+        Me.m_tlpLogo.Controls.Add(Me.m_pbLogo, 1, 1)
+        Me.m_tlpLogo.Name = "m_tlpLogo"
+        '
+        'm_pbLogo
+        '
+        Me.m_pbLogo.BackgroundImage = Global.EwEMergeSplitGroupsPlugin.My.Resources.Resources.geomar_logo_en_print
+        resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
+        Me.m_pbLogo.Name = "m_pbLogo"
+        Me.m_pbLogo.TabStop = False
+        '
         'dlgSplitGroup
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.m_btnCancel
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_tlpLogo)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOK)
@@ -239,6 +260,8 @@ Partial Class dlgSplitGroup
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel1.PerformLayout()
         Me.m_plMoveTaxa.ResumeLayout(False)
+        Me.m_tlpLogo.ResumeLayout(False)
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -267,4 +290,6 @@ Partial Class dlgSplitGroup
     Private WithEvents m_lblStartAge As Windows.Forms.Label
     Friend WithEvents m_tbxAge1 As Windows.Forms.TextBox
     Private WithEvents m_tbxAge2 As Windows.Forms.TextBox
+    Private WithEvents m_tlpLogo As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbLogo As Windows.Forms.PictureBox
 End Class

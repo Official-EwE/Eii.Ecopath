@@ -288,11 +288,10 @@ Public Class dlgMergeGroups
                 cmd.Invoke(strURL)
             End If
         Catch ex As Exception
-            cLog.Write(ex, "dlgMergeGroups::NavigateTo(" & strURL & ")")
+            cLog.Write(ex, "dlgMergeGroups::OpenLink(" & strURL & ")")
         End Try
 
     End Sub
-
 
 #End Region ' Internals
 

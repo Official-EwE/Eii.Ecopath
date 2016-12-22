@@ -318,9 +318,6 @@
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_tlpLogo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
   <data name="m_tlpLogo.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
@@ -357,8 +354,11 @@
   <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_tlpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
   <data name="m_tlpLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 419</value>
+    <value>0, 418</value>
   </data>
   <data name="m_tlpLogo.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
@@ -580,7 +580,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEMergeSplitGroupsPlugin.gridBasicInput, EwEMergeSplitGroupsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=739774b43da74060</value>
+    <value>EwEMergeSplitGroupsPlugin.gridGroupInput, EwEMergeSplitGroupsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=739774b43da74060</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tabBasicInput</value>
@@ -688,7 +688,7 @@
     <value>m_gridTaxa</value>
   </data>
   <data name="&gt;&gt;m_gridTaxa.Type" xml:space="preserve">
-    <value>EwEMergeSplitGroupsPlugin.gridTxa, EwEMergeSplitGroupsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=739774b43da74060</value>
+    <value>EwEMergeSplitGroupsPlugin.gridTaxonomy, EwEMergeSplitGroupsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=739774b43da74060</value>
   </data>
   <data name="&gt;&gt;m_gridTaxa.Parent" xml:space="preserve">
     <value>m_tabTaxonomy</value>

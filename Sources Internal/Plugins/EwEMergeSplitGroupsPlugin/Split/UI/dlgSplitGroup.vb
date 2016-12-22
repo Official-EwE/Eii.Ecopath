@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,10 +21,12 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 
@@ -110,50 +113,38 @@ Public Class dlgSplitGroup
 
 #Region " Events "
 
-    Private Sub OnOK(sender As Object, e As EventArgs) _
-        Handles m_btnOK.Click
-
-        Me.DialogResult = Windows.Forms.DialogResult.OK
-        Me.Close()
-
-    End Sub
-
-    Private Sub OnCancel(sender As Object, e As EventArgs) _
-        Handles m_btnCancel.Click
-
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
-        Me.Close()
-
-    End Sub
-
     Private Sub OnSourceSelected(sender As Object, e As EventArgs) _
         Handles m_cmbSource.SelectedIndexChanged
 
-        Dim i As Integer = Me.SelectedSource
+        Dim grp As cEcoPathGroupInput = Me.SelectedSource()
         Dim core As cCore = Me.m_uic.Core
 
-        If (i > 0) Then
-            Dim grpIn As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
-            Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(i)
+        If (grp IsNot Nothing) Then
+            Dim grpOut As cEcoPathGroupOutput = core.EcoPathGroupOutputs(grp.Index)
             Me.m_biomass = grpOut.Biomass
 
             ' Set biomass source type
-            If grpIn.isMultiStanza Then
+            If grp.isMultiStanza Then
                 Me.m_biomasssource = eBiomassSource.Stanza
-            ElseIf grpIn.NTaxon > 0 Then
+                Dim stanza As cStanzaGroup = Me.SelectedStanza()
+                Debug.Assert(stanza IsNot Nothing)
+                Dim iLifeStage As Integer = stanza.iLifeStage(grp.Index)
+                Me.m_fpA1.Value = stanza.StartAge(iLifeStage)
+                Me.m_fpA2.Value = stanza.StartAge(iLifeStage)
+            ElseIf grp.NTaxon > 0 Then
                 Me.m_biomasssource = eBiomassSource.Taxonomy
             Else
                 Me.m_biomasssource = eBiomassSource.Manual
             End If
 
-            Me.m_fpN1.Value = grpIn.Name
-            Me.m_fpN2.Value = grpIn.Name
-
+            Me.m_fpN1.Value = grp.Name
+            Me.m_fpN2.Value = grp.Name
         Else
             Me.m_biomass = cCore.NULL_VALUE
             Me.m_biomasssource = eBiomassSource.NotSet
         End If
 
+        Me.PopulateStanzaList()
         Me.OnSliderValueChanged(Me, Nothing)
 
         Me.UpdateControls()
@@ -164,9 +155,24 @@ Public Class dlgSplitGroup
 
         Try
             Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
-            Dim grp As cCoreGroupBase = DirectCast(e.ListItem, cCoreGroupBase)
+            Dim grp As cEcoPathGroupInput = DirectCast(e.ListItem, cEcoPathGroupInput)
 
             If (Not grp.Disposed) Then
+                e.Value = fmt.GetDescriptor(e.ListItem)
+            End If
+        Catch ex As Exception
+            ' mmm
+        End Try
+
+    End Sub
+
+    Private Sub OnFormatTaxonItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) Handles m_lbxTaxa1.Format, m_lbxTaxa2.Format
+
+        Try
+            Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
+            Dim taxon As cTaxon = DirectCast(e.ListItem, cTaxon)
+
+            If (Not taxon.Disposed) Then
                 e.Value = fmt.GetDescriptor(e.ListItem)
             End If
         Catch ex As Exception
@@ -187,8 +193,8 @@ Public Class dlgSplitGroup
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
 
-        Me.B1 = Me.m_biomass * B1Ratio
-        Me.B2 = Me.m_biomass * (1 - B1Ratio)
+        Me.B1 = Me.m_biomass * (1 - B1Ratio)
+        Me.B2 = Me.m_biomass * B1Ratio
 
         Me.m_bInUpdate = False
 
@@ -196,36 +202,80 @@ Public Class dlgSplitGroup
 
     Private Sub OnB1Changed(sender As Object, e As EventArgs) Handles m_tbxB1.TextChanged
 
+        If Me.m_bInUpdate Then Return
+
         Dim b1 As Single = Math.Min(Me.m_biomass, CSng(Me.m_fpB1.Value))
-        If (b1 = 0) Then
-            Me.B1Ratio = 0
-        Else
-            Me.B1Ratio = Me.m_biomass / b1
-        End If
+        Me.B1Ratio = 1 - (b1 / Me.m_biomass)
 
     End Sub
 
     Private Sub OnB2Changed(sender As Object, e As EventArgs) Handles m_tbxB2.TextChanged
 
-        Dim b2 As Single = Math.Min(Me.m_biomass, CSng(Me.m_fpB1.Value))
-        If (b2 = Me.m_biomass) Then
-            Me.B1Ratio = 1
-        Else
-            Me.B1Ratio = Me.m_biomass / (1 - b2)
+        If Me.m_bInUpdate Then Return
+
+        Dim b2 As Single = Math.Min(Me.m_biomass, CSng(Me.m_fpB2.Value))
+        Me.B1Ratio = (b2 / Me.m_biomass)
+
+    End Sub
+
+    Private Sub OnMoveTaxaToGroup2(sender As Object, e As EventArgs) Handles m_btn2to1.Click
+        MoveSelectedTaxa(Me.m_lbxTaxa2, Me.m_lbxTaxa1)
+    End Sub
+
+    Private Sub OnMoveTaxaToGroup1(sender As Object, e As EventArgs) Handles m_btn1to2.Click
+        MoveSelectedTaxa(Me.m_lbxTaxa1, Me.m_lbxTaxa2)
+    End Sub
+
+    Private Sub OnTaxaSelectionChanges(sender As Object, e As EventArgs) Handles m_lbxTaxa1.SelectedIndexChanged, m_lbxTaxa2.SelectedIndexChanged
+        Me.UpdateControls()
+    End Sub
+
+    Private Sub OnClickGeomar(sender As Object, e As EventArgs) _
+        Handles m_pbLogo.Click
+
+        Me.OpenLink("http://www.geomar.de")
+
+    End Sub
+
+    Private Sub OnOK(sender As Object, e As EventArgs) _
+        Handles m_btnOK.Click
+
+        If Me.SplitGroup() Then
+            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
         End If
+
+    End Sub
+
+    Private Sub OnCancel(sender As Object, e As EventArgs) _
+        Handles m_btnCancel.Click
+
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.Close()
+
     End Sub
 
 #End Region ' Events
 
 #Region " Internals "
 
-    Private Function SelectedSource() As Integer
+    Private Function SelectedSource() As cEcoPathGroupInput
 
         Dim item As Object = Me.m_cmbSource.SelectedItem
 
-        If (item Is Nothing) Then Return cCore.NULL_VALUE
-        If (Not TypeOf (item) Is cCoreGroupBase) Then Return cCore.NULL_VALUE
-        Return DirectCast(item, cCoreGroupBase).Index
+        If (item Is Nothing) Then Return Nothing
+        If (Not TypeOf (item) Is cEcoPathGroupInput) Then Return Nothing
+        Return DirectCast(item, cEcoPathGroupInput)
+
+    End Function
+
+    Private Function SelectedStanza() As cStanzaGroup
+
+        Dim grp As cEcoPathGroupInput = Me.SelectedSource()
+        If (grp Is Nothing) Then Return Nothing
+        If (Not grp.isMultiStanza) Then Return Nothing
+
+        Return Me.m_uic.Core.StanzaGroups(grp.iStanza)
 
     End Function
 
@@ -254,17 +304,78 @@ Public Class dlgSplitGroup
         Set(value As Single)
             If (Me.m_bInUpdate) Then Return
             If (Me.B1Ratio <> value) Then
-                Me.m_sliderB.Value = CInt(Math.Max(0, Math.Min(1000, value * 1000.0!)))
+                Me.m_sliderB.Value = CInt(Math.Max(0, Math.Min(1000, (1 - value) * 1000.0!)))
             End If
         End Set
     End Property
+
+    Private Sub PopulateStanzaList()
+
+        Me.m_lbxTaxa1.Items.Clear()
+        Me.m_lbxTaxa2.Items.Clear()
+
+        Dim grp As cEcoPathGroupInput = Me.SelectedSource()
+        Dim core As cCore = Me.m_uic.Core
+
+        If (grp Is Nothing) Then Return
+
+        For i As Integer = 1 To grp.NTaxon
+            Dim taxon As cTaxon = core.Taxon(grp.iTaxon(i))
+            Me.m_lbxTaxa1.Items.Add(taxon)
+            If (Me.m_biomasssource = eBiomassSource.Stanza) Then Me.m_lbxTaxa2.Items.Add(taxon)
+        Next
+        Me.RecalcTaxaBiomass()
+
+    End Sub
+
+    Private Sub MoveSelectedTaxa(lbFrom As ListBox, lbTo As ListBox)
+
+        lbFrom.SuspendLayout()
+        lbTo.SuspendLayout()
+
+        Dim items As New List(Of Object)
+        For Each item As Object In lbFrom.SelectedItems
+            If (item IsNot Nothing) Then items.Add(item)
+        Next
+
+        For Each item In items
+            lbFrom.Items.Remove(item)
+            lbTo.Items.Add(item)
+        Next
+
+        lbFrom.ResumeLayout()
+        lbTo.ResumeLayout()
+
+        Me.RecalcTaxaBiomass()
+
+    End Sub
+
+    Private Sub RecalcTaxaBiomass()
+
+        If (Me.m_biomasssource <> eBiomassSource.Taxonomy) Then Return
+
+        Me.B1Ratio = (Me.BiomassFromTaxa(Me.m_lbxTaxa1.Items) / Me.m_biomass)
+
+    End Sub
+
+    Private Function BiomassFromTaxa(taxa As ICollection) As Single
+
+        Dim bTot As Single = 0
+        For Each item As Object In taxa
+            If (TypeOf item Is cTaxon) Then
+                bTot += DirectCast(item, cTaxon).Proportion() * Me.m_biomass
+            End If
+        Next
+        Return bTot
+
+    End Function
 
     Private Sub UpdateControls()
 
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
 
-        Dim bHasSource As Boolean = (Me.SelectedSource > 0)
+        Dim bHasSource As Boolean = (Me.SelectedSource IsNot Nothing)
         Dim bHasTargets As Boolean = True ' Validate unique target names
 
         Me.m_sliderB.Enabled = bHasSource
@@ -286,11 +397,13 @@ Public Class dlgSplitGroup
                 bEditTaxa = True
         End Select
 
+        Me.m_fpN1.Style = cStyleGuide.eStyleFlags.NotEditable
+
         Me.m_fpB1.Style = cSystemUtils.IIF(bEditBiomass, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
         Me.m_fpB2.Style = cSystemUtils.IIF(bEditBiomass, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
-        Me.m_fpA1.Style = cSystemUtils.IIF(bEditAges, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
-        Me.m_fpA2.Style = cSystemUtils.IIF(bEditAges, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
+        Me.m_fpA1.Style = cSystemUtils.IIF(bEditAges, cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+        Me.m_fpA2.Style = cSystemUtils.IIF(bEditAges, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
 
         Me.m_btn1to2.Enabled = bEditTaxa And (Me.m_lbxTaxa1.SelectedIndices.Count > 0)
         Me.m_btn2to1.Enabled = bEditTaxa And (Me.m_lbxTaxa2.SelectedIndices.Count > 0)
@@ -299,13 +412,32 @@ Public Class dlgSplitGroup
 
     End Sub
 
-    Private Sub m_btn2to1_Click(sender As Object, e As EventArgs) Handles m_btn2to1.Click
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Open an external link.
+    ''' </summary>
+    ''' <param name="strURL">The link to navigate to.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub OpenLink(strURL As String)
+
+        Try
+            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            If (cmd IsNot Nothing) Then
+                cmd.Invoke(strURL)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "dlgSplitGroup::OpenLink(" & strURL & ")")
+        End Try
 
     End Sub
 
-    Private Sub m_btn1to2_Click(sender As Object, e As EventArgs) Handles m_btn1to2.Click
+    Private Function SplitGroup() As Boolean
 
-    End Sub
+        ' Add new group
+        ' Change values in both
+        ' Save again
+
+    End Function
 
 #End Region ' Internals
 

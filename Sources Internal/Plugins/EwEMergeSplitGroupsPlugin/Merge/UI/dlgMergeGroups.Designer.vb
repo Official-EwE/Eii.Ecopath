@@ -116,8 +116,8 @@ Partial Class dlgMergeGroups
         '
         'm_tlpLogo
         '
-        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
         Me.m_tlpLogo.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
         Me.m_tlpLogo.Controls.Add(Me.m_pbLogo, 1, 1)
         Me.m_tlpLogo.Name = "m_tlpLogo"
         '

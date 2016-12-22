@@ -75,6 +75,9 @@ Public Class cSplitGroupPluginPoint
         If (Me.m_uic Is Nothing) Then Return
 
         Dim core As cCore = Me.m_uic.Core
+
+        If (Not core.SaveChanges) Then Return
+
         Dim engine As New cEcopathSplitGroup(core)
 
         Me.m_uic.Core.RunEcoPath()
