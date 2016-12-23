@@ -36,6 +36,7 @@ Namespace Ecopath
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cEcopathMergeGroups
+        Inherits cEcopathMergeSplitGroups
 
         Public Enum eEstimate As Integer
             NotSet = 0
@@ -47,12 +48,7 @@ Namespace Ecopath
 
 #Region " Private variables "
 
-        ''' <summary>The core that holds the source model.</summary>
-        Private m_core As cCore = Nothing
         Private m_data As cEcopathMergeGroupsDatastructures = Nothing
-
-        ''' <summary>Status message.</summary>
-        Private m_msgStatus As cMessage = Nothing
 
 #End Region ' Private variables
 
@@ -82,33 +78,6 @@ Namespace Ecopath
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether the current Ecopath model is ready to merge groups.
-        ''' </summary>
-        ''' <param name="bSendMessage"></param>
-        ''' <returns></returns>
-        ''' -----------------------------------------------------------------------
-        Public Function CanMergeGroups(Optional bSendMessage As Boolean = False) As Boolean
-
-            Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
-
-            If Not sm.HasEcopathLoaded() Then
-                If bSendMessage Then Me.SendMessage(My.Resources.CoreMessages.MERGEGROUPS_ERROR_NOMODEL, False)
-                Return False
-            End If
-
-            If Me.m_core.nEcosimScenarios > 0 Then
-                If bSendMessage Then Me.SendMessage(My.Resources.CoreMessages.MERGEGROUPS_ERROR_HASECOSIM, False)
-                Return False
-            End If
-
-            If Not Me.m_core.SaveChanges() Then Return False
-
-            Return True
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Returns whether the current Ecopath model is ready to merge two specific
         ''' groups and a candidate name.
         ''' </summary>
@@ -119,7 +88,7 @@ Namespace Ecopath
         ''' -----------------------------------------------------------------------
         Public Function CanMergeGroups(agg1 As Integer, agg2 As Integer, strName As String) As Boolean
 
-            Return (Me.CanMergeGroups(False) = True) And
+            Return (Me.CanMergeSplitGroups(False) = True) And
                (Array.IndexOf(Me.CompatibleGroups(agg1), agg2) > -1) And
                (Not String.IsNullOrWhiteSpace(strName))
 
@@ -464,9 +433,7 @@ Namespace Ecopath
             End If
 
             If bSuccess Then
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_GROUPMERGE_SUCCESS, strName1, strName2, Me.m_data.GroupName),
-                                        eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
-                Me.m_core.Messages.SendMessage(msg)
+                Me.SendMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_GROUPMERGE_SUCCESS, strName1, strName2, Me.m_data.GroupName), True)
             End If
 
             Return bSuccess
@@ -525,23 +492,6 @@ Namespace Ecopath
         End Sub
 
 #End Region ' Public access
-
-#Region " Internals "
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Append a result notification to the current status message
-        ''' </summary>
-        ''' <param name="strMessage"></param>
-        ''' <param name="bSuccess"></param>
-        ''' -----------------------------------------------------------------------
-        Public Sub SendMessage(strMessage As String, bSuccess As Boolean)
-            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.EcoPath,
-                                cSystemUtils.IIF(bSuccess, eMessageImportance.Information, eMessageImportance.Critical))
-            Me.m_core.Messages.SendMessage(msg)
-        End Sub
-
-#End Region ' Internals
 
 #Region " Original code "
 

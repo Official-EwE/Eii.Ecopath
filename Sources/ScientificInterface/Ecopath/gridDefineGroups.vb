@@ -115,25 +115,11 @@ Public Class gridDefineGroups
     ''' -----------------------------------------------------------------------
     Private Class cGroupInfo
 
-        Private m_iGroupDBID As Integer = cCore.NULL_VALUE
         Private m_iGroupIndex As Integer = cCore.NULL_VALUE
-
-        ''' <summary>PP value for this group.</summary>
-        Private m_sPP As Single = 0.0
-        ''' <summary>Name for this group.</summary>
-        Private m_strName As String = ""
-        ''' <summary>Group color.</summary>
-        Private m_iColor As Integer = 0
 
         ''' <summary>Stanza configuration this group belongs to, if any.</summary>
         Private m_stanza As cStanzaInfo = Nothing
 
-        ''' <summary>Age of this group within a stanza configuration.</summary>
-        Private m_iStanzaAge As Integer = 0
-        ''' <summary>Mortality of this group within a stanza configuration.</summary>
-        Private m_sMortality As Single = 0.0
-        ''' <summary>Flag stating whether a user action is confirmed</summary>
-        Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a group in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
@@ -149,13 +135,13 @@ Public Class gridDefineGroups
         ''' group currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
-            Me.m_iGroupDBID = group.DBID
+            Me.GroupDBID = group.DBID
             Me.m_iGroupIndex = group.Index
             Me.m_sVBK = group.VBK
 
-            Me.m_strName = group.Name
-            Me.m_sPP = group.PP
-            Me.m_iColor = group.PoolColor
+            Me.Name = group.Name
+            Me.PP = group.PP
+            Me.PoolColor = group.PoolColor
             Me.m_status = eItemStatusTypes.Original
         End Sub
 
@@ -166,9 +152,9 @@ Public Class gridDefineGroups
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String)
-            Me.m_strName = strName
-            Me.m_sPP = CSng(ePrimaryProductionTypes.Consumer)
-            Me.m_iColor = 0
+            Me.Name = strName
+            Me.PP = CSng(ePrimaryProductionTypes.Consumer)
+            Me.PoolColor = 0
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -177,14 +163,7 @@ Public Class gridDefineGroups
         ''' Get/set the name of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Name() As String
-            Get
-                Return Me.m_strName
-            End Get
-            Set(ByVal value As String)
-                Me.m_strName = value
-            End Set
-        End Property
+        Public Property Name() As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -192,14 +171,7 @@ Public Class gridDefineGroups
         ''' this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PP() As Single
-            Get
-                Return Me.m_sPP
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sPP = value
-            End Set
-        End Property
+        Public Property PP() As Single = 0.0!
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -207,14 +179,7 @@ Public Class gridDefineGroups
         ''' this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PoolColor() As Integer
-            Get
-                Return Me.m_iColor
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iColor = value
-            End Set
-        End Property
+        Public Property PoolColor() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -222,14 +187,7 @@ Public Class gridDefineGroups
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property GroupDBID() As Integer
-            Get
-                Return Me.m_iGroupDBID
-            End Get
-            Set(value As Integer)
-                Me.m_iGroupDBID = value
-            End Set
-        End Property
+        Public Property GroupDBID() As Integer = cCore.NULL_VALUE
 
         Public ReadOnly Property GroupIndex() As Integer
             Get
@@ -270,13 +228,6 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Confirmed() As Boolean
-            Get
-                Return Me.m_bConfirmed
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bConfirmed = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -289,34 +240,7 @@ Public Class gridDefineGroups
         ''' the group for ease of use in the group-based grid.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property StanzaAge() As Integer
-            Get
-                Return m_iStanzaAge
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iStanzaAge = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the mortality of this group within a stanza configuration.
-        ''' </summary>
-        ''' <remarks>
-        ''' Although this value would be better placed in either 
-        ''' <see cref="cStanzaInfo">StanzaInfo</see> or in a not yet existing
-        ''' StanzaLifeStage wrapper, it has been opted to embed this value in
-        ''' the group for ease of use in the group-based grid.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Property StanzaMortality() As Single
-            Get
-                Return m_sMortality
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sMortality = value
-            End Set
-        End Property
+        Public Property StanzaAge() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -331,11 +255,11 @@ Public Class gridDefineGroups
 
             If (Me.IsNew()) Then Return False
 
-            Debug.Assert(Me.m_iGroupDBID = group.DBID)
+            Debug.Assert(Me.GroupDBID = group.DBID)
 
-            Return (group.Name <> Me.m_strName) Or _
-                   (group.PP <> Me.m_sPP) Or _
-                   (group.PoolColor <> Me.m_iColor)
+            Return (group.Name <> Me.Name) Or
+                   (group.PP <> Me.PP) Or
+                   (group.PoolColor <> Me.PoolColor)
 
         End Function
 
@@ -345,7 +269,7 @@ Public Class gridDefineGroups
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return (Me.m_iGroupDBID = cCore.NULL_VALUE)
+            Return (Me.GroupDBID = cCore.NULL_VALUE)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -778,7 +702,6 @@ Public Class gridDefineGroups
                 gi = DirectCast(Me.m_lgiGroups(isg - iFIRSTGROUPROW), cGroupInfo)
                 ' Copy start age
                 gi.StanzaAge = stanza.StartAge(iGroup)
-                gi.StanzaMortality = stanza.Mortality(iGroup)
                 si.AddGroup(gi)
             Next
         Next
@@ -2003,7 +1926,7 @@ Public Class gridDefineGroups
                         ' Add newly assigned groups
                         For iLifestage As Integer = 0 To si.NumGroups - 1
                             gi = si.GroupList(iLifestage)
-                            If Not Me.Core.AddStanzaLifestage(si.StanzaGroup.Index, gi.GroupDBID, gi.StanzaAge, gi.StanzaMortality) Then
+                            If Not Me.Core.AddStanzaLifestage(si.StanzaGroup.Index, gi.GroupDBID, gi.StanzaAge) Then
                                 bSuccess = False
                             End If
                         Next

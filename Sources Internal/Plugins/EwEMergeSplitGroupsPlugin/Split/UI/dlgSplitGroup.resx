@@ -342,6 +342,9 @@
   <data name="m_sliderB.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
   </data>
+  <data name="m_sliderB.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
   <data name="m_sliderB.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 20</value>
   </data>

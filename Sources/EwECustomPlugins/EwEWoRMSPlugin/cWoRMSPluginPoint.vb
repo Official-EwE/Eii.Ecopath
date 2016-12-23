@@ -390,7 +390,7 @@ Public Class cWoRMSPluginPoint
             Me.m_core.Messages.SendMessage(msg)
             c.Abort()
         Catch exComm As ServiceModel.CommunicationException
-            ' Too many results! Not sure how to handle this
+            ' Too many results, or no end point (HRESULT -2146233087) ...
             c.Abort()
             cLog.Write(exComm, "cWoRMSPluginPoint.SearchThreaded")
         Catch exTime As TimeoutException

@@ -32,20 +32,23 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+''' <summary>
+''' Interface for splitting an Ecopath group in two.
+''' </summary>
 Public Class dlgSplitGroup
 
     Private m_uic As cUIContext = Nothing
     Private m_engine As cEcopathSplitGroup = Nothing
     Private m_bInUpdate As Boolean = True
 
-    Private m_fpN1 As cEwEFormatProvider = Nothing
-    Private m_fpN2 As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpN1 As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpN2 As cEwEFormatProvider = Nothing
 
-    Private m_fpB1 As cEwEFormatProvider = Nothing
-    Private m_fpB2 As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpB1 As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpB2 As cEwEFormatProvider = Nothing
 
-    Private m_fpA1 As cEwEFormatProvider = Nothing
-    Private m_fpA2 As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpA1 As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpA2 As cEwEFormatProvider = Nothing
 
     Private m_biomass As Single = 0
     Private m_biomasssource As eBiomassSource = eBiomassSource.NotSet
@@ -76,7 +79,10 @@ Public Class dlgSplitGroup
         Dim core As cCore = Me.m_uic.Core
 
         For i As Integer = 1 To core.nGroups
-            Me.m_cmbSource.Items.Add(core.EcoPathGroupInputs(i))
+            Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(i)
+            If (grp.BiomassAreaInput > 0) Then
+                Me.m_cmbSource.Items.Add(core.EcoPathGroupInputs(i))
+            End If
         Next
 
         Me.m_fpN1 = New cEwEFormatProvider(Me.m_uic, Me.m_tbxSplit1, GetType(String))
@@ -151,7 +157,8 @@ Public Class dlgSplitGroup
 
     End Sub
 
-    Private Sub OnFormatGroupItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) Handles m_cmbSource.Format
+    Private Sub OnFormatGroupItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_cmbSource.Format
 
         Try
             Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
@@ -166,7 +173,8 @@ Public Class dlgSplitGroup
 
     End Sub
 
-    Private Sub OnFormatTaxonItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) Handles m_lbxTaxa1.Format, m_lbxTaxa2.Format
+    Private Sub OnFormatTaxonItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_lbxTaxa1.Format, m_lbxTaxa2.Format
 
         Try
             Dim fmt As New ScientificInterfaceShared.Style.cCoreInterfaceFormatter()
@@ -182,13 +190,14 @@ Public Class dlgSplitGroup
     End Sub
 
     Private Sub OnSplitNameChanged(sender As Object, e As EventArgs) _
-        Handles m_tbxSplit1.TextChanged, m_tbxSplit2.TextChanged
+        Handles m_fpN2.OnValueChanged
 
         Me.UpdateControls()
 
     End Sub
 
-    Private Sub OnSliderValueChanged(sender As Object, e As EventArgs) Handles m_sliderB.ValueChanged
+    Private Sub OnSliderValueChanged(sender As Object, e As EventArgs) _
+        Handles m_sliderB.ValueChanged
 
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
@@ -200,33 +209,38 @@ Public Class dlgSplitGroup
 
     End Sub
 
-    Private Sub OnB1Changed(sender As Object, e As EventArgs) Handles m_tbxB1.TextChanged
+    Private Sub OnB1Changed(sender As Object, e As EventArgs) _
+        Handles m_fpB1.OnValueChanged
 
         If Me.m_bInUpdate Then Return
 
         Dim b1 As Single = Math.Min(Me.m_biomass, CSng(Me.m_fpB1.Value))
-        Me.B1Ratio = 1 - (b1 / Me.m_biomass)
+        Me.B1Ratio = (b1 / Me.m_biomass)
 
     End Sub
 
-    Private Sub OnB2Changed(sender As Object, e As EventArgs) Handles m_tbxB2.TextChanged
+    Private Sub OnB2Changed(sender As Object, e As EventArgs) _
+        Handles m_fpB2.OnValueChanged
 
         If Me.m_bInUpdate Then Return
 
         Dim b2 As Single = Math.Min(Me.m_biomass, CSng(Me.m_fpB2.Value))
-        Me.B1Ratio = (b2 / Me.m_biomass)
+        Me.B1Ratio = 1 - (b2 / Me.m_biomass)
 
     End Sub
 
-    Private Sub OnMoveTaxaToGroup2(sender As Object, e As EventArgs) Handles m_btn2to1.Click
+    Private Sub OnMoveTaxaToGroup2(sender As Object, e As EventArgs) _
+        Handles m_btn2to1.Click
         MoveSelectedTaxa(Me.m_lbxTaxa2, Me.m_lbxTaxa1)
     End Sub
 
-    Private Sub OnMoveTaxaToGroup1(sender As Object, e As EventArgs) Handles m_btn1to2.Click
+    Private Sub OnMoveTaxaToGroup1(sender As Object, e As EventArgs) _
+        Handles m_btn1to2.Click
         MoveSelectedTaxa(Me.m_lbxTaxa1, Me.m_lbxTaxa2)
     End Sub
 
-    Private Sub OnTaxaSelectionChanges(sender As Object, e As EventArgs) Handles m_lbxTaxa1.SelectedIndexChanged, m_lbxTaxa2.SelectedIndexChanged
+    Private Sub OnTaxaSelectionChanged(sender As Object, e As EventArgs) _
+        Handles m_lbxTaxa1.SelectedIndexChanged, m_lbxTaxa2.SelectedIndexChanged
         Me.UpdateControls()
     End Sub
 
@@ -240,7 +254,19 @@ Public Class dlgSplitGroup
     Private Sub OnOK(sender As Object, e As EventArgs) _
         Handles m_btnOK.Click
 
-        If Me.SplitGroup() Then
+        Dim bSucces As Boolean = False
+        Dim grp As cEcoPathGroupInput = Me.SelectedSource()
+
+        If (grp Is Nothing) Then Debug.Assert(False) : Return
+
+        If (Me.m_biomasssource = eBiomassSource.Stanza) Then
+            bSucces = Me.m_engine.SplitLifeStage(grp.Index, Me.Name2, Me.Age2)
+        Else
+            Dim taxa As New List(Of Integer)
+            bSucces = Me.m_engine.SplitGroup(grp.Index, Me.Name2, B1, B2, Me.Taxa(Me.m_lbxTaxa2, False))
+        End If
+
+        If bSucces Then
             Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
         End If
@@ -309,6 +335,65 @@ Public Class dlgSplitGroup
         End Set
     End Property
 
+    Private Property Name1 As String
+        Get
+            If (Me.m_fpN1.Value Is Nothing) Then Return ""
+            Return CStr(Me.m_fpN1.Value).Trim
+        End Get
+        Set(value As String)
+            Me.m_fpN1.Value = value.Trim
+        End Set
+    End Property
+
+    Private Property Name2 As String
+        Get
+            If (Me.m_fpN2.Value Is Nothing) Then Return ""
+            Return CStr(Me.m_fpN2.Value).Trim
+        End Get
+        Set(value As String)
+            Me.m_fpN2.Value = value.Trim
+        End Set
+    End Property
+
+    Private Property Age1 As Integer
+        Get
+            Return CInt(Me.m_fpN1.Value)
+        End Get
+        Set(value As Integer)
+            Me.m_fpN1.Value = value
+        End Set
+    End Property
+
+    Private Property Age2 As Integer
+        Get
+            Return CInt(Me.m_fpN2.Value)
+        End Get
+        Set(value As Integer)
+            Me.m_fpN2.Value = value
+        End Set
+    End Property
+
+    Private Function Taxa1(bSelectedOnly As Boolean) As cTaxon()
+
+    End Function
+
+    Private Function Taxa(lb As ListBox, bSelectedOnly As Boolean) As cTaxon()
+
+        Dim lTaxa As New List(Of cTaxon)
+        Dim coll As ICollection = Nothing
+        If (bSelectedOnly) Then coll = lb.SelectedItems Else coll = lb.Items
+
+        For Each item As Object In coll
+            If (item IsNot Nothing) Then
+                If (TypeOf item Is cTaxon) Then
+                    lTaxa.Add(DirectCast(item, cTaxon))
+                End If
+            End If
+        Next
+        Return lTaxa.ToArray()
+
+    End Function
+
     Private Sub PopulateStanzaList()
 
         Me.m_lbxTaxa1.Items.Clear()
@@ -333,12 +418,7 @@ Public Class dlgSplitGroup
         lbFrom.SuspendLayout()
         lbTo.SuspendLayout()
 
-        Dim items As New List(Of Object)
-        For Each item As Object In lbFrom.SelectedItems
-            If (item IsNot Nothing) Then items.Add(item)
-        Next
-
-        For Each item In items
+        For Each item In Me.Taxa(lbFrom, True)
             lbFrom.Items.Remove(item)
             lbTo.Items.Add(item)
         Next
@@ -354,17 +434,15 @@ Public Class dlgSplitGroup
 
         If (Me.m_biomasssource <> eBiomassSource.Taxonomy) Then Return
 
-        Me.B1Ratio = (Me.BiomassFromTaxa(Me.m_lbxTaxa1.Items) / Me.m_biomass)
+        Me.B1Ratio = 1 - (Me.BiomassFromTaxa(Me.Taxa(Me.m_lbxTaxa1, False)) / Me.m_biomass)
 
     End Sub
 
-    Private Function BiomassFromTaxa(taxa As ICollection) As Single
+    Private Function BiomassFromTaxa(taxa As cTaxon()) As Single
 
         Dim bTot As Single = 0
-        For Each item As Object In taxa
-            If (TypeOf item Is cTaxon) Then
-                bTot += DirectCast(item, cTaxon).Proportion() * Me.m_biomass
-            End If
+        For Each taxon As cTaxon In taxa
+            bTot += taxon.Proportion() * Me.m_biomass
         Next
         Return bTot
 
@@ -377,6 +455,11 @@ Public Class dlgSplitGroup
 
         Dim bHasSource As Boolean = (Me.SelectedSource IsNot Nothing)
         Dim bHasTargets As Boolean = True ' Validate unique target names
+        Dim bCanSplit As Boolean = False
+
+        If (bHasSource) Then
+            bCanSplit = Me.m_engine.CanSplitGroups(Me.SelectedSource.Index, Me.Name2)
+        End If
 
         Me.m_sliderB.Enabled = bHasSource
         Me.m_tbxSplit1.Enabled = bHasSource
@@ -408,6 +491,8 @@ Public Class dlgSplitGroup
         Me.m_btn1to2.Enabled = bEditTaxa And (Me.m_lbxTaxa1.SelectedIndices.Count > 0)
         Me.m_btn2to1.Enabled = bEditTaxa And (Me.m_lbxTaxa2.SelectedIndices.Count > 0)
 
+        Me.m_btnOK.Enabled = bCanSplit
+
         Me.m_bInUpdate = False
 
     End Sub
@@ -430,14 +515,6 @@ Public Class dlgSplitGroup
         End Try
 
     End Sub
-
-    Private Function SplitGroup() As Boolean
-
-        ' Add new group
-        ' Change values in both
-        ' Save again
-
-    End Function
 
 #End Region ' Internals
 

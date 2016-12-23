@@ -196,9 +196,10 @@
     <Compile Include="EcoBase\cEcobaseData.vb" />
     <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
     <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
-    <Compile Include="EcoPath\Utility\Merge groups\cEcopathMergeGroups.vb" />
-    <Compile Include="EcoPath\Utility\Merge groups\cEcopathMergeGroupsDatastructures.vb" />
-    <Compile Include="EcoPath\Utility\Split group\cEcopathSplitGroup.vb" />
+    <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeGroups.vb" />
+    <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeGroupsDatastructures.vb" />
+    <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeSplitGroups.vb" />
+    <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathSplitGroup.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimEnviroInputData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />

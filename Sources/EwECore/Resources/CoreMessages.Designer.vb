@@ -425,6 +425,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Groups {0} has been split into {1} and {2}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOPATH_GROUPSPLIT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_GROUPSPLIT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!.
         '''</summary>
         Public Shared ReadOnly Property ECOPATH_GS_WARNING() As String
@@ -604,6 +613,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property ECOPATH_LOADED() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_LOADED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cannot automatically merge or split groups for models with Ecosim scenarios.
+        '''</summary>
+        Public Shared ReadOnly Property ECOPATH_MERGESPLIT_ERROR_HASECOSIM() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_MERGESPLIT_ERROR_HASECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please load a model before attempting to merge groups.
+        '''</summary>
+        Public Shared ReadOnly Property ECOPATH_MERGESPLIT_ERROR_NOMODEL() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_MERGESPLIT_ERROR_NOMODEL", resourceCulture)
             End Get
         End Property
         
@@ -2044,24 +2071,6 @@ Namespace My.Resources
         Public Shared ReadOnly Property MEDIATION_ZERO_BASE_DETAIL() As String
             Get
                 Return ResourceManager.GetString("MEDIATION_ZERO_BASE_DETAIL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Cannot automatically merge groups for models with Ecosim scenarios.
-        '''</summary>
-        Public Shared ReadOnly Property MERGEGROUPS_ERROR_HASECOSIM() As String
-            Get
-                Return ResourceManager.GetString("MERGEGROUPS_ERROR_HASECOSIM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Please load a model before attempting to merge groups.
-        '''</summary>
-        Public Shared ReadOnly Property MERGEGROUPS_ERROR_NOMODEL() As String
-            Get
-                Return ResourceManager.GetString("MERGEGROUPS_ERROR_NOMODEL", resourceCulture)
             End Get
         End Property
         

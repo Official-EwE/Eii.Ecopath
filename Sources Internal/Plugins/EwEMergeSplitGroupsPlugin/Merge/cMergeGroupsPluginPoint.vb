@@ -77,7 +77,7 @@ Public Class cMergeGroupsPluginPoint
         Dim core As cCore = Me.m_uic.Core
         Dim engine As New cEcopathMergeGroups(core)
 
-        If Not engine.CanMergeGroups(True) Then Return
+        If Not engine.CanMergeSplitGroups(True) Then Return
 
         Me.m_uic.Core.RunEcoPath()
 
