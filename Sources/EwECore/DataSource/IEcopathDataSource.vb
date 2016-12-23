@@ -199,8 +199,8 @@ Namespace DataSources
         ''' <param name="sMortality">Mortality for this life stage.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
-                                    ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean
+        Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer,
+                                    ByVal iStartAge As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

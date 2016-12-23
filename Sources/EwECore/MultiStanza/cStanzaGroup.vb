@@ -464,8 +464,9 @@ Public Class cStanzaGroup
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the <see cref="cCoreInputOutputBase.Index">Index</see> of a group 
+    ''' Get/set the <see cref="cCoreGroupBase.Index">index</see> of a life stage 
     ''' in this multi-stanza grouping. Groups are stored in a one-based array.
     ''' </summary>
     ''' <param name="iLifeStage">The one-based index of a group within this Stanza group
@@ -487,16 +488,34 @@ Public Class cStanzaGroup
     ''' Next iLifeStage
     ''' </code>
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Property iGroups(ByVal iLifeStage As Integer) As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.StanzaGroup, iLifeStage))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.StanzaGroup, value, iLifeStage)
         End Set
+    End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the life stage index of a <see cref="cCoreGroupBase.Index">group index</see>
+    ''' within this stanza configuration.
+    ''' </summary>
+    ''' <param name="iGroup">The group index to find the one-based life stage index for.</param>
+    ''' <returns>A one-based index of a life stage, or <see cref="cCore.NULL_VALUE"/> 
+    ''' if the group was not found.</returns>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property iLifeStage(ByVal iGroup As Integer) As Integer
+        Get
+            For i As Integer = 1 To Me.nLifeStages
+                If (Me.iGroups(i) = iGroup) Then
+                    Return i
+                End If
+            Next
+            Return cCore.NULL_VALUE
+        End Get
     End Property
 
     Public Property Biomass(ByVal iLifeStage As Integer) As Single

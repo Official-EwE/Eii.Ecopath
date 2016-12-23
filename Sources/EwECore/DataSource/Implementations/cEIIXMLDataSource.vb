@@ -3098,11 +3098,10 @@ Public Class cEIIXMLDataSource
     ''' <param name="iStanzaDBID">Database ID of the stanza group to add the life stage to.</param>
     ''' <param name="iGroupDBID">Group to add as a life stage.</param>
     ''' <param name="iStartAge">Start age of this life stage.</param>
-    ''' <param name="sMortality">Mortality for this life stage.</param>
     ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
-                                       ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean _
+    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer,
+                                       ByVal iStartAge As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddStanzaLifestage
         Return False
     End Function

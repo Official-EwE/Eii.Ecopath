@@ -11952,11 +11952,10 @@ Public Class cCore
     ''' <param name="iStanza">Index of the stanza group to modify.</param>
     ''' <param name="iGroupDBID">Database if of the Group to assign as life stage.</param>
     ''' <param name="iAge">The age to assign to this life stage.</param>
-    ''' <param name="sMortality"></param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddStanzaLifestage(ByVal iStanza As Integer, ByVal iGroupDBID As Integer,
-                                       ByVal iAge As Integer, ByVal sMortality As Single) As Boolean
+                                       ByVal iAge As Integer) As Boolean
 
         Dim iStanzaDBID As Integer = Me.m_Stanza.StanzaDBID(iStanza)
         Dim bSucces As Boolean = False
@@ -11970,7 +11969,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
         ' Remove the stanza
         ds = DirectCast(DataSource, IEcopathDataSource)
-        bSucces = ds.AddStanzaLifestage(iStanzaDBID, iGroupDBID, iAge, sMortality)
+        bSucces = ds.AddStanzaLifestage(iStanzaDBID, iGroupDBID, iAge)
         ' Decrease batch count
         Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath)
 
