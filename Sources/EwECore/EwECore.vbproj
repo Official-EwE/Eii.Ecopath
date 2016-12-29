@@ -210,6 +210,10 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerExclusion.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCBaseResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapBiomassWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapCatchWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapEffortWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceAvgModelAreaResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
@@ -436,7 +440,6 @@
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceBaseResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceCSVMapResultsWriter.vb" />
-    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEnviroInputMap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />
