@@ -75,6 +75,9 @@ Namespace Core
         ''' </summary>
         Property FirstOutputTimeStep As Integer
 
+        Property SelectedGroups As Boolean()
+
+
     End Interface
 
 End Namespace

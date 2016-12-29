@@ -71,52 +71,6 @@ Public Class cEcospaceResultWriterFactory
 
     End Function
 
-    ' ''' -----------------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' Factory method.
-    ' ''' </summary>
-    ' ''' <param name="strDataName">The <see cref="IEcospaceResultsWriter.DataName">internal name</see> 
-    ' ''' to find a writer for.</param>
-    ' ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
-    ' ''' no writer could be found for the provided extension.</returns>
-    ' ''' -----------------------------------------------------------------------
-    'Public Shared Function GetWriter(ByVal strDataName As String, _
-    '                                 ByVal pm As cPluginManager) As IEcospaceResultsWriter
-
-    '    ' JS 28May15: Small change here: writers are now identified by their internal name, not by their localized name
-    '    Select Case strDataName.ToLower()
-
-    '        Case cEcospaceCSVMapResultsWriter.cDATA_NAME
-    '            Return New cEcospaceCSVMapResultsWriter()
-    '        Case cEcospaceASCMapResultsWriter.cDATA_NAME
-    '            Return New cEcospaceASCMapResultsWriter()
-    '        Case cEcospaceAvgModelAreaResultsWriter.cDATA_NAME
-    '            Return New cEcospaceAvgModelAreaResultsWriter()
-
-    '        Case "csv map", ".csv"
-    '            ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
-    '            Return New cEcospaceCSVMapResultsWriter()
-    '        Case "ascii map", ".asc"
-    '            ' Backwards compatibility - localized names and ambiguous file extensions should not be used anymore
-    '            Return New cEcospaceASCMapResultsWriter()
-
-    '    End Select
-
-    '    ' Plug-in manager provided?
-    '    If (pm IsNot Nothing) Then
-    '        ' #Yes: see if a plug-in based writer supports the requested format
-    '        For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
-    '            ' JS: Use writer display name here
-    '            If (String.Compare(strDataName, ip.DataName, True) = 0) Then
-    '                ' #Yes: use it
-    '                Return ip
-    '            End If
-    '        Next
-    '    End If
-
-    '    Return Nothing
-
-    'End Function
 
 End Class
 
@@ -141,6 +95,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' </summary>
     ''' <remarks></remarks>
     Protected m_FirstStep As Integer = 1
+
+    Protected vars() As eVarNameFlags
+
+    Protected m_selGroups() As Boolean
 
 #End Region ' Protected data
 
@@ -195,7 +153,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Public MustOverride ReadOnly Property DataName() As String _
         Implements IEcospaceResultsWriter.DataName
 
-    <Obsolete("Since the file extension is no longer crucial for identifying writers, this method should go")> _
+    <Obsolete("Since the file extension is no longer crucial for identifying writers, this method should go")>
     Public MustOverride Function FileExtension() As String
 
     ''' -----------------------------------------------------------------------
@@ -265,9 +223,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' not supplied then no time stamp will appear in the filename.</param>
     ''' <returns>A file name.</returns>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags, _
-                                                    ByVal iGrp As Integer, _
-                                                    ByVal strExt As String, _
+    Protected Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags,
+                                                    ByVal iGrp As Integer,
+                                                    ByVal strExt As String,
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim Filename As String
@@ -287,13 +245,39 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                 strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
             End If
 
-            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
+            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
                                                                         cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
         Return System.IO.Path.Combine(Me.OutputDirectory, Filename.Replace("..", "."))
 
     End Function
+
+    Protected Sub setAllGroupsSelected()
+        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
+        For igrp As Integer = 1 To Me.EcopathData.NumGroups
+            m_selGroups(igrp) = True
+        Next igrp
+
+    End Sub
+
+    Protected Sub setCatchSelected()
+        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
+        For igrp As Integer = 1 To Me.EcopathData.NumGroups
+            For iflt As Integer = 1 To Me.EcopathData.NumFleet
+                If (Me.EcopathData.Discard(iflt, igrp) + Me.EcopathData.Landing(iflt, igrp)) > 0 Then
+                    m_selGroups(igrp) = True
+                End If
+            Next iflt
+        Next igrp
+    End Sub
+
+    Protected Sub setAllFleetsSelected()
+        Me.m_selGroups = New Boolean(Me.m_core.nGroups) {}
+        For iflt As Integer = 1 To Me.EcopathData.NumFleet
+            m_selGroups(iflt) = True
+        Next iflt
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -307,9 +291,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' not supplied then no time stamp will appear in the filename.</param>
     ''' <returns>A file name.</returns>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags, _
-                                                    ByVal iFlt As Integer, _
-                                                    ByVal strExt As String, _
+    Protected Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags,
+                                                    ByVal iFlt As Integer,
+                                                    ByVal strExt As String,
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
 
@@ -328,7 +312,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                 strTimestep = cStringUtils.Localize("-{0:00000}", iModelTimeStep)
             End If
 
-            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}", _
+            Filename = EwEUtils.Utilities.cFileUtils.ToValidFileName(cStringUtils.Localize("{0}-{1}{2}.{3}",
                                                                      cin.GetVarName(varname), fltName, strTimestep, strExt.Replace(".", "")), False)
         End If
 
@@ -371,9 +355,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <param name="iIndex"></param>
     ''' <param name="varname"></param>
     ''' <returns></returns>
-    Protected Overridable Function ScaleValue(ByVal value As Double, _
-                                              ByVal SpaceTSData As cEcospaceTimestep, _
-                                              ByVal iIndex As Integer, _
+    Protected Overridable Function ScaleValue(ByVal value As Double,
+                                              ByVal SpaceTSData As cEcospaceTimestep,
+                                              ByVal iIndex As Integer,
                                               ByVal varname As eVarNameFlags) As Double
         Return value
     End Function
@@ -391,6 +375,15 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Get
         Set(value As Integer)
             Me.m_FirstStep = value
+        End Set
+    End Property
+
+    Public Overridable Property SelectedGroups As Boolean() Implements IEcospaceResultsWriter.SelectedGroups
+        Get
+            Return Me.m_selGroups
+        End Get
+        Set(value() As Boolean)
+            Me.m_selGroups = value
         End Set
     End Property
 

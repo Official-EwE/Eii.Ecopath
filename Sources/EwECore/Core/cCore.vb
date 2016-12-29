@@ -2724,7 +2724,7 @@ Public Class cCore
                         Select Case savetype
                             Case eAutosaveTypes.EcospaceResults
                                 If (String.IsNullOrWhiteSpace(AutosaveFormat(savetype))) Then
-                                    Me.AutosaveFormat(savetype) = cEcospaceASCMapResultsWriter.cDATA_NAME
+                                    Me.AutosaveFormat(savetype) = cEcospaceASCBaseResultsWriter.cDATA_NAME
                                 End If
                         End Select
                     Else

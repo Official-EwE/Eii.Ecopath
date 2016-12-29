@@ -855,15 +855,15 @@ Public Class cEcospaceModelParameters
     ''' Get/set whether Ecospace should automatically save ASC files.
     ''' </summary>
     ''' <remarks>
-    ''' This shortcut method enables or disables the <see cref="cEcospaceASCMapResultsWriter"/>.
+    ''' This shortcut method enables or disables the <see cref="cEcospaceASCBaseResultsWriter"/>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
-            Return Me.Autosave(cEcospaceASCMapResultsWriter.cDATA_NAME)
+            Return Me.Autosave(cEcospaceASCBaseResultsWriter.cDATA_NAME)
         End Get
         Set(value As Boolean)
-            Me.Autosave(cEcospaceASCMapResultsWriter.cDATA_NAME) = value
+            Me.Autosave(cEcospaceASCBaseResultsWriter.cDATA_NAME) = value
         End Set
     End Property
 

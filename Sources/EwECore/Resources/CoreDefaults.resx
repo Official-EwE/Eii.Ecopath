@@ -251,8 +251,14 @@
     <value>Created {0}</value>
     <comment>{0} date and time, converted to string in current Locale</comment>
   </data>
-  <data name="ECOSPACE_WRITER_ASCMAP" xml:space="preserve">
-    <value>Georeferenced ASCII maps</value>
+  <data name="ECOSPACE_WRITER_ASC_BIOMASS" xml:space="preserve">
+    <value>Biomass ASCII map</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_CATCH" xml:space="preserve">
+    <value>Catch ASCII map</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_EFFORT" xml:space="preserve">
+    <value>Effort ASCII map</value>
   </data>
   <data name="ECOSPACE_WRITER_CSVMAP" xml:space="preserve">
     <value>CSV maps</value>
