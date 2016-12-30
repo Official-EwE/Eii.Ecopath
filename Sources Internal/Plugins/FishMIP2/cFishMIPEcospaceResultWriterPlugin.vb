@@ -222,8 +222,9 @@ Public Class cFishMIPEcospaceResultWriterPlugin
                     End If
 
                     If Not bHasData Then val = Me.m_dNoData
+
                     Me.m_writers(result).WriteLine("{0},{1},{2},{3}",
-                                                   iTime - 1,
+                                                   dt.ToString("yyyy-MM"),
                                                    bm.RowToLat(iRow) - bm.CellSize / 2, bm.ColToLon(iCol) + bm.CellSize / 2,
                                                    val)
                 Next iCol
