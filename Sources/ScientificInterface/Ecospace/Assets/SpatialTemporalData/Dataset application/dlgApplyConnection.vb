@@ -402,6 +402,14 @@ Namespace Ecospace.Controls
 
 #Region " Scaling "
 
+        Private Sub OnScaleTextChanged(sender As Object, e As EventArgs) _
+            Handles m_tbxScale.TextChanged
+
+            Me.m_rbRelative.Checked = True
+
+        End Sub
+
+
         Private Sub OnDatScaleTypeChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
 
