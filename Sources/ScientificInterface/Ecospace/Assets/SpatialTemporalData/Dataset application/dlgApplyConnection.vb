@@ -33,7 +33,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-' ToDo: Use format provider for scale box
 ' ToDo: Populate dataset details panel
 ' ToDo: Respond to configuration / name changes
 ' ToDo: Enable varname hierarchy in TreeView
@@ -423,11 +422,9 @@ Namespace Ecospace.Controls
                 If (Me.m_bIsScaling) Then
                     If (Me.m_rbAbsolute.Checked) Then
                         conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Absolute
-                        Me.m_fpScale.Enabled = False
                     Else
                         conn.ScaleType = cSpatialScalarDataAdapterBase.eScaleType.Relative
                         conn.Scale = CSng(Me.m_fpScale.Value)
-                        Me.m_fpScale.Enabled = True
                     End If
 
                     ' Invalidate the cached data for this dataset
