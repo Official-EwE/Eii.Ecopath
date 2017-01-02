@@ -3,7 +3,7 @@ Imports EwECore
 
 Public Class dlgSpaceRun
 
-    Public Sub New(core As cCore, strHist As String, iYearHist As Integer, strFore As String, iYearFore As Integer, dNoData As Double)
+    Public Sub New(core As cCore, strHist As String, iYearHist As Integer, strFore As String, iYearFore As Integer)
         Me.InitializeComponent()
 
         Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
@@ -16,9 +16,11 @@ Public Class dlgSpaceRun
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
-        Dim bError As Boolean = cFishMIPPlugin.GetInstance().Configuration.IsEmpty
+        Dim iNumConfig As Integer = cFishMIPPlugin.GetInstance().Configuration.NumConfig
+        Dim bError As Boolean = (cFishMIPPlugin.GetInstance().Configuration.NumConfig < 10)
         Me.m_pbAlert.Visible = bError
         Me.m_lblError.Visible = bError
+        Me.m_lblError.Text = String.Format(Me.m_lblError.Text, iNumConfig)
 
         Me.m_pbAlert.Image = ScientificInterfaceShared.My.Resources.Warning
 
@@ -50,14 +52,6 @@ Public Class dlgSpaceRun
     Public ReadOnly Property RunForecast As String
         Get
             Return cFileUtils.ToValidFileName(Me.m_tbxFileFore.Text, False)
-        End Get
-    End Property
-
-    Public ReadOnly Property NoData As Double
-        Get
-            Dim dNoData As Double
-            Double.TryParse(Me.m_tbxNoData.Text, dNoData)
-            Return dNoData
         End Get
     End Property
 

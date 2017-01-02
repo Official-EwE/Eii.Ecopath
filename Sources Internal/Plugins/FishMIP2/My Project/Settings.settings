@@ -1,5 +1,21 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" UseMySettingsClassName="true">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
-  <Settings />
+  <Settings>
+    <Setting Name="EcospaceYearHist" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1971</Value>
+    </Setting>
+    <Setting Name="EcospaceYearForecast" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2006</Value>
+    </Setting>
+    <Setting Name="EcospaceNoData" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1E+20</Value>
+    </Setting>
+    <Setting Name="EcospaceFileHist" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ecoocean_gfdl-reanalysis_hist_wo-diaz_no-fishing_no-oa_{0}_global_monthly_1971_2005</Value>
+    </Setting>
+    <Setting Name="EcospaceFileForecast" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ecoocean_gfdl-reanalysis_rcp2p6t_wo-diaz_no-fishing_no-oa_{0}_global_monthly_1971_2005</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

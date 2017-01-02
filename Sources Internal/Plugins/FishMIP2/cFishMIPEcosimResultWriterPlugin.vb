@@ -85,7 +85,13 @@ Public Class cFishMIPEcosimResultWriterPlugin
     End Property
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-        ' NOP; rely on cFishMipCore instead
+
+        Me.m_iYearHist = My.Settings.EcospaceYearHist
+        Me.m_iYearFore = My.Settings.EcospaceYearForecast
+        Me.m_dNoData = My.Settings.EcospaceNoData
+        Me.m_strRunHist = My.Settings.EcospaceFileHist
+        Me.m_strRunFore = My.Settings.EcospaceFileForecast
+
     End Sub
 
 #End Region ' General bits
@@ -173,6 +179,14 @@ Public Class cFishMIPEcosimResultWriterPlugin
         Me.m_iYearHist = dlg.YearHist
         Me.m_strRunFore = dlg.RunForecast
         Me.m_iYearFore = dlg.YearForecast
+
+        ' Update settings
+        My.Settings.EcospaceYearHist = Me.m_iYearHist
+        My.Settings.EcospaceYearForecast = Me.m_iYearFore
+        My.Settings.EcospaceNoData = Me.m_dNoData
+        My.Settings.EcospaceFileHist = Me.m_strRunHist
+        My.Settings.EcospaceFileForecast = Me.m_strRunFore
+        My.Settings.Save()
 
         ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 

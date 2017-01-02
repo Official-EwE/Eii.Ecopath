@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblFileHist.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>14</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tbxFileHist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxFileHist.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>11</value>
   </data>
   <data name="m_lblYearHist.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -196,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblYearHist.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>13</value>
   </data>
   <data name="m_tbxYearHist.Location" type="System.Drawing.Point, System.Drawing">
     <value>66, 33</value>
@@ -220,13 +220,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxYearHist.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>337, 228</value>
+    <value>337, 171</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -247,7 +247,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_lblFileFore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -274,7 +274,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblFileFore.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>12</value>
   </data>
   <data name="m_lblYearFore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -301,7 +301,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblYearFore.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>10</value>
   </data>
   <data name="m_tbxFileFore.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -325,7 +325,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxFileFore.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="m_tbxYearFore.Location" type="System.Drawing.Point, System.Drawing">
     <value>66, 111</value>
@@ -349,57 +349,6 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxYearFore.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="m_lblNoData.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblNoData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 192</value>
-  </data>
-  <data name="m_lblNoData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 13</value>
-  </data>
-  <data name="m_lblNoData.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_lblNoData.Text" xml:space="preserve">
-    <value>&amp;No data:</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoData.Name" xml:space="preserve">
-    <value>m_lblNoData</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoData.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoData.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="m_tbxNoData.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tbxNoData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>66, 189</value>
-  </data>
-  <data name="m_tbxNoData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 20</value>
-  </data>
-  <data name="m_tbxNoData.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoData.Name" xml:space="preserve">
-    <value>m_tbxNoData</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoData.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoData.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="m_tbxEnd.Location" type="System.Drawing.Point, System.Drawing">
@@ -424,7 +373,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxEnd.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="m_tbxStart.Location" type="System.Drawing.Point, System.Drawing">
     <value>133, 33</value>
@@ -448,10 +397,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxStart.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
+  </data>
+  <data name="m_pbAlert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="m_pbAlert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 228</value>
+    <value>15, 171</value>
   </data>
   <data name="m_pbAlert.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 23</value>
@@ -471,20 +423,23 @@
   <data name="&gt;&gt;m_pbAlert.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_lblError.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
   <data name="m_lblError.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblError.Location" type="System.Drawing.Point, System.Drawing">
-    <value>50, 233</value>
+    <value>50, 176</value>
   </data>
   <data name="m_lblError.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 13</value>
+    <value>126, 13</value>
   </data>
   <data name="m_lblError.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
   <data name="m_lblError.Text" xml:space="preserve">
-    <value>FishMIP configuration not loaded</value>
+    <value>FishMIP {0} aggragations</value>
   </data>
   <data name="&gt;&gt;m_lblError.Name" xml:space="preserve">
     <value>m_lblError</value>
@@ -497,36 +452,6 @@
   </data>
   <data name="&gt;&gt;m_lblError.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_hdrOther.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrOther.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 168</value>
-  </data>
-  <data name="m_hdrOther.Size" type="System.Drawing.Size, System.Drawing">
-    <value>400, 18</value>
-  </data>
-  <data name="m_hdrOther.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="m_hdrOther.Text" xml:space="preserve">
-    <value>Other</value>
-  </data>
-  <data name="m_hdrOther.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOther.Name" xml:space="preserve">
-    <value>m_hdrOther</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOther.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOther.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_hdrOther.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -556,7 +481,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_hdrHist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -586,7 +511,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrHist.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -601,7 +526,10 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>424, 263</value>
+    <value>424, 206</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>FishMIP Ecospace run</value>

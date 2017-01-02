@@ -63,17 +63,18 @@ Public Class cConfiguration
         End Set
     End Property
 
-    Public Function IsEmpty() As Boolean
+    Public Function NumConfig() As Integer
 
+        Dim iNumConfig As Integer = 0
         For Each j As eResultTypes In [Enum].GetValues(GetType(eResultTypes))
             Dim b As Boolean = False
             For i As Integer = 1 To Me.m_core.nGroups
                 If (Me.Configuration(i, j)) Then
-                    Return False
+                    iNumConfig += 1
                 End If
             Next
         Next
-        Return True
+        Return iNumConfig
 
     End Function
 

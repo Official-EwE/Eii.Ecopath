@@ -32,13 +32,10 @@ Partial Class dlgSpaceRun
         Me.m_lblYearFore = New System.Windows.Forms.Label()
         Me.m_tbxFileFore = New System.Windows.Forms.TextBox()
         Me.m_tbxYearFore = New System.Windows.Forms.TextBox()
-        Me.m_lblNoData = New System.Windows.Forms.Label()
-        Me.m_tbxNoData = New System.Windows.Forms.TextBox()
         Me.m_tbxEnd = New System.Windows.Forms.TextBox()
         Me.m_tbxStart = New System.Windows.Forms.TextBox()
         Me.m_pbAlert = New System.Windows.Forms.PictureBox()
         Me.m_lblError = New System.Windows.Forms.Label()
-        Me.m_hdrOther = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrHist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,16 +87,6 @@ Partial Class dlgSpaceRun
         resources.ApplyResources(Me.m_tbxYearFore, "m_tbxYearFore")
         Me.m_tbxYearFore.Name = "m_tbxYearFore"
         '
-        'm_lblNoData
-        '
-        resources.ApplyResources(Me.m_lblNoData, "m_lblNoData")
-        Me.m_lblNoData.Name = "m_lblNoData"
-        '
-        'm_tbxNoData
-        '
-        resources.ApplyResources(Me.m_tbxNoData, "m_tbxNoData")
-        Me.m_tbxNoData.Name = "m_tbxNoData"
-        '
         'm_tbxEnd
         '
         resources.ApplyResources(Me.m_tbxEnd, "m_tbxEnd")
@@ -126,14 +113,6 @@ Partial Class dlgSpaceRun
         Me.m_lblError.ForeColor = System.Drawing.Color.OrangeRed
         Me.m_lblError.Name = "m_lblError"
         '
-        'm_hdrOther
-        '
-        resources.ApplyResources(Me.m_hdrOther, "m_hdrOther")
-        Me.m_hdrOther.CanCollapseParent = False
-        Me.m_hdrOther.CollapsedParentHeight = 0
-        Me.m_hdrOther.IsCollapsed = False
-        Me.m_hdrOther.Name = "m_hdrOther"
-        '
         'CEwEHeaderLabel1
         '
         resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
@@ -157,17 +136,14 @@ Partial Class dlgSpaceRun
         Me.ControlBox = False
         Me.Controls.Add(Me.m_lblError)
         Me.Controls.Add(Me.m_pbAlert)
-        Me.Controls.Add(Me.m_hdrOther)
         Me.Controls.Add(Me.CEwEHeaderLabel1)
         Me.Controls.Add(Me.m_hdrHist)
         Me.Controls.Add(Me.m_btnOK)
-        Me.Controls.Add(Me.m_tbxNoData)
         Me.Controls.Add(Me.m_tbxEnd)
         Me.Controls.Add(Me.m_tbxYearFore)
         Me.Controls.Add(Me.m_tbxStart)
         Me.Controls.Add(Me.m_tbxYearHist)
         Me.Controls.Add(Me.m_tbxFileFore)
-        Me.Controls.Add(Me.m_lblNoData)
         Me.Controls.Add(Me.m_lblYearFore)
         Me.Controls.Add(Me.m_tbxFileHist)
         Me.Controls.Add(Me.m_lblFileFore)
@@ -192,9 +168,6 @@ Partial Class dlgSpaceRun
     Private WithEvents m_tbxFileFore As Windows.Forms.TextBox
     Private WithEvents m_tbxYearFore As Windows.Forms.TextBox
     Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_hdrOther As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_lblNoData As Windows.Forms.Label
-    Private WithEvents m_tbxNoData As Windows.Forms.TextBox
     Private WithEvents m_tbxEnd As Windows.Forms.TextBox
     Private WithEvents m_tbxStart As Windows.Forms.TextBox
     Private WithEvents m_pbAlert As Windows.Forms.PictureBox

@@ -17,9 +17,11 @@ Public Class dlgSimRun
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
-        Dim bError As Boolean = cFishMIPPlugin.GetInstance().Configuration.IsEmpty
+        Dim iNumConfig As Integer = cFishMIPPlugin.GetInstance().Configuration.NumConfig
+        Dim bError As Boolean = (cFishMIPPlugin.GetInstance().Configuration.NumConfig < 10)
         Me.m_pbAlert.Visible = bError
         Me.m_lblError.Visible = bError
+        Me.m_lblError.Text = String.Format(Me.m_lblError.Text, iNumConfig)
 
         Me.m_pbAlert.Image = ScientificInterfaceShared.My.Resources.Warning
 

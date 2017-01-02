@@ -158,14 +158,13 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 
         ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
-        Dim dlg As New dlgSpaceRun(Me.m_uic.Core, Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore, Me.m_dNoData)
+        Dim dlg As New dlgSpaceRun(Me.m_uic.Core, Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore)
         dlg.ShowDialog(Me.m_uic.FormMain)
 
         Me.m_strRunHist = dlg.RunHistorical
         Me.m_iYearHist = dlg.YearHist
         Me.m_strRunFore = dlg.RunForecast
         Me.m_iYearFore = dlg.YearForecast
-        Me.m_dNoData = dlg.NoData
 
     End Sub
 

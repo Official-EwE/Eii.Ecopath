@@ -53,6 +53,68 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1971")>  _
+        Public Property EcospaceYearHist() As Integer
+            Get
+                Return CType(Me("EcospaceYearHist"),Integer)
+            End Get
+            Set
+                Me("EcospaceYearHist") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("2006")>  _
+        Public Property EcospaceYearForecast() As Integer
+            Get
+                Return CType(Me("EcospaceYearForecast"),Integer)
+            End Get
+            Set
+                Me("EcospaceYearForecast") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("1E+20")>  _
+        Public Property EcospaceNoData() As Double
+            Get
+                Return CType(Me("EcospaceNoData"),Double)
+            End Get
+            Set
+                Me("EcospaceNoData") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("ecoocean_gfdl-reanalysis_hist_wo-diaz_no-fishing_no-oa_{0}_global_monthly_1971_20"& _ 
+            "05")>  _
+        Public Property EcospaceFileHist() As String
+            Get
+                Return CType(Me("EcospaceFileHist"),String)
+            End Get
+            Set
+                Me("EcospaceFileHist") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("ecoocean_gfdl-reanalysis_rcp2p6t_wo-diaz_no-fishing_no-oa_{0}_global_monthly_1971"& _ 
+            "_2005")>  _
+        Public Property EcospaceFileForecast() As String
+            Get
+                Return CType(Me("EcospaceFileForecast"),String)
+            End Get
+            Set
+                Me("EcospaceFileForecast") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
