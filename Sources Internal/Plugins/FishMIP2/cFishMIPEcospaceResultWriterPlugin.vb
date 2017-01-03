@@ -156,6 +156,12 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         ' Not autosaving? Done
         If Not Me.m_bSaving Then Return
 
+        Me.m_iYearHist = My.Settings.EcospaceYearHist
+        Me.m_iYearFore = My.Settings.EcospaceYearForecast
+        Me.m_dNoData = My.Settings.EcospaceNoData
+        Me.m_strRunHist = My.Settings.EcospaceFileHist
+        Me.m_strRunFore = My.Settings.EcospaceFileForecast
+
         ReDim Me.m_writers([Enum].GetValues(GetType(cConfiguration.eResultTypes)).Length)
 
         Dim dlg As New dlgSpaceRun(Me.m_uic.Core, Me.m_strRunHist, Me.m_iYearHist, Me.m_strRunFore, Me.m_iYearFore)
@@ -165,6 +171,13 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         Me.m_iYearHist = dlg.YearHist
         Me.m_strRunFore = dlg.RunForecast
         Me.m_iYearFore = dlg.YearForecast
+
+        My.Settings.EcospaceYearHist = Me.m_iYearHist
+        My.Settings.EcospaceYearForecast = Me.m_iYearFore
+        My.Settings.EcospaceNoData = Me.m_dNoData
+        My.Settings.EcospaceFileHist = Me.m_strRunHist
+        My.Settings.EcospaceFileForecast = Me.m_strRunFore
+        My.Settings.Save()
 
     End Sub
 
