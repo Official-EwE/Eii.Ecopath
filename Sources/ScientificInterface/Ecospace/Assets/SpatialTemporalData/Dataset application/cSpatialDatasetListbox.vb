@@ -26,6 +26,7 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -40,7 +41,9 @@ Namespace Ecospace.Controls
         Implements IUIElement
 
         Private m_uic As cUIContext = Nothing
-        Private m_filter As eVarNameFlags = Nothing
+        Private m_varFilter As eVarNameFlags = Nothing
+        Private m_strFilter As String = ""
+        Private m_bFilterCaseSensitive As Boolean = False
         Private m_manConn As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_mhEcospace As cMessageHandler = Nothing
@@ -80,13 +83,37 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Public Property Filter As eVarNameFlags
+        Public Property TextFilter As String
             Get
-                Return Me.m_filter
+                Return Me.m_strFilter
+            End Get
+            Set(value As String)
+                If (String.Compare(value, Me.m_strFilter, Not Me.IsTextFilterCaseSensitive) <> 0) Then
+                    Me.m_strFilter = value
+                    Me.RefreshContent()
+                End If
+            End Set
+        End Property
+
+        Public Property IsTextFilterCaseSensitive As Boolean
+            Get
+                Return Me.m_bFilterCaseSensitive
+            End Get
+            Set(value As Boolean)
+                If (Me.m_bFilterCaseSensitive <> value) Then
+                    Me.m_bFilterCaseSensitive = value
+                    Me.RefreshContent()
+                End If
+            End Set
+        End Property
+
+        Public Property VariableFilter As eVarNameFlags
+            Get
+                Return Me.m_varFilter
             End Get
             Set(value As eVarNameFlags)
-                If (value = Me.m_filter) Then Return
-                Me.m_filter = value
+                If (value = Me.m_varFilter) Then Return
+                Me.m_varFilter = value
                 Me.RefreshContent()
             End Set
         End Property
@@ -94,9 +121,20 @@ Namespace Ecospace.Controls
         Public Sub RefreshContent()
 
             Me.SuspendLayout()
+
             Me.Items.Clear()
             For Each ds As ISpatialDataSet In Me.m_manSets
-                If (Me.m_filter = eVarNameFlags.NotSet) Or (ds.VarName = eVarNameFlags.NotSet) Or ((ds.VarName = Me.m_filter)) Then
+                Dim bUseDataset As Boolean = (Me.m_varFilter = eVarNameFlags.NotSet) Or (ds.VarName = eVarNameFlags.NotSet) Or ((ds.VarName = Me.m_varFilter))
+
+                If (Not String.IsNullOrWhiteSpace(Me.TextFilter) And bUseDataset) Then
+                    If (Me.IsTextFilterCaseSensitive) Then
+                        bUseDataset = (ds.DisplayName.IndexOf(Me.TextFilter, StringComparison.CurrentCulture) > -1)
+                    Else
+                        bUseDataset = (ds.DisplayName.IndexOf(Me.TextFilter, StringComparison.CurrentCultureIgnoreCase) > -1)
+                    End If
+                End If
+
+                If (bUseDataset) Then
                     Me.Items.Add(ds)
                 End If
             Next

@@ -154,10 +154,11 @@ Namespace Ecospace.Controls
 
             Me.m_bInUpdate = True
 
-            Me.m_tsbnShowAllAvailable.Image = SharedResources.FilterHS
+            Me.m_tslFilter.Image = SharedResources.FilterHS
+            Me.m_tsbnCaseSensitive.Image = SharedResources.CaseSensitive
 
             ' Kick!
-            Me.FillSourceDatasetBox()
+            Me.RefreshDatasetList()
 
             ' Dynamic makeup
             Me.m_tsbnDefineConnections.Image = SharedResources.Database
@@ -232,7 +233,7 @@ Namespace Ecospace.Controls
                 Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditSpatialDatasets")
                 If (cmd IsNot Nothing) Then
                     cmd.Invoke()
-                    Me.FillSourceDatasetBox()
+                    Me.RefreshDatasetList()
                     Me.UpdateControls()
                 End If
             Catch ex As Exception
@@ -242,12 +243,37 @@ Namespace Ecospace.Controls
 
 #End Region ' Manage connections 
 
-#Region " Candidate connections "
+#Region " Connections list "
 
+        Private Sub OnNameFilterChanged(sender As Object, e As EventArgs) _
+            Handles m_tstbFilter.TextChanged
+            Try
+                Me.m_lbSourceDatasets.TextFilter = Me.m_tstbFilter.Text
+            Catch ex As Exception
 
-        Private Sub OnToggleFilterConnections(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnShowAllAvailable.Click
-            Me.FillSourceDatasetBox()
+            End Try
+        End Sub
+
+        Private Sub OnToggleCaseSensitive(sender As Object, e As EventArgs) _
+            Handles m_tsbnCaseSensitive.CheckedChanged
+            Try
+                Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = Me.m_tsbnCaseSensitive.Checked
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnToggleFilterByVariable(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnFilterByVariable.CheckedChanged
+            Try
+                If (Me.m_tsbnFilterByVariable.Checked) Or (Me.m_adt Is Nothing) Then
+                    Me.m_lbSourceDatasets.VariableFilter = eVarNameFlags.NotSet
+                Else
+                    Me.m_lbSourceDatasets.VariableFilter = Me.m_adt.VarName
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub OnAddDataset(sender As System.Object, e As System.EventArgs) _
@@ -531,7 +557,7 @@ Namespace Ecospace.Controls
 
 #End Region ' Scaling
 
-#Region " Other "
+#Region " OK "
 
         Private Sub OnOK(sender As Object, e As System.EventArgs) _
             Handles m_btnOK.Click
@@ -564,13 +590,9 @@ Namespace Ecospace.Controls
 
 #Region " Internals "
 
-        Private Sub FillSourceDatasetBox()
+        Private Sub RefreshDatasetList()
 
-            If (Me.m_tsbnShowAllAvailable.Checked) Or (Me.m_adt Is Nothing) Then
-                Me.m_lbSourceDatasets.Filter = eVarNameFlags.NotSet
-            Else
-                Me.m_lbSourceDatasets.Filter = Me.m_adt.VarName
-            End If
+
 
         End Sub
 
