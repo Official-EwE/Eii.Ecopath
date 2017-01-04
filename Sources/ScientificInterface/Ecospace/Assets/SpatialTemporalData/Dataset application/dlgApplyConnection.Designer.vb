@@ -34,7 +34,6 @@ Namespace Ecospace.Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyConnection))
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnection = New System.Windows.Forms.Panel()
-            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
             Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
@@ -54,19 +53,19 @@ Namespace Ecospace.Controls
             Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrConnections = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tslFilter = New System.Windows.Forms.ToolStripLabel()
             Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
             Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnFilterByVariable = New System.Windows.Forms.ToolStripButton()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnShowIncompatibleConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnDefineConnections = New System.Windows.Forms.ToolStripButton()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_plAvailable = New System.Windows.Forms.Panel()
-            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
             Me.m_btnRemove = New System.Windows.Forms.Button()
             Me.m_btnAdd = New System.Windows.Forms.Button()
             Me.m_cbEnabled = New System.Windows.Forms.CheckBox()
-            Me.m_tslFilter = New System.Windows.Forms.ToolStripLabel()
+            Me.m_lbSourceDatasets = New ScientificInterface.Ecospace.Controls.cSpatialDatasetListbox()
+            Me.m_gridConnections = New ScientificInterface.Ecospace.Controls.gridApplyDatasets()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnection.SuspendLayout()
             Me.m_plScalarAdapter.SuspendLayout()
@@ -96,39 +95,6 @@ Namespace Ecospace.Controls
             Me.m_plConnection.Controls.Add(Me.m_hdrSource)
             resources.ApplyResources(Me.m_plConnection, "m_plConnection")
             Me.m_plConnection.Name = "m_plConnection"
-            '
-            'm_gridConnections
-            '
-            Me.m_gridConnections.AllowBlockSelect = False
-            Me.m_gridConnections.AutoSizeMinHeight = 10
-            Me.m_gridConnections.AutoSizeMinWidth = 10
-            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
-            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
-            Me.m_gridConnections.BackColor = System.Drawing.Color.White
-            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridConnections.CustomSort = False
-            Me.m_gridConnections.DataName = "grid content"
-            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
-            Me.m_gridConnections.FixedColumnWidths = False
-            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridConnections.GridToolTipActive = True
-            Me.m_gridConnections.IsLayoutSuspended = False
-            Me.m_gridConnections.IsOutputGrid = True
-            Me.m_gridConnections.Name = "m_gridConnections"
-            Me.m_gridConnections.SelectedConnection = Nothing
-            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridConnections.UIContext = Nothing
             '
             'm_hdrSource
             '
@@ -256,35 +222,39 @@ Namespace Ecospace.Controls
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslFilter, Me.m_tstbFilter, Me.m_tsbnCaseSensitive, Me.m_tsbnFilterByVariable, Me.ToolStripSeparator1, Me.m_tsbnDefineConnections})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowIncompatibleConnections, Me.m_tsbnCaseSensitive, Me.m_tstbFilter, Me.m_tslFilter, Me.m_tsbnDefineConnections})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
+            'm_tslFilter
+            '
+            Me.m_tslFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tslFilter.Name = "m_tslFilter"
+            resources.ApplyResources(Me.m_tslFilter, "m_tslFilter")
+            '
             'm_tstbFilter
             '
+            Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
             Me.m_tstbFilter.Name = "m_tstbFilter"
             '
             'm_tsbnCaseSensitive
             '
+            Me.m_tsbnCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tsbnCaseSensitive.AutoToolTip = False
             Me.m_tsbnCaseSensitive.CheckOnClick = True
             Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsbnCaseSensitive, "m_tsbnCaseSensitive")
             Me.m_tsbnCaseSensitive.Name = "m_tsbnCaseSensitive"
             '
-            'm_tsbnFilterByVariable
+            'm_tsbnShowIncompatibleConnections
             '
-            Me.m_tsbnFilterByVariable.CheckOnClick = True
-            Me.m_tsbnFilterByVariable.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnFilterByVariable, "m_tsbnFilterByVariable")
-            Me.m_tsbnFilterByVariable.Name = "m_tsbnFilterByVariable"
-            '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            Me.m_tsbnShowIncompatibleConnections.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tsbnShowIncompatibleConnections.CheckOnClick = True
+            Me.m_tsbnShowIncompatibleConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnShowIncompatibleConnections, "m_tsbnShowIncompatibleConnections")
+            Me.m_tsbnShowIncompatibleConnections.Name = "m_tsbnShowIncompatibleConnections"
             '
             'm_tsbnDefineConnections
             '
@@ -319,18 +289,6 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_plAvailable, "m_plAvailable")
             Me.m_plAvailable.Name = "m_plAvailable"
             '
-            'm_lbSourceDatasets
-            '
-            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
-            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_lbSourceDatasets.FormattingEnabled = True
-            Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = False
-            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
-            Me.m_lbSourceDatasets.Sorted = True
-            Me.m_lbSourceDatasets.TextFilter = ""
-            Me.m_lbSourceDatasets.UIContext = Nothing
-            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
-            '
             'm_btnRemove
             '
             resources.ApplyResources(Me.m_btnRemove, "m_btnRemove")
@@ -349,10 +307,50 @@ Namespace Ecospace.Controls
             Me.m_cbEnabled.Name = "m_cbEnabled"
             Me.m_cbEnabled.UseVisualStyleBackColor = True
             '
-            'm_tslFilter
+            'm_lbSourceDatasets
             '
-            Me.m_tslFilter.Name = "m_tslFilter"
-            resources.ApplyResources(Me.m_tslFilter, "m_tslFilter")
+            resources.ApplyResources(Me.m_lbSourceDatasets, "m_lbSourceDatasets")
+            Me.m_lbSourceDatasets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.m_lbSourceDatasets.FormattingEnabled = True
+            Me.m_lbSourceDatasets.IsTextFilterCaseSensitive = False
+            Me.m_lbSourceDatasets.Name = "m_lbSourceDatasets"
+            Me.m_lbSourceDatasets.Sorted = True
+            Me.m_lbSourceDatasets.TextFilter = ""
+            Me.m_lbSourceDatasets.UIContext = Nothing
+            Me.m_lbSourceDatasets.VariableFilter = EwEUtils.Core.eVarNameFlags.NotSet
+            '
+            'm_gridConnections
+            '
+            Me.m_gridConnections.AllowBlockSelect = False
+            Me.m_gridConnections.AutoSizeMinHeight = 10
+            Me.m_gridConnections.AutoSizeMinWidth = 10
+            Me.m_gridConnections.AutoStretchColumnsToFitWidth = True
+            Me.m_gridConnections.AutoStretchRowsToFitHeight = False
+            Me.m_gridConnections.BackColor = System.Drawing.Color.White
+            Me.m_gridConnections.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridConnections.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridConnections.CustomSort = False
+            Me.m_gridConnections.DataName = "grid content"
+            resources.ApplyResources(Me.m_gridConnections, "m_gridConnections")
+            Me.m_gridConnections.FixedColumnWidths = False
+            Me.m_gridConnections.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridConnections.GridToolTipActive = True
+            Me.m_gridConnections.IsLayoutSuspended = False
+            Me.m_gridConnections.IsOutputGrid = True
+            Me.m_gridConnections.Name = "m_gridConnections"
+            Me.m_gridConnections.SelectedConnection = Nothing
+            Me.m_gridConnections.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridConnections.UIContext = Nothing
             '
             'dlgApplyConnection
             '
@@ -416,10 +414,9 @@ Namespace Ecospace.Controls
         Private WithEvents m_lbSourceDatasets As cSpatialDatasetListbox
         Friend WithEvents m_pbCompat As System.Windows.Forms.PictureBox
         Private WithEvents m_cbEnabled As System.Windows.Forms.CheckBox
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tstbFilter As ToolStripTextBox
         Private WithEvents m_tsbnCaseSensitive As ToolStripButton
-        Private WithEvents m_tsbnFilterByVariable As ToolStripButton
+        Private WithEvents m_tsbnShowIncompatibleConnections As ToolStripButton
         Friend WithEvents m_tslFilter As ToolStripLabel
     End Class
 

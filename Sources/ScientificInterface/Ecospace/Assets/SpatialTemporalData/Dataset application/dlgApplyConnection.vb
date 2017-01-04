@@ -156,7 +156,7 @@ Namespace Ecospace.Controls
 
             Me.m_tslFilter.Image = SharedResources.FilterHS
             Me.m_tsbnCaseSensitive.Image = SharedResources.CaseSensitive
-
+            Me.m_tsbnShowIncompatibleConnections.Image = SharedResources.Warning
             ' Kick!
             Me.RefreshDatasetList()
 
@@ -264,9 +264,9 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnToggleFilterByVariable(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnFilterByVariable.CheckedChanged
+            Handles m_tsbnShowIncompatibleConnections.CheckedChanged
             Try
-                If (Me.m_tsbnFilterByVariable.Checked) Or (Me.m_adt Is Nothing) Then
+                If (Me.m_tsbnShowIncompatibleConnections.Checked) Or (Me.m_adt Is Nothing) Then
                     Me.m_lbSourceDatasets.VariableFilter = eVarNameFlags.NotSet
                 Else
                     Me.m_lbSourceDatasets.VariableFilter = Me.m_adt.VarName
@@ -521,14 +521,14 @@ Namespace Ecospace.Controls
                 Select Case ssda.CalculateScaleFromEcopathTimePeriod(m_iLayer, conn, iStartTimeStep, dScale)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        msg = New cMessage(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX, _
+                        msg = New cMessage(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOINDEX,
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Information)
-                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors,
                          cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()),
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, dtStartDate.ToShortDateString()), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, dtStartDate.ToShortDateString()),
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case Else
                         ' Only when ok
@@ -611,6 +611,16 @@ Namespace Ecospace.Controls
             Dim bCanAddDS As Boolean = False
             Dim bCanRemoveDS As Boolean = False
             Dim comp As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.NotSet
+            Dim bHasIncompatible As Boolean = False
+
+            If (Me.m_adt IsNot Nothing) Then
+                For Each test As ISpatialDataSet In Me.m_manSets.Datasets
+                    If (test.VarName <> eVarNameFlags.NotSet) And (test.VarName <> Me.m_adt.VarName) Then
+                        bHasIncompatible = True
+                    End If
+                Next
+            End If
+            Me.m_tsbnShowIncompatibleConnections.Visible = bHasIncompatible
 
             If (bHasConnectionSelected) Then
                 ds = conn.Dataset
