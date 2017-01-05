@@ -253,7 +253,7 @@ Namespace Ecospace
                 Dim cmd As cEcospaceConfigureConnectionCommand = CType(Me.UIContext.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
                 cmd.Invoke(info.Layer, Me.ConnectionAtCell(e.Position))
 
-                Me.UpdateDatasetRow(e.Position.Row)
+                Me.RefreshContent()
 
             Catch ex As Exception
                 ' Whoah
