@@ -324,17 +324,21 @@ Partial Class dlgEcobaseExport
         '
         'm_cmbEcoType
         '
+        Me.m_cmbEcoType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbEcoType.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbEcoType, "m_cmbEcoType")
         Me.m_cmbEcoType.Name = "m_cmbEcoType"
+        Me.m_cmbEcoType.Sorted = True
         '
         'm_cmbCountry
         '
         resources.ApplyResources(Me.m_cmbCountry, "m_cmbCountry")
         Me.m_cmbCountry.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.m_cmbCountry.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.m_cmbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbCountry.FormattingEnabled = True
         Me.m_cmbCountry.Name = "m_cmbCountry"
+        Me.m_cmbCountry.Sorted = True
         '
         'm_tcExport
         '

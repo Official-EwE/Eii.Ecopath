@@ -105,7 +105,7 @@ Public Class dlgEcobaseExport
         Me.m_fpFirstYear.Value = model.FirstYear
         Me.m_fpLastYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelLastYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathNumYears))
         Me.m_fpLastYear.Value = Math.Max(model.NumYears - 1 + model.FirstYear, model.FirstYear)
-        Me.m_fpArea = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelArea, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.HabitatArea))
+        Me.m_fpArea = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelArea, GetType(Single), model.GetVariableMetadata(eVarNameFlags.HabitatArea))
         Me.m_fpArea.Value = model.Area
 
         ' -- Publication page --
@@ -634,17 +634,10 @@ Public Class dlgEcobaseExport
 
     Private Sub FillCombo(cmb As ComboBox, values As StringCollection)
 
-        Dim col As New AutoCompleteStringCollection()
-        If (values IsNot Nothing) Then
-            For Each str As String In values
-                col.Add(str)
-            Next
-        End If
-
         cmb.Items.Clear()
-        cmb.AutoCompleteSource = AutoCompleteSource.CustomSource
-        cmb.AutoCompleteCustomSource = col
-        cmb.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+        For Each str As String In values
+            cmb.Items.Add(str)
+        Next
 
     End Sub
 

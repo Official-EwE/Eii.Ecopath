@@ -207,9 +207,6 @@
   <data name="&gt;&gt;m_lblDOI.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="m_lblModelAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
   <data name="m_lblModelAuthor.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -265,7 +262,7 @@
     <value>16</value>
   </data>
   <data name="m_tbxModelAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxModelAuthor.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 137</value>
@@ -381,9 +378,6 @@
   <data name="&gt;&gt;m_btnSubmit.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_lblModelEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
   <data name="m_lblModelEmail.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -415,7 +409,7 @@
     <value>18</value>
   </data>
   <data name="m_tbxModelEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxModelEmail.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 163</value>
@@ -502,7 +496,7 @@
     <value>14</value>
   </data>
   <data name="m_pbModelAuthorEmail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+    <value>Top, Right</value>
   </data>
   <data name="m_pbModelAuthorEmail.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
@@ -1155,9 +1149,6 @@
   <data name="&gt;&gt;m_lblModelArea.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_cbModelIsAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
   <data name="m_cbModelIsAuthor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1186,7 +1177,7 @@
     <value>6</value>
   </data>
   <data name="m_pbModelIsAuthor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+    <value>Top, Right</value>
   </data>
   <data name="m_pbModelIsAuthor.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
@@ -1714,7 +1705,7 @@
     <value>0</value>
   </data>
   <data name="m_plExtent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_nudSouth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -1735,7 +1726,7 @@
     <value>m_nudSouth</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -1762,7 +1753,7 @@
     <value>m_nudNorth</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -1786,7 +1777,7 @@
     <value>m_nudWest</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -1813,7 +1804,7 @@
     <value>m_nudEast</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -2437,7 +2428,7 @@
     <value>m_hdrEcosystem</value>
   </data>
   <data name="&gt;&gt;m_hdrEcosystem.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEcosystem.Parent" xml:space="preserve">
     <value>m_tpClassification</value>
@@ -2470,7 +2461,7 @@
     <value>m_hdrClassification</value>
   </data>
   <data name="&gt;&gt;m_hdrClassification.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrClassification.Parent" xml:space="preserve">
     <value>m_tpClassification</value>
@@ -2500,7 +2491,7 @@
     <value>m_hdrArea</value>
   </data>
   <data name="&gt;&gt;m_hdrArea.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrArea.Parent" xml:space="preserve">
     <value>m_tpClassification</value>
@@ -2917,7 +2908,7 @@
     <value>m_hdrAccess</value>
   </data>
   <data name="&gt;&gt;m_hdrAccess.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAccess.Parent" xml:space="preserve">
     <value>m_tpAccess</value>
@@ -3430,7 +3421,7 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>460, 400</value>
+    <value>750, 480</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Submit model to EcoBase</value>
@@ -3451,6 +3442,6 @@
     <value>dlgEcobaseExport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
