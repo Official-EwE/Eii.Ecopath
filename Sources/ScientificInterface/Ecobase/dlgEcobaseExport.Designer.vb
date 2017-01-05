@@ -623,8 +623,8 @@ Partial Class dlgEcobaseExport
         '
         'm_nudWest
         '
-        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudWest.Name = "m_nudWest"
         '
         'm_nudEast
