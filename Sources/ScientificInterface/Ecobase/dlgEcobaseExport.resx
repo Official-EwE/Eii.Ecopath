@@ -1761,8 +1761,11 @@
   <data name="&gt;&gt;m_nudNorth.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_nudWest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
   <data name="m_nudWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>42, 31</value>
+    <value>176, 31</value>
   </data>
   <data name="m_nudWest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1786,10 +1789,10 @@
     <value>2</value>
   </data>
   <data name="m_nudEast.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Top</value>
   </data>
   <data name="m_nudEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>498, 31</value>
+    <value>402, 31</value>
   </data>
   <data name="m_nudEast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1848,6 +1851,9 @@
   <data name="&gt;&gt;m_lblNorth.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="m_lblWest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
   <data name="m_lblWest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1855,7 +1861,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 33</value>
+    <value>135, 33</value>
   </data>
   <data name="m_lblWest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1882,7 +1888,7 @@
     <value>5</value>
   </data>
   <data name="m_lblEast.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Top</value>
   </data>
   <data name="m_lblEast.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1891,7 +1897,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>455, 33</value>
+    <value>359, 33</value>
   </data>
   <data name="m_lblEast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
