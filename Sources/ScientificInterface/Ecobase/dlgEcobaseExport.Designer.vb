@@ -101,6 +101,12 @@ Partial Class dlgEcobaseExport
         Me.m_pbOtherNeeded = New System.Windows.Forms.PictureBox()
         Me.m_pbObjectives = New System.Windows.Forms.PictureBox()
         Me.m_tpClassification = New System.Windows.Forms.TabPage()
+        Me.m_lblM3 = New System.Windows.Forms.Label()
+        Me.m_lblDegC3 = New System.Windows.Forms.Label()
+        Me.m_lblDegC2 = New System.Windows.Forms.Label()
+        Me.m_lblDegC1 = New System.Windows.Forms.Label()
+        Me.m_lblM2 = New System.Windows.Forms.Label()
+        Me.m_lblM1 = New System.Windows.Forms.Label()
         Me.m_cbIsEntireFoodWeb = New System.Windows.Forms.CheckBox()
         Me.m_plExtent = New System.Windows.Forms.Panel()
         Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -324,17 +330,21 @@ Partial Class dlgEcobaseExport
         '
         'm_cmbEcoType
         '
-        Me.m_cmbEcoType.FormattingEnabled = True
         resources.ApplyResources(Me.m_cmbEcoType, "m_cmbEcoType")
+        Me.m_cmbEcoType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbEcoType.FormattingEnabled = True
         Me.m_cmbEcoType.Name = "m_cmbEcoType"
+        Me.m_cmbEcoType.Sorted = True
         '
         'm_cmbCountry
         '
         resources.ApplyResources(Me.m_cmbCountry, "m_cmbCountry")
         Me.m_cmbCountry.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
         Me.m_cmbCountry.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.m_cmbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbCountry.FormattingEnabled = True
         Me.m_cmbCountry.Name = "m_cmbCountry"
+        Me.m_cmbCountry.Sorted = True
         '
         'm_tcExport
         '
@@ -446,7 +456,7 @@ Partial Class dlgEcobaseExport
         '
         resources.ApplyResources(Me.m_cbModelIsAuthor, "m_cbModelIsAuthor")
         Me.m_cbModelIsAuthor.Name = "m_cbModelIsAuthor"
-        Me.m_cbModelIsAuthor.UseVisualStyleBackColor = False
+        Me.m_cbModelIsAuthor.UseVisualStyleBackColor = True
         '
         'm_pbModelIsAuthor
         '
@@ -556,6 +566,12 @@ Partial Class dlgEcobaseExport
         '
         'm_tpClassification
         '
+        Me.m_tpClassification.Controls.Add(Me.m_lblM3)
+        Me.m_tpClassification.Controls.Add(Me.m_lblDegC3)
+        Me.m_tpClassification.Controls.Add(Me.m_lblDegC2)
+        Me.m_tpClassification.Controls.Add(Me.m_lblDegC1)
+        Me.m_tpClassification.Controls.Add(Me.m_lblM2)
+        Me.m_tpClassification.Controls.Add(Me.m_lblM1)
         Me.m_tpClassification.Controls.Add(Me.m_cbIsEntireFoodWeb)
         Me.m_tpClassification.Controls.Add(Me.m_plExtent)
         Me.m_tpClassification.Controls.Add(Me.m_lblTempMax)
@@ -585,6 +601,36 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_tpClassification, "m_tpClassification")
         Me.m_tpClassification.Name = "m_tpClassification"
         Me.m_tpClassification.UseVisualStyleBackColor = True
+        '
+        'm_lblM3
+        '
+        resources.ApplyResources(Me.m_lblM3, "m_lblM3")
+        Me.m_lblM3.Name = "m_lblM3"
+        '
+        'm_lblDegC3
+        '
+        resources.ApplyResources(Me.m_lblDegC3, "m_lblDegC3")
+        Me.m_lblDegC3.Name = "m_lblDegC3"
+        '
+        'm_lblDegC2
+        '
+        resources.ApplyResources(Me.m_lblDegC2, "m_lblDegC2")
+        Me.m_lblDegC2.Name = "m_lblDegC2"
+        '
+        'm_lblDegC1
+        '
+        resources.ApplyResources(Me.m_lblDegC1, "m_lblDegC1")
+        Me.m_lblDegC1.Name = "m_lblDegC1"
+        '
+        'm_lblM2
+        '
+        resources.ApplyResources(Me.m_lblM2, "m_lblM2")
+        Me.m_lblM2.Name = "m_lblM2"
+        '
+        'm_lblM1
+        '
+        resources.ApplyResources(Me.m_lblM1, "m_lblM1")
+        Me.m_lblM1.Name = "m_lblM1"
         '
         'm_cbIsEntireFoodWeb
         '
@@ -619,8 +665,8 @@ Partial Class dlgEcobaseExport
         '
         'm_nudWest
         '
-        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+        Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
         Me.m_nudWest.Name = "m_nudWest"
         '
         'm_nudEast
@@ -1136,4 +1182,10 @@ Partial Class dlgEcobaseExport
     Private WithEvents m_wrkGetModels As System.ComponentModel.BackgroundWorker
     Private WithEvents m_pbSubmType As System.Windows.Forms.PictureBox
     Private WithEvents m_cbObjectiveMarineProtection As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblM3 As Label
+    Private WithEvents m_lblDegC3 As Label
+    Private WithEvents m_lblDegC2 As Label
+    Private WithEvents m_lblDegC1 As Label
+    Private WithEvents m_lblM2 As Label
+    Private WithEvents m_lblM1 As Label
 End Class
