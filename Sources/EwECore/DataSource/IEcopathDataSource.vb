@@ -196,7 +196,6 @@ Namespace DataSources
         ''' <param name="iStanzaDBID">Database ID of the stanza group to add the life stage to.</param>
         ''' <param name="iGroupDBID">Group to add as a life stage.</param>
         ''' <param name="iStartAge">Start age of this life stage.</param>
-        ''' <param name="sMortality">Mortality for this life stage.</param>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
         Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer,
