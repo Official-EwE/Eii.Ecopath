@@ -456,7 +456,7 @@ Public Class cCore
     End Property
 
     ''' <inheritdocs cref="nEnvironmentalDriverLayers"/>
-    <Obsolete("Use nEnvironmentalDriverLayers instead")> _
+    <Obsolete("Use nEnvironmentalDriverLayers instead")>
     Public ReadOnly Property nEnvironmentalLayers() As Integer
         Get
             Return Me.nEnvironmentalDriverLayers
@@ -2652,57 +2652,6 @@ Public Class cCore
     ''' </summary>
     ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
     ''' to access this setting for.</param>
-    ''' <remarks>This should be the default getter/setter</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Property Autosave(savetype As eAutosaveTypes, format As String) As Boolean
-        Get
-            If (String.IsNullOrWhiteSpace(format)) Then Return Me.Autosave(savetype)
-
-            Dim fmt As String = Me.m_settings.AutosaveFormat(savetype)
-            Dim bts As String() = fmt.Split(";"c)
-            fmt = ""
-            For i As Integer = 0 To bts.Count - 1
-                If (bts(i) = format) Then Return True
-            Next
-            Return False
-        End Get
-        Set(value As Boolean)
-            If (String.IsNullOrWhiteSpace(format)) Then
-                Me.Autosave(savetype) = value
-            Else
-                Dim fmt As String = Me.m_settings.AutosaveFormat(savetype)
-
-                If (value = True) Then
-                    If Not fmt.Contains(format) Then
-                        If Not String.IsNullOrWhiteSpace(fmt) Then fmt = fmt & ";"c
-                        fmt = fmt & format
-                    End If
-                    ' Just make sure
-                    Me.Autosave(savetype) = True
-                Else
-                    Dim bts As String() = fmt.Split(";"c)
-                    fmt = ";"
-                    For i As Integer = 0 To bts.Count - 1
-                        If (bts(i) <> format) Then
-                            fmt = fmt & bts(i) & ";"c
-                        End If
-                    Next
-                End If
-                Me.m_settings.AutosaveFormat(savetype) = fmt
-            End If
-
-            Me.OnSettingsChanged()
-        End Set
-
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set whether a <see cref="eAutosaveTypes">auto-save capable component</see>
-    ''' is allowed to auto-save.
-    ''' </summary>
-    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
-    ''' to access this setting for.</param>
     ''' -----------------------------------------------------------------------
     Public Property Autosave(savetype As eAutosaveTypes) As Boolean
         Get
@@ -2717,60 +2666,12 @@ Public Class cCore
             Try
                 If (value <> Me.m_settings.Autosave(savetype)) Then
                     Me.m_settings.Autosave(savetype) = value
-                    Me.OnSettingsChanged()
-
-                    If (value = True) Then
-                        ' Ensure defaults when needed
-                        Select Case savetype
-                            Case eAutosaveTypes.EcospaceResults
-                                If (String.IsNullOrWhiteSpace(AutosaveFormat(savetype))) Then
-                                    Me.AutosaveFormat(savetype) = cEcospaceASCBaseResultsWriter.cDATA_NAME
-                                End If
-                        End Select
-                    Else
-                        Me.AutosaveFormat(savetype) = ""
-                    End If
                 End If
+                Me.OnSettingsChanged()
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
 
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the file format for an <see cref="eAutosaveTypes">auto-save capable component</see>.
-    ''' </summary>
-    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
-    ''' to access this setting for.</param>
-    ''' <remarks>Note that this value may not be honoured by a component. In fact,
-    ''' at the time of implementation, only the Ecospace result writer routines 
-    ''' support two file formats, .csv and .asc.</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Property AutosaveFormat(savetype As eAutosaveTypes) As String
-        Get
-            Try
-                Return Me.m_settings.AutosaveFormat(savetype)
-            Catch ex As Exception
-                cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
-            End Try
-            Return ""
-        End Get
-        Set(value As String)
-            Try
-                If (String.Compare(value, Me.m_settings.AutosaveFormat(savetype), True) <> 0) Then
-                    Me.m_settings.AutosaveFormat(savetype) = value
-                    Me.OnSettingsChanged()
-
-                    Select Case savetype
-                        Case eAutosaveTypes.EcospaceResults
-                            Me.Autosave(savetype) = (Not String.IsNullOrWhiteSpace(value))
-                    End Select
-                End If
-            Catch ex As Exception
-                cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
-            End Try
         End Set
     End Property
 
@@ -9464,22 +9365,20 @@ Public Class cCore
     ''' <remarks></remarks>
     Private Sub EcospaceMessageHandler(ByRef message As cMessage)
 
-        'at this moment this just passes the messages off the who ever is listening
+        'at this moment this just passes the messages off to whomever is listening
         'the core does not have to do anything in response to Ecospace messages
         m_publisher.AddMessage(message)
 
     End Sub
 
-    Private Sub updateEcospaceResultsWriters()
+    Private Sub LoadEcospaceResultsWriters()
 
-        'Output writing
         For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
             Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
             writer.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
         Next
 
     End Sub
-
 
     Private Sub UpdateEcospaceBioForcedByEcosim()
         Try
@@ -10368,6 +10267,8 @@ Public Class cCore
             m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimForcing
 
             m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
+
+            Me.LoadEcospaceResultsWriters()
 
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
@@ -12067,7 +11968,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="nEcotracerScenarios"/>
     ''' -----------------------------------------------------------------------
-    <Obsolete("Use nEcotracerScenarios instead")> _
+    <Obsolete("Use nEcotracerScenarios instead")>
     Public ReadOnly Property EcotracerScenarioCount() As Integer
         Get
             Try
@@ -13160,10 +13061,10 @@ Public Class cCore
 
                     ' Block cascaded name changes for groups and fleets
                     If (value.varName = eVarNameFlags.Name) Then
-                        bBlock = bBlock Or _
-                                 dtAffected = eDataTypes.EcoPathGroupOutput Or _
-                                 dtAffected = eDataTypes.EcoSimGroupInput Or _
-                                 dtAffected = eDataTypes.EcospaceGroup Or _
+                        bBlock = bBlock Or
+                                 dtAffected = eDataTypes.EcoPathGroupOutput Or
+                                 dtAffected = eDataTypes.EcoSimGroupInput Or
+                                 dtAffected = eDataTypes.EcospaceGroup Or
                                  dtAffected = eDataTypes.EcospaceFleet
                     End If
 
@@ -13254,7 +13155,7 @@ Public Class cCore
                 'greater than zero 
                 'less than the last time step
                 'greater than start summary period
-                If value > 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
+                If value > 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And
                                 value > m_EcoSpaceData.SumStart(0) Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
@@ -13272,7 +13173,7 @@ Public Class cCore
                 'greater than or equal to zero 
                 'less than the last time step
                 'less than end summary period
-                If value >= 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
+                If value >= 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And
                                 value < m_EcoSpaceData.SumStart(1) Then
                     'passed validation
                     ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
@@ -13974,12 +13875,11 @@ Public Class cCore
                         Me.EcospaceBasemap.LayerRegion.Invalidate()
 
                     Case eVarNameFlags.EcospaceFirstOutputTimeStep
-                        Me.updateEcospaceResultsWriters()
+                        Me.LoadEcospaceResultsWriters()
 
                     Case eVarNameFlags.EcospaceUseEcosimBiomassForcing
                         Me.m_publisher.AddMessage(New cMessage("Ecospace use Ecosim biomass forcing.", eMessageType.DataModified,
                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceModelParameter))
-
 
                 End Select 'Select Case value.varName
 
@@ -14294,7 +14194,7 @@ Public Class cCore
                     Me.LoadEcopathInputs()
                     Me.LoadEcopathFleetInputs()
 
-                    Me.m_publisher.AddMessage(New cMessage("Sample data is loaded.", eMessageType.DataModified, _
+                    Me.m_publisher.AddMessage(New cMessage("Sample data is loaded.", eMessageType.DataModified,
                                        eCoreComponentType.EcoPath, eMessageImportance.Maintenance))
 
                 Case eDataTypes.EcospaceMapResponse
@@ -14487,7 +14387,7 @@ Public Class cCore
             Return
         End If
 
-        Dim fmsg As New cFeedbackMessage( _
+        Dim fmsg As New cFeedbackMessage(
                 cStringUtils.Localize(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, ex.Message, Environment.NewLine),
                 eCoreComponentType.External, eMessageType.Any,
                 eMessageImportance.Warning,

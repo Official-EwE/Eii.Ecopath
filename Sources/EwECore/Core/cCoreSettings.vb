@@ -37,8 +37,6 @@ Friend Class cCoreSettings
 
     ''' <summary>Autosave flags</summary>
     Private m_bAutosave() As Boolean
-    ''' <summary>Autosave formats</summary>
-    Private m_strAutosaveFormat() As String
 
 #End Region ' Private vars
 
@@ -46,7 +44,6 @@ Friend Class cCoreSettings
 
     Public Sub New()
         ReDim m_bAutosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
-        ReDim m_strAutosaveFormat([Enum].GetValues(GetType(eAutosaveTypes)).Length)
     End Sub
 
 #End Region ' Constructor
@@ -75,22 +72,6 @@ Friend Class cCoreSettings
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property AutosaveHeaders() As Boolean = True
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the file format for autosaving a given component.
-    ''' </summary>
-    ''' <param name="t">The <see cref="eAutosaveTypes">auto-save enabled component</see>
-    ''' to access the format for.</param>
-    ''' -----------------------------------------------------------------------
-    Public Property AutosaveFormat(t As eAutosaveTypes) As String
-        Get
-            Return Me.m_strAutosaveFormat(t)
-        End Get
-        Set(value As String)
-            Me.m_strAutosaveFormat(t) = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

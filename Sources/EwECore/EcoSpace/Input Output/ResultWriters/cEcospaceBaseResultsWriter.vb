@@ -90,12 +90,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>The complete path to the directory containing result files.</summary>
     Protected m_OutputPath As String
 
-    ''' <summary>
-    ''' Default first time step to write data
-    ''' </summary>
-    ''' <remarks></remarks>
-    Protected m_FirstStep As Integer = 1
-
     Protected vars() As eVarNameFlags
 
     Protected m_selGroups() As Boolean
@@ -105,7 +99,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 #Region " Constructor "
 
     Public Sub New()
-        ' NOP
+        Me.FirstOutputTimeStep = 1
     End Sub
 
 #End Region ' Constructor
@@ -370,13 +364,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
 
     Public Overridable Property FirstOutputTimeStep As Integer Implements EwEUtils.Core.IEcospaceResultsWriter.FirstOutputTimeStep
-        Get
-            Return Me.m_FirstStep
-        End Get
-        Set(value As Integer)
-            Me.m_FirstStep = value
-        End Set
-    End Property
 
     Public Overridable Property SelectedGroups As Boolean() Implements IEcospaceResultsWriter.SelectedGroups
         Get

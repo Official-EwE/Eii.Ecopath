@@ -27,32 +27,28 @@ Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
-''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
-''' to write Ecospace output to ESRI ASCII files. 
+''' Implementation of <see cref="IEcospaceResultsWriter"/> to write Ecospace effort
+''' distributions maps to ESRI ASCII files. 
 ''' </summary>
-''' <remarks>Each ASCII file will contain an Ecospace value for a given group and time step</remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceASCMapEffortWriter
     Inherits cEcospaceASCBaseResultsWriter
 
+    Public Shared DATA_NAME As String = "ascmapEffort"
+
     Public Sub New()
         MyBase.New()
-
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapEffort}
     End Sub
-
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
         Me.setAllFleetsSelected()
     End Sub
 
-
     Protected Overrides Function NMaps() As Integer
         Return Me.EcopathData.NumFleet
     End Function
-
 
     Public Overrides ReadOnly Property DisplayName As String
         Get
@@ -60,13 +56,18 @@ Public Class cEcospaceASCMapEffortWriter
         End Get
     End Property
 
-
     Protected Overrides Function GetFileName(ByVal varname As eVarNameFlags,
-                                                    ByVal iGrp As Integer,
-                                                    ByVal strExt As String,
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+                                             ByVal iGrp As Integer,
+                                             ByVal strExt As String,
+                                             Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
         Return MyBase.GetFleetFileName(varname, iGrp, strExt, iModelTimeStep)
     End Function
+
+    Public Overrides ReadOnly Property DataName As String
+        Get
+            Return DATA_NAME
+        End Get
+    End Property
 
 End Class
 

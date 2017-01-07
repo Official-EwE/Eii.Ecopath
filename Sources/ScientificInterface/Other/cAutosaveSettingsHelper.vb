@@ -40,6 +40,8 @@ Imports EwEUtils.Core
 ''' ===========================================================================
 Friend Class cAutosaveSettingsHelper
 
+    Private Shared sEcospaceFormat As String = ""
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Load autosave settings from the XML document.
@@ -65,8 +67,17 @@ Friend Class cAutosaveSettingsHelper
                     ' #Yes: plunder content
                     att = node.Attributes("Enabled")
                     core.Autosave(t) = IIF(att IsNot Nothing, Boolean.Parse(att.InnerText), False)
-                    att = node.Attributes("Format")
-                    core.AutosaveFormat(t) = IIF(att IsNot Nothing, att.InnerText, "")
+
+                    Select Case t
+                        Case eAutosaveTypes.EcospaceResults
+                            att = node.Attributes("Format")
+                            If (att IsNot Nothing) Then
+                                sEcospaceFormat = att.InnerText
+                            Else
+                                sEcospaceFormat = ""
+                            End If
+
+                    End Select
                 End If
             Catch ex As Exception
                 ' Woops - ignore malformed setting
@@ -82,6 +93,9 @@ Friend Class cAutosaveSettingsHelper
     ''' <returns>A penguin. Really.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function SaveToSettings(core As cCore) As XmlDocument
+
+        ' Just in case
+        StoreEcospaceWriterSettings(core)
 
         Dim doc As New XmlDocument()
         Dim node As XmlNode = Nothing
@@ -103,9 +117,14 @@ Friend Class cAutosaveSettingsHelper
                 att.InnerText = core.Autosave(t).ToString
                 nodeChild.Attributes.Append(att)
 
-                att = doc.CreateAttribute("Format")
-                att.InnerText = core.AutosaveFormat(t)
-                nodeChild.Attributes.Append(att)
+                Select Case t
+                    Case eAutosaveTypes.EcospaceResults
+                        att = doc.CreateAttribute("Format")
+                        att.InnerText = sEcospaceFormat
+                        nodeChild.Attributes.Append(att)
+                    Case Else
+                        ' NOP
+                End Select
 
                 node.AppendChild(nodeChild)
 
@@ -116,5 +135,30 @@ Friend Class cAutosaveSettingsHelper
         Return doc
 
     End Function
+
+    Public Shared Sub InitEcospaceWriters(core As cCore)
+        If (core.ActiveEcospaceScenarioIndex > 0) Then
+            Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
+            Dim bits As String() = sEcospaceFormat.Split(";"c)
+            For n As Integer = 1 To parms.nResultWriters
+                Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
+                writer.Enabled = bits.Contains(writer.DataName) Or (String.IsNullOrWhiteSpace(sEcospaceFormat) And TypeOf (writer) Is cEcospaceASCMapBiomassWriter)
+            Next
+        End If
+    End Sub
+
+    Public Shared Sub StoreEcospaceWriterSettings(core As cCore)
+        If (core.ActiveEcospaceScenarioIndex > 0) Then
+            Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
+            sEcospaceFormat = ""
+            For n As Integer = 1 To parms.nResultWriters
+                Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
+                If writer.Enabled Then
+                    If Not String.IsNullOrWhiteSpace(sEcospaceFormat) Then sEcospaceFormat &= ";"
+                    sEcospaceFormat &= writer.DataName
+                End If
+            Next
+        End If
+    End Sub
 
 End Class

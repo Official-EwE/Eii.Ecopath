@@ -38,9 +38,6 @@ Imports EwEUtils.Utilities
 Public MustInherit Class cEcospaceASCBaseResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
-    Public Const cDATA_NAME As String = "ascmap"
-
-
 #Region " Base writer overrides "
 
     ''' -----------------------------------------------------------------------
@@ -264,15 +261,5 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     End Sub
 
 #End Region ' Internals
-
-#Region "Overriden Proporties"
-
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return cDATA_NAME
-        End Get
-    End Property
-
-#End Region
 
 End Class

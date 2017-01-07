@@ -25,25 +25,36 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Implementation of <see cref="IEcospaceResultsWriter"/> to write Ecospace catch
+''' distributions maps to ESRI ASCII files. 
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEcospaceASCMapBiomassWriter
     Inherits cEcospaceASCBaseResultsWriter
 
+    Public Shared DATA_NAME As String = "ascmapBiomass"
+
     Public Sub New()
         MyBase.New()
-
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass}
     End Sub
-
 
     Public Overrides Sub Init(theCore As Object)
         MyBase.Init(theCore)
         Me.setAllGroupsSelected()
     End Sub
 
-
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_ASC_BIOMASS
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property DataName As String
+        Get
+            Return DATA_NAME
         End Get
     End Property
 

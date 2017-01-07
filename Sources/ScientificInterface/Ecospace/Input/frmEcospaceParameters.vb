@@ -124,10 +124,8 @@ Namespace Ecospace
             Me.m_fpUseBiomassForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimForcing, Me.m_bpUseBiomassForcing)
 
             Me.m_clbAutosave.Items.Clear()
-            Dim strFmt As String = Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults)
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
-                writer.Enabled = (strFmt.IndexOf(writer.DataName) > 0)
                 Me.m_clbAutosave.Items.Add(writer, writer.Enabled)
             Next
 
@@ -209,6 +207,8 @@ Namespace Ecospace
             Catch ex As Exception
 
             End Try
+
+            cAutosaveSettingsHelper.StoreEcospaceWriterSettings(Me.Core)
 
             MyBase.OnFormClosed(e)
         End Sub
@@ -392,14 +392,11 @@ Namespace Ecospace
             If Me.m_bInUpdate Then Return
 
             ' Delay the update, because the item state has not changed yet
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateAutosaveSettings))
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateResultWriters))
 
         End Sub
 
-        Private Sub UpdateAutosaveSettings()
-
-            Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
-            Dim strFmt As String = ""
+        Private Sub UpdateResultWriters()
 
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
@@ -407,11 +404,7 @@ Namespace Ecospace
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
                 wr.Enabled = Me.m_clbAutosave.GetItemChecked(i)
-                If (wr.Enabled) Then
-                    strFmt = strFmt & ";" & wr.DataName
-                End If
             Next
-            Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceResults) = strFmt
 
             Me.m_bInUpdate = False
 
