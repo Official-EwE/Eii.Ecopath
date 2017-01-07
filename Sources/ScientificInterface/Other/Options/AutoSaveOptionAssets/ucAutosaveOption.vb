@@ -177,8 +177,6 @@ Namespace Other
                             Me.m_uic.Core.Autosave(Me.m_autosavetype) = True
                         Else
                             Me.m_uic.Core.Autosave(Me.m_autosavetype) = False
-                            ' Clear autosave format
-                            Me.m_uic.Core.AutosaveFormat(Me.m_autosavetype) = ""
                         End If
                     End If
                 End If

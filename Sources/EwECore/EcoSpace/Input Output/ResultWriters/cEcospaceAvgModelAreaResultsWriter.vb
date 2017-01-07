@@ -183,8 +183,6 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         Return lstDataSources
     End Function
 
-
-
     Private Sub WriteResult()
 
         Dim sw As StreamWriter = Nothing
@@ -210,9 +208,9 @@ Public Class cEcospaceAvgModelAreaResultsWriter
                     sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
                     If Me.m_core.SaveWithFileHeader Then
                         sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                        sw.WriteLine("Data," & cStringUtils.ToCSVField(ds.DataDescriptor))
+                        sw.WriteLine(cStringUtils.ToCSVField("Data") & "," & cStringUtils.ToCSVField(ds.DataDescriptor))
                         sw.WriteLine(cStringUtils.ToCSVField(ds.AreaDescriptor) + "," & cStringUtils.ToCSVField(ds.nWaterCells * Me.m_core.EcospaceBasemap.CellLength() ^ 2))
-                        sw.WriteLine("Number of cells," & cStringUtils.ToCSVField(ds.nWaterCells))
+                        sw.WriteLine(cStringUtils.ToCSVField("Number of cells") & "," & cStringUtils.ToCSVField(ds.nWaterCells))
                         sw.WriteLine()
                     End If
 
@@ -256,7 +254,6 @@ Public Class cEcospaceAvgModelAreaResultsWriter
         End If
 
     End Function
-
 
     Private Sub WriteData(sw As StreamWriter, dataSource As cEcospaceResultsWriterDataSourceBase, AvgType As eEcospaceResultsAverageType)
         Dim nYrs As Integer = 0

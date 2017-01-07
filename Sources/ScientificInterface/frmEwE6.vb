@@ -2522,6 +2522,7 @@ Public Class frmEwE6
             cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_LOADING, es.Name))
             bSucces = Me.Core.LoadEcospaceScenario(es)
             cApplicationStatusNotifier.EndProgress(Me.Core)
+            cAutosaveSettingsHelper.InitEcospaceWriters(Me.Core)
         End If
         Return bSucces
 
@@ -4812,6 +4813,8 @@ Public Class frmEwE6
                 Case "AutoIndexDatasets"
                     Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed = My.Settings.AutoIndexDatasets
 
+                Case "AutosaveResults"
+                    cAutosaveSettingsHelper.InitEcospaceWriters(Me.Core)
             End Select
 
             Me.m_ssMain.UpdateModelPanes()

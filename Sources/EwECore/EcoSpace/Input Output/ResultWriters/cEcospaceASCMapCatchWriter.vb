@@ -28,18 +28,17 @@ Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
-''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
-''' to write Ecospace output to ESRI ASCII files. 
+''' Implementation of <see cref="IEcospaceResultsWriter"/> to write Ecospace catch
+''' distributions maps to ESRI ASCII files. 
 ''' </summary>
-''' <remarks>Each ASCII file will contain an Ecospace value for a given group and time step</remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceASCMapCatchWriter
     Inherits cEcospaceASCBaseResultsWriter
 
+    Public Shared DATA_NAME As String = "ascmapCatch"
+
     Public Sub New()
         MyBase.New()
-
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapCatch}
     End Sub
 
@@ -48,10 +47,15 @@ Public Class cEcospaceASCMapCatchWriter
         Me.setCatchSelected()
     End Sub
 
-
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_ASC_CATCH
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property DataName As String
+        Get
+            Return DATA_NAME
         End Get
     End Property
 
