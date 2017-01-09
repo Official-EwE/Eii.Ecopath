@@ -67,10 +67,6 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 
 #Region " Public access "
 
-    Public Overrides Function FileExtension() As String
-        Return ".csv"
-    End Function
-
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.StartWrite"/>
     ''' -----------------------------------------------------------------------
@@ -102,12 +98,12 @@ Public Class cEcospaceAvgModelAreaResultsWriter
             ' ToDo: globalize this method
 
             ' Notify user
-            msg = New cMessage("Ecospace average results have been saved to '" & Me.OutputDirectory & "'", _
+            msg = New cMessage("Ecospace average results have been saved to '" & Me.OutputDirectory & "'",
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             msg.Hyperlink = Me.OutputDirectory
         Catch ex As Exception
             ' Notify user of error
-            msg = New cMessage("Ecospace average results could not be saved to '" & Me.OutputDirectory & "'. " & ex.Message, _
+            msg = New cMessage("Ecospace average results could not be saved to '" & Me.OutputDirectory & "'. " & ex.Message,
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
         End Try
         ' Done
@@ -118,6 +114,10 @@ Public Class cEcospaceAvgModelAreaResultsWriter
 #End Region ' Public access
 
 #Region " Internals "
+
+    Protected Overrides Function FileExtension() As String
+        Return ".csv"
+    End Function
 
     ''' <summary>
     ''' Make sure output directory is defined and available.
@@ -336,15 +336,6 @@ Public Class cEcospaceAvgModelAreaResultsWriter
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_REGAVG
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.DataName"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return "regavg"
         End Get
     End Property
 

@@ -35,8 +35,6 @@ Imports EwEUtils.Core
 Public Class cEcospaceASCMapCatchWriter
     Inherits cEcospaceASCBaseResultsWriter
 
-    Public Shared DATA_NAME As String = "ascmapCatch"
-
     Public Sub New()
         MyBase.New()
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapCatch}
@@ -50,12 +48,6 @@ Public Class cEcospaceASCMapCatchWriter
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_ASC_CATCH
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return DATA_NAME
         End Get
     End Property
 

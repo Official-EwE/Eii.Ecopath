@@ -142,7 +142,8 @@ Friend Class cAutosaveSettingsHelper
             Dim bits As String() = sEcospaceFormat.Split(";"c)
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
-                writer.Enabled = bits.Contains(writer.DataName) Or (String.IsNullOrWhiteSpace(sEcospaceFormat) And TypeOf (writer) Is cEcospaceASCMapBiomassWriter)
+                writer.Enabled = bits.Contains(cTypeUtils.TypeToString(writer.GetType())) Or
+                                 (String.IsNullOrWhiteSpace(sEcospaceFormat) And TypeOf (writer) Is cEcospaceASCMapBiomassWriter)
             Next
         End If
     End Sub
@@ -155,7 +156,7 @@ Friend Class cAutosaveSettingsHelper
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
                 If writer.Enabled Then
                     If Not String.IsNullOrWhiteSpace(sEcospaceFormat) Then sEcospaceFormat &= ";"
-                    sEcospaceFormat &= writer.DataName
+                    sEcospaceFormat &= cTypeUtils.TypeToString(writer.GetType())
                 End If
             Next
         End If

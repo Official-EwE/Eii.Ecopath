@@ -39,16 +39,16 @@ Imports EwEUtils.Utilities
 Public Class cEcospaceCSVMapResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
-    Public Const cDATA_NAME As String = "csvmap"
-
 #Region " Overrides "
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function FileExtension() As String
-        Return ".csv"
-    End Function
+    Public Overrides ReadOnly Property DisplayName As String
+        Get
+            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_CSVMAP
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.StartWrite"/>
@@ -62,7 +62,7 @@ Public Class cEcospaceCSVMapResultsWriter
             Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapCatch)
             Me.WriteFleetFileHeaders(eVarNameFlags.EcospaceMapEffort)
         Catch ex As Exception
-            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message),
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
     End Sub
@@ -100,7 +100,7 @@ Public Class cEcospaceCSVMapResultsWriter
                             End If
                         Catch ex As IOException
                             cLog.Write(ex)
-                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+                            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
                                                    eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
                             Me.m_core.Messages.SendMessage(msg)
                         End Try
@@ -126,7 +126,7 @@ Public Class cEcospaceCSVMapResultsWriter
                 End If
             Catch ex As IOException
                 cLog.Write(ex)
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message),
                                        eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
                 Me.m_core.Messages.SendMessage(msg)
             End Try
@@ -138,7 +138,7 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
-        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS, Me.m_OutputPath), _
+        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS, Me.m_OutputPath),
                                 eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
         msg.Hyperlink = Me.m_OutputPath
@@ -148,6 +148,13 @@ Public Class cEcospaceCSVMapResultsWriter
 #End Region ' Overrides
 
 #Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
+    ''' -----------------------------------------------------------------------
+    Protected Overrides Function FileExtension() As String
+        Return ".csv"
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -179,9 +186,9 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' <param name="iIndex"></param>
     ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub SaveCSV(ByVal strm As StreamWriter, _
-                        ByVal timestep As cEcospaceTimestep, _
-                        ByVal iIndex As Integer, _
+    Private Sub SaveCSV(ByVal strm As StreamWriter,
+                        ByVal timestep As cEcospaceTimestep,
+                        ByVal iIndex As Integer,
                         ByVal varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = timestep.Layer(varname, iIndex)
@@ -216,8 +223,8 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' <param name="SpaceTSData"></param>
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub saveXYZ(ByVal strm As StreamWriter, _
-                        ByVal SpaceTSData As cEcospaceTimestep, _
+    Private Sub saveXYZ(ByVal strm As StreamWriter,
+                        ByVal SpaceTSData As cEcospaceTimestep,
                         ByVal iIndex As Integer,
                         ByVal varname As eVarNameFlags)
 
@@ -287,17 +294,5 @@ Public Class cEcospaceCSVMapResultsWriter
     End Sub
 
 #End Region ' Internals
-
-    Public Overrides ReadOnly Property DisplayName As String
-        Get
-            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_CSVMAP
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return cEcospaceCSVMapResultsWriter.cDATA_NAME
-        End Get
-    End Property
 
 End Class

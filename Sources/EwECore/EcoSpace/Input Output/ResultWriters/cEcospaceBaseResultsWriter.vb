@@ -142,15 +142,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Implements IEcospaceResultsWriter.DisplayName
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IEcospaceResultsWriter.DataName"/>
-    ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property DataName() As String _
-        Implements IEcospaceResultsWriter.DataName
-
-    <Obsolete("Since the file extension is no longer crucial for identifying writers, this method should go")>
-    Public MustOverride Function FileExtension() As String
-
-    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.Enabled"/>
     ''' -----------------------------------------------------------------------  
     Public Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
@@ -158,6 +149,11 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 #End Region ' IEcospaceResultsWriter implementation
 
 #Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>File extension for internal use.</summary>
+    ''' -----------------------------------------------------------------------
+    Protected MustOverride Function FileExtension() As String
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
