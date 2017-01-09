@@ -143,7 +143,7 @@ Public MustInherit Class cEcospaceASCBaseResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function FileExtension() As String
+    Protected Overrides Function FileExtension() As String
         Return ".asc"
     End Function
 

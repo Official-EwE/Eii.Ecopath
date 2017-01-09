@@ -61,11 +61,6 @@ Namespace Core
         ReadOnly Property DisplayName() As String
 
         ''' <summary>
-        ''' Return the internal name of this writer.
-        ''' </summary>
-        ReadOnly Property DataName() As String
-
-        ''' <summary>
         ''' Get/set whether this writer is allowed to write outputs.
         ''' </summary>
         Property Enabled As Boolean

@@ -34,8 +34,6 @@ Imports EwEUtils.Core
 Public Class cEcospaceASCMapEffortWriter
     Inherits cEcospaceASCBaseResultsWriter
 
-    Public Shared DATA_NAME As String = "ascmapEffort"
-
     Public Sub New()
         MyBase.New()
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapEffort}
@@ -62,12 +60,6 @@ Public Class cEcospaceASCMapEffortWriter
                                              Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
         Return MyBase.GetFleetFileName(varname, iGrp, strExt, iModelTimeStep)
     End Function
-
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return DATA_NAME
-        End Get
-    End Property
 
 End Class
 

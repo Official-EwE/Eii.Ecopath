@@ -34,8 +34,6 @@ Imports EwEUtils.Core
 Public Class cEcospaceASCMapBiomassWriter
     Inherits cEcospaceASCBaseResultsWriter
 
-    Public Shared DATA_NAME As String = "ascmapBiomass"
-
     Public Sub New()
         MyBase.New()
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass}
@@ -49,12 +47,6 @@ Public Class cEcospaceASCMapBiomassWriter
     Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.CoreDefaults.ECOSPACE_WRITER_ASC_BIOMASS
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property DataName As String
-        Get
-            Return DATA_NAME
         End Get
     End Property
 
