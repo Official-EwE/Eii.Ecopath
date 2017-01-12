@@ -798,7 +798,6 @@ Namespace Database
             Catch ex As Exception
                 bWithSeason = False
             End Try
-            'No longer applicable
             'drow("WithSeason") = bWithSeason
 
             If (bWithSeason) Then
@@ -1462,7 +1461,7 @@ Namespace Database
                 ' Translate col to varname
                 Select Case CInt(reader("paramNum"))
                     Case 1 ' feeding type, not used anymore in EwE5
-                    Case 2 : varName = eVarNameFlags.HabitatArea
+                    Case 2 : varName = eVarNameFlags.Area
                     Case 3 : varName = eVarNameFlags.BiomassAreaInput
                     Case 4 : varName = eVarNameFlags.PBInput
                     Case 5 : varName = eVarNameFlags.QBInput
@@ -1669,6 +1668,16 @@ Namespace Database
 
         End Function
 
+        Private Structure SimEnvFunction
+            Public Property Sopt As Single
+            Public Property SLeft As Single
+            Public Property SRight As Single
+            Public Property GroupID As Integer
+            Public Property GroupName As String
+            Public Property ScenarioID As Integer
+            Public Property ScenarioName As String
+        End Structure
+
         Private Sub ImportEcosimN()
 
             Dim reader As IDataReader = Nothing
@@ -1683,6 +1692,9 @@ Namespace Database
             Dim strGroup As String = ""
             ' Flag stating whether an ecosim group was found for a given ecopath group
             Dim bHasGroup As Boolean = False
+
+            ' JS 120117: Use Ecosim environmental drivers
+            Dim lEnvFunctions As New List(Of SimEnvFunction)
 
             ' JS 070212: Every Ecopath group should have an Ecosim counterpart
             reader = Me.m_dbTarget.GetReader("SELECT * from EcopathGroup")
@@ -1736,9 +1748,15 @@ Namespace Database
                             drow("SwitchPower") = Me.FixValue(reader, "SwitchPower")
                         End If
                         If (Me.m_dbEwE5.GetVersion() >= 1.725) Then
-                            drow("SalOpt") = Me.FixValue(reader, "SalOpt", 35.0!)
-                            drow("SdSalLeft") = Me.FixValue(reader, "SdSal", 1000.0!)
-                            drow("SdSalRight") = Me.FixValue(reader, "SdSal", 1000.0!)
+                            Dim info As New SimEnvFunction()
+                            info.Sopt = CSng(Me.FixValue(reader, "SalOpt", 35.0!))
+                            info.SLeft = CSng(Me.FixValue(reader, "SdSal", 1000.0!))
+                            info.SRight = CSng(Me.FixValue(reader, "SdSal", 1000.0!))
+                            info.GroupName = strGroup
+                            info.ScenarioName = strScenario
+                            info.GroupID = iGroupID
+                            info.ScenarioID = iScenarioID
+                            lEnvFunctions.Add(info)
                         End If
 
                         ' No shape imported for this group yet?
@@ -1757,10 +1775,10 @@ Namespace Database
                         End If
                     Else
                         ' #No: the new group will get all default values
-                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSIMGROUP, _
-                                iGroupID, _
-                                strGroup, _
-                                strScenario), _
+                        Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSIMGROUP,
+                                iGroupID,
+                                strGroup,
+                                strScenario),
                                 eMessageType.DataImport, eMessageImportance.Information)
 
                         ' No shape imported for this group yet?
@@ -1768,10 +1786,10 @@ Namespace Database
                             drow("FishMortShapeID") = Me.HashKey(eDataTypes.FishMort, strGroup, eDataTypes.EcoSimScenario, iScenarioID)
                         Else
                             ' Notify world
-                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEFISHMORTSHAPE, _
-                                    Me.m_iNextShapeID, _
-                                    strGroup, _
-                                    strScenario), _
+                            Me.LogMessage(cStringUtils.Localize(My.Resources.CoreMessages.IMPORT_FIX_CREATEFISHMORTSHAPE,
+                                    Me.m_iNextShapeID,
+                                    strGroup,
+                                    strScenario),
                                     eMessageType.DataImport, eMessageImportance.Information)
 
                             ' Create dummy shape
@@ -1811,6 +1829,16 @@ Namespace Database
 
             Me.m_dbTarget.ReleaseWriter(writer)
 
+            ' Add Ecosim environmental forcing
+            If (Me.m_dbEwE5.GetVersion() >= 1.725) Then
+                Dim upd As New cDBUpdate6_50_00_27()
+                For Each info As SimEnvFunction In lEnvFunctions
+                    Dim iShapeID As Integer = 0
+                    upd.CreateReponseCurve(Me.m_dbTarget, "Salinity", 0, info.GroupName, info.ScenarioName, info.Sopt, info.SLeft, info.SRight, iShapeID)
+                    upd.AssignResponse(Me.m_dbTarget, info.ScenarioID, info.GroupID, Me.m_iNextShapeID, iShapeID)
+                    Me.m_iNextShapeID += 1
+                Next
+            End If
         End Sub
 
         Private Sub ImportEcosimPairs()
@@ -2083,10 +2111,10 @@ Namespace Database
             Public ShapeDataType As eDataTypes = eDataTypes.NotSet
             Public ShapeType As eShapeFunctionType = eShapeFunctionType.NotSet
             Public Seasonal As Boolean = False
-            Public Yzero As Single = 0
-            Public YBase As Single = 0
-            Public YEnd As Single = 0
-            Public Steep As Single = 0
+            'Public Yzero As Single = 0
+            'Public YBase As Single = 0
+            'Public YEnd As Single = 0
+            'Public Steep As Single = 0
             Public IMedBase As Single = 0
 
             Public Overrides Function Equals(ByVal obj As Object) As Boolean
@@ -2175,19 +2203,11 @@ Namespace Database
                         Me.SplitZScale(CStr(reader("zScale")), strZScale, fsd.Title)
                         fsd.ZScale = Me.RebuildNumberListString(strZScale)
                         fsd.ZMaxScale = CStr(Me.FixValue(reader, "zMaxScale", 0))
-                        fsd.Yzero = CSng(Me.FixValue(reader, "Yzero", 0))
-                        fsd.YBase = CSng(Me.FixValue(reader, "Ybase", 0))
-                        fsd.YEnd = CSng(Me.FixValue(reader, "Yend", 0))
-                        fsd.Steep = CSng(Me.FixValue(reader, "Steep", 0))
 
                     Case eDataTypes.Mediation
                         fsd.ZScale = Me.RebuildNumberListString(CStr(Me.FixValue(reader, "zScale", "")))
                         fsd.ZMaxScale = CStr(Me.FixValue(reader, "zMaxScale", 0))
                         fsd.IMedBase = CSng(Me.FixValue(reader, "XBaseLine", 0.25))
-                        fsd.Yzero = CSng(Me.FixValue(reader, "Yzero", 0))
-                        fsd.YBase = CSng(Me.FixValue(reader, "Ybase", 0))
-                        fsd.YEnd = CSng(Me.FixValue(reader, "Yend", 0))
-                        fsd.Steep = CSng(Me.FixValue(reader, "Steep", 0))
 
                 End Select
 
@@ -2843,7 +2863,10 @@ Namespace Database
                     drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
                     ' Calculate number of years in this time series
                     Dim strData As String = CStr(Me.FixValue(reader, "MemoField", ""))
+                    ' Set as initial max number of years for this dataset 
+                    iNumPoints = CInt(strData.Length / 10)
                     drow("NumPoints") = iNumPoints
+                    drow("DataInterval") = eTSDataSetInterval.Annual
 
                     Me.HashKey(eDataTypes.TimeSeriesDataset, strDataset) = iDatasetID
                     strDatasetLast = strDataset
@@ -2959,11 +2982,9 @@ Namespace Database
                             drow = writerShapeTime.NewRow()
                             drow("ShapeID") = Me.m_iNextShapeID
                             drow("Title") = fsd.Title
-                            drow("YZero") = fsd.Yzero
-                            drow("YBase") = fsd.YBase
-                            drow("YEnd") = fsd.YEnd
-                            drow("Steep") = fsd.Steep
-                            drow("FunctionType") = fsd.ShapeType
+                            drow("FunctionType") = eShapeFunctionType.NotSet
+                            drow("FunctionParams") = ""
+
                             drow("Zscale") = fsd.ZScale
                             writerShapeTime.AddRow(drow)
 
