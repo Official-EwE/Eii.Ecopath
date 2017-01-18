@@ -214,7 +214,7 @@ Friend Class frmUI
 
     Private Sub OnInputChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tbxWeightPower.Validated, m_nudNumYears.Validated, m_nudTimeStep.Validated,
-                m_tbxWeightPower.LostFocus, m_nudNumYears.LostFocus, m_nudTimeStep.LostFocus,
+                m_tbxWeightPower.LostFocus, m_nudNumYears.LostFocus, m_nudTimeStep.LostFocus
 
         If (Not Me.m_bReady) Then Return
         Try
