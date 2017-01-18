@@ -105,6 +105,7 @@ Friend Class cData
     Public Property WPower As Single = 2.0F
 
     Public Property OutputFormat As eDataSourceTypes = eDataSourceTypes.Access2003
+    Public Property OutputTimeStep As Integer = 6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

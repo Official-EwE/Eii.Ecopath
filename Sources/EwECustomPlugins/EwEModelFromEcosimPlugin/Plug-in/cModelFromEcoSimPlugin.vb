@@ -56,6 +56,7 @@ Public Class cModelFromEcosimPluginPoint
     Private m_data As cData = Nothing
     Private m_generator As cEcopathModelFromEcosim = Nothing
     Private m_bAutosaving As Boolean = False
+    Private m_simdata As cEcosimDatastructures = Nothing
 
 #End Region ' Private vars
 
@@ -239,6 +240,7 @@ Public Class cModelFromEcosimPluginPoint
 
         ' Use a static version of the enabled flag for the duration of an Ecosim run 
         Me.m_bAutosaving = Me.AutoSave
+        Me.m_simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
 
         If Me.m_bAutosaving Then
             Me.m_generator.InitRun(Me.m_data.OutputPath)
@@ -267,7 +269,7 @@ Public Class cModelFromEcosimPluginPoint
                                      ByVal Ecosimresults As Object) _
                                      Implements EwEPlugin.IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
 
-        If Not Me.m_bAutosaving Then Return
+        If (Not Me.m_bAutosaving) Then Return
 
         Dim strModelName As String = ""
         Dim strModelPath As String = ""
@@ -275,12 +277,11 @@ Public Class cModelFromEcosimPluginPoint
 
         Try
 
-            Dim nStepsPerYear As Integer = CInt(Me.m_core.nEcosimYears / Me.m_core.nEcosimTimeSteps)
-            Dim iMonth As Integer = iTime Mod nStepsPerYear
-            Dim iYear As Integer = CInt(iTime / nStepsPerYear)
+            Dim nStepsPerYear As Integer = Me.m_simdata.NumStepsPerYear
+            Dim iStep As Integer = 1 + ((iTime - 1) Mod nStepsPerYear) ' Engine uses one-based time steps
+            Dim iYear As Integer = CInt((iTime - 1) / nStepsPerYear) + 1 ' Engine uses one-based years
 
-            If (Not Me.m_bAutosaving) Then Return
-            If (iMonth <> (My.Settings.Month - 1)) Then Return
+            If (iStep <> Me.m_data.OutputTimeStep) Then Return
 
             ' Is generator explicitly enabled and should a model be created for the current time step?
             If (Me.m_data.CreateModel(iYear)) Then
@@ -298,8 +299,7 @@ Public Class cModelFromEcosimPluginPoint
                     Select Case Me.m_generator.SaveModel(cFileUtils.ToValidFileName(strModelPath, True), strModelName, iTime,
                                                      Me.m_data.BACalcMode, Me.m_data.BAAverageYears, Me.m_data.WPower)
                         Case eDatasourceAccessType.Created, eDatasourceAccessType.Opened, eDatasourceAccessType.Success
-                            Dim dt As New Date(Me.m_core.EcosimFirstYear - 1 + iYear, iMonth + 1, 1)
-                            Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, dt.ToShortDateString(), strModelName), eStatusFlags.OK)
+                            Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, iTime, strModelName), eStatusFlags.OK)
                         Case eDatasourceAccessType.Failed_CannotSave
                             Me.m_generator.LogStatus(cStringUtils.Localize(My.Resources.STATUS_SAVE_ERROR_NOACCESS, strModelPath), eStatusFlags.ErrorEncountered)
                         Case eDatasourceAccessType.Failed_OSUnsupported
