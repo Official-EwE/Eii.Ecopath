@@ -160,7 +160,7 @@
     <comment>{0}=model file</comment>
   </data>
   <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
-    <value>Ecosim time {0} saved to {1}</value>
+    <value>Ecosim timestep {0} saved to {1}</value>
     <comment>{0}=time, {1}=model</comment>
   </data>
 </root>
