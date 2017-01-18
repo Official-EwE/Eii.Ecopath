@@ -148,16 +148,16 @@
     <value>m_tabOutput</value>
   </data>
   <data name="&gt;&gt;m_cbEnable.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_grid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 149</value>
+    <value>12, 147</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 285</value>
+    <value>557, 287</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -166,7 +166,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEModelFromEcosimPlugin.gridUI, EwEModelFromEcosimPlugin, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
+    <value>EwEModelFromEcosimPlugin.gridUI, EwEModelFromEcosimPlugin, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -199,7 +199,7 @@
     <value>m_tabOutput</value>
   </data>
   <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_tbxOutputPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -208,7 +208,7 @@
     <value>80, 28</value>
   </data>
   <data name="m_tbxOutputPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>466, 20</value>
+    <value>385, 20</value>
   </data>
   <data name="m_tbxOutputPath.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -223,13 +223,13 @@
     <value>m_tabOutput</value>
   </data>
   <data name="&gt;&gt;m_tbxOutputPath.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_btnChoose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_btnChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>471, 51</value>
+    <value>471, 26</value>
   </data>
   <data name="m_btnChoose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -253,7 +253,7 @@
     <value>m_tabOutput</value>
   </data>
   <data name="&gt;&gt;m_btnChoose.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_cmbBACalcType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -414,6 +414,60 @@
   <data name="m_tcMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_nudTimeStep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_nudTimeStep.Location" type="System.Drawing.Point, System.Drawing">
+    <value>408, 55</value>
+  </data>
+  <data name="m_nudTimeStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 20</value>
+  </data>
+  <data name="m_nudTimeStep.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeStep.Name" xml:space="preserve">
+    <value>m_nudTimeStep</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeStep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeStep.Parent" xml:space="preserve">
+    <value>m_tabOutput</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeStep.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblTimeStep.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_lblTimeStep.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblTimeStep.Location" type="System.Drawing.Point, System.Drawing">
+    <value>337, 57</value>
+  </data>
+  <data name="m_lblTimeStep.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 13</value>
+  </data>
+  <data name="m_lblTimeStep.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_lblTimeStep.Text" xml:space="preserve">
+    <value>&amp;At time step:</value>
+  </data>
+  <data name="&gt;&gt;m_lblTimeStep.Name" xml:space="preserve">
+    <value>m_lblTimeStep</value>
+  </data>
+  <data name="&gt;&gt;m_lblTimeStep.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblTimeStep.Parent" xml:space="preserve">
+    <value>m_tabOutput</value>
+  </data>
+  <data name="&gt;&gt;m_lblTimeStep.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_cmbFormat.Location" type="System.Drawing.Point, System.Drawing">
     <value>80, 54</value>
   </data>
@@ -433,7 +487,7 @@
     <value>m_tabOutput</value>
   </data>
   <data name="&gt;&gt;m_cmbFormat.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_lblFormat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -463,7 +517,7 @@
     <value>m_tabOutput</value>
   </data>
   <data name="&gt;&gt;m_lblFormat.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_tabOutput.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -561,6 +615,39 @@
   <data name="m_ts.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
+  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 123</value>
+  </data>
+  <data name="m_ts.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>557, 25</value>
+  </data>
+  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_ts.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
+    <value>m_ts</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tslQuickSelect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 22</value>
+  </data>
+  <data name="m_tslQuickSelect.Text" xml:space="preserve">
+    <value>Quick select:</value>
+  </data>
   <data name="m_tsbnAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -609,33 +696,6 @@
   <data name="m_tsbnNone.Text" xml:space="preserve">
     <value>None</value>
   </data>
-  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 121</value>
-  </data>
-  <data name="m_ts.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 25</value>
-  </data>
-  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_ts.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
-    <value>m_ts</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -654,6 +714,12 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Ecopath model from Ecosim</value>
   </data>
+  <data name="&gt;&gt;m_tslQuickSelect.Name" xml:space="preserve">
+    <value>m_tslQuickSelect</value>
+  </data>
+  <data name="&gt;&gt;m_tslQuickSelect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbnAll.Name" xml:space="preserve">
     <value>m_tsbnAll</value>
   </data>
@@ -670,6 +736,6 @@
     <value>frmUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

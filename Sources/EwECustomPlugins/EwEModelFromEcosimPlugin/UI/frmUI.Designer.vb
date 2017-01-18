@@ -58,15 +58,19 @@ Partial Class frmUI
         Me.m_lblDWP = New System.Windows.Forms.Label()
         Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tabOutput = New System.Windows.Forms.TabPage()
+        Me.m_nudTimeStep = New System.Windows.Forms.NumericUpDown()
+        Me.m_lblTimeStep = New System.Windows.Forms.Label()
         Me.m_cmbFormat = New System.Windows.Forms.ComboBox()
         Me.m_lblFormat = New System.Windows.Forms.Label()
         Me.m_tabBA = New System.Windows.Forms.TabPage()
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tslQuickSelect = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsbnAll = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnNone = New System.Windows.Forms.ToolStripButton()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcMain.SuspendLayout()
         Me.m_tabOutput.SuspendLayout()
+        CType(Me.m_nudTimeStep, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tabBA.SuspendLayout()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
@@ -170,6 +174,8 @@ Partial Class frmUI
         '
         'm_tabOutput
         '
+        Me.m_tabOutput.Controls.Add(Me.m_nudTimeStep)
+        Me.m_tabOutput.Controls.Add(Me.m_lblTimeStep)
         Me.m_tabOutput.Controls.Add(Me.m_cmbFormat)
         Me.m_tabOutput.Controls.Add(Me.m_cbEnable)
         Me.m_tabOutput.Controls.Add(Me.m_lblFormat)
@@ -179,6 +185,19 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_tabOutput, "m_tabOutput")
         Me.m_tabOutput.Name = "m_tabOutput"
         Me.m_tabOutput.UseVisualStyleBackColor = True
+        '
+        'm_nudTimeStep
+        '
+        resources.ApplyResources(Me.m_nudTimeStep, "m_nudTimeStep")
+        Me.m_nudTimeStep.Maximum = New Decimal(New Integer() {12, 0, 0, 0})
+        Me.m_nudTimeStep.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudTimeStep.Name = "m_nudTimeStep"
+        Me.m_nudTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'm_lblTimeStep
+        '
+        resources.ApplyResources(Me.m_lblTimeStep, "m_lblTimeStep")
+        Me.m_lblTimeStep.Name = "m_lblTimeStep"
         '
         'm_cmbFormat
         '
@@ -208,10 +227,15 @@ Partial Class frmUI
         '
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnAll, Me.m_tsbnNone})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslQuickSelect, Me.m_tsbnAll, Me.m_tsbnNone})
         Me.m_ts.Name = "m_ts"
         Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_ts.Stretch = True
+        '
+        'm_tslQuickSelect
+        '
+        Me.m_tslQuickSelect.Name = "m_tslQuickSelect"
+        resources.ApplyResources(Me.m_tslQuickSelect, "m_tslQuickSelect")
         '
         'm_tsbnAll
         '
@@ -239,6 +263,7 @@ Partial Class frmUI
         Me.m_tcMain.ResumeLayout(False)
         Me.m_tabOutput.ResumeLayout(False)
         Me.m_tabOutput.PerformLayout()
+        CType(Me.m_nudTimeStep, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tabBA.ResumeLayout(False)
         Me.m_tabBA.PerformLayout()
         Me.m_ts.ResumeLayout(False)
@@ -265,4 +290,7 @@ Partial Class frmUI
     Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_tsbnAll As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnNone As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_nudTimeStep As Windows.Forms.NumericUpDown
+    Friend WithEvents m_lblTimeStep As Windows.Forms.Label
+    Friend WithEvents m_tslQuickSelect As Windows.Forms.ToolStripLabel
 End Class
