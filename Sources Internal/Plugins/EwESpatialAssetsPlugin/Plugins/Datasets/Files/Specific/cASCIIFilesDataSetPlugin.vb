@@ -360,9 +360,9 @@ Namespace SpatialData
                 rs = Nothing
             End If
 
-            If bRowCountError Then Me.LogMessage("", eStatusFlags.MissingParameter)
-            If bColCountError Then Me.LogMessage("", eStatusFlags.MissingParameter)
-            If bValueError Then Me.LogMessage("", eStatusFlags.FailedValidation)
+            If bRowCountError Then Me.LogMessage("Incorrect number of rows", eStatusFlags.MissingParameter)
+            If bColCountError Then Me.LogMessage("Incorrect number of columns", eStatusFlags.MissingParameter)
+            If bValueError Then Me.LogMessage("Invalid data value", eStatusFlags.FailedValidation)
 
             Return bDataCorrect
 
