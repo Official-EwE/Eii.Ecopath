@@ -196,14 +196,14 @@ Namespace Ecospace.Advection
                         Me.m_scOutputMaps.IsSplitterFixed = True
                         Me.m_scMaps.Panel1Collapsed = True
                         Me.m_scMaps.Panel2Collapsed = False
-                        Me.m_scOutputMaps.Panel1Collapsed = True
-                        Me.m_scOutputMaps.Panel2Collapsed = False
+                        Me.m_scOutputMaps.Panel1Collapsed = False
+                        Me.m_scOutputMaps.Panel2Collapsed = True
                     Case 3 'upwelling - bottom panel, right
                         Me.m_scOutputMaps.IsSplitterFixed = True
                         Me.m_scMaps.Panel1Collapsed = True
                         Me.m_scMaps.Panel2Collapsed = False
-                        Me.m_scOutputMaps.Panel1Collapsed = False
-                        Me.m_scOutputMaps.Panel2Collapsed = True
+                        Me.m_scOutputMaps.Panel1Collapsed = True
+                        Me.m_scOutputMaps.Panel2Collapsed = False
                 End Select
             Catch ex As Exception
                 Debug.Assert(False)
