@@ -621,6 +621,8 @@ Namespace Samples
         ''' <summary>
         ''' Create a model snapshot from Ecopath.
         ''' </summary>
+        ''' <param name="iIndex">Sequential index of the sample.</param>
+        ''' <param name="bMustBalance"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function MakeSnapshot(iIndex As Integer, bMustBalance As Boolean) As cEcopathSample
@@ -637,7 +639,7 @@ Namespace Samples
 
             ' Grab parameters
             For iGroup As Integer = 1 To epdata.NumGroups
-                s.B(iGroup) = epdata.B(iGroup)
+                s.B(iGroup) = epdata.Binput(iGroup)
                 s.PB(iGroup) = epdata.PB(iGroup)
                 s.QB(iGroup) = epdata.QB(iGroup)
                 s.EE(iGroup) = epdata.EE(iGroup)
@@ -695,7 +697,7 @@ Namespace Samples
                     epdata.EEinput(iGroup) = s.EE(iGroup)
                 End If
 
-                If (epdata.BA(iGroup) > 0) Then
+                If (epdata.BAInput(iGroup) <> 0) Then
                     epdata.BAInput(iGroup) = s.BA(iGroup)
                 End If
 
