@@ -52,7 +52,7 @@ Namespace Controls
                 Case eEnvResponseLineType.Response : clr = Color.SandyBrown
                 Case Else : Debug.Assert(False)
             End Select
-            Return MyBase.CreateLineItem(strName, Definitions.eSketchDrawModeTypes.NotSet, clr, ppl, lineType)
+            Return MyBase.CreateLineItem(strName, Definitions.eSketchDrawModeTypes.Line, clr, ppl, lineType)
         End Function
 
         Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
