@@ -274,8 +274,8 @@ Namespace Ecospace
 
             'Time series
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
-            Me.m_tbxXYTimeSeriesFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.InputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.InputFileName)
-            Me.m_tbxlOutputResidualsFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.OuputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OuputFileName)
+            Me.m_tbxXYTimeSeriesFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.BiomassInputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.BiomassInputFileName)
+            Me.m_tbxlOutputResidualsFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.OutputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OutputFileName)
 
             'If Ecosim Biomass forcing is loaded then enable the control
             'IsEcosimBiomassForcingLoaded() just tell use that there is Ecosim Biomass Forcing loaded
@@ -419,7 +419,7 @@ Namespace Ecospace
             If cmdFO.Result = Windows.Forms.DialogResult.OK Then
                 Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
                 Dim InputFile As String = cmdFO.FileNames(0)
-                manager.Load(InputFile, "")
+                manager.Load(InputFile, "", eVarNameFlags.EcospaceMapBiomass)
             End If
         End Sub
 
@@ -428,10 +428,10 @@ Namespace Ecospace
             Dim dlgSave As New SaveFileDialog
 
             dlgSave.Filter = SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT
-            dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OuputFileName)
-            dlgSave.FileName = IO.Path.GetFileName(manager.OuputFileName)
+            dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OutputFileName)
+            dlgSave.FileName = IO.Path.GetFileName(manager.OutputFileName)
             If dlgSave.ShowDialog = Windows.Forms.DialogResult.OK Then
-                manager.OuputFileName = dlgSave.FileName
+                manager.OutputFileName = dlgSave.FileName
             End If
 
         End Sub

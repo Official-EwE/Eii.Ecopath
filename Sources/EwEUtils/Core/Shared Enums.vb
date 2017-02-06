@@ -1146,6 +1146,11 @@ Namespace Core
         ''' <summary>To document</summary>
         CSum
 
+        ''' <summary>
+        ''' Max number of sub time steps for the contaminant tracer model
+        ''' </summary>
+        ConMaxTimeSteps
+
         'MPA Optimization EcoSeed RandomSearch
         ''' <summary>To document</summary>
         MPAOptEconomicValue

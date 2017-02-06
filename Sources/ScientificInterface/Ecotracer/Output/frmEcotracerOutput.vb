@@ -37,6 +37,15 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' ---------------------------------------------------------------------------
 Public Class frmEcotracerOutput
 
+    'ToDo 9-Nov-2016 (First Trump Day!) Stop button on Status Notifier doesn't work. 
+    '           When it's used to stop Ecospace it leaves the form controls disabled
+    '           and the cursor as a hourglass
+    'ToDo 2-Dec-2016 Need a more robust way to tell if Ecospace is running from the Run Ecospace form instead of locally.
+    '           When run form Ecospace UI it doesn't know current timestep so it plots past the end of the data.
+
+    'ToDo 6-Feb-2017 If Ecospace w Tracer from the Ecospace UI the Tracer UI needs to know and Update so you can't start a new run
+    'ToDo 6-Feb-2017 It is still possible to 'trick' the Tracer UI into thinking Tracer not running when it is. This really needs a good debug.
+
 #Region " Definitions "
 
     ''' -----------------------------------------------------------------------
@@ -87,6 +96,9 @@ Public Class frmEcotracerOutput
     ''' <summary>Value tracker for Conc Space.</summary>
     Private m_propConcSpaceOn As cProperty = Nothing
 
+
+    Private m_CurTimeStep As Integer
+
 #End Region ' Private vars
 
     Public Sub New()
@@ -114,6 +126,8 @@ Public Class frmEcotracerOutput
         Me.m_propConcSpaceOn = Me.PropertyManager.GetProperty(Me.Core.EcospaceModelParameters, eVarNameFlags.ConSimOnEcoSpace)
         AddHandler Me.m_propConcSimOn.PropertyChanged, AddressOf OnConcPropChanged
         AddHandler Me.m_propConcSpaceOn.PropertyChanged, AddressOf OnConcPropChanged
+
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
@@ -146,6 +160,36 @@ Public Class frmEcotracerOutput
         If (msg.Source = eCoreComponentType.Core And msg.Type = eMessageType.GlobalSettingsChanged) Then
             Me.m_cbAutosaveResults.Checked = Me.Core.Autosave(eAutosaveTypes.Ecotracer)
         End If
+
+    End Sub
+
+    Private Sub OnCoreStateChanged(ByVal cms As cCoreStateMonitor)
+        Try
+
+            ' If Me.IsActivated Then
+            If cms.IsEcospaceRunning <> Me.IsRunning Then
+
+                    Me.m_CurTimeStep = Me.Core.nEcospaceTimeSteps
+
+                    '' Update state flag
+                    'Me.IsRunning = cms.IsEcospaceRunning
+
+                    '' Update status feedback
+                    'If Me.IsRunning Then
+                    '    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING)
+                    'Else
+                    '    cApplicationStatusNotifier.EndProgress(Me.Core)
+                    'End If
+
+                    '' Update controls
+                    ''    Me.m_lblProgress.Text = ""
+                    'Me.UpdateControls()
+
+                End If
+            '   End If
+        Catch ex As Exception
+            'Just swallow it for now???
+        End Try
 
     End Sub
 
@@ -184,7 +228,7 @@ Public Class frmEcotracerOutput
             Me.Core.EcoSimModelParameters.ContaminantTracing = True
             Me.m_bInUpdate = False
             Me.StartModelRun()
-            Me.Core.RunEcoSim(AddressOf Me.EcosimCallback)
+            Me.Core.RunEcoSim(AddressOf Me.EcosimCallback, True)
             ' Restore state
             Me.RefreshGraph()
 
@@ -306,6 +350,7 @@ Public Class frmEcotracerOutput
     Private Sub StartModelRun()
         ' Reset progress
         cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOTRACER_RUNNING)
+        Me.m_CurTimeStep = 0
         Me.UpdateControls()
         Me.IsRunning = True
     End Sub
@@ -438,6 +483,10 @@ Public Class frmEcotracerOutput
         Me.m_zgc.GraphPane.XAxis.Scale.Min = m_DisplayHelper.FirstYear
         Me.m_zgc.GraphPane.XAxis.Scale.Max = m_DisplayHelper.FirstYear + m_DisplayHelper.nYears
 
+        'JB force the y axis to scale from zero
+        'This forces the data from running locally and remotely to plot the same
+        Me.m_zgc.GraphPane.YAxis.Scale.Min = 0.0D
+
         ' Update plot 
         Me.PlotSelectedGroups()
 
@@ -455,38 +504,40 @@ Public Class frmEcotracerOutput
         Dim source As cCoreInputOutputBase = Nothing
 
         If Me.m_DisplayHelper.CanPlot Then
+            If Me.m_CurTimeStep > 0 Then
 
-            Try
+                Try
 
-                ' Iterate over all selected listbox items
-                For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
-                    ' Get source at this item
-                    source = Me.m_lbGroups.GetGroupAt(iListboxItem)
-                    ' Is environment node?
-                    If (source Is Nothing) Then
-                        ' #Yes: get environment lines
-                        aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0)
-                    Else
-                        ' #No: get group lines
-                        aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index)
-                    End If
-                    ' Add all lines
-                    For Each li As LineItem In aLinesGroup
-                        ' Is a line?
-                        If (li IsNot Nothing) Then
-                            ' #Yes: add it
-                            lLinesPlot.Add(li)
+                    ' Iterate over all selected listbox items
+                    For Each iListboxItem As Integer In Me.m_lbGroups.SelectedIndices
+                        ' Get source at this item
+                        source = Me.m_lbGroups.GetGroupAt(iListboxItem)
+                        ' Is environment node?
+                        If (source Is Nothing) Then
+                            ' #Yes: get environment lines
+                            aLinesGroup = Me.m_DisplayHelper.GetGroupLines(0, Me.m_CurTimeStep)
+                        Else
+                            ' #No: get group lines
+                            aLinesGroup = Me.m_DisplayHelper.GetGroupLines(source.Index, Me.m_CurTimeStep)
                         End If
+                        ' Add all lines
+                        For Each li As LineItem In aLinesGroup
+                            ' Is a line?
+                            If (li IsNot Nothing) Then
+                                ' #Yes: add it
+                                lLinesPlot.Add(li)
+                            End If
+                        Next
                     Next
-                Next
 
-                ' Plot all encountered lines
-                Me.m_zgh.PlotLines(lLinesPlot.ToArray())
+                    ' Plot all encountered lines
+                    Me.m_zgh.PlotLines(lLinesPlot.ToArray())
 
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
+                Catch ex As Exception
+                    Debug.Assert(False, ex.Message)
+                End Try
 
+            End If
         End If
 
         Me.m_zgh.RescaleAndRedraw()
@@ -495,8 +546,11 @@ Public Class frmEcotracerOutput
 
     Private Sub EcosimCallback(ByVal iTime As Long, ByVal data As cEcoSimResults)
         Try
+            Me.m_CurTimeStep = CInt(iTime)
             If (iTime Mod cCore.N_MONTHS) = 0 Then
-                Me.UpdateProgess(CSng(iTime / Me.m_DisplayHelper.nStepPerYear))
+                'Me.UpdateProgess(CSng(iTime / Me.m_DisplayHelper.nStepPerYear))
+                Me.UpdateProgess(CSng(iTime / Me.Core.nEcosimTimeSteps))
+                Me.PlotSelectedGroups()
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -505,7 +559,10 @@ Public Class frmEcotracerOutput
 
     Private Sub EcospaceCallback(ByRef EcospaceResults As cEcospaceTimestep)
         Try
-            Me.UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
+            ' Me.UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
+            Me.UpdateProgess(CSng(EcospaceResults.iTimeStep / Me.Core.nEcospaceTimeSteps))
+            Me.m_CurTimeStep = EcospaceResults.iTimeStep
+            Me.PlotSelectedGroups()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
@@ -580,7 +637,7 @@ Public Class frmEcotracerOutput
         ''' <remarks>For Ecospace results, lines may be returned for every 
         ''' relevant region.</remarks>
         ''' -------------------------------------------------------------------
-        Function GetGroupLines(ByVal iGroup As Integer) As LineItem()
+        Function GetGroupLines(ByVal iGroup As Integer, ByVal nTimeStepToRetrieve As Integer) As LineItem()
 
         Function GetGroupMax(ByVal iGroup As Integer) As Single
 
@@ -687,6 +744,7 @@ Public Class frmEcotracerOutput
 
         Sub New(ByVal uic As cUIContext)
             ' Sanity check
+            UIContext = uic
             Debug.Assert(uic IsNot Nothing)
         End Sub
 
@@ -696,7 +754,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property Core() As cCore _
             Implements IDisplayModeHelper.Core
             Get
-                Return Nothing
+                Return UIContext.Core
             End Get
         End Property
 
@@ -707,7 +765,7 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
+        Public Function GetGroupLines(ByVal iGroup As Integer, ByVal nTimeStepToRetrieve As Integer) As LineItem() _
             Implements IDisplayModeHelper.GetGroupLines
             Debug.Assert(False, Me.ToString & ".GetGroupLine() Warning this should not be called!")
             Return New LineItem() {}
@@ -814,7 +872,7 @@ Public Class frmEcotracerOutput
             End Get
         End Property
 
-        Private Function BuildLine(ByVal iGroup As Integer) As LineItem
+        Private Function BuildLine(ByVal iGroup As Integer, ByVal iCurTimeStep As Integer) As LineItem
 
             If iGroup < 0 Then Return Nothing ' Safety first
 
@@ -838,15 +896,15 @@ Public Class frmEcotracerOutput
 
                 SimBio = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                For iTimeStep As Integer = 1 To iCurTimeStep 'Me.Core.nEcosimTimeSteps
                     dPos = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
-                    yVal = CDbl(td.Concentration(iGroup, iTimeStep) / SimBio.Biomass(iTimeStep))
+                    yVal = CDbl(td.ConBio(iGroup, iTimeStep))
                     vList.Add(dPos, yVal)
                 Next iTimeStep
 
             Else
 
-                For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
+                For iTimeStep As Integer = 1 To iCurTimeStep 'Me.Core.nEcosimTimeSteps
                     dPos = Me.Core.EcosimFirstYear + (iTimeStep / cCore.N_MONTHS)
                     yVal = CDbl(td.Concentration(iGroup, iTimeStep))
                     vList.Add(dPos, yVal)
@@ -858,10 +916,10 @@ Public Class frmEcotracerOutput
 
         End Function
 
-        Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
+        Public Function GetGroupLines(ByVal iGroup As Integer, ByVal nTimeStepToRetrieve As Integer) As LineItem() _
             Implements IDisplayModeHelper.GetGroupLines
 
-            Return New LineItem() {BuildLine(iGroup)}
+            Return New LineItem() {BuildLine(iGroup, nTimeStepToRetrieve)}
 
         End Function
 
@@ -876,7 +934,7 @@ Public Class frmEcotracerOutput
 
                     Dim grpbio As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
                     For iTimeStep As Integer = 1 To Me.Core.nEcosimTimeSteps
-                        smax = Math.Max(Me.Core.EcotracerGroupResults.Concentration(iGroup, iTimeStep) / grpbio.Biomass(iTimeStep), smax)
+                        smax = Math.Max(Me.Core.EcotracerGroupResults.ConBio(iGroup, iTimeStep), smax)
                     Next
 
                 Else
@@ -956,7 +1014,8 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property CanPlot() As Boolean _
             Implements IDisplayModeHelper.CanPlot
             Get
-                Return Me.Core.StateMonitor.HasEcotracerRanForEcosim
+                Return Me.Core.StateMonitor.IsEcosimRunning Or Me.Core.StateMonitor.HasEcotracerRanForEcosim
+                '  Return Me.Core.StateMonitor.HasEcotracerRanForEcosim
             End Get
         End Property
 
@@ -1021,7 +1080,7 @@ Public Class frmEcotracerOutput
             Return smax
         End Function
 
-        Public Function GetGroupLines(ByVal iGroup As Integer) As LineItem() _
+        Public Function GetGroupLines(ByVal iGroup As Integer, ByVal nTimeStepToRetrieve As Integer) As LineItem() _
             Implements IDisplayModeHelper.GetGroupLines
 
             If iGroup < 0 Then Return Nothing
@@ -1036,14 +1095,14 @@ Public Class frmEcotracerOutput
             End If
 
             For iReg As Integer = iRegStart To iRegEnd
-                lstLines.Add(BuildLine(iGroup, iReg))
+                lstLines.Add(BuildLine(iGroup, iReg, nTimeStepToRetrieve))
             Next
 
             Return lstLines.ToArray
 
         End Function
 
-        Private Function BuildLine(ByVal iGroup As Integer, ByVal iRegion As Integer) As LineItem
+        Private Function BuildLine(ByVal iGroup As Integer, ByVal iRegion As Integer, ByVal iCurTimeStep As Integer) As LineItem
 
             Dim td As cEcotracerRegionGroupOutput = Me.Core.EcotracerRegionGroupResults
             Dim list As New PointPairList()
@@ -1076,7 +1135,7 @@ Public Class frmEcotracerOutput
             ' Figure out which varname to display based on the selected group and the ePlotTypes enum
             Dim varName As eVarNameFlags = GetVarName(iGroup)
 
-            For iTimeStep As Integer = 1 To Me.Core.nEcospaceTimeSteps
+            For iTimeStep As Integer = 1 To iCurTimeStep 'Me.Core.nEcospaceTimeSteps
                 dPos = Me.Core.EcosimFirstYear + (iTimeStep / ntsYear)
                 sY = td.GetVariable(varName, iRegion, iGroup, iTimeStep)
                 list.Add(dPos, CDbl(sY))
@@ -1178,7 +1237,10 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property CanPlot() As Boolean _
             Implements IDisplayModeHelper.CanPlot
             Get
-                Return Me.Core.StateMonitor.HasEcotracerRanForEcospace
+                'JB ECOTRACER_HACK This may think it's OK to plot if even if Ecotracer has not been activated
+                'I didn't check that. 
+                '  Return Me.Core.StateMonitor.HasEcospaceInitialized
+                Return Me.Core.StateMonitor.IsEcospaceRunning Or Me.Core.StateMonitor.HasEcotracerRanForEcospace
             End Get
         End Property
 

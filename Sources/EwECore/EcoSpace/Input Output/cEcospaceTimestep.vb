@@ -627,11 +627,16 @@ Public Class cEcospaceTimestep
 
         Dim lLayers As New List(Of cEcospaceLayer)
         Select Case varName
-            Case eVarNameFlags.EcospaceMapBiomass, _
-                 eVarNameFlags.EcospaceMapCatch, _
+            Case eVarNameFlags.EcospaceMapBiomass,
+                 eVarNameFlags.EcospaceMapCatch,
                  eVarNameFlags.LayerHabitatCapacity
                 lLayers.Add(Nothing) ' Add 0-item emptyness
                 For igroup As Integer = 1 To Me.m_core.nGroups
+                    lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
+                Next
+
+            Case eVarNameFlags.Concentration
+                For igroup As Integer = 0 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
                 Next
 
@@ -666,6 +671,8 @@ Public Class cEcospaceTimestep
                 Return Me.FishingEffortMap
             Case eVarNameFlags.EcospaceMapSumEffort
                 Return Me.m_sumEffortMap
+            Case eVarNameFlags.Concentration
+                Return Me.ContaminantMap
         End Select
         Return Nothing
 

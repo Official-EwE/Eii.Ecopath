@@ -440,7 +440,7 @@ Public Class cSpaceSolver
 
             'Cell area in KM2 at the equator * relative width of the cell
             CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
-
+            'Debug.Assert(m_Data.Ccell(i, j, 0) = 0)
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.ConcTr(0) = m_Data.Ccell(i, j, 0)
                 'jb ConTotal() is not used anywhere
@@ -698,7 +698,8 @@ Public Class cSpaceSolver
         Dim TimeStep2c As Single
 
         Try
-            ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
+            'Debug.Assert(Not (i = 1 And j = 1))
+
             ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
             TimeStep2c = CSng(TimeStepC * 0.66667)

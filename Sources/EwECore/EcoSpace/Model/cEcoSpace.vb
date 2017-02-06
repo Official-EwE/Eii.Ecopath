@@ -941,6 +941,7 @@ Public Class cEcoSpace
                 'setTimeStepCounters() also deals with the SpinUp period
                 Me.setTimeStepCounters(itt, its)
 
+
                 If itt > nEcospaceTimeSteps Then
                     'We have exceeded the number of time step bump out of the time loop.
                     'This quarantees we don't come up one time step long due to rounding issues with m_Data.TimeStep
@@ -1057,7 +1058,10 @@ Public Class cEcoSpace
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
 
-
+                If Me.m_tracerData.EcoSpaceConSimOn Then
+                    'drive contaminant concentration with external data
+                    Me.m_TimeSeriesManager.ForceContaminantConcentrations(its)
+                End If
                 '*************
                 'UPDATE SOLVERS WITH NON REFERENCED TIMESTEP DATA (itt, etc)
                 '*************
@@ -1211,7 +1215,6 @@ Public Class cEcoSpace
                                 Next
                             Next
                         Next
-
 
                     Next
                     Me.summarizeContaminantTracer()
@@ -1394,8 +1397,13 @@ Public Class cEcoSpace
 
         End If 'm_Data.bInSpinUp 
 
-        'The cumulative monthly counter used for data arrayed by month i.e. zscale()
-        iDataTimeStep = Math.Truncate(m_Data.TimeNow * 12) + 1
+        'The cumulative MONTHLY counter used for data arrayed by month i.e. zscale()
+        If Me.m_Data.nTimeStepsPerYear <> cCore.N_MONTHS Then
+            iDataTimeStep = Math.Truncate((m_Data.TimeNow + 0.0000000001) * 12) + 1
+        Else
+            iDataTimeStep = iCumTimeStep
+        End If
+
         'make sure the data array index (its in the main loop) do not get larger than the data they reference
         If iDataTimeStep > m_SimData.ForcePoints Then iDataTimeStep = m_SimData.ForcePoints 'HACK  bump back the index
         If iDataTimeStep > m_SimData.NTimes Then iDataTimeStep = m_SimData.NTimes
@@ -1406,6 +1414,8 @@ Public Class cEcoSpace
         m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
         If m_Data.YearNow > Math.Truncate(Me.m_Data.TotalTime) Then m_Data.YearNow = Math.Truncate(Me.m_Data.TotalTime)
 
+        Debug.Assert(iDataTimeStep = iCumTimeStep)
+
     End Sub
 
     ''' <summary>
@@ -1414,40 +1424,11 @@ Public Class cEcoSpace
     ''' <remarks></remarks>
     Private Sub AccumulateFitStats(iTimeStep As Integer, Biomass(,,) As Single)
 
-        If m_TimeSeriesManager.ContainsData Then
+        If m_TimeSeriesManager.ContainsData(eVarNameFlags.EcospaceMapBiomass) Then
             Me.m_TimeSeriesManager.CalculateStats(iTimeStep, Biomass)
         End If
 
-        'System.Console.WriteLine("Warning: Ecospace.AccumulateFitStats() not called for debugging Monthly Timeseries.")
         Return
-
-        'Try
-
-        '    'Don't gather stats during the Spin-Up
-        '    If m_Data.bInSpinUp Then Return
-
-        '    Static bNeedStatsForYear As Boolean
-        '    If iFitCurYear <> Me.m_Data.YearNow Then
-        '        'In a new year
-        '        'Keep track of this year
-        '        iFitCurYear = Me.m_Data.YearNow
-        '        'We need to gather stats for this year
-        '        bNeedStatsForYear = True
-        '    End If
-
-        '    'Make sure AccumulateDataInfo only gets called once a year
-        '    'If the user has set the time step to a value other the one month MonthNow may never = 6 or it may = 6 for multiple time steps
-        '    If m_Data.MonthNow >= 6 And bNeedStatsForYear Then
-        '        'Call Ecosim to gather the stats
-        '        m_Ecosim.AccumulateDataInfo(m_Data.YearNow - 1, Btime, loss)
-        '        'Ok we have the stats for this year 
-        '        'so turn off the boolean flag until the next year
-        '        bNeedStatsForYear = False
-        '    End If
-
-        'Catch ex As Exception
-        '    cLog.Write(ex, "cEcospace.AccumulateFitStats()")
-        'End Try
 
     End Sub
 
@@ -2057,8 +2038,6 @@ Public Class cEcoSpace
         Dim iLstCell As Integer
         Dim etRunTime As Double
 
-
-
         iFrstCell = 1
         iLstCell = 0
 
@@ -2236,6 +2215,9 @@ Public Class cEcoSpace
             Next j
         Next i
 
+        ' Me.m_Data.debugDumpContaminantMap(0)
+        'System.Console.WriteLine("Sum Region 0 " + m_tracerData.TracerConcByRegion(0, 0, itt).ToString)
+
         'average contamintant results by region
         For iRgn = 0 To m_Data.nRegions
             Dim nInRgn As Integer = m_Data.nCellsInRegion(iRgn)
@@ -2247,8 +2229,8 @@ Public Class cEcoSpace
             Next igrp
         Next iRgn
 
-
     End Sub
+
 
     Private Sub runContaminantTracerExplicit1(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
         Dim i As Integer, j As Integer, iGrp As Integer
@@ -2264,6 +2246,50 @@ Public Class cEcoSpace
                         Derivcon(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) +
                             Bcw(i, j, iGrp) * m_Data.Ccell(i - 1, j, iGrp) +
                             C(i, j, iGrp) * m_Data.Ccell(i + 1, j, iGrp) +
+                            d(i, j - 1, iGrp) * m_Data.Ccell(i, j - 1, iGrp) +
+                            e(i, j + 1, iGrp) * m_Data.Ccell(i, j + 1, iGrp) +
+                            m_Data.AMmTr(i, j, iGrp) * m_Data.Ccell(i, j, iGrp)
+                        'm_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+                        Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                    Next
+                End If
+            Next
+        Next
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    For iGrp = 0 To m_Data.NGroups
+                        m_Data.Ccell(i, j, iGrp) = m_Data.Ccell(i, j, iGrp) + Derivcon(i, j, iGrp) * Tst
+                        'Derivcon2(i, j, iGrp) = Derivcon(i, j, iGrp)
+                    Next
+                End If
+            Next
+        Next
+
+    End Sub
+
+
+    Private Sub runContaminantTracerExplicit1_NoOffset(ByRef Derivcon As Single(,,), ByRef Derivcon2 As Single(,,), ByVal ntc As Integer)
+        'jb 6-Dec-2016 OK This fixes the issue with the velocity vectors being off set by one cell 
+        'But the model goes unstable after a long run... So not so good ehhh
+        Dim i As Integer, j As Integer, iGrp As Integer
+        Dim Tst As Single
+
+        'set smaller timestep previously calculated in estimateMaxTimeStep
+        Tst = m_Data.TimeStep / CSng(ntc)
+
+        For i = 1 To m_Data.InRow
+            For j = 1 To m_Data.InCol
+                If m_Data.Depth(i, j) > 0 Then
+                    For iGrp = 0 To m_Data.NGroups
+
+                        'If iGrp = 41 And i = 3 And j - 1 = 3 Then
+                        '    Debug.Assert(False)
+                        'End If
+                        Derivcon(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) +
+                            Bcw(i - 1, j, iGrp) * m_Data.Ccell(i - 1, j, iGrp) +
+                            C(i + 1, j, iGrp) * m_Data.Ccell(i + 1, j, iGrp) +
                             d(i, j - 1, iGrp) * m_Data.Ccell(i, j - 1, iGrp) +
                             e(i, j + 1, iGrp) * m_Data.Ccell(i, j + 1, iGrp) +
                             m_Data.AMmTr(i, j, iGrp) * m_Data.Ccell(i, j, iGrp)
@@ -2602,7 +2628,7 @@ Public Class cEcoSpace
                             'Debug.Assert(False, "EcoSpace Contaminant Tracer not Initialized properly.")
                             'jb in EwE5 Ccell() is initialized using ConcTr()
                             'in EwE5 CInitialize() was called right before this setting ConcTr() to Czero()
-                            m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip) 'm_Data.Bcell(i, j, ip) / Basebiomass(ip) * Me.m_tracerData.Czero(ip)
+                            m_Data.Ccell(i, j, ip) = m_Data.HabCap(ip)(i, j) * Me.m_tracerData.Czero(ip)
                             m_Data.Clast(i, j, ip) = m_Data.Ccell(i, j, ip)
                         End If
 
@@ -3839,12 +3865,239 @@ Public Class cEcoSpace
     End Sub
 
 
+    Sub SetMovementParameters_NoOffset()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'jb 6-Dec-2016 OK This fixes the issue with the velocity vectors being off set by one cell 
+        'But the model goes unstable after a long run... So not so good ehhh
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        'sets solvegrid movement arrays based on depth map
+        Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
+        Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
+
+        Me.m_Data.allocate(Bcw, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        Me.m_Data.allocate(C, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        'd movement to right
+        Me.m_Data.allocate(d, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        'e movement to left
+        Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+
+        'Advection vectors Xvel(,) are in cm/sec convert to km/year, same units as the mrate()
+        '[km/year] / [cell length]
+        AdScale = 315.36 / m_Data.CellLength
+
+        'set depth for the boundary cells to be equal to the depth just inside the model
+        m_Data.Width(0) = m_Data.Width(1)
+        'm_Data.Width(m_Data.InRow + 1) = m_Data.Width(m_Data.InRow)
+        For i = 1 To m_Data.InRow
+            m_Data.Depth(i, 0) = m_Data.Depth(i, 1)
+            m_Data.Depth(i, m_Data.InCol + 1) = m_Data.Depth(i, m_Data.InCol)
+            If m_Data.Depth(i, 0) > 0 Then
+                m_Data.Xvel(i, 0) = m_Data.Xvel(i, 1)
+                m_Data.Yvel(i, 0) = m_Data.Yvel(i, 1)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(i, 0) = m_Data.HabCap(ip)(i, 1)
+                Next
+            End If
+            If m_Data.Depth(i, m_Data.InCol + 1) > 0 Then
+                m_Data.Xvel(i, m_Data.InCol + 1) = m_Data.Xvel(i, m_Data.InCol)
+                m_Data.Yvel(i, m_Data.InCol + 1) = m_Data.Yvel(i, m_Data.InCol)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(i, m_Data.InCol + 1) = m_Data.HabCap(ip)(i, m_Data.InCol)
+                Next
+            End If
+        Next
+        For j = 1 To m_Data.InCol
+            m_Data.Depth(0, j) = m_Data.Depth(1, j)
+            m_Data.Depth(m_Data.InRow + 1, j) = m_Data.Depth(m_Data.InRow, j)
+            If m_Data.Depth(0, j) > 0 Then
+                m_Data.Xvel(0, j) = m_Data.Xvel(1, j)
+                m_Data.Yvel(0, j) = m_Data.Yvel(1, j)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(0, j) = m_Data.HabCap(ip)(1, j)
+                Next
+            End If
+            If m_Data.Depth(m_Data.InRow + 1, j) > 0 Then
+                m_Data.Xvel(m_Data.InRow + 1, j) = m_Data.Xvel(m_Data.InRow, j)
+                m_Data.Yvel(m_Data.InRow + 1, j) = m_Data.Yvel(m_Data.InRow, j)
+                For ip = 1 To m_Data.NGroups
+                    m_Data.HabCap(ip)(m_Data.InRow + 1, j) = m_Data.HabCap(ip)(m_Data.InRow, j)
+                Next
+            End If
+        Next
+
+        For i = 0 To m_Data.InRow
+            For j = 0 To m_Data.InCol
+                'is this cell water
+                If m_Data.Depth(i, j) > 0 Then
+                    'Yes we are in a water cell
+                    'check depth on right face of this cell
+                    If m_Data.Depth(i, j + 1) > 0 Then
+
+                        For ip = 1 To m_Data.NGroups
+                            If j > 0 And j < m_Data.InCol + 1 Then
+
+                                If m_Data.HabCap(ip)(i, j + 1) = m_Data.HabCap(ip)(i, j) Then
+                                    d(i, j, ip) = m_Data.Mrate(ip)
+                                    e(i, j + 1, ip) = m_Data.Mrate(ip)
+                                ElseIf m_Data.HabCap(ip)(i, j + 1) > m_Data.HabCap(ip)(i, j) Then
+                                    d(i, j, ip) = m_Data.Mrate(ip)
+                                    e(i, j + 1, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i, j) / m_Data.HabCap(ip)(i, j + 1)
+                                Else
+                                    d(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i, j + 1) / m_Data.HabCap(ip)(i, j)
+                                    e(i, j + 1, ip) = m_Data.Mrate(ip)
+                                End If
+
+                                'e(i, j + 1, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j + 1) * RelHabMove(i, j + 1, i, j, Me.HabGrad, m_Data.MoveScale, ip)
+                                'd(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i, j + 1, Me.HabGrad, m_Data.MoveScale, ip)
+                                If m_Data.IsAdvected(ip) Then
+                                    If m_Data.Xvel(i, j) > 0 Then
+                                        d(i, j, ip) = d(i, j, ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
+                                        ' d(i, j, ip) = d(i, j, ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
+                                    Else
+                                        ' e(i, j + 1, ip) = e(i, j + 1, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                        e(i, j, ip) = e(i, j, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                    End If
+
+                                End If
+                            Else
+                                'Outside the grid bounds Col=0 or n+1
+                                If m_Data.IsAdvected(ip) Then
+                                    If m_Data.Xvel(i, j) > 0 Then
+                                        e(i, j + 1, ip) = m_Data.Mrate(ip) 'into j from right
+                                        d(i, j, ip) = m_Data.Mrate(ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
+                                    Else
+                                        e(i, j + 1, ip) = m_Data.Mrate(ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                        d(i, j, ip) = m_Data.Mrate(ip) 'from j to the right
+
+                                    End If
+                                Else
+                                    e(i, j + 1, ip) = 0
+                                    d(i, j, ip) = 0
+                                End If
+                            End If
+                            Enomig(i, j + 1, ip) = e(i, j + 1, ip)
+                            dNomig(i, j, ip) = d(i, j, ip)
+                        Next ip
+
+                        'EwE5
+                        ' nvar2 = nvar + 2 * npairs
+                        nvar2 = m_Data.NGroups
+                        ir = 0
+                        For isp = 1 To m_Stanza.Nsplit
+                            For ist = 1 To m_Stanza.Nstanza(isp)
+                                ieco = m_Stanza.EcopathCode(isp, ist)
+                                ir = ir + 1
+                                e(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
+                                d(i, j, nvar2 + ir) = d(i, j, ieco)
+                                Enomig(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
+                                dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
+                            Next
+                        Next
+                    End If 'm_Data.Depth(i, j + 1) > 0
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'end of col
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Start or rows
+                    'xxxxxxxxxxxxxxxxxxxxxx
+                    'then check depths on bottom face of this cell
+                    If m_Data.Depth(i + 1, j) > 0 Then
+                        For ip = 1 To m_Data.NGroups
+                            If i > 0 And i < m_Data.InRow + 1 Then
+
+                                If m_Data.HabCap(ip)(i + 1, j) = m_Data.HabCap(ip)(i, j) Then
+                                    Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
+                                    C(i, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i)
+                                ElseIf m_Data.HabCap(ip)(i + 1, j) > m_Data.HabCap(ip)(i, j) Then
+                                    Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) '* RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
+                                    C(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i, j) / m_Data.HabCap(ip)(i + 1, j) * m_Data.Width(i) 'RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
+                                Else
+                                    Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(ip)(i + 1, j) / m_Data.HabCap(ip)(i, j) * m_Data.Width(i)
+                                    C(i, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) '* RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
+                                End If
+                                'C(i, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i + 1, j) * RelHabMove(i + 1, j, i, j, HabGrad, m_Data.MoveScale, ip)
+                                'Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j) * RelHabMove(i, j, i + 1, j, HabGrad, m_Data.MoveScale, ip)
+                                If m_Data.IsAdvected(ip) Then
+                                    'Debug.Assert(i <> 4)
+                                    'jb 1-Dec-2016 Include cell width scaler in Y velocity movements
+                                    If m_Data.Yvel(i, j) > 0 Then
+                                        ' Bcw(i + 1, j, ip) = Bcw(i + 1, j, ip) + m_Data.Yvel(i, j) * AdScale * m_Data.Width(i)
+                                        Bcw(i, j, ip) = Bcw(i, j, ip) + m_Data.Yvel(i, j) * AdScale * m_Data.Width(i)
+                                    Else
+                                        C(i, j, ip) = C(i, j, ip) - m_Data.Yvel(i, j) * AdScale * m_Data.Width(i)
+                                    End If
+
+                                End If
+                            Else
+                                If m_Data.IsAdvected(ip) Then
+
+                                    If m_Data.Yvel(i, j) > 0 Then
+                                        C(i, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) 'from row i+1 to i
+                                        Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) + m_Data.Yvel(i, j) * AdScale ' + AdvectSouth 'from i to i+1
+                                    Else
+                                        C(i, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i) - m_Data.Yvel(i, j) * AdScale 'from row i+1 to i
+                                        Bcw(i + 1, j, ip) = m_Data.Mrate(ip) * m_Data.Width(i)
+                                    End If
+                                Else
+                                    C(i, j, ip) = 0
+                                    Bcw(i + 1, j, ip) = 0
+                                End If
+                            End If
+                            CNomig(i, j, ip) = C(i, j, ip)
+                            BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
+                        Next
+
+                        'EwE5
+                        ' nvar2 = nvar + 2 * npairs
+                        nvar2 = m_Data.NGroups
+                        ir = 0
+                        For isp = 1 To m_Stanza.Nsplit
+                            For ist = 1 To m_Stanza.Nstanza(isp)
+                                ieco = m_Stanza.EcopathCode(isp, ist)
+                                ir = ir + 1
+                                Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
+                                C(i, j, nvar2 + ir) = C(i, j, ieco)
+                                BcwNomig(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ieco)
+                                CNomig(i, j, nvar2 + ir) = C(i, j, ieco)
+                            Next
+                        Next
+                    End If
+                End If
+
+            Next j
+        Next i
+
+        'Me.debugDumpFlowRates(Bcw, Me.m_Data.nLiving + 1, "SetMovementParameters b")
+        'Me.debugDumpFlowRates(C, Me.m_Data.nLiving + 1, "SetMovementParameters c")
+        'Me.debugDumpFlowRates(d, Me.m_Data.nLiving + 1, "SetMovementParameters d")
+        'Me.debugDumpFlowRates(e, Me.m_Data.nLiving + 1, "SetMovementParameters e")
+
+        If m_tracerData.EcoSpaceConSimOn Then
+            'set movement rates for physical contaminant concentration to
+            'rates for first detritus pool
+            For i = 0 To m_Data.InRow + 1
+                For j = 0 To m_Data.InCol + 1
+                    Bcw(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
+                    C(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
+                    d(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
+                    e(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
+                    BcwNomig(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
+                    CNomig(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
+                    dNomig(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
+                    Enomig(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
+                Next
+            Next
+        End If
+    End Sub
+
     Private Sub debugDumpFlowRates(flowArray(,,) As Single, iGrp As Integer, Optional msg As String = " ")
         Dim tempstr As String
         Debug.Print(msg)
-        Debug.Print("Flow for " + Me.m_EPdata.GroupName(iGrp).ToString)
-        For i As Integer = 1 To m_Data.InRow
-            For j As Integer = 1 To m_Data.InCol
+        Debug.Print("Flow for " + iGrp.ToString)
+        For i As Integer = 1 To m_Data.InRow '+ 1
+            For j As Integer = 1 To m_Data.InCol ' + 1
                 tempstr = tempstr + Math.Round(flowArray(i, j, iGrp), 10).ToString.PadRight(20)
             Next
             Debug.Print(tempstr)
@@ -5723,7 +5976,6 @@ exitline:
         Dim Ceq As Single, Cin As Single, Cout As Single
         Dim Terr As Single, Ttemp As Single, maxT As Single
 
-
         maxT = m_Data.TimeStep
 
         For i = 1 To m_Data.InRow
@@ -5737,25 +5989,30 @@ exitline:
                     Cin = Cin + d(i, j - 1, iGrp) * m_Data.Ccell(i, j - 1, iGrp)
                     Cin = Cin + e(i, j + 1, iGrp) * m_Data.Ccell(i, j + 1, iGrp)
                     Cout = -m_Data.AMmTr(i, j, iGrp)
-                    Ceq = Cin / Cout
-                    'calculate distance to equilibrium (%)
-                    Terr = CSng(2.0 * Math.Abs(Ceq - m_Data.Ccell(i, j, iGrp)) / (Ceq + m_Data.Ccell(i, j, iGrp) + 1.0E-30))
-                    If Terr < 0.5 Then
-                        Terr = 0.5
+
+                    If Cout <> 0 Then
+                        Ceq = Cin / Cout
+                        'calculate distance to equilibrium (%)
+                        Terr = CSng(2.0 * Math.Abs(Ceq - m_Data.Ccell(i, j, iGrp)) / (Ceq + m_Data.Ccell(i, j, iGrp) + 1.0E-30))
+                        If Terr < 0.5 Then
+                            Terr = 0.5
+                        End If
+                        'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
+                        'the timestep scales from (0.01 to 0.1) times 1/closs as ConcTr approaches Ceq
+                        Ttemp = CSng(0.1 / Terr / Cout)
+                        If Ttemp < maxT Then
+                            maxT = Ttemp
+                        End If
                     End If
-                    'minimum timestep is 0.01 times 1/closs (which is essentially the time to equilibrium at the current derivative value)
-                    'the timestep scales from (0.01 to 0.1) times 1/closs as ConcTr approaches Ceq
-                    Ttemp = CSng(0.1 / Terr / Cout)
-                    If Ttemp < maxT Then
-                        maxT = Ttemp
-                    End If
+
                 Next
             Next
         Next
 
         ntc = Math.Ceiling(m_Data.TimeStep / maxT)
-
-        Return ntc
+        'jb 1-Dec-2016 Hack to cap the number of ecotrace time steps!
+        'Default to 1000
+        Return Math.Min(ntc, Me.m_tracerData.MaxTimeSteps)
 
     End Function
 

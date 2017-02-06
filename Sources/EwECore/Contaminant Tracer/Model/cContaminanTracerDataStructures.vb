@@ -112,6 +112,8 @@ Public Class cContaminantTracerDataStructures
     ''' <summary>Concentration over biomass (region x group x time).</summary>
     Public TracerCBRegion(,,) As Single
 
+    Public TracerCB(,) As Single
+
     ''' <summary>Max concentration of contaminant at the current time step by group</summary>
     Public ConcMax() As Single
 
@@ -119,6 +121,12 @@ Public Class cContaminantTracerDataStructures
     Friend EcoSimConSimOn As Boolean
     ''' <summary>Ecospace tracer enabled state flag.</summary>
     Friend m_bEcoSpaceConSimOn As Boolean
+
+    Public MaxTimeSteps As Integer
+
+    Public Sub New()
+        MaxTimeSteps = 1000
+    End Sub
 
     Friend Sub RedimByNGroups(ByVal nGroups As Integer)
         Me.m_nGroups = nGroups
@@ -136,6 +144,8 @@ Public Class cContaminantTracerDataStructures
         Me.m_nTime = nTime
         Me.m_nRegions = 0
         ReDim TracerConc(nGroups + 1, nTime)
+        ReDim TracerCB(nGroups + 1, nTime)
+
     End Sub
 
     Public Sub redimForEcospaceRun(ByVal nRegions As Integer, ByVal nGroups As Integer, ByVal nTime As Integer)
@@ -149,6 +159,7 @@ Public Class cContaminantTracerDataStructures
         Me.m_nGroups = 0
 
         TracerConc = Nothing '(nGroups + 1, nTime)
+        TracerCB = Nothing
         TracerConcByRegion = Nothing '(nRegions, nGroups + 1, nTime)
         TracerCBRegion = Nothing '(nRegions, nGroups + 1, nTime)
 

@@ -1267,6 +1267,13 @@ Namespace Ecospace
                 Me.m_graphData.Item(ePlotTypes.PredMortRateGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.PredMortRate(groupIndex)
                 Me.m_graphData.Item(ePlotTypes.ConsumpRateGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.ConsumptRate(groupIndex)
                 Me.m_graphData.Item(ePlotTypes.CatchGraph)(groupIndex, TimeStepData.iTimeStep) = TimeStepData.Catch(groupIndex)
+
+                'JB ECOTRACER_HACK
+                'jb 22-Nov-2016 For debugging set contaminant legend scaler to max across the map
+                'doing this at every timestep is incorrect but shows the spatial distribution 
+                'Some how we need to figure out what the concentration is over time?????
+                Me.m_BaseC(groupIndex) = TimeStepData.ConcMax(groupIndex) * 0.25F
+
             Next
 
             'Temporary variables to store the timesteps for plotting. 

@@ -213,6 +213,7 @@
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCBaseResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapBiomassWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapCatchWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapContaminants.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapEffortWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceAvgModelAreaResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />

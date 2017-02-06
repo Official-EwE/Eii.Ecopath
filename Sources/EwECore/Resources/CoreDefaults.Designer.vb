@@ -434,6 +434,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Contaminant Concentrations ASCII map.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_CONTAMINANTS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_WRITER_ASC_CONTAMINANTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Effort ASCII map.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_EFFORT() As String

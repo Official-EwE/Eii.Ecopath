@@ -45,7 +45,7 @@ Namespace EcospaceTimeSeries
             Me.TimeStampFormatString = Me.m_Manager.TimeStepFormatString
         End Sub
 
-        Public Function Read() As Boolean
+        Public Function Read(VarName As eVarNameFlags) As Boolean
 
             Me.Init()
 
@@ -66,7 +66,7 @@ Namespace EcospaceTimeSeries
 
                 Do While Not strm.EndOfStream
                     RecBuffer = strm.ReadLine()
-                    rec = cEcospaceTimeSeriesRec.FromString(RecBuffer, Me.TimeStampFormatString)
+                    rec = cEcospaceTimeSeriesRec.FromString(RecBuffer, Me.TimeStampFormatString, VarName)
                     If rec.ReadValidation = eTimeSeriesRecValidations.isReadValid Then
                         Me.getMinMaxDates(rec)
                         Me.getExtent(rec)
@@ -84,6 +84,8 @@ Namespace EcospaceTimeSeries
                 Throw New Exception(ex.Message)
 
             End Try
+
+            Me.m_Manager.Debug_DumpDataTableRows()
 
             Me.dumpFailedRecs()
 
@@ -121,15 +123,15 @@ Namespace EcospaceTimeSeries
         End Sub
 
         Private Sub dumpFailedRecs()
-            Dim msg As New Text.StringBuilder
             If Me.m_dctFailedRecs.Count = 0 Then
                 Return
             End If
 
+            Dim msg As New Text.StringBuilder
+
             msg.Append(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE)
             For Each pair As KeyValuePair(Of eTimeSeriesRecValidations, Integer) In Me.m_dctFailedRecs
                 System.Console.WriteLine(pair.Key.ToString + " " + pair.Value.ToString)
-                '" " + pair.Value.ToString + " records because of " + pair.Key.ToString
                 msg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_READ_FAIL_REASON, pair.Value, pair.Key))
             Next
             If msg.Length > 0 Then

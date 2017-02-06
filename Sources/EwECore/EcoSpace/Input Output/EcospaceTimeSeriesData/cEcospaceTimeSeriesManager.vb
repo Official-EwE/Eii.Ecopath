@@ -22,6 +22,9 @@ Option Strict On
 Option Explicit On
 Imports EwEUtils
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
+
+
 
 Namespace EcospaceTimeSeries
 
@@ -63,47 +66,11 @@ Namespace EcospaceTimeSeries
 
         'ToDo: Complete intellisense XML code comments
 
-#Region " Public data/properties "
-
-        Public Property TimeStepFormatString As String = "yyyy-MM-dd"
-
-        Public Property InputFileName As String
-            Get
-                Return Me.m_FileName
-            End Get
-            Set(value As String)
-                'Only send out notifications when needed
-                If (String.Compare(Me.m_FileName, value, True) <> 0) Then
-                    Me.m_FileName = value
-                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
-                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
-                                                       EwEUtils.Core.eMessageImportance.Information))
-                End If
-            End Set
-        End Property
-
-        Public Property OuputFileName As String
-            Get
-                If (String.IsNullOrWhiteSpace(Me.m_OutputFilename)) Then Return Me.getDefaultOutputFileName(Me.InputFileName)
-                Return Me.m_OutputFilename
-            End Get
-            Set(value As String)
-                'Only send out notifications when needed
-                If (String.Compare(Me.m_OutputFilename, value, True) <> 0) Then
-                    Me.m_OutputFilename = value
-                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
-                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
-                                                       EwEUtils.Core.eMessageImportance.Information))
-                End If
-            End Set
-        End Property
-
-#End Region ' Public data/properties
 
 #Region "Private data"
 
 
-        Private m_dcDataByDate As Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+        '  Private m_dcDataByDate As Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
         Private m_core As cCore
         Private m_SpaceData As cEcospaceDataStructures
 
@@ -125,10 +92,61 @@ Namespace EcospaceTimeSeries
         'sumof(log(obs/pred)^2)
         Private DatSumZ2 As Double
 
-        Private m_FileName As String
+        Private m_BiomassFileName As String
+        Private m_ContamFileName As String
         Private m_OutputFilename As String
 
+
+        ' Private m_DataTable As DataTable
+        Private m_dataSets As DataSet
+
 #End Region
+
+#Region " Public data/properties "
+
+        Public Property TimeStepFormatString As String = "yyyy-MM-dd"
+
+        Public Property BiomassInputFileName As String
+            Get
+                Return Me.m_BiomassFileName
+            End Get
+            Set(value As String)
+                'Only send out notifications when needed
+                If (String.Compare(Me.m_BiomassFileName, value, True) <> 0) Then
+                    Me.m_BiomassFileName = value
+                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
+                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                       EwEUtils.Core.eMessageImportance.Information))
+                End If
+            End Set
+        End Property
+
+
+        Public ReadOnly Property ContaminantInputFileName As String
+            Get
+                Return Me.m_ContamFileName
+            End Get
+        End Property
+
+        Public Property OutputFileName As String
+            Get
+                If (String.IsNullOrWhiteSpace(Me.m_OutputFilename)) Then Return Me.getDefaultOutputFileName(Me.BiomassInputFileName)
+                Return Me.m_OutputFilename
+            End Get
+            Set(value As String)
+                'Only send out notifications when needed
+                If (String.Compare(Me.OutputFileName, value, True) <> 0) Then
+                    Me.m_OutputFilename = value
+                    Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_OUTPUT_SET,
+                                                       EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
+                                                       EwEUtils.Core.eMessageImportance.Information))
+                End If
+            End Set
+        End Property
+
+#End Region ' Public data/properties
+
+
 
 #Region "Construction Initialization"
 
@@ -139,7 +157,10 @@ Namespace EcospaceTimeSeries
             Me.m_SpaceData = EcospaceData
 
             'Create a new list of cEcospaceTimeSeriesRec
-            Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+            ' Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+
+            Me.m_dataSets = New DataSet()
+
 
         End Sub
 
@@ -155,13 +176,12 @@ Namespace EcospaceTimeSeries
                 Me.DatSumZ = 0.0
                 Me.DatSumZ2 = 0.0
 
-                'Clear out the results part of the cEcospaceTimeSeriesRec objects
-                For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
-                    For Each rec As cEcospaceTimeSeriesRec In recs
-                        rec.PredictedValue = cCore.NULL_VALUE
-                        rec.PredError = cCore.NULL_VALUE
-                    Next
-                Next
+                ''Clear out the results part of the cEcospaceTimeSeriesRec objects
+                'For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
+                '    For Each rec As cEcospaceTimeSeriesRec In recs
+                '        rec.ClearResults()
+                '    Next
+                'Next
 
             Catch ex As Exception
 
@@ -170,15 +190,32 @@ Namespace EcospaceTimeSeries
         End Sub
 
 
-        Private Sub InitForRead()
+        Private Sub InitForRead(VarName As eVarNameFlags)
+
+            If Not Me.m_dataSets.Tables.Contains(VarName.ToString) Then
+                Me.AddTable(VarName)
+            End If
+
             'Create a new list of cEcospaceTimeSeriesRec
-            Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+            ' Me.m_dcDataByDate = New Dictionary(Of Date, List(Of cEcospaceTimeSeriesRec))
+        End Sub
+
+        Private Sub AddTable(varName As eVarNameFlags)
+            Dim table As DataTable
+            table = New DataTable(varName.ToString)
+
+            table.Columns.Add("Date", GetType(Date))
+            table.Columns.Add("Rec", GetType(Object))
+
+            m_dataSets.Tables.Add(table)
         End Sub
 
         Public Sub Clear()
-            Me.m_dcDataByDate.Clear()
-            Me.m_FileName = String.Empty
+            Me.m_dataSets.Tables.Clear()
+            ' Me.m_dcDataByDate.Clear()
+            Me.m_BiomassFileName = String.Empty
             Me.m_OutputFilename = String.Empty
+            Me.m_ContamFileName = String.Empty
         End Sub
 
 #End Region
@@ -193,10 +230,12 @@ Namespace EcospaceTimeSeries
         Public Function Add(TimeSeriesRec As cEcospaceTimeSeriesRec) As Boolean
 
             Try
-                'Add TimeSeriesRec to the list of cEcospaceTimeSeriesRec objects
-                'cEcospaceTimeSeriesRec are stored by date, all the recs with the same date will be in one list
-                'Me.ByDate(date,CreateNew:=True) will create a new list if it doesn't already exist
-                Me.RecsByDate(TimeSeriesRec.TimeStamp, CreateNew:=True).Add(TimeSeriesRec)
+                ''Add TimeSeriesRec to the list of cEcospaceTimeSeriesRec objects
+                ''cEcospaceTimeSeriesRec are stored by date, all the recs with the same date will be in one list
+                ''Me.ByDate(date,CreateNew:=True) will create a new list if it doesn't already exist
+                'Me.RecsByDate(TimeSeriesRec.TimeStamp, CreateNew:=True).Add(TimeSeriesRec)
+
+                Me.m_dataSets.Tables(TimeSeriesRec.VarType.ToString).Rows.Add(TimeSeriesRec.TimeStamp, TimeSeriesRec)
             Catch ex As Exception
                 EwEUtils.Core.cLog.Write(ex, "Failed to add Ecospace time series record.")
                 Return False
@@ -204,12 +243,27 @@ Namespace EcospaceTimeSeries
             Return True
         End Function
 
+        Public Sub Debug_DumpDataTableRows()
+
+            For Each table As DataTable In Me.m_dataSets.Tables
+                System.Console.WriteLine("----------------" + table.TableName + "----------------")
+                For Each row As DataRow In table.Rows
+                    Dim tsrec As cEcospaceTimeSeriesRec
+                    tsrec = DirectCast(row("Rec"), cEcospaceTimeSeriesRec)
+                    System.Console.WriteLine(tsrec.ToCSVString)
+                Next
+                System.Console.WriteLine("--------------------------------")
+            Next
+
+
+        End Sub
+
         ''' <summary>
         ''' Read the Ecospace time series XYZ formatted file 
         ''' </summary>
         ''' <param name="InputFilename"></param>
         ''' <returns>True if successful.</returns>
-        Public Function Load(InputFilename As String, OutputFileName As String) As Boolean
+        Public Function Load(InputFilename As String, OutputFileName As String, VarName As eVarNameFlags) As Boolean
             Dim bReturn As Boolean = True
 
             If Not IO.File.Exists(InputFilename) Then
@@ -217,16 +271,14 @@ Namespace EcospaceTimeSeries
                 Return False
             End If
 
-            Me.m_FileName = InputFilename
-            Me.m_OutputFilename = OutputFileName
-
-            Me.InitForRead()
+            Me.setFileNames(InputFilename, OutputFileName, VarName)
+            Me.InitForRead(VarName)
 
             Try
                 Dim reader As New cEcospaceTimeSeriesXYZReader(InputFilename, Me)
 
                 'Read will populate the managers list of time series records
-                If reader.Read() Then
+                If reader.Read(VarName) Then
                     Me.checkDates(reader.StartDate, reader.EndDate)
                     Me.checkExtent(reader.MaxRow, reader.MaxCol)
                     bReturn = True
@@ -242,10 +294,10 @@ Namespace EcospaceTimeSeries
                 bReturn = False
             End Try
 
-            If Me.ContainsData Then
+            If Me.ContainsData(VarName) Then
 
 
-                Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_NRECORDS_LOADED, Me.nRecords),
+                Me.m_core.Messages.AddMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_NRECORDS_LOADED, Me.nRecords(VarName)),
                                                        EwEUtils.Core.eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace,
                                                        EwEUtils.Core.eMessageImportance.Information))
             Else
@@ -274,53 +326,87 @@ Namespace EcospaceTimeSeries
             Dim zstat As Double
             Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
             Try
+                Dim table As DataTable = Me.m_dataSets.Tables(eVarNameFlags.EcospaceMapBiomass.ToString)
+                Dim rows As DataRow() = table.Select("Date='" + TimeStepDate.ToLongDateString + "'")
+                Dim Rec As cEcospaceTimeSeriesRec
+                For Each row As DataRow In rows
+                    Rec = DirectCast(row("Rec"), cEcospaceTimeSeriesRec)
 
-                'is there records for this model date
-                If Me.ContainsDate(TimeStepDate) Then
+                    'clear out any old values 
+                    Rec.ClearResults()
 
-                    'get a list of all the records for this date
-                    For Each Rec As cEcospaceTimeSeriesRec In Me.RecsByDate(TimeStepDate)
+                    If Me.isValid(biomass, Rec) Then
 
-                        'System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
+                        'log prediction error
+                        zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
 
-                        'Trap errors for each record incase the validation missed something
-                        Try
+                        'save the predicted and calculated SS values back into the record
+                        Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
+                        Rec.PredError = zstat
 
-                            If Me.isValid(biomass, Rec) Then
-                                'log prediction error
-                                zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+                        'Debug.Assert(Not Double.IsNaN(zstat))
+                        If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
+                            'By Group
+                            Me.m_ss(Rec.iGroupID) += zstat ^ 2
 
-                                'save the predicted and calculated SS values back into the record
-                                Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
-                                Rec.PredError = zstat
+                            Me.Erpred.Add(zstat)
+                            Me.DatSumZ += zstat
+                            Me.DatSumZ2 += zstat ^ 2
+                        End If
 
-                                'Debug.Assert(Not Double.IsNaN(zstat))
-                                If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
-                                    'By Group
-                                    Me.m_ss(Rec.iGroupID) += zstat ^ 2
+                        'shouldn't happen!
+                        Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
+                    End If
 
-                                    Me.Erpred.Add(zstat)
-                                    Me.DatSumZ += zstat
-                                    Me.DatSumZ2 += zstat ^ 2
-                                End If
 
-                                'shouldn't happen!
-                                Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
-                            End If
+                Next
 
-                        Catch ex As Exception
-                            'What to do if a data point throws an exception???
-                            System.Console.WriteLine(Me.ToString + ".CalculateStats() Invalid data point.")
-                        End Try
+                ''is there records for this model date
+                'If Me.ContainsDate(TimeStepDate) Then
 
-                    Next Rec
+                '    'get a list of all the records for this date
+                '    For Each Rec As cEcospaceTimeSeriesRec In Me.RecsByDate(TimeStepDate)
 
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'for debugging
-                    'Me.dumpDebugData()
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                '        'System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
 
-                End If
+                '        'Trap errors for each record incase the validation missed something
+                '        Try
+
+                '            If Me.isValid(biomass, Rec) Then
+                '                'log prediction error
+                '                zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+
+                '                'save the predicted and calculated SS values back into the record
+                '                Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
+                '                Rec.PredError = zstat
+
+                '                'Debug.Assert(Not Double.IsNaN(zstat))
+                '                If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
+                '                    'By Group
+                '                    Me.m_ss(Rec.iGroupID) += zstat ^ 2
+
+                '                    Me.Erpred.Add(zstat)
+                '                    Me.DatSumZ += zstat
+                '                    Me.DatSumZ2 += zstat ^ 2
+                '                End If
+
+                '                'shouldn't happen!
+                '                Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
+                '            End If
+
+                '        Catch ex As Exception
+                '            'What to do if a data point throws an exception???
+                '            System.Console.WriteLine(Me.ToString + ".CalculateStats() Invalid data point.")
+                '        End Try
+
+                '    Next Rec
+
+                '    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                '    'for debugging
+                '    'Me.dumpDebugData()
+                '    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                'End If
 
             Catch ex As Exception
                 'This shouldn't happen during normal execution!
@@ -331,6 +417,106 @@ Namespace EcospaceTimeSeries
             End Try
 
             Return True
+
+        End Function
+
+
+        Public Function ForceContaminantConcentrations(iTimeStep As Integer) As Boolean
+
+            If Not Me.ContainsData(eVarNameFlags.Concentration) Then
+                Return False
+            End If
+
+            Try
+                'Clear current data from memory
+                'Me.clearContaminantForcing()
+                Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
+
+                Dim table As DataTable = Me.m_dataSets.Tables(eVarNameFlags.Concentration.ToString)
+                Dim rows As DataRow() = table.Select("Date='" + TimeStepDate.ToLongDateString + "'")
+                For Each row As DataRow In rows
+
+                    Dim Rec As cEcospaceTimeSeriesRec = DirectCast(row("Rec"), cEcospaceTimeSeriesRec)
+                    If Rec.Row <= Me.m_SpaceData.InRow And Rec.Col <= Me.m_SpaceData.InCol Then
+                        Me.m_SpaceData.Ccell(Rec.Row, Rec.Col, Rec.iGroupID) = Rec.CellValue
+                    End If
+
+                Next
+
+            Catch ex As Exception
+                'This shouldn't happen during normal execution!
+                'If it does it's some kind of a programming error...Really...
+                Debug.Assert(False, "Ecospace Time Series failed to load contaminant concentration at timestep " + iTimeStep.ToString)
+                EwEUtils.Core.cLog.Write(ex)
+                Return False
+            End Try
+
+            Return True
+
+        End Function
+
+
+        Public Function CalculateStats_Old(iTimeStep As Integer, biomass(,,) As Single) As Boolean
+            'Dim zstat As Double
+            'Dim TimeStepDate As Date = Me.TimeStepToDate(iTimeStep)
+            ' Try
+
+            '    'is there records for this model date
+            '    If Me.ContainsDate(TimeStepDate) Then
+
+            '        'get a list of all the records for this date
+            '        For Each Rec As cEcospaceTimeSeriesRec In Me.RecsByDate(TimeStepDate)
+
+            '            'System.Console.WriteLine("Ecospace Timeseries group=" + Rec.iGroupID.ToString + ", Date=" + Rec.TimeStamp.ToShortDateString)
+
+            '            'Trap errors for each record incase the validation missed something
+            '            Try
+
+            '                If Me.isValid(biomass, Rec) Then
+            '                    'log prediction error
+            '                    zstat = Math.Log(Rec.CellValue / biomass(Rec.Row, Rec.Col, Rec.iGroupID))
+
+            '                    'save the predicted and calculated SS values back into the record
+            '                    Rec.PredictedValue = biomass(Rec.Row, Rec.Col, Rec.iGroupID)
+            '                    Rec.PredError = zstat
+
+            '                    'Debug.Assert(Not Double.IsNaN(zstat))
+            '                    If Not Double.IsNaN(zstat) And Not Double.IsInfinity(zstat) Then
+            '                        'By Group
+            '                        Me.m_ss(Rec.iGroupID) += zstat ^ 2
+
+            '                        Me.Erpred.Add(zstat)
+            '                        Me.DatSumZ += zstat
+            '                        Me.DatSumZ2 += zstat ^ 2
+            '                    End If
+
+            '                    'shouldn't happen!
+            '                    Debug.Assert(Not Double.IsNaN(Me.DatSumZ2))
+            '                End If
+
+            '            Catch ex As Exception
+            '                'What to do if a data point throws an exception???
+            '                System.Console.WriteLine(Me.ToString + ".CalculateStats() Invalid data point.")
+            '            End Try
+
+            '        Next Rec
+
+            '        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            '        'for debugging
+            '        'Me.dumpDebugData()
+            '        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            '    End If
+
+            'Catch ex As Exception
+            '    'This shouldn't happen during normal execution!
+            '    'If it does it's some kind of a programming error...Really...
+            '    Debug.Assert(False, "Ecospace Time Series failed to calculate stats for timestep " + iTimeStep.ToString)
+            '    EwEUtils.Core.cLog.Write(ex)
+            '    Return False
+            'End Try
+
+            'Return True
 
         End Function
 
@@ -390,62 +576,101 @@ Namespace EcospaceTimeSeries
         End Function
 
 
-        ''' <summary>
-        ''' Get a list of cEcospaceTimeSeriesRec objects for this date. 
-        ''' If CreateNew = True add a new list and return it, if CreateNew = False return nothing.   
-        ''' </summary>
-        ''' <param name="RecDate"></param>
-        ''' <param name="CreateNew"></param>
-        ''' <returns></returns>
-        Private Function RecsByDate(RecDate As Date, Optional CreateNew As Boolean = False) As List(Of cEcospaceTimeSeriesRec)
-            If m_dcDataByDate.ContainsKey(RecDate) Then
-                Return m_dcDataByDate.Item(RecDate)
-            End If
+        Private Sub setFileNames(InputFileName As String, OutputFileName As String, VarName As eVarNameFlags)
+            Select Case VarName
+                Case eVarNameFlags.EcospaceMapBiomass
+                    Me.m_BiomassFileName = InputFileName
+                    Me.m_OutputFilename = OutputFileName
+                Case eVarNameFlags.Concentration
+                    Me.m_ContamFileName = InputFileName
+            End Select
+        End Sub
 
-            If CreateNew Then
-                Dim recs As New List(Of cEcospaceTimeSeriesRec)
-                m_dcDataByDate.Add(RecDate, recs)
-                Return recs
-            End If
 
-            Return Nothing
+        '''' <summary>
+        '''' Get a list of cEcospaceTimeSeriesRec objects for this date. 
+        '''' If CreateNew = True add a new list and return it, if CreateNew = False return nothing.   
+        '''' </summary>
+        '''' <param name="RecDate"></param>
+        '''' <param name="CreateNew"></param>
+        '''' <returns></returns>
+        'Private Function RecsByDate(RecDate As Date, Optional CreateNew As Boolean = False) As List(Of cEcospaceTimeSeriesRec)
+        '    If m_dcDataByDate.ContainsKey(RecDate) Then
+        '        Return m_dcDataByDate.Item(RecDate)
+        '    End If
 
-        End Function
+        '    If CreateNew Then
+        '        Dim recs As New List(Of cEcospaceTimeSeriesRec)
+        '        m_dcDataByDate.Add(RecDate, recs)
+        '        Return recs
+        '    End If
 
-        Public ReadOnly Property nRecords As Integer
+        '    Return Nothing
+
+        'End Function
+
+        Public ReadOnly Property nRecords(VarName As eVarNameFlags) As Integer
             Get
-                Return Me.m_dcDataByDate.Count
+                If Me.m_dataSets.Tables.Contains(VarName.ToString) Then
+                    Return Me.m_dataSets.Tables(VarName.ToString).Rows.Count
+                End If
+                Return 0
             End Get
         End Property
+
+
+        '''' <summary>
+        '''' Is there Ecospace time series data loaded
+        '''' </summary>
+        '''' <returns>True if there is loaded data, False otherwise. Does not test the map bounds or dates.</returns>
+        'Public ReadOnly Property ContainsData_list(VarName As eVarNameFlags) As Boolean
+        '    Get
+        '        If Me.m_dcDataByDate IsNot Nothing Then
+        '            Return Me.m_dcDataByDate.Count > 0
+        '        End If
+        '        Return False
+        '    End Get
+        'End Property
+
 
 
         ''' <summary>
         ''' Is there Ecospace time series data loaded
         ''' </summary>
         ''' <returns>True if there is loaded data, False otherwise. Does not test the map bounds or dates.</returns>
-        Public ReadOnly Property ContainsData As Boolean
+        Public ReadOnly Property ContainsData(VarName As eVarNameFlags) As Boolean
             Get
-                If Me.m_dcDataByDate IsNot Nothing Then
-                    Return Me.m_dcDataByDate.Count > 0
-                End If
+
+                Try
+                    If Me.m_dataSets.Tables.Contains(VarName.ToString) Then
+                        Dim table As DataTable = Me.m_dataSets.Tables(VarName.ToString)
+                        Return table.Rows.Count > 0
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+                'If Me.m_dcDataByDate IsNot Nothing Then
+                '    Return Me.m_dcDataByDate.Count > 0
+                'End If
                 Return False
             End Get
         End Property
 
 
-        ''' <summary>
-        ''' Does the currently loaded data contain this date
-        ''' </summary>
-        ''' <param name="RecDate"></param>
-        ''' <returns></returns>
-        Private Function ContainsDate(RecDate As Date) As Boolean
+        '''' <summary>
+        '''' Does the currently loaded data contain this date
+        '''' </summary>
+        '''' <param name="RecDate"></param>
+        '''' <returns></returns>
+        'Private Function ContainsDate(RecDate As Date) As Boolean
 
-            If m_dcDataByDate.ContainsKey(RecDate) Then
-                Return True
-            End If
-            Return False
+        '    If m_dcDataByDate.ContainsKey(RecDate) Then
+        '        Return True
+        '    End If
+        '    Return False
 
-        End Function
+        'End Function
 
 
 
@@ -486,16 +711,13 @@ Namespace EcospaceTimeSeries
                 If StartDate > mED Or EndDate < mSD Then
                     'Failed date bounds
                     msg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_DATES, StartDate.ToShortDateString, EndDate.ToShortDateString))
-                    'msg.Append("Ecospace Time Series dates " + StartDate.ToShortDateString + " to " + EndDate.ToShortDateString + " do not overlap with current model dates. ")
-                    'msg.Append("Check Model date or dates in input file.")
-
                     bReturn = False
+
                 End If
-            Else
+            Else 'Me.m_core.EwEModel.FirstYear <> 0
                 'First year = 0 
                 'The user has not set a model data
                 msg.Append(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_LOAD_NO_DATE)
-
                 bReturn = False
             End If
 
@@ -530,37 +752,36 @@ Namespace EcospaceTimeSeries
 
         Private Sub SaveResults()
 
-            If Not Me.ContainsData Then
+            If Not Me.ContainsData(eVarNameFlags.EcospaceMapBiomass) Then
                 'nothing the save
                 Exit Sub
             End If
 
-
-
             'build the output directory if it doesn't exist
             'if this fails the streamwriter will throw an error and the user will get an error message
-            Utilities.cFileUtils.IsDirectoryAvailable(IO.Path.GetDirectoryName(Me.m_OutputFilename), True)
+            Utilities.cFileUtils.IsDirectoryAvailable(IO.Path.GetDirectoryName(Me.OutputFileName), True)
 
             Try
                 Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
-                Dim strm As New IO.StreamWriter(Me.m_OutputFilename)
+                Dim strm As New IO.StreamWriter(Me.OutputFileName)
                 strm.WriteLine(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
                 strm.WriteLine(header)
-                For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
-                    For Each rec As cEcospaceTimeSeriesRec In recs
-                        If rec.PredictedValue <> cCore.NULL_VALUE Then
-                            strm.WriteLine(rec.ToCSVString)
-                        End If
-                    Next
+
+                Dim table As DataTable = Me.m_dataSets.Tables(eVarNameFlags.EcospaceMapBiomass.ToString)
+                For Each row As DataRow In table.Rows
+                    Dim rec As cEcospaceTimeSeriesRec = DirectCast(row("Rec"), cEcospaceTimeSeriesRec)
+                    If rec.PredictedValue <> cCore.NULL_VALUE Then
+                        strm.WriteLine(rec.ToCSVString)
+                    End If
                 Next
 
                 strm.Close()
 
-                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_RESULTS_SAVED, Me.OuputFileName),
+                Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_RESULTS_SAVED, Me.OutputFileName),
                                                            EwEUtils.Core.eMessageType.DataExport,
                                                            EwEUtils.Core.eCoreComponentType.EcoSpace,
                                                            EwEUtils.Core.eMessageImportance.Information)
-                msg.Hyperlink = Me.OuputFileName
+                msg.Hyperlink = Me.OutputFileName
                 Me.m_core.Messages.AddMessage(msg)
 
             Catch ex As Exception
@@ -574,6 +795,54 @@ Namespace EcospaceTimeSeries
             End Try
 
         End Sub
+
+
+
+        'Private Sub SaveResults_old()
+
+        '    If Not Me.ContainsData(eVarNameFlags.EcospaceMapBiomass) Then
+        '        'nothing the save
+        '        Exit Sub
+        '    End If
+
+        '    'build the output directory if it doesn't exist
+        '    'if this fails the streamwriter will throw an error and the user will get an error message
+        '    Utilities.cFileUtils.IsDirectoryAvailable(IO.Path.GetDirectoryName(Me.m_OutputFilename), True)
+
+        '    Try
+        '        Dim header As String = "Row,Col,GroupID,Date(yyyy-MM-dd),ObservedValue,PredictedValue,PredictionError(LogN(ObservedValue/PredictedValue)"
+        '        Dim strm As New IO.StreamWriter(Me.m_OutputFilename)
+        '        strm.WriteLine(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecospace))
+        '        strm.WriteLine(header)
+        '        For Each recs As List(Of cEcospaceTimeSeriesRec) In Me.m_dcDataByDate.Values
+        '            For Each rec As cEcospaceTimeSeriesRec In recs
+        '                If rec.PredictedValue <> cCore.NULL_VALUE Then
+        '                    strm.WriteLine(rec.ToCSVString)
+        '                End If
+        '            Next
+        '        Next
+
+        '        strm.Close()
+
+        '        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_RESULTS_SAVED, Me.OuputFileName),
+        '                                                   EwEUtils.Core.eMessageType.DataExport,
+        '                                                   EwEUtils.Core.eCoreComponentType.EcoSpace,
+        '                                                   EwEUtils.Core.eMessageImportance.Information)
+        '        msg.Hyperlink = Me.OuputFileName
+        '        Me.m_core.Messages.AddMessage(msg)
+
+        '    Catch ex As Exception
+        '        EwEUtils.Core.cLog.Write(ex, Me.ToString + ".SaveResults() Exception")
+
+        '        Dim ExMsg As New Text.StringBuilder
+        '        ExMsg.Append(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_TIMESERIES_SAVE_EXCEPTION, ex.Message))
+
+        '        Me.m_core.Messages.AddMessage(New cMessage(ExMsg.ToString, EwEUtils.Core.eMessageType.ErrorEncountered,
+        '           EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageImportance.Warning))
+        '    End Try
+
+        'End Sub
+
 
         Public Function getDefaultOutputFileName(InputFileName As String) As String
             If (String.IsNullOrWhiteSpace(InputFileName)) Then Return ""

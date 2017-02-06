@@ -99,6 +99,14 @@ Public Class cEcotracerModelParameters
             val = New cValue(New Integer, eVarNameFlags.ConForceNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ConForceNumber))
             m_values.Add(val.varName, val)
 
+
+            ''integers
+            'Max nunmber of time steps
+            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.ConMaxTimeSteps, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ConForceNumber))
+            m_values.Add(val.varName, val)
+
+
             'set status flags to default values
             ResetStatusFlags()
             Me.AllowValidation = True
@@ -178,6 +186,18 @@ Public Class cEcotracerModelParameters
         End Set
     End Property
 
+    'ConMaxTimeSteps
+
+
+    Public Property MaxTimeSteps() As Integer
+        Get
+            Return CInt(GetVariable(eVarNameFlags.ConMaxTimeSteps))
+        End Get
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.ConMaxTimeSteps, value)
+        End Set
+    End Property
+
 #End Region ' Variable via dot(.) operator
 
 #Region " Status Flags via dot(.) operator"
@@ -226,6 +246,18 @@ Public Class cEcotracerModelParameters
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.CPhysicalDecayRate, value)
+        End Set
+
+    End Property
+
+    Public Property MaxTimeStepsStatus() As eStatusFlags
+
+        Get
+            Return GetStatus(eVarNameFlags.ConMaxTimeSteps)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.ConMaxTimeSteps, value)
         End Set
 
     End Property

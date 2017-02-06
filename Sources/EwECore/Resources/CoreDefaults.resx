@@ -257,6 +257,9 @@
   <data name="ECOSPACE_WRITER_ASC_CATCH" xml:space="preserve">
     <value>Catch ASCII map</value>
   </data>
+  <data name="ECOSPACE_WRITER_ASC_CONTAMINANTS" xml:space="preserve">
+    <value>Contaminant Concentrations ASCII map</value>
+  </data>
   <data name="ECOSPACE_WRITER_ASC_EFFORT" xml:space="preserve">
     <value>Effort ASCII map</value>
   </data>
