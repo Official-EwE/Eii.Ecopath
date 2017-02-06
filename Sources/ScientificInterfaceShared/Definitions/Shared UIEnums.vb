@@ -208,6 +208,10 @@ Namespace Definitions
         Arch = 2
     End Enum
 
+    Public Enum eFDNodeScaleType As Integer
+        Logarithmic
+        Realistic
+    End Enum
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type determining how map layers are drawn.
