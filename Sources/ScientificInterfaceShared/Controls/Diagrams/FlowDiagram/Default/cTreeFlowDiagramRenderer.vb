@@ -216,6 +216,7 @@ Namespace Controls
         Private m_colorusagetype As eFDColorUsageTypes = eFDColorUsageTypes.None
         Private m_tsShowLegend As TriState = TriState.UseDefault
         Private m_nodeshowtype As eFDShowHiddenType = eFDShowHiddenType.GrayedOut
+        Private m_nodescaletype As eFDNodeScaleType = eFDNodeScaleType.Logarithmic
 
         Private Shared g_fmt As New StringFormat()
         ''' <summary>Minimum mouse hit area size</summary>
@@ -302,9 +303,9 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawNode(ByVal g As Graphics, _
-                            ByVal rc As Rectangle, _
-                            ByVal iGroup As Integer, _
+        Friend Sub DrawNode(ByVal g As Graphics,
+                            ByVal rc As Rectangle,
+                            ByVal iGroup As Integer,
                             ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawNode
 
@@ -362,10 +363,10 @@ Namespace Controls
 
         End Sub
 
-        Friend Sub DrawConnection(ByVal g As Graphics, _
-                                  ByVal rc As Rectangle, _
-                                  ByVal iPred As Integer, _
-                                  ByVal iPrey As Integer, _
+        Friend Sub DrawConnection(ByVal g As Graphics,
+                                  ByVal rc As Rectangle,
+                                  ByVal iPred As Integer,
+                                  ByVal iPrey As Integer,
                                   ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawConnection
 
@@ -404,11 +405,11 @@ Namespace Controls
 
             sLineWidth *= Me.CalcLineWidth(sDiet, sDietMax)
 
-            Me.m_connectors.DrawConnection(g, _
-                                        Me.NodeLocation(iPred, rc), _
-                                        Me.NodeLocation(iPrey, rc), _
-                                        clrLine, _
-                                        sLineWidth, _
+            Me.m_connectors.DrawConnection(g,
+                                        Me.NodeLocation(iPred, rc),
+                                        Me.NodeLocation(iPrey, rc),
+                                        clrLine,
+                                        sLineWidth,
                                         Me.LineConnectionType)
         End Sub
 
@@ -509,10 +510,10 @@ Namespace Controls
 
 #Region " Configuration "
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("LABEL_TITLE"), _
-            DefaultValue("Flow diagram")> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("LABEL_TITLE"),
+            DefaultValue("Flow diagram")>
         Public Property Title() As String
             Get
                 Return Me.m_data.Title
@@ -525,11 +526,11 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("PROMPT_SHOWTITLE"), _
-            cLocalizedDescription("PROMPT_SHOWTITLE_DESCR"), _
-            DefaultValue(True)> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("PROMPT_SHOWTITLE"),
+            cLocalizedDescription("PROMPT_SHOWTITLE_DESCR"),
+            DefaultValue(True)>
         Public Property ShowTitle() As Boolean
             Get
                 Return Me.m_bShowTitle
@@ -542,8 +543,8 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-        Category("Appearance"), _
+        <Browsable(True),
+        Category("Appearance"),
         cLocalizedDisplayName("GENERIC_SHOW_TROPHIC_LEVELS"),
         DefaultValue(5)>
         Public Property ShowTrophicLevels() As Boolean
@@ -558,10 +559,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_SHOW_NUMTL"), _
-            DefaultValue(5)> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("GENERIC_SHOW_NUMTL"),
+            DefaultValue(5)>
         Public Property NumberOfTrophicLevels() As Integer
             Get
                 Return Me.m_iNumTrophicLevels - 1
@@ -575,10 +576,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_COLOUR_USAGE"), _
-            DefaultValue(eFDColorUsageTypes.None)> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("GENERIC_COLOUR_USAGE"),
+            DefaultValue(eFDColorUsageTypes.None)>
         Public Property AutoColorUsage() As eFDColorUsageTypes
             Get
                 Return Me.m_colorusagetype
@@ -591,10 +592,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_SHOW_LEGEND"), _
-            DefaultValue(TriState.UseDefault)> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("GENERIC_SHOW_LEGEND"),
+            DefaultValue(TriState.UseDefault)>
         Public Property ShowLegend As TriState
             Get
                 Return Me.m_tsShowLegend
@@ -607,10 +608,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-             Category("Node"), _
-             cLocalizedDisplayName("HEADER_COLOR"), _
-             DefaultValue(&HFFD3D3D3)> _
+        <Browsable(True),
+             Category("Node"),
+             cLocalizedDisplayName("HEADER_COLOR"),
+             DefaultValue(&HFFD3D3D3)>
         Public Property CustomNodeColor() As Color
             Get
                 Return Me.m_clrNode
@@ -623,10 +624,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Node"), _
-            cLocalizedDisplayName("HEADER_NODE_SIZE_AUTO"), _
-            DefaultValue(True)> _
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("HEADER_NODE_SIZE_AUTO"),
+            DefaultValue(True)>
         Public Property AutoNodeSize() As Boolean
             Get
                 Return Me.m_bAutoNodeSize
@@ -639,10 +640,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Node"), _
-            cLocalizedDisplayName("HEADER_NODE_SIZE"), _
-            DefaultValue(True)> _
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("HEADER_NODE_SIZE"),
+            DefaultValue(True)>
         Public Property CustomNodeSize() As Integer
             Get
                 Return Me.m_iNodeSize
@@ -655,10 +656,26 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Node"), _
-            cLocalizedDisplayName("HEADER_NODE_TYPE"), _
-            DefaultValue(eFDNodeTypes.Circle)> _
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("HEADER_NODE_SCALE"),
+            DefaultValue(eFDNodeScaleType.Logarithmic)>
+        Public Property NodeScaleType() As eFDNodeScaleType
+            Get
+                Return Me.m_nodescaletype
+            End Get
+            Set(ByVal value As eFDNodeScaleType)
+                If (value <> Me.m_nodescaletype) Then
+                    Me.m_nodescaletype = value
+                    Me.Update()
+                End If
+            End Set
+        End Property
+
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("HEADER_NODE_TYPE"),
+            DefaultValue(eFDNodeTypes.Circle)>
         Public Property NodeType() As eFDNodeTypes
             Get
                 Return Me.m_nodetype
@@ -671,10 +688,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Line"), _
-            cLocalizedDisplayName("HEADER_LINE_WIDTH_AUTO"), _
-            DefaultValue(False)> _
+        <Browsable(True),
+            Category("Line"),
+            cLocalizedDisplayName("HEADER_LINE_WIDTH_AUTO"),
+            DefaultValue(False)>
         Public Property AutoLineWidth() As Boolean
             Get
                 Return Me.m_bAutoLineWidth
@@ -687,10 +704,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Line"), _
-            cLocalizedDisplayName("HEADER_LINE_WIDTH"), _
-            DefaultValue(1)> _
+        <Browsable(True),
+            Category("Line"),
+            cLocalizedDisplayName("HEADER_LINE_WIDTH"),
+            DefaultValue(1)>
         Public Property CustomLineWidth() As Single
             Get
                 Return Me.m_sLineWidth
@@ -703,9 +720,9 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Line"), _
-            cLocalizedDisplayName("HEADER_LINE_COLOR")> _
+        <Browsable(True),
+            Category("Line"),
+            cLocalizedDisplayName("HEADER_LINE_COLOR")>
         Public Property CustomLineColor() As Color
             Get
                 Return Me.m_clrLine
@@ -718,10 +735,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Line"), _
-            cLocalizedDisplayName("HEADER_LINE_TYPE"), _
-            DefaultValue(eFDConnectionType.Arch)> _
+        <Browsable(True),
+            Category("Line"),
+            cLocalizedDisplayName("HEADER_LINE_TYPE"),
+            DefaultValue(eFDConnectionType.Arch)>
         Public Property LineConnectionType() As eFDConnectionType
             Get
                 Return Me.m_connectiontype
@@ -734,10 +751,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Node"), _
-            cLocalizedDisplayName("HEADER_SHOW_VALUES"), _
-            DefaultValue(False)> _
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("HEADER_SHOW_VALUES"),
+            DefaultValue(False)>
         Public Property NodeDrawValue() As Boolean
             Get
                 Return Me.m_bIsNodeDrawValue
@@ -750,10 +767,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Node"), _
-            cLocalizedDisplayName("HEADER_SHOW_LABELS"), _
-            DefaultValue(True)> _
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("HEADER_SHOW_LABELS"),
+            DefaultValue(True)>
         Public Property NodeDrawLabels() As Boolean
             Get
                 Return Me.m_bIsDrawLabel
@@ -766,10 +783,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Node"), _
-            cLocalizedDisplayName("GENERIC_SHOW_HIDDEN"), _
-            DefaultValue(eFDShowHiddenType.GrayedOut)> _
+        <Browsable(True),
+            Category("Node"),
+            cLocalizedDisplayName("GENERIC_SHOW_HIDDEN"),
+            DefaultValue(eFDShowHiddenType.GrayedOut)>
         Public Property ShowHiddenMode() As eFDShowHiddenType _
             Implements IFlowDiagramRenderer.ShowHiddenNodes
             Get
@@ -900,26 +917,26 @@ Namespace Controls
             End Set
         End Property
 
-        Public Function IsNodeAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF, _
+        Public Function IsNodeAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF,
                                       ByVal i As Integer, ByVal sValue As Single) As Boolean _
             Implements IFlowDiagramRenderer.IsNodeAtPoint
 
             Dim ptfNodeLocation As PointF = Me.NodeLocation(i, rc)
             Dim sNodeSize As Single = CSng(Math.Max(g_minsize, Me.CalcNodeSize(sValue, Me.m_data.ValueMax)))
-            Dim rcf As New RectangleF(ptfNodeLocation.X - sNodeSize / 2, _
-                                      ptfNodeLocation.Y - sNodeSize / 2, _
-                                      sNodeSize, _
+            Dim rcf As New RectangleF(ptfNodeLocation.X - sNodeSize / 2,
+                                      ptfNodeLocation.Y - sNodeSize / 2,
+                                      sNodeSize,
                                       sNodeSize)
 
             Return rcf.Contains(ptfTest)
 
         End Function
 
-        Public Function IsLabelAtPoint(ByVal rc As Rectangle, _
-                                       ByVal ptfTest As PointF, _
-                                       ByVal i As Integer, _
-                                       ByVal strLabel As String, _
-                                       ByVal g As Graphics, _
+        Public Function IsLabelAtPoint(ByVal rc As Rectangle,
+                                       ByVal ptfTest As PointF,
+                                       ByVal i As Integer,
+                                       ByVal strLabel As String,
+                                       ByVal g As Graphics,
                                        ByVal font As Font) As Boolean _
             Implements IFlowDiagramRenderer.IsLabelAtPoint
 
@@ -1011,18 +1028,22 @@ Namespace Controls
             Get
                 Dim iSize As Integer = Me.m_iNodeSize
 
-                If Me.m_bAutoNodeSize Then
-                    If sValue > 0 And sValueMax > 0 Then
-                        Select Case Me.m_nodetype
-                            Case eFDNodeTypes.Circle
-                                iSize = CInt(Me.m_iNodeSize * Math.Sqrt((2 * sValue / sValueMax) / Math.PI) * 2)
-                            Case eFDNodeTypes.Rectangle
-                                iSize = CInt(Me.m_iNodeSize * Math.Sqrt(2 * sValue / sValueMax))
-                        End Select
-                        ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
-                        ' Note that Math.Log = ln
-                        'iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
-                    End If
+                If (Me.m_bAutoNodeSize) And (sValue > 0) And (sValueMax > 0) Then
+                    Select Case Me.NodeScaleType
+                        Case eFDNodeScaleType.Logarithmic
+                            ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
+                            ' Note that Math.Log = ln
+                            iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
+                        Case eFDNodeScaleType.Realistic
+                            Select Case Me.m_nodetype
+                                Case eFDNodeTypes.Circle
+                                    iSize = CInt(Me.m_iNodeSize * Math.Sqrt((2 * sValue / sValueMax) / Math.PI) * 2)
+                                Case eFDNodeTypes.Rectangle
+                                    iSize = CInt(Me.m_iNodeSize * Math.Sqrt(2 * sValue / sValueMax))
+                            End Select
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
                 End If
                 Return Math.Max(3, iSize)
             End Get
