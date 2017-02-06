@@ -100,24 +100,26 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
             Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
 
             'Yaxis (left) grid lines
-            Me.m_zgh.GetPane(1).YAxis.MajorGrid.IsVisible = True
+            Dim gp As GraphPane = Me.m_zgh.GetPane(1)
+
+            gp.YAxis.MajorGrid.IsVisible = True
 
             ' JB: the cool thing to do here would be to only show the 1.0 grid line;not all the grid line....
             ' JS: This should help
-            Me.m_zgh.GetPane(1).YAxis.MajorTic.IsAllTics = False
+            gp.YAxis.MajorTic.IsAllTics = False
 
-            Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
+            gp.Y2Axis.IsVisible = True
 
-            Me.m_zgh.GetPane(1).Y2Axis.Title.Text = My.Resources.HEADER_MAP_HISTOGRAM
-            Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
-            Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
+            gp.Y2Axis.Title.Text = My.Resources.HEADER_MAP_HISTOGRAM
+            gp.Y2Axis.Title.IsVisible = True
+            gp.Y2Axis.Title.FontSpec = gp.YAxis.Title.FontSpec
 
-            Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsAllTics = False
-            Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsOpposite = False
-            Me.m_zgh.GetPane(1).Y2Axis.MajorTic.IsOpposite = False
+            gp.Y2Axis.MinorTic.IsAllTics = False
+            gp.Y2Axis.MinorTic.IsOpposite = False
+            gp.Y2Axis.MajorTic.IsOpposite = False
 
             'somehow set the Y2Axis label font size
-            Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
+            gp.Y2Axis.Scale.MaxAuto = True
 
             Me.m_lbxGroups.Attach(Me.m_uic)
             Me.m_lbxGroups.Populate(Me.GetGroupList())
