@@ -93,13 +93,13 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Current model time step in years. Incremented by <see cref="TimeStep">TimeStep</see> at the end of the timestep.</summary>
     ''' <remarks>This is the time in years, not the array index.</remarks>
-    Public TimeNow As Single
+    Public TimeNow As Double
 
     ''' <summary>
     ''' Length of the time step in years 
     ''' </summary>
     ''' <remarks>1 month = 0.083333</remarks>
-    Public TimeStep As Single
+    Public TimeStep As Double
 
     ''' <summary>Current year that is being executed.</summary>
     Public YearNow As Integer = 0
@@ -771,6 +771,7 @@ Public Class cEcospaceDataStructures
     Public IsEcosimBioForcingGroup() As Boolean
 
     Public UseEcosimForcing As Boolean
+
 
 #End Region
 
@@ -1525,6 +1526,29 @@ Public Class cEcospaceDataStructures
     End Sub
 
 
+    Friend Sub debugDumpContaminantMap(foriGroup As Integer)
+        System.Console.WriteLine("-------------Contaminants for " + foriGroup.ToString + "----------")
+        Dim sumC As Single
+        For ir As Integer = 1 To Me.InRow
+            For ic As Integer = 1 To Me.InCol
+                'System.Console.Write(Me.Ccell(ir, ic, foriGroup).ToString)
+                'If ic <> Me.InCol Then
+                '    System.Console.Write(", ")
+                'Else
+                '    System.Console.WriteLine()
+                'End If
+
+                sumC += (Me.Ccell(ir, ic, foriGroup))
+            Next
+        Next
+
+
+        System.Console.WriteLine("Sum, " + sumC.ToString)
+        System.Console.WriteLine("-----------------------")
+    End Sub
+
+
+
     ''' <summary>
     ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.EffortDistThreshold"></see>
     ''' </summary>
@@ -1919,6 +1943,7 @@ Public Class cEcospaceDataStructures
             Me.allocate(MonthlyXvel, 12, InRow + 1, InCol + 1)
             Me.allocate(MonthlyYvel, 12, InRow + 1, InCol + 1)
             Me.allocate(MonthlyUpWell, 12, InRow + 1, InCol + 1)
+
 
             'jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1

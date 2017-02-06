@@ -513,14 +513,17 @@ Namespace SpatialData
 
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
                                 ' JS 24Nov14: Fixed file exist check when loading dataset metadata
-                                If Not IO.File.Exists(f.FileName) Then
-                                    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
-                                ElseIf (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
+                                ' JS 16Jan17: File.exists is expensive because of internal exception trapping (http://stackoverflow.com/questions/2225415/why-is-file-exists-much-slower-when-the-file-does-not-exist)
+                                '             This should really be done via background indexing 
+                                'If Not IO.File.Exists(f.FileName) Then
+                                '    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
+                                'Else
+                                If (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                     If (Boolean.Parse(xnChild.Attributes("Indexed").InnerText)) Then
                                         f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
-                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMin").InnerText, GetType(Single))), _
+                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMin").InnerText, GetType(Single))),
                                                             CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LatMax").InnerText, GetType(Single))))
-                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMax").InnerText, GetType(Single))), _
+                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMax").InnerText, GetType(Single))),
                                                             CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LatMin").InnerText, GetType(Single))))
                                     End If
                                 End If

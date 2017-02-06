@@ -71,6 +71,12 @@ Public Class cEcotracerGroupOutput
                 Case eVarNameFlags.CEnvironment
                     'environment data stored in zero group
                     Return Me.m_TracerData.TracerConc(0, iTimeStep)
+
+                Case eVarNameFlags.ConcBio
+                    'environment data stored in zero group
+                    Return Me.m_TracerData.TracerCB(iGroup, iTimeStep)
+
+
             End Select
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -118,6 +124,27 @@ Public Class cEcotracerGroupOutput
         Set(ByVal value As Single)
             Try
                 SetVariable(eVarNameFlags.Concentration, value, iGroup, iTimeStep)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Set
+    End Property
+
+
+    Public Property ConBio(ByVal iGroup As Integer, ByVal iTimeStep As Integer) As Single
+        Get
+            Try
+                Return GetVariable(eVarNameFlags.ConcBio, iGroup, iTimeStep)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                Return cCore.NULL_VALUE
+            End Try
+
+        End Get
+
+        Set(ByVal value As Single)
+            Try
+                SetVariable(eVarNameFlags.ConcBio, value, iGroup, iTimeStep)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try

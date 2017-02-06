@@ -50,17 +50,26 @@ Public Class cEcospaceResultWriterFactory
         Try
 
             For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
+
                 If (GetType(IEcospaceResultsWriter).IsAssignableFrom(t) And Not t.IsAbstract()) Then
-                    writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
+                    Try
+                        writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
+                    Catch ex As Exception
+                        cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultsWriter")
+                    End Try
                 End If
             Next
 
             ' Plug-in manager provided?
             If (pm IsNot Nothing) Then
-                ' #Yes: see if a plug-in based writer supports the requested format
-                For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
-                    writers.Add(ip)
-                Next
+                Try
+                    ' #Yes: see if a plug-in based writer supports the requested format
+                    For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
+                        writers.Add(ip)
+                    Next
+                Catch ex As Exception
+                    cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultWriterPlugin")
+                End Try
             End If
 
         Catch ex As Exception
@@ -90,6 +99,12 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>The complete path to the directory containing result files.</summary>
     Protected m_OutputPath As String
 
+    ''' <summary>
+    ''' Default first time step to write data
+    ''' </summary>
+    ''' <remarks></remarks>
+    Protected m_FirstStep As Integer = 1
+
     Protected vars() As eVarNameFlags
 
     Protected m_selGroups() As Boolean
@@ -99,7 +114,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 #Region " Constructor "
 
     Public Sub New()
-        Me.FirstOutputTimeStep = 1
+        ' NOP
     End Sub
 
 #End Region ' Constructor
@@ -150,9 +165,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
 #Region " Internals "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>File extension for internal use.</summary>
-    ''' -----------------------------------------------------------------------
     Protected MustOverride Function FileExtension() As String
 
     ''' -----------------------------------------------------------------------
@@ -224,10 +236,11 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             'System.Console.WriteLine("Plugin Filename = " + Filename)
 
         Else
-            'Ok Use the default filename
+
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
             Dim strTimestep As String = ""
+            'Ok Use the default filename
+            Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
 
             ' Is there a time step in the file name?
             If (iModelTimeStep > 0) Then
@@ -360,6 +373,13 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
 
     Public Overridable Property FirstOutputTimeStep As Integer Implements EwEUtils.Core.IEcospaceResultsWriter.FirstOutputTimeStep
+        Get
+            Return Me.m_FirstStep
+        End Get
+        Set(value As Integer)
+            Me.m_FirstStep = value
+        End Set
+    End Property
 
     Public Overridable Property SelectedGroups As Boolean() Implements IEcospaceResultsWriter.SelectedGroups
         Get

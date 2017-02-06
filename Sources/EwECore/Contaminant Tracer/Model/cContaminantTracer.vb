@@ -63,6 +63,8 @@ Public Class cContaminantTracer
 
     Public BypassIntegrated() As Boolean
 
+    Public EnvConDriver() As Single
+
     'references to other core data 
     Private m_EPData As cEcopathDataStructures
     Private m_ESData As cEcosimDatastructures
@@ -85,9 +87,12 @@ Public Class cContaminantTracer
         If m_TracerData.ConForceNumber > 0 Then
             ' If i = 0 And m_TracerData.ConForceNumber > 0 Then
             InputMult = m_ESData.tval(m_TracerData.ConForceNumber)
+            Debug.Assert(InputMult <> 1)
         Else
             InputMult = 1
         End If
+
+
 
         'find the maximum allowable timestep
         ConDeriv(Biom, Derivcon, Cintotal, Closs, InputMult, False)
@@ -113,8 +118,9 @@ Public Class cContaminantTracer
 
         'Euler 1st step
         For i = 0 To m_EPData.NumGroups
-            ConcTr(i) = ConcTr(i) + Derivcon(i) * Tst
+            Me.ConcTr(i) = Me.ConcTr(i) + Derivcon(i) * Tst
             Derivcon2(i) = Derivcon(i)
+            Me.EnvConDriver(i) = 0.0
         Next
 
         'Adams bashford steps 2-N
@@ -235,6 +241,8 @@ Public Class cContaminantTracer
             'add environmental and immigration flows to get total inflow
             '(at this point, m_tracer.Cinflow already sums inflow components from biological flows (derivt)
             Cintotal(i) = InputMultT * m_TracerData.Cinflow(i) + m_TracerData.Cimmig(i) * m_EPData.Immig(i) + m_TracerData.Cenv(i) * Biom(i) * ConcTr(0)
+            'Added Ecospace forced contaminants
+            Cintotal(i) += Me.EnvConDriver(i)
 
             'flow to environment from detritus and trophic flows
             'this contaminant flow will not be subjected to the contaminant forcing function via InputMultT
@@ -260,6 +268,7 @@ Public Class cContaminantTracer
             ReDim ConcTr(m_EPData.NumGroups + 1)
             'BypassIntegrated() should all be false all groups need to run the grid integration 
             ReDim BypassIntegrated(m_EPData.NumGroups)
+            ReDim EnvConDriver(m_EPData.NumGroups + 1)
 
             'jb EwE5
             ' ReDim ConKdet(EPData.NumGroups, NumLiving + 1 To EPData.NumGroups, NumGear) 
@@ -296,9 +305,9 @@ Public Class cContaminantTracer
         Dim igrp As Integer
         For igrp = 0 To m_EPData.NumGroups + 1
             TracerData.TracerConc(igrp, iTime) = Me.ConcTr(igrp)
-            'If igrp <= m_EPData.NumGroups Then
-            'If Biomass(igrp) > 0 Then TracerData.TracerConc(igrp, iTime) = TracerData.TracerConc(igrp, iTime) / Biomass(igrp)
-            'End If
+            If igrp <= m_EPData.NumGroups Then
+                TracerData.TracerCB(igrp, iTime) = Me.ConcTr(igrp) / (Biomass(igrp) + 1.0E-20F)
+            End If
         Next igrp
     End Sub
 

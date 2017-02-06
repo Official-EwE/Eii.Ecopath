@@ -19,13 +19,14 @@
 '
 
 Option Strict On
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 
 Namespace EcospaceTimeSeries
 
     Public Class cEcospaceTimeSeriesRec
+
+#Region "Private Properties and Definitions"
 
         Private Enum eDataCols
             Row
@@ -35,7 +36,11 @@ Namespace EcospaceTimeSeries
             Value
         End Enum
 
+        Private m_validation As eTimeSeriesRecValidations
 
+#End Region
+
+#Region "Public Properties"
 
         Public iGroupID As Integer = cCore.NULL_VALUE
         Public Row As Integer = cCore.NULL_VALUE
@@ -50,7 +55,9 @@ Namespace EcospaceTimeSeries
 
         Public InputTimeStepFormat As String = "yyyy-MM-dd"
 
-        Private m_validation As eTimeSeriesRecValidations
+#End Region
+
+#Region "Constructors"
 
         Private Sub New(strRec As String, TimeStepFormatString As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass)
             Dim data() As String
@@ -86,6 +93,10 @@ Namespace EcospaceTimeSeries
         Private Sub New()
 
         End Sub
+
+#End Region
+
+#Region "Public Methods"
 
         Shared Function FromString(strRec As String, DateFormatString As String, Optional DataType As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass) As cEcospaceTimeSeriesRec
             Try
@@ -123,6 +134,21 @@ Namespace EcospaceTimeSeries
         End Function
 
 
+        Public ReadOnly Property ReadValidation As eTimeSeriesRecValidations
+            Get
+                Return Me.m_validation
+            End Get
+        End Property
+
+        Public Sub ClearResults()
+            PredError = cCore.NULL_VALUE
+            PredictedValue = cCore.NULL_VALUE
+        End Sub
+
+#End Region
+
+#Region "Private Methods"
+
         Private Function PaserString(recString As String, ByRef data() As String) As Boolean
             Dim bReturn As Boolean = True
             data = EwEUtils.Utilities.cStringUtils.SplitQualified(recString, ",")
@@ -145,11 +171,9 @@ Namespace EcospaceTimeSeries
             Return bReturn
         End Function
 
-        Public ReadOnly Property ReadValidation As eTimeSeriesRecValidations
-            Get
-                Return Me.m_validation
-            End Get
-        End Property
+
+#End Region
+
     End Class
 
 End Namespace

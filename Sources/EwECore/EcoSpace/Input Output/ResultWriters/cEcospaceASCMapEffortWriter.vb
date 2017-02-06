@@ -37,6 +37,11 @@ Public Class cEcospaceASCMapEffortWriter
     Public Sub New()
         MyBase.New()
         Me.vars = New eVarNameFlags() {eVarNameFlags.EcospaceMapEffort}
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''For debugging CreateInstance exceptions
+        'Throw New Exception("Test Exception cEcospaceASCMapEffortWriter.New()")
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     End Sub
 
     Public Overrides Sub Init(theCore As Object)

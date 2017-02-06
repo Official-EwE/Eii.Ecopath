@@ -8958,14 +8958,7 @@ Public Class cCore
                             Me.m_StateMonitor.SetEcospaceRun()
                             Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
-                            'Output writing
-                            For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
-                                Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
-                                If (writer.Enabled) Then
-                                    writer.Init(Me)
-                                    writer.StartWrite()
-                                End If
-                            Next
+                            Me.initEcospaceResultsWriters()
 
                             'make sure Ecospace is not paused
                             Me.m_Ecospace.isPaused = False
@@ -9974,6 +9967,8 @@ Public Class cCore
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
             Me.m_StateMonitor.SetEcospaceLoaded(False)
 
+            Me.m_EcospaceTimeSeriesManager.Clear()
+
             ' Invoke plugin point
             If (Me.PluginManager IsNot Nothing) Then
                 Me.PluginManager.EcospaceRunInvalidated()
@@ -10287,7 +10282,7 @@ Public Class cCore
 
         m_EcoSpaceData.PredictEffort = m_EcospaceModelParams.PredictEffort
 
-        m_EcoSpaceData.TimeStep = CSng(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear)
+        m_EcoSpaceData.TimeStep = CDbl(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear)
 
         m_EcoSpaceData.SumStart(0) = m_EcospaceModelParams.StartSummaryTime
         m_EcoSpaceData.SumStart(1) = m_EcospaceModelParams.EndSummaryTime
@@ -10694,6 +10689,22 @@ Public Class cCore
     End Sub
 
 
+    Private Sub initEcospaceResultsWriters()
+        'Output writing
+        For iWriter As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
+            Try
+                Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(iWriter)
+                If (writer.Enabled) Then
+                    writer.Init(Me)
+                    writer.StartWrite()
+                End If
+            Catch ex As Exception
+                System.Console.WriteLine("Exception in " + Me.ToString + ".initEcospaceResultsWriters()")
+            End Try
+        Next
+    End Sub
+
+
     Private Sub LoadEcospaceResults()
         'see cEcoSpace.ScaleAfterNumStep(), summarizeCatchData() and summarizeTimeStepData()
         Dim iflt As Integer
@@ -10796,7 +10807,7 @@ Public Class cCore
             Me.m_EcospaceStats.SS = Me.m_EcospaceTimeSeriesManager.SS
             'if the manager contains data then SS has been calculated
             'this doesn't mean it isn't zero!
-            Me.m_EcospaceStats.isSSCalculated = Me.m_EcospaceTimeSeriesManager.ContainsData
+            Me.m_EcospaceStats.isSSCalculated = Me.m_EcospaceTimeSeriesManager.ContainsData(eVarNameFlags.EcospaceMapBiomass)
             For igrp = 1 To Me.nGroups
                 Me.m_EcospaceStats.SSGroup(igrp) = Me.m_EcospaceTimeSeriesManager.SSGroup(igrp)
             Next
@@ -12463,6 +12474,7 @@ Public Class cCore
             Me.m_EcotracerModelParameters.COutflow = Me.m_tracerData.CoutFlow(0)
             Me.m_EcotracerModelParameters.CDecay = Me.m_tracerData.cdecay(0)
             Me.m_EcotracerModelParameters.ConForceNumber = Me.m_tracerData.ConForceNumber
+            Me.m_EcotracerModelParameters.MaxTimeSteps = Me.m_tracerData.MaxTimeSteps
 
             Me.m_EcotracerModelParameters.ResetStatusFlags()
             Me.m_EcotracerModelParameters.AllowValidation = True
@@ -12484,6 +12496,9 @@ Public Class cCore
             Me.m_tracerData.CoutFlow(0) = Me.m_EcotracerModelParameters.COutflow
             Me.m_tracerData.cdecay(0) = Me.m_EcotracerModelParameters.CDecay
             Me.m_tracerData.ConForceNumber = Me.m_EcotracerModelParameters.ConForceNumber
+
+            Me.m_tracerData.MaxTimeSteps = Me.m_EcotracerModelParameters.MaxTimeSteps
+
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".EcoSimModelRunParameters() EcoSim Parameters will not be set Error: " & ex.Message)

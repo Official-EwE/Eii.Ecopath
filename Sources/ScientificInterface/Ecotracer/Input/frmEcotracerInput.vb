@@ -45,6 +45,8 @@ Namespace Ecotracer
         Private m_fpCDecayEnv As cEwEFormatProvider = Nothing
         Private m_fpInflowForceNumberEnv As cEwEFormatProvider = Nothing
 
+        Private m_fpMAxTS As cEwEFormatProvider = Nothing
+
 #End Region ' Private vars
 
 #Region " Constructors "
@@ -72,6 +74,7 @@ Namespace Ecotracer
             Me.m_fpCDecayEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCDecayRateEnv, ecotracerModelParams, eVarNameFlags.CPhysicalDecayRate)
             Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
             Me.m_fpCOutflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCLossEnv, ecotracerModelParams, eVarNameFlags.COutflow)
+            Me.m_fpMAxTS = New cPropertyFormatProvider(Me.UIContext, Me.m_tbMaxTS, ecotracerModelParams, eVarNameFlags.ConMaxTimeSteps)
 
             Me.m_grid.UIContext = Me.UIContext
 
@@ -87,6 +90,7 @@ Namespace Ecotracer
             Me.m_fpCOutflowEnv.Release()
             Me.m_fpCZeroEnv.Release()
             Me.m_fpInflowForceNumberEnv.Release()
+            Me.m_fpMAxTS.Release()
 
             Me.m_grid.UIContext = Nothing
 
@@ -114,8 +118,27 @@ Namespace Ecotracer
             Me.m_fpInflowForceNumberEnv.Items = aItems
         End Sub
 
+        Private Sub m_btSelectFile_Click(sender As Object, e As EventArgs) Handles m_btSelectFile.Click
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            cmdFO.Invoke(SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
+            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+                Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
+                Dim InputFile As String = cmdFO.FileNames(0)
+                If manager.Load(InputFile, "", eVarNameFlags.Concentration) Then
+                    Me.m_lbConcentrationFile.Text = manager.ContaminantInputFileName
+                End If ' Load with default output file name
+            End If
+        End Sub
+
+        Private Sub m_btClearFile_Click(sender As Object, e As EventArgs) Handles m_btClearFile.Click
+            Me.Core.EcospaceTimeSeriesManager.Clear()
+            Me.m_lbConcentrationFile.Text = ""
+        End Sub
+
 #End Region ' Internals
 
-     End Class
+    End Class
 
 End Namespace

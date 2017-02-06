@@ -129,7 +129,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 25</value>
+    <value>760, 27</value>
   </data>
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -138,7 +138,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_tlpGroups</value>
@@ -157,13 +157,13 @@
     <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
+    <value>0, 27</value>
   </data>
   <data name="m_grid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 375</value>
+    <value>760, 348</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -172,7 +172,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecotracer.gridEcotracerInput, EwE6, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecotracer.gridEcotracerInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tlpGroups</value>
@@ -181,7 +181,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 114</value>
+    <value>0, 154</value>
   </data>
   <data name="m_tlpGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -190,7 +190,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 400</value>
+    <value>760, 375</value>
   </data>
   <data name="m_tlpGroups.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -209,39 +209,6 @@
   </data>
   <data name="m_tlpGroups.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 96</value>
-  </data>
-  <data name="m_hdrGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 18</value>
-  </data>
-  <data name="m_hdrGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_hdrGroups.Text" xml:space="preserve">
-    <value>Groups</value>
-  </data>
-  <data name="m_hdrGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Name" xml:space="preserve">
-    <value>m_hdrGroups</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
-    <value>m_plAaargh</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="m_tlp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -262,7 +229,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_lbCZeroEnv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 23</value>
+    <value>183, 27</value>
   </data>
   <data name="m_lbCZeroEnv.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -295,10 +262,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbCDecayRateEnv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 23</value>
+    <value>3, 27</value>
   </data>
   <data name="m_lbCDecayRateEnv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 23</value>
+    <value>183, 27</value>
   </data>
   <data name="m_lbCDecayRateEnv.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -325,13 +292,13 @@
     <value>Fill</value>
   </data>
   <data name="m_cmbEnvInflowFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 49</value>
+    <value>192, 57</value>
   </data>
   <data name="m_cmbEnvInflowFF.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 21</value>
+    <value>104, 21</value>
   </data>
   <data name="m_cmbEnvInflowFF.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_cmbEnvInflowFF.Name" xml:space="preserve">
     <value>m_cmbEnvInflowFF</value>
@@ -345,6 +312,39 @@
   <data name="&gt;&gt;m_cmbEnvInflowFF.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 108</value>
+  </data>
+  <data name="m_hdrGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>754, 18</value>
+  </data>
+  <data name="m_hdrGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_hdrGroups.Text" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="m_hdrGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrGroups.Name" xml:space="preserve">
+    <value>m_hdrGroups</value>
+  </data>
+  <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
+    <value>m_tlp</value>
+  </data>
+  <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="m_lbFFEnv.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -355,10 +355,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbFFEnv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 46</value>
+    <value>3, 54</value>
   </data>
   <data name="m_lbFFEnv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 24</value>
+    <value>183, 27</value>
   </data>
   <data name="m_lbFFEnv.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -379,7 +379,7 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_lbFFEnv.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_lblCInflowEnv.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -391,10 +391,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCInflowEnv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 0</value>
+    <value>322, 0</value>
   </data>
   <data name="m_lblCInflowEnv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 23</value>
+    <value>176, 27</value>
   </data>
   <data name="m_lblCInflowEnv.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -415,7 +415,7 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_lblCInflowEnv.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblCDecay.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -427,10 +427,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblCDecay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 23</value>
+    <value>322, 27</value>
   </data>
   <data name="m_lblCDecay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 23</value>
+    <value>176, 27</value>
   </data>
   <data name="m_lblCDecay.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -451,10 +451,10 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_lblCDecay.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_tbCDecayRateEnv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>189, 23</value>
+    <value>189, 27</value>
   </data>
   <data name="m_tbCDecayRateEnv.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -463,7 +463,7 @@
     <value>80, 20</value>
   </data>
   <data name="m_tbCDecayRateEnv.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;m_tbCDecayRateEnv.Name" xml:space="preserve">
     <value>m_tbCDecayRateEnv</value>
@@ -475,10 +475,10 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_tbCDecayRateEnv.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_tbCInflowEnv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>557, 0</value>
+    <value>501, 0</value>
   </data>
   <data name="m_tbCInflowEnv.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -487,7 +487,7 @@
     <value>80, 20</value>
   </data>
   <data name="m_tbCInflowEnv.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_tbCInflowEnv.Name" xml:space="preserve">
     <value>m_tbCInflowEnv</value>
@@ -499,10 +499,10 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_tbCInflowEnv.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_tbCLossEnv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>557, 23</value>
+    <value>501, 27</value>
   </data>
   <data name="m_tbCLossEnv.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -511,7 +511,7 @@
     <value>80, 20</value>
   </data>
   <data name="m_tbCLossEnv.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_tbCLossEnv.Name" xml:space="preserve">
     <value>m_tbCLossEnv</value>
@@ -523,7 +523,7 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_tbCLossEnv.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_tbCZeroEnv.Location" type="System.Drawing.Point, System.Drawing">
     <value>189, 0</value>
@@ -547,16 +547,232 @@
     <value>m_tlp</value>
   </data>
   <data name="&gt;&gt;m_tbCZeroEnv.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
+  </data>
+  <data name="m_lbMaxTS.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbMaxTS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lbMaxTS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbMaxTS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>322, 54</value>
+  </data>
+  <data name="m_lbMaxTS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 27</value>
+  </data>
+  <data name="m_lbMaxTS.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_lbMaxTS.Text" xml:space="preserve">
+    <value>Max number of time steps:</value>
+  </data>
+  <data name="m_lbMaxTS.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaxTS.Name" xml:space="preserve">
+    <value>m_lbMaxTS</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaxTS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaxTS.Parent" xml:space="preserve">
+    <value>m_tlp</value>
+  </data>
+  <data name="&gt;&gt;m_lbMaxTS.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_tbMaxTS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>501, 54</value>
+  </data>
+  <data name="m_tbMaxTS.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tbMaxTS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 20</value>
+  </data>
+  <data name="m_tbMaxTS.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_tbMaxTS.Name" xml:space="preserve">
+    <value>m_tbMaxTS</value>
+  </data>
+  <data name="&gt;&gt;m_tbMaxTS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbMaxTS.Parent" xml:space="preserve">
+    <value>m_tlp</value>
+  </data>
+  <data name="&gt;&gt;m_tbMaxTS.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_lbConcentration.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbConcentration.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lbConcentration.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lbConcentration.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 81</value>
+  </data>
+  <data name="m_lbConcentration.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 27</value>
+  </data>
+  <data name="m_lbConcentration.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lbConcentration.Text" xml:space="preserve">
+    <value>Contaminant concentration driver file</value>
+  </data>
+  <data name="m_lbConcentration.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentration.Name" xml:space="preserve">
+    <value>m_lbConcentration</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentration.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentration.Parent" xml:space="preserve">
+    <value>m_tlp</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentration.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="m_btSelectFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btSelectFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>192, 84</value>
+  </data>
+  <data name="m_btSelectFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 20</value>
+  </data>
+  <data name="m_btSelectFile.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_btSelectFile.Text" xml:space="preserve">
+    <value>Select file...</value>
+  </data>
+  <data name="&gt;&gt;m_btSelectFile.Name" xml:space="preserve">
+    <value>m_btSelectFile</value>
+  </data>
+  <data name="&gt;&gt;m_btSelectFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btSelectFile.Parent" xml:space="preserve">
+    <value>m_tlp</value>
+  </data>
+  <data name="&gt;&gt;m_btSelectFile.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_tlpDriverFile.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lbConcentrationFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lbConcentrationFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_lbConcentrationFile.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="m_lbConcentrationFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>346, 21</value>
+  </data>
+  <data name="m_lbConcentrationFile.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lbConcentrationFile.Text" xml:space="preserve">
+    <value>{not selected}</value>
+  </data>
+  <data name="m_lbConcentrationFile.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentrationFile.Name" xml:space="preserve">
+    <value>m_lbConcentrationFile</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentrationFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentrationFile.Parent" xml:space="preserve">
+    <value>m_tlpDriverFile</value>
+  </data>
+  <data name="&gt;&gt;m_lbConcentrationFile.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btClearFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>355, 3</value>
+  </data>
+  <data name="m_btClearFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 20</value>
+  </data>
+  <data name="m_btClearFile.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_btClearFile.Text" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="&gt;&gt;m_btClearFile.Name" xml:space="preserve">
+    <value>m_btClearFile</value>
+  </data>
+  <data name="&gt;&gt;m_btClearFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btClearFile.Parent" xml:space="preserve">
+    <value>m_tlpDriverFile</value>
+  </data>
+  <data name="&gt;&gt;m_btClearFile.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpDriverFile.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpDriverFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>319, 81</value>
+  </data>
+  <data name="m_tlpDriverFile.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpDriverFile.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpDriverFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>441, 27</value>
+  </data>
+  <data name="m_tlpDriverFile.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDriverFile.Name" xml:space="preserve">
+    <value>m_tlpDriverFile</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDriverFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDriverFile.Parent" xml:space="preserve">
+    <value>m_tlp</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDriverFile.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="m_tlpDriverFile.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbConcentrationFile" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btClearFile" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,80,Percent,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlp.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 23</value>
   </data>
   <data name="m_tlp.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_tlp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 70</value>
+    <value>760, 128</value>
   </data>
   <data name="m_tlp.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -571,10 +787,10 @@
     <value>m_plAaargh</value>
   </data>
   <data name="&gt;&gt;m_tlp.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_tlp.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbCZeroEnv" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCDecayRateEnv" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbEnvInflowFF" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbFFEnv" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCInflowEnv" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCDecay" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCDecayRateEnv" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCInflowEnv" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCLossEnv" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCZeroEnv" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,50,Absolute,20,AutoSize,0,Percent,50" /&gt;&lt;Rows Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbCZeroEnv" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbCDecayRateEnv" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbEnvInflowFF" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrGroups" Row="4" RowSpan="1" Column="0" ColumnSpan="5" /&gt;&lt;Control Name="m_lbFFEnv" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCInflowEnv" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblCDecay" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCDecayRateEnv" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCInflowEnv" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCLossEnv" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_tbCZeroEnv" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lbMaxTS" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_tbMaxTS" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lbConcentration" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btSelectFile" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDriverFile" Row="3" RowSpan="1" Column="3" ColumnSpan="2" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,30,Absolute,20,AutoSize,0,Percent,70" /&gt;&lt;Rows Styles="Percent,25,Percent,25,Percent,25,Percent,25,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrInit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -586,7 +802,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrInit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 18</value>
+    <value>760, 18</value>
   </data>
   <data name="m_hdrInit.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -601,13 +817,13 @@
     <value>m_hdrInit</value>
   </data>
   <data name="&gt;&gt;m_hdrInit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInit.Parent" xml:space="preserve">
     <value>m_plAaargh</value>
   </data>
   <data name="&gt;&gt;m_hdrInit.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_plAaargh.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -616,7 +832,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_plAaargh.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 514</value>
+    <value>760, 529</value>
   </data>
   <data name="m_plAaargh.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -646,7 +862,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>724, 514</value>
+    <value>760, 529</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -658,6 +874,6 @@
     <value>frmEcotracerInput</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

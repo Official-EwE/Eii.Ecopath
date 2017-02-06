@@ -4375,7 +4375,7 @@ Public Class frmEwE6
         If cmdFO.Result = Windows.Forms.DialogResult.OK Then
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
             Dim InputFile As String = cmdFO.FileNames(0)
-            manager.Load(InputFile, "") ' Load with default output file name
+            manager.Load(InputFile, "", eVarNameFlags.EcospaceMapBiomass) ' Load with default output file name
         End If
 
     End Sub

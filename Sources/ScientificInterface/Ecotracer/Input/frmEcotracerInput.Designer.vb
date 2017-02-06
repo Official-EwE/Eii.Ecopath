@@ -51,11 +51,11 @@ Namespace Ecotracer
             Me.m_plAaargh = New System.Windows.Forms.Panel()
             Me.m_tlpGroups = New System.Windows.Forms.TableLayoutPanel()
             Me.m_grid = New ScientificInterface.Ecotracer.gridEcotracerInput()
-            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbCZeroEnv = New System.Windows.Forms.Label()
             Me.m_lbCDecayRateEnv = New System.Windows.Forms.Label()
             Me.m_cmbEnvInflowFF = New System.Windows.Forms.ComboBox()
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lbFFEnv = New System.Windows.Forms.Label()
             Me.m_lblCInflowEnv = New System.Windows.Forms.Label()
             Me.m_lblCDecay = New System.Windows.Forms.Label()
@@ -63,10 +63,18 @@ Namespace Ecotracer
             Me.m_tbCInflowEnv = New System.Windows.Forms.TextBox()
             Me.m_tbCLossEnv = New System.Windows.Forms.TextBox()
             Me.m_tbCZeroEnv = New System.Windows.Forms.TextBox()
+            Me.m_lbMaxTS = New System.Windows.Forms.Label()
+            Me.m_tbMaxTS = New System.Windows.Forms.TextBox()
+            Me.m_lbConcentration = New System.Windows.Forms.Label()
+            Me.m_btSelectFile = New System.Windows.Forms.Button()
+            Me.m_tlpDriverFile = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lbConcentrationFile = New System.Windows.Forms.Label()
+            Me.m_btClearFile = New System.Windows.Forms.Button()
             Me.m_hdrInit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plAaargh.SuspendLayout()
             Me.m_tlpGroups.SuspendLayout()
             Me.m_tlp.SuspendLayout()
+            Me.m_tlpDriverFile.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
@@ -79,7 +87,6 @@ Namespace Ecotracer
             'm_plAaargh
             '
             Me.m_plAaargh.Controls.Add(Me.m_tlpGroups)
-            Me.m_plAaargh.Controls.Add(Me.m_hdrGroups)
             Me.m_plAaargh.Controls.Add(Me.m_tlp)
             Me.m_plAaargh.Controls.Add(Me.m_hdrInit)
             resources.ApplyResources(Me.m_plAaargh, "m_plAaargh")
@@ -124,20 +131,13 @@ Namespace Ecotracer
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'm_hdrGroups
-            '
-            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
-            Me.m_hdrGroups.CanCollapseParent = False
-            Me.m_hdrGroups.CollapsedParentHeight = 0
-            Me.m_hdrGroups.IsCollapsed = False
-            Me.m_hdrGroups.Name = "m_hdrGroups"
-            '
             'm_tlp
             '
             resources.ApplyResources(Me.m_tlp, "m_tlp")
             Me.m_tlp.Controls.Add(Me.m_lbCZeroEnv, 0, 0)
             Me.m_tlp.Controls.Add(Me.m_lbCDecayRateEnv, 0, 1)
             Me.m_tlp.Controls.Add(Me.m_cmbEnvInflowFF, 1, 2)
+            Me.m_tlp.Controls.Add(Me.m_hdrGroups, 0, 4)
             Me.m_tlp.Controls.Add(Me.m_lbFFEnv, 0, 2)
             Me.m_tlp.Controls.Add(Me.m_lblCInflowEnv, 3, 0)
             Me.m_tlp.Controls.Add(Me.m_lblCDecay, 3, 1)
@@ -145,6 +145,11 @@ Namespace Ecotracer
             Me.m_tlp.Controls.Add(Me.m_tbCInflowEnv, 4, 0)
             Me.m_tlp.Controls.Add(Me.m_tbCLossEnv, 4, 1)
             Me.m_tlp.Controls.Add(Me.m_tbCZeroEnv, 1, 0)
+            Me.m_tlp.Controls.Add(Me.m_lbMaxTS, 3, 2)
+            Me.m_tlp.Controls.Add(Me.m_tbMaxTS, 4, 2)
+            Me.m_tlp.Controls.Add(Me.m_lbConcentration, 0, 3)
+            Me.m_tlp.Controls.Add(Me.m_btSelectFile, 1, 3)
+            Me.m_tlp.Controls.Add(Me.m_tlpDriverFile, 3, 3)
             Me.m_tlp.Name = "m_tlp"
             '
             'm_lbCZeroEnv
@@ -163,6 +168,15 @@ Namespace Ecotracer
             Me.m_cmbEnvInflowFF.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbEnvInflowFF.FormattingEnabled = True
             Me.m_cmbEnvInflowFF.Name = "m_cmbEnvInflowFF"
+            '
+            'm_hdrGroups
+            '
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.CanCollapseParent = False
+            Me.m_hdrGroups.CollapsedParentHeight = 0
+            Me.m_tlp.SetColumnSpan(Me.m_hdrGroups, 5)
+            Me.m_hdrGroups.IsCollapsed = False
+            Me.m_hdrGroups.Name = "m_hdrGroups"
             '
             'm_lbFFEnv
             '
@@ -199,6 +213,47 @@ Namespace Ecotracer
             resources.ApplyResources(Me.m_tbCZeroEnv, "m_tbCZeroEnv")
             Me.m_tbCZeroEnv.Name = "m_tbCZeroEnv"
             '
+            'm_lbMaxTS
+            '
+            resources.ApplyResources(Me.m_lbMaxTS, "m_lbMaxTS")
+            Me.m_lbMaxTS.Name = "m_lbMaxTS"
+            '
+            'm_tbMaxTS
+            '
+            resources.ApplyResources(Me.m_tbMaxTS, "m_tbMaxTS")
+            Me.m_tbMaxTS.Name = "m_tbMaxTS"
+            '
+            'm_lbConcentration
+            '
+            resources.ApplyResources(Me.m_lbConcentration, "m_lbConcentration")
+            Me.m_lbConcentration.Name = "m_lbConcentration"
+            '
+            'm_btSelectFile
+            '
+            resources.ApplyResources(Me.m_btSelectFile, "m_btSelectFile")
+            Me.m_btSelectFile.Name = "m_btSelectFile"
+            Me.m_btSelectFile.UseVisualStyleBackColor = True
+            '
+            'm_tlpDriverFile
+            '
+            resources.ApplyResources(Me.m_tlpDriverFile, "m_tlpDriverFile")
+            Me.m_tlp.SetColumnSpan(Me.m_tlpDriverFile, 2)
+            Me.m_tlpDriverFile.Controls.Add(Me.m_lbConcentrationFile, 0, 0)
+            Me.m_tlpDriverFile.Controls.Add(Me.m_btClearFile, 1, 0)
+            Me.m_tlpDriverFile.Name = "m_tlpDriverFile"
+            '
+            'm_lbConcentrationFile
+            '
+            resources.ApplyResources(Me.m_lbConcentrationFile, "m_lbConcentrationFile")
+            Me.m_lbConcentrationFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_lbConcentrationFile.Name = "m_lbConcentrationFile"
+            '
+            'm_btClearFile
+            '
+            resources.ApplyResources(Me.m_btClearFile, "m_btClearFile")
+            Me.m_btClearFile.Name = "m_btClearFile"
+            Me.m_btClearFile.UseVisualStyleBackColor = True
+            '
             'm_hdrInit
             '
             resources.ApplyResources(Me.m_hdrInit, "m_hdrInit")
@@ -218,6 +273,7 @@ Namespace Ecotracer
             Me.m_tlpGroups.ResumeLayout(False)
             Me.m_tlp.ResumeLayout(False)
             Me.m_tlp.PerformLayout()
+            Me.m_tlpDriverFile.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -238,6 +294,13 @@ Namespace Ecotracer
         Private WithEvents m_grid As ScientificInterface.Ecotracer.gridEcotracerInput
         Private WithEvents m_hdrInit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tlpGroups As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents m_lbMaxTS As Label
+        Friend WithEvents m_tbMaxTS As TextBox
+        Friend WithEvents m_lbConcentration As Label
+        Friend WithEvents m_btSelectFile As Button
+        Friend WithEvents m_tlpDriverFile As TableLayoutPanel
+        Friend WithEvents m_lbConcentrationFile As Label
+        Friend WithEvents m_btClearFile As Button
     End Class
 
 End Namespace
