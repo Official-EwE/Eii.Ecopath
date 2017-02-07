@@ -42,8 +42,8 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Private m_sDietMin As Single = 0
         Private m_sDietMax As Single = 0
-        Private m_sBiomassMin As Single = 0
-        Private m_sBiomassMax As Single = 0
+        Private m_sValueMin As Single = 0
+        Private m_sValueMax As Single = 0
 
         Private m_bInvalid As Boolean = True
 
@@ -78,7 +78,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.NumItems"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumGroups() As Integer _
+        Public ReadOnly Property NumItems() As Integer _
               Implements IFlowDiagramData.NumItems
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -87,10 +87,10 @@ Namespace Ecopath.Controls.FlowDiagram
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.NumLivingitems"/>
+        ''' <inheritdocs cref="IFlowDiagramData.NumLivingItems"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property NumLivingGroups() As Integer _
-                Implements IFlowDiagramData.NumLivingitems
+        Public ReadOnly Property NumLivingItems() As Integer _
+                Implements IFlowDiagramData.NumLivingItems
             Get
                 Dim c As cCore = Me.UIContext.Core
                 Return c.nLivingGroups + c.nFleets
@@ -100,11 +100,14 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.Value"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single _
+        Public ReadOnly Property Value(ByVal iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
                 Dim c As cCore = Me.UIContext.Core
-                If (iIndex <= c.nGroups) Then Return c.EcoPathGroupOutputs(iIndex).Biomass
+                If (iIndex <= c.nGroups) Then
+
+                    Return c.EcoPathGroupOutputs(iIndex).Biomass
+                End If
                 iIndex -= c.nGroups
                 Dim b As Single = 0
                 For i As Integer = 1 To c.nGroups
@@ -117,17 +120,17 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueLabel"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassLabel(sBiomass As Single) As String _
+        Public ReadOnly Property ValueLabel(sValue As Single) As String _
               Implements IFlowDiagramData.ValueLabel
             Get
-                Return cStringUtils.Localize(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
+                Return cStringUtils.Localize(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sValue, cStyleGuide.eStyleFlags.OK))
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ItemName(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupName(ByVal iIndex As Integer) As String _
+        Public ReadOnly Property ItemName(ByVal iIndex As Integer) As String _
                 Implements IFlowDiagramData.ItemName
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -140,7 +143,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ItemColor(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupColor(ByVal iIndex As Integer) As Color _
+        Public ReadOnly Property ItemColor(ByVal iIndex As Integer) As Color _
                 Implements IFlowDiagramData.ItemColor
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -154,7 +157,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.IsItemVisible(Integer)"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property IsGroupVisible(ByVal iIndex As Integer) As Boolean _
+        Public ReadOnly Property IsItemVisible(ByVal iIndex As Integer) As Boolean _
                 Implements IFlowDiagramData.IsItemVisible
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -168,7 +171,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValue"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
+        Public ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
                 Dim c As cCore = Me.UIContext.Core
@@ -195,7 +198,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 If (iIndex <= c.nGroups) Then Return c.EcoPathGroupOutputs(iIndex).TTLX
                 iIndex -= c.nGroups
 
-                Me.Recalc()
+                Me.UpdateData()
                 Return Me.m_TTLX_all(iIndex)
             End Get
         End Property
@@ -203,32 +206,32 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueMax"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassMax() As Single _
+        Public ReadOnly Property ValueMax() As Single _
                 Implements IFlowDiagramData.ValueMax
             Get
-                If Me.m_bInvalid Then Me.Recalc()
-                Return Me.m_sBiomassMax
+                Me.UpdateData()
+                Return Me.m_sValueMax
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueMin"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassMin() As Single _
+        Public ReadOnly Property ValueMin() As Single _
                Implements IFlowDiagramData.ValueMin
             Get
-                If Me.m_bInvalid Then Me.Recalc()
-                Return Me.m_sBiomassMin
+                Me.UpdateData()
+                Return Me.m_sValueMin
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValueMin"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DietMin() As Single _
+        Public ReadOnly Property LinkValueMin() As Single _
                  Implements IFlowDiagramData.LinkValueMin
             Get
-                If Me.m_bInvalid Then Me.Recalc()
+                Me.UpdateData()
                 Return Me.m_sDietMin
             End Get
         End Property
@@ -236,10 +239,10 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValueMax"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DietMax() As Single _
+        Public ReadOnly Property LinkValueMax() As Single _
                   Implements IFlowDiagramData.LinkValueMax
             Get
-                If Me.m_bInvalid Then Me.Recalc()
+                Me.UpdateData()
                 Return Me.m_sDietMax
             End Get
         End Property
@@ -254,34 +257,34 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Internals "
 
-        Private Sub Recalc()
+        Private Sub UpdateData()
 
             If Not Me.m_bInvalid Then Return
             If (Me.UIContext Is Nothing) Then Return
 
             Dim c As cCore = Me.UIContext.Core
-            Dim DC_all(c.nGroups + c.nFleets, c.nGroups + c.nFleets) As Single
-            Dim B_all(c.nGroups + c.nFleets) As Single
+            Dim link_all(c.nGroups + c.nFleets, c.nGroups + c.nFleets) As Single
+            Dim val_all(c.nGroups + c.nFleets) As Single
             Dim PP_all(c.nGroups + c.nFleets) As Single
             ReDim Me.m_TTLX_all(c.nGroups + c.nFleets)
 
-            Me.m_sBiomassMax = 0
-            Me.m_sBiomassMin = Single.MaxValue
+            Me.m_sValueMax = 0
+            Me.m_sValueMin = Single.MaxValue
             Me.m_sDietMax = 0
             Me.m_sDietMin = Single.MaxValue
 
             For i As Integer = 1 To c.nGroups
                 For j As Integer = 1 To c.nGroups
-                    Dim sDiet As Single = Me.Diet(i, j)
+                    Dim sDiet As Single = Me.LinkValue(i, j)
                     Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
                     Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
-                    DC_all(c.nFleets + i, c.nFleets + j) = sDiet
+                    link_all(c.nFleets + i, c.nFleets + j) = sDiet
                 Next j
 
-                Dim sB As Single = Me.Biomass(i)
-                Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
-                Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
-                B_all(i) = sB
+                Dim sB As Single = Me.Value(i)
+                Me.m_sValueMax = Math.Max(Me.m_sValueMax, sB)
+                Me.m_sValueMin = Math.Min(Me.m_sValueMin, sB)
+                val_all(i) = sB
 
                 PP_all(c.nFleets + i) = c.EcoPathGroupInputs(i).PP
 
@@ -290,23 +293,23 @@ Namespace Ecopath.Controls.FlowDiagram
             For i As Integer = 1 To c.nFleets
 
                 For j As Integer = 1 To c.nGroups
-                    Dim sDiet As Single = Me.Diet(i + c.nGroups, j)
+                    Dim sDiet As Single = Me.LinkValue(i + c.nGroups, j)
                     Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
                     Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
-                    DC_all(i, c.nFleets + j) = sDiet
+                    link_all(i, c.nFleets + j) = sDiet
                 Next j
 
-                Dim sB As Single = Me.Biomass(i + c.nGroups)
-                Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
-                Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
-                B_all(i + c.nFleets) = sB
+                Dim sB As Single = Me.Value(i + c.nGroups)
+                Me.m_sValueMax = Math.Max(Me.m_sValueMax, sB)
+                Me.m_sValueMin = Math.Min(Me.m_sValueMin, sB)
+                val_all(i + c.nFleets) = sB
 
                 ' Just to be explicit: fleets are full-on consumers
                 PP_all(i) = 0
             Next i
 
             Dim fn As cEcoFunctions = c.EcoFunction
-            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, DC_all, m_TTLX_all)
+            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, link_all, m_TTLX_all)
             Me.m_bInvalid = False
 
         End Sub

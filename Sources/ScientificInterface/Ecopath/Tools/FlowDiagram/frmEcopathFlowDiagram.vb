@@ -21,8 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.ComponentModel
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
@@ -46,7 +44,7 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Private variables "
 
         Private components As System.ComponentModel.IContainer = Nothing
-        Private m_data As IFlowDiagramData = Nothing
+        Private m_data As cEcopathFlowDiagramData = Nothing
         Private m_doodler As cFlowDiagramManager = Nothing
         Private m_tree As cTreeFlowDiagramRenderer = Nothing
 

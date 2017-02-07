@@ -511,7 +511,7 @@ Namespace Controls
 #Region " Configuration "
 
         <Browsable(True),
-            Category("Appearance"),
+            cLocalizedCategory("HEADER_APPEARANCE"),
             cLocalizedDisplayName("LABEL_TITLE"),
             DefaultValue("Flow diagram")>
         Public Property Title() As String
@@ -527,7 +527,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Appearance"),
+            cLocalizedCategory("HEADER_APPEARANCE"),
             cLocalizedDisplayName("PROMPT_SHOWTITLE"),
             cLocalizedDescription("PROMPT_SHOWTITLE_DESCR"),
             DefaultValue(True)>
@@ -544,7 +544,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-        Category("Appearance"),
+        cLocalizedCategory("HEADER_APPEARANCE"),
         cLocalizedDisplayName("GENERIC_SHOW_TROPHIC_LEVELS"),
         DefaultValue(5)>
         Public Property ShowTrophicLevels() As Boolean
@@ -560,7 +560,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Appearance"),
+            cLocalizedCategory("HEADER_APPEARANCE"),
             cLocalizedDisplayName("GENERIC_SHOW_NUMTL"),
             DefaultValue(5)>
         Public Property NumberOfTrophicLevels() As Integer
@@ -577,7 +577,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Appearance"),
+            cLocalizedCategory("HEADER_APPEARANCE"),
             cLocalizedDisplayName("GENERIC_COLOUR_USAGE"),
             DefaultValue(eFDColorUsageTypes.None)>
         Public Property AutoColorUsage() As eFDColorUsageTypes
@@ -593,7 +593,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Appearance"),
+            cLocalizedCategory("HEADER_APPEARANCE"),
             cLocalizedDisplayName("GENERIC_SHOW_LEGEND"),
             DefaultValue(TriState.UseDefault)>
         Public Property ShowLegend As TriState
@@ -609,7 +609,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-             Category("Node"),
+             cLocalizedCategory("HEADER_COMPARTMENT"),
              cLocalizedDisplayName("HEADER_COLOR"),
              DefaultValue(&HFFD3D3D3)>
         Public Property CustomNodeColor() As Color
@@ -625,7 +625,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("HEADER_NODE_SIZE_AUTO"),
             DefaultValue(True)>
         Public Property AutoNodeSize() As Boolean
@@ -641,7 +641,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("HEADER_NODE_SIZE"),
             DefaultValue(True)>
         Public Property CustomNodeSize() As Integer
@@ -657,7 +657,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("HEADER_NODE_SCALE"),
             DefaultValue(eFDNodeScaleType.Logarithmic)>
         Public Property NodeScaleType() As eFDNodeScaleType
@@ -673,7 +673,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("HEADER_NODE_TYPE"),
             DefaultValue(eFDNodeTypes.Circle)>
         Public Property NodeType() As eFDNodeTypes
@@ -689,7 +689,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Line"),
+            cLocalizedCategory("HEADER_LINK"),
             cLocalizedDisplayName("HEADER_LINE_WIDTH_AUTO"),
             DefaultValue(False)>
         Public Property AutoLineWidth() As Boolean
@@ -705,7 +705,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Line"),
+            cLocalizedCategory("HEADER_LINK"),
             cLocalizedDisplayName("HEADER_LINE_WIDTH"),
             DefaultValue(1)>
         Public Property CustomLineWidth() As Single
@@ -721,7 +721,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Line"),
+            cLocalizedCategory("HEADER_LINK"),
             cLocalizedDisplayName("HEADER_LINE_COLOR")>
         Public Property CustomLineColor() As Color
             Get
@@ -736,7 +736,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Line"),
+            cLocalizedCategory("HEADER_LINK"),
             cLocalizedDisplayName("HEADER_LINE_TYPE"),
             DefaultValue(eFDConnectionType.Arch)>
         Public Property LineConnectionType() As eFDConnectionType
@@ -752,7 +752,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("HEADER_SHOW_VALUES"),
             DefaultValue(False)>
         Public Property NodeDrawValue() As Boolean
@@ -768,7 +768,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("HEADER_SHOW_LABELS"),
             DefaultValue(True)>
         Public Property NodeDrawLabels() As Boolean
@@ -784,7 +784,7 @@ Namespace Controls
         End Property
 
         <Browsable(True),
-            Category("Node"),
+            cLocalizedCategory("HEADER_COMPARTMENT"),
             cLocalizedDisplayName("GENERIC_SHOW_HIDDEN"),
             DefaultValue(eFDShowHiddenType.GrayedOut)>
         Public Property ShowHiddenMode() As eFDShowHiddenType _
@@ -1034,7 +1034,7 @@ Namespace Controls
                             ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
                             ' Note that Math.Log = ln
                             iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
-                        Case eFDNodeScaleType.Realistic
+                        Case eFDNodeScaleType.Linear
                             Select Case Me.m_nodetype
                                 Case eFDNodeTypes.Circle
                                     iSize = CInt(Me.m_iNodeSize * Math.Sqrt((2 * sValue / sValueMax) / Math.PI) * 2)

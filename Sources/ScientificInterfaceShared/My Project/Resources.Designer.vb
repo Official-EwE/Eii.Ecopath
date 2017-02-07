@@ -3476,6 +3476,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Appearance.
+        '''</summary>
+        Public ReadOnly Property HEADER_APPEARANCE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_APPEARANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Area closed (%).
         '''</summary>
         Public ReadOnly Property HEADER_AREA_CLOSED() As String
@@ -4138,6 +4147,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_COLOR() As String
             Get
                 Return ResourceManager.GetString("HEADER_COLOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Compartment.
+        '''</summary>
+        Public ReadOnly Property HEADER_COMPARTMENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_COMPARTMENT", resourceCulture)
             End Get
         End Property
         
@@ -5308,6 +5326,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_LINE_WIDTH_AUTO() As String
             Get
                 Return ResourceManager.GetString("HEADER_LINE_WIDTH_AUTO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Link.
+        '''</summary>
+        Public ReadOnly Property HEADER_LINK() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LINK", resourceCulture)
             End Get
         End Property
         

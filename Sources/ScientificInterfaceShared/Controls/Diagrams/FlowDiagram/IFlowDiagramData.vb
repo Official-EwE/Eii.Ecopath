@@ -68,11 +68,11 @@ Namespace Controls
         ''' </summary>
         ''' <remarks>
         ''' Living groups can have incoming / predation and outgoing / prey links, 
-        ''' whereas all non-living groups (<see cref="NumItems"/> - <see cref="NumLivingitems"/>)
+        ''' whereas all non-living groups (<see cref="NumItems"/> - <see cref="NumLivingItems"/>)
         ''' can only have incoming / predation links.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        ReadOnly Property NumLivingitems() As Integer
+        ReadOnly Property NumLivingItems() As Integer
 
         ''' -------------------------------------------------------------------
         ''' <summary>
