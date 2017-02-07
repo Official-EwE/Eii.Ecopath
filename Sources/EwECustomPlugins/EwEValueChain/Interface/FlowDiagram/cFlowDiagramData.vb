@@ -175,9 +175,9 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
-    ''' <inheritdocs cref="IFlowDiagramData.NumLivingitems"/>
+    ''' <inheritdocs cref="IFlowDiagramData.NumLivingItems"/>
     Public ReadOnly Property NumLivingitems As Integer _
-        Implements IFlowDiagramData.NumLivingitems
+        Implements IFlowDiagramData.NumLivingItems
         Get
             Return Me.m_nLivingGroups
         End Get

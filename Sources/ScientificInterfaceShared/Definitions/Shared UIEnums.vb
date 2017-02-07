@@ -208,9 +208,14 @@ Namespace Definitions
         Arch = 2
     End Enum
 
+    'Public Enum eFDNodeValueType As Integer
+    '    Biomass
+    '    Production
+    'End Enum
+
     Public Enum eFDNodeScaleType As Integer
         Logarithmic
-        Realistic
+        Linear
     End Enum
     ''' -----------------------------------------------------------------------
     ''' <summary>

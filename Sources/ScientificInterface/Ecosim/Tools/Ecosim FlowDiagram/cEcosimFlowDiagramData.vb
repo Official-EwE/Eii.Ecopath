@@ -87,10 +87,10 @@ Namespace Ecosim
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.NumLivingitems"/>
+        ''' <inheritdocs cref="IFlowDiagramData.NumLivingItems"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property NumLivingitems() As Integer _
-                Implements IFlowDiagramData.NumLivingitems
+                Implements IFlowDiagramData.NumLivingItems
             Get
                 Return Me.m_core.nLivingGroups
             End Get
@@ -99,7 +99,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.Value"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single _
+        Public ReadOnly Property Value(ByVal iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
             Get
                 Return Me.m_core.EcoSimGroupOutputs(iIndex).Biomass(Me.TimeStep)
@@ -109,7 +109,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueLabel"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassLabel(ByVal sBiomass As Single) As String _
+        Public ReadOnly Property ValueLabel(ByVal sBiomass As Single) As String _
               Implements IFlowDiagramData.ValueLabel
             Get
                 Return cStringUtils.Localize(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.m_sg.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
@@ -149,7 +149,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValue"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
+        Public ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
                 ' ToDo: obtain this from Ecosim
@@ -171,7 +171,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueMax"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassMax() As Single _
+        Public ReadOnly Property ValueMax() As Single _
                 Implements IFlowDiagramData.ValueMax
             Get
                 Me.Recalc()
@@ -182,7 +182,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.ValueMin"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property BiomassMin() As Single _
+        Public ReadOnly Property ValueMin() As Single _
                Implements IFlowDiagramData.ValueMin
             Get
                 Me.Recalc()
@@ -193,7 +193,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValueMin"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DietMin() As Single _
+        Public ReadOnly Property LinkValueMin() As Single _
                  Implements IFlowDiagramData.LinkValueMin
             Get
                 Me.Recalc()
@@ -204,7 +204,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IFlowDiagramData.LinkValueMax"/>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DietMax() As Single _
+        Public ReadOnly Property LinkValueMax() As Single _
                   Implements IFlowDiagramData.LinkValueMax
             Get
                 Me.Recalc()
@@ -238,13 +238,13 @@ Namespace Ecosim
 
             For i As Integer = 1 To Me.NumItems
                 For j As Integer = 1 To Me.NumItems
-                    Dim sDiet As Single = Me.Diet(i, j)
+                    Dim sDiet As Single = Me.LinkValue(i, j)
                     Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
                     Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
 
                 Next j
 
-                Dim sB As Single = Me.Biomass(i)
+                Dim sB As Single = Me.Value(i)
                 Me.m_sBiomassMax = Math.Max(Me.m_sBiomassMax, sB)
                 Me.m_sBiomassMin = Math.Min(Me.m_sBiomassMin, sB)
 

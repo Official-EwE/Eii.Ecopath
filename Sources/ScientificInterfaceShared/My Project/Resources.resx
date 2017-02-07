@@ -3137,4 +3137,13 @@
   <data name="HEADER_NODE_SCALE" xml:space="preserve">
     <value>Node scale mode</value>
   </data>
+  <data name="HEADER_APPEARANCE" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="HEADER_COMPARTMENT" xml:space="preserve">
+    <value>Compartment</value>
+  </data>
+  <data name="HEADER_LINK" xml:space="preserve">
+    <value>Link</value>
+  </data>
 </root>

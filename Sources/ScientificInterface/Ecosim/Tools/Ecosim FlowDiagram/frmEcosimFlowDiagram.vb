@@ -351,7 +351,7 @@ Namespace Ecosim
                         Dim celval As Integer = 1
                         For j As Integer = 1 To Me.m_data.NumItems
 
-                            If (Me.m_data.Diet(m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
+                            If (Me.m_data.LinkValue(m_iHighlightedNode, j) > 0) Then   'Pred:highlightNod Pray:j
 
                                 Dim cons As Single = Me.Core.EcoPathGroupOutputs(j).Consumption(m_iHighlightedNode)
                                 Dim gpnm As String = Me.m_data.ItemName(j)
@@ -363,7 +363,7 @@ Namespace Ecosim
                                 m_mdataGridView.Rows(1).Cells(celval).Style.ForeColor = Color.Green
                                 celval += 1
 
-                            ElseIf (Me.m_data.Diet(j, m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
+                            ElseIf (Me.m_data.LinkValue(j, m_iHighlightedNode) > 0) Then   'Pred:j Pray:highlightNod
 
                                 Dim cons1 As Single = Me.Core.EcoPathGroupOutputs(m_iHighlightedNode).Consumption(j)
                                 Dim gpnm1 As String = Me.m_data.ItemName(j)
