@@ -56,6 +56,7 @@ Namespace Ecosim
             Me.UIContext = uic
             Me.m_core = uic.Core
             Me.m_sg = uic.StyleGuide
+            Me.DataTitle = ScientificInterfaceShared.My.Resources.HEADER_BIOMASS
         End Sub
 
 #End Region ' Constructor
@@ -222,6 +223,12 @@ Namespace Ecosim
         ''' <summary>Get/set the time step in Ecosim.</summary>
         ''' -------------------------------------------------------------------
         Public Property TimeStep As Integer
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IFlowDiagramData.DataTitle"/>
+        ''' -------------------------------------------------------------------
+        Public Property DataTitle As String _
+            Implements IFlowDiagramData.DataTitle
 
 #End Region ' Properties
 

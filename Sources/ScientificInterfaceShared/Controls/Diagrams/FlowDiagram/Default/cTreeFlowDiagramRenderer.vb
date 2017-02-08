@@ -437,15 +437,15 @@ Namespace Controls
                     Case eFDColorUsageTypes.Value
                         sMin = Me.m_data.ValueMin
                         sMax = Me.m_data.ValueMax
-                        strTitle = "Value"
+                        strTitle = Me.m_data.DataTitle
                     Case eFDColorUsageTypes.EwE
                         sMin = 1
                         sMax = Me.m_data.NumItems
-                        strTitle = "Components"
+                        strTitle = My.Resources.HEADER_COMPARTMENT
                     Case eFDColorUsageTypes.Flow
                         sMin = Me.m_data.LinkValueMin
                         sMax = Me.m_data.LinkValueMax
-                        strTitle = "Flow"
+                        strTitle = My.Resources.HEADER_LINK
                 End Select
                 Dim lgd As New cLegend(Me.UIContext, strTitle)
                 lgd.AddGradient("", sMin, sMax)

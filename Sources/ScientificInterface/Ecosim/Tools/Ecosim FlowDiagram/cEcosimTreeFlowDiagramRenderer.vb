@@ -22,16 +22,11 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Text
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls.Map
-Imports ScientificInterfaceShared.Definitions
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-Namespace Controls
+Namespace Ecosim
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -62,10 +57,10 @@ Namespace Controls
         Public Event OnBiomassLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
         Public Event OnFlowRateLegendChanged(ByVal sender As cTreeFlowDiagramRenderer)
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_SHOW_BIOMASS_LEGEND"), _
-            DefaultValue(False)> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("GENERIC_SHOW_BIOMASS_LEGEND"),
+            DefaultValue(False)>
         Public Property ShowBiomassLegend As Boolean
             Get
                 Return Me.m_tsShowBiomassLegend
@@ -79,10 +74,10 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(True), _
-            Category("Appearance"), _
-            cLocalizedDisplayName("GENERIC_SHOW_FLOW_RATE_LEGEND"), _
-            DefaultValue(TriState.False)> _
+        <Browsable(True),
+            Category("Appearance"),
+            cLocalizedDisplayName("GENERIC_SHOW_FLOW_RATE_LEGEND"),
+            DefaultValue(TriState.False)>
         Public Property ShowFlowRateLegend As Boolean
             Get
                 Return Me.m_tsShowFlowRateLegend

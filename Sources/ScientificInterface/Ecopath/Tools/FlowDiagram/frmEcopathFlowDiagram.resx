@@ -249,6 +249,18 @@
   <data name="m_tss2.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
+  <data name="m_tslData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>34, 22</value>
+  </data>
+  <data name="m_tslData.Text" xml:space="preserve">
+    <value>Data:</value>
+  </data>
+  <data name="m_tscmbData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 25</value>
+  </data>
+  <data name="m_tss1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
   <data name="m_tsmiSaveToImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -274,7 +286,7 @@
   <data name="m_tsmiSaveToImage.Text" xml:space="preserve">
     <value>Save to &amp;image...</value>
   </data>
-  <data name="m_tss1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tss3.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
   <data name="m_tsmiFont.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -439,8 +451,26 @@
   <data name="&gt;&gt;m_tsmiResetLayout.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tslData.Name" xml:space="preserve">
+    <value>m_tslData</value>
+  </data>
+  <data name="&gt;&gt;m_tslData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbData.Name" xml:space="preserve">
+    <value>m_tscmbData</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tss3.Name" xml:space="preserve">
+    <value>m_tss3</value>
+  </data>
+  <data name="&gt;&gt;m_tss3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmFlowDiagram</value>
+    <value>frmEcopathFlowDiagram</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>

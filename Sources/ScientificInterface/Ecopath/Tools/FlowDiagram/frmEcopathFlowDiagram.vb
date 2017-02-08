@@ -60,6 +60,9 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiFont As ToolStripButton
+        Private WithEvents m_tslData As ToolStripLabel
+        Friend WithEvents m_tscmbData As ToolStripComboBox
+        Friend WithEvents m_tss3 As ToolStripSeparator
         Private WithEvents m_tsmiCenterLabels As ToolStripButton
 
 #End Region ' Private variables
@@ -95,6 +98,10 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tsmiFont.Image = SharedResources.CaseSensitive
             Me.m_tsmiResetLayout.Image = SharedResources.ResetHS
             Me.m_tsmiCenterLabels.Image = SharedResources.AlignObjectsCenteredHorizontalHS
+
+            Me.m_tscmbData.Items.Add(eFDNodeValueType.Biomass)
+            Me.m_tscmbData.Items.Add(eFDNodeValueType.Production)
+            Me.m_tscmbData.SelectedIndex = 0
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -350,6 +357,22 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
+        Private Sub OnShowDataChanged(sender As Object, e As EventArgs) _
+            Handles m_tscmbData.SelectedIndexChanged
+
+            ' To catch premature events
+            If (Me.m_data Is Nothing) Then Return
+
+            Try
+                Me.m_data.ValueType = CType(Me.m_tscmbData.SelectedItem, eFDNodeValueType)
+                ' ToDo: localize this
+                Me.m_data.DataTitle = Me.m_data.ValueType.ToString()
+                Me.m_pbFlowDiagram.Invalidate()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Commands
 
 #End Region ' Events
@@ -384,6 +407,9 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiCenterLabels = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
+            Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tscmbData = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tss3 = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
@@ -420,7 +446,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tslData, Me.m_tscmbData, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tss3, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -470,13 +496,29 @@ Namespace Ecopath.Controls.FlowDiagram
             resources.ApplyResources(Me.m_tsmiResetLayout, "m_tsmiResetLayout")
             Me.m_tsmiResetLayout.Name = "m_tsmiResetLayout"
             '
-            'frmFlowDiagram
+            'm_tslData
+            '
+            Me.m_tslData.Name = "m_tslData"
+            resources.ApplyResources(Me.m_tslData, "m_tslData")
+            '
+            'm_tscmbData
+            '
+            Me.m_tscmbData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbData.Name = "m_tscmbData"
+            resources.ApplyResources(Me.m_tscmbData, "m_tscmbData")
+            '
+            'm_tss3
+            '
+            Me.m_tss3.Name = "m_tss3"
+            resources.ApplyResources(Me.m_tss3, "m_tss3")
+            '
+            'frmEcopathFlowDiagram
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
-            Me.Name = "frmFlowDiagram"
+            Me.Name = "frmEcopathFlowDiagram"
             Me.TabText = ""
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)

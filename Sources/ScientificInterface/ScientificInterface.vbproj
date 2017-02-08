@@ -219,6 +219,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFlowDiagramData.vb" />
+    <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimTreeFlowDiagramRenderer.vb" />
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
