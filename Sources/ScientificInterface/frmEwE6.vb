@@ -263,6 +263,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdHelpReportIssue As cCommand = Nothing
+    Private WithEvents m_cmdHelpRequestCodeAccess As cCommand
     Private WithEvents m_cmdHelpFeedback As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
     Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
@@ -672,6 +673,9 @@ Public Class frmEwE6
 
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
+
+        Me.m_cmdHelpRequestCodeAccess = New cCommand(cmdh, "RequesCodeAccess")
+        Me.m_cmdHelpRequestCodeAccess.AddControl(Me.m_tsmiHelpRequestSourceCodeAccess)
 
         Me.m_cmdHelpFeedback = New cCommand(cmdh, "HelpFeedback")
 
@@ -3393,16 +3397,20 @@ Public Class frmEwE6
     End Sub
 
     Private Sub OnReportBug(cmd As cCommand) Handles m_cmdHelpReportIssue.OnInvoke
-
-        Debug.Assert(Not Me.m_cmdBrowseURI.IsInvoking)
-
         Try
             Dim strReport As String = cBugReporter.BugReport(My.Resources.GENERIC_CAPTION, "ewedevteam@gmail.com", Me.m_pluginManager)
             Me.m_cmdBrowseURI.Invoke(strReport)
         Catch ex As Exception
 
         End Try
+    End Sub
 
+    Private Sub OnRequestSourceCodeAccess(cmd As cCommand) Handles m_cmdHelpRequestCodeAccess.OnInvoke
+        Try
+            Me.m_cmdBrowseURI.Invoke("mailto:ewedevteam@gmail.com?subject=Request source code access")
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub OnProvideFeedback(cmd As cCommand) Handles m_cmdHelpFeedback.OnInvoke
