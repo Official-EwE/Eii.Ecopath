@@ -159,6 +159,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsmiHelpRequestSourceCodeAccess = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -364,7 +365,7 @@ Partial Public Class frmEwE6
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiViewLog, m_tssHelp2, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiViewLog, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiHelpRequestSourceCodeAccess, m_tssHelp2, Me.m_tsmiHelpAbout, Me.m_tsmiHelpFeedback})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -807,6 +808,11 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
+        'm_tsmiHelpRequestSourceCodeAccess
+        '
+        Me.m_tsmiHelpRequestSourceCodeAccess.Name = "m_tsmiHelpRequestSourceCodeAccess"
+        resources.ApplyResources(Me.m_tsmiHelpRequestSourceCodeAccess, "m_tsmiHelpRequestSourceCodeAccess")
+        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -926,5 +932,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcobaseExport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiExternalTools As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceLoadXYRefData As ToolStripMenuItem
+    Friend WithEvents m_tsmiHelpRequestSourceCodeAccess As ToolStripMenuItem
 End Class
 
