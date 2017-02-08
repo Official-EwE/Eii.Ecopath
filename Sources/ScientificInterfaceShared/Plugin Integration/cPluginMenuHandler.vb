@@ -186,14 +186,8 @@ Namespace Integration
 
                 ' New EwE 6.6: can create menu items now too
                 Dim strNodeName As String = aLocations(iLocation).Trim()
-                Dim strLabel As String = ""
 
-                If strNodeName.IndexOf(":"c) > -1 Then
-                    Dim bits As String() = strNodeName.Split(":"c)
-                    strNodeName = bits(0)
-                    strLabel = bits(1)
-                End If
-
+                bFound = String.IsNullOrWhiteSpace(strNodeName)
                 While iItem < tsic.Count And Not bFound
                     If (TypeOf tsic.Item(iItem) Is ToolStripMenuItem) Then
                         tsi = DirectCast(tsic.Item(iItem), ToolStripMenuItem)
@@ -202,14 +196,7 @@ Namespace Integration
                     iItem += 1
                 End While
                 If bFound Then
-                    tsic = tsi.DropDownItems
-                ElseIf Not String.IsNullOrWhiteSpace(strLabel) Then
-                    ' New EwE 6.6: can create menu items now too
-                    Dim tmp As New ToolStripMenuItem(strLabel)
-                    tmp.Name = strNodeName
-                    tsic.Add(tmp)
-                    tsic = tmp.DropDownItems
-                    bFound = True
+                    If (tsi IsNot Nothing) Then tsic = tsi.DropDownItems
                 End If
                 bError = Not bFound
                 iLocation += 1
