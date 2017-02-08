@@ -83,9 +83,10 @@ Partial Public Class frmEwE6
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpRequestSourceCodeAccess = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpFeedback = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuWindows = New System.Windows.Forms.ToolStripMenuItem()
@@ -159,7 +160,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiHelpRequestSourceCodeAccess = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -389,6 +389,11 @@ Partial Public Class frmEwE6
         Me.m_tsmiHelpViewFacebook.Name = "m_tsmiHelpViewFacebook"
         resources.ApplyResources(Me.m_tsmiHelpViewFacebook, "m_tsmiHelpViewFacebook")
         '
+        'm_tsmiViewLog
+        '
+        Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
+        resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
+        '
         'm_tsmiHelpViewReports
         '
         resources.ApplyResources(Me.m_tsmiHelpViewReports, "m_tsmiHelpViewReports")
@@ -399,10 +404,10 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsmiHelpReportIssue, "m_tsmiHelpReportIssue")
         Me.m_tsmiHelpReportIssue.Name = "m_tsmiHelpReportIssue"
         '
-        'm_tsmiViewLog
+        'm_tsmiHelpRequestSourceCodeAccess
         '
-        Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
-        resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
+        resources.ApplyResources(Me.m_tsmiHelpRequestSourceCodeAccess, "m_tsmiHelpRequestSourceCodeAccess")
+        Me.m_tsmiHelpRequestSourceCodeAccess.Name = "m_tsmiHelpRequestSourceCodeAccess"
         '
         'm_tsmiHelpAbout
         '
@@ -807,11 +812,6 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_tsmiHelpRequestSourceCodeAccess
-        '
-        Me.m_tsmiHelpRequestSourceCodeAccess.Name = "m_tsmiHelpRequestSourceCodeAccess"
-        resources.ApplyResources(Me.m_tsmiHelpRequestSourceCodeAccess, "m_tsmiHelpRequestSourceCodeAccess")
         '
         'frmEwE6
         '

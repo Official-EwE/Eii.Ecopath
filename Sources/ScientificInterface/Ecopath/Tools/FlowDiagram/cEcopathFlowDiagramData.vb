@@ -46,6 +46,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private m_sValueMax As Single = 0
 
         Private m_bInvalid As Boolean = True
+        Private m_datatype As eFDNodeValueType = eFDNodeValueType.Biomass
 
         Private m_TTLX_all() As Single
 
@@ -105,7 +106,15 @@ Namespace Ecopath.Controls.FlowDiagram
             Get
                 Dim c As cCore = Me.UIContext.Core
                 If (iIndex <= c.nGroups) Then
-
+                    Dim grp As cEcoPathGroupOutput = c.EcoPathGroupOutputs(iIndex)
+                    Select Case Me.m_datatype
+                        Case eFDNodeValueType.Biomass
+                            Return grp.Biomass
+                        Case eFDNodeValueType.Production
+                            Return grp.PBOutput
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
                     Return c.EcoPathGroupOutputs(iIndex).Biomass
                 End If
                 iIndex -= c.nGroups
@@ -253,6 +262,24 @@ Namespace Ecopath.Controls.FlowDiagram
         Public Property Title As String _
             Implements IFlowDiagramData.Title
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IFlowDiagramData.DataTitle"/>
+        ''' -------------------------------------------------------------------
+        Public Property DataTitle As String _
+            Implements IFlowDiagramData.DataTitle
+
+        Public Property ValueType As eFDNodeValueType
+            Get
+                Return Me.m_datatype
+            End Get
+            Set(value As eFDNodeValueType)
+                If (value <> Me.m_datatype) Then
+                    Me.m_datatype = value
+                    Me.Refresh()
+                End If
+            End Set
+        End Property
+
 #End Region ' Properties
 
 #Region " Internals "
@@ -281,10 +308,10 @@ Namespace Ecopath.Controls.FlowDiagram
                     link_all(c.nFleets + i, c.nFleets + j) = sDiet
                 Next j
 
-                Dim sB As Single = Me.Value(i)
-                Me.m_sValueMax = Math.Max(Me.m_sValueMax, sB)
-                Me.m_sValueMin = Math.Min(Me.m_sValueMin, sB)
-                val_all(i) = sB
+                Dim sValue As Single = Me.Value(i)
+                Me.m_sValueMax = Math.Max(Me.m_sValueMax, sValue)
+                Me.m_sValueMin = Math.Min(Me.m_sValueMin, sValue)
+                val_all(i) = sValue
 
                 PP_all(c.nFleets + i) = c.EcoPathGroupInputs(i).PP
 

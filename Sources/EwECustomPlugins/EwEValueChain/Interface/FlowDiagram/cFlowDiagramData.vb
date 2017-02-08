@@ -59,7 +59,7 @@ Public Class cFlowDiagramData
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal uic As cUIContext, ByVal model As cModel, _
+    Public Sub New(ByVal uic As cUIContext, ByVal model As cModel,
                    ByVal data As cData, ByVal results As cResults)
 
         Me.m_uic = uic
@@ -99,6 +99,7 @@ Public Class cFlowDiagramData
                 Me.m_displayvalue = value
                 Dim fmt As New cGraphDataTypeFormatter()
                 Me.Title = fmt.GetDescriptor(Me.m_displayvalue, eDescriptorTypes.Name)
+                Me.DataTitle = Me.Title
                 Me.m_bValid = False
             End If
         End Set
@@ -247,6 +248,10 @@ Public Class cFlowDiagramData
     ''' <inheritdocs cref="IFlowDiagramData.Title"/>
     Public Property Title As String _
         Implements IFlowDiagramData.Title
+
+    ''' <inheritdocs cref="IFlowDiagramData.DataTitle"/>
+    Public Property DataTitle As String _
+        Implements IFlowDiagramData.DataTitle
 
 #End Region ' Properties
 

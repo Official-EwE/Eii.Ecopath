@@ -46,6 +46,13 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the name of the data displayed in the diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property DataTitle As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Refresh the data for the flow diagram. This can be used to trigger
         ''' recalculations and recalibrations.
         ''' </summary>

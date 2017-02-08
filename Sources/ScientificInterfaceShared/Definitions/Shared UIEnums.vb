@@ -208,15 +208,16 @@ Namespace Definitions
         Arch = 2
     End Enum
 
-    'Public Enum eFDNodeValueType As Integer
-    '    Biomass
-    '    Production
-    'End Enum
+    Public Enum eFDNodeValueType As Integer
+        Biomass
+        Production
+    End Enum
 
     Public Enum eFDNodeScaleType As Integer
         Logarithmic
         Linear
     End Enum
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated type determining how map layers are drawn.

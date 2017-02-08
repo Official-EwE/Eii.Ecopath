@@ -143,7 +143,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramManager.vb" />
-    <Compile Include="Controls\Diagrams\FlowDiagram\Default\cEcosimTreeFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\Default\cTreeFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramData.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramRenderer.vb" />
@@ -1080,6 +1079,7 @@
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Seed.PNG" />
     <None Include="Resources\taxon.png" />
+    <None Include="Resources\SourceCodeHS.png" />
     <Content Include="Resources\timeseries.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />
