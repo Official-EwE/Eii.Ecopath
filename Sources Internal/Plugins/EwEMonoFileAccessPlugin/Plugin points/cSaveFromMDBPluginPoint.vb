@@ -55,7 +55,7 @@ Public Class cSavePluginPoint
 
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "Save an Ecopath model database to a flat text file for MONO."
+            Return "Save an Ecopath model database to a flat text file."
         End Get
     End Property
 

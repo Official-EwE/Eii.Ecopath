@@ -33,6 +33,7 @@ Imports System.Data.OleDb
 Imports EwEUtils.Utilities
 Imports EwECore.MSE
 Imports EwECore.SpatialData
+Imports EwECore.Auxiliary
 
 '
 #End Region ' Imports
@@ -57,7 +58,7 @@ Public Class cEIIXMLDataSource
     Public Sub New()
         s_dtExcludedDBEntries("EcopathGroup") = New String() {"PoolColor"}
         s_dtExcludedDBEntries("EcopathFleet") = New String() {"PoolColor"}
-        s_dtExcludedDBEntries("Auxillary") = New String() {}
+        ' s_dtExcludedDBEntries("Auxillary") = New String() {}
         s_dtExcludedDBEntries("Quote") = New String() {}
         s_dtExcludedDBEntries("UpdateLog") = New String() {}
         s_dtExcludedDBEntries("Pedigree") = New String() {}
@@ -293,7 +294,7 @@ Public Class cEIIXMLDataSource
             bSucces = bSucces And Me.LoadPedigreeLevels()
             bSucces = bSucces And Me.LoadPedigreeAssignments()
 
-            'bSucces = bSucces And Me.LoadAuxillaryData()
+            bSucces = bSucces And Me.LoadAuxillaryData()
 
             ecopathDS.bInitialized = bSucces
             ecopathDS.onPostInitialization()
@@ -802,6 +803,46 @@ Public Class cEIIXMLDataSource
 
     End Function
 
+    Private Function LoadAuxillaryData() As Boolean
+
+        Dim dt As DataTable = Me.ReadTable("Auxillary")
+        Dim strValueID As String = ""
+        Dim strRemark As String = ""
+        Dim strVisualStyle As String = ""
+        Dim ad As cAuxiliaryData = Nothing
+        Dim bSucces As Boolean = True
+
+        Me.m_core.m_dtAuxiliaryData.Clear()
+
+        Try
+            For Each drow As DataRow In dt.Rows
+
+                strValueID = CStr(drow("ValueID"))
+                strRemark = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "Remark", "")))
+                strVisualStyle = CStr(Me.ReadSafe(drow, "VisualStyle", ""))
+
+                ad = Me.m_core.AuxillaryData(strValueID)
+                ad.AllowValidation = False
+
+                ad.DBID = CInt(drow("DBID"))
+                ad.Remark = strRemark
+                ad.VisualStyle = cVisualStyleReader.StringToStyle(strVisualStyle)
+                ad.Settings.Load(CStr(Me.ReadSafe(drow, "Settings", "")))
+
+                ad.AllowValidation = True
+
+            Next
+            dt.Clear()
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Load the pedigree level definitions.
@@ -816,8 +857,6 @@ Public Class cEIIXMLDataSource
         ' Init data structure
         ecopathDS.NumPedigreeLevels = 0
         ecopathDS.RedimPedigree()
-
-        ' dt.DefaultView.Sort = "ScenarioID ASC"
 
         Return True
 
@@ -1897,7 +1936,7 @@ Public Class cEIIXMLDataSource
         For Each drow As DataRow In dtFishRate.DefaultView.ToTable.Rows
             Try
                 ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(drow("Title"))
-                strMemo = CStr(drow("zScale"))
+                strMemo = CStr(Me.ReadSafe(drow, "zScale", ""))
                 astrMemoBits = strMemo.Trim.Split(CChar(" "))
                 For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
                     ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
@@ -2070,6 +2109,7 @@ Public Class cEIIXMLDataSource
         Return bSucces
 
     End Function
+
 #End Region ' Ecosim
 
 #Region " Ecospace "
