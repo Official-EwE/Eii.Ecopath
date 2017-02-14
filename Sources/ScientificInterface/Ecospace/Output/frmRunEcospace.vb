@@ -1116,13 +1116,12 @@ Namespace Ecospace
             End Select
         End Sub
 
-        Private Sub OnPause(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnPause.Click
-            If Me.Core.EcospacePaused() Then
-                Me.Core.EcospacePaused = False
-            Else
-                Me.Core.EcospacePaused = True
-            End If
+        Private Sub OnPause(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnPause.Click
+
+            Me.Core.EcospacePaused = Not Me.Core.EcospacePaused
             Me.UpdateControls()
+
         End Sub
 
 
