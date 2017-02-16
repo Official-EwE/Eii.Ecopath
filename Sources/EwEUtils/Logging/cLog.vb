@@ -44,7 +44,6 @@ Namespace Core
         Private Shared m_logFilename As String = ""
         Private Shared m_modelname As String = "No Model Loaded"
         Private Shared m_lock As New ReaderWriterLock()
-        Private Shared m_verboselevel As eVerboseLevel = eVerboseLevel.Standard
 
         ''' <summary>
         ''' Max size of the log file in bytes. One megabyte
@@ -64,14 +63,7 @@ Namespace Core
         ''' which is measured against the level of detail that a user wants to
         ''' include in the log to determine whether event will be written to the log.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Property VerboseLevel As eVerboseLevel
-            Get
-                Return cLog.m_verboselevel
-            End Get
-            Set(value As eVerboseLevel)
-                cLog.m_verboselevel = value
-            End Set
-        End Property
+        Public Shared Property VerboseLevel As eVerboseLevel = eVerboseLevel.Standard
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -115,7 +107,7 @@ Namespace Core
         Public Shared Sub Write(ByVal theException As Exception, _
                                 ByVal level As eVerboseLevel, _
                                 Optional ByVal strMsg As String = "")
-            If (level > cLog.m_verboselevel) Then Return
+            If (level > cLog.VerboseLevel) Then Return
             cLog.Write(theException, strMsg)
         End Sub
 
@@ -130,7 +122,7 @@ Namespace Core
         ''' This will log the exception text and all nested exceptions.
         '''</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal theException As Exception, _
+        Public Shared Sub Write(ByVal theException As Exception,
                                 Optional ByVal strMsg As String = "")
 
             If Not AcquireWriterLock() Then Return
@@ -187,10 +179,10 @@ Namespace Core
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' <param name="strMsg">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal message As IMessage, _
-                                ByVal level As eVerboseLevel, _
+        Public Shared Sub Write(ByVal message As IMessage,
+                                ByVal level As eVerboseLevel,
                                 Optional ByVal strMsg As String = "")
-            If (level > cLog.m_verboselevel) Then Return
+            If (level > cLog.VerboseLevel) Then Return
             cLog.Write(message, strMsg)
         End Sub
 
@@ -247,9 +239,9 @@ Namespace Core
         ''' <param name="msg">Message string to write.</param>
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal msg As String, _
+        Public Shared Sub Write(ByVal msg As String,
                                 ByVal level As eVerboseLevel)
-            If (level > cLog.m_verboselevel) Then Return
+            If (level > cLog.VerboseLevel) Then Return
             cLog.Write(msg)
         End Sub
 
