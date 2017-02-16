@@ -2641,7 +2641,7 @@ Public Class cEcoSpace
                 Btime(ip) = Btime(ip) / m_Data.nWaterCells
                 'For Debugging
                 If ip > 0 Then
-                    System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
+                    ' System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
                 End If
             Next ip
 

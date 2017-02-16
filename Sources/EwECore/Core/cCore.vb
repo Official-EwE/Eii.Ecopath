@@ -8654,7 +8654,7 @@ Public Class cCore
     Private m_EcospaceModelParams As cEcospaceModelParameters
     Private m_EcospaceBasemap As cEcospaceBasemap
     Private m_spaceresults As cEcospaceTimestep
-    Private m_SpaceInterfaceCallBack As EcoSpaceInterfaceDelegate
+    Private m_SpaceInterfaceCallBacks As New List(Of EcoSpaceInterfaceDelegate)
     Private m_EcospaceTimeSeriesManager As EcospaceTimeSeries.cEcospaceTimeSeriesManager
 
     'Ecospace output lists
@@ -8874,6 +8874,14 @@ Public Class cCore
 
     End Function
 
+    Public Sub AddEcospaceTimeStepHandler(handler As EcoSpaceInterfaceDelegate)
+        If (handler IsNot Nothing) Then Me.m_SpaceInterfaceCallBacks.Add(handler)
+    End Sub
+
+    Public Sub RemoveEcospaceTimeStepHandler(handler As EcoSpaceInterfaceDelegate)
+        If (handler IsNot Nothing) Then Me.m_SpaceInterfaceCallBacks.Remove(handler)
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Run the Ecospace model with the currently loaded Ecosim and Ecospace scenario
@@ -8950,7 +8958,7 @@ Public Class cCore
                             cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, eVerboseLevel.Detailed)
 
                             'Setup delegates for Ecospace to call 
-                            Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
+                            Me.AddEcospaceTimeStepHandler(EcospaceTimeStepHandler)
                             m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
                             Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
 
@@ -8990,15 +8998,16 @@ Public Class cCore
                                           eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
             End If 'If Me.m_StateMonitor.HasEcospaceLoaded Then
 
-            Return breturn
-
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR, ex.Message),
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
-
-            Return False
+            breturn = False
+        Finally
+            Me.RemoveEcospaceTimeStepHandler(EcospaceTimeStepHandler)
         End Try
+
+        Return breturn
 
     End Function
 
@@ -9248,7 +9257,7 @@ Public Class cCore
 #Region "Ecospace Private Methods"
 
     ''' <summary>
-    ''' This gets call by Ecospace at every time step
+    ''' This gets called by Ecospace at every time step
     ''' </summary>
     ''' <param name="iTime">Time index of this time step</param>
     ''' <remarks>processEcospaceTimeStep() will populate the cEcospaceTSResults object and send it to an interface</remarks>
@@ -9286,15 +9295,13 @@ Public Class cCore
                 Me.SaveEcospaceResults(Me.m_spaceresults)
             End If
             'Call the interface delegate
-            If m_SpaceInterfaceCallBack IsNot Nothing Then
-
+            For Each callback As EcoSpaceInterfaceDelegate In m_SpaceInterfaceCallBacks
                 Try
-                    m_SpaceInterfaceCallBack(m_spaceresults)
+                    callback(m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.onEcospaceTimeStep(" & iTime.ToString & ") Interface Delegate Exception: " & ex.Message)
                 End Try
-
-            End If
+            Next
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".processEcospaceTimeStep() Error: " & ex.Message)
@@ -9961,7 +9968,7 @@ Public Class cCore
             Me.m_Ecospace.Clear()
 
             'delegates
-            Me.m_SpaceInterfaceCallBack = Nothing
+            Me.m_SpaceInterfaceCallBacks.Clear()
             Me.m_Ecospace.TimeStepDelegate = Nothing
 
             Me.m_EcoPathData.ActiveEcospaceScenario = -1
