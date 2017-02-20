@@ -8655,6 +8655,8 @@ Public Class cCore
     Private m_EcospaceBasemap As cEcospaceBasemap
     Private m_spaceresults As cEcospaceTimestep
     Private m_SpaceInterfaceCallBacks As New List(Of EcoSpaceInterfaceDelegate)
+    Private m_SpaceInterfaceCallBackUI As EcoSpaceInterfaceDelegate = Nothing
+
     Private m_EcospaceTimeSeriesManager As EcospaceTimeSeries.cEcospaceTimeSeriesManager
 
     'Ecospace output lists
@@ -8959,6 +8961,7 @@ Public Class cCore
 
                             'Setup delegates for Ecospace to call 
                             Me.AddEcospaceTimeStepHandler(EcospaceTimeStepHandler)
+                            m_SpaceInterfaceCallBackUI = EcospaceTimeStepHandler
                             m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
                             Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
 
@@ -9003,10 +9006,6 @@ Public Class cCore
             Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR, ex.Message),
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
             breturn = False
-            '20-Feb-2016 Can't remove the EcospaceTimeStepHandler in the Finally statement 
-            'cause the UI will never get called
-            'Finally
-            '    Me.RemoveEcospaceTimeStepHandler(EcospaceTimeStepHandler)
         End Try
 
         Return breturn
@@ -9064,6 +9063,9 @@ Public Class cCore
                 Me.m_publisher.AddMessage(New cFeedbackMessage("Ecospace experienced problems with external spatial temporal data",
                                                                eCoreComponentType.EcoSpace, eMessageType.DataImport, eMessageImportance.Warning, eMessageReplyStyle.OK))
             End If
+
+            Me.RemoveEcospaceTimeStepHandler(Me.m_SpaceInterfaceCallBackUI)
+            Me.m_SpaceInterfaceCallBackUI = Nothing
 
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED,
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
