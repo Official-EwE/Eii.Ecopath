@@ -9003,8 +9003,10 @@ Public Class cCore
             Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR, ex.Message),
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
             breturn = False
-        Finally
-            Me.RemoveEcospaceTimeStepHandler(EcospaceTimeStepHandler)
+            '20-Feb-2016 Can't remove the EcospaceTimeStepHandler in the Finally statement 
+            'cause the UI will never get called
+            'Finally
+            '    Me.RemoveEcospaceTimeStepHandler(EcospaceTimeStepHandler)
         End Try
 
         Return breturn
