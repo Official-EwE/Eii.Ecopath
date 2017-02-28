@@ -912,6 +912,7 @@ Namespace Utilities
             Dim strValue As String = ""
 
             If (objValue Is Nothing) Then Return strValue
+            If (Convert.IsDBNull(objValue)) Then Return strValue
 
             If (TypeOf (objValue) Is String) Then
                 strValue = CStr(objValue)
