@@ -2633,7 +2633,21 @@ Namespace Ecosim
                         ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), i, i, True)
                         'pbm(i) = 0 for all non PP groups
                         'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
-                        pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'Changed 3-Mar-2017
+                        'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                        'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                        '1)      There is a line that calculates pbb(i):
+                        'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                        '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                        '(this allows primary production rate to as much as double as nutrient concentrations increase)
+                        '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+
+                        pbb(i) = 2 * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
                         'VC051011: To accomodate constant Z policies I've included a recalculation of F = Z - Pred - Other Mortality - Emigration:
                         If m_RefData.PoolForceZ(i, 0) > 0 Then 'constant Z for this group, saved in array 0 for convenience
@@ -2802,7 +2816,20 @@ Namespace Ecosim
 
             ReDim m_Data.NutFreeBase(nGroups)
             For i = 1 To m_EPData.NumLiving
-                m_Data.NutFreeBase(i) = (m_Data.PBmaxs(i) - 1) * m_Data.NutFree
+                'm_Data.NutFreeBase(i) = (m_Data.PBmaxs(i) - 1) * m_Data.NutFree
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Changed 3-Mar-2017
+                'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                '1)      There is a line that calculates pbb(i):
+                'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                '(this allows primary production rate to as much as double as nutrient concentrations increase)
+
+                '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+                m_Data.NutFreeBase(i) = m_Data.NutFree
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             Next
             m_Data.NutMin = CSng(0.00101 * m_Data.NutFree)
 
@@ -4311,13 +4338,6 @@ Namespace Ecosim
         Public Sub ApplyAVmodifiers(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
             Dim K As Integer, Mult As Single
 
-            '' JS Dec12: Apply looped environmental response handing
-            'For fn As Integer = 1 To m_Data.NumEnvResponseFunctions
-            '    If m_Data.EnvResponseForceNo(fn) > 0 And UseTime Then
-            '        ApplySalinityModifier(A, m_Data.tval(m_Data.EnvResponseForceNo(fn)), m_Data.EnvResponseOpt(fn, j), m_Data.EnvResponseSdLeft(fn, j), m_Data.EnvResponseSdRight(fn, j))
-            '    End If
-            'Next
-
             Me.ApplyEnvironmentalResponse(A, j, iTime)
 
             For K = 1 To cMediationDataStructures.MAXFUNCTIONS
@@ -4333,6 +4353,27 @@ Namespace Ecosim
                         Mult = 1
                     End If
                 End If
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'jb allow the user to set both Mediation and Forcing function on the same group
+                'THIS CODE DOES NOT WORK IT'S STILL BEING DEVELOPED
+                'we need to know if a forcing function has been set
+                'Mult = 1
+                'If m_Data.BioMedData.IsMedFunction(i, j, K) Then
+                '     Debug.Assert(m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K)) = 1)
+                '    Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
+                'End If
+
+                'If UseTime = True Then
+                '    If Not m_Data.BioMedData.IsMedFunction(i, j, K) Then
+                '        Mult = Mult * m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K))
+                '    End If
+                'Else
+                '    Mult = 1
+                'End If
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                System.Console.Write(Mult.ToString + ",")
 
                 Select Case m_Data.BioMedData.ApplicationType(i, j, K)
                     Case eForcingFunctionApplication.SearchRate, _

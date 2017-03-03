@@ -144,15 +144,6 @@ Public Class cEcosimDatastructures
         End Get
     End Property
 
-    'Public EnvResponseForceName() As String
-    'Public EnvResponseForceNo() As Integer
-    ' ''' <summary>Environmental response optimum (function x group)</summary>
-    'Public EnvResponseOpt(,) As Single
-    ' ''' <summary>Environmental response left (function x group)</summary>
-    'Public EnvResponseSdLeft(,) As Single
-    ' ''' <summary>Environmental response right (function x group)</summary>
-    'Public EnvResponseSdRight(,) As Single
-
     ''' <summary>
     ''' Index of the Response function that has been applied to this EnviromentalDrive and Group (driver,group)
     ''' </summary>
