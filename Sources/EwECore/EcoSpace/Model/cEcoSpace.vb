@@ -3406,8 +3406,22 @@ Public Class cEcoSpace
             If i <= m_Data.nLiving Then      'Living group
                 Pmult = 1.0#
                 m_Ecosim.ApplyAVmodifiers(its, Pmult, Veff(1), i, i, False)
-                pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Changed 3-Mar-2017
+                'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                '1)      There is a line that calculates pbb(i):
+                'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                '(this allows primary production rate to as much as double as nutrient concentrations increase)
+                '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+
+                'pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
                 'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
+                pbb(i) = 2 * EatEff(i) * m_SimData.NutFree / (m_SimData.NutFree + m_SimData.NutFreeBase(i)) * Pmult * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
+
                 loss(i) = m_SimData.Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * m_SimData.Ftime(i)) + m_EPdata.Emig(i) + m_SimData.FishTime(i)) * Biomass(i)
                 'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
                 'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))

@@ -911,8 +911,19 @@ Public Class cSpaceSolver
                     Pmult = 1.0#
                     ApplyAVmodifiers(Pmult, Veff(1), i, i, False, iRow, iCol)
                     'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
-                    pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) ' * EatEff(i)
-                    ' pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i)
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Changed 3-Mar-2017
+                    'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                    'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                    '1)      There is a line that calculates pbb(i):
+                    'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                    'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                    '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                    '(this allows primary production rate to as much as double as nutrient concentrations increase)
+                    '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+
+                    ' pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) ' * EatEff(i)
+                    pbb(i) = 2 * EatEff(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * Pmult * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
 
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
 
@@ -1072,6 +1083,7 @@ Public Class cSpaceSolver
                 Mult = 1
                 'If UseTime = True Then Mult = m_ESData.tval(m_ESData.FunctionNumber(i, j, K)) Else Mult = 1
             End If
+            'Debug.Assert(Mult = 1)
 
             Select Case m_SimData.BioMedData.ApplicationType(i, j, K)
                 'SearchRate, Production and ImportedDetritus are all applied to the A multiplier
