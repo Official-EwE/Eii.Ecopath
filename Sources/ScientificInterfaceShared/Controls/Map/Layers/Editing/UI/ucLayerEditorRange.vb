@@ -51,11 +51,11 @@ Namespace Controls.Map.Layers
         Protected Overrides Sub Dispose(ByVal bDisposing As Boolean)
             Try
                 If bDisposing Then
-                    If (Me.UIContext Is Nothing) Then Return
-
-                    RemoveHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
-                    RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                    Me.m_fpValue.Release()
+                    If (Me.m_fpValue IsNot Nothing) Then
+                        RemoveHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
+                        Me.m_fpValue.Release()
+                        Me.m_fpValue = Nothing
+                    End If
 
                     If components IsNot Nothing Then
                         components.Dispose()
@@ -113,9 +113,23 @@ Namespace Controls.Map.Layers
             End If
 
             AddHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged
-            AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
         End Sub
+
+        Public Overrides Property UIContext As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As cUIContext)
+                If (Me.UIContext IsNot Nothing) Then
+                    RemoveHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+                MyBase.UIContext = value
+                If (Me.UIContext IsNot Nothing) Then
+                    AddHandler Me.UIContext.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+            End Set
+        End Property
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)

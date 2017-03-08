@@ -74,6 +74,7 @@ Namespace Properties
         Private m_bDisposed As Boolean = False
 
         Private m_bStored As Boolean = True
+        Private m_bInUpdate As Boolean = False
 
 #If DEBUG Then
         Private Shared s_iNextID As Long = 0
@@ -249,6 +250,8 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public Sub Refresh()
 
+            If (Me.m_bInUpdate) Then Return
+
             Dim newValue As Object = Nothing
             Dim strNewRemark As String = ""
             Dim coreStatus As eStatusFlags = 0
@@ -395,12 +398,16 @@ Namespace Properties
                 ' Correct for secundary offset
                 iIndex -= Me.m_iSecIndexOffset
 
+                Me.m_bInUpdate = True
+
                 'jb 16/mar/06 setVariable() now returns boolean so get the Style object from CurrentStyle
                 ' Set new value
                 m_Source.SetVariable(Me.m_VarName, newValue, iIndex)
 
                 ' Get the status of this operation
                 vs = m_Source.ValidationStatus
+
+                Me.m_bInUpdate = False
 
                 ' Did the core accept this value?
                 If ((vs.Status And eStatusFlags.FailedValidation) = 0) Then
