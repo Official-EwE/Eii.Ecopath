@@ -52,6 +52,7 @@ Namespace Other
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnViewLogFileDir = New System.Windows.Forms.Button()
             Me.m_cbShowVariableValidations = New System.Windows.Forms.CheckBox()
+            Me.m_cbUseExternalBrowser = New System.Windows.Forms.CheckBox()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -168,6 +169,12 @@ Namespace Other
             Me.m_cbShowVariableValidations.Name = "m_cbShowVariableValidations"
             Me.m_cbShowVariableValidations.UseVisualStyleBackColor = True
             '
+            'm_cbUseExternalBrowser
+            '
+            resources.ApplyResources(Me.m_cbUseExternalBrowser, "m_cbUseExternalBrowser")
+            Me.m_cbUseExternalBrowser.Name = "m_cbUseExternalBrowser"
+            Me.m_cbUseExternalBrowser.UseVisualStyleBackColor = True
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
@@ -181,6 +188,7 @@ Namespace Other
             Me.Controls.Add(Me.m_lblMaxNumMessages)
             Me.Controls.Add(Me.m_hdrAuthor)
             Me.Controls.Add(Me.m_hdrStatusPanel)
+            Me.Controls.Add(Me.m_cbUseExternalBrowser)
             Me.Controls.Add(Me.m_cbShowHost)
             Me.Controls.Add(Me.m_btnViewLogFileDir)
             Me.Controls.Add(Me.m_btnClearMRU)
@@ -215,7 +223,7 @@ Namespace Other
         Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
         Private WithEvents m_btnViewLogFileDir As System.Windows.Forms.Button
         Private WithEvents m_cbShowVariableValidations As System.Windows.Forms.CheckBox
-
+        Private WithEvents m_cbUseExternalBrowser As CheckBox
     End Class
 
 End Namespace

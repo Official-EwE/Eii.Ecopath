@@ -371,6 +371,7 @@ Public Class dlgEcobaseImport
         End Try
 
     End Sub
+
     Private Sub OnVisitEcobase(sender As System.Object, e As EventArgs) _
         Handles m_llToEcoBase.Click
 
@@ -380,11 +381,11 @@ Public Class dlgEcobaseImport
             Dim strURL As String = String.Format(link.GetURL(cWebLinks.eLinkType.EcoBaseModelInfo), Me.m_model.EcobaseCode)
             cmd.Invoke(strURL)
 
-            If Not My.Settings.UseExternalBrowser Then
-                ' Close this dialog to reveal start screen
-                Me.DialogResult = Windows.Forms.DialogResult.Cancel
-                Me.Close()
-            End If
+            'If Not My.Settings.UseExternalBrowser Then
+            '    ' Close this dialog to reveal start screen
+            '    Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            '    Me.Close()
+            'End If
         Catch ex As Exception
 
         End Try

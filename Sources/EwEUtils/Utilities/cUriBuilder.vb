@@ -169,11 +169,35 @@ Namespace Utilities
 
 #End Region ' Private methods
 
-    End Class
+#Region " Utility "
 
-    <Obsolete("Use cUriBuilder instead")> _
-    Public Class UrlBuilder
-        Inherits cUriBuilder
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Test if a string is a valid URI
+        ''' </summary>
+        ''' <param name="strUri"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' http://stackoverflow.com/questions/4835269/how-to-check-that-a-uri-string-is-valid
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsValidURI(strUri As String) As Boolean
+
+            If (Not Uri.IsWellFormedUriString(strUri, UriKind.Absolute)) Then
+                Return False
+            End If
+
+            Dim tmp As Uri = Nothing
+
+            If (Not Uri.TryCreate(strUri, UriKind.Absolute, tmp)) Then
+                Return False
+            End If
+
+            Return tmp.Scheme = Uri.UriSchemeHttp Or tmp.Scheme = Uri.UriSchemeHttps
+
+        End Function
+
+#End Region ' Utility
 
     End Class
 
