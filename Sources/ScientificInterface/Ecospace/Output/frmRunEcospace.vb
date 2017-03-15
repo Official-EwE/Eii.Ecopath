@@ -342,7 +342,6 @@ Namespace Ecospace
             Me.m_cmbLabelPos.SelectedIndex = 0
 
             Me.ShowItemMode = eShowItemType.ShowAll
-            Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
             Dim nGrps As Integer = Me.Core.nGroups
             ReDim Me.m_BaseC(nGrps)
@@ -362,11 +361,6 @@ Namespace Ecospace
             'Scaler for the fishing mort map legend
             Me.m_txFMax.Text = Me.m_FishingMortMax.ToString
 
-            'Start tracking ConcTracing setting
-            AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
-            ' Start tracking core state monitor for Ecospace run states
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
-
             ' Connect hover menu
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
             Me.m_hoverMenu.Attach(Me.m_pbMap)
@@ -375,6 +369,13 @@ Namespace Ecospace
             AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_bInUpdate = False
+
+            'Start tracking ConcTracing setting
+            AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
+            ' Start tracking core state monitor for Ecospace run states
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
+            Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
             Me.ClearResults()
             Me.UpdateStyleColors()
