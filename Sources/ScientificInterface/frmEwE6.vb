@@ -4377,7 +4377,8 @@ Public Class frmEwE6
         Handles m_cmdEditLayer.OnUpdate
 
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
+        ' Allow layer edits when Ecospace is paused
+        cmd.Enabled = m.HasEcospaceLoaded() And (Not m.IsBusy Or Me.Core.EcospacePaused)
 
     End Sub
 
