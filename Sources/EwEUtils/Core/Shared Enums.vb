@@ -3566,6 +3566,7 @@ Namespace Core
     ''' Enumerated type stating supported levels of detail for the content of log files.
     '''</summary>
     Public Enum eVerboseLevel As Integer
+        Disabled = -1
         ''' <summary>Log all generic errors</summary>
         Standard = 0
         ''' <summary>Log details to track application flow in more detail</summary>
