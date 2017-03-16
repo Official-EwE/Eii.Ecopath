@@ -49,7 +49,7 @@ Namespace Core
         ''' Max size of the log file in bytes. One megabyte
         ''' </summary>
         ''' <remarks></remarks>
-        Private Shared MAX_LOG_SIZE As Integer = 1048576
+        Private Shared MAX_LOG_SIZE As Integer = 1024^2
 
 #End Region
 
@@ -485,7 +485,6 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
-        <CLSCompliant(False)> _
         Public Shared Sub WriteGroupMapToFile(ByVal strFilename As String, ByVal array(,,) As Single, Optional ByVal strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)
@@ -566,7 +565,6 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
-        <CLSCompliant(False)> _
         Public Shared Sub WriteMatrixToFile(ByVal strFilename As String, ByVal array(,) As Single, Optional ByVal strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)
@@ -609,7 +607,6 @@ Namespace Core
         ''' <remarks>Used for debugging to test the contents of an array against the original code
         ''' the data is appended so that it can be written to multiple time each call is a new block
         ''' </remarks>
-        <CLSCompliant(False)> _
         Public Shared Sub WriteMatrixToFile(ByVal strFilename As String, ByVal array(,,) As Single, Optional ByVal strHeader As String = "")
             Dim strm As System.IO.StreamWriter
             Dim n1 As Integer = array.GetUpperBound(0)

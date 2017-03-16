@@ -45,16 +45,9 @@ Namespace Style
         Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
 
-            Dim val As eVerboseLevel = DirectCast(value, eVerboseLevel)
+            Dim strValue As String = value.ToString
+            Return cResourceUtils.LoadString("VERBOSE_" & strValue.ToUpper, My.Resources.ResourceManager)
 
-            Select Case val
-                Case eVerboseLevel.Standard
-                    Return My.Resources.VERBOSE_STANDARD
-                Case eVerboseLevel.Detailed
-                    Return My.Resources.VERBOSE_DETAILED
-            End Select
-
-            Return "?"
         End Function
 
     End Class

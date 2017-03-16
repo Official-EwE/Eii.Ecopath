@@ -8897,6 +8897,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to No logging.
+        '''</summary>
+        Public ReadOnly Property VERBOSE_DISABLED() As String
+            Get
+                Return ResourceManager.GetString("VERBOSE_DISABLED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Standard.
         '''</summary>
         Public ReadOnly Property VERBOSE_STANDARD() As String
