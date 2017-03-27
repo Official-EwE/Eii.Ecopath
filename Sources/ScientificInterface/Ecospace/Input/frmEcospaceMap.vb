@@ -373,14 +373,17 @@ Namespace Ecospace.Basemap
 
             If Me.IsDisposed Then Return
 
-            ' Refresh basemap on ANY data added or removed message from Ecospace
             If (msg.Source = eCoreComponentType.EcoSpace) Then
+                ' Refresh basemap on ANY data added or removed message from Ecospace
                 If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                     ' Redraw it all
                     Me.Invalidate()
                 ElseIf (msg.Type = eMessageType.DataValidation And msg.HasVariable(eVarNameFlags.IsMigratory)) Then
                     ' Refresh the migration map group
                     Me.AddData(eVarNameFlags.LayerMigration, True)
+                ElseIf (msg.Type = eMessageType.DataModified) Then
+                    ' Refresh only map
+                    Me.m_ucBasemap.Invalidate()
                 End If
             End If
 
