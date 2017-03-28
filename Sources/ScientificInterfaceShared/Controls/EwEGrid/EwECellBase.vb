@@ -303,6 +303,10 @@ Namespace Controls.EwEGrid
                 ' Is this a single?
                 If (tValue Is GetType(Single)) Then
                     Dim sValue As Single = 0
+
+                    ' JS 27Mar17: Avoid costly exception
+                    If (objValue Is Nothing) Then objValue = Me.DataModel.DefaultValue
+
                     Try
                         ' #Yes: apply format
                         sValue = CSng(Val(objValue))
