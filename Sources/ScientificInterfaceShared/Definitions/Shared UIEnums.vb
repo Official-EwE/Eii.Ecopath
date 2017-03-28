@@ -215,6 +215,7 @@ Namespace Definitions
 
     Public Enum eFDNodeScaleType As Integer
         Logarithmic
+        SquareRoot
         Linear
     End Enum
 
