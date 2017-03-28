@@ -1034,7 +1034,13 @@ Namespace Controls
                             ' Ln(values 1-11) make max ~2.5 => times 4 to scale to 10
                             ' Note that Math.Log = ln
                             iSize = CInt(Math.Log(1.2 + (10 * sValue / sValueMax)) * (1.2 * iSize))
-                        Case eFDNodeScaleType.Linear
+                        Case eFDNodeScaleType.Linear, eFDNodeScaleType.SquareRoot
+
+                            If (Me.NodeScaleType = eFDNodeScaleType.SquareRoot) Then
+                                sValue = CSng(Math.Sqrt(sValue))
+                                sValueMax = CSng(Math.Sqrt(sValueMax))
+                            End If
+
                             Select Case Me.m_nodetype
                                 Case eFDNodeTypes.Circle
                                     iSize = CInt(Me.m_iNodeSize * Math.Sqrt((2 * sValue / sValueMax) / Math.PI) * 2)

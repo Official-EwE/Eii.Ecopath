@@ -1376,8 +1376,8 @@ Namespace Controls.EwEGrid
                         Try
                             c = Me(p.Row, p.Column)
                             If c IsNot Nothing Then
-                                ' Is property cell?
-                                If (TypeOf c Is IPropertyCell) Then
+                                ' Is property cell, but is not header?
+                                If (TypeOf c Is IPropertyCell) And Not (TypeOf c Is PropertyHeaderCell) Then
                                     ' #Yes: add to list of selected cells
                                     Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
                                 End If
