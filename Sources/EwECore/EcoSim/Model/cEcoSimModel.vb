@@ -4346,6 +4346,7 @@ Namespace Ecosim
 
                 If m_Data.BioMedData.IsMedFunction(i, j, K) Then
                     Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
+                    'Debug.Assert(Mult = 1)
                 Else
                     If UseTime = True Then
                         Mult = m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K))
@@ -4354,29 +4355,8 @@ Namespace Ecosim
                     End If
                 End If
 
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'jb allow the user to set both Mediation and Forcing function on the same group
-                'THIS CODE DOES NOT WORK IT'S STILL BEING DEVELOPED
-                'we need to know if a forcing function has been set
-                'Mult = 1
-                'If m_Data.BioMedData.IsMedFunction(i, j, K) Then
-                '     Debug.Assert(m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K)) = 1)
-                '    Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
-                'End If
-
-                'If UseTime = True Then
-                '    If Not m_Data.BioMedData.IsMedFunction(i, j, K) Then
-                '        Mult = Mult * m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K))
-                '    End If
-                'Else
-                '    Mult = 1
-                'End If
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                System.Console.Write(Mult.ToString + ",")
-
                 Select Case m_Data.BioMedData.ApplicationType(i, j, K)
-                    Case eForcingFunctionApplication.SearchRate, _
+                    Case eForcingFunctionApplication.SearchRate,
                          eForcingFunctionApplication.ProductionRate
                         A = A * Mult
                     Case eForcingFunctionApplication.Vulnerability
