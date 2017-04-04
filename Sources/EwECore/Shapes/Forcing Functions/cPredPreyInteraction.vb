@@ -54,10 +54,15 @@ Public Class cPredPreyInteraction
         Me.m_prey = PreyIndex
         Me.m_manager = manager
 
-        'this logic comes from EwE5 frmAddFunction.Form_Load()
-        If (Me.m_pred = Me.m_prey) And (Me.m_manager.getEcoPathData.PP(Me.m_prey) = 1) Then
-            Me.m_bIsProd = True
-        End If
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''jb 4-Apr-2017 Allow more than one forcing or mediation function on a primary producer
+        ''This allows for both forcing and mediation fuctions on a primary producer
+        ''this logic comes from EwE5 frmAddFunction.Form_Load()
+        'If (Me.m_pred = Me.m_prey) And (Me.m_manager.getEcoPathData.PP(Me.m_prey) = 1) Then
+        '    Debug.Assert(False, Me.ToString + ".New()")
+        '    Me.m_bIsProd = True
+        'End If
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'initialize the list of shape/functiontype pairs with the number of function modifiers from Ecosim
         'Modifiers that are not used will have a NULL shape in the cShapeFunctionTypePair object
