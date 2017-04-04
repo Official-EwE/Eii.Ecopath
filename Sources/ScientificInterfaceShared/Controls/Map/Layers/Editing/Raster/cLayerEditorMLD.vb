@@ -21,6 +21,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 
 #End Region ' Imports 
 
@@ -28,59 +29,65 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports manual modifications of layers where cells
-    ''' have two values: set or cleared.
+    ''' Layer editor base class that supports manual modification of Ecospace 
+    ''' layers.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorTwoState
-        Inherits cLayerEditor
+    Public Class cLayerEditorMLD
+        Inherits cLayerEditorRange
+
+#Region " Private vars "
+
+        ''' <summary>The depth layer to limit MLD values against.</summary>
+        Private m_layerDepth As cEcospaceLayer = Nothing
+
+#End Region ' Private vars
+
+#Region " Construction "
 
         Public Sub New()
-            Me.New(Nothing, True)
+            MyBase.New()
         End Sub
 
-        Public Sub New(ByVal typeGUI As Type, bAutoToggleCellValue As Boolean)
-            MyBase.New(typeGUI)
-            Me.AutoToggleCellValue = bAutoToggleCellValue
-        End Sub
+#End Region ' Construction
 
-        Protected Property AutoToggleCellValue As Boolean = True
+#Region " Overrides "
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Initialize(ByVal uic As cUIContext, _
-                                        ByVal layer As cDisplayRasterLayer)
+        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
             MyBase.Initialize(uic, layer)
-            Me.CellValueMax = CSng(Math.Max(layer.ValueSet, layer.ValueClear))
-            Me.CellValueMin = CSng(Math.Min(layer.ValueSet, layer.ValueClear))
+
+            Dim bm As cEcospaceBasemap = uic.Core.EcospaceBasemap
+            If (bm IsNot Nothing) Then
+                Me.m_layerDepth = bm.LayerDepth
+            End If
+
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="cLayerEditor.StartEdit"/>
+        ''' <summary>
+        ''' Set a cell value. Overridden to limit values to the actual map depths.
+        ''' </summary>
+        ''' <param name="ptSet"></param>
+        ''' <param name="value"></param>
+        ''' <param name="e"></param>
+        ''' <param name="ptClick"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
-
+        Protected Overrides Sub SetCellValue(ByVal ptSet As System.Drawing.Point, _
+                                             ByVal value As Object, _
+                                             ByVal e As System.Windows.Forms.MouseEventArgs, _
+                                             ByVal ptClick As System.Drawing.Point)
+            ' Sanity checks
+            Debug.Assert(Me.m_layerDepth IsNot Nothing)
             If (Not Me.IsEditable) Then Return
 
-            If (Me.AutoToggleCellValue) Then
+            MyBase.SetCellValue(ptSet, Math.Min(CSng(value), CSng(Me.m_layerDepth.Cell(ptSet.Y, ptSet.X))), e, ptClick)
 
-                ' Clicked on an empty cell?
-                If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueClear)) Then
-                    ' #Yes: start setting values
-                    Me.CellValue = CSng(Layer.ValueSet)
-                Else
-                    ' #No: start clearing values
-                    Me.CellValue = CSng(Layer.ValueClear)
-                End If
-
-                If Me.GUI IsNot Nothing Then
-                    ' Trigger GUI to update to the changes
-                    Me.GUI.UpdateContent(Me)
-                End If
-
-            End If
         End Sub
+
+#End Region ' Overrides
 
     End Class
 

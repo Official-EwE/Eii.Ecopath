@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports EwEUtils.Core
-Imports EwECore
 
 #End Region ' Imports 
 
@@ -33,8 +32,8 @@ Namespace Controls.Map.Layers
     ''' Layer editor that supports selections of ports for fleets.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorPorts
-        Inherits cLayerEditorTwoState
+    Public Class cLayerEditorSailCost
+        Inherits cLayerEditorRange
         Implements IFleetFilter
 
 #Region " Construction "
@@ -44,7 +43,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Sub New(ByVal t As Type)
-            MyBase.New(t, True)
+            MyBase.New(t)
             Me.CellValue = 1
         End Sub
 
@@ -52,7 +51,7 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
-        Public Event OnFilterChanged(sender As IContentFilter) Implements IFleetFilter.FilterChanged
+        Public Event FilterChanged(sender As IContentFilter) Implements IContentFilter.FilterChanged
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -62,12 +61,12 @@ Namespace Controls.Map.Layers
         Public Property Fleet() As Integer _
             Implements IFleetFilter.Fleet
             Get
-                Dim layer As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
+                Dim layer As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
                 Return layer.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layer As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                value = Math.Max(0, Math.Min(Me.UIContext.Core.nFleets, value))
+                Dim layer As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
+                value = Math.Max(1, Math.Min(Me.UIContext.Core.nFleets, value))
                 ' Will fleet index change?
                 If (value <> layer.iLayer) Then
                     ' #Yes: update index in the underlying layer collector
@@ -76,35 +75,13 @@ Namespace Controls.Map.Layers
                     Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
                     Try
-                        RaiseEvent OnFilterChanged(Me)
+                        RaiseEvent FilterChanged(Me)
                     Catch ex As Exception
-                        ' NOP
+
                     End Try
                 End If
             End Set
         End Property
-
-        ''' <summary>
-        ''' Overridden to set coastal cells only
-        ''' </summary>
-        ''' <param name="ptSet"></param>
-        ''' <param name="value"></param>
-        ''' <param name="e"></param>
-        ''' <param name="ptClick"></param>
-        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
-                                             value As Object, _
-                                             e As System.Windows.Forms.MouseEventArgs, _
-                                             ptClick As System.Drawing.Point)
-
-            Dim core As cCore = Me.UIContext.Core
-            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-
-            If depth.IsCoastalCell(ptSet.Y, ptSet.X) Then
-                MyBase.SetCellValue(ptSet, value, e, ptClick)
-            End If
-
-        End Sub
 
 #End Region ' Public interfaces
 

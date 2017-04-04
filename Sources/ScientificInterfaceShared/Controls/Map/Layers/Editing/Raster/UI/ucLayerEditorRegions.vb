@@ -62,7 +62,7 @@ Namespace Controls.Map.Layers
             End Try
         End Sub
 
-        Public Overrides Sub UpdateContent(editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(editor As cLayerEditorRaster)
 
             MyBase.UpdateContent(editor)
             If (Me.UIContext Is Nothing) Then Return

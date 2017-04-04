@@ -89,8 +89,8 @@ Namespace Controls.Map
             AddHandler layer.LayerChanged, AddressOf OnLayerChanged
 
             ' Link to editors
-            If (TypeOf layer Is cDisplayRasterLayer) Then
-                Dim rl As cDisplayRasterLayer = DirectCast(layer, cDisplayRasterLayer)
+            If (TypeOf layer Is cDisplayLayerRaster) Then
+                Dim rl As cDisplayLayerRaster = DirectCast(layer, cDisplayLayerRaster)
                 Dim edt As cLayerEditor = rl.Editor
                 Dim bFilter As Boolean = False
 
@@ -128,9 +128,9 @@ Namespace Controls.Map
             If Object.ReferenceEquals(ucg, Nothing) Then Return
 
             ' Remove link to editor, if any
-            If (TypeOf layer Is cDisplayRasterLayer) Then
+            If (TypeOf layer Is cDisplayLayerRaster) Then
 
-                Dim rl As cDisplayRasterLayer = DirectCast(layer, cDisplayRasterLayer)
+                Dim rl As cDisplayLayerRaster = DirectCast(layer, cDisplayLayerRaster)
                 Dim edt As cLayerEditor = rl.Editor
                 Dim bFilter As Boolean = False
 

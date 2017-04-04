@@ -29,17 +29,17 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports selections of ports for fleets.
+    ''' Layer editor that supports selections of groups.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorSailCost
+    Public Class cLayerEditorGroup
         Inherits cLayerEditorRange
-        Implements IFleetFilter
+        Implements IGroupFilter
 
 #Region " Construction "
 
         Public Sub New()
-            Me.New(GetType(ucLayerEditorPort))
+            Me.New(GetType(ucLayerEditorGroup))
         End Sub
 
         Public Sub New(ByVal t As Type)
@@ -51,33 +51,32 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
-        Public Event FilterChanged(sender As IContentFilter) Implements IContentFilter.FilterChanged
+        Public Event OnFilterChanged(sender As IContentFilter) Implements IGroupFilter.FilterChanged
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the index of the Ecopath fleet to filter by.
+        ''' Get/set the index of the Ecopath group to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Fleet() As Integer _
-            Implements IFleetFilter.Fleet
+        Public Property Group() As Integer _
+            Implements IGroupFilter.Group
             Get
-                Dim layer As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                Return layer.iLayer
+                Dim layerCore As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
+                Return layerCore.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layer As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                value = Math.Max(1, Math.Min(Me.UIContext.Core.nFleets, value))
-                ' Will fleet index change?
-                If (value <> layer.iLayer) Then
-                    ' #Yes: update index in the underlying layer collector
-                    layer.iLayer = value
+                Dim layerCore As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
+                ' Will Group index change?
+                If (value <> layerCore.iLayer) Then
+                    ' #Yes: update Group index in the underlying Ecospace layer
+                    layerCore.iLayer = value
                     ' Force map update
                     Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
                     Try
-                        RaiseEvent FilterChanged(Me)
+                        RaiseEvent OnFilterChanged(Me)
                     Catch ex As Exception
-
+                        ' NOP
                     End Try
                 End If
             End Set

@@ -34,7 +34,7 @@ Imports ScientificInterfaceShared.Style
 Namespace Controls.Map.Layers
 
     Public Class cStyleguideImageLayer
-        Inherits cDisplayImageLayer
+        Inherits cDisplayLayerImage
 
         Private m_bStyleGuideChanged As Boolean = False
 

@@ -49,6 +49,7 @@ Namespace Controls.Map.Layers
         Protected m_renderer As cLayerRenderer = Nothing
         Protected m_bSelected As Boolean = False
         Protected m_bInUpdate As Boolean = False
+        Protected m_editor As cLayerEditor = Nothing
 
 #End Region ' Private vars
 
@@ -204,6 +205,17 @@ Namespace Controls.Map.Layers
         Public ReadOnly Property Renderer() As cLayerRenderer
             Get
                 Return Me.m_renderer
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the layer <see cref="cLayerEditor">editor</see>.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable ReadOnly Property Editor() As cLayerEditor
+            Get
+                Return Me.m_editor
             End Get
         End Property
 

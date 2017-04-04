@@ -46,7 +46,7 @@ Namespace Controls.Map.Layers
             Me.InitializeComponent()
         End Sub
 
-        Public Overrides Sub Attach(uic As cUIContext, editor As cLayerEditor, layer As cDisplayRasterLayer)
+        Public Overrides Sub Attach(uic As cUIContext, editor As cLayerEditor, layer As cDisplayLayerRaster)
             MyBase.Attach(uic, editor, layer)
             Me.m_fpName = New cEwEFormatProvider(uic, Me.m_tbxName, GetType(String))
             AddHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
@@ -58,7 +58,7 @@ Namespace Controls.Map.Layers
             MyBase.Detach()
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             ' Sanity checks
@@ -148,7 +148,7 @@ Namespace Controls.Map.Layers
 
         Private Sub EditLayer(ByVal edittype As eLayerEditTypes)
             Try
-                Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
+                Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
                 Dim cmd As cEditLayerCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                 cmd.Invoke(rl, Nothing, edittype)
             Catch ex As Exception

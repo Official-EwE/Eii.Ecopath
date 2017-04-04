@@ -214,8 +214,8 @@ Namespace Controls.Map
             ' Toggle layer visiblity
             For Each uc As UserControl In Me.m_fpItems.Controls
                 lc = DirectCast(uc, ucLayer)
-                If (TypeOf lc.Layer Is cDisplayRasterLayer) Then
-                    DirectCast(lc.Layer, cDisplayRasterLayer).Editor.IsEditable = bEditable
+                If (TypeOf lc.Layer Is cDisplayLayerRaster) Then
+                    DirectCast(lc.Layer, cDisplayLayerRaster).Editor.IsEditable = bEditable
                 End If
                 lc.Layer.Update(cDisplayLayer.eChangeFlags.Visibility)
             Next

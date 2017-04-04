@@ -103,9 +103,9 @@ Namespace Ecospace
         Private m_lLayers As New List(Of cDisplayLayer)
         ''' <summary>All layers that reflect search progress.</summary>
         ''' <remarks>The data for these layers orginates from the core.</remarks>
-        Private m_alayerFeedback() As cDisplayRasterLayer = Nothing
-        Private m_layerSeed As cDisplayRasterLayer = Nothing
-        Private m_alayerMPA() As cDisplayRasterLayer = Nothing
+        Private m_alayerFeedback() As cDisplayLayerRaster = Nothing
+        Private m_layerSeed As cDisplayLayerRaster = Nothing
+        Private m_alayerMPA() As cDisplayLayerRaster = Nothing
         ''' <summary>Data structure to update with feedback data.</summary>
         Private m_aiFeedback As Integer(,) = Nothing
 
@@ -481,7 +481,7 @@ Namespace Ecospace
                                                      Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
                                                      cStringUtils.Localize(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
-                layerTmp = New cDisplayRasterLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
+                layerTmp = New cDisplayLayerRaster(Me.UIContext, ldataTmp, Nothing, Nothing)
                 ' Add the layer to the stash to save
                 lLayers.Add(layerTmp)
 
@@ -1047,12 +1047,12 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayRasterLayer()
+        Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayLayerRaster()
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = ""
             Dim strCommand As String = factory.GetLayerEditCommand(varName)
-            Dim alayers As cDisplayRasterLayer() = factory.GetLayers(Me.UIContext, varName)
+            Dim alayers As cDisplayLayerRaster() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
 
             If (bEditable) Then strCommand = factory.GetLayerGroup(varName)
@@ -1063,9 +1063,9 @@ Namespace Ecospace
             ' Add individual layers
             For iLayer As Integer = 0 To alayers.Length - 1
                 l = alayers(iLayer)
-                If (TypeOf (l) Is cDisplayRasterLayer) Then
+                If (TypeOf (l) Is cDisplayLayerRaster) Then
                     ' Add the layer to the control(s)
-                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                    Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
                     rl.Editor.IsReadOnly = Not bEditable
                     Me.AddLayer(l, strGroup, strCommand)
                 End If
@@ -1083,9 +1083,9 @@ Namespace Ecospace
         Private Sub InitMapFeedback()
 
             Dim strGroup As String = ""
-            Dim l As cDisplayRasterLayer = Nothing
-            Dim alayers As cDisplayRasterLayer() = Nothing
-            Dim lRunStateLayers As New List(Of cDisplayRasterLayer)
+            Dim l As cDisplayLayerRaster = Nothing
+            Dim alayers As cDisplayLayerRaster() = Nothing
+            Dim lRunStateLayers As New List(Of cDisplayLayerRaster)
             Dim factory As New cLayerFactoryInternal()
             Dim datalayerTemp As cEcospaceLayerInteger = Nothing
 

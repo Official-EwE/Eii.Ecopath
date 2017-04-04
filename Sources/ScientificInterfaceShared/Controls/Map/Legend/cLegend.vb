@@ -126,8 +126,8 @@ Namespace Controls.Map
 
             Public Overrides ReadOnly Property Max As Single
                 Get
-                    If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
-                        Return DirectCast(Me.m_layer, cDisplayRasterLayer).Data.MaxValue
+                    If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
+                        Return DirectCast(Me.m_layer, cDisplayLayerRaster).Data.MaxValue
                     End If
                     Return cCore.NULL_VALUE
                 End Get
@@ -135,8 +135,8 @@ Namespace Controls.Map
 
             Public Overrides ReadOnly Property Min As Single
                 Get
-                    If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
-                        Return DirectCast(Me.m_layer, cDisplayRasterLayer).Data.MinValue
+                    If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
+                        Return DirectCast(Me.m_layer, cDisplayLayerRaster).Data.MinValue
                     End If
                     Return cCore.NULL_VALUE
                 End Get

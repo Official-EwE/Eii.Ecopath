@@ -56,7 +56,7 @@ Namespace Controls.Map.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
+        Public Overrides Sub Initialize(ByVal editor As cLayerEditorRaster)
             MyBase.Initialize(editor)
 
             Debug.Assert(TypeOf editor Is cLayerEditorDepth, "Depth editor expected")
@@ -85,7 +85,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Dim val As Single
@@ -175,8 +175,8 @@ Namespace Controls.Map.Layers
             End If
 
             If (renderer IsNot Nothing) Then
-                renderer.RenderCell(g, New Rectangle(0, 0, bmp.Width, bmp.Height), _
-                                    Me.Layer.Data, sValue, _
+                renderer.RenderCell(g, New Rectangle(0, 0, bmp.Width, bmp.Height),
+                                    Me.Layer.Data, sValue,
                                     cStyleGuide.eStyleFlags.Highlight)
             End If
             pb.Image = bmp
@@ -199,7 +199,6 @@ Namespace Controls.Map.Layers
         End Sub
 
 #End Region ' Internals
-
 
     End Class
 

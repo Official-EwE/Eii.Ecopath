@@ -45,12 +45,12 @@ Namespace Ecospace.Basemap.Layers
         Private m_qehGrid As cQuickEditHandler = Nothing
 
         ''' <summary>Original layer this dialog was invoked for.</summary>
-        Private m_layerOriginal As cDisplayRasterLayer = Nothing
-        Private m_layerDepth As cDisplayRasterLayer = Nothing
+        Private m_layerOriginal As cDisplayLayerRaster = Nothing
+        Private m_layerDepth As cDisplayLayerRaster = Nothing
         Private m_edittype As eLayerEditTypes
 
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
-        Private m_layerWork As cDisplayRasterLayer = Nothing
+        Private m_layerWork As cDisplayLayerRaster = Nothing
         ''' <summary>Editor to transmogrify the representation of the layer.</summary>
         Private m_ucEditVisualStyle As ucEditVisualStyle = Nothing
 
@@ -76,7 +76,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="edittype"></param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext,
-                       ByRef layer As cDisplayRasterLayer,
+                       ByRef layer As cDisplayLayerRaster,
                        ByVal edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
@@ -97,7 +97,7 @@ Namespace Ecospace.Basemap.Layers
             End If
             Me.m_edittype = edittype
 
-            Me.m_layerWork = New cDisplayRasterLayer(uic, layer) ' Work on a clone
+            Me.m_layerWork = New cDisplayLayerRaster(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
             Me.m_layerWork.IsSelected = True ' Select layer, otherwise its content may not be rendered
 

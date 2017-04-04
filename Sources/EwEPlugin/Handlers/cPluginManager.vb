@@ -2050,7 +2050,6 @@ Public Class cPluginManager
 
     End Function
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns all <see cref="IPlugin">plug-ins</see> with a given type.

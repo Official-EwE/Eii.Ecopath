@@ -1802,7 +1802,7 @@ Namespace Ecospace
             Dim lgd As New cLegend(Me.UIContext, strValueName)
             Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
             Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, strDataName)
-            Dim l As New cDisplayRasterLayer(Me.UIContext, data, r, Nothing)
+            Dim l As New cDisplayLayerRaster(Me.UIContext, data, r, Nothing)
 
             lgd.AddLayer(l)
             lgd.Save(strFilenameLegend, imgFormat)

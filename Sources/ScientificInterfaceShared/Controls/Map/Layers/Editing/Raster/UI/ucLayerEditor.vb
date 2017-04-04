@@ -53,9 +53,9 @@ Namespace Controls.Map.Layers
 
         Public Overridable Sub Attach(ByVal uic As cUIContext,
                                       ByVal editor As cLayerEditor,
-                                      ByVal layer As cDisplayRasterLayer)
+                                      ByVal layer As cDisplayLayerRaster)
             Me.UIContext = uic
-            Me.Editor = editor
+            Me.Editor = CType(editor, cLayerEditorRaster)
             Me.Layer = layer
         End Sub
 
@@ -73,7 +73,7 @@ Namespace Controls.Map.Layers
         ''' GUI operates on.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Editor() As cLayerEditor
+        Public Overridable Property Editor() As cLayerEditorRaster
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -81,12 +81,12 @@ Namespace Controls.Map.Layers
         ''' GUI to show editor previews.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Layer() As cDisplayRasterLayer
+        Public Overridable Property Layer() As cDisplayLayerRaster
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Initialize(ByVal editor As cLayerEditor) _
+        Public Overridable Sub Initialize(ByVal editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.Initialize
             ' NOP
         End Sub
@@ -94,21 +94,21 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.StartEdit"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit(ByVal editor As cLayerEditor) _
+        Public Overridable Sub StartEdit(ByVal editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.StartEdit
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.EndEdit"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub EndEdit(ByVal editor As cLayerEditor) _
+        Public Overridable Sub EndEdit(ByVal editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.EndEdit
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.UpdateContent"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub UpdateContent(ByVal editor As cLayerEditor) _
+        Public Overridable Sub UpdateContent(ByVal editor As cLayerEditorRaster) _
             Implements ILayerEditorGUI.UpdateContent
 
             Dim strLabel As String = ""

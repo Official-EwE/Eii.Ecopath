@@ -33,7 +33,7 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorVelocity
-        Inherits cLayerEditor
+        Inherits cLayerEditorRaster
         Implements IMonthFilter
 
 #Region " Private vars "
@@ -55,16 +55,9 @@ Namespace Controls.Map.Layers
 #Region " Public interfaces "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="cLayerEditor.StartEdit"/>
+        ''' <inheritdoc cref="cLayerEditor.ProcessMouseDraw"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub StartEdit(ByVal ptClick As Point, ByVal buttons As MouseEventArgs)
-            MyBase.StartEdit(ptClick, buttons)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="cLayerEditor.Edit"/>
-        ''' -------------------------------------------------------------------
-        Public Overrides Sub Edit(ByVal ptFrom As Point,
+        Protected Overrides Sub Edit(ByVal ptFrom As Point,
                                   ByVal ptTo As Point,
                                   ByVal ptDeltaMouse As Point,
                                   ByVal szfCell As SizeF,
@@ -77,13 +70,6 @@ Namespace Controls.Map.Layers
 
             MyBase.Edit(ptFrom, ptTo, ptDeltaMouse, szfCell, args, ptUpdateMin, ptUpdateMax)
 
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="cLayerEditor.EndEdit"/>
-        ''' -------------------------------------------------------------------
-        Public Overrides Sub EndEdit()
-            MyBase.EndEdit()
         End Sub
 
 #End Region ' Public interfaces

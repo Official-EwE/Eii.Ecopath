@@ -19,8 +19,6 @@
 '
 
 Imports EwECore
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map.Layers
@@ -53,7 +51,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_cmbGroups.Enabled = Me.IsAttached

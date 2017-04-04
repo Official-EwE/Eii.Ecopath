@@ -71,9 +71,9 @@ Namespace Controls.Map.Layers
                                        ByVal ptfBR As PointF,
                                        ByVal style As cStyleGuide.eStyleFlags)
 
-            If (Not TypeOf layer Is cDisplayImageLayer) Then Return
+            If (Not TypeOf layer Is cDisplayLayerImage) Then Return
 
-            Dim bml As cDisplayImageLayer = DirectCast(layer, cDisplayImageLayer)
+            Dim bml As cDisplayLayerImage = DirectCast(layer, cDisplayLayerImage)
             Dim img As Image = bml.Image
             Dim imgTL As PointF = bml.ImageTL
             Dim imgBR As PointF = bml.ImageBR

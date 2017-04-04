@@ -45,7 +45,7 @@ Namespace Controls.Map
 
     ' ToDo_JS: overhaul map drawing
     '          - Map should no longer try to access individual cells. This logic has to move inside the individual raster layers
-    '          - All map layers should use the method Render instead. This enables chached drawing, etc
+    '          - All map layers should use the method Render instead. This enables cached drawing, etc
     '          - Layers can then render in individual threads, and layer images are rendered by this class.
 
     ''' -----------------------------------------------------------------------
@@ -182,20 +182,9 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Public Overloads Sub Refresh()
             Me.UpdateMap()
-            Me.UpdateCursorFeedback()
         End Sub
 
-        Private m_bEditable As Boolean = False
-
-        Public Property Editable() As Boolean
-            Get
-                Return Me.m_bEditable
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bEditable = value
-                Me.UpdateCursorFeedback()
-            End Set
-        End Property
+        Public Property Editable() As Boolean = False
 
         Public ReadOnly Property NumCols() As Integer
             Get
@@ -208,6 +197,13 @@ Namespace Controls.Map
             Get
                 If (Me.Basemap Is Nothing) Then Return 20
                 Return Me.Basemap.InRow
+            End Get
+        End Property
+
+        Public ReadOnly Property CellSize As Single
+            Get
+                If (Me.Basemap Is Nothing) Then Return 0.5
+                Return Me.Basemap.CellSize
             End Get
         End Property
 
@@ -293,30 +289,32 @@ Namespace Controls.Map
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
-            Dim bShiftPressed As Boolean = (Control.ModifierKeys = Keys.Shift)
-            Dim ptCellCur As Point = Me.GetCellIndex(New Point(e.X, e.Y), InRow, InCol)
 
             If (Me.CanEdit = False) Then Return
 
-            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layerSelected, cDisplayRasterLayer)
+            Dim edt As cLayerEditor = Me.m_layerSelected.Editor
 
-            If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
+            ' It's up to the editor to start editing
+            edt.ProcessMouseClick(e, Me)
 
-                rl.Editor.Pickup(Me.GetCellIndex(e.Location, InRow, InCol))
-                Me.Capture = False
-
-            ElseIf ((e.Button And MouseButtons.Left) > 0) Then
-
+            If (edt.IsEditing) Then
                 Me.Capture = True
-
-                ' If NOT Shift key pressed, release the last mouse pos
-                If Not bShiftPressed Then Me.m_ptScreenPrevious = Nothing
-
-                ' Start editing
-                rl.Editor.StartEdit(ptCellCur, e)
-
-                Me.ProcessMouseInput(e, InRow, InCol)
             End If
+
+            'If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
+
+            '    Me.Capture = False
+            '    edt.ProcessMouseClick(e, Me)
+
+            'ElseIf ((e.Button And MouseButtons.Left) > 0) Then
+
+            '    Me.Capture = True
+
+            '    ' Start editing
+            '    edt.StartEdit(e, Me)
+            '    Me.ProcessMouseMove(e)
+
+            'End If
 
         End Sub
 
@@ -333,35 +331,41 @@ Namespace Controls.Map
             Dim InCol As Integer = bm.InCol
             Dim l As cDisplayLayer = Me.m_layerSelected
 
+            If (Me.CanEdit) Then
+                Me.Cursor = Me.m_layerSelected.Editor.Cursor(e.Location, Me)
+            Else
+                Me.Cursor = Cursors.Default
+            End If
+
             If (Me.CanEdit And Me.Capture) Then
-                Me.ProcessMouseInput(e, InRow, InCol)
-
-            ElseIf (l IsNot Nothing) Then
-
+                Me.ProcessMouseMove(e)
+            Else
                 Dim ptCell As Point = Me.GetCellIndex(e.Location, InRow, InCol)
                 Dim sLat As Single = bm.RowToLat(ptCell.Y)
                 Dim sLon As Single = bm.ColToLon(ptCell.X)
                 Dim strVal As String = ""
                 Dim strFeedback As String = ""
 
-                If TypeOf l Is cDisplayRasterLayer Then
-                    strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayRasterLayer).Value(ptCell.Y, ptCell.X))
+                If (l IsNot Nothing) Then
+                    If (TypeOf l Is cDisplayLayerRaster) Then
+                        strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayLayerRaster).Value(ptCell.Y, ptCell.X))
+                    End If
                 End If
 
                 Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(sLat)
                 Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(sLon)
                 Dim fmt As New cMapUnitFormatter()
-                Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells, _
-                                                         fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol), _
+                Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells,
+                                                         fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol),
                                                          fmt.GetDescriptor(eUnitMapType.dd, eDescriptorTypes.Symbol))
 
                 If Not String.IsNullOrWhiteSpace(strVal) Then
-                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
-                                                strLon, strLat, strUnit, _
+                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE,
+                                                strLon, strLat, strUnit,
                                                 ptCell.Y, ptCell.X, strVal)
                 Else
-                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
-                                                strLon, strLat, strUnit, _
+                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS,
+                                                strLon, strLat, strUnit,
                                                 ptCell.Y, ptCell.X)
                 End If
 
@@ -381,12 +385,12 @@ Namespace Controls.Map
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
 
-            DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.EndEdit()
+            Me.m_layerSelected.Editor.ProcessMouseUp()
 
             ' Process pending layer changes
             For Each l As cDisplayLayer In m_layers
-                If (TypeOf l Is cDisplayRasterLayer) Then
-                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                If (TypeOf l Is cDisplayLayerRaster) Then
+                    Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
                     If rl.IsModified Then rl.Update(cDisplayLayer.eChangeFlags.Map) : rl.IsModified = False
                 End If
             Next
@@ -409,8 +413,6 @@ Namespace Controls.Map
                 Me.m_bmp = Nothing
             End If
 
-            ' Update cursor
-            Me.UpdateCursorFeedback()
             ' Schedule paint job
             Me.Invalidate()
 
@@ -433,9 +435,9 @@ Namespace Controls.Map
                 Me.UpdateSelection(l)
             End If
 
-            If ((cf And (cDisplayLayer.eChangeFlags.Map Or _
-                                 cDisplayLayer.eChangeFlags.Visibility Or _
-                                 cDisplayLayer.eChangeFlags.VisualStyle Or _
+            If ((cf And (cDisplayLayer.eChangeFlags.Map Or
+                                 cDisplayLayer.eChangeFlags.Visibility Or
+                                 cDisplayLayer.eChangeFlags.VisualStyle Or
                                  cDisplayLayer.eChangeFlags.Selected)) > 0) Then
                 ' Update Map
                 Me.UpdateMap()
@@ -443,7 +445,7 @@ Namespace Controls.Map
 
             If ((cf And (cDisplayLayer.eChangeFlags.Editable Or cDisplayLayer.eChangeFlags.Selected)) > 0) Then
                 ' Refresh edit environment
-                Me.UpdateCursorFeedback()
+                ' Nothing to do right now...
             End If
 
         End Sub
@@ -458,15 +460,12 @@ Namespace Controls.Map
 
 #Region " Internals "
 
-        Protected ReadOnly Property Basemap As cEcospaceBasemap
+        Public ReadOnly Property Basemap As cEcospaceBasemap
             Get
                 If (Me.m_uic Is Nothing) Then Return Nothing
                 Return Me.m_uic.Core.EcospaceBasemap
             End Get
         End Property
-
-        ''' <summary>Draw helper flag: previous draw point.</summary>
-        Private m_ptScreenPrevious As Point = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -474,34 +473,17 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub ProcessMouseInput(ByVal e As MouseEventArgs, InRow As Integer, InCol As Integer)
+        Private Sub ProcessMouseMove(ByVal e As MouseEventArgs)
 
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
 
-            Dim ptScreenCur As Point = New Point(e.X, e.Y)
+            Me.m_layerSelected.Editor.ProcessMouseDraw(e, Me)
 
-            If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
+        End Sub
 
-            Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious, InRow, InCol)
-            Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur, InRow, InCol)
-            Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
-            Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
-            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layerSelected, cDisplayRasterLayer)
-
-            rl.Editor.Edit(ptCellFrom, ptCellTo, _
-                           New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
-                           Me.GetCellSize(InRow, InCol), _
-                           e, _
-                           ptUpdateMin, ptUpdateMax)
-
-            ' Flag layer as changed
-            rl.IsModified = True
-
-            Me.UpdateMap(Me.m_bmp, ptUpdateMin, ptUpdateMax)
-
-            Me.m_ptScreenPrevious = ptScreenCur
-
+        Public Sub UpdateMap(ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
+            Me.UpdateMap(Me.m_bmp, ptCellFrom, ptCellTo)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -580,8 +562,8 @@ Namespace Controls.Map
 
             If (Me.m_layerSelected IsNot Nothing) Then
                 If (Me.m_layerSelected.RenderMode = Definitions.eLayerRenderType.Grouped) Then
-                    If (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then
-                        dtGroup = DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Data.DataType
+                    If (TypeOf Me.m_layerSelected Is cDisplayLayerRaster) Then
+                        dtGroup = DirectCast(Me.m_layerSelected, cDisplayLayerRaster).Data.DataType
                     End If
                 End If
             End If
@@ -589,9 +571,9 @@ Namespace Controls.Map
             For Each l In Me.m_layers
                 Dim bDrawLayer As Boolean = (l.Renderer.IsVisible)
 
-                If TypeOf l Is cDisplayRasterLayer Then
+                If TypeOf l Is cDisplayLayerRaster Then
 
-                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                    Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
 
                     If (rl.VarName = eVarNameFlags.LayerDepth) Then
                         displayDepth = rl
@@ -629,9 +611,9 @@ Namespace Controls.Map
                 l = layers(iLayer)
                 If (l.Renderer.IsVisible) Then
 
-                    If (TypeOf l Is cDisplayRasterLayer) Then
+                    If (TypeOf l Is cDisplayLayerRaster) Then
 
-                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                        Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
 
                         If (rl.HasData) Then
 
@@ -700,67 +682,29 @@ Namespace Controls.Map
                     Me.m_layerSelected = Nothing
                 End If
             End If
-            ' Reflect this
-            Me.UpdateCursorFeedback()
-        End Sub
-
-        Public Sub UpdateCursorFeedback()
-
-            ' Sanity check
-            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
-
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim InRow As Integer = bm.InRow
-            Dim InCol As Integer = bm.InCol
-            If Me.CanEdit Then
-                Me.Cursor = DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.Cursor(Me.GetCellSize(bm.InRow, bm.InCol))
-            Else
-                Me.Cursor = Cursors.Default
-            End If
-        End Sub
-
-        Private Sub SetBrushCursor(ByVal iBrushSize As Integer)
-
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim szCell As SizeF = Me.GetCellSize(bm.InRow, bm.InCol)
-            Dim ptIconSize As New Size(CInt(szCell.Width * iBrushSize), CInt(szCell.Height * iBrushSize))
-
-            If iBrushSize = 0 Then
-                Me.Cursor = Cursors.Default
-            Else
-                Try
-                    Dim bmp As New Bitmap(ptIconSize.Width + 1, ptIconSize.Height + 1)
-                    Dim g As Graphics = Graphics.FromImage(bmp)
-
-                    g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-                    g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bmp.Width, bmp.Height))
-                    g.DrawEllipse(Pens.Gray, 0, 0, ptIconSize.Width, ptIconSize.Height)
-                    Me.Cursor = New Cursor(bmp.GetHicon())
-                    g.Dispose()
-                    bm.Dispose()
-
-                Catch e As Exception
-                    Debug.WriteLine(e.Message)
-                End Try
-            End If
 
         End Sub
 
         Private Function CanEdit() As Boolean
+
             If (Me.Editable = False) Then Return False
             If (Me.m_layerSelected Is Nothing) Then Return False
-            If Not (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then Return False
             If (Me.m_layerSelected.Renderer.IsVisible = False) Then Return False
-            If (DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.IsEditable = False) Then Return False
-            Return True
+
+            If (Me.m_layerSelected.Editor IsNot Nothing) Then
+                Return Me.m_layerSelected.Editor.IsEditable
+            End If
+
+            Return False
+
         End Function
 
-        <ReflectionPermission(SecurityAction.Demand, MemberAccess:=True)> _
+        <ReflectionPermission(SecurityAction.Demand, MemberAccess:=True)>
         Private Sub ResetExceptionState(ByVal control As Control)
             ' Reset exception state on drawing errors
             Dim args() As Object = {&H400000, False}
-            GetType(Control).InvokeMember("SetState", _
-                                          BindingFlags.NonPublic Or BindingFlags.InvokeMethod Or BindingFlags.Instance, _
+            GetType(Control).InvokeMember("SetState",
+                                          BindingFlags.NonPublic Or BindingFlags.InvokeMethod Or BindingFlags.Instance,
                                           Nothing, control, args)
         End Sub
 
@@ -797,7 +741,7 @@ Namespace Controls.Map
         ''' <param name="layer">The layer to add.</param>
         ''' <param name="layerPosition">The layer to add the layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal layer As cDisplayLayer, _
+        Public Sub AddLayer(ByVal layer As cDisplayLayer,
                             Optional ByVal layerPosition As cDisplayLayer = Nothing)
 
             ' Sanity check
@@ -838,7 +782,6 @@ Namespace Controls.Map
             ' Clear selection
             If Object.ReferenceEquals(layer, Me.m_layerSelected) Then
                 Me.m_layerSelected = Nothing
-                Me.UpdateCursorFeedback()
             End If
 
             Me.m_layers.Remove(layer)
@@ -871,7 +814,7 @@ Namespace Controls.Map
         ''' Calculate the width and height of a cell.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellSize(InRow As Integer, InCol As Integer) As SizeF
+        Friend Function GetCellSize(InRow As Integer, InCol As Integer) As SizeF
             Return New SizeF(CSng(Me.Width / InCol), CSng(Me.Height / InRow))
         End Function
 
@@ -880,16 +823,16 @@ Namespace Controls.Map
         ''' Calculate the cell screen rectangle of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellRect(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Rectangle
+        Friend Function GetCellRect(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Rectangle
 
             Dim ptCell As Point = Me.GetCellPos(ptCellIndex, InRow, InCol)
             Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
 
-            Return New Rectangle( _
-                    ptCell.X, _
-                    ptCell.Y, _
-                    CInt(Math.Ceiling(szCell.Width)), _
-                    CInt(Math.Ceiling(szCell.Height)) _
+            Return New Rectangle(
+                    ptCell.X,
+                    ptCell.Y,
+                    CInt(Math.Ceiling(szCell.Width)),
+                    CInt(Math.Ceiling(szCell.Height))
             )
 
         End Function
@@ -899,12 +842,12 @@ Namespace Controls.Map
         ''' Calculate the top left screen coordinates of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellPos(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Point
+        Friend Function GetCellPos(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Point
 
             Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
-            Return New Point( _
-                    CInt(Math.Floor((ptCellIndex.X - 1) * szCell.Width)), _
-                    CInt(Math.Floor((ptCellIndex.Y - 1) * szCell.Height)) _
+            Return New Point(
+                    CInt(Math.Floor((ptCellIndex.X - 1) * szCell.Width)),
+                    CInt(Math.Floor((ptCellIndex.Y - 1) * szCell.Height))
             )
 
         End Function
@@ -914,7 +857,7 @@ Namespace Controls.Map
         ''' Calculate the index of a cell, based on a given screen point.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellIndex(ByVal ptScreen As Point, InRow As Integer, InCol As Integer) As Point
+        Friend Function GetCellIndex(ByVal ptScreen As Point, InRow As Integer, InCol As Integer) As Point
 
             Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
             Dim iColIndex As Integer = CInt((ptScreen.X + 0.5 * szCell.Width) / szCell.Width)

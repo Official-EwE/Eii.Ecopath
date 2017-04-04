@@ -28,7 +28,7 @@ Imports EwECore
 Namespace Controls.Map.Layers
 
     Public Class cLayerEditorDepth
-        Inherits cLayerEditor
+        Inherits cLayerEditorRaster
 
         Public Sub New()
             MyBase.New(GetType(ucLayerEditorDepth))

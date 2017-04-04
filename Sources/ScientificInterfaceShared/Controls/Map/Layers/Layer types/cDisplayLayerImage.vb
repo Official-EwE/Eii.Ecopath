@@ -21,31 +21,39 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
+Imports EwECore.Auxiliary
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Style
 
-#End Region ' Imports 
+#End Region ' Imports
 
 Namespace Controls.Map.Layers
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Layer editor that supports manual modifications of layers where cells
-    ''' can have a range of values.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorRange
-        Inherits cLayerEditor
+    Public Class cDisplayLayerImage
+        Inherits cDisplayLayer
 
-#Region " Construction "
-
-        Public Sub New()
-            Me.New(GetType(ucLayerEditorRange))
+        Public Sub New(uic As cUIContext, Optional img As Image = Nothing)
+            MyBase.New(uic, New cImageLayerRenderer(Nothing))
+            Me.Image = img
+            Me.m_editor = Nothing
         End Sub
 
-        Public Sub New(ByVal typeGUI As Type)
-            MyBase.New(typeGUI)
-        End Sub
+        Public Overridable Property Image As Image = Nothing
 
-#End Region ' Construction
+        Public Property ImageTL As PointF = New PointF(0, 0)
+
+        Public Property ImageBR As PointF = New PointF(0, 0)
+
+        Public ReadOnly Property IsValid As Boolean
+            Get
+                If (Me.m_uic Is Nothing) Then Return False
+                Return (Me.Image IsNot Nothing)
+            End Get
+        End Property
 
     End Class
 

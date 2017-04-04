@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -25,7 +25,6 @@ Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 
@@ -68,7 +67,7 @@ Namespace Controls.Map.Layers
     ''' </list>
     ''' </para>
     ''' </remarks>
-    Public Class cDisplayRasterLayer
+    Public Class cDisplayLayerRaster
         Inherits cDisplayLayer
 
 #Region " Private helper classes "
@@ -78,8 +77,8 @@ Namespace Controls.Map.Layers
         ''' Default editor class for layers without an editor.
         ''' </summary>
         ''' ===================================================================
-        Private Class cDefaultEditor
-            Inherits cLayerEditor
+        Private Class cLayerEditorRasterDefault
+            Inherits cLayerEditorRaster
 
             Public Sub New()
                 MyBase.New(Nothing)
@@ -108,7 +107,6 @@ Namespace Controls.Map.Layers
         Private m_valueType As Type = GetType(Single)
         Private m_sValueSet As Single = cCore.NULL_VALUE
         Private m_sValueClear As Single = cCore.NULL_VALUE
-        Private m_editor As cLayerEditor = Nothing
 
         Private m_bModified As Boolean = False
 
@@ -129,7 +127,7 @@ Namespace Controls.Map.Layers
 
         ' --- shared defaults ---
 
-        Private Shared s_editorLocked As New cDefaultEditor()
+        Private Shared s_editorLocked As New cLayerEditorRasterDefault()
 
 #End Region ' Private vars
 
@@ -172,7 +170,7 @@ Namespace Controls.Map.Layers
             '' Sanity checks
             'Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
 
-            If (editor Is Nothing) Then editor = cDisplayRasterLayer.s_editorLocked
+            If (editor Is Nothing) Then editor = cDisplayLayerRaster.s_editorLocked
 
             Me.m_source = source
             Me.m_varName = varName
@@ -195,7 +193,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal layer As cDisplayRasterLayer)
+        Public Sub New(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
 
             Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), layer.Source, layer.VarName, layer.ValueSet, layer.ValueClear)
 
@@ -460,21 +458,15 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the layer <see cref="cLayerEditor">editor</see>.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Editor() As cLayerEditor
+        Public Overrides ReadOnly Property Editor As cLayerEditor
             Get
-                ' Initialize editor upon request
-                If (Me.m_editor.UIContext Is Nothing) Then
-                    Me.m_editor.Initialize(Me.m_uic, Me)
+                Dim edt As cLayerEditor = MyBase.Editor
+                If (edt.UIContext Is Nothing) Then
+                    edt.Initialize(Me.m_uic, Me)
                 End If
-                Return Me.m_editor
+                Return edt
             End Get
         End Property
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get whether the underlying data is 
@@ -636,11 +628,11 @@ Namespace Controls.Map.Layers
                             Case 0
                                 strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name)
                             Case 1
-                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name, _
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name,
                                                                sg.GetUnitString(m_aUnitTypes(0)))
                             Case 2
-                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name, _
-                                                               sg.GetUnitString(m_aUnitTypes(0)), _
+                                strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name,
+                                                               sg.GetUnitString(m_aUnitTypes(0)),
                                                                sg.GetUnitString(m_aUnitTypes(1)))
                             Case Else
                                 Debug.Assert(False)

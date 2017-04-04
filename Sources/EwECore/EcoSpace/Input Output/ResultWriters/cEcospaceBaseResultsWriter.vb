@@ -36,6 +36,7 @@ Imports System.Reflection
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceResultWriterFactory
 
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get all the Ecospace result writers provided by the EwE core and plug-ins
@@ -381,7 +382,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Set
     End Property
 
-    Public Overridable Property SelectedGroups As Boolean() Implements IEcospaceResultsWriter.SelectedGroups
+    Public Overridable Property SelectedGroups As Boolean()
         Get
             Return Me.m_selGroups
         End Get

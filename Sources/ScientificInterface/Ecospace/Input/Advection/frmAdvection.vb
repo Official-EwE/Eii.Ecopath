@@ -126,7 +126,6 @@ Namespace Ecospace.Advection
 
             ' Unplug editor
             RemoveHandler Me.m_edtWind.OnFilterChanged, AddressOf OnMonthChanged
-            Me.m_edtWind.GUI = Nothing
             Me.m_edtWind = Nothing
 
             For Each uc As ucAdvectionMap In Me.Maps
@@ -241,7 +240,7 @@ Namespace Ecospace.Advection
             'May not be that important
 
             ' Update data layer
-            Dim layer As cDisplayRasterLayer = Me.m_ucAdvection.DataLayer
+            Dim layer As cDisplayLayerRaster = Me.m_ucAdvection.DataLayer
             layer.IsModified = True
             layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 

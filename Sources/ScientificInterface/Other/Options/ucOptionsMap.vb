@@ -48,8 +48,8 @@ Namespace Other
         Private m_fpWest As cEwEFormatProvider = Nothing
         Private m_fpEast As cEwEFormatProvider = Nothing
 
-        Private m_layerBack As cDisplayImageLayer = Nothing
-        Private m_layerPreview As cDisplayImageLayer = Nothing
+        Private m_layerBack As cDisplayLayerImage = Nothing
+        Private m_layerPreview As cDisplayLayerImage = Nothing
         Private m_imgPreview As Image = Nothing
 
 #End Region ' Variables
@@ -71,11 +71,11 @@ Namespace Other
             AddHandler Me.m_fpEast.OnValueChanged, AddressOf OnExtentChanged
             AddHandler Me.m_fpWest.OnValueChanged, AddressOf OnExtentChanged
 
-            Me.m_layerBack = New cDisplayImageLayer(Me.UIContext, My.Resources.urf)
+            Me.m_layerBack = New cDisplayLayerImage(Me.UIContext, My.Resources.urf)
             Me.m_layerBack.ImageTL = New PointF(-180, 90)
             Me.m_layerBack.ImageBR = New PointF(180, -90)
 
-            Me.m_layerPreview = New cDisplayImageLayer(Me.UIContext, Nothing)
+            Me.m_layerPreview = New cDisplayLayerImage(Me.UIContext, Nothing)
 
         End Sub
 

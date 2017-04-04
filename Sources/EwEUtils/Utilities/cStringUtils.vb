@@ -1008,8 +1008,9 @@ Namespace Utilities
                 candidates = c_DELIMITERS
             End If
 
-            ' Did receive any data to split?
-            If Not String.IsNullOrWhiteSpace(strIn) Then
+            ' Did receive any data to split? 
+            ' NB: Do NOT use IsNullOrWhitespace here; all whitespace lines may contain valid split chars
+            If Not String.IsNullOrEmpty(strIn) Then
                 ' #Yes: find most relevant split character
                 For Each c As Char In candidates
                     ' Does candidate occur in string?
