@@ -641,12 +641,21 @@ Namespace Controls
 
 #Region " Internals "
 
+            Private m_bInUpdate As Boolean = False
+
             Private Sub Validate()
+
+                If (Me.m_bInUpdate) Then Return
+                Me.m_bInUpdate = True
+
                 ' Update internal value
                 If (CDec(Me.m_provider.Value) <> Me.m_ud.Value) Then
                     Me.m_provider.Value = Me.m_ud.Value
                     Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
                 End If
+
+                Me.m_bInUpdate = False
+
             End Sub
 
 #End Region ' Internals
