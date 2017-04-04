@@ -60,13 +60,13 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overloads Function GetLayers(ByVal uic As cUIContext, _
                                             ByVal varName As eVarNameFlags, _
-                                            Optional ByVal layerData As cEcospaceLayer = Nothing) As cDisplayRasterLayer()
+                                            Optional ByVal layerData As cEcospaceLayer = Nothing) As cDisplayLayerRaster()
 
-            Dim lLayers As New List(Of cDisplayRasterLayer)
+            Dim lLayers As New List(Of cDisplayLayerRaster)
 
             Dim core As cCore = uic.Core
             Dim bmd As cEcospaceBasemap = core.EcospaceBasemap
-            Dim layer As cDisplayRasterLayer = Nothing
+            Dim layer As cDisplayLayerRaster = Nothing
             Dim key As cValueID = Nothing
             Dim ad As cAuxiliaryData = Nothing
             Dim avs As cVisualStyle() = Nothing
@@ -87,7 +87,7 @@ Namespace Ecospace.Basemap.Layers
 
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
-                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
+                    layer = New cDisplayLayerRaster(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
 
                     lLayers.Add(layer)
 
@@ -102,7 +102,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     renderer.RenderMode = eLayerRenderType.Always
                     editor = New cLayerEditorTwoState()
-                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedCurrent, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cDisplayLayerRaster(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedCurrent, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = layerData.Name
                     layer.Editor.IsReadOnly = True
 
@@ -120,7 +120,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     renderer.RenderMode = eLayerRenderType.Always
                     editor = New cLayerEditorTwoState()
-                    layer = New cDisplayRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedBest, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cDisplayLayerRaster(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedBest, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = layerData.Name
                     layer.Editor.IsReadOnly = True
 
@@ -136,7 +136,7 @@ Namespace Ecospace.Basemap.Layers
                         renderer = New cLayerRendererValue(vs)
                         renderer.RenderMode = eLayerRenderType.Always
                         editor = New cLayerEditorRange()
-                        layer = New cDisplayRasterLayer(uic, layerData, renderer, editor)
+                        layer = New cDisplayLayerRaster(uic, layerData, renderer, editor)
                         layer.Name = layerData.Name
                         layer.Editor.IsReadOnly = True
 
@@ -182,11 +182,11 @@ Namespace Ecospace.Basemap.Layers
         ''' Get a collection with the EwE foundation layers.
         ''' </summary>
         ''' <param name="uic">The UI context to plunder layers from.</param>
-        ''' <returns>An array of <see cref="cDisplayRasterLayer"/>s.</returns>
+        ''' <returns>An array of <see cref="cDisplayLayerRaster"/>s.</returns>
         ''' -------------------------------------------------------------------
-        Public Function BaseRasterLayers(uic As cUIContext) As cDisplayRasterLayer()
+        Public Function BaseRasterLayers(uic As cUIContext) As cDisplayLayerRaster()
 
-            Dim lLayers As New List(Of cDisplayRasterLayer)
+            Dim lLayers As New List(Of cDisplayLayerRaster)
 
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerMPA))

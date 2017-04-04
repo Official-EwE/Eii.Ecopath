@@ -38,7 +38,7 @@ Namespace Core
         Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
         ''' <summary>
-        ''' Init to the current cCore.
+        ''' Inititialize a writer for writing when an Ecospace run has started.
         ''' </summary>
         ''' <param name="theCore">The core to initialize with.</param>
         Sub Init(ByVal theCore As Object)
@@ -69,9 +69,6 @@ Namespace Core
         ''' Model time step the writer will begin outputting data on
         ''' </summary>
         Property FirstOutputTimeStep As Integer
-
-        Property SelectedGroups As Boolean()
-
 
     End Interface
 

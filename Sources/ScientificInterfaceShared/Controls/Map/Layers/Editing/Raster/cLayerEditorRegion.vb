@@ -34,7 +34,7 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerEditorRegion
-        Inherits cLayerEditor
+        Inherits cLayerEditorRaster
 
 #Region " Construction "
 

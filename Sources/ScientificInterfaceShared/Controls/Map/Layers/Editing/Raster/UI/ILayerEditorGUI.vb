@@ -22,44 +22,46 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for implementing a layer editor user interface.
+    ''' Interface for implementing a user interface for editing raster layers.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Interface ILayerEditorGUI
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Initialize an editor GUI to a layer.
+        ''' Initialize an editor GUI to a raster layer.
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub Initialize(ByVal editor As cLayerEditor)
+        Sub Initialize(ByVal editor As cLayerEditorRaster)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Inform the editor GUI that the user has started editing the layer.
+        ''' Inform the editor GUI that the user has started editing the 
+        ''' raster layer.
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub StartEdit(ByVal editor As cLayerEditor)
+        Sub StartEdit(ByVal editor As cLayerEditorRaster)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Inform the editor GUI that the user has finished editing the layer.
+        ''' Inform the editor GUI that the user has finished editing the raster 
+        ''' layer.
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub EndEdit(ByVal editor As cLayerEditor)
+        Sub EndEdit(ByVal editor As cLayerEditorRaster)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update the content of the editor GUI because something in the
         ''' underlying <see cref="cDisplayLayer">display layer</see> or
-        ''' <see cref="cLayerEditor">layer editor</see> has changed.
+        ''' <see cref="cLayerEditorRaster">raster layer editor</see> has changed.
         ''' </summary>
         ''' <param name="editor"></param>
         ''' -------------------------------------------------------------------
-        Sub UpdateContent(ByVal editor As cLayerEditor)
+        Sub UpdateContent(ByVal editor As cLayerEditorRaster)
 
     End Interface
 

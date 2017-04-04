@@ -332,8 +332,8 @@ Namespace Ecospace.Basemap
                         Me.m_editorGUISelected = Nothing
                     End If
 
-                    If (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then
-                        DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.DestroyEditorControl()
+                    If (TypeOf Me.m_layerSelected Is cDisplayLayerRaster) Then
+                        DirectCast(Me.m_layerSelected, cDisplayLayerRaster).Editor.DestroyEditorControl()
                     End If
                 End If
 
@@ -342,8 +342,8 @@ Namespace Ecospace.Basemap
                 If (Me.m_layerSelected IsNot Nothing) Then
 
                     ' Add layer editor GUI
-                    If (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then
-                        Me.m_editorGUISelected = DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.CreateEditorControl()
+                    If (TypeOf Me.m_layerSelected Is cDisplayLayerRaster) Then
+                        Me.m_editorGUISelected = DirectCast(Me.m_layerSelected, cDisplayLayerRaster).Editor.CreateEditorControl()
                     End If
 
                     If (Me.m_editorGUISelected IsNot Nothing) Then
@@ -362,7 +362,7 @@ Namespace Ecospace.Basemap
         End Property
 
         Private Sub OnLayerEditorChanged(ByVal editor As ucLayerEditor)
-            Me.m_ucBasemap.UpdateCursorFeedback()
+            ' NOP
         End Sub
 
 #End Region ' Internals

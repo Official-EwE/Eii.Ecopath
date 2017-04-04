@@ -61,7 +61,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_cmbMonth.Enabled = Me.IsAttached

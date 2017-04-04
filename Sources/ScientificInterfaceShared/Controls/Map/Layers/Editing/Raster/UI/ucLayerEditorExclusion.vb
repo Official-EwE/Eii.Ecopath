@@ -53,7 +53,7 @@ Namespace Controls.Map.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
+        Public Overrides Sub Initialize(ByVal editor As cLayerEditorRaster)
             MyBase.Initialize(editor)
 
             Me.m_nudDepth.DecimalPlaces = 0
@@ -117,7 +117,7 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_btnClear.Enabled = (Me.IsAttached)

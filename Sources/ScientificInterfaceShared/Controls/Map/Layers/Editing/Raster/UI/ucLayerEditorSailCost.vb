@@ -20,17 +20,14 @@
 
 #Region " Imports "
 
-Option Strict On
 Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
 Namespace Controls.Map.Layers
 
-    Public Class ucLayerEditorGroup
-        Inherits ucLayerEditorDefault
+    Public Class ucLayerEditorSailCost
 
         Public Sub New()
             MyBase.New()
@@ -44,33 +41,39 @@ Namespace Controls.Map.Layers
 
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
-            Dim grp As cCoreGroupBase = Nothing
+            Dim fleet As cFleetInput = Nothing
 
-            Me.m_cmbGroup.Items.Clear()
-            For iGroup As Integer = 1 To core.nGroups
-                grp = core.EcoPathGroupInputs(iGroup)
-                Me.m_cmbGroup.Items.Add(grp)
-            Next iGroup
+            Me.m_cmbFleet.Items.Clear()
+            For i As Integer = 1 To core.nFleets
+                fleet = core.FleetInputs(i)
+                Me.m_cmbFleet.Items.Add(fleet)
+            Next i
 
             ' Update control
-            Me.m_cmbGroup.SelectedIndex = Me.GroupIndex - 1
+            Me.m_cmbFleet.SelectedIndex = Math.Max(0, Me.FleetIndex - 1)
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
-
-            Me.m_cmbGroup.Enabled = Me.IsAttached
-
+            ' May be cleaning up
+            If (Not Me.IsAttached Or Me.Editor Is Nothing) Then Return
+            ' Okidoki
+            Me.m_btnCalculate.Enabled = editor.IsEditable
         End Sub
 
-        Protected Overloads Property Editor() As cLayerEditorGroup
+        Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnCalculate.Click
+            Me.UIContext.Core.CalcEcospaceCostOfSailing()
+        End Sub
+
+        Protected Overloads Property Editor() As cLayerEditorSailCost
             Get
-                Return DirectCast(MyBase.Editor, cLayerEditorGroup)
+                Return DirectCast(MyBase.Editor, cLayerEditorSailCost)
             End Get
-            Set(ByVal editor As cLayerEditorGroup)
+            Set(ByVal editor As cLayerEditorSailCost)
                 ' Sanity check
-                Debug.Assert(TypeOf editor Is cLayerEditorGroup, "ucLayerEditorGroup connected to wrong editor class")
+                Debug.Assert(TypeOf editor Is cLayerEditorSailCost, "ucLayerEditorSailCost connected to wrong editor class")
                 ' Configure editor
                 editor.CellValue = 0
                 ' Set
@@ -78,33 +81,33 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        Protected Property GroupIndex() As Integer
+        Protected Property FleetIndex() As Integer
             Get
                 If (Not Me.IsAttached) Then Return cCore.NULL_VALUE
-                Return Me.Editor.Group
+                Return Me.Editor.Fleet
             End Get
             Set(ByVal value As Integer)
                 If (Me.IsAttached) Then
-                    If (Me.Editor.Group <> value) Then
-                        Me.Editor.Group = value
+                    If (Me.Editor.Fleet <> value) Then
+                        Me.Editor.Fleet = value
                     End If
                 End If
             End Set
         End Property
 
-        Private Sub OnSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cmbGroup.SelectedIndexChanged
-            Me.GroupIndex = Me.m_cmbGroup.SelectedIndex + 1
-        End Sub
-
         Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_cmbGroup.Format
+            Handles m_cmbFleet.Format
             Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
             Dim fmt As New cCoreInterfaceFormatter()
             e.Value = fmt.GetDescriptor(io)
         End Sub
 
+        Private Sub OnFleetSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cmbFleet.SelectedIndexChanged
+            Dim item As Object = Me.m_cmbFleet.SelectedItem
+            Me.FleetIndex = DirectCast(item, cCoreInputOutputBase).Index
+        End Sub
+
     End Class
 
 End Namespace
-

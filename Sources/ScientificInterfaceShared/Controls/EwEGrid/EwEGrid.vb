@@ -1300,7 +1300,7 @@ Namespace Controls.EwEGrid
                                             ' #Yes: attempt to set value
                                             strValue = astrCols(iColData).Trim
                                             ' Is empty value?
-                                            If (String.IsNullOrWhiteSpace(strValue)) And _
+                                            If (String.IsNullOrWhiteSpace(strValue)) And
                                                 ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double)) Or (cell.DataModel.ValueType Is GetType(Integer))) Then
                                                 ' #Yes: Convert to cell default value
                                                 strValue = Convert.ToString(cell.DataModel.DefaultValue)
@@ -1318,7 +1318,7 @@ Namespace Controls.EwEGrid
                                                 End If
                                             Catch ex As Exception
                                                 ' Whoah
-                                                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString, _
+                                                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString,
                                                            eVerboseLevel.Detailed)
                                             End Try
                                             If cell.DataModel.IsValidValue(objValue) Then

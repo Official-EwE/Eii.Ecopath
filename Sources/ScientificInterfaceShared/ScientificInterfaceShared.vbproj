@@ -172,21 +172,24 @@
     <Compile Include="Controls\Map\DirectRendering\ucLegendBar.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorUpwelling.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVelocity.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorRaster.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorUpwelling.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorSailCost.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorVelocity.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorExclusion.Designer.vb">
       <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorExclusion.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMonthVelocity.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.Designer.vb">
       <DependentUpon>ucLayerEditorMonthVelocity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMonthVelocity.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Vector\cLayerEditorVector.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayerRaster.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExclusion.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerFleet.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerGroup.vb" />
@@ -345,80 +348,79 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cDisplayImageLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayerImage.vb" />
     <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cDisplayRasterLayerBundle.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cDisplayRasterLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayerRasterBundle.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorPort.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorGroup.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMigration.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMLD.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRange.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRegion.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorTwoState.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorHabitat.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\UI\ILayerEditorGUI.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorDepth.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorPort.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorGroup.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorMigration.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorMLD.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorRange.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorRegion.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorTwoState.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\cLayerEditorHabitat.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ILayerEditorGUI.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditor.Designer.vb">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditor.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDefault.Designer.vb">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDefault.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDepth.Designer.vb">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDepth.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.Designer.vb">
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorHabitatCapacity.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.Designer.vb">
       <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorHabitatCapacity.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMigration.Designer.vb">
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMigration.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorPort.Designer.vb">
       <DependentUpon>ucLayerEditorPort.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorPort.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRange.Designer.vb">
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRange.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegions.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRegions.Designer.vb">
       <DependentUpon>ucLayerEditorRegions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegions.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRegions.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.Designer.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorSailCost.Designer.vb">
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.vb">
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorSailCost.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\Layer types\cStyleguideImageLayer.vb" />
@@ -776,49 +778,49 @@
     <EmbeddedResource Include="Controls\Map\DirectRendering\ucLegendBar.resx">
       <DependentUpon>ucLegendBar.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorExclusion.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorExclusion.resx">
       <DependentUpon>ucLayerEditorExclusion.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditor.resx">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDefault.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDefault.resx">
       <DependentUpon>ucLayerEditorDefault.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorDepth.resx">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorGroup.resx">
       <DependentUpon>ucLayerEditorGroup.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorHabitatCapacity.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.resx">
       <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMigration.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMigration.resx">
       <DependentUpon>ucLayerEditorMigration.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorMonthVelocity.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.resx">
       <DependentUpon>ucLayerEditorMonthVelocity.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorPort.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorPort.resx">
       <DependentUpon>ucLayerEditorPort.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRange.resx">
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegions.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorRegions.resx">
       <DependentUpon>ucLayerEditorRegions.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.resx">
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorSailCost.resx">
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

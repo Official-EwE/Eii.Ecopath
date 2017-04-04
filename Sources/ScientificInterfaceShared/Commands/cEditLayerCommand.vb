@@ -21,8 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 
@@ -38,15 +36,15 @@ Namespace Commands
     Public Class cEditLayerCommand
         Inherits cCommand
 
-        Private m_layer As cDisplayRasterLayer = Nothing
-        Private m_layerDepth As cDisplayRasterLayer = Nothing
+        Private m_layer As cDisplayLayerRaster = Nothing
+        Private m_layerDepth As cDisplayLayerRaster = Nothing
         Private m_edittype As eLayerEditTypes
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~EditLayer"
 
         Public Sub New(ByVal cmdh As cCommandHandler)
-            MyBase.new(cmdh, cEditLayerCommand.cCOMMAND_NAME)
+            MyBase.New(cmdh, cEditLayerCommand.cCOMMAND_NAME)
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -55,7 +53,7 @@ Namespace Commands
         ''' <param name="layerDepth">Depth reference layer.</param>
         ''' <param name="edittype">Type of <see cref="eLayerEditTypes">edit operation</see>.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal layer As cDisplayRasterLayer, ByVal layerDepth As cDisplayRasterLayer, ByVal edittype As eLayerEditTypes)
+        Public Overloads Sub Invoke(ByVal layer As cDisplayLayerRaster, ByVal layerDepth As cDisplayLayerRaster, ByVal edittype As eLayerEditTypes)
             Me.m_layer = layer
             Me.m_layerDepth = layerDepth
             Me.m_edittype = edittype
@@ -67,7 +65,7 @@ Namespace Commands
         ''' Get the layer to edit.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property Layer() As cDisplayRasterLayer
+        Public ReadOnly Property Layer() As cDisplayLayerRaster
             Get
                 Return Me.m_layer
             End Get
@@ -78,7 +76,7 @@ Namespace Commands
         ''' Get the reference depth layer to help with the edit operation.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property LayerDepth() As cDisplayRasterLayer
+        Public ReadOnly Property LayerDepth() As cDisplayLayerRaster
             Get
                 Return Me.m_layer
             End Get

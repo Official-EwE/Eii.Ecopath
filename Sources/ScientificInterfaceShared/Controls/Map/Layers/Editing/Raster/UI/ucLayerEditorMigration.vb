@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -60,7 +59,7 @@ Namespace Controls.Map.Layers
 
         Private m_bInUpdate As Boolean = False
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             If (Me.UIContext Is Nothing) Then Return

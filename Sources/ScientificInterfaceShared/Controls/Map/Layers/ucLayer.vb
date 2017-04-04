@@ -145,9 +145,9 @@ Namespace Controls.Map
         End Sub
 
         Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
-            If (TypeOf Me.Layer Is cDisplayRasterLayer) Then
+            If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
                 Try
-                    Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
+                    Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
                     Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                     cmd.Invoke(rl, Nothing, edittype)
                 Catch ex As Exception
@@ -157,9 +157,9 @@ Namespace Controls.Map
         End Sub
 
         Public Sub EditLayerConnection()
-            If (TypeOf Me.Layer Is cDisplayRasterLayer) Then
+            If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
                 Try
-                    Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
+                    Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
                     Dim cmd As cEcospaceConfigureConnectionCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
                     cmd.Invoke(rl.Data)
                 Catch ex As Exception
@@ -282,8 +282,8 @@ Namespace Controls.Map
                 e.Graphics.FillRectangle(SystemBrushes.Control, rcControl)
             End If
 
-            If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
-                Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layer, cDisplayRasterLayer)
+            If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
+                Dim rl As cDisplayLayerRaster = DirectCast(Me.m_layer, cDisplayLayerRaster)
                 ' Draw editable indicator (only when selected or hovering)
                 If (rl.IsExternal) Then
                     If (rl.IsExternalEnabled) Then
@@ -343,7 +343,7 @@ Namespace Controls.Map
             End If
 
             ' - Render border
-            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
+            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken,
                 Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
 
             ' Draw button borders only when hovering
@@ -372,8 +372,8 @@ Namespace Controls.Map
                     Me.EditLayer(eLayerEditTypes.EditVisuals)
 
                 Case eAreaTypes.Editable
-                    If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
-                        Dim edt As cLayerEditor = DirectCast(Me.m_layer, cDisplayRasterLayer).Editor
+                    If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
+                        Dim edt As cLayerEditor = DirectCast(Me.m_layer, cDisplayLayerRaster).Editor
                         edt.IsEditable = Not edt.IsEditable
                         flag = flag Or cDisplayLayer.eChangeFlags.Editable
                     End If

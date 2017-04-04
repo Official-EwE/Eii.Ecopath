@@ -21,9 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Utilities
-Imports EwEUtils.Core
 
 #End Region ' Imports 
 
@@ -41,15 +38,11 @@ Namespace Controls.Map.Layers
 
         ' === LAYER SUPPORT ===
         ''' <summary>The raster layer to operate on.</summary>
-        Private m_layer As cDisplayRasterLayer = Nothing
+        Protected m_layer As cDisplayLayer = Nothing
         ''' <summary>Flag stating whether the layer is editable.</summary>
-        Private m_bEditable As Boolean = True
-        ''' <summary>The current value 'under the cursor'.</summary>
-        Private m_sValue As Single = Nothing
-        ''' <summary>Max value for cursor.</summary>
-        Private m_sValueMax As Single = Single.MaxValue
-        ''' <summary>Min value for cursor.</summary>
-        Private m_sValueMin As Single = 0
+        Protected m_bEditable As Boolean = True
+        ''' <summary>Flag stating whether the layer is being edited.</summary>
+        Private m_bEditing As Boolean = False
 
         ' === GUI SUPPORT ===
         ''' <summary>Runtime type of the <see cref="ucLayerEditor">layer editor GUI</see>
@@ -58,13 +51,16 @@ Namespace Controls.Map.Layers
         ''' <summary>A GUI, if any.</summary>
         Private m_gui As ILayerEditorGUI = Nothing
 
-        ' === FEEDBACK SUPPORT ===
-        Private Shared s_iCursorSize As Integer = 1
-
 #End Region ' Private vars
 
 #Region " Construction "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="typeGUI">The class type for the GUI to attach to this editor, if any.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal typeGUI As Type)
             If typeGUI Is Nothing Then typeGUI = GetType(ucLayerEditorDefault)
             Me.m_typeGUI = typeGUI
@@ -77,12 +73,16 @@ Namespace Controls.Map.Layers
         ''' <param name="uic">UI context to attach.</param>
         ''' <param name="layer">Layer to attach.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Initialize(ByVal uic As cUIContext, _
-                                          ByVal layer As cDisplayRasterLayer)
+        Public Overridable Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
             Me.UIContext = uic
             Me.Layer = layer
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Destroy the editor.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Protected Overrides Sub Finalize()
 
             If (Me.m_gui IsNot Nothing) Then
@@ -98,6 +98,12 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Duplicate the editor
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Overridable Function Clone() As cLayerEditor
             Dim minime As cLayerEditor = Nothing
 
@@ -113,43 +119,15 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Private Sub OnLayerChanged(ByVal layer As cDisplayLayer, ByVal cf As cDisplayLayer.eChangeFlags)
-            If Me.GUI IsNot Nothing Then
-                Me.GUI.UpdateContent(Me)
+        Protected Sub OnLayerChanged(ByVal layer As cDisplayLayer, ByVal cf As cDisplayLayer.eChangeFlags)
+            If (Me.GUI IsNot Nothing) Then
+                Me.GUI.UpdateContent(CType(Me, cLayerEditorRaster))
             End If
         End Sub
 
 #End Region ' Events
 
 #Region " GUI feedback "
-
-        Public Shared Function EditorCursor(ByVal iCursorSize As Integer, ByVal szCell As SizeF) As Cursor
-
-            Dim ptIconSize As New Size(CInt(szCell.Width * iCursorSize), CInt(szCell.Height * iCursorSize))
-            Dim cursor As Cursor = Cursors.Hand
-
-            If (iCursorSize > 0) Then
-                Try
-                    Dim bm As New Bitmap(ptIconSize.Width + 1, ptIconSize.Height + 1)
-                    Dim g As Graphics = Graphics.FromImage(bm)
-
-                    g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-                    g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bm.Width, bm.Height))
-                    g.DrawEllipse(Pens.White, 1, 1, ptIconSize.Width - 2, ptIconSize.Height - 2)
-                    g.DrawEllipse(Pens.Black, 0, 0, ptIconSize.Width, ptIconSize.Height)
-                    Using br As New SolidBrush(Color.FromArgb(45, 0, 0, 0))
-                        g.FillEllipse(br, 0, 0, ptIconSize.Width, ptIconSize.Height)
-                    End Using
-                    cursor = New Cursor(bm.GetHicon())
-                    g.Dispose()
-                    bm.Dispose()
-
-                Catch e As Exception
-                    Debug.WriteLine(e.Message)
-                End Try
-            End If
-            Return cursor
-        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -173,8 +151,8 @@ Namespace Controls.Map.Layers
                 Debug.Assert(TypeOf obj Is ucLayerEditor)
 
                 gui = DirectCast(obj, ucLayerEditor)
-                gui.Attach(Me.UIContext, Me, Me.m_layer)
-                gui.Initialize(Me)
+                gui.Attach(Me.UIContext, Me, CType(Me.m_layer, cDisplayLayerRaster))
+                gui.Initialize(CType(Me, cLayerEditorRaster))
 
                 ' Remember GUI
                 Me.m_gui = gui
@@ -211,24 +189,55 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' Cursor feedback for the current location of the cursor.
         ''' </summary>
+        ''' <param name="ptMouse">Mouse position over the map.</param>
+        ''' <param name="map">The map that the mouse is moving over.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Cursor(ByVal szCell As SizeF) As Cursor
-            Return cLayerEditor.EditorCursor(Me.CursorSize, szCell)
-        End Function
+        Public MustOverride Function Cursor(ByVal ptMouse As Point, ByVal map As ucMap) As Cursor
 
-        Public Property GUI() As ILayerEditorGUI
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="ILayerEditorGUI">GUI</see> attached to the
+        ''' editor. 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property GUI() As ILayerEditorGUI
             Get
                 Return Me.m_gui
             End Get
-            Set(ByVal value As ILayerEditorGUI)
-                Me.m_gui = value
-                If Me.m_gui IsNot Nothing Then
-                    Me.m_gui.Initialize(Me)
-                End If
-            End Set
         End Property
 
 #End Region ' GUI feedback
+
+#Region " Mouse input processing "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Process a mouse button click. This can put the editor in edit mode.
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <param name="map"></param>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Sub ProcessMouseClick(e As MouseEventArgs, map As ucMap)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Process mouse drawing with the left button down. This is only called when
+        ''' the editor is <see cref="IsEditing"/>
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <param name="map"></param>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Sub ProcessMouseDraw(e As MouseEventArgs, map As ucMap)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Process the end of a mouse draw operation
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Sub ProcessMouseUp()
+
+#End Region ' Mouse input processing
 
 #Region " Editing "
 
@@ -236,258 +245,42 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' User has started editing the layer.
         ''' </summary>
-        ''' <param name="ptClick">The cell position that was clicked.</param>
-        ''' <param name="args">Click <see cref="MouseEventArgs">mouse state</see>
+        ''' <param name="e">Click <see cref="MouseEventArgs">mouse state</see>
         ''' information.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal args As MouseEventArgs)
-
-            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
-            ' Notify the editor GUI, if any
-            Me.GUI.StartEdit(Me)
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Edit the layer from one point to a next.
-        ''' </summary>
-        ''' <param name="ptFrom">The mouse location to edit from.</param>
-        ''' <param name="ptTo">The mouse location to edit to.</param>
-        ''' <param name="ptDelta">Mouse distance travelled since the last edit operation.</param>
-        ''' <param name="szfCell">Size of a single cell.</param>
-        ''' <param name="args">Click <see cref="MouseEventArgs">mouse state</see>
-        ''' information.</param>
-        ''' <param name="ptUpdateMin">Top-left cell position affected by
-        ''' the edit operation.</param>
-        ''' <param name="ptUpdateMax">Bottom-right cell position affected by
-        ''' the edit operation.</param>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub Edit(ByVal ptFrom As Point, _
-                                    ByVal ptTo As Point, _
-                                    ByVal ptDelta As Point, _
-                                    ByVal szfCell As SizeF, _
-                                    ByVal args As MouseEventArgs, _
-                                    ByRef ptUpdateMin As Point, _
-                                    ByRef ptUpdateMax As Point)
-
-            If (Not Me.IsEditable) Then Return
-
-            ' Calc positions between current and last draw point
-            Dim iNumSteps As Integer = Math.Max(1, Math.Max(Math.Abs(ptFrom.X - ptTo.X), Math.Abs(ptFrom.Y - ptTo.Y)))
-            Dim dDX As Double = (ptTo.X - ptFrom.X) / iNumSteps
-            Dim dX As Double = ptFrom.X
-            Dim dDY As Double = (ptTo.Y - ptFrom.Y) / iNumSteps
-            Dim dY As Double = ptFrom.Y
-
-            Dim ptDraw As Point = Nothing
-            Dim ptCell As Point = Nothing
-
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-
-            ' Draw every step between the two draw points
-            For iStep As Integer = 1 To iNumSteps
-
-                dX += dDX
-                dY += dDY
-
-                For iX As Integer = 0 To Me.CursorSize - 1
-                    For iY As Integer = 0 To Me.CursorSize - 1
-
-                        Dim ptfCursor As New PointF(CSng(iX - (Me.CursorSize - 1) / 2), _
-                                                    CSng(iY - (Me.CursorSize - 1) / 2))
-
-                        If (Math.Sqrt(ptfCursor.X * ptfCursor.X + ptfCursor.Y * ptfCursor.Y) <= (Me.CursorSize / 2)) Then
-
-                            ptCell = New Point(CInt(Math.Floor(dX + ptfCursor.X)), CInt(Math.Floor(dY + ptfCursor.Y)))
-
-                            ' JS 26Feb15: This is the only spot to protect for invalid row/col access.
-                            '             Should this check not have been here ages ago?!
-                            If (bm.IsValidCellPosition(ptCell.Y, ptCell.X)) Then
-                                Me.SetCellValue(ptCell, Me.CellValue, args, New Point(iX, iY))
-
-                                ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
-                                ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
-                                ptUpdateMax.X = Math.Max(ptCell.X, ptUpdateMax.X)
-                                ptUpdateMax.Y = Math.Max(ptCell.Y, ptUpdateMax.Y)
-                            End If
-                        End If
-                    Next iY
-                Next iX
-
-            Next iStep
-
-        End Sub
+        Protected MustOverride Sub StartEdit(ByVal e As MouseEventArgs, map As ucMap)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' User is done editing the layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub EndEdit()
-            ' Last-minute abort
-            If (Not Me.IsEditable) Then Return
-            ' Notify the editor GUI, if any
-            If (Me.GUI IsNot Nothing) Then Me.GUI.EndEdit(Me)
-            ' Update layer
-            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
-        End Sub
+        Protected MustOverride Sub EndEdit()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Pick up the cell value at a given point, and store this value in the
-        ''' layer editor as the next value that will be set.
+        ''' Get/set whether the layer is being edited.
         ''' </summary>
-        ''' <param name="pt">The cell location to pick up a value from.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Pickup(ByVal pt As Point)
-
-            Try
-                Me.CellValue = CDec(Layer.Value(pt.Y, pt.X))
-            Catch ex As Exception
-            End Try
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Set the value of a cell in the current layer with the designated 
-        ''' <see cref="CellValue">set value</see>.
-        ''' </summary>
-        ''' <param name="ptSet">The cell location (Col, Row) to set.</param>
-        ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Sub SetCellValue(ByVal ptSet As Point, _
-                                               ByVal value As Object, _
-                                               ByVal e As MouseEventArgs, _
-                                               ByVal ptClick As Point)
-            If (Not Me.IsEditable) Then Return
-            Me.Layer.Value(ptSet.Y, ptSet.X) = value
-        End Sub
-
-        Public ReadOnly Property CanSmooth() As Boolean
+        Public Property IsEditing As Boolean
             Get
-                Return Me.m_layer.ValueType Is GetType(Single)
+                Return Me.m_bEditing
             End Get
+            Protected Set(value As Boolean)
+                Me.m_bEditing = value
+            End Set
         End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Smooth layer data across water cells.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub Smooth()
-
-            If (Not Me.IsEditable) Then Return
-
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim cnew(,) As Single, i As Integer, j As Integer
-            Dim t As Single
-            Dim n As Integer
-
-            ReDim cnew(bm.InRow, bm.InCol)
-
-            For i = 1 To bm.InRow
-                For j = 1 To bm.InCol
-                    t = 0
-                    n = 0
-                    For ii As Integer = i - 1 To i + 1
-                        For jj As Integer = j - 1 To j + 1
-                            If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And (layerDepth.IsWaterCell(ii, jj)) Then
-                                t += CSng(Me.Layer.Value(ii, jj))
-                                n += 1
-                            End If
-                        Next jj
-                    Next ii
-                    If n > 0 Then cnew(i, j) = t / n
-                Next j
-            Next i
-
-            For i = 1 To bm.InRow
-                For j = 1 To bm.InCol
-                    If layerDepth.IsWaterCell(i, j) Then
-                        Me.Layer.Value(i, j) = cnew(i, j)
-                    End If
-                Next
-            Next
-            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
-
-        End Sub
-
-        Public Overridable ReadOnly Property CanDuplicate() As Boolean
-            Get
-                Return (Me.Layer.Data.SecundaryIndexCounter <> eCoreCounterTypes.NotSet)
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Duplicate layer data across indexed layers.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub Duplicate(ByVal iFrom As Integer)
-
-            If (Not Me.IsEditable) Then Return
-
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim cc As Integer = Me.UIContext.Core.GetCoreCounter(Me.Layer.Data.SecundaryIndexCounter)
-            Dim val As Object = Nothing
-
-            For i As Integer = 1 To bm.InRow
-                For j As Integer = 1 To bm.InCol
-                    If (layerDepth.IsWaterCell(i, j)) Then
-                        val = Me.Layer.Data.Cell(i, j, iFrom)
-                        For k As Integer = 1 To cc
-                            If (k <> iFrom) Then
-                                Me.Layer.Data.Cell(i, j, k) = val
-                            End If
-                        Next k
-                    End If
-                Next j
-            Next i
-
-            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Fill the layer with the current <see cref="CellValue"/>
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Sub Reset()
-
-            If (Not Me.IsEditable) Then Return
-
-            ' ToDo: globalize this
-            Dim msg As New cFeedbackMessage(cStringUtils.Localize("Are you sure you want to set all cells in this map to {0}?", Me.CellValue), _
-                                            eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question)
-            msg.ReplyStyle = eMessageReplyStyle.YES_NO
-            msg.Reply = eMessageReply.YES
-
-            Me.UIContext.Core.Messages.SendMessage(msg)
-
-            If (msg.Reply <> eMessageReply.YES) Then Return
-
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-
-            For i As Integer = 1 To bm.InRow
-                For j As Integer = 1 To bm.InCol
-                    If layerDepth.IsWaterCell(i, j) Then
-                        Me.Layer.Value(i, j) = Me.CellValue
-                    End If
-                Next j
-            Next i
-            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
-
-        End Sub
 
 #End Region ' Editing
 
 #Region " Properties "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="cUIContext"/> to operate onto.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext() As cUIContext
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -531,106 +324,18 @@ Namespace Controls.Map.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the size of the cursor.
-        ''' </summary>
-        ''' <remarks>
-        ''' This value is persistent across layer editors.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Overridable Property CursorSize() As Integer
-            Get
-                Return cLayerEditor.s_iCursorSize
-            End Get
-            Set(ByVal iCursorSize As Integer)
-                cLayerEditor.s_iCursorSize = iCursorSize
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the value for the next cell that is to be edited.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overridable Property CellValue() As Object
-            Get
-                Return Me.m_sValue
-            End Get
-            Set(ByVal value As Object)
-                Dim sValue As Single = Math.Max(Math.Min(CSng(value), Me.m_sValueMax), Me.m_sValueMin)
-                If (sValue <> Me.m_sValue) Then
-                    Me.m_sValue = sValue
-                    'Me.UpdateGUI()
-                End If
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Configure the editor to adhere to given <see cref="cVariableMetaData">variable meta data</see>.
-        ''' </summary>
-        ''' <param name="md">
-        ''' The metadata to apply. If Nothing/Null this editor will need to be
-        ''' manually configured via <see cref="CellValueMax">CellValueMax</see> 
-        ''' and <see cref="CellValueMin">CellValueMin</see>.
-        ''' </param>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Sub ApplyMetadata(ByVal md As cVariableMetaData)
-            If (md IsNot Nothing) Then
-                Me.m_sValueMin = md.Min
-                Me.m_sValueMax = md.Max
-            End If
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the max value allowed in a cell.
-        ''' </summary>
-        ''' <remarks>
-        ''' Ideally, this value would be obtained from core meta data. For now,
-        ''' the UI is required to manually control this property.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Property CellValueMax() As Single
-            Get
-                Return Me.m_sValueMax
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sValueMax = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the min value allowed in a cell.
-        ''' </summary>
-        ''' <remarks>
-        ''' Ideally, this value would be obtained from core meta data. For now,
-        ''' the UI is required to manually control this property.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Property CellValueMin() As Single
-            Get
-                Return Me.m_sValueMin
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sValueMin = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Get/set the layer to attach to this Editor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Layer() As cDisplayRasterLayer
+        Public Overridable Property Layer() As cDisplayLayer
             Get
                 Return Me.m_layer
             End Get
-            Private Set(ByVal value As cDisplayRasterLayer)
+            Protected Set(ByVal value As cDisplayLayer)
                 If Object.ReferenceEquals(value, Me.m_layer) Then Return
 
                 ' Already has a layer?
-                If Me.m_layer IsNot Nothing Then
+                If (Me.m_layer IsNot Nothing) Then
                     ' #Yes: stop listening to layer changes
                     RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
                 End If
@@ -639,28 +344,12 @@ Namespace Controls.Map.Layers
                 Me.m_layer = value
 
                 ' Has a new layer?
-                If Me.m_layer IsNot Nothing Then
+                If (Me.m_layer IsNot Nothing) Then
                     ' #Yes: start listening to layer changes
                     AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
-                    ' Set metadata
-                    Dim d As cEcospaceLayer = Me.m_layer.Data
-                    Dim md As cVariableMetaData = Nothing
-
-                    If (d IsNot Nothing) Then md = d.MetadataCell
-                    Me.ApplyMetadata(md)
-
                 End If
-
             End Set
         End Property
-
-        Public Property UIContext() As cUIContext
-
-        Protected Sub UpdateGUI()
-            If (Me.m_gui IsNot Nothing) Then
-                Me.m_gui.UpdateContent(Me)
-            End If
-        End Sub
 
 #End Region ' Properties
 

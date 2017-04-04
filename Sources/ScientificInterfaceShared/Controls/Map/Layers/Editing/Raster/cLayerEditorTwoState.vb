@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports 
 
@@ -30,66 +29,63 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor base class that supports manual modification of Ecospace 
-    ''' layers.
+    ''' Layer editor that supports manual modifications of layers where cells
+    ''' have two values: set or cleared.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorMLD
-        Inherits cLayerEditorRange
-
-#Region " Private vars "
-
-        ''' <summary>The depth layer to limit MLD values against.</summary>
-        Private m_layerDepth As cEcospaceLayer = Nothing
-
-#End Region ' Private vars
-
-#Region " Construction "
+    Public Class cLayerEditorTwoState
+        Inherits cLayerEditorRaster
 
         Public Sub New()
-            MyBase.New()
+            Me.New(Nothing, True)
         End Sub
 
-#End Region ' Construction
+        Public Sub New(ByVal typeGUI As Type, bAutoToggleCellValue As Boolean)
+            MyBase.New(typeGUI)
+            Me.AutoToggleCellValue = bAutoToggleCellValue
+        End Sub
 
-#Region " Overrides "
+        Protected Property AutoToggleCellValue As Boolean = True
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Initialize(ByVal uic As cUIContext, _
-                                        ByVal layer As cDisplayRasterLayer)
+        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
             MyBase.Initialize(uic, layer)
-
-            Dim bm As cEcospaceBasemap = uic.Core.EcospaceBasemap
-            If (bm IsNot Nothing) Then
-                Me.m_layerDepth = bm.LayerDepth
-            End If
-
+            Me.CellValueMax = CSng(Math.Max(layer.ValueSet, layer.ValueClear))
+            Me.CellValueMin = CSng(Math.Min(layer.ValueSet, layer.ValueClear))
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Set a cell value. Overridden to limit values to the actual map depths.
-        ''' </summary>
-        ''' <param name="ptSet"></param>
-        ''' <param name="value"></param>
-        ''' <param name="e"></param>
-        ''' <param name="ptClick"></param>
+        ''' <inheritdoc cref="cLayerEditor.StartEdit"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub SetCellValue(ByVal ptSet As System.Drawing.Point, _
-                                             ByVal value As Object, _
-                                             ByVal e As System.Windows.Forms.MouseEventArgs, _
-                                             ByVal ptClick As System.Drawing.Point)
-            ' Sanity checks
-            Debug.Assert(Me.m_layerDepth IsNot Nothing)
+        Protected Overrides Sub StartEdit(ByVal e As MouseEventArgs, map As ucMap)
+
             If (Not Me.IsEditable) Then Return
 
-            MyBase.SetCellValue(ptSet, Math.Min(CSng(value), CSng(Me.m_layerDepth.Cell(ptSet.Y, ptSet.X))), e, ptClick)
+            MyBase.StartEdit(e, map)
 
+            Dim bm As cEcospaceBasemap = map.Basemap
+            Dim ptClick As Point = map.GetCellIndex(e.Location, bm.InRow, bm.InCol)
+
+            If (Me.AutoToggleCellValue) Then
+
+                ' Clicked on an empty cell?
+                If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueClear)) Then
+                    ' #Yes: start setting values
+                    Me.CellValue = CSng(Layer.ValueSet)
+                Else
+                    ' #No: start clearing values
+                    Me.CellValue = CSng(Layer.ValueClear)
+                End If
+
+                If Me.GUI IsNot Nothing Then
+                    ' Trigger GUI to update to the changes
+                    Me.GUI.UpdateContent(Me)
+                End If
+
+            End If
         End Sub
-
-#End Region ' Overrides
 
     End Class
 

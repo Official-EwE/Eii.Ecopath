@@ -22,12 +22,7 @@
 
 Option Strict On
 Imports EwECore
-Imports EwECore.Auxiliary
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.Map
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -40,21 +35,21 @@ Namespace Controls.Map.Layers
     ''' data is based on <see cref="eCoreCounterTypes"/>.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public Class cDisplayRasterLayerBundle
-        Inherits cDisplayRasterLayer
+    Public Class cDisplayLayerRasterBundle
+        Inherits cDisplayLayerRaster
 
         Private m_layers As cEcospaceLayer()
         Private m_iLayer As Integer = 0
         Private m_cc As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal data As cEcospaceLayer(), _
-                       ByVal renderer As cLayerRenderer, _
-                       ByVal editor As cLayerEditor, _
-                       ByVal cc As eCoreCounterTypes, _
-                       ByVal source As cCoreInputOutputBase, _
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
-                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal data As cEcospaceLayer(),
+                       ByVal renderer As cLayerRenderer,
+                       ByVal editor As cLayerEditor,
+                       ByVal cc As eCoreCounterTypes,
+                       ByVal source As cCoreInputOutputBase,
+                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name,
+                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE,
                        Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
 
             MyBase.New(uic, data(0), renderer, editor, source, varName, sValueSet, sValueClear)

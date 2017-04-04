@@ -17,10 +17,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Style
+
+#End Region ' Imports
 
 Namespace Controls.Map.Layers
 
@@ -53,7 +56,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             Me.m_btnClear.Enabled = (Me.IsAttached)

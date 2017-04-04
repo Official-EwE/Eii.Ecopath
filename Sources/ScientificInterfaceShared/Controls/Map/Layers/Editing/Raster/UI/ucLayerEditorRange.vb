@@ -70,10 +70,10 @@ Namespace Controls.Map.Layers
 
 #Region " Overrides "
 
-        Public Overrides Sub Initialize(ByVal editor As cLayerEditor)
+        Public Overrides Sub Initialize(ByVal editor As cLayerEditorRaster)
             MyBase.Initialize(editor)
 
-            Dim edt As cLayerEditor = Me.Editor
+            Dim edt As cLayerEditorRaster = Me.Editor
             Dim prop As cProperty = edt.Layer.GetDataProperty()
 
             If (prop IsNot Nothing) Then
@@ -131,7 +131,7 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
+        Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
             ' Sanity check
@@ -139,7 +139,7 @@ Namespace Controls.Map.Layers
             If (Me.UIContext Is Nothing) Then Return
 
             ' Set control value
-            Dim sValue As Single = Math.Max(Math.Min(CSng(Me.Editor.CellValue), CSng(Me.m_nudValue.Maximum)), _
+            Dim sValue As Single = Math.Max(Math.Min(CSng(Me.Editor.CellValue), CSng(Me.m_nudValue.Maximum)),
                                             CSng(Me.m_nudValue.Minimum))
 
             Me.m_nudValue.Value = Convert.ToDecimal(sValue)
@@ -154,8 +154,8 @@ Namespace Controls.Map.Layers
             End If
 
             If (renderer IsNot Nothing) Then
-                renderer.RenderCell(g, New Rectangle(0, 0, bmp.Width, bmp.Height), _
-                                    Me.Layer.Data, sValue, _
+                renderer.RenderCell(g, New Rectangle(0, 0, bmp.Width, bmp.Height),
+                                    Me.Layer.Data, sValue,
                                     cStyleGuide.eStyleFlags.Highlight)
             End If
             Me.m_pbPreview.Image = bmp
@@ -170,14 +170,14 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub StartEdit(editor As cLayerEditor)
+        Public Overrides Sub StartEdit(editor As cLayerEditorRaster)
             ' Freeze renderer min/max values 
             Me.Layer.Renderer.ScaleMax = Me.Layer.Data.MaxValue
             Me.Layer.Renderer.ScaleMin = Me.Layer.Data.MinValue
             MyBase.StartEdit(editor)
         End Sub
 
-        Public Overrides Sub EndEdit(editor As cLayerEditor)
+        Public Overrides Sub EndEdit(editor As cLayerEditorRaster)
             ' Release renderer min/max values
             Me.Layer.Renderer.ScaleMax = cCore.NULL_VALUE
             Me.Layer.Renderer.ScaleMin = cCore.NULL_VALUE

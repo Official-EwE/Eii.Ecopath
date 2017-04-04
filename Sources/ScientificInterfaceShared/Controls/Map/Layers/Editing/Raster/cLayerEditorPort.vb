@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwECore
 
 #End Region ' Imports 
 
@@ -29,21 +30,21 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports selections of groups.
+    ''' Layer editor that supports selections of ports for fleets.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorGroup
-        Inherits cLayerEditorRange
-        Implements IGroupFilter
+    Public Class cLayerEditorPorts
+        Inherits cLayerEditorTwoState
+        Implements IFleetFilter
 
 #Region " Construction "
 
         Public Sub New()
-            Me.New(GetType(ucLayerEditorGroup))
+            Me.New(GetType(ucLayerEditorPort))
         End Sub
 
         Public Sub New(ByVal t As Type)
-            MyBase.New(t)
+            MyBase.New(t, True)
             Me.CellValue = 1
         End Sub
 
@@ -51,25 +52,26 @@ Namespace Controls.Map.Layers
 
 #Region " Public interfaces "
 
-        Public Event OnFilterChanged(sender As IContentFilter) Implements IGroupFilter.FilterChanged
+        Public Event OnFilterChanged(sender As IContentFilter) Implements IFleetFilter.FilterChanged
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the index of the Ecopath group to filter by.
+        ''' Get/set the index of the Ecopath fleet to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Group() As Integer _
-            Implements IGroupFilter.Group
+        Public Property Fleet() As Integer _
+            Implements IFleetFilter.Fleet
             Get
-                Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                Return layerCore.iLayer
+                Dim layer As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
+                Return layer.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
-                ' Will Group index change?
-                If (value <> layerCore.iLayer) Then
-                    ' #Yes: update Group index in the underlying Ecospace layer
-                    layerCore.iLayer = value
+                Dim layer As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
+                value = Math.Max(0, Math.Min(Me.UIContext.Core.nFleets, value))
+                ' Will fleet index change?
+                If (value <> layer.iLayer) Then
+                    ' #Yes: update index in the underlying layer collector
+                    layer.iLayer = value
                     ' Force map update
                     Me.Layer.Update(cDisplayLayer.eChangeFlags.Map, False)
 
@@ -81,6 +83,28 @@ Namespace Controls.Map.Layers
                 End If
             End Set
         End Property
+
+        ''' <summary>
+        ''' Overridden to set coastal cells only
+        ''' </summary>
+        ''' <param name="ptSet"></param>
+        ''' <param name="value"></param>
+        ''' <param name="e"></param>
+        ''' <param name="ptClick"></param>
+        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
+                                             value As Object, _
+                                             e As System.Windows.Forms.MouseEventArgs, _
+                                             ptClick As System.Drawing.Point)
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
+            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+
+            If depth.IsCoastalCell(ptSet.Y, ptSet.X) Then
+                MyBase.SetCellValue(ptSet, value, e, ptClick)
+            End If
+
+        End Sub
 
 #End Region ' Public interfaces
 

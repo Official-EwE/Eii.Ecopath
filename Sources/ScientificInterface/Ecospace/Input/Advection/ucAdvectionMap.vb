@@ -42,7 +42,7 @@ Namespace Ecospace.Advection
         ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>The raster layer that can be edited in this map, if any.</summary>
-        Private m_layerData As cDisplayRasterLayer = Nothing
+        Private m_layerData As cDisplayLayerRaster = Nothing
 
         Public Sub New()
             Me.InitializeComponent()
@@ -97,7 +97,7 @@ Namespace Ecospace.Advection
         ''' Get the layer that the user can edit in this map.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DataLayer() As cDisplayRasterLayer
+        Public ReadOnly Property DataLayer() As cDisplayLayerRaster
             Get
                 Return Me.m_layerData
             End Get
@@ -215,11 +215,11 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cDisplayRasterLayer
+        Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cDisplayLayerRaster
 
             Dim factory As New cLayerFactoryInternal()
-            Dim layers() As cDisplayRasterLayer = factory.GetLayers(Me.m_uic, vn)
-            Dim l As cDisplayRasterLayer = Nothing
+            Dim layers() As cDisplayLayerRaster = factory.GetLayers(Me.m_uic, vn)
+            Dim l As cDisplayLayerRaster = Nothing
 
             If (layers Is Nothing) Then Return Nothing
             If (layers.Length = 0) Then
