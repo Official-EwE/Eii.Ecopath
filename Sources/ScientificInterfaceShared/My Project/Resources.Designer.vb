@@ -1806,6 +1806,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecopath access databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_MODEL_ACCESS() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_MODEL_ACCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb;*.eii;*.eiixml.
         '''</summary>
         Public ReadOnly Property FILEFILTER_MODEL_OPEN() As String

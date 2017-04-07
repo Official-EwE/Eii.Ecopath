@@ -7162,8 +7162,8 @@ Description: {1}</value>
     <value>Computed {0} of {1} years</value>
     <comment>{0}=computed #years, {1}=total #years</comment>
   </data>
-  <data name="PROMPT_GOOGLELOCATION_SEARCH" xml:space="preserve">
-    <value>Found entry '{0}' with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this value?</value>
+  <data name="PROMPT_LOCATION_SEARCH" xml:space="preserve">
+    <value>Found location {0} with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this?</value>
     <comment>{0}=term, {1} to {4} extent N,W,S,E</comment>
   </data>
   <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
@@ -13103,5 +13103,12 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="HEADER_ALL_REGULATIONS_APPLY" xml:space="preserve">
     <value>All MPAs enforced</value>
+  </data>
+  <data name="STATUS_EXPORT_FAILURE" xml:space="preserve">
+    <value>Failed to export one or more models to {0}</value>
+  </data>
+  <data name="STATUS_EXPORT_SUCCESS" xml:space="preserve">
+    <value>Models(s) exported successfully to {0}</value>
+    <comment>{0}=file destination</comment>
   </data>
 </root>

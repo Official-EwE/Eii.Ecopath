@@ -50,10 +50,11 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
+        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayer)
             MyBase.Initialize(uic, layer)
-            Me.CellValueMax = CSng(Math.Max(layer.ValueSet, layer.ValueClear))
-            Me.CellValueMin = CSng(Math.Min(layer.ValueSet, layer.ValueClear))
+            Dim rl As cDisplayLayerRaster = DirectCast(layer, cDisplayLayerRaster)
+            Me.CellValueMax = CSng(Math.Max(rl.ValueSet, rl.ValueClear))
+            Me.CellValueMin = CSng(Math.Min(rl.ValueSet, rl.ValueClear))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -65,8 +66,7 @@ Namespace Controls.Map.Layers
 
             MyBase.StartEdit(e, map)
 
-            Dim bm As cEcospaceBasemap = map.Basemap
-            Dim ptClick As Point = map.GetCellIndex(e.Location, bm.InRow, bm.InCol)
+            Dim ptClick As Point = map.GetCellIndex(e.Location)
 
             If (Me.AutoToggleCellValue) Then
 

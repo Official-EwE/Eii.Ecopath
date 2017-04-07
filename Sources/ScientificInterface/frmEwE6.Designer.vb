@@ -52,14 +52,14 @@ Partial Public Class frmEwE6
         Dim m_tssEcospace1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcospace2 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcospace3 As System.Windows.Forms.ToolStripSeparator
-        Dim m_tssTools1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssHelp1 As System.Windows.Forms.ToolStripSeparator
-        Dim m_tssEcotracer1 As System.Windows.Forms.ToolStripSeparator
         Dim MenuEcospace As System.Windows.Forms.ToolStripMenuItem
         Dim sep3 As System.Windows.Forms.ToolStripSeparator
         Dim sep2 As System.Windows.Forms.ToolStripSeparator
         Dim sep1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssHelp3 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssEcotracer1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssTools1 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -143,12 +143,6 @@ Partial Public Class frmEwE6
         Me.m_tsmiTimeSeriesEditWeights = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuTools = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiExternalTools = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MenuEcotracer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcotracerNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcotracerLoad = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbnPreview = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
@@ -160,6 +154,13 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsmiEIIXMLExport = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuEcotracer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcotracerNew = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcotracerLoad = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -170,14 +171,14 @@ Partial Public Class frmEwE6
         m_tssEcospace1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssEcospace2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssEcospace3 = New System.Windows.Forms.ToolStripSeparator()
-        m_tssTools1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssHelp1 = New System.Windows.Forms.ToolStripSeparator()
-        m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator()
         MenuEcospace = New System.Windows.Forms.ToolStripMenuItem()
         sep3 = New System.Windows.Forms.ToolStripSeparator()
         sep2 = New System.Windows.Forms.ToolStripSeparator()
         sep1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssHelp3 = New System.Windows.Forms.ToolStripSeparator()
+        m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator()
+        m_tssTools1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
@@ -232,20 +233,10 @@ Partial Public Class frmEwE6
         m_tssEcospace3.Name = "m_tssEcospace3"
         resources.ApplyResources(m_tssEcospace3, "m_tssEcospace3")
         '
-        'm_tssTools1
-        '
-        m_tssTools1.Name = "m_tssTools1"
-        resources.ApplyResources(m_tssTools1, "m_tssTools1")
-        '
         'm_tssHelp1
         '
         m_tssHelp1.Name = "m_tssHelp1"
         resources.ApplyResources(m_tssHelp1, "m_tssHelp1")
-        '
-        'm_tssEcotracer1
-        '
-        m_tssEcotracer1.Name = "m_tssEcotracer1"
-        resources.ApplyResources(m_tssEcotracer1, "m_tssEcotracer1")
         '
         'MenuEcospace
         '
@@ -538,7 +529,7 @@ Partial Public Class frmEwE6
         'm_menuMain
         '
         Me.m_menuMain.GripMargin = New System.Windows.Forms.Padding(0)
-        Me.m_menuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuFile, Me.MenuView, Me.MenuEcopath, Me.MenuEcosim, MenuEcospace, Me.MenuTools, Me.MenuWindows, Me.MenuHelp})
+        Me.m_menuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuFile, Me.MenuView, Me.MenuEcopath, Me.MenuEcosim, MenuEcospace, Me.MenuEcotracer, Me.MenuTools, Me.MenuWindows, Me.MenuHelp})
         resources.ApplyResources(Me.m_menuMain, "m_menuMain")
         Me.m_menuMain.MdiWindowListItem = Me.MenuWindows
         Me.m_menuMain.Name = "m_menuMain"
@@ -696,7 +687,7 @@ Partial Public Class frmEwE6
         '
         'MenuTools
         '
-        Me.MenuTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.m_tsmiExternalTools, m_tssTools1, Me.MenuEcotracer})
+        Me.MenuTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.m_tsmiExternalTools, m_tssTools1, Me.m_tsmiEIIXMLExport})
         Me.MenuTools.Name = "MenuTools"
         resources.ApplyResources(Me.MenuTools, "MenuTools")
         '
@@ -704,37 +695,6 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiExternalTools.Name = "m_tsmiExternalTools"
         resources.ApplyResources(Me.m_tsmiExternalTools, "m_tsmiExternalTools")
-        '
-        'MenuEcotracer
-        '
-        Me.MenuEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, m_tssEcotracer1, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs, Me.m_tsmiEcotracerDelete})
-        resources.ApplyResources(Me.MenuEcotracer, "MenuEcotracer")
-        Me.MenuEcotracer.Name = "MenuEcotracer"
-        '
-        'm_tsmiEcotracerNew
-        '
-        resources.ApplyResources(Me.m_tsmiEcotracerNew, "m_tsmiEcotracerNew")
-        Me.m_tsmiEcotracerNew.Name = "m_tsmiEcotracerNew"
-        '
-        'm_tsmiEcotracerLoad
-        '
-        resources.ApplyResources(Me.m_tsmiEcotracerLoad, "m_tsmiEcotracerLoad")
-        Me.m_tsmiEcotracerLoad.Name = "m_tsmiEcotracerLoad"
-        '
-        'm_tsmiEcotracerSave
-        '
-        Me.m_tsmiEcotracerSave.Name = "m_tsmiEcotracerSave"
-        resources.ApplyResources(Me.m_tsmiEcotracerSave, "m_tsmiEcotracerSave")
-        '
-        'm_tsmiEcotracerSaveAs
-        '
-        resources.ApplyResources(Me.m_tsmiEcotracerSaveAs, "m_tsmiEcotracerSaveAs")
-        Me.m_tsmiEcotracerSaveAs.Name = "m_tsmiEcotracerSaveAs"
-        '
-        'm_tsmiEcotracerDelete
-        '
-        resources.ApplyResources(Me.m_tsmiEcotracerDelete, "m_tsmiEcotracerDelete")
-        Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
         '
         'm_tsModel
         '
@@ -813,6 +773,53 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
+        'm_tsmiEIIXMLExport
+        '
+        Me.m_tsmiEIIXMLExport.Name = "m_tsmiEIIXMLExport"
+        resources.ApplyResources(Me.m_tsmiEIIXMLExport, "m_tsmiEIIXMLExport")
+        '
+        'MenuEcotracer
+        '
+        Me.MenuEcotracer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.MenuEcotracer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcotracerNew, Me.m_tsmiEcotracerLoad, m_tssEcotracer1, Me.m_tsmiEcotracerSave, Me.m_tsmiEcotracerSaveAs, Me.m_tsmiEcotracerDelete})
+        resources.ApplyResources(Me.MenuEcotracer, "MenuEcotracer")
+        Me.MenuEcotracer.Name = "MenuEcotracer"
+        '
+        'm_tsmiEcotracerNew
+        '
+        resources.ApplyResources(Me.m_tsmiEcotracerNew, "m_tsmiEcotracerNew")
+        Me.m_tsmiEcotracerNew.Name = "m_tsmiEcotracerNew"
+        '
+        'm_tsmiEcotracerLoad
+        '
+        resources.ApplyResources(Me.m_tsmiEcotracerLoad, "m_tsmiEcotracerLoad")
+        Me.m_tsmiEcotracerLoad.Name = "m_tsmiEcotracerLoad"
+        '
+        'm_tssEcotracer1
+        '
+        m_tssEcotracer1.Name = "m_tssEcotracer1"
+        resources.ApplyResources(m_tssEcotracer1, "m_tssEcotracer1")
+        '
+        'm_tsmiEcotracerSave
+        '
+        Me.m_tsmiEcotracerSave.Name = "m_tsmiEcotracerSave"
+        resources.ApplyResources(Me.m_tsmiEcotracerSave, "m_tsmiEcotracerSave")
+        '
+        'm_tsmiEcotracerSaveAs
+        '
+        resources.ApplyResources(Me.m_tsmiEcotracerSaveAs, "m_tsmiEcotracerSaveAs")
+        Me.m_tsmiEcotracerSaveAs.Name = "m_tsmiEcotracerSaveAs"
+        '
+        'm_tsmiEcotracerDelete
+        '
+        resources.ApplyResources(Me.m_tsmiEcotracerDelete, "m_tsmiEcotracerDelete")
+        Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
+        '
+        'm_tssTools1
+        '
+        m_tssTools1.Name = "m_tssTools1"
+        resources.ApplyResources(m_tssTools1, "m_tssTools1")
+        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -859,11 +866,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceDefineMPAs As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceEditMap As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTimeSeriesLoad As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents MenuEcotracer As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcotracerLoad As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcotracerSave As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcotracerSaveAs As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcotracerNew As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcosim As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsbEcospace As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiTimeSeriesEditWeights As System.Windows.Forms.ToolStripMenuItem
@@ -898,7 +900,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceDelete As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbSave As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbEcotracer As System.Windows.Forms.ToolStripSplitButton
-    Private WithEvents m_tsmiEcotracerDelete As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcopathDefineTraits As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbEcopath As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiEcopathDefinePedigree As System.Windows.Forms.ToolStripMenuItem
@@ -933,5 +934,12 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiExternalTools As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceLoadXYRefData As ToolStripMenuItem
     Friend WithEvents m_tsmiHelpRequestSourceCodeAccess As ToolStripMenuItem
+    Private WithEvents m_tsmiEIIXMLExport As ToolStripMenuItem
+    Private WithEvents MenuEcotracer As ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerNew As ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerLoad As ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerSave As ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerSaveAs As ToolStripMenuItem
+    Private WithEvents m_tsmiEcotracerDelete As ToolStripMenuItem
 End Class
 

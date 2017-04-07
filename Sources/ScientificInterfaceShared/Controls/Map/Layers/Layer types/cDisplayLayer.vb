@@ -215,6 +215,11 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Overridable ReadOnly Property Editor() As cLayerEditor
             Get
+                If (Me.m_editor IsNot Nothing) Then
+                    If (Me.m_editor.UIContext Is Nothing) Then
+                        Me.m_editor.Initialize(Me.m_uic, Me)
+                    End If
+                End If
                 Return Me.m_editor
             End Get
         End Property
