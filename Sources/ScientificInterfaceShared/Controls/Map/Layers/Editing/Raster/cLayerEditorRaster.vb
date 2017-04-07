@@ -54,12 +54,13 @@ Namespace Controls.Map.Layers
 
 #Region " Initialization "
 
-        Public Overrides Sub Initialize(uic As cUIContext, layer As cDisplayLayerRaster)
+        Public Overrides Sub Initialize(uic As cUIContext, layer As cDisplayLayer)
             MyBase.Initialize(uic, layer)
 
             If (layer IsNot Nothing) Then
-                If (layer.Data IsNot Nothing) Then
-                    Dim md As cVariableMetaData = layer.Data.MetadataCell
+                Dim rl As cDisplayLayerRaster = DirectCast(layer, cDisplayLayerRaster)
+                If (rl.Data IsNot Nothing) Then
+                    Dim md As cVariableMetaData = rl.Data.MetadataCell
                     If (md IsNot Nothing) Then
                         Me.CellValueMin = md.Min
                         Me.CellValueMax = md.Max
@@ -99,7 +100,7 @@ Namespace Controls.Map.Layers
         Public Overridable Sub Pickup(ByVal pt As Point)
 
             Try
-                Me.CellValue = CDec(Layer.Value(pt.Y, pt.X))
+                Me.CellValue = CDec(Me.Layer.Value(pt.Y, pt.X))
                 If (Me.GUI IsNot Nothing) Then
                     Me.GUI.UpdateContent(CType(Me, cLayerEditorRaster))
                 End If
@@ -179,8 +180,7 @@ Namespace Controls.Map.Layers
         Public Overrides Function Cursor(ByVal ptMouse As Point, ByVal map As ucMap) As Cursor
 
             If (s_cursor Is Nothing) Then
-                Dim bm As cEcospaceBasemap = map.Basemap
-                Dim szCell As SizeF = map.GetCellSize(bm.InRow, bm.InCol)
+                Dim szCell As SizeF = map.GetCellSize()
                 s_cursor = cLayerEditorRaster.EditorCursor(Me.CursorSize, szCell)
             End If
             Return s_cursor
@@ -224,8 +224,7 @@ Namespace Controls.Map.Layers
             If Not Me.IsEditable Then Return
 
             If ((e.Button And MouseButtons.Right) > 0) Then
-                Dim bm As cEcospaceBasemap = map.Basemap
-                Me.Pickup(map.GetCellIndex(e.Location, bm.InRow, bm.InCol))
+                Me.Pickup(map.GetCellIndex(e.Location))
             ElseIf ((e.Button And MouseButtons.Left) > 0) Then
                 Me.StartEdit(e, map)
             End If
@@ -240,15 +239,14 @@ Namespace Controls.Map.Layers
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            Dim bm As cEcospaceBasemap = map.Basemap
-            Dim ptCellFrom As Point = map.GetCellIndex(Me.m_ptScreenPrevious, bm.InRow, bm.InCol)
-            Dim ptCellTo As Point = map.GetCellIndex(ptScreenCur, bm.InRow, bm.InCol)
+            Dim ptCellFrom As Point = map.GetCellIndex(Me.m_ptScreenPrevious)
+            Dim ptCellTo As Point = map.GetCellIndex(ptScreenCur)
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
             Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
 
             Me.Edit(ptCellFrom, ptCellTo,
                            New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y),
-                           map.GetCellSize(bm.InRow, bm.InCol),
+                           map.GetCellSize(),
                            e,
                            ptUpdateMin, ptUpdateMax)
 

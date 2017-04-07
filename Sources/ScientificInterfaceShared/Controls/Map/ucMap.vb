@@ -113,13 +113,11 @@ Namespace Controls.Map
 
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            Dim InRow As Integer = bm.InRow
-            Dim InCol As Integer = bm.InCol
-            Dim szCellSize As SizeF = Me.GetCellSize(InRow, InCol)
+            Dim szCellSize As SizeF = Me.GetCellSize()
             Dim strFilenameLegend As String = ""
 
             Try
-                Dim bmp As Bitmap = sg.GetImage(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height), format, strFileName)
+                Dim bmp As Bitmap = sg.GetImage(CInt(Me.NumCols * szCellSize.Width), CInt(Me.NumRows * szCellSize.Height), format, strFileName)
                 Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
                 bmp.Save(strFileName, format)
 
@@ -327,8 +325,6 @@ Namespace Controls.Map
 
             ' Get value in selected layer
             Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim InRow As Integer = bm.InRow
-            Dim InCol As Integer = bm.InCol
             Dim l As cDisplayLayer = Me.m_layerSelected
 
             If (Me.CanEdit) Then
@@ -340,9 +336,8 @@ Namespace Controls.Map
             If (Me.CanEdit And Me.Capture) Then
                 Me.ProcessMouseMove(e)
             Else
-                Dim ptCell As Point = Me.GetCellIndex(e.Location, InRow, InCol)
-                Dim sLat As Single = bm.RowToLat(ptCell.Y)
-                Dim sLon As Single = bm.ColToLon(ptCell.X)
+                Dim ptCell As Point = Me.GetCellIndex(e.Location)
+                Dim pos As PointF = Me.GetLocation(e.Location)
                 Dim strVal As String = ""
                 Dim strFeedback As String = ""
 
@@ -352,8 +347,8 @@ Namespace Controls.Map
                     End If
                 End If
 
-                Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(sLat)
-                Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(sLon)
+                Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(pos.Y)
+                Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(pos.X)
                 Dim fmt As New cMapUnitFormatter()
                 Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells,
                                                          fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol),
@@ -494,7 +489,7 @@ Namespace Controls.Map
         ''' This will invalidate the entire map screen area.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateMap()
+        Public Sub UpdateMap()
 
             ' Sanity check
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
@@ -520,21 +515,19 @@ Namespace Controls.Map
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim InRow As Integer = bm.InRow
-            Dim InCol As Integer = bm.InCol
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim l As cDisplayLayer = Nothing
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
             Dim layDepth As cEcospaceLayerDepth = Me.Basemap.LayerDepth()
             Dim layExcl As cEcospaceLayerExclusion = Me.Basemap.LayerExclusion()
-            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
+            Dim szCell As SizeF = Me.GetCellSize()
             Dim ptCell As Point = Nothing
             Dim rcScreen As Rectangle = Nothing
             Dim bDrawCell As Boolean = False
 
             ' Calc area to invalidate
-            Dim p1 As Point = Me.GetCellPos(ptCellFrom, InRow, InCol)
-            Dim p2 As Point = Me.GetCellPos(ptCellTo, InRow, InCol)
+            Dim p1 As Point = Me.GetCellPos(ptCellFrom)
+            Dim p2 As Point = Me.GetCellPos(ptCellTo)
 
             ' Sort coords
             Dim iXFrom As Integer = Math.Min(p1.X, p2.X)
@@ -625,7 +618,7 @@ Namespace Controls.Map
                                        (layDepth.IsLandCell(Y, X)) Then
 
                                         ptCell = New Point(X, Y)
-                                        Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
+                                        Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
 
                                         Select Case rl.Data.DataType
                                             Case eDataTypes.EcospaceLayerDepth,
@@ -811,11 +804,11 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the width and height of a cell.
+        ''' Calculate the width and height of a cell in pixels, as drawn in the map.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Function GetCellSize(InRow As Integer, InCol As Integer) As SizeF
-            Return New SizeF(CSng(Me.Width / InCol), CSng(Me.Height / InRow))
+        Public Function GetCellSize() As SizeF
+            Return New SizeF(CSng(Me.Width / Me.NumCols), CSng(Me.Height / Me.NumRows))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -823,10 +816,10 @@ Namespace Controls.Map
         ''' Calculate the cell screen rectangle of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Function GetCellRect(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Rectangle
+        Public Function GetCellRect(ByVal ptCellIndex As Point) As Rectangle
 
-            Dim ptCell As Point = Me.GetCellPos(ptCellIndex, InRow, InCol)
-            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
+            Dim ptCell As Point = Me.GetCellPos(ptCellIndex)
+            Dim szCell As SizeF = Me.GetCellSize()
 
             Return New Rectangle(
                     ptCell.X,
@@ -842,9 +835,9 @@ Namespace Controls.Map
         ''' Calculate the top left screen coordinates of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Function GetCellPos(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Point
+        Public Function GetCellPos(ByVal ptCellIndex As Point) As Point
 
-            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
+            Dim szCell As SizeF = Me.GetCellSize()
             Return New Point(
                     CInt(Math.Floor((ptCellIndex.X - 1) * szCell.Width)),
                     CInt(Math.Floor((ptCellIndex.Y - 1) * szCell.Height))
@@ -857,17 +850,56 @@ Namespace Controls.Map
         ''' Calculate the index of a cell, based on a given screen point.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Function GetCellIndex(ByVal ptScreen As Point, InRow As Integer, InCol As Integer) As Point
+        Public Function GetCellIndex(ByVal ptScreen As Point) As Point
 
-            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
+            Dim szCell As SizeF = Me.GetCellSize()
             Dim iColIndex As Integer = CInt((ptScreen.X + 0.5 * szCell.Width) / szCell.Width)
             Dim iRowIndex As Integer = CInt((ptScreen.Y + 0.5 * szCell.Height) / szCell.Height)
 
             ' Truncate
-            iRowIndex = Math.Max(Math.Min(iRowIndex, Me.Basemap.InRow), 1)
-            iColIndex = Math.Max(Math.Min(iColIndex, Me.Basemap.InCol), 1)
+            iRowIndex = Math.Max(Math.Min(iRowIndex, Me.NumRows), 1)
+            iColIndex = Math.Max(Math.Min(iColIndex, Me.NumCols), 1)
 
             Return New Point(iColIndex, iRowIndex)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the georefrenced location of a given screen point.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Function GetLocation(ByVal ptScreen As Point) As PointF
+
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm Is Nothing) Then Return Nothing
+
+            Dim tl As PointF = bm.PosTopLeft
+            Dim br As PointF = bm.PosBottomRight
+            Dim lon As Single = tl.X + ptScreen.X * (br.X - tl.X) / Me.Width
+            Dim lat As Single = tl.Y - ptScreen.Y * (tl.Y - br.Y) / Me.Height
+
+            Return New PointF(lon, lat)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the screen point for a georefrenced location.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Function GetScreenPoint(ptLocation As PointF) As Point
+
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm Is Nothing) Then Return Nothing
+
+            Dim tl As PointF = bm.PosTopLeft
+            Dim br As PointF = bm.PosBottomRight
+            Dim x As Integer = CInt((ptLocation.X - tl.X) * Me.Width / (br.X - tl.X))
+            Dim y As Integer = CInt((tl.Y - ptLocation.Y) * Me.Height / (tl.Y - br.Y))
+
+            Return New Point(x, y)
+
 
         End Function
 

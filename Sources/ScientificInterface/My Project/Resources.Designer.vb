@@ -89,7 +89,7 @@ Namespace My.Resources
         
         '''<summary>
         '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang3082\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 00000000000000000000}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 020b0503020204020204}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property acknowledgements() As String
             Get
@@ -2952,15 +2952,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Found entry &apos;{0}&apos; with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this value?.
-        '''</summary>
-        Public ReadOnly Property PROMPT_GOOGLELOCATION_SEARCH() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_GOOGLELOCATION_SEARCH", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to This type of file is not supported by EwE6.
         '''</summary>
         Public ReadOnly Property PROMPT_INVALIDFILE() As String
@@ -2993,6 +2984,15 @@ Namespace My.Resources
         Public ReadOnly Property PROMPT_INVALIDTARGETPATH() As String
             Get
                 Return ResourceManager.GetString("PROMPT_INVALIDTARGETPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Found location {0} with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this?.
+        '''</summary>
+        Public ReadOnly Property PROMPT_LOCATION_SEARCH() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_LOCATION_SEARCH", resourceCulture)
             End Get
         End Property
         
@@ -3735,6 +3735,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to export one or more models to {0}.
+        '''</summary>
+        Public ReadOnly Property STATUS_EXPORT_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_EXPORT_FAILURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Models(s) exported successfully to {0}.
+        '''</summary>
+        Public ReadOnly Property STATUS_EXPORT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_EXPORT_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Importing Time Series dataset {0}....
         '''</summary>
         Public ReadOnly Property STATUS_IMPORTING_DATASET() As String
@@ -4257,8 +4275,8 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff31507\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi31507\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Time [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Ro [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property team() As String
             Get

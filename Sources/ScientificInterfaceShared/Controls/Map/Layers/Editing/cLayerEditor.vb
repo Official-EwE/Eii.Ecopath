@@ -73,7 +73,7 @@ Namespace Controls.Map.Layers
         ''' <param name="uic">UI context to attach.</param>
         ''' <param name="layer">Layer to attach.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
+        Public Overridable Sub Initialize(ByVal uic As cUIContext, ByVal layer As cDisplayLayer)
             Me.UIContext = uic
             Me.Layer = layer
         End Sub

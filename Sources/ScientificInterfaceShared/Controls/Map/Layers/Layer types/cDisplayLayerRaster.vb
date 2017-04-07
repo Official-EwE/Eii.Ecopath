@@ -458,15 +458,6 @@ Namespace Controls.Map.Layers
             End Get
         End Property
 
-        Public Overrides ReadOnly Property Editor As cLayerEditor
-            Get
-                Dim edt As cLayerEditor = MyBase.Editor
-                If (edt.UIContext Is Nothing) Then
-                    edt.Initialize(Me.m_uic, Me)
-                End If
-                Return edt
-            End Get
-        End Property
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get whether the underlying data is 

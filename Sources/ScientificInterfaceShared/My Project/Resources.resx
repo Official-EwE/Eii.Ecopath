@@ -3152,4 +3152,7 @@
   <data name="VERBOSE_DISABLED" xml:space="preserve">
     <value>No logging</value>
   </data>
+  <data name="FILEFILTER_MODEL_ACCESS" xml:space="preserve">
+    <value>Ecopath access databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb</value>
+  </data>
 </root>
