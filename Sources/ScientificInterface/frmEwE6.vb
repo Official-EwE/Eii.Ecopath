@@ -3155,57 +3155,6 @@ Public Class frmEwE6
         cmd.Enabled = Not Me.Core.StateMonitor.IsBusy And Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
-    Private Sub OnEIIXMLExportInvoke(ByVal cmd As cCommand) _
-        Handles m_cmdEIIXMLExport.OnInvoke
-
-        Try
-            Dim ofd As New OpenFileDialog()
-            Dim msg As cMessage = Nothing
-
-            ofd.Filter = SharedResources.FILEFILTER_MODEL_ACCESS
-            ofd.CheckFileExists = True
-            ofd.RestoreDirectory = True
-
-            If (ofd.ShowDialog() <> DialogResult.OK) Then Return
-            Dim ds As IEwEDataSource = cDataSourceFactory.Create(ofd.FileName)
-            If Not (TypeOf ds Is cDBDataSource) Then Return
-            Dim dbds As cDBDataSource = DirectCast(ds, cDBDataSource)
-            If Not (TypeOf dbds.Connection Is cEwEAccessDatabase) Then Return
-            Dim db As cEwEAccessDatabase = DirectCast(dbds.Connection, cEwEAccessDatabase)
-
-            If (db.Open(ofd.FileName) <> EwEUtils.Core.eDatasourceAccessType.Opened) Then Return
-
-            Try
-                Dim strPath As String = Path.Combine(
-                    Path.GetDirectoryName(ofd.FileName),
-                    Path.GetFileNameWithoutExtension(ofd.FileName) & ".eiixml")
-
-                ds = cDataSourceFactory.Create(EwEUtils.Core.eDataSourceTypes.EIIXML)
-                If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strPath) Then
-                    msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strPath),
-                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = Path.GetDirectoryName(strPath)
-                Else
-                    msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strPath),
-                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                End If
-                Me.Core.Messages.SendMessage(msg)
-                ds.Close()
-
-            Catch ex As Exception
-
-            End Try
-            db.Close()
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-    Private Sub OnEIIXMLExporEnable(ByVal cmd As cCommand) Handles m_cmdEIIXMLExport.OnUpdate
-        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
-    End Sub
-
 #End Region ' File commands
 
 #Region " View commands "
@@ -3440,6 +3389,57 @@ Public Class frmEwE6
 
     Private Sub OnEditRefMap(ByVal cmd As cCommand) Handles m_cmdEditReferenceMap.OnInvoke
         Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.ReferenceMaps)
+    End Sub
+
+    Private Sub OnEIIXMLExportInvoke(ByVal cmd As cCommand) _
+        Handles m_cmdEIIXMLExport.OnInvoke
+
+        Try
+            Dim ofd As New OpenFileDialog()
+            Dim msg As cMessage = Nothing
+
+            ofd.Filter = SharedResources.FILEFILTER_MODEL_ACCESS
+            ofd.CheckFileExists = True
+            ofd.RestoreDirectory = True
+
+            If (ofd.ShowDialog() <> DialogResult.OK) Then Return
+            Dim ds As IEwEDataSource = cDataSourceFactory.Create(ofd.FileName)
+            If Not (TypeOf ds Is cDBDataSource) Then Return
+            Dim dbds As cDBDataSource = DirectCast(ds, cDBDataSource)
+            If Not (TypeOf dbds.Connection Is cEwEAccessDatabase) Then Return
+            Dim db As cEwEAccessDatabase = DirectCast(dbds.Connection, cEwEAccessDatabase)
+
+            If (db.Open(ofd.FileName) <> eDatasourceAccessType.Opened) Then Return
+
+            Try
+                Dim strPath As String = Path.Combine(
+                    Path.GetDirectoryName(ofd.FileName),
+                    Path.GetFileNameWithoutExtension(ofd.FileName) & ".eiixml")
+
+                ds = cDataSourceFactory.Create(eDataSourceTypes.EIIXML)
+                If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strPath) Then
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strPath),
+                                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = Path.GetDirectoryName(strPath)
+                Else
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strPath),
+                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                End If
+                Me.Core.Messages.SendMessage(msg)
+                ds.Close()
+
+            Catch ex As Exception
+
+            End Try
+            db.Close()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnEIIXMLExporEnable(ByVal cmd As cCommand) Handles m_cmdEIIXMLExport.OnUpdate
+        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
     End Sub
 
 #End Region ' Tools commands
