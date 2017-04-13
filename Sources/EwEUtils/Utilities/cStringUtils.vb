@@ -558,6 +558,49 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Generic conversion helper, converts a string into a single value using
+        ''' the fixed EwE number format of decimal points and NO thousands separator.
+        ''' </summary>
+        ''' <param name="strNumber">The number to convert.</param>
+        ''' <param name="strDecimalSeparator">Separator for decimals.</param>
+        ''' <param name="strThousandsSeparator">Separator for thousands (a.k.a digit grouping separator)</param>
+        ''' <param name="dNullValue">Value to return in case parse failed.</param>
+        ''' <returns>A decimal value.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ConvertToDecimal(ByVal strNumber As String,
+                                               Optional ByVal dNullValue As Decimal = -9999D,
+                                               Optional ByVal strDecimalSeparator As String = ".",
+                                               Optional ByVal strThousandsSeparator As String = "") As Decimal
+
+            Select Case strNumber.Trim
+                Case "-", "_" : strNumber = ""
+            End Select
+
+            If Not String.IsNullOrEmpty(strNumber) Then
+
+                Try
+
+                    Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
+                    Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+                    Dim dValue As Decimal = dNullValue
+
+                    ni.NumberDecimalSeparator = strDecimalSeparator
+                    ni.NumberGroupSeparator = strThousandsSeparator
+
+                    If Decimal.TryParse(strNumber, NumberStyles.Any, ni, dValue) Then
+                        Return dValue
+                    End If
+                Catch ex As Exception
+
+                End Try
+
+            End If
+            Return dNullValue
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Generic conversion helper, converts a decimal value into a string with
         ''' a given number of releveant decimal digits, and custom decimal and
         ''' thousand separators.
@@ -641,7 +684,7 @@ Namespace Utilities
 
             ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
             ' to determine the number of relevant digits (which is what we want) while Decimal.Format 
-            ' rounds to ni.NumberDecimalDigits (which is what we DON NOT want)
+            ' rounds to ni.NumberDecimalDigits (which is what we DO NOT want)
             Return Convert.ToString(decValue, ni)
 
         End Function
@@ -679,7 +722,7 @@ Namespace Utilities
 
             ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
             ' to determine the number of relevant digits (which is what we want) while Single.Format 
-            ' rounds to ni.NumberDecimalDigits (which is what we DON NOT want)
+            ' rounds to ni.NumberDecimalDigits (which is what we DO NOT want)
             Return Convert.ToString(sValue, ni)
 
         End Function
@@ -718,7 +761,7 @@ Namespace Utilities
 
             ' PLEASE DO NOT USE Convert.Format below!!! Convert.ToString will use ni.NumberDecimalDigits
             ' to determine the number of relevant digits (which is what we want) while Double.Format 
-            ' rounds to ni.NumberDecimalDigits (which is what we DON NOT want)
+            ' rounds to ni.NumberDecimalDigits (which is what we DO NOT want)
             Return Convert.ToString(dValue, ni)
 
         End Function
