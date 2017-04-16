@@ -6588,7 +6588,6 @@ Public Class cCore
 
     End Sub
 
-
     ''' <summary>
     ''' Set MSE QuotaShare values to default
     ''' </summary>
@@ -6714,7 +6713,6 @@ Public Class cCore
             Debug.Assert(False, ex.Message)
             Return False
         End Try
-
 
     End Function
 
@@ -6877,7 +6875,6 @@ Public Class cCore
 
             m_TSData.ClearTimeSeries()
 
-
             'jb I still need to deal with how to handle these problems
             ds = DirectCast(DataSource, IEcosimDatasource)
             If Not ds.LoadEcosimScenario(Me.m_EcoPathData.EcosimScenarioDBID(iScenario)) Then
@@ -6898,8 +6895,6 @@ Public Class cCore
             InitEcosimGroups()
             InitEcosimFleetInput()
             initEcoSimModelParameters()
-
-
 
             'rebuild all the shapes in the shape managers
             For Each manager As cBaseShapeManager In m_ShapeManagers.Values

@@ -1579,7 +1579,6 @@ Public Class cEIIXMLDataSource
             ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
             ecosimDS.ForcingTitles(iForcingShape) = CStr(drow("Title"))
             ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.Forcing
-            ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(CInt(Me.ReadSafe(drow, "ApplicationType", eForcingApplicationTypes.NotSet)), eForcingApplicationTypes)
             ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
         Catch ex As Exception

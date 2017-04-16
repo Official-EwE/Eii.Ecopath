@@ -5167,7 +5167,6 @@ Namespace DataSources
                 ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
                 ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title")).Trim()
                 ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.Forcing
-                ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(Me.m_db.ReadSafe(readerShape, "ApplicationType", eForcingApplicationTypes.NotSet), eForcingApplicationTypes)
                 ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
                 Me.m_db.ReleaseReader(readerShape)
@@ -5796,7 +5795,6 @@ Namespace DataSources
                 drow("Title") = ecosimDS.ForcingTitles(iShape)
                 drow("FunctionType") = shapeParms.ShapeFunctionType
                 drow("FunctionParams") = cStringUtils.ParamArrayToString(shapeParms.ShapeFunctionParams)
-                drow("ApplicationType") = ecosimDS.ForcingApplicationType(iShape)
 
                 Dim iTrackBack As Integer = ecosimDS.ForcePoints
                 Dim sLastVal As Single = ecosimDS.zscale(iTrackBack, iShape)
