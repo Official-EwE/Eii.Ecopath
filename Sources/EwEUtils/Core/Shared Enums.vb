@@ -3145,28 +3145,6 @@ Namespace Core
 
 #End Region ' Feedback message
 
-#Region " Forcing application types "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Enumerated type stating supported forcing function application targets.
-    '''</summary>
-    ''' -----------------------------------------------------------------------
-    Public Enum eForcingApplicationTypes As Integer
-        ''' <summary>No application specified</summary>
-        NotSet = 0
-        ''' <summary>Forcing FF applied to nutrient forcing</summary>
-        Nutrient = 1
-        ''' <summary>Forcing FF applied to salinity forcing</summary>
-        Salinity = 2
-        ''' <summary>Forcing FF applied to temperature forcing</summary>
-        Temperature = 3
-        ''' <summary>Forcing FF applied to primary production</summary>
-        PrimaryProducer = 4
-    End Enum
-
-#End Region ' Forcing application types
-
 #Region " Forcing function application targets "
 
     ''' ---------------------------------------------------------------------------
