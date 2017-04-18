@@ -93,7 +93,7 @@ Public Class cTransect
     End Sub
 
     Public Overrides Function ToString() As String
-        Return String.Format("{0} ({1},{2})-({3},{4})", Me.Name, Me.m_ptStart.X, Me.m_ptStart.Y, Me.m_ptEnd.X, Me.m_ptEnd.Y)
+        Return Me.Name
     End Function
 
 End Class

@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports EwETransectExtractionPlugin
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
@@ -32,12 +33,8 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 
 Public Class frmTransectWriter
 
-    Private m_data As cTransectDatastructures = Nothing
+    Private WithEvents m_data As cTransectDatastructures = Nothing
     Private m_layer As cDisplayLayerTransect = Nothing
-    Private m_fpX1 As cEwEFormatProvider = Nothing
-    Private m_fpY1 As cEwEFormatProvider = Nothing
-    Private m_fpX2 As cEwEFormatProvider = Nothing
-    Private m_fpY2 As cEwEFormatProvider = Nothing
 
     Public Sub New(uic As cUIContext, data As cTransectDatastructures)
         Me.InitializeComponent()
@@ -76,14 +73,7 @@ Public Class frmTransectWriter
             Me.m_mapzoom.Map.AddLayer(l)
         Next
 
-        Me.m_fpX1 = New cEwEFormatProvider(Me.UIContext, m_tbxX1, GetType(Single))
-        Me.m_fpY1 = New cEwEFormatProvider(Me.UIContext, m_tbxY1, GetType(Single))
-        Me.m_fpX2 = New cEwEFormatProvider(Me.UIContext, m_tbxX2, GetType(Single))
-        Me.m_fpY2 = New cEwEFormatProvider(Me.UIContext, m_tbxY2, GetType(Single))
-
-        For Each t As cTransect In Me.m_data.Transects
-            Me.m_lbxTransects.Items.Add(t)
-        Next
+        Me.UpdateTransects()
 
     End Sub
 
@@ -94,57 +84,40 @@ Public Class frmTransectWriter
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
-        Dim bHasName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxTName.Text)
-
     End Sub
 
 #End Region ' Form overrides
 
 #Region " Events "
 
-    Private Sub m_tbxTName_TextChanged(sender As Object, e As EventArgs) Handles m_tbxTName.TextChanged
-        Me.UpdateControls()
+    Private Sub m_data_OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectAdded
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
+        Me.UpdateTransects()
+        Me.m_bInUpdate = False
     End Sub
 
-    Private Sub m_btnTAdd_Click(sender As Object, e As EventArgs) Handles m_btnTAdd.Click
-        Dim t As New cTransect()
-        Me.UpdateTransect(t)
-        Me.m_data.Transects.Add(t)
-
-        Me.m_lbxTransects.Items.Add(t)
-        Me.m_lbxTransects.SelectedItem = t
-        Me.UpdateMap()
+    Private Sub m_data_OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectRemoved
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
+        Me.UpdateTransects()
+        Me.m_bInUpdate = False
     End Sub
 
-    Private Sub m_btnTRename_Click(sender As Object, e As EventArgs) Handles m_btnTRename.Click
-        Me.UpdateTransect(Me.SelectedTransect)
-        Me.UpdateMap()
-    End Sub
-
-    Private Sub m_btnTDelete_Click(sender As Object, e As EventArgs) Handles m_btnTDelete.Click
-        Dim t As cTransect = Me.SelectedTransect()
-        Me.m_data.Transects.Remove(t)
-        Me.m_lbxTransects.Items.Remove(t)
-        Me.UpdateMap()
+    Private Sub m_data_OnTransectSelected(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectSelected
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
+        Me.m_lbxTransects.SelectedItem = transect
+        Me.m_bInUpdate = False
     End Sub
 
     Private Sub m_lbxTransects_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_lbxTransects.SelectedIndexChanged
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
         Dim t As cTransect = Me.SelectedTransect()
-        If (t IsNot Nothing) Then
-            Me.m_tbxTName.Text = t.Name
-            Me.m_fpX1.Value = t.Start.X
-            Me.m_fpY1.Value = t.Start.Y
-            Me.m_fpX2.Value = t.End.X
-            Me.m_fpY2.Value = t.End.Y
-        Else
-            Me.m_tbxTName.Text = ""
-            Me.m_fpX1.Style = eStyleFlags.Null
-            Me.m_fpY1.Style = eStyleFlags.Null
-            Me.m_fpX2.Style = eStyleFlags.Null
-            Me.m_fpY2.Style = eStyleFlags.Null
-        End If
         Me.m_data.Selection = t
         Me.UpdateMap()
+        Me.m_bInUpdate = False
     End Sub
 
     Private Sub m_cbAutosave_CheckedChanged(sender As Object, e As EventArgs) Handles m_cbAutosave.CheckedChanged
@@ -155,23 +128,23 @@ Public Class frmTransectWriter
 
 #Region " Internals "
 
+    Private m_bInUpdate As Boolean = False
+
     Private Function SelectedTransect() As cTransect
         Return DirectCast(Me.m_lbxTransects.SelectedItem, cTransect)
     End Function
 
-    Private Sub UpdateTransect(t As cTransect)
-
-        If (t Is Nothing) Then Return
-        t.Name = Me.m_tbxTName.Text
-        t.Start = New PointF(CSng(Me.m_fpX1.Value), CSng(Me.m_fpY1.Value))
-        t.End = New PointF(CSng(Me.m_fpX2.Value), CSng(Me.m_fpY2.Value))
-
-        Me.UpdateMap()
-
-    End Sub
-
     Private Sub UpdateMap()
         Me.m_mapzoom.Map.Refresh()
+    End Sub
+
+    Private Sub UpdateTransects()
+        Me.m_bInUpdate = True
+        Me.m_lbxTransects.Items.Clear()
+        For Each t As cTransect In Me.m_data.Transects
+            Me.m_lbxTransects.Items.Add(t)
+        Next
+        Me.m_bInUpdate = False
     End Sub
 
 #End Region ' Internals

@@ -52,19 +52,26 @@ Public Class cTransectVectorEditor
     Public Overrides Sub ProcessMouseClick(e As MouseEventArgs, map As ucMap)
 
         ' ToDo: Check if clicked on or near a line for deletion
+        Dim td As cDisplayLayerTransect = DirectCast(Me.Layer, cDisplayLayerTransect)
+        Dim data As cTransectDatastructures = td.Data
 
         If Not TransectAt(e.Location, map, Me.m_transectEdit, Me.m_transectEditMode) Then
 
-            Dim td As cDisplayLayerTransect = DirectCast(Me.Layer, cDisplayLayerTransect)
-            Dim data As cTransectDatastructures = td.Data
+            ' Get transect names
+            Dim lNames As New List(Of String)
+            Dim strMask As String = "New transect {0}"
+            For Each t As cTransect In data.Transects
+                lNames.Add(t.Name)
+            Next
+            Dim n As Integer = EwEUtils.Utilities.cStringUtils.GetNextNumber(lNames.ToArray, strMask)
 
             Me.m_transectEdit = New cTransect() With {
-                .Name = "New transect",
+                .Name = String.Format(strMask, n),
                 .Start = map.GetLocation(e.Location),
                 .End = .Start
             }
             Me.m_transectEditMode = eEditModeType.End
-            data.Transects.Add(Me.m_transectEdit)
+            data.Add(Me.m_transectEdit)
 
         Else
             If (Me.m_transectEditMode = eEditModeType.Line) Then
@@ -72,10 +79,12 @@ Public Class cTransectVectorEditor
                 Me.m_ptfStartOrg = Me.m_transectEdit.Start
                 Me.m_ptfEndOrg = Me.m_transectEdit.End
             End If
-
         End If
 
+        data.Selection = Me.m_transectEdit
+
         Me.StartEdit(e, map)
+        map.UpdateMap()
 
     End Sub
 
