@@ -547,7 +547,7 @@ Namespace Controls.Map
             iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
 
             Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
-            Dim ptBR As New PointF(bm.ColToLon(iXTo), bm.RowToLat(iYTo))
+            Dim ptBR As New PointF(bm.ColToLon(iXTo + 1), bm.RowToLat(iYTo + 1))
 
             Dim layers As New List(Of cDisplayLayer)
             Dim displayDepth As cDisplayLayer = Nothing
@@ -847,7 +847,7 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the index of a cell, based on a given screen point.
+        ''' Calculate the one-based index of a cell, based on a given screen point.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetCellIndex(ByVal ptScreen As Point) As Point
@@ -866,7 +866,7 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the georefrenced location of a given screen point.
+        ''' Returns the georeferenced location of a given screen point.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetLocation(ByVal ptScreen As Point) As PointF
@@ -876,8 +876,8 @@ Namespace Controls.Map
 
             Dim tl As PointF = bm.PosTopLeft
             Dim br As PointF = bm.PosBottomRight
-            Dim lon As Single = tl.X + ptScreen.X * (br.X - tl.X) / Me.Width
-            Dim lat As Single = tl.Y - ptScreen.Y * (tl.Y - br.Y) / Me.Height
+            Dim lon As Single = tl.X + ptScreen.X * (br.X - tl.X) / Me.ClientRectangle.Width
+            Dim lat As Single = tl.Y - ptScreen.Y * (tl.Y - br.Y) / Me.ClientRectangle.Height
 
             Return New PointF(lon, lat)
 
@@ -885,7 +885,7 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the screen point for a georefrenced location.
+        ''' Returns the screen point for a georeferenced location.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetScreenPoint(ptLocation As PointF) As Point
@@ -895,8 +895,8 @@ Namespace Controls.Map
 
             Dim tl As PointF = bm.PosTopLeft
             Dim br As PointF = bm.PosBottomRight
-            Dim x As Integer = CInt((ptLocation.X - tl.X) * Me.Width / (br.X - tl.X))
-            Dim y As Integer = CInt((tl.Y - ptLocation.Y) * Me.Height / (tl.Y - br.Y))
+            Dim x As Integer = CInt((ptLocation.X - tl.X) * Me.ClientRectangle.Width / (br.X - tl.X))
+            Dim y As Integer = CInt((tl.Y - ptLocation.Y) * Me.ClientRectangle.Height / (tl.Y - br.Y))
 
             Return New Point(x, y)
 
