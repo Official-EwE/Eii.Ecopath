@@ -543,11 +543,11 @@ Namespace Controls.Map
             ' Draw surrounding cells as well to avoid anomalies
             iXFrom = Math.Max(1, Math.Min(ptCellFrom.X, ptCellTo.X) - 1)
             iYFrom = Math.Max(1, Math.Min(ptCellFrom.Y, ptCellTo.Y) - 1)
-            iXTo = Math.Min(Me.Basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
-            iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
+            iXTo = Math.Min(Me.Basemap.InCol + 1, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
+            iYTo = Math.Min(Me.Basemap.InRow + 1, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
 
             Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
-            Dim ptBR As New PointF(bm.ColToLon(iXTo + 1), bm.RowToLat(iYTo + 1))
+            Dim ptBR As New PointF(bm.ColToLon(iXTo), bm.RowToLat(iYTo))
 
             Dim layers As New List(Of cDisplayLayer)
             Dim displayDepth As cDisplayLayer = Nothing
