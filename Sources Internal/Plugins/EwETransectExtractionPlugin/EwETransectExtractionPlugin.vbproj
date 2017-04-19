@@ -119,9 +119,11 @@
     <Compile Include="cTransectDatastructures.vb" />
     <Compile Include="cTransectWriterPlugin.vb" />
     <Compile Include="cTransect.vb" />
-    <Compile Include="UI\cDisplayTransectLayer.vb" />
-    <Compile Include="UI\cTransectVectorEditor.vb" />
-    <Compile Include="UI\cTransectVectorRenderer.vb" />
+    <Compile Include="UI\Layers\Raster\cTransectRasterDisplay.vb" />
+    <Compile Include="UI\Layers\Raster\cTransectLayer.vb" />
+    <Compile Include="UI\Layers\Vector\cTransectVectorDisplay.vb" />
+    <Compile Include="UI\Layers\Vector\cTransectVectorEditor.vb" />
+    <Compile Include="UI\Layers\Vector\cTransectVectorRenderer.vb" />
     <Compile Include="UI\frmTransectWriter.Designer.vb">
       <DependentUpon>frmTransectWriter.vb</DependentUpon>
     </Compile>

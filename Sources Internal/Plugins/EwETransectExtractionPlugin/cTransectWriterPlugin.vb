@@ -49,7 +49,7 @@ Public Class cTransectWriterPlugin
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         Me.m_core = CType(core, cCore)
-        Me.m_data = New cTransectDatastructures()
+        Me.m_data = New cTransectDatastructures(Me.m_core)
     End Sub
 
     Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState

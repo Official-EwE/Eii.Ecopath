@@ -23,25 +23,20 @@
 Option Strict On
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
-Public Class cDisplayLayerTransect
+Public Class cTransectVectorDisplay
     Inherits cDisplayLayer
 
     Public Sub New(uic As cUIContext)
-        MyBase.New(uic, New cTransectVectorRenderer(Nothing))
+        MyBase.New(uic, New cTransectVectorRenderer())
         Me.m_editor = New cTransectVectorEditor()
+        Me.RenderMode = eLayerRenderType.Always
     End Sub
 
     Public Property Data As cTransectDatastructures = Nothing
-
-    Public ReadOnly Property IsValid As Boolean
-        Get
-            If (Me.m_uic Is Nothing) Then Return False
-            Return (Me.Data IsNot Nothing)
-        End Get
-    End Property
 
 End Class
 

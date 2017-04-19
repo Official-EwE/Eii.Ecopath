@@ -37,37 +37,37 @@ Public Class cTransectVectorRenderer
     ''' <summary>
     ''' 
     ''' </summary>
-    ''' <param name="vs"></param>
-    ''' <param name="layerStyleFlags"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal vs As cVisualStyle,
-                   Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
-        MyBase.New(vs, layerStyleFlags)
+    Public Sub New()
+        MyBase.New(Nothing, cVisualStyle.eVisualStyleTypes.NotSet)
     End Sub
 
 #End Region ' Construction / destruction
+
+#Region " Overrides "
 
     Public Overrides Sub RenderPreview(g As Graphics, rc As Rectangle, Optional iSymbol As Integer = 0)
     End Sub
 
     Public Overrides Sub Render(g As Graphics, layer As cDisplayLayer, rc As Rectangle, ptfTL As PointF, ptfBR As PointF, style As cStyleGuide.eStyleFlags)
 
-        If (Not TypeOf layer Is cDisplayLayerTransect) Then Return
-
-        Dim bml As cDisplayLayerTransect = DirectCast(layer, cDisplayLayerTransect)
-        Dim data As cTransectDatastructures = bml.Data
-
-        If (data Is Nothing) Then Return
+        Dim m_data As cTransectDatastructures = DirectCast(layer, cTransectVectorDisplay).Data
 
         Dim sScaleX As Single = (rc.Width / (ptfBR.X - ptfTL.X))
         Dim sScaleY As Single = (rc.Height / (ptfTL.Y - ptfBR.Y))
 
-        For Each t As cTransect In data.Transects
+        For Each t As cTransect In m_data.Transects
             Me.RenderTransect(t, g, rc, ptfTL, sScaleX, sScaleY, Color.LightBlue)
         Next
-        Me.RenderTransect(data.Selection, g, rc, ptfTL, sScaleX, sScaleY, Color.Orange)
+        Me.RenderTransect(m_data.Selection, g, rc, ptfTL, sScaleX, sScaleY, Color.Orange)
 
     End Sub
+
+    Public Overrides Function GetDisplayText(value As Object) As String
+        Return "Transects"
+    End Function
+
+#End Region ' Overrides
 
     Private Sub RenderTransect(t As cTransect, g As Graphics, rc As Rectangle, ptfTL As PointF, sScaleX As Single, sScaleY As Single, clr As Color)
 
@@ -89,9 +89,5 @@ Public Class cTransectVectorRenderer
         End Using
 
     End Sub
-
-    Public Overrides Function GetDisplayText(value As Object) As String
-        Return "Transects"
-    End Function
 
 End Class

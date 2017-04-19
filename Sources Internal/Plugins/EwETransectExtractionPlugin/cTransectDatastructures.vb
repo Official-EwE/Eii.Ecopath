@@ -21,13 +21,21 @@
 #Region " Imports "
 
 Imports EwECore
+Imports EwECore.Core
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
 Public Class cTransectDatastructures
+    Implements IEcospaceLayerManager
 
     Private m_transects As New List(Of cTransect)
     Private m_selection As cTransect = Nothing
+    Private m_core As cCore = Nothing
+
+    Public Sub New(core As cCore)
+        Me.m_core = core
+    End Sub
 
     Public ReadOnly Property Transects As cTransect()
         Get
@@ -78,6 +86,19 @@ Public Class cTransectDatastructures
 
         End Try
     End Sub
+
+    Public Function Layers(Optional varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() Implements IEcospaceLayerManager.Layers
+        Return Nothing
+    End Function
+
+    Public Function Layer(varName As eVarNameFlags, Optional iIndex As Integer = -9999) As cEcospaceLayer Implements IEcospaceLayerManager.Layer
+        Return Nothing
+    End Function
+
+    Public Function LayerData(varName As eVarNameFlags, iIndex As Integer) As Object Implements IEcospaceLayerManager.LayerData
+        If (Me.Selection Is Nothing) Then Return Nothing
+        Return Me.Selection.Cells(Me.m_core.EcospaceBasemap)
+    End Function
 
     Public Property Autosaving As Boolean = False
 

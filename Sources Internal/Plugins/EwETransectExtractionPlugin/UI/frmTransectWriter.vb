@@ -34,7 +34,7 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 Public Class frmTransectWriter
 
     Private WithEvents m_data As cTransectDatastructures = Nothing
-    Private m_layer As cDisplayLayerTransect = Nothing
+    Private m_layerRaster As cTransectLayer = Nothing
 
     Public Sub New(uic As cUIContext, data As cTransectDatastructures)
         Me.InitializeComponent()
@@ -62,11 +62,16 @@ Public Class frmTransectWriter
 
         Dim factory As New cLayerFactoryBase()
 
-        Me.m_layer = New cDisplayLayerTransect(Me.UIContext)
-        Me.m_layer.IsSelected = True
-        Me.m_layer.Data = Me.m_data
+        Dim DisplayVector As New cTransectVectorDisplay(Me.UIContext)
+        DisplayVector.IsSelected = True
+        DisplayVector.Data = Me.m_data
+
+        Me.m_layerRaster = New cTransectLayer(Me.Core, Me.m_data)
+        Dim DisplayRaster As New cTransectRasterDisplay(Me.UIContext, Me.m_layerRaster)
+
         Me.m_mapzoom.Map.Editable = True
-        Me.m_mapzoom.Map.AddLayer(Me.m_layer)
+        Me.m_mapzoom.Map.AddLayer(DisplayRaster)
+        Me.m_mapzoom.Map.AddLayer(DisplayVector)
 
         For Each l As cDisplayLayer In factory.GetLayers(Me.UIContext, eVarNameFlags.LayerDepth)
             l.RenderMode = ScientificInterfaceShared.Definitions.eLayerRenderType.Always
@@ -109,6 +114,10 @@ Public Class frmTransectWriter
         Me.m_bInUpdate = True
         Me.m_lbxTransects.SelectedItem = transect
         Me.m_bInUpdate = False
+    End Sub
+
+    Private Sub m_data_OnTransectsChanged(sender As cTransectDatastructures) Handles m_data.OnTransectsChanged
+        Me.m_layerRaster.Invalidate()
     End Sub
 
     Private Sub m_lbxTransects_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_lbxTransects.SelectedIndexChanged

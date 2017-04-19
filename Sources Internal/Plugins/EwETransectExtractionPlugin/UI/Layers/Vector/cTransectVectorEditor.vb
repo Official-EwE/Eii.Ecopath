@@ -51,8 +51,7 @@ Public Class cTransectVectorEditor
 
     Public Overrides Sub ProcessMouseClick(e As MouseEventArgs, map As ucMap)
 
-        ' ToDo: Check if clicked on or near a line for deletion
-        Dim td As cDisplayLayerTransect = DirectCast(Me.Layer, cDisplayLayerTransect)
+        Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
         Dim data As cTransectDatastructures = td.Data
 
         If Not TransectAt(e.Location, map, Me.m_transectEdit, Me.m_transectEditMode) Then
@@ -91,7 +90,11 @@ Public Class cTransectVectorEditor
     Public Overrides Sub ProcessMouseDraw(e As MouseEventArgs, map As ucMap)
 
         If (Me.IsEditing) Then
+
             Dim loc As PointF = map.GetLocation(e.Location)
+            Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
+            Dim data As cTransectDatastructures = td.Data
+
             Select Case Me.m_transectEditMode
                 Case eEditModeType.Start
                     Me.m_transectEdit.Start = loc
@@ -104,7 +107,10 @@ Public Class cTransectVectorEditor
                     Me.m_transectEdit.Start = New PointF(Me.m_ptfStartOrg.X + dx, Me.m_ptfStartOrg.Y + dy)
                     Me.m_transectEdit.End = New PointF(Me.m_ptfEndOrg.X + dx, Me.m_ptfEndOrg.Y + dy)
             End Select
+
+            data.OnChanged()
             map.UpdateMap()
+
         End If
 
     End Sub
@@ -139,7 +145,7 @@ Public Class cTransectVectorEditor
 
     Private Function TransectAt(ptMouse As Point, map As ucMap, ByRef t As cTransect, ByRef editMode As eEditModeType) As Boolean
 
-        Dim td As cDisplayLayerTransect = DirectCast(Me.Layer, cDisplayLayerTransect)
+        Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
         Dim data As cTransectDatastructures = td.Data
         Dim ptStart As Point = Nothing
         Dim ptEnd As Point = Nothing
