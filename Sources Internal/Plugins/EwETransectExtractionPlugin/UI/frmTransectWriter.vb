@@ -33,8 +33,8 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 
 Public Class frmTransectWriter
 
-    Private WithEvents m_data As cTransectDatastructures = Nothing
     Private m_layerRaster As cTransectLayer = Nothing
+    Private WithEvents m_data As cTransectDatastructures = Nothing
 
     Public Sub New(uic As cUIContext, data As cTransectDatastructures)
         Me.InitializeComponent()
@@ -81,6 +81,8 @@ Public Class frmTransectWriter
             Me.m_mapzoom.Map.AddLayer(l)
         Next
 
+        Me.m_cbAutosave.Checked = Me.m_data.Autosaving
+
         Me.UpdateTransects()
 
     End Sub
@@ -100,11 +102,13 @@ Public Class frmTransectWriter
 
 #Region " Events "
 
-    Private Sub m_btnDeleteTransect_Click(sender As Object, e As EventArgs) Handles m_btnDeleteTransect.Click
+    Private Sub OnDeleteTransect(sender As Object, e As EventArgs) _
+        Handles m_btnDeleteTransect.Click
         Me.m_data.Delete(Me.m_data.Selection)
     End Sub
 
-    Private Sub m_data_OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectAdded
+    Private Sub OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) _
+        Handles m_data.OnTransectAdded
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.UpdateTransects()
@@ -112,7 +116,8 @@ Public Class frmTransectWriter
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub m_data_OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectRemoved
+    Private Sub OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect) _
+        Handles m_data.OnTransectRemoved
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.UpdateTransects()
@@ -121,7 +126,8 @@ Public Class frmTransectWriter
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub m_data_OnTransectSelected(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectSelected
+    Private Sub OnTransectSelected(sender As cTransectDatastructures, transect As cTransect) _
+        Handles m_data.OnTransectSelected
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.m_lbxTransects.SelectedItem = transect
@@ -130,11 +136,13 @@ Public Class frmTransectWriter
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub m_data_OnTransectsChanged(sender As cTransectDatastructures) Handles m_data.OnTransectsChanged
+    Private Sub OnTransectsChanged(sender As cTransectDatastructures) _
+        Handles m_data.OnTransectsChanged
         Me.m_layerRaster.Invalidate()
     End Sub
 
-    Private Sub m_lbxTransects_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_lbxTransects.SelectedIndexChanged
+    Private Sub OnTransitSelected(sender As Object, e As EventArgs) _
+        Handles m_lbxTransects.SelectedIndexChanged
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Dim t As cTransect = Me.SelectedTransect()
@@ -144,8 +152,9 @@ Public Class frmTransectWriter
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub m_cbAutosave_CheckedChanged(sender As Object, e As EventArgs) Handles m_cbAutosave.CheckedChanged
-
+    Private Sub OnAutoSaveToggled(sender As Object, e As EventArgs) _
+        Handles m_cbAutosave.CheckedChanged
+        Me.m_data.Autosaving = Me.m_cbAutosave.Checked
     End Sub
 
 #End Region ' Events
