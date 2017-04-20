@@ -43,11 +43,6 @@ Imports EwEUtils.Utilities
 
 Namespace Controls.Map
 
-    ' ToDo_JS: overhaul map drawing
-    '          - Map should no longer try to access individual cells. This logic has to move inside the individual raster layers
-    '          - All map layers should use the method Render instead. This enables cached drawing, etc
-    '          - Layers can then render in individual threads, and layer images are rendered by this class.
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Control that provides an interface to a series core data map layers.
@@ -543,11 +538,11 @@ Namespace Controls.Map
             ' Draw surrounding cells as well to avoid anomalies
             iXFrom = Math.Max(1, Math.Min(ptCellFrom.X, ptCellTo.X) - 1)
             iYFrom = Math.Max(1, Math.Min(ptCellFrom.Y, ptCellTo.Y) - 1)
-            iXTo = Math.Min(Me.Basemap.InCol + 1, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
-            iYTo = Math.Min(Me.Basemap.InRow + 1, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
+            iXTo = Math.Min(Me.Basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
+            iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
 
             Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
-            Dim ptBR As New PointF(bm.ColToLon(iXTo), bm.RowToLat(iYTo))
+            Dim ptBR As New PointF(bm.ColToLon(iXTo + 1), bm.RowToLat(iYTo + 1))
 
             Dim layers As New List(Of cDisplayLayer)
             Dim displayDepth As cDisplayLayer = Nothing
@@ -564,16 +559,12 @@ Namespace Controls.Map
             For Each l In Me.m_layers
                 Dim bDrawLayer As Boolean = (l.Renderer.IsVisible)
 
-                If TypeOf l Is cDisplayLayerRaster Then
+                If (TypeOf l Is cDisplayLayerRaster) Then
 
                     Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
 
                     If (rl.VarName = eVarNameFlags.LayerDepth) Then
                         displayDepth = rl
-                    End If
-
-                    If (rl.VarName = eVarNameFlags.LayerAdvection) Then
-                        'Stop
                     End If
 
                     Select Case rl.RenderMode
@@ -593,8 +584,12 @@ Namespace Controls.Map
                     If (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells) Then
                         bDrawLayer = True
                     End If
-
                 End If
+
+                If (l.RenderMode = Definitions.eLayerRenderType.Always) Then
+                    bDrawLayer = True
+                End If
+
                 If bDrawLayer Then layers.Add(l)
             Next
 
