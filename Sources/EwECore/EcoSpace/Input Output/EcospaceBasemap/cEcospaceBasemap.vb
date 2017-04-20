@@ -1004,12 +1004,6 @@ Public Class cEcospaceBasemap
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function LonToCol(ByVal sLon As Single) As Integer
-        ' Coarse wrap check
-        If (sLon < Me.Longitude) Then
-            sLon += 360
-        ElseIf (sLon > (sLon + Me.InCol * Me.CellSize)) Then
-            sLon += 360
-        End If
         Return CInt(Math.Floor((sLon - Me.Longitude) / Me.CellSize)) + 1
     End Function
 
