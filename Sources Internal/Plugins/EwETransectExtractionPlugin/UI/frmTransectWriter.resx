@@ -198,6 +198,33 @@
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_btnDeleteTransect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_btnDeleteTransect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 374</value>
+  </data>
+  <data name="m_btnDeleteTransect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>190, 23</value>
+  </data>
+  <data name="m_btnDeleteTransect.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_btnDeleteTransect.Text" xml:space="preserve">
+    <value>Delete transect</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.Name" xml:space="preserve">
+    <value>m_btnDeleteTransect</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.Parent" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_lbxTransects.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -208,7 +235,7 @@
     <value>2, 3</value>
   </data>
   <data name="m_lbxTransects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 397</value>
+    <value>190, 365</value>
   </data>
   <data name="m_lbxTransects.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -223,7 +250,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lbxTransects.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_cbAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -253,7 +280,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_cbAutosave.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>

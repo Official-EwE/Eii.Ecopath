@@ -50,6 +50,7 @@ Partial Class frmTransectWriter
         Me.m_toolstrip = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
         Me.m_lbxTransects = New System.Windows.Forms.ListBox()
         Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
+        Me.m_btnDeleteTransect = New System.Windows.Forms.Button()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -68,6 +69,7 @@ Partial Class frmTransectWriter
         '
         'm_scMain.Panel2
         '
+        Me.m_scMain.Panel2.Controls.Add(Me.m_btnDeleteTransect)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lbxTransects)
         Me.m_scMain.Panel2.Controls.Add(Me.m_cbAutosave)
         '
@@ -98,6 +100,12 @@ Partial Class frmTransectWriter
         Me.m_cbAutosave.Name = "m_cbAutosave"
         Me.m_cbAutosave.UseVisualStyleBackColor = True
         '
+        'm_btnDeleteTransect
+        '
+        resources.ApplyResources(Me.m_btnDeleteTransect, "m_btnDeleteTransect")
+        Me.m_btnDeleteTransect.Name = "m_btnDeleteTransect"
+        Me.m_btnDeleteTransect.UseVisualStyleBackColor = True
+        '
         'frmTransectWriter
         '
         resources.ApplyResources(Me, "$this")
@@ -120,4 +128,5 @@ Partial Class frmTransectWriter
     Private WithEvents m_toolstrip As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
     Friend WithEvents m_lbxTransects As Windows.Forms.ListBox
     Private WithEvents m_cbAutosave As Windows.Forms.CheckBox
+    Private WithEvents m_btnDeleteTransect As Windows.Forms.Button
 End Class

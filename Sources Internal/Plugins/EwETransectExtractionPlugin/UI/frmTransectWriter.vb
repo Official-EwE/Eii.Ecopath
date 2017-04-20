@@ -54,6 +54,7 @@ Public Class frmTransectWriter
         Set(value As cUIContext)
             MyBase.UIContext = value
             Me.m_mapzoom.UIContext = Me.UIContext
+            Me.m_toolstrip.UIContext = Me.UIContext
         End Set
     End Property
 
@@ -73,6 +74,8 @@ Public Class frmTransectWriter
         Me.m_mapzoom.Map.AddLayer(DisplayRaster)
         Me.m_mapzoom.Map.AddLayer(DisplayVector)
 
+        Me.m_toolstrip.AddZoomContainer(Me.m_mapzoom)
+
         For Each l As cDisplayLayer In factory.GetLayers(Me.UIContext, eVarNameFlags.LayerDepth)
             l.RenderMode = ScientificInterfaceShared.Definitions.eLayerRenderType.Always
             Me.m_mapzoom.Map.AddLayer(l)
@@ -89,16 +92,23 @@ Public Class frmTransectWriter
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
 
+        Me.m_btnDeleteTransect.Enabled = (Me.m_data.Selection IsNot Nothing)
+
     End Sub
 
 #End Region ' Form overrides
 
 #Region " Events "
 
+    Private Sub m_btnDeleteTransect_Click(sender As Object, e As EventArgs) Handles m_btnDeleteTransect.Click
+        Me.m_data.Delete(Me.m_data.Selection)
+    End Sub
+
     Private Sub m_data_OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectAdded
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.UpdateTransects()
+        Me.UpdateControls()
         Me.m_bInUpdate = False
     End Sub
 
@@ -106,6 +116,8 @@ Public Class frmTransectWriter
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.UpdateTransects()
+        Me.UpdateMap()
+        Me.UpdateControls()
         Me.m_bInUpdate = False
     End Sub
 
@@ -113,6 +125,8 @@ Public Class frmTransectWriter
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
         Me.m_lbxTransects.SelectedItem = transect
+        Me.UpdateMap()
+        Me.UpdateControls()
         Me.m_bInUpdate = False
     End Sub
 
@@ -126,6 +140,7 @@ Public Class frmTransectWriter
         Dim t As cTransect = Me.SelectedTransect()
         Me.m_data.Selection = t
         Me.UpdateMap()
+        Me.UpdateControls()
         Me.m_bInUpdate = False
     End Sub
 

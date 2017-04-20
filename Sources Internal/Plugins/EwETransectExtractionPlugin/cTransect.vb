@@ -64,6 +64,13 @@ Public Class cTransect
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Calculate all cells the transect passes through.
+    ''' </summary>
+    ''' <param name="bm"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Function Cells(bm As cEcospaceBasemap) As Point()
 
         If (Me.m_cells.Count = 0) Then
@@ -73,48 +80,20 @@ Public Class cTransect
             Dim x1 As Integer = bm.LonToCol(Me.m_ptEnd.X)
             Dim y1 As Integer = bm.LatToRow(Me.m_ptEnd.Y)
 
-            '' Bresenham
-            'Dim dx As Integer = x1 - x0
-            'Dim dy As Integer = y1 - y0
-            'Dim d As Single = 2 * dy - dx
-            'Dim y = y0
-
-            'For x As Integer = x0 To x1
-            '    m_cells.Add(New Point(x, y))
-            '    If (d > 0) Then
-            '        y += 1
-            '        d -= 2 * dx
-            '    End If
-            '    d += 2 * dy
-            'Next
-
-            ' https://gamedev.stackexchange.com/questions/81267/how-do-i-generalise-bresenhams-line-algorithm-to-floating-point-endpoints
-            'float difX = end.x - start.x;
-            'float difY = end.y - start.y;
-            'float dist = abs(difX) + abs(difY);
-
-            'float dx = difX / dist;
-            'float dy = difY / dist;
-
-            'For (int i = 0, int x, int y; i <= ceil(dist); i++) {
-            '    x = floor(Start.X + dx * i);
-            '    y = floor(Start.Y + dy * i);
-            '    draw(x, y);
-            '}
-            'Return True;
-
             Dim difX As Double = x1 - x0
-            Dim difY As Double = y1 - x0
+            Dim difY As Double = y1 - y0
             Dim dist As Double = Math.Abs(difX) + Math.Abs(difY)
 
             Dim dx As Double = 0
             Dim dy As Double = 0
 
-            If (dist > 0) Then dx = difX / dist : dy = difY / dist
+            If (dist > 0) Then
+                dx = difX / dist : dy = difY / dist
+            End If
 
             For i As Integer = 0 To CInt(Math.Ceiling(dist))
-                Dim x As Integer = CInt(Math.Round(x0 + dx * i))
-                Dim y As Integer = CInt(Math.Round(y0 + dy * i))
+                Dim x As Integer = x0 + CInt(Math.Round(dx * i))
+                Dim y As Integer = y0 + CInt(Math.Round(dy * i))
                 Me.m_cells.Add(New Point(x, y))
             Next
         End If
