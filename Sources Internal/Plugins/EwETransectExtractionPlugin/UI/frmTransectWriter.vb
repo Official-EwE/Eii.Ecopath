@@ -136,8 +136,8 @@ Public Class frmTransectWriter
         Me.m_bInUpdate = False
     End Sub
 
-    Private Sub OnTransectsChanged(sender As cTransectDatastructures) _
-        Handles m_data.OnTransectsChanged
+    Private Sub OnTransectsChanged(sender As cTransectDatastructures, transect As cTransect) _
+        Handles m_data.OnTransectChanged
         Me.m_layerRaster.Invalidate()
     End Sub
 

@@ -64,8 +64,7 @@ Public Class cTransectVectorEditor
             Next
             Dim n As Integer = EwEUtils.Utilities.cStringUtils.GetNextNumber(lNames.ToArray, strMask)
 
-            Me.m_transectEdit = New cTransect() With {
-                .Name = String.Format(strMask, n),
+            Me.m_transectEdit = New cTransect(String.Format(strMask, n)) With {
                 .Start = map.GetLocation(e.Location),
                 .End = .Start
             }
@@ -108,7 +107,7 @@ Public Class cTransectVectorEditor
                     Me.m_transectEdit.End = New PointF(Me.m_ptfEndOrg.X + dx, Me.m_ptfEndOrg.Y + dy)
             End Select
 
-            data.OnChanged()
+            data.OnChanged(Me.m_transectEdit)
             map.UpdateMap()
 
         End If
@@ -117,7 +116,6 @@ Public Class cTransectVectorEditor
 
     Public Overrides Sub ProcessMouseUp()
         If Me.IsEditing Then
-            Me.m_transectEdit.Invalidate()
             Me.EndEdit()
         End If
     End Sub

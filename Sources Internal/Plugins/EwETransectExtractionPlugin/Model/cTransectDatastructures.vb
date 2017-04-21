@@ -26,22 +26,63 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Datastructures for holding <see cref="cTransect">transects</see>.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cTransectDatastructures
     Implements IEcospaceLayerManager
 
+#Region " Private vars "
+
+    Private m_core As cCore = Nothing
     Private m_transects As New List(Of cTransect)
     Private m_selection As cTransect = Nothing
-    Private m_core As cCore = Nothing
+
+#End Region ' Private vars
+
+#Region " Construction "
 
     Public Sub New(core As cCore)
         Me.m_core = core
     End Sub
 
-    Public ReadOnly Property Transects As cTransect()
-        Get
-            Return Me.m_transects.ToArray()
-        End Get
-    End Property
+#End Region ' Construction
+
+#Region " Events "
+
+    ''' <summary>
+    ''' Event to notify that the selected transect has changed.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="transect">The newly selected transect.</param>
+    Public Event OnTransectSelected(sender As cTransectDatastructures, transect As cTransect)
+
+    ''' <summary>
+    ''' Event to notify that a transect was added.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="transect">The selected that was added.</param>
+    Public Event OnTransectAdded(sender As cTransectDatastructures, transect As cTransect)
+
+    ''' <summary>
+    ''' Event to notify that a transect was removed.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="transect">The selected that was removed.</param>
+    Public Event OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect)
+
+    ''' <summary>
+    ''' Event to notify that a transect has been modified.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="transect">The selected that was modified.</param>
+    Public Event OnTransectChanged(sender As cTransectDatastructures, transect As cTransect)
+
+#End Region ' Events
+
+#Region " Public access "
 
     Public Sub Add(t As cTransect)
         Me.m_transects.Add(t)
@@ -79,13 +120,30 @@ Public Class cTransectDatastructures
         End Set
     End Property
 
-    Public Sub OnChanged()
+    Public Sub OnChanged(t As cTransect)
         Try
-            RaiseEvent OnTransectsChanged(Me)
+            RaiseEvent OnTransectChanged(Me, t)
         Catch ex As Exception
 
         End Try
     End Sub
+
+    Public ReadOnly Property Transects As cTransect()
+        Get
+            Return Me.m_transects.ToArray()
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether transect data is automatically saved.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property Autosaving As Boolean = False
+
+#End Region ' Public access
+
+#Region " IEcospaceLayerManager implementation "
 
     Public Function Layers(Optional varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() Implements IEcospaceLayerManager.Layers
         Return Nothing
@@ -100,11 +158,6 @@ Public Class cTransectDatastructures
         Return Me.Selection.Cells(Me.m_core.EcospaceBasemap)
     End Function
 
-    Public Property Autosaving As Boolean = False
-
-    Public Event OnTransectSelected(sender As cTransectDatastructures, transect As cTransect)
-    Public Event OnTransectAdded(sender As cTransectDatastructures, transect As cTransect)
-    Public Event OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect)
-    Public Event OnTransectsChanged(sender As cTransectDatastructures)
+#End Region ' IEcospaceLayerManager implementation
 
 End Class
