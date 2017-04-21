@@ -3527,9 +3527,6 @@ Namespace Core
         Ecospace
         ''' <summary>Ecospace run results</summary>
         EcospaceResults
-        ''' <summary>Ecospace run results extracted by region</summary>
-        ''' <remarks>This optiopn is too granular and should go. Region output is provided by just another result writer.</remarks>
-        EcospaceResultsRegion
         ''' <summary>MPA optimizations</summary>
         MPAOpt
         ''' <summary>Ecotracer run results</summary>

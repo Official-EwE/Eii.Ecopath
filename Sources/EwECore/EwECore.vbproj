@@ -219,6 +219,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceResultWriterFactory.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\EcospaceResultsWriterDataSources.vb" />
     <Compile Include="FitToTimeSeries\Input Output\cF2TSManager.vb" />
     <Compile Include="FitToTimeSeries\Input Output\cF2TSResults.vb" />

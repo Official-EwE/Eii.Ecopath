@@ -22,67 +22,10 @@
 
 Option Strict On
 Imports System.IO
-Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports System.Reflection
 
 #End Region ' Imports
-
-''' ---------------------------------------------------------------------------
-''' <summary>
-''' Factory class for creating an <see cref="IEcospaceResultsWriter"/>
-''' </summary>
-''' ---------------------------------------------------------------------------
-Public Class cEcospaceResultWriterFactory
-
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get all the Ecospace result writers provided by the EwE core and plug-ins
-    ''' </summary>
-    ''' <param name="pm">The plug-in manager instance to consult, if any.</param>
-    ''' <returns>An array of all avaliable result writers.</returns>
-    ''' -----------------------------------------------------------------------
-    Friend Shared Function GetWriters(ByVal pm As cPluginManager) As IEcospaceResultsWriter()
-
-        Dim writers As New List(Of IEcospaceResultsWriter)
-
-        Try
-
-            For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
-
-                If (GetType(IEcospaceResultsWriter).IsAssignableFrom(t) And Not t.IsAbstract()) Then
-                    Try
-                        writers.Add(CType(Activator.CreateInstance(t), IEcospaceResultsWriter))
-                    Catch ex As Exception
-                        cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultsWriter")
-                    End Try
-                End If
-            Next
-
-            ' Plug-in manager provided?
-            If (pm IsNot Nothing) Then
-                Try
-                    ' #Yes: see if a plug-in based writer supports the requested format
-                    For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
-                        writers.Add(ip)
-                    Next
-                Catch ex As Exception
-                    cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters() Failed to create instance of IEcospaceResultWriterPlugin")
-                End Try
-            End If
-
-        Catch ex As Exception
-            cLog.Write(ex, "cEcospaceResultWriterFactory.GetWriters()")
-        End Try
-
-        Return writers.ToArray()
-
-    End Function
-
-
-End Class
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -160,7 +103,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.Enabled"/>
     ''' -----------------------------------------------------------------------  
-    Public Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
+    Public Overridable Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
 
 #End Region ' IEcospaceResultsWriter implementation
 
