@@ -2572,16 +2572,6 @@ Public Class cCore
                         strScenario = strScenario & "{scenario}"
                     End If
 
-                Case eAutosaveTypes.EcospaceResultsRegion
-                    strScenario = "ecospace_summary_"
-
-                    strScenario = "ecospace_"
-                    If (Me.ActiveEcospaceScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
-
                 Case eAutosaveTypes.MPAOpt
                     strScenario = "mpa_opt_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
