@@ -45,6 +45,7 @@ Public Class cEcospaceLayerMigration
     Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerMigration, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerMigration
+        Me.m_ccSecundaryIndex = eCoreCounterTypes.nMonths
     End Sub
 
 #End Region ' Construction
