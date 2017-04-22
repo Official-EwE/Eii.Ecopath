@@ -64,7 +64,7 @@ Namespace Controls
             End Property
 
             Public Overrides Function ToString() As String
-                Return String.Format(My.Resources.HEADER_X_UNIT, Me.m_strDescription, Me.m_strISOSymbol)
+                Return String.Format(My.Resources.GENERIC_LABEL_DOUBLE, Me.m_strISOSymbol, Me.m_strDescription)
             End Function
 
         End Class
@@ -102,13 +102,17 @@ Namespace Controls
             Me.SuspendLayout()
 
             For Each ci As CultureInfo In CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-                Dim ri As New RegionInfo(ci.LCID)
-                Dim strAbbr As String = fmt.GetDescriptor(ri, eDescriptorTypes.Abbreviation)
-                Dim strName As String = fmt.GetDescriptor(ri, eDescriptorTypes.Name)
+                Try
+                    Dim ri As New RegionInfo(ci.LCID)
+                    Dim strAbbr As String = fmt.GetDescriptor(ri, eDescriptorTypes.Abbreviation)
+                    Dim strName As String = fmt.GetDescriptor(ri, eDescriptorTypes.Name)
 
-                If Me.GetUnitIndex(strAbbr) = -1 Then
-                    Me.Items.Add(New MonetaryUnitItem(strAbbr, strName))
-                End If
+                    If Me.GetUnitIndex(strAbbr) = -1 Then
+                        Me.Items.Add(New MonetaryUnitItem(strAbbr, strName))
+                    End If
+                Catch ex As Exception
+                    ' Swallow this
+                End Try
             Next
 
             Me.Sorted = True
