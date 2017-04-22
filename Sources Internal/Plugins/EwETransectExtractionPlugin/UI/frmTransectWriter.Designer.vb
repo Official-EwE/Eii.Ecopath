@@ -48,9 +48,8 @@ Partial Class frmTransectWriter
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_mapzoom = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
         Me.m_toolstrip = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
-        Me.m_lbxTransects = New System.Windows.Forms.ListBox()
-        Me.m_cbAutosave = New System.Windows.Forms.CheckBox()
         Me.m_btnDeleteTransect = New System.Windows.Forms.Button()
+        Me.m_lbxTransects = New System.Windows.Forms.ListBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -71,7 +70,6 @@ Partial Class frmTransectWriter
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_btnDeleteTransect)
         Me.m_scMain.Panel2.Controls.Add(Me.m_lbxTransects)
-        Me.m_scMain.Panel2.Controls.Add(Me.m_cbAutosave)
         '
         'm_mapzoom
         '
@@ -88,23 +86,17 @@ Partial Class frmTransectWriter
         Me.m_toolstrip.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
         Me.m_toolstrip.UIContext = Nothing
         '
-        'm_lbxTransects
-        '
-        resources.ApplyResources(Me.m_lbxTransects, "m_lbxTransects")
-        Me.m_lbxTransects.FormattingEnabled = True
-        Me.m_lbxTransects.Name = "m_lbxTransects"
-        '
-        'm_cbAutosave
-        '
-        resources.ApplyResources(Me.m_cbAutosave, "m_cbAutosave")
-        Me.m_cbAutosave.Name = "m_cbAutosave"
-        Me.m_cbAutosave.UseVisualStyleBackColor = True
-        '
         'm_btnDeleteTransect
         '
         resources.ApplyResources(Me.m_btnDeleteTransect, "m_btnDeleteTransect")
         Me.m_btnDeleteTransect.Name = "m_btnDeleteTransect"
         Me.m_btnDeleteTransect.UseVisualStyleBackColor = True
+        '
+        'm_lbxTransects
+        '
+        resources.ApplyResources(Me.m_lbxTransects, "m_lbxTransects")
+        Me.m_lbxTransects.FormattingEnabled = True
+        Me.m_lbxTransects.Name = "m_lbxTransects"
         '
         'frmTransectWriter
         '
@@ -116,7 +108,6 @@ Partial Class frmTransectWriter
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel1.PerformLayout()
         Me.m_scMain.Panel2.ResumeLayout(False)
-        Me.m_scMain.Panel2.PerformLayout()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -127,6 +118,5 @@ Partial Class frmTransectWriter
     Private WithEvents m_mapzoom As ScientificInterfaceShared.Controls.Map.ucMapZoom
     Private WithEvents m_toolstrip As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
     Friend WithEvents m_lbxTransects As Windows.Forms.ListBox
-    Private WithEvents m_cbAutosave As Windows.Forms.CheckBox
     Private WithEvents m_btnDeleteTransect As Windows.Forms.Button
 End Class

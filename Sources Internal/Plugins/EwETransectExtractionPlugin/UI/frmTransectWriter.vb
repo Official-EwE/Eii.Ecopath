@@ -81,8 +81,6 @@ Public Class frmTransectWriter
             Me.m_mapzoom.Map.AddLayer(l)
         Next
 
-        Me.m_cbAutosave.Checked = Me.m_data.Autosaving
-
         Me.UpdateTransects()
 
     End Sub
@@ -150,11 +148,6 @@ Public Class frmTransectWriter
         Me.UpdateMap()
         Me.UpdateControls()
         Me.m_bInUpdate = False
-    End Sub
-
-    Private Sub OnAutoSaveToggled(sender As Object, e As EventArgs) _
-        Handles m_cbAutosave.CheckedChanged
-        Me.m_data.Autosaving = Me.m_cbAutosave.Checked
     End Sub
 
 #End Region ' Events

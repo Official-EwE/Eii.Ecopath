@@ -23,12 +23,8 @@
 Option Strict On
 Imports System.Xml
 Imports EwECore
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Forms
-Imports WeifenLuo.WinFormsUI
-Imports ScientificInterfaceShared
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -40,7 +36,7 @@ Imports EwEUtils.Core
 ''' ===========================================================================
 Friend Class cAutosaveSettingsHelper
 
-    Private Shared sEcospaceFormat As String = ""
+    Private Shared sFormats As New Dictionary(Of eAutosaveTypes, String)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -66,21 +62,21 @@ Friend Class cAutosaveSettingsHelper
                 If (node IsNot Nothing) Then
                     ' #Yes: plunder content
                     att = node.Attributes("Enabled")
-                    core.Autosave(t) = IIF(att IsNot Nothing, Boolean.Parse(att.InnerText), False)
+                    If (att IsNot Nothing) Then
+                        core.Autosave(t) = Boolean.Parse(att.InnerText)
+                    Else
+                        core.Autosave(t) = False
+                    End If
 
-                    Select Case t
-                        Case eAutosaveTypes.EcospaceResults
-                            att = node.Attributes("Format")
-                            If (att IsNot Nothing) Then
-                                sEcospaceFormat = att.InnerText
-                            Else
-                                sEcospaceFormat = ""
-                            End If
-
-                    End Select
+                    att = node.Attributes("Format")
+                    If (att IsNot Nothing) Then
+                        sFormats(t) = att.InnerText
+                    Else
+                        sFormats(t) = ""
+                    End If
                 End If
             Catch ex As Exception
-                ' Woops - ignore malformed setting
+                cLog.Write(ex, "cAutosaveSettingsHelper.LoadFromSettings(" & t.ToString & ")")
             End Try
         Next
 
@@ -95,7 +91,7 @@ Friend Class cAutosaveSettingsHelper
     Public Shared Function SaveToSettings(core As cCore) As XmlDocument
 
         ' Just in case
-        StoreEcospaceWriterSettings(core)
+        Store(core)
 
         Dim doc As New XmlDocument()
         Dim node As XmlNode = Nothing
@@ -120,7 +116,7 @@ Friend Class cAutosaveSettingsHelper
                 Select Case t
                     Case eAutosaveTypes.EcospaceResults
                         att = doc.CreateAttribute("Format")
-                        att.InnerText = sEcospaceFormat
+                        att.InnerText = sFormats(t)
                         nodeChild.Attributes.Append(att)
                     Case Else
                         ' NOP
@@ -136,30 +132,36 @@ Friend Class cAutosaveSettingsHelper
 
     End Function
 
-    Public Shared Sub InitEcospaceWriters(core As cCore)
+    Public Shared Sub Init(core As cCore)
         If (core.ActiveEcospaceScenarioIndex > 0) Then
             Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
-            Dim bits As String() = sEcospaceFormat.Split(";"c)
+            Dim strFormat As String = sFormats(eAutosaveTypes.EcospaceResults)
+            Dim bits As String() = strFormat.Split(";"c)
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
                 writer.Enabled = bits.Contains(cTypeUtils.TypeToString(writer.GetType())) Or
-                                 (String.IsNullOrWhiteSpace(sEcospaceFormat) And TypeOf (writer) Is cEcospaceASCMapBiomassWriter)
+                                 (String.IsNullOrWhiteSpace(strFormat) And TypeOf (writer) Is cEcospaceASCMapBiomassWriter)
             Next
         End If
     End Sub
 
-    Public Shared Sub StoreEcospaceWriterSettings(core As cCore)
+    Public Shared Sub Store(core As cCore)
         If (core.ActiveEcospaceScenarioIndex > 0) Then
             Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
-            sEcospaceFormat = ""
+            Dim strFormat As String = ""
+            Dim bSaving As Boolean = False
             For n As Integer = 1 To parms.nResultWriters
                 Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
                 If writer.Enabled Then
-                    If Not String.IsNullOrWhiteSpace(sEcospaceFormat) Then sEcospaceFormat &= ";"
-                    sEcospaceFormat &= cTypeUtils.TypeToString(writer.GetType())
+                    If Not String.IsNullOrWhiteSpace(strFormat) Then strFormat &= ";"
+                    strFormat &= cTypeUtils.TypeToString(writer.GetType())
+                    bSaving = True
                 End If
             Next
+            sFormats(eAutosaveTypes.EcospaceResults) = strFormat
+            core.Autosave(eAutosaveTypes.EcospaceResults) = bSaving
         End If
+
     End Sub
 
 End Class

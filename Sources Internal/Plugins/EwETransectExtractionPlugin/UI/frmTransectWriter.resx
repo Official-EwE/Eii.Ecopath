@@ -202,7 +202,7 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_btnDeleteTransect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 374</value>
+    <value>2, 412</value>
   </data>
   <data name="m_btnDeleteTransect.Size" type="System.Drawing.Size, System.Drawing">
     <value>190, 23</value>
@@ -235,7 +235,7 @@
     <value>2, 3</value>
   </data>
   <data name="m_lbxTransects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 365</value>
+    <value>190, 403</value>
   </data>
   <data name="m_lbxTransects.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -251,36 +251,6 @@
   </data>
   <data name="&gt;&gt;m_lbxTransects.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="m_cbAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="m_cbAutosave.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbAutosave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 406</value>
-  </data>
-  <data name="m_cbAutosave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 17</value>
-  </data>
-  <data name="m_cbAutosave.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_cbAutosave.Text" xml:space="preserve">
-    <value>&amp;Auto-save to CSV</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutosave.Name" xml:space="preserve">
-    <value>m_cbAutosave</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutosave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutosave.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_cbAutosave.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
