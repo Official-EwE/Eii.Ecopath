@@ -17,53 +17,42 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-Public Class cTransectPluginPoint
+Public Class cTransectResultWriterPlugin
     Inherits cEcospaceBaseResultsWriter
-    Implements INavigationTreeItemPlugin
-    Implements IUIContextPlugin
     Implements IEcospaceResultWriterPlugin
 
-#Region " Private vars "
-
     Private m_data As cTransectDatastructures = Nothing
-    Private m_uic As cUIContext = Nothing
-    Private m_frm As frmTransectWriter = Nothing
 
-#End Region ' Private vars
-
-#Region " Foundation "
-
-    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-        Me.m_core = CType(core, cCore)
-        Me.m_data = New cTransectDatastructures(Me.m_core)
+    Public Sub New()
+        MyBase.New()
     End Sub
 
-    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
+    Public Overrides Sub Init(theCore As Object) Implements IPlugin.Initialize
+        MyBase.Init(theCore)
+        Me.m_core = DirectCast(theCore, cCore)
+        Me.m_data = cTransectDatastructures.Instance(Me.m_core)
+    End Sub
+
+    Public Overrides ReadOnly Property DisplayName As String
         Get
-            Return eCoreExecutionState.EcospaceLoaded
+            Return "Transects writer"
         End Get
     End Property
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transects"
+            Return "TransectsResultWriter"
         End Get
     End Property
 
@@ -75,70 +64,15 @@ Public Class cTransectPluginPoint
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return "Jeroen Steenbeek"
+            Return ""
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return "ewedevteam@gmail.com"
-        End Get
-    End Property
-
-#End Region ' Foundation
-
-#Region " UI "
-
-    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
-        Me.m_uic = CType(uic, cUIContext)
-    End Sub
-
-    Public ReadOnly Property NavigationTreeItemLocation As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            Return "ndSpatialDynamic\ndEcospaceInput"
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
-        Get
-            Return SharedResources.nav0_application_get
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
-        Get
             Return ""
         End Get
     End Property
-
-    Public Overrides Property Enabled As Boolean Implements IEcospaceResultsWriter.Enabled
-        Get
-            Return Me.m_data.Autosaving
-        End Get
-        Set(value As Boolean)
-            Me.m_data.Autosaving = value
-        End Set
-    End Property
-
-    Public Overrides ReadOnly Property DisplayName As String
-        Get
-            Return "Transects"
-        End Get
-    End Property
-
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
-        frmPlugin = Me.GetUI()
-    End Sub
-
-#End Region ' UI
-
-#Region " Result writer "
 
     Public Overrides Sub StartWrite()
         For Each t As cTransect In Me.m_data.Transects
@@ -178,24 +112,11 @@ Public Class cTransectPluginPoint
 
     End Sub
 
-#End Region ' Result writer
-
-#Region " Internals "
-
-    Private Function HasUI() As Boolean
-        If (Me.m_frm Is Nothing) Then Return False
-        Return Not Me.m_frm.IsDisposed
-    End Function
-
-    Private Function GetUI() As frmTransectWriter
-        If (Not Me.HasUI()) Then Me.m_frm = New frmTransectWriter(Me.m_uic, Me.m_data)
-        Return Me.m_frm
-    End Function
-
     Protected Overrides Function FileExtension() As String
         Return ".csv"
     End Function
 
+#Region " Internals "
 
     Private Sub WriteResult()
 
@@ -220,7 +141,7 @@ Public Class cTransectPluginPoint
                         sw.WriteLine(cStringUtils.ToCSVField("Start-lon") + "," & cStringUtils.ToCSVField(t.Start.X))
                         sw.WriteLine(cStringUtils.ToCSVField("End-lat") + "," & cStringUtils.ToCSVField(t.End.Y))
                         sw.WriteLine(cStringUtils.ToCSVField("End-lon") + "," & cStringUtils.ToCSVField(t.End.X))
-                        sw.WriteLine(cStringUtils.ToCSVField("Number of cells") & "," & cStringUtils.ToCSVField(t.Cells(Me.m_core.EcospaceBasemap)))
+                        sw.WriteLine(cStringUtils.ToCSVField("Number of cells") & "," & cStringUtils.ToCSVField(t.NumCells))
                         sw.WriteLine()
                     End If
 
@@ -266,38 +187,38 @@ Public Class cTransectPluginPoint
 
         ' Loop over all the time steps. 
         ' If in Annual mode then sum and average the at the end of the year
-        For iTime As Integer = Me.FirstOutputTimeStep To Me.m_core.nEcospaceTimeSteps
-            Dim cells As Point() = t.Cells(Me.m_core.EcospaceBasemap)
-            Dim value(cells.Length, Me.m_core.nGroups, 2) As Single
-            For iCell As Integer = 0 To cells.Length - 1
-                Dim cell As Point = cells(iCell)
-                For iGroup As Integer = 1 To Me.m_core.nGroups
-                    For iRslt As Integer = 0 To 1
-                        value(iCell, iGroup, iRslt) += t.Result(iTime, iGroup, iRslt, iCell)
-                        Select Case avg
-                            Case eEcospaceResultsAverageType.Annual
-                                If ((iTime Mod Me.m_core.m_EcoSpaceData.nTimeStepsPerYear) = 0) Then
-                                    value(iCell, iGroup, iRslt) /= 12
-                                    bSave = True
-                                End If
-                            Case eEcospaceResultsAverageType.TimeStep
-                                bSave = True
-                            Case Else
-                                Debug.Assert(False)
-                        End Select
-                    Next iRslt
+        '    For iTime As Integer = Me.FirstOutputTimeStep To Me.m_core.nEcospaceTimeSteps
+        '        Dim cells As Point() = t.Cells(Me.m_core.EcospaceBasemap)
+        '        Dim value(cells.Length, Me.m_core.nGroups, 2) As Single
+        '        For iCell As Integer = 0 To cells.Length - 1
+        '            Dim cell As Point = cells(iCell)
+        '            For iGroup As Integer = 1 To Me.m_core.nGroups
+        '                For iRslt As Integer = 0 To 1
+        '                    value(iCell, iGroup, iRslt) += t.Result(iTime, iGroup, iRslt, iCell)
+        '                    Select Case avg
+        '                        Case eEcospaceResultsAverageType.Annual
+        '                            If ((iTime Mod Me.m_core.m_EcoSpaceData.nTimeStepsPerYear) = 0) Then
+        '                                value(iCell, iGroup, iRslt) /= 12
+        '                                bSave = True
+        '                            End If
+        '                        Case eEcospaceResultsAverageType.TimeStep
+        '                            bSave = True
+        '                        Case Else
+        '                            Debug.Assert(False)
+        '                    End Select
+        '                Next iRslt
 
-                    If bSave Then
-                        iYear += 1
-                        sw.WriteLine("{0},{1},{2},{3}", cSystemUtils.IIF(avg = eEcospaceResultsAverageType.Annual, iYear, iTime), cell.Y, cell.X, iGroup, cStringUtils.FormatNumber(value(iCell, iGroup, 0)), cStringUtils.FormatNumber(value(iCell, iGroup, 1)))
-                        bSave = False
-                    End If
+        '                If bSave Then
+        '                    iYear += 1
+        '                    sw.WriteLine("{0},{1},{2},{3}", IIF(avg = eEcospaceResultsAverageType.Annual, iYear, iTime), cell.Y, cell.X, iGroup, cStringUtils.FormatNumber(value(iCell, iGroup, 0)), cStringUtils.FormatNumber(value(iCell, iGroup, 1)))
+        '                    bSave = False
+        '                End If
 
-                Next iGroup
-            Next iCell
-        Next iTime
+        '            Next iGroup
+        '        Next iCell
+        '    Next iTime
     End Sub
 
-#End Region ' Internals 
+#End Region ' Internals
 
 End Class

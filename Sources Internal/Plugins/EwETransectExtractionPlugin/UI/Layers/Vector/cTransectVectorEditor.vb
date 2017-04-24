@@ -125,8 +125,11 @@ Public Class cTransectVectorEditor
     End Sub
 
     Protected Overrides Sub EndEdit()
+        If (Me.m_transectEdit IsNot Nothing) Then
+            Me.m_transectEdit.EndEdit()
+            Me.m_transectEdit = Nothing
+        End If
         Me.IsEditing = False
-        Me.m_transectEdit = Nothing
     End Sub
 
     Public Overrides Function Cursor(ptMouse As Point, map As ucMap) As Cursor

@@ -117,8 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\cTransectDatastructures.vb" />
-    <Compile Include="cTransectPluginPoint.vb" />
+    <Compile Include="Plugins\cTransectEcospaceInputPluginPoint.vb" />
     <Compile Include="Model\cTransect.vb" />
+    <Compile Include="Plugins\cTransectResultWriterPlugin.vb" />
+    <Compile Include="Model\cTransectSummary.vb" />
     <Compile Include="UI\Layers\Raster\cTransectRasterDisplay.vb" />
     <Compile Include="UI\Layers\Raster\cTransectLayer.vb" />
     <Compile Include="UI\Layers\Vector\cTransectVectorDisplay.vb" />

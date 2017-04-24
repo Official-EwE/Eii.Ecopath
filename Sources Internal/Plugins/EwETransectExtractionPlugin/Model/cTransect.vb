@@ -39,9 +39,14 @@ Public Class cTransect
     Private m_cells As New List(Of Point)
     Private m_ptStart As PointF
     Private m_ptEnd As PointF
-    Private m_results(,,,) As Single
+    Private m_summaries As New Dictionary(Of String, cTransectSummary)
 
 #End Region ' Private vars
+
+    Public Enum eSummaryType As Byte
+        Biomass
+        [Catch]
+    End Enum
 
 #Region " Constructor "
 
@@ -94,7 +99,28 @@ Public Class cTransect
         End Set
     End Property
 
+    Public Sub EndEdit()
+        ' Make sure start is to the west and north of end 
+        If (Me.Start.X > Me.End.X) Or ((Me.Start.X = Me.End.X) And (Me.Start.Y > Me.End.Y)) Then
+            Dim ptTemp As PointF = Me.m_ptStart
+            Me.m_ptStart = Me.m_ptEnd
+            Me.m_ptEnd = ptTemp
+        End If
+    End Sub
+
     ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the number of cells in the transect, or -1 if this number is not determined yet.
+    ''' </summary>
+    ''' <returns>The number of cells in the transect, or -1 if this number is 
+    ''' not determined yet.</returns>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NumCells As Integer
+        Get
+            Return Me.m_cells.Count - 1
+        End Get
+    End Property
+
     ''' <summary>
     ''' Returns all modelled cells that the transect passes through. The cells
     ''' are given as col, row.
@@ -150,18 +176,15 @@ Public Class cTransect
 
     Public Sub InitRun(core As cCore)
         Me.m_core = core
-        ReDim Me.m_results(Me.m_core.nEcospaceTimeSteps, Me.m_core.nGroups, Me.m_cells.Count, 2)
+        Me.m_summaries.Clear()
     End Sub
 
     Public Sub Record(results As cEcospaceTimestep)
         If (Me.m_core IsNot Nothing) Then Return
         Dim t As Integer = results.iTimeStep
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            For iCell As Integer = 0 To Me.m_cells.Count - 1
-                Dim pt As Point = Me.m_cells(iCell)
-                Me.m_results(t, iGroup, iCell, 0) = results.BiomassMap(pt.Y, pt.X, iGroup)
-                Me.m_results(t, iGroup, iCell, 1) = results.CatchMap(pt.Y, pt.X, iGroup)
-            Next
+            Me.m_summaries(Key(t, iGroup, eSummaryType.Biomass)) = New cTransectSummary(Me, Me.m_cells, "Biomass " & t, results.BiomassMap, iGroup)
+            Me.m_summaries(Key(t, iGroup, eSummaryType.Catch)) = New cTransectSummary(Me, Me.m_cells, "Catch " & t, results.CatchMap, iGroup)
         Next
     End Sub
 
@@ -169,32 +192,31 @@ Public Class cTransect
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Transect average
+    ''' Get a transect summary for a given time step, group, and variable.
     ''' </summary>
     ''' <param name="iTimestep"></param>
     ''' <param name="iGroup"></param>
-    ''' <param name="iValue"></param>
+    ''' <param name="variable"></param>
     ''' <returns></returns>
-    Public Function Result(iTimestep As Integer, iGroup As Integer, iValue As Integer) As Single
-        Dim t As Single = 0
-        Dim n As Integer = Math.Max(1, Me.m_cells.Count - 1)
-        For iCell As Integer = 0 To Me.m_cells.Count - 1
-            t += Me.m_results(iTimestep, iGroup, iCell, iValue)
-        Next
-        Return t / n
+    ''' -----------------------------------------------------------------------
+    Public Function Summary(iTimestep As Integer, iGroup As Integer, variable As eSummaryType) As cTransectSummary
+        Dim strKey As String = Key(iTimestep, iGroup, variable)
+        If Me.m_summaries.ContainsKey(strKey) Then Return Me.m_summaries(strKey)
+        Return Nothing
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Transect value for given cell
+    ''' Get a transect summary for a specific input layer.
     ''' </summary>
-    ''' <param name="iTimestep"></param>
-    ''' <param name="iGroup"></param>
-    ''' <param name="iValue"></param>
-    ''' <param name="iCell"></param>
+    ''' <param name="l"></param>
+    ''' <param name="iIndex"></param>
     ''' <returns></returns>
-    Public Function Result(iTimestep As Integer, iGroup As Integer, iValue As Integer, iCell As Integer) As Single
-        Return Me.m_results(iTimestep, iGroup, iCell, iValue)
+    ''' -----------------------------------------------------------------------
+    Public Function Summary(l As cEcospaceLayer, iIndex As Integer) As cTransectSummary
+        Return New cTransectSummary(Me, Me.Cells(Me.m_core.EcospaceBasemap), l, iIndex)
     End Function
 
 #End Region ' Public access
@@ -207,12 +229,15 @@ Public Class cTransect
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Sub Invalidate()
+
         Me.m_cells.Clear()
-        If (Me.m_results IsNot Nothing) Then
-            Erase Me.m_results
-            Me.m_results = Nothing
-        End If
+        Me.m_summaries.Clear()
+
     End Sub
+
+    Private Function Key(t As Integer, iGroup As Integer, value As Byte) As String
+        Return t & "_" & iGroup & "_" & value
+    End Function
 
 #End Region ' Internals
 

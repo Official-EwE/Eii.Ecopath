@@ -34,6 +34,8 @@ Imports EwEUtils.Core
 Public Class cTransectDatastructures
     Implements IEcospaceLayerManager
 
+    Private Shared Instances As New Dictionary(Of cCore, cTransectDatastructures)
+
 #Region " Private vars "
 
     Private m_core As cCore = Nothing
@@ -46,9 +48,19 @@ Public Class cTransectDatastructures
 
     Public Sub New(core As cCore)
         Me.m_core = core
+        Instances(core) = Me
     End Sub
 
 #End Region ' Construction
+
+#Region " Singleton "
+
+    Public Shared Function Instance(core As cCore) As cTransectDatastructures
+        If (Instances.ContainsKey(core)) Then Return Instances(core)
+        Return Nothing
+    End Function
+
+#End Region ' Singleton
 
 #Region " Events "
 
