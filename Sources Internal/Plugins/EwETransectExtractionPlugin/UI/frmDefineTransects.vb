@@ -31,17 +31,17 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
-Public Class frmTransectWriter
+Public Class frmDefineTransects
 
     Private m_layerRaster As cTransectLayer = Nothing
     Private WithEvents m_data As cTransectDatastructures = Nothing
 
-    Public Sub New(uic As cUIContext, data As cTransectDatastructures)
+    Public Sub New(uic As cUIContext)
         Me.InitializeComponent()
         Me.UIContext = uic
-        Me.m_data = data
+        Me.m_data = cTransectDatastructures.Instance(uic.Core)
 
-        Me.Text = My.Resources.CAPTION
+        Me.Text = My.Resources.CAPTION_IN
         Me.TabText = Me.Text
     End Sub
 
@@ -71,10 +71,14 @@ Public Class frmTransectWriter
         Dim DisplayRaster As New cTransectRasterDisplay(Me.UIContext, Me.m_layerRaster)
 
         Me.m_mapzoom.Map.Editable = True
-        Me.m_mapzoom.Map.AddLayer(DisplayRaster)
         Me.m_mapzoom.Map.AddLayer(DisplayVector)
+        Me.m_mapzoom.Map.AddLayer(DisplayRaster)
 
         Me.m_toolstrip.AddZoomContainer(Me.m_mapzoom)
+
+        For Each l As cDisplayLayer In factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPA)
+            Me.m_mapzoom.Map.AddLayer(l)
+        Next
 
         For Each l As cDisplayLayer In factory.GetLayers(Me.UIContext, eVarNameFlags.LayerDepth)
             l.RenderMode = ScientificInterfaceShared.Definitions.eLayerRenderType.Always

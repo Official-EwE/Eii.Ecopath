@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -19,7 +20,7 @@
 '
 #Region " Imports "
 
-Option Strict On
+Imports System.Drawing
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map.Layers
@@ -30,8 +31,12 @@ Imports ScientificInterfaceShared.Definitions
 Public Class cTransectRasterDisplay
     Inherits cDisplayLayerRaster
 
+    Private Shared m_vs As New cVisualStyle()
+
     Public Sub New(ByVal uic As cUIContext, ByVal data As cTransectLayer)
-        MyBase.New(uic, data, New cLayerRendererHatch(New cVisualStyle()), Nothing)
+        MyBase.New(uic, data, New cLayerRendererHatch(m_vs), Nothing)
+        m_vs.ForeColour = Color.Orange
+        m_vs.HatchStyle = Drawing2D.HatchStyle.SmallConfetti
         Me.RenderMode = eLayerRenderType.Always
     End Sub
 

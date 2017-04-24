@@ -1,0 +1,97 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Strict On
+Imports EwECore
+Imports EwEPlugin
+
+#End Region ' Imports
+
+Public Class cTransectRecorderPlugin
+    Implements IEcospaceInitRunCompletedPlugin
+    Implements IEcospaceRunInvalidatedPlugin
+    Implements IEcospaceRunCompletedPlugin
+
+#Region " Private vars "
+
+    Private m_core As cCore = Nothing
+    Private m_data As cTransectDatastructures = Nothing
+    Private m_dgt As cCore.EcoSpaceInterfaceDelegate = Nothing
+
+#End Region ' Private vars
+
+    Public ReadOnly Property Name As String Implements IPlugin.Name
+        Get
+            Return "transectRecorder"
+        End Get
+    End Property
+
+    Public ReadOnly Property Description As String Implements IPlugin.Description
+        Get
+            Return ""
+        End Get
+    End Property
+
+    Public ReadOnly Property Author As String Implements IPlugin.Author
+        Get
+            Return ""
+        End Get
+    End Property
+
+    Public ReadOnly Property Contact As String Implements IPlugin.Contact
+        Get
+            Return ""
+        End Get
+    End Property
+
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
+        Me.m_core = CType(core, cCore)
+        Me.m_data = cTransectDatastructures.Instance(Me.m_core)
+    End Sub
+
+    Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+        For Each t As cTransect In Me.m_data.Transects
+            t.InitRun(Me.m_core)
+        Next
+
+        Me.m_dgt = New cCore.EcoSpaceInterfaceDelegate(AddressOf OnEcospaceTimeStep)
+        Me.m_core.AddEcospaceTimeStepHandler(Me.m_dgt)
+    End Sub
+
+    Public Sub EcospaceRunInvalidated() Implements IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
+        For Each t As cTransect In Me.m_data.Transects
+            t.Invalidate()
+        Next
+    End Sub
+
+    Private Sub OnEcospaceTimeStep(ByRef data As cEcospaceTimestep)
+        For Each t As cTransect In Me.m_data.Transects
+            t.Record(data)
+        Next
+    End Sub
+
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+        Me.m_core.RemoveEcospaceTimeStepHandler(Me.m_dgt)
+        Me.m_dgt = Nothing
+    End Sub
+
+End Class

@@ -46,7 +46,7 @@ Public Class cTransectDatastructures
 
 #Region " Construction "
 
-    Public Sub New(core As cCore)
+    Protected Sub New(core As cCore)
         Me.m_core = core
         Instances(core) = Me
     End Sub
@@ -56,8 +56,10 @@ Public Class cTransectDatastructures
 #Region " Singleton "
 
     Public Shared Function Instance(core As cCore) As cTransectDatastructures
-        If (Instances.ContainsKey(core)) Then Return Instances(core)
-        Return Nothing
+        If (Not Instances.ContainsKey(core)) Then
+            Instances(core) = New cTransectDatastructures(core)
+        End If
+        Return Instances(core)
     End Function
 
 #End Region ' Singleton

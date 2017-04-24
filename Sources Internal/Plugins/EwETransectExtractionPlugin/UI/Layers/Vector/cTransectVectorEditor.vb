@@ -58,7 +58,7 @@ Public Class cTransectVectorEditor
 
             ' Get transect names
             Dim lNames As New List(Of String)
-            Dim strMask As String = "New transect {0}"
+            Dim strMask As String = "Transect {0}"
             For Each t As cTransect In data.Transects
                 lNames.Add(t.Name)
             Next

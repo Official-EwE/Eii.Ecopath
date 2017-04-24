@@ -155,9 +155,9 @@ Public Class cTransect
                 Dim iCol As Integer = x0 + CInt(Math.Round(dx * i))
                 Dim iRow As Integer = y0 + CInt(Math.Round(dy * i))
                 ' Note reversal of row and col here. It's messy, but it's deliberate
-                If bm.IsModelledCell(iRow, iCol) Then
-                    Me.m_cells.Add(New Point(iCol, iRow))
-                End If
+                'If bm.IsModelledCell(iRow, iCol) Then
+                Me.m_cells.Add(New Point(iCol, iRow))
+                'End If
             Next
         End If
 
@@ -174,17 +174,28 @@ Public Class cTransect
         Return Me.Name
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove all cached cells, to be determined again when needed next.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Invalidate()
+        Me.m_cells.Clear()
+        Me.m_summaries.Clear()
+    End Sub
+
     Public Sub InitRun(core As cCore)
         Me.m_core = core
         Me.m_summaries.Clear()
     End Sub
 
     Public Sub Record(results As cEcospaceTimestep)
-        If (Me.m_core IsNot Nothing) Then Return
+        If (Me.m_core Is Nothing) Then Return
         Dim t As Integer = results.iTimeStep
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            Me.m_summaries(Key(t, iGroup, eSummaryType.Biomass)) = New cTransectSummary(Me, Me.m_cells, "Biomass " & t, results.BiomassMap, iGroup)
-            Me.m_summaries(Key(t, iGroup, eSummaryType.Catch)) = New cTransectSummary(Me, Me.m_cells, "Catch " & t, results.CatchMap, iGroup)
+            Me.m_summaries(Key(t, iGroup, eSummaryType.Biomass)) = New cTransectSummary(Me, bm, "Biomass " & t, results.BiomassMap, iGroup)
+            Me.m_summaries(Key(t, iGroup, eSummaryType.Catch)) = New cTransectSummary(Me, bm, "Catch " & t, results.CatchMap, iGroup)
         Next
     End Sub
 
@@ -215,25 +226,13 @@ Public Class cTransect
     ''' <param name="iIndex"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Summary(l As cEcospaceLayer, iIndex As Integer) As cTransectSummary
-        Return New cTransectSummary(Me, Me.Cells(Me.m_core.EcospaceBasemap), l, iIndex)
+    Public Function Summary(bm As cEcospacebasemap, l As cEcospaceLayer, iIndex As Integer) As cTransectSummary
+        Return New cTransectSummary(Me, bm, l, iIndex)
     End Function
 
 #End Region ' Public access
 
 #Region " Internals "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Remove all cached cells, to be determined again when needed next.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Protected Sub Invalidate()
-
-        Me.m_cells.Clear()
-        Me.m_summaries.Clear()
-
-    End Sub
 
     Private Function Key(t As Integer, iGroup As Integer, value As Byte) As String
         Return t & "_" & iGroup & "_" & value

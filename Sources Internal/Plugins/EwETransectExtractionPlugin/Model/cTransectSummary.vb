@@ -23,6 +23,7 @@
 Option Strict On
 Imports System.Drawing
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -35,31 +36,54 @@ Public Class cTransectSummary
 
     Private m_values As Single()
 
-    Public Sub New(t As cTransect, cells As ICollection(Of Point), l As cEcospaceLayer, iIndex As Integer)
+    Public Sub New(t As cTransect, bm As cEcospaceBasemap, l As cEcospaceLayer, iIndex As Integer)
 
         Me.Transect = t
         Me.Name = l.Name
+
+        Dim cells As Point() = t.Cells(bm)
         ReDim m_values(cells.Count - 1)
         For iCell As Integer = 0 To cells.Count - 1
             Dim pt As Point = cells(iCell)
-            Me.m_values(iCell) = CSng(l.Cell(pt.Y, pt.X, iIndex))
+            Dim sValue As Single = cCore.NULL_VALUE
+            If bm.IsModelledCell(pt.Y, pt.X) Or l.VarName = eVarNameFlags.LayerDepth Then
+                sValue = CSng(l.Cell(pt.Y, pt.X, iIndex))
+            End If
+            Me.m_values(iCell) = sValue
         Next
 
     End Sub
 
-    Public Sub New(t As cTransect, cells As ICollection(Of Point), strName As String, ecospaceoutput As Single(,,), iIndex As Integer)
+    Public Sub New(t As cTransect, bm As cEcospaceBasemap, strName As String, ecospaceoutput As Single(,,), iIndex As Integer)
 
         Me.Transect = t
         Me.Name = strName
+
+        Dim cells As Point() = t.Cells(bm)
         ReDim m_values(cells.Count - 1)
         For iCell As Integer = 0 To cells.Count - 1
             Dim pt As Point = cells(iCell)
-            Me.m_values(iCell) = ecospaceoutput(pt.Y, pt.X, iIndex)
+            Dim sValue As Single = cCore.NULL_VALUE
+            If bm.IsModelledCell(pt.Y, pt.X) Then
+                sValue = ecospaceoutput(pt.Y, pt.X, iIndex)
+            End If
+            Me.m_values(iCell) = sValue
         Next
 
     End Sub
 
     Public ReadOnly Property Transect As cTransect
     Public ReadOnly Property Name As String
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="i">Zero-based index</param>
+    ''' <returns></returns>
+    Public ReadOnly Property Value(i As Integer) As Single
+        Get
+            Return Me.m_values(i)
+        End Get
+    End Property
 
 End Class

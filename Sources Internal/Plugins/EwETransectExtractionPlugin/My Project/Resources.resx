@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CAPTION" xml:space="preserve">
+  <data name="CAPTION_IN" xml:space="preserve">
     <value>Transects</value>
+  </data>
+  <data name="CAPTION_OUT" xml:space="preserve">
+    <value>Transect summary</value>
   </data>
 </root>

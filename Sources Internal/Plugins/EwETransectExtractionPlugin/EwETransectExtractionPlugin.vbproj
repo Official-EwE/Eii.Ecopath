@@ -104,6 +104,10 @@
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
+    <Reference Include="ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
@@ -117,19 +121,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\cTransectDatastructures.vb" />
-    <Compile Include="Plugins\cTransectEcospaceInputPluginPoint.vb" />
+    <Compile Include="Plugins\cTransectRecorderPlugin.vb" />
+    <Compile Include="Plugins\cTransectSummaryPluginPoint.vb" />
+    <Compile Include="Plugins\cTransectDefinePluginPoint.vb" />
     <Compile Include="Model\cTransect.vb" />
     <Compile Include="Plugins\cTransectResultWriterPlugin.vb" />
     <Compile Include="Model\cTransectSummary.vb" />
+    <Compile Include="UI\frmTransectSummary.Designer.vb">
+      <DependentUpon>frmTransectSummary.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmTransectSummary.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\Layers\Raster\cTransectRasterDisplay.vb" />
     <Compile Include="UI\Layers\Raster\cTransectLayer.vb" />
     <Compile Include="UI\Layers\Vector\cTransectVectorDisplay.vb" />
     <Compile Include="UI\Layers\Vector\cTransectVectorEditor.vb" />
     <Compile Include="UI\Layers\Vector\cTransectVectorRenderer.vb" />
-    <Compile Include="UI\frmTransectWriter.Designer.vb">
-      <DependentUpon>frmTransectWriter.vb</DependentUpon>
+    <Compile Include="UI\frmDefineTransects.Designer.vb">
+      <DependentUpon>frmDefineTransects.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmTransectWriter.vb">
+    <Compile Include="UI\frmDefineTransects.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -149,14 +161,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\frmTransectWriter.resx">
-      <DependentUpon>frmTransectWriter.vb</DependentUpon>
+    <EmbeddedResource Include="UI\frmDefineTransects.resx">
+      <DependentUpon>frmDefineTransects.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmTransectSummary.resx">
+      <DependentUpon>frmTransectSummary.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -31,7 +31,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-Public Class cTransectEcospaceInputPluginPoint
+Public Class cTransectDefinePluginPoint
     Implements INavigationTreeItemPlugin
     Implements IUIContextPlugin
 
@@ -40,7 +40,7 @@ Public Class cTransectEcospaceInputPluginPoint
     Private m_core As cCore = Nothing
     Private m_data As cTransectDatastructures = Nothing
     Private m_uic As cUIContext = Nothing
-    Private m_frm As frmTransectWriter = Nothing
+    Private m_frm As frmDefineTransects = Nothing
 
 #End Region ' Private vars
 
@@ -48,7 +48,7 @@ Public Class cTransectEcospaceInputPluginPoint
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         Me.m_core = CType(core, cCore)
-        Me.m_data = New cTransectDatastructures(Me.m_core)
+        Me.m_data = cTransectDatastructures.Instance(Me.m_core)
     End Sub
 
     Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
@@ -103,7 +103,7 @@ Public Class cTransectEcospaceInputPluginPoint
 
     Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
         Get
-            Return My.Resources.CAPTION
+            Return My.Resources.CAPTION_IN
         End Get
     End Property
 
@@ -126,8 +126,8 @@ Public Class cTransectEcospaceInputPluginPoint
         Return Not Me.m_frm.IsDisposed
     End Function
 
-    Private Function GetUI() As frmTransectWriter
-        If (Not Me.HasUI()) Then Me.m_frm = New frmTransectWriter(Me.m_uic, Me.m_data)
+    Private Function GetUI() As frmDefineTransects
+        If (Not Me.HasUI()) Then Me.m_frm = New frmDefineTransects(Me.m_uic)
         Return Me.m_frm
     End Function
 

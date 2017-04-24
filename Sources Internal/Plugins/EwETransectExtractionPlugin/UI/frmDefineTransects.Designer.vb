@@ -21,7 +21,7 @@
 Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class frmTransectWriter
+Partial Class frmDefineTransects
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -44,7 +44,7 @@ Partial Class frmTransectWriter
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTransectWriter))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDefineTransects))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_mapzoom = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
         Me.m_toolstrip = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
