@@ -36,7 +36,7 @@ Public Class cTransectRasterDisplay
     Public Sub New(ByVal uic As cUIContext, ByVal data As cTransectLayer)
         MyBase.New(uic, data, New cLayerRendererHatch(m_vs), Nothing)
         m_vs.ForeColour = Color.Orange
-        m_vs.HatchStyle = Drawing2D.HatchStyle.SmallConfetti
+        m_vs.HatchStyle = Drawing2D.HatchStyle.Percent50
         Me.RenderMode = eLayerRenderType.Always
     End Sub
 

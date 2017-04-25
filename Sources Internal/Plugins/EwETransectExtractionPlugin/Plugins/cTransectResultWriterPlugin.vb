@@ -47,7 +47,7 @@ Public Class cTransectResultWriterPlugin
 
     Public Overrides ReadOnly Property DisplayName As String
         Get
-            Return "Transects writer"
+            Return "Transect CSV summary"
         End Get
     End Property
 

@@ -57,6 +57,7 @@ Public Class frmTransectSummary
         ' Make pretty
         Me.m_tsbnPlay.Image = SharedResources.PlayHS
         Me.m_tsbnStop.Image = SharedResources.StopHS
+        Me.m_tsbnSaveToCSV.Image = SharedResources.saveOutputHS
 
         ' ToDo: globalize this, include units, etc
         Me.m_zgh = New cZedGraphHelper()
@@ -336,7 +337,9 @@ Public Class frmTransectSummary
 
                     gp.CurveList.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl))
                     ' ToDo: globalize this
-                    gp.Title.Text = cStringUtils.Localize("{0} at timestep {1}/{2}", IIF(var = cTransect.eSummaryType.Biomass, "Biomass", "Catch"), Me.m_tick, Me.Core.nEcospaceTimeSteps)
+                    Dim strData As String = IIF(var = cTransect.eSummaryType.Biomass, "Biomass", "Catch")
+                    Dim strTime As String = IIF(Me.Core.StateMonitor.HasEcospaceRan, cStringUtils.Localize("timestep {0}/{1}", Me.m_tick, Me.Core.nEcospaceTimeSteps), "(no data)")
+                    gp.Title.Text = cStringUtils.Localize("{0} {1}", strData, strTime)
 
                 Next
 
