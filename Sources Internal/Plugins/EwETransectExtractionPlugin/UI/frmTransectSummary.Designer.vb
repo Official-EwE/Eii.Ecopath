@@ -50,11 +50,13 @@ Partial Class frmTransectSummary
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTransectSummary))
         Me.m_ts = New System.Windows.Forms.ToolStrip()
+        Me.m_tslblTransect = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbTransect = New System.Windows.Forms.ToolStripComboBox()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnPlay = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnStop = New System.Windows.Forms.ToolStripButton()
-        Me.m_tslblPlayTime = New System.Windows.Forms.ToolStripLabel()
+        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnSaveToCSV = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_timerPlay = New System.Windows.Forms.Timer(Me.components)
         Me.m_ts.SuspendLayout()
@@ -62,9 +64,14 @@ Partial Class frmTransectSummary
         '
         'm_ts
         '
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tscmbTransect, Me.ToolStripSeparator1, Me.m_tsbnPlay, Me.m_tsbnStop, Me.m_tslblPlayTime})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblTransect, Me.m_tscmbTransect, Me.m_sep1, Me.m_tsbnPlay, Me.m_tsbnStop, Me.m_sep2, Me.m_tsbnSaveToCSV})
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
+        '
+        'm_tslblTransect
+        '
+        Me.m_tslblTransect.Name = "m_tslblTransect"
+        resources.ApplyResources(Me.m_tslblTransect, "m_tslblTransect")
         '
         'm_tscmbTransect
         '
@@ -72,10 +79,10 @@ Partial Class frmTransectSummary
         Me.m_tscmbTransect.Name = "m_tscmbTransect"
         resources.ApplyResources(Me.m_tscmbTransect, "m_tscmbTransect")
         '
-        'ToolStripSeparator1
+        'm_sep1
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+        Me.m_sep1.Name = "m_sep1"
+        resources.ApplyResources(Me.m_sep1, "m_sep1")
         '
         'm_tsbnPlay
         '
@@ -89,10 +96,15 @@ Partial Class frmTransectSummary
         resources.ApplyResources(Me.m_tsbnStop, "m_tsbnStop")
         Me.m_tsbnStop.Name = "m_tsbnStop"
         '
-        'm_tslblPlayTime
+        'm_sep2
         '
-        Me.m_tslblPlayTime.Name = "m_tslblPlayTime"
-        resources.ApplyResources(Me.m_tslblPlayTime, "m_tslblPlayTime")
+        Me.m_sep2.Name = "m_sep2"
+        resources.ApplyResources(Me.m_sep2, "m_sep2")
+        '
+        'm_tsbnSaveToCSV
+        '
+        resources.ApplyResources(Me.m_tsbnSaveToCSV, "m_tsbnSaveToCSV")
+        Me.m_tsbnSaveToCSV.Name = "m_tsbnSaveToCSV"
         '
         'm_graph
         '
@@ -108,7 +120,6 @@ Partial Class frmTransectSummary
         '
         'm_timerPlay
         '
-        Me.m_timerPlay.Interval = 200
         '
         'frmTransectSummary
         '
@@ -128,9 +139,11 @@ Partial Class frmTransectSummary
     Private WithEvents m_ts As Windows.Forms.ToolStrip
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tscmbTransect As Windows.Forms.ToolStripComboBox
-    Friend WithEvents ToolStripSeparator1 As Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnPlay As Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnStop As Windows.Forms.ToolStripButton
-    Private WithEvents m_tslblPlayTime As Windows.Forms.ToolStripLabel
     Private WithEvents m_timerPlay As Windows.Forms.Timer
+    Private WithEvents m_sep2 As Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnSaveToCSV As Windows.Forms.ToolStripButton
+    Private WithEvents m_tslblTransect As Windows.Forms.ToolStripLabel
+    Private WithEvents m_sep1 As Windows.Forms.ToolStripSeparator
 End Class

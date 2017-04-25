@@ -24,7 +24,10 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Definitions
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -49,35 +52,32 @@ Public Class frmTransectSummary
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
+        If (Me.UIContext Is Nothing) Then Return
+
+        ' Make pretty
+        Me.m_tsbnPlay.Image = SharedResources.PlayHS
+        Me.m_tsbnStop.Image = SharedResources.StopHS
+
+        ' ToDo: globalize this, include units, etc
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph, 4)
         Me.m_zgh.ConfigurePane("Depth", "Cell", "Depth", False, iPane:=1)
         Me.m_zgh.ConfigurePane("MPA", "Cell", "MPA", False, iPane:=2)
-        Me.m_zgh.ConfigurePane("Biomass at T", "Cell", "Biomass", False, iPane:=3)
-        Me.m_zgh.ConfigurePane("Catch at T", "Cell", "Catch", False, iPane:=4)
+        Me.m_zgh.ConfigurePane("Biomass", "Cell", "Biomass", False, iPane:=3)
+        Me.m_zgh.ConfigurePane("Catch", "Cell", "Catch", False, iPane:=4)
 
         For i As Integer = 1 To 4
             AddHandler Me.m_zgh.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXScale
         Next
 
-        Me.m_tsbnPlay.Image = SharedResources.PlayHS
-        Me.m_tsbnStop.Image = SharedResources.StopHS
-
+        AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Me.FillTransectBox()
         Me.UpdateControls()
 
     End Sub
 
-    Private Function OnFormatXScale(pane As GraphPane, axis As Axis, val As Double, index As Integer) As String
-        Dim t As cTransect = DirectCast(Me.m_tscmbTransect.SelectedItem, cTransect)
-        If (t IsNot Nothing) Then
-            If (index = 0) Then Return "top left"
-            If (index = t.NumCells - 1) Then Return "bottom right"
-        End If
-        Return ""
-    End Function
-
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+        Me.m_timerPlay.Enabled = False
         Me.m_zgh.Detach()
         MyBase.OnFormClosed(e)
     End Sub
@@ -89,9 +89,11 @@ Public Class frmTransectSummary
 
         Dim sm As cCoreStateMonitor = Me.Core.StateMonitor
         Dim bHasResults As Boolean = Not sm.IsBusy And sm.HasEcospaceRan
+        Dim bIsPlaying As Boolean = Me.m_timerPlay.Enabled
 
-        Me.m_tsbnPlay.Enabled = bHasResults
-        Me.m_tsbnStop.Enabled = Me.m_timerPlay.Enabled
+        Me.m_tsbnPlay.Enabled = bHasResults And Not bIsPlaying
+        Me.m_tsbnStop.Enabled = bIsPlaying
+        Me.m_tsbnSaveToCSV.Enabled = bHasResults
 
     End Sub
 
@@ -99,44 +101,102 @@ Public Class frmTransectSummary
 
 #Region " Control events "
 
-    Private Sub OnSelectTransect(sender As Object, e As EventArgs) Handles m_tscmbTransect.SelectedIndexChanged
-
+    Private Sub OnSelectTransect(sender As Object, e As EventArgs) _
+        Handles m_tscmbTransect.SelectedIndexChanged
         Try
             Me.UpdateGraph()
         Catch ex As Exception
-
+            ' NOP
         End Try
     End Sub
 
-    Private Sub m_data_OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectAdded
-        Me.m_tscmbTransect.Items.Add(transect)
+    Private Sub OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) _
+        Handles m_data.OnTransectAdded
+        Try
+            Me.m_tscmbTransect.Items.Add(transect)
+        Catch ex As Exception
+            ' NOP
+        End Try
     End Sub
 
-    Private Sub m_data_OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect) Handles m_data.OnTransectRemoved
-        Me.m_tscmbTransect.Items.Remove(transect)
+    Private Sub OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect) _
+        Handles m_data.OnTransectRemoved
+        Try
+            Me.m_tscmbTransect.Items.Remove(transect)
+        Catch ex As Exception
+            ' NOP
+        End Try
     End Sub
 
-    Private Sub m_data_OnTransectChanged(sender As cTransectDatastructures, transect As cTransect) _
+    Private Sub OnTransectChanged(sender As cTransectDatastructures, transect As cTransect) _
         Handles m_data.OnTransectChanged
         Try
             Me.UpdateGraph()
         Catch ex As Exception
+            ' NOP
+        End Try
+    End Sub
 
+    Private Function OnFormatXScale(pane As GraphPane, axis As Axis, val As Double, index As Integer) As String
+        Dim t As cTransect = DirectCast(Me.m_tscmbTransect.SelectedItem, cTransect)
+        If (t IsNot Nothing) Then
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim cells As Point() = t.Cells(bm)
+            If (cells.Count > 0) And ((index = 0) Or (index = t.NumCells - 1)) Then
+                Dim pt As Point = cells(index)
+                ' ToDo: globalize this
+                Return cStringUtils.Localize("({0}, {1})", pt.X, pt.Y)
+            End If
+        End If
+        Return ""
+    End Function
+
+    Private Sub OnCoreExecutionStateChanged(statemonitor As cCoreStateMonitor)
+        Try
+            Me.m_timerPlay.Enabled = False
+            Me.UpdateControls()
+        Catch ex As Exception
+            ' NOP
         End Try
     End Sub
 
     Private Sub OnPlay(sender As Object, e As EventArgs) Handles m_tsbnPlay.Click
-        Me.m_timerPlay.Enabled = True
+        Try
+            Me.m_timerPlay.Enabled = True
+            Me.UpdateControls()
+        Catch ex As Exception
+            ' NOP
+        End Try
     End Sub
 
     Private Sub OnStop(sender As Object, e As EventArgs) Handles m_tsbnStop.Click
-        Me.m_timerPlay.Enabled = False
+        Try
+            Me.m_timerPlay.Enabled = False
+            Me.UpdateControls()
+        Catch ex As Exception
+            ' NOP
+        End Try
     End Sub
 
     Private Sub OnTick(sender As Object, e As EventArgs) Handles m_timerPlay.Tick
-        Me.UpdateGraph()
-        Me.m_tick += 1
-        If (Me.m_tick > Core.nEcospaceTimeSteps) Then Me.m_tick = 1
+        Try
+            Me.m_tick += 1
+            If (Me.m_tick > Core.nEcospaceTimeSteps) Then Me.m_tick = 1
+            Me.UpdateGraph()
+            Me.UpdateControls()
+        Catch ex As Exception
+            ' NOP
+        End Try
+    End Sub
+
+    Private Sub OnSaveTransectsToCSV(sender As Object, e As EventArgs) _
+        Handles m_tsbnSaveToCSV.Click
+
+        ' We can take these humongous shortcuts here because we have inside information ;)
+        Dim w As New cTransectResultWriterPlugin()
+        w.Init(Me.Core)
+        w.EndWrite()
+
     End Sub
 
 #End Region ' Control events
@@ -166,6 +226,8 @@ Public Class frmTransectSummary
 
     End Sub
 
+    ' ToDo: fix redundancy between FillInputPane and FillOutputPane
+
     Private Sub FillInputPane(iPane As Integer, t As cTransect, var As eVarNameFlags)
 
         Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
@@ -179,32 +241,50 @@ Public Class frmTransectSummary
 
             Try
                 For Each l As cEcospaceLayer In bm.Layers(var)
+
                     Dim s As cTransectSummary = t.Summary(bm, l, -1)
                     Dim ppl As New PointPairList()
+                    Dim bIsMissing As Boolean = False
+
                     For i As Integer = 0 To t.NumCells - 1
+
                         Dim pt As Point = cells(i)
                         Dim sVal As Single = s.Value(i)
+
                         If ((bm.IsModelledCell(pt.Y, pt.X)) Or (var = eVarNameFlags.LayerDepth)) And (sVal >= 0) Then
+                            If bIsMissing Then
+                                ppl.Add(i, 0)
+                                bIsMissing = False
+                            End If
                             ppl.Add(i, sVal)
+                            ppl.Add(i + 1, sVal)
+                        Else
+                            If Not bIsMissing Then
+                                ppl.Add(i, 0)
+                                bIsMissing = True
+                            End If
+                            ppl.Add(i, PointPair.Missing)
+                            ppl.Add(i + 1, PointPair.Missing)
                         End If
                     Next
-                    Dim li As LineItem = Me.m_zgh.CreateLineItem(s.Name, ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Line, Color.Black, ppl)
-                    gp.CurveList.Add(li)
+
+                    gp.CurveList.Add(Me.m_zgh.CreateLineItem(s.Name, eSketchDrawModeTypes.Line, Color.Black, ppl))
                 Next
 
                 With gp.XAxis.Scale
                     .Min = 0
                     .MinAuto = False
                     .MinGrace = 0
-                    .Max = t.NumCells
+                    .Max = t.NumCells - 1
                     .MaxAuto = False
                     .MaxGrace = 0
                     .MinorStep = 0
                     .MajorStep = 1
                     .MajorStepAuto = False
                 End With
-            Catch ex As Exception
 
+            Catch ex As Exception
+                ' NOP
             End Try
             Me.m_zgh.RescaleAndRedraw()
         End If
@@ -224,37 +304,61 @@ Public Class frmTransectSummary
 
             Try
                 For iGroup As Integer = 1 To Me.Core.nGroups
+
                     Dim s As cTransectSummary = t.Summary(Me.m_tick, iGroup, var)
                     Dim ppl As New PointPairList()
+                    Dim bIsMissing As Boolean = False
+
                     If (s IsNot Nothing) Then
                         For i As Integer = 0 To t.NumCells - 1
+
                             Dim pt As Point = cells(i)
                             Dim sVal As Single = s.Value(i)
+
                             If (bm.IsModelledCell(pt.Y, pt.X) And (sVal >= 0)) Then
+                                If bIsMissing Then
+                                    ppl.Add(i, 0)
+                                    bIsMissing = False
+                                End If
                                 ppl.Add(i, sVal)
+                                ppl.Add(i + 1, sVal)
+                            Else
+                                If Not bIsMissing Then
+                                    ppl.Add(i, 0)
+                                    bIsMissing = True
+                                End If
+                                ppl.Add(i, PointPair.Missing)
+                                ppl.Add(i + 1, PointPair.Missing)
                             End If
+
                         Next
                     End If
-                    Dim li As LineItem = Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl)
-                    gp.CurveList.Add(li)
+
+                    gp.CurveList.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl))
+                    ' ToDo: globalize this
+                    gp.Title.Text = cStringUtils.Localize("{0} at timestep {1}/{2}", IIF(var = cTransect.eSummaryType.Biomass, "Biomass", "Catch"), Me.m_tick, Me.Core.nEcospaceTimeSteps)
+
                 Next
 
                 With gp.XAxis.Scale
                     .Min = 0
                     .MinAuto = False
                     .MinGrace = 0
-                    .Max = t.NumCells
+                    .Max = t.NumCells - 1
                     .MaxAuto = False
                     .MaxGrace = 0
                     .MinorStep = 0
                     .MajorStep = 1
                     .MajorStepAuto = False
                 End With
-            Catch ex As Exception
 
+            Catch ex As Exception
+                ' NOP
             End Try
             Me.m_zgh.RescaleAndRedraw()
+
         End If
+
     End Sub
 
 #End Region ' Internals
