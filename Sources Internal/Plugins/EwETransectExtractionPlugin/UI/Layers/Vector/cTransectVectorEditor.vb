@@ -51,6 +51,8 @@ Public Class cTransectVectorEditor
 
     Public Overrides Sub ProcessMouseClick(e As MouseEventArgs, map As ucMap)
 
+        ' ToDo: globalize this method
+
         Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
         Dim data As cTransectDatastructures = td.Data
 

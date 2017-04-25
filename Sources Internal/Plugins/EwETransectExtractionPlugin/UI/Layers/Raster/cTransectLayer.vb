@@ -41,7 +41,7 @@ Public Class cTransectLayer
     ''' <param name="core"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As cCore, ds As cTransectDatastructures)
-        ' Provide a bugs varname as the manager does not care
+        ' Provide a bogus varname as the manager does not care
         MyBase.New(core, ds, "Transect cells", eVarNameFlags.Applied)
     End Sub
 

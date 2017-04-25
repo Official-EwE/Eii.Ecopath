@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
 #End Region ' Imports
@@ -49,7 +50,7 @@ Partial Class frmTransectSummary
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTransectSummary))
-        Me.m_ts = New System.Windows.Forms.ToolStrip()
+        Me.m_ts = New cEwEToolstrip()
         Me.m_tslblTransect = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbTransect = New System.Windows.Forms.ToolStripComboBox()
         Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
@@ -136,7 +137,7 @@ Partial Class frmTransectSummary
 
     End Sub
 
-    Private WithEvents m_ts As Windows.Forms.ToolStrip
+    Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tscmbTransect As Windows.Forms.ToolStripComboBox
     Private WithEvents m_tsbnPlay As Windows.Forms.ToolStripButton
@@ -146,4 +147,5 @@ Partial Class frmTransectSummary
     Private WithEvents m_tsbnSaveToCSV As Windows.Forms.ToolStripButton
     Private WithEvents m_tslblTransect As Windows.Forms.ToolStripLabel
     Private WithEvents m_sep1 As Windows.Forms.ToolStripSeparator
+
 End Class
