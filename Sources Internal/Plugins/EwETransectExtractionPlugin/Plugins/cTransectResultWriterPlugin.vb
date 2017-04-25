@@ -29,6 +29,11 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plug-in point that implements a transect summary Ecospace result writer.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cTransectResultWriterPlugin
     Inherits cEcospaceBaseResultsWriter
     Implements IEcospaceResultWriterPlugin

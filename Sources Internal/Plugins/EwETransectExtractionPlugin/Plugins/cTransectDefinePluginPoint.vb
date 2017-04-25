@@ -31,6 +31,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plug-in point to invoke the UI to define transects.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cTransectDefinePluginPoint
     Implements INavigationTreeItemPlugin
     Implements IUIContextPlugin

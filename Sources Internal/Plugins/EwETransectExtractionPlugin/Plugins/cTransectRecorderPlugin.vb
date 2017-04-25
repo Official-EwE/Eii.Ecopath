@@ -26,6 +26,11 @@ Imports EwEPlugin
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plug-in point that records transect summaries from Ecospace time step data.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cTransectRecorderPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceRunInvalidatedPlugin
@@ -68,30 +73,43 @@ Public Class cTransectRecorderPlugin
         Me.m_data = cTransectDatastructures.Instance(Me.m_core)
     End Sub
 
-    Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+    Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
+        Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+
         For Each t As cTransect In Me.m_data.Transects
             t.InitRun(Me.m_core)
         Next
 
+        ' Add Ecospace delegate to receive access to Ecospace time step results
         Me.m_dgt = New cCore.EcoSpaceInterfaceDelegate(AddressOf OnEcospaceTimeStep)
         Me.m_core.AddEcospaceTimeStepHandler(Me.m_dgt)
+
     End Sub
 
-    Public Sub EcospaceRunInvalidated() Implements IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
+    Public Sub EcospaceRunInvalidated() _
+        Implements IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated
+
+        ' Clear out cached transect summaries
         For Each t As cTransect In Me.m_data.Transects
             t.Invalidate()
         Next
+
     End Sub
 
     Private Sub OnEcospaceTimeStep(ByRef data As cEcospaceTimestep)
+        ' Ecospaec callback: record summaries
         For Each t As cTransect In Me.m_data.Transects
             t.Record(data)
         Next
     End Sub
 
-    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) _
+        Implements IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+
+        ' Remove delegate at the end of an Ecospace run
         Me.m_core.RemoveEcospaceTimeStepHandler(Me.m_dgt)
         Me.m_dgt = Nothing
+
     End Sub
 
 End Class

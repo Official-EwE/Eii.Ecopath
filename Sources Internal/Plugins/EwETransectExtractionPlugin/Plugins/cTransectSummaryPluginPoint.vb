@@ -31,6 +31,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plug-in point to invoke the UI to view transect summaries.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cTransectSummaryPluginPoint
     Implements INavigationTreeItemPlugin
     Implements IUIContextPlugin
