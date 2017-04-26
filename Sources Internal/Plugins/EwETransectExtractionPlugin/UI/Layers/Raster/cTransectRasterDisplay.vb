@@ -25,19 +25,26 @@ Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
 Public Class cTransectRasterDisplay
     Inherits cDisplayLayerRaster
 
+    ' ToDo: update visual style fore colour when styleguide changes
+
     Private Shared m_vs As New cVisualStyle()
 
     Public Sub New(ByVal uic As cUIContext, ByVal data As cTransectLayer)
         MyBase.New(uic, data, New cLayerRendererHatch(m_vs), Nothing)
-        m_vs.ForeColour = Color.FromArgb(128, Color.Orange)
-        m_vs.BackColour = Color.FromArgb(128, Color.Black)
+
+        Dim sg As cStyleGuide = uic.StyleGuide
+
         m_vs.HatchStyle = Drawing2D.HatchStyle.Percent50
+        m_vs.ForeColour = Color.FromArgb(128, sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
+        m_vs.BackColour = Color.FromArgb(128, Color.Black)
+
         Me.RenderMode = eLayerRenderType.Always
     End Sub
 

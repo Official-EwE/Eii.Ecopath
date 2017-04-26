@@ -25,11 +25,14 @@ Imports System.Drawing.Drawing2D
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
 Public Class cTransectVectorRenderer
     Inherits cVectorLayerRenderer
+
+    Private m_sg As cStyleGuide = Nothing
 
 #Region " Construction / destruction "
 
@@ -38,8 +41,9 @@ Public Class cTransectVectorRenderer
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New()
+    Public Sub New(sg As cStyleGuide)
         MyBase.New(Nothing, cVisualStyle.eVisualStyleTypes.NotSet)
+        Me.m_sg = sg
     End Sub
 
 #End Region ' Construction / destruction
@@ -57,9 +61,9 @@ Public Class cTransectVectorRenderer
         Dim sScaleY As Single = (rc.Height / (ptfTL.Y - ptfBR.Y))
 
         For Each t As cTransect In m_data.Transects
-            Me.RenderTransect(t, g, rc, ptfTL, sScaleX, sScaleY, Color.LightBlue)
+            Me.RenderTransect(t, g, rc, ptfTL, sScaleX, sScaleY, m_sg.ApplicationColor(eApplicationColorType.READONLY_BACKGROUND))
         Next
-        Me.RenderTransect(m_data.Selection, g, rc, ptfTL, sScaleX, sScaleY, Color.Orange)
+        Me.RenderTransect(m_data.Selection, g, rc, ptfTL, sScaleX, sScaleY, m_sg.ApplicationColor(eApplicationColorType.HIGHLIGHT))
 
     End Sub
 

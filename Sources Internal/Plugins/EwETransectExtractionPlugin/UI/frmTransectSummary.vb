@@ -73,6 +73,7 @@ Public Class frmTransectSummary
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Me.FillTransectBox()
+        Me.UpdateGraph()
         Me.UpdateControls()
 
     End Sub
@@ -143,8 +144,8 @@ Public Class frmTransectSummary
         If (t IsNot Nothing) Then
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim cells As Point() = t.Cells(bm)
-            If (cells.Count > 0) And ((index = 0) Or (index = t.NumCells - 1)) Then
-                Dim pt As Point = cells(index)
+            If (cells.Count > 0) And (val < t.NumCells) Then
+                Dim pt As Point = cells(CInt(val))
                 ' ToDo: globalize this
                 Return cStringUtils.Localize("({0}, {1})", pt.X, pt.Y)
             End If
@@ -276,12 +277,9 @@ Public Class frmTransectSummary
                     .Min = 0
                     .MinAuto = False
                     .MinGrace = 0
-                    .Max = t.NumCells
+                    .Max = t.NumCells - 1
                     .MaxAuto = False
                     .MaxGrace = 0
-                    .MinorStep = 0
-                    .MajorStep = 1
-                    .MajorStepAuto = False
                 End With
 
             Catch ex As Exception
@@ -347,12 +345,9 @@ Public Class frmTransectSummary
                     .Min = 0
                     .MinAuto = False
                     .MinGrace = 0
-                    .Max = t.NumCells
+                    .Max = t.NumCells - 1
                     .MaxAuto = False
                     .MaxGrace = 0
-                    .MinorStep = 0
-                    .MajorStep = 1
-                    .MajorStepAuto = False
                 End With
 
             Catch ex As Exception
