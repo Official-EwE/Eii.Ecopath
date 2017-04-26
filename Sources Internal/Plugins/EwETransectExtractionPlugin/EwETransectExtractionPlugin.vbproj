@@ -121,9 +121,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\cTransectDatastructures.vb" />
+    <Compile Include="Plugins\cTransectStoragePlugin.vb" />
     <Compile Include="Plugins\cTransectRecorderPlugin.vb" />
-    <Compile Include="Plugins\cTransectSummaryPluginPoint.vb" />
-    <Compile Include="Plugins\cTransectDefinePluginPoint.vb" />
+    <Compile Include="Plugins\cTransectSummaryPlugin.vb" />
+    <Compile Include="Plugins\cTransectDefinePlugin.vb" />
     <Compile Include="Model\cTransect.vb" />
     <Compile Include="Plugins\cTransectResultWriterPlugin.vb" />
     <Compile Include="Model\cTransectSummary.vb" />

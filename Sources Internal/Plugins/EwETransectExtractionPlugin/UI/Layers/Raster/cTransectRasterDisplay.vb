@@ -1,5 +1,4 @@
-﻿Option Strict On
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,6 +19,7 @@
 '
 #Region " Imports "
 
+Option Strict On
 Imports System.Drawing
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Controls
@@ -34,16 +34,16 @@ Public Class cTransectRasterDisplay
 
     ' ToDo: update visual style fore colour when styleguide changes
 
-    Private Shared m_vs As New cVisualStyle()
+    Private Shared s_vs As New cVisualStyle()
 
     Public Sub New(ByVal uic As cUIContext, ByVal data As cTransectLayer)
-        MyBase.New(uic, data, New cLayerRendererHatch(m_vs), Nothing)
+        MyBase.New(uic, data, New cLayerRendererHatch(s_vs), Nothing)
 
         Dim sg As cStyleGuide = uic.StyleGuide
 
-        m_vs.HatchStyle = Drawing2D.HatchStyle.Percent50
-        m_vs.ForeColour = Color.FromArgb(128, sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
-        m_vs.BackColour = Color.FromArgb(128, Color.Black)
+        s_vs.HatchStyle = Drawing2D.HatchStyle.Percent50
+        s_vs.ForeColour = Color.FromArgb(128, sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
+        s_vs.BackColour = Color.FromArgb(128, Color.Black)
 
         Me.RenderMode = eLayerRenderType.Always
     End Sub

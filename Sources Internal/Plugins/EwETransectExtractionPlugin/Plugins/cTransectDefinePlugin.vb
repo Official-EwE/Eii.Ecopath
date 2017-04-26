@@ -33,10 +33,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Plug-in point to invoke the UI to view transect summaries.
+''' Plug-in point to invoke the UI to define transects.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cTransectSummaryPluginPoint
+Public Class cTransectDefinePlugin
     Implements INavigationTreeItemPlugin
     Implements IUIContextPlugin
 
@@ -45,7 +45,7 @@ Public Class cTransectSummaryPluginPoint
     Private m_core As cCore = Nothing
     Private m_data As cTransectDatastructures = Nothing
     Private m_uic As cUIContext = Nothing
-    Private m_frm As frmTransectSummary = Nothing
+    Private m_frm As frmDefineTransects = Nothing
 
 #End Region ' Private vars
 
@@ -64,13 +64,13 @@ Public Class cTransectSummaryPluginPoint
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect summary"
+            Return "Transect input"
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return ""
+            Return "Launch the user interface to define transects"
         End Get
     End Property
 
@@ -96,19 +96,19 @@ Public Class cTransectSummaryPluginPoint
 
     Public ReadOnly Property NavigationTreeItemLocation As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
-            Return "ndSpatialDynamic\ndEcospaceOutput"
+            Return "ndSpatialDynamic\ndEcospaceInput"
         End Get
     End Property
 
     Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
         Get
-            Return SharedResources.nav1_application_put
+            Return SharedResources.nav0_application_get
         End Get
     End Property
 
     Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
         Get
-            Return My.Resources.CAPTION_OUT
+            Return My.Resources.CAPTION_IN
         End Get
     End Property
 
@@ -131,8 +131,8 @@ Public Class cTransectSummaryPluginPoint
         Return Not Me.m_frm.IsDisposed
     End Function
 
-    Private Function GetUI() As frmTransectSummary
-        If (Not Me.HasUI()) Then Me.m_frm = New frmTransectSummary(Me.m_uic)
+    Private Function GetUI() As frmDefineTransects
+        If (Not Me.HasUI()) Then Me.m_frm = New frmDefineTransects(Me.m_uic)
         Return Me.m_frm
     End Function
 

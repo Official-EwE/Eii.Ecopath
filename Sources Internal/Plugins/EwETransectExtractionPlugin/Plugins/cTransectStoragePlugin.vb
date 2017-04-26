@@ -33,19 +33,16 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Plug-in point to invoke the UI to define transects.
+''' Plug-in point to manage transect persistence
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cTransectDefinePluginPoint
-    Implements INavigationTreeItemPlugin
-    Implements IUIContextPlugin
+Public Class cTransectStoragePlugin
+    Implements IEcospacePlugin
 
 #Region " Private vars "
 
     Private m_core As cCore = Nothing
     Private m_data As cTransectDatastructures = Nothing
-    Private m_uic As cUIContext = Nothing
-    Private m_frm As frmDefineTransects = Nothing
 
 #End Region ' Private vars
 
@@ -56,21 +53,27 @@ Public Class cTransectDefinePluginPoint
         Me.m_data = cTransectDatastructures.Instance(Me.m_core)
     End Sub
 
-    Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
-        Get
-            Return eCoreExecutionState.EcospaceLoaded
-        End Get
-    End Property
+    Public Sub LoadEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.LoadEcospaceScenario
+        ' NOP
+    End Sub
+
+    Public Sub SaveEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.SaveEcospaceScenario
+        ' NOP
+    End Sub
+
+    Public Sub CloseEcospaceScenario() Implements IEcospacePlugin.CloseEcospaceScenario
+        Me.m_data.Clear()
+    End Sub
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect input"
+            Return "Transect storage"
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return ""
+            Return "This plug-in manages the life span of transect data"
         End Get
     End Property
 
@@ -87,55 +90,5 @@ Public Class cTransectDefinePluginPoint
     End Property
 
 #End Region ' Foundation
-
-#Region " UI "
-
-    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
-        Me.m_uic = CType(uic, cUIContext)
-    End Sub
-
-    Public ReadOnly Property NavigationTreeItemLocation As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            Return "ndSpatialDynamic\ndEcospaceInput"
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
-        Get
-            Return SharedResources.nav0_application_get
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION_IN
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Form) Implements IGUIPlugin.OnControlClick
-        frmPlugin = Me.GetUI()
-    End Sub
-
-#End Region ' UI
-
-#Region " Internals "
-
-    Private Function HasUI() As Boolean
-        If (Me.m_frm Is Nothing) Then Return False
-        Return Not Me.m_frm.IsDisposed
-    End Function
-
-    Private Function GetUI() As frmDefineTransects
-        If (Not Me.HasUI()) Then Me.m_frm = New frmDefineTransects(Me.m_uic)
-        Return Me.m_frm
-    End Function
-
-#End Region ' Internals 
 
 End Class

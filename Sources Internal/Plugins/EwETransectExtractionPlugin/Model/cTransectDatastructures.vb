@@ -1,5 +1,4 @@
-﻿Option Strict On
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,6 +19,7 @@
 '
 #Region " Imports "
 
+Option Strict On
 Imports EwECore
 Imports EwECore.Core
 Imports EwEUtils.Core
@@ -92,6 +92,16 @@ Public Class cTransectDatastructures
 #End Region ' Events
 
 #Region " Public access "
+
+    ''' <summary>
+    ''' Erase all transects.
+    ''' </summary>
+    Public Sub Clear()
+        Dim transects() As cTransect = Me.m_transects.ToArray()
+        For Each t As cTransect In transects
+            Me.Delete(t)
+        Next
+    End Sub
 
     Public Sub Add(t As cTransect)
         Me.m_transects.Add(t)

@@ -52,19 +52,19 @@ Public Class cTransectRecorderPlugin
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return ""
+            Return "This plug-in triggers recording of transect summary data when Ecospace is ran"
         End Get
     End Property
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return ""
+            Return "Jeroen Steenbeek"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return ""
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 

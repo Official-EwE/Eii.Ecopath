@@ -64,19 +64,19 @@ Public Class cTransectResultWriterPlugin
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return ""
+            Return "Provides discoverable Ecospace result writer to store transect data"
         End Get
     End Property
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return ""
+            Return "Jeroen Steenbeek"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return ""
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 
