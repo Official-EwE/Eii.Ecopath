@@ -128,7 +128,7 @@ Public Class cTransectVectorEditor
 
     Protected Overrides Sub EndEdit()
         If (Me.m_transectEdit IsNot Nothing) Then
-            Me.m_transectEdit.EndEdit()
+            Me.m_transectEdit.SortLocations()
             Me.m_transectEdit = Nothing
         End If
         Me.IsEditing = False

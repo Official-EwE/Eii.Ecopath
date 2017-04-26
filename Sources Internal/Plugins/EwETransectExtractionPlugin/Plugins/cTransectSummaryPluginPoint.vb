@@ -64,7 +64,7 @@ Public Class cTransectSummaryPluginPoint
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "TransectsOut"
+            Return "Transect summary"
         End Get
     End Property
 

@@ -32,7 +32,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
-Imports EwECore.Style
 
 #End Region ' Imports
 

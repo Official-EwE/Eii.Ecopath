@@ -46,7 +46,7 @@ Public Class cTransectRecorderPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "transectRecorder"
+            Return "Transect recorder"
         End Get
     End Property
 

@@ -269,14 +269,14 @@ Public Class frmTransectSummary
                         End If
                     Next
 
-                    gp.CurveList.Add(Me.m_zgh.CreateLineItem(s.Name, eSketchDrawModeTypes.Line, Color.Black, ppl))
+                    gp.CurveList.Add(Me.m_zgh.CreateLineItem(s.Name, eSketchDrawModeTypes.Line, Color.Blue, ppl))
                 Next
 
                 With gp.XAxis.Scale
                     .Min = 0
                     .MinAuto = False
                     .MinGrace = 0
-                    .Max = t.NumCells - 1
+                    .Max = t.NumCells
                     .MaxAuto = False
                     .MaxGrace = 0
                     .MinorStep = 0
@@ -338,7 +338,7 @@ Public Class frmTransectSummary
                     gp.CurveList.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl))
                     ' ToDo: globalize this
                     Dim strData As String = IIF(var = cTransect.eSummaryType.Biomass, "Biomass", "Catch")
-                    Dim strTime As String = IIF(Me.Core.StateMonitor.HasEcospaceRan, cStringUtils.Localize("timestep {0}/{1}", Me.m_tick, Me.Core.nEcospaceTimeSteps), "(no data)")
+                    Dim strTime As String = IIF(t.HasSummaries, cStringUtils.Localize("timestep {0}/{1}", Me.m_tick, Me.Core.nEcospaceTimeSteps), "(no data)")
                     gp.Title.Text = cStringUtils.Localize("{0} {1}", strData, strTime)
 
                 Next
@@ -347,7 +347,7 @@ Public Class frmTransectSummary
                     .Min = 0
                     .MinAuto = False
                     .MinGrace = 0
-                    .Max = t.NumCells - 1
+                    .Max = t.NumCells
                     .MaxAuto = False
                     .MaxGrace = 0
                     .MinorStep = 0

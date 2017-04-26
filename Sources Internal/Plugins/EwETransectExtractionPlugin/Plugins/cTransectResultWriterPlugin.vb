@@ -58,7 +58,7 @@ Public Class cTransectResultWriterPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "TransectsResultWriter"
+            Return "Transect result writer"
         End Get
     End Property
 

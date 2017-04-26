@@ -56,7 +56,8 @@ Public Class cTransect
 
 #End Region ' Constructor
 
-#Region " Public access "
+#Region " Transect properties "
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -99,15 +100,6 @@ Public Class cTransect
         End Set
     End Property
 
-    Public Sub EndEdit()
-        ' Make sure start is to the west and north of end 
-        If (Me.Start.X > Me.End.X) Or ((Me.Start.X = Me.End.X) And (Me.Start.Y > Me.End.Y)) Then
-            Dim ptTemp As PointF = Me.m_ptStart
-            Me.m_ptStart = Me.m_ptEnd
-            Me.m_ptEnd = ptTemp
-        End If
-    End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the number of cells in the transect, or -1 if this number is not determined yet.
@@ -120,6 +112,12 @@ Public Class cTransect
             Return Me.m_cells.Count - 1
         End Get
     End Property
+
+#End Region ' Transect properties
+
+#Region " Cell access "
+
+#End Region ' Editing
 
     ''' <summary>
     ''' Returns all modelled cells that the transect passes through. The cells
@@ -184,6 +182,17 @@ Public Class cTransect
         Me.m_summaries.Clear()
     End Sub
 
+    Public Sub SortLocations()
+        ' Make sure start is to the west and north of end 
+        If (Me.Start.X > Me.End.X) Or ((Me.Start.X = Me.End.X) And (Me.Start.Y > Me.End.Y)) Then
+            Dim ptTemp As PointF = Me.m_ptStart
+            Me.m_ptStart = Me.m_ptEnd
+            Me.m_ptEnd = ptTemp
+        End If
+    End Sub
+
+#Region " Ecospace run integration "
+
     Public Sub InitRun(core As cCore)
         Me.m_core = core
         Me.m_summaries.Clear()
@@ -199,9 +208,9 @@ Public Class cTransect
         Next
     End Sub
 
-    Public Sub EndRun()
+#End Region ' Ecospace run integration
 
-    End Sub
+#Region " Summary access "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -230,7 +239,13 @@ Public Class cTransect
         Return New cTransectSummary(Me, bm, l, iIndex)
     End Function
 
-#End Region ' Public access
+    Public ReadOnly Property HasSummaries As Boolean
+        Get
+            Return (Me.m_summaries.Count > 0)
+        End Get
+    End Property
+
+#End Region ' Summary access
 
 #Region " Internals "
 
