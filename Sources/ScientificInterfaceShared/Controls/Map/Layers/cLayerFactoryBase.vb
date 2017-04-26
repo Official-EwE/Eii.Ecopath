@@ -76,7 +76,6 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererDepth(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Always
                     editor = New cLayerEditorDepth()
                     layer = New cDisplayLayerRaster(uic, bmd.LayerDepth, renderer, editor, bmd, varName)
                     lLayers.Add(layer)

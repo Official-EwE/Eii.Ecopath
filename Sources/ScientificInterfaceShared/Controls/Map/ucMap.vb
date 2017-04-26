@@ -562,10 +562,7 @@ Namespace Controls.Map
                 If (TypeOf l Is cDisplayLayerRaster) Then
 
                     Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
-
-                    If (rl.VarName = eVarNameFlags.LayerDepth) Then
-                        displayDepth = rl
-                    End If
+                    Dim dt As eDataTypes = rl.Data.DataType
 
                     Select Case rl.RenderMode
                         Case Definitions.eLayerRenderType.Always
@@ -580,10 +577,16 @@ Namespace Controls.Map
                             End If
                     End Select
 
-                    ' Special case
-                    If (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells) Then
+                    ' Special cases
+                    If (dt = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells) Then
                         bDrawLayer = True
                     End If
+
+                    If (dt = eDataTypes.EcospaceLayerDepth) Then
+                        displayDepth = rl
+                        bDrawLayer = True
+                    End If
+
                 End If
 
                 If (l.RenderMode = Definitions.eLayerRenderType.Always) Then
@@ -602,39 +605,35 @@ Namespace Controls.Map
                     If (TypeOf l Is cDisplayLayerRaster) Then
 
                         Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
+                        Dim dt As eDataTypes = rl.Data.DataType
 
                         If (rl.HasData) Then
 
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
 
-                                    If (CBool(layExcl.Cell(Y, X)) = False) Or
-                                       (rl.Data.DataType = eDataTypes.EcospaceLayerExclusion) Or
-                                       (layDepth.IsLandCell(Y, X)) Then
+                                    ptCell = New Point(X, Y)
+                                    Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
 
-                                        ptCell = New Point(X, Y)
-                                        Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
+                                    Select Case dt
+                                        Case eDataTypes.EcospaceLayerExclusion,
+                                             eDataTypes.EcospaceLayerDepth,
+                                             eDataTypes.EcospaceLayerPort
+                                            bDrawCell = True
+                                        Case Else
+                                            bDrawCell = layDepth.IsWaterCell(Y, X) And CBool(layExcl.Cell(Y, X)) = False
+                                    End Select
 
-                                        Select Case rl.Data.DataType
-                                            Case eDataTypes.EcospaceLayerDepth,
-                                                 eDataTypes.EcospaceLayerPort,
-                                                 eDataTypes.EcospaceLayerExclusion
-                                                bDrawCell = True
-                                            Case Else
-                                                bDrawCell = layDepth.IsWaterCell(Y, X)
-                                        End Select
-
-                                        If bDrawCell Then
-                                            Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
-                                            If rl.IsValue(objValue) Then
-                                                ' Build style flags
-                                                style = cStyleGuide.eStyleFlags.OK
-                                                If l.IsSelected Then
-                                                    style = (style Or cStyleGuide.eStyleFlags.Highlight)
-                                                End If
-                                                ' Render cell
-                                                DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcCell, rl.Data, objValue, style)
+                                    If bDrawCell Then
+                                        Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
+                                        If rl.IsValue(objValue) Then
+                                            ' Build style flags
+                                            style = cStyleGuide.eStyleFlags.OK
+                                            If l.IsSelected Or l.RenderMode = Definitions.eLayerRenderType.Always Then
+                                                style = (style Or cStyleGuide.eStyleFlags.Highlight)
                                             End If
+                                            ' Render cell
+                                            DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcCell, rl.Data, objValue, style)
                                         End If
                                     End If
 
