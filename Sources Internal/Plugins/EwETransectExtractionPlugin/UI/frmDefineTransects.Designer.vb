@@ -59,6 +59,7 @@ Partial Class frmDefineTransects
         'm_scMain
         '
         resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
         Me.m_scMain.Name = "m_scMain"
         '
         'm_scMain.Panel1
@@ -98,12 +99,12 @@ Partial Class frmDefineTransects
         Me.m_lbxTransects.FormattingEnabled = True
         Me.m_lbxTransects.Name = "m_lbxTransects"
         '
-        'frmTransectWriter
+        'frmDefineTransects
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_scMain)
-        Me.Name = "frmTransectWriter"
+        Me.Name = "frmDefineTransects"
         Me.TabText = ""
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel1.PerformLayout()

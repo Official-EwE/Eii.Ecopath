@@ -62,10 +62,10 @@ Public Class frmTransectSummary
         ' ToDo: globalize this, include units, etc
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph, 4)
-        Me.m_zgh.ConfigurePane("Depth", "Cell", "Depth", False, iPane:=1)
+        Me.m_zgh.ConfigurePane("Depth", "Cell", "Depth (m)", False, iPane:=1)
         Me.m_zgh.ConfigurePane("MPA", "Cell", "MPA", False, iPane:=2)
-        Me.m_zgh.ConfigurePane("Biomass", "Cell", "Biomass", False, iPane:=3)
-        Me.m_zgh.ConfigurePane("Catch", "Cell", "Catch", False, iPane:=4)
+        Me.m_zgh.ConfigurePane("Biomass", "Cell", Nothing, "Biomass", New eUnitType() {eUnitType.Currency}, False, iPane:=3)
+        Me.m_zgh.ConfigurePane("Catch", "Cell", Nothing, "Catch", New eUnitType() {eUnitType.Currency}, False, iPane:=4)
 
         For i As Integer = 1 To 4
             AddHandler Me.m_zgh.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXScale

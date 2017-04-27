@@ -1,4 +1,6 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Imports System.Drawing
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -19,10 +21,11 @@
 '
 #Region " Imports "
 
-Option Strict On
+Imports System.Xml
 Imports EwECore
 Imports EwECore.Core
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -161,6 +164,95 @@ Public Class cTransectDatastructures
     Public Property Autosaving As Boolean = False
 
 #End Region ' Public access
+
+#Region " Database access "
+
+    Public Function FromXML(strFile As String) As Boolean
+
+        Try
+
+            Dim doc As New XmlDocument()
+            doc.Load(strFile)
+
+            Me.m_transects.Clear()
+            For Each xn As XmlNode In doc.SelectNodes("//transect")
+
+                Dim strName As String = ""
+                Dim x0 As Single = 0
+                Dim y0 As Single = 0
+                Dim x1 As Single = 0
+                Dim y1 As Single = 0
+
+                For Each xa As XmlAttribute In xn.Attributes
+                    Select Case xa.Name
+                        Case "name" : strName = xa.InnerText
+                        Case "start_lon" : x0 = cStringUtils.ConvertToSingle(xa.InnerText)
+                        Case "start_lat" : y0 = cStringUtils.ConvertToSingle(xa.InnerText)
+                        Case "end_lon" : x1 = cStringUtils.ConvertToSingle(xa.InnerText)
+                        Case "end_lat" : y1 = cStringUtils.ConvertToSingle(xa.InnerText)
+                    End Select
+                Next
+                Dim t As New cTransect(strName)
+                t.Start = New PointF(x0, y0)
+                t.End = New PointF(x1, y1)
+                Me.m_transects.Add(t)
+            Next
+        Catch ex As Exception
+            cLog.Write(ex, "cTransectDataStructures.Load(" & strFile & ")")
+            Return False
+        End Try
+
+        Return True
+
+    End Function
+
+    Public Function ToXML(strFile As String) As Boolean
+
+        Try
+
+            Dim xnRoot As XmlNode = Nothing
+            Dim xnTransect As XmlNode = Nothing
+            Dim xa As XmlAttribute = Nothing
+            Dim doc As XmlDocument = cXMLUtils.NewDoc("transects", xnRoot)
+
+            For Each t As cTransect In Me.Transects
+                xnTransect = doc.CreateElement("transect")
+
+                xa = doc.CreateAttribute("name")
+                xa.InnerText = t.Name
+                xnTransect.Attributes.Append(xa)
+
+                xa = doc.CreateAttribute("start_lon")
+                xa.InnerText = cStringUtils.FormatNumber(t.Start.X)
+                xnTransect.Attributes.Append(xa)
+
+                xa = doc.CreateAttribute("start_lat")
+                xa.InnerText = cStringUtils.FormatNumber(t.Start.Y)
+                xnTransect.Attributes.Append(xa)
+
+                xa = doc.CreateAttribute("end_lon")
+                xa.InnerText = cStringUtils.FormatNumber(t.End.X)
+                xnTransect.Attributes.Append(xa)
+
+                xa = doc.CreateAttribute("end_lat")
+                xa.InnerText = cStringUtils.FormatNumber(t.End.Y)
+                xnTransect.Attributes.Append(xa)
+
+                xnRoot.AppendChild(xnTransect)
+
+            Next
+
+            doc.Save(strFile)
+
+        Catch ex As Exception
+            cLog.Write(ex, "cTransectDataStructures.Save(" & strFile & ")")
+            Return False
+        End Try
+        Return True
+
+    End Function
+
+#End Region ' Database access
 
 #Region " IEcospaceLayerManager implementation "
 

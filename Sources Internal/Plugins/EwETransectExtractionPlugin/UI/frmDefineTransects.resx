@@ -135,7 +135,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_mapzoom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>437, 410</value>
+    <value>516, 501</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_mapzoom.TabIndex" type="System.Int32, mscorlib">
@@ -169,7 +169,7 @@
     <value>100, 25</value>
   </data>
   <data name="m_toolstrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>437, 25</value>
+    <value>516, 25</value>
   </data>
   <data name="m_toolstrip.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -202,10 +202,10 @@
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_btnDeleteTransect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 412</value>
+    <value>3, 500</value>
   </data>
   <data name="m_btnDeleteTransect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 23</value>
+    <value>148, 23</value>
   </data>
   <data name="m_btnDeleteTransect.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -235,7 +235,7 @@
     <value>2, 3</value>
   </data>
   <data name="m_lbxTransects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 403</value>
+    <value>148, 491</value>
   </data>
   <data name="m_lbxTransects.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -265,10 +265,10 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>636, 435</value>
+    <value>673, 526</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>437</value>
+    <value>516</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -292,7 +292,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>636, 435</value>
+    <value>673, 526</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -301,7 +301,7 @@
     <value>frmTransectWriter</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>frmTransectWriter</value>
+    <value>frmDefineTransects</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>

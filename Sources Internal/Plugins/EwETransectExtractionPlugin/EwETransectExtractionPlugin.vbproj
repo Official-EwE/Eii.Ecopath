@@ -134,6 +134,12 @@
     <Compile Include="UI\frmTransectSummary.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\dlgEditTransect.Designer.vb">
+      <DependentUpon>dlgEditTransect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\dlgEditTransect.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\Layers\Raster\cTransectRasterDisplay.vb" />
     <Compile Include="UI\Layers\Raster\cTransectLayer.vb" />
     <Compile Include="UI\Layers\Vector\cTransectVectorDisplay.vb" />
@@ -173,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmTransectSummary.resx">
       <DependentUpon>frmTransectSummary.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\dlgEditTransect.resx">
+      <DependentUpon>dlgEditTransect.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

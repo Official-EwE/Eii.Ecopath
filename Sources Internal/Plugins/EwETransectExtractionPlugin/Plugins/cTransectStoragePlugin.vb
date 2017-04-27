@@ -22,8 +22,10 @@
 
 Option Strict On
 Imports System.Drawing
+Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwECore.DataSources
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
@@ -54,11 +56,28 @@ Public Class cTransectStoragePlugin
     End Sub
 
     Public Sub LoadEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.LoadEcospaceScenario
-        ' NOP
+
+        Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
+        Dim strDBFileNme As String = Me.TransectFileName(ds.FileName)
+
+        If Me.m_data.FromXML(strDBFileNme) Then
+            ' NOP
+        Else
+            ' NOP
+        End If
+
     End Sub
 
     Public Sub SaveEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.SaveEcospaceScenario
-        ' NOP
+
+        Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
+        Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
+        If Me.m_data.ToXML(strDBFileNme) Then
+            ' NOP
+        Else
+            ' NOP
+        End If
+
     End Sub
 
     Public Sub CloseEcospaceScenario() Implements IEcospacePlugin.CloseEcospaceScenario
@@ -90,5 +109,18 @@ Public Class cTransectStoragePlugin
     End Property
 
 #End Region ' Foundation
+
+#Region " Internals "
+
+    Private Function TransectFileName(strDB As String) As String
+
+        Dim strPath As String = Path.GetDirectoryName(strDB)
+        Dim scenario As cEwEScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+        Dim strFile As String = Path.GetFileNameWithoutExtension(strDB) & "_" & scenario.DBID & "_transects.xml"
+        Return Path.Combine(strPath, strFile)
+
+    End Function
+
+#End Region ' Internals
 
 End Class

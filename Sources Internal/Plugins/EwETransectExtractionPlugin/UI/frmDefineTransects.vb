@@ -154,6 +154,21 @@ Public Class frmDefineTransects
         Me.m_bInUpdate = False
     End Sub
 
+    Private Sub OnTransectDoubleClick(sender As Object, e As EventArgs) _
+        Handles m_lbxTransects.DoubleClick
+
+        Dim t As cTransect = Me.SelectedTransect
+        Dim dlg As New dlgEditTransect(Me.Core, t)
+        If dlg.ShowDialog(Me) = DialogResult.OK Then
+            ' Ugh
+            Me.m_lbxTransects.BeginUpdate()
+            Me.m_lbxTransects.Items(Me.m_lbxTransects.SelectedIndex) = t
+            Me.m_lbxTransects.EndUpdate()
+        End If
+
+    End Sub
+
+
 #End Region ' Events
 
 #Region " Internals "
