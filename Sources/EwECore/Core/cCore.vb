@@ -10012,7 +10012,7 @@ Public Class cCore
             Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
 
             ' Invoke plugin point
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me.DataSource)
             ' Force update
             Me.m_StateMonitor.SetEcospaceLoaded(True, TriState.True)
             ' Update data state
