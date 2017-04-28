@@ -158,7 +158,7 @@ Public Class frmDefineTransects
         Handles m_lbxTransects.DoubleClick
 
         Dim t As cTransect = Me.SelectedTransect
-        Dim dlg As New dlgEditTransect(Me.Core, t)
+        Dim dlg As New dlgEditTransect(Me.UIContext, t)
         If dlg.ShowDialog(Me) = DialogResult.OK Then
             ' Ugh
             Me.m_lbxTransects.BeginUpdate()

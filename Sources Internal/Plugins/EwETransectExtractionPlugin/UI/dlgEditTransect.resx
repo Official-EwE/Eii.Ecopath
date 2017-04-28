@@ -151,10 +151,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>85, 12</value>
+    <value>56, 12</value>
   </data>
   <data name="m_tbxName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 20</value>
+    <value>313, 20</value>
   </data>
   <data name="m_tbxName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -178,25 +178,25 @@
     <value>True</value>
   </metadata>
   <data name="m_colName.HeaderText" xml:space="preserve">
-    <value>Location</value>
+    <value>Coordinate</value>
   </data>
   <metadata name="m_colCellIndex.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="m_colCellIndex.HeaderText" xml:space="preserve">
-    <value>Cell</value>
+    <value>Cell (row, col)</value>
   </data>
   <metadata name="m_colCoordinate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="m_colCoordinate.HeaderText" xml:space="preserve">
-    <value>Coordinate</value>
+    <value>Location (lon, lat)</value>
   </data>
   <data name="m_dgvPos.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 38</value>
   </data>
   <data name="m_dgvPos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>291, 132</value>
+    <value>354, 132</value>
   </data>
   <data name="m_dgvPos.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -217,7 +217,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 176</value>
+    <value>213, 176</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -244,7 +244,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 176</value>
+    <value>294, 176</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -274,7 +274,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>318, 211</value>
+    <value>381, 211</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Edit transect</value>

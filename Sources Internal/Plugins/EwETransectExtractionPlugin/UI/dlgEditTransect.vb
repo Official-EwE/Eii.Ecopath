@@ -1,5 +1,4 @@
-﻿Option Strict On
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,31 +19,41 @@
 '
 #Region " Imports "
 
+Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
 Public Class dlgEditTransect
 
+    Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
     Private m_data As cTransectDatastructures = Nothing
     Private m_transect As cTransect = Nothing
 
-    Public Sub New(core As cCore, t As cTransect)
+    Public Sub New(uic As cUIContext, t As cTransect)
         Me.InitializeComponent()
-        Me.m_core = core
-        Me.m_data = cTransectDatastructures.Instance(core)
+        Me.m_uic = uic
+        Me.m_core = uic.Core
+        Me.m_data = cTransectDatastructures.Instance(Me.m_core)
         Me.m_transect = t
     End Sub
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
+        ' ToDo: globalize this method
+
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
         Me.m_tbxName.Text = Me.m_transect.Name
+
+        Me.m_colName.DefaultCellStyle.BackColor = Me.m_uic.StyleGuide.ApplicationColor(eApplicationColorType.NAMES_BACKGROUND)
+        Me.m_dgvPos.RowHeadersDefaultCellStyle.BackColor = SystemColors.ButtonFace
 
         Me.m_dgvPos.Rows.Add("X0", bm.LonToCol(Me.m_transect.Start.X), Me.m_transect.Start.X)
         Me.m_dgvPos.Rows.Add("Y0", bm.LatToRow(Me.m_transect.Start.Y), Me.m_transect.Start.Y)

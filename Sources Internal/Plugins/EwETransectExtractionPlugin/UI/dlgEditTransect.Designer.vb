@@ -121,6 +121,7 @@ Partial Class dlgEditTransect
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEditTransect"
+        Me.ShowInTaskbar = False
         CType(Me.m_dgvPos, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
