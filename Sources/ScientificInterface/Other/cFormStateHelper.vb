@@ -178,8 +178,8 @@ Friend Class cEwEFormStateHelper
 
                     ' Check if form should be disabled
                     ' A form should be disabled if it is an input form; path, sim or space are running,
-                    ' and the form is not used to start the runs.
-                    bMustDisableForm = (Me.m_csm.IsBusy) And (Not f.IsRunForm())
+                    ' and the form is not used to start runs.
+                    bMustDisableForm = (Me.m_csm.IsBusy) And (Not f.IsRunForm()) And (Not Me.m_csm.IsPaused())
                 End If
 
                 If bMustCloseForm Then
