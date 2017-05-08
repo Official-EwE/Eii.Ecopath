@@ -133,7 +133,7 @@ Friend Class cAutosaveSettingsHelper
     End Function
 
     Public Shared Sub Init(core As cCore)
-        If (core.ActiveEcospaceScenarioIndex > 0) Then
+        If (core.ActiveEcospaceScenarioIndex > 0) And (core.Autosave(eAutosaveTypes.EcospaceResults) = True) Then
             Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
             Dim strFormat As String = sFormats(eAutosaveTypes.EcospaceResults)
             Dim bits As String() = strFormat.Split(";"c)
