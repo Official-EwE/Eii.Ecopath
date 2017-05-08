@@ -330,38 +330,37 @@ Namespace Controls.Map
 
             If (Me.CanEdit And Me.Capture) Then
                 Me.ProcessMouseMove(e)
-            Else
-                Dim ptCell As Point = Me.GetCellIndex(e.Location)
-                Dim pos As PointF = Me.GetLocation(e.Location)
-                Dim strVal As String = ""
-                Dim strFeedback As String = ""
-
-                If (l IsNot Nothing) Then
-                    If (TypeOf l Is cDisplayLayerRaster) Then
-                        strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayLayerRaster).Value(ptCell.Y, ptCell.X))
-                    End If
-                End If
-
-                Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(pos.Y)
-                Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(pos.X)
-                Dim fmt As New cMapUnitFormatter()
-                Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells,
-                                                         fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol),
-                                                         fmt.GetDescriptor(eUnitMapType.dd, eDescriptorTypes.Symbol))
-
-                If Not String.IsNullOrWhiteSpace(strVal) Then
-                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE,
-                                                strLon, strLat, strUnit,
-                                                ptCell.Y, ptCell.X, strVal)
-                Else
-                    strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS,
-                                                strLon, strLat, strUnit,
-                                                ptCell.Y, ptCell.X)
-                End If
-
-                cApplicationStatusNotifier.UpdateStatus(Me.m_uic.Core, strFeedback)
-
             End If
+
+            Dim ptCell As Point = Me.GetCellIndex(e.Location)
+            Dim pos As PointF = Me.GetLocation(e.Location)
+            Dim strVal As String = ""
+            Dim strFeedback As String = ""
+
+            If (l IsNot Nothing) Then
+                If (TypeOf l Is cDisplayLayerRaster) Then
+                    strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayLayerRaster).Value(ptCell.Y, ptCell.X))
+                End If
+            End If
+
+            Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(pos.Y)
+            Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(pos.X)
+            Dim fmt As New cMapUnitFormatter()
+            Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells,
+                                                     fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol),
+                                                     fmt.GetDescriptor(eUnitMapType.dd, eDescriptorTypes.Symbol))
+
+            If Not String.IsNullOrWhiteSpace(strVal) Then
+                strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE,
+                                            strLon, strLat, strUnit,
+                                            ptCell.Y, ptCell.X, strVal)
+            Else
+                strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS,
+                                            strLon, strLat, strUnit,
+                                            ptCell.Y, ptCell.X)
+            End If
+
+            cApplicationStatusNotifier.UpdateStatus(Me.m_uic.Core, strFeedback)
 
         End Sub
 
