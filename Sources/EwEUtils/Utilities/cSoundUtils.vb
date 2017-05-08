@@ -23,6 +23,8 @@
 Imports System.Windows.Forms
 Imports Microsoft.Win32
 Imports System
+Imports System.IO
+Imports Microsoft.VisualBasic
 
 #End Region ' Imports
 
@@ -58,39 +60,51 @@ Namespace Utilities
 
 #Region " Public access "
 
-        Public Shared Sub PlaySound(ByVal icon As MessageBoxIcon, Optional ByVal strFileName As String = "")
+
+        Public Shared Sub PlaySound(ByVal icon As MessageBoxIcon)
 
             cSoundUtilities.InitSounds()
 
-            If String.IsNullOrWhiteSpace(strFileName) Then
+            Dim strFileName As String = s_sounds.[Default]
 
-                strFileName = s_sounds.[Default]
+            Select Case icon
+                Case MessageBoxIcon.Asterisk
+                    strFileName = s_sounds.Asterisk
+                Case MessageBoxIcon.Exclamation
+                    strFileName = s_sounds.Exclamation
+                Case MessageBoxIcon.Hand,
+                     MessageBoxIcon.Stop
+                    strFileName = s_sounds.Hand
+                Case MessageBoxIcon.Information
+                    strFileName = s_sounds.Notification
+                Case MessageBoxIcon.Question
+                    strFileName = s_sounds.Question
+                Case MessageBoxIcon.Warning
+                    strFileName = s_sounds.[Default]
+            End Select
 
-                Select Case icon
-                    Case MessageBoxIcon.Asterisk
-                        strFileName = s_sounds.Asterisk
-                    Case MessageBoxIcon.Exclamation
-                        strFileName = s_sounds.Exclamation
-                    Case MessageBoxIcon.Hand, _
-                         MessageBoxIcon.Stop
-                        strFileName = s_sounds.Hand
-                    Case MessageBoxIcon.Information
-                        strFileName = s_sounds.Notification
-                    Case MessageBoxIcon.Question
-                        strFileName = s_sounds.Question
-                    Case MessageBoxIcon.Warning
-                        strFileName = s_sounds.[Default]
-                End Select
+            PlaySound(strFileName)
 
-            End If
+        End Sub
 
-            If Not String.IsNullOrWhiteSpace(strFileName) Then
-                Try
-                    My.Computer.Audio.Play(strFileName, 1)
-                Catch ex As Exception
-                    ' Whoah
-                End Try
-            End If
+        Public Shared Sub PlaySound(ByVal strFileName As String)
+
+            If String.IsNullOrWhiteSpace(strFileName) Then Return
+            Try
+                My.Computer.Audio.Play(strFileName, AudioPlayMode.Background)
+            Catch ex As Exception
+                ' Whoah
+            End Try
+
+        End Sub
+
+        Public Shared Sub PlaySound(ByVal stream As Stream)
+
+            Try
+                My.Computer.Audio.Play(stream, AudioPlayMode.Background)
+            Catch ex As Exception
+                ' Whoah
+            End Try
 
         End Sub
 

@@ -125,6 +125,7 @@ Namespace Other
             Me.m_lvItems.Name = "m_lvItems"
             Me.m_lvItems.ShowGroups = False
             Me.m_lvItems.ShowItemToolTips = True
+            Me.m_lvItems.Sorting = System.Windows.Forms.SortOrder.Ascending
             Me.m_lvItems.UseCompatibleStateImageBehavior = False
             Me.m_lvItems.View = System.Windows.Forms.View.Details
             '

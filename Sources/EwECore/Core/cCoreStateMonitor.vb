@@ -782,6 +782,15 @@ Public Class cCoreStateMonitor
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Returns whether the core is paused while <see cref="IsBusy()"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function IsPaused() As Boolean
+        Return Me.IsBusy And Me.m_core.EcospacePaused
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns whether an Ecopath model has been loaded.
     ''' </summary>
     ''' -----------------------------------------------------------------------
