@@ -169,6 +169,11 @@ Public Class cTransectDatastructures
 
     Public Function FromXML(strFile As String) As Boolean
 
+        Me.m_selection = Nothing
+        Me.m_transects.Clear()
+
+        If Not System.IO.File.Exists(strFile) Then Return True
+
         Try
 
             Dim doc As New XmlDocument()
