@@ -357,16 +357,20 @@ Public Class cEcospaceImportExportASCIIData
 
         Try
             For ir As Integer = 1 To Me.m_nRows
-                'ASC files written by GDAL contain a space at the start of the line so strip it off
-                'this should not affect other ASC file reading
-                Dim strLine As String = reader.ReadLine.Trim()
-                Dim astrBits() As String = strLine.Split(" "c)
-                For ic As Integer = 1 To Math.Min(Me.m_nCols, astrBits.Length)
-                    If Not Double.TryParse(astrBits(ic - 1), value) Then
-                        value = Me.m_dNoData
-                    End If
-                    Me.Value(Me.Seq(ir, ic)) = value
-                Next
+                If (Not reader.EndOfStream) Then
+                    'ASC files written by GDAL contain a space at the start of the line so strip it off
+                    'this should not affect other ASC file reading
+                    Dim strLine As String = reader.ReadLine.Trim()
+                    Dim astrBits() As String = strLine.Split(" "c)
+                    For ic As Integer = 1 To Math.Min(Me.m_nCols, astrBits.Length)
+                        If Not Double.TryParse(astrBits(ic - 1), value) Then
+                            value = Me.m_dNoData
+                        End If
+                        Me.Value(Me.Seq(ir, ic)) = value
+                    Next
+                Else
+                    bSuccess = False
+                End If
             Next
         Catch ex As Exception
             bSuccess = False
