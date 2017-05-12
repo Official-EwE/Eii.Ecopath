@@ -211,7 +211,7 @@ Public Class frmNavigationPanel
             .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), "Dispersal.htm")
             .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceParameters), "Ecospace parameters.htm")
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceMap), "Basemap.htm")
-            .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), "Ecospace Fishery.htm")
+            '.Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), "Ecospace Fishery.htm")
             .Add("ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceHabitatFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), "Ecospace Fishery.htm")
