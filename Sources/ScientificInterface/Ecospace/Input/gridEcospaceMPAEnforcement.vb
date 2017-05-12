@@ -47,10 +47,11 @@ Namespace Ecospace
             Index = 0
             Name
             All
-            FirstMPA
         End Enum
 
         Private m_bInUpdate As Boolean = False
+
+        ' Predict effort OFF disables all MPAs!!
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
         Public Sub New()
@@ -101,7 +102,7 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.Core.nMPAs
                 source = Me.Core.EcospaceMPAs(i)
-                Me(0, eColumnTypes.FirstMPA + i - 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, eColumnTypes.All + i) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
         End Sub
@@ -120,15 +121,15 @@ Namespace Ecospace
                     Me(i, eColumnTypes.All).Behaviors.Add(Me.EwEEditHandler)
 
                     For iMPA As Integer = 1 To Me.Core.nMPAs
-                        Me(i, eColumnTypes.FirstMPA + iMPA - 1) = New Cells.Real.CheckBox(Not CBool(source.MPAFishery(iMPA)))
-                        Me(i, eColumnTypes.FirstMPA + iMPA - 1).Behaviors.Add(Me.EwEEditHandler)
+                        Me(i, eColumnTypes.All + iMPA) = New Cells.Real.CheckBox(Not CBool(source.MPAFishery(iMPA)))
+                        Me(i, eColumnTypes.All + iMPA).Behaviors.Add(Me.EwEEditHandler)
                     Next
 
                     Me.UpdateRow(i)
                 Else
                     Me(i, eColumnTypes.All) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     For iMPA As Integer = 1 To Me.Core.nMPAs
-                        Me(i, eColumnTypes.FirstMPA + iMPA - 1) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                        Me(i, eColumnTypes.All + iMPA) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     Next
                 End If
 
@@ -144,6 +145,8 @@ Namespace Ecospace
 
         Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
+            If (Me.m_bInUpdate) Then Return True
+
             Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(p.Row)
 
             Select Case p.Column
@@ -154,7 +157,7 @@ Namespace Ecospace
                     Next
 
                 Case Else
-                    Dim iMPA As Integer = p.Column - eColumnTypes.FirstMPA + 1
+                    Dim iMPA As Integer = p.Column - eColumnTypes.All
                     fleet.MPAFishery(iMPA) = (CBool(cell.GetValue(p)) = False)
 
             End Select
@@ -192,7 +195,7 @@ Namespace Ecospace
 
             For iMPA As Integer = 1 To Me.Core.nMPAs
                 Dim bRestricted As Boolean = (fleet.MPAFishery(iMPA) = False)
-                Me(iRow, eColumnTypes.FirstMPA + iMPA - 1).Value = bRestricted
+                Me(iRow, eColumnTypes.All + iMPA).Value = bRestricted
                 bAllRestricted = bAllRestricted And bRestricted
             Next
 
@@ -203,6 +206,7 @@ Namespace Ecospace
         End Sub
 
 #End Region ' Internals
+
     End Class
 
 End Namespace
