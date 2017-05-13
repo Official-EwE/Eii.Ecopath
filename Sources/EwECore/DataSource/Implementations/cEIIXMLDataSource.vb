@@ -2796,19 +2796,24 @@ Public Class cEIIXMLDataSource
 
 #Region " Save from database "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Save an Ecopath database to a file
     ''' </summary>
     ''' <param name="db"></param>
     ''' <param name="strFile"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Function SaveFromDB(db As cEwEDatabase, strFile As String) As Boolean
+
+        ' DB must be open!
 
         Dim conn As OleDbConnection = DirectCast(db.GetConnection(), OleDbConnection)
         Dim dtTables As DataTable = Nothing
         Dim drow As DataRow = Nothing
         Dim doc As New XmlDocument()
+
+        If (conn Is Nothing) Then Return False
 
         dtTables = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, New String() {Nothing, Nothing, Nothing, Nothing})
         If (dtTables Is Nothing) Then Return False

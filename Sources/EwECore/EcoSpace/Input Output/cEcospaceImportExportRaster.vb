@@ -33,7 +33,7 @@ Imports EwEUtils.SpatialData
 ''' exporting</see> external data without a true spatial engine.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Friend Class cEcospaceImportExportRaster
+Public Class cEcospaceImportExportRaster
     Implements ISpatialRaster
 
 #Region " Private vars "
@@ -52,7 +52,7 @@ Friend Class cEcospaceImportExportRaster
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal parent As IEcospaceImportExport, _
+    Public Sub New(ByVal parent As IEcospaceImportExport,
                    Optional ByVal strField As String = "")
         Me.m_parent = parent
         Me.m_strField = strField
