@@ -1809,7 +1809,7 @@ Namespace Core
         ''' <summary>Shannon's diversity index</summary>
         ShannonDiversity
         ''' <summary>User selection of biodiversity indicator</summary>
-        BiodiversityIndicatorType
+        DiversityIndex
         ''' <summary>Value of selected biodiversity indicator</summary>
         BiodiversityIndicator
 

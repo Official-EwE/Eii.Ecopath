@@ -93,7 +93,7 @@ Public Class frmModelParameters
         Me.m_fpEast = New cPropertyFormatProvider(Me.UIContext, Me.m_nudEast, eweModel, eVarNameFlags.East)
         Me.m_fpCountry = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbCountry, eweModel, eVarNameFlags.Country)
         Me.m_fpEcosystemType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEcoType, eweModel, eVarNameFlags.EcosystemType)
-        Me.m_fpBiodivIndex = New cPropertyFormatProvider(Me.UIContext, Me.m_cbmBiodivIndex, eweModel, eVarNameFlags.BiodiversityIndicatorType, Nothing, New cDiversityIndexTypeFormatter())
+        Me.m_fpBiodivIndex = New cPropertyFormatProvider(Me.UIContext, Me.m_cbmBiodivIndex, eweModel, eVarNameFlags.DiversityIndex, Nothing, New cDiversityIndexTypeFormatter())
 
         Me.m_fpURI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationURL, eweModel, eVarNameFlags.PublicationURI)
         Me.m_fpDOI = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxPublicationDOI, eweModel, eVarNameFlags.PublicationDOI)
