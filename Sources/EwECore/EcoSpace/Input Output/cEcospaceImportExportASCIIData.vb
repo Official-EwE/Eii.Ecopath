@@ -426,42 +426,42 @@ Public Class cEcospaceImportExportASCIIData
     End Sub
 
     Public ReadOnly Property CellSize As Double _
-        Implements EwEUtils.Core.IEcospaceImportExport.CellSize
+        Implements IEcospaceImportExport.CellSize
         Get
             Return Me.m_dCellSize
         End Get
     End Property
 
     Public ReadOnly Property InCol As Integer _
-        Implements EwEUtils.Core.IEcospaceImportExport.InCol
+        Implements IEcospaceImportExport.InCol
         Get
             Return Me.m_nCols
         End Get
     End Property
 
     Public ReadOnly Property InRow As Integer _
-        Implements EwEUtils.Core.IEcospaceImportExport.InRow
+        Implements IEcospaceImportExport.InRow
         Get
             Return Me.m_nRows
         End Get
     End Property
 
     Public ReadOnly Property NoDataValue As Double _
-        Implements EwEUtils.Core.IEcospaceImportExport.NoDataValue
+        Implements IEcospaceImportExport.NoDataValue
         Get
             Return Me.m_dNoData
         End Get
     End Property
 
     Public ReadOnly Property ProjectionString As String _
-        Implements EwEUtils.Core.IEcospaceImportExport.ProjectionString
+        Implements IEcospaceImportExport.ProjectionString
         Get
             Return Me.m_strProjectionString
         End Get
     End Property
 
     Public ReadOnly Property TopLeft As PointF _
-        Implements EwEUtils.Core.IEcospaceImportExport.PosTopLeft
+        Implements IEcospaceImportExport.PosTopLeft
         Get
             Return New PointF(CSng(Me.m_dXLLpos), CSng(Me.m_dYLLpos + Me.m_nCols * Me.m_dCellSize))
         End Get

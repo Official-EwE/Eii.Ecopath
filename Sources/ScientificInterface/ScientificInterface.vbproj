@@ -252,12 +252,6 @@
     <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceFishery.Designer.vb">
-      <DependentUpon>frmEcospaceFishery.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\frmEcospaceFishery.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.Designer.vb">
       <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
     </Compile>
@@ -768,9 +762,6 @@
     <Compile Include="Ecospace\Input\dlgDefineMPAs.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEcospaceFishery.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecospace\Output\EcospaceResultsGridRegion.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -985,9 +976,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.resx">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\frmEcospaceFishery.resx">
-      <DependentUpon>frmEcospaceFishery.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceHabitatFishery.resx">
       <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
