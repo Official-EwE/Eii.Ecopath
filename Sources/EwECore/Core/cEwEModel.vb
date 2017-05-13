@@ -219,7 +219,7 @@ Public Class cEwEModel
 
             ' BiodiversityIndicatorType (enum)
             meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.BiodiversityIndicatorType, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.DiversityIndex, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             'set status flags to their default values
@@ -298,11 +298,11 @@ Public Class cEwEModel
 
     Public Property DiversityIndexType() As eDiversityIndexType
         Get
-            Return DirectCast(GetVariable(eVarNameFlags.BiodiversityIndicatorType), eDiversityIndexType)
+            Return DirectCast(GetVariable(eVarNameFlags.DiversityIndex), eDiversityIndexType)
         End Get
 
         Set(ByVal i As eDiversityIndexType)
-            SetVariable(eVarNameFlags.BiodiversityIndicatorType, CInt(i))
+            SetVariable(eVarNameFlags.DiversityIndex, CInt(i))
         End Set
     End Property
 

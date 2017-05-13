@@ -437,7 +437,7 @@ End Enum
 ''' </summary>
 Public Enum eDiversityIndexType As Integer
     Shannon = 0
-    KemptonsQ
+    KemptonsQ = 1
 End Enum
 
 #End Region ' Diversity index

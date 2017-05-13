@@ -368,7 +368,7 @@ Public Class cEcopathDataStructures
     Public Shannon As Single
 
     ''' <summary>
-    ''' Returns the diversity index as selected in <see cref="DiversityIndexType"/>
+    ''' Returns the computed diversity index that is selected in <see cref="DiversityIndexType"/>
     ''' </summary>
     Public ReadOnly Property DiversityIndex As Single
         Get
