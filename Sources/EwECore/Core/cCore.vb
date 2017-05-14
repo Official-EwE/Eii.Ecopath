@@ -14120,7 +14120,8 @@ Public Class cCore
                      eDataTypes.EcospaceLayerFlow,
                      eDataTypes.EcospaceLayerUpwelling,
                      eDataTypes.EcospaceLayerHabitatCapacityInput,
-                     eDataTypes.EcospaceLayerExclusion
+                     eDataTypes.EcospaceLayerExclusion,
+                     eDataTypes.EcospaceLayerDriver
 
                     DirectCast(obj, cEcospaceLayer).Invalidate()
 
