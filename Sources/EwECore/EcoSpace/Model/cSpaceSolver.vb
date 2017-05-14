@@ -1203,8 +1203,8 @@ Public Class cSpaceSolver
         Dim j As Integer
         Dim SumDiet As Single
 
-        If Not Me.m_Data.bCalTrophicLevel Then
-            'Nope turned Off
+        If Not Me.m_Data.bCalTrophicLevel Or Me.m_Data.bInSpinUp Then
+            'Turned off or spinning up
             Return
         End If
 
