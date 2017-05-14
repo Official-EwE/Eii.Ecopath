@@ -1254,11 +1254,8 @@ Public Class cSpaceSolver
             If (Me.m_Data.TimeStep = 0) Then
 
                 SyncLock TLlockOb
-                    If Me.m_PathData.DiversityIndexType = eDiversityIndexType.KemptonsQ Then
-                        Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, Me.m_PathData.TTLX, m_Data.BBase, 0.25)
-                    ElseIf Me.m_PathData.DiversityIndexType = eDiversityIndexType.Shannon Then
-                        Me.m_Data.ShannonDiversity(iRow, iCol) = EcoFunctions.ShannonDiversityIndex(m_PathData.NumLiving, m_Data.BBase)
-                    End If
+                    Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, Me.m_PathData.TTLX, m_Data.BBase, 0.25)
+                    Me.m_Data.ShannonDiversity(iRow, iCol) = EcoFunctions.ShannonDiversityIndex(m_PathData.NumLiving, m_Data.BBase)
                 End SyncLock 'TLlockO
 
             Else
@@ -1270,11 +1267,8 @@ Public Class cSpaceSolver
                 Next
 
                 SyncLock TLlockOb
-                    If Me.m_PathData.DiversityIndexType = eDiversityIndexType.KemptonsQ Then
-                        Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, TLs, BSpace, 0.25)
-                    ElseIf Me.m_PathData.DiversityIndexType = eDiversityIndexType.Shannon Then
-                        Me.m_Data.ShannonDiversity(iRow, iCol) = EcoFunctions.ShannonDiversityIndex(Me.m_PathData.NumLiving, BSpace)
-                    End If
+                    Me.m_Data.KemptonsQ(iRow, iCol) = EcoFunctions.KemptonsQ(Me.m_PathData.NumLiving, TLs, BSpace, 0.25)
+                    Me.m_Data.ShannonDiversity(iRow, iCol) = EcoFunctions.ShannonDiversityIndex(Me.m_PathData.NumLiving, BSpace)
                 End SyncLock 'TLlockOb
 
             End If

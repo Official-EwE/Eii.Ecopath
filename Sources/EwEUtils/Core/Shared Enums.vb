@@ -522,14 +522,18 @@ Namespace Core
         AdjustSpace
         ''' <summary>Conversion factor for fishing effort</summary>
         FleetEffortConversion
-        ''' <summary>To document</summary>
+        ''' <summary>Biomass map as computed by Ecospace.</summary>
         EcospaceMapBiomass
-        ''' <summary>To document</summary>
+        ''' <summary>Catch map as computed by Ecospace.</summary>
         EcospaceMapCatch
-        ''' <summary>To document</summary>
+        ''' <summary>Sum of effort map as computed by Ecospace.</summary>
         EcospaceMapSumEffort
-        ''' <summary>To document</summary>
+        ''' <summary>Effort map as computed by Ecospace.</summary>
         EcospaceMapEffort
+        ''' <summary>Shannon Diversity indicator map as computed by Ecospace.</summary>
+        EcospaceMapShannonDiversity
+        ''' <summary>KemptonsQ indicator map as computed by Ecospace.</summary>
+        EcospaceMapKemptonsQ
         ''' <summary>To document</summary>
         EcospaceGroupBiomassStart
         ''' <summary>To document</summary>
