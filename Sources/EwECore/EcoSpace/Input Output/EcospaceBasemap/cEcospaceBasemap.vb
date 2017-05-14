@@ -579,7 +579,6 @@ Public Class cEcospaceBasemap
     ''' </returns>
     ''' -----------------------------------------------------------------------
     Public Function IsModelledCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
-        If Not IsValidCellPosition(iRow, iCol) Then Return False
         Return Me.m_core.m_EcoSpaceData.Depth(iRow, iCol) > 0
     End Function
 
