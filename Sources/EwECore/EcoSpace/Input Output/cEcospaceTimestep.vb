@@ -34,8 +34,6 @@ Public Class cEcospaceTimestep
     Private m_dbid As Integer
     Private m_name As String
 
-    Private m_iTime As Integer
-    Private m_ts As Single
     Private m_ConMax() As Single
 
     Private m_biomass() As Single 'biomass by group
@@ -190,7 +188,6 @@ Public Class cEcospaceTimestep
 
 #Region "Public Properties"
 
-
     ''' <summary>
     ''' Cumulative timestep counter for the current results. 
     ''' </summary>
@@ -199,25 +196,11 @@ Public Class cEcospaceTimestep
     ''' See <see cref="TimeStepinYears">TimeStepinYears</see> for the length of the run.
     ''' </remarks>
     Public Property iTimeStep() As Integer
-        Get
-            Return m_iTime
-        End Get
-        Set(ByVal value As Integer)
-            m_iTime = value
-        End Set
-    End Property
 
     ''' <summary>
     ''' Lenght of the run in Years
     ''' </summary>
     Public Property TimeStepinYears() As Single
-        Get
-            Return m_ts
-        End Get
-        Set(ByVal value As Single)
-            m_ts = value
-        End Set
-    End Property
 
     ''' <summary>
     ''' Biomass map dimensioned by Row, Col, Group
@@ -231,7 +214,6 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
-
     ''' <summary>
     ''' Catch map dimensioned by Row, Col, Group
     ''' </summary>
@@ -243,8 +225,6 @@ Public Class cEcospaceTimestep
             Return Me.m_spaceData.CatchMap
         End Get
     End Property
-
-
 
     ''' <summary>
     ''' Fishing Effort dimensioned by Fleet, Row, Col
@@ -258,7 +238,6 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
-
     ''' <summary>
     ''' Contaminant concentrations dimensioned by Row, Col and Group
     ''' </summary>
@@ -267,6 +246,24 @@ Public Class cEcospaceTimestep
     Public ReadOnly Property ContaminantMap() As Single(,,)
         Get
             Return Me.m_spaceData.Ccell
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' KemptonsQ map dimensioned by Row, Col
+    ''' </summary>
+    Public ReadOnly Property KemptonsQMap() As Single(,)
+        Get
+            Return Me.m_spaceData.KemptonsQ
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Shannon diversity map dimensioned by Row, Col
+    ''' </summary>
+    Public ReadOnly Property ShannonDiversityMap() As Single(,)
+        Get
+            Return Me.m_spaceData.ShannonDiversity
         End Get
     End Property
 
@@ -334,7 +331,6 @@ Public Class cEcospaceTimestep
 
     End Property
 
-
     Public Property ConsumptRate(ByVal iGroup As Single) As Single
 
         Get
@@ -355,9 +351,6 @@ Public Class cEcospaceTimestep
         End Set
 
     End Property
-
-
-
 
     ''' <summary>
     ''' Average Biomass by group
@@ -660,8 +653,6 @@ Public Class cEcospaceTimestep
         Select Case varName
 
             Case eVarNameFlags.LayerHabitatCapacity
-                'This EcospaceTimestep object does not contain the Capacity map
-                'Fish it out of the Core Ecospace data
                 Return Me.m_spaceData.HabCap
             Case eVarNameFlags.EcospaceMapBiomass
                 Return Me.BiomassMap
@@ -673,6 +664,10 @@ Public Class cEcospaceTimestep
                 Return Me.m_sumEffortMap
             Case eVarNameFlags.Concentration
                 Return Me.ContaminantMap
+            Case eVarNameFlags.EcospaceMapShannonDiversity
+                Return Me.ShannonDiversityMap
+            Case eVarNameFlags.EcospaceMapKemptonsQ
+                Return Me.KemptonsQMap
         End Select
         Return Nothing
 

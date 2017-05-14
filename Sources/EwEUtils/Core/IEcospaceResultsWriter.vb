@@ -65,11 +65,6 @@ Namespace Core
         ''' </summary>
         Property Enabled As Boolean
 
-        ''' <summary>
-        ''' Model time step the writer will begin outputting data on
-        ''' </summary>
-        Property FirstOutputTimeStep As Integer
-
     End Interface
 
 End Namespace

@@ -29,12 +29,12 @@ Imports EwEUtils.Utilities
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Base implementation of <see cref="EwEUtils.Core.IEcospaceResultsWriter">IEcospaceResultsWriter</see>
+''' Base implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see>
 ''' </summary>
 ''' <remarks>Provides directory creation and file naming functionality for derived classes</remarks>
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class cEcospaceBaseResultsWriter
-    Implements EwEUtils.Core.IEcospaceResultsWriter
+    Implements IEcospaceResultsWriter
 
 #Region " Protected data "
 
@@ -43,10 +43,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>The complete path to the directory containing result files.</summary>
     Protected m_OutputPath As String
 
-    ''' <summary>
-    ''' Default first time step to write data
-    ''' </summary>
-    ''' <remarks></remarks>
     Protected m_FirstStep As Integer = 1
 
     Protected vars() As eVarNameFlags
@@ -69,10 +65,12 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <inheritdocs cref="IEcospaceResultsWriter.Init"/>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub Init(ByVal theCore As Object) _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.Init
+        Implements IEcospaceResultsWriter.Init
         Me.m_core = DirectCast(theCore, cCore)
 
-        Me.FirstOutputTimeStep = Me.m_core.m_EcoSpaceData.FirstOutputTimeStep
+        ' First save timestep now picked up by writers at initialization
+        ' This value does not need to be set externally anymore
+        Me.m_FirstStep = Me.m_core.m_EcoSpaceData.FirstOutputTimeStep
 
     End Sub
 
@@ -80,19 +78,19 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <inheritdocs cref="IEcospaceResultsWriter.StartWrite"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride Sub StartWrite() _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.StartWrite
+        Implements IEcospaceResultsWriter.StartWrite
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.WriteResults"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride Sub WriteResults(ByVal SpaceTimeStepResults As Object) _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.WriteResults
+        Implements IEcospaceResultsWriter.WriteResults
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.EndWrite"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride Sub EndWrite() _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
+        Implements IEcospaceResultsWriter.EndWrite
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.DisplayName"/>
@@ -103,7 +101,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceResultsWriter.Enabled"/>
     ''' -----------------------------------------------------------------------  
-    Public Overridable Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
+    Public Overridable Property Enabled As Boolean _
+        Implements IEcospaceResultsWriter.Enabled
 
 #End Region ' IEcospaceResultsWriter implementation
 
@@ -315,14 +314,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End Get
     End Property
 
-
-    Public Overridable Property FirstOutputTimeStep As Integer Implements EwEUtils.Core.IEcospaceResultsWriter.FirstOutputTimeStep
+    Public ReadOnly Property FirstOutputTimeStep As Integer
         Get
-            Return Me.m_FirstStep
+            Return m_FirstStep
         End Get
-        Set(value As Integer)
-            Me.m_FirstStep = value
-        End Set
     End Property
 
     Public Overridable Property SelectedGroups As Boolean()

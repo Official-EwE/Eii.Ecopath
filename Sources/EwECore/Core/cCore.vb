@@ -9361,12 +9361,7 @@ Public Class cCore
     End Sub
 
     Private Sub LoadEcospaceResultsWriters()
-
-        For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
-            Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
-            writer.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
-        Next
-
+        ' NOP
     End Sub
 
     Private Sub UpdateEcospaceBioForcedByEcosim()

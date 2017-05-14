@@ -125,6 +125,8 @@ Public Class cEcospaceImportExportASCIIData
 
     Public Function Save(strFile As String) As Boolean
 
+        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then Return False
+
         Try
             Using wr As New StreamWriter(strFile)
                 Me.WriteASCIIHeader(wr)
@@ -171,6 +173,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' -------------------------------------------------------------------
     Private Property Value(ByVal iCell As Integer) As Object
         Get
+            If Not Me.m_buffer.ContainsKey(iCell) Then Return Me.m_dNoData
             Return Me.m_buffer(iCell)
         End Get
         Set(ByVal value As Object)
