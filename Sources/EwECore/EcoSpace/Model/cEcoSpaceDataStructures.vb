@@ -99,7 +99,7 @@ Public Class cEcospaceDataStructures
     ''' Length of the time step in years 
     ''' </summary>
     ''' <remarks>1 month = 0.083333</remarks>
-    Public TimeStep As Double
+    Public TimeStep As Double = 1 / cCore.N_MONTHS
 
     ''' <summary>Current year that is being executed.</summary>
     Public YearNow As Integer = 0
@@ -2046,19 +2046,22 @@ Public Class cEcospaceDataStructures
 
         Try
 
-            Me.allocate(ResultsByGroup, [Enum].GetValues(GetType(eSpaceResultsGroups)).Length, m_ngroups, NumberOfTimeSteps)
+            Me.allocate(ResultsByGroup, [Enum].GetValues(GetType(eSpaceResultsGroups)).Length, NGroups, NumberOfTimeSteps)
             Me.allocate(ResultsByFleet, [Enum].GetValues(GetType(eSpaceResultsFleets)).Length, nFleets, NumberOfTimeSteps)
             Me.allocate(ResultsByFleetGroup, [Enum].GetValues(GetType(eSpaceResultsFleetsGroups)).Length, nFleets, NGroups, NumberOfTimeSteps)
 
             Me.allocate(ResultsRegionGroup, nRegions, NGroups, NumberOfTimeSteps)
-            Me.allocate(ResultsRegionGroupYear, nRegions, NGroups, CInt(NumberOfTimeSteps / Me.NumStep + 1))
+            Me.allocate(ResultsRegionGroupYear, nRegions, NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
             Me.allocate(ResultsCatchRegionGearGroup, nRegions, nFleets, NGroups, NumberOfTimeSteps)
-            Me.allocate(ResultsCatchRegionGearGroupYear, nRegions, nFleets, NGroups, CInt(NumberOfTimeSteps / Me.NumStep + 1))
+            Me.allocate(ResultsCatchRegionGearGroupYear, nRegions, nFleets, NGroups, CInt(NumberOfTimeSteps / Math.Max(Me.NumStep, 1) + 1))
 
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & ex.Message)
-            message = New cMessage(My.Resources.CoreMessages.ECOSPACE_OUT_OF_MEMORY, _
+        Catch exmem As OutOfMemoryException
+            System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & exmem.Message)
+            message = New cMessage(My.Resources.CoreMessages.ECOSPACE_OUT_OF_MEMORY,
                                    eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".redimTimeStepResults(): " & ex.Message)
+            message = New cMessage(ex.Message, eMessageType.Any, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Critical)
         End Try
 
         If message IsNot Nothing Then
@@ -2077,7 +2080,7 @@ Public Class cEcospaceDataStructures
             'set the summary data to be over the total time
             SumStart(0) = 0 'start of first summary period
             SumStart(1) = TotalTime - 1 'start of last summary perion
-            NumStep = CInt(1.0 / TimeStep) 'number of time steps to summarize over one year for the default summary
+            NumStep = Math.Max(1, CInt(1.0 / TimeStep)) 'number of time steps to summarize over one year for the default summary
         Catch ex As Exception
             SumStart(0) = 0 'start of first summary period
             SumStart(1) = TotalTime - 1 'start of last summary period
