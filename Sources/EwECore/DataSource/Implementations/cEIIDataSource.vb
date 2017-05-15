@@ -1094,9 +1094,6 @@ Public Class cEIIDataSource
             ecospaceDS.TimeStep = 1 / 12
             ecospaceDS.PredictEffort = True
 
-            ' JS 05apr08: pragmatic fix to prevent mayhem
-            If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
-
             ecospaceDS.TotalTime = 50
             ecospaceDS.IFDPower = 0.5
             ecospaceDS.nSpaceSolverThreads = 1
