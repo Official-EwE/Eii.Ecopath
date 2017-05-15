@@ -273,7 +273,7 @@ Public Class cEIIXMLDataSource
             Me.m_doc.Load(Me.m_strFilename)
             xnModel = Me.m_doc.SelectSingleNode("EwEModel")
             Try
-                sDBVersion = Single.Parse(xnModel.Attributes("DBVersion").InnerText)
+                sDBVersion = cStringUtils.ConvertToSingle(xnModel.Attributes("DBVersion").InnerText)
             Catch ex As Exception
                 sDBVersion = 6.120011
             End Try
@@ -1235,7 +1235,7 @@ Public Class cEIIXMLDataSource
                 iGroupID = CInt(drow("GroupID"))
                 iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
                 iYear = CInt(drow("TimeYear"))
-                If (iGroup > 0) And (iGroup <= ecosimDS.nGroups) And _
+                If (iGroup > 0) And (iGroup <= ecosimDS.nGroups) And
                    (iYear > 0) And (iYear <= mseDS.nYears) Then
                     mseDS.CVBiomT(iGroup, iYear) = CSng(drow("CVBiom"))
                 End If
@@ -1335,7 +1335,7 @@ Public Class cEIIXMLDataSource
                 iFleetID = CInt(drow("FleetID"))
                 iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
                 iYear = CInt(drow("TimeYear"))
-                If (iFleet > 0) And (iFleet <= ecosimDS.nGear) And _
+                If (iFleet > 0) And (iFleet <= ecosimDS.nGear) And
                    (iYear > 0) And (iYear <= mseDS.nYears) Then
                     mseDS.CVFT(iFleet, iYear) = CSng(drow("CV"))
                 End If
@@ -1500,9 +1500,9 @@ Public Class cEIIXMLDataSource
 
 #Region " Shape load helpers "
 
-    Private Function LoadEggShape(ByVal dt As DataTable, _
-                                  ByVal iShapeID As Integer, _
-                                  ByVal iForcingShape As Integer, _
+    Private Function LoadEggShape(ByVal dt As DataTable,
+                                  ByVal iShapeID As Integer,
+                                  ByVal iForcingShape As Integer,
             Optional ByVal bIsSeasonal As Boolean = False) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -1546,9 +1546,9 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadTimeShape(ByVal dtTime As DataTable, _
-                                   ByVal iShapeID As Integer, _
-                                   ByVal iForcingShape As Integer, _
+    Private Function LoadTimeShape(ByVal dtTime As DataTable,
+                                   ByVal iShapeID As Integer,
+                                   ByVal iForcingShape As Integer,
                                    Optional ByVal bIsSeasonal As Boolean = False) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -1591,9 +1591,9 @@ Public Class cEIIXMLDataSource
 
     End Function
 
-    Private Function LoadMediationShape(ByVal dtMed As DataTable, _
-                                        ByVal iShapeID As Integer, _
-                                        ByVal iMediationShape As Integer, _
+    Private Function LoadMediationShape(ByVal dtMed As DataTable,
+                                        ByVal iShapeID As Integer,
+                                        ByVal iMediationShape As Integer,
                                         ByVal medData As cMediationDataStructures) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -1920,8 +1920,8 @@ Public Class cEIIXMLDataSource
         Return bSucces
     End Function
 
-    Private Function LoadFishingRateShape(ByVal dtFishRate As DataTable, _
-                                          ByVal iShapeID As Integer, _
+    Private Function LoadFishingRateShape(ByVal dtFishRate As DataTable,
+                                          ByVal iShapeID As Integer,
                                           ByVal iFishingRateShape As Integer) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -2642,7 +2642,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.ImportanceLayerWeight(iLayer) = CSng(drow("Weight"))
 
                 Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.ImportanceLayerMap(iLayer), _
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.ImportanceLayerMap(iLayer),
                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
             Catch ex As Exception
@@ -2674,7 +2674,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(drow("LayerDescription"))
 
                 Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
-                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer), _
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer),
                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
             Catch ex As Exception
@@ -3026,7 +3026,7 @@ Public Class cEIIXMLDataSource
     ''' core a full data reload is required after a group is created.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
+    Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single,
                       ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddGroup
         Return False
@@ -3249,7 +3249,7 @@ Public Class cEIIXMLDataSource
         Return False
     End Function
 
-    Public Function SaveEcosimScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String, _
+    Public Function SaveEcosimScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String,
      ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.SaveEcosimScenarioAs
         Return False
@@ -3365,9 +3365,9 @@ Public Class cEIIXMLDataSource
     ''' <inheritdocs cref="IEcosimDatasource.AppendTimeSeriesDataset"/>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String, _
-                                            ByVal strAuthor As String, ByVal strContact As String, _
-                                            ByVal iFirstYear As Integer, ByVal iNumPoints As Integer, ByVal interval As eTSDataSetInterval, _
+    Public Function AppendTimeSeriesDataset(ByVal strDatasetName As String, ByVal strDescription As String,
+                                            ByVal strAuthor As String, ByVal strContact As String,
+                                            ByVal iFirstYear As Integer, ByVal iNumPoints As Integer, ByVal interval As eTSDataSetInterval,
                                             ByRef iDatasetID As Integer) As Boolean _
         Implements DataSources.IEcosimDatasource.AppendTimeSeriesDataset
         Return False
@@ -3567,7 +3567,13 @@ Public Class cEIIXMLDataSource
                 For i As Integer = 0 To astrData.Length - 1
                     If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
                         Try
-                            drow(astrCols(i)) = astrData(i)
+                            If (atCols(i)) Is GetType(String) Then
+                                drow(astrCols(i)) = astrData(i)
+                            ElseIf (atCols(i)) Is GetType(Boolean) Then
+                                drow(astrCols(i)) = Convert.ToBoolean(astrData(i))
+                            Else
+                                drow(astrCols(i)) = cStringUtils.ConvertToNumber(astrData(i), atCols(i))
+                            End If
                         Catch ex As Exception
                             Debug.Assert(False, "Exception loaded table " & strTable & ": " & ex.Message)
                         End Try
@@ -3594,9 +3600,9 @@ Public Class cEIIXMLDataSource
     ''' <param name="objValueIgnore">Value to interpret as 'no value. When encountered, the default value will be returned.</param>
     ''' <returns>The value of the requested column, or the provided default if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ReadSafe(ByVal row As DataRow, _
-                             ByVal strField As String, _
-                             Optional ByVal objValueDefault As Object = Nothing, _
+    Public Function ReadSafe(ByVal row As DataRow,
+                             ByVal strField As String,
+                             Optional ByVal objValueDefault As Object = Nothing,
                              Optional ByVal objValueIgnore As Object = CSng(-9999)) As Object
 
         Dim objResult As Object = Nothing
