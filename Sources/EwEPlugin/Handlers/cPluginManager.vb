@@ -1480,7 +1480,7 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Bridge, invokes the <see cref="IEcospaceLayerChangePlugin.EcospaceBeginLayerChange"/> 
+    ''' Bridge, invokes the <see cref="IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted"/> 
     ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
     ''' </summary>
     ''' <param name="EcospaceDataStructures"></param>
