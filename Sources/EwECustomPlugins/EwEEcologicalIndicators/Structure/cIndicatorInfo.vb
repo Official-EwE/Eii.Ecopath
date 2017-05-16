@@ -23,7 +23,6 @@
 Option Strict On
 Imports System.Reflection
 Imports EwECore
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 
 #End Region ' Imports

@@ -21,9 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Reflection
-Imports EwECore
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -110,7 +107,9 @@ Public Class cIndicatorInfoGroup
     ''' Add an indicator that has a sinlge-dimensioned, dynamic unit.
     ''' </summary>
     ''' <param name="strName">The name to assign to the indicator.</param>
-    ''' <param name="strPropertyName">The property name of the indicator as exposed by the computed <see cref="cIndicators">indicator</see>.</param>
+    ''' <param name="strPropertyName">The property name of the indicator as 
+    ''' exposed by the computed <see cref="cIndicators">indicator</see>.
+    ''' This GUI uses reflection to dynamically the correct computed indicator.</param>
     ''' <param name="strDescription">Description to assign to the indicator.</param>
     ''' <returns>The new indicator info object.</returns>
     ''' -------------------------------------------------------------------
