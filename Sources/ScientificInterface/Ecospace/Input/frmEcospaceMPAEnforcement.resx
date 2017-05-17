@@ -180,7 +180,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 25</value>
+    <value>335, 25</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
@@ -208,10 +208,10 @@
     <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 48</value>
+    <value>3, 60</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 210</value>
+    <value>329, 190</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -228,6 +228,9 @@
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="m_lblInfo.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="m_lblInfo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -240,14 +243,17 @@
   <data name="m_lblInfo.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 25</value>
   </data>
+  <data name="m_lblInfo.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
   <data name="m_lblInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 20</value>
+    <value>329, 32</value>
   </data>
   <data name="m_lblInfo.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_lblInfo.Text" xml:space="preserve">
-    <value>Select which MPA applies to which fleet</value>
+    <value>Set a check mark for each MPA fishing closure that applies to a fleet</value>
   </data>
   <data name="m_lblInfo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -274,7 +280,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 261</value>
+    <value>335, 253</value>
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -301,7 +307,7 @@
     <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>284, 261</value>
+    <value>335, 253</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
