@@ -45,10 +45,12 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            AllHabitats
+            FirstHabitat
         End Enum
 
         Private m_bInUpdate As Boolean = False
+
+        ' Predict Effort flag is monitored to block the form content if PredictEffort is OFF
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
         Public Sub New()
@@ -85,14 +87,13 @@ Namespace Ecospace
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            Me.Redim(1, 2 + Me.Core.nHabitats)
+            Me.Redim(1, 1 + Me.Core.nHabitats)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
-            Me(0, eColumnTypes.AllHabitats) = New EwEColumnHeaderCell(My.Resources.HEADER_FISH_EVERYWHERE)
 
             For j As Integer = 1 To Me.Core.nHabitats - 1
                 source = Me.Core.EcospaceHabitats(j)
-                Me(0, eColumnTypes.AllHabitats + j) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, eColumnTypes.FirstHabitat + j - 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
         End Sub
@@ -112,14 +113,14 @@ Namespace Ecospace
 
                 If (bEnable) Then
 
-                    For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
-                        Me(iRow, eColumnTypes.AllHabitats + iHabitat) = New Cells.Real.CheckBox(fleet.HabitatFishery(iHabitat))
-                        Me(iRow, eColumnTypes.AllHabitats + iHabitat).Behaviors.Add(Me.EwEEditHandler)
+                    For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
+                        Me(iRow, eColumnTypes.FirstHabitat + iHabitat - 1) = New Cells.Real.CheckBox(fleet.HabitatFishery(iHabitat))
+                        Me(iRow, eColumnTypes.FirstHabitat + iHabitat - 1).Behaviors.Add(Me.EwEEditHandler)
                     Next
 
                 Else
-                    For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
-                        Me(iRow, eColumnTypes.AllHabitats + iHabitat) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                    For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
+                        Me(iRow, eColumnTypes.FirstHabitat + iHabitat - 1) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     Next
 
                 End If
@@ -142,15 +143,17 @@ Namespace Ecospace
 
             If (Me.m_bInUpdate) Then Return True
 
-            Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(p.Row)
-            Dim bChecked As Boolean = CBool(cell.GetValue(p))
+            Try
 
-            Select Case p.Column
+                Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(p.Row)
+                Dim bChecked As Boolean = CBool(cell.GetValue(p))
+                Dim iHabitat As Integer = p.Column - eColumnTypes.FirstHabitat + 1
 
-                Case eColumnTypes.AllHabitats To 2 + Me.Core.nHabitats
-                    fleet.HabitatFishery(p.Column - 2) = bChecked
+                fleet.HabitatFishery(iHabitat) = bChecked
 
-            End Select
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
 
         End Function
 
