@@ -215,23 +215,28 @@ Namespace Integration
                         tsi.ToolTipText = ip.ControlTooltipText
                         ' Add tag
                         tsi.Tag = ip
+
+                        If (TypeOf (ip) Is IMenuItemKeyboardShortcutPlugin) Then
+                            tsi.ShortcutKeys = DirectCast(ip, IMenuItemKeyboardShortcutPlugin).ShortcutKeys
+                        End If
+
                         Me.m_lItems.Add(tsi)
 
-                        ' try to insert menu item into strip
-                        Dim bFoundGroup As Boolean = False
-                        For iItem = 0 To tsic.Count - 1
-                            If (tsi.Name.Contains(tsic(iItem).Name)) Then
-                                bFoundGroup = True
-                            ElseIf (bFoundGroup) Then
-                                tsic.Insert(iItem, tsi)
-                                Return ' Done
-                            End If
-                        Next
-                        ' Add new item to menu item strip
-                        tsic.Add(tsi)
-                    Else
-                        ' Remove menu item
-                        tsic.RemoveByKey(ip.Name)
+                            ' try to insert menu item into strip
+                            Dim bFoundGroup As Boolean = False
+                            For iItem = 0 To tsic.Count - 1
+                                If (tsi.Name.Contains(tsic(iItem).Name)) Then
+                                    bFoundGroup = True
+                                ElseIf (bFoundGroup) Then
+                                    tsic.Insert(iItem, tsi)
+                                    Return ' Done
+                                End If
+                            Next
+                            ' Add new item to menu item strip
+                            tsic.Add(tsi)
+                        Else
+                            ' Remove menu item
+                            tsic.RemoveByKey(ip.Name)
                         tsi = DirectCast(tsic.Find(ip.Name, True)(0), ToolStripMenuItem)
                         Me.m_lItems.Remove(tsi)
                     End If

@@ -47,13 +47,18 @@ Namespace Ecospace
             Me.m_tsMain = New System.Windows.Forms.ToolStrip()
             Me.m_tsbnDefineMPAs = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.gridMPAs()
+            Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblInfo = New System.Windows.Forms.Label()
+            Me.m_tsbnQuickHelp = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsMain.SuspendLayout()
+            Me.m_tlpContent.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_tsMain
             '
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnDefineMPAs})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnQuickHelp, Me.ToolStripSeparator1, Me.m_tsbnDefineMPAs})
             Me.m_tsMain.Name = "m_tsMain"
             '
             'm_tsbnDefineMPAs
@@ -72,7 +77,7 @@ Namespace Ecospace
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
-            Me.m_grid.DataName = "grid content"
+            Me.m_grid.DataName = "MPA closure"
             resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
@@ -81,33 +86,62 @@ Namespace Ecospace
             Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
+            '
+            'm_tlpContent
+            '
+            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+            Me.m_tlpContent.Controls.Add(Me.m_lblInfo, 0, 1)
+            Me.m_tlpContent.Controls.Add(Me.m_tsMain, 0, 0)
+            Me.m_tlpContent.Controls.Add(Me.m_grid, 0, 2)
+            Me.m_tlpContent.Name = "m_tlpContent"
+            '
+            'm_lblInfo
+            '
+            resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
+            Me.m_lblInfo.Name = "m_lblInfo"
+            '
+            'm_tsbnQuickHelp
+            '
+            Me.m_tsbnQuickHelp.AutoToolTip = False
+            Me.m_tsbnQuickHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnQuickHelp, "m_tsbnQuickHelp")
+            Me.m_tsbnQuickHelp.Name = "m_tsbnQuickHelp"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
             'frmMPAs
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.Controls.Add(Me.m_grid)
-            Me.Controls.Add(Me.m_tsMain)
+            Me.Controls.Add(Me.m_tlpContent)
             Me.Name = "frmMPAs"
             Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
+            Me.m_tlpContent.ResumeLayout(False)
+            Me.m_tlpContent.PerformLayout()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
         Private WithEvents m_tsbnDefineMPAs As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As gridMPAs
+        Friend WithEvents m_tlpContent As TableLayoutPanel
+        Private WithEvents m_lblInfo As Label
+        Private WithEvents m_tsbnQuickHelp As ToolStripButton
+        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     End Class
 
 End Namespace
