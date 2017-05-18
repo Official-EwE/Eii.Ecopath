@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.4
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScientificInterface", "ScientificInterface", "{5969ADB4-4FDE-4385-986B-6C28A162AD78}"
 EndProject
@@ -76,6 +76,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwECore", "EwECore", "{A14E30F6-A74B-47DE-9BD5-84BFAC900D32}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwECore", "EwECore\EwECore.vbproj", "{CDECE065-503A-4562-A955-06777B2F909E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEMergeSplitGroupsPlugin", "EwEMergeSplitGroupsPlugin", "{CA35DB85-C156-4E56-9C4E-EB10B798194D}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEMergeSplitGroupsPlugin", "..\Sources Internal\Plugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj", "{88137892-3068-42B7-BCCA-B811D7264B4A}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -306,6 +310,18 @@ Global
 		{CDECE065-503A-4562-A955-06777B2F909E}.Release|x64.Build.0 = Release|x64
 		{CDECE065-503A-4562-A955-06777B2F909E}.Release|x86.ActiveCfg = Release|x86
 		{CDECE065-503A-4562-A955-06777B2F909E}.Release|x86.Build.0 = Release|x86
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Debug|x64.ActiveCfg = Debug|x64
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Debug|x64.Build.0 = Debug|x64
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Debug|x86.ActiveCfg = Debug|x86
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Debug|x86.Build.0 = Debug|x86
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Release|x64.ActiveCfg = Release|x64
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Release|x64.Build.0 = Release|x64
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Release|x86.ActiveCfg = Release|x86
+		{88137892-3068-42B7-BCCA-B811D7264B4A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -342,5 +358,7 @@ Global
 		{ADA9F604-2A16-4816-9FE5-31487778902D} = {AC92A132-377B-40A3-A333-B401C08EC68F}
 		{F24972EB-7291-497E-B4D7-9C2EACBE8E62} = {5969ADB4-4FDE-4385-986B-6C28A162AD78}
 		{CDECE065-503A-4562-A955-06777B2F909E} = {A14E30F6-A74B-47DE-9BD5-84BFAC900D32}
+		{CA35DB85-C156-4E56-9C4E-EB10B798194D} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
+		{88137892-3068-42B7-BCCA-B811D7264B4A} = {CA35DB85-C156-4E56-9C4E-EB10B798194D}
 	EndGlobalSection
 EndGlobal

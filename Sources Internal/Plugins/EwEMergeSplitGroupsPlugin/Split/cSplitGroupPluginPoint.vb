@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -30,7 +30,7 @@ Imports System.Windows.Forms
 #End Region ' Imports
 
 Public Class cSplitGroupPluginPoint
-    Implements IMenuItemPlugin
+    Implements IMenuItemKeyboardShortcutPlugin
     Implements IUIContextPlugin
 
 #Region " Private vars "
@@ -112,6 +112,12 @@ Public Class cSplitGroupPluginPoint
         End Get
     End Property
 
+    Public ReadOnly Property ShortcutKeys As Keys Implements IMenuItemKeyboardShortcutPlugin.ShortcutKeys
+        Get
+            Return Keys.Control Or Keys.D7
+        End Get
+    End Property
+
 #End Region ' Menu item
 
 #Region " Generic "
@@ -140,7 +146,7 @@ Public Class cSplitGroupPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ndSplitGroup"
+            Return "Z08SplitGroup"
         End Get
     End Property
 

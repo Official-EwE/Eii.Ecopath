@@ -208,10 +208,10 @@
     <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 60</value>
+    <value>3, 47</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>329, 190</value>
+    <value>329, 203</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -247,13 +247,13 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_lblInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>329, 32</value>
+    <value>329, 19</value>
   </data>
   <data name="m_lblInfo.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_lblInfo.Text" xml:space="preserve">
-    <value>Set a check mark for each MPA fishing closure that applies to a fleet</value>
+    <value>Set a check mark for each month that a MPA is closed for fishing</value>
   </data>
   <data name="m_lblInfo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>

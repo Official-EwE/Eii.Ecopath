@@ -54,6 +54,10 @@ Namespace Ecospace
 
             Me.m_tsbnDefineMPAs.Image = SharedResources.MPA
 
+            Me.m_tsbnDefineMPAs.Image = SharedResources.MPA
+            Me.m_tsbnQuickHelp.Image = SharedResources.Info
+            Me.m_lblInfo.Visible = False
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -66,6 +70,14 @@ Namespace Ecospace
 
             cmd = Me.CommandHandler.GetCommand("EditMPAs")
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnDefineMPAs)
+        End Sub
+
+        Private Sub OnShowQuickHelp(sender As Object, e As EventArgs) Handles m_tsbnQuickHelp.MouseDown
+            Me.m_lblInfo.Visible = True
+        End Sub
+
+        Private Sub OnHideQuickHelp(sender As Object, e As MouseEventArgs) Handles m_tsbnQuickHelp.MouseUp
+            Me.m_lblInfo.Visible = False
         End Sub
 
     End Class

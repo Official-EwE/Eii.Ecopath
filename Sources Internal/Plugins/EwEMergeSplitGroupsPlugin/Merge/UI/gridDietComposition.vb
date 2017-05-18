@@ -1,5 +1,4 @@
-﻿Option Strict On
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -14,20 +13,18 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
 
 #Region " Imports "
 
-Imports System.Drawing
+Option Strict On
 Imports EwECore
 Imports EwECore.Ecopath
 Imports EwECore.Style
-Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
@@ -35,6 +32,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+''' <summary>
+''' Grid class that shows how diets will be merged.
+''' </summary>
+''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
 Public Class gridDietComposition
     Inherits EwEGrid
 

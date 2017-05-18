@@ -1,5 +1,4 @@
-﻿Option Strict On
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -14,13 +13,14 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
 
 #Region " Imports "
 
+Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Ecopath
@@ -33,7 +33,7 @@ Imports ScientificInterfaceShared.Style
 #End Region ' Imports
 
 ''' <summary>
-''' Interface for splitting an Ecopath group in two.
+''' Dialog form class to guide users in the Ecopath group splitting process.
 ''' </summary>
 Public Class dlgSplitGroup
 

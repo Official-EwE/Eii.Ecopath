@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -30,7 +30,7 @@ Imports ScientificInterfaceShared.Controls
 #End Region ' Imports
 
 Public Class cMergeGroupsPluginPoint
-    Implements IMenuItemPlugin
+    Implements IMenuItemKeyboardShortcutPlugin
     Implements IUIContextPlugin
 
 #Region " Private vars "
@@ -111,6 +111,12 @@ Public Class cMergeGroupsPluginPoint
         End Get
     End Property
 
+    Public ReadOnly Property ShortcutKeys As Keys Implements IMenuItemKeyboardShortcutPlugin.ShortcutKeys
+        Get
+            Return Keys.Control Or Keys.D6
+        End Get
+    End Property
+
 #End Region ' Menu item
 
 #Region " Generic "
@@ -139,7 +145,7 @@ Public Class cMergeGroupsPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ndMergeGroups"
+            Return "Z04MergeGroups"
         End Get
     End Property
 

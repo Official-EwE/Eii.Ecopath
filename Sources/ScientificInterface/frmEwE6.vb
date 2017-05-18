@@ -283,7 +283,7 @@ Public Class frmEwE6
 
     ''' <summary>Command to define external spatial temporal data connections.</summary>
     Private WithEvents m_cmdDefineSpatialDatasets As cCommand = Nothing
-    ''' <summary>Command to define explort spatial temporal data connections.</summary>
+    ''' <summary>Command to define export spatial temporal data connections.</summary>
     Private WithEvents m_cmdEcospaceExportSpatialDatasets As cCommand = Nothing
     ''' <summary>Command to edit an external data set.</summary>
     Private WithEvents m_cmdEditSpatialDataset As cEditSpatialDatasetCommand = Nothing
@@ -694,8 +694,6 @@ Public Class frmEwE6
 
         Me.m_cmdPickColor = New cPickColorCommand(cmdh)
 
-
-
 #If BETA = 1 Then
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnPreview)
         Me.m_tsbnPreview.Visible = True
@@ -753,7 +751,7 @@ Public Class frmEwE6
 
     Private Sub InitPanels()
 
-        ' Init panels
+        ' Initialize panels
         Try
             Me.m_dtPanels(cPANEL_NAV) = New frmNavigationPanel(Me.UIContext, Me.m_pluginManager)
             Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
@@ -799,7 +797,7 @@ Public Class frmEwE6
 
         Me.UIContext = New cUIContext(core, sg, pm, cmdh, Me, fps, help, so)
 
-        ' Config state monitor
+        ' Configure state monitor
         Me.Core.StateMonitor.SyncObject = Me
         Me.m_mhProgress = New cMessageHandler(AddressOf OnProgressMessage, eCoreComponentType.External, eMessageType.Progress, Me.SyncObject)
         Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.DataAddedOrRemoved, Me.SyncObject)
@@ -825,19 +823,19 @@ Public Class frmEwE6
         Me.m_MessageHistory = New cMessageHistory()
         Me.m_MessageHistory.UIContext = Me.UIContext
 
-        ' Create plugin manager for this GUI
+        ' Create plug-in manager for this GUI
         Me.m_pluginManager = New cPluginManager()
         Me.m_pluginManager.UIContext = Me.UIContext
         Me.m_pluginManager.SyncObject = Me.UIContext.SyncObject
 
-        ' Config plugin manager
+        ' Configure plug-in manager
         Me.m_pluginManager.Core = Me.Core
         Me.m_pluginManager.UIContext = Me.UIContext
 
-        ' Distribute plugin manager
+        ' Distribute plug-in manager
         Me.Core.PluginManager = Me.m_pluginManager
 
-        ' Create plugin menu handler to position plugin menu items in the main menu from this form
+        ' Create plug-in menu handler to position plug-in menu items in the main menu from this form
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHandler)
 
         ' Initialize core controller

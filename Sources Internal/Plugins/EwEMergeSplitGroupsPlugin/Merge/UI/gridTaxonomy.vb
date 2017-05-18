@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -32,6 +32,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+''' <summary>
+''' Grid class that shows how taxonomy will be merged.
+''' </summary>
+''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
 Public Class gridTaxonomy
     Inherits EwEGrid
 

@@ -1,5 +1,4 @@
-﻿
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -14,10 +13,11 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -32,16 +32,20 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
+''' <summary>
+''' Grid class that shows how basic input parameters will be merged.
+''' </summary>
+''' <seealso cref="ScientificInterfaceShared.Controls.EwEGrid.EwEGrid" />
 Public Class gridGroupInput
     Inherits EwEGrid
 
     Private Enum eColumnTypes As Integer
         Name = 0
-        Merge
         Agg1In
         Agg1Out
         Agg2In
         Agg2Out
+        Merge
     End Enum
 
     Private m_data As cEcopathMergeGroupsDatastructures = Nothing
@@ -97,7 +101,7 @@ Public Class gridGroupInput
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
-        Me.StretchColumnsToFitWidth()
+        Me.AutoStretchColumnsToFitWidth = True
     End Sub
 
     Public Sub UpdateContent()
@@ -131,6 +135,7 @@ Public Class gridGroupInput
         Me.UpdateHeaderCell(eColumnTypes.Agg1Out, Me.m_data.IndexTarget, My.Resources.HEADER_EST)
         Me.UpdateHeaderCell(eColumnTypes.Agg2In, Me.m_data.IndexMerge, My.Resources.HEADER_IN)
         Me.UpdateHeaderCell(eColumnTypes.Agg2Out, Me.m_data.IndexMerge, My.Resources.HEADER_EST)
+        Me.UpdateHeaderCell(eColumnTypes.Merge, Me.m_data.IndexMerge, My.Resources.HEADER_MERGE)
 
     End Sub
 
