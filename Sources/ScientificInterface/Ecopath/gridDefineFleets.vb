@@ -36,9 +36,9 @@ Imports EwEUtils.Core
 ''' Grid class for the Edit Fleets interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)> _
-   Public Class gridDefineFleets
-    : Inherits EwEGrid
+<CLSCompliant(False)>
+Public Class gridDefineFleets
+    Inherits EwEGrid
 
 #Region " Private vars "
 
@@ -77,21 +77,13 @@ Imports EwEUtils.Core
     ''' -----------------------------------------------------------------------
     Private Class cFleetInfo
 
-        Private m_iFleetIndex As Integer = -1
-        Private m_iFleetDBID As Integer = cCore.NULL_VALUE
 
-        ''' <summary>Name for this Fleet.</summary>
-        Private m_strName As String = ""
-        ''' <summary>Fleet color.</summary>
-        Private m_iColor As Integer = 0
-        ''' <summary>Flag stating whether a user action is confirmed</summary>
-        Private m_bConfirmed As Boolean = True
         ''' <summary>The status of a Fleet in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes a new instanze of this class.
+        ''' Constructor, initializes a new instance of this class.
         ''' </summary>
         ''' <param name="Fleet">The <see cref="cFleetInput">cFleetInput</see> to
         ''' initialize this instance from. If set, this instance represents a
@@ -99,10 +91,10 @@ Imports EwEUtils.Core
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal fleet As cFleetInput)
             Debug.Assert(fleet IsNot Nothing)
-            Me.m_iFleetDBID = fleet.DBID
-            Me.m_iFleetIndex = fleet.Index
-            Me.m_strName = fleet.Name
-            Me.m_iColor = fleet.PoolColor
+            Me.FleetDBID = fleet.DBID
+            Me.FleetIndex = fleet.Index
+            Me.Name = fleet.Name
+            Me.PoolColor = fleet.PoolColor
             Me.m_status = eItemStatusTypes.Original
         End Sub
 
@@ -113,8 +105,8 @@ Imports EwEUtils.Core
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal strName As String)
-            Me.m_strName = strName
-            Me.m_iColor = 0
+            Me.Name = strName
+            Me.PoolColor = 0
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -123,14 +115,7 @@ Imports EwEUtils.Core
         ''' Get/set the name of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Name() As String
-            Get
-                Return Me.m_strName
-            End Get
-            Set(ByVal value As String)
-                Me.m_strName = value
-            End Set
-        End Property
+        Public Property Name() As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -138,14 +123,7 @@ Imports EwEUtils.Core
         ''' this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PoolColor() As Integer
-            Get
-                Return Me.m_iColor
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iColor = value
-            End Set
-        End Property
+        Public Property PoolColor() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -154,10 +132,6 @@ Imports EwEUtils.Core
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property FleetIndex() As Integer
-            Get
-                Return Me.m_iFleetIndex
-            End Get
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -166,10 +140,6 @@ Imports EwEUtils.Core
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property FleetDBID() As Integer
-            Get
-                Return Me.m_iFleetDBID
-            End Get
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -189,13 +159,6 @@ Imports EwEUtils.Core
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Confirmed() As Boolean
-            Get
-                Return Me.m_bConfirmed
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bConfirmed = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -206,9 +169,9 @@ Imports EwEUtils.Core
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsChanged(ByVal fleet As cFleetInput) As Boolean
-            If (Me.m_iFleetDBID <> fleet.DBID) Then Return False
-            Return (fleet.Name <> Me.m_strName) Or _
-                   (fleet.PoolColor <> Me.m_iColor)
+            If (Me.FleetDBID <> fleet.DBID) Then Return False
+            Return (fleet.Name <> Me.Name) Or
+                   (fleet.PoolColor <> Me.PoolColor)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -217,7 +180,7 @@ Imports EwEUtils.Core
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return Me.m_iFleetDBID = cCore.NULL_VALUE
+            Return Me.FleetDBID = cCore.NULL_VALUE
         End Function
 
         ''' -------------------------------------------------------------------
@@ -892,7 +855,7 @@ Imports EwEUtils.Core
                         fi.Confirmed = True
                         bConfigurationChanged = True
                     Case Else
-                        ' Unexpected anwer: assert
+                        ' Unexpected answer: assert
                         Debug.Assert(False)
                 End Select
 

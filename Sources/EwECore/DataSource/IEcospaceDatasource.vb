@@ -148,22 +148,32 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Adds an ecospace habitat to the datasource.
+        ''' Adds an ecospace habitat to the data source.
         ''' </summary>
         ''' <param name="strHabitatName">Name to assign to new habitat.</param>
         ''' <param name="iHabitatID">Database ID assigned to the new habitat.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function AddEcospaceHabitat(ByVal strHabitatName As String, ByRef iHabitatID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes an ecospace habitat from the datasource.
+        ''' Removes an ecospace habitat from the data source.
         ''' </summary>
         ''' <param name="iHabitatID">Database ID of the habitat to remove.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function RemoveEcospaceHabitat(ByVal iHabitatID As Integer) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecospace habitat to a different position in the habitat sequence.
+        ''' </summary>
+        ''' <param name="iHabitatID">Database ID of the habitat to move.</param>
+        ''' <param name="iPosition">The new position of the habitat in the habitat sequence.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Function MoveHabitat(ByVal iHabitatID As Integer, ByVal iPosition As Integer) As Boolean
 
 #End Region ' Habitats
 

@@ -142,10 +142,10 @@ Namespace DataSources
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Removes a fleet from the datasource.
+        ''' Removes a fleet from the data source.
         ''' </summary>
         ''' <param name="iDBID">Database ID of the fleet to remove.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function RemoveFleet(ByVal iDBID As Integer) As Boolean
 
@@ -155,7 +155,7 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="iDBID">Database ID of the fleet to move.</param>
         ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean
 

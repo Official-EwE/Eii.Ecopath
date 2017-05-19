@@ -47,6 +47,9 @@ Namespace Ecospace
             Me.OK_Button = New System.Windows.Forms.Button()
             Me.Cancel_Button = New System.Windows.Forms.Button()
             Me.m_btnKeep = New System.Windows.Forms.Button()
+            Me.m_hdrOrder = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnMoveDown = New System.Windows.Forms.Button()
+            Me.m_btnMoveUp = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_grid
@@ -69,14 +72,14 @@ Namespace Ecospace
             Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
             'm_btnAddHabitat
@@ -108,11 +111,34 @@ Namespace Ecospace
             Me.m_btnKeep.Name = "m_btnKeep"
             Me.m_btnKeep.UseVisualStyleBackColor = True
             '
+            'm_hdrOrder
+            '
+            resources.ApplyResources(Me.m_hdrOrder, "m_hdrOrder")
+            Me.m_hdrOrder.CanCollapseParent = False
+            Me.m_hdrOrder.CollapsedParentHeight = 0
+            Me.m_hdrOrder.IsCollapsed = False
+            Me.m_hdrOrder.Name = "m_hdrOrder"
+            '
+            'm_btnMoveDown
+            '
+            resources.ApplyResources(Me.m_btnMoveDown, "m_btnMoveDown")
+            Me.m_btnMoveDown.Name = "m_btnMoveDown"
+            Me.m_btnMoveDown.UseVisualStyleBackColor = True
+            '
+            'm_btnMoveUp
+            '
+            resources.ApplyResources(Me.m_btnMoveUp, "m_btnMoveUp")
+            Me.m_btnMoveUp.Name = "m_btnMoveUp"
+            Me.m_btnMoveUp.UseVisualStyleBackColor = True
+            '
             'dlgEditHabitats
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_hdrOrder)
+            Me.Controls.Add(Me.m_btnMoveDown)
+            Me.Controls.Add(Me.m_btnMoveUp)
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.Cancel_Button)
@@ -133,7 +159,9 @@ Namespace Ecospace
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_btnKeep As System.Windows.Forms.Button
-
+        Private WithEvents m_hdrOrder As cEwEHeaderLabel
+        Private WithEvents m_btnMoveDown As Button
+        Private WithEvents m_btnMoveUp As Button
     End Class
 
 End Namespace

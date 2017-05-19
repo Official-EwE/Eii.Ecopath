@@ -60,7 +60,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -75,27 +75,37 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
             Me.DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 
-        Private Sub m_btnInsert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAddHabitat.Click
+        Private Sub OnInsert(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnAddHabitat.Click
             Me.m_grid.InsertRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveHabitat.Click
+        Private Sub OnDelete(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveHabitat.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
+        Private Sub OnKeep(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
             Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_HabitatGrid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub OnMoveUp(sender As Object, e As EventArgs) Handles m_btnMoveUp.Click
+            Me.m_grid.MoveRowUp()
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnMoveDown(sender As Object, e As EventArgs) Handles m_btnMoveDown.Click
+            Me.m_grid.MoveRowDown()
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnHabitatSelected(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 
@@ -107,6 +117,8 @@ Namespace Ecospace
             Me.m_btnAddHabitat.Enabled = Me.m_grid.CanAddRow()
             Me.m_btnRemoveHabitat.Enabled = Me.m_grid.IsHabitatRow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsHabitatRow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
+            Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
         End Sub
 
 #End Region ' Updating

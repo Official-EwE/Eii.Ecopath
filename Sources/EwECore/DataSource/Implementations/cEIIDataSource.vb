@@ -1199,6 +1199,10 @@ Public Class cEIIDataSource
         Return False
     End Function
 
+    Public Function MoveEcospaceHabitat(iHabitatID As Integer, iPosition As Integer) As Boolean Implements IEcospaceDatasource.MoveHabitat
+        Return False
+    End Function
+
     Public Function RemoveEcospaceImportanceLayer(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceImportanceLayer
         Return False
     End Function
