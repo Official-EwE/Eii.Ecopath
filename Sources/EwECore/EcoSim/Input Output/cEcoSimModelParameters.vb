@@ -163,6 +163,13 @@ Public Class cEcoSimModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            'end summary
+            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Single, eVarNameFlags.EcosimSORWt, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.EcosimSORWt))
+            val.Stored = True
+            val.AffectsRunState = True
+            m_values.Add(val.varName, val)
+
             '  Me.AllowValidation = True
 
         Catch ex As Exception
@@ -515,6 +522,18 @@ Public Class cEcoSimModelParameters
 
     'End Property
 
+    Public Property SORWt() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimSORWt))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcosimSORWt, value)
+        End Set
+
+    End Property
+
 #End Region
 
 #Region "Status via dot (.) operator"
@@ -698,6 +717,18 @@ Public Class cEcoSimModelParameters
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.UseVarPQ, value)
+        End Set
+
+    End Property
+
+    Public Property SORWtStatus() As eStatusFlags
+
+        Get
+            Return GetStatus(eVarNameFlags.EcosimSORWt)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcosimSORWt, value)
         End Set
 
     End Property

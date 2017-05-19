@@ -119,10 +119,14 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_nudNutBaseFreeProp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 45</value>
+    <value>341, 81</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_nudNutBaseFreeProp.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_nudNutBaseFreeProp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 20</value>
+    <value>150, 29</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_nudNutBaseFreeProp.TabIndex" type="System.Int32, mscorlib">
@@ -138,13 +142,16 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_nudNutBaseFreeProp.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_nudNumberYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 18</value>
+    <value>341, 36</value>
+  </data>
+  <data name="m_nudNumberYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_nudNumberYears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 20</value>
+    <value>150, 29</value>
   </data>
   <data name="m_nudNumberYears.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -159,13 +166,16 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_nudNumberYears.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_cmbNutForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 98</value>
+    <value>341, 169</value>
+  </data>
+  <data name="m_cmbNutForcing.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_cmbNutForcing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 21</value>
+    <value>282, 32</value>
   </data>
   <data name="m_cmbNutForcing.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -180,16 +190,19 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_cmbNutForcing.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_chkPredictEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkPredictEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 127</value>
+    <value>5, 263</value>
+  </data>
+  <data name="m_chkPredictEffort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_chkPredictEffort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 17</value>
+    <value>218, 29</value>
   </data>
   <data name="m_chkPredictEffort.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -207,16 +220,19 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_chkPredictEffort.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="m_chkConTracing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkConTracing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 150</value>
+    <value>5, 312</value>
+  </data>
+  <data name="m_chkConTracing.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_chkConTracing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 17</value>
+    <value>212, 29</value>
   </data>
   <data name="m_chkConTracing.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -234,16 +250,19 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_chkConTracing.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_lblNutForcing.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblNutForcing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 101</value>
+    <value>5, 173</value>
+  </data>
+  <data name="m_lblNutForcing.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblNutForcing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 13</value>
+    <value>289, 25</value>
   </data>
   <data name="m_lblNutForcing.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -261,16 +280,19 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_lblNutForcing.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_lblNutBaseFreeProp.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblNutBaseFreeProp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
+    <value>5, 83</value>
+  </data>
+  <data name="m_lblNutBaseFreeProp.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblNutBaseFreeProp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 13</value>
+    <value>293, 25</value>
   </data>
   <data name="m_lblNutBaseFreeProp.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -288,16 +310,19 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_lblNutBaseFreeProp.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_lblNumberYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblNumberYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 22</value>
+    <value>5, 38</value>
+  </data>
+  <data name="m_lblNumberYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblNumberYears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 13</value>
+    <value>271, 25</value>
   </data>
   <data name="m_lblNumberYears.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -315,9 +340,8 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_lblNumberYears.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdrInitialization.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
@@ -327,8 +351,11 @@
   <data name="m_hdrInitialization.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="m_hdrInitialization.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
+  </data>
   <data name="m_hdrInitialization.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 18</value>
+    <value>1673, 32</value>
   </data>
   <data name="m_hdrInitialization.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -349,7 +376,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_hdrInitialization.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_hdrScenario.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -360,8 +387,11 @@
   <data name="m_hdrScenario.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="m_hdrScenario.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
+  </data>
   <data name="m_hdrScenario.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 18</value>
+    <value>1673, 32</value>
   </data>
   <data name="m_hdrScenario.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -388,7 +418,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 119</value>
+    <value>341, 208</value>
+  </data>
+  <data name="m_tbContact.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_tbContact.MaxLength" type="System.Int32, mscorlib">
     <value>250</value>
@@ -397,7 +430,7 @@
     <value>True</value>
   </data>
   <data name="m_tbContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 33</value>
+    <value>1324, 55</value>
   </data>
   <data name="m_tbContact.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -422,13 +455,16 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 93</value>
+    <value>341, 163</value>
+  </data>
+  <data name="m_tbAuthor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_tbAuthor.MaxLength" type="System.Int32, mscorlib">
     <value>60</value>
   </data>
   <data name="m_tbAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 20</value>
+    <value>1324, 29</value>
   </data>
   <data name="m_tbAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -452,10 +488,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbContact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 122</value>
+    <value>5, 214</value>
+  </data>
+  <data name="m_lbContact.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lbContact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
+    <value>86, 25</value>
   </data>
   <data name="m_lbContact.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -482,10 +521,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 96</value>
+    <value>5, 168</value>
+  </data>
+  <data name="m_lbAuthor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lbAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 13</value>
+    <value>76, 25</value>
   </data>
   <data name="m_lbAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -509,10 +551,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 21</value>
+    <value>341, 37</value>
+  </data>
+  <data name="m_tbName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_tbName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 20</value>
+    <value>1324, 29</value>
   </data>
   <data name="m_tbName.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -533,13 +578,16 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 46</value>
+    <value>341, 80</value>
+  </data>
+  <data name="m_tbDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_tbDescription.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 41</value>
+    <value>1324, 69</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -563,10 +611,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
+    <value>5, 86</value>
+  </data>
+  <data name="m_lblDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lblDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 13</value>
+    <value>115, 25</value>
   </data>
   <data name="m_lblDescription.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -590,10 +641,13 @@
     <value>True</value>
   </data>
   <data name="m_lbScenarioName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 24</value>
+    <value>5, 42</value>
+  </data>
+  <data name="m_lbScenarioName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="m_lbScenarioName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 13</value>
+    <value>70, 25</value>
   </data>
   <data name="m_lbScenarioName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -620,10 +674,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_chkUseVarPQ.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 173</value>
+    <value>5, 361</value>
+  </data>
+  <data name="m_chkUseVarPQ.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_chkUseVarPQ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 17</value>
+    <value>186, 29</value>
   </data>
   <data name="m_chkUseVarPQ.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -641,7 +698,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_chkUseVarPQ.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="TableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -650,10 +707,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>5, 5</value>
+  </data>
+  <data name="m_plDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_plDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 155</value>
+    <value>1673, 271</value>
   </data>
   <data name="m_plDescription.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -670,11 +730,62 @@
   <data name="&gt;&gt;m_plDescription.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_txSORwt.Location" type="System.Drawing.Point, System.Drawing">
+    <value>339, 216</value>
+  </data>
+  <data name="m_txSORwt.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 29</value>
+  </data>
+  <data name="m_txSORwt.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_txSORwt.Name" xml:space="preserve">
+    <value>m_txSORwt</value>
+  </data>
+  <data name="&gt;&gt;m_txSORwt.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txSORwt.Parent" xml:space="preserve">
+    <value>m_plInit</value>
+  </data>
+  <data name="&gt;&gt;m_txSORwt.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 218</value>
+  </data>
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>311, 25</value>
+  </data>
+  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Successive over-relaxation for PP:</value>
+  </data>
+  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
+    <value>Label2</value>
+  </data>
+  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+    <value>m_plInit</value>
+  </data>
+  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_tbxMinFeedingRateAdjustment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>195, 72</value>
+    <value>341, 126</value>
+  </data>
+  <data name="m_tbxMinFeedingRateAdjustment.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_tbxMinFeedingRateAdjustment.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 20</value>
+    <value>148, 29</value>
   </data>
   <data name="m_tbxMinFeedingRateAdjustment.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -689,7 +800,7 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;m_tbxMinFeedingRateAdjustment.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -698,10 +809,13 @@
     <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 75</value>
+    <value>5, 128</value>
+  </data>
+  <data name="Label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 0, 5, 0</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 13</value>
+    <value>213, 25</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -719,16 +833,19 @@
     <value>m_plInit</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_plInit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_plInit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 164</value>
+    <value>5, 286</value>
+  </data>
+  <data name="m_plInit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="m_plInit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>543, 192</value>
+    <value>1673, 431</value>
   </data>
   <data name="m_plInit.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -751,11 +868,14 @@
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="TableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
   <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="TableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>549, 363</value>
+    <value>1683, 886</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -779,16 +899,19 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
+    <value>168, 168</value>
   </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>549, 363</value>
+    <value>1683, 886</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmEcosimParameters</value>

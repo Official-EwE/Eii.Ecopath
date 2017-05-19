@@ -8312,6 +8312,8 @@ Public Class cCore
             m_EcoSimRun.StartSummaryTime = m_EcoSim.m_Data.SumStart(0)
             m_EcoSimRun.EndSummaryTime = m_EcoSim.m_Data.SumStart(1)
 
+            m_EcoSimRun.SORWt = m_EcoSim.m_Data.SorWt
+
             m_EcoSimRun.AllowValidation = True
 
             m_EcoSimRun.ResetStatusFlags()
@@ -8350,6 +8352,8 @@ Public Class cCore
             m_EcoSim.m_Data.NumStep = m_EcoSimRun.NumberSummaryTimeSteps
             m_EcoSim.m_Data.SumStart(0) = m_EcoSimRun.StartSummaryTime
             m_EcoSim.m_Data.SumStart(1) = m_EcoSimRun.EndSummaryTime
+
+            m_EcoSim.m_Data.SorWt = m_EcoSimRun.SORWt
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".EcoSimModelRunParameters() EcoSim Parameters will not be set Error: " & ex.Message)

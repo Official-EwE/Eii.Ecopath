@@ -1969,6 +1969,8 @@ Namespace Core
 
         Z
 
+        ''' <summary>Ecosim SOR Weight for groups with fast production.</summary>
+        EcosimSORWt
     End Enum
 
 #End Region ' Variable names

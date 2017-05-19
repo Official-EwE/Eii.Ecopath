@@ -68,6 +68,8 @@ Namespace Ecosim
             Me.m_plInit = New System.Windows.Forms.Panel()
             Me.m_tbxMinFeedingRateAdjustment = New System.Windows.Forms.TextBox()
             Me.Label1 = New System.Windows.Forms.Label()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_txSORwt = New System.Windows.Forms.TextBox()
             CType(Me.m_nudNutBaseFreeProp, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumberYears, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel1.SuspendLayout()
@@ -210,6 +212,8 @@ Namespace Ecosim
             '
             'm_plInit
             '
+            Me.m_plInit.Controls.Add(Me.m_txSORwt)
+            Me.m_plInit.Controls.Add(Me.Label2)
             Me.m_plInit.Controls.Add(Me.m_tbxMinFeedingRateAdjustment)
             Me.m_plInit.Controls.Add(Me.m_hdrInitialization)
             Me.m_plInit.Controls.Add(Me.Label1)
@@ -234,6 +238,16 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.Label1, "Label1")
             Me.Label1.Name = "Label1"
+            '
+            'Label2
+            '
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
+            '
+            'm_txSORwt
+            '
+            resources.ApplyResources(Me.m_txSORwt, "m_txSORwt")
+            Me.m_txSORwt.Name = "m_txSORwt"
             '
             'frmEcosimParameters
             '
@@ -276,7 +290,8 @@ Namespace Ecosim
         Private WithEvents m_plInit As System.Windows.Forms.Panel
         Private WithEvents Label1 As System.Windows.Forms.Label
         Friend WithEvents m_tbxMinFeedingRateAdjustment As System.Windows.Forms.TextBox
-
+        Friend WithEvents m_txSORwt As TextBox
+        Friend WithEvents Label2 As Label
     End Class
 End Namespace
 

@@ -50,6 +50,7 @@ Namespace Ecosim
         Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpUseVarPQ As cEwEFormatProvider = Nothing
         Private m_fpForagingTimeLowerLimit As cEwEFormatProvider = Nothing
+        Private m_fpSORwt As cEwEFormatProvider = Nothing
 
         Private m_propConTracing As cBooleanProperty = Nothing
         Private m_propPredictEffort As cBooleanProperty = Nothing
@@ -77,6 +78,8 @@ Namespace Ecosim
             Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_chkPredictEffort, parms, eVarNameFlags.PredictEffort)
             Me.m_fpUseVarPQ = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseVarPQ, parms, eVarNameFlags.UseVarPQ)
             Me.m_fpForagingTimeLowerLimit = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinFeedingRateAdjustment, parms, eVarNameFlags.ForagingTimeLowerLimit)
+            Me.m_fpSORwt = New cPropertyFormatProvider(Me.UIContext, Me.m_txSORwt, parms, eVarNameFlags.EcosimSORWt)
+
             Me.m_propConTracing = DirectCast(pm.GetProperty(parms, eVarNameFlags.ConSimOnEcoSim), cBooleanProperty)
             AddHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
 
@@ -107,6 +110,7 @@ Namespace Ecosim
             Me.m_fpPredictEffort.Release()
             Me.m_fpUseVarPQ.Release()
             Me.m_fpForagingTimeLowerLimit.Release()
+            Me.m_fpSORwt.Release()
 
             RemoveHandler Me.m_propConTracing.PropertyChanged, AddressOf OnConTracingChanged
             Me.m_propConTracing = Nothing
