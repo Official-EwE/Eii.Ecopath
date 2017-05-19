@@ -2633,20 +2633,29 @@ Namespace Ecosim
                         ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), i, i, True)
                         'pbm(i) = 0 for all non PP groups
                         'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
-                        'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                        'Changed 3-Mar-2017
-                        'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
-                        'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
-                        '1)      There is a line that calculates pbb(i):
-                        'pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
-                        'change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
-                        '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
-                        '(this allows primary production rate to as much as double as nutrient concentrations increase)
-                        '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
 
-                        pbb(i) = 2 * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
-                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'JB 19-May-2017 Changed back to original code
+                        'Joe,
+                        'Brett And i have been playing With the ewe version that you sent him, And found a nasty bug; 
+                        'when the proportion of free nutrients Is set less than 1.0 (which gets changed to .9999 internally), 
+                        'we get transient changes in primary producer biomasses even when there should be none.  
+                        'So something has apparently gone wrong with implementing the changes that we decided to do with pbb calculations in derivt And initialstate (see thread below). 
+                        pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        ''Changed 3-Mar-2017
+                        ''Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
+                        ''There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
+                        ''1)      There is a line that calculates pbb(i):
+                        ''pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        ''change the term m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) in this line to just
+                        ''2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
+                        ''(this allows primary production rate to as much as double as nutrient concentrations increase)
+                        ''2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+
+                        'pbb(i) = 2 * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+                        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
                         'VC051011: To accomodate constant Z policies I've included a recalculation of F = Z - Pred - Other Mortality - Emigration:
@@ -2816,8 +2825,14 @@ Namespace Ecosim
 
             ReDim m_Data.NutFreeBase(nGroups)
             For i = 1 To m_EPData.NumLiving
-                'm_Data.NutFreeBase(i) = (m_Data.PBmaxs(i) - 1) * m_Data.NutFree
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'jb 19-May-2017 Reverted back to original state
+                'Brett and I have been playing with the ewe version that you sent him, 
+                'And found a nasty bug; when the proportion of free nutrients is set less than 1.0 (which gets changed to .9999 internally), 
+                'we get transient changes in primary producer biomasses even when there should be none.  
+                'So something has apparently gone wrong with implementing the changes that we decided to do with pbb calculations in derivt And initialstate 
+                m_Data.NutFreeBase(i) = (m_Data.PBmaxs(i) - 1) * m_Data.NutFree
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Changed 3-Mar-2017
                 'Carl Walters email "fixing nutrient effects on primary production in ecosim, and bug in modifying producers with forcing functions and mediation functions"
                 'There is a bad setup in derivt that couples nutrient response effects to the biomass shading effects; these need to vary independently. 
@@ -2829,7 +2844,8 @@ Namespace Ecosim
 
                 '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
                 m_Data.NutFreeBase(i) = m_Data.NutFree
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             Next
             m_Data.NutMin = CSng(0.00101 * m_Data.NutFree)
 
