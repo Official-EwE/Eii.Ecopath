@@ -36,9 +36,9 @@ Namespace Ecospace
     ''' <summary>
     ''' Grid catered to defining <see cref="cEcospaceHabitat">habitats</see>.
     ''' </summary>
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridEditHabitats
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         ''' <summary>A number representing the row that contains the first Habitat</summary>
         Private Const iFIRSTHABITATROW As Integer = 1
@@ -74,19 +74,12 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Class cHabitatInfo
 
-            ''' <summary>DBID of associated habitat.</summary>
-            Private m_iHabitatDBID As Integer = cCore.NULL_VALUE
-            Private m_iHabitatIndex As Integer = cCore.NULL_VALUE
-            ''' <summary>Name for this Habitat.</summary>
-            Private m_strName As String = ""
-            ''' <summary>Flag stating whether a user action is confirmed</summary>
-            Private m_bConfirmed As Boolean = True
             ''' <summary>The status of a Habitat in the interface.</summary>
             Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Constructor, initializes a new instanze of this class.
+            ''' Constructor, initializes a new instance of this class.
             ''' </summary>
             ''' <param name="Habitat">The <see cref="cEcospaceHabitat">cEcospaceHabitat</see> to
             ''' initialize this instance from. If set, this instance represents a
@@ -94,20 +87,20 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal habitat As cEcospaceHabitat)
                 Debug.Assert(habitat IsNot Nothing)
-                Me.m_iHabitatDBID = habitat.DBID
-                Me.m_iHabitatIndex = habitat.Index
-                Me.m_strName = habitat.Name
+                Me.HabitatDBID = habitat.DBID
+                Me.HabitatIndex = habitat.Index
+                Me.Name = habitat.Name
                 Me.m_status = eItemStatusTypes.Original
             End Sub
 
             ''' -------------------------------------------------------------------
             ''' <summary>
-            ''' Constructor, initializes a new instanze of this class.
+            ''' Constructor, initializes a new instance of this class.
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String)
-                Me.m_strName = strName
+                Me.Name = strName
                 Me.m_status = eItemStatusTypes.Added
             End Sub
 
@@ -116,14 +109,7 @@ Namespace Ecospace
             ''' Get/set the name of this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Property Name() As String
-                Get
-                    Return Me.m_strName
-                End Get
-                Set(ByVal value As String)
-                    Me.m_strName = value
-                End Set
-            End Property
+            Public Property Name() As String = ""
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -132,10 +118,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property HabitatDBID() As Integer
-                Get
-                    Return Me.m_iHabitatDBID
-                End Get
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -144,10 +126,6 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property HabitatIndex() As Integer
-                Get
-                    Return Me.m_iHabitatIndex
-                End Get
-            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -166,14 +144,7 @@ Namespace Ecospace
             ''' Get/set whether the user has confirmed an action on this object.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Property Confirmed() As Boolean
-                Get
-                    Return Me.m_bConfirmed
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bConfirmed = value
-                End Set
-            End Property
+            Public Property Confirmed() As Boolean = False
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -185,8 +156,8 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Function IsChanged(ByVal habitat As cEcospaceHabitat) As Boolean
                 If (Me.IsNew()) Then Return False
-                If (habitat.DBID <> Me.m_iHabitatDBID) Then Return False
-                Return (habitat.Name <> Me.m_strName)
+                If (habitat.DBID <> Me.HabitatDBID) Then Return False
+                Return (habitat.Name <> Me.Name)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -198,7 +169,7 @@ Namespace Ecospace
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsNew() As Boolean
-                Return (Me.m_iHabitatDBID = cCore.NULL_VALUE)
+                Return (Me.HabitatDBID = cCore.NULL_VALUE)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -337,7 +308,7 @@ Namespace Ecospace
                 Me.Rows.Remove(Me.Rows.Count - iFIRSTHABITATROW)
             End While
 
-            ' Sanity check whether grid can accomodate all Habitats + header
+            ' Sanity check whether grid can accommodate all Habitats + header
             Debug.Assert(Me.Rows.Count = Me.m_alHabitats.Count + 1)
 
             ' Populate rows
@@ -383,7 +354,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Called when the user has finished editing a cell. Handled to update 
-        ''' local admin based on cell value changes.
+        ''' local administration based on cell value changes.
         ''' </summary>
         ''' <returns>
         ''' True if the edit operation is allowed, False to cancel the edit operation.
@@ -542,7 +513,7 @@ Namespace Ecospace
                 lstrHabitats.Add(hi.Name)
             Next
 
-            ' Format new hab with an autonumber value based on existing names
+            ' Format new habitat with an auto-number value based on existing names
             hi = New cHabitatInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWHABITAT_NUM, _
                     cStringUtils.GetNextNumber(lstrHabitats.ToArray(), SharedResources.DEFAULT_NEWHABITAT_NUM)))
             Me.m_alHabitats.Insert(iHabitat, hi)
@@ -557,6 +528,82 @@ Namespace Ecospace
         Public Function CanAddRow() As Boolean
             Return True
         End Function
+
+        ''' <summary>
+        ''' Move row up, switching positions with the row above it.
+        ''' </summary>
+        Public Sub MoveRowUp(Optional ByVal iRow As Integer = -1)
+            Dim bMoveSelection As Boolean = (iRow = -1)
+
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            If Not CanMoveRowUp(iRow) Then Return
+            Me.MoveRow(iRow, iRow - 1)
+
+            If bMoveSelection Then
+                Me.SelectRow(iRow - 1)
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' States whether a row can be moved up.
+        ''' </summary>
+        Public Function CanMoveRowUp(Optional ByVal iRow As Integer = -1) As Boolean
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            Return (Me.RowsCount > (iFIRSTHABITATROW + 1)) And (iRow > iFIRSTHABITATROW)
+        End Function
+
+        ''' <summary>
+        ''' Move row down, switching positions with the row below it.
+        ''' </summary>
+        Public Sub MoveRowDown(Optional ByVal iRow As Integer = -1)
+            Dim bMoveSelection As Boolean = (iRow = -1)
+
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            If Not CanMoveRowDown(iRow) Then Return
+            Me.MoveRow(iRow, iRow + 1)
+
+            If bMoveSelection Then
+                Me.SelectRow(iRow + 1)
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' States whether a row can be moved down.
+        ''' </summary>
+        Public Function CanMoveRowDown(Optional ByVal iRow As Integer = -1) As Boolean
+            If iRow = -1 Then iRow = Me.SelectedRow()
+            Return (Me.RowsCount > (iFIRSTHABITATROW + 1)) And (iRow >= iFIRSTHABITATROW) And (iRow < Me.RowsCount - 1)
+        End Function
+
+        ''' <summary>
+        ''' Move one row to another position.
+        ''' </summary>
+        Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
+
+            Dim objTemp As cHabitatInfo = Nothing
+            Dim iStep As Integer = 1
+            Dim iFromHab As Integer = iFromRow - iFIRSTHABITATROW
+            Dim iToHab As Integer = iToRow - iFIRSTHABITATROW
+
+            ' Truncate
+            iFromHab = Math.Max(0, Math.Min(Me.m_alHabitats.Count - 1, iFromHab))
+            iToHab = Math.Max(0, Math.Min(Me.m_alHabitats.Count - 1, iToHab))
+
+            ' Nothing to do? abort
+            If iFromHab = iToHab Then Return
+            ' Determine direction of movement
+            If iFromHab < iToHab Then iStep = 1 Else iStep = -1
+
+            ' Swap Fleets (but do not swap the Fleet at iTo because then we've gone 1 too far)
+            For iHab As Integer = iFromHab To iToHab - iStep Step iStep
+                objTemp = Me.m_alHabitats(iHab + iStep)
+                Me.m_alHabitats(iHab + iStep) = Me.m_alHabitats(iHab)
+                Me.m_alHabitats(iHab) = objTemp
+                Me.UpdateRow(iHab + iFIRSTHABITATROW)
+                Me.UpdateRow(iHab + iFIRSTHABITATROW + iStep)
+            Next iHab
+
+        End Sub
 
 #End Region ' Row manipulation 
 
@@ -694,6 +741,7 @@ Namespace Ecospace
                     bConfigurationChanged = True
                 Else
                     ' Check if this habitat has been modified
+                    If ((iHabitat + 1) <> hi.HabitatIndex) Then bConfigurationChanged = True
                     bHabitatsChanged = bHabitatsChanged Or hi.IsChanged(Me.Core.EcospaceHabitats(hi.HabitatIndex))
                 End If
             Next iHabitat
@@ -717,7 +765,7 @@ Namespace Ecospace
                     Case eMessageReply.NO
                         ' NOP
                     Case Else
-                        ' Unexpected anwer: assert
+                        ' Unexpected answer: assert
                         Debug.Assert(False)
                 End Select
 
@@ -743,7 +791,7 @@ Namespace Ecospace
                                 hi.Confirmed = True
                                 bConfigurationChanged = True
                             Case Else
-                                ' Unexpected anwer: assert
+                                ' Unexpected answer: assert
                                 Debug.Assert(False)
                         End Select
 
@@ -763,6 +811,10 @@ Namespace Ecospace
                     hi = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
                     If (hi.IsNew()) Then
                         bSuccess = bSuccess And Me.Core.AddEcospaceHabitat(hi.Name, iDBID)
+                    Else
+                        If ((iHabitat + 1) <> hi.HabitatIndex) Then
+                            bSuccess = bSuccess And Me.Core.MoveEcospaceHabitat(hi.HabitatDBID, iHabitat + 1)
+                        End If
                     End If
                 Next
 

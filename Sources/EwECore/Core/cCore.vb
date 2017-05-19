@@ -767,7 +767,7 @@ Public Class cCore
     ''' Export the Ecopath model to a new Datasource
     ''' </summary>
     ''' <param name="ds"><see cref="IEwEDataSource">DataSource</see> to save to</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>This will perform a full model save to the temporary data source
     ''' passed to this method.</remarks>
     ''' -----------------------------------------------------------------------
@@ -982,7 +982,7 @@ Public Class cCore
     ''' <param name="sPP"><see cref="ePrimaryProductionTypes">Primary Production type</see> of the group (producer, consumer or detritus).</param>
     ''' <param name="iGroup">Position to insert group into the current group list. This position may be modified by this call.</param>
     ''' <param name="iGroupID">Database ID assigned to the new group.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddGroup(ByVal strName As String, ByVal sPP As Single, ByVal sVBK As Single,
             ByRef iGroup As Integer, ByRef iGroupID As Integer) As Boolean
@@ -1494,7 +1494,7 @@ Public Class cCore
     ''' Import one time series into the database.
     ''' </summary>
     ''' <param name="ts">The <see cref="cTimeSeries">cTimeSeries-derived</see> object to import.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function ImportEcosimTimeSeries(ByVal ts As cTimeSeriesImport, ByVal iDataset As Integer) As Boolean
 
         Dim bSucces As Boolean = True
@@ -1678,7 +1678,7 @@ Public Class cCore
     ''' <summary>
     ''' Store TS Input/output data in the core.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function UpdateEcosimTimeSeries() As Boolean
         Dim bSucces As Boolean = (Me.UpdateEcosimGroupTimeSeries() And Me.UpdateEcosimFleetTimeSeries())
@@ -1869,7 +1869,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="tsd">The dataset to load. Provide 'nothing' to unload any dataset.</param>
     ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadTimeSeries(ByVal tsd As cTimeSeriesDataset,
                                    Optional ByVal bEnable As Boolean = False) As Boolean
@@ -1884,7 +1884,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iDataset">One-based index of the dataset to load. Provide 0 to unload any dataset.</param>
     ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadTimeSeries(ByVal iDataset As Integer,
                                    Optional ByVal bEnable As Boolean = False) As Boolean
@@ -1999,7 +1999,7 @@ Public Class cCore
     ''' Apply all <see cref="cTimeSeries">Time Series</see> that are flagged as
     ''' <see cref="cTimeSeries.Enabled">Enabled</see> to the Ecosim model.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function UpdateTimeSeries(Optional ByVal bDirtyDatasource As Boolean = False) As Boolean
 
@@ -2200,7 +2200,7 @@ Public Class cCore
     ''' <param name="interval">The <see cref="eTSDataSetInterval">interval</see> between two points in the dataset.</param>
     ''' <param name="iDataset">Index of the new time series dataset if the 
     ''' operation completed succesfully.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AppendTimeSeriesDataset(ByVal strName As String,
                                             ByVal strDescription As String,
@@ -3132,7 +3132,7 @@ Public Class cCore
     ''' Compact the current M$ Access database.
     ''' </summary>
     ''' <param name="strFileTo">Target database to compact to. Can be left blank.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function Compact(ByVal strFileTo As String) As eDatasourceAccessType
 
@@ -3595,7 +3595,7 @@ Public Class cCore
     ''' <summary>
     ''' Save the Ecopath model.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>Note that this logic will NOT sync the two datasources; this
     ''' responsibility is left to the calling process. Yes, this is a hack 
     ''' around a process that needs to be very well thought out!!!</remarks>
@@ -4520,7 +4520,7 @@ Public Class cCore
     ''' <param name="data">Taxonomy data to add.</param>
     ''' <param name="sProportion">Proportion that this taxonomy definition contributes to the entire group.</param>
     ''' <param name="iDBID">Database ID for the new taxonomy definition.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddTaxon(ByVal iTarget As Integer,
                              ByVal bIsStanza As Boolean,
@@ -4730,7 +4730,7 @@ Public Class cCore
     ''' <param name="strName">Name of the fleet.</param>
     ''' <param name="iFleet">Position to insert fleet into the current fleet list. This position may be modified by this call.</param>
     ''' <param name="iFleetID">Database ID assigned to the new fleet.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddFleet(ByVal strName As String, ByRef iFleet As Integer, ByRef iFleetID As Integer) As Boolean
 
@@ -6722,7 +6722,7 @@ Public Class cCore
     ''' Load an <see cref="cEcoSimScenario">Ecosim scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSimScenario">Scenario</see> to load.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function LoadEcosimScenario(ByVal scenario As cEcoSimScenario) As Boolean
         Return LoadEcosimScenario(scenario.Index)
     End Function
@@ -6766,7 +6766,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="strName">Name to assign to new scenario.</param>
     ''' <param name="strDescription">Description to assign to new scenario.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function NewEcosimScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
@@ -6808,7 +6808,7 @@ Public Class cCore
     ''' Load an <see cref="cEcoSimScenario">Ecosim scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="iScenario">One-based index of the <see cref="cEcoSimScenario">Scenario</see> in the <see cref="m_EcoSimScenarios">Scenario list</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function LoadEcosimScenario(ByVal iScenario As Integer) As Boolean
 
         If (iScenario < 1) Then Return False
@@ -7025,7 +7025,7 @@ Public Class cCore
     ''' <summary>
     ''' Saves the current Ecosim scenario.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveEcosimScenario() As Boolean
 
@@ -7136,7 +7136,7 @@ Public Class cCore
     ''' Remove a <see cref="cEcoSimScenario">Ecosim Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSimScenario">Scenario</see> to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function RemoveEcosimScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
         If (scenario Is Nothing) Then Return True
         If (Not TypeOf (scenario) Is cEcoSimScenario) Then Return False
@@ -7147,7 +7147,7 @@ Public Class cCore
     ''' Remove a <see cref="cEcoSimScenario">Ecosim Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcoSimScenarios">Scenario list</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function RemoveEcosimScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
@@ -7660,7 +7660,7 @@ Public Class cCore
     ''' <summary>
     ''' Update all the underlying data structures that contain EcoSim scenario data
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Private Function UpdateEcoSimScenario(ByVal iDBID As Integer) As Boolean
 
         Dim iScenario As Integer = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iDBID)
@@ -9719,7 +9719,7 @@ Public Class cCore
     ''' <param name="sLat">Latitude of basemap (TL corner).</param>
     ''' <param name="sLon">Longitude of basemap (TL corner)></param>
     ''' <param name="sCellLength">Cell length, in km. A square grid is assumed.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function NewEcospaceScenario(ByVal strName As String, ByVal strDescription As String,
             ByVal strAuthor As String, ByVal strContact As String,
             ByVal iNumRows As Integer, ByVal iNumCols As Integer,
@@ -9774,7 +9774,7 @@ Public Class cCore
     ''' Load an <see cref="cEcoSimScenario">Ecospace scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to load.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function LoadEcospaceScenario(ByVal scenario As cEcospaceScenario) As Boolean
         Return LoadEcospaceScenario(scenario.Index)
     End Function
@@ -9783,7 +9783,7 @@ Public Class cCore
     ''' Load an <see cref="cEcoSpaceScenario">Ecospace scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="iScenario">Index of the <see cref="cEcoSpaceScenario">Scenario</see> in the <see cref="m_EcoSpaceScenarios">Scenario list</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function LoadEcospaceScenario(ByVal iScenario As Integer) As Boolean
 
         If (iScenario < 1) Then Return False
@@ -10090,7 +10090,7 @@ Public Class cCore
     ''' Remove a <see cref="cEcoSpaceScenario">Ecospace Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Public Function RemoveEcospaceScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
         If (scenario Is Nothing) Then Return True
         If (Not TypeOf (scenario) Is cEcospaceScenario) Then Return False
@@ -10102,7 +10102,7 @@ Public Class cCore
     ''' Remove a <see cref="cEcoSpaceScenario">Ecospace Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcoSpaceScenarios">Ecospace Scenario list</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcospaceScenario(ByVal iScenario As Integer) As Boolean
 
@@ -10880,7 +10880,7 @@ Public Class cCore
     ''' <see cref="cEcospaceHabitat">Ecospace habitat</see>.
     ''' </summary>
     ''' <param name="iDBID">Database ID of the Ecospace Habitat to update.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function UpdateEcospaceHabitat(ByVal iDBID As Integer) As Boolean
         Dim objHab As cEcospaceHabitat = Nothing
@@ -10912,7 +10912,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="strHabitatName">Name of habitat to add.</param>
     ''' <param name="iHabitatID">DBID of the habitat.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddEcospaceHabitat(ByVal strHabitatName As String, ByRef iHabitatID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
@@ -10948,7 +10948,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iDBID">The <see cref="cEcospaceHabitat.DBID"/> of the habitat 
     ''' to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcospaceHabitat(ByVal iDBID As Integer) As Boolean
         Dim bsucces As Boolean = False
@@ -10980,6 +10980,34 @@ Public Class cCore
         Return bsucces
     End Function
 
+    Public Function MoveEcospaceHabitat(ByVal iHabitatID As Integer, ByVal iIndex As Integer) As Boolean
+
+        Dim bSucces As Boolean = False
+        Dim ds As IEcospaceDatasource = Nothing
+
+        ' Sanity checks
+        If (Not Me.CanSave(True)) Then Return False
+        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
+
+        ' Increase batch count
+        If Not SetBatchLock(eBatchLockType.Restructure) Then Return False
+
+        ds = DirectCast(DataSource, IEcospaceDatasource)
+        If ds.MoveHabitat(iHabitatID, iIndex) Then
+
+            Me.DataModifiedMessage("Ecospace habitat order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceHabitat)
+            Me.DataModifiedMessage("Ecospace habitat order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceLayerHabitat)
+            bSucces = True
+
+        End If
+
+        ' Decrease batch count
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
+
+        Return bSucces
+
+    End Function
 #End Region ' Habitats
 
 #Region " MPAs "
@@ -11073,7 +11101,7 @@ Public Class cCore
     ''' <param name="iDBID"><see cref="cCoreInputOutputBase.DBID"/> of the new MPA.</param>
     ''' <param name="MPAMonths">One-based series of flags that indicate when the 
     ''' MPA is OPEN for fishing.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddEcospaceMPA(ByVal strMPAName As String,
                                    ByVal MPAMonths() As Boolean,
@@ -11110,7 +11138,7 @@ Public Class cCore
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
     ''' <param name="iMPADBID">The <see cref="cEcospaceMPA.DBID"/> to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcospaceMPA(ByVal iMPADBID As Integer) As Boolean
         Dim bsucces As Boolean = False
@@ -11259,7 +11287,7 @@ Public Class cCore
     ''' <param name="sWeight">Weight of layer to add.</param>
     ''' <param name="iID">DBID that the data source has assigned to the new 
     ''' layer.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddEcospaceImportanceLayer(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single, ByRef iID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
@@ -11295,7 +11323,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="objLayer">The <see cref="cEcospaceLayerImportance">
     ''' Ecospace importance layer</see> to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcospaceImportanceLayer(ByVal objLayer As cEcospaceLayerImportance) As Boolean
         Dim bsucces As Boolean = False
@@ -11336,7 +11364,7 @@ Public Class cCore
     ''' <param name="iDBID">DB id of the new map.</param>
     ''' <param name="strName">Name of layer to add.</param>
     ''' <param name="strDescription">Description of layer to add.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
@@ -11373,7 +11401,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iDBID">The <see cref="cCoreInputOutputBase.DBID"/> of the map
     ''' to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean
         Dim bsucces As Boolean = False
@@ -11787,7 +11815,7 @@ Public Class cCore
     ''' to assign to a multi-stanza configuration.</param>
     ''' <param name="aiStartAge">Zero-based array of start ages for <paramref name="aiGroupID">these groups</paramref>.</param>
     ''' <param name="iDBID">Database ID assigned to the new stanza group.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>The EwE core cannot handle a situation where a stanza configuration
     ''' is defined without having any groups. To avoid this situation, this method
     ''' requires a valid group ID.</remarks>
@@ -11821,7 +11849,7 @@ Public Class cCore
     ''' Remove a stanza group from the data source.
     ''' </summary>
     ''' <param name="iStanza">Index of the stanza group to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveStanza(ByRef iStanza As Integer) As Boolean
 
@@ -12014,7 +12042,7 @@ Public Class cCore
     ''' <param name="strDescription">Description to assign to new scenario.</param>
     ''' <param name="strAuthor">Author to assign to new scenario.</param>
     ''' <param name="strContact">Contact to assign to new scenario.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function NewEcotracerScenario(ByVal strName As String,
                                          ByVal strDescription As String,
@@ -12060,7 +12088,7 @@ Public Class cCore
     ''' current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcotracerScenario">Scenario</see> to load.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadEcotracerScenario(ByRef scenario As cEcotracerScenario) As Boolean
         Return LoadEcotracerScenario(scenario.Index)
@@ -12074,7 +12102,7 @@ Public Class cCore
     ''' <param name="iScenario">Index of the 
     ''' <see cref="cEcotracerScenario">Scenario</see> in the 
     ''' <see cref="m_EcotracerScenarios">Scenario list</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadEcotracerScenario(ByVal iScenario As Integer) As Boolean
 
@@ -12262,7 +12290,7 @@ Public Class cCore
     ''' Remove a <see cref="cEcotracerScenario">Ecotracer Scenario</see> from the current <see cref="IEwEDataSource">Data Source</see>.
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcotracerScenario">Scenario</see> to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcotracerScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
         If (scenario Is Nothing) Then Return True
@@ -12277,7 +12305,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iScenario">Index of the scenario in the 
     ''' <see cref="m_EcotracerScenarios">Ecotracer Scenario list</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function RemoveEcotracerScenario(ByVal iScenario As Integer) As Boolean
 
@@ -14710,7 +14738,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iLevelDBID">The <see cref="cPedigreeLevel.DBID"/> of the level to move.</param>
     ''' <param name="iIndex">The new posiition to move the level to.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function MovePedigreeLevel(ByVal iLevelDBID As Integer, ByVal iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
