@@ -18,7 +18,6 @@
 ' ===============================================================================
 '
 
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 

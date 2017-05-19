@@ -1002,6 +1002,13 @@ Namespace Style
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if sketching one habitat layer should allow the GUI to
+        ''' auto-correct the cell ratio of other habitats in affected cells.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property UseHabitatAreaCorrection As Boolean = False
 
 #End Region ' Maps and charts
 

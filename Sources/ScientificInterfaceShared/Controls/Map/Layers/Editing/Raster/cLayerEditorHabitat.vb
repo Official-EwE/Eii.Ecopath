@@ -38,13 +38,15 @@ Namespace Controls.Map.Layers
         Inherits cLayerEditorRange
 
         Public Sub New()
-            MyBase.New()
+            MyBase.New(GetType(ucLayerEditorHabitat))
             Me.CellValue = 1.0!
         End Sub
 
-        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
-                                             value As Object, _
-                                             e As System.Windows.Forms.MouseEventArgs, _
+        Public Property UseHabitatAreaCorrection As Boolean = False
+
+        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point,
+                                             value As Object,
+                                             e As System.Windows.Forms.MouseEventArgs,
                                              ptClick As System.Drawing.Point)
 
             If (Me.UIContext Is Nothing) Then Return
@@ -55,23 +57,26 @@ Namespace Controls.Map.Layers
             Dim sValue As Single = Math.Min(Math.Max(0.0!, CSng(value)), 1.0!)
             Dim sTotal As Single = 0
 
-            ' Hackerdihack: scale cell for all other habitat layers
-            For i As Integer = 1 To core.nHabitats - 1
-                If (i = iHab) Then
-                    sTotal += sValue
-                Else
-                    sTotal += CSng(bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X))
-                End If
-            Next
+            If (Me.UseHabitatAreaCorrection) Then
 
-            If (sTotal > 1) Then
-                Dim sRemainer As Single = (1 - sValue)
                 For i As Integer = 1 To core.nHabitats - 1
-                    If (i <> iHab) Then
-                        ' Scale down other habitat capacities
-                        bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X) = CSng(bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X)) * sRemainer
+                    If (i = iHab) Then
+                        sTotal += sValue
+                    Else
+                        sTotal += CSng(bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X))
                     End If
                 Next
+
+                If (sTotal > 1) Then
+                    Dim sRemainer As Single = (1 - sValue)
+                    For i As Integer = 1 To core.nHabitats - 1
+                        If (i <> iHab) Then
+                            ' Scale down other habitat capacities
+                            bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X) = CSng(bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X)) * sRemainer
+                        End If
+                    Next
+                End If
+
             End If
 
             MyBase.SetCellValue(ptSet, sValue, e, ptClick)

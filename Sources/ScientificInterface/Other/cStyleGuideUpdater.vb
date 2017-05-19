@@ -214,6 +214,7 @@ Friend Class cStyleGuideUpdater
             .MapReferenceLayerTL = New PointF(My.Settings.MapLayerRefLonMin, My.Settings.MapLayerRefLatMax)
             .MapReferenceLayerBR = New PointF(My.Settings.MapLayerRefLonMax, My.Settings.MapLayerRefLatMin)
             .ShowExcludedCells = My.Settings.MapShowExcludedCells
+            .UseHabitatAreaCorrection = My.Settings.UseHabitatAreaCorrection
 
             .PreferredDPI = My.Settings.OutputDPI
 
@@ -266,6 +267,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLayerRefLatMin = .MapReferenceLayerBR.Y
             My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
             My.Settings.MapShowExcludedCells = .ShowExcludedCells
+            My.Settings.UseHabitatAreaCorrection = .UseHabitatAreaCorrection
 
             My.Settings.CountryNames = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName)
             My.Settings.EcosystemTypes = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.EcosystemType)
