@@ -94,6 +94,8 @@ Namespace Database
 #If DEBUG Then
                 Me.m_ID = s_IDnext
                 s_IDnext += 1
+#End If
+#If VERBOSE_LEVEL > 2 Then
                 Debug.WriteLine("DB writer " & Me.m_ID & " created(" & strTable & ")")
 #End If
                 Me.Connect(db, strTable)
@@ -217,7 +219,7 @@ Namespace Database
                 Me.m_db = Nothing
                 Me.m_strTable = ""
 
-#If DEBUG Then
+#If VERBOSE_LEVEL > 2 Then
                 Debug.WriteLine("DB writer " & Me.m_ID & " disconnected")
 #End If
                 Return bSucces
@@ -304,15 +306,15 @@ Namespace Database
             ''' </summary>
             ''' ---------------------------------------------------------------
             Protected Overrides Sub Finalize()
-#If DEBUG Then
+#If VERBOSE_LEVEL > 2 Then
                 Debug.WriteLine("DB writer " & Me.m_ID & " finalized")
 #End If
-                ' JS 18May16: Disconnecting upoin disposal is very likely to fail,
+                ' JS 18May16: Disconnecting upon disposal is very likely to fail,
                 ' because the underlying transaction has probably already perished.
                 ' Instead, users should explicitly Disconnect
                 Debug.Assert(Not Me.IsConnected(), "Database adapter for " & Me.m_strTable & " not explicitly released!")
 
-                ' Changes may get lost here, which is the consequence of not properly releaseing
+                ' Changes may get lost here, which is the consequence of not properly releasing
                 If Me.IsConnected Then
                     Me.Disconnect(Me.m_db.Transaction IsNot Nothing)
                 End If
@@ -355,7 +357,7 @@ Namespace Database
 
                     If bIsValueNull And Not bIsNullable Then
 
-                        ' Set default using common datatype conversions to bypass language-specific
+                        ' Set default using common data type conversions to bypass language-specific
                         ' problems caused by misinterpreted decimal separators, etc
 
                         ' Get column data type
@@ -440,7 +442,7 @@ Namespace Database
             ''' ---------------------------------------------------------------
             ''' <summary>
             ''' Helper method; replaces DBNull values that are specified as not 
-            ''' Nullable in the underlying Access database schema with the default 
+            ''' nullable in the underlying Access database schema with the default 
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
