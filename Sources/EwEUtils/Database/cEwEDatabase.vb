@@ -477,7 +477,7 @@ Namespace Database
 
 #End Region ' Class cEwEDbWriter
 
-#Region " Private vars and consts "
+#Region " Private vars and constants "
 
         ''' <summary>Current database version.</summary>
         Private m_sVersion As Single = 0.0
@@ -491,7 +491,7 @@ Namespace Database
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73!
 
-#End Region ' Private vars and consts
+#End Region ' Private vars and constants
 
 #Region " Open and close "
 
@@ -549,7 +549,7 @@ Namespace Database
         ''' <param name="strDatabaseTo">Target database name.</param>
         ''' <param name="strModelName">New name to assign to the model.</param>
         ''' <param name="bOverwrite">States whether any model in the way will be obliterated.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function SaveAs(ByVal strDatabaseTo As String,
                 ByVal strModelName As String,
@@ -621,7 +621,7 @@ Namespace Database
         ''' <param name="strFileFrom">Source database to compact.</param>
         ''' <param name="strFileTo">Target database to compact to. If left 
         ''' blank, the source database is replaced with a compacted version.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function Compact(ByVal strFileFrom As String,
                                              ByVal strFileTo As String) As eDatasourceAccessType
@@ -702,7 +702,7 @@ Namespace Database
         ''' <summary>
         ''' Begins a transaction for the current <see cref="GetConnection">Connection</see>.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>19may07: status experimental</remarks>
         ''' -------------------------------------------------------------------
         Public Function BeginTransaction() As Boolean
@@ -831,7 +831,7 @@ Namespace Database
         ''' <seealso cref="GetReader"/>
         ''' </summary>
         ''' <param name="reader">The <see cref="IDataReader"/> to release.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseReader(ByVal reader As IDataReader) As Boolean
             Try
@@ -862,7 +862,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="writer">The writer to release</param>
         ''' <param name="bSaveChanges">States whether changes should be written (true) or discarded (false).</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseWriter(ByRef writer As cEwEDbWriter, Optional ByVal bSaveChanges As Boolean = True) As Boolean
             Dim bSuccess As Boolean = writer.Disconnect(bSaveChanges)
@@ -932,7 +932,7 @@ Namespace Database
         ''' <see cref="GetAdapter"/>.
         ''' </summary>
         ''' <param name="adapter">The <see cref="IDataAdapter"/> to release.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ReleaseAdapter(ByRef adapter As IDataAdapter) As Boolean
             ' Nothing to do
@@ -944,7 +944,7 @@ Namespace Database
         ''' Executes a SQL command that does not return any information.
         ''' </summary>
         ''' <param name="strSQL">The query to execute.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function Execute(ByVal strSQL As String) As Boolean
 
@@ -1251,7 +1251,7 @@ Namespace Database
         ''' to commit any changes to. If this parameter is left blank, any changes made to
         ''' the dataset and its data are discarded.</param>
         ''' <param name="strTable">The name of the table to update.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Overridable Function ReleaseDataSet(ByVal dset As DataSet, Optional ByVal adapter As IDataAdapter = Nothing, Optional ByVal strTable As String = "") As Boolean
             Return Me.CommitDataSet(dset, adapter, strTable)
@@ -2067,7 +2067,7 @@ Namespace Database
         ''' instance from the database.
         ''' </summary>
         ''' <param name="obj">The object to delete.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function DeleteObject(ByVal obj As cOOPStorable) As Boolean
 
@@ -2100,7 +2100,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="obj">The object to delete.</param>
         ''' <param name="t">The class level to delete from the database.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Private Function DeleteObjectRecursive(ByVal obj As cOOPStorable, ByVal t As Type) As Boolean
 
@@ -2323,7 +2323,7 @@ Namespace Database
         ''' Create a table for a <see cref="cOOPStorable">cOOPStorable</see>-derived class 
         ''' </summary>
         ''' <param name="t">The <see cref="Type">type</see> to build the table for.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Private Function OOPCreateObjectTable(ByVal t As Type) As Boolean
 
@@ -2394,7 +2394,7 @@ Namespace Database
         ''' <param name="t">The type to update the database schema for.</param>
         ''' <param name="conn">The database connection to update the database
         ''' schema.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>
         ''' <para>This method does not recurse; a single type is processed for a 
         ''' single table. To process an enitre object inheritance tree, use
@@ -2466,7 +2466,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="t">The type to update the database schema for.</param>
         ''' <returns>
-        ''' True if succesful.
+        ''' True if successful.
         ''' </returns>
         ''' -------------------------------------------------------------------
         Private Function OOPUpdateObjectSchema(ByVal t As Type) As Boolean
