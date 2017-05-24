@@ -420,6 +420,8 @@ Namespace Utilities
                 Return ConvertToSingle(strNumber, CSng(objNullValue), strDecimalSeparator, strThousandsSeparator)
             ElseIf typeTarget Is GetType(Double) Then
                 Return ConvertToDouble(strNumber, CDbl(objNullValue), strDecimalSeparator, strThousandsSeparator)
+            ElseIf typeTarget Is GetType(Decimal) Then
+                Return ConvertToDecimal(strNumber, CDec(objNullValue), strDecimalSeparator, strThousandsSeparator)
             End If
             Return ConvertToInteger(strNumber, CInt(objNullValue), strDecimalSeparator, strThousandsSeparator)
         End Function
