@@ -2076,6 +2076,10 @@
       <Project>{243CBCB0-4FD7-43B8-A6D1-27E26E866A99}</Project>
       <Name>EwEModelFromEcosimPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj">
+      <Project>{19b57860-d7c5-479a-8979-e4dfe9a46b50}</Project>
+      <Name>EwEMSEPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj">
       <Project>{C73CF657-456C-4397-B6A1-5DC8FA68AD48}</Project>
       <Name>EwEMultiSimPlugin</Name>
