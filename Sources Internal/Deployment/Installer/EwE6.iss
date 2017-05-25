@@ -7,7 +7,7 @@
 #define MyAppExeName "ewe6.exe"
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
-#define Ecosampler 1
+#define Ecosampler 0
 #define SpatTemp 0
 #define MergeGroups 0
 
@@ -84,6 +84,9 @@ Source: "C:\Temp\Build\EwEEcoTroph.dll"; DestDir: "{app}\Plugins"; Flags: ignore
 Source: "C:\Temp\Build\EwEModelFromEcosimPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\output\modelfromsim
 Source: "C:\Temp\Build\Includes\LPSolve\win32\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win32\"; Flags: ignoreversion
 Source: "C:\Temp\Build\Includes\LPSolve\win64\lpsolve55.dll"; DestDir: "{app}\Includes\LPSolve\win64\"; Flags: ignoreversion
+Source: "C:\Temp\Build\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
+Source: "C:\Temp\Build\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: plugin\automation\mse
+Source: "C:\Temp\Build\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion; Components: plugin\automation\mse
 Source: "C:\Temp\Build\UserGuide\ChristensenValueChainMS.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\analysis\valuechain
 Source: "C:\Temp\Build\UserGuide\EwE model from time step.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 Source: "C:\Temp\Build\UserGuide\EwE6_userguide.chm"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: userguide
@@ -235,6 +238,7 @@ Name: "plugin\output\resultextractor"; Description: "Results extractor"; Types: 
 Name: "plugin\automation"; Description: "Automation"; Types: full custom
 Name: "plugin\automation\multisim"; Description: "Multi-Sim"; Types: custom full
 Name: "plugin\automation\stepwisef"; Description: "Stepwise Fitting"; Types: full
+Name: "plugin\automation\mse"; Description: "Cefas MSE"; Types: custom full
 #if Ecosampler == 1
 Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
 #endif
