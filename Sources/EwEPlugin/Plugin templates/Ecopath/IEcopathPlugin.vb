@@ -39,7 +39,7 @@ Public Interface IEcopathPlugin
     ''' data is being loaded.</param>
     ''' <remarks>This plug-in point is non-exclusive, meaning that multiple
     ''' plug-ins can respond to this event.</remarks>
-    ''' <returns>True if loaded succesful.</returns>
+    ''' <returns>True if loaded successful.</returns>
     ''' -----------------------------------------------------------------------
     Function LoadModel(ByVal dataSource As Object) As Boolean
 
@@ -59,7 +59,7 @@ Public Interface IEcopathPlugin
     ''' <summary>
     ''' Plug-in point that is called when an Ecopath model has been closed.
     ''' </summary>
-    ''' <returns>True if closed succesful.</returns>
+    ''' <returns>True if closed successful.</returns>
     ''' -----------------------------------------------------------------------
     Function CloseModel() As Boolean
 

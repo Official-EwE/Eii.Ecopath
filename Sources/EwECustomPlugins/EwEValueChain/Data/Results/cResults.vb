@@ -459,7 +459,7 @@ Public Class cResults
     ''' <param name="unit">Unit to save variable for</param>
     ''' <param name="var">Type of the variable to save</param>
     ''' <param name="sValue">Value to save</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function Store(ByVal unit As cUnit, _
                           ByVal var As eVariableType, _
@@ -485,7 +485,7 @@ Public Class cResults
     ''' </summary>
     ''' <param name="objKey">The key to store the snapshot for.</param>
     ''' <param name="iTimeStep">The time step to store a snapshot for.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function StoreSnapshot(ByVal objKey As Object, ByVal iTimeStep As Integer) As Boolean
 

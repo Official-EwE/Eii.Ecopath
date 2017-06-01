@@ -57,7 +57,7 @@ Public MustInherit Class cMediatedInteraction
     ''' <summary>
     ''' Build the list of shapes used by this interaction from the underlying Ecosim data.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Friend MustOverride Function Load() As Boolean
 
     Public Sub Clear()

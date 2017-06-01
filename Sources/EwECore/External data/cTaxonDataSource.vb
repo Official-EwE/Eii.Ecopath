@@ -214,7 +214,7 @@ Namespace ExternalData
         ''' </summary>
         ''' <param name="strDataName">Name of incoming data (not used).</param>
         ''' <param name="data">Actual incoming data.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function ReceiveData(ByVal strDataName As String, ByVal data As EwEPlugin.Data.IPluginData) As Boolean _
             Implements EwEPlugin.Data.IDataConsumerPlugin.ReceiveData

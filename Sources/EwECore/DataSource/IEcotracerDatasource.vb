@@ -54,7 +54,7 @@ Namespace DataSources
         ''' Loads an Ecotracer scenario from the datasource.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID of the scenario to load.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>An implementing class should ensure that this load will cascade to
         ''' load all information pertaining to a scenario.</remarks>
         ''' -------------------------------------------------------------------
@@ -68,7 +68,7 @@ Namespace DataSources
         ''' <param name="iScenarioID">Database ID to save the current scenario to.
         ''' If this parameter is left blank, the current scenario is saved
         ''' under its own database ID.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function SaveEcotracerScenario(ByVal iScenarioID As Integer) As Boolean
 
@@ -81,7 +81,7 @@ Namespace DataSources
         ''' <param name="strAuthor">Author to assign to the new scenario.</param>
         ''' <param name="strContact">Contact info to assign to the new scenario.</param>
         ''' <param name="iScenarioID">Database ID assigned to the new scenario.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function AppendEcotracerScenario(ByVal strScenarioName As String, ByVal strDescription As String, _
                 ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean
@@ -91,7 +91,7 @@ Namespace DataSources
         ''' Removes an Ecotracer scenario from the datasource.
         ''' </summary>
         ''' <param name="iScenarioID">Database ID of the scenario to remove.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function RemoveEcotracerScenario(ByVal iScenarioID As Integer) As Boolean
 

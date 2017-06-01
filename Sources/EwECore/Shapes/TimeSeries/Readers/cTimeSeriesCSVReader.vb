@@ -65,7 +65,7 @@ Public Class cTimeSeriesCSVReader
     ''' <param name="strDecimalSeparator">
     ''' Decimal separator to use when interpreting floating point values in the text.
     ''' </param>
-    ''' <returns>True when succesful.</returns>
+    ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Overloads Function Read(ByVal strFileName As String, _
                                    ByVal strDelimiter As String, _

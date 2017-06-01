@@ -149,7 +149,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Close the EII datasource.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function Close() As Boolean _
          Implements IEwEDataSource.Close
@@ -250,7 +250,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Initiates a full load of an ecopath model.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function LoadModel() As Boolean _
         Implements IEcopathDataSource.LoadModel
@@ -320,7 +320,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Helper method, loads model info for the current model.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Private Function LoadModelInfo() As Boolean
 
@@ -389,7 +389,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Loads Ecopath Group information.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathGroups() As Boolean
 
@@ -484,7 +484,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Loads ecopath diet composition information.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathDietComp() As Boolean
 
@@ -531,15 +531,6 @@ Public Class cEIIXMLDataSource
             Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
             bSucces = False
         End Try
-
-        ' Read 'Import'
-        dt = Me.ReadTable("EcopathGroup")
-        iPred = 1
-        For Each row As DataRow In dt.Rows
-            If CSng(row("ImpVar")) > 0 Then ecopathDS.DCInput(iPred, 0) = CSng(row("ImpVar"))
-            iPred += 1
-        Next
-        dt.Clear()
 
         Return True
 
@@ -676,7 +667,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Loads all fleet-related data.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' If there is no <see cref="IsFishing">fishing</see>, the fleet data will not be loaded.
     ''' This check is inherited from EwE5.
@@ -696,7 +687,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Loads all Ecopath fleets.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathFleets() As Boolean
 
@@ -876,7 +867,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Loads Ecopath taxonomy information.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Private Function LoadEcopathTaxon() As Boolean
 
@@ -891,7 +882,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Load the list of available Ecosim scenarios.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' Note that this will NOT load any actual Ecosim scenario. Scenario definitions 
     ''' merely provide a preview of available Ecosim scenarios in the database.
@@ -934,7 +925,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Load the list of available Ecospace scenarios.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' Note that this will NOT load any actual Ecospace scenario. Scenario definitions 
     ''' merely provide a preview of available Ecospace scenarios in the database.
@@ -977,7 +968,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Load the list of available Ecotracer scenarios.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>Not supported yet</remarks>
     ''' -----------------------------------------------------------------------
     Private Function LoadEcotracerScenarioDefinitions() As Boolean
@@ -1049,7 +1040,7 @@ Public Class cEIIXMLDataSource
     ''' Loads an ecosim scenario from the DB.
     ''' </summary>
     ''' <param name="iScenarioID">Database ID of the scenario to load.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Friend Function LoadEcosimScenario(ByVal iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.LoadEcosimScenario
@@ -1796,7 +1787,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Load the mediation weights for the active scenario.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function LoadMediationWeights() As Boolean
 
@@ -2227,7 +2218,7 @@ Public Class cEIIXMLDataSource
     ''' Load the spatial data associated with an Ecospace scenario.
     ''' </summary>
     ''' <param name="iScenarioID">The scenario to load the data for.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function LoadEcospaceMap(dtScenario As DataTable, ByVal iScenarioID As Integer) As Boolean
 
@@ -2260,7 +2251,7 @@ Public Class cEIIXMLDataSource
     ''' Load the spatial data associated with an Ecospace scenario.
     ''' </summary>
     ''' <param name="iScenarioID">The scenario to load the data for.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function LoadEcospaceMonthlyMaps(ByVal iScenarioID As Integer) As Boolean
 
@@ -2785,7 +2776,7 @@ Public Class cEIIXMLDataSource
     ''' <summary>
     ''' Initiates a save of an EwE model
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Function SaveModel() As Boolean _
              Implements IEcopathDataSource.SaveModel
@@ -3020,7 +3011,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="sPP">The Type of the new group; 0=consumer, 1=producer, 2=detritus.</param>
     ''' <param name="iPosition">The position of the new group in the group sequence.</param>
     ''' <param name="iDBID">Database ID assigned to the new Group.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' Note that this will not adjust the data arrays. Due to the complex organization of the
     ''' core a full data reload is required after a group is created.
@@ -3037,7 +3028,7 @@ Public Class cEIIXMLDataSource
     ''' Remove a group from the datasource.
     ''' </summary>
     ''' <param name="iDBID">Database ID of the group to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' Note that this will not adjust the data arrays. Due to the complex organization of the
     ''' core a full data reload is required after a group is removed.
@@ -3075,7 +3066,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <param name="strFleetName">Name of the new fleet.</param>
     ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddFleet
@@ -3101,7 +3092,7 @@ Public Class cEIIXMLDataSource
     ''' </summary>
     ''' <param name="iDBID">Database ID of the fleet to move.</param>
     ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.MoveFleet
@@ -3230,7 +3221,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="strAuthor">Author to assign to the new scenario.</param>
     ''' <param name="strContact">Contact info to assign to the new scenario.</param>
     ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Friend Function AppendEcosimScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String, ByRef iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.AppendEcosimScenario
@@ -3267,7 +3258,7 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID assigned to the new shape.</param>
     ''' <param name="asData">Shape point data.</param>
     ''' <param name="functionType">Primitive function type shape was created from.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Function AppendShape(ByVal strShapeName As String,
                          ByVal shapeType As eDataTypes,

@@ -526,7 +526,7 @@ Public Class frmNetworkAnalysis
                                           Me.m_uic) Then
 
                 Try
-                    ' Display data if succesful
+                    ' Display data if successful
                     Me.m_contentmanager.DisplayData()
                     Me.Invalidate(True)
                 Catch ex As Exception

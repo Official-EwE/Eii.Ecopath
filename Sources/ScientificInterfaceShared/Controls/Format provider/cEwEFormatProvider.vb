@@ -61,7 +61,7 @@ Namespace Controls
             ''' <param name="ctrl">The <see cref="Control">Windows Control</see> to wrap.</param>
             ''' <param name="provider">The <see cref="cEwEFormatProvider">cEwEFormatProvider</see>
             ''' that requested this wrap.</param>
-            ''' <returns>A <see cref="IControlWrapper">IControlWrapper</see> instance if succesful,
+            ''' <returns>A <see cref="IControlWrapper">IControlWrapper</see> instance if successful,
             ''' or nothing if an error occurred.</returns>
             ''' -----------------------------------------------------------------------
             Shared Function GetControlWrapper(ByVal uic As cUIContext, _

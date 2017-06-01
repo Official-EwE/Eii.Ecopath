@@ -263,7 +263,7 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="strFileName">New FN to copy the DB to</param>
         ''' <returns>True if successful.</returns>
-        ''' <remarks>This will open the new database if succesful.</remarks>
+        ''' <remarks>This will open the new database if successful.</remarks>
         ''' -------------------------------------------------------------------
         Public Function SaveAs(ByVal strFileName As String, ByVal strModelName As String) As eDatasourceAccessType
             Return Me.m_db.SaveAs(strFileName, strModelName, True)
@@ -683,7 +683,7 @@ Namespace DataSources
                 Me.m_db.RollbackTransaction()
             End If
 
-            ' Save succesful?
+            ' Save successful?
             If bSucces Then
                 ' #Yes: Clear ecopath changed flags
                 Me.ClearChanged(s_EcopathComponents)

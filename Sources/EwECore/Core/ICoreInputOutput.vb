@@ -77,7 +77,7 @@ Public Interface ICoreInputOutput
     ''' </summary>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iIndex">Optional index of the value to set when accessing an array-type variable.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Boolean
 
     ''' <summary>
@@ -497,7 +497,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="VarName">Variable to replace status information for.</param>
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
     ''' <param name="newStatus">The new status values to set.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Friend Function SetStatus(ByVal VarName As eVarNameFlags,
                               ByVal newStatus As eStatusFlags,
@@ -518,7 +518,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="VarName">Variable to add status information for.</param>
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
     ''' <param name="statusFlags">The status values to add.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Friend Function SetStatusFlags(ByVal VarName As eVarNameFlags,
                                    ByVal statusFlags As eStatusFlags,
@@ -539,7 +539,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="VarName">Variable to clear status information for.</param>
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
     ''' <param name="statusFlags">The status values to clear.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Friend Function ClearStatusFlags(ByVal VarName As eVarNameFlags, ByVal statusFlags As eStatusFlags, Optional ByVal iIndex As Integer = -9999) As Boolean
         Try

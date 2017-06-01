@@ -237,7 +237,7 @@ Public Class cForcingFunction
     ''' <summary>
     ''' Update the already existing underlying EcoSim data structures (m_data)
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>This gets called by the cForcingData when it has been edited to update the existing EcoSim data</remarks>
     Public Overrides Function Update() As Boolean
 

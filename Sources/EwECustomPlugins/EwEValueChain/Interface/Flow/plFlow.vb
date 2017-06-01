@@ -956,7 +956,7 @@ Public Class plFlow
     ''' Remove an existing unit from the flow, and remove it from the underlying data
     ''' </summary>
     ''' <param name="unit"></param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function DeleteUnit(ByVal unit As cUnit, ByVal fp As cFlowPosition) As Boolean
 

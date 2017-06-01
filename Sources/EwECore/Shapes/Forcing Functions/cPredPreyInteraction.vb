@@ -75,7 +75,7 @@ Public Class cPredPreyInteraction
     ''' <summary>
     ''' Build the list of shapes used by this interaction from the underlying Ecosim data.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     Friend Overrides Function Load() As Boolean
 
         Dim esdata As cEcosimDatastructures = m_manager.getEcoSimData

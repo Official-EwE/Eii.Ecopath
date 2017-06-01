@@ -2188,7 +2188,7 @@ Public Class frmEwE6
     ''' <param name="strFileName">The name of the file to create.</param>
     ''' <param name="strModelName">The name of the model to create.</param>
     ''' <param name="format">The file format to create.</param>
-    ''' <returns>An Ecopath database, if succesful.</returns>
+    ''' <returns>An Ecopath database, if successful.</returns>
     ''' <remarks>
     ''' Note that this will NOT load the new model! For this, 
     ''' <see cref="LoadEcopathModel"/> will need to be called.
@@ -2273,7 +2273,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">The name of the file to create.</param>
     ''' <param name="strModelName">The name of the model to create.</param>
-    ''' <returns>An Ecopath database, if succesful.</returns>
+    ''' <returns>An Ecopath database, if successful.</returns>
     ''' <remarks>
     ''' <para>Note that this will NOT load the new model! For this, 
     ''' <see cref="LoadEcopathModel"/> will need to be called.</para>
@@ -2343,7 +2343,7 @@ Public Class frmEwE6
     ''' Load or reload an Ecosim scenario.
     ''' </summary>
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Friend Function LoadEcosimScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
 
@@ -2456,7 +2456,7 @@ Public Class frmEwE6
     ''' Load or reload an Ecospace scenario.
     ''' </summary>
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Friend Function LoadEcospaceScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
 
@@ -2556,7 +2556,7 @@ Public Class frmEwE6
     ''' Load or reload an Ecotracer scenario.
     ''' </summary>
     ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Friend Function LoadEcotracerScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
 
@@ -2566,7 +2566,7 @@ Public Class frmEwE6
 
         ' Prerequesite: Ecosim needs to be loaded
         Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
-        ' Not succesful? abort
+        ' Not successful? abort
         If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return False
 
         ' Try to obtain ecotracer scenario to load
@@ -4476,7 +4476,7 @@ Public Class frmEwE6
 
         ' Prerequesite: Ecosim needs to be loaded
         Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
-        ' Not succesful? abort
+        ' Not successful? abort
         If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
 
         Dim dlg As New dlgEcotracerScenario(Me.UIContext, dlgEcotracerScenario.eDialogModeType.CreateScenario)
@@ -4624,7 +4624,7 @@ Public Class frmEwE6
             Case eTracerRunModeTypes.RunSim ' Ecosim
                 ' Load sim
                 Me.CoreController.LoadState(eCoreExecutionState.EcosimLoaded)
-                ' Not succesful? abort
+                ' Not successful? abort
                 If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
                 ' Get property to enable tracer for Sim
                 ecosimModelParams = Me.Core.EcoSimModelParameters
@@ -4635,7 +4635,7 @@ Public Class frmEwE6
             Case eTracerRunModeTypes.RunSpace ' Ecospace
                 ' Load space
                 Me.CoreController.LoadState(eCoreExecutionState.EcospaceLoaded)
-                ' Not succesful? abort
+                ' Not successful? abort
                 If Not Me.Core.StateMonitor.HasEcospaceLoaded Then Return
                 ' Get property to enable tracer for Space
                 ecospaceModelParams = Me.Core.EcospaceModelParameters

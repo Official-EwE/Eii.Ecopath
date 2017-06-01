@@ -966,7 +966,7 @@ Public Class cCoreStateMonitor
     ''' states that supercede earlier states.</para>
     ''' <para>For instance, the eCoreExecutionState EcosimReady can only 
     ''' occur when an underlying Ecopath model has been loaded and when
-    ''' the Ecopath model as completed a succesful run: the state
+    ''' the Ecopath model as completed a successful run: the state
     ''' <see cref="eCoreExecutionState.EcosimLoaded">EcosimLoaded</see> thus supercedes
     ''' <see cref="eCoreExecutionState.EcopathLoaded">EcopathLoaded</see> and
     ''' <see cref="eCoreExecutionState.EcopathCompleted">EcopathCompleted</see>.</para>

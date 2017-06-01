@@ -95,7 +95,7 @@ Namespace Database
         ''' Perform a database update.
         ''' </summary>
         ''' <param name="db">The <see cref="cEwEDatabase">database</see> to update</param>
-        ''' <returns>True if succesful</returns>
+        ''' <returns>True if successful</returns>
         ''' -------------------------------------------------------------------
         Public Function UpdateDatabase(ByVal db As cEwEDatabase) As Boolean
             Return Me.RunAllUpdates(db)

@@ -66,7 +66,7 @@ Public Class cIndicesWithPPREst
             ' Switch on PPR in Ecosim
             Me.NetworkManager.UseEcosimNetwork = True
             Me.NetworkManager.EcosimPPROn = True
-            ' Ecosim NA run succesful?
+            ' Ecosim NA run successful?
             bSucces = bSucces And Me.NetworkManager.RunEcosimNetwork()
             Me.NetworkManager.UseEcosimNetwork = False
         Else

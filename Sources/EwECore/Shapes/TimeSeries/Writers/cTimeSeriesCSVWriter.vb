@@ -92,7 +92,7 @@ Public Class cTimeSeriesCSVWriter
     ''' separating the text into different columns.</param>
     ''' <param name="strDecimalSeparator">Decimal separator to use when 
     ''' interpreting floating point values in the text.</param>
-    ''' <returns>True when succesful.</returns>
+    ''' <returns>True when successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Overridable Function Write(ByVal strFileName As String, _
                                       ByVal strDelimiter As String, _

@@ -156,7 +156,7 @@ Namespace Database
         ''' <param name="strDatabaseTo">Target database name.</param>
         ''' <param name="strModelName">New name to assign to the model.</param>
         ''' <param name="bOverwrite">States whether any model in the way will be obliterated.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function SaveAs(ByVal strDatabaseTo As String, _
                 ByVal strModelName As String, _
@@ -449,7 +449,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strFileFrom">Source database to compact.</param>
         ''' <param name="strFileTo">Target database to compact to. Can be left blank.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>
         ''' Only MDB databases can be compacted for now. Note that the database
         ''' cannot be <see cref="IsConnected">connected</see> when compacting.

@@ -1487,7 +1487,7 @@ Namespace Ecospace
         ''' <param name="iAreaPercentToClose">Percent of water cells 
         ''' to close in addition to the current MPAs.</param>
         ''' <param name="iMPA">The MPA to assign new cells to.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>
         ''' Cells are selected from the best count map, aiMap, by descending
         ''' value until either the requested percentage is met or there are no 

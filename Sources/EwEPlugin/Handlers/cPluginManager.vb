@@ -864,7 +864,7 @@ Public Class cPluginManager
     ''' <param name="objEcoPath"></param>
     ''' <param name="objEcoSim"></param>
     ''' <param name="objEcoSpace"></param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Public Function CoreInitialized(ByVal objEcoPath As Object, ByVal objEcoSim As Object, ByVal objEcoSpace As Object) As Boolean
 
@@ -883,7 +883,7 @@ Public Class cPluginManager
     ''' </summary>
     ''' <param name="varname"></param>
     ''' <param name="datatype"></param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Public Function DataValidated(ByVal varname As eVarNameFlags, ByVal datatype As eDataTypes) As Boolean
 
@@ -1367,7 +1367,7 @@ Public Class cPluginManager
     ''' Invokes right after LoadEcospaceScenario
     ''' </summary>
     ''' <param name="EcospaceDatastructures"></param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>Due to avoid circular references, this project is unable to reference
     ''' the assembly EwECore. As such, links in this help text cannot be resolved.
     ''' Refer to the EwE Datasource documentation for calling conventions and 
