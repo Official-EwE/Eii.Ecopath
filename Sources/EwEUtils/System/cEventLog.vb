@@ -61,7 +61,7 @@ Public Class cEventLog
     ''' </summary>
     ''' <param name="strEntry">Value to write</param>
     ''' <param name="eventlogentry"><see cref="EventLogEntryType">Entry Type</see>.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function WriteToEventLog(ByVal strEntry As String, _
                                     Optional ByVal eventlogentry As EventLogEntryType = EventLogEntryType.Information) As Boolean

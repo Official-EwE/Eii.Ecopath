@@ -1197,7 +1197,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="adapter">The <see cref="IDataAdapter">IDataAdapter</see> to fill the <see cref="DataSet">DataSet</see> from.</param>
         ''' <param name="strTable">The name of the table to fill the <see cref="DataSet">DataSet</see> from.</param>
-        ''' <returns>The <see cref="DataSet">DataSet</see> if succesful, or Nothing if an error occurred.</returns>
+        ''' <returns>The <see cref="DataSet">DataSet</see> if successful, or Nothing if an error occurred.</returns>
         ''' <remarks>The obtained <see cref="DataSet">DataSet</see> should be released via <see cref="ReleaseDataSet">ReleaseWriter</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
@@ -1220,7 +1220,7 @@ Namespace Database
         ''' <param name="dset">The <see cref="DataSet">DataSet</see> to commit</param>
         ''' <param name="adapter">The <see cref="IDataAdapter">OleDbDataAdapter</see> to write to the database</param>
         ''' <param name="strTable">The table to update</param>
-        ''' <returns>True if succesful</returns>
+        ''' <returns>True if successful</returns>
         ''' -------------------------------------------------------------------
         Protected Overridable Function CommitDataSet(ByVal dset As DataSet, ByVal adapter As IDataAdapter, ByVal strTable As String) As Boolean
             Dim bSucces As Boolean = True
@@ -2636,7 +2636,7 @@ Namespace Database
         ''' Obtain a database adapter from the adapter cache.
         ''' </summary>
         ''' <param name="strTable">Table name to obtain the adapter for.</param>
-        ''' <returns>A database adapter if succesful, or Nothing if an error occurred.</returns>
+        ''' <returns>A database adapter if successful, or Nothing if an error occurred.</returns>
         ''' <remarks>
         ''' An adapter obtained via this method must be released via 
         ''' <see cref="OOPReleaseAdapter">OOPReleaseAdapter</see>
@@ -3374,7 +3374,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="sVersion">The version to set.</param>
         ''' <param name="strRemark">The remark to add to the update.</param>
-        ''' <returns>True if succesful</returns>
+        ''' <returns>True if successful</returns>
         ''' <remarks>This method only allows setting the version on an EwE6 database.</remarks>
         ''' -------------------------------------------------------------------
         Public Function SetVersion(ByVal sVersion As Single, ByVal strRemark As String) As Boolean

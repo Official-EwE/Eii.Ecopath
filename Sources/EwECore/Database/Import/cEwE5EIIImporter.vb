@@ -124,7 +124,7 @@ Namespace Database
         ''' <summary>
         ''' Imports and converts a model in an EwE5 database into a provided EwE6 database.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function PerformImport() As Boolean
 
@@ -679,7 +679,7 @@ Namespace Database
         ''' <summary>
         ''' Save imported data to the EwE6 database.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Private Function Save() As Boolean
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL)
@@ -806,7 +806,7 @@ Namespace Database
         ''' <summary>
         ''' Save Ecopath diets
         ''' </summary>
-        ''' <returns>True if succesful</returns>
+        ''' <returns>True if successful</returns>
         ''' -------------------------------------------------------------------
         Private Function SaveDietComp() As Boolean
 
@@ -852,7 +852,7 @@ Namespace Database
         ''' <summary>
         ''' Save Ecopath fleets
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Private Function SaveFleets() As Boolean
 

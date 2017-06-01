@@ -2892,7 +2892,7 @@ Namespace Core
     '''</summary>
     ''' -------------------------------------------------------------------
     Public Enum eDatasourceAccessType As Integer
-        ''' <summary>Database operation succesful</summary>
+        ''' <summary>Database operation successful</summary>
         Success = 0
         ''' <summary>Database could not be saved in the indicated location</summary>
         Failed_CannotSave

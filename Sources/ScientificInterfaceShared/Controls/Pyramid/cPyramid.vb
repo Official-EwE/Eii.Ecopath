@@ -473,7 +473,7 @@ Namespace Controls
         ''' file content using fixed number formatting (True), assuming decimal points
         ''' and not allowing for thousands separators, or using number formatting as
         ''' defined by the language settings in Windows (False).</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Function FromEwE5TextFile(ByVal strFileName As String, _
                                          Optional ByVal bFixedFormatting As Boolean = True) As Boolean

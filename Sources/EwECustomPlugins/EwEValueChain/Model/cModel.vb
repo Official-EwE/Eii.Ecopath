@@ -75,7 +75,7 @@ Public Class cModel
     ''' </summary>
     ''' <param name="data">Data to operate on.</param>
     ''' <param name="results">Results to plunder.</param>
-    ''' <returns>True if succesful</returns>
+    ''' <returns>True if successful</returns>
     ''' -----------------------------------------------------------------------
     Public Function RunEquilibrium(ByVal data As cData, ByVal results As cResults) As Boolean
 
@@ -191,7 +191,7 @@ Public Class cModel
     ''' <param name="data">The data to set effort into.</param>
     ''' <param name="Fleet">The fleet index to set effort for.</param>
     ''' <param name="Val">The value to set effort to.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Private Function SetFishingEffort(ByVal data As cData, ByVal Fleet As Integer, ByVal Val As Single) As Boolean
 

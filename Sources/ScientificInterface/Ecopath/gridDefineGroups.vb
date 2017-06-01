@@ -1953,7 +1953,7 @@ Public Class gridDefineGroups
             Me.UIContext.Core.Messages.SendMessage(msg)
         End If
 
-        ' Update core objects when previous operations were succesful
+        ' Update core objects when previous operations were successful
         If (bSuccess And bGroupsChanged) Then
             Dim bColorsChanged As Boolean = False
 

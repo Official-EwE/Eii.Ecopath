@@ -95,7 +95,7 @@ Namespace DataSources
         ''' <param name="strModelName">Name to assign to the model.</param>
         ''' <param name="core"><see cref="cCore">Core instance</see> that holds the 
         ''' datastructures to read to, and write from.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function Create(ByVal strName As String, ByVal strModelName As String, ByVal core As cCore) As eDatasourceAccessType
 
@@ -111,7 +111,7 @@ Namespace DataSources
         ''' <summary>
         ''' Close the data source connection
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function Close() As Boolean
 
@@ -175,7 +175,7 @@ Namespace DataSources
         ''' Start a database transaction.
         ''' </summary>
         ''' <returns>
-        ''' True if succesful.
+        ''' True if successful.
         ''' </returns>
         ''' <remarks>
         ''' Transactions cannot be nested.
@@ -190,7 +190,7 @@ Namespace DataSources
         ''' <param name="bCommit">States whether the transaction should be 
         ''' committed (True) or reverted (False).</param>
         ''' <returns>
-        ''' True if succesful.
+        ''' True if successful.
         ''' </returns>
         ''' <remarks>
         ''' Transactions cannot be nested.
@@ -205,7 +205,7 @@ Namespace DataSources
         ''' <param name="strTarget">The target identifying the a new database
         ''' to compact into. If left blank, the current database is compacted 
         ''' and no new database is generated.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function Compact(ByVal strTarget As String) As eDatasourceAccessType
 
@@ -216,7 +216,7 @@ Namespace DataSources
         ''' <param name="strTarget">The target identifying the a new database
         ''' to compact into. If left blank, the current database is compacted 
         ''' and no new database is generated.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Function CanCompact(ByVal strTarget As String) As Boolean
 

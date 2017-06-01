@@ -331,7 +331,7 @@ Namespace Import
         ''' </summary>
         ''' <param name="setting">The <see cref="cImportSettings">model</see>
         ''' to import.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Import(ByVal setting As cImportSettings) As Boolean
 

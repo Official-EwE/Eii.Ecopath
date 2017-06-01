@@ -1921,7 +1921,7 @@ Public Class cCore
                         Else
                             Me.SendTimeSeriesLoadMessage("")
                         End If
-                        ' Flag as succesful
+                        ' Flag as successful
                         bSucces = True
                     End If
                 End If
@@ -5126,7 +5126,7 @@ Public Class cCore
             m_EcoPath.RunState = Ecopath.eEcopathRunState.Error
         End Try
 
-        ' Did Ecopath run succesful?
+        ' Did Ecopath run successful?
         If bSuccessEcopath Then
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
             m_publisher.AddMessage(msg)
@@ -5147,7 +5147,7 @@ Public Class cCore
             Me.m_StateMonitor.SetEcopathLoaded(True)
         End If
 
-        ' Did PSD run succesful?
+        ' Did PSD run successful?
         If Me.m_PSDData.Enabled Then
             If (bSuccessPSD) Then
                 msg = New cMessage(My.Resources.CoreMessages.PSD_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)

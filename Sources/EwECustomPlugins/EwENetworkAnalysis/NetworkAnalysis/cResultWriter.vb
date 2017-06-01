@@ -147,7 +147,7 @@ Public Class cResultWriter
         ' Switch on PPR in Ecosim
         Me.m_manager.UseEcosimNetwork = True
         Me.m_manager.EcosimPPROn = True
-        ' Ecosim NA run succesful?
+        ' Ecosim NA run successful?
         bSucces = bSucces And Me.m_manager.RunEcosimNetwork()
         Me.m_manager.UseEcosimNetwork = False
 
@@ -169,7 +169,7 @@ Public Class cResultWriter
         ' Switch on PPR in Ecosim
         Me.m_manager.UseEcosimNetwork = True
         Me.m_manager.EcosimPPROn = False
-        ' Ecosim NA run succesful?
+        ' Ecosim NA run successful?
         bSucces = bSucces And Me.m_manager.RunEcosimNetwork()
         Me.m_manager.UseEcosimNetwork = False
 

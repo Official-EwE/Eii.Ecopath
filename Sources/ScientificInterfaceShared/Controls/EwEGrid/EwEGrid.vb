@@ -1511,7 +1511,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="sr">The <see cref="StreamReader">stream reader</see> to 
         ''' read the grid content from.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>
         ''' This method does not affect read-only cells, and attempts to convert 
         ''' values encountered in the stream reader to the proper cell value types. 

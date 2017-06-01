@@ -504,7 +504,7 @@ Namespace NetUtilities
         ''' <param name="obj">The object to send.</param>
         ''' <param name="bRequiresAuthorization">Flag indicating whether the socket
         ''' needs to be <see cref="Authorized">Authorized</see> to send this data.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -----------------------------------------------------------------------
         Public Function Send(ByVal obj As cSerializableObject, _
             Optional ByVal bRequiresAuthorization As Boolean = True, _

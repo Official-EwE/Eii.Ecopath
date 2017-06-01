@@ -49,7 +49,7 @@ Public Class cTimeSeriesReaderFactory
     ''' <param name="readerType">The <see cref="cTimeSeriesReaderFactory.eTimeSeriesReaderTypes">type of Time series input source</see>
     ''' to rad from.</param>
     ''' <returns>
-    ''' A <see cref="cTimeSeriesTextReader">Time series text reader</see> if succesful, 
+    ''' A <see cref="cTimeSeriesTextReader">Time series text reader</see> if successful, 
     ''' or Nothing/Null/Nada/Zip if an error occurred.
     ''' </returns>
     ''' -----------------------------------------------------------------------

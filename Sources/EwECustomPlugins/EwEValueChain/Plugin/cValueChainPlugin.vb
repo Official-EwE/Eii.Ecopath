@@ -228,7 +228,7 @@ Public Class cValueChainPlugin
     ''' Plug-in point implementation, no longer called but kept for compliancy.
     ''' </summary>
     ''' <param name="strName">The name of the datasource.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function Open(ByVal strName As String) As Boolean _
         Implements EwEPlugin.Data.IDatabasePlugin.Open
@@ -269,7 +269,7 @@ Public Class cValueChainPlugin
     ''' Handled toload the Value Chain model corresponding to an EwE model.
     ''' </summary>
     ''' <param name="dataSource">The loaded datasource.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadModel(ByVal dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.LoadModel
@@ -293,7 +293,7 @@ Public Class cValueChainPlugin
     ''' Handled to save the Value Chain model corresponding to an EwE model.
     ''' </summary>
     ''' <param name="dataSource">The loaded datasource.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(ByVal dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel

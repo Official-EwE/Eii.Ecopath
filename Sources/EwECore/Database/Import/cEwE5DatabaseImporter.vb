@@ -577,7 +577,7 @@ Namespace Database
         ''' <summary>
         ''' Imports and converts a model in an EwE5 database into a provided EwE6 database.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function PerformImport() As Boolean
 

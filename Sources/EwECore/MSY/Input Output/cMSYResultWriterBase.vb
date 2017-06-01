@@ -89,7 +89,7 @@ Namespace MSY
         ''' </summary>
         ''' <param name="sw">The writer to close.</param>
         ''' <param name="strPath ">The path to the file of the writer.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Function CloseWriter(sw As StreamWriter, strPath As String) As Boolean
 

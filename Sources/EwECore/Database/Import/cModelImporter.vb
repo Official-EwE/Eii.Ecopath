@@ -88,7 +88,7 @@ Namespace Database
         ''' Connects the importer to an EwE5 source database. This database is
         ''' indicated as a file path, and is assumed to be an MS Access database.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' <remarks>
         ''' Any database connection established via the Open method must be 
         ''' disconnected via the <see cref="Close">Close</see> method.
@@ -122,7 +122,7 @@ Namespace Database
         ''' <summary>
         ''' Perform the actual import.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Import(ByVal info As cExternalModelInfo, _
                                ByVal db As cEwEDatabase, _

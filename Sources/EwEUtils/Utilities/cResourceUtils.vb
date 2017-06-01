@@ -47,7 +47,7 @@ Namespace Utilities
         ''' <param name="bOverwrite">States whether an existing file is allowed to be overwritten</param>
         ''' <param name="ass">The assembly to obtain the resource from.</param>
         ''' <param name="strNamespace">The namespace to obtain the resource from.</param>
-        ''' <returns>True if succesful</returns>
+        ''' <returns>True if successful</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function SaveResourceToFile(ByVal strResourceName As String, _
                                                   ByVal strFileName As String, _

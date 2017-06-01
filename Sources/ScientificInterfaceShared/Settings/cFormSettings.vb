@@ -131,7 +131,7 @@ Public Class cFormSettings
         ''' Initialize by reading position information from a given form.
         ''' </summary>
         ''' <param name="frm">The form to read.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Store(ByVal frm As Form) As Boolean
             Dim rc As Rectangle = Nothing
@@ -168,7 +168,7 @@ Public Class cFormSettings
         ''' Initialize by reading a settings string.
         ''' </summary>
         ''' <param name="nodeSetting">The xml node to read.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function FromXML(ByVal nodeSetting As XmlNode) As Boolean
             Try

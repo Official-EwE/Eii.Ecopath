@@ -75,7 +75,7 @@ Public Class cCoreController
     ''' regardless what state the EwE6 core is at. Handle this parameter with 
     ''' care because recklessly overriding core states may have unpredictable 
     ''' results.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadState(ByVal iState As eCoreExecutionState, _
             Optional ByVal bForceState As Boolean = False) As Boolean
@@ -167,7 +167,7 @@ Public Class cCoreController
     ''' <summary>
     ''' Attempt to load an Ecopath model.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Private Function TryLoadEcopathModel() As Boolean
         Return Me.m_monitor.HasEcopathLoaded
@@ -177,7 +177,7 @@ Public Class cCoreController
     ''' <summary>
     ''' Attempt get Ecopath to produce outputs.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Private Function TryCompleteEcopath() As Boolean
 
@@ -216,7 +216,7 @@ Public Class cCoreController
     ''' <summary>
     ''' Attempt to load an Ecosim scenario.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Private Function TryLoadEcosimScenario() As Boolean
 
@@ -234,7 +234,7 @@ Public Class cCoreController
     ''' <summary>
     ''' Attempt to load an Ecospace scenario.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Private Function TryLoadEcospaceScenario() As Boolean
 
@@ -254,7 +254,7 @@ Public Class cCoreController
     ''' <summary>
     ''' Attempt to load an Ecotracer scenario.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Private Function TryLoadEcotracerScenario() As Boolean
 

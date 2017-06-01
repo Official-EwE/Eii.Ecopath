@@ -179,7 +179,7 @@ Namespace Ecospace.Advection
         ''' <summary>
         ''' Revert XVel and YVel to their initial state.
         ''' </summary>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Revert() As Boolean
 

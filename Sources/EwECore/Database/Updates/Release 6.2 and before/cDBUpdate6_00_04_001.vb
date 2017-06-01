@@ -43,7 +43,7 @@ Friend Class cDBUpdate6_00_04_0001
     ''' The actual update logic.
     ''' </summary>
     ''' <param name="db">Database to modify.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
 

@@ -102,7 +102,7 @@ Public Class cEIIDataSource
     ''' <summary>
     ''' Close the EII datasource.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function Close() As Boolean _
          Implements IEwEDataSource.Close
@@ -205,7 +205,7 @@ Public Class cEIIDataSource
     ''' <summary>
     ''' Initiates a full load of an ecopath model.
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function LoadModel() As Boolean _
         Implements IEcopathDataSource.LoadModel
@@ -562,7 +562,7 @@ Public Class cEIIDataSource
     ''' <summary>
     ''' Initiates a save of an EwE model
     ''' </summary>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Function SaveModel() As Boolean _
              Implements IEcopathDataSource.SaveModel
@@ -597,7 +597,7 @@ Public Class cEIIDataSource
     ''' <param name="sPP">The Type of the new group; 0=consumer, 1=producer, 2=detritus.</param>
     ''' <param name="iPosition">The position of the new group in the group sequence.</param>
     ''' <param name="iDBID">Database ID assigned to the new Group.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' Note that this will not adjust the data arrays. Due to the complex organization of the
     ''' core a full data reload is required after a group is created.
@@ -614,7 +614,7 @@ Public Class cEIIDataSource
     ''' Remove a group from the datasource.
     ''' </summary>
     ''' <param name="iDBID">Database ID of the group to remove.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' <remarks>
     ''' Note that this will not adjust the data arrays. Due to the complex organization of the
     ''' core a full data reload is required after a group is removed.
@@ -652,7 +652,7 @@ Public Class cEIIDataSource
     ''' </summary>
     ''' <param name="strFleetName">Name of the new fleet.</param>
     ''' <param name="iDBID">Database ID assigned to the new fleet.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddFleet
@@ -678,7 +678,7 @@ Public Class cEIIDataSource
     ''' </summary>
     ''' <param name="iDBID">Database ID of the fleet to move.</param>
     ''' <param name="iPosition">The new position of the fleet in the fleet sequence.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Public Function MoveFleet(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.MoveFleet
@@ -772,7 +772,7 @@ Public Class cEIIDataSource
     ''' Loads an ecosim scenario from the EII.
     ''' </summary>
     ''' <param name="iDBID">Database ID of the scenario to load.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Function LoadEcosimScenario(ByVal iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.LoadEcosimScenario
@@ -869,7 +869,7 @@ Public Class cEIIDataSource
     ''' <param name="strAuthor">Author to assign to the new scenario.</param>
     ''' <param name="strContact">Contact info to assign to the new scenario.</param>
     ''' <param name="iDBID">Database ID assigned to the new scenario.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Friend Function AppendEcosimScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String, ByRef iDBID As Integer) As Boolean _
             Implements IEcosimDatasource.AppendEcosimScenario
@@ -908,7 +908,7 @@ Public Class cEIIDataSource
     ''' <param name="iDBID">Database ID assigned to the new shape.</param>
     ''' <param name="points">Shape point data.</param>
     ''' <param name="functionType">Primitive function type shape was created from.</param>
-    ''' <returns>True if succesful.</returns>
+    ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
     Function AppendShape(ByVal strShapeName As String,
                          ByVal shapeType As eDataTypes,
