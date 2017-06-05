@@ -101,6 +101,16 @@ Namespace Extensions
             Return result
         End Function
 
+        <Extension()>
+        Public Function Approximates(s1 As Single, s2 As Single, Optional sThreshold As Single = 0.00001) As Boolean
+            Return EwEUtils.Utilities.cNumberUtils.Approximates(s1, s2, sThreshold)
+        End Function
+
+        <Extension()>
+        Public Function Approximates(s1 As Double, s2 As Double, Optional sThreshold As Single = 0.00001) As Boolean
+            Return EwEUtils.Utilities.cNumberUtils.Approximates(s1, s2, sThreshold)
+        End Function
+
     End Module
 
 End Namespace 'Extensions

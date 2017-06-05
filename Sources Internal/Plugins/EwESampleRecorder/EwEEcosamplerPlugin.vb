@@ -32,7 +32,7 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
-Public Class EwESampleRecorderPlugin
+Public Class EwEEcosamplerPlugin
     Implements IMonteCarloPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
@@ -45,6 +45,7 @@ Public Class EwESampleRecorderPlugin
 
     Private m_uic As cUIContext = Nothing
     Private m_sampleman As cEcopathSampleManager = Nothing
+    Private m_montecarlo As cEcosimMonteCarlo = Nothing
     Private m_iNumSamples As Integer = 0
     Private m_ui As frmSamples = Nothing
 
@@ -127,7 +128,7 @@ Public Class EwESampleRecorderPlugin
 
         ' Restore original model. Should the user be asked?
         If (Me.m_sampleman.IsLoaded) Then
-            Me.m_sampleman.Load(Nothing)
+            Me.m_sampleman.Load(Nothing, True)
         End If
 
         ' JS 5 April 16: Disabled automatic sample invalidation while hash keys differ due to minute numerical differences
@@ -190,7 +191,7 @@ Public Class EwESampleRecorderPlugin
 
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) _
         Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
-        ' NOP
+        Me.m_montecarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
     End Sub
 
     Public Sub MonteCarloRunInitialized() _
@@ -198,14 +199,13 @@ Public Class EwESampleRecorderPlugin
         ' NOP
     End Sub
 
-    Public Sub MonteCarloBalancedEcopathModel(WaitLock As System.Threading.ManualResetEvent,
-                                              TrialNumber As Integer, nIterations As Integer) _
+    Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) _
         Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
         If (Not Me.IsRecording) Then Return
 
         Try
-            If (Me.m_sampleman.Record(Me.m_strBaseHash) IsNot Nothing) Then
+            If (Me.m_sampleman.Record(Me.m_strBaseHash, Me.m_montecarlo) IsNot Nothing) Then
                 Me.m_iNumSamples += 1
             End If
         Catch ex As Exception
@@ -252,7 +252,7 @@ Public Class EwESampleRecorderPlugin
         Implements EwEPlugin.ISearchPlugin.SearchIterationsStarting
 
         ' Make sure to unload any loaded sample
-        Me.m_sampleman.Load(Nothing)
+        Me.m_sampleman.Load(Nothing, False)
 
         If (Not Me.IsRecording) Then Return
 

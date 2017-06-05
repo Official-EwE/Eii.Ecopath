@@ -90,7 +90,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             If (iTrial <= 0) Then
 
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
-                    If (Me.m_MC.IsVariable(par)) Then
+                    If (Me.m_MC.IsEnabled(par)) Then
                         Dim sw As StreamWriter = Nothing
                         Try
                             cFileUtils.IsDirectoryAvailable(strPathInput, True)
@@ -109,7 +109,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 Next
             ElseIf (iTrial < Integer.MaxValue) Then
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
-                    If (Me.m_MC.IsVariable(par)) Then
+                    If (Me.m_MC.IsEnabled(par)) Then
                         Dim sw As StreamWriter = Nothing
                         Try
                             cFileUtils.IsDirectoryAvailable(strPathInput, True)

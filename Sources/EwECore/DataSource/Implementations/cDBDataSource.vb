@@ -675,7 +675,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SavePedigreeLevels()
             bSucces = bSucces And Me.SavePedigreeAssignments()
             bSucces = bSucces And Me.SaveAuxillaryData()
-            bSucces = bSucces And Me.SaveSamples()
+            bSucces = bSucces And Me.SaveEcopathSamples()
 
             If bSucces Then
                 bSucces = Me.m_db.CommitTransaction()
@@ -10276,7 +10276,7 @@ Namespace DataSources
                 End While
 
             Catch ex As Exception
-                Me.LogMessage(String.format("Error {0} occurred while reading AuxillaryData", ex.Message))
+                Me.LogMessage(String.Format("Error {0} occurred while reading AuxillaryData", ex.Message))
                 bSucces = False
             End Try
 
@@ -10331,8 +10331,8 @@ Namespace DataSources
 
         End Function
 
-        Private Function DuplicateAuxillaryData(ByVal idm As cIDMappings, _
-                                                ByVal dt As eDataTypes, _
+        Private Function DuplicateAuxillaryData(ByVal idm As cIDMappings,
+                                                ByVal dt As eDataTypes,
                                                 ByVal iDBID As Integer) As Boolean
 
             ' Do not bother if no such mappings exist
@@ -10359,8 +10359,8 @@ Namespace DataSources
 
                             ' Make new key
                             key = ad.Key
-                            key = New cValueID(dt, idm.GetID(dt, iDBID), _
-                                               key.VarNameText, _
+                            key = New cValueID(dt, idm.GetID(dt, iDBID),
+                                               key.VarNameText,
                                                key.DataTypeSec, idm.GetID(key.DataTypeSec, ad.Key.DBIDSec))
 
                             ' Start new row
@@ -10498,8 +10498,8 @@ Namespace DataSources
                 End Try
             End While
 
-            bSucces = bSucces And Me.LoadGroupSamples() And _
-                                  Me.LoadDietSamples() And _
+            bSucces = bSucces And Me.LoadGroupSamples() And
+                                  Me.LoadDietSamples() And
                                   Me.LoadGroupCatchSamples()
 
             If Not bSucces Then ds.m_samples.Clear()
@@ -10533,7 +10533,9 @@ Namespace DataSources
                         s.QB(iGroup) = CSng(reader("ConsBiom"))
                         s.EE(iGroup) = CSng(reader("EcoEfficiency"))
                         s.BA(iGroup) = CSng(reader("BiomAcc"))
-                        s.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
+                        If (iGroup <= Me.m_core.nLivingGroups) Then
+                            s.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
+                        End If
                     End If
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcopathGroupSample", ex.Message))
@@ -10565,7 +10567,7 @@ Namespace DataSources
                     If dt.ContainsKey(DBID) And (iPred >= 0) And (iPrey >= 0) Then
                         Dim s As Samples.cEcopathSample = dt(DBID)
                         Dim sDiet As Single = CSng(reader("Diet"))
-                        If (sDiet > 0) Then
+                        If (sDiet > cCore.NULL_VALUE) Then
                             s.DC(iPred, iPrey) = sDiet
                         End If
                     End If
@@ -10614,8 +10616,8 @@ Namespace DataSources
 
 #Region " Save "
 
-        Private Function SaveSamples() As Boolean _
-            Implements IEcopathSampleDataSource.SaveSamples
+        Private Function SaveEcopathSamples() As Boolean _
+            Implements IEcopathSampleDataSource.SaveEcopathSamples
 
             ' Only save rating, the other data is fixed when the sample is added
 
@@ -10687,7 +10689,11 @@ Namespace DataSources
                     drow("ConsBiom") = sample.QB(iGroup)
                     drow("EcoEfficiency") = sample.EE(iGroup)
                     drow("BiomAcc") = sample.BA(iGroup)
-                    drow("ImpVar") = sample.DC(iGroup, 0)
+                    If (iGroup <= Me.m_core.nLivingGroups) Then
+                        drow("ImpVar") = sample.DC(iGroup, 0)
+                    Else
+                        drow("ImpVar") = cCore.NULL_VALUE
+                    End If
                     writer.AddRow(drow)
                 Next
             Catch ex As Exception

@@ -40,13 +40,13 @@ Public Class frmSamples
 
 #Region " Private vars "
 
-    Private m_plugin As EwESampleRecorderPlugin = Nothing
+    Private m_plugin As EwEEcosamplerPlugin = Nothing
 
 #End Region ' Private vars
 
 #Region " Construction / destruction "
 
-    Public Sub New(uic As cUIContext, plugin As EwESampleRecorderPlugin)
+    Public Sub New(uic As cUIContext, plugin As EwEEcosamplerPlugin)
         Me.InitializeComponent()
 
         Me.UIContext = uic
@@ -212,8 +212,7 @@ Public Class frmSamples
 
             ' Toggle load
             If (s IsNot Nothing) And (man.IsLoaded(s)) Then s = Nothing
-            Me.Core.SampleManager.Load(s)
-            Me.Core.RunEcoPath()
+            Me.Core.SampleManager.Load(s, True)
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)

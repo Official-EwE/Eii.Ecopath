@@ -24,7 +24,7 @@ Option Strict On
 
 Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
-Imports EwEUtils.Utilities
+Imports EwEUtils.Extensions
 
 #End Region ' Imports
 
@@ -32,11 +32,11 @@ Namespace Samples
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Parameter sample snapshot for an Ecopath model, recorded from 
+    ''' Parameter sample snapshot of an Ecopath model, recorded from 
     ''' Monte Carlo model perturbations.
+    ''' </summary>
     ''' <seealso cref="cEcopathSampleManager"/>.
     ''' <seealso cref="cEcopathSampleDatastructures"/>.
-    ''' </summary>
     ''' -------------------------------------------------------------------
     Public Class cEcopathSample
         Inherits cCoreInputOutputBase
@@ -81,9 +81,18 @@ Namespace Samples
             ReDim Me.m_qb(Me.m_core.nGroups)
             ReDim Me.m_ee(Me.m_core.nGroups)
             ReDim Me.m_ba(Me.m_core.nGroups)
-            ReDim Me.m_dc(Me.m_core.nGroups, Me.m_core.nGroups)
+            ReDim Me.m_dc(Me.m_core.nLivingGroups, Me.m_core.nGroups)
             ReDim Me.m_landing(Me.m_core.nFleets, Me.m_core.nGroups)
             ReDim Me.m_discard(Me.m_core.nFleets, Me.m_core.nGroups)
+
+            Me.m_b.Fill(cCore.NULL_VALUE)
+            Me.m_pb.Fill(cCore.NULL_VALUE)
+            Me.m_qb.Fill(cCore.NULL_VALUE)
+            Me.m_ee.Fill(cCore.NULL_VALUE)
+            Me.m_ba.Fill(cCore.NULL_VALUE)
+            Me.m_dc.Fill(cCore.NULL_VALUE)
+            Me.m_landing.Fill(cCore.NULL_VALUE)
+            Me.m_discard.Fill(cCore.NULL_VALUE)
 
         End Sub
 

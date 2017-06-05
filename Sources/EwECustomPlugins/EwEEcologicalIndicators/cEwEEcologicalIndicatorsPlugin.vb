@@ -456,7 +456,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     End Sub
 
-    Public Sub MonteCarloBalancedEcopathModel(WaitLock As System.Threading.ManualResetEvent, TrialNumber As Integer, nIterations As Integer) _
+    Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) _
         Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
         ' Calculate only if supposed to run with MC
