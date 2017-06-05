@@ -53,7 +53,7 @@ Namespace DataSources
 
         Function LoadSamples() As Boolean
 
-        Function SaveSamples() As Boolean
+        Function SaveEcopathSamples() As Boolean
 
         Function AddSample(sample As cEcopathSample) As Boolean
 

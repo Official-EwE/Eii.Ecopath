@@ -39,7 +39,6 @@ Public Interface IMonteCarloPlugin
     ''' <summary>
     ''' The MonteCarlo has found a balanced model and it about to run Ecosim.
     ''' </summary>
-    ''' <param name="WaitLock">A ManualResetEvent object used by the calling routine to Wait for  MonteCarloBalancedEcopathModel(...) to return.</param>
     ''' <param name="TrialNumber">Number of the current trial.</param>
     ''' <param name="nIterations">Number of iteration to find a balanced Ecopath model</param>
     ''' <remarks>The Plugin Manager will marshal the call to MonteCarloBalancedEcopathModel(...) from the MonteCarlo thread onto the main thread. 
@@ -47,7 +46,7 @@ Public Interface IMonteCarloPlugin
     ''' Then once the thread has completed call WaitLock.Set() to release the signal state and allow the MonteCarlo to continue.
     ''' If the Plugin ignores the WaitLock the MonteCarlo will continue running when MonteCarloBalancedEcopathModel(...) returns.
     '''  </remarks>
-    Sub MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, ByVal TrialNumber As Integer, ByVal nIterations As Integer)
+    Sub MonteCarloBalancedEcopathModel(ByVal TrialNumber As Integer, ByVal nIterations As Integer)
 
     ''' <summary>
     ''' The MonteCarlo has completed its Ecosim run and will start another trial.

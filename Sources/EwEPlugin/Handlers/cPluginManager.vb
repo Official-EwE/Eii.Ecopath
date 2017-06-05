@@ -1925,9 +1925,9 @@ Public Class cPluginManager
 
     End Function
 
-    Public Function MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, TrialNumber As Integer, ByVal nIterations As Integer) As Boolean
+    Public Function MonteCarloBalancedEcopathModel(TrialNumber As Integer, ByVal nIterations As Integer) As Boolean
 
-        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloBalancedEcopathModel", New Object() {WaitLock, TrialNumber, nIterations})
+        Return Me.TryInvokeMethod(GetType(IMonteCarloPlugin), "MonteCarloBalancedEcopathModel", New Object() {TrialNumber, nIterations})
 
     End Function
 

@@ -29,7 +29,7 @@ Imports EwEPlugin
 Imports System.Threading
 Imports EwEUtils.SystemUtilities
 
-#End Region ' Imports
+#End Region ' Imports 
 
 Public Enum eMCParams As Integer
     NotSet = 0
@@ -194,14 +194,14 @@ Public Class cEcosimMonteCarlo
     Private m_rand As Random
 
     ''' <summary>
+    ''' Flag (x eMSParam) stating if a given variable can be pertubed at all.
+    ''' </summary>
+    Private m_isEnabled() As Boolean
+
+    ''' <summary>
     ''' Flag (x group, eMCParam) stating if a given group value can be perturbed by Monte Carlo.
     ''' </summary>
-    ''' <remarks>
-    ''' The zero index (0, eMCParam) value is used to state whether the given variable can
-    ''' be perturbed at all.
-    ''' </remarks>
-    Private m_isVariable(,) As Boolean
-    Private m_isDietVariable(,) As Boolean
+    Private m_isVariableItem(,) As Boolean
 
     Public Sub New(ByRef theCore As cCore)
 
@@ -354,18 +354,30 @@ Public Class cEcosimMonteCarlo
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'jb 22-Mar-2014 
         'Added the isVariable() to check if a parameter can be varied
-        ReDim m_isVariable(m_core.nGroups, Me.NumParams())
+
+        ReDim m_isEnabled(Me.NumParams())
+        Me.m_isEnabled(eMCParams.Biomass) = True
+        Me.m_isEnabled(eMCParams.BA) = True
+        Me.m_isEnabled(eMCParams.PB) = True
+        Me.m_isEnabled(eMCParams.QB) = True
+        Me.m_isEnabled(eMCParams.EE) = True
+        Me.m_isEnabled(eMCParams.Landings) = False
+        Me.m_isEnabled(eMCParams.Discards) = False
+        Me.m_isEnabled(eMCParams.Diets) = False
+
+        ReDim m_isVariableItem(m_core.nGroups, Me.NumParams())
+
         For iGrp As Integer = 1 To m_core.nGroups
 
-            Me.m_isVariable(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
+            Me.m_isVariableItem(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
             'Use the B index in missing(group,variable) from Ecopath for BA
             ' JS Apr 16: do not perturb BA if not entered
-            Me.m_isVariable(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA) And (Me.m_epdata.BAInput(iGrp) <> 0)
+            Me.m_isVariableItem(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA) And (Me.m_epdata.BAInput(iGrp) <> 0)
 
-            Me.m_isVariable(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
+            Me.m_isVariableItem(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
             'QB needs to check the input variable
-            Me.m_isVariable(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
-            Me.m_isVariable(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4))
+            Me.m_isVariableItem(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
+            Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4))
 
         Next
 
@@ -373,16 +385,6 @@ Public Class cEcosimMonteCarlo
         ' MP Apr 2016 add Diets - not necessary to remember isVariable, always perturb diets
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-        ' Defaults
-        Me.m_isVariable(0, eMCParams.Biomass) = True
-        Me.m_isVariable(0, eMCParams.BA) = True
-        Me.m_isVariable(0, eMCParams.PB) = True
-        Me.m_isVariable(0, eMCParams.QB) = True
-        Me.m_isVariable(0, eMCParams.EE) = True
-        Me.m_isVariable(0, eMCParams.Landings) = False
-        Me.m_isVariable(0, eMCParams.Discards) = False
-        Me.m_isVariable(0, eMCParams.Diets) = False
 
     End Sub
 
@@ -602,16 +604,27 @@ Public Class cEcosimMonteCarlo
         End Get
     End Property
 
-    Public Property IsVariable(var As eMCParams) As Boolean
+    Public Property IsEnabled(var As eMCParams) As Boolean
         Get
             If (var = eMCParams.NotSet) Then Return False
-            Return Me.m_isVariable(0, var)
+            Return Me.m_isEnabled(var)
         End Get
         Set(value As Boolean)
             If (var = eMCParams.NotSet) Then Return
-            Me.m_isVariable(0, var) = value
+            Me.m_isEnabled(var) = value
         End Set
     End Property
+
+    Public Function IsVariable(item As Integer, var As eMCParams) As Boolean
+        Select Case var
+            Case eMCParams.NotSet
+                Return False
+            Case eMCParams.Diets, eMCParams.Landings, eMCParams.Discards
+                Return Me.m_isEnabled(var)
+            Case Else
+                Return Me.m_isEnabled(var) And Me.m_isVariableItem(item, var)
+        End Select
+    End Function
 
     Public Property Ntrials As Integer
     Public Property StopTrial As Boolean
@@ -695,7 +708,7 @@ Public Class cEcosimMonteCarlo
 
                 If StopTrial = True Then Exit For
 
-                'number of ecopath interation to find new pararameters
+                'number of ecopath iterations to find new parameters
                 iter = 0
                 RunsSinceLastWithLowerSS += 1
                 Me.m_bIsBestFit = False
@@ -823,7 +836,7 @@ Public Class cEcosimMonteCarlo
         Dim WaitLock As ManualResetEvent = New ManualResetEvent(True)
         If Me.m_pluginmanager IsNot Nothing Then
             Try
-                Me.m_pluginmanager.MonteCarloBalancedEcopathModel(WaitLock, iTrial, iter)
+                Me.m_pluginmanager.MonteCarloBalancedEcopathModel(iTrial, iter)
             Catch ex As Exception
                 cLog.Write(ex, "cEcosimMonteCarlo::Run BalancedEcopathModel(" & iTrial & ", " & iter & ")")
             End Try
@@ -1042,7 +1055,7 @@ Public Class cEcosimMonteCarlo
 
                 For igrp = 1 To m_core.nLivingGroups
 
-                    If Me.m_isVariable(0, eMCParams.Biomass) And Me.m_isVariable(igrp, eMCParams.Biomass) Then
+                    If Me.IsVariable(igrp, eMCParams.Biomass) Then
                         m_epdata.B(igrp) = ChooseFeasiblePar(eMCParams.Biomass,
                                                              Pmean(eMCParams.Biomass, igrp),
                                                              CVpar(eMCParams.Biomass, igrp),
@@ -1050,7 +1063,7 @@ Public Class cEcosimMonteCarlo
                                                              ParLimit(1, eMCParams.Biomass, igrp))
                     End If
 
-                    If Me.m_isVariable(0, eMCParams.BA) And Me.m_isVariable(igrp, eMCParams.BA) Then
+                    If Me.IsVariable(igrp, eMCParams.BA) Then
                         m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp),
                                                              Pmean(eMCParams.BA, igrp),
                                                              CVpar(eMCParams.BA, igrp),
@@ -1058,7 +1071,7 @@ Public Class cEcosimMonteCarlo
                          ParLimit(1, eMCParams.BA, igrp))
                     End If
 
-                    If Me.m_isVariable(0, eMCParams.PB) And Me.m_isVariable(igrp, eMCParams.PB) Then
+                    If Me.IsVariable(igrp, eMCParams.PB) Then
                         m_epdata.PB(igrp) = ChooseFeasiblePar(eMCParams.PB,
                                                               Pmean(eMCParams.PB, igrp),
                                                               CVpar(eMCParams.PB, igrp),
@@ -1066,7 +1079,7 @@ Public Class cEcosimMonteCarlo
                                                               ParLimit(1, eMCParams.PB, igrp))
                     End If
 
-                    If Me.m_isVariable(0, eMCParams.QB) And Me.m_isVariable(igrp, eMCParams.QB) Then
+                    If Me.IsVariable(igrp, eMCParams.QB) Then
                         m_epdata.QB(igrp) = ChooseFeasiblePar(eMCParams.QB,
                                                               Pmean(eMCParams.QB, igrp),
                                                               CVpar(eMCParams.QB, igrp),
@@ -1074,7 +1087,7 @@ Public Class cEcosimMonteCarlo
                                                               ParLimit(1, eMCParams.QB, igrp))
                     End If
 
-                    If Me.m_isVariable(0, eMCParams.EE) And Me.m_isVariable(igrp, eMCParams.EE) Then
+                    If Me.IsVariable(igrp, eMCParams.EE) Then
                         m_epdata.EE(igrp) = ChooseFeasiblePar(eMCParams.EE,
                                                               Pmean(eMCParams.EE, igrp),
                                                               CVpar(eMCParams.EE, igrp),
@@ -1083,7 +1096,7 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     ' JS Nov 2015 adding Catches
-                    If Me.m_isVariable(0, eMCParams.Landings) Then
+                    If Me.IsEnabled(eMCParams.Landings) Then
                         For iflt As Integer = 1 To m_epdata.NumFleet
                             If (Me.PMeanLanding(iflt, igrp) > 0) Then
                                 Me.m_epdata.Landing(iflt, igrp) = ChooseFeasiblePar(eMCParams.Landings,
@@ -1096,7 +1109,7 @@ Public Class cEcosimMonteCarlo
 
                     End If
 
-                    If Me.m_isVariable(0, eMCParams.Discards) Then
+                    If Me.IsEnabled(eMCParams.Discards) Then
                         For iflt As Integer = 1 To m_epdata.NumFleet
                             If (Me.PMeanDiscard(iflt, igrp) > 0) Then
                                 Me.m_epdata.Discard(iflt, igrp) = ChooseFeasiblePar(eMCParams.Discards,
@@ -1109,7 +1122,7 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     ' MP Apr 2016 adding diets
-                    If Me.m_isVariable(0, eMCParams.Diets) Then
+                    If Me.IsEnabled(eMCParams.Diets) Then
                         ChooseFeasibleDiet(Dietmeans, CVpar(eMCParams.Diets, igrp), igrp, m_epdata.DC)
                     End If
 
@@ -1199,6 +1212,14 @@ Public Class cEcosimMonteCarlo
         End If
     End Sub
 
+    ''' <summary>
+    ''' Determines whether the given variable depends on other stanza.
+    ''' </summary>
+    ''' <param name="igrp">The igrp.</param>
+    ''' <param name="varType">Type of the variable.</param>
+    ''' <returns>
+    ''' True if the variable depends on other life stages and thus cannot be varied.
+    ''' </returns>
     Private Function isStanzaGroupVariable(igrp As Integer, varType As eMCParams) As Boolean
 
         'Not a multistanza group so OK to vary
@@ -1220,12 +1241,13 @@ Public Class cEcosimMonteCarlo
                 'For B and QB only the leading group can be varied
                 If Not Me.m_epdata.isGroupLeadingCB(igrp) Then bReturn = False
 
-            Case eMCParams.Landings, eMCParams.Discards
-                ' JS Nov 2015 adding Catches
-                ' NOP
-            Case eMCParams.Diets
-                ' MP Apr 2016 adding diets
-                ' MDP do we need to put anything here?
+            Case eMCParams.Landings, eMCParams.Discards, eMCParams.Diets
+                ' Never stanza vars
+                bReturn = False
+
+            Case Else
+                Debug.Assert(False)
+
         End Select
 
         Return bReturn

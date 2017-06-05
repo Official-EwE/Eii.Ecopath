@@ -1,4 +1,3 @@
-Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -12,8 +11,7 @@ Option Strict On
 '
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-
-
+'
 ' Copyright 1991- 
 '    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
@@ -22,7 +20,7 @@ Option Strict On
 
 #Region " Imports "
 
-Imports System.Reflection
+Option Strict On
 Imports System.Threading
 Imports EwECore.Ecosim
 Imports EwEPlugin
@@ -33,7 +31,7 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 ''' <summary>
-''' Manager to run the ecosim monte carlo object
+''' Manager to run the Ecosim Monte Carlo.
 ''' </summary>
 Public Class cMonteCarloManager
     Inherits cThreadWaitBase
@@ -842,11 +840,11 @@ Public Class cMonteCarloManager
     Public Property Enable(vn As eMCParams) As Boolean
         Get
             If (Me.m_mc Is Nothing) Then Return False
-            Return Me.m_mc.IsVariable(vn)
+            Return Me.m_mc.IsEnabled(vn)
         End Get
         Set(value As Boolean)
             If (Me.m_mc Is Nothing) Then Return
-            Me.m_mc.IsVariable(vn) = value
+            Me.m_mc.IsEnabled(vn) = value
         End Set
     End Property
 
