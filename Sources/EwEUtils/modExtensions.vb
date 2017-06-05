@@ -18,10 +18,10 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Imports System
+Imports System.Runtime.CompilerServices
 
 #End Region ' Imports
 
@@ -37,7 +37,7 @@ Namespace Extensions
         ''' <param name="arr">The array to fill.</param>
         ''' <param name="value">The value to fill the array with.</param>
         ''' -----------------------------------------------------------------------
-        <Runtime.CompilerServices.Extension()>
+        <Extension()>
         Public Sub Fill(Of T)(ByRef arr As T(), ByVal value As T)
             If (arr Is Nothing) Then Return
             For i As Integer = 0 To arr.Length - 1
@@ -53,7 +53,7 @@ Namespace Extensions
         ''' <param name="arr">The array to fill.</param>
         ''' <param name="value">The value to fill the array with.</param>
         ''' -----------------------------------------------------------------------
-        <Runtime.CompilerServices.Extension()>
+        <Extension()>
         Public Sub Fill(Of T)(ByRef arr As T(,), ByVal value As T)
             If (arr Is Nothing) Then Return
             For i As Integer = 0 To arr.GetUpperBound(0)
@@ -71,7 +71,7 @@ Namespace Extensions
         ''' <param name="arr">The array to fill.</param>
         ''' <param name="value">The value to fill the array with.</param>
         ''' -----------------------------------------------------------------------
-        <Runtime.CompilerServices.Extension()>
+        <Extension()>
         Public Sub Fill(Of T)(ByRef arr As T(,,), ByVal value As T)
             If (arr Is Nothing) Then Return
             For i As Integer = 0 To arr.GetUpperBound(0)
@@ -93,7 +93,7 @@ Namespace Extensions
         ''' <param name="iEnd"></param>
         ''' <returns></returns>
         ''' -----------------------------------------------------------------------
-        <Runtime.CompilerServices.Extension()>
+        <Extension()>
         Public Function SubArray(Of T)(ByVal values() As T, ByVal iStart As Integer, ByVal iEnd As Integer) As T()
             Dim n As Integer = iEnd - iStart + 1
             Dim result(n - 1) As T
