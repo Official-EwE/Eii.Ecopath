@@ -346,7 +346,7 @@ Namespace Controls.Map
             Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(pos.Y)
             Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(pos.X)
             Dim fmt As New cMapUnitFormatter()
-            Dim strUnit As String = cSystemUtils.IIF(bm.AssumeSquareCells,
+            Dim strUnit As String = If(bm.AssumeSquareCells,
                                                      fmt.GetDescriptor(eUnitMapType.m, eDescriptorTypes.Symbol),
                                                      fmt.GetDescriptor(eUnitMapType.dd, eDescriptorTypes.Symbol))
 

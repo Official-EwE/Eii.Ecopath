@@ -263,8 +263,8 @@ Namespace WebServices.Ecobase
             Me.Reference = ecopathDS.ModelPublicationRef
 
             Me.UnitCurrencyIsCustom = Not String.IsNullOrWhiteSpace(ecopathDS.ModelUnitCurrencyCustom)
-            Me.UnitCurrency = cSystemUtils.IIF(Me.UnitCurrencyIsCustom, _
-                                               ecopathDS.ModelUnitCurrencyCustom, _
+            Me.UnitCurrency = If(Me.UnitCurrencyIsCustom,
+                                               ecopathDS.ModelUnitCurrencyCustom,
                                                DirectCast(ecopathDS.ModelUnitCurrency, eUnitCurrencyType).ToString())
 
             Me.EcosystemType = ecopathDS.ModelEcosystemType
@@ -299,108 +299,108 @@ Namespace WebServices.Ecobase
 
 #Region " Variables "
 
-        <XmlElement("group_seq")> _
+        <XmlElement("group_seq")>
         Public Property Index As Integer
-        <XmlElement("group_name")> _
+        <XmlElement("group_name")>
         Public Property Name() As String
-        <XmlElement("group_color")> _
+        <XmlElement("group_color")>
         Public Property Color As Integer
 
         ' -- Basic inputs --
 
-        <XmlElement("habitat_area")> _
+        <XmlElement("habitat_area")>
         Public Property Area As Single
-        <XmlElement("biomass")> _
+        <XmlElement("biomass")>
         Public Property B As Single
         ''' <summary>Biomass in habitat area</summary>
-        <XmlElement("biomass_habitat_area")> _
+        <XmlElement("biomass_habitat_area")>
         Public Property BH As Single
-        <XmlElement("b_hab_area_input")> _
+        <XmlElement("b_hab_area_input")>
         Public Property BHIsInput As Boolean
 
-        <XmlElement("pb")> _
+        <XmlElement("pb")>
         Public Property PB As Single
-        <XmlElement("pb_input")> _
+        <XmlElement("pb_input")>
         Public Property PBIsInput As Boolean
 
-        <XmlElement("qb")> _
+        <XmlElement("qb")>
         Public Property QB As Single
-        <XmlElement("qb_input")> _
+        <XmlElement("qb_input")>
         Public Property QBIsInput As Boolean
 
-        <XmlElement("ee")> _
+        <XmlElement("ee")>
         Public Property EE As Single
-        <XmlElement("ee_input")> _
+        <XmlElement("ee_input")>
         Public Property EEIsInput As Boolean
 
-        <XmlElement("ge")> _
+        <XmlElement("ge")>
         Public Property GE As Single
-        <XmlElement("ge_input")> _
+        <XmlElement("ge_input")>
         Public Property GEIsInput As Boolean
 
-        <XmlElement("detritus_import")> _
+        <XmlElement("detritus_import")>
         Public Property DtImp As Single
-        <XmlElement("export")> _
+        <XmlElement("export")>
         Public Property Ex As Single
-        <XmlElement("pp")> _
+        <XmlElement("pp")>
         Public Property PP As Single
-        <XmlElement("gs")> _
+        <XmlElement("gs")>
         Public Property GS As Single
-        <XmlElement("biomass_accum_rate_input")> _
+        <XmlElement("biomass_accum_rate_input")>
         Public BAIsInput As Boolean
-        <XmlElement("biomass_accum")> _
+        <XmlElement("biomass_accum")>
         Public Property BA As Single
-        <XmlElement("biomass_accum_rate")> _
+        <XmlElement("biomass_accum_rate")>
         Public Property BaBi As Single
-        <XmlElement("respiration")> _
+        <XmlElement("respiration")>
         Public Property Respiration As Single
-        <XmlElement("immigration")> _
+        <XmlElement("immigration")>
         Public Property Immig As Single
-        <XmlElement("emigration")> _
+        <XmlElement("emigration")>
         Public Property Emig As Single
-        <XmlElement("emigration_rate")> _
+        <XmlElement("emigration_rate")>
         Public Property EmigRate As Single
         ''' <summary>Non-market price</summary>
-        <XmlElement("shadow_price")> _
+        <XmlElement("shadow_price")>
         Public Property Shadow As Single
-        <XmlElement("other_mort")> _
+        <XmlElement("other_mort")>
         Public Property OtherMort As Single
-        <XmlElement("other_mort_rate")> _
+        <XmlElement("other_mort_rate")>
         Public Property MortCoOtherMort As Single
-        <XmlElement("vbk")> _
+        <XmlElement("vbk")>
         Public Property vbK As Single
 
         ' -- Fields exclusively for the benefit of Ecotroph --
-        <XmlElement("tl")> _
+        <XmlElement("tl")>
         Public Property TL As Single
-        <XmlElement("oi")> _
+        <XmlElement("oi")>
         Public Property OmnivoryIndex As Single
-        <XmlElement("flow_to_det")> _
+        <XmlElement("flow_to_det")>
         Public Property FlowToDet As Single
-        <XmlElement("net_efficiency")> _
+        <XmlElement("net_efficiency")>
         Public Property NetEfficiency As Single
-        <XmlElement("fish_mort_rate")> _
+        <XmlElement("fish_mort_rate")>
         Public Property MortCoFishRate As Single
-        <XmlElement("pred_mort_rate")> _
+        <XmlElement("pred_mort_rate")>
         Public Property MortCoPredMort As Single
-        <XmlElement("net_migration_rate")> _
+        <XmlElement("net_migration_rate")>
         Public Property MortCoNetMig As Single
 
         ' Diets
-        <XmlArray("diet_descr")> _
-        <XmlArrayItem("diet")> _
+        <XmlArray("diet_descr")>
+        <XmlArrayItem("diet")>
         Public Property Diets As New List(Of cDietData)
-        <XmlElement("diet_imp")> _
+        <XmlElement("diet_imp")>
         Public Property ImpVar As Single
 
         ' Pedigree
-        <XmlArray("pedigree_assignment_descr")> _
-        <XmlArrayItem("pedigree_assignment")> _
+        <XmlArray("pedigree_assignment_descr")>
+        <XmlArrayItem("pedigree_assignment")>
         Public Property PedigreeAssignments As New List(Of cPedigreeAssignmentData)
 
         ' Taon
-        <XmlArray("taxon_descr")> _
-        <XmlArrayItem("taxon")> _
+        <XmlArray("taxon_descr")>
+        <XmlArrayItem("taxon")>
         Public Property Taxa As New List(Of cTaxonData)
 
 #End Region ' Variables
@@ -444,20 +444,20 @@ Namespace WebServices.Ecobase
             Me.OtherMort = ecopathDS.OtherMortinput(iGroup)
 
             Me.BHIsInput = (ecopathDS.Binput(iGroup) >= 0)
-            Me.B = cSystemUtils.IIF(Me.BHIsInput, ecopathDS.Binput(iGroup), ecopathDS.B(iGroup))
+            Me.B = If(Me.BHIsInput, ecopathDS.Binput(iGroup), ecopathDS.B(iGroup))
             Me.BH = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
             Me.EEIsInput = (ecopathDS.EEinput(iGroup) >= 0)
-            Me.EE = cSystemUtils.IIF(Me.EEIsInput, ecopathDS.EEinput(iGroup), ecopathDS.EE(iGroup))
+            Me.EE = If(Me.EEIsInput, ecopathDS.EEinput(iGroup), ecopathDS.EE(iGroup))
 
             Me.PBIsInput = (ecopathDS.PBinput(iGroup) >= 0)
-            Me.PB = cSystemUtils.IIF(Me.PBIsInput, ecopathDS.PBinput(iGroup), ecopathDS.PB(iGroup))
+            Me.PB = If(Me.PBIsInput, ecopathDS.PBinput(iGroup), ecopathDS.PB(iGroup))
 
             Me.QBIsInput = (ecopathDS.QBinput(iGroup) >= 0)
-            Me.QB = cSystemUtils.IIF(Me.QBIsInput, ecopathDS.QBinput(iGroup), ecopathDS.QB(iGroup))
+            Me.QB = If(Me.QBIsInput, ecopathDS.QBinput(iGroup), ecopathDS.QB(iGroup))
 
             Me.GEIsInput = (ecopathDS.GEinput(iGroup) >= 0)
-            Me.GE = cSystemUtils.IIF(Me.GEIsInput, ecopathDS.GEinput(iGroup), ecopathDS.GE(iGroup))
+            Me.GE = If(Me.GEIsInput, ecopathDS.GEinput(iGroup), ecopathDS.GE(iGroup))
 
             Me.Immig = ecopathDS.Immig(iGroup)
             Me.Emig = ecopathDS.Emigration(iGroup)

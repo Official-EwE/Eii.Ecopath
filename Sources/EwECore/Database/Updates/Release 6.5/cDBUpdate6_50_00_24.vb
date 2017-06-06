@@ -102,8 +102,8 @@ Friend Class cDBUpdate6_50_00_24
                 Dim St As Single = CSng(drow("Steep"))
 
                 If (bIsMediation) Then
-                    XMin = CSng(cSystemUtils.IIF(Convert.IsDBNull(drow("XAxisMin")), 0, drow("XAxisMin")))
-                    XMax = CSng(cSystemUtils.IIF(Convert.IsDBNull(drow("XAxisMax")), 0, drow("XAxisMax")))
+                    XMin = CSng(If(Convert.IsDBNull(drow("XAxisMin")), 0, drow("XAxisMin")))
+                    XMax = CSng(If(Convert.IsDBNull(drow("XAxisMax")), 0, drow("XAxisMax")))
                 End If
 
                 Select Case functiontype

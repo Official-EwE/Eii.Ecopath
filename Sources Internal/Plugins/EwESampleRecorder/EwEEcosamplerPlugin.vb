@@ -103,7 +103,7 @@ Public Class EwEEcosamplerPlugin
 
     Public Function DockState() As Integer _
         Implements EwEPlugin.IDockStatePlugin.DockState
-        Return cSystemUtils.IIF(cSystemUtils.IsRightToLeft,
+        Return If(cSystemUtils.IsRightToLeft,
                                 WeifenLuo.WinFormsUI.Docking.DockState.DockLeft,
                                 WeifenLuo.WinFormsUI.Docking.DockState.DockRight)
     End Function

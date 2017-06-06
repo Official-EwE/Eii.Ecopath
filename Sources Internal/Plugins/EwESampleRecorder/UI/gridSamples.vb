@@ -69,7 +69,7 @@ Public Class gridSamples
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
-        ' Me.Selection.SelectionMode = SourceGrid2.GridSelectionMode.Row
+        Me.Selection.SelectionMode = SourceGrid2.GridSelectionMode.Row
         Me.AllowBlockSelect = False
 
     End Sub
@@ -126,7 +126,7 @@ Public Class gridSamples
 
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim s As cEcopathSample = Me.Sample(iRow)
-            Me(iRow, eColumnTypes.Loaded).Value = cSystemUtils.IIF(man.IsLoaded(s), SharedResources.GENERIC_VALUE_YES, "")
+            Me(iRow, eColumnTypes.Loaded).Value = If(man.IsLoaded(s), SharedResources.GENERIC_VALUE_YES, "")
 #If ShowRatings Then
             Me(iRow, eColumnTypes.Rating).Value = s.Rating
 #End If

@@ -77,17 +77,17 @@ Namespace MSY
                 ' Write data
                 For i As Integer = 1 To Me.m_core.nGroups
                     ' Only write MSY values if an actual max has been detected
-                    sw.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}", _
-                                 cStringUtils.ToCSVField(epdata.GroupName(i)), _
-                                 cStringUtils.FormatSingle(epdata.TTLX(i)), _
-                                 cStringUtils.FormatSingle(result.FBase(i)), _
-                                 cStringUtils.FormatSingle(result.CMSYBase(i)), _
-                                 cStringUtils.FormatSingle(result.ValueBase(i)), _
-                                 cSystemUtils.IIF(result.IsFopt(i), 1, 0), _
-                                 cStringUtils.FormatSingle(result.FMSY(i)), _
-                                 cStringUtils.FormatSingle(result.CMSY(i)), _
-                                 cStringUtils.FormatSingle(result.Value(i)), _
-                                 cStringUtils.FormatSingle(result.CatchAtFMSY(i)), _
+                    sw.WriteLine("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}",
+                                 cStringUtils.ToCSVField(epdata.GroupName(i)),
+                                 cStringUtils.FormatSingle(epdata.TTLX(i)),
+                                 cStringUtils.FormatSingle(result.FBase(i)),
+                                 cStringUtils.FormatSingle(result.CMSYBase(i)),
+                                 cStringUtils.FormatSingle(result.ValueBase(i)),
+                                 If(result.IsFopt(i), 1, 0),
+                                 cStringUtils.FormatSingle(result.FMSY(i)),
+                                 cStringUtils.FormatSingle(result.CMSY(i)),
+                                 cStringUtils.FormatSingle(result.Value(i)),
+                                 cStringUtils.FormatSingle(result.CatchAtFMSY(i)),
                                  cStringUtils.FormatSingle(result.ValueAtFMSY(i)))
                 Next i
 

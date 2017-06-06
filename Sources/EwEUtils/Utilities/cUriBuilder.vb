@@ -140,7 +140,7 @@ Namespace Utilities
 
             For Each s As String In astrPairs
                 Dim astrPair() As String = s.Split(New Char() {"="c})
-                Me.m_dtQuery(astrPair(0)) = CStr(cSystemUtils.IIF(astrPair.Length > 1, astrPair(1), String.Empty))
+                Me.m_dtQuery(astrPair(0)) = CStr(If(astrPair.Length > 1, astrPair(1), String.Empty))
             Next
         End Sub
 

@@ -410,12 +410,9 @@ Namespace SystemUtilities
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
+        <Obsolete("Use new Roslyn If(condition, truepart, falsepart) construction instead")>
         Public Shared Function IIF(Of T)(ByVal bValue As Boolean, ByVal cTrue As T, ByVal cFalse As T) As T
-            If bValue Then
-                Return DirectCast(cTrue, T)
-            Else
-                Return DirectCast(cFalse, T)
-            End If
+            Return If(bValue, cTrue, cFalse)
         End Function
 
         ''' -------------------------------------------------------------------

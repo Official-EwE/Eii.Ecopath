@@ -22,12 +22,11 @@
 
 Option Strict On
 
+Imports System.Threading
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
-Imports EwEUtils.Core
 Imports EwEPlugin
-Imports System.Threading
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Core
 
 #End Region ' Imports 
 
@@ -370,14 +369,10 @@ Public Class cEcosimMonteCarlo
         For iGrp As Integer = 1 To m_core.nGroups
 
             Me.m_isVariableItem(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
-            'Use the B index in missing(group,variable) from Ecopath for BA
-            ' JS Apr 16: do not perturb BA if not entered
             Me.m_isVariableItem(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA) And (Me.m_epdata.BAInput(iGrp) <> 0)
-
             Me.m_isVariableItem(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
-            'QB needs to check the input variable
             Me.m_isVariableItem(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
-            Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4))
+            Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4)) And (iGrp <= Me.m_epdata.NumLiving)
 
         Next
 
@@ -733,7 +728,7 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     'xxxxxxxxxxxxxxxxxxxx Below is for global Nereus model, June 2013 xxxxxxxxxxxxxxxxxx
-                    'Calculate penalty for being away from reasonable fishing mortality
+                    'Calculate penalty for being away from reasonable fishing mortalityIsVariable
                     Fpenalty = Me.getFPenalty(bFirstRun, bForcedCatches)
                     m_esdata.SS += Fpenalty
                     'Debug.Print(Me.m_esdata.SS & " = " & Me.m_esdata.SS - Fpenalty & " + " & Fpenalty)
@@ -1508,9 +1503,9 @@ Public Class cEcosimMonteCarlo
 
         Const MIN_DIET_PROP As Single = 0.000001
 
-        'SumInteractions(iPred - 1) += cSystemUtils.IIF(m_core.EcoPathGroupInputs(iPred).ImpDiet > 0, 1, 0)
+        'SumInteractions(iPred - 1) += If(m_core.EcoPathGroupInputs(iPred).ImpDiet > 0, 1, 0)
         For iPrey As Integer = 0 To m_core.nGroups
-            SumInteractions += cSystemUtils.IIF(Diets(iPred, iPrey) > 0, 1, 0)
+            SumInteractions += If(Diets(iPred, iPrey) > 0, 1, 0)
         Next
 
         'mCore.EcoPathGroupInputs(iPred + 1).DietComp(0) = 0

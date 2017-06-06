@@ -305,11 +305,11 @@ Public Class frmMain
         Me.m_rbCustom.Enabled = Not bIsRunning
         Me.m_rbDefault.Enabled = Not bIsRunning
 
-        Me.m_tpEcopath.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithEcopath, 1, 0)
-        Me.m_tpEcosim.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithEcosim, 1, 0)
-        Me.m_tpEcospace.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithEcospace, 1, 0)
-        Me.m_tpMCpath.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithMC, 1, 0)
-        Me.m_tpMCsim.ImageIndex = cSystemUtils.IIF(My.Settings.RunWithMC, 1, 0)
+        Me.m_tpEcopath.ImageIndex = If(My.Settings.RunWithEcopath, 1, 0)
+        Me.m_tpEcosim.ImageIndex = If(My.Settings.RunWithEcosim, 1, 0)
+        Me.m_tpEcospace.ImageIndex = If(My.Settings.RunWithEcospace, 1, 0)
+        Me.m_tpMCpath.ImageIndex = If(My.Settings.RunWithMC, 1, 0)
+        Me.m_tpMCsim.ImageIndex = If(My.Settings.RunWithMC, 1, 0)
 
     End Sub
 

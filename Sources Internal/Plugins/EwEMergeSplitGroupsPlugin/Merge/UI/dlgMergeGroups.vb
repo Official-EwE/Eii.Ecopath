@@ -244,7 +244,7 @@ Public Class dlgMergeGroups
         Me.m_cmbMerge.Enabled = (iTarget > 0)
         Me.m_btnOK.Enabled = bCanMerge And bHasEstimate
 
-        Me.m_tabBasicInput.ImageIndex = cSystemUtils.IIF(bCanMerge And bHasEstimate, 0, 2)
+        Me.m_tabBasicInput.ImageIndex = If(bCanMerge And bHasEstimate, 0, 2)
         Me.m_tabDiets.ImageIndex = 0
         Me.m_tabTaxonomy.ImageIndex = 0
 

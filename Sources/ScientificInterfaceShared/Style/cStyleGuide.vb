@@ -535,7 +535,7 @@ Namespace Style
             End If
 
             If (tsGroupDigits = TriState.UseDefault) Then
-                tsGroupDigits = cSystemUtils.IIF(Me.m_bGroupDigits, TriState.True, TriState.False)
+                tsGroupDigits = If(Me.m_bGroupDigits, TriState.True, TriState.False)
             End If
 
             ' Calculated values must be formatted with a hard number of digits

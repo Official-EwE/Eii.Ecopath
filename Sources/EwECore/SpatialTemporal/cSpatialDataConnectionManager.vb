@@ -51,7 +51,7 @@ Namespace SpatialData
                 Implements System.Collections.Generic.IComparer(Of cSpatialDataAdapter).Compare
 
                 If (x.VarName = y.VarName) Then Return 0
-                Return CInt(cSystemUtils.IIF(x.VarName < y.VarName, -1, 1))
+                Return CInt(If(x.VarName < y.VarName, -1, 1))
 
             End Function
 

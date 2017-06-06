@@ -26,10 +26,8 @@ Imports System.Text
 Imports EwECore.DataSources
 Imports EwECore.Ecopath
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Extensions
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -120,7 +118,7 @@ Namespace Samples
                 sb.Append(strVar)
                 For i As Integer = 1 To data.GetUpperBound(0)
                     If (i > 1) Then sb.Append(" ")
-                    sb.Append(cSystemUtils.IIF(data(i), "1", "0"))
+                    sb.Append(If(data(i), "1", "0"))
                 Next
                 'Debug.Print(sb.ToString())
                 Return cEncryptionUtilities.MD5(sb.ToString())
@@ -656,26 +654,26 @@ Namespace Samples
                 ' #Yes: obtain data from Ecopath output vars that Monte Carlo has produced
                 For iGroup As Integer = 1 To epdata.NumGroups
 
-                    s.B(iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), -9999)
-                    s.PB(iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), -9999)
-                    s.QB(iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), -9999)
-                    s.EE(iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), -9999)
-                    s.BA(iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.BA), epdata.BA(iGroup), -9999)
+                    s.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), -9999)
+                    s.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), -9999)
+                    s.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), -9999)
+                    s.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), -9999)
+                    s.BA(iGroup) = If(mc.IsVariable(iGroup, eMCParams.BA), epdata.BA(iGroup), -9999)
 
                     For iFleet As Integer = 1 To epdata.NumFleet
-                        s.Landing(iFleet, iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), -9999)
-                        s.Discard(iFleet, iGroup) = IIF(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), -9999)
+                        s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), -9999)
+                        s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), -9999)
                     Next
 
                     For iPred As Integer = 1 To epdata.NumLiving
-                        s.DC(iPred, iGroup) = IIF(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), -9999)
+                        s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), -9999)
                     Next
                 Next
 
                 ' Diets
                 For iPred As Integer = 1 To epdata.NumLiving
                     For iPrey As Integer = 0 To epdata.NumGroups
-                        s.DC(iPred, iPrey) = IIF(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iPrey), -9999)
+                        s.DC(iPred, iPrey) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iPrey), -9999)
                     Next
                 Next
 

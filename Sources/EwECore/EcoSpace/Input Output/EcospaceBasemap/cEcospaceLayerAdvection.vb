@@ -71,7 +71,7 @@ Public Class cEcospaceLayerAdvection
 
     Protected Overrides Function DefaultName() As String
         Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_ADVECTION,
-                                     cSystemUtils.IIF(Me.Index = 1, My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY, My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY))
+                                     If(Me.Index = 1, My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY, My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY))
     End Function
 
 #End Region ' Overrides

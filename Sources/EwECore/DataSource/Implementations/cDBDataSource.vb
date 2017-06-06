@@ -7471,7 +7471,7 @@ Namespace DataSources
 
                 drow("AdjustSpace") = ecospaceDS.AdjustSpace
                 drow("UseExact") = ecospaceDS.UseExact
-                drow("UseEffortDistrThreshold") = cSystemUtils.IIF(ecospaceDS.bUseEffortDistThreshold, 1, 0)
+                drow("UseEffortDistrThreshold") = If(ecospaceDS.bUseEffortDistThreshold, 1, 0)
                 drow("EffortDistrThreshold") = ecospaceDS.EffortDistThreshold
 
                 If Me.Version >= 6.01 Then

@@ -273,8 +273,8 @@ Namespace Ecospace
 
             'Time series
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
-            Me.m_tbxXYTimeSeriesFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.BiomassInputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.BiomassInputFileName)
-            Me.m_tbxlOutputResidualsFile.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(manager.OutputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OutputFileName)
+            Me.m_tbxXYTimeSeriesFile.Text = If(String.IsNullOrWhiteSpace(manager.BiomassInputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.BiomassInputFileName)
+            Me.m_tbxlOutputResidualsFile.Text = If(String.IsNullOrWhiteSpace(manager.OutputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OutputFileName)
 
             'If Ecosim Biomass forcing is loaded then enable the control
             'IsEcosimBiomassForcingLoaded() just tell use that there is Ecosim Biomass Forcing loaded

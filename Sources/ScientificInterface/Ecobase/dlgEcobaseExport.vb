@@ -99,8 +99,8 @@ Public Class dlgEcobaseExport
         ' -- Model page --
         Me.m_tbxModelName.Text = model.Name
         Me.m_tbxModelDescription.Text = model.Description
-        Me.m_tbxModelAuthor.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Author), core.DefaultAuthor, model.Author)
-        Me.m_tbxModelEmail.Text = cSystemUtils.IIF(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
+        Me.m_tbxModelAuthor.Text = If(String.IsNullOrWhiteSpace(model.Author), core.DefaultAuthor, model.Author)
+        Me.m_tbxModelEmail.Text = If(String.IsNullOrWhiteSpace(model.Contact), core.DefaultContact, model.Contact)
         Me.m_fpFirstYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelFirstYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathFirstYear))
         Me.m_fpFirstYear.Value = model.FirstYear
         Me.m_fpLastYear = New cEwEFormatProvider(Me.UIContext, Me.m_tbxModelLastYear, GetType(Integer), model.GetVariableMetadata(eVarNameFlags.EcopathNumYears))
@@ -170,20 +170,20 @@ Public Class dlgEcobaseExport
 #Region " Event handlers "
 
     Private Sub OnContentChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbAuthorAgreement.CheckedChanged, _
-                m_tbxModelAuthor.TextChanged, m_tbxModelName.TextChanged, m_tbxModelEmail.TextChanged, m_tbxModelDescription.TextChanged, m_tbxObjectives.TextChanged, _
-                m_tbxDOI.TextChanged, m_tbxHyperlink.TextChanged, m_tbxReference.TextChanged, _
-                m_cbModelIsAuthor.CheckedChanged, m_cbConfirmDessiminate.CheckedChanged, _
-                m_tbxModelFirstYear.TextChanged, m_tbxModelLastYear.TextChanged, m_tbxModelArea.TextChanged, _
-                m_cbEcosimUsed.CheckedChanged, m_cbFittedToTimeSeries.CheckedChanged, m_cbEcospaceUsed.CheckedChanged, _
-                m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged, _
-                m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged, _
-                m_cmbCountry.TextChanged, m_cmbEcoType.TextChanged, _
-                m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged, _
-                m_cbPubMatchesPaper.CheckedChanged, m_tbxDifference.TextChanged, _
-                m_cbObjectiveAquaculture.CheckedChanged, m_cbObjectiveFisheries.CheckedChanged, m_cbObjectiveEcosystemFunctioning.CheckedChanged, _
-                m_cbObjectiveEnvironmentalVariability.CheckedChanged, m_cbObjectiveOtherImpactAssessment.CheckedChanged, m_cbObjectivePollution.CheckedChanged, m_cbObjectiveMarineProtection.CheckedChanged, _
-                m_rbSubmNew.CheckedChanged, m_rbSubmDerived.CheckedChanged, m_rbSubmUpdate.CheckedChanged, m_tbxSubmModifications.TextChanged, m_cmbSubmEcobaseModel.SelectedIndexChanged, _
+        Handles m_cbAuthorAgreement.CheckedChanged,
+                m_tbxModelAuthor.TextChanged, m_tbxModelName.TextChanged, m_tbxModelEmail.TextChanged, m_tbxModelDescription.TextChanged, m_tbxObjectives.TextChanged,
+                m_tbxDOI.TextChanged, m_tbxHyperlink.TextChanged, m_tbxReference.TextChanged,
+                m_cbModelIsAuthor.CheckedChanged, m_cbConfirmDessiminate.CheckedChanged,
+                m_tbxModelFirstYear.TextChanged, m_tbxModelLastYear.TextChanged, m_tbxModelArea.TextChanged,
+                m_cbEcosimUsed.CheckedChanged, m_cbFittedToTimeSeries.CheckedChanged, m_cbEcospaceUsed.CheckedChanged,
+                m_tbxDepthMin.TextChanged, m_tbxDepthMean.TextChanged, m_tbxDepthMax.TextChanged,
+                m_tbxTempMin.TextChanged, m_tbxTempMean.TextChanged, m_tbxTempMax.TextChanged,
+                m_cmbCountry.TextChanged, m_cmbEcoType.TextChanged,
+                m_nudNorth.ValueChanged, m_nudEast.ValueChanged, m_nudWest.ValueChanged, m_nudSouth.ValueChanged,
+                m_cbPubMatchesPaper.CheckedChanged, m_tbxDifference.TextChanged,
+                m_cbObjectiveAquaculture.CheckedChanged, m_cbObjectiveFisheries.CheckedChanged, m_cbObjectiveEcosystemFunctioning.CheckedChanged,
+                m_cbObjectiveEnvironmentalVariability.CheckedChanged, m_cbObjectiveOtherImpactAssessment.CheckedChanged, m_cbObjectivePollution.CheckedChanged, m_cbObjectiveMarineProtection.CheckedChanged,
+                m_rbSubmNew.CheckedChanged, m_rbSubmDerived.CheckedChanged, m_rbSubmUpdate.CheckedChanged, m_tbxSubmModifications.TextChanged, m_cmbSubmEcobaseModel.SelectedIndexChanged,
                 m_tbxPermissionComments.TextChanged, m_cbObjectiveMarineProtection.CheckedChanged
 
         Try
@@ -274,8 +274,8 @@ Public Class dlgEcobaseExport
         Me.m_rtfAuthorAgreement.Rtf = Me.m_strAuthorAgreement
 
 
-        Me.m_pbModelName.BackgroundImage = cSystemUtils.IIF(bAgreementOK, SharedResources.OK, SharedResources.Critical)
-        Me.m_tpEcoBase.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
+        Me.m_pbModelName.BackgroundImage = If(bAgreementOK, SharedResources.OK, SharedResources.Critical)
+        Me.m_tpEcoBase.ImageIndex = If(bAgreementOK, 0, 2)
 
         ' -- Model page --
         Dim bHasModelName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxModelName.Text)
@@ -287,19 +287,19 @@ Public Class dlgEcobaseExport
         Dim bHasArea As Boolean = (CInt(Me.m_fpArea.Value) > 0)
         Dim bModelOK As Boolean = bHasModelName And bHasDescription And bHasAuthor And bIsAuthor And bHasYears And bHasArea
 
-        Me.m_pbModelName.BackgroundImage = cSystemUtils.IIF(bHasModelName, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbModelDescription.BackgroundImage = cSystemUtils.IIF(bHasDescription, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbModelAuthorEmail.BackgroundImage = cSystemUtils.IIF(bHasAuthor And bHasContact, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbModelYear.BackgroundImage = cSystemUtils.IIF(bHasYears, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbArea.BackgroundImage = cSystemUtils.IIF(bHasArea, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbModelIsAuthor.BackgroundImage = cSystemUtils.IIF(bIsAuthor, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelName.BackgroundImage = If(bHasModelName, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelDescription.BackgroundImage = If(bHasDescription, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelAuthorEmail.BackgroundImage = If(bHasAuthor And bHasContact, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelYear.BackgroundImage = If(bHasYears, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbArea.BackgroundImage = If(bHasArea, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbModelIsAuthor.BackgroundImage = If(bIsAuthor, SharedResources.OK, SharedResources.Critical)
 
         Me.m_cbEcosimUsed.Enabled = (core.nEcosimScenarios > 0)
         If (Not Me.m_cbEcosimUsed.Enabled) Then Me.m_cbFittedToTimeSeries.Checked = False
         Me.m_cbFittedToTimeSeries.Enabled = (core.nTimeSeriesDatasets > 0) And Me.m_cbEcosimUsed.Checked
         Me.m_cbEcospaceUsed.Enabled = (core.nEcospaceScenarios > 0)
 
-        Me.m_tpModel.ImageIndex = cSystemUtils.IIF(bModelOK, 0, 2)
+        Me.m_tpModel.ImageIndex = If(bModelOK, 0, 2)
 
         ' -- Publication page --
         Dim bHasPublication As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDOI.Text) Or Not String.IsNullOrWhiteSpace(Me.m_tbxHyperlink.Text)
@@ -312,15 +312,15 @@ Public Class dlgEcobaseExport
             Me.m_pbDifference.Image = SharedResources.OK
         Else
             Me.m_tbxDifference.Enabled = True
-            Me.m_pbDifference.Image = cSystemUtils.IIF(bHasDifferences, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbDifference.Image = If(bHasDifferences, SharedResources.OK, SharedResources.Critical)
         End If
 
-        Me.m_pbPublication.BackgroundImage = cSystemUtils.IIF(bHasPublication, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbRef.BackgroundImage = cSystemUtils.IIF(bHasReference, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbPublication.BackgroundImage = If(bHasPublication, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbRef.BackgroundImage = If(bHasReference, SharedResources.OK, SharedResources.Critical)
 
         Me.m_llViewPublication.Enabled = bHasPublication
 
-        Me.m_tpPublication.ImageIndex = cSystemUtils.IIF(bPubsOK, 0, 2)
+        Me.m_tpPublication.ImageIndex = If(bPubsOK, 0, 2)
 
         ' -- Classification page --
         Dim bHasCountry As Boolean = (Not String.IsNullOrWhiteSpace(Me.m_cmbCountry.Text))
@@ -329,22 +329,22 @@ Public Class dlgEcobaseExport
         Dim bHasEnv As Boolean = (CSng(Me.m_fpDmean.Value) > 0) And (CSng(Me.m_fpDmax.Value) > 0)
         Dim bClassOK As Boolean = bHasCountry And bHasBoundingBox And bHasEcosystem
 
-        Me.m_pbAreaName.BackgroundImage = cSystemUtils.IIF(bHasCountry, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbBoundingBox.BackgroundImage = cSystemUtils.IIF(bHasBoundingBox, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbEcosystem.BackgroundImage = cSystemUtils.IIF(bHasEcosystem, SharedResources.OK, SharedResources.Critical)
-        Me.m_pbEnvVars.BackgroundImage = cSystemUtils.IIF(bHasEnv, SharedResources.OK, SharedResources.Warning)
+        Me.m_pbAreaName.BackgroundImage = If(bHasCountry, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbBoundingBox.BackgroundImage = If(bHasBoundingBox, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbEcosystem.BackgroundImage = If(bHasEcosystem, SharedResources.OK, SharedResources.Critical)
+        Me.m_pbEnvVars.BackgroundImage = If(bHasEnv, SharedResources.OK, SharedResources.Warning)
 
         If (bHasCountry And bHasBoundingBox And bHasBoundingBox) Then
-            Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bHasEnv, 0, 1)
+            Me.m_tpClassification.ImageIndex = If(bHasEnv, 0, 1)
         Else
             Me.m_tpClassification.ImageIndex = 2
         End If
 
-        Me.m_tpClassification.ImageIndex = cSystemUtils.IIF(bClassOK, 0, 2)
+        Me.m_tpClassification.ImageIndex = If(bClassOK, 0, 2)
 
         ' -- Objectives --
-        Dim bHasObjOptions As Boolean = (Me.m_cbObjectiveFisheries.Checked Or Me.m_cbObjectiveAquaculture.Checked Or _
-                                         Me.m_cbObjectiveEcosystemFunctioning.Checked Or Me.m_cbObjectiveEnvironmentalVariability.Checked Or _
+        Dim bHasObjOptions As Boolean = (Me.m_cbObjectiveFisheries.Checked Or Me.m_cbObjectiveAquaculture.Checked Or
+                                         Me.m_cbObjectiveEcosystemFunctioning.Checked Or Me.m_cbObjectiveEnvironmentalVariability.Checked Or
                                          Me.m_cbObjectivePollution.Checked Or m_cbObjectiveMarineProtection.Checked)
         Dim bHasObjOther As Boolean = Me.m_cbObjectiveOtherImpactAssessment.Checked
         Dim bHasObjOtherText As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxObjectives.Text)
@@ -355,16 +355,16 @@ Public Class dlgEcobaseExport
         If (bHasObjOptions) Then
             Me.m_pbOtherNeeded.BackgroundImage = Nothing
         Else
-            Me.m_pbOtherNeeded.BackgroundImage = cSystemUtils.IIF(bHasObjOther, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbOtherNeeded.BackgroundImage = If(bHasObjOther, SharedResources.OK, SharedResources.Critical)
         End If
         If (bHasObjOther) Then
-            Me.m_pbOtherText.BackgroundImage = cSystemUtils.IIF(bHasObjOtherText, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbOtherText.BackgroundImage = If(bHasObjOtherText, SharedResources.OK, SharedResources.Critical)
         Else
             Me.m_pbOtherText.BackgroundImage = Nothing
         End If
 
-        Me.m_pbObjectives.BackgroundImage = cSystemUtils.IIF(bObjectivesOK, SharedResources.OK, SharedResources.Critical)
-        Me.m_tpObjectives.ImageIndex = cSystemUtils.IIF(bObjectivesOK, 0, 2)
+        Me.m_pbObjectives.BackgroundImage = If(bObjectivesOK, SharedResources.OK, SharedResources.Critical)
+        Me.m_tpObjectives.ImageIndex = If(bObjectivesOK, 0, 2)
 
         ' -- Open access --
         Dim bAccessOK As Boolean = False
@@ -377,9 +377,9 @@ Public Class dlgEcobaseExport
             bAccessOK = (Not String.IsNullOrWhiteSpace(Me.m_tbxPermissionComments.Text))
             Me.m_lblPermissionComments.Enabled = True
             Me.m_tbxPermissionComments.Enabled = True
-            Me.m_pbPermissionComment.Image = cSystemUtils.IIF(bAccessOK, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbPermissionComment.Image = If(bAccessOK, SharedResources.OK, SharedResources.Critical)
         End If
-        Me.m_tpAccess.ImageIndex = cSystemUtils.IIF(bAccessOK, 0, 2)
+        Me.m_tpAccess.ImageIndex = If(bAccessOK, 0, 2)
 
         ' -- Submission --
         Dim bIsModification As Boolean = Me.m_rbSubmUpdate.Checked Or Me.m_rbSubmDerived.Checked
@@ -393,14 +393,14 @@ Public Class dlgEcobaseExport
         Me.m_cmbSubmEcobaseModel.Enabled = bIsModification
 
         If bIsModification Then
-            Me.m_pbSubmExistingModel.Image = cSystemUtils.IIF(bHasModelLink, SharedResources.OK, SharedResources.Critical)
-            Me.m_pbSubmModifications.Image = cSystemUtils.IIF(bHasModificationText, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbSubmExistingModel.Image = If(bHasModelLink, SharedResources.OK, SharedResources.Critical)
+            Me.m_pbSubmModifications.Image = If(bHasModificationText, SharedResources.OK, SharedResources.Critical)
         Else
             Me.m_pbSubmModifications.Image = Nothing
             Me.m_pbSubmExistingModel.Image = Nothing
         End If
 
-        Me.m_tpSubmission.ImageIndex = cSystemUtils.IIF(bSubmissionOk, 0, 2)
+        Me.m_tpSubmission.ImageIndex = If(bSubmissionOk, 0, 2)
 
         ' -- SUBMIT --
         Me.m_btnSubmit.Enabled = bAgreementOK And bModelOK And bPubsOK And bClassOK And bAccessOK And bObjectivesOK And bSubmissionOk

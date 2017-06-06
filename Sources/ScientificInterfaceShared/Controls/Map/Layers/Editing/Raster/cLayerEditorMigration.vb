@@ -52,7 +52,7 @@ Namespace Controls.Map.Layers
             Implements IMonthFilter.FilterChanged
 
         Public Sub [Next]()
-            Me.Month = cSystemUtils.IIF(Me.Month = cCore.N_MONTHS, 1, Me.Month + 1)
+            Me.Month = If(Me.Month = cCore.N_MONTHS, 1, Me.Month + 1)
         End Sub
 
         ''' -------------------------------------------------------------------

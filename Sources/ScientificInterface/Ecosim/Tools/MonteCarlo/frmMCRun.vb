@@ -928,7 +928,7 @@ Namespace Ecosim
             Me.m_cmbSaveFormat.Enabled = Not bIsBusy
             Me.m_cbSRA.Enabled = Not bIsBusy
 
-            Me.m_fpFMratio.Style = cSystemUtils.IIF(Me.m_mcmanager.IncludeFpenalty, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
+            Me.m_fpFMratio.Style = If(Me.m_mcmanager.IncludeFpenalty, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
             Me.m_bInUpdate = False
 

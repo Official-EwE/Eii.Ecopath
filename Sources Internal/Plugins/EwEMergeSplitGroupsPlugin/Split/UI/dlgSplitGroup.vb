@@ -482,11 +482,11 @@ Public Class dlgSplitGroup
 
         Me.m_fpN1.Style = cStyleGuide.eStyleFlags.NotEditable
 
-        Me.m_fpB1.Style = cSystemUtils.IIF(bEditBiomass, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
-        Me.m_fpB2.Style = cSystemUtils.IIF(bEditBiomass, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
+        Me.m_fpB1.Style = If(bEditBiomass, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
+        Me.m_fpB2.Style = If(bEditBiomass, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
-        Me.m_fpA1.Style = cSystemUtils.IIF(bEditAges, cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
-        Me.m_fpA2.Style = cSystemUtils.IIF(bEditAges, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+        Me.m_fpA1.Style = If(bEditAges, cStyleGuide.eStyleFlags.NotEditable, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+        Me.m_fpA2.Style = If(bEditAges, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
 
         Me.m_btn1to2.Enabled = bEditTaxa And (Me.m_lbxTaxa1.SelectedIndices.Count > 0)
         Me.m_btn2to1.Enabled = bEditTaxa And (Me.m_lbxTaxa2.SelectedIndices.Count > 0)

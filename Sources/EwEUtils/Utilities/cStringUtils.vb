@@ -1683,7 +1683,7 @@ Namespace Utilities
                         bUseCell = True
                     Else
                         ' #No: only use cell if land or water (depeding on bWaterOnly)
-                        bUseCell = cSystemUtils.IIF(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly)
+                        bUseCell = If(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly)
                     End If
 
                     If (bUseCell) Then
@@ -1692,7 +1692,7 @@ Namespace Utilities
                         ' Append value in correct type 
                         If tData Is GetType(Boolean) Then
                             ' #Boolean values are stored as 1 (true) and 0 (false)
-                            sbRow.Append(cSystemUtils.IIF(CBool(value), "1", "0"))
+                            sbRow.Append(If(CBool(value), "1", "0"))
                             bHasRowValues = bHasRowValues Or (CBool(value))
                         Else
                             ' Is an allowed value?
@@ -1765,7 +1765,7 @@ Namespace Utilities
                             bUseCell = True
                         Else
                             ' #No: only use cell if land or water (depeding on bWaterOnly)
-                            bUseCell = cSystemUtils.IIF(land(i, j) > 0, bWaterOnly, Not bWaterOnly)
+                            bUseCell = If(land(i, j) > 0, bWaterOnly, Not bWaterOnly)
                         End If
 
                         ' Use cell and there is cell data?
@@ -1878,7 +1878,7 @@ Namespace Utilities
                         bUseCell = True
                     Else
                         ' #No: only use cell if land or water (depeding on bWaterOnly)
-                        bUseCell = cSystemUtils.IIF(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly)
+                        bUseCell = If(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly)
                     End If
 
                     If bUseCell Then
@@ -1891,7 +1891,7 @@ Namespace Utilities
 
 
                         If tData Is GetType(Boolean) Then
-                            sbRow.Append(cSystemUtils.IIF(CBool(value), "1", "0"))
+                            sbRow.Append(If(CBool(value), "1", "0"))
                             bHasRowValues = bHasRowValues Or (CBool(value))
                         Else
                             ' Is not an allowed value?
@@ -1971,7 +1971,7 @@ Namespace Utilities
                             bUseValue = True
                         Else
                             ' #No: only use cell if land or water (depeding on bWaterOnly)
-                            bUseValue = cSystemUtils.IIF(land(i, j) > 0, bWaterOnly, Not bWaterOnly)
+                            bUseValue = If(land(i, j) > 0, bWaterOnly, Not bWaterOnly)
                         End If
 
                         ' Use cell and there is cell data?
@@ -2271,7 +2271,7 @@ Namespace Utilities
                     Next
                 End If
 
-                For j As Integer = cSystemUtils.IIF(iFrom <> -9999, 1, 0) To nums.Length - 1
+                For j As Integer = If(iFrom <> -9999, 1, 0) To nums.Length - 1
                     bSuccess = bSuccess And Integer.TryParse(nums(j), iFrom)
                     If (Not lValues.Contains(iFrom)) Then
                         lValues.Add(iFrom)

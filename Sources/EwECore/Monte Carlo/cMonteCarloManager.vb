@@ -1044,9 +1044,9 @@ Public Class cMonteCarloManager
             Dim sg As cStanzaGroup = Me.m_core.StanzaGroups(grp.iStanza)
             Select Case var
                 Case eVarNameFlags.BiomassAreaInput
-                    status = cSystemUtils.IIF(sg.iGroups(sg.LeadingB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
+                    status = if(sg.iGroups(sg.LeadingB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
                 Case eVarNameFlags.QBInput
-                    status = cSystemUtils.IIF(sg.iGroups(sg.LeadingCB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
+                    status = if(sg.iGroups(sg.LeadingCB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
                 Case eVarNameFlags.PBInput
                     'PB needs to be supplied for all stages in a Multistanza group; it can be varied
                     status = eStatusFlags.OK
@@ -1063,7 +1063,7 @@ Public Class cMonteCarloManager
         End If
 
         If (var = eVarNameFlags.DietComp) Then
-            status = cSystemUtils.IIF(grp.IsConsumer, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            status = if(grp.IsConsumer, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
         End If
 
         ' Any null or not editable status flag should be blocked out in the MCMC interface

@@ -258,7 +258,7 @@ Friend Class cEngine
         If (Not Me.m_core.SaveChanges()) Then Return
 
         Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
-        Dim strScope As String = cSystemUtils.IIF(bReadMonthly, "monthly", "annual")
+        Dim strScope As String = If(bReadMonthly, "monthly", "annual")
 
         Me.m_bReadMonthly = bReadMonthly
         Me.m_astrFiles = astrFiles

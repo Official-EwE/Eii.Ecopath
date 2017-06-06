@@ -397,7 +397,7 @@ Namespace Controls
                 iNodeTmp += 1
             End While
 
-            Return cSystemUtils.IIF(iNodeViz > 0, iNodeViz, iNodeHid)
+            Return If(iNodeViz > 0, iNodeViz, iNodeHid)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -412,9 +412,9 @@ Namespace Controls
         ''' node at the location, or 0 if no node was found.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Private Function GetLabelAtPoint(ByVal rc As Rectangle, _
-                                         ByVal pt As PointF, _
-                                         ByVal g As Graphics, _
+        Private Function GetLabelAtPoint(ByVal rc As Rectangle,
+                                         ByVal pt As PointF,
+                                         ByVal g As Graphics,
                                          ByVal font As Font) As Integer
 
             Dim iNodeViz As Integer = 0
@@ -434,7 +434,7 @@ Namespace Controls
                 iNodeTmp += 1
             End While
 
-            Return cSystemUtils.IIF(iNodeViz > 0, iNodeViz, iNodeHid)
+            Return If(iNodeViz > 0, iNodeViz, iNodeHid)
 
         End Function
 

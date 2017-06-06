@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 0</value>
+    <value>316, 0</value>
   </data>
   <data name="m_btnDelete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 0, 0, 0</value>
@@ -154,7 +154,7 @@
     <value>0</value>
   </data>
   <data name="m_btnLoad.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 0</value>
+    <value>250, 0</value>
   </data>
   <data name="m_btnLoad.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 3, 0</value>
@@ -190,7 +190,7 @@
     <value>3, 0</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 23</value>
+    <value>244, 23</value>
   </data>
   <data name="Label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -217,13 +217,13 @@
     <value>Fill</value>
   </data>
   <data name="m_tlpOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 197</value>
+    <value>3, 323</value>
   </data>
   <data name="m_tlpOptions.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_tlpOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>291, 23</value>
+    <value>376, 23</value>
   </data>
   <data name="m_tlpOptions.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -256,7 +256,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>297, 169</value>
+    <value>382, 295</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -346,7 +346,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>297, 25</value>
+    <value>382, 25</value>
   </data>
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -355,7 +355,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_tlpMain</value>
@@ -367,7 +367,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 52</value>
+    <value>290, 52</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 23</value>
@@ -394,7 +394,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_nudNumSamples.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 26</value>
+    <value>290, 26</value>
   </data>
   <data name="m_nudNumSamples.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 20</value>
@@ -448,7 +448,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>297, 18</value>
+    <value>382, 18</value>
   </data>
   <data name="m_hdrRun.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -463,7 +463,7 @@
     <value>m_hdrRun</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.Parent" xml:space="preserve">
     <value>m_plBatchRun</value>
@@ -475,13 +475,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plBatchRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 229</value>
+    <value>0, 355</value>
   </data>
   <data name="m_plBatchRun.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 6, 0, 0</value>
   </data>
   <data name="m_plBatchRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>297, 80</value>
+    <value>382, 80</value>
   </data>
   <data name="m_plBatchRun.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -508,7 +508,7 @@
     <value>4</value>
   </data>
   <data name="m_tlpMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>297, 309</value>
+    <value>382, 435</value>
   </data>
   <data name="m_tlpMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -535,7 +535,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>297, 309</value>
+    <value>382, 435</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -574,6 +574,6 @@
     <value>frmSamples</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

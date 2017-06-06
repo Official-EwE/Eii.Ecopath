@@ -427,7 +427,7 @@ Namespace Ecosim
                     strFileName = "value-fleet-group"
             End Select
 
-            strFileName = strFileName & "_" & cSystemUtils.IIF(bSaveAnnual, "annual", "monthly")
+            strFileName = strFileName & "_" & If(bSaveAnnual, "annual", "monthly")
 
             Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
             If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
@@ -630,7 +630,7 @@ Namespace Ecosim
             Dim str As New StringBuilder()
             For i As Integer = 1 To Me.m_core.nGroups
                 If (i > 1) Then str.Append(","c)
-                str.Append(cStringUtils.ToCSVField(cSystemUtils.IIF(ShowGroupNames,
+                str.Append(cStringUtils.ToCSVField(If(ShowGroupNames,
                                                                     Me.m_core.EcoPathGroupInputs(i).Name, CStr(Me.m_core.EcoPathGroupInputs(i).Index))))
             Next i
             Return str.ToString()

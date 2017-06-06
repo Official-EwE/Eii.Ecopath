@@ -317,12 +317,12 @@ Namespace Database
                     drow("Respiration") = gd.Respiration
 
                     'variable with input/output pair only the input gets saved
-                    drow("EcoEfficiency") = cSystemUtils.IIF(gd.EEIsInput, gd.EE, cCore.NULL_VALUE)
+                    drow("EcoEfficiency") = If(gd.EEIsInput, gd.EE, cCore.NULL_VALUE)
                     drow("OtherMort") = gd.OtherMort
-                    drow("ProdBiom") = cSystemUtils.IIF(gd.PBIsInput, gd.PB, cCore.NULL_VALUE)
-                    drow("ConsBiom") = cSystemUtils.IIF(gd.QBIsInput, gd.QB, cCore.NULL_VALUE)
-                    drow("ProdCons") = cSystemUtils.IIF(gd.GEIsInput, gd.GE, cCore.NULL_VALUE)
-                    drow("Biomass") = cSystemUtils.IIF(gd.BHIsInput, gd.B, cCore.NULL_VALUE)
+                    drow("ProdBiom") = If(gd.PBIsInput, gd.PB, cCore.NULL_VALUE)
+                    drow("ConsBiom") = If(gd.QBIsInput, gd.QB, cCore.NULL_VALUE)
+                    drow("ProdCons") = If(gd.GEIsInput, gd.GE, cCore.NULL_VALUE)
+                    drow("Biomass") = If(gd.BHIsInput, gd.B, cCore.NULL_VALUE)
 
                     drow("Immigration") = gd.Immig
                     drow("Emigration") = gd.Emig

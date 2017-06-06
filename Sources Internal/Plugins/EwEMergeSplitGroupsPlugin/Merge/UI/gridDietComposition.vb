@@ -191,7 +191,7 @@ Public Class gridDietComposition
                     Else
                         val = Me.m_data.DCInput(iPred, iPrey)
                         ' Validate if changing
-                        If (val - cSystemUtils.IIF(iPrey = 0, pred.ImpDiet(), pred.DietComp(iPrey))) > 0.00001 Then
+                        If (val - If(iPrey = 0, pred.ImpDiet(), pred.DietComp(iPrey))) > 0.00001 Then
                             ' Unexpected large difference
                             style = style Or eStyleFlags.ErrorEncountered
                         End If

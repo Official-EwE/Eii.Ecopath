@@ -73,7 +73,7 @@ Namespace MSY
             ' 2 Variables
             For k As Integer = 0 To 1
 
-                strFile = Path.Combine(strPath, Me.CSVFileName(target, cSystemUtils.IIF(k = 0, "B", "Catch"), ass))
+                strFile = Path.Combine(strPath, Me.CSVFileName(target, If(k = 0, "B", "Catch"), ass))
                 sw = Me.OpenWriter(strFile)
 
                 If (sw IsNot Nothing) Then
@@ -93,7 +93,7 @@ Namespace MSY
                         sw.Write(cStringUtils.FormatSingle(r.FCur))
                         For j As Integer = 1 To Me.m_core.nGroups
                             Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
-                            sw.Write(",{0}", cStringUtils.FormatSingle(cSystemUtils.IIF(k = 0, r.B(j), r.Catch(j))))
+                            sw.Write(",{0}", cStringUtils.FormatSingle(If(k = 0, r.B(j), r.Catch(j))))
                         Next
                         sw.WriteLine()
                     Next
@@ -117,11 +117,11 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteGroupValueResults(ByVal strPath As String, _
-                                               ByVal iGroup As Integer, _
-                                               ByVal ass As eMSYAssessmentTypes, _
-                                               ByVal FBase As Single, _
-                                               ByVal results As cMSYFResult(), _
+        Public Function WriteGroupValueResults(ByVal strPath As String,
+                                               ByVal iGroup As Integer,
+                                               ByVal ass As eMSYAssessmentTypes,
+                                               ByVal FBase As Single,
+                                               ByVal results As cMSYFResult(),
                                                ByVal optimum As cMSYOptimum) As Boolean
 
             Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
@@ -166,10 +166,10 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteFleetResults(ByVal strPath As String, _
-                                          ByVal iFleet As Integer, _
-                                          ByVal assessment As eMSYAssessmentTypes, _
-                                          ByVal results As cMSYFResult(), _
+        Public Function WriteFleetResults(ByVal strPath As String,
+                                          ByVal iFleet As Integer,
+                                          ByVal assessment As eMSYAssessmentTypes,
+                                          ByVal results As cMSYFResult(),
                                           ByVal optimum As cMSYOptimum) As Boolean
 
             Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
@@ -181,7 +181,7 @@ Namespace MSY
             ' 2 variables
             For k As Integer = 0 To 1
 
-                strFile = Path.Combine(strPath, Me.CSVFileName(flt, cSystemUtils.IIF(k = 0, "B", "Catch"), assessment))
+                strFile = Path.Combine(strPath, Me.CSVFileName(flt, If(k = 0, "B", "Catch"), assessment))
                 sw = Me.OpenWriter(strFile)
                 If (sw IsNot Nothing) Then
 
@@ -201,7 +201,7 @@ Namespace MSY
                         sw.Write(cStringUtils.FormatSingle(r.FCur))
                         For j As Integer = 1 To Me.m_core.nGroups
                             Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
-                            sw.Write(",{0}", cStringUtils.FormatSingle(cSystemUtils.IIF(k = 0, r.B(j), r.Catch(j))))
+                            sw.Write(",{0}", cStringUtils.FormatSingle(If(k = 0, r.B(j), r.Catch(j))))
                         Next
                         sw.WriteLine()
                     Next
@@ -226,10 +226,10 @@ Namespace MSY
         ''' <param name="results">MSY results.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function WriteFleetValueResults(ByVal strPath As String, _
-                                               ByVal iFleet As Integer, _
-                                               ByVal assessment As eMSYAssessmentTypes, _
-                                               ByVal results As cMSYFResult(), _
+        Public Function WriteFleetValueResults(ByVal strPath As String,
+                                               ByVal iFleet As Integer,
+                                               ByVal assessment As eMSYAssessmentTypes,
+                                               ByVal results As cMSYFResult(),
                                                ByVal optimum As cMSYOptimum) As Boolean
 
             Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
@@ -269,18 +269,18 @@ Namespace MSY
 
 #Region " Internals "
 
-        Protected Sub WriteGroupHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes, _
-                                       ByVal target As cEcoPathGroupInput, _
+        Protected Sub WriteGroupHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes,
+                                       ByVal target As cEcoPathGroupInput,
                                        ByVal fBase As Single, ByVal optimum As cMSYOptimum)
             MyBase.WriteHeader(sw, ass, "MSY")
             sw.WriteLine("Group,{0}", cStringUtils.ToCSVField(target.Name))
             sw.WriteLine("Fbase,{0}", cStringUtils.FormatSingle(fBase))
-            sw.WriteLine("Fmsy,{0}", cSystemUtils.IIF(optimum.IsFopt(target.Index), _
-                                                       cStringUtils.FormatSingle(optimum.Fopt(target.Index)), _
+            sw.WriteLine("Fmsy,{0}", If(optimum.IsFopt(target.Index),
+                                                       cStringUtils.FormatSingle(optimum.FOpt(target.Index)),
                                                        cStringUtils.ToCSVField(My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND)))
         End Sub
 
-        Protected Sub WriteFleetHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes, _
+        Protected Sub WriteFleetHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes,
                                        ByVal target As cFleetInput, ByVal optimum As cMSYOptimum)
 
             Me.WriteHeader(sw, ass)
@@ -297,7 +297,7 @@ Namespace MSY
             sw.WriteLine()
             sw.Write("FmsyFound")
             For j As Integer = 1 To Me.m_core.nGroups
-                sw.Write(",{0}", cSystemUtils.IIF(optimum.IsFopt(j), 1, 0))
+                sw.Write(",{0}", If(optimum.IsFopt(j), 1, 0))
             Next
             sw.WriteLine()
         End Sub

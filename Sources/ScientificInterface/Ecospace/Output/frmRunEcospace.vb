@@ -1793,7 +1793,7 @@ Namespace Ecospace
             For iRow As Integer = 1 To nRows
                 For iCol As Integer = 1 To nCols
                     If bm.IsModelledCell(iRow, iCol) Then
-                        sdummy(iRow, iCol) = cSystemUtils.IIF(i = 0, 10, -10)
+                        sdummy(iRow, iCol) = If(i = 0, 10, -10)
                         i = (i + 1) Mod 2 'FlipFlop
                     End If
                 Next iCol

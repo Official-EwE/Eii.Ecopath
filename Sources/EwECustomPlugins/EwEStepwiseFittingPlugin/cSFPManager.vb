@@ -1146,7 +1146,7 @@ Public Class cSFPManager
             End Try
         End If
 
-        iteration.RunState = cSystemUtils.IIF(bSuccess, ISFPIterations.eRunState.Completed, ISFPIterations.eRunState.Error)
+        iteration.RunState = If(bSuccess, ISFPIterations.eRunState.Completed, ISFPIterations.eRunState.Error)
         Return bSuccess
 
     End Function

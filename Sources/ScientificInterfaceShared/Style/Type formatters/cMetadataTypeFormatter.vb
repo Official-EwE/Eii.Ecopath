@@ -64,20 +64,20 @@ Namespace Style
 
                 Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.IntArray
                     If (md.Min > Integer.MinValue) Then
-                        sbDescr.Append(CStr(md.Min) & " " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cGreaterThan), "<", "≤")) & " ")
+                        sbDescr.Append(CStr(md.Min) & " " & CStr(If((TypeOf md.MinOperator Is cGreaterThan), "<", "≤")) & " ")
                     End If
                     sbDescr.Append(My.Resources.METADATA_INTEGER)
                     If (md.Max < Integer.MaxValue) Then
-                        sbDescr.Append(" " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cLessThan), "<", "≤")) & " " & CStr(md.Max))
+                        sbDescr.Append(" " & CStr(If((TypeOf md.MinOperator Is cLessThan), "<", "≤")) & " " & CStr(md.Max))
                     End If
 
                 Case ValueWrapper.eValueTypes.Sng, ValueWrapper.eValueTypes.SingleArray
                     If (md.Min > Single.MinValue) Then
-                        sbDescr.Append(CStr(md.Min) & " " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cGreaterThan), "<", "≤")) & " ")
+                        sbDescr.Append(CStr(md.Min) & " " & CStr(If((TypeOf md.MinOperator Is cGreaterThan), "<", "≤")) & " ")
                     End If
                     sbDescr.Append(My.Resources.METADATA_SINGLE)
                     If (md.Max < Single.MaxValue) Then
-                        sbDescr.Append(" " & CStr(cSystemUtils.IIF((TypeOf md.MinOperator Is cLessThan), "<", "≤")) & " " & CStr(md.Max))
+                        sbDescr.Append(" " & CStr(If((TypeOf md.MinOperator Is cLessThan), "<", "≤")) & " " & CStr(md.Max))
                     End If
 
                 Case ValueWrapper.eValueTypes.Str

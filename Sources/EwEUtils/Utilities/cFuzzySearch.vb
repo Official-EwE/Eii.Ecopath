@@ -108,7 +108,7 @@ Namespace Utilities
                 If (Not String.IsNullOrWhiteSpace(strTerm)) And (Not lIgnored.Contains(strTerm)) And (strTerm.Length >= Me.MinWordLength) Then
 
                     ' Full-string match preferred
-                    iOffset = CInt(IIf(iSearchTerm = 0, 0, 1))
+                    iOffset = CInt(If(iSearchTerm = 0, 0, 1))
 
                     ' Is a direct hit?
                     iDirectHit = Array.IndexOf(data, strTerm)
@@ -133,7 +133,7 @@ Namespace Utilities
 
                                 For iArrayTerm As Integer = 0 To lArrayTerms.Count - 1
                                     Dim strArrayTerm As String = lArrayTerms(iArrayTerm)
-                                    iOffset = CInt(IIf(iSearchTerm = 0 And iArrayTerm = 0, 0, 1))
+                                    iOffset = CInt(If(iSearchTerm = 0 And iArrayTerm = 0, 0, 1))
 
                                     If (Not String.IsNullOrWhiteSpace(strArrayTerm)) And _
                                         (Not lIgnored.Contains(strArrayTerm)) And _

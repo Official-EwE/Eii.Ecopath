@@ -119,13 +119,13 @@ Public Class frmSamples
 
         If (Me.m_plugin IsNot Nothing) Then
             Me.m_tsbnRecord.Checked = Me.m_plugin.IsRecording
-            Me.m_tsbnRecord.Image = cSystemUtils.IIF(Me.m_plugin.IsRecording, My.Resources.RecordingHS, My.Resources.RecordHS)
+            Me.m_tsbnRecord.Image = if(Me.m_plugin.IsRecording, My.Resources.RecordingHS, My.Resources.RecordHS)
         End If
 
         Me.m_tsddImport.Image = SharedResources.ImportHS
 
         Me.m_btnLoad.Enabled = Not bIsRunning And bHasSelection
-        Me.m_btnLoad.Text = cSystemUtils.IIF(bIsLoaded, My.Resources.LABEL_UNLOAD, My.Resources.LABEL_LOAD)
+        Me.m_btnLoad.Text = if(bIsLoaded, My.Resources.LABEL_UNLOAD, My.Resources.LABEL_LOAD)
         Me.m_btnDelete.Enabled = Not bIsRunning And bHasSelection
 
         Me.m_nudNumSamples.Value = Math.Min(Me.m_nudNumSamples.Value, man.nSamples)
