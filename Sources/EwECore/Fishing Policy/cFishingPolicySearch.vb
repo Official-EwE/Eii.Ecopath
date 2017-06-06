@@ -470,9 +470,9 @@ Namespace FishingPolicy
             '        'frmOptF.Res.Print Format(Exp(X(i)), "#.#"); "  ";
             '        '061129VC: the maxeffort is to make it possible to go beyond the max 60x effort
             '        'we've had to do that for models starting in 1950 where effort was 200x by 2003
-            '        'MaxEffort = IIf(frmOptF.Option1(0).value, 5 * Frates(i), Log(60))
+            '        'MaxEffort = if(frmOptF.Option1(0).value, 5 * Frates(i), Log(60))
             '        'If MaxEffort < 60 Then MaxEffort = 60
-            '        FormStr = IIf(X(i) > 4.6, "0", GenNum)  'no decimals if bigger than 100
+            '        FormStr = if(X(i) > 4.6, "0", GenNum)  'no decimals if bigger than 100
             '        If X(i) < Log(MaxEffort) Then   '3.4011 Then   'exp(4.1)=60
             '            SetCellValue(frmOptF.vaRes, i + 6, frmOptF.vaRes.maxRows, Format(Exp(X(i)), FormStr))
             '            optVal(i, frmOptF.vaRes.maxRows - 1) = Exp(X(i))

@@ -837,7 +837,7 @@ Namespace Ecosim
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
                 'Constrain the Ecosim year index to the run length passed in as the arguement NumberOfYears
-                iyf = IIF(iyr <= NumberOfYears, iyr, NumberOfYears)
+                iyf = if(iyr <= NumberOfYears, iyr, NumberOfYears)
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
                 Me.SetFGear(Fgear, RelFopt, QYear, iyr)
@@ -1362,7 +1362,7 @@ Namespace Ecosim
             'Constrain the year index to the Ecosim run length
             'When run for the Fishing Policy Search Ecosim is run past the end of the run length
             'This makes sure the iYear index is not out of bounds
-            Dim iyf As Integer = CInt(IIF(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
+            Dim iyf As Integer = CInt(if(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
 
             'Set Fgear() to values entered by the user
             For iFlt As Integer = 1 To Me.m_EPData.NumFleet
@@ -4007,7 +4007,7 @@ Namespace Ecosim
                 Else    'for detriuts
                     m_Data.Fish1(i) = 0
                     m_Data.FishRateMax(i) = 1
-                    m_Data.Emig(i) = IIF(m_EPData.Emig(i) > 0 And m_EPData.Emigration(i) = 0, m_EPData.Emig(i), m_EPData.Emigration(i) / m_Data.StartBiomass(i))
+                    m_Data.Emig(i) = if(m_EPData.Emig(i) > 0 And m_EPData.Emigration(i) = 0, m_EPData.Emig(i), m_EPData.Emigration(i) / m_Data.StartBiomass(i))
                     'jb Don't overwrite Immigration with Imported Detritus
                     ' m_EPData.Immig(i) = m_EPData.DtImp(i)
                 End If
@@ -4497,7 +4497,7 @@ Namespace Ecosim
             Try
                 For iShp As Integer = 1 To m_Data.NumForcingShapes
                     'jb changed all forcing function data are stored by time 
-                    ' m_Data.tval(i) = IIf(i <= 6 / 2, m_Data.zscale(its, i), m_Data.zscale(itt, i))
+                    ' m_Data.tval(i) = if(i <= 6 / 2, m_Data.zscale(its, i), m_Data.zscale(itt, i))
                     m_Data.tval(iShp) = m_Data.zscale(iTime, iShp)
                 Next
 

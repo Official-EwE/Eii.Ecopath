@@ -664,14 +664,14 @@ Public Class cLindemanSpineDiagram
         Dim rcSub As Rectangle = Nothing
         Dim fmt As New StringFormat()
 
-        Me.RenderBox(g, pen, font, _
-                     brText, brBack, _
-                     3, 2, _
-                     My.Resources.LBL_TL, _
-                     CStr(IIf(Me.m_bShowImport, My.Resources.LBL_IMPORT, "")), _
-                     CStr(IIf(Me.m_bShowTST, My.Resources.LBL_TST, "")), _
-                     CStr(IIf(Me.m_bShowB, My.Resources.LBL_BIOMASS, "")), _
-                     CStr(IIf(Me.m_bShowAccum, My.Resources.LBL_BACCUM, "")), _
+        Me.RenderBox(g, pen, font,
+                     brText, brBack,
+                     3, 2,
+                     My.Resources.LBL_TL,
+                     If(Me.m_bShowImport, My.Resources.LBL_IMPORT, ""),
+                     If(Me.m_bShowTST, My.Resources.LBL_TST, ""),
+                     If(Me.m_bShowB, My.Resources.LBL_BIOMASS, ""),
+                     If(Me.m_bShowAccum, My.Resources.LBL_BACCUM, ""),
                      My.Resources.LBL_EXPORT, My.Resources.LBL_RESP)
 
         rcSub = New Rectangle(rcBox.X - 2 * iBoxHalfSpacer, rcBox.Y, 2 * iBoxHalfSpacer, CInt(rcBox.Height * 0.5))

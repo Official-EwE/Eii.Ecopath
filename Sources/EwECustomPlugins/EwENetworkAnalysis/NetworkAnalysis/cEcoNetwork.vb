@@ -1330,7 +1330,7 @@ Public Class cEcoNetwork
                     If j <= m_epdata.NumLiving Then   '041022, accommodating m_epdata.pp with diets
                         '070104VC: the line below had m_epdata.pp(i) instead of m_epdata.pp(j) this caused flow to detritus to be calculated
                         'erroneously. Gave problems with MTI, Absolute flows, ascendency which are fixed now.
-                        AUL(i, j) = CSng(IIf(m_epdata.PP(j) < 1, B(j) * QB(j) * DC(j, i), 0))
+                        AUL(i, j) = If(m_epdata.PP(j) < 1, B(j) * QB(j) * DC(j, i), 0)
                     Else
                         AUL(i, j) = CSng(m_epdata.det(i, j))
                     End If
@@ -2594,7 +2594,7 @@ NextPivot:
         'this really has to change 
         Try
             TabNo = 1 'in EwE5 this is called from Tab number one
-            Topic = 4 ' IIf(TabNo = 0, 2, 4)
+            Topic = 4 ' if(TabNo = 0, 2, 4)
             FindPaths(numPaths, m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, m_epdata.fCatch)
 
         Catch ex As Exception
@@ -3158,7 +3158,7 @@ NextPivot:
         '        arrow = 1
         '        PrintC = 0
 
-        '        kStart = IIf(Topic = 3, 0, pivot - 1)
+        '        kStart = if(Topic = 3, 0, pivot - 1)
         '        For K = kStart To Level              'PreyOK
         '            If Path(K) > 0 Then
         '                If arrow = 1 Then aa = Path(K)
@@ -3271,7 +3271,7 @@ NextPivot:
         arrow = 1
         '    PrintC = 0
 
-        KStart = CInt(IIf(Topic = 3, 0, pivot - 1))
+        KStart = If(Topic = 3, 0, pivot - 1)
         For K = KStart To Level              'PreyOK
             If Path(K) > 0 Then
                 If arrow = 1 Then aa = Path(K)
@@ -3358,7 +3358,7 @@ NextPivot:
     Public Function InitForEcosim() As Boolean
 
         ' RetVal = MsgBox("Estimate PPR? (very time consuming for bigger model)", vbQuestion + vbYesNo, "PPR?")
-        '  PPRon = IIf(RetVal = vbYes, True, False)
+        '  PPRon = if(RetVal = vbYes, True, False)
         Try
 
             ' ReDim ValueSim(m_esdata.NTimes)  'value of catch in Ecosim

@@ -1528,7 +1528,7 @@ Namespace Controls
                     Me.SetCursor(iPane)
                 End If
                 Me.m_zgc.IsEnableZoom = (Me.m_abShowCursor(iPane) = False)
-                Me.m_zgc.Cursor = DirectCast(IIF(value, Cursors.Hand, Cursors.Default), Cursor)
+                Me.m_zgc.Cursor = If(value, Cursors.Hand, Cursors.Default)
             End Set
         End Property
 
@@ -2460,7 +2460,7 @@ Namespace Controls
                                     .Line.Color = info.Colour
                                     .Line.Fill.Color = Color.White
                                 End If
-                                .Line.Width = CSng(IIF(info.IsHighlighted And iNumHighlights = 1, 3.0!, 1.0!))
+                                .Line.Width = If(info.IsHighlighted And iNumHighlights = 1, 3.0!, 1.0!)
                                 .Symbol.Border.Color = .Line.Color
                                 .Symbol.Fill.Color = .Line.Color
                             End With

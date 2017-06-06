@@ -183,8 +183,8 @@ Public Class cResultWriter
 
     Private Function GetNAIndicatorsFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
         Dim strFile As String = "NA_" &
-                                CStr(IIf(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY)) & "_" &
-                                CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")) &
+                                If(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY) & "_" &
+                                If(bWithPPR, "IndicesPPR", "IndicesWithoutPPR") &
                                 ".csv"
         Return Path.Combine(strPath, strFile)
     End Function
@@ -475,8 +475,8 @@ Public Class cResultWriter
     End Function
 
     Private Sub SendMessage(strMessage As String, Optional bError As Boolean = False, Optional strURL As String = "")
-        Dim msg As New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, _
-                                DirectCast(IIf(bError, eMessageImportance.Warning, eMessageImportance.Information), eMessageImportance))
+        Dim msg As New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External,
+                                If(bError, eMessageImportance.Warning, eMessageImportance.Information))
         msg.Hyperlink = strURL
         Me.m_manager.Core.Messages.SendMessage(msg)
     End Sub

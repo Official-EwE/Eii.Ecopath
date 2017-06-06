@@ -204,22 +204,22 @@ Public Class cPlotOfMixedTrophicImpact
             Me.Plot.Content.Dock = DockStyle.Fill
         Else
             Me.Plot.Content.Dock = DockStyle.None
-            Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style, _
-                                                   Me.m_asData, _
-                                                   My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
-                                                   My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
-                                                   astrLegends, _
-                                                   Me.m_bDrawGrid, _
-                                                   CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+            Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style,
+                                                   Me.m_asData,
+                                                   My.Resources.LBL_IMPACTED_GP, m_astrLabelsX,
+                                                   My.Resources.LBL_IMPACTING_GP, m_astrLabelsY,
+                                                   astrLegends,
+                                                   Me.m_bDrawGrid,
+                                                   If(Me.m_bDrawSlanted, 30, 0))
         End If
 
-        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style, _
-                Me.m_asData, _
-                My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
-                My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
-                astrLegends, _
-                Me.m_bDrawGrid, _
-                CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style,
+                Me.m_asData,
+                My.Resources.LBL_IMPACTED_GP, m_astrLabelsX,
+                My.Resources.LBL_IMPACTING_GP, m_astrLabelsY,
+                astrLegends,
+                Me.m_bDrawGrid,
+                If(Me.m_bDrawSlanted, 30, 0))
     End Sub
 
     Private Sub PlotToEMF(ByVal g As Graphics)
@@ -230,13 +230,13 @@ Public Class cPlotOfMixedTrophicImpact
         If Not Me.DrawLegend Then astrLegends = Nothing
 
         ' Draw on client area only; me.width and me.height include space occupied by borders, caption bar, etc
-        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style, _
-                Me.m_asData, _
-                My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX, _
-                My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY, _
-                astrLegends, _
-                Me.m_bDrawGrid, _
-                CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+        ag.Draw(Me.UIContext.StyleGuide, g, Me.Plot.Content.ClientRectangle, Me.m_style,
+                Me.m_asData,
+                My.Resources.LBL_IMPACTED_GP, Me.m_astrLabelsX,
+                My.Resources.LBL_IMPACTING_GP, Me.m_astrLabelsY,
+                astrLegends,
+                Me.m_bDrawGrid,
+                If(Me.m_bDrawSlanted, 30, 0))
 
     End Sub
 
@@ -332,13 +332,13 @@ Public Class cPlotOfMixedTrophicImpact
                 Dim g As Graphics = Graphics.FromHwnd(Me.Plot.Content.Handle)
 
                 Me.Plot.Content.Dock = DockStyle.None
-                Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style, _
-                                                       Me.m_asData, _
-                                                       My.Resources.LBL_IMPACTED_GP, m_astrLabelsX, _
-                                                       My.Resources.LBL_IMPACTING_GP, m_astrLabelsY, _
-                                                       Nothing, _
-                                                       Me.m_bDrawGrid, _
-                                                       CSng(IIf(Me.m_bDrawSlanted, 30, 0)))
+                Me.Plot.Content.Size = ag.MeasureGraph(Me.UIContext.StyleGuide, g, Me.m_style,
+                                                       Me.m_asData,
+                                                       My.Resources.LBL_IMPACTED_GP, m_astrLabelsX,
+                                                       My.Resources.LBL_IMPACTING_GP, m_astrLabelsY,
+                                                       Nothing,
+                                                       Me.m_bDrawGrid,
+                                                       If(Me.m_bDrawSlanted, 30, 0))
 
                 g.Dispose()
             End If

@@ -441,7 +441,7 @@ Public Class gridDefineTaxonomy
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
-        Dim iNumCols As Integer = CInt(IIf(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Status + 1))
+        Dim iNumCols As Integer = CInt(if(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Status + 1))
 
         ' Redim columns
         Me.Redim(1, iNumCols)

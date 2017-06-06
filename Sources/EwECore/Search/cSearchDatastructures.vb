@@ -816,7 +816,7 @@ Public Class cSearchDatastructures
 
         'When Ecosim is run for a Fishing Policy Search it is run for 20 years past the end of the regular run length(cSearchDataStructures.ExtraYearsForSearch)
         'Constrain the year index to the Ecosim run length so the effort set by the FPS for the last year is used for the extra years
-        Dim iyf As Integer = CInt(IIF(iYear <= m_ecosimData.NumYears, iYear, m_ecosimData.NumYears))
+        Dim iyf As Integer = CInt(if(iYear <= m_ecosimData.NumYears, iYear, m_ecosimData.NumYears))
 
         Debug.Assert(Me.SearchMode = eSearchModes.FishingPolicy, "Ecosim BUG warning: setting fishing effort to values computed by Fishing Policy Search when not in search!")
 

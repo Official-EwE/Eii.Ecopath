@@ -83,7 +83,7 @@ Public Class cCyclingAndPathLen
 
         'g_Recordset.Fields("TrputCyclExlDet").value = Tc
         'SetCellText(Grid, 1, 2, "Predatory cycling index")
-        'SetCellValue(Grid, 2, 2, IIf(Abs(TCyc) > 0, Format(100 * Tc / TCyc, "0.00"), ""))
+        'SetCellValue(Grid, 2, 2, if(Abs(TCyc) > 0, Format(100 * Tc / TCyc, "0.00"), ""))
         'SetCellText(Grid, 3, 2, "% of throughput w/o detritus")
         'g_Recordset.Fields("PredatorCyclingIndex").value = 100 * Tc / TCyc
         strRowContent(0) = My.Resources.ROW_HDR_PRED_CYC_INDX
@@ -98,7 +98,7 @@ Public Class cCyclingAndPathLen
         Grid.Rows(2).Visible = True
 
         'SetCellText(Grid, 1, 3, "Throughput cycled (including detritus)")
-        'SetCellValue(Grid, 2, 3, IIf(Abs(TcD) > 0, Format(TcD, "0.00"), ""))  'Format(100 * Tc / TcD, "0.00"), "")
+        'SetCellValue(Grid, 2, 3, if(Abs(TcD) > 0, Format(TcD, "0.00"), ""))  'Format(100 * Tc / TcD, "0.00"), "")
         'SetCellText(Grid, 3, 3, GetUnits(2, 2))
         'g_Recordset.Fields("TrputCyclInclDet").value = TcD
         strRowContent(0) = My.Resources.ROW_HDR_THROUGHPUT_CYC_TOTAL
@@ -126,7 +126,7 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 1, 5, "Finn's mean path length")
         'If SumEx + SumResp > 0 Then
         '    SetCellValue(Grid, 2, 5, Format(TruPut / (SumEx + SumResp), GenNum))
-        '    'Print #fnum, Chr(9); Format(IIf(Abs((TruPut / (SumEx + SumResp))) > 0.001, TruPut / (SumEx + SumResp), 0), "0.00") &
+        '    'Print #fnum, Chr(9); Format(if(Abs((TruPut / (SumEx + SumResp))) > 0.001, TruPut / (SumEx + SumResp), 0), "0.00") &
         '    g_Recordset.Fields("PathLength").value = TruPut / (SumEx + SumResp)
         'End If
         'SetCellText(Grid, 3, 5, "-")
@@ -144,7 +144,7 @@ Public Class cCyclingAndPathLen
         'SetCellText(Grid, 1, 6, "Finn's straight-through path length")
         'If (SumEx - Ex(NumGroups) + SumResp) > 0 Then
         '    SetCellValue(Grid, 2, 6, Format((TCyc - Tc) / (SumEx - Ex(NumGroups) + SumResp), GenNum))
-        '    g_Recordset.Fields("StraightPathLength").value = IIf(Abs(((TCyc - Tc) / (SumEx - Ex(NumGroups) + SumResp))) > 0.001, ((TCyc - Tc) / (SumEx - Ex(NumGroups) + SumResp)), 0)
+        '    g_Recordset.Fields("StraightPathLength").value = if(Abs(((TCyc - Tc) / (SumEx - Ex(NumGroups) + SumResp))) > 0.001, ((TCyc - Tc) / (SumEx - Ex(NumGroups) + SumResp)), 0)
         'End If
         'SetCellText(Grid, 3, 6, "without detritus")
         'g_Recordset.Update()

@@ -250,9 +250,9 @@ Public Class cPrebalZedGraphHelper
                 FindRegression(pplRegression, sSlope, sSlopeStdErr, sIntercept, sInterceptStdErr, sCorrelation, sMin, sMax, iSampleSize)
 
                 If Me.ShowRegressionFormula Then
-                    strLabel = cStringUtils.Localize(My.Resources.LABEL_REGRESSION_FORMULA, _
-                                                     sg.FormatNumber(sSlope), _
-                                                     IIf(sIntercept < 0, "-", "+"), sg.FormatNumber(Math.Abs(sIntercept)))
+                    strLabel = cStringUtils.Localize(My.Resources.LABEL_REGRESSION_FORMULA,
+                                                     sg.FormatNumber(sSlope),
+                                                     If(sIntercept < 0, "-", "+"), sg.FormatNumber(Math.Abs(sIntercept)))
                 Else
                     strLabel = My.Resources.LABEL_REGRESSION
                 End If

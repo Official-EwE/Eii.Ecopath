@@ -269,7 +269,7 @@ Friend Class cDBUpdate6_02_00_01
                 iCol = CInt(reader("InCol"))
 
                 If (iRow <= InRow) And (iCol <= InCol) Then
-                    dataPort(i)(iRow, iCol) = CInt(IIF(CInt(reader("PortID")) > 0, 1, 0))
+                    dataPort(i)(iRow, iCol) = CInt(if(CInt(reader("PortID")) > 0, 1, 0))
                     dataSailingCost(i)(iRow, iCol) = CSng(db.ReadSafe(reader, "SailCost", 0.0!))
                 End If
 

@@ -97,7 +97,7 @@ On Local Error GoTo exitSub
     '
     '    Next
     'Next
-    j = IIf(CritVal(3) > 0, 1, 0)
+    j = if(CritVal(3) > 0, 1, 0)
     picKite.Circle (0, 0), 0.01
     picKite.ForeColor = QBColor(2)
     picKite.Line (0, 0)-(1, 0)

@@ -112,7 +112,7 @@ Namespace Controls
             If Me.IsDisposed Then Return
 
             Me.m_ctrlTarget = target
-            Me.m_ctrlParent = DirectCast(IIF(target.Parent Is Nothing, target, target.Parent), Control)
+            Me.m_ctrlParent = If(target.Parent Is Nothing, target, target.Parent)
 
             Me.m_ctrlParent.Controls.Add(Me)
             Me.BringToFront()

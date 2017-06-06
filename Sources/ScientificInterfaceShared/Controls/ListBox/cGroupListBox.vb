@@ -608,7 +608,7 @@ Namespace Controls
             Set(ByVal iGroup As Integer)
                 If (Not Me.IsInitialized()) Then Return
                 If (iGroup < 1 Or iGroup >= Me.m_uic.Core.nGroups) Then
-                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllGroupsItem, 0, -1))
+                    Me.SelectedIndex = If(Me.m_bShowAllGroupsItem, 0, -1)
                     Return
                 End If
                 Me.SelectedIndex = Me.GroupIndex(iGroup)
@@ -630,7 +630,7 @@ Namespace Controls
             Set(ByVal group As cEcoPathGroupInput)
                 If (Not Me.IsInitialized()) Then Return
                 If (group Is Nothing) Then
-                    Me.SelectedIndex = CInt(IIf(Me.m_bShowAllGroupsItem, 0, -1))
+                    Me.SelectedIndex = If(Me.m_bShowAllGroupsItem, 0, -1)
                     Return
                 End If
                 Me.SelectedIndex = Me.GroupIndex(group.Index)

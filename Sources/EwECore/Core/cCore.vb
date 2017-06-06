@@ -40,7 +40,6 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SpatialData
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -914,9 +913,9 @@ Public Class cCore
                 '                   In other words, adding or removing groups (batch level Ecopath) will NOT
                 '                   cause batch level Ecosim and higher to automatically reload because Ecopath 
                 '                   will most likely not run. This addresses issue #512
-                Dim iEcosimScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
-                Dim iEcospaceScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE))
-                Dim iEcotracerScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
+                Dim iEcosimScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE)
+                Dim iEcospaceScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE)
+                Dim iEcotracerScenarioToLoad As Integer = If(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE)
                 Dim iDatasetToReload As Integer = 0
 
                 If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
@@ -3922,12 +3921,12 @@ Public Class cCore
                     If m_EcoPathData.DC(i, iGroup) > 0 Then group.IsPred(i) = True
                 Next
 
-                group.BioAccumInput = CSng((IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup))))
+                group.BioAccumInput = If(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup))
 
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
                 'from original code
-                group.Emigration = CSng(IIF(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
-                                                m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.Emigration(iGroup)))
+                group.Emigration = If(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
+                                                m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.Emigration(iGroup))
                 Dim j As Integer
                 'Diet Comp (DO NOT INCLUDE IMPORT IN THE DC ARRAY - THIS IS SEPARATED IN ECOPATHGROUP!)
                 For j = 1 To m_EcoPathData.NumGroups
@@ -4022,14 +4021,14 @@ Public Class cCore
                 m_EcoPathData.Shadow(iGroup) = Input.NonMarketValue()
 
                 'from the original code MakeUnknownUnknown
-                m_EcoPathData.BAInput(iGroup) = CSng(IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0,
-                                                m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup)))
+                m_EcoPathData.BAInput(iGroup) = If(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0,
+                                                m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BAInput(iGroup))
 
                 'Emigi(igroup) = inputVars.EmigRate
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
                 'from original code
-                m_EcoPathData.Emigration(iGroup) = CSng(IIF(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
-                                                         m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), Input.Emigration))
+                m_EcoPathData.Emigration(iGroup) = If(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0,
+                                                         m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), Input.Emigration)
 
                 'GS Unassimilated Consumption changes with Model Currency Units
                 m_EcoPathData.GS(iGroup) = Input.GS
@@ -5275,7 +5274,7 @@ Public Class cCore
                         ' Send only notifications when NO lock active
                         Me.m_StateMonitor.UpdateDataState(DataSource, state)
                         'logic before Mono compatibility changes
-                        ' DirectCast(IIF(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
+                        ' If(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False)
                     End If
                 End If
 
@@ -6316,7 +6315,7 @@ Public Class cCore
                     If msg Is Nothing Then
                         msg = New cMessage("Group fished state has changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput)
                     End If
-                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Group " & group.Name & " is " & CStr(IIF(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, group.Index)
+                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Group " & group.Name & " is " & If(bIsFished, "", "not ") & "fished", eVarNameFlags.IsFished, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, group.Index)
                     msg.AddVariable(vs)
                 End If
                 group.AllowValidation = True
@@ -6342,7 +6341,7 @@ Public Class cCore
                     If msg Is Nothing Then
                         msg = New cMessage("Stanza fished state has changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.Stanza)
                     End If
-                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Stanza " & stanza.Name & " is " & CStr(IIF(bIsFished, "", "not ")) & "fished", eVarNameFlags.IsFished, eDataTypes.Stanza, eCoreComponentType.EcoPath, iStanza)
+                    vs = New cVariableStatus(group, eStatusFlags.ValueComputed, "Stanza " & stanza.Name & " is " & If(bIsFished, "", "not ") & "fished", eVarNameFlags.IsFished, eDataTypes.Stanza, eCoreComponentType.EcoPath, iStanza)
                     msg.AddVariable(vs)
                 End If
                 stanza.AllowValidation = True

@@ -30,6 +30,8 @@ Imports EwEUtils.Core
 
 #End Region ' Imports 
 
+' ToDo: include perturbation of Biomass Accumulation Rates (BaBi) - Ticket #1533
+
 Public Enum eMCParams As Integer
     NotSet = 0
     Biomass = 1
@@ -369,6 +371,7 @@ Public Class cEcosimMonteCarlo
         For iGrp As Integer = 1 To m_core.nGroups
 
             Me.m_isVariableItem(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
+            ' ToDo: include BaBi (BA rate) input here
             Me.m_isVariableItem(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA) And (Me.m_epdata.BAInput(iGrp) <> 0)
             Me.m_isVariableItem(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
             Me.m_isVariableItem(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)

@@ -189,8 +189,8 @@ Namespace Controls.EwEGrid
 
             ' Render Image and Text
             Dim ftCell As Font = Me.GetCellFont()
-            Using ft As New Font(ftCell, _
-                                 ftCell.Style Or IIF((style And cStyleGuide.eStyleFlags.Taxon) > 0, FontStyle.Italic, ftCell.Style))
+            Using ft As New Font(ftCell,
+                                 ftCell.Style Or If((style And cStyleGuide.eStyleFlags.Taxon) > 0, FontStyle.Italic, ftCell.Style))
 
                 Dim strText As String = cell.GetDisplayText(pos)
                 Dim al As ContentAlignment = Me.ImageAlignment
@@ -205,9 +205,9 @@ Namespace Controls.EwEGrid
                     End If
                 End If
 
-                Utility.PaintImageAndText(e.Graphics, rcClient, _
-                    Me.Image, al, Me.ImageStretch, _
-                    strText, Me.StringFormat, Me.AlignTextToImage, rcBorder, _
+                Utility.PaintImageAndText(e.Graphics, rcClient,
+                    Me.Image, al, Me.ImageStretch,
+                    strText, Me.StringFormat, Me.AlignTextToImage, rcBorder,
                     clrFore, ft)
             End Using
 

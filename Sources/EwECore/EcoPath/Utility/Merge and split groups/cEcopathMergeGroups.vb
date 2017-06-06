@@ -656,14 +656,14 @@ Private Sub UpdateValuesOnInputFormAndInDataBase(Grid As vaSpread)
 Dim SQL As String
     'Groupname on form and database has been update already
     'SetCellValue Grid, 2, Agg1, Format(PP(Agg1), "0.0")
-    'If Not NotInput(Agg1, 1) Then SetCellValue Grid, 3, Agg1, IIf(B(Agg1) > 0, Format(B(Agg1), GenNum), "")
-    'If Not NotInput(Agg1, 2) Then SetCellValue Grid, 4, Agg1, IIf(PB(Agg1) > 0 And Agg1 <= NumLiving, Format(PB(Agg1), GenNum), "")
-    'If Not NotInput(Agg1, 3) Then SetCellValue Grid, 5, Agg1, IIf(QB(Agg1) > 0 And Agg1 <= NumLiving, Format(QB(Agg1), GenNum), "")
-    'If Not NotInput(Agg1, 4) Then SetCellValue Grid, 6, Agg1, IIf(EE(Agg1) >= 0 And Agg1 <= NumLiving, Format(EE(Agg1), GenNum), "")
-    'If Not NotInput(Agg1, 0) Then SetCellValue Grid, 7, Agg1, IIf(GE(Agg1) > 0 And Agg1 <= NumLiving, Format(GE(Agg1), GenNum), "")
-    'SetCellValue Grid, 8, Agg1, IIf(Agg1 <= NumLiving, Format(BA(Agg1), GenNum), "")
-    'SetCellValue Grid, 9, Agg1, IIf(Agg1 <= NumLiving, Format(GS(Agg1), GenNum), "")
-    'SetCellValue Grid, 10, Agg1, IIf(Agg1 <= NumLiving, "", Format(DtImp(Agg1), GenNum))
+    'If Not NotInput(Agg1, 1) Then SetCellValue Grid, 3, Agg1, if(B(Agg1) > 0, Format(B(Agg1), GenNum), "")
+    'If Not NotInput(Agg1, 2) Then SetCellValue Grid, 4, Agg1, if(PB(Agg1) > 0 And Agg1 <= NumLiving, Format(PB(Agg1), GenNum), "")
+    'If Not NotInput(Agg1, 3) Then SetCellValue Grid, 5, Agg1, if(QB(Agg1) > 0 And Agg1 <= NumLiving, Format(QB(Agg1), GenNum), "")
+    'If Not NotInput(Agg1, 4) Then SetCellValue Grid, 6, Agg1, if(EE(Agg1) >= 0 And Agg1 <= NumLiving, Format(EE(Agg1), GenNum), "")
+    'If Not NotInput(Agg1, 0) Then SetCellValue Grid, 7, Agg1, if(GE(Agg1) > 0 And Agg1 <= NumLiving, Format(GE(Agg1), GenNum), "")
+    'SetCellValue Grid, 8, Agg1, if(Agg1 <= NumLiving, Format(BA(Agg1), GenNum), "")
+    'SetCellValue Grid, 9, Agg1, if(Agg1 <= NumLiving, Format(GS(Agg1), GenNum), "")
+    'SetCellValue Grid, 10, Agg1, if(Agg1 <= NumLiving, "", Format(DtImp(Agg1), GenNum))
     'Also update the database   [Group Info]
     SaveGroupInfo Specie(Agg1), Agg1    ', True
     '(GrpName As String, Group As Integer, EditOnly As Boolean)

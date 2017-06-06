@@ -61,9 +61,9 @@ Namespace Controls.EwEGrid
         Public Sub New(ByVal obj As Object, ByVal pi As PropertyInfo)
 
             ' Set the cell value to the intial property value and type
-            MyBase.New(pi.GetValue(obj, Nothing), _
-                       pi.PropertyType, _
-                       IIF(pi.CanWrite, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable))
+            MyBase.New(pi.GetValue(obj, Nothing),
+                       pi.PropertyType,
+                       If(pi.CanWrite, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable))
 
             ' Sanity checks
             Debug.Assert(obj IsNot Nothing)

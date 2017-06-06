@@ -53,7 +53,7 @@ Namespace Database
 
             Public Function Compare(ByVal x As cDBUpdate, ByVal y As cDBUpdate) As Integer _
                     Implements IComparer(Of cDBUpdate).Compare
-                Return CInt(IIF(x.UpdateVersion < y.UpdateVersion, -1, 1))
+                Return CInt(if(x.UpdateVersion < y.UpdateVersion, -1, 1))
             End Function
 
         End Class
