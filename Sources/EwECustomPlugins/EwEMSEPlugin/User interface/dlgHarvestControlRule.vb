@@ -112,7 +112,7 @@ Public Class dlgHarvestControlRule
 
         Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Target))
         Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Conservation))
-        Me.m_cmbCostFunctions.SelectedIndex = cSystemUtils.IIF(Me.m_HCR.TypeOfHCR = HCRType.Target, 0, 1)
+        Me.m_cmbCostFunctions.SelectedIndex = If(Me.m_HCR.TypeOfHCR = HCRType.Target, 0, 1)
 
         Me.m_bInitialized = True
 

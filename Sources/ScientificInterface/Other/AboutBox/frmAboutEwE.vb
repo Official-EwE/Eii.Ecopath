@@ -58,7 +58,7 @@ Namespace Other
             Me.m_bInUpdate = True
 
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
-            Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
+            Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
 
             Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
             cmd.AddControl(Me.m_rtbAcknowledgements)

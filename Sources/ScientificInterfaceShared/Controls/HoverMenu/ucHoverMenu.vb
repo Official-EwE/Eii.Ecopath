@@ -159,7 +159,7 @@ Namespace Controls
                                 Optional ByVal tag As Object = Nothing, _
                                 Optional handler As System.EventHandler = Nothing) As ToolStripButton
 
-            Dim item As New ToolStripButton(strTooltip, img, cSystemUtils.IIF(handler Is Nothing, AddressOf OnItemClicked, handler))
+            Dim item As New ToolStripButton(strTooltip, img, If(handler Is Nothing, AddressOf OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Image
             item.ToolTipText = strTooltip
@@ -180,11 +180,11 @@ Namespace Controls
         ''' <param name="handler">Optional handler for click events.</param>
         ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Function AddItem(ByVal strText As String, ByVal img As Image, ByVal strTooltip As String, _
-                                Optional tag As Object = Nothing, _
+        Public Function AddItem(ByVal strText As String, ByVal img As Image, ByVal strTooltip As String,
+                                Optional tag As Object = Nothing,
                                 Optional handler As System.EventHandler = Nothing) As ToolStripButton
 
-            Dim item As New ToolStripButton(strText, img, cSystemUtils.IIF(handler Is Nothing, AddressOf OnItemClicked, handler))
+            Dim item As New ToolStripButton(strText, img, If(handler Is Nothing, AddressOf OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
             item.TextImageRelation = TextImageRelation.ImageAboveText
@@ -205,10 +205,10 @@ Namespace Controls
         ''' <param name="handler">Optional handler for click events.</param>
         ''' <returns>The added item.</returns>
         ''' -------------------------------------------------------------------
-        Public Function AddItem(strText As String, strTooltip As String, tag As Object, _
+        Public Function AddItem(strText As String, strTooltip As String, tag As Object,
                                 Optional handler As System.EventHandler = Nothing) As ToolStripButton
 
-            Dim item As New ToolStripButton(strText, Nothing, cSystemUtils.IIF(handler Is Nothing, AddressOf OnItemClicked, handler))
+            Dim item As New ToolStripButton(strText, Nothing, If(handler Is Nothing, AddressOf OnItemClicked, handler))
             item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Text
             item.ToolTipText = strTooltip

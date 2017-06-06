@@ -483,7 +483,7 @@ Public MustInherit Class cCoreInputOutputBase
                                           Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
             Dim val As cValue = m_values.Item(VarName)
-            Return val.Status(iIndex) Or CType(cSystemUtils.IIF(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
+            Return val.Status(iIndex) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".getVariable()Error " & ex.Message)
             Return Nothing

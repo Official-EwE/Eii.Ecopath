@@ -132,8 +132,8 @@ Namespace Ecosim
             For igrp As Integer = 1 To Me.Core.nGroups
                 mcGrp = Me.m_mcmanager.Groups(igrp)
                 For iflt As Integer = 1 To Core.nFleets
-                    Dim var As eVarNameFlags = cSystemUtils.IIF(Me.m_value = eMCRunDisplayInputValueTypes.Landings, eVarNameFlags.Landings, eVarNameFlags.Discards)
-                    Dim vars() As eVarNameFlags = cSystemUtils.IIF(Me.m_value = eMCRunDisplayInputValueTypes.Landings, _
+                    Dim var As eVarNameFlags = If(Me.m_value = eMCRunDisplayInputValueTypes.Landings, eVarNameFlags.Landings, eVarNameFlags.Discards)
+                    Dim vars() As eVarNameFlags = If(Me.m_value = eMCRunDisplayInputValueTypes.Landings,
                                                                    New eVarNameFlags() {eVarNameFlags.mcLandingscv, eVarNameFlags.mcLandingsLower, eVarNameFlags.mcLandings, eVarNameFlags.mcLandingsUpper},
                                                                    New eVarNameFlags() {eVarNameFlags.mcDiscardscv, eVarNameFlags.mcDiscardsLower, eVarNameFlags.mcDiscards, eVarNameFlags.mcDiscardsUpper})
                     Dim flt As cFleetInput = Me.Core.FleetInputs(iflt)

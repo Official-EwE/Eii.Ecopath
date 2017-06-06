@@ -601,7 +601,7 @@ Namespace Ecosim
                                 plot = Me.m_lPlots(j - 1)
                                 ts = plot.TimeSeries
 
-                                Dim t As Integer = cSystemUtils.IIF(bAnnual, ((k - 1) \ nSteps) + 1, k)
+                                Dim t As Integer = If(bAnnual, ((k - 1) \ nSteps) + 1, k)
 
                                 Select Case i
                                     Case 1

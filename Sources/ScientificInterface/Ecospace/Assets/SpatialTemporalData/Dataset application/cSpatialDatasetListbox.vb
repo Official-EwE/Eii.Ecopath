@@ -163,7 +163,7 @@ Namespace Ecospace.Controls
             If (ds Is Nothing) Then Return
 
             Dim comp As cDatasetCompatilibity = m_manSets.Compatibility(ds)
-            Dim img As Image = cSystemUtils.IIF(Me.m_manConn.IsApplied(ds), SharedResources.Database, SharedResources.database_NA)
+            Dim img As Image = If(Me.m_manConn.IsApplied(ds), SharedResources.Database, SharedResources.database_NA)
             Dim clrText As Color = e.ForeColor
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center

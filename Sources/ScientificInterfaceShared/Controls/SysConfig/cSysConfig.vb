@@ -35,14 +35,14 @@ Namespace Controls
 
         Public Shared Function OSVersion() As String
             Dim strOS As String = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, My.Computer.Info.OSFullName, My.Computer.Info.OSVersion)
-            Dim strBit As String = cSystemUtils.IIF(cSystemUtils.Is64BitOS, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
+            Dim strBit As String = If(cSystemUtils.Is64BitOS, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
             Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strOS, strBit)
         End Function
 
         Public Shared Function NETVersion() As String
-            Return String.Format(My.Resources.ABOUT_NET_VERSION, _
-                                 System.Environment.Version.ToString(), _
-                                 cSystemUtils.IIF(cSystemUtils.Is64BitProcess, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
+            Return String.Format(My.Resources.ABOUT_NET_VERSION,
+                                 System.Environment.Version.ToString(),
+                                 If(cSystemUtils.Is64BitProcess, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
         End Function
 
         Public Shared Function Modules(pm As cPluginManager) As String

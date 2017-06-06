@@ -175,8 +175,8 @@ Public Class dlgEditBasemap
 
         Dim fmt As New EwECore.Style.cMapUnitFormatter()
 
-        Dim strUnit As String = cSystemUtils.IIF(Me.m_cbAssumeSquareCells.Checked, _
-                                                 fmt.GetDescriptor(eUnitMapType.m), _
+        Dim strUnit As String = If(Me.m_cbAssumeSquareCells.Checked,
+                                                 fmt.GetDescriptor(eUnitMapType.m),
                                                  fmt.GetDescriptor(eUnitMapType.dd))
 
         Me.m_lblUnitLon.Text = strUnit

@@ -603,7 +603,7 @@ Public Class cCoreStateMonitor
         If (Me.m_iEcosimState <> eCoreExecutionState.EcosimRunning) Then Return
 
         Me.m_bRequiresEcosimFullInit = False
-        Me.m_iEcotracerResultState = cSystemUtils.IIF(bEcotracerOn, eEcotracerRunState.Ecosim, eEcotracerRunState.None)
+        Me.m_iEcotracerResultState = If(bEcotracerOn, eEcotracerRunState.Ecosim, eEcotracerRunState.None)
 
         ' Update execution state
         Me.CalcExecutionState(Me.m_iEcopathState, eCoreExecutionState.EcosimCompleted,
@@ -683,7 +683,7 @@ Public Class cCoreStateMonitor
     Friend Sub SetEcospaceCompleted(ByVal bEcotracerOn As Boolean)
         ' Check for invalid state transitions
         If (Me.m_iEcospaceState <> eCoreExecutionState.EcospaceRunning) Then Return
-        Me.m_iEcotracerResultState = cSystemUtils.IIF(bEcotracerOn, eEcotracerRunState.Ecospace, eEcotracerRunState.None)
+        Me.m_iEcotracerResultState = If(bEcotracerOn, eEcotracerRunState.Ecospace, eEcotracerRunState.None)
 
         ' Update execution state
         Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, eCoreExecutionState.EcospaceCompleted,

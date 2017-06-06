@@ -448,7 +448,7 @@ Namespace Controls.Map
                     szBox.Height += Me.LayerBoxVSpacing
                 End If
 
-                Dim szItem As SizeF = g.MeasureString(cSystemUtils.IIF(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
+                Dim szItem As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
                 Debug.Print(szItem.Width & " = " & strText)
 
                 Select Case style
@@ -480,7 +480,7 @@ Namespace Controls.Map
                     style = eLayerRenderStyle.Element
                 End If
 
-                Dim szBox As SizeF = g.MeasureString(cSystemUtils.IIF(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
+                Dim szBox As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
                 Dim rcPreview As Rectangle = New Rectangle(pt.X, pt.Y, Me.LayerBoxWidth, CInt(Math.Max(Me.LayerBoxHeight, szBox.Height)))
                 Dim iSymbolKey As Integer = l.Renderer.SymbolKey(i)
                 Select Case style

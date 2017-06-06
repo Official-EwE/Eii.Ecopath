@@ -203,8 +203,8 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
                 sw.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
                 sw.WriteLine(cStringUtils.ToCSVField("Num. trials") & "," & Me.m_MC.Ntrials)
-                sw.WriteLine(cStringUtils.ToCSVField("Trial") & "," & cSystemUtils.IIF(iTrial <= 0, "baseline", CStr(iTrial)))
-                sw.WriteLine(cStringUtils.ToCSVField("SS") & "," & cSystemUtils.IIF(iTrial <= 0, cStringUtils.ToCSVField(Me.MC.SSorg), cStringUtils.ToCSVField(Me.MC.SSCurrent)))
+                sw.WriteLine(cStringUtils.ToCSVField("Trial") & "," & If(iTrial <= 0, "baseline", CStr(iTrial)))
+                sw.WriteLine(cStringUtils.ToCSVField("SS") & "," & If(iTrial <= 0, cStringUtils.ToCSVField(Me.MC.SSorg), cStringUtils.ToCSVField(Me.MC.SSCurrent)))
             End If
         Catch ex As Exception
             Me.ReportSaveError(ex.Message)
@@ -268,7 +268,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                                 Case eMCParams.Discards
                                     val = Me.Core.m_EcoPathData.Discard(iFleet, iGroup)
                             End Select
-                            sw.Write(",{0}", cSystemUtils.IIF(val > 0, cStringUtils.ToCSVField(val), ""))
+                            sw.Write(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                         End If
                     Next iFleet
                 Next iGroup
@@ -284,7 +284,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                     sw.Write("{0}", iPred)
                     For iPrey As Integer = 1 To Me.Core.nGroups
                         Dim val As Single = Me.m_core.m_EcoPathData.DC(iPred, iPrey)
-                        sw.Write(",{0}", cSystemUtils.IIF(val > 0, cStringUtils.ToCSVField(val), ""))
+                        sw.Write(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                     Next
                     sw.WriteLine()
                 Next
@@ -304,7 +304,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                         Case Else
                             Debug.Assert(False, "Yo! Variable not supported yet!")
                     End Select
-                    sw.WriteLine(",{0}", cSystemUtils.IIF(val > 0, cStringUtils.ToCSVField(val), ""))
+                    sw.WriteLine(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                 Next
         End Select
 

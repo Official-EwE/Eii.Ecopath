@@ -951,12 +951,12 @@ Namespace Ecosim
             ' Get data point value
             Select Case Me.m_plotData
                 Case eMSEPlotData.Biomass
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass, 1))
+                    Return CSng(If(Me.m_bIsCumulative, src.Biomass, 1))
                 Case eMSEPlotData.GroupCatch
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.TcatchOutput, 1))
+                    Return CSng(If(Me.m_bIsCumulative, src.TcatchOutput, 1))
                 Case eMSEPlotData.Value
                     ' ToDo: resolve group value
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, 0, 1))
+                    Return CSng(If(Me.m_bIsCumulative, 0, 1))
             End Select
 
             Return cCore.NULL_VALUE
@@ -978,11 +978,11 @@ Namespace Ecosim
             ' Get data point value
             Select Case Me.m_plotData
                 Case eMSEPlotData.Biomass
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
+                    Return CSng(If(Me.m_bIsCumulative, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
                 Case eMSEPlotData.GroupCatch
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Catch(iTimeStep), src.CatchRel(iTimeStep)))
+                    Return CSng(If(Me.m_bIsCumulative, src.Catch(iTimeStep), src.CatchRel(iTimeStep)))
                 Case eMSEPlotData.Value
-                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
+                    Return CSng(If(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
             End Select
 
             Return cCore.NULL_VALUE

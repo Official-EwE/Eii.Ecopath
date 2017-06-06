@@ -4913,7 +4913,7 @@ Public Class frmEwE6
 
         Dim strAutosave As String = ""
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
-            strAutosave = strAutosave & CChar(cSystemUtils.IIF(Me.Core.Autosave(setting), "1"c, "0"c))
+            strAutosave = strAutosave & CChar(If(Me.Core.Autosave(setting), "1"c, "0"c))
         Next
 
         My.Settings.AutosaveResults = cAutosaveSettingsHelper.SaveToSettings(Me.Core)

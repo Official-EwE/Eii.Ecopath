@@ -134,9 +134,9 @@ Public Class dlgEcobaseImport
 
             ' #Yes: store persistent settings
             Dim p As New cSettingsParser()
-            p.Parameter("Year") = cSystemUtils.IIF(Me.m_tsbnShowYear.Checked, "1", "0")
-            p.Parameter("Author") = cSystemUtils.IIF(Me.m_tsbnShowAuthor.Checked, "1", "0")
-            p.Parameter("Downloadable") = cSystemUtils.IIF(Me.m_tsbnShowDownloadable.Checked, "1", "0")
+            p.Parameter("Year") = If(Me.m_tsbnShowYear.Checked, "1", "0")
+            p.Parameter("Author") = If(Me.m_tsbnShowAuthor.Checked, "1", "0")
+            p.Parameter("Downloadable") = If(Me.m_tsbnShowDownloadable.Checked, "1", "0")
             Me.Settings = p.Buffer
 
             Try
@@ -203,12 +203,12 @@ Public Class dlgEcobaseImport
             Me.m_lblCountryValue.Text = cStringUtils.ToTitleCase(Me.m_model.Country)
             Me.m_lblEcosystemTypeValue.Text = cStringUtils.ToSentenceCase(Me.m_model.EcosystemType)
             Me.m_lblPeriodValue.Text = Me.PeriodLabel()
-            Me.m_lblEcosimUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcosimUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
-            Me.m_lblFittedValue.Text = cSystemUtils.IIF(Me.m_model.IsFittedToTimeSeries, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
-            Me.m_lblEcospaceUsedValue.Text = cSystemUtils.IIF(Me.m_model.EcospaceUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblEcosimUsedValue.Text = If(Me.m_model.EcosimUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblFittedValue.Text = If(Me.m_model.IsFittedToTimeSeries, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblEcospaceUsedValue.Text = If(Me.m_model.EcospaceUsed, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
 
-            Me.m_lblDessimAllowValue.Text = cSystemUtils.IIF(Me.m_model.AllowDissemination, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
-            Me.m_lblDessimAllowValue.Image = cSystemUtils.IIF(Me.m_model.AllowDissemination, SharedResources.OK, SharedResources.Critical)
+            Me.m_lblDessimAllowValue.Text = If(Me.m_model.AllowDissemination, SharedResources.BUTTON_YES, SharedResources.BUTTON_NO)
+            Me.m_lblDessimAllowValue.Image = If(Me.m_model.AllowDissemination, SharedResources.OK, SharedResources.Critical)
 
             Me.m_lblRefValue.Text = Me.m_model.Reference()
 
@@ -271,8 +271,8 @@ Public Class dlgEcobaseImport
 
         bCanDownload = bCanDissiminate And bAgreementOK
 
-        Me.m_tpAgreement.ImageIndex = cSystemUtils.IIF(bAgreementOK, 0, 2)
-        Me.m_tpImport.ImageIndex = cSystemUtils.IIF(bCanDownload, 0, 2)
+        Me.m_tpAgreement.ImageIndex = If(bAgreementOK, 0, 2)
+        Me.m_tpImport.ImageIndex = If(bCanDownload, 0, 2)
 
         Me.m_btnOK.Enabled = bCanDownload
 

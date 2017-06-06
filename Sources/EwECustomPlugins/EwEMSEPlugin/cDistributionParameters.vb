@@ -28,11 +28,10 @@
 Option Strict On
 Option Explicit On
 
-Imports LumenWorks.Framework.IO.Csv
-Imports EwECore
 Imports System.IO
+Imports EwECore
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
+Imports LumenWorks.Framework.IO.Csv
 
 #End Region ' Imports
 
@@ -490,7 +489,7 @@ Public Class cEcosimDistributionParamsData
         Me.DistributionType = DistributionType
         Me.LowerBound = LowerBound
         Me.UpperBound = UpperBound
-        Me.MidPoint = EwEUtils.SystemUtilities.cSystemUtils.IIF(MidPoint < 0, cCore.NULL_VALUE, MidPoint)
+        Me.MidPoint = If(MidPoint < 0, cCore.NULL_VALUE, MidPoint)
     End Sub
 
     Public Property GroupNo As Integer

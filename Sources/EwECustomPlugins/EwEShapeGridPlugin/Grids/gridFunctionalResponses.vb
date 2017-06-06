@@ -22,12 +22,10 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -107,7 +105,7 @@ Public Class gridFunctionalResponses
         For i As Integer = 0 To iNumShapes - 1
 
             Dim env As cEnviroResponseFunction = DirectCast(shapes(i), cEnviroResponseFunction)
-            style = cSystemUtils.IIF(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
+            style = If(Me.Handler.CanEditPoints(shapes(i)), cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
 
             Me.Shape(i + 1) = env
             Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))

@@ -129,7 +129,7 @@ Public Class dlgSelectResponse
 
         Dim p As New cSettingsParser()
         p("filter") = Me.m_tstbFilter.Text
-        p("casesensitive") = cSystemUtils.IIF(Me.m_tsbnCaseSensitive.Checked, "1", "0")
+        p("casesensitive") = If(Me.m_tsbnCaseSensitive.Checked, "1", "0")
         Me.Settings = p
         MyBase.OnClosing(e)
 
