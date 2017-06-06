@@ -654,26 +654,33 @@ Namespace Samples
                 ' #Yes: obtain data from Ecopath output vars that Monte Carlo has produced
                 For iGroup As Integer = 1 To epdata.NumGroups
 
-                    s.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), -9999)
-                    s.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), -9999)
-                    s.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), -9999)
-                    s.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), -9999)
-                    s.BA(iGroup) = If(mc.IsVariable(iGroup, eMCParams.BA), epdata.BA(iGroup), -9999)
+                    s.B(iGroup) = If(mc.IsVariable(iGroup, eMCParams.Biomass), epdata.B(iGroup), cCore.NULL_VALUE)
+                    s.PB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.PB), epdata.PB(iGroup), cCore.NULL_VALUE)
+                    s.QB(iGroup) = If(mc.IsVariable(iGroup, eMCParams.QB), epdata.QB(iGroup), cCore.NULL_VALUE)
+                    s.EE(iGroup) = If(mc.IsVariable(iGroup, eMCParams.EE), epdata.EE(iGroup), cCore.NULL_VALUE)
+
+                    If (mc.IsVariable(iGroup, eMCParams.BaBi)) Then
+                        s.BaBi(iGroup) = epdata.BaBi(iGroup)
+                        s.BA(iGroup) = cCore.NULL_VALUE
+                    Else
+                        s.BaBi(iGroup) = cCore.NULL_VALUE
+                        s.BA(iGroup) = epdata.BA(iGroup)
+                    End If
 
                     For iFleet As Integer = 1 To epdata.NumFleet
-                        s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), -9999)
-                        s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), -9999)
+                        s.Landing(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Landings), epdata.Landing(iFleet, iGroup), cCore.NULL_VALUE)
+                        s.Discard(iFleet, iGroup) = If(mc.IsVariable(iGroup, eMCParams.Discards), epdata.Discard(iFleet, iGroup), cCore.NULL_VALUE)
                     Next
 
                     For iPred As Integer = 1 To epdata.NumLiving
-                        s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), -9999)
+                        s.DC(iPred, iGroup) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iGroup), cCore.NULL_VALUE)
                     Next
                 Next
 
                 ' Diets
                 For iPred As Integer = 1 To epdata.NumLiving
                     For iPrey As Integer = 0 To epdata.NumGroups
-                        s.DC(iPred, iPrey) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iPrey), -9999)
+                        s.DC(iPred, iPrey) = If(mc.IsVariable(iPred, eMCParams.Diets), epdata.DC(iPred, iPrey), cCore.NULL_VALUE)
                     Next
                 Next
 
@@ -692,6 +699,7 @@ Namespace Samples
                     s.QB(iGroup) = epdata.QBinput(iGroup)
                     s.EE(iGroup) = epdata.EEinput(iGroup)
                     s.BA(iGroup) = epdata.BAInput(iGroup)
+                    s.BaBi(iGroup) = epdata.BaBi(iGroup)
 
                     For iFleet As Integer = 1 To epdata.NumFleet
                         s.Landing(iFleet, iGroup) = epdata.Landing(iFleet, iGroup)
@@ -758,6 +766,10 @@ Namespace Samples
 
                 If (s.BA(iGroup) > cCore.NULL_VALUE) Then
                     epdata.BAInput(iGroup) = s.BA(iGroup)
+                End If
+
+                If (s.BaBi(iGroup) > cCore.NULL_VALUE) Then
+                    epdata.BaBi(iGroup) = s.BaBi(iGroup)
                 End If
 
                 For iFleet As Integer = 1 To m_core.nFleets

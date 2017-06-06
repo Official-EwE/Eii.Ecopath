@@ -152,6 +152,7 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_23.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_24.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_26.vb" />
+    <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_01.vb" />
     <Compile Include="DataSource\IEcopathSampleDataSource.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_25.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_27.vb" />
@@ -660,8 +661,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\Updates\Release 6.6\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

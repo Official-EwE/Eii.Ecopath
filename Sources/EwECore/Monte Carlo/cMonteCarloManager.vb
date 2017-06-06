@@ -404,7 +404,7 @@ Public Class cMonteCarloManager
     ''' </summary>
     ''' <returns></returns>
     Public Function SupportedVariables() As eMCParams()
-        Return New eMCParams() {eMCParams.BA, eMCParams.Biomass, eMCParams.Diets, eMCParams.Discards, eMCParams.EE, eMCParams.Landings, eMCParams.PB, eMCParams.QB}
+        Return New eMCParams() {eMCParams.BA, eMCParams.Biomass, eMCParams.Diets, eMCParams.Discards, eMCParams.EE, eMCParams.Landings, eMCParams.PB, eMCParams.QB, eMCParams.BaBi}
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -887,16 +887,15 @@ Public Class cMonteCarloManager
                 grp.PB = m_epdata.PB(iGroup)
                 grp.QB = m_epdata.QB(iGroup)
                 grp.BA = m_epdata.BA(iGroup)
+                grp.BaBi = m_epdata.BaBi(iGroup)
                 grp.EE = m_epdata.EE(iGroup)
                 grp.VU = m_esdata.VulnerabilityPredator(iGroup)
 
-                ' JS Nov 2015 Adding Catches
                 For iflt As Integer = 1 To m_epdata.NumFleet
                     grp.Landings(iflt) = m_epdata.Landing(iflt, iGroup)
                     grp.Discards(iflt) = m_epdata.Discard(iflt, iGroup)
                 Next
 
-                ' MP Apr 2016 Adding Diets
                 For iPrey As Integer = 0 To m_core.nGroups
                     grp.Diets(iPrey) = m_epdata.DC(iGroup, iPrey)
                 Next
@@ -905,26 +904,25 @@ Public Class cMonteCarloManager
                 grp.PBcv = m_mc.CVpar(eMCParams.PB, iGroup)
                 grp.QBcv = m_mc.CVpar(eMCParams.QB, iGroup)
                 grp.BAcv = m_mc.CVpar(eMCParams.BA, iGroup)
+                grp.BaBicv = m_mc.CVpar(eMCParams.BaBi, iGroup)
                 grp.EEcv = m_mc.CVpar(eMCParams.EE, iGroup)
                 grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, iGroup)
 
-                ' JS Nov 2015 Adding Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     grp.Landingscv(iFleet) = m_mc.CVparLanding(iFleet, iGroup)
                     grp.Discardscv(iFleet) = m_mc.CVparDiscard(iFleet, iGroup)
                 Next
 
-                ' MP Apr 2016 Adding diets
                 grp.DietMultiplier = m_mc.CVpar(eMCParams.Diets, iGroup)
 
                 grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, iGroup)
                 grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, iGroup)
                 grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, iGroup)
                 grp.BALower = m_mc.ParLimit(0, eMCParams.BA, iGroup)
+                grp.BaBiLower = m_mc.ParLimit(0, eMCParams.BaBi, iGroup)
                 grp.EELower = m_mc.ParLimit(0, eMCParams.EE, iGroup)
                 grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, iGroup)
 
-                ' JS Nov 2015 Adding Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     grp.LandingsLower(iFleet) = m_mc.ParLimitLanding(0, iFleet, iGroup)
                     grp.DiscardsLower(iFleet) = m_mc.ParLimitDiscard(0, iFleet, iGroup)
@@ -934,10 +932,10 @@ Public Class cMonteCarloManager
                 grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, iGroup)
                 grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, iGroup)
                 grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, iGroup)
+                grp.BaBiUpper = m_mc.ParLimit(1, eMCParams.BaBi, iGroup)
                 grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, iGroup)
                 grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, iGroup)
 
-                ' JS Nov 2015 Adding Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     grp.LandingsUpper(iFleet) = m_mc.ParLimitLanding(1, iFleet, iGroup)
                     grp.DiscardsUpper(iFleet) = m_mc.ParLimitDiscard(1, iFleet, iGroup)
@@ -948,16 +946,15 @@ Public Class cMonteCarloManager
                 grp.PBbf = m_mc.BestFit(eMCParams.PB, iGroup)
                 grp.QBbf = m_mc.BestFit(eMCParams.QB, iGroup)
                 grp.BAbf = m_mc.BestFit(eMCParams.BA, iGroup)
+                grp.BaBibf = m_mc.BestFit(eMCParams.BaBi, iGroup)
                 grp.EEbf = m_mc.BestFit(eMCParams.EE, iGroup)
                 grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, iGroup)
 
-                ' JS Nov 2015 Adding Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     grp.Landingsbf(iFleet) = m_mc.BestFit(eMCParams.Landings, iGroup)
                     grp.Discardsbf(iFleet) = m_mc.BestFit(eMCParams.Discards, iGroup)
                 Next
 
-                ' MP Apr 2016 Adding Diets
                 For iPrey As Integer = 1 To m_core.nGroups
                     grp.Dietsbf = m_mc.BestFitDiets(iGroup, iPrey)
                 Next
@@ -994,6 +991,13 @@ Public Class cMonteCarloManager
                 grp.SetStatusFlags(eVarNameFlags.mcBAUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput))
                 grp.SetStatusFlags(eVarNameFlags.mcBAbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumInput, True))
 
+                ' BaBi
+                grp.SetStatusFlags(eVarNameFlags.mcBaBi, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumRate))
+                grp.SetStatusFlags(eVarNameFlags.mcBaBicv, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumRate))
+                grp.SetStatusFlags(eVarNameFlags.mcBaBiLower, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumRate))
+                grp.SetStatusFlags(eVarNameFlags.mcBaBiUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumRate))
+                grp.SetStatusFlags(eVarNameFlags.mcBaBibf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccumRate, True))
+
                 ' EE
                 grp.SetStatusFlags(eVarNameFlags.mcEE, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEEcv, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
@@ -1001,12 +1005,12 @@ Public Class cMonteCarloManager
                 grp.SetStatusFlags(eVarNameFlags.mcEEUpper, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEEbf, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput, True))
 
-                ' MP Apr 2016 Adding Diets
+                ' Diet
                 grp.SetStatusFlags(eVarNameFlags.mcDietComp, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp))
                 grp.SetStatusFlags(eVarNameFlags.mcDietMult, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp))
                 grp.SetStatusFlags(eVarNameFlags.mcDietsbf, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp, True))
 
-                ' JS Nov 2015 Adding Catches
+                ' Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     grp.SetStatusFlags(eVarNameFlags.mcLandingsbf, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, iFleet)
                     grp.SetStatusFlags(eVarNameFlags.mcDiscardsbf, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, iFleet)
@@ -1044,9 +1048,9 @@ Public Class cMonteCarloManager
             Dim sg As cStanzaGroup = Me.m_core.StanzaGroups(grp.iStanza)
             Select Case var
                 Case eVarNameFlags.BiomassAreaInput
-                    status = if(sg.iGroups(sg.LeadingB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
+                    status = If(sg.iGroups(sg.LeadingB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
                 Case eVarNameFlags.QBInput
-                    status = if(sg.iGroups(sg.LeadingCB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
+                    status = If(sg.iGroups(sg.LeadingCB) = grp.Index, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
                 Case eVarNameFlags.PBInput
                     'PB needs to be supplied for all stages in a Multistanza group; it can be varied
                     status = eStatusFlags.OK
@@ -1055,8 +1059,11 @@ Public Class cMonteCarloManager
             Dim grpIn As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(grp.Index)
             Select Case var
                 Case eVarNameFlags.BioAccumInput
-                    ' Cannot vary BA if not entered
                     If (grpIn.BioAccumInput = 0) Then
+                        status = eStatusFlags.NotEditable Or eStatusFlags.Null
+                    End If
+                Case eVarNameFlags.BioAccumRate
+                    If (grpIn.BioAccumRate = 0) Then
                         status = eStatusFlags.NotEditable Or eStatusFlags.Null
                     End If
             End Select
@@ -1079,75 +1086,6 @@ Public Class cMonteCarloManager
 
     End Function
 
-    ' ''' <summary>
-    ' ''' Update the Monte Carlo groups with the best fit of the trials
-    ' ''' </summary>
-    ' ''' <remarks></remarks>
-    'Private Sub LoadBestFitsToGroups()
-
-    '    Try
-    '        Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
-    '        Dim m_ecopath As cEcoPathModel = m_core.m_EcoPath
-
-    '        For Each grp As cMonteCarloGroup In m_lstGrps
-
-    '            grp.AllowValidation = False
-
-    '            'convert the Database ID into an iGroup
-    '            grp.Index = Array.IndexOf(m_epdata.GroupDBID, grp.DBID)
-    '            grp.Resize()
-
-    '            'best fit data from the monte carlo trials
-    '            grp.Bbf = m_mc.BestFit(eMCParams.Biomass, grp.Index)
-    '            grp.PBbf = m_mc.BestFit(eMCParams.PB, grp.Index)
-    '            grp.QBbf = m_mc.BestFit(eMCParams.QB, grp.Index)
-    '            grp.BAbf = m_mc.BestFit(eMCParams.BA, grp.Index)
-    '            grp.EEbf = m_mc.BestFit(eMCParams.EE, grp.Index)
-    '            grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, grp.Index)
-
-    '            'ReDim CVpar(5, m_core.nGroups)
-    '            grp.Bcv = m_mc.CVpar(eMCParams.Biomass, grp.Index)
-    '            grp.PBcv = m_mc.CVpar(eMCParams.PB, grp.Index)
-    '            grp.QBcv = m_mc.CVpar(eMCParams.QB, grp.Index)
-    '            grp.BAcv = m_mc.CVpar(eMCParams.BA, grp.Index)
-    '            grp.EEcv = m_mc.CVpar(eMCParams.EE, grp.Index)
-    '            grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, grp.Index)
-
-    '            'ReDim ParLimit(1, 5, m_core.nGroups)
-    '            grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, grp.Index)
-    '            grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, grp.Index)
-    '            grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, grp.Index)
-    '            grp.BALower = m_mc.ParLimit(0, eMCParams.BA, grp.Index)
-    '            grp.EELower = m_mc.ParLimit(0, eMCParams.EE, grp.Index)
-    '            grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, grp.Index)
-
-    '            grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, grp.Index)
-    '            grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, grp.Index)
-    '            grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, grp.Index)
-    '            grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, grp.Index)
-    '            grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, grp.Index)
-    '            grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, grp.Index)
-
-    '            grp.ResetStatusFlags()
-
-    '            'validation for monte carlo groups should be handled by the manager
-    '            'the manager and the monte carlo model know what to do in response to an edit
-    '            'this is not setup yet
-    '            grp.AllowValidation = True
-
-    '        Next 'For Each grp As cMonteCarloGroup
-
-    '        Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
-
-    '    Catch ex As Exception
-    '        cLog.Write(ex)
-    '        Debug.Assert(False, ex.StackTrace)
-    '        Throw New ApplicationException("UpdateGroupsBestFit", ex)
-    '    End Try
-
-
-    'End Sub
-
     Private Sub InitGroups()
 
         Try
@@ -1163,7 +1101,6 @@ Public Class cMonteCarloManager
             Debug.Assert(False, ex.StackTrace)
             Throw New ApplicationException("LoadGroupParameters", ex)
         End Try
-
 
     End Sub
 
@@ -1184,16 +1121,15 @@ Public Class cMonteCarloManager
                 m_mc.Pmean(eMCParams.PB, MCGroup.Index) = MCGroup.PB
                 m_mc.Pmean(eMCParams.QB, MCGroup.Index) = MCGroup.QB
                 m_mc.Pmean(eMCParams.BA, MCGroup.Index) = MCGroup.BA
+                m_mc.Pmean(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBi
                 m_mc.Pmean(eMCParams.EE, MCGroup.Index) = MCGroup.EE
                 m_mc.Pmean(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VU
 
-                ' JS Nov 2015 Adding Catches
                 For ifleet As Integer = 1 To Me.m_core.nFleets
                     m_mc.PMeanLanding(ifleet, MCGroup.Index) = MCGroup.Landings(ifleet)
                     m_mc.PMeanDiscard(ifleet, MCGroup.Index) = MCGroup.Discards(ifleet)
                 Next
 
-                ' MP Apr 2016 Adding Diets
                 For iPrey As Integer = 0 To m_core.nGroups
                     m_mc.Dietmeans(MCGroup.Index, iPrey) = MCGroup.Diets(iPrey)
                 Next
@@ -1202,10 +1138,10 @@ Public Class cMonteCarloManager
                 m_mc.CVpar(eMCParams.PB, MCGroup.Index) = MCGroup.PBcv
                 m_mc.CVpar(eMCParams.QB, MCGroup.Index) = MCGroup.QBcv
                 m_mc.CVpar(eMCParams.BA, MCGroup.Index) = MCGroup.BAcv
+                m_mc.CVpar(eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBicv
                 m_mc.CVpar(eMCParams.EE, MCGroup.Index) = MCGroup.EEcv
                 m_mc.CVpar(eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUcv
 
-                ' JS Nov 2015 Adding Catches
                 For ifleet As Integer = 1 To Me.m_core.nFleets
                     m_mc.CVparLanding(ifleet, MCGroup.Index) = MCGroup.Landingscv(ifleet)
                     m_mc.CVparDiscard(ifleet, MCGroup.Index) = MCGroup.Discardscv(ifleet)
@@ -1216,10 +1152,10 @@ Public Class cMonteCarloManager
                 m_mc.ParLimit(0, eMCParams.PB, MCGroup.Index) = MCGroup.PBLower
                 m_mc.ParLimit(0, eMCParams.QB, MCGroup.Index) = MCGroup.QBLower
                 m_mc.ParLimit(0, eMCParams.BA, MCGroup.Index) = MCGroup.BALower
+                m_mc.ParLimit(0, eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBiLower
                 m_mc.ParLimit(0, eMCParams.EE, MCGroup.Index) = MCGroup.EELower
                 m_mc.ParLimit(0, eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VULower
 
-                ' JS Nov 2015 Adding Catches
                 For iFleet As Integer = 1 To m_core.nFleets
                     m_mc.ParLimitLanding(0, iFleet, MCGroup.Index) = MCGroup.LandingsLower(iFleet)
                     m_mc.ParLimitDiscard(0, iFleet, MCGroup.Index) = MCGroup.DiscardsLower(iFleet)
@@ -1229,10 +1165,10 @@ Public Class cMonteCarloManager
                 m_mc.ParLimit(1, eMCParams.PB, MCGroup.Index) = MCGroup.PBUpper
                 m_mc.ParLimit(1, eMCParams.QB, MCGroup.Index) = MCGroup.QBUpper
                 m_mc.ParLimit(1, eMCParams.BA, MCGroup.Index) = MCGroup.BAUpper
+                m_mc.ParLimit(1, eMCParams.BaBi, MCGroup.Index) = MCGroup.BaBiUpper
                 m_mc.ParLimit(1, eMCParams.EE, MCGroup.Index) = MCGroup.EEUpper
                 m_mc.ParLimit(1, eMCParams.Vulnerability, MCGroup.Index) = MCGroup.VUUpper
 
-                ' JS Nov 2015 Adding Catches
                 For iFleet As Integer = 1 To m_core.nFleets
                     m_mc.ParLimitLanding(1, iFleet, MCGroup.Index) = MCGroup.LandingsUpper(iFleet)
                     m_mc.ParLimitDiscard(1, iFleet, MCGroup.Index) = MCGroup.DiscardsUpper(iFleet)

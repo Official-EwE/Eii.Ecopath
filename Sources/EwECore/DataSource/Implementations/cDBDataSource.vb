@@ -10484,15 +10484,15 @@ Namespace DataSources
             While reader.Read()
                 iSeq += 1
                 Try
-                    Dim s As New Samples.cEcopathSample(Me.m_core, CInt(reader("SampleID")), iSeq)
-                    s.AllowValidation = False
-                    s.Hash = CStr(reader("Hash"))
-                    s.Source = CStr(reader("Source"))
-                    s.Rating = CInt(reader("Rating"))
-                    s.Generated = cDateUtils.JulianToDate(CDbl(reader("Generated")))
-                    s.AllowValidation = True
+                    Dim sample As New Samples.cEcopathSample(Me.m_core, CInt(reader("SampleID")), iSeq)
+                    sample.AllowValidation = False
+                    sample.Hash = CStr(reader("Hash"))
+                    sample.Source = CStr(reader("Source"))
+                    sample.Rating = CInt(reader("Rating"))
+                    sample.Generated = cDateUtils.JulianToDate(CDbl(reader("Generated")))
+                    sample.AllowValidation = True
 
-                    ds.m_samples.Add(s)
+                    ds.m_samples.Add(sample)
                 Catch ex As Exception
                     bSucces = False
                 End Try
@@ -10527,14 +10527,15 @@ Namespace DataSources
                     Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
 
                     If dt.ContainsKey(DBID) And iGroup > 0 Then
-                        Dim s As Samples.cEcopathSample = dt(DBID)
-                        s.B(iGroup) = CSng(reader("Biomass"))
-                        s.PB(iGroup) = CSng(reader("ProdBiom"))
-                        s.QB(iGroup) = CSng(reader("ConsBiom"))
-                        s.EE(iGroup) = CSng(reader("EcoEfficiency"))
-                        s.BA(iGroup) = CSng(reader("BiomAcc"))
+                        Dim sample As Samples.cEcopathSample = dt(DBID)
+                        sample.B(iGroup) = CSng(reader("Biomass"))
+                        sample.PB(iGroup) = CSng(reader("ProdBiom"))
+                        sample.QB(iGroup) = CSng(reader("ConsBiom"))
+                        sample.EE(iGroup) = CSng(reader("EcoEfficiency"))
+                        sample.BA(iGroup) = CSng(reader("BiomAcc"))
+                        sample.BaBi(iGroup) = CSng(Me.m_db.ReadSafe(reader, "BiomAccRate", 0))
                         If (iGroup <= Me.m_core.nLivingGroups) Then
-                            s.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
+                            sample.DC(iGroup, 0) = CSng(Me.m_db.ReadSafe(reader, "ImpVar", 0))
                         End If
                     End If
                 Catch ex As Exception
@@ -10565,10 +10566,10 @@ Namespace DataSources
                     Dim iPrey As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("PreyID")))
 
                     If dt.ContainsKey(DBID) And (iPred >= 0) And (iPrey >= 0) Then
-                        Dim s As Samples.cEcopathSample = dt(DBID)
+                        Dim sample As Samples.cEcopathSample = dt(DBID)
                         Dim sDiet As Single = CSng(reader("Diet"))
                         If (sDiet > cCore.NULL_VALUE) Then
-                            s.DC(iPred, iPrey) = sDiet
+                            sample.DC(iPred, iPrey) = sDiet
                         End If
                     End If
                 Catch ex As Exception
@@ -10584,8 +10585,8 @@ Namespace DataSources
 
             Dim ds As Samples.cEcopathSampleDatastructures = Me.m_core.m_SampleData
             Dim dt As New Dictionary(Of Integer, Samples.cEcopathSample)
-            For Each s As Samples.cEcopathSample In ds.m_samples
-                dt(s.DBID) = s
+            For Each sample As Samples.cEcopathSample In ds.m_samples
+                dt(sample.DBID) = sample
             Next
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -10599,9 +10600,9 @@ Namespace DataSources
                     Dim iFleet As Integer = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
 
                     If dt.ContainsKey(DBID) And iGroup > 0 And iFleet > 0 Then
-                        Dim s As Samples.cEcopathSample = dt(DBID)
-                        s.Landing(iFleet, iGroup) = CSng(reader("Landing"))
-                        s.Discard(iFleet, iGroup) = CSng(reader("Discards"))
+                        Dim sample As Samples.cEcopathSample = dt(DBID)
+                        sample.Landing(iFleet, iGroup) = CSng(reader("Landing"))
+                        sample.Discard(iFleet, iGroup) = CSng(reader("Discards"))
                     End If
                 Catch ex As Exception
                     Me.LogMessage(String.Format("Error {0} occurred while reading EcopathGroupCatchSample", ex.Message))
@@ -10631,12 +10632,12 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcopathSample")
                 dt = writer.GetDataTable()
 
-                For Each s As Samples.cEcopathSample In ds.m_samples
+                For Each sample As Samples.cEcopathSample In ds.m_samples
 
-                    drow = dt.Rows.Find(s.DBID)
+                    drow = dt.Rows.Find(sample.DBID)
                     Debug.Assert(drow IsNot Nothing)
                     drow.BeginEdit()
-                    drow("Rating") = s.Rating
+                    drow("Rating") = sample.Rating
                     drow.EndEdit()
                 Next
 
@@ -10689,6 +10690,7 @@ Namespace DataSources
                     drow("ConsBiom") = sample.QB(iGroup)
                     drow("EcoEfficiency") = sample.EE(iGroup)
                     drow("BiomAcc") = sample.BA(iGroup)
+                    drow("BiomAccRate") = sample.BaBi(iGroup)
                     If (iGroup <= Me.m_core.nLivingGroups) Then
                         drow("ImpVar") = sample.DC(iGroup, 0)
                     Else

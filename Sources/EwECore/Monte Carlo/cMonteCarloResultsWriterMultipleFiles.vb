@@ -298,6 +298,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                     Select Case par
                         Case eMCParams.Biomass : val = Me.Core.m_EcoPathData.B(iGroup)
                         Case eMCParams.BA : val = Me.Core.m_EcoPathData.BA(iGroup)
+                        Case eMCParams.BaBi : val = Me.Core.m_EcoPathData.BaBi(iGroup)
                         Case eMCParams.PB : val = Me.Core.m_EcoPathData.PB(iGroup)
                         Case eMCParams.QB : val = Me.Core.m_EcoPathData.QB(iGroup)
                         Case eMCParams.EE : val = Me.Core.m_EcoPathData.EE(iGroup)

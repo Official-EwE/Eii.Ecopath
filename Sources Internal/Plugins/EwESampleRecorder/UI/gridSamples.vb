@@ -86,9 +86,15 @@ Public Class gridSamples
         For i As Integer = 1 To man.nSamples
             Dim iRow As Integer = Me.AddRow()
             Dim s As cEcopathSample = man.Sample(i)
+            Dim cell As EwECell = Nothing
+
             Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, s, eVarNameFlags.Index)
             Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
-            Me(iRow, eColumnTypes.NumInvalidEE) = New EwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
+
+            cell = New EwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
+            cell.SuppressZero(0) = True
+            Me(iRow, eColumnTypes.NumInvalidEE) = cell
+
 #If ShowRatings Then
             Me(iRow, eColumnTypes.Rating) = New PropertyCell(Me.PropertyManager, s, eVarNameFlags.SampleRating)
 #End If
