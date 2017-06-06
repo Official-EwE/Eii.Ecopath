@@ -26,10 +26,9 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.Samples
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
-Imports EwEUtils.SystemUtilities
-
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -119,13 +118,13 @@ Public Class frmSamples
 
         If (Me.m_plugin IsNot Nothing) Then
             Me.m_tsbnRecord.Checked = Me.m_plugin.IsRecording
-            Me.m_tsbnRecord.Image = if(Me.m_plugin.IsRecording, My.Resources.RecordingHS, My.Resources.RecordHS)
+            Me.m_tsbnRecord.Image = If(Me.m_plugin.IsRecording, My.Resources.RecordingHS, My.Resources.RecordHS)
         End If
 
         Me.m_tsddImport.Image = SharedResources.ImportHS
 
         Me.m_btnLoad.Enabled = Not bIsRunning And bHasSelection
-        Me.m_btnLoad.Text = if(bIsLoaded, My.Resources.LABEL_UNLOAD, My.Resources.LABEL_LOAD)
+        Me.m_btnLoad.Text = If(bIsLoaded, My.Resources.LABEL_UNLOAD, My.Resources.LABEL_LOAD)
         Me.m_btnDelete.Enabled = Not bIsRunning And bHasSelection
 
         Me.m_nudNumSamples.Value = Math.Min(Me.m_nudNumSamples.Value, man.nSamples)
@@ -232,7 +231,15 @@ Public Class frmSamples
     Private Sub OnRunBatch(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRun.Click
         Try
-            Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value))
+            If Not Me.Core.SaveChanges() Then Return
+            ' ToDo: globalize this
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize("Are you sure you want to batch run {0} sample(s)? This task cannot be interrupted", CInt(Me.m_nudNumSamples.Value)),
+                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO, defaultReply:=eMessageReply.NO)
+            Core.Messages.SendMessage(fmsg)
+            If (fmsg.Reply = eMessageReply.YES) Then
+                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value))
+            End If
+
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
