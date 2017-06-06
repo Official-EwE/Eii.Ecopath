@@ -266,7 +266,7 @@ Namespace Ecosim
                 Me.IsRunning = bEcosimRunning
 
                 ' Configure run/stop button
-                Me.m_btnRun.Text = IIF(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
+                Me.m_btnRun.Text = if(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
                 Me.m_btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
                 ' Reflect change immediately
                 Me.m_btnRun.Update()

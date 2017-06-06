@@ -318,8 +318,8 @@ Namespace Controls.Map
             Dim ptScroll As Point = New Point(-Me.m_sbHorz.Value, -Me.m_sbVert.Value)
             Dim ptMap As New Point
 
-            ptMap.X = IIf(ptCentered.X > 0, ptCentered.X, ptScroll.X)
-            ptMap.Y = IIf(ptCentered.Y > 0, ptCentered.Y, ptScroll.Y)
+            ptMap.X = If(ptCentered.X > 0, ptCentered.X, ptScroll.X)
+            ptMap.Y = If(ptCentered.Y > 0, ptCentered.Y, ptScroll.Y)
 
             ' Hold all blinking etc
             Me.SuspendLayout()

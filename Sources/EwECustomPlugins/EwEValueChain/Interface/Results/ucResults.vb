@@ -692,7 +692,9 @@ Public Class ucResults
 
         Dim gv As IGraphView = DirectCast(Me.m_view, IGraphView)
         Dim strGraphTitle As String = ""
-        Dim strXAxisLabel As String = CStr(IIF(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year"))
+
+        ' ToDo: globalize this
+        Dim strXAxisLabel As String = If(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year")
         Dim strYAxisLabel As String = ""
         Dim aUnitsYAxis() As eUnitType = New eUnitType() {eUnitType.Monetary}
         Dim avars() As cResults.eVariableType = Nothing

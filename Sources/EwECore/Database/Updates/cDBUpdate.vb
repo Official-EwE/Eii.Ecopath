@@ -67,10 +67,10 @@ Friend MustInherit Class cDBUpdate
     ''' <param name="strProgress">Progress entry to write.</param>
     ''' -----------------------------------------------------------------------
     Protected Sub LogProgress(ByVal strProgress As String, ByVal bSucces As Boolean)
-        cLog.Write(String.Format("Update {0}: {1} {2}", _
-                                 Me.UpdateVersion, _
-                                 strProgress, _
-                                 IIf(bSucces, "Succes", "Failed")))
+        cLog.Write(String.Format("Update {0}: {1} {2}",
+                                 Me.UpdateVersion,
+                                 strProgress,
+                                 If(bSucces, "Succes", "Failed")))
     End Sub
 
     ''' -----------------------------------------------------------------------

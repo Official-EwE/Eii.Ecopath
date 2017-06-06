@@ -4845,7 +4845,7 @@ Namespace DataSources
                     drow("CatchRefUpper") = mseDS.CatchFleetBounds(iFleet).Upper
                     drow("EffortRefLower") = mseDS.EffortFleetBounds(iFleet).Lower
                     drow("EffortRefUpper") = mseDS.EffortFleetBounds(iFleet).Upper
-                    'drow("MSYEvaluateFleet") = CInt(IIf(mseDS.MSYEvaluateFleet(iFleet), 1, 0))
+                    'drow("MSYEvaluateFleet") = CInt(if(mseDS.MSYEvaluateFleet(iFleet), 1, 0))
 
                     ' Wrap up: was this a new row?
                     If bNewRow Then
@@ -8516,7 +8516,7 @@ Namespace DataSources
                 drow("EcopathGroupID") = iEcopathGroupID
                 drow("GroupID") = iGroupID
                 ' Detritus default of 10, non-detritus 300
-                drow("MVel") = IIF(bIsDetritus, 10.0!, 300.0!)
+                drow("MVel") = If(bIsDetritus, 10.0!, 300.0!)
                 drow("CapacityMap") = ""
                 writer.AddRow(drow)
 
@@ -9054,7 +9054,7 @@ Namespace DataSources
                     sbMPAMonth.Length = 0
                     For iMonth As Integer = 1 To cCore.N_MONTHS
                         ' Closed for fishing: store as 0, open: store as 1
-                        sbMPAMonth.Append(IIF(ecospaceDS.MPAmonth(iMonth, iMPA), "1", "0"))
+                        sbMPAMonth.Append(If(ecospaceDS.MPAmonth(iMonth, iMPA), "1", "0"))
                     Next iMonth
                     drow("MPAMonth") = sbMPAMonth.ToString()
 
@@ -9141,7 +9141,7 @@ Namespace DataSources
             sbMPAMonth.Length = 0
             For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, bMPAMonths.Length - 1)
                 ' Closed for fishing: store as 0, open: store as 1
-                sbMPAMonth.Append(IIF(bMPAMonths(iMonth), "1", "0"))
+                sbMPAMonth.Append(If(bMPAMonths(iMonth), "1", "0"))
             Next iMonth
             drow("MPAMonth") = sbMPAMonth.ToString()
 
@@ -9553,7 +9553,7 @@ Namespace DataSources
                             ' Referenced to Ecospace group DBIDs
                             drow("GroupID") = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
-                            drow("VarDBID") = IIF(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
+                            drow("VarDBID") = If(iMap = 0, 0, idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iMap)))
                             writer.AddRow(drow)
                         End If
                     Next iGroup

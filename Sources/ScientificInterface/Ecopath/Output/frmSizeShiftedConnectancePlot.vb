@@ -147,7 +147,7 @@ Dim X As Single
 Dim Temp() As Variant
 Dim Predat As Boolean
 Dim Wi As Single
-    MinDC = IIf(txtMin <> "", txtMin, 0.001)
+    MinDC = if(txtMin <> "", txtMin, 0.001)
     'Find the maximum trophic level:
     max = -1000
     For i = 1 To NumLiving
@@ -212,7 +212,7 @@ Dim Wi As Single
                             '    picbox.ForeColor = poolcolor(i)
                             End If
                             Wi = (Landing(i, j) + Discard(i, j)) / Catch(j) * 30
-                            If chkHost Then picbox.DrawWidth = IIf(Wi > 1, Wi, 1)
+                            If chkHost Then picbox.DrawWidth = if(Wi > 1, Wi, 1)
                             picbox.Line (Xa(i + NumGroups), Ya(i + NumGroups))-(Xa(j), Ya(j))
                         End If
                     Next
@@ -229,7 +229,7 @@ Dim Wi As Single
                     End If
                     If DC(j, i) > 0 Then   'a prey -- used mixed color if 1'order cycle
                         Predat = False
-                        picbox.ForeColor = IIf(DC(i, j) > 0 And i <= NumLiving, RGB(255, 0, 255), RGB(0, 0, 255))
+                        picbox.ForeColor = if(DC(i, j) > 0 And i <= NumLiving, RGB(255, 0, 255), RGB(0, 0, 255))
                         GoSub DrawLine
                     End If
                 Next
@@ -244,7 +244,7 @@ Dim Wi As Single
                                 picbox.ForeColor = PoolColor(i)
                             End If
                             Wi = (Landing(i, j) + Discard(i, j)) / Catch(j) * 30
-                            If chkHost Then picbox.DrawWidth = IIf(Wi > 1, Wi, 1)
+                            If chkHost Then picbox.DrawWidth = if(Wi > 1, Wi, 1)
                             picbox.Line (Xa(i + NumGroups), Ya(i + NumGroups))-(Xa(j), Ya(j))
                        End If
                     Next
@@ -266,9 +266,9 @@ Dim Wi As Single
                 picbox.CurrentX = Xa(i) - 0.1
                 picbox.CurrentY = Ya(i) + 0.15
                 'picbox.Line (Xa(i) - 2 * BoxL(i), Ya(i) + 1 * BoxL(i))-(Xa(i) + 2 * BoxL(i), Ya(i) - 1 * BoxL(i)), QBColor(0), B
-                picbox.Circle (Xa(i), Ya(i)), 0.01, IIf(chkColor, PoolColor(i), 0)
-                picbox.Circle (Xa(i), Ya(i)), 0.02, IIf(chkColor, PoolColor(i), 0)
-                picbox.Circle (Xa(i), Ya(i)), 0.03, IIf(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xa(i), Ya(i)), 0.01, if(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xa(i), Ya(i)), 0.02, if(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xa(i), Ya(i)), 0.03, if(chkColor, PoolColor(i), 0)
             Else
                 picbox.Print CStr(i)
             End If
@@ -289,9 +289,9 @@ Dim Wi As Single
                         picbox.CurrentY = Ya(NumGroups + i) + 0.15
                         'picbox.ForeColor = QBColor(0)
                         'picbox.Line (Xa(NumGroups + i) - 2 * BoxL(0), Ya(NumGroups + i + BoxL(0)))-(Xa(NumGroups + i) + 2 * BoxL(0), Ya(NumGroups + i) - BoxL(0)), QBColor(0), B
-                        picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.01, IIf(chkColor, PoolColor(i), 0)
-                        picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.02, IIf(chkColor, PoolColor(i), 0)
-                        picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.03, IIf(chkColor, PoolColor(i), 0)
+                        picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.01, if(chkColor, PoolColor(i), 0)
+                        picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.02, if(chkColor, PoolColor(i), 0)
+                        picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.03, if(chkColor, PoolColor(i), 0)
                     Else
                         picbox.Print "F " + CStr(i)
                     End If
@@ -305,9 +305,9 @@ Dim Wi As Single
                 picbox.CurrentY = Ya(NumGroups + i) + 0.15
                 'picbox.ForeColor = QBColor(0)
                 'picbox.Line (Xa(NumGroups + i) - 2 * BoxL(0), Ya(NumGroups + i + BoxL(0)))-(Xa(NumGroups + i) + 2 * BoxL(0), Ya(NumGroups + i) - BoxL(0)), QBColor(0), B
-                picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.01, IIf(chkColor, PoolColor(i), 0)
-                picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.02, IIf(chkColor, PoolColor(i), 0)
-                picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.03, IIf(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.01, if(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.02, if(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xa(NumGroups + i), Ya(NumGroups + i)), 0.03, if(chkColor, PoolColor(i), 0)
             End If
         Next
     End If
@@ -337,9 +337,9 @@ Exit Sub
 DrawLine:
     If chkHost.value = Checked Then
         If Predat Then
-            picbox.DrawWidth = IIf(Host(j, i) * 50 > 1, Host(j, i) * 50, 1)
+            picbox.DrawWidth = if(Host(j, i) * 50 > 1, Host(j, i) * 50, 1)
         ElseIf optGrp(1) And Predat = False Then
-            picbox.DrawWidth = IIf(DC(j, i) * 50 > 1, DC(j, i) * 50, 1)
+            picbox.DrawWidth = if(DC(j, i) * 50 > 1, DC(j, i) * 50, 1)
         End If
     Else
         picbox.DrawWidth = 1
@@ -708,10 +708,10 @@ Private Sub picbox_MouseMove(Button As Integer, Shift As Integer, X As Single, Y
         End If
         lblMoveGroup.Left = X - 0.1
         If MoveGroup <= NumGroups Then
-            lblMoveGroup.Caption = IIf(chkNames, Mid(Specie(MoveGroup), 1, 15), CStr(MoveGroup))
+            lblMoveGroup.Caption = if(chkNames, Mid(Specie(MoveGroup), 1, 15), CStr(MoveGroup))
             frmMdiEcopath4.ShowGroupName Specie(MoveGroup)
         Else
-            lblMoveGroup.Caption = IIf(chkNames, Mid(GearName(MoveGroup - NumGroups), 1, 15), "F " + CStr(MoveGroup - NumGroups))
+            lblMoveGroup.Caption = if(chkNames, Mid(GearName(MoveGroup - NumGroups), 1, 15), "F " + CStr(MoveGroup - NumGroups))
         End If
         lblMoveGroup.Visible = True
     End If
@@ -759,8 +759,8 @@ Dim X As Single
     max = 2 * max
     min = CInt(min - 0.5) / 2 - 0.5
 
-    MinLong = IIf(txtMin <> "", txtMin, -6)
-    min = IIf(min < CSng(MinLong), CSng(MinLong), min)
+    MinLong = if(txtMin <> "", txtMin, -6)
+    min = if(min < CSng(MinLong), CSng(MinLong), min)
     max = CInt(max + 0.5) / 2 + 0.5
 
     MinTL = 10
@@ -775,7 +775,7 @@ Dim X As Single
     MinTL = CInt(MinTL - 0.49) '- 1
     picbox.AutoRedraw = True
     picbox.Cls
-    picbox.Scale (IIf(min < -1, 1.13 * min, min - 0.5), 1.15 * maxTL)-(1.1 * max, MinTL - 1)
+    picbox.Scale (if(min < -1, 1.13 * min, min - 0.5), 1.15 * maxTL)-(1.1 * max, MinTL - 1)
     If chkFlow Then
         For i = 1 To NumLiving
             For j = 1 To NumLiving
@@ -808,9 +808,9 @@ Dim X As Single
                 picbox.Print Specie(i)  'Mid(Specie(i), 1, 15)
                 picbox.CurrentX = Xv(i) - 0.1
                 picbox.CurrentY = Yv(i) + 0.15
-                picbox.Circle (Xv(i), Yv(i)), 0.01, IIf(chkColor, PoolColor(i), 0)
-                picbox.Circle (Xv(i), Yv(i)), 0.02, IIf(chkColor, PoolColor(i), 0)
-                picbox.Circle (Xv(i), Yv(i)), 0.03, IIf(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xv(i), Yv(i)), 0.01, if(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xv(i), Yv(i)), 0.02, if(chkColor, PoolColor(i), 0)
+                picbox.Circle (Xv(i), Yv(i)), 0.03, if(chkColor, PoolColor(i), 0)
             Else
                 picbox.Print CStr(i)
             End If
@@ -818,7 +818,7 @@ Dim X As Single
         End If
     Next
 
-    For X = min To max Step IIf(max - min > 8, 1, 0.5)
+    For X = min To max Step if(max - min > 8, 1, 0.5)
         picbox.Line (X, MinTL)-(X, 0.008 * (max - min) + MinTL)
         picbox.CurrentY = MinTL '0.002 * (max - min)
         picbox.CurrentX = X - 0.1 '3

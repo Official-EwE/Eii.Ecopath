@@ -152,7 +152,7 @@ Namespace Controls
             End If
 
             If (Me.m_rcLabel.Width > 0) Then
-                br = DirectCast(IIF(Me.IsLabelHover, SystemBrushes.ControlText, SystemBrushes.ControlDark), Brush)
+                br = If(Me.IsLabelHover, SystemBrushes.ControlText, SystemBrushes.ControlDark)
                 e.Graphics.DrawString(Me.m_strLabel, Me.Font, br, Me.m_rcLabel, Me.m_sfmt)
             End If
 

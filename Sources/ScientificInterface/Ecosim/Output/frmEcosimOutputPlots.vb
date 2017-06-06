@@ -274,7 +274,7 @@ Namespace Ecosim
                 Dim sbSettings As New StringBuilder()
                 Dim iNumPlots As Integer = [Enum].GetValues(GetType(ePlot)).Length
                 For iPlot As Integer = 0 To iNumPlots - 1
-                    sbSettings.Append(IIF(Me.m_abPlotVisible(DirectCast(iPlot, ePlot)), "1", "0"))
+                    sbSettings.Append(if(Me.m_abPlotVisible(DirectCast(iPlot, ePlot)), "1", "0"))
                 Next
                 Return sbSettings.ToString()
             End Get

@@ -278,13 +278,13 @@ Namespace Controls
 
             ' Brush picker
             Me.pbBrush.Enabled = ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Hatch) > 0)
-            Me.pbBrush.BorderStyle = IIF(Me.pbBrush.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
+            Me.pbBrush.BorderStyle = If(Me.pbBrush.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
 
             Me.plBackColor.Enabled = ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.BackColor) > 0)
-            Me.plBackColor.BorderStyle = IIF(Me.plBackColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
+            Me.plBackColor.BorderStyle = If(Me.plBackColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
 
             Me.plForeColor.Enabled = ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.ForeColor) > 0)
-            Me.plForeColor.BorderStyle = IIF(Me.plForeColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
+            Me.plForeColor.BorderStyle = If(Me.plForeColor.Enabled, BorderStyle.Fixed3D, BorderStyle.FixedSingle)
 
             Me.UpdateColors()
         End Sub
@@ -298,7 +298,7 @@ Namespace Controls
 
             Me.m_bInUpdate = True
 
-            Dim clr As Color = CType(IIf(Me.m_selectionType = eSelectionType.ForeColor, Me.m_clrFore, Me.m_clrBack), Color)
+            Dim clr As Color = If(Me.m_selectionType = eSelectionType.ForeColor, Me.m_clrFore, Me.m_clrBack)
             Dim bEnabled As Boolean = (Me.RepresentationStyles And (cVisualStyle.eVisualStyleTypes.BackColor Or cVisualStyle.eVisualStyleTypes.ForeColor)) > 0
 
             Me.tbRed.Value = clr.R

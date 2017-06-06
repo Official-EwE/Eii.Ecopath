@@ -462,7 +462,7 @@ Namespace FitToTimeSeries
 
                         'nBlocks is the user set number of blocks
                         'm_lstSSResults.Count is the actual number of pred/columns found by the sensitivity search
-                        n = CInt(IIF(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
+                        n = CInt(if(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
 
                         icell = 0
                         For Each ssObj In m_lstSSResults
@@ -483,7 +483,7 @@ Namespace FitToTimeSeries
 
                     Case eSensType.PredPreyCell
 
-                        n = CInt(IIF(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
+                        n = CInt(if(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
                         icell = 0
                         For Each ssObj In m_lstSSResults
                             icell = icell + 1

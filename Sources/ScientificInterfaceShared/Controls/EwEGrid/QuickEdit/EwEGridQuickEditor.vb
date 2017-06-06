@@ -455,7 +455,7 @@ Namespace Controls.EwEGrid
                                 Catch ex As Exception
                                 End Try
                             ElseIf TypeOf objValue Is Boolean Then
-                                Me.m_ctrlValue.Text = IIF(CBool(objValue) = True, "1", "0")
+                                Me.m_ctrlValue.Text = If(CBool(objValue) = True, "1", "0")
                             End If
 
                         Case eControlType.ComboBox

@@ -159,7 +159,7 @@ Public Class cResults
 
 
                 ' TotalUtility a.k.a. Throughput = cost when (profit < 0), revenue otherwise
-                sTotalUtility = IIf(sProfit < 0, sCost, sRevenue)
+                sTotalUtility = If(sProfit < 0, sCost, sRevenue)
 
                 ' Jobs
                 sTotalJobsMale = Me.m_results(eVariableType.NumberOfWorkerMales, unit.Sequence) + _

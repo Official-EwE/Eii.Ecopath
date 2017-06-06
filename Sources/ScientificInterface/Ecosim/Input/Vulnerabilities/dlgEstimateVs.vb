@@ -296,7 +296,7 @@ Namespace Ecosim
             gp.CurveList.Add(Me.MakePlotLine(XVal, PlotVal, True))
             gp.CurveList.Add(Me.MakePlotLine(XVal, PlotVal, False))
             gp.XAxis.Type = AxisType.Linear
-            gp.YAxis.Type = IIF(bIsLogScale, AxisType.Log, AxisType.Linear)
+            gp.YAxis.Type = if(bIsLogScale, AxisType.Log, AxisType.Linear)
             gp.YAxis.Scale.IsUseTenPower = bIsLogScale
 
             gp.XAxis.Scale.MinGrace = 0.0#

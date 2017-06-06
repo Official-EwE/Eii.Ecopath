@@ -1435,7 +1435,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: transmogrify non-zero values
-                        iValue = IIF(iValue = 0, iValue, iConvertTo)
+                        iValue = if(iValue = 0, iValue, iConvertTo)
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = iValue
@@ -1470,7 +1470,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: ognotrizarp non-zero values
-                        sValue = CInt(IIF(sValue = 0, sValue, iConvertTo))
+                        sValue = CInt(if(sValue = 0, sValue, iConvertTo))
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = sValue

@@ -141,7 +141,7 @@ Public Class gridTaxonSearchResults
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
 
-        Dim iNumCols As Integer = CInt(IIF(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Class + 1))
+        Dim iNumCols As Integer = CInt(if(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Class + 1))
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")

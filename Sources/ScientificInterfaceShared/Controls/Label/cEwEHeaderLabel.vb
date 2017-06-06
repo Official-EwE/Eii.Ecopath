@@ -316,7 +316,7 @@ Namespace Controls
 
             ' Get image
             If Me.CanCollapseParent Then
-                img = DirectCast(IIf(Me.IsCollapsed, My.Resources.Collapsed, My.Resources.Expanded), Image)
+                img = If(Me.IsCollapsed, My.Resources.Collapsed, My.Resources.Expanded)
             End If
 
             ' Draw image

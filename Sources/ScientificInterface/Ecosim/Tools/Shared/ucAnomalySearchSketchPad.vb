@@ -206,7 +206,7 @@ Namespace Ecosim
                     Dim iSwitch As Integer = Me.m_iYearFirstDragPos
                     Me.m_iYearFirstDragPos = Me.m_iYearLastDragPos
                     Me.m_iYearLastDragPos = iSwitch
-                    Me.m_dragMode = IIF(Me.m_dragMode = eDragModeTypes.FirstYear, eDragModeTypes.EndYear, eDragModeTypes.FirstYear)
+                    Me.m_dragMode = If(Me.m_dragMode = eDragModeTypes.FirstYear, eDragModeTypes.EndYear, eDragModeTypes.FirstYear)
                 End If
                 Me.Invalidate()
 

@@ -223,7 +223,7 @@ Namespace Controls
 #Region " Internals "
 
         Private Function WeightCol() As Integer
-            Return IIF(Me.m_bLandings, 2, 1)
+            Return If(Me.m_bLandings, 2, 1)
         End Function
 
         ''' -------------------------------------------------------------------

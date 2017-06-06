@@ -242,7 +242,7 @@ Namespace Database
                 Dim iSecond As Integer = strMemo.IndexOf(CChar("."), iFirst + 1)
                 ' Take calculated number string length if two decimal points found. If this fails,
                 ' take the default number string length provided as a parameter
-                'Dim iNumLen As Integer = CInt(IIf(iFirst = -1 Or iSecond = -1, nDefaultNumberLen, iSecond - iFirst))
+                'Dim iNumLen As Integer = CInt(if(iFirst = -1 Or iSecond = -1, nDefaultNumberLen, iSecond - iFirst))
                 Dim iNumLen As Integer
                 If iFirst = -1 Or iSecond = -1 Then
                     iNumLen = nDefaultNumberLen
@@ -355,13 +355,13 @@ Namespace Database
                 ' Is this a character from the match set?
                 If (strMatch.IndexOf(cTest) >= 0) Then
                     ' #Yes: Add 1 or 0, depending on bMatchAsOne flag value
-                    'CInt(IIf(bMatchAsOne, 1, 0))
+                    'CInt(if(bMatchAsOne, 1, 0))
                     If bMatchAsOne Then
                         iBitFlags += 1
                     End If
                 Else
                     ' #No: Add 0 or 1, depending on bMatchAsOne flag value
-                    ' iBitFlags += CInt(IIf(bMatchAsOne, 0, 1))
+                    ' iBitFlags += CInt(if(bMatchAsOne, 0, 1))
                     If bMatchAsOne Then
                         iBitFlags += 1
                     End If
@@ -1049,7 +1049,7 @@ Namespace Database
                             sTemp), _
                             eMessageType.DataImport, eMessageImportance.Information, True)
                 End If
-                ' drow("Unassim") = CSng(IIf(sTemp > 1, sTemp / 100.0, sTemp))
+                ' drow("Unassim") = CSng(if(sTemp > 1, sTemp / 100.0, sTemp))
                 If sTemp > 1 Then
                     drow("Unassim") = CSng(sTemp / 100.0)
                 Else
@@ -3284,7 +3284,7 @@ Namespace Database
                 sbMPA = New StringBuilder()
                 For i As Integer = 0 To Math.Min(strMPA.Length, 12) - 1
                     ' Closed for fishing: store as 0, open: store as 1
-                    'sbMPA.Append(CChar(IIf("Cc".IndexOf(strMPA(i)) >= 0, "0", "1")))
+                    'sbMPA.Append(CChar(if("Cc".IndexOf(strMPA(i)) >= 0, "0", "1")))
                     If "Cc".IndexOf(strMPA(i)) >= 0 Then
                         sbMPA.Append(CChar("0"))
                     Else
